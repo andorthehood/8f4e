@@ -1,0 +1,238 @@
+8f4e/v1
+
+; Literal and constant expressions are executed as regular language tests.
+entry test
+module validConstantNameAssertions
+; Constants with valid names are available as int, float, and declaration defaults.
+const TEST1 420
+const TEST2 420.69
+const TEST3 69
+
+push TEST1
+push 420
+call assert
+
+push TEST2
+push 420.69
+call assertf
+
+int output3 TEST3
+push output3
+push 69
+call assert
+moduleEnd
+
+module fractionLiteralAssertions
+; Fraction literals work in push, memory declarations, and constants.
+push 1/16
+push 0.0625
+call assertf
+
+int intFraction 1/16
+push intFraction
+push 0
+call assert
+
+float floatFraction 1/16
+push floatFraction
+push 0.0625
+call assertf
+
+int intWholeFraction 8/2
+push intWholeFraction
+push 4
+call assert
+
+float negativeFraction -1/2
+push negativeFraction
+push -0.5
+call assertf
+
+const MY_FRACTION 1/8
+push MY_FRACTION
+push 0.125
+call assertf
+moduleEnd
+
+module literalMulDivExpressionAssertions
+; Literal-only multiplication and division fold in const, push, and memory contexts.
+const MUL_RESULT 16*2
+push MUL_RESULT
+push 32
+call assert
+
+const DIV_RESULT 8/2
+push DIV_RESULT
+push 4
+call assert
+
+push 16*2
+push 32
+call assert
+
+push 1/2
+push 0.5
+call assertf
+
+push 0x10*2
+push 32
+call assert
+
+push 0x10/2
+push 8
+call assert
+
+push 3.5*4
+push 14.0
+call assertf
+
+int multipliedDefault 4*3
+push multipliedDefault
+push 12
+call assert
+
+int[] literalSizedBuffer 4*2
+push count(literalSizedBuffer)
+push 8
+call assert
+moduleEnd
+
+module constantExpressionAssertions
+; Constants can reference constants and shape memory sizes.
+const SIZE 8
+int[] dividedBuffer SIZE/2
+push count(dividedBuffer)
+push 4
+call assert
+
+int[] multipliedBuffer SIZE*2
+push count(multipliedBuffer)
+push 16
+call assert
+
+const HALF SIZE/2
+push HALF
+push 4
+call assert
+
+const SIGNED -1/SIZE
+push SIGNED
+push -0.125
+call assertf
+
+push SIZE/2
+push 4
+call assert
+
+int defaultFromExpression SIZE/2
+push defaultFromExpression
+push 4
+call assert
+moduleEnd
+
+module sizeAndCountExpressionAssertions
+; sizeof and count expressions work in constants, push, and buffer sizing.
+int16[] samples 4
+const BYTE_SIZE 123*sizeof(samples)
+push BYTE_SIZE
+push 246
+call assert
+
+const SAMPLE_BYTES sizeof(samples)*2
+push SAMPLE_BYTES
+push 4
+call assert
+
+const SIZE 8
+const TOTAL SIZE*sizeof(samples)
+push TOTAL
+push 16
+call assert
+
+push sizeof(samples)*4
+push 8
+call assert
+
+push SIZE*sizeof(samples)
+push 16
+call assert
+
+push 123*sizeof(samples)
+push 246
+call assert
+
+push 2*SIZE
+push 16
+call assert
+
+float[] floatSamples 8
+float* ptr &floatSamples
+push count(*ptr)
+push 8
+call assert
+
+float* endPtr floatSamples&
+push count(*endPtr)
+push 1
+call assert
+
+int8[] smallSamples 4
+int8* smallPtr &smallSamples
+push min(*smallPtr)
+push -128
+call assert
+
+int[] sizeofBuffer sizeof(samples)*2
+push count(sizeofBuffer)
+push 4
+call assert
+
+int[] source 8
+int[] dest count(source)*2
+push count(dest)
+push 16
+call assert
+moduleEnd
+
+module exponentExpressionAssertions
+; Exponent expressions are supported for constants, push values, and buffer sizes.
+const WIDTH 2^16
+push WIDTH
+push 65536
+call assert
+
+const SIZE 4
+const TOTAL SIZE^3
+push TOTAL
+push 64
+call assert
+
+const EXP 8
+const RESULT 2^EXP
+push RESULT
+push 256
+call assert
+
+push 2^SIZE
+push 16
+call assert
+
+const MEMORY_EXP 3
+int defaultFromExponent MEMORY_EXP^2
+push defaultFromExponent
+push 9
+call assert
+
+const BUFFER_BASE 2
+int[] exponentialBuffer BUFFER_BASE^3
+push count(exponentialBuffer)
+push 8
+call assert
+
+int32[] samples 4
+const SIZEOF_POWER sizeof(samples)^2
+push SIZEOF_POWER
+push 16
+call assert
+moduleEnd
+entryEnd

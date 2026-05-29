@@ -792,7 +792,7 @@ export const instructionSpecs = {
 	},
 	// map ( -- )
 	map: {
-		sourceArguments: { minArguments: 2, maxArguments: 2, argumentTypes: ['mapValue', 'mapValue'] },
+		sourceArguments: { minArguments: 1, maxArguments: 2, argumentTypes: 'mapValue' },
 		scope: 'map',
 		allowedInMapBlocks: true,
 		docs: { shortDescription: 'Starts a map case inside a map block.' },

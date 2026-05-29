@@ -1,0 +1,181 @@
+8f4e/v1
+
+; Comparison instructions return integer booleans and are checked with assert.
+entry test
+module equalAssertions
+; equal returns true for matching integer operands and false otherwise.
+push 420
+push 420
+equal
+push 1
+call assert
+
+push 420
+push -420
+equal
+push 0
+call assert
+
+push 69
+push 96
+equal
+push 0
+call assert
+
+push 0
+push 0
+equal
+push 1
+call assert
+moduleEnd
+
+module equalToZeroAssertions
+; equalToZero returns true only for zero.
+push 420
+equalToZero
+push 0
+call assert
+
+push -69
+equalToZero
+push 0
+call assert
+
+push 0
+equalToZero
+push 1
+call assert
+moduleEnd
+
+module greaterThanIntAssertions
+; greaterThan compares signed integers.
+push 420
+push 420
+greaterThan
+push 0
+call assert
+
+push 420
+push 0
+greaterThan
+push 1
+call assert
+
+push 0
+push 0
+greaterThan
+push 0
+call assert
+
+push 0
+push 69
+greaterThan
+push 0
+call assert
+
+push 0
+push -69
+greaterThan
+push 1
+call assert
+moduleEnd
+
+module greaterThanFloatAssertions
+; greaterThan compares floats and still returns an integer boolean.
+push 420.1
+push 420.1
+greaterThan
+push 0
+call assert
+
+push 420.1
+push 0.001
+greaterThan
+push 1
+call assert
+
+push 0.001
+push 0.001
+greaterThan
+push 0
+call assert
+
+push 0.001
+push 69.1
+greaterThan
+push 0
+call assert
+
+push 0.001
+push -69.1
+greaterThan
+push 1
+call assert
+moduleEnd
+
+module greaterOrEqualIntAssertions
+; greaterOrEqual returns true for equal or greater signed integers.
+push 420
+push 420
+greaterOrEqual
+push 1
+call assert
+
+push 420
+push 0
+greaterOrEqual
+push 1
+call assert
+
+push 0
+push 0
+greaterOrEqual
+push 1
+call assert
+
+push 0
+push 69
+greaterOrEqual
+push 0
+call assert
+
+push 0
+push -69
+greaterOrEqual
+push 1
+call assert
+moduleEnd
+
+module greaterOrEqualFloatAssertions
+; greaterOrEqual returns true for equal or greater floats.
+push 420.1
+push 420.1
+greaterOrEqual
+push 1
+call assert
+
+push 420.1
+push 0.001
+greaterOrEqual
+push 1
+call assert
+
+push 0.001
+push 0.001
+greaterOrEqual
+push 1
+call assert
+
+push 0.001
+push 69.1
+greaterOrEqual
+push 0
+call assert
+
+push 0.001
+push -69.1
+greaterOrEqual
+push 1
+call assert
+moduleEnd
+entryEnd

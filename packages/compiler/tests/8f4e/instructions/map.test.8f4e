@@ -1,0 +1,336 @@
+8f4e/v1
+
+; map runtime behavior is asserted through source-level fixtures.
+entry test
+module mapIntIntAssertions
+; Integer maps return matching values and fall back to implicit zero.
+int input
+
+push &input
+push 1
+store
+push input
+mapBegin int
+map 1 100
+map 2 200
+map 3 300
+mapEnd int
+push 100
+call assert
+
+push &input
+push 2
+store
+push input
+mapBegin int
+map 1 100
+map 2 200
+map 3 300
+mapEnd int
+push 200
+call assert
+
+push &input
+push 3
+store
+push input
+mapBegin int
+map 1 100
+map 2 200
+map 3 300
+mapEnd int
+push 300
+call assert
+
+push &input
+push 99
+store
+push input
+mapBegin int
+map 1 100
+map 2 200
+map 3 300
+mapEnd int
+push 0
+call assert
+moduleEnd
+
+module mapCharLiteralAssertions
+; Single-character literals map through their ASCII integer values.
+int input
+
+push &input
+push 65
+store
+push input
+mapBegin int
+map "A" "B"
+mapEnd int
+push 66
+call assert
+
+push &input
+push 66
+store
+push input
+mapBegin int
+map "A" "B"
+mapEnd int
+push 0
+call assert
+moduleEnd
+
+module mapDefaultAssertions
+; Explicit defaults are returned when no row matches.
+int input
+
+push &input
+push 1
+store
+push input
+mapBegin int
+map 1 10
+default 999
+mapEnd int
+push 10
+call assert
+
+push &input
+push 0
+store
+push input
+mapBegin int
+map 1 10
+default 999
+mapEnd int
+push 999
+call assert
+
+push &input
+push 42
+store
+push input
+mapBegin int
+map 1 10
+default 999
+mapEnd int
+push 999
+call assert
+moduleEnd
+
+module mapIntFloatAssertions
+; Integer keys can map to float outputs.
+int input
+
+push &input
+push 0
+store
+push input
+mapBegin int
+map 0 0.5
+map 1 1.5
+mapEnd float
+push 0.5
+call assertf
+
+push &input
+push 1
+store
+push input
+mapBegin int
+map 0 0.5
+map 1 1.5
+mapEnd float
+push 1.5
+call assertf
+
+push &input
+push 2
+store
+push input
+mapBegin int
+map 0 0.5
+map 1 1.5
+mapEnd float
+push 0.0
+call assertf
+moduleEnd
+
+module mapFloatFloatAssertions
+; Float keys can map to float outputs.
+float input
+
+push &input
+push 0.5
+store
+push input
+mapBegin float
+map 0.5 10.0
+map 1.5 20.0
+mapEnd float
+push 10.0
+call assertf
+
+push &input
+push 1.5
+store
+push input
+mapBegin float
+map 0.5 10.0
+map 1.5 20.0
+mapEnd float
+push 20.0
+call assertf
+
+push &input
+push 0.0
+store
+push input
+mapBegin float
+map 0.5 10.0
+map 1.5 20.0
+mapEnd float
+push 0.0
+call assertf
+moduleEnd
+
+module mapImplicitDefaultAssertions
+; Missing rows use the implicit zero default.
+int input
+
+push &input
+push 7
+store
+push input
+mapBegin int
+map 7 42
+mapEnd int
+push 42
+call assert
+
+push &input
+push 0
+store
+push input
+mapBegin int
+map 7 42
+mapEnd int
+push 0
+call assert
+moduleEnd
+
+module mapImplicitKeyAssertions
+; Single-argument map rows use their zero-based row index as the key.
+int input
+
+push &input
+push 0
+store
+push input
+mapBegin int
+map 100
+map 200
+map 300
+mapEnd int
+push 100
+call assert
+
+push &input
+push 2
+store
+push input
+mapBegin int
+map 100
+map 200
+map 300
+mapEnd int
+push 300
+call assert
+
+push &input
+push 9
+store
+push input
+mapBegin int
+map 100
+map 200
+map 300
+mapEnd int
+push 0
+call assert
+moduleEnd
+
+module mapImplicitKeyMixedRowsAssertions
+; Explicit rows do not change the zero-based row index used by implicit rows.
+int input
+
+push &input
+push 2
+store
+push input
+mapBegin int
+map 10
+map 9 99
+map 30
+mapEnd int
+push 30
+call assert
+
+push &input
+push 9
+store
+push input
+mapBegin int
+map 10
+map 9 99
+map 30
+mapEnd int
+push 99
+call assert
+moduleEnd
+
+module mapImplicitFloatKeyAssertions
+; Float maps also derive numeric implicit keys from the row index.
+float input
+
+push &input
+push 1.0
+store
+push input
+mapBegin float
+map 0.5
+map 1.5
+mapEnd float
+push 1.5
+call assertf
+moduleEnd
+
+module mapFirstMatchAssertions
+; Duplicate keys use the first matching row.
+int input 1
+push input
+mapBegin int
+map 1 10
+map 1 20
+mapEnd int
+push 10
+call assert
+moduleEnd
+
+module mapZeroRowsAssertions
+; Empty maps return either implicit zero or an explicit default.
+int input 5
+push input
+mapBegin int
+mapEnd int
+push 0
+call assert
+
+push input
+mapBegin int
+default 42
+mapEnd int
+push 42
+call assert
+moduleEnd
+entryEnd

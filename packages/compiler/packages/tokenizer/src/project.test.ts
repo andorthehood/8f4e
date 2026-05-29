@@ -17,13 +17,18 @@ describe('parse8f4eProject', () => {
 		const text = [
 			'8f4e/v1',
 			'',
+			'; project comment before an entry',
 			'entry main',
+			'; entry comment before a module',
 			...validModuleBlock,
+			'// entry comment before closing',
 			'entryEnd',
 			'',
+			'# project directive-style comment before a function',
 			...validFunctionBlock,
 			'',
 			...validNoteBlock,
+			'; trailing project comment',
 		].join('\n');
 		const project = parse8f4eProject(text);
 

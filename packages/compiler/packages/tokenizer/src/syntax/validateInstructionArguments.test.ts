@@ -10,9 +10,13 @@ const { parseCompileTimeOperand } = await import('./parseArgument');
 describe('validateInstructionArguments', () => {
 	it('enforces missing arguments for known instruction arity', () => {
 		expect(() => validateInstructionArguments('push', [])).toThrowError(SyntaxRulesError);
+		expect(() => validateInstructionArguments('map', [])).toThrowError(SyntaxRulesError);
+	});
+
+	it('accepts one-argument map rows', () => {
 		expect(() =>
 			validateInstructionArguments('map', [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }])
-		).toThrowError(SyntaxRulesError);
+		).not.toThrow();
 	});
 
 	it('rejects extra arguments for fixed-arity instructions', () => {

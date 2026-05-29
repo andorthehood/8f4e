@@ -1,8 +1,6 @@
 import { SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 import { describe, it, expect } from 'vitest';
 
-import { moduleTester } from './testUtils';
-
 import compile from '../../src';
 
 import type { Module } from '../../src/types';
@@ -13,31 +11,6 @@ const defaultOptions = {
 };
 
 describe('const instruction', () => {
-	moduleTester(
-		'const with valid constant names',
-		`module const
-
-const TEST1 420
-const TEST2 420.69
-const TEST3 69
-
-int output1
-float output2
-int output3 TEST3
-
-push &output1
-push TEST1
-store
-
-push &output2
-push TEST2
-store
-
-moduleEnd
-`,
-		[[{}, { output1: 420, output2: 420.69, output3: 69 }]]
-	);
-
 	it('should reject constant names with lowercase letters', () => {
 		const modules: Module[] = [
 			{

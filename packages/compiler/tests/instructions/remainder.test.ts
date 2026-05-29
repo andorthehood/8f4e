@@ -1,27 +1,6 @@
 import { describe, test, expect } from 'vitest';
 
-import { moduleTester, createTestModule } from './testUtils';
-
-moduleTester(
-	'remainder with ensureNonZero',
-	`module remainder
-
-int input1
-int input2
-int output
-
-push &output
-push input1
-push input2
-ensureNonZero
-remainder
-store
-
-moduleEnd
-`,
-	[[{ input1: 4, input2: 2 }, { output: 0 }]],
-	[[{ input1: 3, input2: 2 }, { output: 1 }]]
-);
+import { createTestModule } from './testUtils';
 
 describe('remainder without ensureNonZero', () => {
 	test('should throw DIVISION_BY_ZERO error when divisor may be zero', async () => {
