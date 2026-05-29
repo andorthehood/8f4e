@@ -160,11 +160,11 @@ describe('cli', () => {
 		expect(stdout).toBe('Ran 3 assertions.\n');
 	});
 
-	it('uses mock blocks only when running tests', async () => {
+	it('runs tests with ordinary dependency blocks', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
-		const mockTestPath = path.join(tmpDir, 'mockDependency.8f4e');
+		const dependencyTestPath = path.join(tmpDir, 'dependencyTest.8f4e');
 		await fs.writeFile(
-			mockTestPath,
+			dependencyTestPath,
 			[
 				'8f4e/v1',
 				'',
@@ -176,14 +176,13 @@ describe('cli', () => {
 				'moduleEnd',
 				'',
 				'module dependency',
-				'#mock ; test-only dependency',
 				'int value 42',
 				'moduleEnd',
 				'groupEnd',
 			].join('\n')
 		);
 
-		const { stdout } = await execCli(['test', mockTestPath]);
+		const { stdout } = await execCli(['test', dependencyTestPath]);
 
 		expect(stdout).toBe('Ran 1 assertion.\n');
 	});

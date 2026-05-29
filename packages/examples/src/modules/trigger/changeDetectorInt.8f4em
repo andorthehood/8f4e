@@ -2,6 +2,7 @@
 
 group main
 module change2Trig
+; @public
 
 const HIGH 1
 const LOW 0
@@ -30,7 +31,6 @@ store
 
 moduleEnd
 module sh
-#mock
 int out 0
 moduleEnd
 groupEnd

@@ -66,28 +66,7 @@ describe('compileProjectModules', () => {
 		expect(result.compiledModules?.addWorks.executionGroupName).toBe('test');
 	});
 
-	it('excludes mock blocks from normal project compilation', () => {
-		const result = compileProjectModules(
-			[
-				{
-					code: ['module realDependency', 'int value 7', 'moduleEnd'],
-					executionGroupName: 'main',
-				},
-				{
-					code: ['module realDependency', '#mock ; test-only duplicate', 'int value 1', 'moduleEnd'],
-					executionGroupName: 'main',
-				},
-			],
-			{
-				compilerOptions: { startingMemoryWordAddress: 0 },
-				includeWasm: false,
-			}
-		);
-
-		expect(result.compiledModules?.realDependency.memoryMap.value.default).toBe(7);
-	});
-
-	it('includes mock blocks for test project compilation', () => {
+	it('compiles test dependencies as ordinary blocks', () => {
 		const result = compileProjectModules(
 			[
 				{
@@ -95,13 +74,12 @@ describe('compileProjectModules', () => {
 					executionGroupName: 'test',
 				},
 				{
-					code: ['module dependency', '#mock', 'int value 42', 'moduleEnd'],
+					code: ['module dependency', 'int value 42', 'moduleEnd'],
 					executionGroupName: 'main',
 				},
 			],
 			{
 				compilerOptions: { startingMemoryWordAddress: 0 },
-				includeMocks: true,
 				includeWasm: false,
 			}
 		);

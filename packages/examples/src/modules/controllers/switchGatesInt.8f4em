@@ -2,6 +2,7 @@
 
 group main
 module switchGates
+; @public
 
 int* in0
 int out0

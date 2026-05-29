@@ -4,6 +4,7 @@ group main
 groupEnd
 
 constants amigaPeriodIncrement
+; @public
 ; @tab 12
 use env
 
@@ -47,7 +48,6 @@ const B3	31388.4513/SAMPLE_RATE
 constantsEnd
 
 constants env
-#mock
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 constantsEnd

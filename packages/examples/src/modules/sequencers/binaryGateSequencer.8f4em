@@ -2,6 +2,7 @@
 
 group main
 module binaryGateSeq
+; @public
 
 int step1  0b10100000
 int step2  0b00100000

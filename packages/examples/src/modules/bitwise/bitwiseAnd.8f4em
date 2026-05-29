@@ -2,6 +2,7 @@
 
 group main
 module bitwiseAnd
+; @public
          ;   .----.
 int* in1 ; --+     '
 int out  ;   | and  |---

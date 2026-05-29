@@ -2,6 +2,7 @@
 
 group main
 module bitwiseOr
+; @public
          ;   -----.
 int* in1 ; --+     '
 int out  ;   )  or  |---

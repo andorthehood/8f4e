@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function jankoMap
+; @public
 param int keycode
 use midiCodes
 push keycode

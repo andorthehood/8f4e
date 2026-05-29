@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function sigmoid
+; @public
 ; Fast sigmoid approximation
 ; of logistic sigmoid
 ; mapped to [0, 1]

@@ -2,6 +2,7 @@
 
 group main
 module reverser
+; @public
 
 int* bufferIn
 int* lengthIn

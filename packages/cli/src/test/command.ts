@@ -230,7 +230,6 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	}
 
 	const compileResult = compileProject(project, {
-		includeMocks: true,
 		compilerOptions: {
 			disableSharedMemory: true,
 		},

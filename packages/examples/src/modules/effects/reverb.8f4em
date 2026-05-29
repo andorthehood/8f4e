@@ -2,6 +2,7 @@
 
 group main
 module reverb
+; @public
 
 float* in
 float out

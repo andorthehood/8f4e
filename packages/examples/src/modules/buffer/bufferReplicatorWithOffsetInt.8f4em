@@ -2,6 +2,7 @@
 
 group main
 module replicator
+; @public
 
 const TIMES 2
 const OFFSET 12

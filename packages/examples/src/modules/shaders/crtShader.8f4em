@@ -4,6 +4,7 @@ group main
 groupEnd
 
 note fragmentShaderPostprocess
+; @public
 #version 300 es
 
 precision mediump float;

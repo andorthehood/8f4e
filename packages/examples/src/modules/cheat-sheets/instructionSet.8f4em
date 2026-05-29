@@ -4,6 +4,7 @@ group main
 groupEnd
 
 constants instructionSet
+; @public
 ; @pos 27 83
 ; 8f4e instruction set.
 ; @tab 36

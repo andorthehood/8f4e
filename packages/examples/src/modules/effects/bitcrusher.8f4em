@@ -2,6 +2,7 @@
 
 group main
 module bitcrusher
+; @public
 
 float* in
 float defAmount 0.9

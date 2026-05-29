@@ -2,6 +2,7 @@
 
 group main
 module expLUT
+; @public
 
 float 0.3679
 float 0.3686
