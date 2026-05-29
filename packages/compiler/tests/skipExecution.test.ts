@@ -84,7 +84,7 @@ moduleEnd
 	});
 
 	test('#skipExecution in constants block throws error', () => {
-		const modules = [
+		const constants = [
 			{
 				code: `
 constants env
@@ -96,7 +96,7 @@ constantsEnd
 		];
 
 		expect(() => {
-			compile({ groups: { main: modules } }, {});
+			compile({ groups: { main: [] }, constants }, {});
 		}).toThrow();
 	});
 

@@ -102,15 +102,6 @@
       "wordAlignedSize": 2,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
-    },
-    {
-      "id": "env",
-      "index": 10,
-      "byteAddress": 76,
-      "wordAlignedAddress": 19,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
     }
   ]
 }
