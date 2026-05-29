@@ -4,6 +4,8 @@ import {
 	documentBlockInstructionPairs,
 } from '@8f4e/compiler-spec';
 
+import { compileToAST } from './parser';
+
 import type { CompilableBlockType, DocumentBlockType, Module } from '@8f4e/compiler-spec';
 
 export const FORMAT_HEADER = '8f4e/v1';
@@ -109,6 +111,23 @@ export function getDocumentProjectBlockType(code: string[]): DocumentBlockType |
 
 	const [match] = presentTypes;
 	return match.hasOpener && match.hasCloser ? match.type : 'unknown';
+}
+
+function getModuleExecutionGroupName(block: ProjectCodeBlock): string {
+	const ast = compileToAST(block.code);
+	if (ast.type !== 'module') {
+		return block.executionGroupName ?? 'main';
+	}
+
+	if (ast.testLine !== undefined) {
+		return 'test';
+	}
+
+	if (ast.lines.some(line => line.instruction === '#initOnly')) {
+		return 'init';
+	}
+
+	return block.executionGroupName ?? 'main';
 }
 
 export function parse8f4eProject(text: string): ProjectInput {
@@ -238,7 +257,7 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 
 		const blockType = getProjectBlockType(block.code);
 		if (blockType === moduleBlockType) {
-			const groupName = block.executionGroupName ?? 'main';
+			const groupName = getModuleExecutionGroupName(block);
 			groups[groupName] ??= [];
 			groups[groupName].push({ code: block.code });
 			continue;
