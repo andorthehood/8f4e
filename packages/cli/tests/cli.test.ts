@@ -137,8 +137,21 @@ describe('cli', () => {
 
 	it('reports assertion failures from project tests', async () => {
 		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
-			stderr: expect.stringContaining('addFails:5 expected 4, received 3'),
+			stderr: expect.stringContaining('addFails:6 expected 4, received 3'),
 		});
+	});
+
+	it('detects test directives with trailing semicolon comments', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const commentedTestPath = path.join(tmpDir, 'commentedTest.8f4e');
+		await fs.writeFile(
+			commentedTestPath,
+			['8f4e/v1', '', 'module commentedTest', '#test ; inline comment', 'push 1', 'assert 1', 'moduleEnd'].join('\n')
+		);
+
+		const { stdout } = await execCli(['test', commentedTestPath]);
+
+		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
 
 	it('runs embedded tests declared in an example module file', async () => {
