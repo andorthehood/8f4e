@@ -1,0 +1,6 @@
+name = "8f4e"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-05-29"
+
+[vars]
+NX_NO_CLOUD = "true"
