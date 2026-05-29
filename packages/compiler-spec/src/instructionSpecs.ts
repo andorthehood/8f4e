@@ -351,6 +351,15 @@ export const instructionSpecs = {
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
+	// assert <expected> (int -- )
+	assert: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'compileTimeValue' },
+		scope: 'moduleOnly',
+		minOperands: 1,
+		operandTypes: 'int',
+		docs: { shortDescription: 'Reports an assertion failure when the top stack value differs from expected.' },
+		stack: stack({ inputs: ['int'], outputs: [], effect: stackMutation(1) }),
+	},
 	// block ( -- )
 	block: {
 		sourceArguments: noSourceArguments,
@@ -756,6 +765,21 @@ export const instructionSpecs = {
 		scope: 'moduleOnly',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
 		docs: { shortDescription: 'Runs the current module only during initialization.' },
+		stack: stack({ inputs: [], outputs: [] }),
+	},
+	// #test ( -- )
+	'#test': {
+		sourceArguments: noSourceArguments,
+		scope: 'moduleOnly',
+		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
+		docs: { shortDescription: 'Marks the current module for execution by the test runner.' },
+		stack: stack({ inputs: [], outputs: [] }),
+	},
+	// #mock ( -- )
+	'#mock': {
+		sourceArguments: noSourceArguments,
+		allowedInConstantsBlocks: true,
+		docs: { shortDescription: 'Marks a source block as test-only mock support.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #impure ( -- )

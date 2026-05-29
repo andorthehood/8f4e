@@ -14,6 +14,8 @@ export interface CompileOptions {
 	includeAST?: boolean;
 	/** Whether to include per-instruction stack analysis in compiled modules and functions. Default is false. */
 	includeStackAnalysis?: boolean;
+	/** Whether to export a test runner that executes modules marked with #test. Default is false. */
+	includeTestRunner?: boolean;
 	/** Disable shared memory for tests (wabt doesn't support shared memory). Default is false (shared enabled). */
 	disableSharedMemory?: boolean;
 	/** Buffer size for the buffer function. Default is 128. */

@@ -2,6 +2,8 @@
 
 module square
 
+use env
+
 float default 1 ;Hz 
 float* frequency &default
 float out
@@ -15,6 +17,7 @@ push 2.0
 mul 
 push SAMPLE_RATE 
 castToFloat
+ensureNonZero
 div 
 push direction
 mul
@@ -53,3 +56,9 @@ store
 ifEnd
 
 moduleEnd
+
+constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd

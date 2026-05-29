@@ -1,4 +1,5 @@
 import load from './load';
+import assert from './assert';
 import localSet from './localSet';
 import _else from './else';
 import store from './store';
@@ -57,6 +58,8 @@ import param from './param';
 import call from './call';
 import skipExecution from './skipExecution';
 import initOnly from './initOnly';
+import test from './test';
+import mock from './mock';
 import impure from './impure';
 import exportFunction from './exportFunction';
 import loopCap from './loopCap';
@@ -70,6 +73,7 @@ import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAdd
 
 const instructions = {
 	and,
+	assert,
 	or,
 	load: load,
 	load8u: load,
@@ -135,6 +139,8 @@ const instructions = {
 	call,
 	'#skipExecution': skipExecution,
 	'#initOnly': initOnly,
+	'#test': test,
+	'#mock': mock,
 	'#impure': impure,
 	'#export': exportFunction,
 	'#loopCap': loopCap,

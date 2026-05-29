@@ -1,3 +1,5 @@
+8f4e/v1
+
 module adrEnv
 ; @tab 8
 use env
@@ -8,7 +10,7 @@ float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/2
 float	decayLevel 0.5
 int	releaseTime SAMPLE_RATE*2
-int	_state RELEASE
+int	_state 3
 int	_counter
 float	out
 
@@ -36,7 +38,7 @@ push	_counter
 push	0
 greaterThan
 and
-if	void
+if
 push	&out
 push	1.0
 push	_counter
@@ -57,7 +59,7 @@ push	_state
 push	ATTACK
 equal
 and
-if	void ; End of attack
+if ; End of attack
 push	&_state
 push	DECAY
 store
@@ -74,7 +76,7 @@ push	_counter
 push 0
 greaterThan
 and
-if	void
+if
 push	&out
 push	decayLevel
 push	_counter
@@ -133,7 +135,7 @@ ifEnd
 push	_counter
 push	0
 greaterThan
-if	void
+if
 push	&_counter
 push	_counter
 push	1
@@ -142,3 +144,9 @@ store
 ifEnd
 
 moduleEnd
+
+constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd

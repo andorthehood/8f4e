@@ -41,6 +41,7 @@ add
 push bufferIn
 push _pointer
 push *lengthIn
+ensureNonZero
 remainder
 push sizeof(bufferIn)
 mul
@@ -50,6 +51,7 @@ loadFloat
 
 push _pointer
 push *lengthIn
+ensureNonZero
 div
 castToFloat
 push OFFSET

@@ -57,4 +57,12 @@ ${periods
 
 constantsEnd`;
 
-export default amigaPeriodIncrement;
+const testMocks = `constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd`;
+
+export default `${amigaPeriodIncrement}
+
+${testMocks}`;

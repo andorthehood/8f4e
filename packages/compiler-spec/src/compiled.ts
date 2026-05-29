@@ -29,6 +29,7 @@ export interface CompiledModule {
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
 	initOnlyExecution?: boolean;
+	testExecution?: boolean;
 }
 
 export type CompiledModuleLookup = Record<string, CompiledModule>;
@@ -72,6 +73,14 @@ export interface CompiledFunction extends FunctionMetadata {
 
 export type CompiledFunctionLookup = Record<string, CompiledFunction>;
 
+/** Source metadata for one compiled 8f4e assertion. */
+export interface TestAssertionMetadata {
+	assertIndex: number;
+	moduleId: string;
+	lineNumber: number;
+	expected: number;
+}
+
 /** Reusable compiler caches returned from a compile operation. */
 export interface CompilerCache {
 	ast: ASTCache<AST>;
@@ -81,6 +90,9 @@ export type CompileResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
+	/** Source module ids marked with #test during AST construction. */
+	testModuleIds?: string[];
+	testAssertions?: TestAssertionMetadata[];
 	requiredMemoryBytes: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
 	cache: CompilerCache;

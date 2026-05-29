@@ -10,6 +10,7 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 	const compilerOptions: CompileOptions = {
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,
 		includeAST: options.compilerOptions?.includeAST,
+		includeTestRunner: options.compilerOptions?.includeTestRunner,
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 		bufferSize: options.compilerOptions?.bufferSize,
 		bufferStrategy: options.compilerOptions?.bufferStrategy,
@@ -36,5 +37,8 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		compiledFunctions: undefined,
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
+		requiredMemoryBytesByRegion: moduleResult.requiredMemoryBytesByRegion,
+		testModuleIds: moduleResult.testModuleIds,
+		testAssertions: moduleResult.testAssertions,
 	};
 }

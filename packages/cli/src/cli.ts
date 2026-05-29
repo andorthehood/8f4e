@@ -2,6 +2,7 @@
 import { getCaptureUsage, runCaptureCommand } from './capture/command';
 import { getCompileUsage, runCompileCommand } from './compile/command';
 import { getRunUsage, runRunCommand } from './run/command';
+import { getTestUsage, runTestCommand } from './test/command';
 
 function getUsage(): string {
 	return [
@@ -9,6 +10,7 @@ function getUsage(): string {
 		`  ${getCompileUsage().replace('Usage: ', '')}`,
 		`  ${getRunUsage().replace('Usage: ', '')}`,
 		`  ${getCaptureUsage().replace('Usage: ', '')}`,
+		`  ${getTestUsage().replace('Usage: ', '')}`,
 	].join('\n');
 }
 
@@ -32,6 +34,11 @@ async function run(): Promise<void> {
 
 	if (subcommand === 'capture') {
 		await runCaptureCommand(args);
+		return;
+	}
+
+	if (subcommand === 'test') {
+		await runTestCommand(args);
 		return;
 	}
 
