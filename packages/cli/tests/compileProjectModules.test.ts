@@ -44,4 +44,20 @@ describe('compileProjectModules', () => {
 			result.compiledModules?.source.memoryMap.value.byteAddress
 		);
 	});
+
+	it('returns test module ids reported by parsed compiler metadata', () => {
+		const result = compileProjectModules(
+			[
+				{
+					code: ['module addWorks', '#test ; inline comment', 'push 1', 'assert 1', 'moduleEnd'],
+				},
+			],
+			{
+				compilerOptions: { includeTestRunner: true, startingMemoryWordAddress: 0 },
+				includeWasm: false,
+			}
+		);
+
+		expect(result.testModuleIds).toEqual(['addWorks']);
+	});
 });

@@ -1,6 +1,17 @@
-import { isProjectTestModule, parse8f4eProject } from '@8f4e/tokenizer';
+import { compileToAST, getProjectBlockType, parse8f4eProject } from '@8f4e/tokenizer';
+
+import type { ProjectCodeBlock } from '@8f4e/tokenizer';
 
 import { FORMAT_HEADER } from '~/features/project-format';
+
+function isParsedTestModule(block: ProjectCodeBlock): boolean {
+	if (getProjectBlockType(block.code) !== 'module') {
+		return false;
+	}
+
+	const ast = compileToAST(block.code);
+	return ast.type === 'module' && ast.testLine !== undefined;
+}
 
 export default function parseModuleSource(source: string): string[] {
 	const lines = source.split('\n');
@@ -9,7 +20,7 @@ export default function parseModuleSource(source: string): string[] {
 	}
 
 	const project = parse8f4eProject(source);
-	const [firstNonTestBlock] = project.codeBlocks.filter(block => !isProjectTestModule(block));
+	const [firstNonTestBlock] = project.codeBlocks.filter(block => !isParsedTestModule(block));
 
 	return firstNonTestBlock?.code ?? [];
 }

@@ -5,8 +5,6 @@ import {
 	documentBlockInstructionPairs,
 } from '@8f4e/compiler-spec';
 
-import instructionParser from './syntax/instructionParser';
-
 import type { CompilableBlockType, DocumentBlockType, Module } from '@8f4e/compiler-spec';
 
 export const FORMAT_HEADER = '8f4e/v1';
@@ -96,18 +94,6 @@ export function getDocumentProjectBlockType(code: string[]): DocumentBlockType |
 
 	const [match] = presentTypes;
 	return match.hasOpener && match.hasCloser ? match.type : 'unknown';
-}
-
-export function isProjectTestModule(block: ProjectCodeBlock): boolean {
-	if (getProjectBlockType(block.code) !== 'module') {
-		return false;
-	}
-
-	return block.code.some(line => instructionParser.exec(line)?.[1] === '#test');
-}
-
-export function hasProjectTestModule(blocks: ProjectCodeBlock[]): boolean {
-	return blocks.some(block => !block.disabled && isProjectTestModule(block));
 }
 
 export function parse8f4eProject(text: string): ProjectInput {
