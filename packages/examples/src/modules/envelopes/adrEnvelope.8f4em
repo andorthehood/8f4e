@@ -38,7 +38,7 @@ push	_counter
 push	0
 greaterThan
 and
-if	void
+if
 push	&out
 push	1.0
 push	_counter
@@ -59,7 +59,7 @@ push	_state
 push	ATTACK
 equal
 and
-if	void ; End of attack
+if ; End of attack
 push	&_state
 push	DECAY
 store
@@ -76,7 +76,7 @@ push	_counter
 push 0
 greaterThan
 and
-if	void
+if
 push	&out
 push	decayLevel
 push	_counter
@@ -135,7 +135,7 @@ ifEnd
 push	_counter
 push	0
 greaterThan
-if	void
+if
 push	&_counter
 push	_counter
 push	1

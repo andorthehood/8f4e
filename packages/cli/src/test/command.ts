@@ -1,10 +1,12 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { compileToAST, getProjectBlockType } from '@8f4e/tokenizer';
+
 import { compileProject } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
 
-import type { ProjectInput } from '../shared/types';
+import type { ProjectCodeBlock, ProjectInput } from '../shared/types';
 import type { TestAssertionMetadata } from '@8f4e/compiler-spec';
 
 const WASM_MEMORY_PAGE_SIZE = 65536;
@@ -200,19 +202,28 @@ export function getTestUsage(): string {
 	return 'Usage: cli test <input.8f4e|input.8f4em|glob>...';
 }
 
+function isParsedTestModule(block: ProjectCodeBlock): boolean {
+	if (block.disabled || getProjectBlockType(block.code) !== 'module') {
+		return false;
+	}
+
+	const ast = compileToAST(block.code);
+	return ast.type === 'module' && ast.testLine !== undefined;
+}
+
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
 	const project = parse8f4eToProject(inputRaw) as ProjectInput;
+	if (!project.codeBlocks.some(isParsedTestModule)) {
+		return { assertions: 0, skipped: true };
+	}
+
 	const compileResult = compileProject(project, {
 		compilerOptions: {
 			disableSharedMemory: true,
 			includeTestRunner: true,
 		},
 	});
-
-	if ((compileResult.testModuleIds?.length ?? 0) === 0) {
-		return { assertions: 0, skipped: true };
-	}
 
 	if (!compileResult.compiledWasm) {
 		throw new Error('Unable to run tests: compilation did not produce runnable output');

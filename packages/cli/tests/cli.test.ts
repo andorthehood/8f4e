@@ -154,6 +154,19 @@ describe('cli', () => {
 		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
 
+	it('skips no-test modules before semantic compilation', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const noTestPath = path.join(tmpDir, 'noTestSemanticReferences.8f4e');
+		await fs.writeFile(
+			noTestPath,
+			['8f4e/v1', '', 'module noTest', 'float* in', 'float[] buffer AUDIO_BUFFER_SIZE', 'moduleEnd'].join('\n')
+		);
+
+		const { stdout } = await execCli(['test', noTestPath]);
+
+		expect(stdout).toBe('No tests found.\n');
+	});
+
 	it('runs embedded tests declared in an example module file', async () => {
 		const { stdout } = await execCli(['test', wrapPointerModulePath]);
 
