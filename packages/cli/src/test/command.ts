@@ -1,6 +1,8 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { hasProjectTestModule } from '@8f4e/tokenizer';
+
 import { compileProject } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
 
@@ -202,11 +204,11 @@ export function getTestUsage(): string {
 
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
-	if (!inputRaw.split('\n').some(line => line.trim() === '#test')) {
+	const project = parse8f4eToProject(inputRaw) as ProjectInput;
+	if (!hasProjectTestModule(project.codeBlocks)) {
 		return { assertions: 0, skipped: true };
 	}
 
-	const project = parse8f4eToProject(inputRaw) as ProjectInput;
 	const compileResult = compileProject(project, {
 		compilerOptions: {
 			disableSharedMemory: true,
