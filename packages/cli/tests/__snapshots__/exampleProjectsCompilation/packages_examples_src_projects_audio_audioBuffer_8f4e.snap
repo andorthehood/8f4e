@@ -16,7 +16,8 @@
       "wordAlignedAddress": 1,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 0
+      "index": 0,
+      "executionGroupName": "main"
     },
     "phaseAccumulator": {
       "id": "phaseAccumulator",
@@ -110,7 +111,7 @@
         2,
         0,
         16,
-        4,
+        3,
         56,
         2,
         0,
@@ -185,7 +186,8 @@
         }
       },
       "wordAlignedSize": 4,
-      "index": 1
+      "index": 1,
+      "executionGroupName": "main"
     },
     "audioout": {
       "id": "audioout",
@@ -333,7 +335,8 @@
         }
       },
       "wordAlignedSize": 130,
-      "index": 2
+      "index": 2,
+      "executionGroupName": "main"
     },
     "notes": {
       "id": "notes",
@@ -348,9 +351,10 @@
       "wordAlignedAddress": 135,
       "memoryMap": {},
       "wordAlignedSize": 0,
-      "index": 3
+      "index": 3,
+      "executionGroupName": "main"
     }
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDCgkAAAAAAwAAAAAHLAQMaW5pdERlZmF1bHRzAAAFY3ljbGUAAQhpbml0T25seQACBmJ1ZmZlcgADDAECCuwCCSEAQQBBAEGcBPwLAEEEQQBBFPwIAABBmARBAEEE/AgBAAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLZAEBfSAAQ9sPyT9eBEBD2w9JQCAAkyEACyAAQ9sPyT9DAACAv5RdBEBD2w9JQEMAAIC/lCAAkyEACyAAIACUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAtdAQF9QQxBDCoCAEPbD8lAQQgoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBDCoCAEPbD0lAXgRAQQxD2w9JwDgCAAtBEEEMKgIAEAQ4AgALVwIBfwF9QZgEKAIAQRQoAgAqAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATgCAAULQZgEQZgEKAIAQQRqNgIAQZgEKAIAQZQESgRAQZgEQRg2AgALCwIACwsdAgEUAADcQwQAAAAAAAAAAAAAABAAAAABBBgAAAA=",
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDCQgAAAADAAAAAAcgAwxpbml0RGVmYXVsdHMAAAZidWZmZXIAAQRtYWluAAIMAQIK6QIIIQBBAEEAQZwE/AsAQQRBAEEU/AgAAEGYBEEAQQT8CAEACxkBAX9BgAEhAANAEAIgAEEBayEAIAANAAsLCgAQBBAFEAYQBwtkAQF9IABD2w/JP14EQEPbD0lAIACTIQALIABD2w/JP0MAAIC/lF0EQEPbD0lAQwAAgL+UIACTIQALIAAgAJQhASABQ9EMULmUQ4iICDySIAGUQ6uqKr6SIAGUQwAAgD+SIACUCwIAC10BAX1BDEEMKgIAQ9sPyUBBCCgCACoCAJRBgPcCsiEAIABDAAAAAFsEQEMAAIA/IQALIACVkjgCAEEMKgIAQ9sPSUBeBEBBDEPbD0nAOAIAC0EQQQwqAgAQAzgCAAtXAgF/AX1BmAQoAgBBFCgCACoCACEBIQAgAD8AQQFrQRB0Qfz/A2pNBEAgACABOAIABQtBmARBmAQoAgBBBGo2AgBBmAQoAgBBlARKBEBBmARBGDYCAAsLAgALCx0CARQAANxDBAAAAAAAAAAAAAAAEAAAAAEEGAAAAA==",
   "requiredMemoryBytes": 540
 }

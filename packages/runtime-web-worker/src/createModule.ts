@@ -3,7 +3,7 @@ export default async function createModule(
 	codeBuffer: Uint8Array
 ): Promise<{
 	memoryBuffer: Int32Array;
-	cycle: CallableFunction;
+	main: CallableFunction;
 	initDefaults: CallableFunction;
 	buffer: CallableFunction;
 }> {
@@ -15,9 +15,9 @@ export default async function createModule(
 		},
 	})) as unknown as { instance: WebAssembly.Instance; module: WebAssembly.Module };
 
-	const cycle = instance.exports.cycle as CallableFunction;
+	const main = instance.exports.main as CallableFunction;
 	const buffer = instance.exports.buffer as CallableFunction;
 	const initDefaults = instance.exports.initDefaults as CallableFunction;
 
-	return { memoryBuffer, cycle, buffer, initDefaults };
+	return { memoryBuffer, main, buffer, initDefaults };
 }

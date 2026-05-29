@@ -18,6 +18,7 @@ export interface CompiledModule {
 	initFunctionBody: number[];
 	cycleFunction: number[];
 	id: string;
+	executionGroupName?: string;
 	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress: number;
@@ -28,8 +29,6 @@ export interface CompiledModule {
 	ast?: ModuleAST | ConstantsAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
-	initOnlyExecution?: boolean;
-	testExecution?: boolean;
 }
 
 export type CompiledModuleLookup = Record<string, CompiledModule>;
@@ -74,7 +73,7 @@ export interface CompiledFunction extends FunctionMetadata {
 export type CompiledFunctionLookup = Record<string, CompiledFunction>;
 
 /** Source metadata for one compiled 8f4e assertion. */
-export interface TestAssertionMetadata {
+export interface AssertionMetadata {
 	assertIndex: number;
 	moduleId: string;
 	lineNumber: number;
@@ -90,9 +89,7 @@ export type CompileResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
-	/** Source module ids marked with #test during AST construction. */
-	testModuleIds?: string[];
-	testAssertions?: TestAssertionMetadata[];
+	assertions?: AssertionMetadata[];
 	requiredMemoryBytes: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
 	cache: CompilerCache;

@@ -157,7 +157,7 @@ describe('array declaration inline initializers', () => {
 			},
 			{ disableSharedMemory: true }
 		);
-		const { initDefaults, cycle, memory } = await createWasmInstance(result.codeBuffer);
+		const { initDefaults, main, memory } = await createWasmInstance(result.codeBuffer);
 		const scratch = result.compiledModules.test.memoryMap.scratch;
 		const marker = result.compiledModules.test.memoryMap.marker;
 
@@ -165,7 +165,7 @@ describe('array declaration inline initializers', () => {
 		expect(memory[scratch.wordAlignedAddress]).toBe(0);
 		expect(memory[marker.wordAlignedAddress]).toBe(123);
 
-		cycle();
+		main();
 		expect(memory[scratch.wordAlignedAddress]).toBe(99);
 		expect(memory[marker.wordAlignedAddress]).toBe(456);
 

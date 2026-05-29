@@ -19,8 +19,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "result",
@@ -28,8 +27,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 1,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "notes",
@@ -37,8 +35,7 @@
       "byteAddress": 8,
       "wordAlignedAddress": 2,
       "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "switches",
@@ -46,8 +43,7 @@
       "byteAddress": 8,
       "wordAlignedAddress": 2,
       "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "perceptron",
@@ -55,8 +51,7 @@
       "byteAddress": 16,
       "wordAlignedAddress": 4,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "perceptron2",
@@ -64,8 +59,7 @@
       "byteAddress": 28,
       "wordAlignedAddress": 7,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "activationFn",
@@ -73,8 +67,7 @@
       "byteAddress": 40,
       "wordAlignedAddress": 10,
       "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "activationFn2",
@@ -82,8 +75,7 @@
       "byteAddress": 48,
       "wordAlignedAddress": 12,
       "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "perceptron3",
@@ -91,8 +83,7 @@
       "byteAddress": 56,
       "wordAlignedAddress": 14,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "activationFn3",
@@ -100,8 +91,7 @@
       "byteAddress": 68,
       "wordAlignedAddress": 17,
       "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     }
   ]
 }

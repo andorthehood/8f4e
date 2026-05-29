@@ -127,20 +127,10 @@ export type ExportLine = ASTLineBase<'#export', [] | [ArgumentIdentifier]> & Com
 export type RegionLine = ASTLineBase<'#region', [ArgumentIdentifier | ArgumentLiteral]> &
 	CompilerDirectivePrologueMetadata;
 export type SkipExecutionLine = ASTLineBase<'#skipExecution', []> & CompilerDirectivePrologueMetadata;
-export type InitOnlyLine = ASTLineBase<'#initOnly', []> & CompilerDirectivePrologueMetadata;
-export type TestLine = ASTLineBase<'#test', []> & CompilerDirectivePrologueMetadata;
 export type MockLine = ASTLineBase<'#mock', []> & CompilerDirectivePrologueMetadata;
 export type AssertLine = ASTLineBase<'assert', [CompileTimeValueArgument]>;
 export type ClampAddressLine = ASTLineBase<ClampAddressInstructionName, [] | [CompileTimeValueArgument]>;
-export type CompilerDirectiveLine =
-	| LoopCapLine
-	| ImpureLine
-	| ExportLine
-	| RegionLine
-	| SkipExecutionLine
-	| InitOnlyLine
-	| TestLine
-	| MockLine;
+export type CompilerDirectiveLine = LoopCapLine | ImpureLine | ExportLine | RegionLine | SkipExecutionLine | MockLine;
 
 export type MemoryDeclarationArgument =
 	| ArgumentLiteral
@@ -217,8 +207,6 @@ type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| ExportLine
 	| RegionLine
 	| SkipExecutionLine
-	| InitOnlyLine
-	| TestLine
 	| MockLine
 	| AssertLine
 	| ClampAddressLine
@@ -262,7 +250,6 @@ export interface ModuleAST {
 	lines: CompilerASTLines;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
-	testLine?: TestLine;
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 

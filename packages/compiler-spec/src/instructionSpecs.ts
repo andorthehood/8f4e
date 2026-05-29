@@ -756,23 +756,7 @@ export const instructionSpecs = {
 		sourceArguments: noSourceArguments,
 		scope: 'moduleOnly',
 		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
-		docs: { shortDescription: 'Skips the current module during cycle execution.' },
-		stack: stack({ inputs: [], outputs: [] }),
-	},
-	// #initOnly ( -- )
-	'#initOnly': {
-		sourceArguments: noSourceArguments,
-		scope: 'moduleOnly',
-		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
-		docs: { shortDescription: 'Runs the current module only during initialization.' },
-		stack: stack({ inputs: [], outputs: [] }),
-	},
-	// #test ( -- )
-	'#test': {
-		sourceArguments: noSourceArguments,
-		scope: 'moduleOnly',
-		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
-		docs: { shortDescription: 'Marks the current module for execution by the test runner.' },
+		docs: { shortDescription: 'Skips the current module during main execution.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #mock ( -- )

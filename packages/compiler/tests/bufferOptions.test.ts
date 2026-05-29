@@ -224,12 +224,12 @@ describe('buffer options integration tests', () => {
 
 			// Verify all expected exports exist
 			expect(instance.instance.exports.initDefaults).toBeDefined();
-			expect(instance.instance.exports.cycle).toBeDefined();
+			expect(instance.instance.exports.main).toBeDefined();
 			expect(instance.instance.exports.buffer).toBeDefined();
 
 			// Verify exports are functions
 			expect(typeof instance.instance.exports.initDefaults).toBe('function');
-			expect(typeof instance.instance.exports.cycle).toBe('function');
+			expect(typeof instance.instance.exports.main).toBe('function');
 			expect(typeof instance.instance.exports.buffer).toBe('function');
 		});
 
@@ -250,11 +250,11 @@ describe('buffer options integration tests', () => {
 
 			// Verify all expected exports exist
 			expect(instance.instance.exports.initDefaults).toBeDefined();
-			expect(instance.instance.exports.cycle).toBeDefined();
+			expect(instance.instance.exports.main).toBeDefined();
 			expect(instance.instance.exports.buffer).toBeDefined();
 		});
 
-		test('buffer function executes cycle function the expected number of times (loop strategy)', async () => {
+		test('buffer function executes main group the expected number of times (loop strategy)', async () => {
 			const bufferSize = 10;
 			const result = compile(
 				{ groups: { main: modules } },
@@ -285,7 +285,7 @@ describe('buffer options integration tests', () => {
 			// Get initial value
 			const initialValue = dataView.getInt32(counterMemory.byteAddress, true);
 
-			// Call buffer function which should call cycle bufferSize times
+			// Call buffer function which should call main bufferSize times
 			(instance.instance.exports.buffer as CallableFunction)();
 
 			// The value should have changed after buffer calls
@@ -294,7 +294,7 @@ describe('buffer options integration tests', () => {
 			expect(finalValue).not.toBe(initialValue);
 		});
 
-		test('buffer function executes cycle function the expected number of times (unrolled strategy)', async () => {
+		test('buffer function executes main group the expected number of times (unrolled strategy)', async () => {
 			const bufferSize = 10;
 			const result = compile(
 				{ groups: { main: modules } },
@@ -325,7 +325,7 @@ describe('buffer options integration tests', () => {
 			// Get initial value
 			const initialValue = dataView.getInt32(counterMemory.byteAddress, true);
 
-			// Call buffer function which should call cycle bufferSize times
+			// Call buffer function which should call main bufferSize times
 			(instance.instance.exports.buffer as CallableFunction)();
 
 			// The value should have changed after buffer calls

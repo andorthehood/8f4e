@@ -11,13 +11,14 @@ Compares the top stack value with an expected integer value and reports a failur
 **Usage:**
 
 ```8f4e
+group test
 module addWorks
-#test
 push 1
 push 2
 add
 assert 3
 moduleEnd
+groupEnd
 ```
 
 **Behavior:**
@@ -33,7 +34,8 @@ moduleEnd
 test.assertFailed(assertIndex: number, expected: number, received: number): void
 ```
 
-The host function does not need to throw. A runner can collect calls during `runTests()` and report all failures afterward.
+The host function does not need to throw. A runner can collect calls during execution and report all failures afterward.
+The CLI test runner executes the `test` execution group, but `assert` is valid in any module.
 
 **Limitations:**
 - Float assertions and approximate comparisons are not supported yet

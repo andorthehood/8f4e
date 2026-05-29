@@ -14,8 +14,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "phaseAccumulator",
@@ -23,8 +22,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 4,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "audioout",
@@ -32,8 +30,7 @@
       "byteAddress": 20,
       "wordAlignedAddress": 5,
       "wordAlignedSize": 130,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "notes",
@@ -41,8 +38,7 @@
       "byteAddress": 540,
       "wordAlignedAddress": 135,
       "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     }
   ]
 }

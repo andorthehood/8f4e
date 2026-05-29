@@ -1,8 +1,7 @@
 8f4e/v1
 
-group main
+group test
 module addWorks
-#test
 push 1
 push 2
 add
