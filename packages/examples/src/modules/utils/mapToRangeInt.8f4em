@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module mapToRange
 ; @public
 
@@ -32,4 +32,4 @@ castToInt
 store
 
 moduleEnd
-groupEnd
+entryEnd

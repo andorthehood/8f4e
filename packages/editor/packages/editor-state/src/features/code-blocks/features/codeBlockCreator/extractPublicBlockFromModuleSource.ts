@@ -23,7 +23,7 @@ export default function extractPublicBlockFromModuleSource(source: string): stri
 
 	const project = parse8f4eProject(source);
 	const [publicBlock] = project.codeBlocks.filter(
-		block => block.executionGroupName !== 'test' && hasPublicDirective(block)
+		block => block.executionEntryName !== 'test' && hasPublicDirective(block)
 	);
 
 	return publicBlock ? removeDirective(publicBlock.code, PUBLIC_BLOCK_DIRECTIVE) : [];
@@ -39,11 +39,11 @@ if (import.meta.vitest) {
 
 		it('returns the public block from module files', () => {
 			expect(
-				extractPublicBlockFromModuleSource('8f4e/v1\n\ngroup main\nmodule foo\n; @public\nmoduleEnd\ngroupEnd')
+				extractPublicBlockFromModuleSource('8f4e/v1\n\nentry main\nmodule foo\n; @public\nmoduleEnd\nentryEnd')
 			).toEqual(['module foo', 'moduleEnd']);
 		});
 
-		it('returns the public non-test block from module files that include test groups', () => {
+		it('returns the public non-test block from module files that include test entries', () => {
 			const text = [
 				'8f4e/v1',
 				'',
@@ -51,37 +51,37 @@ if (import.meta.vitest) {
 				'; @public',
 				'functionEnd',
 				'',
-				'group test',
+				'entry test',
 				'module helperTest',
 				'push 1',
 				'push 1',
 				'call assert',
 				'moduleEnd',
-				'groupEnd',
+				'entryEnd',
 			].join('\n');
 
 			expect(extractPublicBlockFromModuleSource(text)).toEqual(['function helper', 'functionEnd']);
 		});
 
-		it('filters out module files that only mark test groups public', () => {
+		it('filters out module files that only mark test entries public', () => {
 			const text = [
 				'8f4e/v1',
 				'',
-				'group test',
+				'entry test',
 				'module helperTest',
 				'; @public',
 				'push 1',
 				'push 1',
 				'call assert',
 				'moduleEnd',
-				'groupEnd',
+				'entryEnd',
 			].join('\n');
 
 			expect(extractPublicBlockFromModuleSource(text)).toEqual([]);
 		});
 
 		it('returns no block when a module file does not mark a public block', () => {
-			const text = ['8f4e/v1', '', 'group main', 'module helper', 'moduleEnd', 'groupEnd'].join('\n');
+			const text = ['8f4e/v1', '', 'entry main', 'module helper', 'moduleEnd', 'entryEnd'].join('\n');
 
 			expect(extractPublicBlockFromModuleSource(text)).toEqual([]);
 		});

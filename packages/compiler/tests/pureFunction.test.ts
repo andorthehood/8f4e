@@ -27,7 +27,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions).toBeDefined();
 		expect(result.compiledFunctions!.noop).toBeDefined();
@@ -50,7 +50,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.add).toBeDefined();
 		expect(result.compiledFunctions!.add.signature.parameters).toEqual(['int', 'int']);
@@ -70,7 +70,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.multiply).toBeDefined();
 		expect(result.compiledFunctions!.multiply.signature.parameters).toEqual(['float', 'float']);
@@ -99,7 +99,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.convert).toBeDefined();
 		expect(result.compiledFunctions!.convert.signature.parameters).toEqual(['int', 'float']);
@@ -119,7 +119,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.duplicate).toBeDefined();
 		expect(result.compiledFunctions!.duplicate.signature.parameters).toEqual(['int']);
@@ -139,7 +139,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.square).toBeDefined();
 		expect(result.compiledModules.test).toBeDefined();
@@ -171,7 +171,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.addWithLocal).toBeDefined();
 		expect(result.compiledFunctions!.addWithLocal.signature.parameters).toEqual(['int', 'int']);
@@ -191,7 +191,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(result.compiledFunctions!.getPi).toBeDefined();
 		expect(result.compiledFunctions!.getPi.signature.parameters).toEqual([]);
@@ -217,7 +217,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 
 		expect(Object.keys(result.compiledFunctions!)).toHaveLength(3);
 		expect(result.compiledFunctions!.add).toBeDefined();
@@ -245,7 +245,7 @@ describe('Pure Function Compilation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow(
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow(
 			`${ErrorCode.DUPLICATE_IDENTIFIER}`
 		);
 	});
@@ -265,7 +265,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow(
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow(
 			/Memory declarations are not allowed in functions/i
 		);
 	});
@@ -283,7 +283,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow(
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow(
 			/Memory IO in functions requires #impure/i
 		);
 	});
@@ -301,7 +301,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow(
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow(
 			/Memory IO in functions requires #impure/i
 		);
 	});
@@ -319,7 +319,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow(
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow(
 			/Memory declarations are not allowed in functions/i
 		);
 	});
@@ -337,7 +337,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow(
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow(
 			/Memory IO in functions requires #impure/i
 		);
 	});
@@ -355,7 +355,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).not.toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).not.toThrow();
 	});
 
 	test('should allow store operations in impure functions', () => {
@@ -380,7 +380,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).not.toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).not.toThrow();
 	});
 
 	test('should reject functions with more than 8 parameters', () => {
@@ -408,7 +408,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject functions with more than 8 return values', () => {
@@ -436,7 +436,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject invalid parameter types', () => {
@@ -452,7 +452,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject invalid return types', () => {
@@ -468,7 +468,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject stack mismatch at functionEnd', () => {
@@ -484,7 +484,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject type mismatch in return values', () => {
@@ -500,7 +500,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject calling undefined function from module', () => {
@@ -510,7 +510,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules } }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules } }, defaultOptions)).toThrow();
 	});
 
 	test('should reject function call with wrong argument types', () => {
@@ -526,7 +526,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
 	test('should reject function call with insufficient arguments', () => {
@@ -542,7 +542,7 @@ describe('Pure Function Validation', () => {
 			},
 		];
 
-		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
+		expect(() => compile({ entries: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 });
 
@@ -560,7 +560,7 @@ describe('Pure Function Edge Cases', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 		expect(result.compiledFunctions!.doNothing).toBeDefined();
 	});
 
@@ -577,7 +577,7 @@ describe('Pure Function Edge Cases', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 		expect(result.compiledFunctions!.getZero).toBeDefined();
 		expect(result.compiledModules.test).toBeDefined();
 	});
@@ -607,7 +607,7 @@ describe('Pure Function Edge Cases', () => {
 			},
 		];
 
-		const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+		const result = compile({ entries: { main: modules }, functions: functions }, defaultOptions);
 		expect(result.compiledFunctions!.abs).toBeDefined();
 	});
 });

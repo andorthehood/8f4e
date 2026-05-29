@@ -747,7 +747,7 @@ map 12	S12_VOLUME
 mapEnd int
 functionEnd int
 
-group main
+entry main
 module amigaTick
 ; @pos -157 -28
 use mod
@@ -2318,4 +2318,4 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd

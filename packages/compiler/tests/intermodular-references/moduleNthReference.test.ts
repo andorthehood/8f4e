@@ -9,7 +9,7 @@ describe('inter-module references - module nth-item address (&module:N)', () => 
 			{ code: ['module targetModule', 'int* ptr &sourceModule:0', 'moduleEnd'] },
 		];
 
-		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 0 });
+		const result = compile({ entries: { main: modules } }, { startingMemoryWordAddress: 0 });
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -23,7 +23,7 @@ describe('inter-module references - module nth-item address (&module:N)', () => 
 			{ code: ['module targetModule', 'int* ptrNth &sourceModule:0', 'int* ptrBase &sourceModule:', 'moduleEnd'] },
 		];
 
-		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 0 });
+		const result = compile({ entries: { main: modules } }, { startingMemoryWordAddress: 0 });
 
 		const targetModule = result.compiledModules['targetModule'];
 
@@ -36,7 +36,7 @@ describe('inter-module references - module nth-item address (&module:N)', () => 
 			{ code: ['module targetModule', 'int* ptr &sourceModule:1', 'moduleEnd'] },
 		];
 
-		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 0 });
+		const result = compile({ entries: { main: modules } }, { startingMemoryWordAddress: 0 });
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -50,7 +50,7 @@ describe('inter-module references - module nth-item address (&module:N)', () => 
 			{ code: ['module targetModule', 'int* ptr &sourceModule:2', 'moduleEnd'] },
 		];
 
-		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 0 });
+		const result = compile({ entries: { main: modules } }, { startingMemoryWordAddress: 0 });
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -64,7 +64,7 @@ describe('inter-module references - module nth-item address (&module:N)', () => 
 			{ code: ['module targetModule', 'int* ptr &sourceModule:1', 'moduleEnd'] },
 		];
 
-		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 10 });
+		const result = compile({ entries: { main: modules } }, { startingMemoryWordAddress: 10 });
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -78,7 +78,7 @@ describe('inter-module references - module nth-item address (&module:N)', () => 
 			{ code: ['module targetModule', 'int* ptr &sourceModule:1', 'moduleEnd'] },
 		];
 
-		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 0 });
+		const result = compile({ entries: { main: modules } }, { startingMemoryWordAddress: 0 });
 
 		const sourceModule = result.compiledModules['sourceModule'];
 		const targetModule = result.compiledModules['targetModule'];
@@ -92,7 +92,7 @@ describe('inter-module references - module nth-item address (&module:N)', () => 
 			{ code: ['module sourceModule', 'int a 0', 'int b 0', 'moduleEnd'] },
 		];
 
-		expect(() => compile({ groups: { main: modules } }, { startingMemoryWordAddress: 0 })).toThrow(
+		expect(() => compile({ entries: { main: modules } }, { startingMemoryWordAddress: 0 })).toThrow(
 			'Undeclared identifier: &sourceModule:1.'
 		);
 	});

@@ -17,7 +17,7 @@
       "memoryMap": {},
       "wordAlignedSize": 0,
       "index": 0,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "result": {
       "id": "result",
@@ -51,7 +51,7 @@
       },
       "wordAlignedSize": 1,
       "index": 1,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "notes": {
       "id": "notes",
@@ -67,7 +67,7 @@
       "memoryMap": {},
       "wordAlignedSize": 0,
       "index": 2,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "switches": {
       "id": "switches",
@@ -114,7 +114,7 @@
       },
       "wordAlignedSize": 2,
       "index": 3,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "perceptron": {
       "id": "perceptron",
@@ -220,7 +220,7 @@
       },
       "wordAlignedSize": 3,
       "index": 4,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "perceptron2": {
       "id": "perceptron2",
@@ -326,7 +326,7 @@
       },
       "wordAlignedSize": 3,
       "index": 5,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "activationFn": {
       "id": "activationFn",
@@ -390,7 +390,7 @@
       },
       "wordAlignedSize": 2,
       "index": 6,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "activationFn2": {
       "id": "activationFn2",
@@ -454,7 +454,7 @@
       },
       "wordAlignedSize": 2,
       "index": 7,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "perceptron3": {
       "id": "perceptron3",
@@ -561,7 +561,7 @@
       },
       "wordAlignedSize": 3,
       "index": 8,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     },
     "activationFn3": {
       "id": "activationFn3",
@@ -641,7 +641,7 @@
       },
       "wordAlignedSize": 2,
       "index": 9,
-      "executionGroupName": "main"
+      "executionEntryName": "main"
     }
   },
   "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9AhEBBGhvc3QGbWVtb3J5AgMBAQMPDgAAAAMAAAAAAAAAAAAAByADDGluaXREZWZhdWx0cwAABmJ1ZmZlcgABBG1haW4AAgwBAQrFAg4XAEEAQQBBzAD8CwBBBEEAQcQA/AgAAAsZAQF/QYABIQADQBACIABBAWshACAADQALCxYAEAQQBRAGEAcQCBAJEAoQCxAMEA0LJgEBfSAAIACLQwAAgD+SIQEgAUMAAAAAWwRAQwAAgD8hAQsgAZULAgALAgALAgALAgALKgBBGEEQKAIAKgIAQ1bmIEGUQRQoAgAqAgBDxiUqwpSSQ4Are8CSOAIACyoAQSRBHCgCACoCAEOqoIzClEEgKAIAKgIAQ2gcxkGUkkPbPQzBkjgCAAsRAEEsQSgoAgAqAgAQAzgCAAsRAEE0QTAoAgAqAgAQAzgCAAsrAEHAAEE4KAIAKgIAQ65H3kCUQTwoAgAqAgBDsKzUQJSSQ6nZwUCSOAIACyEAQcgAQcQAKAIAKgIAEANDAAAAP14Ef0EBBUEACzYCAAsLRwEBREgAAAAAAIA/AAAAAAgAAAAMAAAAAAAAAAgAAAAMAAAAAAAAABgAAAAAAAAAJAAAAAAAAAAsAAAANAAAAAAAAABAAAAA",

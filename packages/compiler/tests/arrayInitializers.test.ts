@@ -8,7 +8,7 @@ describe('array declaration inline initializers', () => {
 	test('initializes int[] elements from trailing declaration values', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module test', 'int[] notes 10 48 50 53', 'moduleEnd'],
@@ -33,7 +33,7 @@ describe('array declaration inline initializers', () => {
 	test('resolves constants and compile-time expressions in initializer values', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module test', 'const ROOT 48', 'int[] notes 4 ROOT ROOT+2 ROOT+5', 'moduleEnd'],
@@ -57,7 +57,7 @@ describe('array declaration inline initializers', () => {
 	test('supports hexadecimal initializer values', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module test', 'int[] foo 2 0x01 0x02', 'moduleEnd'],
@@ -80,7 +80,7 @@ describe('array declaration inline initializers', () => {
 	test('uses narrow stores for int8[] and int16[] initializer values', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module test', 'int8[] bytes 4 1 2 3 4', 'int16[] shorts 3 1000 2000 3000', 'moduleEnd'],
@@ -107,7 +107,7 @@ describe('array declaration inline initializers', () => {
 	test('does not emit full passive data images for large sparse array initializers', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module test', 'int[] huge 1000000 1', 'moduleEnd'],
@@ -134,7 +134,7 @@ describe('array declaration inline initializers', () => {
 	test('initDefaults clears implicit arrays before restoring passive data defaults', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: [

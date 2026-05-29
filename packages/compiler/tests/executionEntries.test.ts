@@ -11,11 +11,11 @@ async function instantiate(codeBuffer: Uint8Array, requiredMemoryBytes: number) 
 	return { instance, memory };
 }
 
-describe('execution groups', () => {
+describe('execution entries', () => {
 	test('exports each group as an independently callable dispatcher', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					main: [
 						{
 							code: ['module mainModule', 'int value 0', 'push &value', 'push 1', 'store', 'moduleEnd'],
@@ -52,10 +52,10 @@ describe('execution groups', () => {
 		expect(view.getInt32(auxAddress, true)).toBe(2);
 	});
 
-	test('initDefaults does not execute user-authored init groups', async () => {
+	test('initDefaults does not execute user-authored init entries', async () => {
 		const result = compile(
 			{
-				groups: {
+				entries: {
 					init: [
 						{
 							code: ['module setup', 'int value 0', 'push &value', 'push 7', 'store', 'moduleEnd'],

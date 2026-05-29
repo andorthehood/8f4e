@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module arEnv
 ; @public
 ; Attack-Release (AR)
@@ -61,4 +61,4 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd
