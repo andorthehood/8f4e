@@ -18,7 +18,6 @@ int data2   ; @w
 
 moduleEnd
 entryEnd
-
 constants env
 ; @pos -202 -6
 ; @favorite
@@ -29,6 +28,16 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
+
+function buffer
+; @pos -202 6
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
 
 function midiChannel
 ; @pos -122 -4

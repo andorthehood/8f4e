@@ -70,6 +70,14 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
 				invalid(`Invalid argument for ${instruction}: expected non-negative integer literal.`);
 			}
 			return;
+		case 'nonNegativeIntegerCompileTimeValue':
+			if (
+				!isCompileTimeValue(argument) ||
+				(argument.type === ArgumentType.LITERAL && (!argument.isInteger || argument.value < 0))
+			) {
+				invalid(`Invalid argument for ${instruction}: expected non-negative integer compile-time value.`);
+			}
+			return;
 		case 'nonNegativeCompileTimeValue':
 			if (!isCompileTimeValue(argument) || (argument.type === ArgumentType.LITERAL && argument.value < 0)) {
 				invalid(`Invalid argument for ${instruction}: expected non-negative compile-time value.`);

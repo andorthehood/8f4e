@@ -354,7 +354,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
 constants env
 ; @pos 2 60
 ; @favorite
@@ -365,6 +364,16 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
+
+function buffer
+; @pos 2 72
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
 
 constants math
 ; @pos 57 60

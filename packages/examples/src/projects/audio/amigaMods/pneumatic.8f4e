@@ -2102,7 +2102,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
 constants env
 ; @pos 96 -158
 ; @favorite
@@ -2183,6 +2182,16 @@ const ASSET_SAMPLE30_SIZE 22586
 const ASSET_SAMPLE31_SIZE 20432
 
 constantsEnd
+
+function buffer
+; @pos 96 -146
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
 
 constants mod
 ; @pos 232 -197

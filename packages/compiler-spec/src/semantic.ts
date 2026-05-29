@@ -15,6 +15,7 @@ import type {
 	ConstantsLine,
 	DefaultLine,
 	LocalSetLine,
+	LoopLine,
 	MapLine,
 	MemoryCopyLine,
 	ModuleEndLine,
@@ -274,6 +275,10 @@ export type NormalizedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
 	arguments: [NormalizedArgumentLiteral];
 };
 
+export type NormalizedLoopLine = Omit<LoopLine, 'arguments'> & {
+	arguments: [] | [NormalizedArgumentLiteral];
+};
+
 export type ArrayDeclarationInitializerArgument =
 	| ArgumentCompileTimeExpression
 	| ArgumentIdentifier
@@ -369,11 +374,13 @@ export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstL
 					? ResolvedLocalSetLine
 					: TLine extends PushLine
 						? NormalizedPushLine
-						: TLine extends MemoryCopyLine
-							? NormalizedMemoryCopyLine | MemoryCopyLine
-							: TLine extends ArrayDeclarationLine
-								? ArrayDeclarationLine
-								: TLine;
+						: TLine extends LoopLine
+							? NormalizedLoopLine | LoopLine
+							: TLine extends MemoryCopyLine
+								? NormalizedMemoryCopyLine | MemoryCopyLine
+								: TLine extends ArrayDeclarationLine
+									? ArrayDeclarationLine
+									: TLine;
 
 export const BlockType = {
 	MODULE: 0,
