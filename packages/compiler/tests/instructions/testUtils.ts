@@ -183,46 +183,6 @@ export async function createTestModule(sourceCode: string): Promise<TestModule> 
 	};
 }
 
-export function moduleTester(
-	description: string,
-	moduleCode: string,
-	...tests: [inputs: Record<string, number>, outputs: Record<string, number>][][]
-) {
-	describe(description, () => {
-		let testModule: TestModule;
-
-		beforeAll(async () => {
-			testModule = await createTestModule(moduleCode);
-		});
-
-		beforeEach(() => {
-			testModule.reset();
-		});
-
-		test('if the generated AST, WAT and memory map match the snapshot', () => {
-			expect(testModule.ast).toMatchSnapshot();
-			expect(testModule.wat).toMatchSnapshot();
-			expect(testModule.memoryMap).toMatchSnapshot();
-		});
-
-		test.each(tests)('testing sequence of inputs: %p', (...fixtures) => {
-			const { memory, test } = testModule;
-
-			fixtures.forEach(([inputs, outputs]) => {
-				Object.entries(inputs).forEach(([key, value]) => {
-					memory.set(key, value);
-				});
-
-				test();
-
-				Object.entries(outputs).forEach(([key, value]) => {
-					expect(memory.get(key)).toBeCloseTo(value);
-				});
-			});
-		});
-	});
-}
-
 export async function createTestModuleWithFunctions(moduleCode: string, functionCodes?: string[]): Promise<TestModule> {
 	const modules: Module[] = [{ code: moduleCode.split('\n') }];
 	const functions: Module[] | undefined = functionCodes?.map(code => ({ code: code.split('\n') }));

@@ -1,0 +1,133 @@
+8f4e/v1
+
+; Float instruction behavior is checked through the shared imported assertf helper.
+entry test
+module floatMulAssertions
+; Float multiplication is approximate because WebAssembly stores these values as floats.
+push 4.001
+push 0.5
+mul
+push 2.0
+call assertf
+moduleEnd
+
+module floatDivAssertions
+; Float division uses assertf for tolerance-based comparison.
+push 420.001
+push 69.001
+ensureNonZero
+div
+push 6.0869
+call assertf
+moduleEnd
+
+module floatAbsAssertions
+; abs returns positive float magnitudes.
+push 1.1
+abs
+push 1.1
+call assertf
+
+push -1.1
+abs
+push 1.1
+call assertf
+
+push -69.1
+abs
+push 69.1
+call assertf
+
+push 420.1
+abs
+push 420.1
+call assertf
+moduleEnd
+
+module castToFloatAssertions
+; castToFloat should preserve integer magnitude when converting to float.
+push 1
+castToFloat
+push 1.0
+call assertf
+
+push -69
+castToFloat
+push -69.0
+call assertf
+
+push 0
+castToFloat
+push 0.0
+call assertf
+
+push 420
+castToFloat
+push 420.0
+call assertf
+moduleEnd
+
+module castToIntAssertions
+; castToInt truncates toward zero.
+push 1.1
+castToInt
+push 1
+call assert
+
+push -69.69
+castToInt
+push -69
+call assert
+
+push 0.001
+castToInt
+push 0
+call assert
+
+push 420.99
+castToInt
+push 420
+call assert
+moduleEnd
+
+module roundAssertions
+; round follows the compiler's current half-down behavior.
+push 4.1
+round
+push 4.0
+call assertf
+
+push 4.5
+round
+push 4.0
+call assertf
+
+push 4.51
+round
+push 5.0
+call assertf
+
+push 4.6
+round
+push 5.0
+call assertf
+
+push 4.9
+round
+push 5.0
+call assertf
+moduleEnd
+
+module sqrtAssertions
+; sqrt returns approximate float square roots.
+push 4.001
+sqrt
+push 2.0
+call assertf
+
+push 16.001
+sqrt
+push 4.0
+call assertf
+moduleEnd
+entryEnd

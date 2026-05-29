@@ -1,0 +1,60 @@
+8f4e/v1
+
+; fallingEdge should report when an integer input moves downward.
+entry stateChangeStep
+module fallingEdgeIntState
+int input
+int output
+
+push &output
+push input
+fallingEdge
+if
+push 1
+else
+push 0
+ifEnd int
+store
+moduleEnd
+entryEnd
+
+function test
+#export
+#impure
+loop 10
+push &fallingEdgeIntState:input
+loopIndex
+mapBegin int
+map 10
+map 11
+map 12
+map 9
+map 12
+map 12
+map 10
+map 10
+map 8
+map 9
+mapEnd int
+store
+
+call stateChangeStep
+
+push &fallingEdgeIntState:output
+load
+loopIndex
+mapBegin int
+map 0
+map 0
+map 0
+map 1
+map 0
+map 0
+map 1
+map 0
+map 1
+map 0
+mapEnd int
+call assert
+loopEnd
+functionEnd

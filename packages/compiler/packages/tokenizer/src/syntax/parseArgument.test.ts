@@ -42,6 +42,12 @@ describe('classifyIdentifier – check ordering regression', () => {
 		it('classifies &mod:10 as intermodular-module-nth-reference', () => {
 			expect(classifyIdentifier('&mod:10').referenceKind).toBe('intermodular-module-nth-reference');
 		});
+
+		it('classifies &this:1 as intermodular-module-nth-reference', () => {
+			const result = classifyIdentifier('&this:1');
+			expect(result.referenceKind).toBe('intermodular-module-nth-reference');
+			expect(result.scope).toBe('intermodule');
+		});
 	});
 
 	describe('&mod:mem → intermodular-reference, not memory-reference', () => {

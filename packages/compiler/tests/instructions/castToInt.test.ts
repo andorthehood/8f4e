@@ -1,28 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { createTestModule, moduleTester } from './testUtils';
-
-moduleTester(
-	'castToInt',
-	`module castToInt
-
-float input
-int output
-
-push &output
-push input
-castToInt
-store
-
-moduleEnd
-`,
-	[
-		[{ input: 1.1 }, { output: 1 }],
-		[{ input: -69.69 }, { output: -69 }],
-		[{ input: 0.001 }, { output: 0 }],
-		[{ input: 420.99 }, { output: 420 }],
-	]
-);
+import { createTestModule } from './testUtils';
 
 describe('castToInt saturation', () => {
 	test('does not trap when a float32 is outside the signed i32 range', async () => {

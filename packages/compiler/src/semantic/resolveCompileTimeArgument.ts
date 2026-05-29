@@ -337,9 +337,17 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	}
 
 	// &module:N — start byte address of the Nth memory item (0-indexed) within a module
+	// &this:N — start byte address of the Nth memory item (0-indexed) within the current module
 	if (operand.referenceKind === 'intermodular-module-nth-reference') {
 		const targetModuleId = operand.targetModuleId;
-		const targetNamespace = namespace.namespaces[targetModuleId];
+		const targetNamespace =
+			targetModuleId === 'this'
+				? {
+						kind: 'module' as const,
+						byteAddress: context.startingByteAddress,
+						memory,
+					}
+				: namespace.namespaces[targetModuleId];
 		if (
 			targetNamespace?.kind !== 'module' ||
 			typeof targetNamespace.byteAddress !== 'number' ||
@@ -351,8 +359,9 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		const item = items[operand.targetMemoryIndex];
 		if (item) {
 			const memoryRegionFields = getMemoryRegionFields(item.memoryIndex, item.memoryRegionName);
+			const resolvedModuleId = targetModuleId === 'this' ? context.namespace.moduleName : targetModuleId;
 			return {
-				...memoryStartAddressConst(item, targetModuleId),
+				...memoryStartAddressConst(item, resolvedModuleId),
 				address: {
 					...memoryRegionFields,
 					safeRange: {
@@ -360,7 +369,7 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 						...memoryRegionFields,
 						byteAddress: item.byteAddress,
 						safeByteLength: getWordAlignedByteLength(item.wordAlignedSize),
-						moduleId: targetModuleId,
+						moduleId: resolvedModuleId,
 						...(item.id ? { memoryId: item.id } : {}),
 					},
 				},
