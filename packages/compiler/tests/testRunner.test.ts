@@ -33,7 +33,7 @@ async function instantiate(modules: Module[], functions?: Module[]) {
 		result,
 		failureCalls,
 		exports: instance.exports as WebAssembly.Exports & {
-			init: CallableFunction;
+			initDefaults: CallableFunction;
 			cycle: CallableFunction;
 			runTests: CallableFunction;
 		},
@@ -51,7 +51,7 @@ describe('#test modules and assert runner', () => {
 			},
 		]);
 
-		exports.init();
+		exports.initDefaults();
 		exports.cycle();
 
 		expect(failureCalls).toEqual([]);
@@ -95,7 +95,7 @@ describe('#test modules and assert runner', () => {
 			},
 		]);
 
-		exports.init();
+		exports.initDefaults();
 		exports.runTests();
 
 		expect(failureCalls).toEqual([]);
@@ -123,7 +123,7 @@ describe('#test modules and assert runner', () => {
 			]
 		);
 
-		exports.init();
+		exports.initDefaults();
 		exports.runTests();
 
 		expect(failureCalls).toEqual([]);

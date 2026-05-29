@@ -36,13 +36,13 @@ If a value can be resolved during semantic normalization, downstream instruction
 
 The compiler initializes declared program memory with WebAssembly bulk-memory instructions.
 
-The exported `init` function is responsible for restoring the full declared initial memory image. Its expected sequence is:
+The exported `initDefaults` function is responsible for restoring the full declared initial memory image. Its expected sequence is:
 
 1. Clear the declared memory range with one `memory.fill(0, 0, requiredMemoryBytes)`.
 2. Copy passive data segments into memory with `memory.init`.
 3. Run `initOnly` module calls.
 
-The initial `memory.fill` is part of the contract. It makes implicit defaults cheap and gives repeated `init()` calls the same reset semantics as a fresh memory instance for declared program memory.
+The initial `memory.fill` is part of the contract. It makes implicit defaults cheap and gives repeated `initDefaults()` calls the same reset semantics as a fresh memory instance for declared program memory.
 
 When a program uses logical memory regions, each WebAssembly memory has the same initialization contract independently. The compiler clears the required byte range for memory `0` and for each used custom region, then applies passive data segments with the matching memory index. The compile result keeps `requiredMemoryBytes` scoped to memory `0` and reports custom regions through `requiredMemoryBytesByRegion`.
 
@@ -70,7 +70,7 @@ int[] huge 1000000 1
 
 allocates one million `int` elements, but only emits passive data for the first element. The remaining elements are restored by the initial full-memory zero fill.
 
-Initializer values are prefix-based: `int[] values 4 1 2` initializes elements `0` and `1`; elements `2` and `3` are zero after `init()`.
+Initializer values are prefix-based: `int[] values 4 1 2` initializes elements `0` and `1`; elements `2` and `3` are zero after `initDefaults()`.
 
 ### Segment Coalescing
 
@@ -82,7 +82,7 @@ This balances:
 - fewer passive data entries and fewer `memory.init` calls
 - avoiding large zero payloads for sparse arrays and buffers
 
-The coalescing threshold is an implementation detail, not a language-level guarantee. Runtime-visible behavior is the restored memory image after `init()`, not the number or shape of passive data segments.
+The coalescing threshold is an implementation detail, not a language-level guarantee. Runtime-visible behavior is the restored memory image after `initDefaults()`, not the number or shape of passive data segments.
 
 ### Ownership Boundary
 

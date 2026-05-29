@@ -117,7 +117,7 @@ describe('exported 8f4e functions', () => {
 	test('rejects built-in export names', () => {
 		expect(() =>
 			compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, [
-				{ code: ['function bad', '#export buffer', 'functionEnd'] },
+				{ code: ['function bad', '#export initDefaults', 'functionEnd'] },
 			])
 		).toThrow(expect.objectContaining({ code: ErrorCode.DUPLICATE_EXPORT_NAME }));
 	});

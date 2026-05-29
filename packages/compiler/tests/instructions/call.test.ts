@@ -143,10 +143,10 @@ describe('call instruction (float64)', () => {
 			js: { memory: memoryRef },
 		});
 
-		const init = instance.exports.init as CallableFunction;
+		const initDefaults = instance.exports.initDefaults as CallableFunction;
 		const cycle = instance.exports.cycle as CallableFunction;
 
-		init();
+		initDefaults();
 
 		const inputAddress = module.memoryMap['input'].byteAddress;
 		const outputAddress = module.memoryMap['output'].byteAddress;
