@@ -3,7 +3,7 @@ title: 'TODO: Split StackItem into value and address variants'
 priority: Medium
 effort: 1-2d
 created: 2026-05-26
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/713
 status: Open
 completed: null
 ---
