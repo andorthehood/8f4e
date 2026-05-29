@@ -2,6 +2,7 @@
 
 group main
 module bufferI2F
+; @public
 
 int* bufferIn
 int* lengthIn

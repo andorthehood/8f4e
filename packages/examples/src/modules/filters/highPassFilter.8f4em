@@ -2,6 +2,7 @@
 
 group main
 module highPassFilter
+; @public
 
 float* in &vca:out
 float out
@@ -24,7 +25,6 @@ store
 
 moduleEnd
 module vca
-#mock
 float out 0.0
 moduleEnd
 groupEnd

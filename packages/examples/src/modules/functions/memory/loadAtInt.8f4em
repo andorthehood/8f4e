@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function loadAtInt
+; @public
 #impure
 ; Loads an int from buffer[index].
 param int* buffer

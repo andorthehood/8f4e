@@ -2,6 +2,7 @@
 
 group main
 module XORShift
+; @public
 
 int seed 69420
 float out

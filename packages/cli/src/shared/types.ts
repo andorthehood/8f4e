@@ -10,7 +10,6 @@ export type { ProjectCodeBlock, ProjectInput };
 
 export interface CompileProjectOptions {
 	compilerOptions?: Partial<CompileOptions>;
-	includeMocks?: boolean;
 	includeModules?: boolean;
 	includeWasm?: boolean;
 	includeFunctions?: boolean;

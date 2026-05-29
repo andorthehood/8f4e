@@ -2,6 +2,7 @@
 
 group main
 module seqMux
+; @public
 
 float* in0
 float* in1

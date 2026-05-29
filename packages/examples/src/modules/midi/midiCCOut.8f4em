@@ -2,6 +2,7 @@
 
 group main
 module midiccout
+; @public
 
 int cc 1
 int channel 1

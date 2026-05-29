@@ -1,4 +1,4 @@
-import parseModuleSource from './parseModuleSource';
+import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
 
 import getCodeBlockGridWidth from '../graphicHelper/getCodeBlockGridWidth';
 import getCodeBlockId from '../../utils/getCodeBlockId';
@@ -42,7 +42,7 @@ export async function insertDependencies({
 	// Insert dependencies from left to right
 	for (const dependencySlug of dependencies) {
 		try {
-			const dependencyCode = parseModuleSource(await getModule(dependencySlug));
+			const dependencyCode = extractPublicBlockFromModuleSource(await getModule(dependencySlug));
 
 			// Get the module ID and type from the dependency code
 			const dependencyModuleId = getCodeBlockId(dependencyCode);

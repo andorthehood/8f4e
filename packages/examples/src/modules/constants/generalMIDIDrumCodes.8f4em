@@ -4,6 +4,7 @@ group main
 groupEnd
 
 constants MIDIDrumCodes
+; @public
 
 const LASER 27
 const WHIP 28

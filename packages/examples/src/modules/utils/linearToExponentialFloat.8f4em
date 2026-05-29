@@ -2,6 +2,7 @@
 
 group main
 module linearToExponential
+; @public
 
 const LUT_MAX_INDEX 511.0
 const LUT_WORD_SIZE 4
@@ -55,7 +56,6 @@ store
 
 moduleEnd
 module expLUT
-#mock
 float[] values 512
 moduleEnd
 groupEnd

@@ -2,6 +2,7 @@
 
 group main
 module bufferF2I
+; @public
 
 float* bufferIn
 int* lengthIn

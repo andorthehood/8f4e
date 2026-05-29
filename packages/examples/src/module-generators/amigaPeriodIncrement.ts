@@ -45,6 +45,7 @@ const periods: [string, number][] = [
 ];
 
 const amigaPeriodIncrement = `constants amigaPeriodIncrement
+; @public
 ; @tab 12
 use env
 
@@ -57,8 +58,7 @@ ${periods
 
 constantsEnd`;
 
-const testMocks = `constants env
-#mock
+const testSupportConstants = `constants env
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 constantsEnd`;
@@ -68,4 +68,4 @@ groupEnd
 
 ${amigaPeriodIncrement}
 
-${testMocks}`;
+${testSupportConstants}`;

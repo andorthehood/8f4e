@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function pow2
+; @public
 ; Raises 2 to the power
 ; of an integer exponent.
 param int exponent

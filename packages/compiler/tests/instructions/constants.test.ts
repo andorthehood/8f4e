@@ -290,7 +290,7 @@ describe('constants block validation', () => {
 				code: ['constants math', 'use env', 'const SIZE SAMPLE_RATE/1000', 'constantsEnd'],
 			},
 			{
-				code: ['constants env', '#mock', 'const SAMPLE_RATE 48000', 'constantsEnd'],
+				code: ['constants env', 'const SAMPLE_RATE 48000', 'constantsEnd'],
 			},
 		];
 		const modules: Module[] = [

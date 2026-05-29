@@ -2,6 +2,7 @@
 
 group main
 module copyBuffer
+; @public
 
 int* bufferIn
 int* lengthIn

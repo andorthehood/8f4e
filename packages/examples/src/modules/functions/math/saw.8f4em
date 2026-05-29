@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function saw
+; @public
 ; Sawtooth function for
 ; the input range [-PI, PI]
 ; Output range: [-1, 1]

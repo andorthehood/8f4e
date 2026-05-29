@@ -2,6 +2,7 @@
 
 group main
 module amen1
+; @public
 
 ; MSb 0 kick
 ; 1 snare
