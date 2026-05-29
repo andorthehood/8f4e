@@ -25,7 +25,7 @@ moduleEnd
 			},
 		];
 
-		const result = compile(modules, { startingMemoryWordAddress: 1 });
+		const result = compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 });
 
 		// Module should compile successfully
 		expect(result.compiledModules.test).toBeDefined();
@@ -54,12 +54,12 @@ functionEnd
 
 		// Should compile without error
 		expect(() => {
-			compile(modules, { startingMemoryWordAddress: 1 }, functions);
+			compile({ groups: { main: modules }, functions: functions }, { startingMemoryWordAddress: 1 });
 		}).not.toThrow();
 	});
 
 	test('#loopCap in constants block throws error', () => {
-		const modules = [
+		const constants = [
 			{
 				code: `
 constants env
@@ -71,7 +71,7 @@ constantsEnd
 		];
 
 		expect(() => {
-			compile(modules, { startingMemoryWordAddress: 1 });
+			compile({ groups: { main: [] }, constants }, { startingMemoryWordAddress: 1 });
 		}).toThrow();
 	});
 
@@ -88,7 +88,7 @@ moduleEnd
 		];
 
 		expect(() => {
-			compile(modules, { startingMemoryWordAddress: 1 });
+			compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 });
 		}).toThrow();
 	});
 
@@ -112,7 +112,7 @@ moduleEnd
 			},
 		];
 
-		expect(() => compile(modules, { startingMemoryWordAddress: 1 })).toThrow(
+		expect(() => compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 })).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })
 		);
 	});

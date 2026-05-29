@@ -16,11 +16,22 @@ describe('compiler directive prologue validation', () => {
 	test('accepts module directives immediately after module', () => {
 		expect(() =>
 			compile(
-				[
-					{
-						code: ['module metadataOnly', '#skipExecution', '#initOnly', '#loopCap 64', 'int counter 0', 'moduleEnd'],
+				{
+					groups: {
+						main: [
+							{
+								code: [
+									'module metadataOnly',
+									'#skipExecution',
+									'#initOnly',
+									'#loopCap 64',
+									'int counter 0',
+									'moduleEnd',
+								],
+							},
+						],
 					},
-				],
+				},
 				defaultOptions
 			)
 		).not.toThrow();
@@ -29,11 +40,15 @@ describe('compiler directive prologue validation', () => {
 	test('rejects module directives after declarations', () => {
 		expect(() =>
 			compile(
-				[
-					{
-						code: ['module lateDirective', 'int counter 0', '#skipExecution', 'moduleEnd'],
+				{
+					groups: {
+						main: [
+							{
+								code: ['module lateDirective', 'int counter 0', '#skipExecution', 'moduleEnd'],
+							},
+						],
 					},
-				],
+				},
 				defaultOptions
 			)
 		).toThrow(expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
@@ -42,11 +57,15 @@ describe('compiler directive prologue validation', () => {
 	test('rejects module loop caps after executable instructions', () => {
 		expect(() =>
 			compile(
-				[
-					{
-						code: ['module lateLoopCap', 'loop', 'loopEnd', '#loopCap 64', 'moduleEnd'],
+				{
+					groups: {
+						main: [
+							{
+								code: ['module lateLoopCap', 'loop', 'loopEnd', '#loopCap 64', 'moduleEnd'],
+							},
+						],
 					},
-				],
+				},
 				defaultOptions
 			)
 		).toThrow(expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
@@ -54,42 +73,60 @@ describe('compiler directive prologue validation', () => {
 
 	test('accepts function directives immediately after function', () => {
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, [
+			compile(
 				{
-					code: [
-						'function writeValue',
-						'#export writeValue',
-						'#impure',
-						'#loopCap 64',
-						'param int address',
-						'param int value',
-						'push address',
-						'push value',
-						'store',
-						'functionEnd',
+					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					functions: [
+						{
+							code: [
+								'function writeValue',
+								'#export writeValue',
+								'#impure',
+								'#loopCap 64',
+								'param int address',
+								'param int value',
+								'push address',
+								'push value',
+								'store',
+								'functionEnd',
+							],
+						},
 					],
 				},
-			])
+				defaultOptions
+			)
 		).not.toThrow();
 	});
 
 	test('rejects function directives after params', () => {
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, [
+			compile(
 				{
-					code: ['function lateImpure', 'param int address', '#impure', 'push address', 'load', 'functionEnd int'],
+					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					functions: [
+						{
+							code: ['function lateImpure', 'param int address', '#impure', 'push address', 'load', 'functionEnd int'],
+						},
+					],
 				},
-			])
+				defaultOptions
+			)
 		).toThrow(expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
 	});
 
 	test('rejects function exports after executable instructions', () => {
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, [
+			compile(
 				{
-					code: ['function lateExport', 'push 1', '#export lateExport', 'functionEnd int'],
+					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					functions: [
+						{
+							code: ['function lateExport', 'push 1', '#export lateExport', 'functionEnd int'],
+						},
+					],
 				},
-			])
+				defaultOptions
+			)
 		).toThrow(expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE }));
 	});
 });

@@ -131,9 +131,9 @@ export default function traceInstructionFlow(
 	project: ProjectInput,
 	compilerOptions: CompileOptions
 ): InstructionFlowTrace {
-	const { moduleBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
+	const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
 
-	if (moduleBlocks.length === 0) {
+	if (groups.main.length === 0 && constantsBlocks.length === 0) {
 		return {
 			requiredMemoryBytes: 0,
 			blocks: [],
@@ -141,13 +141,16 @@ export default function traceInstructionFlow(
 	}
 
 	const compileResult = compile(
-		moduleBlocks,
+		{
+			groups,
+			constants: constantsBlocks,
+			functions: functionBlocks,
+			macros: macroBlocks,
+		},
 		{
 			...compilerOptions,
 			includeAST: true,
-		},
-		functionBlocks.length > 0 ? functionBlocks : undefined,
-		macroBlocks.length > 0 ? macroBlocks : undefined
+		}
 	);
 
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);

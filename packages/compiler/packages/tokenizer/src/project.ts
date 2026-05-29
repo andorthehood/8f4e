@@ -1,5 +1,4 @@
 import {
-	compiledModuleBlockTypes,
 	compilableBlockTypes,
 	documentBlockInstructionByType,
 	documentBlockInstructionPairs,
@@ -15,7 +14,6 @@ export const BLOCK_DELIMITERS = documentBlockInstructionPairs.map(({ type, start
 }));
 
 const blockDelimiters = compilableBlockTypes.map(type => documentBlockInstructionByType[type]);
-const compiledModuleBlockTypeSet = new Set<string>(compiledModuleBlockTypes);
 const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
 const closerByOpener = new Map<string, string>(documentBlockInstructionPairs.map(({ start, end }) => [start, end]));
@@ -32,7 +30,8 @@ export interface ProjectInput {
 }
 
 export interface ProjectCompilerBlocks {
-	moduleBlocks: Module[];
+	groups: Record<string, Module[]>;
+	constantsBlocks: Module[];
 	functionBlocks: Module[];
 	macroBlocks: Module[];
 }
@@ -158,6 +157,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 
 export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCompilerBlocks {
 	const moduleBlocks: Module[] = [];
+	const constantsBlocks: Module[] = [];
 	const functionBlocks: Module[] = [];
 	const macroBlocks: Module[] = [];
 
@@ -167,8 +167,12 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 		}
 
 		const blockType = getProjectBlockType(block.code);
-		if (compiledModuleBlockTypeSet.has(blockType)) {
+		if (blockType === documentBlockInstructionByType.module.type) {
 			moduleBlocks.push({ code: block.code });
+			continue;
+		}
+		if (blockType === documentBlockInstructionByType.constants.type) {
+			constantsBlocks.push({ code: block.code });
 			continue;
 		}
 		if (blockType === functionBlockType) {
@@ -180,5 +184,5 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 		}
 	}
 
-	return { moduleBlocks, functionBlocks, macroBlocks };
+	return { groups: { main: moduleBlocks }, constantsBlocks, functionBlocks, macroBlocks };
 }

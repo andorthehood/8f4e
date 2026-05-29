@@ -111,13 +111,15 @@ describe('program compiler effect', () => {
 		await triggerProgrammaticCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
-			expect.any(Array),
+			expect.objectContaining({
+				groups: { main: expect.any(Array) },
+				functions: expect.any(Array),
+				macros: expect.any(Array),
+			}),
 			{
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: true,
-			},
-			expect.any(Array),
-			expect.any(Array)
+			}
 		);
 		expect(mockState.info.compiler).toMatchObject({
 			isCompiling: false,
@@ -151,13 +153,15 @@ describe('program compiler effect', () => {
 		await triggerProgrammaticCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
-			expect.any(Array),
+			expect.objectContaining({
+				groups: { main: expect.any(Array) },
+				functions: expect.any(Array),
+				macros: expect.any(Array),
+			}),
 			{
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: false,
-			},
-			expect.any(Array),
-			expect.any(Array)
+			}
 		);
 	});
 
@@ -183,13 +187,15 @@ describe('program compiler effect', () => {
 		await vi.advanceTimersByTimeAsync(500);
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
-			expect.any(Array),
+			expect.objectContaining({
+				groups: { main: expect.any(Array) },
+				functions: expect.any(Array),
+				macros: expect.any(Array),
+			}),
 			{
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: false,
-			},
-			expect.any(Array),
-			expect.any(Array)
+			}
 		);
 
 		mockState.featureFlags.codeLineSelection = true;
@@ -197,13 +203,15 @@ describe('program compiler effect', () => {
 		await vi.advanceTimersByTimeAsync(500);
 
 		expect(mockCompileCode).toHaveBeenLastCalledWith(
-			expect.any(Array),
+			expect.objectContaining({
+				groups: { main: expect.any(Array) },
+				functions: expect.any(Array),
+				macros: expect.any(Array),
+			}),
 			{
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: true,
-			},
-			expect.any(Array),
-			expect.any(Array)
+			}
 		);
 	});
 
