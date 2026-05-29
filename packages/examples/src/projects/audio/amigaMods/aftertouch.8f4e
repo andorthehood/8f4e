@@ -197,6 +197,8 @@ module projectConfig
 ; @pos -21 -145
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName aftertouch
 
 moduleEnd
@@ -1983,7 +1985,6 @@ store
 moduleEnd
 module audiooutL
 ; @pos 798 -10
-; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 use env
 
 float* in &lowpassL:out
@@ -2053,7 +2054,6 @@ module colors
 moduleEnd
 module audiooutR
 ; @pos 839 -10
-; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 use env
 
 float* in &lowpassR:out

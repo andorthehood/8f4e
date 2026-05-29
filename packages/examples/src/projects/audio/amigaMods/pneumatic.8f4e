@@ -251,6 +251,8 @@ module projectConfig
 ; @pos 9 -125
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName pneumatic
 
 moduleEnd
@@ -2029,7 +2031,6 @@ store
 moduleEnd
 module audiooutL
 ; @pos 797 -10
-; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 use env
 
 float* in &lowpassL:out
@@ -2066,7 +2067,6 @@ ifEnd
 moduleEnd
 module audiooutR
 ; @pos 839 -10
-; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 use env
 
 float* in &lowpassR:out

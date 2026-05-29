@@ -5,6 +5,7 @@ module projectConfig
 ; @pos -94 1
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config export.fileName audioBuffer
 
 moduleEnd
@@ -54,7 +55,6 @@ moduleEnd
 module audioout
 ; @pos 88 1
 ; @home
-; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 use env
 
 float* in &phaseAccumulator:out
