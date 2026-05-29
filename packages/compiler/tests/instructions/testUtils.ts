@@ -275,7 +275,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 
 	reset();
 
-	const cycle = (instance?.exports.cycle ||
+	const main = (instance?.exports.main ||
 		function () {
 			return;
 		}) as CallableFunction;
@@ -339,7 +339,7 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 			set: (address: number | string, value: number | number[]) => void;
 			allocMemoryForPointer: (address: number | string) => number;
 		},
-		test: cycle,
+		test: main,
 		reset,
 		wat,
 		program,
@@ -401,7 +401,7 @@ export function expectModuleToThrow(description: string, moduleCode: string, err
  * Creates a WebAssembly instance from compiled code with typed exports
  * @param codeBuffer - Compiled WebAssembly code buffer
  * @param options - Options for memory configuration
- * @returns Object with instance exports (initDefaults, cycle, initOnly, buffer) and memory buffer
+ * @returns Object with instance exports (initDefaults, main, buffer) and memory buffer
  */
 export async function createWasmInstance(
 	codeBuffer: Uint8Array,
@@ -417,8 +417,7 @@ export async function createWasmInstance(
 
 	return {
 		initDefaults: instance.exports.initDefaults as () => void,
-		cycle: instance.exports.cycle as () => void,
-		initOnly: instance.exports.initOnly as () => void,
+		main: instance.exports.main as () => void,
 		buffer: instance.exports.buffer as () => void,
 		memory: buffer,
 	};

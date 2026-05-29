@@ -130,14 +130,11 @@ exports[`call constant function > if the generated AST, WAT and memory map match
     i32.const 8
     memory.fill)
   (func (;1;) (type 0)
-    call 5)
-  (func (;2;) (type 0))
-  (func (;3;) (type 0)
     (local i32)
     i32.const 128
     local.set 0
     loop  ;; label = @1
-      call 1
+      call 2
       local.get 0
       i32.const 1
       i32.sub
@@ -145,9 +142,11 @@ exports[`call constant function > if the generated AST, WAT and memory map match
       local.get 0
       br_if 0 (;@1;)
     end)
-  (func (;4;) (type 3) (result i32)
+  (func (;2;) (type 0)
+    call 4)
+  (func (;3;) (type 3) (result i32)
     i32.const 42)
-  (func (;5;) (type 0)
+  (func (;4;) (type 0)
     (local i32)
     i32.const 0
     local.set 0
@@ -164,15 +163,14 @@ exports[`call constant function > if the generated AST, WAT and memory map match
         i32.add
         local.set 0
         i32.const 4
-        call 4
+        call 3
         i32.store
         br 0 (;@2;)
       end
     end)
   (export "initDefaults" (func 0))
-  (export "cycle" (func 1))
-  (export "initOnly" (func 2))
-  (export "buffer" (func 3)))
+  (export "buffer" (func 1))
+  (export "main" (func 2)))
 "
 `;
 
@@ -326,14 +324,11 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
     i32.const 16
     memory.fill)
   (func (;1;) (type 0)
-    call 5)
-  (func (;2;) (type 0))
-  (func (;3;) (type 0)
     (local i32)
     i32.const 128
     local.set 0
     loop  ;; label = @1
-      call 1
+      call 2
       local.get 0
       i32.const 1
       i32.sub
@@ -341,11 +336,13 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
       local.get 0
       br_if 0 (;@1;)
     end)
-  (func (;4;) (type 3) (result f64)
+  (func (;2;) (type 0)
+    call 4)
+  (func (;3;) (type 3) (result f64)
     f64.const 0x1.921fb54442d11p+1 (;=3.14159;)
     f64.const 0x1p+1 (;=2;)
     f64.mul)
-  (func (;5;) (type 0)
+  (func (;4;) (type 0)
     (local i32)
     i32.const 0
     local.set 0
@@ -362,15 +359,14 @@ exports[`call float64-returning function > if the generated AST, WAT and memory 
         i32.add
         local.set 0
         i32.const 8
-        call 4
+        call 3
         f64.store
         br 0 (;@2;)
       end
     end)
   (export "initDefaults" (func 0))
-  (export "cycle" (func 1))
-  (export "initOnly" (func 2))
-  (export "buffer" (func 3)))
+  (export "buffer" (func 1))
+  (export "main" (func 2)))
 "
 `;
 
@@ -544,14 +540,11 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
     i32.const 8
     memory.fill)
   (func (;1;) (type 0)
-    call 6)
-  (func (;2;) (type 0))
-  (func (;3;) (type 0)
     (local i32)
     i32.const 128
     local.set 0
     loop  ;; label = @1
-      call 1
+      call 2
       local.get 0
       i32.const 1
       i32.sub
@@ -559,11 +552,13 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
       local.get 0
       br_if 0 (;@1;)
     end)
-  (func (;4;) (type 3) (result i32)
+  (func (;2;) (type 0)
+    call 5)
+  (func (;3;) (type 3) (result i32)
     i32.const 2)
-  (func (;5;) (type 3) (result i32)
+  (func (;4;) (type 3) (result i32)
     i32.const 3)
-  (func (;6;) (type 0)
+  (func (;5;) (type 0)
     (local i32)
     i32.const 0
     local.set 0
@@ -580,17 +575,16 @@ exports[`call function multiple times > if the generated AST, WAT and memory map
         i32.add
         local.set 0
         i32.const 4
+        call 3
         call 4
-        call 5
         i32.add
         i32.store
         br 0 (;@2;)
       end
     end)
   (export "initDefaults" (func 0))
-  (export "cycle" (func 1))
-  (export "initOnly" (func 2))
-  (export "buffer" (func 3)))
+  (export "buffer" (func 1))
+  (export "main" (func 2)))
 "
 `;
 
@@ -785,14 +779,11 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
     i32.const 12
     memory.fill)
   (func (;1;) (type 0)
-    call 5)
-  (func (;2;) (type 0))
-  (func (;3;) (type 0)
     (local i32)
     i32.const 128
     local.set 0
     loop  ;; label = @1
-      call 1
+      call 2
       local.get 0
       i32.const 1
       i32.sub
@@ -800,11 +791,13 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
       local.get 0
       br_if 0 (;@1;)
     end)
-  (func (;4;) (type 3) (param i32) (result i32)
+  (func (;2;) (type 0)
+    call 4)
+  (func (;3;) (type 3) (param i32) (result i32)
     local.get 0
     i32.const 2
     i32.mul)
-  (func (;5;) (type 0)
+  (func (;4;) (type 0)
     (local i32)
     i32.const 0
     local.set 0
@@ -823,15 +816,14 @@ exports[`call function with parameter > if the generated AST, WAT and memory map
         i32.const 8
         i32.const 4
         i32.load
-        call 4
+        call 3
         i32.store
         br 0 (;@2;)
       end
     end)
   (export "initDefaults" (func 0))
-  (export "cycle" (func 1))
-  (export "initOnly" (func 2))
-  (export "buffer" (func 3)))
+  (export "buffer" (func 1))
+  (export "main" (func 2)))
 "
 `;
 
@@ -1001,14 +993,11 @@ exports[`function can call another function with its signature and wasm index av
     i32.const 8
     memory.fill)
   (func (;1;) (type 0)
-    call 6)
-  (func (;2;) (type 0))
-  (func (;3;) (type 0)
     (local i32)
     i32.const 128
     local.set 0
     loop  ;; label = @1
-      call 1
+      call 2
       local.get 0
       i32.const 1
       i32.sub
@@ -1016,14 +1005,16 @@ exports[`function can call another function with its signature and wasm index av
       local.get 0
       br_if 0 (;@1;)
     end)
-  (func (;4;) (type 3) (param i32) (result i32)
+  (func (;2;) (type 0)
+    call 5)
+  (func (;3;) (type 3) (param i32) (result i32)
     local.get 0
     i32.const 1
     i32.add)
-  (func (;5;) (type 4) (result i32)
+  (func (;4;) (type 4) (result i32)
     i32.const 41
-    call 4)
-  (func (;6;) (type 0)
+    call 3)
+  (func (;5;) (type 0)
     (local i32)
     i32.const 0
     local.set 0
@@ -1040,15 +1031,14 @@ exports[`function can call another function with its signature and wasm index av
         i32.add
         local.set 0
         i32.const 4
-        call 5
+        call 4
         i32.store
         br 0 (;@2;)
       end
     end)
   (export "initDefaults" (func 0))
-  (export "cycle" (func 1))
-  (export "initOnly" (func 2))
-  (export "buffer" (func 3)))
+  (export "buffer" (func 1))
+  (export "main" (func 2)))
 "
 `;
 
