@@ -19,6 +19,20 @@
 				"cwd": "{projectRoot}"
 			}
 		},
+		"test": {
+			"executor": "nx:run-commands",
+			"dependsOn": [
+				{
+					"projects": ["@8f4e/cli"],
+					"target": "build",
+					"params": "ignore"
+				}
+			],
+			"options": {
+				"command": "node ./scripts/run-module-tests.mjs",
+				"cwd": "{projectRoot}"
+			}
+		},
 		"dev": {
 			"executor": "nx:run-commands",
 			"options": {
