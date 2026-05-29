@@ -15,8 +15,8 @@ const defaultOptions = {
 	includeTestRunner: true,
 };
 
-async function instantiate(modules: Module[], functions?: Module[]) {
-	const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
+async function instantiate(groups: Record<string, Module[]>, functions?: Module[]) {
+	const result = compile({ groups, functions: functions }, defaultOptions);
 	const failureCalls: Array<{ assertIndex: number; expected: number; received: number }> = [];
 	const memorySizePages = Math.max(1, Math.ceil(result.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
 	const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
@@ -42,14 +42,18 @@ async function instantiate(modules: Module[], functions?: Module[]) {
 
 describe('#test modules and assert runner', () => {
 	test('maps #test modules to the test group', async () => {
-		const { exports, failureCalls, result } = await instantiate([
-			{
-				code: ['module production', 'moduleEnd'],
-			},
-			{
-				code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 4', 'moduleEnd'],
-			},
-		]);
+		const { exports, failureCalls, result } = await instantiate({
+			main: [
+				{
+					code: ['module production', 'moduleEnd'],
+				},
+			],
+			test: [
+				{
+					code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 4', 'moduleEnd'],
+				},
+			],
+		});
 
 		exports.initDefaults();
 		exports.main();
@@ -79,6 +83,8 @@ describe('#test modules and assert runner', () => {
 						{
 							code: ['module production', 'moduleEnd'],
 						},
+					],
+					test: [
 						{
 							code: ['module emptyTest', '#test ; inline comment', 'moduleEnd'],
 						},
@@ -93,11 +99,13 @@ describe('#test modules and assert runner', () => {
 	});
 
 	test('does not report passing assertions', async () => {
-		const { exports, failureCalls } = await instantiate([
-			{
-				code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 3', 'moduleEnd'],
-			},
-		]);
+		const { exports, failureCalls } = await instantiate({
+			test: [
+				{
+					code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 3', 'moduleEnd'],
+				},
+			],
+		});
 
 		exports.initDefaults();
 		exports.test();
@@ -107,19 +115,21 @@ describe('#test modules and assert runner', () => {
 
 	test('supports memory declarations and pointer arguments in #test modules', async () => {
 		const { exports, failureCalls } = await instantiate(
-			[
-				{
-					code: [
-						'module readFirstWorks',
-						'#test',
-						'int[] values 2 7 8',
-						'push &values',
-						'call readFirst',
-						'assert 7',
-						'moduleEnd',
-					],
-				},
-			],
+			{
+				test: [
+					{
+						code: [
+							'module readFirstWorks',
+							'#test',
+							'int[] values 2 7 8',
+							'push &values',
+							'call readFirst',
+							'assert 7',
+							'moduleEnd',
+						],
+					},
+				],
+			},
 			[
 				{
 					code: ['function readFirst', '#impure', 'param int* ptr', 'push *ptr', 'functionEnd int'],
@@ -141,6 +151,8 @@ describe('#test modules and assert runner', () => {
 						{
 							code: ['module production', 'moduleEnd'],
 						},
+					],
+					test: [
 						{
 							code: ['module addWorks', '#test', 'push 1', 'assert 1', 'moduleEnd'],
 						},
@@ -189,7 +201,7 @@ describe('#test modules and assert runner', () => {
 	test('rejects non-integer expected values before codegen', () => {
 		expect(() =>
 			compile(
-				{ groups: { main: [{ code: ['module badAssert', '#test', 'push 1', 'assert 1.5', 'moduleEnd'] }] } },
+				{ groups: { test: [{ code: ['module badAssert', '#test', 'push 1', 'assert 1.5', 'moduleEnd'] }] } },
 				defaultOptions
 			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.TYPE_MISMATCH }));

@@ -64,11 +64,6 @@ type ModuleCompilerSource = ExpandedCompilerSource & {
 	groupName: string;
 };
 
-type ModuleASTEntry = {
-	groupName: string;
-	ast: ModuleAST;
-};
-
 export { default as instructions } from './instructionCompilers';
 export {
 	assertUniqueModuleIds,
@@ -238,50 +233,8 @@ function parseFunctionAST(
 	return ast;
 }
 
-function isTestModuleAST(ast: ModuleAST | ConstantsAST): boolean {
-	return ast.type === 'module' && ast.testLine !== undefined;
-}
-
-function isInitOnlyModuleAST(ast: ModuleAST | ConstantsAST): boolean {
-	return ast.type === 'module' && ast.lines.some(line => line.instruction === '#initOnly');
-}
-
-function getExecutionGroupName(entry: ModuleASTEntry): string {
-	if (isTestModuleAST(entry.ast)) {
-		return 'test';
-	}
-	if (isInitOnlyModuleAST(entry.ast)) {
-		return 'init';
-	}
-	return entry.groupName;
-}
-
-function createGroupNameList(
-	inputGroupNames: string[],
-	moduleEntries: ModuleASTEntry[],
-	includeTestRunner: boolean
-): string[] {
-	const groupNames: string[] = [];
-	const addGroupName = (groupName: string) => {
-		if (!groupNames.includes(groupName)) {
-			groupNames.push(groupName);
-		}
-	};
-
-	for (const groupName of inputGroupNames) {
-		if (groupName !== 'test' || includeTestRunner) {
-			addGroupName(groupName);
-		}
-	}
-
-	for (const entry of moduleEntries) {
-		if ((entry.groupName === 'test' || isTestModuleAST(entry.ast)) && !includeTestRunner) {
-			continue;
-		}
-		addGroupName(getExecutionGroupName(entry));
-	}
-
-	return groupNames;
+function createGroupNameList(inputGroupNames: string[], includeTestRunner: boolean): string[] {
+	return inputGroupNames.filter(groupName => groupName !== 'test' || includeTestRunner);
 }
 
 export default function compile(
@@ -342,13 +295,11 @@ export default function compile(
 	const astConstants = expandedConstants.map(({ code, lineMetadata, cacheKey }) =>
 		parseConstantsAST(code, lineMetadata, cache, cacheKey)
 	);
-	const testModuleIds = astModuleEntries.filter(({ ast }) => isTestModuleAST(ast)).map(({ ast }) => ast.id);
-	const activeModuleEntries = astModuleEntries.filter(
-		entry => options.includeTestRunner || (entry.groupName !== 'test' && !isTestModuleAST(entry.ast))
-	);
-	const groupNames = createGroupNameList(inputGroupNames, astModuleEntries, options.includeTestRunner === true);
+	const testModuleIds = astModuleEntries.filter(({ groupName }) => groupName === 'test').map(({ ast }) => ast.id);
+	const activeModuleEntries = astModuleEntries.filter(entry => options.includeTestRunner || entry.groupName !== 'test');
+	const groupNames = createGroupNameList(inputGroupNames, options.includeTestRunner === true);
 	const activeAstModules = activeModuleEntries.map(({ ast }) => ast);
-	const activeModuleGroupNames = activeModuleEntries.map(getExecutionGroupName);
+	const activeModuleGroupNames = activeModuleEntries.map(({ groupName }) => groupName);
 	assertUniqueModuleIds(activeAstModules);
 	const hasAssertInstruction =
 		options.includeTestRunner === true &&
