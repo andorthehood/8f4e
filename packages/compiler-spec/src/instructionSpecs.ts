@@ -759,14 +759,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Skips the current module during main execution.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// #initOnly ( -- )
-	'#initOnly': {
-		sourceArguments: noSourceArguments,
-		scope: 'moduleOnly',
-		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
-		docs: { shortDescription: 'Runs the current module only during initialization.' },
-		stack: stack({ inputs: [], outputs: [] }),
-	},
 	// #mock ( -- )
 	'#mock': {
 		sourceArguments: noSourceArguments,

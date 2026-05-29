@@ -20,8 +20,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "keyboard",
@@ -29,8 +28,7 @@
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "janko",
@@ -38,8 +36,7 @@
       "byteAddress": 12,
       "wordAlignedAddress": 3,
       "wordAlignedSize": 2,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "midiLUT",
@@ -47,8 +44,7 @@
       "byteAddress": 20,
       "wordAlignedAddress": 5,
       "wordAlignedSize": 128,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "midiNote2Freq",
@@ -56,8 +52,7 @@
       "byteAddress": 532,
       "wordAlignedAddress": 133,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "arEnv",
@@ -65,8 +60,7 @@
       "byteAddress": 544,
       "wordAlignedAddress": 136,
       "wordAlignedSize": 7,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "phaseAccumulator",
@@ -74,8 +68,7 @@
       "byteAddress": 572,
       "wordAlignedAddress": 143,
       "wordAlignedSize": 4,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "vca",
@@ -83,8 +76,7 @@
       "byteAddress": 588,
       "wordAlignedAddress": 147,
       "wordAlignedSize": 3,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     },
     {
       "id": "audioout",
@@ -92,8 +84,7 @@
       "byteAddress": 600,
       "wordAlignedAddress": 150,
       "wordAlignedSize": 130,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
+      "skipExecutionInCycle": false
     }
   ]
 }

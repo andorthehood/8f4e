@@ -36,7 +36,6 @@ describe('execution groups', () => {
 		const auxAddress = result.compiledModules.auxModule.memoryMap.value.byteAddress;
 
 		expect(instance.exports.cycle).toBeUndefined();
-		expect(instance.exports.initOnly).toBeUndefined();
 		expect(instance.exports.main).toEqual(expect.any(Function));
 		expect(instance.exports.aux).toEqual(expect.any(Function));
 

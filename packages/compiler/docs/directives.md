@@ -118,91 +118,6 @@ In this example:
 - `disabledModule` does not execute, but its memory is initialized with `data = 42`
 - `consumer` can access `disabledModule:data` even though `disabledModule` doesn't execute
 
-### `#initOnly`
-
-Marks a module to execute once during the init phase and skip execution in the cycle dispatcher.
-
-**Scope:** Module blocks only
-
-**Usage:**
-```8f4e
-module myInitModule
-#initOnly
-int state 0
-; ... initialization code ...
-moduleEnd
-```
-
-**Behavior:**
-- The module code runs exactly once during initialization
-- The module code does not run during the cycle loop
-- Memory declared in the module is initialized with default values before the module code runs
-- Incremental recompiles that patch default memory values rerun all init-only modules via the `initOnly` export; full `init` still runs on first compile or memory recreation
-- Multiple prologue `#initOnly` directives in the same module have the same effect as one
-- If both `#skipExecution` and `#initOnly` are present, `#skipExecution` takes precedence (the module does not execute at all)
-
-**Use Cases:**
-- One-time setup or initialization logic that should run before the main cycle loop
-- Compute derived values or perform setup operations that depend on other modules' initialized memory
-- Initialize state that will be read by other modules during cycle execution
-
-**Errors:**
-- Using `#initOnly` outside of a module block (e.g., in `constants` or `function` blocks) will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
-- Placing `#initOnly` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
-
-**Example:**
-
-```8f4e
-; Data module with initialized values
-module config
-int baseValue 100
-moduleEnd
-
-; Init-only module that runs setup logic once
-module setup
-#initOnly
-use config
-int derivedValue 0
-push derivedValue
-push config:baseValue
-load
-push 2
-mul
-store
-moduleEnd
-
-; Regular module that uses the setup data
-module main
-use setup
-int counter 0
-push counter
-push counter
-load
-push 1
-add
-store
-moduleEnd
-```
-
-In this example:
-- `config` has its memory initialized with `baseValue = 100`
-- `setup` runs once during init, computing `derivedValue = baseValue * 2 = 200`
-- `main` executes every cycle, incrementing its counter
-
-**Interaction with `#skipExecution`:**
-
-When both directives are present in the same module:
-```8f4e
-module myModule
-#skipExecution
-#initOnly
-int value 0
-; ... code ...
-moduleEnd
-```
-
-The `#skipExecution` directive takes precedence, and the module code does not execute during either init or cycle. This allows you to temporarily disable a module that was previously marked as init-only without removing the `#initOnly` directive.
-
 ### `#mock`
 
 Marks a block as test-only support for modules that need external dependencies.
@@ -353,7 +268,7 @@ functionEnd
 
 If an unknown compiler directive is encountered, the compiler will throw an `UNRECOGNISED_INSTRUCTION` error.
 
-If a module-scoped directive like `#skipExecution` or `#initOnly` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
+If a module-scoped directive like `#skipExecution` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
 
 If `#loopCap` is used outside of a module or function block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
 
