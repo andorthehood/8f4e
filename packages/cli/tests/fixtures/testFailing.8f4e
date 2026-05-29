@@ -5,6 +5,7 @@ module addFails
 push 1
 push 2
 add
-assert 4
+push 4
+call assert
 moduleEnd
 groupEnd
