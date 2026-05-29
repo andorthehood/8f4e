@@ -4,6 +4,7 @@ group main
 groupEnd
 
 function storeAtInt
+; @public
 #impure
 ; Stores value into buffer[index].
 param int* buffer

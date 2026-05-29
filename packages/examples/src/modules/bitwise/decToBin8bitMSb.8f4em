@@ -2,6 +2,7 @@
 
 group main
 module decToBin
+; @public
 
 int* in
 

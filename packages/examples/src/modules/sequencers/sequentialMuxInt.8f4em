@@ -2,6 +2,7 @@
 
 group main
 module seqMux
+; @public
 
 int* in0
 int* in1

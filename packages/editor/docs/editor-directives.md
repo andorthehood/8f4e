@@ -31,6 +31,21 @@ These directives are editor metadata only. They are not compiler instructions an
 
 ## Supported Directives
 
+### `@public`
+
+Mark the block exported by a `.8f4em` module file when it is imported from the editor module library.
+
+```txt
+; @public
+```
+
+Notes:
+
+- Supported public block types are `function`, `module`, `constants`, and `note`.
+- A module file should mark the single block that represents the file's reusable public content.
+- The editor removes `@public` from the block source when inserting it into a project.
+- This directive is editor metadata only and does not affect compiler output.
+
 ### `@config`
 
 Set editor configuration values.

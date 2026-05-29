@@ -2,6 +2,7 @@
 
 group main
 module binShiftReg
+; @public
 
 int* in
 int* trigger

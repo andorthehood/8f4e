@@ -4,6 +4,7 @@ group main
 groupEnd
 
 constants midiCodes
+; @public
 ; @pos -110 -56
 ; @tab 12
 const A0	21

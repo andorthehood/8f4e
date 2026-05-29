@@ -2,6 +2,7 @@
 
 group main
 module sh
+; @public
 
 int* in
 int* trigger

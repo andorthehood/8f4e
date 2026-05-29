@@ -4,6 +4,7 @@ group main
 groupEnd
 
 constants math
+; @public
 
 const PI      3.141592653589793
 const NEG_PI -3.141592653589793

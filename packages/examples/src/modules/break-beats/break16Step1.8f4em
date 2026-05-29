@@ -2,6 +2,7 @@
 
 group main
 module break
+; @public
 
 ; MSb 0 kick
 ; 1 snare

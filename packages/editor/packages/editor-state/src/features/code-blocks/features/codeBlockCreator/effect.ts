@@ -5,7 +5,7 @@ import { getConstantsId } from '@8f4e/tokenizer';
 import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 
 import { insertDependencies } from './insertDependencies';
-import parseModuleSource from './parseModuleSource';
+import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
 import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 
@@ -266,7 +266,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		const requestedModuleCodeText = await state.callbacks.getModule(codeBlockSlug);
 
 		// Add the requested module at the clicked position
-		const requestedCode = parseModuleSource(requestedModuleCodeText);
+		const requestedCode = extractPublicBlockFromModuleSource(requestedModuleCodeText);
 		onAddCodeBlock({ code: requestedCode, x, y, isNew: false });
 
 		// If the module has dependencies, insert them to the right

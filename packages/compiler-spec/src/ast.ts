@@ -127,10 +127,9 @@ export type ExportLine = ASTLineBase<'#export', [] | [ArgumentIdentifier]> & Com
 export type RegionLine = ASTLineBase<'#region', [ArgumentIdentifier | ArgumentLiteral]> &
 	CompilerDirectivePrologueMetadata;
 export type SkipExecutionLine = ASTLineBase<'#skipExecution', []> & CompilerDirectivePrologueMetadata;
-export type MockLine = ASTLineBase<'#mock', []> & CompilerDirectivePrologueMetadata;
 export type AssertLine = ASTLineBase<'assert', [CompileTimeValueArgument]>;
 export type ClampAddressLine = ASTLineBase<ClampAddressInstructionName, [] | [CompileTimeValueArgument]>;
-export type CompilerDirectiveLine = LoopCapLine | ImpureLine | ExportLine | RegionLine | SkipExecutionLine | MockLine;
+export type CompilerDirectiveLine = LoopCapLine | ImpureLine | ExportLine | RegionLine | SkipExecutionLine;
 
 export type MemoryDeclarationArgument =
 	| ArgumentLiteral
@@ -207,7 +206,6 @@ type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| ExportLine
 	| RegionLine
 	| SkipExecutionLine
-	| MockLine
 	| AssertLine
 	| ClampAddressLine
 	| MemoryDeclarationLine;

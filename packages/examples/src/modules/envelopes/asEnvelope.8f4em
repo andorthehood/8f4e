@@ -2,6 +2,7 @@
 
 group main
 module asEnv
+; @public
 ; Attack-Sustain (AS)
 ; Envelope Generator
 

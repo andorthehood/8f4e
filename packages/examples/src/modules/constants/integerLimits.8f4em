@@ -4,6 +4,7 @@ group main
 groupEnd
 
 constants integerLimits
+; @public
 
 const MAX_8U   255
 const MIN_8U   0

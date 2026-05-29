@@ -2,6 +2,7 @@
 
 group main
 module switchGates
+; @public
 
 float* in0
 float out0

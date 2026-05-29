@@ -2,6 +2,7 @@
 
 group main
 module bufferCombiner
+; @public
 
 float* bufferA
 int* lengthA

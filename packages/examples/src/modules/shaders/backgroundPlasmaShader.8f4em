@@ -4,6 +4,7 @@ group main
 groupEnd
 
 note fragmentShaderBackground
+; @public
 #version 300 es
 
 precision mediump float;

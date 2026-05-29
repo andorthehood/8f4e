@@ -2,6 +2,7 @@
 
 group main
 module dx7colors
+; @public
 ; @pos 2 51
 ; @config color.text.instruction #33ffcc
 ; @config color.icons.inputConnector #ff9999

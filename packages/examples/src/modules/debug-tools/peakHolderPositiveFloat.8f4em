@@ -2,6 +2,7 @@
 
 group main
 module peakHolder
+; @public
 
 float* in
 float out
