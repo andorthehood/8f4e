@@ -17,7 +17,6 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 
 	const moduleResult = compileProjectModules(project.codeBlocks, {
 		compilerOptions,
-		includeMocks: options.includeMocks,
 		includeModules,
 		includeWasm,
 	});

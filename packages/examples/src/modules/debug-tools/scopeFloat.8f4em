@@ -2,6 +2,7 @@
 
 group main
 module scope
+; @public
 
 float* in
 float[] buffer 128

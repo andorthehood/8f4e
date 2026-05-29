@@ -351,18 +351,6 @@ describe('compileToASTLines', () => {
 		expect(isCompilerDirectiveLine(ast[8])).toBe(false);
 	});
 
-	it('marks mock directives in constants prologues', () => {
-		const ast = compileToASTLines([
-			'constants env',
-			'#mock ; test-only constants',
-			'const SAMPLE_RATE 48000',
-			'constantsEnd',
-		]);
-
-		expect(isCompilerDirectiveLine(ast[1]) && ast[1].isBlockPrologue).toBe(true);
-		expect(isCompilerDirectiveLine(ast[2])).toBe(false);
-	});
-
 	it('rejects module directives after the module prologue', () => {
 		expect(() => compileToASTLines(['module test', 'int counter', '#skipExecution', 'moduleEnd'])).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE })

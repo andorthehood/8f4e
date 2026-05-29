@@ -2,6 +2,7 @@
 
 group main
 module clockDiv
+; @public
 
 int default 16
 int* divider &default

@@ -2,6 +2,7 @@
 
 group main
 module midiLUT
+; @public
 ; @tab 7 18
 float	8.1758	; 0
 float	8.6620	; 1

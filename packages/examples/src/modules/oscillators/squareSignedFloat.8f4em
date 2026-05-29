@@ -2,6 +2,7 @@
 
 group main
 module square
+; @public
 
 use env
 
@@ -60,7 +61,6 @@ moduleEnd
 groupEnd
 
 constants env
-#mock
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 constantsEnd

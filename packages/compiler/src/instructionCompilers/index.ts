@@ -57,7 +57,6 @@ import _return from './return';
 import param from './param';
 import call from './call';
 import skipExecution from './skipExecution';
-import mock from './mock';
 import impure from './impure';
 import exportFunction from './exportFunction';
 import loopCap from './loopCap';
@@ -136,7 +135,6 @@ const instructions = {
 	param,
 	call,
 	'#skipExecution': skipExecution,
-	'#mock': mock,
 	'#impure': impure,
 	'#export': exportFunction,
 	'#loopCap': loopCap,

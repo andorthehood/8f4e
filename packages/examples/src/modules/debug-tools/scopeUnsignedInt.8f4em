@@ -2,6 +2,7 @@
 
 group main
 module scope
+; @public
 
 int* in
 int[] buffer 64

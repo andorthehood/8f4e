@@ -4,6 +4,7 @@ group main
 groupEnd
 
 constants morse
+; @public
 
 ; Dots are 1
 ; dashes are 111

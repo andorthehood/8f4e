@@ -2,6 +2,7 @@
 
 group main
 module euclideanRhythm
+; @public
 
 int[] rhythm 16
 int pulses 4
