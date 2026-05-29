@@ -5,14 +5,12 @@ module projectConfig
 ; @pos -106 13
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioInBufferLAddress audioin:buffer
-; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
-; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName audioLoopback
 
 moduleEnd
 module audioin
 ; @pos 5 1
+; @config audioRuntime.audioInBufferLAddress audioin:buffer
 use env
 
 ; Audio buffer
@@ -46,6 +44,7 @@ moduleEnd
 module audiooutL
 ; @pos 48 1
 ; @home
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 use env
 
 float* in &audioin:out
@@ -86,6 +85,7 @@ ifEnd
 moduleEnd
 module audiooutR
 ; @pos 89 1
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 
 use env
 
