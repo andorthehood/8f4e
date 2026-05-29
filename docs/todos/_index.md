@@ -68,9 +68,6 @@ Active todo files are listed below.
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
 | 435 | Add polymorphic function overloads | 🟡 | 1-2d | 2026-05-29 | Allow global functions to share a source name when their exact parameter signatures differ, using signature-derived ids and stack-based call resolution. |
-| 436 | Add test execution support and assert runner | 🟡 | 2-4d | 2026-05-29 | Use `entry test` plus a CLI-provided imported `assert` utility function for executable language-level tests. |
-| 437 | Add execution entries | 🟡 | 2-4d | 2026-05-29 | Add `entry` / `entryEnd` execution partitions, export every entry by name, and rename memory default initialization to `initDefaults`. |
-| 438 | Add generic function imports | 🟡 | 1-2d | 2026-05-29 | Add `#import` for host-provided functions, keeping them callable through normal function resolution while emitting correct WebAssembly import indexes. |
 
 ### 🟢 Low Priority
 
@@ -88,6 +85,8 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 438 | Add generic function imports | 2026-05-29 | `#import <field-name>` now declares host-provided functions, imported functions participate in normal `call` resolution and stack typing, WebAssembly import/function indexes are emitted correctly, and invalid import shapes have compiler coverage. |
+| 437 | Add execution entries | 2026-05-29 | `entry` / `entryEnd` now partitions modules into exported execution entries, `initDefaults` only initializes memory defaults, old test/init-only grouping was removed, and examples/runtime/CLI paths use the new entry exports. |
 | 150 | Add Test Module Type | 2026-05-29 | Completed by the `entry test` CLI test runner flow and superseded by execution entries plus generic function imports. |
 | 433 | Add dash argument continuation lines | 2026-05-28 | Parser now folds `- <arg>` continuation lines into the previous source instruction before validation; docs and tokenizer coverage describe valid and invalid forms. |
 | 428 | Add pointer-aware count and min metadata queries | 2026-05-27 | `min(*ptr)` and `count(*ptr)` now classify explicitly and resolve from pointer metadata; pointer count uses tracked memory-start pointee element counts when available and falls back to `1`. |
