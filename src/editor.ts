@@ -55,8 +55,7 @@ async function init(options: InitOptions = {}) {
 			getModuleDependencies,
 			getListOfProjects,
 			getProject,
-			compileCode: (modules, compilerOptions, functions, macros) =>
-				compileCode(modules, compilerOptions, functions, editor, macros),
+			compileCode: (input, compilerOptions) => compileCode(input, compilerOptions, editor),
 			loadSession,
 			saveSession,
 			loadBrowserLocalNotes,

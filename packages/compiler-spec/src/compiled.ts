@@ -12,7 +12,7 @@ export type CompiledStackAnalysisLine = {
 	stackAnalysis: StackAnalysisResult;
 };
 
-/** Code generation output and metadata for a compiled module or constants block. */
+/** Code generation output and metadata for a compiled executable module. */
 export interface CompiledModule {
 	index: number;
 	initFunctionBody: number[];
@@ -109,4 +109,15 @@ export interface Connection {
 /** Source module payload consumed by the compiler. */
 export interface Module {
 	code: string[];
+}
+
+/** Executable modules partitioned by host-callable execution group. */
+export type ModuleGroups = Record<string, Module[]>;
+
+/** Top-level source payload consumed by the compiler. */
+export interface CompileInput {
+	groups: ModuleGroups;
+	functions?: Module[];
+	constants?: Module[];
+	macros?: Module[];
 }

@@ -16,7 +16,7 @@ const defaultOptions = {
 };
 
 async function instantiate(modules: Module[], functions?: Module[]) {
-	const result = compile(modules, defaultOptions, functions);
+	const result = compile({ groups: { main: modules }, functions: functions }, defaultOptions);
 	const failureCalls: Array<{ assertIndex: number; expected: number; received: number }> = [];
 	const memorySizePages = Math.max(1, Math.ceil(result.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
 	const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
@@ -73,14 +73,18 @@ describe('#test modules and assert runner', () => {
 
 	test('reports #test modules from parsed AST metadata', () => {
 		const result = compile(
-			[
-				{
-					code: ['module production', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module production', 'moduleEnd'],
+						},
+						{
+							code: ['module emptyTest', '#test ; inline comment', 'moduleEnd'],
+						},
+					],
 				},
-				{
-					code: ['module emptyTest', '#test ; inline comment', 'moduleEnd'],
-				},
-			],
+			},
 			defaultOptions
 		);
 
@@ -131,14 +135,18 @@ describe('#test modules and assert runner', () => {
 
 	test('omits #test modules and test imports from normal builds', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module production', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module production', 'moduleEnd'],
+						},
+						{
+							code: ['module addWorks', '#test', 'push 1', 'assert 1', 'moduleEnd'],
+						},
+					],
 				},
-				{
-					code: ['module addWorks', '#test', 'push 1', 'assert 1', 'moduleEnd'],
-				},
-			],
+			},
 			{
 				startingMemoryWordAddress: 1,
 				disableSharedMemory: true,
@@ -160,11 +168,15 @@ describe('#test modules and assert runner', () => {
 	test('rejects assert in normal modules when test support is not enabled', () => {
 		expect(() =>
 			compile(
-				[
-					{
-						code: ['module production', 'push 1', 'assert 1', 'moduleEnd'],
+				{
+					groups: {
+						main: [
+							{
+								code: ['module production', 'push 1', 'assert 1', 'moduleEnd'],
+							},
+						],
 					},
-				],
+				},
 				{
 					startingMemoryWordAddress: 1,
 					disableSharedMemory: true,
@@ -176,7 +188,10 @@ describe('#test modules and assert runner', () => {
 
 	test('rejects non-integer expected values before codegen', () => {
 		expect(() =>
-			compile([{ code: ['module badAssert', '#test', 'push 1', 'assert 1.5', 'moduleEnd'] }], defaultOptions)
+			compile(
+				{ groups: { main: [{ code: ['module badAssert', '#test', 'push 1', 'assert 1.5', 'moduleEnd'] }] } },
+				defaultOptions
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.TYPE_MISMATCH }));
 	});
 

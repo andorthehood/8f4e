@@ -228,13 +228,12 @@ export async function createTestModuleWithFunctions(moduleCode: string, function
 	const functions: Module[] | undefined = functionCodes?.map(code => ({ code: code.split('\n') }));
 
 	const result = compile(
-		modules,
+		{ groups: { main: modules }, functions: functions },
 		{
 			startingMemoryWordAddress: 0,
 			includeAST: true,
 			disableSharedMemory: true,
-		},
-		functions
+		}
 	);
 
 	const module = result.compiledModules[Object.keys(result.compiledModules)[0]];
