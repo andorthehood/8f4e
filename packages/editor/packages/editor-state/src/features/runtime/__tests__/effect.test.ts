@@ -10,9 +10,9 @@ describe('Runtime System', () => {
 	describe('Runtime lifecycle integration', () => {
 		it('should destroy previous runtime when runtime type changes without changeRuntime event', async () => {
 			const audioDestroyer = vi.fn();
-			const mainDestroyer = vi.fn();
+			const mainThreadDestroyer = vi.fn();
 			const audioRuntimeFactory = vi.fn(() => audioDestroyer);
-			const mainRuntimeFactory = vi.fn(() => mainDestroyer);
+			const mainThreadRuntimeFactory = vi.fn(() => mainThreadDestroyer);
 
 			const state = createMockState({
 				editorConfig: { runtime: 'AudioWorkletRuntime' },
@@ -23,7 +23,7 @@ describe('Runtime System', () => {
 					},
 					MainThreadRuntime: {
 						id: 'MainThreadRuntime',
-						factory: mainRuntimeFactory,
+						factory: mainThreadRuntimeFactory,
 					},
 				},
 				defaultRuntimeId: 'AudioWorkletRuntime',
@@ -49,12 +49,12 @@ describe('Runtime System', () => {
 			await new Promise(resolve => setTimeout(resolve, 10));
 
 			expect(audioDestroyer).toHaveBeenCalledTimes(1);
-			expect(mainRuntimeFactory).toHaveBeenCalledTimes(1);
+			expect(mainThreadRuntimeFactory).toHaveBeenCalledTimes(1);
 
 			const destroyOrder = audioDestroyer.mock.invocationCallOrder[0];
-			const mainFactoryOrder = mainRuntimeFactory.mock.invocationCallOrder[0];
+			const mainThreadFactoryOrder = mainThreadRuntimeFactory.mock.invocationCallOrder[0];
 
-			expect(destroyOrder).toBeLessThan(mainFactoryOrder);
+			expect(destroyOrder).toBeLessThan(mainThreadFactoryOrder);
 		});
 
 		it('should switch runtime immediately when runtime selection changes while compiler is idle', async () => {
@@ -118,7 +118,7 @@ describe('Runtime System', () => {
 					WebWorkerRuntime: {
 						id: 'WebWorkerRuntime',
 						editorConfigSchema: {
-							root: 'mainRuntime',
+							root: 'workerRuntime',
 							schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
 						},
 						factory: () => () => {},

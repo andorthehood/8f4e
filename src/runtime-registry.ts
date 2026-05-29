@@ -81,7 +81,7 @@ export const runtimeRegistry: RuntimeRegistry = {
 
 	MainThreadRuntime: createLazyRuntimeEntry(
 		'MainThreadRuntime',
-		{ root: 'mainRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
+		{ root: 'mainThreadRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
 		async () => {
 			const { createMainThreadRuntimeDef } = await import('@8f4e/runtime-main-thread/runtime-def');
 			return createMainThreadRuntimeDef(getCodeBuffer, getMemory);

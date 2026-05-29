@@ -7,7 +7,7 @@ const midiArpeggiator: Project = {
 				'config',
 				'; @pos -47 -25',
 				'; @config runtime WebWorkerMIDIRuntime',
-				'; @config mainRuntime.sampleRate 50',
+				'; @config workerRuntime.sampleRate 50',
 				'',
 				'',
 				'configEnd',
