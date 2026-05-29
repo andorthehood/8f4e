@@ -65,7 +65,7 @@ type OtherOpenBlock = {
 type OpenBlock = IfOpenBlock | GenericOpenBlock | OtherOpenBlock;
 
 type SourceBlockPrologue = {
-	instruction: 'module' | 'function';
+	instruction: 'module' | 'function' | 'constants';
 	blockDepth: number;
 	isOpen: boolean;
 };
@@ -114,8 +114,8 @@ type SourceLine = {
 };
 
 const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
-const sourceBlockStartInstructionSet = new Set(['module', 'function']);
-const sourceBlockEndInstructionSet = new Set(['moduleEnd', 'functionEnd']);
+const sourceBlockStartInstructionSet = new Set(['module', 'function', 'constants']);
+const sourceBlockEndInstructionSet = new Set(['moduleEnd', 'functionEnd', 'constantsEnd']);
 
 function isBlockStartInstruction(instruction: string): instruction is BlockStartInstruction {
 	return blockStartInstructionSet.has(instruction as BlockStartInstruction);
@@ -581,7 +581,7 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 
 			if (sourceBlockStartInstructionSet.has(parsedLine.instruction)) {
 				sourceBlockPrologueStack.push({
-					instruction: parsedLine.instruction as 'module' | 'function',
+					instruction: parsedLine.instruction as 'module' | 'function' | 'constants',
 					blockDepth: blockStack.length,
 					isOpen: true,
 				});

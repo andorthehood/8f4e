@@ -7,6 +7,7 @@ float phase
 float out
 
 use math
+use env
 
 ; Advance phase by
 ; TAU * frequency / SAMPLE_RATE
@@ -40,3 +41,22 @@ call sine
 store
 
 moduleEnd
+
+constants math
+#mock
+const PI 3.141592653589793
+const NEG_PI -3.141592653589793
+const TAU 6.283185307179586
+constantsEnd
+
+constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd
+
+function sine
+#mock
+param float x
+push x
+functionEnd float

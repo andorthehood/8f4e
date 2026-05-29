@@ -1,12 +1,10 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import { compileToAST, getProjectBlockType } from '@8f4e/tokenizer';
-
 import { compileProject } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
 
-import type { ProjectCodeBlock, ProjectInput } from '../shared/types';
+import type { ProjectInput } from '../shared/types';
 import type { TestAssertionMetadata } from '@8f4e/compiler-spec';
 
 const WASM_MEMORY_PAGE_SIZE = 65536;
@@ -198,32 +196,33 @@ function formatFailure(failure: AssertionFailure, metadata: TestAssertionMetadat
 	return `${location} expected ${failure.expected}, received ${failure.received}`;
 }
 
-export function getTestUsage(): string {
-	return 'Usage: cli test <input.8f4e|input.8f4em|glob>...';
+function getErrorMessage(error: unknown): string {
+	if (error instanceof Error) {
+		return error.message;
+	}
+	if (typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string') {
+		return error.message;
+	}
+	return String(error);
 }
 
-function isParsedTestModule(block: ProjectCodeBlock): boolean {
-	if (block.disabled || getProjectBlockType(block.code) !== 'module') {
-		return false;
-	}
-
-	const ast = compileToAST(block.code);
-	return ast.type === 'module' && ast.testLine !== undefined;
+export function getTestUsage(): string {
+	return 'Usage: cli test <input.8f4e|input.8f4em|glob>...';
 }
 
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
 	const project = parse8f4eToProject(inputRaw) as ProjectInput;
-	if (!project.codeBlocks.some(isParsedTestModule)) {
-		return { assertions: 0, skipped: true };
-	}
-
 	const compileResult = compileProject(project, {
 		compilerOptions: {
 			disableSharedMemory: true,
 			includeTestRunner: true,
 		},
 	});
+
+	if ((compileResult.testModuleIds?.length ?? 0) === 0) {
+		return { assertions: 0, skipped: true };
+	}
 
 	if (!compileResult.compiledWasm) {
 		throw new Error('Unable to run tests: compilation did not produce runnable output');
@@ -280,7 +279,7 @@ export async function runTestCommand(args: string[]): Promise<void> {
 			}
 		} catch (error) {
 			const relativePath = path.relative(process.cwd(), inputPath);
-			const message = error instanceof Error ? error.message : String(error);
+			const message = getErrorMessage(error);
 			throw new Error(`${relativePath}\n${message}`);
 		}
 	}

@@ -83,6 +83,11 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('#test', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
 	});
 
+	it('accepts bare #mock and rejects any arguments', () => {
+		expect(() => validateInstructionArguments('#mock', [])).not.toThrow();
+		expect(() => validateInstructionArguments('#mock', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);
+	});
+
 	it('accepts one compile-time value for assert', () => {
 		expect(() =>
 			validateInstructionArguments('assert', [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }])
