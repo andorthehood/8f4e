@@ -929,5 +929,24 @@
 				"maxRangesPerFunction": 31
 			}
 		}
+	},
+	{
+		"commit": "4b622ae88d2603e774a674b1d85c9ef1516b6767",
+		"version": "1.10.0",
+		"benchmark": "sineGenerator.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 200,
+				"functionEntries": 3776,
+				"rangeExecutions": 8901,
+				"maxRangesPerFunction": 61
+			},
+			"tokenizer": {
+				"coveredFunctions": 44,
+				"functionEntries": 2204,
+				"rangeExecutions": 14917,
+				"maxRangesPerFunction": 31
+			}
+		}
 	}
 ]
