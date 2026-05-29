@@ -4,7 +4,7 @@ entry main
 module projectConfig
 ; @pos -5 3
 ; @config runtime MainThreadRuntime
-; ~sampleRate 10
+; @config mainRuntime.sampleRate 10
 
 moduleEnd
 module counter

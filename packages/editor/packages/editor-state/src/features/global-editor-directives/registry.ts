@@ -11,7 +11,6 @@ import type {
 	ParsedGlobalEditorDirective,
 	ResolvedGlobalEditorDirectives,
 } from '@8f4e/editor-state-types';
-import type { RuntimeRegistry } from '@8f4e/editor-state-types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
 	configDirective,
@@ -26,7 +25,6 @@ export function resolveGlobalEditorDirectives(
 		moduleId?: string;
 		blockType?: CodeBlockType;
 	}[],
-	runtimeRegistry: RuntimeRegistry,
 	plugins: GlobalEditorDirectivePlugin[] = globalEditorDirectivePlugins
 ): GlobalEditorDirectiveResolutionResult {
 	const pluginMap = new Map(plugins.map(plugin => [plugin.name, plugin]));
@@ -46,7 +44,6 @@ export function resolveGlobalEditorDirectives(
 			codeBlockId,
 			moduleId: block.moduleId,
 			blockType: block.blockType,
-			runtimeRegistry,
 		};
 
 		for (const directive of directives) {
@@ -65,22 +62,19 @@ if (import.meta.vitest) {
 
 	describe('global editor directive registry', () => {
 		it('ignores unregistered directives', () => {
-			const result = resolveGlobalEditorDirectives(
-				[
-					{
-						parsedDirectives: [
-							{
-								prefix: '@',
-								name: 'unknown',
-								args: ['x'],
-								rawRow: 0,
-								isTrailing: false,
-							},
-						],
-					},
-				],
-				{}
-			);
+			const result = resolveGlobalEditorDirectives([
+				{
+					parsedDirectives: [
+						{
+							prefix: '@',
+							name: 'unknown',
+							args: ['x'],
+							rawRow: 0,
+							isTrailing: false,
+						},
+					],
+				},
+			]);
 
 			expect(result.resolved).toEqual({});
 			expect(result.errors).toEqual([]);

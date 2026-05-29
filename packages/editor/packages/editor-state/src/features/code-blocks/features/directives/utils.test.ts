@@ -21,11 +21,11 @@ describe('parseDirectiveLineRecords', () => {
 	});
 
 	it('parses a full-line runtime directive', () => {
-		expect(parseDirectiveLineRecords('; ~sampleRate 44100')).toEqual([
+		expect(parseDirectiveLineRecords('; ~audioOutput buffer 0 1')).toEqual([
 			{
 				prefix: '~',
-				name: 'sampleRate',
-				args: ['44100'],
+				name: 'audioOutput',
+				args: ['buffer', '0', '1'],
 				isTrailing: false,
 			},
 		]);

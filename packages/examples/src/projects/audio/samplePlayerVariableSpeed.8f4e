@@ -9,7 +9,7 @@ moduleEnd
 module projectConfig
 ; @pos -53 -63
 ; @config runtime AudioWorkletRuntime
-; ~sampleRate 44100
+; @config audioRuntime.sampleRate 44100
 ; @config export.fileName samplePlayerVariableSpeed
 
 moduleEnd

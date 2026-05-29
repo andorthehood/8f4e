@@ -11,18 +11,15 @@ function createParsedBlock(code: string[]) {
 
 describe('@config directive', () => {
 	it('records config entries for validation and resolution', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				createParsedBlock([
-					'module a',
-					'; @config font 6x10',
-					'; @config color.text.code #112233',
-					'; @config color.fill.wire rgba(1,2,3,0.4)',
-					'moduleEnd',
-				]),
-			],
-			{}
-		);
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock([
+				'module a',
+				'; @config font 6x10',
+				'; @config color.text.code #112233',
+				'; @config color.fill.wire rgba(1,2,3,0.4)',
+				'moduleEnd',
+			]),
+		]);
 
 		expect(result.resolved.configEntries).toEqual([
 			{ path: 'font', value: '6x10', rawRow: 1, codeBlockId: 0 },
@@ -33,18 +30,15 @@ describe('@config directive', () => {
 	});
 
 	it('lets validators handle path-specific meaning', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				createParsedBlock([
-					'module a',
-					'; @config font tiny',
-					'; @config blockScale 4',
-					'; @config color.text.code ???',
-					'moduleEnd',
-				]),
-			],
-			{}
-		);
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock([
+				'module a',
+				'; @config font tiny',
+				'; @config blockScale 4',
+				'; @config color.text.code ???',
+				'moduleEnd',
+			]),
+		]);
 
 		expect(result.resolved.configEntries).toEqual([
 			{ path: 'font', value: 'tiny', rawRow: 1, codeBlockId: 0 },
@@ -55,10 +49,9 @@ describe('@config directive', () => {
 	});
 
 	it('requires exactly a path and value', () => {
-		const result = resolveGlobalEditorDirectives(
-			[createParsedBlock(['module a', '; @config', '; @config font', '; @config font ibmvga8x16 extra', 'moduleEnd'])],
-			{}
-		);
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock(['module a', '; @config', '; @config font', '; @config font ibmvga8x16 extra', 'moduleEnd']),
+		]);
 
 		expect(result.resolved).toEqual({});
 		expect(result.errors).toHaveLength(3);
@@ -66,29 +59,26 @@ describe('@config directive', () => {
 	});
 
 	it('does not resolve removed top-level font directive', () => {
-		const result = resolveGlobalEditorDirectives([createParsedBlock(['module a', '; @font 6x10', 'moduleEnd'])], {});
+		const result = resolveGlobalEditorDirectives([createParsedBlock(['module a', '; @font 6x10', 'moduleEnd'])]);
 
 		expect(result.resolved).toEqual({});
 		expect(result.errors).toEqual([]);
 	});
 
 	it('does not resolve removed top-level color directive', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				{
-					parsedDirectives: [
-						{
-							prefix: '@',
-							name: 'color',
-							args: ['text.code', '#112233'],
-							rawRow: 0,
-							isTrailing: false,
-						},
-					],
-				},
-			],
-			{}
-		);
+		const result = resolveGlobalEditorDirectives([
+			{
+				parsedDirectives: [
+					{
+						prefix: '@',
+						name: 'color',
+						args: ['text.code', '#112233'],
+						rawRow: 0,
+						isTrailing: false,
+					},
+				],
+			},
+		]);
 
 		expect(result.resolved).toEqual({});
 		expect(result.errors).toEqual([]);
