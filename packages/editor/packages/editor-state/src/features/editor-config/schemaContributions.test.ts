@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { createEditorConfigSchemaContributionsValidator } from './schemaContributions';
+import { resolveSchemaConfigRoot } from './schemaValidator';
 
 import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
@@ -17,11 +18,27 @@ const store = {
 						properties: {
 							sampleRate: { type: 'number', minimum: 1 },
 							audioOutBufferLAddress: {
+								format: 'memory-address',
 								anyOf: [
 									{ type: 'integer', minimum: 0 },
 									{ type: 'string', pattern: '^[^:\\s]+:[^:\\s]+$' },
 								],
 							},
+						},
+					},
+				},
+			},
+			editorConfig: {
+				audioRuntime: {
+					sampleRate: 48000,
+					audioOutBufferLAddress: 'audioout:buffer',
+				},
+			},
+			compiler: {
+				compiledModules: {
+					audioout: {
+						memoryMap: {
+							buffer: { wordAlignedAddress: 32 },
 						},
 					},
 				},
@@ -87,5 +104,15 @@ describe('editor config schema contributions', () => {
 				codeBlockId: 'config',
 			})
 		).toBe("@config: unknown config path 'audioRuntime.unknown'");
+	});
+
+	it('resolves memory-address formatted config values against compiled memory maps', () => {
+		const state = store.getState();
+		const config = resolveSchemaConfigRoot(state.editorConfigSchemaContributions.audio!, state.editorConfig, state);
+
+		expect(config).toMatchObject({
+			sampleRate: 48000,
+			audioOutBufferLAddress: 32,
+		});
 	});
 });

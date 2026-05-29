@@ -1,12 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
 
-import {
-	createAudioWorkletRuntimeDef,
-	getAudioInputBuffers,
-	getAudioOutputBuffers,
-	resolveAudioBufferWordAddress,
-} from './runtimeDef';
+import { createAudioWorkletRuntimeDef, getAudioInputBuffers, getAudioOutputBuffers } from './runtimeDef';
 import { storeAudioWorkletRuntimeValues } from './runtimeValues';
 
 import type { State } from '@8f4e/editor';
@@ -66,32 +61,27 @@ describe('AudioWorklet runtime config', () => {
 
 		expect(runtimeDef.editorConfigSchema?.schema.properties).toMatchObject({
 			audioOutBufferLAddress: {
+				format: 'memory-address',
 				anyOf: [
 					{ type: 'integer', minimum: 0 },
 					{ type: 'string', pattern: '^[^:\\s]+:[^:\\s]+$' },
 				],
 			},
 			audioOutBufferRAddress: {
+				format: 'memory-address',
 				anyOf: [
 					{ type: 'integer', minimum: 0 },
 					{ type: 'string', pattern: '^[^:\\s]+:[^:\\s]+$' },
 				],
 			},
 			audioInBufferLAddress: {
+				format: 'memory-address',
 				anyOf: [
 					{ type: 'integer', minimum: 0 },
 					{ type: 'string', pattern: '^[^:\\s]+:[^:\\s]+$' },
 				],
 			},
 		});
-	});
-
-	it('resolves configured audio buffer references to compiled word addresses', () => {
-		const state = createState();
-
-		expect(resolveAudioBufferWordAddress(state, 'audiooutL:buffer')).toBe(8);
-		expect(resolveAudioBufferWordAddress(state, 12)).toBe(12);
-		expect(resolveAudioBufferWordAddress(state, 'missing:buffer')).toBeUndefined();
 	});
 
 	it('builds stereo output and mono input routes from audio runtime config', () => {
