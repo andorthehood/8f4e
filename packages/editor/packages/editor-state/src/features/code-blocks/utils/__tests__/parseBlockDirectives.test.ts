@@ -14,26 +14,26 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse a runtime directive (~)', () => {
-		expect(parseBlockDirectives(['; ~sampleRate 44100'])).toEqual([
+		expect(parseBlockDirectives(['; ~audioOutput buffer 0 1'])).toEqual([
 			{
 				prefix: '~',
-				name: 'sampleRate',
-				args: ['44100'],
+				name: 'audioOutput',
+				args: ['buffer', '0', '1'],
 				rawRow: 0,
-				sourceLine: '; ~sampleRate 44100',
+				sourceLine: '; ~audioOutput buffer 0 1',
 				isTrailing: false,
 			},
 		]);
 	});
 
 	it('should parse runtime directives with leading whitespace', () => {
-		expect(parseBlockDirectives(['  ; ~sampleRate 44100'])).toEqual([
+		expect(parseBlockDirectives(['  ; ~audioOutput buffer 0 1'])).toEqual([
 			{
 				prefix: '~',
-				name: 'sampleRate',
-				args: ['44100'],
+				name: 'audioOutput',
+				args: ['buffer', '0', '1'],
 				rawRow: 0,
-				sourceLine: '  ; ~sampleRate 44100',
+				sourceLine: '  ; ~audioOutput buffer 0 1',
 				isTrailing: false,
 			},
 		]);
@@ -65,21 +65,21 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse runtime directives with no arguments', () => {
-		expect(parseBlockDirectives(['; ~sampleRate'])).toEqual([
-			{ prefix: '~', name: 'sampleRate', args: [], rawRow: 0, sourceLine: '; ~sampleRate', isTrailing: false },
+		expect(parseBlockDirectives(['; ~audioOutput'])).toEqual([
+			{ prefix: '~', name: 'audioOutput', args: [], rawRow: 0, sourceLine: '; ~audioOutput', isTrailing: false },
 		]);
 	});
 
 	it('should record the correct rawRow for each directive', () => {
-		const code = ['module test', '; @pos 5 10', 'push 1', '; ~sampleRate 48000', 'moduleEnd'];
+		const code = ['module test', '; @pos 5 10', 'push 1', '; ~audioOutput buffer 0 1', 'moduleEnd'];
 		expect(parseBlockDirectives(code)).toEqual([
 			{ prefix: '@', name: 'pos', args: ['5', '10'], rawRow: 1, sourceLine: '; @pos 5 10', isTrailing: false },
 			{
 				prefix: '~',
-				name: 'sampleRate',
-				args: ['48000'],
+				name: 'audioOutput',
+				args: ['buffer', '0', '1'],
 				rawRow: 3,
-				sourceLine: '; ~sampleRate 48000',
+				sourceLine: '; ~audioOutput buffer 0 1',
 				isTrailing: false,
 			},
 		]);
@@ -107,16 +107,16 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse multiple directives from a block', () => {
-		const code = ['; @pos 0 0', '; @disabled', '; ~sampleRate 44100'];
+		const code = ['; @pos 0 0', '; @disabled', '; ~audioOutput buffer 0 1'];
 		expect(parseBlockDirectives(code)).toEqual([
 			{ prefix: '@', name: 'pos', args: ['0', '0'], rawRow: 0, sourceLine: '; @pos 0 0', isTrailing: false },
 			{ prefix: '@', name: 'disabled', args: [], rawRow: 1, sourceLine: '; @disabled', isTrailing: false },
 			{
 				prefix: '~',
-				name: 'sampleRate',
-				args: ['44100'],
+				name: 'audioOutput',
+				args: ['buffer', '0', '1'],
 				rawRow: 2,
-				sourceLine: '; ~sampleRate 44100',
+				sourceLine: '; ~audioOutput buffer 0 1',
 				isTrailing: false,
 			},
 		]);

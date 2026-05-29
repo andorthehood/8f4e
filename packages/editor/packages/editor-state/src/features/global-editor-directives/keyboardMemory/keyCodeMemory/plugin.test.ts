@@ -14,34 +14,28 @@ function createParsedBlock(code: string[], overrides: { id?: string; moduleId?: 
 
 describe('@keyCodeMemory directive', () => {
 	it('resolves a module-local memory id to a fully qualified memory id', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				createParsedBlock(['module keyboard', '; @keyCodeMemory keyCode', 'moduleEnd'], {
-					moduleId: 'keyboard',
-					blockType: 'module',
-				}),
-			],
-			{}
-		);
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock(['module keyboard', '; @keyCodeMemory keyCode', 'moduleEnd'], {
+				moduleId: 'keyboard',
+				blockType: 'module',
+			}),
+		]);
 
 		expect(result.resolved.keyCodeMemoryId).toBe('keyboard:keyCode');
 		expect(result.errors).toEqual([]);
 	});
 
 	it('reports conflicts between different targets', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				createParsedBlock(['module a', '; @keyCodeMemory keyCode', 'moduleEnd'], {
-					moduleId: 'a',
-					blockType: 'module',
-				}),
-				createParsedBlock(['module b', '; @keyCodeMemory keyCode', 'moduleEnd'], {
-					moduleId: 'b',
-					blockType: 'module',
-				}),
-			],
-			{}
-		);
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock(['module a', '; @keyCodeMemory keyCode', 'moduleEnd'], {
+				moduleId: 'a',
+				blockType: 'module',
+			}),
+			createParsedBlock(['module b', '; @keyCodeMemory keyCode', 'moduleEnd'], {
+				moduleId: 'b',
+				blockType: 'module',
+			}),
+		]);
 
 		expect(result.resolved.keyCodeMemoryId).toBe('a:keyCode');
 		expect(result.errors).toHaveLength(1);

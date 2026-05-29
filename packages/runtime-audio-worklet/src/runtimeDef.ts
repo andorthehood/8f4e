@@ -1,18 +1,41 @@
 // Import the types from the editor
 // Note: audioWorkletUrl is imported at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
+import { resolveSchemaConfigRoot } from '@8f4e/editor';
 
 import { resolveAudioWorkletRouting } from './audioRouting';
-import {
-	getAudioWorkletRuntimeEnvConstantsFromBlocks,
-	resolveAudioWorkletRuntimeDirectives,
-	resolveAudioWorkletRuntimeDirectivesFromBlocks,
-} from './runtimeDirectives';
 import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runtimeValues';
 
-import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
+import type {
+	EditorConfig,
+	EditorConfigSchemaContribution,
+	EventDispatcher,
+	RuntimeRegistryEntry,
+	State,
+} from '@8f4e/editor';
 
 const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
+const AUDIO_BUFFER_SIZE = 128;
+
+const AUDIO_WORKLET_EDITOR_CONFIG: EditorConfigSchemaContribution = {
+	root: 'audioRuntime',
+	defaults: {
+		sampleRate: 48000,
+	},
+	schema: {
+		type: 'object',
+		properties: {
+			sampleRate: { type: 'number' },
+		},
+		additionalProperties: false,
+	},
+};
+
+function getSampleRate(editorConfig: EditorConfig): number {
+	const config = resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, editorConfig);
+
+	return typeof config.sampleRate === 'number' ? config.sampleRate : 48000;
+}
 
 // AudioWorklet Runtime Factory
 export function audioWorkletRuntimeFactory(
@@ -104,16 +127,11 @@ export function audioWorkletRuntimeFactory(
 		if (audioContext) {
 			return;
 		}
-		const sampleRate = resolveAudioWorkletRuntimeDirectives(state).sampleRate;
-		if (sampleRate === undefined) {
-			return;
-		}
-
 		hideAudioPermissionDialog();
 
 		// @ts-expect-error - AudioContext not available in worker context during build
 		audioContext = new AudioContext({
-			sampleRate,
+			sampleRate: getSampleRate(state.editorConfig),
 			latencyHint: 'interactive',
 		});
 
@@ -158,6 +176,7 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
+	store.subscribe('editorConfig.audioRuntime', onEditorConfigOrRoutingChanged);
 	events.on('mousedown', initAudioContext);
 
 	function tearDownAudioContext() {
@@ -183,15 +202,11 @@ export function audioWorkletRuntimeFactory(
 		}
 	}
 
-	function onRuntimeDirectivesChanged() {
+	function onEditorConfigOrRoutingChanged() {
 		if (!audioContext) {
 			return;
 		}
-		const desiredSampleRate = resolveAudioWorkletRuntimeDirectives(state).sampleRate;
-		if (desiredSampleRate === undefined) {
-			tearDownAudioContext();
-			return;
-		}
+		const desiredSampleRate = getSampleRate(state.editorConfig);
 		if (audioContext.sampleRate !== desiredSampleRate) {
 			tearDownAudioContext();
 			showAudioPermissionDialog(
@@ -203,7 +218,7 @@ export function audioWorkletRuntimeFactory(
 		syncCodeAndSettingsWithRuntime();
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', onRuntimeDirectivesChanged);
+	store.subscribe('graphicHelper.codeBlocks', onEditorConfigOrRoutingChanged);
 
 	if (!audioContext) {
 		showAudioPermissionDialog(
@@ -213,7 +228,8 @@ export function audioWorkletRuntimeFactory(
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
-		store.unsubscribe('graphicHelper.codeBlocks', onRuntimeDirectivesChanged);
+		store.unsubscribe('editorConfig.audioRuntime', onEditorConfigOrRoutingChanged);
+		store.unsubscribe('graphicHelper.codeBlocks', onEditorConfigOrRoutingChanged);
 		events.off('mousedown', initAudioContext);
 
 		tearDownAudioContext();
@@ -232,18 +248,11 @@ export function createAudioWorkletRuntimeDef(
 ): RuntimeRegistryEntry {
 	return {
 		id: AUDIO_WORKLET_RUNTIME_ID,
-		defaults: {
-			sampleRate: 48000,
-		},
-		schema: {
-			type: 'object',
-			properties: {
-				sampleRate: { type: 'number' },
-			},
-			additionalProperties: false,
-		} as JSONSchemaLike,
-		resolveRuntimeDirectives: codeBlocks => resolveAudioWorkletRuntimeDirectivesFromBlocks(codeBlocks),
-		getEnvConstants: codeBlocks => getAudioWorkletRuntimeEnvConstantsFromBlocks(codeBlocks),
+		editorConfigSchema: AUDIO_WORKLET_EDITOR_CONFIG,
+		getEnvConstants: editorConfig => [
+			`const SAMPLE_RATE ${getSampleRate(editorConfig)}`,
+			`const AUDIO_BUFFER_SIZE ${AUDIO_BUFFER_SIZE}`,
+		],
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl);
 		},

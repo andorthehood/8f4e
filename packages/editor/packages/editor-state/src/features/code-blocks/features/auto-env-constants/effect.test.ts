@@ -3,44 +3,24 @@ import createStateManager from '@8f4e/state-manager';
 
 import autoEnvConstants from './effect';
 
-import type { State, Project, CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import type { EditorConfig, State, Project, CodeBlockGraphicData } from '@8f4e/editor-state-types';
 
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 
 const AUTO_ENV_BLOCK_ID = 'constants_env';
-const PROJECT_WITH_SAMPLE_RATE_DIRECTIVE: Project = {
+const PROJECT_WITH_CODE_BLOCK: Project = {
 	...EMPTY_DEFAULT_PROJECT,
-	codeBlocks: [{ code: ['module rate', '; ~sampleRate 48000', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+	codeBlocks: [{ code: ['module rate', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
 };
 
-function resolveSampleRateFromDirectives(
-	codeBlocks: Array<{
-		parsedDirectives: Array<{ prefix: '@' | '~'; name: string; args: string[]; rawRow: number; isTrailing: boolean }>;
-		id?: string | number;
-	}>
-) {
-	let sampleRate = 50;
-	for (const block of codeBlocks) {
-		for (const directive of block.parsedDirectives) {
-			if (directive.prefix === '~' && directive.name === 'sampleRate' && directive.args[0]) {
-				sampleRate = Number(directive.args[0]);
-			}
-		}
-	}
-
-	return { sampleRate, errors: [] };
-}
-
-function getRuntimeEnvConstants(
-	codeBlocks: Array<{
-		parsedDirectives: Array<{ prefix: '@' | '~'; name: string; args: string[]; rawRow: number; isTrailing: boolean }>;
-		id?: string | number;
-	}>
-) {
-	const { sampleRate } = resolveSampleRateFromDirectives(codeBlocks);
-
+function getSampleRateEnvConstants(editorConfig: EditorConfig) {
+	const mainRuntime = editorConfig.mainRuntime;
+	const sampleRate =
+		mainRuntime && typeof mainRuntime === 'object' && typeof mainRuntime.sampleRate === 'number'
+			? mainRuntime.sampleRate
+			: 50;
 	return [`const SAMPLE_RATE ${sampleRate}`];
 }
 
@@ -69,10 +49,12 @@ describe('autoEnvConstants', () => {
 			runtimeRegistry: {
 				WebWorkerRuntime: {
 					id: 'WebWorkerRuntime',
-					defaults: { sampleRate: 50 },
-					schema: { type: 'object', properties: {} },
-					resolveRuntimeDirectives: codeBlocks => resolveSampleRateFromDirectives(codeBlocks),
-					getEnvConstants: codeBlocks => getRuntimeEnvConstants(codeBlocks),
+					editorConfigSchema: {
+						root: 'mainRuntime',
+						defaults: { sampleRate: 50 },
+						schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
+					},
+					getEnvConstants: editorConfig => getSampleRateEnvConstants(editorConfig),
 					factory: () => () => {},
 				},
 			},
@@ -112,9 +94,10 @@ describe('autoEnvConstants', () => {
 		expect(state.initialProjectState?.codeBlocks[1].code[0]).toBe('module test');
 	});
 
-	test('should include SAMPLE_RATE from runtime config', () => {
+	test('should include SAMPLE_RATE from runtime-owned editor config', () => {
 		autoEnvConstants(store);
-		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
+		store.set('editorConfig.mainRuntime', { sampleRate: 48000 });
+		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
@@ -125,7 +108,7 @@ describe('autoEnvConstants', () => {
 
 	test('should only include AUDIO_BUFFER_SIZE when the selected runtime contributes it', () => {
 		autoEnvConstants(store);
-		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
+		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
 		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		expect(envBlock?.code).not.toContain('const AUDIO_BUFFER_SIZE 128');
@@ -133,16 +116,18 @@ describe('autoEnvConstants', () => {
 		store.set('runtimeRegistry', {
 			AudioWorkletRuntime: {
 				id: 'AudioWorkletRuntime',
-				defaults: { sampleRate: 44100 },
-				schema: { type: 'object', properties: {} },
-				resolveRuntimeDirectives: codeBlocks => resolveSampleRateFromDirectives(codeBlocks),
-				getEnvConstants: codeBlocks => [...getRuntimeEnvConstants(codeBlocks), 'const AUDIO_BUFFER_SIZE 128'],
+				editorConfigSchema: {
+					root: 'audioRuntime',
+					defaults: { sampleRate: 44100 },
+					schema: { type: 'object', properties: { sampleRate: { type: 'number' } } },
+				},
+				getEnvConstants: editorConfig => [...getSampleRateEnvConstants(editorConfig), 'const AUDIO_BUFFER_SIZE 128'],
 				factory: () => () => {},
 			},
 		});
 		store.set('defaultRuntimeId', 'AudioWorkletRuntime');
 		store.set('editorConfig.runtime', 'AudioWorkletRuntime');
-		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
+		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
 		const audioWorkletEnvBlock = state.initialProjectState?.codeBlocks.find(block =>
 			block.code[0]?.includes('constants env')
@@ -159,7 +144,7 @@ describe('autoEnvConstants', () => {
 		expect(warningLine).toBeDefined();
 	});
 
-	test('should update when runtime config changes', () => {
+	test('should update when runtime-owned editor config changes', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
@@ -169,18 +154,8 @@ describe('autoEnvConstants', () => {
 			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
 		}
 
-		store.set('graphicHelper.codeBlocks', [
-			...(state.graphicHelper.codeBlocks.filter(block => block.id !== AUTO_ENV_BLOCK_ID) ?? []),
-			createMockCodeBlock({
-				id: 'module_rate',
-				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
-				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1, isTrailing: false }],
-				moduleId: 'rate',
-				blockType: 'module',
-			}),
-			createGraphicEnvBlock(envCodeBlock?.code ?? []),
-		]);
-		store.set('editorConfig.runtime', 'WebWorkerRuntime');
+		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock?.code ?? [])]);
+		store.set('editorConfig.mainRuntime', { sampleRate: 44100 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const sampleRateLine = envBlock?.code.find(line => line.includes('SAMPLE_RATE'));
@@ -231,7 +206,7 @@ describe('autoEnvConstants', () => {
 
 	test('should update when binary assets change', () => {
 		autoEnvConstants(store);
-		store.set('initialProjectState', { ...PROJECT_WITH_SAMPLE_RATE_DIRECTIVE });
+		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
 		// Simulate graphicHelper populating codeBlocks from initialProjectState
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
@@ -266,17 +241,8 @@ describe('autoEnvConstants', () => {
 			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
 		}
 
-		store.set('graphicHelper.codeBlocks', [
-			createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 }),
-			createMockCodeBlock({
-				id: 'module_rate',
-				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
-				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1, isTrailing: false }],
-				moduleId: 'rate',
-				blockType: 'module',
-			}),
-		]);
-		store.set('editorConfig.runtime', 'WebWorkerRuntime');
+		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
+		store.set('editorConfig.mainRuntime', { sampleRate: 44100 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
@@ -293,17 +259,8 @@ describe('autoEnvConstants', () => {
 			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
 		}
 
-		store.set('graphicHelper.codeBlocks', [
-			createGraphicEnvBlock(codeWithoutPos),
-			createMockCodeBlock({
-				id: 'module_rate',
-				code: ['module rate', '; ~sampleRate 44100', 'moduleEnd'],
-				parsedDirectives: [{ prefix: '~', name: 'sampleRate', args: ['44100'], rawRow: 1, isTrailing: false }],
-				moduleId: 'rate',
-				blockType: 'module',
-			}),
-		]);
-		store.set('editorConfig.runtime', 'WebWorkerRuntime');
+		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
+		store.set('editorConfig.mainRuntime', { sampleRate: 44100 });
 
 		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');

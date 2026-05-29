@@ -1,14 +1,35 @@
 // Import the types from the editor
 import createMainThreadRuntime from '@8f4e/runtime-main-thread';
 import { StateManager } from '@8f4e/state-manager';
+import { resolveSchemaConfigRoot } from '@8f4e/editor';
 
-import {
-	getMainThreadRuntimeEnvConstantsFromBlocks,
-	resolveMainThreadRuntimeDirectives,
-	resolveMainThreadRuntimeDirectivesFromBlocks,
-} from './runtimeDirectives';
+import type {
+	EditorConfig,
+	EditorConfigSchemaContribution,
+	EventDispatcher,
+	RuntimeRegistryEntry,
+	State,
+} from '@8f4e/editor';
 
-import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
+const MAIN_THREAD_EDITOR_CONFIG: EditorConfigSchemaContribution = {
+	root: 'mainRuntime',
+	defaults: {
+		sampleRate: 50,
+	},
+	schema: {
+		type: 'object',
+		properties: {
+			sampleRate: { type: 'number' },
+		},
+		additionalProperties: false,
+	},
+};
+
+function getSampleRate(editorConfig: EditorConfig): number {
+	const config = resolveSchemaConfigRoot(MAIN_THREAD_EDITOR_CONFIG, editorConfig);
+
+	return typeof config.sampleRate === 'number' ? config.sampleRate : 50;
+}
 
 // Main Thread Runtime Factory
 export function mainThreadRuntimeFactory(
@@ -50,20 +71,18 @@ export function mainThreadRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
-		const sampleRate = resolveMainThreadRuntimeDirectives(state).sampleRate;
-		if (sampleRate === undefined) {
-			return;
-		}
-		runtime.init(memory, sampleRate, getCodeBuffer());
+		runtime.init(memory, getSampleRate(state.editorConfig), getCodeBuffer());
 	}
 
 	runtime = createMainThreadRuntime(onInitialized, onStats, onError);
 	syncCodeAndSettingsWithRuntime();
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
+	store.subscribe('editorConfig.mainRuntime', syncCodeAndSettingsWithRuntime);
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('editorConfig.mainRuntime', syncCodeAndSettingsWithRuntime);
 		if (runtime) {
 			runtime.stop();
 			runtime = undefined;
@@ -81,18 +100,8 @@ export function createMainThreadRuntimeDef(
 ): RuntimeRegistryEntry {
 	return {
 		id: 'MainThreadRuntime',
-		defaults: {
-			sampleRate: 50,
-		},
-		schema: {
-			type: 'object',
-			properties: {
-				sampleRate: { type: 'number' },
-			},
-			additionalProperties: false,
-		} as JSONSchemaLike,
-		resolveRuntimeDirectives: codeBlocks => resolveMainThreadRuntimeDirectivesFromBlocks(codeBlocks),
-		getEnvConstants: codeBlocks => getMainThreadRuntimeEnvConstantsFromBlocks(codeBlocks),
+		editorConfigSchema: MAIN_THREAD_EDITOR_CONFIG,
+		getEnvConstants: editorConfig => [`const SAMPLE_RATE ${getSampleRate(editorConfig)}`],
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return mainThreadRuntimeFactory(store, events, getCodeBuffer, getMemory);
 		},

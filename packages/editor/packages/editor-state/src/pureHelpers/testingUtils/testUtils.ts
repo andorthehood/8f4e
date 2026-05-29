@@ -245,7 +245,7 @@ export function createMockEventDispatcher(): EventDispatcher {
  */
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const mockRuntimeFactory = () => () => {};
-	const defaultRuntimeSettings = { sampleRate: 50 } as const;
+	const mainRuntimeDefaults = { sampleRate: 50 } as const;
 
 	const defaults: State = {
 		compiler: {
@@ -258,8 +258,11 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		runtimeRegistry: {
 			WebWorkerRuntime: {
 				id: 'WebWorkerRuntime',
-				defaults: defaultRuntimeSettings,
-				schema: { type: 'object', properties: {} },
+				editorConfigSchema: {
+					root: 'mainRuntime',
+					defaults: mainRuntimeDefaults,
+					schema: { type: 'object', properties: {} },
+				},
 				factory: mockRuntimeFactory,
 			},
 		},
@@ -330,6 +333,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		editorMode: 'edit',
 		editorConfig: {},
 		editorConfigValidators: {},
+		editorConfigSchemaContributions: {},
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
@@ -338,7 +342,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			compilationErrors: [],
 			editorDirectiveErrors: [],
 			shaderErrors: [],
-			runtimeDirectiveErrors: [],
 		},
 		console: {
 			logs: [],
