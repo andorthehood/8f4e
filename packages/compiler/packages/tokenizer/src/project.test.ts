@@ -110,4 +110,18 @@ describe('project block classification', () => {
 			test: [{ code: ['module other', 'moduleEnd'] }],
 		});
 	});
+
+	it('moves directive modules into their execution groups', () => {
+		expect(
+			pickProjectCompilerBlocks([
+				{ code: ['module regular', 'moduleEnd'], executionGroupName: 'main' },
+				{ code: ['module oldTest', '#test', 'moduleEnd'], executionGroupName: 'main' },
+				{ code: ['module oldInit', '#initOnly', 'moduleEnd'], executionGroupName: 'main' },
+			]).groups
+		).toEqual({
+			main: [{ code: ['module regular', 'moduleEnd'] }],
+			test: [{ code: ['module oldTest', '#test', 'moduleEnd'] }],
+			init: [{ code: ['module oldInit', '#initOnly', 'moduleEnd'] }],
+		});
+	});
 });

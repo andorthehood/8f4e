@@ -64,6 +64,7 @@ describe('compileProjectModules', () => {
 		);
 
 		expect(result.testModuleIds).toEqual(['addWorks']);
+		expect(result.compiledModules?.addWorks.executionGroupName).toBe('test');
 	});
 
 	it('excludes mock blocks from normal project compilation', () => {
