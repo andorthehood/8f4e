@@ -108,7 +108,7 @@ export type MapValueArgument =
 	| ArgumentIdentifier
 	| ArgumentCompileTimeExpression
 	| ArgumentStringLiteral;
-export type MapLine = ASTLineBase<'map', [MapValueArgument, MapValueArgument]>;
+export type MapLine = ASTLineBase<'map', [MapValueArgument] | [MapValueArgument, MapValueArgument]>;
 
 export type DefaultLine = ASTLineBase<'default', [CompileTimeValueArgument]>;
 
