@@ -237,8 +237,6 @@ module projectConfig
 ; @pos 51 -124
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
-; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName hymn_to_aurora
 
 moduleEnd
@@ -1501,6 +1499,7 @@ store
 moduleEnd
 module audiooutL
 ; @pos 689 -10
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 use env
 
 float* in &lowpassL:out
@@ -1537,6 +1536,7 @@ ifEnd
 moduleEnd
 module audiooutR
 ; @pos 730 -10
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 use env
 
 float* in &lowpassR:out
