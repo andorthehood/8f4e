@@ -82,7 +82,7 @@ describe('Example Projects Compilation', () => {
 
 				expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
 				expect(result.codeBuffer.length).toBeGreaterThan(0);
-				expect(Object.keys(result.compiledModules).length).toBe(moduleBlocks.length + constantsBlocks.length);
+				expect(Object.keys(result.compiledModules).length).toBe(moduleBlocks.length);
 			});
 		});
 	});

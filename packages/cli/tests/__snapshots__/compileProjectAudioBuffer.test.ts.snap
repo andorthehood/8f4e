@@ -380,40 +380,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "wordAlignedAddress": 5,
       "wordAlignedSize": 130,
     },
-    "env": {
-      "byteAddress": 540,
-      "cycleFunction": [
-        2,
-        0,
-        11,
-      ],
-      "id": "env",
-      "index": 4,
-      "initFunctionBody": [],
-      "initOnlyExecution": undefined,
-      "memoryIndex": 0,
-      "memoryMap": {},
-      "skipExecutionInCycle": undefined,
-      "wordAlignedAddress": 135,
-      "wordAlignedSize": 0,
-    },
-    "math": {
-      "byteAddress": 540,
-      "cycleFunction": [
-        2,
-        0,
-        11,
-      ],
-      "id": "math",
-      "index": 5,
-      "initFunctionBody": [],
-      "initOnlyExecution": undefined,
-      "memoryIndex": 0,
-      "memoryMap": {},
-      "skipExecutionInCycle": undefined,
-      "wordAlignedAddress": 135,
-      "wordAlignedSize": 0,
-    },
     "notes": {
       "byteAddress": 540,
       "cycleFunction": [
@@ -620,6 +586,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "wordAlignedSize": 0,
     },
   },
-  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDDAsAAAAAAwAAAAAAAAcsBAxpbml0RGVmYXVsdHMAAAVjeWNsZQABCGluaXRPbmx5AAIGYnVmZmVyAAMMAQIK9gILIQBBAEEAQZwE/AsAQQRBAEEU/AgAAEGYBEEAQQT8CAEACw4AEAUQBhAHEAgQCRAKCwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLZAEBfSAAQ9sPyT9eBEBD2w9JQCAAkyEACyAAQ9sPyT9DAACAv5RdBEBD2w9JQEMAAIC/lCAAkyEACyAAIACUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAtdAQF9QQxBDCoCAEPbD8lAQQgoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBDCoCAEPbD0lAXgRAQQxD2w9JwDgCAAtBEEEMKgIAEAQ4AgALVwIBfwF9QZgEKAIAQRQoAgAqAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATgCAAULQZgEQZgEKAIAQQRqNgIAQZgEKAIAQZQESgRAQZgEQRg2AgALCwIACwIACwIACwsdAgEUAADcQwQAAAAAAAAAAAAAABAAAAABBBgAAAA=",
+  "compiledWasm": "AGFzbQEAAAABFARgAABgAX8Bf2ACf38Bf2ABfQF9Ag8BAmpzBm1lbW9yeQIDAQEDCgkAAAAAAwAAAAAHLAQMaW5pdERlZmF1bHRzAAAFY3ljbGUAAQhpbml0T25seQACBmJ1ZmZlcgADDAECCuwCCSEAQQBBAEGcBPwLAEEEQQBBFPwIAABBmARBAEEE/AgBAAsKABAFEAYQBxAICwIACxkBAX9BgAEhAANAEAEgAEEBayEAIAANAAsLZAEBfSAAQ9sPyT9eBEBD2w9JQCAAkyEACyAAQ9sPyT9DAACAv5RdBEBD2w9JQEMAAIC/lCAAkyEACyAAIACUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAtdAQF9QQxBDCoCAEPbD8lAQQgoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBDCoCAEPbD0lAXgRAQQxD2w9JwDgCAAtBEEEMKgIAEAQ4AgALVwIBfwF9QZgEKAIAQRQoAgAqAgAhASEAIAA/AEEBa0EQdEH8/wNqTQRAIAAgATgCAAULQZgEQZgEKAIAQQRqNgIAQZgEKAIAQZQESgRAQZgEQRg2AgALCwIACwsdAgEUAADcQwQAAAAAAAAAAAAAABAAAAABBBgAAAA=",
 }
 `;

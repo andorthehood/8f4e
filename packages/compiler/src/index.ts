@@ -20,7 +20,7 @@ import {
 	WASM_MEMORY_PAGE_SIZE,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { ErrorCode, getInstructionSpec, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 import { compileModule, compileFunction } from './compiler';
 import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
@@ -179,15 +179,38 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
-function parseModuleOrConstantsAST(
+function parseModuleAST(
 	code: string[],
 	lineMetadata: ParsedLineMetadata | undefined,
 	cache: CompilerCache,
 	cacheKey: string
-): ModuleAST | ConstantsAST {
+): ModuleAST {
 	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
-	if (ast.type === 'function') {
+	if (ast.type !== 'module') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
+	}
+	return ast;
+}
+
+function parseConstantsAST(
+	code: string[],
+	lineMetadata: ParsedLineMetadata | undefined,
+	cache: CompilerCache,
+	cacheKey: string
+): ConstantsAST {
+	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
+	if (ast.type !== 'constants') {
+		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
+	}
+	for (const line of ast.lines) {
+		if (line.instruction === 'constants') {
+			continue;
+		}
+
+		const spec = getInstructionSpec(line.instruction) as { allowedInConstantsBlocks?: boolean } | undefined;
+		if (spec?.allowedInConstantsBlocks !== true) {
+			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, undefined);
+		}
 	}
 	return ast;
 }
@@ -258,18 +281,12 @@ export default function compile(
 	}) satisfies ExpandedCompilerSource[];
 
 	// Compile to AST with line metadata for error mapping.
-	const astModules = [
-		...expandedModules.map(({ code, lineMetadata, cacheKey }) =>
-			parseModuleOrConstantsAST(code, lineMetadata, cache, cacheKey)
-		),
-		...expandedConstants.map(({ code, lineMetadata, cacheKey }) => {
-			const ast = parseModuleOrConstantsAST(code, lineMetadata, cache, cacheKey);
-			if (ast.type !== 'constants') {
-				throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
-			}
-			return ast;
-		}),
-	];
+	const astModules = expandedModules.map(({ code, lineMetadata, cacheKey }) =>
+		parseModuleAST(code, lineMetadata, cache, cacheKey)
+	);
+	const astConstants = expandedConstants.map(({ code, lineMetadata, cacheKey }) =>
+		parseConstantsAST(code, lineMetadata, cache, cacheKey)
+	);
 	const testModuleIds = astModules.filter(isTestModuleAST).map(ast => ast.id);
 	const activeAstModules = options.includeTestRunner ? astModules : astModules.filter(ast => !isTestModuleAST(ast));
 	assertUniqueModuleIds(activeAstModules);
@@ -283,8 +300,9 @@ export default function compile(
 	const userFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 	const testAssertions: TestAssertionMetadata[] = [];
 
+	const namespaceAsts = [...activeAstModules, ...astConstants];
 	const namespaces = collectNamespacesFromASTs(
-		activeAstModules,
+		namespaceAsts,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
 		activeAstModules,

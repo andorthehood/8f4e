@@ -103,7 +103,7 @@ moduleEnd
 	});
 
 	test('#initOnly in constants block throws error', () => {
-		const modules = [
+		const constants = [
 			{
 				code: `
 constants env
@@ -115,7 +115,7 @@ constantsEnd
 		];
 
 		expect(() => {
-			compile({ groups: { main: modules } }, { startingMemoryWordAddress: 1 });
+			compile({ groups: { main: [] }, constants }, { startingMemoryWordAddress: 1 });
 		}).toThrow();
 	});
 
