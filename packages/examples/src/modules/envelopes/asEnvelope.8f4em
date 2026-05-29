@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module asEnv
 ; Attack-Sustain (AS)
 ; Envelope Generator
@@ -49,3 +50,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

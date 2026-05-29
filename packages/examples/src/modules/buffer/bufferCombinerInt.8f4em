@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module bufferCombiner
 
 int* bufferA
@@ -23,14 +24,14 @@ store
 push &bufferPointer
 push 0
 store
- 
+
 loop
-; Guard 
+; Guard
 push bufferPointer
 push length
 greaterOrEqual
 branchIfTrue 1
- 
+
 ; Calculate destination
 ; buffer address
 push &buffer
@@ -38,14 +39,14 @@ push bufferPointer
 push sizeof(buffer)
 mul
 add
- 
+
 ; Calculate sorce
 ; buffer address
 push bufferPointer
 push *lengthA
 lessThan
 if
-push bufferA  
+push bufferA
 push bufferPointer
 push sizeof(bufferA)
 mul
@@ -62,7 +63,7 @@ ifEnd int
 
 load ; value from src
 store ; value in dst
- 
+
 ; Increment buffer pointer
 push &bufferPointer
 push bufferPointer
@@ -72,3 +73,4 @@ store
 loopEnd
 
 moduleEnd
+groupEnd

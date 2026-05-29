@@ -9,9 +9,11 @@ describe('compileProjectModules', () => {
 				[
 					{
 						code: ['module target', '; @pos -71 -28', 'int* ptr &source:0', 'moduleEnd'],
+						executionGroupName: 'main',
 					},
 					{
 						code: ['module source', '; @pos -141 -28', 'int value 0', 'moduleEnd'],
+						executionGroupName: 'main',
 					},
 				],
 				{
@@ -27,9 +29,11 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module source', '; @pos -141 -28', 'int value 0', 'moduleEnd'],
+					executionGroupName: 'main',
 				},
 				{
 					code: ['module target', '; @pos -71 -28', 'int* ptr &source:0', 'moduleEnd'],
+					executionGroupName: 'main',
 				},
 			],
 			{
@@ -50,6 +54,7 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module addWorks', '#test ; inline comment', 'push 1', 'assert 1', 'moduleEnd'],
+					executionGroupName: 'main',
 				},
 			],
 			{
@@ -66,9 +71,11 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module realDependency', 'int value 7', 'moduleEnd'],
+					executionGroupName: 'main',
 				},
 				{
 					code: ['module realDependency', '#mock ; test-only duplicate', 'int value 1', 'moduleEnd'],
+					executionGroupName: 'main',
 				},
 			],
 			{
@@ -85,9 +92,11 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module target', '#test', 'int* ptr &dependency:value', 'push *ptr', 'assert 42', 'moduleEnd'],
+					executionGroupName: 'main',
 				},
 				{
 					code: ['module dependency', '#mock', 'int value 42', 'moduleEnd'],
+					executionGroupName: 'main',
 				},
 			],
 			{

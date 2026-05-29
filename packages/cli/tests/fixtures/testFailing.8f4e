@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module addFails
 #test
 push 1
@@ -7,3 +8,4 @@ push 2
 add
 assert 4
 moduleEnd
+groupEnd

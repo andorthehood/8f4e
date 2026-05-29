@@ -18,6 +18,7 @@ div
 
 functionEnd float
 
+group main
 module inputs
 ; @pos -32 0
 ; Input layer
@@ -27,7 +28,6 @@ float input0 0.0
 float input1 0.0
 
 moduleEnd
-
 module neuron2
 ; @pos 0 13
 ; Output layer 1
@@ -55,7 +55,6 @@ call sigmoid
 store
 
 moduleEnd
-
 module outputs
 ; @pos 120 0
 ; Output layer
@@ -67,5 +66,6 @@ push &output0
 push *in0
 store
 
-moduleEnd"
+moduleEnd
+groupEnd"
 `;

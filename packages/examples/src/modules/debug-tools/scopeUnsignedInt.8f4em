@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module scope
 
 int* in
@@ -28,3 +29,4 @@ push *in
 store
 
 moduleEnd
+groupEnd

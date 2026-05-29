@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module audioOut
 
 use env
@@ -17,7 +18,7 @@ push pointer
 push *in
 store
 
-; Increment the buffer 
+; Increment the buffer
 ; pointer by the word size
 push &pointer
 push pointer
@@ -38,6 +39,7 @@ store
 ifEnd
 
 moduleEnd
+groupEnd
 
 constants env
 #mock

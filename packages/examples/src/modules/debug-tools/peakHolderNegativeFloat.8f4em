@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module peakHolder
 
 float* in
@@ -17,3 +18,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

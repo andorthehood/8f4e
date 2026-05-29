@@ -1,7 +1,10 @@
 8f4e/v1
 
+group main
+groupEnd
+
 function sine
-; Polynomial approximation 
+; Polynomial approximation
 ; of the sine function with
 ; Taylor series (7th order)
 ; Only works in the range of

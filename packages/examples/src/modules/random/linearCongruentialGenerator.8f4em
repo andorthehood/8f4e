@@ -1,11 +1,12 @@
 8f4e/v1
 
+group main
 module lcg
-; Linear congruential 
+; Linear congruential
 ; generator
 
 const MULTIPLIER 1664525
-const INCREMENT 1013904223 
+const INCREMENT 1013904223
 const MODULUS 65536 ; 2^16
 int seed 69420
 
@@ -26,7 +27,8 @@ push seed
 castToFloat
 push MODULUS
 castToFloat
-div 
+div
 store
 
 moduleEnd
+groupEnd

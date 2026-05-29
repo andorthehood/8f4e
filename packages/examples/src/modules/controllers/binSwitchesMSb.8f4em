@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module binSwitchesMSb
 
 int bit0
@@ -41,7 +42,7 @@ push bitPointer
 push 7
 greaterThan
 branchIfTrue 1
- 
+
 ; Load switch state
 push &bit0
 push bitPointer
@@ -53,7 +54,7 @@ load
 push 1
 greaterOrEqual
 if
-push &out 
+push &out
 push out
 push 0b10000000
 push bitPointer
@@ -62,14 +63,15 @@ or
 store
 
 ifEnd
- 
+
 ; Increment bitPointer
 push &bitPointer
 push bitPointer
 push 1
 add
 store
- 
+
 loopEnd
 
 moduleEnd
+groupEnd
