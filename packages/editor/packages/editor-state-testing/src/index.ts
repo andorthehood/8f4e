@@ -9,9 +9,7 @@ type DeepPartial<T> = T extends object
 		}
 	: T;
 
-type ParsedDirectiveLineRecord =
-	| { prefix: '@' | '~'; name: string; args: string[]; isTrailing: false }
-	| { prefix: '@'; name: string; args: string[]; isTrailing: true };
+type ParsedDirectiveLineRecord = { prefix: '@'; name: string; args: string[]; isTrailing: boolean };
 
 function createMockFunction<T extends (...args: unknown[]) => unknown>(): T {
 	return (() => {}) as T;
@@ -32,23 +30,20 @@ function parseDirectiveCommentSegment(segment: string, isTrailing: boolean): Par
 	let current: ParsedDirectiveLineRecord | undefined;
 
 	for (const token of tokens) {
-		const directiveMatch = token.match(/^([@~])(\w+)$/);
+		const directiveMatch = token.match(/^@(\w+)$/);
 		if (directiveMatch) {
-			const [, prefix, name] = directiveMatch;
-			if (isTrailing && prefix !== '@') {
-				return [];
-			}
+			const [, name] = directiveMatch;
 
 			if (current) {
 				directives.push(current);
 			}
 
 			current = {
-				prefix: prefix as '@' | '~',
+				prefix: '@',
 				name,
 				args: [],
 				isTrailing,
-			} as ParsedDirectiveLineRecord;
+			};
 			continue;
 		}
 

@@ -6,9 +6,7 @@ export interface DirectiveComment {
 	args: string[];
 }
 
-type ParsedDirectiveLineRecord =
-	| { prefix: '@' | '~'; name: string; args: string[]; isTrailing: false }
-	| { prefix: '@'; name: string; args: string[]; isTrailing: true };
+type ParsedDirectiveLineRecord = { prefix: '@'; name: string; args: string[]; isTrailing: boolean };
 
 function parseDirectiveCommentSegment(segment: string, isTrailing: boolean): ParsedDirectiveLineRecord[] {
 	const trimmed = segment.trim();
@@ -21,23 +19,20 @@ function parseDirectiveCommentSegment(segment: string, isTrailing: boolean): Par
 	let current: ParsedDirectiveLineRecord | undefined;
 
 	for (const token of tokens) {
-		const directiveMatch = token.match(/^([@~])(\w+)$/);
+		const directiveMatch = token.match(/^@(\w+)$/);
 		if (directiveMatch) {
-			const [, prefix, name] = directiveMatch;
-			if (isTrailing && prefix !== '@') {
-				return [];
-			}
+			const [, name] = directiveMatch;
 
 			if (current) {
 				directives.push(current);
 			}
 
 			current = {
-				prefix: prefix as '@' | '~',
+				prefix: '@',
 				name,
 				args: [],
 				isTrailing,
-			} as ParsedDirectiveLineRecord;
+			};
 			continue;
 		}
 
@@ -69,13 +64,9 @@ export function parseDirectiveLineRecords(line: string): ParsedDirectiveLineReco
 }
 
 export function parseDirectiveComments(line: string): DirectiveComment[] {
-	return parseDirectiveLineRecords(line).flatMap(parsed => {
-		if (parsed.isTrailing || parsed.prefix !== '@') {
-			return [];
-		}
-
-		return [{ name: parsed.name, args: parsed.args }];
-	});
+	return parseDirectiveLineRecords(line).flatMap(parsed =>
+		parsed.isTrailing ? [] : [{ name: parsed.name, args: parsed.args }]
+	);
 }
 
 export function serializeDirectiveComments(directives: DirectiveComment[]): string | undefined {
@@ -118,10 +109,6 @@ export function normalizeEditorDirectiveRecords(
 	const pluginsByName = new Map(pluginEntries);
 
 	return records.flatMap(record => {
-		if (record.prefix !== '@') {
-			return [];
-		}
-
 		const plugin = pluginsByName.get(record.name);
 		if (!plugin) {
 			return [];
