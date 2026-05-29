@@ -1572,7 +1572,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
 note
 ; @pos -25 -1
 ; @stop 3 10 left @hidden
@@ -1837,6 +1836,25 @@ const ASSET_SAMPLE11_SIZE 9906
 const ASSET_SAMPLE12_SIZE 9000
 
 constantsEnd
+
+function buffer
+; @pos 91 -128
+#export buffer
+local int i
+use env
+
+loop
+push i
+push AUDIO_BUFFER_SIZE
+greaterOrEqual
+branchIfTrue 1
+call main
+push i
+push 1
+add
+localSet i
+loopEnd
+functionEnd
 
 constants math
 ; @pos 145 -124

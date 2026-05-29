@@ -64,6 +64,25 @@ const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
+function buffer
+; @pos -242 -26
+#export buffer
+local int i
+use env
+
+loop
+push i
+push AUDIO_BUFFER_SIZE
+greaterOrEqual
+branchIfTrue 1
+call main
+push i
+push 1
+add
+localSet i
+loopEnd
+functionEnd
+
 constants math
 ; @pos -242 -26
 ; @tab 14
@@ -929,7 +948,6 @@ const SIZE 10000
 float[] buffer SIZE
 int bufferPointer &buffer
 
-
 ; Compute reverb output
 push &out
 push bufferPointer
@@ -1010,7 +1028,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
 function sin
 ; @pos 119 31
 ; Polynomial approximation

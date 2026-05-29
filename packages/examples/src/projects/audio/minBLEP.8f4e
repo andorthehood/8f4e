@@ -11,6 +11,25 @@ const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
+function buffer
+; @pos -74 -42
+#export buffer
+local int i
+use env
+
+loop
+push i
+push AUDIO_BUFFER_SIZE
+greaterOrEqual
+branchIfTrue 1
+call main
+push i
+push 1
+add
+localSet i
+loopEnd
+functionEnd
+
 constants math
 ; @pos -63 -102
 
@@ -123,7 +142,6 @@ float* pointer &buffer
 ;             ..;;;;;..
 ; Signal got   `:;;;:'
 ; smoothed out.  `:'
-
 
 ; @plot &buffer count(buffer)
 
@@ -683,7 +701,6 @@ float	0.000000000000000000
 
 moduleEnd
 entryEnd
-
 function wrapAdd32
 ; @pos 98 -136
 param int base

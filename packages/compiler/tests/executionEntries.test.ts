@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+import { ErrorCode } from '@8f4e/compiler-spec';
 
 import compile from '../src';
 
@@ -74,5 +75,106 @@ describe('execution entries', () => {
 
 		(instance.exports.init as CallableFunction)();
 		expect(view.getInt32(address, true)).toBe(7);
+	});
+
+	test('does not export buffer by default', async () => {
+		const result = compile(
+			{
+				entries: {
+					main: [
+						{
+							code: ['module test', 'moduleEnd'],
+						},
+					],
+				},
+			},
+			{ startingMemoryWordAddress: 1, disableSharedMemory: true }
+		);
+		const { instance } = await instantiate(result.codeBuffer, result.requiredMemoryBytes);
+
+		expect(instance.exports.buffer).toBeUndefined();
+	});
+
+	test('allows functions to call entries', async () => {
+		const result = compile(
+			{
+				entries: {
+					main: [
+						{
+							code: [
+								'module counter',
+								'int value 0',
+								'push &value',
+								'push value',
+								'push 1',
+								'add',
+								'store',
+								'moduleEnd',
+							],
+						},
+					],
+				},
+				constants: [
+					{
+						code: ['constants env', 'const LIMIT 4', 'constantsEnd'],
+					},
+				],
+				functions: [
+					{
+						code: [
+							'function buffer',
+							'#export buffer',
+							'local int i',
+							'use env',
+							'loop',
+							'push i',
+							'push LIMIT',
+							'greaterOrEqual',
+							'branchIfTrue 1',
+							'call main',
+							'push i',
+							'push 1',
+							'add',
+							'localSet i',
+							'loopEnd',
+							'functionEnd',
+						],
+					},
+				],
+			},
+			{ startingMemoryWordAddress: 1, disableSharedMemory: true }
+		);
+		const { instance, memory } = await instantiate(result.codeBuffer, result.requiredMemoryBytes);
+		const view = new DataView(memory.buffer);
+		const address = result.compiledModules.counter.memoryMap.value.byteAddress;
+
+		expect(instance.exports.buffer).toEqual(expect.any(Function));
+
+		(instance.exports.initDefaults as CallableFunction)();
+		(instance.exports.buffer as CallableFunction)();
+
+		expect(view.getInt32(address, true)).toBe(4);
+	});
+
+	test('rejects function names that collide with entry names', () => {
+		expect(() =>
+			compile(
+				{
+					entries: {
+						main: [
+							{
+								code: ['module test', 'moduleEnd'],
+							},
+						],
+					},
+					functions: [
+						{
+							code: ['function main', 'functionEnd'],
+						},
+					],
+				},
+				{ startingMemoryWordAddress: 1, disableSharedMemory: true }
+			)
+		).toThrow(expect.objectContaining({ code: ErrorCode.DUPLICATE_IDENTIFIER }));
 	});
 });

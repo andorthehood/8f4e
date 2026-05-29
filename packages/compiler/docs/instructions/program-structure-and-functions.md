@@ -23,7 +23,7 @@ push 3
 call add
 ```
 
-Calls can target either 8f4e-defined functions or host-provided imported functions.
+Calls can target 8f4e-defined functions, host-provided imported functions, or execution entries.
 
 ### Imported functions
 

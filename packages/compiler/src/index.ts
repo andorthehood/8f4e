@@ -28,7 +28,6 @@ import {
 } from '@8f4e/compiler-spec';
 
 import { compileModule, compileFunction } from './compiler';
-import createBufferFunctionBody from './wasmBuilders/createBufferFunctionBody';
 import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
 import {
 	assertUniqueModuleIds,
@@ -51,6 +50,7 @@ import type {
 	ConstantsAST,
 	CompilerCache,
 	FunctionAST,
+	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
 	ModuleAST,
@@ -131,7 +131,7 @@ function createCompilerCache(): CompilerCache {
 	};
 }
 
-const RESERVED_EXPORT_NAMES = new Set(['initDefaults', 'buffer']);
+const RESERVED_EXPORT_NAMES = new Set(['initDefaults']);
 
 function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, entryNames: readonly string[]): void {
 	const seen = new Set<string>();
@@ -149,6 +149,33 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, entr
 		}
 
 		seen.add(exportName);
+	}
+}
+
+function createEntryFunctionMetadata(
+	entryNames: readonly string[],
+	importedFunctionCount: number
+): FunctionMetadataLookup {
+	return Object.fromEntries(
+		entryNames.map((entryName, index) => [
+			entryName,
+			{
+				id: entryName,
+				signature: { parameters: [], returns: [] },
+				wasmIndex: importedFunctionCount + 1 + index,
+			} satisfies FunctionMetadata,
+		])
+	);
+}
+
+function assertNoFunctionEntryNameCollisions(
+	functions: readonly FunctionAST[],
+	entryMetadata: FunctionMetadataLookup
+): void {
+	for (const ast of functions) {
+		if (entryMetadata[ast.id]) {
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, undefined, { identifier: ast.id });
+		}
 	}
 }
 
@@ -308,12 +335,15 @@ export default function compile(
 	);
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
-	const builtInFunctionCount = 2 + entryNames.length;
+	const builtInFunctionCount = 1 + entryNames.length;
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 
 	// Collect pre-codegen function metadata so `call` target validation and
 	// function-body codegen can rely on the same registry before compilation finishes.
-	const functionMetadata = collectFunctionMetadataFromAsts(astFunctions, 0, userDefinedFunctionBaseIndex);
+	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
+	assertNoFunctionEntryNameCollisions(astFunctions, entryFunctionMetadata);
+	const userFunctionMetadata = collectFunctionMetadataFromAsts(astFunctions, 0, userDefinedFunctionBaseIndex);
+	const functionMetadata = { ...entryFunctionMetadata, ...userFunctionMetadata };
 
 	// Create a shared type registry for all functions
 	const functionTypeRegistry: FunctionTypeRegistry = {
@@ -352,7 +382,7 @@ export default function compile(
 			startingMemoryWordAddress: 1,
 		},
 		namespaces,
-		compiledFunctionsMap,
+		functionMetadata,
 		internalAllocator
 	).map((module, index) => ({
 		...module,
@@ -409,18 +439,6 @@ export default function compile(
 		]),
 	];
 
-	// Apply defaults for buffer options
-	const bufferSize = options.bufferSize ?? 128;
-	const bufferStrategy = options.bufferStrategy ?? 'loop';
-
-	// Create buffer function (includes locals and body)
-	const mainEntryIndex = entryNames.indexOf('main');
-	const mainEntryFunctionIndex = mainEntryIndex >= 0 ? importedFunctionCount + 2 + mainEntryIndex : undefined;
-	const bufferFunction =
-		mainEntryFunctionIndex === undefined
-			? createFunction([], [])
-			: createBufferFunctionBody(bufferSize, bufferStrategy, mainEntryFunctionIndex);
-
 	// Strip AST from final result if not requested
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
 	const finalCompiledModules = options.includeAST
@@ -446,16 +464,11 @@ export default function compile(
 		),
 	];
 
-	const builtInFunctionSignatures = [0x00, 0x00, ...entryNames.map(() => 0x00)];
-	const builtInFunctionBodies = [
-		createFunction([], memoryInitiatorFunction),
-		bufferFunction,
-		...entryDispatcherFunctions,
-	];
+	const builtInFunctionSignatures = [0x00, ...entryNames.map(() => 0x00)];
+	const builtInFunctionBodies = [createFunction([], memoryInitiatorFunction), ...entryDispatcherFunctions];
 	const builtInExports = [
 		createFunctionExport('initDefaults', importedFunctionCount),
-		createFunctionExport('buffer', importedFunctionCount + 1),
-		...entryNames.map((entryName, index) => createFunctionExport(entryName, importedFunctionCount + 2 + index)),
+		...entryNames.map((entryName, index) => createFunctionExport(entryName, importedFunctionCount + 1 + index)),
 	];
 
 	return {

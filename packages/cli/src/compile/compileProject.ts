@@ -11,8 +11,6 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,
 		includeAST: options.compilerOptions?.includeAST,
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
-		bufferSize: options.compilerOptions?.bufferSize,
-		bufferStrategy: options.compilerOptions?.bufferStrategy,
 	};
 
 	const moduleResult = compileProjectModules(project.codeBlocks, {
