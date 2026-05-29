@@ -10,6 +10,7 @@ import type { BlockTypeValue, CompilationContext } from './semantic';
 export type OperandRule = 'int' | 'float' | 'matching';
 export type SourceArgumentShapeRule =
 	| 'identifier'
+	| 'identifierOrStringLiteral'
 	| 'constantIdentifier'
 	| 'literal'
 	| 'nonNegativeIntegerLiteral'
@@ -748,6 +749,20 @@ export const instructionSpecs = {
 		onInvalidScope: ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT,
 		docs: {
 			shortDescription: 'Exports the current function under the provided name, or the function name if omitted.',
+		},
+		stack: stack({ inputs: [], outputs: [] }),
+	},
+	// #import <module> <name> ( -- )
+	'#import': {
+		sourceArguments: {
+			minArguments: 2,
+			maxArguments: 2,
+			argumentTypes: ['identifierOrStringLiteral', 'identifierOrStringLiteral'],
+		},
+		scope: 'function',
+		onInvalidScope: ErrorCode.IMPORT_DIRECTIVE_INVALID_CONTEXT,
+		docs: {
+			shortDescription: 'Declares that the current function is provided by a WebAssembly host import.',
 		},
 		stack: stack({ inputs: [], outputs: [] }),
 	},

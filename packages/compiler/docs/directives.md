@@ -1,6 +1,6 @@
 # Compiler Directives
 
-Compiler directives are special instructions prefixed with `#` that control compilation behavior without affecting runtime execution. They are processed during compilation and filtered out before code generation.
+Compiler directives are special instructions prefixed with `#` that control compilation behavior instead of emitting ordinary stack instructions. They are processed during compilation and do not appear as executable 8f4e instructions in the function or module body.
 
 Compiler directives are block prologue metadata. In a `module`, module-scoped directives must appear immediately after the `module` line and before declarations or executable instructions. In a `function`, function-scoped directives must appear immediately after the `function` line and before `param`, `local`, or executable instructions. Blank lines and comments are ignored by parsing, so they can still appear around prologue directives.
 
@@ -118,7 +118,7 @@ In this example:
 - `disabledModule` does not execute, but its memory is initialized with `data = 42`
 - `consumer` can access `disabledModule:data` even though `disabledModule` doesn't execute
 
-## Module- and Function-Scoped Directives
+## Function-Scoped Directives
 
 ### `#impure`
 
@@ -148,6 +148,71 @@ functionEnd
 - Using `#impure` outside a function block results in an `IMPURE_DIRECTIVE_INVALID_CONTEXT` error
 - Using memory IO in a function without `#impure` results in an `IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO` error
 - Placing `#impure` after params, locals, or executable instructions results in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
+
+### `#import`
+
+Declares that the current function is provided by the WebAssembly host instead of by 8f4e code.
+
+**Scope:** Function blocks only
+
+**Syntax:** `#import <module-name> <field-name>`
+
+The module and field names can be identifiers or string literals. Use string literals when the host import name contains characters that are not valid 8f4e identifiers.
+
+**Usage:**
+```8f4e
+function hostLog
+#import env log
+param int value
+functionEnd
+```
+
+String-literal host names:
+```8f4e
+function addOne
+#import "host-api" "add.one"
+param int value
+functionEnd int
+```
+
+**Behavior:**
+- The function signature is still declared with `param` and `functionEnd`
+- The function can be called with the normal `call` instruction
+- Imported functions are emitted in the WebAssembly import section
+- Imported functions do not emit a local WebAssembly function body
+- Imported functions are treated as impure
+- Imported functions may return values, and those values are pushed onto the stack like any other function call
+
+**Valid imported function body shape:**
+```8f4e
+function hostRead
+#import env read
+param int address
+functionEnd int
+```
+
+Only function prologue directives, `param` declarations, and `functionEnd` are allowed in an imported function. Executable instructions such as `push`, `load`, `store`, or `call` are invalid because the implementation lives in the host.
+
+**Host imports:**
+```ts
+const { instance } = await WebAssembly.instantiate(codeBuffer, {
+	env: {
+		log(value: number) {
+			console.log(value);
+		},
+	},
+	js: { memory },
+});
+```
+
+**Errors:**
+- Using `#import` outside a function block results in an `IMPORT_DIRECTIVE_INVALID_CONTEXT` error
+- Declaring more than one `#import` in the same function results in a `DUPLICATE_FUNCTION_IMPORT` error
+- Combining `#import` and `#export` in the same function results in an `IMPORT_EXPORT_CONFLICT` error
+- Adding executable body instructions to an imported function results in an `IMPORTED_FUNCTION_BODY` error
+- Placing `#import` after params, locals, or executable instructions results in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
+
+## Module- and Function-Scoped Directives
 
 ### `#loopCap`
 
