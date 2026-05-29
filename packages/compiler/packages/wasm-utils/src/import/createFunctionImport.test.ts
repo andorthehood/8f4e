@@ -6,25 +6,19 @@ import { ImportDesc } from '../section';
 
 describe('createFunctionImport', () => {
 	test('generates a function import entry', () => {
-		expect(createFunctionImport('test', 'assertFailed', 3)).toStrictEqual([
+		expect(createFunctionImport('host', 'assert', 3)).toStrictEqual([
 			4,
-			116,
-			101,
+			104,
+			111,
 			115,
 			116,
-			12,
+			6,
 			97,
 			115,
 			115,
 			101,
 			114,
 			116,
-			70,
-			97,
-			105,
-			108,
-			101,
-			100,
 			ImportDesc.FUNC,
 			3,
 		]);

@@ -352,15 +352,6 @@ export const instructionSpecs = {
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
-	// assert <expected> (int -- )
-	assert: {
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'compileTimeValue' },
-		scope: 'moduleOnly',
-		minOperands: 1,
-		operandTypes: 'int',
-		docs: { shortDescription: 'Reports an assertion failure when the top stack value differs from expected.' },
-		stack: stack({ inputs: ['int'], outputs: [], effect: stackMutation(1) }),
-	},
 	// block ( -- )
 	block: {
 		sourceArguments: noSourceArguments,
