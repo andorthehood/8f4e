@@ -19,7 +19,7 @@ const MAIN_THREAD_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 	schema: {
 		type: 'object',
 		properties: {
-			sampleRate: { type: 'number' },
+			sampleRate: { type: 'number', minimum: 1 },
 		},
 		additionalProperties: false,
 	},

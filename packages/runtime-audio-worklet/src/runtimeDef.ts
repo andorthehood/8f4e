@@ -31,7 +31,7 @@ const AUDIO_WORKLET_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 	schema: {
 		type: 'object',
 		properties: {
-			sampleRate: { type: 'number' },
+			sampleRate: { type: 'number', minimum: 1 },
 			audioOutBufferLAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
 			audioOutBufferRAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
 			audioInBufferLAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,

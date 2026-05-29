@@ -19,7 +19,7 @@ const WEB_WORKER_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 	schema: {
 		type: 'object',
 		properties: {
-			sampleRate: { type: 'number' },
+			sampleRate: { type: 'number', minimum: 1 },
 		},
 		additionalProperties: false,
 	},

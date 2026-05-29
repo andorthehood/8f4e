@@ -60,6 +60,7 @@ describe('AudioWorklet runtime config', () => {
 		);
 
 		expect(runtimeDef.editorConfigSchema?.schema.properties).toMatchObject({
+			sampleRate: { type: 'number', minimum: 1 },
 			audioOutBufferLAddress: {
 				format: 'memory-address',
 				anyOf: [
