@@ -70,7 +70,7 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
  * Auto-managed environment constants block effect.
  *
  * This effect automatically maintains a constants block named 'env' that contains
- * environment values like sample rate, buffer size, and binary asset sizes.
+ * environment values like contributed runtime values and binary asset sizes.
  * The env block is added to the project's codeBlocks array when the project is loaded,
  * and its content is updated in graphicHelper.codeBlocks when contributed environment constants or binary assets change.
  *
