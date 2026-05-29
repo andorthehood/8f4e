@@ -775,6 +775,13 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Marks the current module for execution by the test runner.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
+	// #mock ( -- )
+	'#mock': {
+		sourceArguments: noSourceArguments,
+		allowedInConstantsBlocks: true,
+		docs: { shortDescription: 'Marks a source block as test-only mock support.' },
+		stack: stack({ inputs: [], outputs: [] }),
+	},
 	// #impure ( -- )
 	'#impure': {
 		sourceArguments: noSourceArguments,

@@ -10,7 +10,7 @@ float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/2
 float	decayLevel 0.5
 int	releaseTime SAMPLE_RATE*2
-int	_state RELEASE
+int	_state 3
 int	_counter
 float	out
 
@@ -144,3 +144,9 @@ store
 ifEnd
 
 moduleEnd
+
+constants env
+#mock
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+constantsEnd

@@ -13,6 +13,15 @@ function isParsedTestModule(block: ProjectCodeBlock): boolean {
 	return ast.type === 'module' && ast.testLine !== undefined;
 }
 
+function isParsedMockBlock(block: ProjectCodeBlock): boolean {
+	const blockType = getProjectBlockType(block.code);
+	if (blockType !== 'module' && blockType !== 'function' && blockType !== 'constants') {
+		return false;
+	}
+
+	return compileToAST(block.code).lines.some(line => line.instruction === '#mock');
+}
+
 export default function parseModuleSource(source: string): string[] {
 	const lines = source.split('\n');
 	if (lines[0]?.trim() !== FORMAT_HEADER) {
@@ -20,7 +29,9 @@ export default function parseModuleSource(source: string): string[] {
 	}
 
 	const project = parse8f4eProject(source);
-	const [firstNonTestBlock] = project.codeBlocks.filter(block => !isParsedTestModule(block));
+	const [firstNonTestBlock] = project.codeBlocks.filter(
+		block => !isParsedTestModule(block) && !isParsedMockBlock(block)
+	);
 
 	return firstNonTestBlock?.code ?? [];
 }
@@ -58,6 +69,22 @@ if (import.meta.vitest) {
 			const text = ['8f4e/v1', '', 'module helperTest', '#test', 'push 1', 'assert 1', 'moduleEnd'].join('\n');
 
 			expect(parseModuleSource(text)).toEqual([]);
+		});
+
+		it('filters out mock blocks from module files', () => {
+			const text = [
+				'8f4e/v1',
+				'',
+				'module helperMock',
+				'#mock',
+				'int value 0',
+				'moduleEnd',
+				'',
+				'module helper',
+				'moduleEnd',
+			].join('\n');
+
+			expect(parseModuleSource(text)).toEqual(['module helper', 'moduleEnd']);
 		});
 	});
 }

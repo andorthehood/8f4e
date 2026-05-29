@@ -48,10 +48,10 @@ const amigaPeriodIncrement = `constants amigaPeriodIncrement
 ; @tab 12
 use env
 
+const AMIGA_CLOCK ${AMIGA_CLOCK}
 ${periods
 	.map(([name, period]) => {
-		const freq = (AMIGA_CLOCK / period).toFixed(4);
-		return `const ${name}\t${freq}/SAMPLE_RATE`;
+		return `const ${name}_DEN\tSAMPLE_RATE*${period}\nconst ${name}\tAMIGA_CLOCK/${name}_DEN`;
 	})
 	.join('\n')}
 

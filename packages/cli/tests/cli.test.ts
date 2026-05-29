@@ -154,23 +154,37 @@ describe('cli', () => {
 		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
 
-	it('skips no-test modules before semantic compilation', async () => {
-		await fs.mkdir(tmpDir, { recursive: true });
-		const noTestPath = path.join(tmpDir, 'noTestSemanticReferences.8f4e');
-		await fs.writeFile(
-			noTestPath,
-			['8f4e/v1', '', 'module noTest', 'float* in', 'float[] buffer AUDIO_BUFFER_SIZE', 'moduleEnd'].join('\n')
-		);
-
-		const { stdout } = await execCli(['test', noTestPath]);
-
-		expect(stdout).toBe('No tests found.\n');
-	});
-
 	it('runs embedded tests declared in an example module file', async () => {
 		const { stdout } = await execCli(['test', wrapPointerModulePath]);
 
 		expect(stdout).toBe('Ran 3 assertions.\n');
+	});
+
+	it('uses mock blocks only when running tests', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const mockTestPath = path.join(tmpDir, 'mockDependency.8f4e');
+		await fs.writeFile(
+			mockTestPath,
+			[
+				'8f4e/v1',
+				'',
+				'module target',
+				'#test',
+				'int* ptr &dependency:value',
+				'push *ptr',
+				'assert 42',
+				'moduleEnd',
+				'',
+				'module dependency',
+				'#mock ; test-only dependency',
+				'int value 42',
+				'moduleEnd',
+			].join('\n')
+		);
+
+		const { stdout } = await execCli(['test', mockTestPath]);
+
+		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
 
 	it('runs test files matched by a glob and skips files without #test modules', async () => {

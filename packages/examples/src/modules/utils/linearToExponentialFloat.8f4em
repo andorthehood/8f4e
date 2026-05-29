@@ -48,7 +48,13 @@ loadFloat
 push LUT_MIN
 sub
 push LUT_RANGE
+ensureNonZero
 div
 store
 
+moduleEnd
+
+module expLUT
+#mock
+float[] values 512
 moduleEnd

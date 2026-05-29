@@ -22,3 +22,8 @@ sub
 store
 
 moduleEnd
+
+module vca
+#mock
+float out 0.0
+moduleEnd
