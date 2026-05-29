@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module linearToExponential
 ; @public
 
@@ -58,4 +58,4 @@ moduleEnd
 module expLUT
 float[] values 512
 moduleEnd
-groupEnd
+entryEnd

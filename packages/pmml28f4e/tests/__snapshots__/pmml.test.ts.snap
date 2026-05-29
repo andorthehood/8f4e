@@ -18,7 +18,7 @@ div
 
 functionEnd float
 
-group main
+entry main
 module inputs
 ; @pos -32 0
 ; Input layer
@@ -67,5 +67,5 @@ push *in0
 store
 
 moduleEnd
-groupEnd"
+entryEnd"
 `;

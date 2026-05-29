@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module ringModulator
 ; @public
 
@@ -45,7 +45,7 @@ moduleEnd
 module osc
 float out 0.0
 moduleEnd
-groupEnd
+entryEnd
 
 constants math
 const PI 3.141592653589793

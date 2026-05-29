@@ -17,9 +17,9 @@ describe('parse8f4eProject', () => {
 		const text = [
 			'8f4e/v1',
 			'',
-			'group main',
+			'entry main',
 			...validModuleBlock,
-			'groupEnd',
+			'entryEnd',
 			'',
 			...validFunctionBlock,
 			'',
@@ -28,14 +28,14 @@ describe('parse8f4eProject', () => {
 		const project = parse8f4eProject(text);
 
 		expect(project.codeBlocks).toEqual([
-			{ code: validModuleBlock, executionGroupName: 'main' },
+			{ code: validModuleBlock, executionEntryName: 'main' },
 			{ code: validFunctionBlock },
 			{ code: validNoteBlock },
 		]);
 	});
 
-	it('allows empty groups', () => {
-		const project = parse8f4eProject(['8f4e/v1', '', 'group main', 'groupEnd'].join('\n'));
+	it('allows empty entries', () => {
+		const project = parse8f4eProject(['8f4e/v1', '', 'entry main', 'entryEnd'].join('\n'));
 
 		expect(project.codeBlocks).toEqual([]);
 	});
@@ -46,20 +46,20 @@ describe('parse8f4eProject', () => {
 
 	it('throws on invalid project shape', () => {
 		expect(() => parse8f4eProject('wrong-header\nmodule foo\nmoduleEnd')).toThrow('Invalid .8f4e file');
-		expect(() => parse8f4eProject('8f4e/v1\n\ngroup main\nmodule foo\nsome code')).toThrow('unclosed block');
-		expect(() => parse8f4eProject('8f4e/v1\n\ngroup main\nmodule foo\nfunctionEnd')).toThrow('does not match opener');
+		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\nmodule foo\nsome code')).toThrow('unclosed block');
+		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\nmodule foo\nfunctionEnd')).toThrow('does not match opener');
 		expect(() => parse8f4eProject('8f4e/v1\n\nunexpectedContent')).toThrow('expected opener keyword');
 		expect(() => parse8f4eProject('8f4e/v1\n\nmodule foo\nmoduleEnd')).toThrow(
-			'module blocks must be inside a group block'
+			'module blocks must be inside an entry block'
 		);
 		expect(() =>
-			parse8f4eProject('8f4e/v1\n\ngroup main\nmodule foo\nfunction bar\nfunctionEnd\nmoduleEnd\ngroupEnd')
+			parse8f4eProject('8f4e/v1\n\nentry main\nmodule foo\nfunction bar\nfunctionEnd\nmoduleEnd\nentryEnd')
 		).toThrow('mixed block type markers');
-		expect(() => parse8f4eProject('8f4e/v1\n\ngroup main\nfunction foo\nfunctionEnd\ngroupEnd')).toThrow(
+		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\nfunction foo\nfunctionEnd\nentryEnd')).toThrow(
 			'can only contain module blocks'
 		);
-		expect(() => parse8f4eProject('8f4e/v1\n\ngroup main\ngroupEnd\n\ngroup main\ngroupEnd')).toThrow(
-			'duplicate group'
+		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\nentryEnd\n\nentry main\nentryEnd')).toThrow(
+			'duplicate entry'
 		);
 	});
 });
@@ -84,36 +84,36 @@ describe('project block classification', () => {
 
 	it('splits project blocks into compiler inputs', () => {
 		const blocks = [
-			{ code: validModuleBlock, executionGroupName: 'main' },
+			{ code: validModuleBlock, executionEntryName: 'main' },
 			{ code: validFunctionBlock },
 			{ code: validMacroBlock },
 			{ code: validNoteBlock },
-			{ code: validModuleBlock, executionGroupName: 'main', disabled: true },
+			{ code: validModuleBlock, executionEntryName: 'main', disabled: true },
 		];
 
 		expect(pickProjectCompilerBlocks(blocks)).toEqual({
-			groups: { main: [{ code: validModuleBlock }] },
+			entries: { main: [{ code: validModuleBlock }] },
 			constantsBlocks: [],
 			functionBlocks: [{ code: validFunctionBlock }],
 			macroBlocks: [{ code: validMacroBlock }],
 		});
 	});
 
-	it('splits modules into their execution groups', () => {
+	it('splits modules into their execution entries', () => {
 		expect(
 			pickProjectCompilerBlocks([
-				{ code: validModuleBlock, executionGroupName: 'main' },
-				{ code: ['module other', 'moduleEnd'], executionGroupName: 'test' },
-			]).groups
+				{ code: validModuleBlock, executionEntryName: 'main' },
+				{ code: ['module other', 'moduleEnd'], executionEntryName: 'test' },
+			]).entries
 		).toEqual({
 			main: [{ code: validModuleBlock }],
 			test: [{ code: ['module other', 'moduleEnd'] }],
 		});
 	});
 
-	it('does not infer execution groups from module directives', () => {
+	it('does not infer execution entries from module directives', () => {
 		expect(
-			pickProjectCompilerBlocks([{ code: ['module regular', 'moduleEnd'], executionGroupName: 'main' }]).groups
+			pickProjectCompilerBlocks([{ code: ['module regular', 'moduleEnd'], executionEntryName: 'main' }]).entries
 		).toEqual({
 			main: [{ code: ['module regular', 'moduleEnd'] }],
 		});

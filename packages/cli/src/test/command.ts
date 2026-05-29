@@ -197,8 +197,8 @@ function formatFailure(failure: AssertionFailure): string {
 	return `assert #${failure.assertIndex} expected ${failure.expected}, received ${failure.received}`;
 }
 
-function hasTestGroup(project: ProjectInput): boolean {
-	return project.codeBlocks.some(block => !block.disabled && block.executionGroupName === 'test');
+function hasTestEntry(project: ProjectInput): boolean {
+	return project.codeBlocks.some(block => !block.disabled && block.executionEntryName === 'test');
 }
 
 function getErrorMessage(error: unknown): string {
@@ -218,7 +218,7 @@ export function getTestUsage(): string {
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
 	const project = parse8f4eToProject(inputRaw) as ProjectInput;
-	if (!hasTestGroup(project)) {
+	if (!hasTestEntry(project)) {
 		return { assertions: 0, skipped: true };
 	}
 

@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module templeOS
 ; @public
 ; @pos -41 76
@@ -34,4 +34,4 @@ module templeOS
 ; @config color.icons.inputConnectorBackground	#ffff55
 ; @config color.icons.inputConnector	#000000
 moduleEnd
-groupEnd
+entryEnd

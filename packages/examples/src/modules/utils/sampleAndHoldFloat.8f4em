@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module sh
 ; @public
 
@@ -19,4 +19,4 @@ store
 ifEnd
 
 moduleEnd
-groupEnd
+entryEnd

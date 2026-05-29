@@ -46,7 +46,7 @@ moduleEnd
 		expect(() => {
 			compile(
 				{
-					groups: {
+					entries: {
 						main: [
 							{
 								code: [

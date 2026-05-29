@@ -10,7 +10,7 @@ describe('inter-module references - end address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -36,7 +36,7 @@ describe('inter-module references - end address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -60,7 +60,7 @@ describe('inter-module references - end address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -85,7 +85,7 @@ describe('inter-module references - end address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}
@@ -113,7 +113,7 @@ describe('inter-module references - end address', () => {
 		// Should throw because old syntax is no longer supported
 		expect(() => {
 			compile(
-				{ groups: { main: modules } },
+				{ entries: { main: modules } },
 				{
 					startingMemoryWordAddress: 0,
 				}
@@ -128,7 +128,7 @@ describe('inter-module references - end address', () => {
 		];
 
 		const result = compile(
-			{ groups: { main: modules } },
+			{ entries: { main: modules } },
 			{
 				startingMemoryWordAddress: 0,
 			}

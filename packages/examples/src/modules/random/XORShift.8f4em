@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module XORShift
 ; @public
 
@@ -34,4 +34,4 @@ div
 store
 
 moduleEnd
-groupEnd
+entryEnd

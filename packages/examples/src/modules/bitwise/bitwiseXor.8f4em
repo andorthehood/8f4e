@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module bitwiseXor
 ; @public
          ;  \\\\----.
@@ -16,4 +16,4 @@ xor
 store
 
 moduleEnd
-groupEnd
+entryEnd

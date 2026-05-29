@@ -1,6 +1,6 @@
 8f4e/v1
 
-group main
+entry main
 module sequencer
 ; @public
 
@@ -44,4 +44,4 @@ push *stepPointer
 store
 
 moduleEnd
-groupEnd
+entryEnd

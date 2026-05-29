@@ -65,7 +65,7 @@ type ExpandedCompilerSource = {
 };
 
 type ModuleCompilerSource = ExpandedCompilerSource & {
-	groupName: string;
+	entryName: string;
 };
 
 export { default as instructions } from './instructionCompilers';
@@ -133,9 +133,9 @@ function createCompilerCache(): CompilerCache {
 
 const RESERVED_EXPORT_NAMES = new Set(['initDefaults', 'buffer']);
 
-function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, groupNames: readonly string[]): void {
+function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, entryNames: readonly string[]): void {
 	const seen = new Set<string>();
-	const builtInExportNames = new Set([...RESERVED_EXPORT_NAMES, ...groupNames]);
+	const builtInExportNames = new Set([...RESERVED_EXPORT_NAMES, ...entryNames]);
 
 	for (const compiledFunction of Object.values(functions)) {
 		const exportName = compiledFunction.exportName;
@@ -236,9 +236,9 @@ export default function compile(
 	cache = createCompilerCache()
 ): CompileResult {
 	validateMemoryRegionOptions(options);
-	const inputGroupNames = Object.keys(input.groups);
-	const groupedModules = Object.entries(input.groups).flatMap(([groupName, modules]) =>
-		modules.map((module, index) => ({ groupName, module, index }))
+	const inputEntryNames = Object.keys(input.entries);
+	const entryModules = Object.entries(input.entries).flatMap(([entryName, modules]) =>
+		modules.map((module, index) => ({ entryName, module, index }))
 	);
 	const constants = input.constants ?? [];
 	const functions = input.functions ?? [];
@@ -248,14 +248,14 @@ export default function compile(
 	const macroDefinitions = shouldExpandMacros ? parseMacroDefinitions(macros) : new Map();
 
 	// Expand macros in modules
-	const expandedModules = groupedModules.map(({ groupName, module, index }) => {
+	const expandedModules = entryModules.map(({ entryName, module, index }) => {
 		const expanded = shouldExpandMacros
 			? convertExpandedLinesToCode(expandMacros(module, macroDefinitions))
 			: { code: module.code, lineMetadata: undefined };
 		return {
 			...expanded,
-			cacheKey: `group:${groupName}:module:${index}`,
-			groupName,
+			cacheKey: `entry:${entryName}:module:${index}`,
+			entryName,
 		};
 	}) satisfies ModuleCompilerSource[];
 
@@ -281,16 +281,16 @@ export default function compile(
 	}) satisfies ExpandedCompilerSource[];
 
 	// Compile to AST with line metadata for error mapping.
-	const astModuleEntries = expandedModules.map(({ groupName, code, lineMetadata, cacheKey }) => ({
-		groupName,
+	const astModuleEntries = expandedModules.map(({ entryName, code, lineMetadata, cacheKey }) => ({
+		entryName,
 		ast: parseModuleAST(code, lineMetadata, cache, cacheKey),
 	}));
 	const astConstants = expandedConstants.map(({ code, lineMetadata, cacheKey }) =>
 		parseConstantsAST(code, lineMetadata, cache, cacheKey)
 	);
-	const groupNames = inputGroupNames;
+	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);
-	const moduleGroupNames = astModuleEntries.map(({ groupName }) => groupName);
+	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
 	assertUniqueModuleIds(astModules);
 
 	const namespaceAsts = [...astModules, ...astConstants];
@@ -308,7 +308,7 @@ export default function compile(
 	);
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
-	const builtInFunctionCount = 2 + groupNames.length;
+	const builtInFunctionCount = 2 + entryNames.length;
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 
 	// Collect pre-codegen function metadata so `call` target validation and
@@ -335,7 +335,7 @@ export default function compile(
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
-	assertUniqueFunctionExportNames(compiledFunctionsMap, groupNames);
+	assertUniqueFunctionExportNames(compiledFunctionsMap, entryNames);
 	const requiredMemoryBytesByIndexFromNamespaces = getRequiredMemoryBytesByIndex(Object.values(namespaces));
 	const totalModuleBytes = requiredMemoryBytesByIndexFromNamespaces[0] ?? 0;
 	const internalAllocator = { nextByteAddress: totalModuleBytes };
@@ -356,7 +356,7 @@ export default function compile(
 		internalAllocator
 	).map((module, index) => ({
 		...module,
-		executionGroupName: moduleGroupNames[index],
+		executionEntryName: moduleEntryNames[index],
 	}));
 
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
@@ -382,11 +382,11 @@ export default function compile(
 	const userFunctionCount = definedFunctions.length;
 	const getCompiledModuleFunctionIndex = (module: CompiledModule) =>
 		importedFunctionCount + builtInFunctionCount + userFunctionCount + module.index;
-	const groupDispatcherFunctions = groupNames.map(groupName =>
+	const entryDispatcherFunctions = entryNames.map(entryName =>
 		createFunction(
 			[],
 			compiledModules.flatMap(module =>
-				module.executionGroupName === groupName && !module.skipExecutionInCycle
+				module.executionEntryName === entryName && !module.skipExecutionInCycle
 					? call(getCompiledModuleFunctionIndex(module))
 					: []
 			)
@@ -414,12 +414,12 @@ export default function compile(
 	const bufferStrategy = options.bufferStrategy ?? 'loop';
 
 	// Create buffer function (includes locals and body)
-	const mainGroupIndex = groupNames.indexOf('main');
-	const mainGroupFunctionIndex = mainGroupIndex >= 0 ? importedFunctionCount + 2 + mainGroupIndex : undefined;
+	const mainEntryIndex = entryNames.indexOf('main');
+	const mainEntryFunctionIndex = mainEntryIndex >= 0 ? importedFunctionCount + 2 + mainEntryIndex : undefined;
 	const bufferFunction =
-		mainGroupFunctionIndex === undefined
+		mainEntryFunctionIndex === undefined
 			? createFunction([], [])
-			: createBufferFunctionBody(bufferSize, bufferStrategy, mainGroupFunctionIndex);
+			: createBufferFunctionBody(bufferSize, bufferStrategy, mainEntryFunctionIndex);
 
 	// Strip AST from final result if not requested
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
@@ -446,16 +446,16 @@ export default function compile(
 		),
 	];
 
-	const builtInFunctionSignatures = [0x00, 0x00, ...groupNames.map(() => 0x00)];
+	const builtInFunctionSignatures = [0x00, 0x00, ...entryNames.map(() => 0x00)];
 	const builtInFunctionBodies = [
 		createFunction([], memoryInitiatorFunction),
 		bufferFunction,
-		...groupDispatcherFunctions,
+		...entryDispatcherFunctions,
 	];
 	const builtInExports = [
 		createFunctionExport('initDefaults', importedFunctionCount),
 		createFunctionExport('buffer', importedFunctionCount + 1),
-		...groupNames.map((groupName, index) => createFunctionExport(groupName, importedFunctionCount + 2 + index)),
+		...entryNames.map((entryName, index) => createFunctionExport(entryName, importedFunctionCount + 2 + index)),
 	];
 
 	return {

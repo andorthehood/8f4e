@@ -256,7 +256,7 @@ moduleEnd
 test('constants block expressions are available through use', () => {
 	const result = compile(
 		{
-			groups: {
+			entries: {
 				main: [
 					{
 						code: ['module test', 'use env', 'int output HALF', 'moduleEnd'],
