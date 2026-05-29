@@ -5,6 +5,8 @@ module projectConfig
 ; @pos -94 1
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
+; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName jankoSynth
 
 moduleEnd
@@ -934,8 +936,6 @@ ifEnd
 moduleEnd
 module audioout
 ; @pos 675 39
-; @config audioRuntime.audioOutBufferLAddress audioout:buffer
-; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 use env
 
 float* in &limiter:out
