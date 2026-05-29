@@ -532,13 +532,6 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.MISSING_ASSERT_FAILURE_HANDLER:
-			return {
-				code,
-				message: 'Missing assert failure handler. assert requires the test.assertFailed import context. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.ARRAY_INITIALIZER_TOO_LONG:
 			return {
 				code,

@@ -37,7 +37,8 @@ add
 push &buffer
 push BYTE_LENGTH
 call wrapPointer
-assert &buffer+8
+push &buffer+8
+call assert
 
 moduleEnd
 module wrapPointerWrapsForwardAddress
@@ -50,7 +51,8 @@ add
 push &buffer
 push BYTE_LENGTH
 call wrapPointer
-assert &buffer
+push &buffer
+call assert
 
 moduleEnd
 module wrapPointerWrapsBackwardAddress
@@ -63,7 +65,8 @@ sub
 push &buffer
 push BYTE_LENGTH
 call wrapPointer
-assert buffer&
+push buffer&
+call assert
 
 moduleEnd
 groupEnd
