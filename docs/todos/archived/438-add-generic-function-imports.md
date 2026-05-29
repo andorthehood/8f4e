@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-29
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-29
 ---
 
 # TODO: Add generic function imports
@@ -127,3 +127,4 @@ Imported functions should be normal callable function symbols from the compiler'
 ## Notes
 
 - This TODO intentionally excludes replacing any existing instruction with a utility function. It only records the generic function import feature.
+- Archived after verification on 2026-05-29: functions can declare `#import <field-name>`, imported functions use the normal function signature and `call` resolution paths, WebAssembly function imports are emitted before defined functions, imported function bodies/export conflicts are rejected, and compiler/tokenizer/docs tests cover the feature.

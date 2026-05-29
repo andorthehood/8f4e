@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4d
 created: 2026-05-29
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-05-29
 ---
 
 # TODO: Add execution entries
@@ -180,3 +180,4 @@ Rename the current built-in memory/default initializer from `init` to `initDefau
 - This TODO records the design discussion from 2026-05-29.
 - The current compiler `init` export fills memory with zeroes, applies passive data segments for defaults, and then runs `initOnly` modules. The planned `initDefaults` export should stop before any user module execution.
 - `main`, `init`, and `test` are conventions, not special scoping forms.
+- Archived after verification on 2026-05-29: `entry` / `entryEnd` syntax is parsed from repository examples, compiler input is grouped as `entries`, every entry is exported by name, `initDefaults` is the memory-default initializer, old test/init-only directives are removed, and runtime/CLI callers use the new entry exports.
