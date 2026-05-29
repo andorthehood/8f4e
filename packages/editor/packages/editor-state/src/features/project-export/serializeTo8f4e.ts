@@ -1,6 +1,9 @@
+import { getDocumentProjectBlockType } from '@8f4e/tokenizer';
+
 import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
 
 import type { Project } from '@8f4e/editor-state-types';
+import type { CodeBlock } from '@8f4e/editor-state-types';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
 	// Find first non-empty line (must be opener)
@@ -67,7 +70,39 @@ export function serializeProjectTo8f4e(project: Project): string {
 		validateCodeBlock(codeBlocks[i].code, i);
 	}
 
-	const blockStrings = codeBlocks.map(block => block.code.join('\n'));
+	const emittedGroups = new Set<string>();
+	const blockStrings: string[] = [];
+	const modulesByGroup = new Map<string, CodeBlock[]>();
+
+	for (const block of codeBlocks) {
+		if (getDocumentProjectBlockType(block.code) !== 'module') {
+			continue;
+		}
+
+		const groupName = block.executionGroupName ?? 'main';
+		const groupModules = modulesByGroup.get(groupName) ?? [];
+		groupModules.push(block);
+		modulesByGroup.set(groupName, groupModules);
+	}
+
+	for (const block of codeBlocks) {
+		if (getDocumentProjectBlockType(block.code) !== 'module') {
+			blockStrings.push(block.code.join('\n'));
+			continue;
+		}
+
+		const groupName = block.executionGroupName ?? 'main';
+		if (emittedGroups.has(groupName)) {
+			continue;
+		}
+
+		const groupModules = modulesByGroup.get(groupName) ?? [];
+		blockStrings.push(
+			['group ' + groupName, ...groupModules.flatMap(moduleBlock => moduleBlock.code), 'groupEnd'].join('\n')
+		);
+		emittedGroups.add(groupName);
+	}
+
 	return FORMAT_HEADER + '\n\n' + blockStrings.join('\n\n');
 }
 
@@ -91,6 +126,39 @@ if (import.meta.vitest) {
 			};
 			const result = serializeProjectTo8f4e(project);
 			expect(result).toContain('\n\n');
+			expect(result).toContain('group main\nmodule counter');
+			expect(result).toContain('moduleEnd\ngroupEnd');
+		});
+
+		it('serializes execution groups by first module position', () => {
+			const project = {
+				codeBlocks: [
+					{ code: ['module a', 'moduleEnd'], executionGroupName: 'main' },
+					{ code: validFunctionBlock },
+					{ code: ['module b', 'moduleEnd'], executionGroupName: 'test' },
+					{ code: ['module c', 'moduleEnd'], executionGroupName: 'main' },
+				],
+			};
+
+			expect(serializeProjectTo8f4e(project)).toBe(
+				[
+					'8f4e/v1',
+					'',
+					'group main',
+					'module a',
+					'moduleEnd',
+					'module c',
+					'moduleEnd',
+					'groupEnd',
+					'',
+					...validFunctionBlock,
+					'',
+					'group test',
+					'module b',
+					'moduleEnd',
+					'groupEnd',
+				].join('\n')
+			);
 		});
 
 		it('accepts note blocks', () => {

@@ -1,13 +1,14 @@
 8f4e/v1
 
+group main
 module triangle
 
 use env
 
-float default 1 ;Hz 
+float default 1 ;Hz
 float* frequency &default
 float out
-float direction 1 
+float direction 1
 
 push &out
 push out
@@ -42,6 +43,7 @@ store
 ifEnd
 
 moduleEnd
+groupEnd
 
 constants env
 #mock

@@ -41,6 +41,7 @@ const E       2.718281828459045
 
 constantsEnd
 
+group main
 module projectConfig
 ; @pos -58 -63
 ; @config runtime AudioWorkletRuntime
@@ -48,7 +49,6 @@ module projectConfig
 ; @config export.fileName minBLEP
 
 moduleEnd
-
 module notes
 ; @pos 15 -89
 ; Plays a hardcoded one-cycle pulse
@@ -63,7 +63,6 @@ module notes
 ; then low-pass filters the result before
 ; routing it to audioout.
 moduleEnd
-
 module scopeOriginal
 ; @pos 44 -73
 
@@ -76,7 +75,7 @@ float* pointer &buffer
 ; You can see   `:;;;:'
 ; how chunky the  `:'
 ; signal is.
-        
+
 ; @plot &buffer count(buffer)
 
 push pointer
@@ -99,14 +98,13 @@ store
 ifEnd
 
 moduleEnd
-
 module params
 ; @pos 66 -93
 float increment 1.0 ; @w
 float volOriginal 0.0 ; @w
 float volSmoothed 1.0; @w
 ; @home top
-; You can change the playback speed 
+; You can change the playback speed
 ; by dragging this slider below.
 
 ; @slider &increment
@@ -114,7 +112,6 @@ float volSmoothed 1.0; @w
 ; @crossfade &volOriginal &volSmoothed
 
 moduleEnd
-
 module scopeSmooth
 ; @pos 82 -73
 
@@ -136,13 +133,13 @@ store
 
 push &pointer
 push pointer
-push sizeof(buffer) 
+push sizeof(buffer)
 add
 store
 
 push pointer
-push buffer& 
-greaterThan 
+push buffer&
+greaterThan
 if
 push &pointer
 push &buffer
@@ -150,34 +147,6 @@ store
 ifEnd
 
 moduleEnd
-
-function wrapAdd32
-; @pos 98 -136
-param int base
-param int offset
-local int sum
-
-; Add an offset and wrap
-; the result into a 32-slot ring.
-push base
-push offset
-add
-localSet sum
-
-push sum
-push 32
-greaterOrEqual
-if
-push sum
-push 32
-sub
-return
-ifEnd
-
-push sum
-
-functionEnd int
-
 module packedPulseSample
 ; @pos 101 19
 ; One-cycle pulse sample packed
@@ -219,7 +188,6 @@ int	0xE0 0xE0 0xE0 0xE0
 int	0xE0 0xE0 0xE0 0xE0
 int	0xE0 0xE0 0xE0 0xE0
 moduleEnd
-
 module mixer
 ; @pos 115 -103
 
@@ -240,7 +208,6 @@ add
 store
 
 moduleEnd
-
 module pcmPlayer
 ; @pos 122 -73
 use env
@@ -297,23 +264,6 @@ store
 ifEnd
 
 moduleEnd
-
-function blepQueuePtr
-; @pos 141 -136
-param float* buffer
-param int index
-
-; Compute the address of 
-; a queue slot from a base 
-; pointer and index.
-push buffer
-push index
-push sizeof(*buffer)
-mul
-add
-
-functionEnd float*
-
 module audioout
 ; @pos 165 -100
 ; ~audioOutput buffer 0 0
@@ -333,11 +283,11 @@ push pointer
 push *in
 store
 
-; Increment the buffer 
+; Increment the buffer
 ; pointer by the word size
 push &pointer
 push pointer
-push sizeof(buffer) 
+push sizeof(buffer)
 add
 store
 
@@ -345,8 +295,8 @@ store
 ; when it reaches the end
 ; of the buffer
 push pointer
-push buffer& 
-greaterThan 
+push buffer&
+greaterThan
 if
 push &pointer
 push &buffer
@@ -354,7 +304,6 @@ store
 ifEnd
 
 moduleEnd
-
 module sampleDelta
 ; @pos 177 -73
 float* in &pcmPlayer:out
@@ -372,21 +321,6 @@ push *in
 store
 
 moduleEnd
-
-function frac
-; @pos 178 -136
-param float value
-
-; Return the fractional part
-; of a positive float.
-push value
-push value
-castToInt
-castToFloat
-sub
-
-functionEnd float
-
 module blepSmoother
 ; @pos 213 -73
 float* raw &pcmPlayer:out
@@ -453,43 +387,6 @@ call wrapAdd32
 store
 
 moduleEnd
-
-function positionIncrementToBlepPhase
-; @pos 216 -136
-param float position
-param float increment
-local float phase
-; Convert the fractional part of
-; the current read position into
-; a 0..16 BLEP phase based on
-; where the discontinuity occurred
-; inside the output sample interval.
-push position
-call frac
-push increment
-ensureNonZero 0.000001
-div
-push 16.0
-mul
-localSet phase
-
-; Wrap the exact-boundary case
-; back to phase 0 so the LUT
-; stays in the valid 0..15 range.
-push phase
-push 16.0
-greaterOrEqual
-if
-push phase
-push 16.0
-sub
-return
-ifEnd
-
-push phase
-
-functionEnd float
-
 module blepLowpass
 ; @pos 263 -73
 float* in &blepSmoother:out
@@ -520,100 +417,10 @@ push out
 store
 
 moduleEnd
-
-function blepValueAt
-; @pos 330 -157
-#impure
-param float* lut
-param float phase
-param int tapIndex
-param float delta
-local int phaseIndex
-local int lutIndex
-local float phaseFrac
-local float sample0
-local float sample1
-
-; Look up one minBLEP tap for
-; the selected phase, linearly
-; interpolate between adjacent
-; LUT phases, and scale it by
-; delta.
-push phase
-castToInt
-localSet phaseIndex
-
-push phase
-push phaseIndex
-castToFloat
-sub
-localSet phaseFrac
-
-push phaseIndex
-push tapIndex
-push 16
-mul
-add
-localSet lutIndex
-
-push lut
-push lutIndex
-push sizeof(*lut)
-mul
-add
-loadFloat
-localSet sample0
-
-push lut
-push lutIndex
-push 1
-add
-push sizeof(*lut)
-mul
-add
-loadFloat
-localSet sample1
-
-push sample0
-push sample1
-push sample0
-sub
-push phaseFrac
-mul
-add
-push delta
-mul
-
-functionEnd float
-
-function addBlepAt
-; @pos 372 -157
-#impure
-param float* buffer
-param int index
-param float value
-
-; Accumulate one correction 
-; value into a queue slot.
-push buffer
-push index
-call blepQueuePtr
-
-push buffer
-push index
-call blepQueuePtr
-loadFloat
-
-push value
-add
-store
-
-functionEnd
-
 module minBLEPLUT
 ; @pos 390 -1
 ; @tab 7
-; PT2 clone minBLEP 
+; PT2 clone minBLEP
 ; correction table
 ; source: src/pt2_blep.c
 float	1.000047730261351742
@@ -875,3 +682,186 @@ float	0.000000000000000000
 float	0.000000000000000000
 
 moduleEnd
+groupEnd
+
+function wrapAdd32
+; @pos 98 -136
+param int base
+param int offset
+local int sum
+
+; Add an offset and wrap
+; the result into a 32-slot ring.
+push base
+push offset
+add
+localSet sum
+
+push sum
+push 32
+greaterOrEqual
+if
+push sum
+push 32
+sub
+return
+ifEnd
+
+push sum
+
+functionEnd int
+
+function blepQueuePtr
+; @pos 141 -136
+param float* buffer
+param int index
+
+; Compute the address of
+; a queue slot from a base
+; pointer and index.
+push buffer
+push index
+push sizeof(*buffer)
+mul
+add
+
+functionEnd float*
+
+function frac
+; @pos 178 -136
+param float value
+
+; Return the fractional part
+; of a positive float.
+push value
+push value
+castToInt
+castToFloat
+sub
+
+functionEnd float
+
+function positionIncrementToBlepPhase
+; @pos 216 -136
+param float position
+param float increment
+local float phase
+; Convert the fractional part of
+; the current read position into
+; a 0..16 BLEP phase based on
+; where the discontinuity occurred
+; inside the output sample interval.
+push position
+call frac
+push increment
+ensureNonZero 0.000001
+div
+push 16.0
+mul
+localSet phase
+
+; Wrap the exact-boundary case
+; back to phase 0 so the LUT
+; stays in the valid 0..15 range.
+push phase
+push 16.0
+greaterOrEqual
+if
+push phase
+push 16.0
+sub
+return
+ifEnd
+
+push phase
+
+functionEnd float
+
+function blepValueAt
+; @pos 330 -157
+#impure
+param float* lut
+param float phase
+param int tapIndex
+param float delta
+local int phaseIndex
+local int lutIndex
+local float phaseFrac
+local float sample0
+local float sample1
+
+; Look up one minBLEP tap for
+; the selected phase, linearly
+; interpolate between adjacent
+; LUT phases, and scale it by
+; delta.
+push phase
+castToInt
+localSet phaseIndex
+
+push phase
+push phaseIndex
+castToFloat
+sub
+localSet phaseFrac
+
+push phaseIndex
+push tapIndex
+push 16
+mul
+add
+localSet lutIndex
+
+push lut
+push lutIndex
+push sizeof(*lut)
+mul
+add
+loadFloat
+localSet sample0
+
+push lut
+push lutIndex
+push 1
+add
+push sizeof(*lut)
+mul
+add
+loadFloat
+localSet sample1
+
+push sample0
+push sample1
+push sample0
+sub
+push phaseFrac
+mul
+add
+push delta
+mul
+
+functionEnd float
+
+function addBlepAt
+; @pos 372 -157
+#impure
+param float* buffer
+param int index
+param float value
+
+; Accumulate one correction
+; value into a queue slot.
+push buffer
+push index
+call blepQueuePtr
+
+push buffer
+push index
+call blepQueuePtr
+loadFloat
+
+push value
+add
+store
+
+functionEnd

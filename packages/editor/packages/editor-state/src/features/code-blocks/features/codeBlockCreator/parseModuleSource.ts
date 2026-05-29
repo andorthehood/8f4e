@@ -45,7 +45,10 @@ if (import.meta.vitest) {
 		});
 
 		it('removes 8f4e/v1 header and following blank lines', () => {
-			expect(parseModuleSource('8f4e/v1\n\nmodule foo\nmoduleEnd')).toEqual(['module foo', 'moduleEnd']);
+			expect(parseModuleSource('8f4e/v1\n\ngroup main\nmodule foo\nmoduleEnd\ngroupEnd')).toEqual([
+				'module foo',
+				'moduleEnd',
+			]);
 		});
 
 		it('returns the first non-test block from module files that include #test modules', () => {
@@ -55,18 +58,30 @@ if (import.meta.vitest) {
 				'function helper',
 				'functionEnd',
 				'',
+				'group main',
 				'module helperTest',
 				'#test ; inline comment',
 				'push 1',
 				'assert 1',
 				'moduleEnd',
+				'groupEnd',
 			].join('\n');
 
 			expect(parseModuleSource(text)).toEqual(['function helper', 'functionEnd']);
 		});
 
 		it('filters out module files that only contain #test modules', () => {
-			const text = ['8f4e/v1', '', 'module helperTest', '#test', 'push 1', 'assert 1', 'moduleEnd'].join('\n');
+			const text = [
+				'8f4e/v1',
+				'',
+				'group main',
+				'module helperTest',
+				'#test',
+				'push 1',
+				'assert 1',
+				'moduleEnd',
+				'groupEnd',
+			].join('\n');
 
 			expect(parseModuleSource(text)).toEqual([]);
 		});
@@ -75,6 +90,7 @@ if (import.meta.vitest) {
 			const text = [
 				'8f4e/v1',
 				'',
+				'group main',
 				'module helperMock',
 				'#mock',
 				'int value 0',
@@ -82,6 +98,7 @@ if (import.meta.vitest) {
 				'',
 				'module helper',
 				'moduleEnd',
+				'groupEnd',
 			].join('\n');
 
 			expect(parseModuleSource(text)).toEqual(['module helper', 'moduleEnd']);

@@ -1,11 +1,12 @@
 8f4e/v1
 
+group main
 module adrEnv
 ; @tab 8
 use env
 
 int*	trigger
-int	attackTime SAMPLE_RATE 
+int	attackTime SAMPLE_RATE
 float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/2
 float	decayLevel 0.5
@@ -131,7 +132,7 @@ mul
 store
 ifEnd
 
-; Decrement and wrap counter 
+; Decrement and wrap counter
 push	_counter
 push	0
 greaterThan
@@ -144,6 +145,7 @@ store
 ifEnd
 
 moduleEnd
+groupEnd
 
 constants env
 #mock

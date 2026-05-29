@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module phaseAccumulator
 
 float* frequency
@@ -21,7 +22,7 @@ castToFloat
 ensureNonZero
 div
 add
-store 
+store
 
 ; Wrap phase when it exceeds PI
 push phase
@@ -35,12 +36,13 @@ ifEnd
 
 push &out
 push phase
-; You can swap this call 
+; You can swap this call
 ; with any periodic function
 call sine
 store
 
 moduleEnd
+groupEnd
 
 constants math
 #mock

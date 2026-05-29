@@ -1,20 +1,21 @@
 8f4e/v1
 
+group main
 module allpassDiffuser
 ; Delay-based allpass stage
-; for reverb diffusion. 
-; It smears transients by 
-; feeding a delayed sample 
+; for reverb diffusion.
+; It smears transients by
+; feeding a delayed sample
 ; back into the buffer.
 
 float* in
 float out
 float[] buffer 128
-float* pointer &buffer 
+float* pointer &buffer
 
 const ALLPASS_GAIN 0.8
 
-local float writeValue 
+local float writeValue
 
 push *in
 push *pointer
@@ -33,7 +34,7 @@ store
 
 push pointer
 push writeValue
-store 
+store
 
 push &pointer
 push pointer
@@ -44,10 +45,11 @@ store
 push pointer
 push buffer&
 greaterThan
-if 
+if
 push &pointer
 push &buffer
 store
 ifEnd
 
 moduleEnd
+groupEnd

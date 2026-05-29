@@ -1,11 +1,11 @@
 {
   "sourceModuleOrder": [
     "projectConfig",
-    "env",
-    "math",
     "phaseAccumulator",
     "audioout",
-    "notes"
+    "notes",
+    "env",
+    "math"
   ],
   "compiledModuleLayout": [
     {

@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module projectConfig
 ; @pos -106 13
 ; @config runtime AudioWorkletRuntime
@@ -7,19 +8,6 @@ module projectConfig
 ; @config export.fileName audioLoopback
 
 moduleEnd
-
-constants env
-; @pos -52 1
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 2/19/2026, 1:30:23 PM
-
-const SAMPLE_RATE 48000
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
-
 module audioin
 ; @pos 5 1
 ; ~audioInput buffer 0 0
@@ -37,7 +25,7 @@ push pointer
 loadFloat
 store
 
-push &pointer 
+push &pointer
 push pointer
 push sizeof(buffer)
 add
@@ -53,7 +41,6 @@ store
 ifEnd
 
 moduleEnd
-
 module audiooutL
 ; @pos 48 1
 ; @home
@@ -74,7 +61,7 @@ push pointer
 push *in
 store
 
-; Increment the buffer 
+; Increment the buffer
 ; pointer by the
 ; buffer word size
 push &pointer
@@ -96,7 +83,6 @@ store
 ifEnd
 
 moduleEnd
-
 module audiooutR
 ; @pos 89 1
 ; ~audioOutput buffer 0 1
@@ -117,7 +103,7 @@ push pointer
 push *in
 store
 
-; Increment the buffer 
+; Increment the buffer
 ; pointer by the
 ; buffer word size
 push &pointer
@@ -139,13 +125,25 @@ store
 ifEnd
 
 moduleEnd
-
 module notes
 ; @pos 130 12
 ; This is a stereo loopback example
-; that reads input audio from a 
-; shared buffer and writes the same 
-; signal into left and right output 
+; that reads input audio from a
+; shared buffer and writes the same
+; signal into left and right output
 ; buffers using circular-buffer
 ; pointer logic.
 moduleEnd
+groupEnd
+
+constants env
+; @pos -52 1
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+; Last updated: 2/19/2026, 1:30:23 PM
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd

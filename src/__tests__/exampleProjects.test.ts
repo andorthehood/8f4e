@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import { describe, it, expect } from 'vitest';
 import compile from '@8f4e/compiler';
 import { parse8f4eToProject } from '@8f4e/editor-state';
+import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -54,25 +55,12 @@ describe('Example Projects Compilation', () => {
 	describe('Module Compilation', () => {
 		projects.forEach((project, index) => {
 			it(`should compile module blocks in project ${index}`, () => {
-				const moduleBlocks = project.codeBlocks
-					.filter(block => block.blockType === 'module')
-					.map(block => ({ code: block.code }));
-
-				const constantsBlocks = project.codeBlocks
-					.filter(block => block.blockType === 'constants')
-					.map(block => ({ code: block.code }));
-
-				const functionBlocks = project.codeBlocks
-					.filter(block => block.blockType === 'function')
-					.map(block => ({ code: block.code }));
-
-				const macroBlocks = project.codeBlocks
-					.filter(block => block.blockType === 'macro')
-					.map(block => ({ code: block.code }));
+				const { groups, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
+				const moduleCount = Object.values(groups).reduce((sum, group) => sum + group.length, 0);
 
 				const result = compile(
 					{
-						groups: { main: moduleBlocks },
+						groups,
 						constants: constantsBlocks,
 						functions: functionBlocks.length > 0 ? functionBlocks : undefined,
 						macros: macroBlocks.length > 0 ? macroBlocks : undefined,
@@ -82,7 +70,7 @@ describe('Example Projects Compilation', () => {
 
 				expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
 				expect(result.codeBuffer.length).toBeGreaterThan(0);
-				expect(Object.keys(result.compiledModules).length).toBe(moduleBlocks.length);
+				expect(Object.keys(result.compiledModules).length).toBe(moduleCount);
 			});
 		});
 	});

@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module arEnv
 ; Attack-Release (AR)
 ; Envelope Generator
@@ -59,3 +60,4 @@ store
 ifEnd
 
 moduleEnd
+groupEnd

@@ -1,5 +1,8 @@
 8f4e/v1
 
+group main
+groupEnd
+
 function extractByte
 ; Extracts one byte from a 32-bit integer.
 ; byteIndex is 0..3, where 0 is the least-significant byte.

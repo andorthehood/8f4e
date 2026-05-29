@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module tickClock
 ; @pos -175 -28
 use mod
@@ -47,7 +48,6 @@ add
 store
 
 moduleEnd
-
 module rowClock
 ; @pos -141 -28
 use env
@@ -87,7 +87,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
 module patternOrder
 ; @pos -102 -28
 ; @tab 6
@@ -139,11 +138,10 @@ int	0x18
 int	0x19
 
 moduleEnd
-
 module rowCounter
 ; @pos -68 -28
 use env
-int* trigger &rowClock:out 
+int* trigger &rowClock:out
 int rowCounter -1
 int* patternPointer &patternOrder:0
 int out ; @w
@@ -196,60 +194,22 @@ add
 store
 
 moduleEnd
-
 module rowCount1
 ; @pos -10 20
 int* in &rowCounter:out
 int out
 ; We can afford some reading
-; and writing to memory 
-; for better aesthethics. 
+; and writing to memory
+; for better aesthethics.
 push &out
 push *in
 store
 moduleEnd
-
-note
-; @pos 9 -126
-; Project Config
-; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
-; @config export.fileName lowerIntentions
-
-noteEnd
-
-note
-; @pos 9 -117
-; Assets
-; @tab 22
-; @defAsset sample1	https://static.8f4e.com/assets/mods/lowerintentions/sample_1.pcm
-; @defAsset sample2	https://static.8f4e.com/assets/mods/lowerintentions/sample_2.pcm
-; @defAsset sample3	https://static.8f4e.com/assets/mods/lowerintentions/sample_3.pcm
-; @defAsset sample4	https://static.8f4e.com/assets/mods/lowerintentions/sample_4.pcm
-; @defAsset sample5	https://static.8f4e.com/assets/mods/lowerintentions/sample_5.pcm
-; @defAsset sample6	https://static.8f4e.com/assets/mods/lowerintentions/sample_6.pcm
-; @defAsset sample7	https://static.8f4e.com/assets/mods/lowerintentions/sample_7.pcm
-; @defAsset sample9	https://static.8f4e.com/assets/mods/lowerintentions/sample_9.pcm
-; @defAsset sample10	https://static.8f4e.com/assets/mods/lowerintentions/sample_10.pcm
-; @defAsset sample11	https://static.8f4e.com/assets/mods/lowerintentions/sample_11.pcm
-; @defAsset sample12	https://static.8f4e.com/assets/mods/lowerintentions/sample_12.pcm
-; @defAsset sample13	https://static.8f4e.com/assets/mods/lowerintentions/sample_13.pcm
-; @defAsset sample14	https://static.8f4e.com/assets/mods/lowerintentions/sample_14.pcm
-; @defAsset sample15	https://static.8f4e.com/assets/mods/lowerintentions/sample_15.pcm
-; @defAsset sample16	https://static.8f4e.com/assets/mods/lowerintentions/sample_16.pcm
-; @defAsset sample17	https://static.8f4e.com/assets/mods/lowerintentions/sample_17.pcm
-; @defAsset ch1	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch1.bin
-; @defAsset ch2	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch2.bin
-; @defAsset ch3	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch3.bin
-; @defAsset ch4	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch4.bin
-
-noteEnd
-
 module scope1
 ; @pos 28 -17
 float* in &amp1:out
 float[] buffer 64
-; @plot &buffer 64         
+; @plot &buffer 64
 ; @hide
 int bufferPointer &buffer
 
@@ -273,7 +233,6 @@ push *in
 store
 
 moduleEnd
-
 module rowBuffer1
 ; @pos 28 -1
 int ; @w 0x
@@ -316,12 +275,11 @@ localSet loopCounter
 loopEnd
 
 moduleEnd
-
 module scope2
 ; @pos 64 -17
 float* in &amp2:out
-float[] buffer 64  
-; @plot &buffer 64   
+float[] buffer 64
+; @plot &buffer 64
 ; @hide
 int bufferPointer &buffer
 
@@ -345,7 +303,6 @@ push *in
 store
 
 moduleEnd
-
 module rowBuffer2
 ; @pos 64 -1
 int ; @w 0x
@@ -389,12 +346,11 @@ localSet loopCounter
 loopEnd
 
 moduleEnd
-
 module scope3
 ; @pos 100 -17
 float* in &amp3:out
-float[] buffer 64  
-; @plot &buffer 64         
+float[] buffer 64
+; @plot &buffer 64
 ; @hide
 int bufferPointer &buffer
 
@@ -418,7 +374,6 @@ push *in
 store
 
 moduleEnd
-
 module rowBuffer3
 ; @pos 100 -1
 int ; @w 0x
@@ -462,65 +417,11 @@ localSet loopCounter
 loopEnd
 
 moduleEnd
-
-constants env
-; @pos 126 -192
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 48000
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'patterns_ch1.bin'
-const ASSET_CH1_SIZE 6656
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 6656
-; 'patterns_ch3.bin'
-const ASSET_CH3_SIZE 6656
-; 'patterns_ch4.bin'
-const ASSET_CH4_SIZE 6656
-; 'sample_1.pcm'
-const ASSET_SAMPLE1_SIZE 2812
-; 'sample_2.pcm'
-const ASSET_SAMPLE2_SIZE 28726
-; 'sample_3.pcm'
-const ASSET_SAMPLE3_SIZE 58182
-; 'sample_4.pcm'
-const ASSET_SAMPLE4_SIZE 58708
-; 'sample_5.pcm'
-const ASSET_SAMPLE5_SIZE 28656
-; 'sample_6.pcm'
-const ASSET_SAMPLE6_SIZE 57040
-; 'sample_7.pcm'
-const ASSET_SAMPLE7_SIZE 18354
-; 'sample_9.pcm'
-const ASSET_SAMPLE9_SIZE 7026
-; 'sample_10.pcm'
-const ASSET_SAMPLE10_SIZE 14456
-; 'sample_11.pcm'
-const ASSET_SAMPLE11_SIZE 14352
-; 'sample_12.pcm'
-const ASSET_SAMPLE12_SIZE 17822
-; 'sample_13.pcm'
-const ASSET_SAMPLE13_SIZE 28508
-; 'sample_14.pcm'
-const ASSET_SAMPLE14_SIZE 3318
-; 'sample_15.pcm'
-const ASSET_SAMPLE15_SIZE 65534
-; 'sample_16.pcm'
-const ASSET_SAMPLE16_SIZE 48020
-; 'sample_17.pcm'
-const ASSET_SAMPLE17_SIZE 35098
-
-constantsEnd
-
 module scope4
 ; @pos 136 -17
 float* in &amp4:out
-float[] buffer 64  
-; @plot &buffer 64         
+float[] buffer 64
+; @plot &buffer 64
 ; @hide
 int bufferPointer &buffer
 
@@ -544,7 +445,6 @@ push *in
 store
 
 moduleEnd
-
 module rowBuffer4
 ; @pos 136 -1
 int ; @w 0x
@@ -588,7 +488,6 @@ localSet loopCounter
 loopEnd
 
 moduleEnd
-
 module rowCount2
 ; @pos 152 -33
 int* in &rowCounter:out
@@ -599,37 +498,6 @@ push *in
 store
 
 moduleEnd
-
-constants math
-; @pos 180 -168
-
-const PI      3.141592653589793
-const NEG_PI -3.141592653589793
-const TAU     6.283185307179586
-const HALF_PI 1.570796326794896
-const INV_PI  0.318309886183790
-const INV_TAU 0.159154943091895
-const PHI     1.618033988749895
-const DEG2RAD 0.017453292519943
-const RAD2DEG 57.29577951308232
-const SQRT2   1.414213562373095
-const SQRT1_2 0.707106781186547
-; Useful in FFT twiddle factors.
-const HANN_A0 0.5
-; For common window functions before FFT.
-const HAMMING_A0 0.54
-const HAMMING_A1 0.46
-const BLACKMAN_A0 0.42
-const BLACKMAN_A1 0.5
-const BLACKMAN_A2 0.08
-const LN2     0.693147180559945
-const LN10    2.302585092994046
-const LOG2E   1.442695040888963
-const LOG10E  0.434294481903251
-const E       2.718281828459045
-
-constantsEnd
-
 module sampleOffset1
 ; @pos 195 -71
 ; @group ch1
@@ -645,7 +513,7 @@ push *row
 call maskEffect
 push SAMPLE_OFFSET
 equal
-if 
+if
 push *row
 call maskParam
 equalToZero
@@ -671,7 +539,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
 module sampleOffset2
 ; @pos 195 -24
 ; @group ch2
@@ -688,7 +555,7 @@ push *row
 call maskEffect
 push SAMPLE_OFFSET
 equal
-if 
+if
 push *row
 call maskParam
 equalToZero
@@ -714,7 +581,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
 module sampleOffset3
 ; @pos 195 22
 ; @group ch3
@@ -731,7 +597,7 @@ push *row
 call maskEffect
 push SAMPLE_OFFSET
 equal
-if 
+if
 push *row
 call maskParam
 equalToZero
@@ -757,7 +623,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
 module sampleOffset4
 ; @pos 195 68
 ; @group ch4
@@ -774,7 +639,7 @@ push *row
 call maskEffect
 push SAMPLE_OFFSET
 equal
-if 
+if
 push *row
 call maskParam
 equalToZero
@@ -800,61 +665,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
-constants mod
-; @pos 230 -192
-; @tab 30
-use env
-; Row layout (little-endian)
-const SAMPLE_HI_NIBBLE	0x000000F0
-const PERIOD_HI	0x0000000F
-const PERIOD_LO	0x0000FF00
-const PERIOD_SHIFT	8
-const SAMPLE_LO_NIBBLE	0x00F00000
-const SAMPLE_LO_NIBBLE_SHIFT	20
-const EFFECT_NIBBLE	0x000F0000
-const EFFECT_NIBBLE_SHIFT	16
-const EFFECT_PARAM	0xFF000000
-const EFFECT_PARAM_SHIFT	24
-; AMIGA magic const
-const PAL_AMIGA_CLOCK	7093789.2
-const DEFAULT_TEMPO	125
-const DEFAULT_TICKS	6
-; Effects
-const ARPEGGIO	0x0
-const PITCH_SLIDE_UP	0x1
-const PITCH_SLIDE_DOWN	0x2
-const TONE_PORTAMENTO	0x3
-const VIBRATE	0x4
-const TONE_PORTA_VOL_SLIDE	0x5
-const VIBRATO_VOL_SLIDE	0x6
-const TREMOLO	0x7
-const SAMPLE_OFFSET	0x9
-const VOLUME_SLIDE	0xA
-const PATTERN_JUMP	0xB
-const SET_VOLUME	0xC
-const PATTERN_BREAK	0xD
-const EXTENDED_EFFECTS	0xE
-const SET_SPEED	0xF
-; Extended effects
-const SET_FILTER	0xE0
-const FINE_SLIDE_UP	0xE1
-const FINE_SLIDE_DOWN	0xE2
-const GLISSANDO_CONTROL	0xE3
-const SET_VIBRATO_WAVEFORM	0xE4
-const SET_FINETUNE	0xE5
-const PATTERN_LOOP	0xE6
-const SET_TREMOLO_WAVEFORM	0xE7
-const RETRIGGER_NOTE	0xE9
-const FINE_VOLUME_SLIDE_UP	0xEA
-const FINE_VOLUME_SLIDE_DOWN	0xEB
-const NOTE_CUT	0xEC
-const NOTE_DELAY	0xED
-const PATTERN_DELAY	0xEE
-const INVERT_LOOP	0xEF
-
-constantsEnd
-
 module tempo1
 ; @pos 231 -71
 ; @group ch1
@@ -879,7 +689,7 @@ push *row
 call maskParam
 push 32
 greaterOrEqual
-if 
+if
 	push tempo
 	push *row
 	call maskParam
@@ -893,7 +703,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
 module tempo2
 ; @pos 231 -24
 ; @group ch2
@@ -932,7 +741,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
 module tempo3
 ; @pos 231 22
 ; @group ch3
@@ -957,7 +765,7 @@ push *row
 call maskParam
 push 32
 greaterOrEqual
-if 
+if
 push tempo
 push *row
 call maskParam
@@ -971,7 +779,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
 module tempo4
 ; @pos 231 68
 ; @group ch4
@@ -996,7 +803,7 @@ push *row
 call maskParam
 push 32
 greaterOrEqual
-if 
+if
 push tempo
 push *row
 call maskParam
@@ -1010,7 +817,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-
 module sampleNumber1
 ; @pos 272 -71
 ; @group ch1
@@ -1032,7 +838,6 @@ store
 ifEnd
 
 moduleEnd
-
 module sampleNumber2
 ; @pos 272 -24
 ; @group ch2
@@ -1054,7 +859,6 @@ store
 ifEnd
 
 moduleEnd
-
 module sampleNumber3
 ; @pos 272 22
 ; @group ch3
@@ -1076,7 +880,6 @@ store
 ifEnd
 
 moduleEnd
-
 module sampleNumber4
 ; @pos 272 68
 ; @group ch4
@@ -1098,77 +901,6 @@ store
 ifEnd
 
 moduleEnd
-
-constants sampleMeta
-; @pos 279 -208
-; @tab 26
-const S01_VOLUME	64
-const S01_FINETUNE	0
-const S01_REPEAT_OFFSET	0
-const S01_REPEAT_LENGTH	2812
-const S02_VOLUME	64
-const S02_FINETUNE	-3
-const S02_REPEAT_OFFSET	0
-const S02_REPEAT_LENGTH	2
-const S03_VOLUME	64
-const S03_FINETUNE	-3
-const S03_REPEAT_OFFSET	46752
-const S03_REPEAT_LENGTH	11428
-const S04_VOLUME	64
-const S04_FINETUNE	-3
-const S04_REPEAT_OFFSET	50744
-const S04_REPEAT_LENGTH	5834
-const S05_VOLUME	64
-const S05_FINETUNE	-3
-const S05_REPEAT_OFFSET	0
-const S05_REPEAT_LENGTH	2
-const S06_VOLUME	64
-const S06_FINETUNE	-3
-const S06_REPEAT_OFFSET	52540
-const S06_REPEAT_LENGTH	4498
-const S07_VOLUME	35
-const S07_FINETUNE	2
-const S07_REPEAT_OFFSET	0
-const S07_REPEAT_LENGTH	18354
-const S09_VOLUME	64
-const S09_FINETUNE	0
-const S09_REPEAT_OFFSET	0
-const S09_REPEAT_LENGTH	2
-const S10_VOLUME	64
-const S10_FINETUNE	0
-const S10_REPEAT_OFFSET	0
-const S10_REPEAT_LENGTH	2
-const S11_VOLUME	64
-const S11_FINETUNE	-2
-const S11_REPEAT_OFFSET	0
-const S11_REPEAT_LENGTH	2
-const S12_VOLUME	64
-const S12_FINETUNE	-2
-const S12_REPEAT_OFFSET	0
-const S12_REPEAT_LENGTH	2
-const S13_VOLUME	64
-const S13_FINETUNE	-2
-const S13_REPEAT_OFFSET	0
-const S13_REPEAT_LENGTH	2
-const S14_VOLUME	58
-const S14_FINETUNE	3
-const S14_REPEAT_OFFSET	3100
-const S14_REPEAT_LENGTH	202
-const S15_VOLUME	64
-const S15_FINETUNE	0
-const S15_REPEAT_OFFSET	23050
-const S15_REPEAT_LENGTH	42484
-const S16_VOLUME	64
-const S16_FINETUNE	0
-const S16_REPEAT_OFFSET	38284
-const S16_REPEAT_LENGTH	9736
-const S17_VOLUME	64
-const S17_FINETUNE	0
-const S17_REPEAT_OFFSET	25464
-const S17_REPEAT_LENGTH	9634
-
-constantsEnd
-
 module period1
 ; @pos 308 -71
 ; @group ch1
@@ -1194,10 +926,9 @@ mul
 round
 castToInt
 store
-ifEnd 
+ifEnd
 
 moduleEnd
-
 module period2
 ; @pos 308 -24
 ; @group ch2
@@ -1223,10 +954,9 @@ mul
 round
 castToInt
 store
-ifEnd 
+ifEnd
 
 moduleEnd
-
 module period3
 ; @pos 308 22
 ; @group ch3
@@ -1252,10 +982,9 @@ mul
 round
 castToInt
 store
-ifEnd 
+ifEnd
 
 moduleEnd
-
 module period4
 ; @pos 308 68
 ; @group ch4
@@ -1281,40 +1010,9 @@ mul
 round
 castToInt
 store
-ifEnd 
+ifEnd
 
 moduleEnd
-
-function maskExtendedEffect
-; @pos 331 -122
-; Combine the main E effect
-; nibble with the extended
-; sub-effect nibble.
-param int row
-
-push row
-call maskEffect
-push 4
-shiftLeft
-push row
-call maskParamHi
-or
-
-functionEnd int
-
-function maskEffect
-; @pos 333 -105
-use mod
-param int row
-
-push row
-push EFFECT_NIBBLE
-and
-push EFFECT_NIBBLE_SHIFT
-shiftRightUnsigned
-
-functionEnd int
-
 module trigger1
 ; @pos 355 -71
 ; @group ch1
@@ -1337,10 +1035,9 @@ call maskPeriod
 push 0
 greaterThan
 store
-ifEnd   
+ifEnd
 
 moduleEnd
-
 module trigger2
 ; @pos 355 -24
 ; @group ch2
@@ -1363,10 +1060,9 @@ call maskPeriod
 push 0
 greaterThan
 store
-ifEnd   
+ifEnd
 
 moduleEnd
-
 module trigger3
 ; @pos 355 22
 ; @group ch3
@@ -1389,10 +1085,9 @@ call maskPeriod
 push 0
 greaterThan
 store
-ifEnd   
+ifEnd
 
 moduleEnd
-
 module trigger4
 ; @pos 355 68
 ; @group ch4
@@ -1413,78 +1108,9 @@ call maskPeriod
 push 0
 greaterThan
 store
-ifEnd   
-
-moduleEnd
-
-function maskParam
-; @pos 367 -124
-use mod
-param int row
-
-push row
-push EFFECT_PARAM
-and
-push EFFECT_PARAM_SHIFT
-shiftRightUnsigned
-
-functionEnd int
-
-function maskPeriod
-; @pos 367 -111
-use mod
-param int row
-
-push row
-push PERIOD_HI
-and
-push PERIOD_SHIFT
-shiftLeft
-push row
-push PERIOD_LO
-and
-push PERIOD_SHIFT
-shiftRightUnsigned
-or
-
-functionEnd int
-
-function sampleNumberCanLoop
-; @pos 392 -164
-use sampleMeta
-param int sampleNumber
-
-push sampleNumber
-call sampleNumberToRepeatLen
-push 2
-greaterThan
-
-functionEnd int
-
-function period2Step
-; @pos 395 -188
-param int period
-use mod
-use env
-
-push period
-equalToZero
-if
-push 0.0
-return
 ifEnd
 
-push PAL_AMIGA_CLOCK/2
-push period
-castToFloat
-ensureNonZero
-div
-push SAMPLE_RATE
-castToFloat
-div
-
-functionEnd float
-
+moduleEnd
 module volume1
 ; @pos 396 -71
 ; @group ch1
@@ -1530,7 +1156,6 @@ call clampVolume
 store
 
 moduleEnd
-
 module volume2
 ; @pos 396 -24
 ; @group ch2
@@ -1575,7 +1200,6 @@ call clampVolume
 store
 
 moduleEnd
-
 module volume3
 ; @pos 396 22
 ; @group ch3
@@ -1620,7 +1244,6 @@ call clampVolume
 store
 
 moduleEnd
-
 module volume4
 ; @pos 396 68
 ; @group ch4
@@ -1665,93 +1288,6 @@ call clampVolume
 store
 
 moduleEnd
-
-function maskSampleNumber
-; @pos 401 -131
-use mod
-param int row
-
-push row
-push SAMPLE_HI_NIBBLE
-and
-push row
-push SAMPLE_LO_NIBBLE
-and
-push SAMPLE_LO_NIBBLE_SHIFT
-shiftRightUnsigned
-or
-
-functionEnd int
-
-function maskParamHi
-; @pos 401 -114
-param int row
-
-push row
-call maskParam
-push 4
-shiftRightUnsigned
-
-functionEnd int
-
-function maskParamLo
-; @pos 401 -103
-param int row
-
-push row
-call maskParam
-push 0xF
-and
-
-functionEnd int
-
-function modFinetune
-; @pos 429 -199
-const STEP 96.0
-
-const FT_P0 0/STEP
-const FT_P1 1/STEP
-const FT_P2 2/STEP
-const FT_P3 3/STEP
-const FT_P4 4/STEP
-const FT_P5 5/STEP
-const FT_P6 6/STEP
-const FT_P7 7/STEP
-const FT_P8 8/STEP
-
-const FT_N0 0/STEP
-const FT_N1 -1/STEP
-const FT_N2 -2/STEP
-const FT_N3 -3/STEP
-const FT_N4 -4/STEP
-const FT_N5 -5/STEP
-const FT_N6 -6/STEP
-const FT_N7 -7/STEP
-const FT_N8 -8/STEP
-
-param int fineTune
-push fineTune
-mapBegin int
-map -8 2^FT_P8
-map -7 2^FT_P7
-map -6 2^FT_P6
-map -5 2^FT_P5
-map -4 2^FT_P4
-map -3 2^FT_P3
-map -2 2^FT_P2
-map -1 2^FT_P1
-map  0 2^FT_N0
-map  1 2^FT_N1
-map  2 2^FT_N2
-map  3 2^FT_N3
-map  4 2^FT_N4
-map  5 2^FT_N5
-map  6 2^FT_N6
-map  7 2^FT_N7
-mapEnd float
-
-functionEnd float
-
 module samplePack1
 ; @pos 446 -7
 use env
@@ -1781,7 +1317,6 @@ int8[] sample9 ASSET_SAMPLE9_SIZE
 ; @loadAsset sample9 &sample9
 ; @wave &sample9 count(sample9)
 moduleEnd
-
 module samplePack2
 ; @pos 488 -7
 use env
@@ -1810,91 +1345,6 @@ int8[] sample17 ASSET_SAMPLE17_SIZE
 ; @loadAsset sample17 &sample17
 ; @wave &sample17 count(sample17)
 moduleEnd
-
-function sampleNumberToRepeatOffset
-; @pos 491 -181
-; @tab 8
-use sampleMeta
-param int sampleNumber
-push sampleNumber
-mapBegin int
-map 1	S01_REPEAT_OFFSET
-map 2	S02_REPEAT_OFFSET
-map 3	S03_REPEAT_OFFSET
-map 4	S04_REPEAT_OFFSET
-map 5	S05_REPEAT_OFFSET
-map 6	S06_REPEAT_OFFSET
-map 7	S07_REPEAT_OFFSET
-map 9	S09_REPEAT_OFFSET
-map 10	S10_REPEAT_OFFSET
-map 11	S11_REPEAT_OFFSET
-map 12	S12_REPEAT_OFFSET
-map 13	S13_REPEAT_OFFSET
-map 14	S14_REPEAT_OFFSET
-map 15	S15_REPEAT_OFFSET
-map 16	S16_REPEAT_OFFSET
-map 17	S17_REPEAT_OFFSET
-default 2
-mapEnd int
-
-functionEnd int
-
-function sampleNumberToVolume
-; @pos 497 -209
-; @tab 8
-use sampleMeta
-param int sampleNumber
-
-push sampleNumber
-mapBegin int
-map 1	S01_VOLUME
-map 2	S02_VOLUME
-map 3	S03_VOLUME
-map 4	S04_VOLUME
-map 5	S05_VOLUME
-map 6	S06_VOLUME
-map 7	S07_VOLUME
-map 9	S09_VOLUME
-map 10	S10_VOLUME
-map 11	S11_VOLUME
-map 12	S12_VOLUME
-map 13	S13_VOLUME
-map 14	S14_VOLUME
-map 15	S15_VOLUME
-map 16	S16_VOLUME
-map 17	S17_VOLUME
-default 0
-mapEnd int
-functionEnd int
-
-function sampleNumberToSize
-; @pos 535 -181
-; @tab 8
-use env
-param int sampleNumber
-
-push sampleNumber
-mapBegin int
-map 1	ASSET_SAMPLE1_SIZE
-map 2	ASSET_SAMPLE2_SIZE
-map 3	ASSET_SAMPLE3_SIZE
-map 4	ASSET_SAMPLE4_SIZE
-map 5	ASSET_SAMPLE5_SIZE
-map 6	ASSET_SAMPLE6_SIZE
-map 7	ASSET_SAMPLE7_SIZE
-map 9	ASSET_SAMPLE9_SIZE
-map 10	ASSET_SAMPLE10_SIZE
-map 11	ASSET_SAMPLE11_SIZE
-map 12	ASSET_SAMPLE12_SIZE
-map 13	ASSET_SAMPLE13_SIZE
-map 14	ASSET_SAMPLE14_SIZE
-map 15	ASSET_SAMPLE15_SIZE
-map 16	ASSET_SAMPLE16_SIZE
-map 17	ASSET_SAMPLE17_SIZE
-default 1
-mapEnd int
-functionEnd int
-
 module samplePlayer1
 ; @pos 545 -4
 use env
@@ -1995,12 +1445,11 @@ store
 ifEnd
 
 moduleEnd
-
 module samplePlayer2
 ; @pos 545 16
 use env
 ; @tab 6 20
-int*	period	&period2:out 
+int*	period	&period2:out
 int*	offset	&sampleOffset2:out
 int*	trigger	&trigger2:out
 int*	sampleNumber	&sampleNumber2:out
@@ -2096,6 +1545,987 @@ store
 ifEnd
 
 moduleEnd
+module samplePlayer3
+; @pos 597 -4
+use env
+; @tab 6 20
+int*	period	&period3:out
+int*	offset	&sampleOffset3:out
+int*	trigger	&trigger3:out
+int*	sampleNumber	&sampleNumber3:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress)
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+module samplePlayer4
+; @pos 597 16
+use env
+; @tab 6 20
+int*	period	&period4:out
+int*	offset	&sampleOffset4:out
+int*	trigger	&trigger4:out
+int*	sampleNumber	&sampleNumber4:out
+int8*	sampleAddress	; @w
+int	sampleSize	; @w
+int8*	playhead	; @w
+; @wave2 sampleAddress sampleSize playhead
+float out ; @w
+; @hide
+
+float _position
+int _playing
+
+push &sampleAddress
+push *sampleNumber
+call sampleNumberToAddr
+store
+
+push &sampleSize
+push *sampleNumber
+call sampleNumberToSize
+store
+
+push *trigger
+risingEdge
+if
+push &_playing
+push 1
+store
+push &_position
+push *offset
+castToFloat
+store
+ifEnd
+
+; Calculate read address
+push &playhead
+push _position
+castToInt
+push sampleAddress
+add
+store
+
+; Read sample at playhead
+; write it to output
+push &out
+push *playhead
+castToFloat
+push max(*sampleAddress)
+castToFloat
+div
+store
+
+; Advance the playhead
+push _playing
+if
+push &_position
+push _position
+push *period
+call period2Step
+add
+store
+ifEnd
+
+push *sampleNumber
+call sampleNumberCanLoop
+
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToRepeatEnd
+greaterThan
+and
+if
+push &_position
+push *sampleNumber
+call sampleNumberToRepeatOffset
+castToFloat
+store
+ifEnd
+
+; Stop playing
+; when reaches buffer end
+push _position
+castToInt
+push *sampleNumber
+call sampleNumberToSize
+greaterThan
+if
+push &_playing
+push 0
+store
+ifEnd
+
+moduleEnd
+module amp1
+; @pos 661 -20
+
+float* in &samplePlayer1:out
+int* volume &volume1:out
+float out ; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 68.0
+div
+mul
+store
+
+moduleEnd
+module amp2
+; @pos 661 -2
+float* in &samplePlayer2:out
+int* volume &volume2:out
+float out; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 68.0
+div
+mul
+store
+
+moduleEnd
+module amp3
+; @pos 661 15
+float* in &samplePlayer3:out
+int* volume &volume3:out
+float out ; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 68.0
+div
+mul
+store
+
+moduleEnd
+module amp4
+; @pos 661 32
+float* in &samplePlayer4:out
+int* volume &volume4:out
+float out; @meter
+push &out
+push *in
+push *volume
+castToFloat
+push 68.0
+div
+mul
+store
+
+moduleEnd
+module mixer
+; @pos 705 6
+float* in1 &amp1:out
+float* in2 &amp2:out
+float* in3 &amp3:out
+float* in4 &amp4:out
+
+float outL ; @meter
+float outR ; @meter
+
+push &outL
+push *in1
+push *in3
+add
+push 2.0
+div
+push *in2
+push *in4
+add
+push 3.5
+div
+add
+store
+
+push &outR
+push *in2
+push *in4
+add
+push 2.0
+div
+
+push *in1
+push *in3
+add
+push 3.5
+div
+add
+store
+
+moduleEnd
+module lowpassL
+; @pos 743 -15
+float* in &mixer:outL
+float state 0.0 ; @w
+float out ; @w
+
+use math
+use env
+
+const FREQ 4400
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*FREQ
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
+
+push &out
+push state
+push *in
+push state
+sub
+push COEFFICIENT
+mul
+add
+store
+
+push &state
+push out
+store
+
+moduleEnd
+module lowpassR
+; @pos 743 17
+float* in &mixer:outR
+float state 0.0 ; @w
+float out ; @w
+
+use math
+use env
+
+const FREQ 4400
+const MINUS_2_PI -2*PI
+const CUTOFF_TERM MINUS_2_PI*FREQ
+const EXPONENT CUTOFF_TERM/SAMPLE_RATE
+const DECAY E^EXPONENT
+const COEFFICIENT 1-DECAY
+
+push &out
+push state
+push *in
+push state
+sub
+push COEFFICIENT
+mul
+add
+store
+
+push &state
+push out
+store
+
+moduleEnd
+module colors
+; @pos 755 -70
+; @config color.text.lineNumber rgba(255,255,255,0.3)
+; @config color.text.code rgba(255,255,255,0.8)
+; @config color.text.instruction #ffffff
+; @config color.text.numbers #ffffff
+; @config color.text.codeComment rgba(255,255,255,0.5)
+; @config color.text.menuItemTextHighlighted #ffffff
+; @config color.text.debugInfo rgba(255,255,255,0.5)
+; @config color.text.dialogText #000
+; @config color.text.dialogTitle #000
+; @config color.text.menuItemText #000
+; @config color.fill.moduleBackground rgba(255,255,255,0.2)
+; @config color.fill.wire rgba(255,255,255,0.5)
+; @config color.fill.highlightedCodeLine rgba(255,255,255,0.4)
+; @config color.fill.moduleBackgroundDragged rgba(255,255,255,0.2)
+; @config color.fill.backgroundDots rgba(255,255,255,0.1)
+; @config color.fill.backgroundDots2 rgba(255,255,255,0.3)
+; @config color.fill.menuItemBackground rgba(255,255,255,0.8)
+; @config color.fill.menuItemBackgroundHighlighted #000
+; @config color.fill.codeBlockHighlightLevel1 rgba(255,255,255,0.1)
+; @config color.fill.codeBlockHighlightLevel2 rgba(255,255,255,0.1)
+; @config color.fill.codeBlockHighlightLevel3 rgba(255,255,255,0.1)
+; @config color.fill.waveform rgba(255,255,255,0.8)
+; @config color.fill.debugInfoBackground rgba(255,255,255,0.1)
+; @config color.fill.dialogDimmer rgba(255,255,255,0.2)
+; @config color.fill.dialogBackground rgba(255,255,255,0.8)
+; @config color.icons.inputConnectorBackground rgba(255,255,255,0.4)
+; @config color.icons.inputConnector #fff
+; @config color.icons.outputConnectorBackground rgba(255,255,255,0.4)
+; @config color.icons.outputConnector #fff
+moduleEnd
+module audiooutL
+; @pos 794 -6
+use env
+
+float* in &lowpassL:out
+float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 0
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer
+; pointer with the word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+module audiooutR
+; @pos 835 -6
+use env
+
+float* in &lowpassR:out
+float[] buffer AUDIO_BUFFER_SIZE
+; ~audioOutput buffer 0 1
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer
+; pointer with the word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+groupEnd
+
+note
+; @pos 9 -126
+; Project Config
+; @config runtime AudioWorkletRuntime
+; ~sampleRate 48000
+; @config export.fileName lowerIntentions
+
+noteEnd
+
+note
+; @pos 9 -117
+; Assets
+; @tab 22
+; @defAsset sample1	https://static.8f4e.com/assets/mods/lowerintentions/sample_1.pcm
+; @defAsset sample2	https://static.8f4e.com/assets/mods/lowerintentions/sample_2.pcm
+; @defAsset sample3	https://static.8f4e.com/assets/mods/lowerintentions/sample_3.pcm
+; @defAsset sample4	https://static.8f4e.com/assets/mods/lowerintentions/sample_4.pcm
+; @defAsset sample5	https://static.8f4e.com/assets/mods/lowerintentions/sample_5.pcm
+; @defAsset sample6	https://static.8f4e.com/assets/mods/lowerintentions/sample_6.pcm
+; @defAsset sample7	https://static.8f4e.com/assets/mods/lowerintentions/sample_7.pcm
+; @defAsset sample9	https://static.8f4e.com/assets/mods/lowerintentions/sample_9.pcm
+; @defAsset sample10	https://static.8f4e.com/assets/mods/lowerintentions/sample_10.pcm
+; @defAsset sample11	https://static.8f4e.com/assets/mods/lowerintentions/sample_11.pcm
+; @defAsset sample12	https://static.8f4e.com/assets/mods/lowerintentions/sample_12.pcm
+; @defAsset sample13	https://static.8f4e.com/assets/mods/lowerintentions/sample_13.pcm
+; @defAsset sample14	https://static.8f4e.com/assets/mods/lowerintentions/sample_14.pcm
+; @defAsset sample15	https://static.8f4e.com/assets/mods/lowerintentions/sample_15.pcm
+; @defAsset sample16	https://static.8f4e.com/assets/mods/lowerintentions/sample_16.pcm
+; @defAsset sample17	https://static.8f4e.com/assets/mods/lowerintentions/sample_17.pcm
+; @defAsset ch1	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch1.bin
+; @defAsset ch2	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch2.bin
+; @defAsset ch3	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch3.bin
+; @defAsset ch4	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch4.bin
+
+noteEnd
+
+constants env
+; @pos 126 -192
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'patterns_ch1.bin'
+const ASSET_CH1_SIZE 6656
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 6656
+; 'patterns_ch3.bin'
+const ASSET_CH3_SIZE 6656
+; 'patterns_ch4.bin'
+const ASSET_CH4_SIZE 6656
+; 'sample_1.pcm'
+const ASSET_SAMPLE1_SIZE 2812
+; 'sample_2.pcm'
+const ASSET_SAMPLE2_SIZE 28726
+; 'sample_3.pcm'
+const ASSET_SAMPLE3_SIZE 58182
+; 'sample_4.pcm'
+const ASSET_SAMPLE4_SIZE 58708
+; 'sample_5.pcm'
+const ASSET_SAMPLE5_SIZE 28656
+; 'sample_6.pcm'
+const ASSET_SAMPLE6_SIZE 57040
+; 'sample_7.pcm'
+const ASSET_SAMPLE7_SIZE 18354
+; 'sample_9.pcm'
+const ASSET_SAMPLE9_SIZE 7026
+; 'sample_10.pcm'
+const ASSET_SAMPLE10_SIZE 14456
+; 'sample_11.pcm'
+const ASSET_SAMPLE11_SIZE 14352
+; 'sample_12.pcm'
+const ASSET_SAMPLE12_SIZE 17822
+; 'sample_13.pcm'
+const ASSET_SAMPLE13_SIZE 28508
+; 'sample_14.pcm'
+const ASSET_SAMPLE14_SIZE 3318
+; 'sample_15.pcm'
+const ASSET_SAMPLE15_SIZE 65534
+; 'sample_16.pcm'
+const ASSET_SAMPLE16_SIZE 48020
+; 'sample_17.pcm'
+const ASSET_SAMPLE17_SIZE 35098
+
+constantsEnd
+
+constants math
+; @pos 180 -168
+
+const PI      3.141592653589793
+const NEG_PI -3.141592653589793
+const TAU     6.283185307179586
+const HALF_PI 1.570796326794896
+const INV_PI  0.318309886183790
+const INV_TAU 0.159154943091895
+const PHI     1.618033988749895
+const DEG2RAD 0.017453292519943
+const RAD2DEG 57.29577951308232
+const SQRT2   1.414213562373095
+const SQRT1_2 0.707106781186547
+; Useful in FFT twiddle factors.
+const HANN_A0 0.5
+; For common window functions before FFT.
+const HAMMING_A0 0.54
+const HAMMING_A1 0.46
+const BLACKMAN_A0 0.42
+const BLACKMAN_A1 0.5
+const BLACKMAN_A2 0.08
+const LN2     0.693147180559945
+const LN10    2.302585092994046
+const LOG2E   1.442695040888963
+const LOG10E  0.434294481903251
+const E       2.718281828459045
+
+constantsEnd
+
+constants mod
+; @pos 230 -192
+; @tab 30
+use env
+; Row layout (little-endian)
+const SAMPLE_HI_NIBBLE	0x000000F0
+const PERIOD_HI	0x0000000F
+const PERIOD_LO	0x0000FF00
+const PERIOD_SHIFT	8
+const SAMPLE_LO_NIBBLE	0x00F00000
+const SAMPLE_LO_NIBBLE_SHIFT	20
+const EFFECT_NIBBLE	0x000F0000
+const EFFECT_NIBBLE_SHIFT	16
+const EFFECT_PARAM	0xFF000000
+const EFFECT_PARAM_SHIFT	24
+; AMIGA magic const
+const PAL_AMIGA_CLOCK	7093789.2
+const DEFAULT_TEMPO	125
+const DEFAULT_TICKS	6
+; Effects
+const ARPEGGIO	0x0
+const PITCH_SLIDE_UP	0x1
+const PITCH_SLIDE_DOWN	0x2
+const TONE_PORTAMENTO	0x3
+const VIBRATE	0x4
+const TONE_PORTA_VOL_SLIDE	0x5
+const VIBRATO_VOL_SLIDE	0x6
+const TREMOLO	0x7
+const SAMPLE_OFFSET	0x9
+const VOLUME_SLIDE	0xA
+const PATTERN_JUMP	0xB
+const SET_VOLUME	0xC
+const PATTERN_BREAK	0xD
+const EXTENDED_EFFECTS	0xE
+const SET_SPEED	0xF
+; Extended effects
+const SET_FILTER	0xE0
+const FINE_SLIDE_UP	0xE1
+const FINE_SLIDE_DOWN	0xE2
+const GLISSANDO_CONTROL	0xE3
+const SET_VIBRATO_WAVEFORM	0xE4
+const SET_FINETUNE	0xE5
+const PATTERN_LOOP	0xE6
+const SET_TREMOLO_WAVEFORM	0xE7
+const RETRIGGER_NOTE	0xE9
+const FINE_VOLUME_SLIDE_UP	0xEA
+const FINE_VOLUME_SLIDE_DOWN	0xEB
+const NOTE_CUT	0xEC
+const NOTE_DELAY	0xED
+const PATTERN_DELAY	0xEE
+const INVERT_LOOP	0xEF
+
+constantsEnd
+
+constants sampleMeta
+; @pos 279 -208
+; @tab 26
+const S01_VOLUME	64
+const S01_FINETUNE	0
+const S01_REPEAT_OFFSET	0
+const S01_REPEAT_LENGTH	2812
+const S02_VOLUME	64
+const S02_FINETUNE	-3
+const S02_REPEAT_OFFSET	0
+const S02_REPEAT_LENGTH	2
+const S03_VOLUME	64
+const S03_FINETUNE	-3
+const S03_REPEAT_OFFSET	46752
+const S03_REPEAT_LENGTH	11428
+const S04_VOLUME	64
+const S04_FINETUNE	-3
+const S04_REPEAT_OFFSET	50744
+const S04_REPEAT_LENGTH	5834
+const S05_VOLUME	64
+const S05_FINETUNE	-3
+const S05_REPEAT_OFFSET	0
+const S05_REPEAT_LENGTH	2
+const S06_VOLUME	64
+const S06_FINETUNE	-3
+const S06_REPEAT_OFFSET	52540
+const S06_REPEAT_LENGTH	4498
+const S07_VOLUME	35
+const S07_FINETUNE	2
+const S07_REPEAT_OFFSET	0
+const S07_REPEAT_LENGTH	18354
+const S09_VOLUME	64
+const S09_FINETUNE	0
+const S09_REPEAT_OFFSET	0
+const S09_REPEAT_LENGTH	2
+const S10_VOLUME	64
+const S10_FINETUNE	0
+const S10_REPEAT_OFFSET	0
+const S10_REPEAT_LENGTH	2
+const S11_VOLUME	64
+const S11_FINETUNE	-2
+const S11_REPEAT_OFFSET	0
+const S11_REPEAT_LENGTH	2
+const S12_VOLUME	64
+const S12_FINETUNE	-2
+const S12_REPEAT_OFFSET	0
+const S12_REPEAT_LENGTH	2
+const S13_VOLUME	64
+const S13_FINETUNE	-2
+const S13_REPEAT_OFFSET	0
+const S13_REPEAT_LENGTH	2
+const S14_VOLUME	58
+const S14_FINETUNE	3
+const S14_REPEAT_OFFSET	3100
+const S14_REPEAT_LENGTH	202
+const S15_VOLUME	64
+const S15_FINETUNE	0
+const S15_REPEAT_OFFSET	23050
+const S15_REPEAT_LENGTH	42484
+const S16_VOLUME	64
+const S16_FINETUNE	0
+const S16_REPEAT_OFFSET	38284
+const S16_REPEAT_LENGTH	9736
+const S17_VOLUME	64
+const S17_FINETUNE	0
+const S17_REPEAT_OFFSET	25464
+const S17_REPEAT_LENGTH	9634
+
+constantsEnd
+
+function maskExtendedEffect
+; @pos 331 -122
+; Combine the main E effect
+; nibble with the extended
+; sub-effect nibble.
+param int row
+
+push row
+call maskEffect
+push 4
+shiftLeft
+push row
+call maskParamHi
+or
+
+functionEnd int
+
+function maskEffect
+; @pos 333 -105
+use mod
+param int row
+
+push row
+push EFFECT_NIBBLE
+and
+push EFFECT_NIBBLE_SHIFT
+shiftRightUnsigned
+
+functionEnd int
+
+function maskParam
+; @pos 367 -124
+use mod
+param int row
+
+push row
+push EFFECT_PARAM
+and
+push EFFECT_PARAM_SHIFT
+shiftRightUnsigned
+
+functionEnd int
+
+function maskPeriod
+; @pos 367 -111
+use mod
+param int row
+
+push row
+push PERIOD_HI
+and
+push PERIOD_SHIFT
+shiftLeft
+push row
+push PERIOD_LO
+and
+push PERIOD_SHIFT
+shiftRightUnsigned
+or
+
+functionEnd int
+
+function sampleNumberCanLoop
+; @pos 392 -164
+use sampleMeta
+param int sampleNumber
+
+push sampleNumber
+call sampleNumberToRepeatLen
+push 2
+greaterThan
+
+functionEnd int
+
+function period2Step
+; @pos 395 -188
+param int period
+use mod
+use env
+
+push period
+equalToZero
+if
+push 0.0
+return
+ifEnd
+
+push PAL_AMIGA_CLOCK/2
+push period
+castToFloat
+ensureNonZero
+div
+push SAMPLE_RATE
+castToFloat
+div
+
+functionEnd float
+
+function maskSampleNumber
+; @pos 401 -131
+use mod
+param int row
+
+push row
+push SAMPLE_HI_NIBBLE
+and
+push row
+push SAMPLE_LO_NIBBLE
+and
+push SAMPLE_LO_NIBBLE_SHIFT
+shiftRightUnsigned
+or
+
+functionEnd int
+
+function maskParamHi
+; @pos 401 -114
+param int row
+
+push row
+call maskParam
+push 4
+shiftRightUnsigned
+
+functionEnd int
+
+function maskParamLo
+; @pos 401 -103
+param int row
+
+push row
+call maskParam
+push 0xF
+and
+
+functionEnd int
+
+function modFinetune
+; @pos 429 -199
+const STEP 96.0
+
+const FT_P0 0/STEP
+const FT_P1 1/STEP
+const FT_P2 2/STEP
+const FT_P3 3/STEP
+const FT_P4 4/STEP
+const FT_P5 5/STEP
+const FT_P6 6/STEP
+const FT_P7 7/STEP
+const FT_P8 8/STEP
+
+const FT_N0 0/STEP
+const FT_N1 -1/STEP
+const FT_N2 -2/STEP
+const FT_N3 -3/STEP
+const FT_N4 -4/STEP
+const FT_N5 -5/STEP
+const FT_N6 -6/STEP
+const FT_N7 -7/STEP
+const FT_N8 -8/STEP
+
+param int fineTune
+push fineTune
+mapBegin int
+map -8 2^FT_P8
+map -7 2^FT_P7
+map -6 2^FT_P6
+map -5 2^FT_P5
+map -4 2^FT_P4
+map -3 2^FT_P3
+map -2 2^FT_P2
+map -1 2^FT_P1
+map  0 2^FT_N0
+map  1 2^FT_N1
+map  2 2^FT_N2
+map  3 2^FT_N3
+map  4 2^FT_N4
+map  5 2^FT_N5
+map  6 2^FT_N6
+map  7 2^FT_N7
+mapEnd float
+
+functionEnd float
+
+function sampleNumberToRepeatOffset
+; @pos 491 -181
+; @tab 8
+use sampleMeta
+param int sampleNumber
+push sampleNumber
+mapBegin int
+map 1	S01_REPEAT_OFFSET
+map 2	S02_REPEAT_OFFSET
+map 3	S03_REPEAT_OFFSET
+map 4	S04_REPEAT_OFFSET
+map 5	S05_REPEAT_OFFSET
+map 6	S06_REPEAT_OFFSET
+map 7	S07_REPEAT_OFFSET
+map 9	S09_REPEAT_OFFSET
+map 10	S10_REPEAT_OFFSET
+map 11	S11_REPEAT_OFFSET
+map 12	S12_REPEAT_OFFSET
+map 13	S13_REPEAT_OFFSET
+map 14	S14_REPEAT_OFFSET
+map 15	S15_REPEAT_OFFSET
+map 16	S16_REPEAT_OFFSET
+map 17	S17_REPEAT_OFFSET
+default 2
+mapEnd int
+
+functionEnd int
+
+function sampleNumberToVolume
+; @pos 497 -209
+; @tab 8
+use sampleMeta
+param int sampleNumber
+
+push sampleNumber
+mapBegin int
+map 1	S01_VOLUME
+map 2	S02_VOLUME
+map 3	S03_VOLUME
+map 4	S04_VOLUME
+map 5	S05_VOLUME
+map 6	S06_VOLUME
+map 7	S07_VOLUME
+map 9	S09_VOLUME
+map 10	S10_VOLUME
+map 11	S11_VOLUME
+map 12	S12_VOLUME
+map 13	S13_VOLUME
+map 14	S14_VOLUME
+map 15	S15_VOLUME
+map 16	S16_VOLUME
+map 17	S17_VOLUME
+default 0
+mapEnd int
+functionEnd int
+
+function sampleNumberToSize
+; @pos 535 -181
+; @tab 8
+use env
+param int sampleNumber
+
+push sampleNumber
+mapBegin int
+map 1	ASSET_SAMPLE1_SIZE
+map 2	ASSET_SAMPLE2_SIZE
+map 3	ASSET_SAMPLE3_SIZE
+map 4	ASSET_SAMPLE4_SIZE
+map 5	ASSET_SAMPLE5_SIZE
+map 6	ASSET_SAMPLE6_SIZE
+map 7	ASSET_SAMPLE7_SIZE
+map 9	ASSET_SAMPLE9_SIZE
+map 10	ASSET_SAMPLE10_SIZE
+map 11	ASSET_SAMPLE11_SIZE
+map 12	ASSET_SAMPLE12_SIZE
+map 13	ASSET_SAMPLE13_SIZE
+map 14	ASSET_SAMPLE14_SIZE
+map 15	ASSET_SAMPLE15_SIZE
+map 16	ASSET_SAMPLE16_SIZE
+map 17	ASSET_SAMPLE17_SIZE
+default 1
+mapEnd int
+functionEnd int
 
 function sampleNumberToFinetune
 ; @pos 571 -209
@@ -2211,208 +2641,6 @@ ifEnd
 push 0
 
 functionEnd int
-
-module samplePlayer3
-; @pos 597 -4
-use env
-; @tab 6 20
-int*	period	&period3:out
-int*	offset	&sampleOffset3:out
-int*	trigger	&trigger3:out
-int*	sampleNumber	&sampleNumber3:out
-int8*	sampleAddress	; @w
-int	sampleSize	; @w
-int8*	playhead	; @w
-; @wave2 sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-risingEdge
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress)
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
-
-module samplePlayer4
-; @pos 597 16
-use env
-; @tab 6 20
-int*	period	&period4:out
-int*	offset	&sampleOffset4:out
-int*	trigger	&trigger4:out
-int*	sampleNumber	&sampleNumber4:out
-int8*	sampleAddress	; @w
-int	sampleSize	; @w
-int8*	playhead	; @w
-; @wave2 sampleAddress sampleSize playhead
-float out ; @w
-; @hide
-
-float _position
-int _playing
-
-push &sampleAddress
-push *sampleNumber
-call sampleNumberToAddr
-store
-
-push &sampleSize
-push *sampleNumber
-call sampleNumberToSize
-store
-
-push *trigger
-risingEdge
-if
-push &_playing
-push 1
-store
-push &_position
-push *offset
-castToFloat
-store
-ifEnd
-
-; Calculate read address
-push &playhead
-push _position
-castToInt
-push sampleAddress
-add
-store
-
-; Read sample at playhead
-; write it to output
-push &out
-push *playhead
-castToFloat
-push max(*sampleAddress)
-castToFloat
-div
-store
-
-; Advance the playhead
-push _playing
-if
-push &_position
-push _position
-push *period
-call period2Step
-add
-store
-ifEnd
-
-push *sampleNumber
-call sampleNumberCanLoop
-
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToRepeatEnd
-greaterThan
-and
-if
-push &_position
-push *sampleNumber
-call sampleNumberToRepeatOffset
-castToFloat
-store
-ifEnd
-
-; Stop playing
-; when reaches buffer end
-push _position
-castToInt
-push *sampleNumber
-call sampleNumberToSize
-greaterThan
-if
-push &_playing
-push 0
-store
-ifEnd
-
-moduleEnd
 
 function rowVolumeSlideDelta
 ; @pos 622 -113
@@ -2588,176 +2816,6 @@ push 0
 
 functionEnd int
 
-module amp1
-; @pos 661 -20
-
-float* in &samplePlayer1:out
-int* volume &volume1:out
-float out ; @meter
-push &out
-push *in
-push *volume
-castToFloat
-push 68.0
-div
-mul 
-store
-
-moduleEnd
-
-module amp2
-; @pos 661 -2
-float* in &samplePlayer2:out
-int* volume &volume2:out
-float out; @meter
-push &out
-push *in
-push *volume
-castToFloat
-push 68.0
-div
-mul 
-store
-
-moduleEnd
-
-module amp3
-; @pos 661 15
-float* in &samplePlayer3:out
-int* volume &volume3:out
-float out ; @meter
-push &out
-push *in
-push *volume
-castToFloat
-push 68.0
-div
-mul 
-store
-
-moduleEnd
-
-module amp4
-; @pos 661 32
-float* in &samplePlayer4:out
-int* volume &volume4:out
-float out; @meter
-push &out
-push *in
-push *volume
-castToFloat
-push 68.0
-div
-mul 
-store
-
-moduleEnd
-
-module mixer
-; @pos 705 6
-float* in1 &amp1:out
-float* in2 &amp2:out
-float* in3 &amp3:out
-float* in4 &amp4:out
-
-float outL ; @meter
-float outR ; @meter
-
-push &outL
-push *in1
-push *in3
-add
-push 2.0
-div
-push *in2
-push *in4
-add
-push 3.5
-div
-add
-store
-
-push &outR
-push *in2
-push *in4
-add
-push 2.0
-div
-
-push *in1
-push *in3
-add
-push 3.5
-div
-add
-store
-
-moduleEnd
-
-module lowpassL
-; @pos 743 -15
-float* in &mixer:outL
-float state 0.0 ; @w
-float out ; @w
-
-use math
-use env
-
-const FREQ 4400
-const MINUS_2_PI -2*PI
-const CUTOFF_TERM MINUS_2_PI*FREQ
-const EXPONENT CUTOFF_TERM/SAMPLE_RATE
-const DECAY E^EXPONENT
-const COEFFICIENT 1-DECAY
-
-push &out
-push state
-push *in
-push state
-sub
-push COEFFICIENT
-mul
-add
-store
-
-push &state
-push out
-store
-
-moduleEnd
-
-module lowpassR
-; @pos 743 17
-float* in &mixer:outR
-float state 0.0 ; @w
-float out ; @w
-
-use math
-use env
-
-const FREQ 4400
-const MINUS_2_PI -2*PI
-const CUTOFF_TERM MINUS_2_PI*FREQ
-const EXPONENT CUTOFF_TERM/SAMPLE_RATE
-const DECAY E^EXPONENT
-const COEFFICIENT 1-DECAY
-
-push &out
-push state
-push *in
-push state
-sub
-push COEFFICIENT
-mul
-add
-store
-
-push &state
-push out
-store
-
-moduleEnd
-
 note fragmentShaderBackground
 ; @pos 755 -118
 #version 300 es
@@ -2805,112 +2863,3 @@ void main() {
  outColor = vec4(mix(SKY_COLOR, CLOUD_COLOR, cloud), 1.0);
 }
 noteEnd
-
-module colors
-; @pos 755 -70
-; @config color.text.lineNumber rgba(255,255,255,0.3)
-; @config color.text.code rgba(255,255,255,0.8)
-; @config color.text.instruction #ffffff
-; @config color.text.numbers #ffffff
-; @config color.text.codeComment rgba(255,255,255,0.5)
-; @config color.text.menuItemTextHighlighted #ffffff
-; @config color.text.debugInfo rgba(255,255,255,0.5)
-; @config color.text.dialogText #000
-; @config color.text.dialogTitle #000
-; @config color.text.menuItemText #000
-; @config color.fill.moduleBackground rgba(255,255,255,0.2)
-; @config color.fill.wire rgba(255,255,255,0.5)
-; @config color.fill.highlightedCodeLine rgba(255,255,255,0.4)
-; @config color.fill.moduleBackgroundDragged rgba(255,255,255,0.2)
-; @config color.fill.backgroundDots rgba(255,255,255,0.1)
-; @config color.fill.backgroundDots2 rgba(255,255,255,0.3)
-; @config color.fill.menuItemBackground rgba(255,255,255,0.8)
-; @config color.fill.menuItemBackgroundHighlighted #000
-; @config color.fill.codeBlockHighlightLevel1 rgba(255,255,255,0.1)
-; @config color.fill.codeBlockHighlightLevel2 rgba(255,255,255,0.1)
-; @config color.fill.codeBlockHighlightLevel3 rgba(255,255,255,0.1)
-; @config color.fill.waveform rgba(255,255,255,0.8)
-; @config color.fill.debugInfoBackground rgba(255,255,255,0.1)
-; @config color.fill.dialogDimmer rgba(255,255,255,0.2)
-; @config color.fill.dialogBackground rgba(255,255,255,0.8)
-; @config color.icons.inputConnectorBackground rgba(255,255,255,0.4)
-; @config color.icons.inputConnector #fff
-; @config color.icons.outputConnectorBackground rgba(255,255,255,0.4)
-; @config color.icons.outputConnector #fff
-moduleEnd
-
-module audiooutL
-; @pos 794 -6
-use env
-
-float* in &lowpassL:out
-float[] buffer AUDIO_BUFFER_SIZE
-; ~audioOutput buffer 0 0
-int pointer &buffer
-
-; @plot &buffer count(buffer)
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer 
-; pointer with the word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer&
-greaterThan 
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
-
-module audiooutR
-; @pos 835 -6
-use env
-
-float* in &lowpassR:out
-float[] buffer AUDIO_BUFFER_SIZE
-; ~audioOutput buffer 0 1
-int pointer &buffer
-
-; @plot &buffer count(buffer)
-; Store the input value
-; in the buffer
-push pointer
-push *in
-store
-
-; Increment the buffer 
-; pointer with the word size
-push &pointer
-push pointer
-push sizeof(buffer)
-add
-store
-
-; Reset the buffer pointer
-; when it reaches the end
-; of the buffer
-push pointer
-push buffer& 
-greaterThan 
-if
-push &pointer
-push &buffer
-store
-ifEnd
-
-moduleEnd

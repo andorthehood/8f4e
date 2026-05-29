@@ -1,15 +1,16 @@
 8f4e/v1
 
+group main
 module sequencer
 
-int step0 
+int step0
 int step1
-int step2 
+int step2
 int step3
 int step4
 int step5
 int step6
-int _last 
+int _last
 
 int* stepPointer &step1
 int* trigger
@@ -18,7 +19,7 @@ int out
 
 ; Increment step pointer
 push *trigger
-risingEdge 
+risingEdge
 if
 push &stepPointer
 push stepPointer
@@ -39,6 +40,7 @@ ifEnd
 
 push &out
 push *stepPointer
-store 
+store
 
 moduleEnd
+groupEnd

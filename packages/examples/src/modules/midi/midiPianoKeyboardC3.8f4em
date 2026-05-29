@@ -1,7 +1,9 @@
 8f4e/v1
 
+group main
 module piano
 int[] notes 12
 int notesCount 0
 ; @piano notes notesCount 48
 moduleEnd
+groupEnd

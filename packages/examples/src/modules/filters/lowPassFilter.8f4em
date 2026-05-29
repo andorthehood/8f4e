@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module lowPassFilter
 
 float* in
@@ -16,7 +17,8 @@ push alpha
 sub
 push out
 mul
-add 
+add
 store
 
 moduleEnd
+groupEnd

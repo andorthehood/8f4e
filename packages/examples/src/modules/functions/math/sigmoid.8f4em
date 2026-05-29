@@ -1,5 +1,8 @@
 8f4e/v1
 
+group main
+groupEnd
+
 function sigmoid
 ; Fast sigmoid approximation
 ; of logistic sigmoid

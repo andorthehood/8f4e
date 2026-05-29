@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module triggerPatternSequencer
 
 int* trigger
@@ -50,3 +51,4 @@ ifEnd
 ifEnd
 
 moduleEnd
+groupEnd

@@ -1,5 +1,8 @@
 8f4e/v1
 
+group main
+groupEnd
+
 constants instructionSet
 ; @pos 27 83
 ; 8f4e instruction set.
@@ -57,7 +60,7 @@ constants instructionSet
 ; castToFloat64	Convert the top value to float64.
 ;
 ; Stack
-; push	Push a literal, identifier, 
+; push	Push a literal, identifier,
 ; 	`-> or pointer-derived value.
 ; drop	Discard the top stack value.
 ; clearStack	Clear the current stack.

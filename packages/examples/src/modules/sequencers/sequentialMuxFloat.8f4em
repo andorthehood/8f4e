@@ -1,9 +1,10 @@
 8f4e/v1
 
+group main
 module seqMux
 
 float* in0
-float* in1 
+float* in1
 float* in2
 float* in3
 float* in4
@@ -21,7 +22,7 @@ int counter
 
 push *trigger
 risingEdge
-if 
+if
  ; Increment counter
 push &counter
 push counter
@@ -54,3 +55,4 @@ load
 store
 
 moduleEnd
+groupEnd

@@ -1,5 +1,6 @@
 8f4e/v1
 
+group main
 module projectConfig
 ; @pos -202 -14
 ; @config runtime AudioWorkletRuntime
@@ -7,6 +8,16 @@ module projectConfig
 ; @config export.fileName midiIn
 
 moduleEnd
+module lastMidiEvent
+; @pos -83 7
+; @home right
+int status  ; @w 0x
+int channel ; @w
+int data1   ; @w
+int data2   ; @w
+
+moduleEnd
+groupEnd
 
 constants env
 ; @pos -202 -6
@@ -56,16 +67,6 @@ push data2
 store
 
 functionEnd
-
-module lastMidiEvent
-; @pos -83 7
-; @home right                      
-int status  ; @w 0x
-int channel ; @w
-int data1   ; @w
-int data2   ; @w
-
-moduleEnd
 
 note
 ; @pos -83 19
