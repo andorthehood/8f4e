@@ -103,6 +103,57 @@ describe('map instruction compiler', () => {
 		]);
 	});
 
+	it('records a normalized implicit key row', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [
+				{
+					blockType: BlockType.MODULE,
+					expectedResultIsInteger: false,
+					hasExpectedResult: false,
+				},
+				{
+					blockType: BlockType.MAP,
+					expectedResultIsInteger: false,
+					hasExpectedResult: false,
+					mapState: {
+						inputIsInteger: true,
+						inputIsFloat64: false,
+						rows: [
+							{
+								keyValue: 0,
+								valueValue: 100,
+								valueIsInteger: true,
+								valueIsFloat64: false,
+							},
+						],
+						defaultSet: false,
+					},
+				},
+			],
+		});
+
+		analyzeAndCompileInstruction(
+			map,
+			{
+				lineNumberBeforeMacroExpansion: 2,
+				lineNumberAfterMacroExpansion: 2,
+				instruction: 'map',
+				arguments: [
+					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 200, isInteger: true },
+				],
+			} as CompilerASTLine,
+			context
+		);
+
+		expect(getTopMapState(context).rows.at(-1)).toEqual({
+			keyValue: 1,
+			valueValue: 200,
+			valueIsInteger: true,
+			valueIsFloat64: false,
+		});
+	});
+
 	it('throws when key type mismatches int inputType', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
