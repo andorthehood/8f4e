@@ -73,10 +73,13 @@ async function main() {
       }
 
       compile(
-        benchmarkCase.moduleBlocks,
-        compilerOptions,
-        benchmarkCase.functionBlocks.length > 0 ? benchmarkCase.functionBlocks : undefined,
-        benchmarkCase.macroBlocks.length > 0 ? benchmarkCase.macroBlocks : undefined
+        {
+          groups: benchmarkCase.groups,
+          constants: benchmarkCase.constantsBlocks,
+          functions: benchmarkCase.functionBlocks.length > 0 ? benchmarkCase.functionBlocks : undefined,
+          macros: benchmarkCase.macroBlocks.length > 0 ? benchmarkCase.macroBlocks : undefined,
+        },
+        compilerOptions
       );
       const { result: coverageResult } = await session.post("Profiler.takePreciseCoverage");
       const coverage = summarizeCoverage(coverageResult);
