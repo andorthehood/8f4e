@@ -52,7 +52,7 @@ describe('logical memory regions', () => {
 		);
 		const { instance, defaultView, regionViews } = await instantiateWithRegions(result, ['sampleMemory']);
 
-		(instance.exports.init as CallableFunction)();
+		(instance.exports.initDefaults as CallableFunction)();
 		(instance.exports.cycle as CallableFunction)();
 
 		const values = result.compiledModules.samples.memoryMap.values;
@@ -104,7 +104,7 @@ describe('logical memory regions', () => {
 		);
 		const { instance, defaultView } = await instantiateWithRegions(result, ['sampleMemory']);
 
-		(instance.exports.init as CallableFunction)();
+		(instance.exports.initDefaults as CallableFunction)();
 		(instance.exports.cycle as CallableFunction)();
 
 		const resultMemory = result.compiledModules.defaults.memoryMap.result;
@@ -167,7 +167,7 @@ describe('logical memory regions', () => {
 		);
 		const { instance, memory } = await instantiateWithRegions(result, ['sampleMemory']);
 
-		(instance.exports.init as CallableFunction)();
+		(instance.exports.initDefaults as CallableFunction)();
 		(instance.exports.cycle as CallableFunction)();
 
 		const copy = result.compiledModules.defaults.memoryMap.copy;
