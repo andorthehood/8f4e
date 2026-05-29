@@ -3,7 +3,7 @@ title: 'TODO: Add depth-aware pointer metadata query dereferencing'
 priority: Medium
 effort: 2-4h
 created: 2026-05-27
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/715
 status: Open
 completed: null
 ---

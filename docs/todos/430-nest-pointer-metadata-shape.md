@@ -3,7 +3,7 @@ title: 'TODO: Nest pointer metadata shape'
 priority: Medium
 effort: 4-8h
 created: 2026-05-27
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/717
 status: Open
 completed: null
 ---
