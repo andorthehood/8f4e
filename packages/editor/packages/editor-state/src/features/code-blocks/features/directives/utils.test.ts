@@ -20,15 +20,8 @@ describe('parseDirectiveLineRecords', () => {
 		]);
 	});
 
-	it('parses a full-line runtime directive', () => {
-		expect(parseDirectiveLineRecords('; ~customRuntime value 0 1')).toEqual([
-			{
-				prefix: '~',
-				name: 'customRuntime',
-				args: ['value', '0', '1'],
-				isTrailing: false,
-			},
-		]);
+	it('ignores full-line tilde comments', () => {
+		expect(parseDirectiveLineRecords('; ~customRuntime value 0 1')).toEqual([]);
 	});
 
 	it('parses a full-line directive with no arguments', () => {
@@ -98,7 +91,7 @@ describe('parseDirectiveLineRecords', () => {
 		]);
 	});
 
-	it('does not parse trailing runtime (~) directives', () => {
+	it('does not parse trailing tilde comments', () => {
 		expect(parseDirectiveLineRecords('int foo 1 ; ~runtime')).toEqual([]);
 	});
 
@@ -146,11 +139,6 @@ describe('normalizeEditorDirectiveRecords', () => {
 		expect(normalizeEditorDirectiveRecords(records, [watchPlugin])).toEqual([
 			{ name: 'watch', rawRow: 0, args: ['value'], sourceLine: undefined },
 		]);
-	});
-
-	it('filters out runtime (~) records', () => {
-		const records = [{ prefix: '~' as const, name: 'sampleRate', args: ['44100'], rawRow: 0, isTrailing: false }];
-		expect(normalizeEditorDirectiveRecords(records, [watchPlugin])).toEqual([]);
 	});
 
 	it('filters out unknown directive names', () => {

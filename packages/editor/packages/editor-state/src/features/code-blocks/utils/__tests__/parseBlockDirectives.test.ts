@@ -13,43 +13,16 @@ describe('parseBlockDirectives', () => {
 		]);
 	});
 
-	it('should parse a runtime directive (~)', () => {
-		expect(parseBlockDirectives(['; ~customRuntime value 0 1'])).toEqual([
-			{
-				prefix: '~',
-				name: 'customRuntime',
-				args: ['value', '0', '1'],
-				rawRow: 0,
-				sourceLine: '; ~customRuntime value 0 1',
-				isTrailing: false,
-			},
-		]);
+	it('should ignore tilde comments', () => {
+		expect(parseBlockDirectives(['; ~customRuntime value 0 1'])).toEqual([]);
 	});
 
-	it('should parse runtime directives with leading whitespace', () => {
-		expect(parseBlockDirectives(['  ; ~customRuntime value 0 1'])).toEqual([
-			{
-				prefix: '~',
-				name: 'customRuntime',
-				args: ['value', '0', '1'],
-				rawRow: 0,
-				sourceLine: '  ; ~customRuntime value 0 1',
-				isTrailing: false,
-			},
-		]);
+	it('should ignore tilde comments with leading whitespace', () => {
+		expect(parseBlockDirectives(['  ; ~customRuntime value 0 1'])).toEqual([]);
 	});
 
-	it('should parse unknown runtime directive names', () => {
-		expect(parseBlockDirectives(['; ~runtime WebWorker'])).toEqual([
-			{
-				prefix: '~',
-				name: 'runtime',
-				args: ['WebWorker'],
-				rawRow: 0,
-				sourceLine: '; ~runtime WebWorker',
-				isTrailing: false,
-			},
-		]);
+	it('should ignore unknown tilde names', () => {
+		expect(parseBlockDirectives(['; ~runtime WebWorker'])).toEqual([]);
 	});
 
 	it('should parse unknown editor directive names', () => {
@@ -64,24 +37,15 @@ describe('parseBlockDirectives', () => {
 		]);
 	});
 
-	it('should parse runtime directives with no arguments', () => {
-		expect(parseBlockDirectives(['; ~customRuntime'])).toEqual([
-			{ prefix: '~', name: 'customRuntime', args: [], rawRow: 0, sourceLine: '; ~customRuntime', isTrailing: false },
-		]);
+	it('should ignore tilde comments with no arguments', () => {
+		expect(parseBlockDirectives(['; ~customRuntime'])).toEqual([]);
 	});
 
 	it('should record the correct rawRow for each directive', () => {
-		const code = ['module test', '; @pos 5 10', 'push 1', '; ~customRuntime value 0 1', 'moduleEnd'];
+		const code = ['module test', '; @pos 5 10', 'push 1', '; @favorite', 'moduleEnd'];
 		expect(parseBlockDirectives(code)).toEqual([
 			{ prefix: '@', name: 'pos', args: ['5', '10'], rawRow: 1, sourceLine: '; @pos 5 10', isTrailing: false },
-			{
-				prefix: '~',
-				name: 'customRuntime',
-				args: ['value', '0', '1'],
-				rawRow: 3,
-				sourceLine: '; ~customRuntime value 0 1',
-				isTrailing: false,
-			},
+			{ prefix: '@', name: 'favorite', args: [], rawRow: 3, sourceLine: '; @favorite', isTrailing: false },
 		]);
 	});
 
@@ -107,18 +71,11 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse multiple directives from a block', () => {
-		const code = ['; @pos 0 0', '; @disabled', '; ~customRuntime value 0 1'];
+		const code = ['; @pos 0 0', '; @disabled', '; @favorite'];
 		expect(parseBlockDirectives(code)).toEqual([
 			{ prefix: '@', name: 'pos', args: ['0', '0'], rawRow: 0, sourceLine: '; @pos 0 0', isTrailing: false },
 			{ prefix: '@', name: 'disabled', args: [], rawRow: 1, sourceLine: '; @disabled', isTrailing: false },
-			{
-				prefix: '~',
-				name: 'customRuntime',
-				args: ['value', '0', '1'],
-				rawRow: 2,
-				sourceLine: '; ~customRuntime value 0 1',
-				isTrailing: false,
-			},
+			{ prefix: '@', name: 'favorite', args: [], rawRow: 2, sourceLine: '; @favorite', isTrailing: false },
 		]);
 	});
 

@@ -253,13 +253,13 @@ export interface Crossfade {
 
 /**
  * A single parsed directive record found in a code block's raw lines.
- * Covers both editor directives (`; @name`) and runtime directives (`; ~name`).
+ * Covers editor directives (`; @name`).
  * Multiple records may come from the same source line when directives are
  * chained in one comment.
  */
 export interface ParsedDirectiveRecord {
-	/** Directive prefix: '@' for editor directives, '~' for runtime directives */
-	prefix: '@' | '~';
+	/** Directive prefix. */
+	prefix: '@';
 	/** Directive name (the word immediately after the prefix) */
 	name: string;
 	/** Whitespace-split arguments after the name */
@@ -417,7 +417,7 @@ export interface CodeBlockGraphicData {
 	opacity: number;
 	/**
 	 * Parsed directive records derived from this block's code lines during the central update pass.
-	 * Covers both editor directives (`; @name`) and runtime directives (`; ~name`).
+	 * Covers editor directives (`; @name`).
 	 * Populated once per update; consumers should prefer these over rescanning raw code lines.
 	 */
 	parsedDirectives: ParsedDirectiveRecord[];
