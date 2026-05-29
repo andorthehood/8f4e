@@ -188,8 +188,8 @@ handles the common syntax:
 ```
 
 Multiple directives may share one comment line. Shared syntax utilities parse
-one directive record per `@name` or `~name` token, and source-editing helpers
-must preserve unrelated directives on the same line.
+one directive record per `@name` token, and source-editing helpers must preserve
+unrelated directives on the same line.
 
 Directives should not re-parse their own comment syntax.
 
