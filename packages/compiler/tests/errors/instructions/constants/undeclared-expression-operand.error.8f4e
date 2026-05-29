@@ -1,0 +1,9 @@
+8f4e/v1
+
+entry main
+module undeclaredExpressionOperand
+; const expressions should reject unknown operands.
+const RESULT UNDEFINED_CONST/2
+int x RESULT
+moduleEnd
+entryEnd

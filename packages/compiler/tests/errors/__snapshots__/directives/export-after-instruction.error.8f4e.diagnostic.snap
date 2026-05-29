@@ -1,0 +1,10 @@
+{
+  "code": 10,
+  "context": {},
+  "line": {
+    "instruction": "#export",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Compiler directives must appear in the block prologue, immediately after module or function.",
+}

@@ -1,0 +1,11 @@
+{
+  "code": 53,
+  "context": {},
+  "line": {
+    "arguments": [],
+    "instruction": "block",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  "message": "Invalid memory region name: 1. Custom memory region names must be unique non-numeric identifiers and cannot be "default" or "memory". (53)",
+}

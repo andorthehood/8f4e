@@ -1,0 +1,8 @@
+8f4e/v1
+
+entry main
+module skipExecutionAfterDeclaration
+int counter 0
+#skipExecution
+moduleEnd
+entryEnd

@@ -1,0 +1,14 @@
+{
+  "code": 14,
+  "context": {
+    "codeBlockId": "remainderMayDivideByZero",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [],
+    "instruction": "remainder",
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
+  },
+  "message": "Possible division by zero. (14)",
+}

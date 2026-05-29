@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module minUnknownMemorySource
+int[] buffer 5 0
+moduleEnd
+
+module minUnknownMemoryTarget
+; min(...) should reject unknown memory identifiers.
+int minValue min(minUnknownMemorySource:missing)
+moduleEnd
+entryEnd

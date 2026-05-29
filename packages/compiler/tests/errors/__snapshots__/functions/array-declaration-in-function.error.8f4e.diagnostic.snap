@@ -1,0 +1,26 @@
+{
+  "code": 20,
+  "context": {
+    "codeBlockId": "invalid",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "buffer",
+      },
+      {
+        "isInteger": true,
+        "type": "literal",
+        "value": 10,
+      },
+    ],
+    "instruction": "int[]",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Memory declarations are not allowed in functions. (20)",
+}

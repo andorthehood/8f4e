@@ -1,0 +1,10 @@
+{
+  "code": 5,
+  "context": {},
+  "line": {
+    "instruction": "constants",
+    "lineNumberAfterMacroExpansion": 0,
+    "lineNumberBeforeMacroExpansion": 0,
+  },
+  "message": "Missing required argument for constants.",
+}

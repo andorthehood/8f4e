@@ -1,0 +1,14 @@
+{
+  "code": 33,
+  "context": {
+    "codeBlockId": "equalMixedFloatWidth",
+    "codeBlockType": "module",
+  },
+  "line": {
+    "arguments": [],
+    "instruction": "equal",
+    "lineNumberAfterMacroExpansion": 9,
+    "lineNumberBeforeMacroExpansion": 9,
+  },
+  "message": "Mixed float widths: arithmetic operations require all float operands to have the same width (float32 or float64). (33)",
+}

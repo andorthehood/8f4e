@@ -1,0 +1,15 @@
+8f4e/v1
+
+entry main
+module invalidFunctionHost
+moduleEnd
+entryEnd
+
+function invalid
+; Pure functions should reject memory writes.
+param int* x
+param int y
+push x
+push y
+store
+functionEnd

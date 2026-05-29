@@ -1,0 +1,21 @@
+{
+  "code": 60,
+  "context": {
+    "codeBlockId": "bad",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "two",
+      },
+    ],
+    "instruction": "#import",
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
+  },
+  "message": "Duplicate function import directive. Imported functions can only declare one #import. (60)",
+}

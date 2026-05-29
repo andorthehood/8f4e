@@ -1,0 +1,12 @@
+8f4e/v1
+
+entry main
+module moduleA
+const SECRET 99
+moduleEnd
+
+module moduleB
+; Module-local constants should require an explicit use in other modules.
+int result SECRET
+moduleEnd
+entryEnd

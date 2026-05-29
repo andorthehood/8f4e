@@ -1,0 +1,11 @@
+{
+  "code": 34,
+  "context": {},
+  "line": {
+    "arguments": [],
+    "instruction": "#skipExecution",
+    "lineNumberAfterMacroExpansion": 1,
+    "lineNumberBeforeMacroExpansion": 1,
+  },
+  "message": "This instruction is not allowed inside this block type. (34)",
+}

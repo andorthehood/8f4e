@@ -1,0 +1,27 @@
+{
+  "code": 17,
+  "context": {
+    "codeBlockId": "tooManyParams",
+    "codeBlockType": "function",
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "int",
+      },
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "p9",
+      },
+    ],
+    "instruction": "param",
+    "lineNumberAfterMacroExpansion": 10,
+    "lineNumberBeforeMacroExpansion": 10,
+  },
+  "message": "Function signature overflow. Maximum 8 parameters and 8 return values. (17)",
+}

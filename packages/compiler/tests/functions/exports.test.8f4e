@@ -1,0 +1,36 @@
+8f4e/v1
+
+; Export directives are captured in compile-result snapshots and the functions still run internally.
+entry test
+module exportedFunctionAssertions
+push 2
+push 3
+call addForExportSnapshot
+push 5
+call assert
+
+push 4
+push 5
+call multiplyExportedByOwnName
+push 20
+call assert
+moduleEnd
+entryEnd
+
+function addForExportSnapshot
+#export addFromHost
+param int a
+param int b
+push a
+push b
+add
+functionEnd int
+
+function multiplyExportedByOwnName
+#export
+param int a
+param int b
+push a
+push b
+mul
+functionEnd int

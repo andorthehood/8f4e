@@ -1,0 +1,439 @@
+import { promises as fs } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
+import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
+
+import compile, { serializeDiagnostic } from '../src';
+
+import type {
+	AST,
+	CompileResult,
+	CompiledFunction,
+	CompiledModule,
+	CompilerASTLine,
+	DataStructure,
+	InternalResource,
+} from '@8f4e/compiler-spec';
+import type { ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
+
+interface AssertionFailure {
+	assertIndex: number;
+	assertName: string;
+	expected: number;
+	received: number;
+}
+
+export interface FixtureCompileSnapshots {
+	overview: Record<string, unknown>;
+	moduleMemory: Record<string, unknown>;
+	moduleAst: Record<string, unknown>;
+	functionOverview: Record<string, unknown>;
+	functionAst: Record<string, unknown>;
+}
+
+export interface CompiledFixtureProgram {
+	compileResult: CompileResult;
+	source: string;
+	project: ProjectInput;
+}
+
+export interface InstantiatedFixtureProgram extends CompiledFixtureProgram {
+	instance: WebAssembly.Instance;
+	host: Record<string, WebAssembly.Memory | CallableFunction>;
+}
+
+export interface FixtureProgramCompileOptions {
+	extraCodeBlocks?: ProjectCodeBlock[];
+	includeAssertions?: boolean;
+	includeAST?: boolean;
+	includeStackAnalysis?: boolean;
+	cache?: CompileResult['cache'];
+}
+
+export interface FixtureProgramInstantiateOptions extends FixtureProgramCompileOptions {
+	hostImports?: Record<string, CallableFunction>;
+}
+
+export interface FixtureProgramRunResult extends InstantiatedFixtureProgram {
+	assertionCount: number;
+	compileSnapshots: FixtureCompileSnapshots;
+}
+
+export const testRoot = path.dirname(fileURLToPath(import.meta.url));
+
+const FLOAT_ASSERT_TOLERANCE = 0.001;
+const assertFunctionBlock: ProjectCodeBlock = {
+	code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
+};
+const assertFloatFunctionBlock: ProjectCodeBlock = {
+	code: ['function assertf', '#import assertf', 'param float received', 'param float expected', 'functionEnd'],
+};
+const assertFloat64FunctionBlock: ProjectCodeBlock = {
+	code: ['function assertf64', '#import assertf64', 'param float64 received', 'param float64 expected', 'functionEnd'],
+};
+const injectedAssertionFunctionIds = new Set(['assert', 'assertf', 'assertf64']);
+const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
+
+export function getTestMemoryRegions(source: string): string[] {
+	return source
+		.split('\n')
+		.map(line => line.trim().match(memoryRegionsDirective)?.[1])
+		.filter((regions): regions is string => regions !== undefined)
+		.flatMap(regions => regions.split(/[\s,]+/).filter(Boolean));
+}
+
+export function hasTestExportDeclaration(project: ProjectInput): boolean {
+	return project.codeBlocks.some(block => {
+		if (block.disabled) {
+			return false;
+		}
+		if (block.executionEntryName === 'test') {
+			return true;
+		}
+
+		const [openingLine, ...body] = block.code.map(line => line.trim());
+		return openingLine === 'function test' && body.some(line => line === '#export' || line === '#export test');
+	});
+}
+
+export async function collectFixtureProgramFiles(directory = testRoot): Promise<string[]> {
+	const entries = await fs.readdir(directory, { withFileTypes: true });
+	const nestedFiles = await Promise.all(
+		entries.map(entry => {
+			const entryPath = path.join(directory, entry.name);
+
+			if (entry.isDirectory()) {
+				return collectFixtureProgramFiles(entryPath);
+			}
+			if (entry.isFile() && entry.name.endsWith('.test.8f4e')) {
+				return [entryPath];
+			}
+
+			return [];
+		})
+	);
+
+	return nestedFiles.flat().sort();
+}
+
+export function createMemory(requiredMemoryBytes: number): WebAssembly.Memory {
+	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
+	return new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
+}
+
+export function createMemoryImports(
+	requiredMemoryBytes: number,
+	requiredMemoryBytesByRegion: Record<string, number> = {}
+): Record<string, WebAssembly.Memory> {
+	return {
+		memory: createMemory(requiredMemoryBytes),
+		...Object.fromEntries(
+			Object.entries(requiredMemoryBytesByRegion).map(([regionName, bytes]) => [regionName, createMemory(bytes)])
+		),
+	};
+}
+
+export function getExportedFunction(
+	exports: WebAssembly.Exports,
+	name: string,
+	relativePath = 'fixture'
+): CallableFunction {
+	const exported = exports[name];
+	if (typeof exported !== 'function') {
+		throw new Error(`${relativePath}: expected compiled WebAssembly to export function "${name}"`);
+	}
+	return exported;
+}
+
+export function formatCompileError(relativePath: string, error: unknown): Error {
+	const diagnostic = serializeDiagnostic(error);
+	const line = diagnostic.line.instruction ? ` at ${diagnostic.line.instruction}` : '';
+	const context = diagnostic.context.codeBlockId ? ` in ${diagnostic.context.codeBlockId}` : '';
+
+	return new Error(`${relativePath}: ${diagnostic.message}${context}${line}`);
+}
+
+function formatFailure(failure: AssertionFailure): string {
+	return `${failure.assertName} #${failure.assertIndex} expected ${failure.expected}, received ${failure.received}`;
+}
+
+function sortRecord<T, Result>(
+	record: Record<string, T> | undefined,
+	mapValue: (value: T, key: string) => Result
+): Record<string, Result> {
+	return Object.fromEntries(
+		Object.entries(record ?? {})
+			.sort(([left], [right]) => left.localeCompare(right))
+			.map(([key, value]) => [key, mapValue(value, key)])
+	);
+}
+
+function serializeDefaultValue(value: DataStructure['default']): DataStructure['default'] {
+	if (value === null || typeof value !== 'object') {
+		return value;
+	}
+
+	return sortRecord(value, item => item);
+}
+
+function serializeMemoryData(data: DataStructure): Record<string, unknown> {
+	return {
+		id: data.id,
+		type: data.type,
+		numberOfElements: data.numberOfElements,
+		elementWordSize: data.elementWordSize,
+		wordAlignedSize: data.wordAlignedSize,
+		byteAddress: data.byteAddress,
+		wordAlignedAddress: data.wordAlignedAddress,
+		memoryIndex: data.memoryIndex,
+		...(data.memoryRegionName ? { memoryRegionName: data.memoryRegionName } : {}),
+		default: serializeDefaultValue(data.default),
+		...(data.hasExplicitDefault ? { hasExplicitDefault: true } : {}),
+		isInteger: data.isInteger,
+		...(data.isFloat64 ? { isFloat64: true } : {}),
+		...(data.pointeeBaseType ? { pointeeBaseType: data.pointeeBaseType } : {}),
+		...(data.pointeeMemoryIndex !== undefined ? { pointeeMemoryIndex: data.pointeeMemoryIndex } : {}),
+		...(data.pointeeMemoryRegionName ? { pointeeMemoryRegionName: data.pointeeMemoryRegionName } : {}),
+		...(data.pointeeElementCount !== undefined ? { pointeeElementCount: data.pointeeElementCount } : {}),
+		pointerDepth: data.pointerDepth,
+		isUnsigned: data.isUnsigned,
+	};
+}
+
+function serializeInternalResource(resource: InternalResource): Record<string, unknown> {
+	return {
+		id: resource.id,
+		storageType: resource.storageType,
+		elementWordSize: resource.elementWordSize,
+		wordAlignedSize: resource.wordAlignedSize,
+		byteAddress: resource.byteAddress,
+		wordAlignedAddress: resource.wordAlignedAddress,
+		memoryIndex: resource.memoryIndex,
+		...(resource.memoryRegionName ? { memoryRegionName: resource.memoryRegionName } : {}),
+		default: resource.default,
+	};
+}
+
+function serializeAstLine(line: CompilerASTLine): Record<string, unknown> {
+	const lineSnapshot: Record<string, unknown> = { ...line };
+
+	delete lineSnapshot.lineNumberAfterMacroExpansion;
+	delete lineSnapshot.lineNumberBeforeMacroExpansion;
+	delete lineSnapshot.ifBlock;
+	delete lineSnapshot.ifEndBlock;
+	delete lineSnapshot.blockBlock;
+	delete lineSnapshot.blockEndBlock;
+
+	return lineSnapshot;
+}
+
+function serializeAst(ast: AST | undefined): Record<string, unknown> | undefined {
+	if (!ast) {
+		return undefined;
+	}
+
+	return {
+		type: ast.type,
+		id: ast.id,
+		lines: ast.lines.map(serializeAstLine),
+	};
+}
+
+function serializeCompiledModuleOverview(module: CompiledModule): Record<string, unknown> {
+	return {
+		id: module.id,
+		index: module.index,
+		...(module.executionEntryName ? { executionEntryName: module.executionEntryName } : {}),
+		memoryIndex: module.memoryIndex,
+		...(module.memoryRegionName ? { memoryRegionName: module.memoryRegionName } : {}),
+		byteAddress: module.byteAddress,
+		wordAlignedAddress: module.wordAlignedAddress,
+		wordAlignedSize: module.wordAlignedSize,
+		...(module.skipExecutionInCycle ? { skipExecutionInCycle: true } : {}),
+	};
+}
+
+function serializeCompiledModuleMemory(module: CompiledModule): Record<string, unknown> {
+	return {
+		memoryMap: sortRecord(module.memoryMap, serializeMemoryData),
+		internalResources: sortRecord(module.internalResources, serializeInternalResource),
+	};
+}
+
+function serializeCompiledFunctionOverview(func: CompiledFunction): Record<string, unknown> {
+	return {
+		id: func.id,
+		signature: func.signature,
+		...(func.import ? { import: func.import } : {}),
+		...(func.exportName ? { exportName: func.exportName } : {}),
+	};
+}
+
+function getFixtureCompiledFunctions(result: CompileResult): Array<[string, CompiledFunction]> {
+	return Object.entries(result.compiledFunctions ?? {})
+		.filter(([id]) => !injectedAssertionFunctionIds.has(id))
+		.sort(([left], [right]) => left.localeCompare(right));
+}
+
+export function serializeCompileResult(result: CompileResult): FixtureCompileSnapshots {
+	const fixtureFunctions = getFixtureCompiledFunctions(result);
+	const moduleEntries = Object.entries(result.compiledModules).sort(([left], [right]) => left.localeCompare(right));
+
+	const moduleOverview = Object.fromEntries(
+		moduleEntries.map(([id, module]) => [id, serializeCompiledModuleOverview(module)])
+	);
+	const moduleMemory = Object.fromEntries(
+		moduleEntries.map(([id, module]) => [id, serializeCompiledModuleMemory(module)])
+	);
+	const moduleAst = Object.fromEntries(moduleEntries.map(([id, module]) => [id, serializeAst(module.ast)]));
+	const functionOverview = Object.fromEntries(
+		fixtureFunctions.map(([id, func]) => [id, serializeCompiledFunctionOverview(func)])
+	);
+	const functionAst = Object.fromEntries(fixtureFunctions.map(([id, func]) => [id, serializeAst(func.ast)]));
+
+	return {
+		overview: {
+			requiredMemoryBytes: result.requiredMemoryBytes,
+			requiredMemoryBytesByRegion: sortRecord(result.requiredMemoryBytesByRegion, bytes => bytes),
+			compiledModules: Object.keys(moduleOverview),
+			compiledFunctions: Object.keys(functionOverview),
+		},
+		moduleMemory,
+		moduleAst,
+		functionOverview,
+		functionAst,
+	};
+}
+
+export function getCompileSnapshotPath(filePath: string): string {
+	const relativePath = path.relative(testRoot, filePath);
+
+	return path.join(testRoot, '__snapshots__', `${relativePath}.compile-result.snap`);
+}
+
+export function compileFixtureProgramSource(
+	source: string,
+	options: FixtureProgramCompileOptions = {}
+): CompiledFixtureProgram {
+	const normalizedSource = source.trimStart();
+	const project = parse8f4eProject(normalizedSource);
+	const memoryRegions = getTestMemoryRegions(normalizedSource);
+	const codeBlocks = [
+		...project.codeBlocks,
+		...(options.extraCodeBlocks ?? []),
+		...(options.includeAssertions ? [assertFunctionBlock, assertFloatFunctionBlock, assertFloat64FunctionBlock] : []),
+	];
+	const { entries, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(codeBlocks);
+
+	return {
+		source: normalizedSource,
+		project,
+		compileResult: compile(
+			{
+				entries,
+				constants: constantsBlocks,
+				functions: functionBlocks,
+				macros: macroBlocks,
+			},
+			{
+				disableSharedMemory: true,
+				includeAST: options.includeAST,
+				includeStackAnalysis: options.includeStackAnalysis,
+				memoryRegions,
+			},
+			options.cache
+		),
+	};
+}
+
+export async function instantiateFixtureProgramSource(
+	source: string,
+	options: FixtureProgramInstantiateOptions = {}
+): Promise<InstantiatedFixtureProgram> {
+	const compiledFixture = compileFixtureProgramSource(source, options);
+	const host = {
+		...createMemoryImports(
+			compiledFixture.compileResult.requiredMemoryBytes,
+			compiledFixture.compileResult.requiredMemoryBytesByRegion
+		),
+		...options.hostImports,
+	};
+	const { instance } = await WebAssembly.instantiate(compiledFixture.compileResult.codeBuffer, { host });
+
+	return {
+		...compiledFixture,
+		host,
+		instance,
+	};
+}
+
+export async function runFixtureProgramFile(filePath: string): Promise<FixtureProgramRunResult> {
+	const relativePath = path.relative(testRoot, filePath);
+	const source = await fs.readFile(filePath, 'utf8');
+	const project = parse8f4eProject(source);
+
+	if (!hasTestExportDeclaration(project)) {
+		throw new Error(`${relativePath}: expected an entry test block or exported function test`);
+	}
+
+	const failures: AssertionFailure[] = [];
+	let assertionCount = 0;
+	let instantiatedFixture: InstantiatedFixtureProgram;
+	try {
+		instantiatedFixture = await instantiateFixtureProgramSource(source, {
+			includeAssertions: true,
+			includeAST: true,
+			hostImports: {
+				assert(received: number, expected: number) {
+					const assertIndex = assertionCount;
+					assertionCount += 1;
+
+					if (received !== expected) {
+						failures.push({ assertIndex, assertName: 'assert', expected, received });
+					}
+				},
+				assertf(received: number, expected: number) {
+					const assertIndex = assertionCount;
+					assertionCount += 1;
+
+					if (Math.abs(received - expected) > FLOAT_ASSERT_TOLERANCE) {
+						failures.push({ assertIndex, assertName: 'assertf', expected, received });
+					}
+				},
+				assertf64(received: number, expected: number) {
+					const assertIndex = assertionCount;
+					assertionCount += 1;
+
+					if (Math.abs(received - expected) > FLOAT_ASSERT_TOLERANCE) {
+						failures.push({ assertIndex, assertName: 'assertf64', expected, received });
+					}
+				},
+			},
+		});
+	} catch (error) {
+		throw formatCompileError(relativePath, error);
+	}
+	const compileSnapshots = serializeCompileResult(instantiatedFixture.compileResult);
+
+	compileSnapshots.overview.wasmExports = Object.keys(instantiatedFixture.instance.exports).sort();
+
+	getExportedFunction(instantiatedFixture.instance.exports, 'initDefaults', relativePath)();
+	getExportedFunction(instantiatedFixture.instance.exports, 'test', relativePath)();
+
+	if (failures.length > 0) {
+		throw new Error(
+			[
+				`${relativePath}: ${failures.length} assertion${failures.length === 1 ? '' : 's'} failed:`,
+				...failures.map(failure => `  ${formatFailure(failure)}`),
+			].join('\n')
+		);
+	}
+
+	return {
+		...instantiatedFixture,
+		assertionCount,
+		compileSnapshots,
+	};
+}
