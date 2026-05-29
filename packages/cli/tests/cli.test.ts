@@ -147,6 +147,12 @@ describe('cli', () => {
 		expect(stdout).toBe('Ran 3 assertions.\n');
 	});
 
+	it('runs test files matched by a glob and skips files without #test modules', async () => {
+		const { stdout } = await execCli(['test', '../examples/src/modules/functions/memory/*.8f4em']);
+
+		expect(stdout).toBe('Ran 3 assertions in 1 file.\n');
+	});
+
 	it('captures raw buffer bytes across repeated cycle windows', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 		await execCli([
