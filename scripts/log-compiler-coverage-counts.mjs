@@ -74,7 +74,7 @@ async function main() {
 
       compile(
         {
-          groups: benchmarkCase.groups,
+          entries: benchmarkCase.entries,
           constants: benchmarkCase.constantsBlocks,
           functions: benchmarkCase.functionBlocks.length > 0 ? benchmarkCase.functionBlocks : undefined,
           macros: benchmarkCase.macroBlocks.length > 0 ? benchmarkCase.macroBlocks : undefined,
