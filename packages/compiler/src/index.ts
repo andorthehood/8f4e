@@ -199,6 +199,10 @@ function parseFunctionAST(
 	return ast;
 }
 
+function isTestModuleAST(ast: ModuleAST | ConstantsAST): boolean {
+	return ast.type === 'module' && ast.testLine !== undefined;
+}
+
 export default function compile(
 	modules: Module[],
 	options: CompileOptions,
@@ -231,8 +235,11 @@ export default function compile(
 	const astModules = expandedModules.map(({ code, lineMetadata }, index) =>
 		parseModuleOrConstantsAST(code, lineMetadata, cache, `module:${index}`)
 	);
-	assertUniqueModuleIds(astModules);
-	const hasAssertInstruction = astModules.some(ast => ast.lines.some(line => line.instruction === 'assert'));
+	const activeAstModules = options.includeTestRunner ? astModules : astModules.filter(ast => !isTestModuleAST(ast));
+	assertUniqueModuleIds(activeAstModules);
+	const hasAssertInstruction =
+		options.includeTestRunner === true &&
+		activeAstModules.some(ast => ast.lines.some(line => line.instruction === 'assert'));
 	const importedFunctionCount = hasAssertInstruction ? 1 : 0;
 	const assertFailureFunctionIndex = hasAssertInstruction ? 0 : undefined;
 	const assertFailureTypeIndex = 3;
@@ -240,7 +247,13 @@ export default function compile(
 	const userFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 	const testAssertions: TestAssertionMetadata[] = [];
 
-	const namespaces = collectNamespacesFromASTs(astModules, GLOBAL_ALIGNMENT_BOUNDARY, undefined, astModules, options);
+	const namespaces = collectNamespacesFromASTs(
+		activeAstModules,
+		GLOBAL_ALIGNMENT_BOUNDARY,
+		undefined,
+		activeAstModules,
+		options
+	);
 
 	// Compile functions first with WASM indices and type registry
 	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>
@@ -274,7 +287,7 @@ export default function compile(
 
 	// Compile all modules in input order so editor layout can drive execution order.
 	const compiledModules = compileModules(
-		astModules,
+		activeAstModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
