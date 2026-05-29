@@ -35,6 +35,7 @@ export type NameSectionValue = (typeof NameSection)[keyof typeof NameSection];
  * WebAssembly import descriptor tags supported by this package.
  */
 export const ImportDesc = {
+	FUNC: 0x00,
 	MEMORY: 0x02,
 } as const;
 
