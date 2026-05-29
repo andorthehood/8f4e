@@ -171,7 +171,7 @@ exports[`functionEnd validates stack > if the generated AST, WAT and memory map 
         br 0 (;@2;)
       end
     end)
-  (export "init" (func 0))
+  (export "initDefaults" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3)))
@@ -367,7 +367,7 @@ exports[`functionEnd with float return > if the generated AST, WAT and memory ma
         br 0 (;@2;)
       end
     end)
-  (export "init" (func 0))
+  (export "initDefaults" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3)))
@@ -563,7 +563,7 @@ exports[`functionEnd with int return > if the generated AST, WAT and memory map 
         br 0 (;@2;)
       end
     end)
-  (export "init" (func 0))
+  (export "initDefaults" (func 0))
   (export "cycle" (func 1))
   (export "initOnly" (func 2))
   (export "buffer" (func 3)))
