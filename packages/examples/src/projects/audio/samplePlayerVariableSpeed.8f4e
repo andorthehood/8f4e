@@ -119,7 +119,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
 constants env
 ; @pos 32 -63
 ; @favorite
@@ -134,3 +133,13 @@ const AUDIO_BUFFER_SIZE 128
 const ASSET_AMEN_SIZE 62258
 
 constantsEnd
+
+function buffer
+; @pos 32 -51
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd

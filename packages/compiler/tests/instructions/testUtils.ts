@@ -401,7 +401,7 @@ export function expectModuleToThrow(description: string, moduleCode: string, err
  * Creates a WebAssembly instance from compiled code with typed exports
  * @param codeBuffer - Compiled WebAssembly code buffer
  * @param options - Options for memory configuration
- * @returns Object with instance exports (initDefaults, main, buffer) and memory buffer
+ * @returns Object with common instance exports and memory buffer
  */
 export async function createWasmInstance(
 	codeBuffer: Uint8Array,
@@ -418,7 +418,7 @@ export async function createWasmInstance(
 	return {
 		initDefaults: instance.exports.initDefaults as () => void,
 		main: instance.exports.main as () => void,
-		buffer: instance.exports.buffer as () => void,
+		buffer: instance.exports.buffer as (() => void) | undefined,
 		memory: buffer,
 	};
 }

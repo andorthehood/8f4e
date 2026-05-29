@@ -188,6 +188,16 @@ const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
+function buffer
+; @pos 2 72
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
 constants math
 ; @pos 2 74
 

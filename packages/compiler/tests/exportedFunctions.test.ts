@@ -100,6 +100,17 @@ describe('exported 8f4e functions', () => {
 		expect((exports.addFloat64 as CallableFunction)(0.1, 0.2)).toBeCloseTo(0.3);
 	});
 
+	test('allows functions to export as buffer', async () => {
+		const { result, exports } = await instantiate([
+			{
+				code: ['function userBuffer', '#export buffer', 'functionEnd'],
+			},
+		]);
+
+		expect(result.compiledFunctions.userBuffer.exportName).toBe('buffer');
+		expect(exports.buffer).toBeTypeOf('function');
+	});
+
 	test('rejects duplicate export directives in one function', () => {
 		expect(() =>
 			compile(
