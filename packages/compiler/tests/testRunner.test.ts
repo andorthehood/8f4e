@@ -67,7 +67,25 @@ describe('#test modules and assert runner', () => {
 				expected: 4,
 			},
 		]);
+		expect(result.testModuleIds).toEqual(['addWorks']);
 		expect(result.compiledModules.addWorks.testExecution).toBe(true);
+	});
+
+	test('reports #test modules from parsed AST metadata', () => {
+		const result = compile(
+			[
+				{
+					code: ['module production', 'moduleEnd'],
+				},
+				{
+					code: ['module emptyTest', '#test ; inline comment', 'moduleEnd'],
+				},
+			],
+			defaultOptions
+		);
+
+		expect(result.testModuleIds).toEqual(['emptyTest']);
+		expect(result.compiledModules.emptyTest.testExecution).toBe(true);
 	});
 
 	test('does not report passing assertions', async () => {
@@ -134,6 +152,7 @@ describe('#test modules and assert runner', () => {
 		});
 
 		expect(result.compiledModules.addWorks).toBeUndefined();
+		expect(result.testModuleIds).toEqual(['addWorks']);
 		expect(result.testAssertions).toBeUndefined();
 		expect(instance.exports.runTests).toBeUndefined();
 	});

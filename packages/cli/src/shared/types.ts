@@ -23,6 +23,7 @@ export interface CompileProjectResult {
 	compiledWasm?: string;
 	requiredMemoryBytes?: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
+	testModuleIds?: string[];
 	testAssertions?: TestAssertionMetadata[];
 }
 
