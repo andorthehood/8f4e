@@ -46,20 +46,27 @@ const moduleBlock = compilerSourceBlockInstructionByType.module;
  */
 export function collectFunctionMetadataFromAsts(
 	asts: readonly FunctionAST[],
-	startingWasmIndex: number
+	importedFunctionBaseIndex: number,
+	definedFunctionBaseIndex = importedFunctionBaseIndex
 ): FunctionMetadataLookup {
 	const result: FunctionMetadataLookup = {};
+	let importedFunctionIndex = 0;
+	let definedFunctionIndex = 0;
 
-	for (const [index, ast] of asts.entries()) {
+	for (const ast of asts) {
 		const id = ast.id;
 		if (result[id]) {
 			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, undefined, { identifier: id });
 		}
 
+		const importedFunction = ast.import;
 		result[id] = {
 			id,
 			signature: ast.signature,
-			wasmIndex: startingWasmIndex + index,
+			wasmIndex: importedFunction
+				? importedFunctionBaseIndex + importedFunctionIndex++
+				: definedFunctionBaseIndex + definedFunctionIndex++,
+			...(importedFunction ? { import: importedFunction } : {}),
 		};
 	}
 

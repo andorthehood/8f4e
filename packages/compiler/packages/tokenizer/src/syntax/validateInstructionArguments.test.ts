@@ -102,6 +102,20 @@ describe('validateInstructionArguments', () => {
 		).toThrowError(SyntaxRulesError);
 	});
 
+	it('accepts one identifier or string literal field argument for #import', () => {
+		expect(() => validateInstructionArguments('#import', [classifyIdentifier('log')])).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('#import', [{ type: ArgumentType.STRING_LITERAL, value: 'log.value' }])
+		).not.toThrow();
+		expect(() => validateInstructionArguments('#import', [])).toThrowError(SyntaxRulesError);
+		expect(() =>
+			validateInstructionArguments('#import', [classifyIdentifier('log'), classifyIdentifier('extra')])
+		).toThrowError(SyntaxRulesError);
+		expect(() =>
+			validateInstructionArguments('#import', [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }])
+		).toThrowError(SyntaxRulesError);
+	});
+
 	it('accepts bare exitIfTrue and rejects any arguments', () => {
 		expect(() => validateInstructionArguments('exitIfTrue', [])).not.toThrow();
 		expect(() => validateInstructionArguments('exitIfTrue', [classifyIdentifier('x')])).toThrowError(SyntaxRulesError);

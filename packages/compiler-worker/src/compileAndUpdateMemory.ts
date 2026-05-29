@@ -27,7 +27,7 @@ async function getOrCreateWasmInstanceRef(
 	}
 
 	const result = (await WebAssembly.instantiate(codeBuffer, {
-		js: {
+		host: {
 			memory: memoryRef,
 		},
 		// TODO: revisit this once in a while to check if types have been improved
