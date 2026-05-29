@@ -22,12 +22,9 @@ import type { InstructionCompiler, NormalizedAssertLine } from '@8f4e/compiler-s
  */
 const assert: InstructionCompiler<NormalizedAssertLine> = (line, context) => {
 	const expectedArg = line.arguments[0];
-	if (!expectedArg.isInteger) {
-		throw getError(ErrorCode.TYPE_MISMATCH, line, context);
-	}
 
 	if (context.assertFailureFunctionIndex === undefined || context.testAssertions === undefined) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
+		throw getError(ErrorCode.MISSING_ASSERT_FAILURE_HANDLER, line, context);
 	}
 
 	const expected = expectedArg.value;

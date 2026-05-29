@@ -1,4 +1,8 @@
+import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
+
 import { normalizeAndValidateResolvableArgs } from './helpers';
+
+import { getError } from '../../compilerError';
 
 import type { AssertLine, CompilationContext, NormalizedAssertLine } from '@8f4e/compiler-spec';
 
@@ -10,6 +14,11 @@ export default function normalizeAssert(
 	context: CompilationContext
 ): NormalizedAssertLine | AssertLine {
 	const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);
+	const expected = normalized.arguments[0];
+
+	if (expected?.type === ArgumentType.LITERAL && !expected.isInteger) {
+		throw getError(ErrorCode.TYPE_MISMATCH, line, context);
+	}
 
 	return normalized as NormalizedAssertLine | AssertLine;
 }
