@@ -268,7 +268,7 @@ describe('constants block validation', () => {
 		expect(() => compile({ groups: { main: modules }, functions: functions }, defaultOptions)).toThrow();
 	});
 
-	test('should allow only const declarations inside constants block', () => {
+	test('should allow const declarations inside constants block', () => {
 		const constants: Module[] = [
 			{
 				code: ['constants math', 'const PI 3.14159', 'const E 2.71828', 'const PHI 1.618', 'constantsEnd'],
@@ -282,6 +282,26 @@ describe('constants block validation', () => {
 
 		const result = compile({ groups: { main: modules }, constants }, defaultOptions);
 		expect(result.codeBuffer).toBeDefined();
+	});
+
+	test('should allow constants blocks to use other constants blocks', () => {
+		const constants: Module[] = [
+			{
+				code: ['constants math', 'use env', 'const SIZE SAMPLE_RATE/1000', 'constantsEnd'],
+			},
+			{
+				code: ['constants env', '#mock', 'const SAMPLE_RATE 48000', 'constantsEnd'],
+			},
+		];
+		const modules: Module[] = [
+			{
+				code: ['module testModule', 'use math', 'int x SIZE', 'moduleEnd'],
+			},
+		];
+
+		const result = compile({ groups: { main: modules }, constants }, defaultOptions);
+
+		expect(result.compiledModules.testModule.memoryMap.x.default).toBe(48);
 	});
 
 	test('should require constants block to have a name', () => {

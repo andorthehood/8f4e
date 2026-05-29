@@ -1026,6 +1026,7 @@ export const instructionSpecs = {
 	use: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		allowedInConstantsBlocks: true,
 		docs: { shortDescription: 'Imports declarations from another module or constants block.' },
 	},
 	// xor (int int -- int)
