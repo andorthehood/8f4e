@@ -225,7 +225,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
 constants math
 ; @pos -53 -84
 
@@ -248,6 +247,25 @@ const AUDIO_BUFFER_SIZE 128
 const ASSET_AMEN_SIZE 87256
 
 constantsEnd
+
+function buffer
+; @pos 28 -50
+#export buffer
+local int i
+use env
+
+loop
+push i
+push AUDIO_BUFFER_SIZE
+greaterOrEqual
+branchIfTrue 1
+call main
+push i
+push 1
+add
+localSet i
+loopEnd
+functionEnd
 
 function clamp
 ; @pos 29 -130
