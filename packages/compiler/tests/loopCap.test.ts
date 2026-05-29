@@ -175,6 +175,44 @@ moduleEnd
 );
 
 moduleTester(
+	'loop with constant cap argument resolves compile-time values',
+	`module loop
+const LOOP_COUNT 32
+int counter
+
+loop LOOP_COUNT
+ push &counter
+ push counter
+ push 1
+ add
+ store
+loopEnd
+
+moduleEnd
+`,
+	[[{}, { counter: 32 }]]
+);
+
+moduleTester(
+	'loop with constant expression cap argument resolves compile-time values',
+	`module loop
+const FRAMES 16
+int counter
+
+loop FRAMES*2
+ push &counter
+ push counter
+ push 1
+ add
+ store
+loopEnd
+
+moduleEnd
+`,
+	[[{}, { counter: 32 }]]
+);
+
+moduleTester(
 	'loop with explicit cap argument overrides #loopCap',
 	`module loop
 #loopCap 500
@@ -238,3 +276,35 @@ moduleEnd
 `,
 	[[{}, { counter: 0 }]]
 );
+
+test('loop rejects a resolved negative cap', () => {
+	const modules = [
+		{
+			code: `
+module test
+const LOOP_COUNT -1
+loop LOOP_COUNT
+loopEnd
+moduleEnd
+`.split('\n'),
+		},
+	];
+
+	expect(() => compile({ entries: { main: modules } }, { startingMemoryWordAddress: 1 })).toThrow();
+});
+
+test('loop rejects a resolved float cap', () => {
+	const modules = [
+		{
+			code: `
+module test
+const LOOP_COUNT 1.5
+loop LOOP_COUNT
+loopEnd
+moduleEnd
+`.split('\n'),
+		},
+	];
+
+	expect(() => compile({ entries: { main: modules } }, { startingMemoryWordAddress: 1 })).toThrow();
+});

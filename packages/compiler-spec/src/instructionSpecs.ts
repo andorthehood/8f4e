@@ -14,6 +14,7 @@ export type SourceArgumentShapeRule =
 	| 'constantIdentifier'
 	| 'literal'
 	| 'nonNegativeIntegerLiteral'
+	| 'nonNegativeIntegerCompileTimeValue'
 	| 'nonNegativeCompileTimeValue'
 	| 'compileTimeValue'
 	| 'mapValue'
@@ -711,7 +712,7 @@ export const instructionSpecs = {
 	},
 	// loop ( -- )
 	loop: {
-		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
+		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeIntegerCompileTimeValue' },
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Starts a loop block that repeats until a branch exits it.' },
 		stack: stack({ inputs: [], outputs: [] }),

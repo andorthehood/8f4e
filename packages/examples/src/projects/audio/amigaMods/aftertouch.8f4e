@@ -2167,19 +2167,10 @@ constantsEnd
 function buffer
 ; @pos 108 -203
 #export buffer
-local int i
 use env
 
-loop
-push i
-push AUDIO_BUFFER_SIZE
-greaterOrEqual
-branchIfTrue 1
+loop AUDIO_BUFFER_SIZE
 call main
-push i
-push 1
-add
-localSet i
 loopEnd
 functionEnd
 
