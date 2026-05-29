@@ -55,7 +55,11 @@ describe('Example Projects Compilation', () => {
 		projects.forEach((project, index) => {
 			it(`should compile module blocks in project ${index}`, () => {
 				const moduleBlocks = project.codeBlocks
-					.filter(block => block.blockType === 'module' || block.blockType === 'constants')
+					.filter(block => block.blockType === 'module')
+					.map(block => ({ code: block.code }));
+
+				const constantsBlocks = project.codeBlocks
+					.filter(block => block.blockType === 'constants')
 					.map(block => ({ code: block.code }));
 
 				const functionBlocks = project.codeBlocks
@@ -67,15 +71,18 @@ describe('Example Projects Compilation', () => {
 					.map(block => ({ code: block.code }));
 
 				const result = compile(
-					moduleBlocks,
-					COMPILER_OPTIONS,
-					functionBlocks.length > 0 ? functionBlocks : undefined,
-					macroBlocks.length > 0 ? macroBlocks : undefined
+					{
+						groups: { main: moduleBlocks },
+						constants: constantsBlocks,
+						functions: functionBlocks.length > 0 ? functionBlocks : undefined,
+						macros: macroBlocks.length > 0 ? macroBlocks : undefined,
+					},
+					COMPILER_OPTIONS
 				);
 
 				expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
 				expect(result.codeBuffer.length).toBeGreaterThan(0);
-				expect(Object.keys(result.compiledModules).length).toBe(moduleBlocks.length);
+				expect(Object.keys(result.compiledModules).length).toBe(moduleBlocks.length + constantsBlocks.length);
 			});
 		});
 	});

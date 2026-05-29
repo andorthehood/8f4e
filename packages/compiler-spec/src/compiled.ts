@@ -110,3 +110,14 @@ export interface Connection {
 export interface Module {
 	code: string[];
 }
+
+/** Executable modules partitioned by host-callable execution group. */
+export type ModuleGroups = Record<string, Module[]>;
+
+/** Top-level source payload consumed by the compiler. */
+export interface CompileInput {
+	groups: ModuleGroups;
+	functions?: Module[];
+	constants?: Module[];
+	macros?: Module[];
+}

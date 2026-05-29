@@ -37,6 +37,7 @@ import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semant
 
 import type {
 	CompileOptions,
+	CompileInput,
 	CompileResult,
 	CompiledModule,
 	CompiledModuleLookup,
@@ -47,12 +48,17 @@ import type {
 	FunctionAST,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
-	Module,
 	ModuleAST,
 	Namespaces,
 	ParsedLineMetadata,
 	TestAssertionMetadata,
 } from '@8f4e/compiler-spec';
+
+type ExpandedCompilerSource = {
+	code: string[];
+	lineMetadata: ParsedLineMetadata | undefined;
+	cacheKey: string;
+};
 
 export { default as instructions } from './instructionCompilers';
 export {
@@ -204,37 +210,66 @@ function isTestModuleAST(ast: ModuleAST | ConstantsAST): boolean {
 }
 
 export default function compile(
-	modules: Module[],
+	input: CompileInput,
 	options: CompileOptions,
-	functions?: Module[],
-	macros?: Module[],
 	cache = createCompilerCache()
 ): CompileResult {
 	validateMemoryRegionOptions(options);
+	const groupedModules = Object.entries(input.groups).flatMap(([groupName, modules]) =>
+		modules.map((module, index) => ({ groupName, module, index }))
+	);
+	const constants = input.constants ?? [];
+	const functions = input.functions ?? [];
+	const macros = input.macros ?? [];
+	const shouldExpandMacros = input.macros !== undefined;
 	// Parse and expand macros if provided
-	const macroDefinitions = macros ? parseMacroDefinitions(macros) : new Map();
+	const macroDefinitions = shouldExpandMacros ? parseMacroDefinitions(macros) : new Map();
 
 	// Expand macros in modules
-	const expandedModules = macros
-		? modules.map(module => {
-				const expanded = expandMacros(module, macroDefinitions);
-				return convertExpandedLinesToCode(expanded);
-			})
-		: modules.map(module => ({ code: module.code, lineMetadata: undefined }));
+	const expandedModules = groupedModules.map(({ groupName, module, index }) => {
+		const expanded = shouldExpandMacros
+			? convertExpandedLinesToCode(expandMacros(module, macroDefinitions))
+			: { code: module.code, lineMetadata: undefined };
+		return {
+			...expanded,
+			cacheKey: `group:${groupName}:module:${index}`,
+		};
+	}) satisfies ExpandedCompilerSource[];
+
+	const expandedConstants = constants.map((constantsBlock, index) => {
+		const expanded = shouldExpandMacros
+			? convertExpandedLinesToCode(expandMacros(constantsBlock, macroDefinitions))
+			: { code: constantsBlock.code, lineMetadata: undefined };
+		return {
+			...expanded,
+			cacheKey: `constants:${index}`,
+		};
+	}) satisfies ExpandedCompilerSource[];
 
 	// Expand macros in functions
-	const expandedFunctions =
-		macros && functions
-			? functions.map(func => {
-					const expanded = expandMacros(func, macroDefinitions);
-					return convertExpandedLinesToCode(expanded);
-				})
-			: (functions?.map(func => ({ code: func.code, lineMetadata: undefined })) ?? []);
+	const expandedFunctions = functions.map((func, index) => {
+		const expanded = shouldExpandMacros
+			? convertExpandedLinesToCode(expandMacros(func, macroDefinitions))
+			: { code: func.code, lineMetadata: undefined };
+		return {
+			...expanded,
+			cacheKey: `function:${index}`,
+		};
+	}) satisfies ExpandedCompilerSource[];
 
 	// Compile to AST with line metadata for error mapping.
-	const astModules = expandedModules.map(({ code, lineMetadata }, index) =>
-		parseModuleOrConstantsAST(code, lineMetadata, cache, `module:${index}`)
-	);
+	const astModules = [
+		...expandedModules.map(({ code, lineMetadata, cacheKey }) =>
+			parseModuleOrConstantsAST(code, lineMetadata, cache, cacheKey)
+		),
+		...expandedConstants.map(({ code, lineMetadata, cacheKey }) => {
+			const ast = parseModuleOrConstantsAST(code, lineMetadata, cache, cacheKey);
+			if (ast.type !== 'constants') {
+				throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
+			}
+			return ast;
+		}),
+	];
 	const testModuleIds = astModules.filter(isTestModuleAST).map(ast => ast.id);
 	const activeAstModules = options.includeTestRunner ? astModules : astModules.filter(ast => !isTestModuleAST(ast));
 	assertUniqueModuleIds(activeAstModules);
@@ -257,8 +292,8 @@ export default function compile(
 	);
 
 	// Compile functions first with WASM indices and type registry
-	const astFunctions = expandedFunctions.map(({ code, lineMetadata }, index) =>
-		parseFunctionAST(code, lineMetadata, cache, `function:${index}`)
+	const astFunctions = expandedFunctions.map(({ code, lineMetadata, cacheKey }) =>
+		parseFunctionAST(code, lineMetadata, cache, cacheKey)
 	);
 
 	// Collect pre-codegen function metadata so `call` target validation and

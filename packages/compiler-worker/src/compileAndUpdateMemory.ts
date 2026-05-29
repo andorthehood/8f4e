@@ -5,11 +5,11 @@ import getOrCreateMemory from './getOrCreateMemory';
 
 import type {
 	CompileAndUpdateMemoryResult,
+	CompileInput,
 	CompileOptions,
 	CompiledModuleLookup,
 	CompilerCache,
 	GetOrCreateWasmInstanceResult,
-	Module,
 } from '@8f4e/compiler-spec';
 
 let previousCompiledModules: CompiledModuleLookup | undefined;
@@ -39,16 +39,12 @@ async function getOrCreateWasmInstanceRef(
 }
 
 export default async function compileAndUpdateMemory(
-	modules: Module[],
-	compilerOptions: CompileOptions,
-	functions?: Module[],
-	macros?: Module[]
+	input: CompileInput,
+	compilerOptions: CompileOptions
 ): Promise<CompileAndUpdateMemoryResult> {
 	const { codeBuffer, compiledModules, requiredMemoryBytes, compiledFunctions, cache } = compile(
-		modules,
+		input,
 		compilerOptions,
-		functions,
-		macros,
 		compilerCache
 	);
 	compilerCache = cache;

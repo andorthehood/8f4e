@@ -23,17 +23,8 @@
       "initOnlyExecution": false
     },
     {
-      "id": "env",
-      "index": 1,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false,
-      "initOnlyExecution": false
-    },
-    {
       "id": "result",
-      "index": 2,
+      "index": 1,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
       "wordAlignedSize": 1,
@@ -42,7 +33,7 @@
     },
     {
       "id": "notes",
-      "index": 3,
+      "index": 2,
       "byteAddress": 8,
       "wordAlignedAddress": 2,
       "wordAlignedSize": 0,
@@ -51,7 +42,7 @@
     },
     {
       "id": "switches",
-      "index": 4,
+      "index": 3,
       "byteAddress": 8,
       "wordAlignedAddress": 2,
       "wordAlignedSize": 2,
@@ -60,7 +51,7 @@
     },
     {
       "id": "perceptron",
-      "index": 5,
+      "index": 4,
       "byteAddress": 16,
       "wordAlignedAddress": 4,
       "wordAlignedSize": 3,
@@ -69,7 +60,7 @@
     },
     {
       "id": "perceptron2",
-      "index": 6,
+      "index": 5,
       "byteAddress": 28,
       "wordAlignedAddress": 7,
       "wordAlignedSize": 3,
@@ -78,7 +69,7 @@
     },
     {
       "id": "activationFn",
-      "index": 7,
+      "index": 6,
       "byteAddress": 40,
       "wordAlignedAddress": 10,
       "wordAlignedSize": 2,
@@ -87,7 +78,7 @@
     },
     {
       "id": "activationFn2",
-      "index": 8,
+      "index": 7,
       "byteAddress": 48,
       "wordAlignedAddress": 12,
       "wordAlignedSize": 2,
@@ -96,7 +87,7 @@
     },
     {
       "id": "perceptron3",
-      "index": 9,
+      "index": 8,
       "byteAddress": 56,
       "wordAlignedAddress": 14,
       "wordAlignedSize": 3,
@@ -105,10 +96,19 @@
     },
     {
       "id": "activationFn3",
-      "index": 10,
+      "index": 9,
       "byteAddress": 68,
       "wordAlignedAddress": 17,
       "wordAlignedSize": 2,
+      "skipExecutionInCycle": false,
+      "initOnlyExecution": false
+    },
+    {
+      "id": "env",
+      "index": 10,
+      "byteAddress": 76,
+      "wordAlignedAddress": 19,
+      "wordAlignedSize": 0,
       "skipExecutionInCycle": false,
       "initOnlyExecution": false
     }

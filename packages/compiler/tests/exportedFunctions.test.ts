@@ -15,7 +15,10 @@ const defaultOptions = {
 };
 
 async function instantiate(functions: Module[]) {
-	const result = compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, functions);
+	const result = compile(
+		{ groups: { main: [{ code: ['module test', 'moduleEnd'] }] }, functions: functions },
+		defaultOptions
+	);
 	const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
 		js: { memory: new WebAssembly.Memory({ initial: 1, maximum: 1 }) },
 	});
@@ -99,32 +102,46 @@ describe('exported 8f4e functions', () => {
 
 	test('rejects duplicate export directives in one function', () => {
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, [
-				{ code: ['function bad', '#export first', '#export second', 'functionEnd'] },
-			])
+			compile(
+				{
+					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					functions: [{ code: ['function bad', '#export first', '#export second', 'functionEnd'] }],
+				},
+				defaultOptions
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.DUPLICATE_EXPORT_NAME }));
 	});
 
 	test('rejects duplicate export names across functions', () => {
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, [
-				{ code: ['function a', '#export same', 'functionEnd'] },
-				{ code: ['function b', '#export same', 'functionEnd'] },
-			])
+			compile(
+				{
+					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					functions: [
+						{ code: ['function a', '#export same', 'functionEnd'] },
+						{ code: ['function b', '#export same', 'functionEnd'] },
+					],
+				},
+				defaultOptions
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.DUPLICATE_EXPORT_NAME }));
 	});
 
 	test('rejects built-in export names', () => {
 		expect(() =>
-			compile([{ code: ['module test', 'moduleEnd'] }], defaultOptions, [
-				{ code: ['function bad', '#export initDefaults', 'functionEnd'] },
-			])
+			compile(
+				{
+					groups: { main: [{ code: ['module test', 'moduleEnd'] }] },
+					functions: [{ code: ['function bad', '#export initDefaults', 'functionEnd'] }],
+				},
+				defaultOptions
+			)
 		).toThrow(expect.objectContaining({ code: ErrorCode.DUPLICATE_EXPORT_NAME }));
 	});
 
 	test('rejects #export outside a function block', () => {
-		expect(() => compile([{ code: ['module test', '#export outside', 'moduleEnd'] }], defaultOptions)).toThrow(
-			expect.objectContaining({ code: ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT })
-		);
+		expect(() =>
+			compile({ groups: { main: [{ code: ['module test', '#export outside', 'moduleEnd'] }] } }, defaultOptions)
+		).toThrow(expect.objectContaining({ code: ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT }));
 	});
 });

@@ -17,9 +17,12 @@ describe('automatic memory sizing', () => {
 			},
 		];
 
-		const result = await compileAndUpdateMemory(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = await compileAndUpdateMemory(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		// Should have successfully compiled
 		expect(result.compiledModules).toBeDefined();
@@ -39,9 +42,12 @@ describe('automatic memory sizing', () => {
 			},
 		];
 
-		const result = await compileAndUpdateMemory(modules, {
-			startingMemoryWordAddress: 0,
-		});
+		const result = await compileAndUpdateMemory(
+			{ groups: { main: modules } },
+			{
+				startingMemoryWordAddress: 0,
+			}
+		);
 
 		// Should allocate at least 64 KiB (1 page)
 		expect(result.memoryRef.buffer.byteLength).toBe(65536);

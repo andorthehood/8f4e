@@ -12,11 +12,15 @@ async function compileToWat(codeBuffer: Uint8Array): Promise<string> {
 describe('memory initialization', () => {
 	test('initDefaults clears program memory once before loading passive data segments', async () => {
 		const result = compile(
-			[
-				{
-					code: ['module test', 'int implicitZero', 'int explicitValue 5', 'int[] implicitArray 4', 'moduleEnd'],
+			{
+				groups: {
+					main: [
+						{
+							code: ['module test', 'int implicitZero', 'int explicitValue 5', 'int[] implicitArray 4', 'moduleEnd'],
+						},
+					],
 				},
-			],
+			},
 			{ disableSharedMemory: true }
 		);
 		const wat = await compileToWat(result.codeBuffer);
