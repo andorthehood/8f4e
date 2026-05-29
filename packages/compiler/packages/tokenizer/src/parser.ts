@@ -37,6 +37,7 @@ import type {
 	IfEndLine,
 	IfBlockResultType,
 	IfLine,
+	ImportLine,
 	MemoryDeclarationLine,
 	ModuleLine,
 	ParsedLineMetadata,
@@ -90,6 +91,11 @@ type FunctionASTBuilder = {
 	parameters: FunctionSignature['parameters'];
 	exportLine?: ExportLine;
 	exportName?: string;
+	importLine?: ImportLine;
+	import?: {
+		moduleName: string;
+		fieldName: string;
+	};
 };
 
 type ConstantsASTBuilder = {
@@ -241,6 +247,13 @@ function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine
 		case '#export':
 			builder.exportLine = line;
 			builder.exportName = builder.exportLine.arguments[0]?.value ?? builder.id;
+			return;
+		case '#import':
+			builder.importLine = line;
+			builder.import = {
+				moduleName: line.arguments[0].value,
+				fieldName: line.arguments[1].value,
+			};
 	}
 }
 
@@ -288,6 +301,7 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 					returns: builder.functionEndLine.arguments.map(arg => arg.value as FunctionSignature['returns'][number]),
 				},
 				...(builder.exportLine ? { exportLine: builder.exportLine, exportName: builder.exportName } : {}),
+				...(builder.importLine ? { importLine: builder.importLine, import: builder.import } : {}),
 			};
 		case 'constants':
 			return {

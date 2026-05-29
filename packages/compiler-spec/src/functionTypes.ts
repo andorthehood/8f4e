@@ -25,3 +25,9 @@ export interface FunctionSignature {
 	parameters: FunctionValueType[];
 	returns: FunctionValueType[];
 }
+
+/** WebAssembly host import module/name pair for an imported function. */
+export interface FunctionImportMetadata {
+	moduleName: string;
+	fieldName: string;
+}

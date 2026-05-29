@@ -33,6 +33,7 @@ const _function = function (line: FunctionLine, context: CodegenContext) {
 	};
 	context.currentFunctionIsImpure = false;
 	context.currentFunctionExportName = undefined;
+	context.currentFunctionImport = undefined;
 	context.mode = functionBlockType;
 
 	// Initialize empty locals - parameters will be added by param instructions
