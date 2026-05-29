@@ -81,10 +81,16 @@ function getEntryName(line: string, lineNumber: number): string {
 	return entryName;
 }
 
+function isProjectGapLine(trimmedLine: string): boolean {
+	return (
+		trimmedLine === '' || trimmedLine.startsWith('#') || trimmedLine.startsWith(';') || trimmedLine.startsWith('//')
+	);
+}
+
 export function getProjectBlockType(code: string[]): ProjectBlockType {
 	for (const line of code) {
 		const trimmed = line.trim();
-		if (trimmed === '' || trimmed.startsWith('#') || trimmed.startsWith(';') || trimmed.startsWith('//')) {
+		if (isProjectGapLine(trimmed)) {
 			continue;
 		}
 		const blockDelimiter = blockDelimiters.find(({ start }) => startsWithInstruction(trimmed, start));
@@ -162,7 +168,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 	for (let i = 1; i < lines.length; ) {
 		const trimmed = lines[i].trim();
 
-		if (trimmed === '') {
+		if (isProjectGapLine(trimmed)) {
 			i += 1;
 			continue;
 		}
@@ -192,7 +198,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 			const entryLine = lines[i];
 			const entryTrimmed = entryLine.trim();
 
-			if (entryTrimmed === '') {
+			if (isProjectGapLine(entryTrimmed)) {
 				i += 1;
 				continue;
 			}

@@ -1,0 +1,137 @@
+8f4e/v1
+
+; Control-flow instructions are checked by running source-level assertions.
+entry test
+module branchAssertions
+; branch exits the current block before later instructions run.
+int output
+block
+branch 1
+push &output
+push 1
+store
+blockEnd
+
+push output
+push 0
+call assert
+moduleEnd
+
+module ifIntAssertions
+; if expressions can produce integer values from both branches.
+int truthyInput 1
+push truthyInput
+if
+push 1
+else
+push -1
+ifEnd int
+push 1
+call assert
+
+int falsyInput 0
+push falsyInput
+if
+push 1
+else
+push -1
+ifEnd int
+push -1
+call assert
+moduleEnd
+
+module ifFloatAssertions
+; if expressions can produce float values from both branches.
+int truthyInput 1
+push truthyInput
+if
+push 1.1
+else
+push -1.1
+ifEnd float
+push 1.1
+call assertf
+
+int falsyInput 0
+push falsyInput
+if
+push 1.1
+else
+push -1.1
+ifEnd float
+push -1.1
+call assertf
+moduleEnd
+
+module ifVoidAssertions
+; void if blocks can perform side effects in either branch.
+int truthyInput 1
+int truthyOutput
+push truthyInput
+if
+push &truthyOutput
+push 1
+store
+else
+push &truthyOutput
+push -1
+store
+ifEnd
+push truthyOutput
+push 1
+call assert
+
+int falsyInput 0
+int falsyOutput
+push falsyInput
+if
+push &falsyOutput
+push 1
+store
+else
+push &falsyOutput
+push -1
+store
+ifEnd
+push falsyOutput
+push -1
+call assert
+moduleEnd
+
+module countedLoopAssertions
+; loop can terminate through branchIfTrue once the counter reaches the target.
+int counter
+loop
+push counter
+push 10
+equal
+branchIfTrue 1
+
+push &counter
+push counter
+push 1
+add
+store
+loopEnd
+
+push counter
+push 10
+call assert
+moduleEnd
+
+module loopCapAssertions
+; The compiler loop cap still stops an otherwise unbounded loop at the default cap.
+int counter
+loop
+push &counter
+push counter
+push 1
+add
+store
+loopEnd
+
+push counter
+push 1000
+call assert
+moduleEnd
+entryEnd

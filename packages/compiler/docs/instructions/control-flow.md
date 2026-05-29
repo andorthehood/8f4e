@@ -253,6 +253,8 @@ mapEnd int
 
 The `map` instruction declares a single key→value row inside a map block. The key is matched against the input value, and if it matches (and no earlier row has already matched), the corresponding value becomes the result.
 
+When `map` has one argument, that argument is the value and the key defaults to the zero-based index of the `map` row inside the current `mapBegin`/`mapEnd` block. Explicit and implicit rows can be mixed; the implicit key always uses the row's position among `map` rows.
+
 Key type must match the input type declared in `mapBegin`. Value type is validated against the output type at `mapEnd`.
 For `int` maps, single-character string literals are accepted for keys and values and are converted to ASCII integer codes (for example `"A"` → `65`). Multi-character strings are not allowed in `map`.
 
@@ -263,6 +265,18 @@ push key
 mapBegin int
   map 1 10
   map 2 20
+mapEnd int
+
+mapBegin int
+  map 10    ; key 0
+  map 20    ; key 1
+  map 30    ; key 2
+mapEnd int
+
+mapBegin int
+  map 10    ; key 0
+  map 9 99  ; explicit key 9
+  map 30    ; key 2
 mapEnd int
 ```
 
