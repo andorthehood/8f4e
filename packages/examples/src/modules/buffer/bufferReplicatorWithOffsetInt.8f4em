@@ -47,6 +47,7 @@ add
 push bufferIn
 push _pointer
 push *lengthIn
+ensureNonZero
 remainder
 push sizeof(bufferIn)
 mul
@@ -56,6 +57,7 @@ load ; value from src
  
 push _pointer
 push *lengthIn
+ensureNonZero
 div
 push OFFSET
 mul

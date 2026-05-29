@@ -232,6 +232,36 @@ moduleEnd
 - Using `#test` outside of a module block will result in a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error
 - Placing `#test` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
 
+### `#mock`
+
+Marks a block as test-only support for modules that need external dependencies.
+
+**Scope:** Module, constants, and function block prologues
+
+**Usage:**
+```8f4e
+module filterTest
+#test
+float* input &source:out
+push *input
+assert 7
+moduleEnd
+
+module source
+#mock
+float out 7
+moduleEnd
+```
+
+**Behavior:**
+- Normal project builds exclude `#mock` blocks before compiling
+- Test builds include `#mock` blocks as ordinary modules, constants, or functions
+- The directive itself has no runtime behavior once the block is included
+- Mocks can satisfy imports such as `use env`, address defaults such as `&source:out`, or calls to helper functions
+
+**Errors:**
+- Placing `#mock` after a declaration or executable instruction will result in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
+
 **Example with memory and pointer parameters:**
 
 ```8f4e

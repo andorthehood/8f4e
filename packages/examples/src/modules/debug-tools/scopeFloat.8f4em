@@ -2,7 +2,7 @@
 
 module scope
 
-float* in &pcmPlayer8bit:out
+float* in
 float[] buffer 128
 float* pointer &buffer
 ; @plot &buffer count(buffer)

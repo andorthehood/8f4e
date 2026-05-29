@@ -60,4 +60,47 @@ describe('compileProjectModules', () => {
 
 		expect(result.testModuleIds).toEqual(['addWorks']);
 	});
+
+	it('excludes mock blocks from normal project compilation', () => {
+		const result = compileProjectModules(
+			[
+				{
+					code: ['module realDependency', 'int value 7', 'moduleEnd'],
+				},
+				{
+					code: ['module realDependency', '#mock ; test-only duplicate', 'int value 1', 'moduleEnd'],
+				},
+			],
+			{
+				compilerOptions: { startingMemoryWordAddress: 0 },
+				includeWasm: false,
+			}
+		);
+
+		expect(result.compiledModules?.realDependency.memoryMap.value.default).toBe(7);
+	});
+
+	it('includes mock blocks for test project compilation', () => {
+		const result = compileProjectModules(
+			[
+				{
+					code: ['module target', '#test', 'int* ptr &dependency:value', 'push *ptr', 'assert 42', 'moduleEnd'],
+				},
+				{
+					code: ['module dependency', '#mock', 'int value 42', 'moduleEnd'],
+				},
+			],
+			{
+				compilerOptions: { includeTestRunner: true, startingMemoryWordAddress: 0 },
+				includeWasm: false,
+			}
+		);
+
+		expect(result.testAssertions).toEqual([
+			expect.objectContaining({
+				moduleId: 'target',
+				expected: 42,
+			}),
+		]);
+	});
 });
