@@ -11,6 +11,7 @@ coverage
 
 .nx/cache
 .nx/workspace-data
+.wrangler
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
