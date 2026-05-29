@@ -395,6 +395,10 @@ function parseInstructionTokens(
 	}
 }
 
+function isArgumentContinuationCandidate(line: string): boolean {
+	return /^\s*-(?=\s|;|$)/.test(line);
+}
+
 function foldArgumentContinuationLines(code: string[], lineMetadata?: ParsedLineMetadata): SourceLine[] {
 	const sourceLines: SourceLine[] = [];
 	let previousSourceLine: SourceLine | undefined;
@@ -406,10 +410,8 @@ function foldArgumentContinuationLines(code: string[], lineMetadata?: ParsedLine
 
 		const lineNumberBeforeMacroExpansion =
 			lineMetadata?.[lineNumberAfterMacroExpansion]?.callSiteLineNumber ?? lineNumberAfterMacroExpansion;
-		const tokens = parseInstructionTokens(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
-		const [instruction] = tokens;
 
-		if (instruction !== '-') {
+		if (!isArgumentContinuationCandidate(line)) {
 			const sourceLine = {
 				line,
 				lineNumberBeforeMacroExpansion,
@@ -419,6 +421,9 @@ function foldArgumentContinuationLines(code: string[], lineMetadata?: ParsedLine
 			previousSourceLine = sourceLine;
 			continue;
 		}
+
+		const tokens = parseInstructionTokens(line, lineNumberBeforeMacroExpansion, lineNumberAfterMacroExpansion);
+		const instruction = '-';
 
 		if (!previousSourceLine) {
 			throw new SyntaxRulesError(SyntaxErrorCode.INVALID_ARGUMENT, 'Argument continuation has no instruction.', {
