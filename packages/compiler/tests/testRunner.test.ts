@@ -1,0 +1,110 @@
+import { describe, expect, test } from 'vitest';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
+
+import compile from '../src/index';
+
+import type { Module } from '@8f4e/compiler-spec';
+
+const defaultOptions = {
+	startingMemoryWordAddress: 1,
+	disableSharedMemory: true,
+	includeAST: true,
+	includeTestRunner: true,
+};
+
+async function instantiate(modules: Module[], functions?: Module[]) {
+	const result = compile(modules, defaultOptions, functions);
+	const failureCalls: Array<{ assertIndex: number; expected: number; received: number }> = [];
+	const memorySizePages = Math.max(1, Math.ceil(result.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
+	const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
+	const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
+		js: { memory },
+		test: {
+			assertFailed(assertIndex: number, expected: number, received: number) {
+				failureCalls.push({ assertIndex, expected, received });
+			},
+		},
+	});
+
+	return {
+		result,
+		failureCalls,
+		exports: instance.exports as WebAssembly.Exports & {
+			init: CallableFunction;
+			cycle: CallableFunction;
+			runTests: CallableFunction;
+		},
+	};
+}
+
+describe('#test modules and assert runner', () => {
+	test('excludes #test modules from cycle and executes them from runTests', async () => {
+		const { exports, failureCalls, result } = await instantiate([
+			{
+				code: ['module production', 'moduleEnd'],
+			},
+			{
+				code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 4', 'moduleEnd'],
+			},
+		]);
+
+		exports.init();
+		exports.cycle();
+
+		expect(failureCalls).toEqual([]);
+
+		exports.runTests();
+
+		expect(failureCalls).toEqual([{ assertIndex: 0, expected: 4, received: 3 }]);
+		expect(result.testAssertions).toEqual([
+			{
+				assertIndex: 0,
+				moduleId: 'addWorks',
+				lineNumber: 5,
+				expected: 4,
+			},
+		]);
+		expect(result.compiledModules.addWorks.testExecution).toBe(true);
+	});
+
+	test('does not report passing assertions', async () => {
+		const { exports, failureCalls } = await instantiate([
+			{
+				code: ['module addWorks', '#test', 'push 1', 'push 2', 'add', 'assert 3', 'moduleEnd'],
+			},
+		]);
+
+		exports.init();
+		exports.runTests();
+
+		expect(failureCalls).toEqual([]);
+	});
+
+	test('supports memory declarations and pointer arguments in #test modules', async () => {
+		const { exports, failureCalls } = await instantiate(
+			[
+				{
+					code: [
+						'module readFirstWorks',
+						'#test',
+						'int[] values 2 7 8',
+						'push &values',
+						'call readFirst',
+						'assert 7',
+						'moduleEnd',
+					],
+				},
+			],
+			[
+				{
+					code: ['function readFirst', '#impure', 'param int* ptr', 'push *ptr', 'functionEnd int'],
+				},
+			]
+		);
+
+		exports.init();
+		exports.runTests();
+
+		expect(failureCalls).toEqual([]);
+	});
+});
