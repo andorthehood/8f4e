@@ -111,6 +111,50 @@ describe('#test modules and assert runner', () => {
 		expect(failureCalls).toEqual([]);
 	});
 
+	test('omits #test modules and test imports from normal builds', async () => {
+		const result = compile(
+			[
+				{
+					code: ['module production', 'moduleEnd'],
+				},
+				{
+					code: ['module addWorks', '#test', 'push 1', 'assert 1', 'moduleEnd'],
+				},
+			],
+			{
+				startingMemoryWordAddress: 1,
+				disableSharedMemory: true,
+				includeAST: true,
+			}
+		);
+		const memorySizePages = Math.max(1, Math.ceil(result.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
+		const memory = new WebAssembly.Memory({ initial: memorySizePages, maximum: memorySizePages });
+		const { instance } = await WebAssembly.instantiate(result.codeBuffer, {
+			js: { memory },
+		});
+
+		expect(result.compiledModules.addWorks).toBeUndefined();
+		expect(result.testAssertions).toBeUndefined();
+		expect(instance.exports.runTests).toBeUndefined();
+	});
+
+	test('rejects assert in normal modules when test support is not enabled', () => {
+		expect(() =>
+			compile(
+				[
+					{
+						code: ['module production', 'push 1', 'assert 1', 'moduleEnd'],
+					},
+				],
+				{
+					startingMemoryWordAddress: 1,
+					disableSharedMemory: true,
+					includeAST: true,
+				}
+			)
+		).toThrow(expect.objectContaining({ code: ErrorCode.MISSING_ASSERT_FAILURE_HANDLER }));
+	});
+
 	test('rejects non-integer expected values before codegen', () => {
 		expect(() =>
 			compile([{ code: ['module badAssert', '#test', 'push 1', 'assert 1.5', 'moduleEnd'] }], defaultOptions)

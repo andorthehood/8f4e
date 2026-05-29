@@ -96,6 +96,18 @@ export function getDocumentProjectBlockType(code: string[]): DocumentBlockType |
 	return match.hasOpener && match.hasCloser ? match.type : 'unknown';
 }
 
+export function isProjectTestModule(block: ProjectCodeBlock): boolean {
+	if (getProjectBlockType(block.code) !== 'module') {
+		return false;
+	}
+
+	return block.code.some(line => line.trim() === '#test');
+}
+
+export function hasProjectTestModule(blocks: ProjectCodeBlock[]): boolean {
+	return blocks.some(block => !block.disabled && isProjectTestModule(block));
+}
+
 export function parse8f4eProject(text: string): ProjectInput {
 	const lines = text.split('\n');
 

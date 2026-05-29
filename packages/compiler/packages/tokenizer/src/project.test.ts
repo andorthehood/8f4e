@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import {
 	getDocumentProjectBlockType,
 	getProjectBlockType,
+	hasProjectTestModule,
+	isProjectTestModule,
 	parse8f4eProject,
 	pickProjectCompilerBlocks,
 } from './project';
@@ -67,5 +69,14 @@ describe('project block classification', () => {
 			functionBlocks: [{ code: validFunctionBlock }],
 			macroBlocks: [{ code: validMacroBlock }],
 		});
+	});
+
+	it('detects test modules through tokenizer-owned project helpers', () => {
+		const testModuleBlock = { code: ['module addWorks', '#test', 'push 1', 'assert 1', 'moduleEnd'] };
+		expect(isProjectTestModule(testModuleBlock)).toBe(true);
+		expect(isProjectTestModule({ code: validModuleBlock })).toBe(false);
+		expect(isProjectTestModule({ code: validFunctionBlock })).toBe(false);
+		expect(hasProjectTestModule([{ code: validModuleBlock }, testModuleBlock])).toBe(true);
+		expect(hasProjectTestModule([{ ...testModuleBlock, disabled: true }])).toBe(false);
 	});
 });
