@@ -174,7 +174,6 @@ export function compileModule(
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
-		initOnlyExecution: context.initOnlyExecution,
 	};
 }
 

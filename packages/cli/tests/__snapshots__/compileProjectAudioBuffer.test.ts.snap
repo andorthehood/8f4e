@@ -330,7 +330,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "id": "audioout",
       "index": 2,
       "initFunctionBody": [],
-      "initOnlyExecution": undefined,
       "memoryIndex": 0,
       "memoryMap": {
         "buffer": {
@@ -396,7 +395,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "id": "notes",
       "index": 3,
       "initFunctionBody": [],
-      "initOnlyExecution": undefined,
       "memoryIndex": 0,
       "memoryMap": {},
       "skipExecutionInCycle": undefined,
@@ -505,7 +503,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "id": "phaseAccumulator",
       "index": 1,
       "initFunctionBody": [],
-      "initOnlyExecution": undefined,
       "memoryIndex": 0,
       "memoryMap": {
         "defaultFreq": {
@@ -586,7 +583,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "id": "projectConfig",
       "index": 0,
       "initFunctionBody": [],
-      "initOnlyExecution": undefined,
       "memoryIndex": 0,
       "memoryMap": {},
       "skipExecutionInCycle": undefined,

@@ -172,7 +172,6 @@ export interface CompilationContext {
 	functionTypeRegistry?: FunctionTypeRegistry;
 	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
-	initOnlyExecution?: boolean;
 	assertions?: AssertionMetadata[];
 	assertFailureFunctionIndex?: number;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */

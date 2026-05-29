@@ -29,7 +29,6 @@ export interface CompiledModule {
 	ast?: ModuleAST | ConstantsAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
-	initOnlyExecution?: boolean;
 }
 
 export type CompiledModuleLookup = Record<string, CompiledModule>;
