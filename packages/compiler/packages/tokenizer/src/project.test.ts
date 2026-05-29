@@ -72,7 +72,7 @@ describe('project block classification', () => {
 	});
 
 	it('detects test modules through tokenizer-owned project helpers', () => {
-		const testModuleBlock = { code: ['module addWorks', '#test', 'push 1', 'assert 1', 'moduleEnd'] };
+		const testModuleBlock = { code: ['module addWorks', '#test ; inline comment', 'push 1', 'assert 1', 'moduleEnd'] };
 		expect(isProjectTestModule(testModuleBlock)).toBe(true);
 		expect(isProjectTestModule({ code: validModuleBlock })).toBe(false);
 		expect(isProjectTestModule({ code: validFunctionBlock })).toBe(false);
