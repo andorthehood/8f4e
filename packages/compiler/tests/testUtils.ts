@@ -89,7 +89,7 @@ export function hasTestExportDeclaration(project: ProjectInput): boolean {
 		if (block.disabled) {
 			return false;
 		}
-		if (block.executionEntryName === 'test') {
+		if (block.entry === 'test') {
 			return true;
 		}
 
