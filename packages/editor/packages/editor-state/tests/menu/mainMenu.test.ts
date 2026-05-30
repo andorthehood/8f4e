@@ -60,29 +60,30 @@ describe('menus - go home entry', () => {
 		expect(newNoteItem?.payload).toEqual({ isNew: true, blockType: 'note' });
 	});
 
-	it('shows "New Entry" as a new module with a fresh execution entry', () => {
+	it('uses "New Module" as the module creation action', () => {
 		const mockState = createMockState({
 			editorMode: 'edit',
 		});
 
 		const menu = mainMenu(mockState as State);
-		const newEntryItem = menu.find(item => item.title === 'New Entry');
+		const newModuleItem = menu.find(item => item.title === 'New Module');
 
-		expect(newEntryItem).toBeDefined();
-		expect(newEntryItem?.action).toBe('addCodeBlock');
-		expect(newEntryItem?.payload).toEqual({ isNew: true, blockType: 'module', newEntry: true });
+		expect(newModuleItem).toBeDefined();
+		expect(newModuleItem?.action).toBe('addCodeBlock');
+		expect(newModuleItem?.payload).toEqual({ isNew: true, blockType: 'module' });
+		expect(menu.find(item => item.title === 'New Entry')).toBeUndefined();
 	});
 
-	it('hides "New Entry" when editing is disabled', () => {
+	it('hides "New Module" when editing is disabled', () => {
 		const mockState = createMockState({
 			editorMode: 'view',
 			featureFlags: { editing: false },
 		});
 
 		const menu = mainMenu(mockState as State);
-		const newEntryItem = menu.find(item => item.title === 'New Entry');
+		const newModuleItem = menu.find(item => item.title === 'New Module');
 
-		expect(newEntryItem).toBeUndefined();
+		expect(newModuleItem).toBeUndefined();
 	});
 
 	it('shows "Take Screenshot" when canvas screenshot export is available', () => {
