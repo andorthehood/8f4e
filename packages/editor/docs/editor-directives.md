@@ -792,4 +792,14 @@ Select the runtime host the editor should load for the project.
 ; @config runtime AudioWorkletRuntime
 ```
 
-For runtime directives (`; ~...`), see [runtime-directives.md](./runtime-directives.md).
+Extensions may also contribute schema-backed config paths mounted at their own root. Runtime packages use this for
+paths such as:
+
+```txt
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
+; @config workerRuntime.sampleRate 50
+; @config mainThreadRuntime.sampleRate 50
+```
+
+These roots are owned by their contributing package, not by the editor config type.

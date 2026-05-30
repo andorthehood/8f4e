@@ -1,5 +1,5 @@
 import parsePos from '../directives/pos/data';
-import { resolveRuntimeEnvConstants } from '../../../runtime/directives';
+import { getSelectedRuntimeEntry } from '../../../runtime/editorConfig';
 
 import type { StateManager } from '@8f4e/state-manager';
 import type { State, CodeBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
@@ -30,7 +30,12 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	lines.push('; Changes will be overwritten');
 	lines.push('');
 
-	lines.push(...resolveRuntimeEnvConstants(state));
+	const runtimeEntry = getSelectedRuntimeEntry(
+		state.editorConfig.runtime,
+		state.runtimeRegistry,
+		state.defaultRuntimeId
+	);
+	lines.push(...(runtimeEntry.getEnvConstants?.(state.editorConfig) ?? []));
 
 	// Binary asset sizes
 	const binaryAssets = state.binaryAssets || [];
@@ -65,9 +70,9 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
  * Auto-managed environment constants block effect.
  *
  * This effect automatically maintains a constants block named 'env' that contains
- * environment values like sample rate, buffer size, and binary asset sizes.
+ * environment values like contributed runtime values and binary asset sizes.
  * The env block is added to the project's codeBlocks array when the project is loaded,
- * and its content is updated in graphicHelper.codeBlocks when runtime settings or binary assets change.
+ * and its content is updated in graphicHelper.codeBlocks when contributed environment constants or binary assets change.
  *
  * @param store - State manager instance
  */
@@ -142,10 +147,10 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 	// Ensure env block exists when project is loaded
 	store.subscribe('initialProjectState', ensureEnvBlockInProject);
 
-	// Update env block code in graphicHelper.codeBlocks when runtime config or binary assets change.
+	// Update env block code in graphicHelper.codeBlocks when editor config, runtime registry, or binary assets change.
 	// This avoids the infinite loop caused by modifying initialProjectState.
 	store.subscribe('graphicHelper.selectedCodeBlock.code', updateEnvConstantsBlockInGraphicHelper);
-	store.subscribe('editorConfig.runtime', updateEnvConstantsBlockInGraphicHelper);
+	store.subscribe('editorConfig', updateEnvConstantsBlockInGraphicHelper);
 	store.subscribe('runtimeRegistry', updateEnvConstantsBlockInGraphicHelper);
 	store.subscribe('binaryAssets', updateEnvConstantsBlockInGraphicHelper);
 }

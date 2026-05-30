@@ -12,7 +12,13 @@ import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 import type { PostProcessEffect, BackgroundEffect } from 'glugglug';
-import type { Callbacks, InfoRecord, State, RuntimeRegistry } from '@8f4e/editor-state-types';
+import type {
+	Callbacks,
+	EditorConfigSchemaContributionRegistry,
+	InfoRecord,
+	State,
+	RuntimeRegistry,
+} from '@8f4e/editor-state-types';
 
 // Re-export types that consumers might need
 export type {
@@ -27,12 +33,12 @@ export type {
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
 	RuntimeValuesByRuntimeId,
-	WebWorkerRuntime,
-	MainThreadRuntime,
-	AudioWorkletRuntime,
 	FeatureFlags,
 	FeatureFlagsConfig,
 	EditorMode,
+	EditorConfig,
+	EditorConfigSchemaContribution,
+	EditorConfigSchemaContributionRegistry,
 	JSONSchemaLike,
 	BrowserLocalNoteStorageBlock,
 } from '@8f4e/editor-state-types';
@@ -41,6 +47,14 @@ export type { MemoryRef } from './memoryViewManager';
 
 // Re-export helper functions
 export { updateStateWithSpriteData } from './updateStateWithSpriteData';
+export {
+	collectSchemaConfigPaths,
+	createSchemaEditorConfigValidator,
+	getSchemaForConfigPath,
+	parseSchemaConfigValue,
+	resolveSchemaConfigRoot,
+	validateSchemaConfigValue,
+} from '@8f4e/editor-state';
 
 export interface Editor {
 	resize: (width: number, height: number) => void;
@@ -60,6 +74,7 @@ interface Options {
 	};
 	runtimeRegistry: RuntimeRegistry;
 	defaultRuntimeId: string;
+	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 	renderStatsIntervalFrames?: number;
 }
 

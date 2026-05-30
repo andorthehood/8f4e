@@ -4,8 +4,7 @@ import type { ParsedDirectiveRecord } from '@8f4e/editor-state-types';
 
 /**
  * Scans every line of a code block's raw source and returns a flat array of
- * parsed directive records for both editor (`; @name`) and runtime (`; ~name`)
- * directive comments.
+ * parsed editor directive records (`; @name`) from directive comments.
  *
  * One record is emitted per matching directive in raw row order.
  */

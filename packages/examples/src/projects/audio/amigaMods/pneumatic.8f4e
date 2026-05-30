@@ -250,7 +250,9 @@ moduleEnd
 module projectConfig
 ; @pos 9 -125
 ; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName pneumatic
 
 moduleEnd
@@ -2033,7 +2035,6 @@ use env
 
 float* in &lowpassL:out
 float[] buffer AUDIO_BUFFER_SIZE
-; ~audioOutput buffer 0 0
 int pointer &buffer
 
 ; @plot &buffer count(buffer)
@@ -2070,7 +2071,6 @@ use env
 
 float* in &lowpassR:out
 float[] buffer AUDIO_BUFFER_SIZE
-; ~audioOutput buffer 0 1
 int pointer &buffer
 
 ; @plot &buffer count(buffer)

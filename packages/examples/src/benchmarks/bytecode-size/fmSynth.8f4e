@@ -757,8 +757,6 @@ macro adsrEnv
 moduleEnd
 module audioout
 ; @pos 675 39
-; ~audioOutput buffer 0 0
-; ~audioOutput buffer 0 1
 use env
 
 float* in &limiter:out
@@ -1398,7 +1396,9 @@ moduleEnd
 module projectConfig
 ; @pos -94 1
 ; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
+; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName jankoSynth
 
 moduleEnd

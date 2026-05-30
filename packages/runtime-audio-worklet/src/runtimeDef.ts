@@ -1,18 +1,117 @@
 // Import the types from the editor
 // Note: audioWorkletUrl is imported at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
+import { resolveSchemaConfigRoot } from '@8f4e/editor';
 
-import { resolveAudioWorkletRouting } from './audioRouting';
-import {
-	getAudioWorkletRuntimeEnvConstantsFromBlocks,
-	resolveAudioWorkletRuntimeDirectives,
-	resolveAudioWorkletRuntimeDirectivesFromBlocks,
-} from './runtimeDirectives';
 import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runtimeValues';
 
-import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
+import type {
+	EditorConfig,
+	EditorConfigSchemaContribution,
+	EventDispatcher,
+	RuntimeRegistryEntry,
+	State,
+} from '@8f4e/editor';
 
 const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
+const AUDIO_BUFFER_SIZE = 128;
+const AUDIO_BUFFER_ADDRESS_SCHEMA = {
+	format: 'memory-address',
+	anyOf: [
+		{ type: 'integer' as const, minimum: 0 },
+		{ type: 'string' as const, pattern: '^[^:\\s]+:[^:\\s]+$' },
+	],
+};
+
+const AUDIO_WORKLET_EDITOR_CONFIG: EditorConfigSchemaContribution = {
+	root: 'audioRuntime',
+	defaults: {
+		sampleRate: 48000,
+	},
+	schema: {
+		type: 'object',
+		properties: {
+			sampleRate: { type: 'number', minimum: 1 },
+			audioOutBufferLAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
+			audioOutBufferRAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
+			audioInBufferLAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
+		},
+		additionalProperties: false,
+	},
+};
+
+interface AudioWorkletRuntimeConfig {
+	sampleRate: number;
+	audioOutBufferLAddress?: number;
+	audioOutBufferRAddress?: number;
+	audioInBufferLAddress?: number;
+}
+
+type AudioBufferConfigKey = 'audioOutBufferLAddress' | 'audioOutBufferRAddress' | 'audioInBufferLAddress';
+
+interface AudioOutputBufferRoute {
+	audioBufferWordAddress: number;
+	output: number;
+	channel: number;
+}
+
+interface AudioInputBufferRoute {
+	audioBufferWordAddress: number;
+	input: number;
+	channel: number;
+}
+
+function getAudioWorkletRuntimeConfig(state: State): AudioWorkletRuntimeConfig {
+	const config = resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, state.editorConfig, state) as Record<
+		string,
+		unknown
+	>;
+
+	return {
+		sampleRate: typeof config.sampleRate === 'number' ? config.sampleRate : 48000,
+		audioOutBufferLAddress: getAudioBufferConfigValue(config, 'audioOutBufferLAddress'),
+		audioOutBufferRAddress: getAudioBufferConfigValue(config, 'audioOutBufferRAddress'),
+		audioInBufferLAddress: getAudioBufferConfigValue(config, 'audioInBufferLAddress'),
+	};
+}
+
+function getAudioBufferConfigValue(config: Record<string, unknown>, key: AudioBufferConfigKey): number | undefined {
+	const value = config[key];
+	return typeof value === 'number' ? value : undefined;
+}
+
+function getSampleRate(editorConfig: EditorConfig): number {
+	const config = resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, editorConfig);
+	return typeof config.sampleRate === 'number' ? config.sampleRate : 48000;
+}
+
+export function getAudioOutputBuffers(state: State): AudioOutputBufferRoute[] {
+	const config = getAudioWorkletRuntimeConfig(state);
+	const leftAddress = config.audioOutBufferLAddress;
+	const rightAddress = config.audioOutBufferRAddress;
+	const buffers: AudioOutputBufferRoute[] = [];
+
+	if (leftAddress !== undefined) {
+		buffers.push({ audioBufferWordAddress: leftAddress, output: 0, channel: 0 });
+	}
+
+	if (rightAddress !== undefined) {
+		buffers.push({ audioBufferWordAddress: rightAddress, output: 0, channel: 1 });
+	}
+
+	return buffers;
+}
+
+export function getAudioInputBuffers(state: State): AudioInputBufferRoute[] {
+	const config = getAudioWorkletRuntimeConfig(state);
+	const leftAddress = config.audioInBufferLAddress;
+
+	return leftAddress === undefined ? [] : [{ audioBufferWordAddress: leftAddress, input: 0, channel: 0 }];
+}
+
+function hasAudioInputBufferConfig(editorConfig: EditorConfig): boolean {
+	return resolveSchemaConfigRoot(AUDIO_WORKLET_EDITOR_CONFIG, editorConfig).audioInBufferLAddress !== undefined;
+}
 
 // AudioWorklet Runtime Factory
 export function audioWorkletRuntimeFactory(
@@ -47,8 +146,6 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	function syncCodeAndSettingsWithRuntime() {
-		const audioRoutes = resolveAudioWorkletRouting(state.graphicHelper.codeBlocks);
-
 		if (!audioWorklet || !audioContext) {
 			return;
 		}
@@ -59,44 +156,47 @@ export function audioWorkletRuntimeFactory(
 			return;
 		}
 
-		const audioOutputBuffers = audioRoutes.audioOutputs
-			.map(({ moduleId, memoryId, output, channel }) => {
-				const audioModule = state.compiler.compiledModules[moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
-				return {
-					audioBufferWordAddress,
-					output,
-					channel,
-				};
-			})
-			.filter(
-				({ audioBufferWordAddress }: { audioBufferWordAddress: number | undefined }) =>
-					typeof audioBufferWordAddress !== 'undefined'
-			);
-
-		const audioInputBuffers = audioRoutes.audioInputs
-			.map(({ moduleId, memoryId, input, channel }) => {
-				const audioModule = state.compiler.compiledModules[moduleId];
-				const audioBufferWordAddress = audioModule?.memoryMap[memoryId]?.wordAlignedAddress;
-				return {
-					audioBufferWordAddress,
-					input,
-					channel,
-				};
-			})
-			.filter(
-				({ audioBufferWordAddress }: { audioBufferWordAddress: number | undefined }) =>
-					typeof audioBufferWordAddress !== 'undefined'
-			);
-
 		if (audioWorklet) {
 			audioWorklet.port.postMessage({
 				type: 'init',
 				memoryRef: memory,
 				codeBuffer: getCodeBuffer(),
-				audioOutputBuffers,
-				audioInputBuffers,
+				audioOutputBuffers: getAudioOutputBuffers(state),
+				audioInputBuffers: getAudioInputBuffers(state),
 			});
+		}
+	}
+
+	async function syncAudioInputSource() {
+		if (!audioContext || !audioWorklet) {
+			return;
+		}
+
+		if (!hasAudioInputBufferConfig(state.editorConfig)) {
+			if (mediaStreamSource) {
+				mediaStreamSource.disconnect();
+				mediaStreamSource = null;
+			}
+
+			if (mediaStream) {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				mediaStream.getTracks().forEach((track: any) => track.stop());
+				mediaStream = null;
+			}
+			return;
+		}
+
+		if (mediaStreamSource) {
+			return;
+		}
+
+		try {
+			// @ts-expect-error - navigator.mediaDevices not available in worker context during build
+			mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+			mediaStreamSource = audioContext.createMediaStreamSource(mediaStream);
+			mediaStreamSource.connect(audioWorklet);
+		} catch (error) {
+			console.error('Error accessing the microphone:', error);
 		}
 	}
 
@@ -104,16 +204,11 @@ export function audioWorkletRuntimeFactory(
 		if (audioContext) {
 			return;
 		}
-		const sampleRate = resolveAudioWorkletRuntimeDirectives(state).sampleRate;
-		if (sampleRate === undefined) {
-			return;
-		}
-
 		hideAudioPermissionDialog();
 
 		// @ts-expect-error - AudioContext not available in worker context during build
 		audioContext = new AudioContext({
-			sampleRate,
+			sampleRate: getSampleRate(state.editorConfig),
 			latencyHint: 'interactive',
 		});
 
@@ -141,16 +236,7 @@ export function audioWorkletRuntimeFactory(
 			}
 		};
 
-		if (resolveAudioWorkletRouting(state.graphicHelper.codeBlocks).audioInputs.length > 0) {
-			try {
-				// @ts-expect-error - navigator.mediaDevices not available in worker context during build
-				mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-				mediaStreamSource = audioContext.createMediaStreamSource(mediaStream);
-				mediaStreamSource.connect(audioWorklet);
-			} catch (error) {
-				console.error('Error accessing the microphone:', error);
-			}
-		}
+		await syncAudioInputSource();
 
 		audioWorklet.connect(audioContext.destination);
 
@@ -158,6 +244,7 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
+	store.subscribe('editorConfig.audioRuntime', onEditorConfigChanged);
 	events.on('mousedown', initAudioContext);
 
 	function tearDownAudioContext() {
@@ -183,15 +270,11 @@ export function audioWorkletRuntimeFactory(
 		}
 	}
 
-	function onRuntimeDirectivesChanged() {
+	function onEditorConfigChanged() {
 		if (!audioContext) {
 			return;
 		}
-		const desiredSampleRate = resolveAudioWorkletRuntimeDirectives(state).sampleRate;
-		if (desiredSampleRate === undefined) {
-			tearDownAudioContext();
-			return;
-		}
+		const desiredSampleRate = getSampleRate(state.editorConfig);
 		if (audioContext.sampleRate !== desiredSampleRate) {
 			tearDownAudioContext();
 			showAudioPermissionDialog(
@@ -200,10 +283,9 @@ export function audioWorkletRuntimeFactory(
 			return;
 		}
 
+		void syncAudioInputSource();
 		syncCodeAndSettingsWithRuntime();
 	}
-
-	store.subscribe('graphicHelper.codeBlocks', onRuntimeDirectivesChanged);
 
 	if (!audioContext) {
 		showAudioPermissionDialog(
@@ -213,7 +295,7 @@ export function audioWorkletRuntimeFactory(
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
-		store.unsubscribe('graphicHelper.codeBlocks', onRuntimeDirectivesChanged);
+		store.unsubscribe('editorConfig.audioRuntime', onEditorConfigChanged);
 		events.off('mousedown', initAudioContext);
 
 		tearDownAudioContext();
@@ -232,18 +314,11 @@ export function createAudioWorkletRuntimeDef(
 ): RuntimeRegistryEntry {
 	return {
 		id: AUDIO_WORKLET_RUNTIME_ID,
-		defaults: {
-			sampleRate: 48000,
-		},
-		schema: {
-			type: 'object',
-			properties: {
-				sampleRate: { type: 'number' },
-			},
-			additionalProperties: false,
-		} as JSONSchemaLike,
-		resolveRuntimeDirectives: codeBlocks => resolveAudioWorkletRuntimeDirectivesFromBlocks(codeBlocks),
-		getEnvConstants: codeBlocks => getAudioWorkletRuntimeEnvConstantsFromBlocks(codeBlocks),
+		editorConfigSchema: AUDIO_WORKLET_EDITOR_CONFIG,
+		getEnvConstants: editorConfig => [
+			`const SAMPLE_RATE ${getSampleRate(editorConfig)}`,
+			`const AUDIO_BUFFER_SIZE ${AUDIO_BUFFER_SIZE}`,
+		],
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl);
 		},
