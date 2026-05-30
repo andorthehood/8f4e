@@ -132,7 +132,7 @@ describe('Runtime System', () => {
 
 			await runtimeEffect(store, events);
 
-			expect(Object.keys(state.editorConfigSchemaContributions)).toEqual([
+			expect(Object.keys(store.getState().editorConfigSchemaContributions)).toEqual([
 				'host',
 				'runtime:WebWorkerRuntime',
 				'runtime:AudioWorkletRuntime',
