@@ -76,6 +76,66 @@ function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
 }
 
 describe('drawModules', () => {
+	it('draws precomputed entry outlines before rendering code blocks', () => {
+		const state = createMockState({
+			graphicHelper: {
+				codeBlocks: [],
+				entryOutlines: [
+					{
+						entryName: 'main',
+						topLeft: { x: 8, y: 16 },
+						topRight: { x: 104, y: 16 },
+						bottomRight: { x: 104, y: 96 },
+						bottomLeft: { x: 8, y: 96 },
+					},
+				],
+				spriteLookups: {
+					fillColors: {},
+				} as never,
+			},
+			viewport: {
+				vGrid: 8,
+				hGrid: 16,
+			},
+		});
+		const engine = createMockEngine({ drawCachedGroup: false });
+
+		drawModules(engine, state, createMemoryViews());
+
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
+			1,
+			8,
+			16,
+			'wire',
+			96,
+			1
+		);
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
+			2,
+			8,
+			95,
+			'wire',
+			96,
+			1
+		);
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
+			3,
+			8,
+			16,
+			'wire',
+			1,
+			80
+		);
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
+			4,
+			103,
+			16,
+			'wire',
+			1,
+			80
+		);
+	});
+
 	it('renders only the corners for hidden blocks by default', () => {
 		const hiddenBlock = createMockCodeBlock({
 			hidden: true,

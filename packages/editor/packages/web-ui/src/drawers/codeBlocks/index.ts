@@ -15,6 +15,7 @@ import drawErrorMessages from './widgets/errorMessages';
 import drawPianoKeyboards from './widgets/pianoKeyboards';
 import drawArrow from './drawArrow';
 import drawBlockHighlights from './widgets/blockHighlights';
+import drawEntryOutlines from './drawEntryOutlines';
 import drawSelectedOutline from './drawSelectedOutline';
 import drawSelectedLineHint from './drawSelectedLineHint';
 
@@ -36,6 +37,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 	const offsetY = -y;
 
 	engine.startGroup(offsetX, offsetY);
+	drawEntryOutlines(engine, state);
 
 	for (const codeBlock of state.graphicHelper.codeBlocks) {
 		const renderHiddenPreview = codeBlock.hidden && !state.graphicHelper.showHiddenCodeBlocks;
