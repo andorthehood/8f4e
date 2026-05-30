@@ -38,7 +38,6 @@ import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlo
 import updateViewport from '../../../viewport/updateViewport';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 import { isShaderNoteCode } from '../../../shader-effects/getShaderNoteMetadata';
-import { flattenProjectCodeBlocks } from '../../../project/projectBlocks';
 
 import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
 
@@ -290,7 +289,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		store.set('graphicHelper.selectedCodeBlock', undefined);
 		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', undefined);
 
-		const codeBlocks = flattenProjectCodeBlocks(state.initialProjectState).map(codeBlock => {
+		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
 			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
 			state.graphicHelper.nextCodeBlockCreationIndex++;
 
@@ -322,7 +321,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				lineNumberColumnWidth: 1,
 				creationIndex,
 				blockType,
-				executionEntryName: codeBlock.executionEntryName,
+				executionEntryName: codeBlock.entry,
 				disabled: directiveState.blockState.disabled,
 				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,

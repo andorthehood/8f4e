@@ -198,7 +198,7 @@ function formatFailure(failure: AssertionFailure): string {
 }
 
 function hasTestEntry(project: ProjectInput): boolean {
-	return project.codeBlocks.some(block => !block.disabled && block.executionEntryName === 'test');
+	return project.codeBlocks.some(block => !block.disabled && block.entry === 'test');
 }
 
 function getErrorMessage(error: unknown): string {

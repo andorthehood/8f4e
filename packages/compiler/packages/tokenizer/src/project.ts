@@ -28,7 +28,7 @@ const openerByCloser = new Map<string, string>(projectBlockDelimiters.map(({ ope
 export interface ProjectCodeBlock {
 	code: string[];
 	disabled?: boolean;
-	executionEntryName?: string;
+	entry?: string;
 }
 
 export interface ProjectInput {
@@ -127,7 +127,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 	const codeBlocks: ProjectCodeBlock[] = [];
 	const seenEntryNames = new Set<string>();
 
-	function readDocumentBlock(startIndex: number, executionEntryName?: string): number {
+	function readDocumentBlock(startIndex: number, entry?: string): number {
 		const openerLine = lines[startIndex];
 		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
 		if (!openerKeyword || openerKeyword === ENTRY_BLOCK_DELIMITER.opener) {
@@ -148,7 +148,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 				}
 
-				codeBlocks.push({ code: currentBlockLines, ...(executionEntryName ? { executionEntryName } : {}) });
+				codeBlocks.push({ code: currentBlockLines, ...(entry ? { entry } : {}) });
 				return i + 1;
 			}
 
@@ -244,7 +244,7 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 
 		const blockType = getProjectBlockType(block.code);
 		if (blockType === moduleBlockType) {
-			const entryName = block.executionEntryName ?? 'main';
+			const entryName = block.entry ?? 'main';
 			entries[entryName] ??= [];
 			entries[entryName].push({ code: block.code });
 			continue;
