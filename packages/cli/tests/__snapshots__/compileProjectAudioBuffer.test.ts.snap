@@ -14,7 +14,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "moduleEnd",
       ],
-      "executionEntryName": "main",
+      "entry": "main",
     },
     {
       "code": [
@@ -62,7 +62,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "moduleEnd",
       ],
-      "executionEntryName": "main",
+      "entry": "main",
     },
     {
       "code": [
@@ -108,7 +108,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "moduleEnd",
       ],
-      "executionEntryName": "main",
+      "entry": "main",
     },
     {
       "code": [
@@ -122,7 +122,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "; (audioout)",
         "moduleEnd",
       ],
-      "executionEntryName": "main",
+      "entry": "main",
     },
     {
       "code": [
