@@ -111,9 +111,9 @@ describe('creationIndex', () => {
 			const projectWithBlocks: Project = {
 				...EMPTY_DEFAULT_PROJECT,
 				codeBlocks: [
-					{ code: ['module a', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
-					{ code: ['module b', 'moduleEnd'], gridCoordinates: { x: 10, y: 0 } },
-					{ code: ['module c', 'moduleEnd'], gridCoordinates: { x: 20, y: 0 } },
+					{ code: ['module a', 'moduleEnd'], entry: 'main' },
+					{ code: ['module b', 'moduleEnd'], entry: 'main' },
+					{ code: ['module c', 'moduleEnd'], entry: 'main' },
 				],
 			};
 
@@ -141,7 +141,7 @@ describe('creationIndex', () => {
 
 			const project: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [{ code: ['module a', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+				codeBlocks: [{ code: ['module a', 'moduleEnd'], entry: 'main' }],
 			};
 
 			loadProjectCallback({ project });
@@ -158,6 +158,7 @@ describe('creationIndex', () => {
 				creationIndex: 0,
 				code: ['module a', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				gridX: 20,
 				gridY: 0,
 			});
@@ -166,6 +167,7 @@ describe('creationIndex', () => {
 				creationIndex: 1,
 				code: ['module b', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				gridX: 0,
 				gridY: 10,
 			});
@@ -174,6 +176,7 @@ describe('creationIndex', () => {
 				creationIndex: 2,
 				code: ['module c', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				gridX: 0,
 				gridY: 0,
 			});
@@ -195,6 +198,7 @@ describe('creationIndex', () => {
 				creationIndex: 2,
 				code: ['module a', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				gridX: 0,
 				gridY: 0,
 			});
@@ -203,6 +207,7 @@ describe('creationIndex', () => {
 				creationIndex: 0,
 				code: ['module b', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				gridX: 0,
 				gridY: 0,
 			});
@@ -211,6 +216,7 @@ describe('creationIndex', () => {
 				creationIndex: 1,
 				code: ['module c', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				gridX: 0,
 				gridY: 0,
 			});
@@ -230,6 +236,7 @@ describe('creationIndex', () => {
 				creationIndex: 0,
 				code: ['module dependent', 'int* ptr &source:0', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				gridX: 0,
 				gridY: 0,
 			});
@@ -238,6 +245,7 @@ describe('creationIndex', () => {
 				creationIndex: 1,
 				code: ['module source', 'int value 0', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				gridX: 20,
 				gridY: 0,
 			});
@@ -256,6 +264,7 @@ describe('creationIndex', () => {
 				creationIndex: 0,
 				code: ['module testModule', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 			});
 			const functionBlock = createMockCodeBlock({
 				id: 'testFunc',
@@ -268,6 +277,7 @@ describe('creationIndex', () => {
 				creationIndex: 2,
 				code: ['module testModuleTwo', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 			});
 
 			const codeBlocksArray = [moduleBlock, functionBlock, secondModuleBlock];

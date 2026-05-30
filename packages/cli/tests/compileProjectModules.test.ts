@@ -9,11 +9,11 @@ describe('compileProjectModules', () => {
 				[
 					{
 						code: ['module target', '; @pos -71 -28', 'int* ptr &source:0', 'moduleEnd'],
-						executionEntryName: 'main',
+						entry: 'main',
 					},
 					{
 						code: ['module source', '; @pos -141 -28', 'int value 0', 'moduleEnd'],
-						executionEntryName: 'main',
+						entry: 'main',
 					},
 				],
 				{
@@ -29,11 +29,11 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module source', '; @pos -141 -28', 'int value 0', 'moduleEnd'],
-					executionEntryName: 'main',
+					entry: 'main',
 				},
 				{
 					code: ['module target', '; @pos -71 -28', 'int* ptr &source:0', 'moduleEnd'],
-					executionEntryName: 'main',
+					entry: 'main',
 				},
 			],
 			{
@@ -54,7 +54,7 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module addWorks', 'push 1', 'drop', 'moduleEnd'],
-					executionEntryName: 'test',
+					entry: 'test',
 				},
 			],
 			{
@@ -71,11 +71,11 @@ describe('compileProjectModules', () => {
 			[
 				{
 					code: ['module target', 'int* ptr &dependency:value', 'push *ptr', 'drop', 'moduleEnd'],
-					executionEntryName: 'test',
+					entry: 'test',
 				},
 				{
 					code: ['module dependency', 'int value 42', 'moduleEnd'],
-					executionEntryName: 'main',
+					entry: 'main',
 				},
 			],
 			{

@@ -33,7 +33,7 @@ describe('parse8f4eProject', () => {
 		const project = parse8f4eProject(text);
 
 		expect(project.codeBlocks).toEqual([
-			{ code: validModuleBlock, executionEntryName: 'main' },
+			{ code: validModuleBlock, entry: 'main' },
 			{ code: validFunctionBlock },
 			{ code: validNoteBlock },
 		]);
@@ -89,11 +89,11 @@ describe('project block classification', () => {
 
 	it('splits project blocks into compiler inputs', () => {
 		const blocks = [
-			{ code: validModuleBlock, executionEntryName: 'main' },
+			{ code: validModuleBlock, entry: 'main' },
 			{ code: validFunctionBlock },
 			{ code: validMacroBlock },
 			{ code: validNoteBlock },
-			{ code: validModuleBlock, executionEntryName: 'main', disabled: true },
+			{ code: validModuleBlock, entry: 'main', disabled: true },
 		];
 
 		expect(pickProjectCompilerBlocks(blocks)).toEqual({
@@ -107,8 +107,8 @@ describe('project block classification', () => {
 	it('splits modules into their execution entries', () => {
 		expect(
 			pickProjectCompilerBlocks([
-				{ code: validModuleBlock, executionEntryName: 'main' },
-				{ code: ['module other', 'moduleEnd'], executionEntryName: 'test' },
+				{ code: validModuleBlock, entry: 'main' },
+				{ code: ['module other', 'moduleEnd'], entry: 'test' },
 			]).entries
 		).toEqual({
 			main: [{ code: validModuleBlock }],
@@ -117,10 +117,12 @@ describe('project block classification', () => {
 	});
 
 	it('does not infer execution entries from module directives', () => {
-		expect(
-			pickProjectCompilerBlocks([{ code: ['module regular', 'moduleEnd'], executionEntryName: 'main' }]).entries
-		).toEqual({
+		expect(pickProjectCompilerBlocks([{ code: ['module regular', 'moduleEnd'], entry: 'main' }]).entries).toEqual({
 			main: [{ code: ['module regular', 'moduleEnd'] }],
 		});
+	});
+
+	it('rejects module blocks without an entry', () => {
+		expect(() => pickProjectCompilerBlocks([{ code: validModuleBlock }])).toThrow('missing entry');
 	});
 });

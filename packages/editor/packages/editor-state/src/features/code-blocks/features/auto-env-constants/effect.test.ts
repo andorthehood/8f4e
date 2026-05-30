@@ -12,7 +12,7 @@ import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultPro
 const AUTO_ENV_BLOCK_ID = 'constants_env';
 const PROJECT_WITH_CODE_BLOCK: Project = {
 	...EMPTY_DEFAULT_PROJECT,
-	codeBlocks: [{ code: ['module demo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+	codeBlocks: [{ code: ['module demo', 'moduleEnd'], entry: 'main' }],
 };
 
 function getTestRuntimeEnvConstants(editorConfig: EditorConfig) {
@@ -81,7 +81,7 @@ describe('autoEnvConstants', () => {
 	test('should place env block at beginning of codeBlocks array', () => {
 		const projectWithBlocks: Project = {
 			...EMPTY_DEFAULT_PROJECT,
-			codeBlocks: [{ code: ['module test', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+			codeBlocks: [{ code: ['module test', 'moduleEnd'], entry: 'main' }],
 		};
 
 		store.set('initialProjectState', projectWithBlocks);
@@ -272,7 +272,6 @@ describe('autoEnvConstants', () => {
 			codeBlocks: [
 				{
 					code: ['constants env', 'const RUNTIME_MAGIC 123', 'constantsEnd'],
-					gridCoordinates: { x: 0, y: 0 },
 				},
 			],
 		};
