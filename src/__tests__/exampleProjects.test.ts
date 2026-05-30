@@ -18,10 +18,6 @@ function collectProjectPaths(directory: string): string[] {
 		const entryPath = resolve(directory, entry.name);
 
 		if (entry.isDirectory()) {
-			if (entry.name === 'archived') {
-				return [];
-			}
-
 			return collectProjectPaths(entryPath);
 		}
 
