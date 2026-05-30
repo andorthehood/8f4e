@@ -103,6 +103,21 @@ function incrementCodeBlockIdUntilUnique(state: State, blockType: RenameableCode
 	return blockId;
 }
 
+function getUniqueExecutionEntryName(state: State): string {
+	const usedEntryNames = new Set(
+		state.graphicHelper.codeBlocks
+			.filter(block => block.blockType === moduleBlock.type || getModuleId(block.code))
+			.map(block => block.executionEntryName ?? 'main')
+	);
+	let entryName = 'entry';
+
+	while (usedEntryNames.has(entryName)) {
+		entryName = incrementCodeBlockId(entryName);
+	}
+
+	return entryName;
+}
+
 export default function codeBlockCreator(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 	async function onAddCodeBlock({
@@ -110,12 +125,14 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		y,
 		isNew,
 		blockType,
+		newEntry,
 		code = [''],
 	}: {
 		x: number;
 		y: number;
 		isNew: boolean;
 		blockType?: NewCodeBlockType;
+		newEntry?: boolean;
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -201,6 +218,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			offsetY: 0,
 			creationIndex,
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
+			executionEntryName: newEntry && moduleId ? getUniqueExecutionEntryName(state) : undefined,
 			disabled: false,
 			isHome: false,
 		});
