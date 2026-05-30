@@ -68,6 +68,9 @@ Active todo files are listed below.
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
 | 435 | Add polymorphic function overloads | 🟡 | 1-2d | 2026-05-29 | Allow global functions to share a source name when their exact parameter signatures differ, using signature-derived ids and stack-based call resolution. |
+| 439 | Migrate @midiIn to config directive | 🟡 | 1-2d | 2026-05-30 | Move browser MIDI input routing from a standalone editor directive into a MIDI-owned schema-backed `@config` root. |
+| 440 | Migrate keyboard memory directives to config | 🟡 | 4-8h | 2026-05-30 | Replace `@keyCodeMemory` and `@keyPressedMemory` with keyboard-owned schema-backed config paths. |
+| 441 | Migrate binary asset directives to config | 🟡 | 1-2d | 2026-05-30 | Replace `@defAsset` and `@loadAsset` raw directive parsing with binary-asset-owned schema-backed config paths. |
 
 ### 🟢 Low Priority
 
