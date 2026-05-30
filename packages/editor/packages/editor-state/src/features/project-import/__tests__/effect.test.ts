@@ -226,7 +226,7 @@ describe('projectImport', () => {
 				'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e'
 			);
 
-			expect(mockState.initialProjectState.codeBlocks).toHaveLength(1);
+			expect(mockState.initialProjectState.entries.main).toHaveLength(1);
 		});
 
 		it('should warn when no getProject callback is provided', async () => {

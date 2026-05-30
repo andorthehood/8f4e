@@ -2,7 +2,10 @@
 
 exports[`serializeToProject > serializes basic project state without compiled data 1`] = `
 {
-  "codeBlocks": [
+  "entries": {
+    "main": [],
+  },
+  "global": [
     {
       "code": [
         "10 example",

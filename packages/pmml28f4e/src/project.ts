@@ -130,7 +130,8 @@ function buildOutputsBlock(outputs: PmmlNeuralNetwork['outputs'], position: { x:
 }
 
 export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork): Project {
-	const codeBlocks: CodeBlock[] = [];
+	const global: CodeBlock[] = [];
+	const main: CodeBlock[] = [];
 	const activationNeeded = [
 		neuralNetwork.activationFunction,
 		...neuralNetwork.layers.map(layer => layer.activationFunction),
@@ -141,10 +142,10 @@ export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork):
 		.some(value => value === 'logistic' || value === 'sigmoid');
 
 	if (activationNeeded) {
-		codeBlocks.push(buildSigmoidFunctionBlock());
+		global.push(buildSigmoidFunctionBlock());
 	}
 
-	codeBlocks.push(buildInputsBlock(neuralNetwork.inputs));
+	main.push(buildInputsBlock(neuralNetwork.inputs));
 
 	const addressById = new Map<number, string>();
 	neuralNetwork.inputs.forEach(input => {
@@ -195,7 +196,7 @@ export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork):
 					y: cursorY,
 				};
 
-				codeBlocks.push(buildNeuronBlock(code, position));
+				main.push(buildNeuronBlock(code, position));
 				addressById.set(neuron.id, `&neuron${neuron.id}.out`);
 				cursorY -= columnHeights[localIndex] + DEFAULT_BLOCK_PADDING_Y;
 			}
@@ -209,10 +210,13 @@ export function buildProjectFromNeuralNetwork(neuralNetwork: PmmlNeuralNetwork):
 			x: layerBaseX + DEFAULT_GRID_SPACING_X,
 			y: 0,
 		});
-		codeBlocks.push(outputBlock);
+		main.push(outputBlock);
 	}
 
 	return {
-		codeBlocks,
+		global,
+		entries: {
+			main,
+		},
 	};
 }

@@ -1,5 +1,7 @@
 import { parse8f4eProject } from '@8f4e/tokenizer';
 
+import { DEFAULT_PROJECT_ENTRY_NAME } from '../project/projectBlocks';
+
 import type { Project } from '@8f4e/editor-state-types';
 
 /**
@@ -7,7 +9,25 @@ import type { Project } from '@8f4e/editor-state-types';
  * Throws if the text is not valid .8f4e format.
  */
 export function parse8f4eToProject(text: string): Project {
-	return parse8f4eProject(text) as Project;
+	const parsed = parse8f4eProject(text);
+	const project: Project = {
+		global: [],
+		entries: {
+			[DEFAULT_PROJECT_ENTRY_NAME]: [],
+		},
+	};
+
+	for (const block of parsed.codeBlocks) {
+		if (block.executionEntryName) {
+			project.entries[block.executionEntryName] ??= [];
+			project.entries[block.executionEntryName].push({ code: block.code });
+			continue;
+		}
+
+		project.global.push({ code: block.code });
+	}
+
+	return project;
 }
 
 if (import.meta.vitest) {
@@ -21,26 +41,27 @@ if (import.meta.vitest) {
 		it('parses a valid .8f4e text with one block', () => {
 			const text = '8f4e/v1\n\nentry main\n' + validBlock.join('\n') + '\nentryEnd';
 			const project = parse8f4eToProject(text);
-			expect(project.codeBlocks).toHaveLength(1);
-			expect(project.codeBlocks[0]).toEqual({ code: validBlock, executionEntryName: 'main' });
+			expect(project.entries.main).toHaveLength(1);
+			expect(project.entries.main[0]).toEqual({ code: validBlock });
 		});
 
 		it('parses multiple blocks', () => {
 			const text = '8f4e/v1\n\nentry main\n' + validBlock.join('\n') + '\nentryEnd\n\n' + validFunctionBlock.join('\n');
 			const project = parse8f4eToProject(text);
-			expect(project.codeBlocks).toHaveLength(2);
+			expect(project.entries.main).toHaveLength(1);
+			expect(project.global).toHaveLength(1);
 		});
 
 		it('parses note blocks', () => {
 			const text = '8f4e/v1\n\n' + validNoteBlock.join('\n');
 			const project = parse8f4eToProject(text);
-			expect(project.codeBlocks).toHaveLength(1);
-			expect(project.codeBlocks[0].code).toEqual(validNoteBlock);
+			expect(project.global).toHaveLength(1);
+			expect(project.global[0].code).toEqual(validNoteBlock);
 		});
 
 		it('parses empty file (header only)', () => {
 			const project = parse8f4eToProject('8f4e/v1\n');
-			expect(project.codeBlocks).toHaveLength(0);
+			expect(project).toEqual({ global: [], entries: { main: [] } });
 		});
 
 		it('throws on invalid header', () => {
@@ -70,14 +91,16 @@ if (import.meta.vitest) {
 		it('round-trips through serialize then parse', async () => {
 			const { serializeProjectTo8f4e } = await import('../project-export/serializeTo8f4e');
 			const project = {
-				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }, { code: validNoteBlock }],
+				global: [{ code: validFunctionBlock }, { code: validNoteBlock }],
+				entries: {
+					main: [{ code: validBlock }],
+				},
 			};
 			const text = serializeProjectTo8f4e(project);
 			const parsed = parse8f4eToProject(text);
-			expect(parsed.codeBlocks).toHaveLength(3);
-			expect(parsed.codeBlocks[0]).toEqual({ code: validBlock, executionEntryName: 'main' });
-			expect(parsed.codeBlocks[1].code).toEqual(validFunctionBlock);
-			expect(parsed.codeBlocks[2].code).toEqual(validNoteBlock);
+			expect(parsed.entries.main[0]).toEqual({ code: validBlock });
+			expect(parsed.global[0].code).toEqual(validFunctionBlock);
+			expect(parsed.global[1].code).toEqual(validNoteBlock);
 		});
 	});
 }

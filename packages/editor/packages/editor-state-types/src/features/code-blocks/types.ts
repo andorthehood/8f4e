@@ -15,7 +15,6 @@ import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
  */
 export interface CodeBlock {
 	code: string[];
-	executionEntryName?: string;
 }
 
 /**

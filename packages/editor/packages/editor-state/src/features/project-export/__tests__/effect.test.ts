@@ -6,7 +6,7 @@ import { exportFileNameEditorConfigValidator } from '../editorConfig';
 
 import type { State } from '@8f4e/editor-state-types';
 
-import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 
 describe('projectExport', () => {
@@ -201,6 +201,13 @@ describe('projectExport', () => {
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });
 			mockState.callbacks.saveSession = mockSaveSession;
 			mockState.callbacks.getStorageQuota = mockGetStorageQuota;
+			mockState.graphicHelper.codeBlocks = [
+				createMockCodeBlock({
+					blockType: 'module',
+					code: ['module other', 'moduleEnd'],
+					executionEntryName: 'entry1',
+				}),
+			];
 
 			projectExport(store, mockEvents);
 
@@ -211,6 +218,13 @@ describe('projectExport', () => {
 			await saveSessionCallback();
 
 			expect(mockSaveSession).toHaveBeenCalled();
+			expect(mockSaveSession).toHaveBeenCalledWith({
+				global: [],
+				entries: {
+					main: [],
+					entry1: [{ code: ['module other', 'moduleEnd'] }],
+				},
+			});
 			expect(mockGetStorageQuota).toHaveBeenCalled();
 			expect(mockState.storageQuota.usedBytes).toBe(1024);
 		});

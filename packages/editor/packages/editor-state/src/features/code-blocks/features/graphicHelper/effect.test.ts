@@ -164,11 +164,13 @@ describe('graphic helper home directive', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [
-					{
-						code: ['module home', '; @home top', '; @pos 10 20', 'moduleEnd'],
-					},
-				],
+				entries: {
+					main: [
+						{
+							code: ['module home', '; @home top', '; @pos 10 20', 'moduleEnd'],
+						},
+					],
+				},
 			},
 			viewport: {
 				x: 0,
@@ -212,11 +214,13 @@ describe('graphic helper home directive', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [
-					{
-						code: ['module home', '; @home', '; @pos 10 20', 'moduleEnd'],
-					},
-				],
+				entries: {
+					main: [
+						{
+							code: ['module home', '; @home', '; @pos 10 20', 'moduleEnd'],
+						},
+					],
+				},
 			},
 			viewport: {
 				x: 0,
