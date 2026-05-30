@@ -6,7 +6,6 @@ type EntryBounds = {
 	minY: number;
 	maxX: number;
 	maxY: number;
-	count: number;
 };
 
 const DEFAULT_ENTRY_NAME = 'main';
@@ -22,7 +21,6 @@ function createBounds(entryName: string): EntryBounds {
 		minY: Number.POSITIVE_INFINITY,
 		maxX: Number.NEGATIVE_INFINITY,
 		maxY: Number.NEGATIVE_INFINITY,
-		count: 0,
 	};
 }
 
@@ -31,7 +29,6 @@ function updateBounds(bounds: EntryBounds, codeBlock: CodeBlockGraphicData): voi
 	bounds.minY = Math.min(bounds.minY, codeBlock.y);
 	bounds.maxX = Math.max(bounds.maxX, codeBlock.x + codeBlock.width);
 	bounds.maxY = Math.max(bounds.maxY, codeBlock.y + codeBlock.height);
-	bounds.count++;
 }
 
 function createOutline(bounds: EntryBounds, paddingX: number, paddingY: number): CodeBlockEntryOutline {
@@ -67,9 +64,7 @@ export default function deriveEntryOutlines(
 		boundsByEntry.set(entryName, bounds);
 	}
 
-	return [...boundsByEntry.values()]
-		.filter(bounds => bounds.count > 1)
-		.map(bounds => createOutline(bounds, paddingX, paddingY));
+	return [...boundsByEntry.values()].map(bounds => createOutline(bounds, paddingX, paddingY));
 }
 
 if (import.meta.vitest) {
@@ -118,6 +113,52 @@ if (import.meta.vitest) {
 					topRight: { x: 256, y: 32 },
 					bottomRight: { x: 256, y: 144 },
 					bottomLeft: { x: 16, y: 144 },
+				},
+				{
+					entryName: 'test',
+					topLeft: { x: 0, y: 0 },
+					topRight: { x: 100, y: 0 },
+					bottomRight: { x: 100, y: 100 },
+					bottomLeft: { x: 0, y: 100 },
+				},
+			]);
+		});
+
+		it('derives corners around a single-module main entry', () => {
+			const outlines = deriveEntryOutlines([
+				{ blockType: 'module', x: 0, y: 0, width: 10, height: 10 } as CodeBlockGraphicData,
+			]);
+
+			expect(outlines).toEqual([
+				{
+					entryName: 'main',
+					topLeft: { x: 0, y: 0 },
+					topRight: { x: 10, y: 0 },
+					bottomRight: { x: 10, y: 10 },
+					bottomLeft: { x: 0, y: 10 },
+				},
+			]);
+		});
+
+		it('derives corners around a single-module non-main entry', () => {
+			const outlines = deriveEntryOutlines([
+				{
+					blockType: 'module',
+					executionEntryName: 'entry',
+					x: 20,
+					y: 30,
+					width: 40,
+					height: 50,
+				} as CodeBlockGraphicData,
+			]);
+
+			expect(outlines).toEqual([
+				{
+					entryName: 'entry',
+					topLeft: { x: 20, y: 30 },
+					topRight: { x: 60, y: 30 },
+					bottomRight: { x: 60, y: 80 },
+					bottomLeft: { x: 20, y: 80 },
 				},
 			]);
 		});
