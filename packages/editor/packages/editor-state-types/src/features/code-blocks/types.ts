@@ -10,6 +10,7 @@ import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
  * Project-level code block structure for persistent storage.
+ * Module blocks must store their execution entry explicitly.
  * Position is stored within code via @pos directive.
  * Disabled state is stored within code via @disabled directive.
  */
@@ -364,10 +365,10 @@ export interface CodeBlockGraphicData {
 	 */
 	blockType: CodeBlockType;
 	/**
-	 * Optional execution entry name used by the compiler export pipeline.
+	 * Execution entry name used by module blocks in the compiler export pipeline.
 	 * This is separate from the visual `; @group` directive.
 	 */
-	executionEntryName?: string;
+	entry?: string;
 	/**
 	 * When true, the block is excluded from compilation and rendered with a transparent background.
 	 * Defaults to false.

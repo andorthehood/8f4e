@@ -167,6 +167,7 @@ describe('graphic helper home directive', () => {
 				codeBlocks: [
 					{
 						code: ['module home', '; @home top', '; @pos 10 20', 'moduleEnd'],
+						entry: 'main',
 					},
 				],
 			},
@@ -215,6 +216,7 @@ describe('graphic helper home directive', () => {
 				codeBlocks: [
 					{
 						code: ['module home', '; @home', '; @pos 10 20', 'moduleEnd'],
+						entry: 'main',
 					},
 				],
 			},

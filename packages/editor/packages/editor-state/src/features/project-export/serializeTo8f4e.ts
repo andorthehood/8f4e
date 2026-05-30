@@ -2,9 +2,7 @@ import { getDocumentProjectBlockType } from '@8f4e/tokenizer';
 
 import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
 
-import type { Project } from '@8f4e/editor-state-types';
-
-const DEFAULT_PROJECT_ENTRY_NAME = 'main';
+import type { CodeBlock, Project } from '@8f4e/editor-state-types';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
 	// Find first non-empty line (must be opener)
@@ -60,6 +58,13 @@ function validateCodeBlock(code: string[], blockIndex: number): void {
 	}
 }
 
+function getModuleEntryName(block: CodeBlock, blockIndex: number): string {
+	if (!block.entry) {
+		throw new Error(`Block ${blockIndex}: module block is missing entry`);
+	}
+	return block.entry;
+}
+
 /**
  * Serializes a Project to .8f4e text format.
  * Throws if any code block fails export-gate validation.
@@ -75,24 +80,26 @@ export function serializeProjectTo8f4e(project: Project): string {
 	const emittedEntries = new Set<string>();
 	const modulesByEntry = new Map<string, Project['codeBlocks']>();
 
-	for (const block of codeBlocks) {
+	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex += 1) {
+		const block = codeBlocks[blockIndex];
 		if (getDocumentProjectBlockType(block.code) !== 'module') {
 			continue;
 		}
 
-		const entryName = block.entry ?? DEFAULT_PROJECT_ENTRY_NAME;
+		const entryName = getModuleEntryName(block, blockIndex);
 		const entryModules = modulesByEntry.get(entryName) ?? [];
 		entryModules.push(block);
 		modulesByEntry.set(entryName, entryModules);
 	}
 
-	for (const block of codeBlocks) {
+	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex += 1) {
+		const block = codeBlocks[blockIndex];
 		if (getDocumentProjectBlockType(block.code) !== 'module') {
 			blockStrings.push(block.code.join('\n'));
 			continue;
 		}
 
-		const entryName = block.entry ?? DEFAULT_PROJECT_ENTRY_NAME;
+		const entryName = getModuleEntryName(block, blockIndex);
 		if (emittedEntries.has(entryName)) {
 			continue;
 		}
@@ -116,14 +123,14 @@ if (import.meta.vitest) {
 
 	describe('serializeProjectTo8f4e', () => {
 		it('produces 8f4e/v1 header', () => {
-			const project = { codeBlocks: [{ code: validBlock }] };
+			const project = { codeBlocks: [{ code: validBlock, entry: 'main' }] };
 			const result = serializeProjectTo8f4e(project);
 			expect(result.startsWith('8f4e/v1\n')).toBe(true);
 		});
 
 		it('serializes multiple code blocks separated by blank lines', () => {
 			const project = {
-				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }, { code: validNoteBlock }],
+				codeBlocks: [{ code: validBlock, entry: 'main' }, { code: validFunctionBlock }, { code: validNoteBlock }],
 			};
 			const result = serializeProjectTo8f4e(project);
 			expect(result).toContain('\n\n');
@@ -204,8 +211,13 @@ if (import.meta.vitest) {
 		});
 
 		it('ignores trailing empty lines when finding closer', () => {
-			const project = { codeBlocks: [{ code: ['module foo', 'moduleEnd', '', ''] }] };
+			const project = { codeBlocks: [{ code: ['module foo', 'moduleEnd', '', ''], entry: 'main' }] };
 			expect(() => serializeProjectTo8f4e(project)).not.toThrow();
+		});
+
+		it('throws on module blocks without an entry', () => {
+			const project = { codeBlocks: [{ code: validBlock }] };
+			expect(() => serializeProjectTo8f4e(project)).toThrow('module block is missing entry');
 		});
 	});
 }

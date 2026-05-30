@@ -5,6 +5,7 @@ const DEFAULT_GRID_SPACING_X = 40;
 const DEFAULT_BLOCK_PADDING_Y = 2;
 const MAX_ROWS_PER_LAYER = 6;
 const LAYER_GAP_COLUMNS = 1;
+const PROJECT_ENTRY_NAME = 'main';
 
 function sanitizeIdentifier(value: string): string {
 	const sanitized = value.replace(/[^a-zA-Z0-9_]/g, '_');
@@ -61,6 +62,7 @@ function buildInputsBlock(inputs: PmmlNeuralNetwork['inputs']): CodeBlock {
 	code.push('', 'moduleEnd');
 	return {
 		code,
+		entry: PROJECT_ENTRY_NAME,
 	};
 }
 
@@ -104,6 +106,7 @@ function buildNeuronBlock(code: string[], position: { x: number; y: number }): C
 	code.splice(1, 0, `; @pos ${position.x} ${position.y}`);
 	return {
 		code,
+		entry: PROJECT_ENTRY_NAME,
 	};
 }
 
@@ -126,6 +129,7 @@ function buildOutputsBlock(outputs: PmmlNeuralNetwork['outputs'], position: { x:
 	code.push('moduleEnd');
 	return {
 		code,
+		entry: PROJECT_ENTRY_NAME,
 	};
 }
 

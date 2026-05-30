@@ -244,7 +244,10 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 
 		const blockType = getProjectBlockType(block.code);
 		if (blockType === moduleBlockType) {
-			const entryName = block.entry ?? 'main';
+			if (!block.entry) {
+				throw new Error('Project module block is missing entry');
+			}
+			const entryName = block.entry;
 			entries[entryName] ??= [];
 			entries[entryName].push({ code: block.code });
 			continue;

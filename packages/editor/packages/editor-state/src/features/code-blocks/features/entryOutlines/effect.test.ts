@@ -17,7 +17,7 @@ describe('entryOutlines effect', () => {
 		const store = createStateManager<State>(state);
 		const first = createMockCodeBlock({
 			blockType: 'module',
-			executionEntryName: 'main',
+			entry: 'main',
 			x: 16,
 			y: 32,
 			width: 80,
@@ -25,7 +25,7 @@ describe('entryOutlines effect', () => {
 		});
 		const second = createMockCodeBlock({
 			blockType: 'module',
-			executionEntryName: 'main',
+			entry: 'main',
 			x: 160,
 			y: 96,
 			width: 96,

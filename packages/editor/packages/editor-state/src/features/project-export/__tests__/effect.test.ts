@@ -205,7 +205,7 @@ describe('projectExport', () => {
 				createMockCodeBlock({
 					blockType: 'module',
 					code: ['module other', 'moduleEnd'],
-					executionEntryName: 'entry1',
+					entry: 'entry1',
 				}),
 			];
 

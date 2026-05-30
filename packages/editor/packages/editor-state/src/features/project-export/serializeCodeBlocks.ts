@@ -17,12 +17,16 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): Project {
 	return {
 		codeBlocks: sortCodeBlocksByGridPosition(codeBlocks.filter(block => !isBrowserLocalNoteBlock(block))).map(
-			codeBlock => ({
-				code: codeBlock.code,
-				...(codeBlock.blockType === 'module' && codeBlock.executionEntryName
-					? { entry: codeBlock.executionEntryName }
-					: {}),
-			})
+			codeBlock => {
+				if (codeBlock.blockType === 'module' && !codeBlock.entry) {
+					throw new Error(`Module code block "${codeBlock.id}" is missing an entry`);
+				}
+
+				return {
+					code: codeBlock.code,
+					...(codeBlock.blockType === 'module' ? { entry: codeBlock.entry } : {}),
+				};
+			}
 		),
 	};
 }
@@ -103,12 +107,13 @@ if (import.meta.vitest) {
 				createMockCodeBlock({
 					id: 'main',
 					blockType: 'module',
+					entry: 'main',
 					code: ['module main', 'moduleEnd'],
 				}),
 				createMockCodeBlock({
 					id: 'entry',
 					blockType: 'module',
-					executionEntryName: 'entry1',
+					entry: 'entry1',
 					code: ['module entry', 'moduleEnd'],
 				}),
 			];
@@ -116,9 +121,21 @@ if (import.meta.vitest) {
 			const result = convertGraphicDataToProjectStructure(blocks);
 
 			expect(result.codeBlocks).toEqual([
-				{ code: ['module main', 'moduleEnd'] },
+				{ code: ['module main', 'moduleEnd'], entry: 'main' },
 				{ code: ['module entry', 'moduleEnd'], entry: 'entry1' },
 			]);
+		});
+
+		it('rejects module blocks without an entry', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				createMockCodeBlock({
+					id: 'main',
+					blockType: 'module',
+					code: ['module main', 'moduleEnd'],
+				}),
+			];
+
+			expect(() => convertGraphicDataToProjectStructure(blocks)).toThrow('missing an entry');
 		});
 	});
 }
