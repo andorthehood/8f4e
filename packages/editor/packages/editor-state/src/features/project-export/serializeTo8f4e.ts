@@ -1,9 +1,9 @@
 import { getDocumentProjectBlockType } from '@8f4e/tokenizer';
 
 import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
+import { DEFAULT_PROJECT_ENTRY_NAME } from '../project/projectBlocks';
 
 import type { Project } from '@8f4e/editor-state-types';
-import type { CodeBlock } from '@8f4e/editor-state-types';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
 	// Find first non-empty line (must be opener)
@@ -64,43 +64,35 @@ function validateCodeBlock(code: string[], blockIndex: number): void {
  * Throws if any code block fails export-gate validation.
  */
 export function serializeProjectTo8f4e(project: Project): string {
-	const { codeBlocks } = project;
-
-	for (let i = 0; i < codeBlocks.length; i++) {
-		validateCodeBlock(codeBlocks[i].code, i);
-	}
-
-	const emittedEntries = new Set<string>();
 	const blockStrings: string[] = [];
-	const modulesByEntry = new Map<string, CodeBlock[]>();
 
-	for (const block of codeBlocks) {
-		if (getDocumentProjectBlockType(block.code) !== 'module') {
-			continue;
+	project.global.forEach((block, blockIndex) => {
+		validateCodeBlock(block.code, blockIndex);
+		if (getDocumentProjectBlockType(block.code) === 'module') {
+			throw new Error(`Global block ${blockIndex}: module blocks must be nested under entries`);
 		}
+		blockStrings.push(block.code.join('\n'));
+	});
 
-		const entryName = block.executionEntryName ?? 'main';
-		const entryModules = modulesByEntry.get(entryName) ?? [];
-		entryModules.push(block);
-		modulesByEntry.set(entryName, entryModules);
+	let entryBlockIndex = 0;
+	const entries = Object.entries(project.entries);
+	if (entries.length === 0) {
+		entries.push([DEFAULT_PROJECT_ENTRY_NAME, []]);
 	}
 
-	for (const block of codeBlocks) {
-		if (getDocumentProjectBlockType(block.code) !== 'module') {
-			blockStrings.push(block.code.join('\n'));
-			continue;
+	for (const [entryName, modules] of entries) {
+		for (const moduleBlock of modules) {
+			validateCodeBlock(moduleBlock.code, entryBlockIndex);
+			if (getDocumentProjectBlockType(moduleBlock.code) !== 'module') {
+				throw new Error(`Entry "${entryName}" block ${entryBlockIndex}: entries can only contain module blocks`);
+			}
+
+			entryBlockIndex++;
 		}
 
-		const entryName = block.executionEntryName ?? 'main';
-		if (emittedEntries.has(entryName)) {
-			continue;
-		}
-
-		const entryModules = modulesByEntry.get(entryName) ?? [];
 		blockStrings.push(
-			['entry ' + entryName, ...entryModules.flatMap(moduleBlock => moduleBlock.code), 'entryEnd'].join('\n')
+			['entry ' + entryName, ...modules.flatMap(moduleBlock => moduleBlock.code), 'entryEnd'].join('\n')
 		);
-		emittedEntries.add(entryName);
 	}
 
 	return FORMAT_HEADER + '\n\n' + blockStrings.join('\n\n');
@@ -115,14 +107,15 @@ if (import.meta.vitest) {
 
 	describe('serializeProjectTo8f4e', () => {
 		it('produces 8f4e/v1 header', () => {
-			const project = { codeBlocks: [{ code: validBlock }] };
+			const project = { global: [], entries: { main: [{ code: validBlock }] } };
 			const result = serializeProjectTo8f4e(project);
 			expect(result.startsWith('8f4e/v1\n')).toBe(true);
 		});
 
 		it('serializes multiple code blocks separated by blank lines', () => {
 			const project = {
-				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }, { code: validNoteBlock }],
+				global: [{ code: validFunctionBlock }, { code: validNoteBlock }],
+				entries: { main: [{ code: validBlock }] },
 			};
 			const result = serializeProjectTo8f4e(project);
 			expect(result).toContain('\n\n');
@@ -130,19 +123,20 @@ if (import.meta.vitest) {
 			expect(result).toContain('moduleEnd\nentryEnd');
 		});
 
-		it('serializes execution entries by first module position', () => {
+		it('serializes global blocks before entries', () => {
 			const project = {
-				codeBlocks: [
-					{ code: ['module a', 'moduleEnd'], executionEntryName: 'main' },
-					{ code: validFunctionBlock },
-					{ code: ['module b', 'moduleEnd'], executionEntryName: 'test' },
-					{ code: ['module c', 'moduleEnd'], executionEntryName: 'main' },
-				],
+				global: [{ code: validFunctionBlock }],
+				entries: {
+					main: [{ code: ['module a', 'moduleEnd'] }, { code: ['module c', 'moduleEnd'] }],
+					test: [{ code: ['module b', 'moduleEnd'] }],
+				},
 			};
 
 			expect(serializeProjectTo8f4e(project)).toBe(
 				[
 					'8f4e/v1',
+					'',
+					...validFunctionBlock,
 					'',
 					'entry main',
 					'module a',
@@ -150,8 +144,6 @@ if (import.meta.vitest) {
 					'module c',
 					'moduleEnd',
 					'entryEnd',
-					'',
-					...validFunctionBlock,
 					'',
 					'entry test',
 					'module b',
@@ -162,48 +154,54 @@ if (import.meta.vitest) {
 		});
 
 		it('accepts note blocks', () => {
-			const project = { codeBlocks: [{ code: validNoteBlock }] };
+			const project = { global: [{ code: validNoteBlock }], entries: { main: [] } };
 			expect(() => serializeProjectTo8f4e(project)).not.toThrow();
 		});
 
-		it('handles empty codeBlocks array', () => {
-			const project = { codeBlocks: [] };
+		it('handles empty project entries', () => {
+			const project = { global: [], entries: { main: [] } };
 			const result = serializeProjectTo8f4e(project);
-			expect(result).toBe('8f4e/v1\n\n');
+			expect(result).toBe('8f4e/v1\n\nentry main\nentryEnd');
 		});
 
 		it('accepts functionEnd with type suffix', () => {
-			const project = { codeBlocks: [{ code: validFunctionBlock }] };
+			const project = { global: [{ code: validFunctionBlock }], entries: { main: [] } };
 			expect(() => serializeProjectTo8f4e(project)).not.toThrow();
 		});
 
 		it('throws on missing opener', () => {
-			const project = { codeBlocks: [{ code: ['unknownToken', 'moduleEnd'] }] };
+			const project = { global: [{ code: ['unknownToken', 'moduleEnd'] }], entries: { main: [] } };
 			expect(() => serializeProjectTo8f4e(project)).toThrow('unknown or missing opener');
 		});
 
 		it('throws on missing closer', () => {
-			const project = { codeBlocks: [{ code: ['module foo', 'some code'] }] };
+			const project = { global: [], entries: { main: [{ code: ['module foo', 'some code'] }] } };
 			expect(() => serializeProjectTo8f4e(project)).toThrow('unknown or missing closer');
 		});
 
 		it('throws on opener/closer mismatch', () => {
-			const project = { codeBlocks: [{ code: ['module foo', 'functionEnd'] }] };
+			const project = { global: [], entries: { main: [{ code: ['module foo', 'functionEnd'] }] } };
 			expect(() => serializeProjectTo8f4e(project)).toThrow('opener/closer mismatch');
 		});
 
 		it('throws on mixed block type markers', () => {
-			const project = { codeBlocks: [{ code: ['module foo', 'function bar', 'functionEnd', 'moduleEnd'] }] };
+			const project = {
+				global: [],
+				entries: { main: [{ code: ['module foo', 'function bar', 'functionEnd', 'moduleEnd'] }] },
+			};
 			expect(() => serializeProjectTo8f4e(project)).toThrow('mixed block type markers');
 		});
 
 		it('throws on closer not at end of block', () => {
-			const project = { codeBlocks: [{ code: ['module foo', 'moduleEnd', 'extra line', 'moduleEnd'] }] };
+			const project = {
+				global: [],
+				entries: { main: [{ code: ['module foo', 'moduleEnd', 'extra line', 'moduleEnd'] }] },
+			};
 			expect(() => serializeProjectTo8f4e(project)).toThrow('not at the end of the block');
 		});
 
 		it('ignores trailing empty lines when finding closer', () => {
-			const project = { codeBlocks: [{ code: ['module foo', 'moduleEnd', '', ''] }] };
+			const project = { global: [], entries: { main: [{ code: ['module foo', 'moduleEnd', '', ''] }] } };
 			expect(() => serializeProjectTo8f4e(project)).not.toThrow();
 		});
 	});

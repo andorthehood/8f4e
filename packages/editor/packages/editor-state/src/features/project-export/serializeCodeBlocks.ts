@@ -1,7 +1,8 @@
 import { isBrowserLocalNoteBlock } from '../browser-local-notes/browserLocalNotes';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
+import { DEFAULT_PROJECT_ENTRY_NAME } from '../project/projectBlocks';
 
-import type { CodeBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import type { CodeBlock, CodeBlockGraphicData, Project } from '@8f4e/editor-state-types';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
@@ -12,14 +13,32 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
  * Disabled state is stored in @disabled directive within code, not in separate disabled field.
  * Excludes browser-local notes from the exported project.
  * @param codeBlocks Array of code blocks with full graphic data
- * @returns Array of simplified code blocks suitable for file format
+ * @returns Project suitable for JSON persistence and file export
  */
-export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): CodeBlock[] {
-	return sortCodeBlocksByGridPosition(codeBlocks.filter(codeBlock => !isBrowserLocalNoteBlock(codeBlock))).map(
-		codeBlock => ({
+export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): Project {
+	const project: Project = {
+		global: [],
+		entries: {
+			[DEFAULT_PROJECT_ENTRY_NAME]: [],
+		},
+	};
+
+	for (const codeBlock of sortCodeBlocksByGridPosition(codeBlocks.filter(block => !isBrowserLocalNoteBlock(block)))) {
+		const projectBlock: CodeBlock = {
 			code: codeBlock.code,
-		})
-	);
+		};
+
+		if (codeBlock.blockType === 'module') {
+			const entryName = codeBlock.executionEntryName ?? DEFAULT_PROJECT_ENTRY_NAME;
+			project.entries[entryName] ??= [];
+			project.entries[entryName].push(projectBlock);
+			continue;
+		}
+
+		project.global.push(projectBlock);
+	}
+
+	return project;
 }
 
 if (import.meta.vitest) {
@@ -35,7 +54,7 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result.map(block => block.code[0])).toEqual(['line 3', 'line 2', 'line 1']);
+			expect(result.global.map(block => block.code[0])).toEqual(['line 3', 'line 2', 'line 1']);
 		});
 
 		it('exports code without gridCoordinates field', () => {
@@ -43,9 +62,9 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0]).not.toHaveProperty('gridCoordinates');
-			expect(result[0]).not.toHaveProperty('disabled');
-			expect(result[0].code).toEqual(['code']);
+			expect(result.global[0]).not.toHaveProperty('gridCoordinates');
+			expect(result.global[0]).not.toHaveProperty('disabled');
+			expect(result.global[0].code).toEqual(['code']);
 		});
 
 		it('does not include disabled field even when block is disabled', () => {
@@ -53,8 +72,8 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0]).not.toHaveProperty('disabled');
-			expect(result[0].code).toEqual(['code']);
+			expect(result.global[0]).not.toHaveProperty('disabled');
+			expect(result.global[0].code).toEqual(['code']);
 		});
 
 		it('does not include disabled field when block is not disabled', () => {
@@ -62,8 +81,8 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0]).not.toHaveProperty('disabled');
-			expect(result[0].code).toEqual(['code']);
+			expect(result.global[0]).not.toHaveProperty('disabled');
+			expect(result.global[0].code).toEqual(['code']);
 		});
 
 		it('excludes browser-local notes from the exported project', () => {
@@ -90,7 +109,30 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result.map(block => block.code[0])).toEqual(['note', 'note fragmentShaderPostprocess']);
+			expect(result.global.map(block => block.code[0])).toEqual(['note', 'note fragmentShaderPostprocess']);
+		});
+
+		it('nests module blocks under entries', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				createMockCodeBlock({
+					id: 'main',
+					blockType: 'module',
+					code: ['module main', 'moduleEnd'],
+				}),
+				createMockCodeBlock({
+					id: 'entry',
+					blockType: 'module',
+					executionEntryName: 'entry1',
+					code: ['module entry', 'moduleEnd'],
+				}),
+			];
+
+			const result = convertGraphicDataToProjectStructure(blocks);
+
+			expect(result.entries).toEqual({
+				main: [{ code: ['module main', 'moduleEnd'] }],
+				entry1: [{ code: ['module entry', 'moduleEnd'] }],
+			});
 		});
 	});
 }

@@ -110,11 +110,13 @@ describe('creationIndex', () => {
 
 			const projectWithBlocks: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [
-					{ code: ['module a', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
-					{ code: ['module b', 'moduleEnd'], gridCoordinates: { x: 10, y: 0 } },
-					{ code: ['module c', 'moduleEnd'], gridCoordinates: { x: 20, y: 0 } },
-				],
+				entries: {
+					main: [
+						{ code: ['module a', 'moduleEnd'] },
+						{ code: ['module b', 'moduleEnd'] },
+						{ code: ['module c', 'moduleEnd'] },
+					],
+				},
 			};
 
 			loadProjectCallback({ project: projectWithBlocks });
@@ -141,7 +143,9 @@ describe('creationIndex', () => {
 
 			const project: Project = {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [{ code: ['module a', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+				entries: {
+					main: [{ code: ['module a', 'moduleEnd'] }],
+				},
 			};
 
 			loadProjectCallback({ project });

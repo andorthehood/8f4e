@@ -12,12 +12,7 @@ import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils
 export default function serializeToProject(state: State): Project {
 	const { graphicHelper } = state;
 
-	const project: Project = {
-		codeBlocks: convertGraphicDataToProjectStructure(graphicHelper.codeBlocks),
-		// postProcessEffects are now derived from shader code blocks and not persisted
-	};
-
-	return project;
+	return convertGraphicDataToProjectStructure(graphicHelper.codeBlocks);
 }
 
 if (import.meta.vitest) {

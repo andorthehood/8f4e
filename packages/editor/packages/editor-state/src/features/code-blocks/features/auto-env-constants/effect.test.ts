@@ -12,7 +12,9 @@ import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultPro
 const AUTO_ENV_BLOCK_ID = 'constants_env';
 const PROJECT_WITH_CODE_BLOCK: Project = {
 	...EMPTY_DEFAULT_PROJECT,
-	codeBlocks: [{ code: ['module demo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+	entries: {
+		main: [{ code: ['module demo', 'moduleEnd'] }],
+	},
 };
 
 function getTestRuntimeEnvConstants(editorConfig: EditorConfig) {
@@ -73,15 +75,17 @@ describe('autoEnvConstants', () => {
 		// Trigger project load
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		expect(envBlock).toBeDefined();
 		expect(envBlock?.code[0]).toBe('constants env');
 	});
 
-	test('should place env block at beginning of codeBlocks array', () => {
+	test('should place env block at beginning of global code blocks', () => {
 		const projectWithBlocks: Project = {
 			...EMPTY_DEFAULT_PROJECT,
-			codeBlocks: [{ code: ['module test', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } }],
+			entries: {
+				main: [{ code: ['module test', 'moduleEnd'] }],
+			},
 		};
 
 		store.set('initialProjectState', projectWithBlocks);
@@ -90,8 +94,8 @@ describe('autoEnvConstants', () => {
 		// Trigger another project load to add env block
 		store.set('initialProjectState', { ...projectWithBlocks });
 
-		expect(state.initialProjectState?.codeBlocks[0].code[0]).toBe('constants env');
-		expect(state.initialProjectState?.codeBlocks[1].code[0]).toBe('module test');
+		expect(state.initialProjectState?.global[0].code[0]).toBe('constants env');
+		expect(state.initialProjectState?.entries.main[0].code[0]).toBe('module test');
 	});
 
 	test('should include constants returned by the selected runtime contribution', () => {
@@ -99,7 +103,7 @@ describe('autoEnvConstants', () => {
 		store.set('editorConfig.testRuntime', { magicNumber: 123 });
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		const magicNumberLine = envBlock?.code.find(line => line.includes('RUNTIME_MAGIC'));
 		expect(magicNumberLine).toBe('const RUNTIME_MAGIC 123');
 		const unusedRuntimeLine = envBlock?.code.find(line => line.includes('UNUSED_RUNTIME_MAGIC'));
@@ -110,7 +114,7 @@ describe('autoEnvConstants', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		expect(envBlock?.code).not.toContain('const RUNTIME_EXTRA 128');
 
 		store.set('runtimeRegistry', {
@@ -129,7 +133,7 @@ describe('autoEnvConstants', () => {
 		store.set('editorConfig.runtime', 'SecondaryRuntime');
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
-		const secondaryRuntimeEnvBlock = state.initialProjectState?.codeBlocks.find(block =>
+		const secondaryRuntimeEnvBlock = state.initialProjectState?.global.find(block =>
 			block.code[0]?.includes('constants env')
 		);
 		expect(secondaryRuntimeEnvBlock?.code).toContain('const RUNTIME_EXTRA 128');
@@ -139,7 +143,7 @@ describe('autoEnvConstants', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		const warningLine = envBlock?.code.find(line => line.includes('Auto-generated'));
 		expect(warningLine).toBeDefined();
 	});
@@ -149,7 +153,7 @@ describe('autoEnvConstants', () => {
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
 		// Simulate graphicHelper populating codeBlocks from initialProjectState
-		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envCodeBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
 			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
 		}
@@ -179,7 +183,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
 		expect(assetSizeLine).toBe('const ASSET_0_SIZE 12345');
 	});
@@ -199,7 +203,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_SNARE_SIZE'));
 		expect(assetSizeLine).toBe('const ASSET_SNARE_SIZE 22050');
 	});
@@ -209,7 +213,7 @@ describe('autoEnvConstants', () => {
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
 		// Simulate graphicHelper populating codeBlocks from initialProjectState
-		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envCodeBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
 			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
 		}
@@ -233,7 +237,7 @@ describe('autoEnvConstants', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envCodeBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		let codeWithCustomPos: string[] = [];
 		if (envCodeBlock) {
 			codeWithCustomPos = [...envCodeBlock.code];
@@ -252,7 +256,7 @@ describe('autoEnvConstants', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envCodeBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		let codeWithoutPos: string[] = [];
 		if (envCodeBlock) {
 			codeWithoutPos = envCodeBlock.code.filter(line => !line.includes('@pos'));
@@ -269,10 +273,9 @@ describe('autoEnvConstants', () => {
 	test('should not duplicate env block if already exists', () => {
 		const projectWithEnv: Project = {
 			...EMPTY_DEFAULT_PROJECT,
-			codeBlocks: [
+			global: [
 				{
 					code: ['constants env', 'const RUNTIME_MAGIC 123', 'constantsEnd'],
-					gridCoordinates: { x: 0, y: 0 },
 				},
 			],
 		};
@@ -283,7 +286,7 @@ describe('autoEnvConstants', () => {
 		// Trigger another load
 		store.set('initialProjectState', { ...projectWithEnv });
 
-		const envBlocks = state.initialProjectState?.codeBlocks.filter(block => block.code[0]?.includes('constants env'));
+		const envBlocks = state.initialProjectState?.global.filter(block => block.code[0]?.includes('constants env'));
 		expect(envBlocks?.length).toBe(1);
 	});
 
@@ -301,7 +304,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		const assetCommentLine = envBlock?.code.find(line => line.includes("; 'test.wav'"));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
 		expect(assetCommentLine).toBe("; 'test.wav'");
@@ -322,7 +325,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
 		expect(assetSizeLine).toBeUndefined();
 	});
@@ -339,7 +342,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		const binaryAssetSection = envBlock?.code.indexOf('// Binary asset sizes in bytes');
 		expect(binaryAssetSection).toBe(-1);
 	});
@@ -368,7 +371,7 @@ describe('autoEnvConstants', () => {
 
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		const envBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
+		const envBlock = state.initialProjectState?.global.find(block => block.code[0]?.includes('constants env'));
 		const sizeLines = envBlock?.code.filter(line => line.includes('const ASSET_AMEN_SIZE'));
 		expect(sizeLines).toEqual(['const ASSET_AMEN_SIZE 1024']);
 	});

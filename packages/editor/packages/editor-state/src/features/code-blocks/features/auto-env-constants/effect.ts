@@ -71,7 +71,7 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
  *
  * This effect automatically maintains a constants block named 'env' that contains
  * environment values like contributed runtime values and binary asset sizes.
- * The env block is added to the project's codeBlocks array when the project is loaded,
+ * The env block is added to the project's global code blocks when the project is loaded,
  * and its content is updated in graphicHelper.codeBlocks when contributed environment constants or binary assets change.
  *
  * @param store - State manager instance
@@ -127,7 +127,7 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		}
 
 		// Check if env block already exists
-		const hasEnvBlock = state.initialProjectState.codeBlocks.some(
+		const hasEnvBlock = state.initialProjectState.global.some(
 			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_NAME}`)
 		);
 
@@ -139,7 +139,8 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 
 			store.set('initialProjectState', {
 				...state.initialProjectState,
-				codeBlocks: [envBlock, ...state.initialProjectState.codeBlocks],
+				global: [envBlock, ...state.initialProjectState.global],
+				entries: state.initialProjectState.entries,
 			});
 		}
 	}
