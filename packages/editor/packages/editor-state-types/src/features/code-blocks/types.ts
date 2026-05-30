@@ -435,6 +435,14 @@ export interface CodeBlockGraphicData {
 	alwaysOnTop: boolean;
 }
 
+export interface CodeBlockEntryOutline {
+	entryName: string;
+	topLeft: { x: number; y: number };
+	topRight: { x: number; y: number };
+	bottomRight: { x: number; y: number };
+	bottomLeft: { x: number; y: number };
+}
+
 /**
  * Graphic helper state for rendering code blocks and UI elements.
  */
@@ -442,6 +450,12 @@ export type GraphicHelper = {
 	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
 	codeBlocks: CodeBlockGraphicData[];
+	/**
+	 * Derived outline corners for execution entries that contain multiple module blocks.
+	 * Maintained from code block geometry so renderers can draw entry grouping without
+	 * recomputing relationships every frame.
+	 */
+	entryOutlines: CodeBlockEntryOutline[];
 	/**
 	 * Subset of codeBlocks that have a `@viewport` directive.
 	 * Maintained in sync with codeBlocks so that viewport move/resize handlers

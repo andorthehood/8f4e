@@ -8,6 +8,7 @@ export default function createDefaultState() {
 		},
 		graphicHelper: {
 			codeBlocks: [],
+			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],
 			textureCacheEpoch: 0,
 			nextCodeBlockCreationIndex: 0,

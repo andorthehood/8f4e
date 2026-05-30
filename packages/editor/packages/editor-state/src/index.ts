@@ -30,6 +30,7 @@ import globalEditorDirectivesEffect from './features/global-editor-directives/ef
 import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
 import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
+import entryOutlines from './features/code-blocks/features/entryOutlines/effect';
 import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
 import groupNonstickToggler from './features/code-blocks/features/group/nonstickToggler/effect';
 import groupCopier from './features/code-blocks/features/group/copier/effect';
@@ -115,6 +116,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	compiler(store);
 	graphicHelper(store, events);
 	viewportDirectiveEffect(store, events);
+	entryOutlines(store);
 	browserLocalNotes(store, events);
 	codeEditing(store, events);
 	tooltip(store);
