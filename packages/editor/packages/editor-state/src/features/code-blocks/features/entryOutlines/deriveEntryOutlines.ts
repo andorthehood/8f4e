@@ -8,10 +8,11 @@ type EntryBounds = {
 	maxY: number;
 };
 
-const DEFAULT_ENTRY_NAME = 'main';
-
 function getEntryName(codeBlock: CodeBlockGraphicData): string {
-	return codeBlock.executionEntryName ?? DEFAULT_ENTRY_NAME;
+	if (!codeBlock.entry) {
+		throw new Error(`Module code block "${codeBlock.id}" is missing entry`);
+	}
+	return codeBlock.entry;
 }
 
 function createBounds(entryName: string): EntryBounds {
@@ -75,7 +76,7 @@ if (import.meta.vitest) {
 			const outlines = deriveEntryOutlines([
 				{
 					blockType: 'module',
-					executionEntryName: 'main',
+					entry: 'main',
 					x: 16,
 					y: 32,
 					width: 80,
@@ -83,7 +84,7 @@ if (import.meta.vitest) {
 				} as CodeBlockGraphicData,
 				{
 					blockType: 'module',
-					executionEntryName: 'main',
+					entry: 'main',
 					x: 160,
 					y: 96,
 					width: 96,
@@ -91,7 +92,7 @@ if (import.meta.vitest) {
 				} as CodeBlockGraphicData,
 				{
 					blockType: 'module',
-					executionEntryName: 'test',
+					entry: 'test',
 					x: 0,
 					y: 0,
 					width: 100,
@@ -126,7 +127,7 @@ if (import.meta.vitest) {
 
 		it('derives corners around a single-module main entry', () => {
 			const outlines = deriveEntryOutlines([
-				{ blockType: 'module', x: 0, y: 0, width: 10, height: 10 } as CodeBlockGraphicData,
+				{ blockType: 'module', entry: 'main', x: 0, y: 0, width: 10, height: 10 } as CodeBlockGraphicData,
 			]);
 
 			expect(outlines).toEqual([
@@ -144,7 +145,7 @@ if (import.meta.vitest) {
 			const outlines = deriveEntryOutlines([
 				{
 					blockType: 'module',
-					executionEntryName: 'entry',
+					entry: 'entry',
 					x: 20,
 					y: 30,
 					width: 40,
@@ -166,8 +167,8 @@ if (import.meta.vitest) {
 		it('applies padding to the derived corners', () => {
 			const outlines = deriveEntryOutlines(
 				[
-					{ blockType: 'module', x: 10, y: 20, width: 30, height: 40 } as CodeBlockGraphicData,
-					{ blockType: 'module', x: 100, y: 120, width: 30, height: 40 } as CodeBlockGraphicData,
+					{ blockType: 'module', entry: 'main', x: 10, y: 20, width: 30, height: 40 } as CodeBlockGraphicData,
+					{ blockType: 'module', entry: 'main', x: 100, y: 120, width: 30, height: 40 } as CodeBlockGraphicData,
 				],
 				8,
 				16
@@ -182,10 +183,10 @@ if (import.meta.vitest) {
 			});
 		});
 
-		it('groups modules without an explicit entry as main', () => {
+		it('groups modules that share the main entry', () => {
 			const outlines = deriveEntryOutlines([
-				{ blockType: 'module', x: 0, y: 0, width: 10, height: 10 } as CodeBlockGraphicData,
-				{ blockType: 'module', x: 20, y: 20, width: 10, height: 10 } as CodeBlockGraphicData,
+				{ blockType: 'module', entry: 'main', x: 0, y: 0, width: 10, height: 10 } as CodeBlockGraphicData,
+				{ blockType: 'module', entry: 'main', x: 20, y: 20, width: 10, height: 10 } as CodeBlockGraphicData,
 			]);
 
 			expect(outlines[0].entryName).toBe('main');

@@ -26,7 +26,6 @@ type RenameableCodeBlockType = Extract<CompilerSourceBlockType, 'module' | 'func
 const functionBlock = documentBlockInstructionByType.function;
 const moduleBlock = documentBlockInstructionByType.module;
 const noteBlock = documentBlockInstructionByType.note;
-const DEFAULT_EXECUTION_ENTRY_NAME = 'main';
 
 const nameList = [
 	'quark',
@@ -105,11 +104,11 @@ function incrementCodeBlockIdUntilUnique(state: State, blockType: RenameableCode
 	return blockId;
 }
 
-function getUniqueExecutionEntryName(state: State): string {
+function getUniqueEntryName(state: State): string {
 	const usedEntryNames = new Set(
 		state.graphicHelper.codeBlocks
 			.filter(block => block.blockType === moduleBlock.type || getModuleId(block.code))
-			.map(block => block.executionEntryName ?? DEFAULT_EXECUTION_ENTRY_NAME)
+			.map(block => block.entry)
 	);
 	let entryName = 'entry';
 
@@ -120,12 +119,10 @@ function getUniqueExecutionEntryName(state: State): string {
 	return entryName;
 }
 
-function getExecutionEntryNameForNewModule(state: State, x: number, y: number, newEntry?: boolean): string | undefined {
-	const entryName = newEntry
-		? getUniqueExecutionEntryName(state)
-		: (findEntryNameAtPosition(state.graphicHelper.entryOutlines, x, y) ?? getUniqueExecutionEntryName(state));
-
-	return entryName === DEFAULT_EXECUTION_ENTRY_NAME ? undefined : entryName;
+function getEntryNameForNewModule(state: State, x: number, y: number, newEntry?: boolean): string {
+	return newEntry
+		? getUniqueEntryName(state)
+		: (findEntryNameAtPosition(state.graphicHelper.entryOutlines, x, y) ?? getUniqueEntryName(state));
 }
 
 export default function codeBlockCreator(store: StateManager<State>, events: EventDispatcher): void {
@@ -212,9 +209,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 
 		// Add canonical @pos directive to code
 		code = upsertPos(code, gridX, gridY);
-		const executionEntryName = moduleId
-			? getExecutionEntryNameForNewModule(state, pixelX, pixelY, newEntry)
-			: undefined;
+		const entry = moduleId ? getEntryNameForNewModule(state, pixelX, pixelY, newEntry) : undefined;
 
 		const codeBlock: CodeBlockGraphicData = createCodeBlockGraphicData({
 			width: 0,
@@ -233,7 +228,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			offsetY: 0,
 			creationIndex,
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
-			executionEntryName,
+			entry,
 			disabled: false,
 			isHome: false,
 		});

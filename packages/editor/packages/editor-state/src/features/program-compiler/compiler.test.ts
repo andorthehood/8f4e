@@ -10,6 +10,7 @@ describe('flattenProjectForCompiler', () => {
 			{
 				code: ['module test', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				creationIndex: 0,
 			} as CodeBlockGraphicData,
 			{
@@ -42,6 +43,7 @@ describe('flattenProjectForCompiler', () => {
 			{
 				code: ['module test', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				creationIndex: 1,
 			} as CodeBlockGraphicData,
 		];
@@ -101,6 +103,7 @@ describe('flattenProjectForCompiler', () => {
 			{
 				code: ['module enabled', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				creationIndex: 0,
 				disabled: false,
 			} as CodeBlockGraphicData,
@@ -173,6 +176,7 @@ describe('flattenProjectForCompiler', () => {
 			{
 				code: ['module first', 'moduleEnd'],
 				blockType: 'module',
+				entry: 'main',
 				creationIndex: 0,
 			} as CodeBlockGraphicData,
 			{

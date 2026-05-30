@@ -121,4 +121,8 @@ describe('project block classification', () => {
 			main: [{ code: ['module regular', 'moduleEnd'] }],
 		});
 	});
+
+	it('rejects module blocks without an entry', () => {
+		expect(() => pickProjectCompilerBlocks([{ code: validModuleBlock }])).toThrow('missing entry');
+	});
 });
