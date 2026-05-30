@@ -61,6 +61,7 @@ export default function createDefaultState() {
 		editorMode: 'view' as const,
 		editorConfig: {},
 		editorConfigValidators: {},
+		editorConfigSchemaContributions: {},
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
@@ -69,7 +70,6 @@ export default function createDefaultState() {
 			compilationErrors: [],
 			editorDirectiveErrors: [],
 			shaderErrors: [],
-			runtimeDirectiveErrors: [],
 		},
 		console: {
 			logs: [],

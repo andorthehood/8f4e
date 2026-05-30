@@ -4,7 +4,7 @@ entry main
 module projectConfig
 ; @pos -9 -73
 ; @config runtime WebWorkerRuntime
-; ~sampleRate 10
+; @config workerRuntime.sampleRate 10
 ; @config export.fileName xorProblem
 
 moduleEnd

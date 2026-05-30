@@ -18,7 +18,6 @@ renderers can replace it.
 ## Docs
 
 - `docs/editor-directives.md` - Editor-only code-block directive syntax (`; @...`) and supported directives.
-- `docs/runtime-directives.md` - Runtime directive syntax (`; ~...`) and supported directives.
 
 ## Editor Config
 
@@ -26,6 +25,7 @@ Configure editor settings with `; @config <path> <value>`.
 
 - Global editor directives control editor presentation settings like `font` and color overrides.
 - `; @config runtime <runtimeId>` controls the runtime backend for the project.
+- Extensions can contribute schema-backed config roots; runtime packages use this for paths like `; @config audioRuntime.sampleRate 48000` and `; @config audioRuntime.audioOutBufferLAddress audioout:buffer`.
 - `; @config export.fileName <value>` controls the base file name used by editor export actions.
 - `; @config color.<path> <value>` controls individual color scheme entries.
 - Color values should be valid color strings (for example `#101820` or `rgba(255,255,255,0.65)`).

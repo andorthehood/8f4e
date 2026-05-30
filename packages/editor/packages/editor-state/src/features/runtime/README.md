@@ -2,14 +2,14 @@
 
 ## Purpose
 
-Manages the lifecycle of runtime instances that execute compiled 8f4e programs. Handles runtime selection from editor config, initialization, destruction, and recreation when configuration changes.
+Manages the lifecycle of runtime instances that execute compiled 8f4e programs. Handles runtime selection from editor config, initialization, destruction, and recreation when the selected runtime changes.
 
 ## Key Behaviors
 
 - **Runtime Registry**: Looks up runtime factories from `state.runtimeRegistry` at project root
 - **Runtime Selection**: Determines which runtime to use from `state.editorConfig.runtime`
 - **Lifecycle Management**: Creates and destroys runtime instances as needed
-- **Runtime Switching**: Recreates runtime when configuration changes (e.g., switching from logic to audio runtime)
+- **Runtime Switching**: Recreates runtime when the selected runtime changes
 - **Fallback Handling**: Falls back to default runtime ID if unknown runtime is requested
 - **Initialization Locking**: Prevents concurrent initialization attempts
 
@@ -70,7 +70,6 @@ Runtime lifecycle events are logged:
 
 - "Requesting runtime: {runtime}"
 - "Loaded runtime from registry: {runtime}"
-- "Unknown runtime {runtime}, falling back to default: {default}"
 - "Destroying runtime: {runtime}"
 - "Successfully initialized runtime: {runtime}"
 

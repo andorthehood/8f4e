@@ -20,17 +20,6 @@ describe('parseDirectiveLineRecords', () => {
 		]);
 	});
 
-	it('parses a full-line runtime directive', () => {
-		expect(parseDirectiveLineRecords('; ~sampleRate 44100')).toEqual([
-			{
-				prefix: '~',
-				name: 'sampleRate',
-				args: ['44100'],
-				isTrailing: false,
-			},
-		]);
-	});
-
 	it('parses a full-line directive with no arguments', () => {
 		expect(parseDirectiveLineRecords('; @disabled')).toEqual([
 			{
@@ -98,10 +87,6 @@ describe('parseDirectiveLineRecords', () => {
 		]);
 	});
 
-	it('does not parse trailing runtime (~) directives', () => {
-		expect(parseDirectiveLineRecords('int foo 1 ; ~runtime')).toEqual([]);
-	});
-
 	it('parses multiple full-line directives from one comment line', () => {
 		expect(parseDirectiveLineRecords('; @stop 1 01 @favorite')).toEqual([
 			{ prefix: '@', name: 'stop', args: ['1', '01'], isTrailing: false },
@@ -146,11 +131,6 @@ describe('normalizeEditorDirectiveRecords', () => {
 		expect(normalizeEditorDirectiveRecords(records, [watchPlugin])).toEqual([
 			{ name: 'watch', rawRow: 0, args: ['value'], sourceLine: undefined },
 		]);
-	});
-
-	it('filters out runtime (~) records', () => {
-		const records = [{ prefix: '~' as const, name: 'sampleRate', args: ['44100'], rawRow: 0, isTrailing: false }];
-		expect(normalizeEditorDirectiveRecords(records, [watchPlugin])).toEqual([]);
 	});
 
 	it('filters out unknown directive names', () => {

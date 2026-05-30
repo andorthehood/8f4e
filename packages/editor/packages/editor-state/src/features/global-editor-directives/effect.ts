@@ -26,7 +26,7 @@ function withOwnerId(errors: CodeError[]): CodeError[] {
 export default function globalEditorDirectivesEffect(store: StateManager<State>): void {
 	function resolve(): void {
 		const state = store.getState();
-		const { resolved, errors } = resolveGlobalEditorDirectives(state.graphicHelper.codeBlocks, state.runtimeRegistry);
+		const { resolved, errors } = resolveGlobalEditorDirectives(state.graphicHelper.codeBlocks);
 		const { configEntries, ...globalEditorDirectives } = resolved;
 		const nextEditorConfig = resolveEditorConfigEntries(configEntries ?? [], state.editorConfigValidators);
 		const nextErrors = [...errors, ...validateEditorConfigEntries(configEntries ?? [], state.editorConfigValidators)];
@@ -57,4 +57,5 @@ export default function globalEditorDirectivesEffect(store: StateManager<State>)
 	store.subscribe('graphicHelper.codeBlocks', resolve);
 	store.subscribe('graphicHelper.selectedCodeBlock.code', resolve);
 	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', resolve);
+	store.subscribe('editorConfigSchemaContributions', resolve);
 }

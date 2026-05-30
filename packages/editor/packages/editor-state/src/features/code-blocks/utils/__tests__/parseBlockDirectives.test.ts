@@ -13,45 +13,6 @@ describe('parseBlockDirectives', () => {
 		]);
 	});
 
-	it('should parse a runtime directive (~)', () => {
-		expect(parseBlockDirectives(['; ~sampleRate 44100'])).toEqual([
-			{
-				prefix: '~',
-				name: 'sampleRate',
-				args: ['44100'],
-				rawRow: 0,
-				sourceLine: '; ~sampleRate 44100',
-				isTrailing: false,
-			},
-		]);
-	});
-
-	it('should parse runtime directives with leading whitespace', () => {
-		expect(parseBlockDirectives(['  ; ~sampleRate 44100'])).toEqual([
-			{
-				prefix: '~',
-				name: 'sampleRate',
-				args: ['44100'],
-				rawRow: 0,
-				sourceLine: '  ; ~sampleRate 44100',
-				isTrailing: false,
-			},
-		]);
-	});
-
-	it('should parse unknown runtime directive names', () => {
-		expect(parseBlockDirectives(['; ~runtime WebWorker'])).toEqual([
-			{
-				prefix: '~',
-				name: 'runtime',
-				args: ['WebWorker'],
-				rawRow: 0,
-				sourceLine: '; ~runtime WebWorker',
-				isTrailing: false,
-			},
-		]);
-	});
-
 	it('should parse unknown editor directive names', () => {
 		expect(parseBlockDirectives(['; @midi'])).toEqual([
 			{ prefix: '@', name: 'midi', args: [], rawRow: 0, sourceLine: '; @midi', isTrailing: false },
@@ -64,24 +25,11 @@ describe('parseBlockDirectives', () => {
 		]);
 	});
 
-	it('should parse runtime directives with no arguments', () => {
-		expect(parseBlockDirectives(['; ~sampleRate'])).toEqual([
-			{ prefix: '~', name: 'sampleRate', args: [], rawRow: 0, sourceLine: '; ~sampleRate', isTrailing: false },
-		]);
-	});
-
 	it('should record the correct rawRow for each directive', () => {
-		const code = ['module test', '; @pos 5 10', 'push 1', '; ~sampleRate 48000', 'moduleEnd'];
+		const code = ['module test', '; @pos 5 10', 'push 1', '; @favorite', 'moduleEnd'];
 		expect(parseBlockDirectives(code)).toEqual([
 			{ prefix: '@', name: 'pos', args: ['5', '10'], rawRow: 1, sourceLine: '; @pos 5 10', isTrailing: false },
-			{
-				prefix: '~',
-				name: 'sampleRate',
-				args: ['48000'],
-				rawRow: 3,
-				sourceLine: '; ~sampleRate 48000',
-				isTrailing: false,
-			},
+			{ prefix: '@', name: 'favorite', args: [], rawRow: 3, sourceLine: '; @favorite', isTrailing: false },
 		]);
 	});
 
@@ -107,18 +55,11 @@ describe('parseBlockDirectives', () => {
 	});
 
 	it('should parse multiple directives from a block', () => {
-		const code = ['; @pos 0 0', '; @disabled', '; ~sampleRate 44100'];
+		const code = ['; @pos 0 0', '; @disabled', '; @favorite'];
 		expect(parseBlockDirectives(code)).toEqual([
 			{ prefix: '@', name: 'pos', args: ['0', '0'], rawRow: 0, sourceLine: '; @pos 0 0', isTrailing: false },
 			{ prefix: '@', name: 'disabled', args: [], rawRow: 1, sourceLine: '; @disabled', isTrailing: false },
-			{
-				prefix: '~',
-				name: 'sampleRate',
-				args: ['44100'],
-				rawRow: 2,
-				sourceLine: '; ~sampleRate 44100',
-				isTrailing: false,
-			},
+			{ prefix: '@', name: 'favorite', args: [], rawRow: 2, sourceLine: '; @favorite', isTrailing: false },
 		]);
 	});
 
