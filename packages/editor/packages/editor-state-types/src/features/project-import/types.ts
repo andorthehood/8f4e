@@ -8,5 +8,6 @@ import type { CodeBlock } from '../code-blocks/types';
  * Complete project structure for serialization and loading.
  */
 export interface Project {
-	codeBlocks: CodeBlock[];
+	global: CodeBlock[];
+	entries: Record<string, CodeBlock[]>;
 }
