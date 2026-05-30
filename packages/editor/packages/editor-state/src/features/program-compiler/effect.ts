@@ -36,7 +36,10 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 
 	for (const block of sortedEnabled) {
 		if (block.blockType === moduleBlockType) {
-			const entryName = block.executionEntryName ?? 'main';
+			if (!block.entry) {
+				throw new Error(`Module code block "${block.id}" is missing entry`);
+			}
+			const entryName = block.entry;
 			moduleEntries[entryName] ??= [];
 			moduleEntries[entryName].push(block);
 		} else if (block.blockType === constantsBlockType) {

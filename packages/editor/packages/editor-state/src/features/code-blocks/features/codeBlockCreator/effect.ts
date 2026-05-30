@@ -9,6 +9,7 @@ import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSo
 import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 
+import findEntryNameAtPosition from '../entryOutlines/findEntryNameAtPosition';
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
@@ -103,6 +104,27 @@ function incrementCodeBlockIdUntilUnique(state: State, blockType: RenameableCode
 	return blockId;
 }
 
+function getUniqueEntryName(state: State): string {
+	const usedEntryNames = new Set(
+		state.graphicHelper.codeBlocks
+			.filter(block => block.blockType === moduleBlock.type || getModuleId(block.code))
+			.map(block => block.entry)
+	);
+	let entryName = 'entry';
+
+	while (usedEntryNames.has(entryName)) {
+		entryName = incrementCodeBlockId(entryName);
+	}
+
+	return entryName;
+}
+
+function getEntryNameForNewModule(state: State, x: number, y: number, newEntry?: boolean): string {
+	return newEntry
+		? getUniqueEntryName(state)
+		: (findEntryNameAtPosition(state.graphicHelper.entryOutlines, x, y) ?? getUniqueEntryName(state));
+}
+
 export default function codeBlockCreator(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
 	async function onAddCodeBlock({
@@ -110,12 +132,14 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		y,
 		isNew,
 		blockType,
+		newEntry,
 		code = [''],
 	}: {
 		x: number;
 		y: number;
 		isNew: boolean;
 		blockType?: NewCodeBlockType;
+		newEntry?: boolean;
 		code?: string[];
 	}) {
 		if (!state.featureFlags.editing) {
@@ -180,9 +204,12 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		// Calculate grid position
 		const gridX = Math.round((state.viewport.x + x) / state.viewport.vGrid);
 		const gridY = Math.round((state.viewport.y + y) / state.viewport.hGrid);
+		const pixelX = state.viewport.x + x;
+		const pixelY = state.viewport.y + y;
 
 		// Add canonical @pos directive to code
 		code = upsertPos(code, gridX, gridY);
+		const entry = moduleId ? getEntryNameForNewModule(state, pixelX, pixelY, newEntry) : undefined;
 
 		const codeBlock: CodeBlockGraphicData = createCodeBlockGraphicData({
 			width: 0,
@@ -193,14 +220,15 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			moduleId: getModuleId(code) || getConstantsId(code) || undefined,
 			gridX,
 			gridY,
-			x: state.viewport.x + x,
-			y: state.viewport.y + y,
+			x: pixelX,
+			y: pixelY,
 			lineNumberColumnWidth: 2,
 			offsetX: 0,
 			lastUpdated: Date.now(),
 			offsetY: 0,
 			creationIndex,
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
+			entry,
 			disabled: false,
 			isHome: false,
 		});

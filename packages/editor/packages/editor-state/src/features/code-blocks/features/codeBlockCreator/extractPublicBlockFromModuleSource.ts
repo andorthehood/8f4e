@@ -22,9 +22,7 @@ export default function extractPublicBlockFromModuleSource(source: string): stri
 	}
 
 	const project = parse8f4eProject(source);
-	const [publicBlock] = project.codeBlocks.filter(
-		block => block.executionEntryName !== 'test' && hasPublicDirective(block)
-	);
+	const [publicBlock] = project.codeBlocks.filter(block => block.entry !== 'test' && hasPublicDirective(block));
 
 	return publicBlock ? removeDirective(publicBlock.code, PUBLIC_BLOCK_DIRECTIVE) : [];
 }

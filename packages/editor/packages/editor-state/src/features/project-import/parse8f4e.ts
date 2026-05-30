@@ -7,7 +7,7 @@ import type { Project } from '@8f4e/editor-state-types';
  * Throws if the text is not valid .8f4e format.
  */
 export function parse8f4eToProject(text: string): Project {
-	return parse8f4eProject(text) as Project;
+	return parse8f4eProject(text);
 }
 
 if (import.meta.vitest) {
@@ -22,7 +22,7 @@ if (import.meta.vitest) {
 			const text = '8f4e/v1\n\nentry main\n' + validBlock.join('\n') + '\nentryEnd';
 			const project = parse8f4eToProject(text);
 			expect(project.codeBlocks).toHaveLength(1);
-			expect(project.codeBlocks[0]).toEqual({ code: validBlock, executionEntryName: 'main' });
+			expect(project.codeBlocks[0]).toEqual({ code: validBlock, entry: 'main' });
 		});
 
 		it('parses multiple blocks', () => {
@@ -40,7 +40,7 @@ if (import.meta.vitest) {
 
 		it('parses empty file (header only)', () => {
 			const project = parse8f4eToProject('8f4e/v1\n');
-			expect(project.codeBlocks).toHaveLength(0);
+			expect(project).toEqual({ codeBlocks: [] });
 		});
 
 		it('throws on invalid header', () => {
@@ -70,12 +70,11 @@ if (import.meta.vitest) {
 		it('round-trips through serialize then parse', async () => {
 			const { serializeProjectTo8f4e } = await import('../project-export/serializeTo8f4e');
 			const project = {
-				codeBlocks: [{ code: validBlock }, { code: validFunctionBlock }, { code: validNoteBlock }],
+				codeBlocks: [{ code: validBlock, entry: 'main' }, { code: validFunctionBlock }, { code: validNoteBlock }],
 			};
 			const text = serializeProjectTo8f4e(project);
 			const parsed = parse8f4eToProject(text);
-			expect(parsed.codeBlocks).toHaveLength(3);
-			expect(parsed.codeBlocks[0]).toEqual({ code: validBlock, executionEntryName: 'main' });
+			expect(parsed.codeBlocks[0]).toEqual({ code: validBlock, entry: 'main' });
 			expect(parsed.codeBlocks[1].code).toEqual(validFunctionBlock);
 			expect(parsed.codeBlocks[2].code).toEqual(validNoteBlock);
 		});

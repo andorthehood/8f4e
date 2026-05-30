@@ -1,7 +1,7 @@
 import { isBrowserLocalNoteBlock } from '../browser-local-notes/browserLocalNotes';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 
-import type { CodeBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, Project } from '@8f4e/editor-state-types';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
@@ -12,14 +12,23 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
  * Disabled state is stored in @disabled directive within code, not in separate disabled field.
  * Excludes browser-local notes from the exported project.
  * @param codeBlocks Array of code blocks with full graphic data
- * @returns Array of simplified code blocks suitable for file format
+ * @returns Project suitable for JSON persistence and file export
  */
-export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): CodeBlock[] {
-	return sortCodeBlocksByGridPosition(codeBlocks.filter(codeBlock => !isBrowserLocalNoteBlock(codeBlock))).map(
-		codeBlock => ({
-			code: codeBlock.code,
-		})
-	);
+export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): Project {
+	return {
+		codeBlocks: sortCodeBlocksByGridPosition(codeBlocks.filter(block => !isBrowserLocalNoteBlock(block))).map(
+			codeBlock => {
+				if (codeBlock.blockType === 'module' && !codeBlock.entry) {
+					throw new Error(`Module code block "${codeBlock.id}" is missing an entry`);
+				}
+
+				return {
+					code: codeBlock.code,
+					...(codeBlock.blockType === 'module' ? { entry: codeBlock.entry } : {}),
+				};
+			}
+		),
+	};
 }
 
 if (import.meta.vitest) {
@@ -35,7 +44,7 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result.map(block => block.code[0])).toEqual(['line 3', 'line 2', 'line 1']);
+			expect(result.codeBlocks.map(block => block.code[0])).toEqual(['line 3', 'line 2', 'line 1']);
 		});
 
 		it('exports code without gridCoordinates field', () => {
@@ -43,9 +52,9 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0]).not.toHaveProperty('gridCoordinates');
-			expect(result[0]).not.toHaveProperty('disabled');
-			expect(result[0].code).toEqual(['code']);
+			expect(result.codeBlocks[0]).not.toHaveProperty('gridCoordinates');
+			expect(result.codeBlocks[0]).not.toHaveProperty('disabled');
+			expect(result.codeBlocks[0].code).toEqual(['code']);
 		});
 
 		it('does not include disabled field even when block is disabled', () => {
@@ -53,8 +62,8 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0]).not.toHaveProperty('disabled');
-			expect(result[0].code).toEqual(['code']);
+			expect(result.codeBlocks[0]).not.toHaveProperty('disabled');
+			expect(result.codeBlocks[0].code).toEqual(['code']);
 		});
 
 		it('does not include disabled field when block is not disabled', () => {
@@ -62,8 +71,8 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result[0]).not.toHaveProperty('disabled');
-			expect(result[0].code).toEqual(['code']);
+			expect(result.codeBlocks[0]).not.toHaveProperty('disabled');
+			expect(result.codeBlocks[0].code).toEqual(['code']);
 		});
 
 		it('excludes browser-local notes from the exported project', () => {
@@ -90,7 +99,43 @@ if (import.meta.vitest) {
 
 			const result = convertGraphicDataToProjectStructure(blocks);
 
-			expect(result.map(block => block.code[0])).toEqual(['note', 'note fragmentShaderPostprocess']);
+			expect(result.codeBlocks.map(block => block.code[0])).toEqual(['note', 'note fragmentShaderPostprocess']);
+		});
+
+		it('stores module entries on module blocks', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				createMockCodeBlock({
+					id: 'main',
+					blockType: 'module',
+					entry: 'main',
+					code: ['module main', 'moduleEnd'],
+				}),
+				createMockCodeBlock({
+					id: 'entry',
+					blockType: 'module',
+					entry: 'entry1',
+					code: ['module entry', 'moduleEnd'],
+				}),
+			];
+
+			const result = convertGraphicDataToProjectStructure(blocks);
+
+			expect(result.codeBlocks).toEqual([
+				{ code: ['module main', 'moduleEnd'], entry: 'main' },
+				{ code: ['module entry', 'moduleEnd'], entry: 'entry1' },
+			]);
+		});
+
+		it('rejects module blocks without an entry', () => {
+			const blocks: CodeBlockGraphicData[] = [
+				createMockCodeBlock({
+					id: 'main',
+					blockType: 'module',
+					code: ['module main', 'moduleEnd'],
+				}),
+			];
+
+			expect(() => convertGraphicDataToProjectStructure(blocks)).toThrow('missing an entry');
 		});
 	});
 }
