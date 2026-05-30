@@ -84,15 +84,15 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 		});
 	});
 
-	describe('New Entry', () => {
-		it('creates a new empty module assigned to a fresh execution entry', async () => {
+	describe('New Module entry assignment', () => {
+		it('creates a new empty module assigned to a fresh execution entry outside existing entries', async () => {
 			codeBlockCreator(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
 			const addCodeBlockCallback = addCodeBlockCall![1];
 
-			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module', newEntry: true });
+			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
 			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBe('entry');
@@ -101,7 +101,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			expect(mockState.graphicHelper.codeBlocks[0].code.at(-1)).toBe('moduleEnd');
 		});
 
-		it('increments the entry name when the default new entry name is already used', async () => {
+		it('increments the entry name when creating outside entries and the default new entry name is already used', async () => {
 			mockState.graphicHelper.codeBlocks = [
 				createMockCodeBlock({
 					code: ['module existing', 'moduleEnd'],
@@ -116,13 +116,76 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
 			const addCodeBlockCallback = addCodeBlockCall![1];
 
-			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module', newEntry: true });
+			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
 			expect(mockState.graphicHelper.codeBlocks[1].executionEntryName).toBe('entry2');
 		});
 
-		it('does not assign a new entry to regular new modules', async () => {
+		it('assigns a regular new module to the containing non-main entry', async () => {
+			mockState.graphicHelper.entryOutlines = [
+				{
+					entryName: 'fx',
+					topLeft: { x: 0, y: 0 },
+					topRight: { x: 200, y: 0 },
+					bottomRight: { x: 200, y: 200 },
+					bottomLeft: { x: 0, y: 200 },
+				},
+			];
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
+			const addCodeBlockCallback = addCodeBlockCall![1];
+
+			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
+
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
+			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBe('fx');
+		});
+
+		it('uses the first overlapping entry outline at the new module position', async () => {
+			mockState.graphicHelper.entryOutlines = [
+				{
+					entryName: 'first',
+					topLeft: { x: 0, y: 0 },
+					topRight: { x: 200, y: 0 },
+					bottomRight: { x: 200, y: 200 },
+					bottomLeft: { x: 0, y: 200 },
+				},
+				{
+					entryName: 'second',
+					topLeft: { x: 0, y: 0 },
+					topRight: { x: 200, y: 0 },
+					bottomRight: { x: 200, y: 200 },
+					bottomLeft: { x: 0, y: 200 },
+				},
+			];
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
+			const addCodeBlockCallback = addCodeBlockCall![1];
+
+			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
+
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
+			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBe('first');
+		});
+
+		it('uses the main entry without storing an explicit execution entry name', async () => {
+			mockState.graphicHelper.entryOutlines = [
+				{
+					entryName: 'main',
+					topLeft: { x: 0, y: 0 },
+					topRight: { x: 200, y: 0 },
+					bottomRight: { x: 200, y: 200 },
+					bottomLeft: { x: 0, y: 200 },
+				},
+			];
+
 			codeBlockCreator(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;

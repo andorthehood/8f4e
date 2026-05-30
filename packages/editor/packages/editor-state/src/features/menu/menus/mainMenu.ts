@@ -10,12 +10,6 @@ export const mainMenu: MenuGenerator = state => [
 					close: true,
 				},
 				{
-					title: 'New Entry',
-					action: 'addCodeBlock',
-					payload: { isNew: true, blockType: 'module', newEntry: true },
-					close: true,
-				},
-				{
 					title: 'New Function',
 					action: 'addCodeBlock',
 					payload: { isNew: true, blockType: 'function' },
