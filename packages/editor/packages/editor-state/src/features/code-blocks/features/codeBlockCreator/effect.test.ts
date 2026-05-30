@@ -95,7 +95,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBe('entry');
+			expect(mockState.graphicHelper.codeBlocks[0].entry).toBe('entry');
 			expect(mockState.graphicHelper.codeBlocks[0].code[0]).toMatch(/^module \w+$/);
 			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
 			expect(mockState.graphicHelper.codeBlocks[0].code.at(-1)).toBe('moduleEnd');
@@ -106,7 +106,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 				createMockCodeBlock({
 					code: ['module existing', 'moduleEnd'],
 					blockType: 'module',
-					executionEntryName: 'entry',
+					entry: 'entry',
 				}),
 			];
 
@@ -119,7 +119,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
-			expect(mockState.graphicHelper.codeBlocks[1].executionEntryName).toBe('entry2');
+			expect(mockState.graphicHelper.codeBlocks[1].entry).toBe('entry2');
 		});
 
 		it('assigns a regular new module to the containing non-main entry', async () => {
@@ -142,7 +142,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBe('fx');
+			expect(mockState.graphicHelper.codeBlocks[0].entry).toBe('fx');
 		});
 
 		it('uses the first overlapping entry outline at the new module position', async () => {
@@ -172,10 +172,10 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBe('first');
+			expect(mockState.graphicHelper.codeBlocks[0].entry).toBe('first');
 		});
 
-		it('uses the main entry without storing an explicit execution entry name', async () => {
+		it('stores the main entry explicitly', async () => {
 			mockState.graphicHelper.entryOutlines = [
 				{
 					entryName: 'main',
@@ -195,7 +195,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
 			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBeUndefined();
+			expect(mockState.graphicHelper.codeBlocks[0].entry).toBe('main');
 		});
 	});
 

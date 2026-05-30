@@ -307,6 +307,9 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			const pixelY = isAnchored ? 0 : gridY * state.viewport.hGrid;
 
 			const blockType = getBlockType(codeBlock.code) as CodeBlockGraphicData['blockType'];
+			if (blockType === 'module' && !codeBlock.entry) {
+				throw new Error(`Project module block "${getCodeBlockId(codeBlock.code)}" is missing an entry`);
+			}
 
 			return createCodeBlockGraphicData({
 				width: 0,
@@ -321,7 +324,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 				lineNumberColumnWidth: 1,
 				creationIndex,
 				blockType,
-				executionEntryName: codeBlock.entry,
+				entry: codeBlock.entry,
 				disabled: directiveState.blockState.disabled,
 				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,
