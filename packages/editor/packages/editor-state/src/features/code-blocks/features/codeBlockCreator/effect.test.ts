@@ -84,6 +84,58 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 		});
 	});
 
+	describe('New Entry', () => {
+		it('creates a new empty module assigned to a fresh execution entry', async () => {
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
+			const addCodeBlockCallback = addCodeBlockCall![1];
+
+			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module', newEntry: true });
+
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
+			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBe('entry');
+			expect(mockState.graphicHelper.codeBlocks[0].code[0]).toMatch(/^module \w+$/);
+			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
+			expect(mockState.graphicHelper.codeBlocks[0].code.at(-1)).toBe('moduleEnd');
+		});
+
+		it('increments the entry name when the default new entry name is already used', async () => {
+			mockState.graphicHelper.codeBlocks = [
+				createMockCodeBlock({
+					code: ['module existing', 'moduleEnd'],
+					blockType: 'module',
+					executionEntryName: 'entry',
+				}),
+			];
+
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
+			const addCodeBlockCallback = addCodeBlockCall![1];
+
+			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module', newEntry: true });
+
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
+			expect(mockState.graphicHelper.codeBlocks[1].executionEntryName).toBe('entry2');
+		});
+
+		it('does not assign a new entry to regular new modules', async () => {
+			codeBlockCreator(store, mockEvents);
+
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
+			const addCodeBlockCallback = addCodeBlockCall![1];
+
+			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
+
+			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
+			expect(mockState.graphicHelper.codeBlocks[0].executionEntryName).toBeUndefined();
+		});
+	});
+
 	describe('Copy Module (writeClipboardText callback)', () => {
 		it('should write to clipboard callback when copying a module', async () => {
 			const mockWriteClipboard = vi.fn().mockResolvedValue(undefined);

@@ -60,6 +60,31 @@ describe('menus - go home entry', () => {
 		expect(newNoteItem?.payload).toEqual({ isNew: true, blockType: 'note' });
 	});
 
+	it('shows "New Entry" as a new module with a fresh execution entry', () => {
+		const mockState = createMockState({
+			editorMode: 'edit',
+		});
+
+		const menu = mainMenu(mockState as State);
+		const newEntryItem = menu.find(item => item.title === 'New Entry');
+
+		expect(newEntryItem).toBeDefined();
+		expect(newEntryItem?.action).toBe('addCodeBlock');
+		expect(newEntryItem?.payload).toEqual({ isNew: true, blockType: 'module', newEntry: true });
+	});
+
+	it('hides "New Entry" when editing is disabled', () => {
+		const mockState = createMockState({
+			editorMode: 'view',
+			featureFlags: { editing: false },
+		});
+
+		const menu = mainMenu(mockState as State);
+		const newEntryItem = menu.find(item => item.title === 'New Entry');
+
+		expect(newEntryItem).toBeUndefined();
+	});
+
 	it('shows "Take Screenshot" when canvas screenshot export is available', () => {
 		const mockState = createMockState({
 			callbacks: { exportCanvasScreenshot: async () => {} },
