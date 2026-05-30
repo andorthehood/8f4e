@@ -3,7 +3,12 @@ import WebWorkerRuntime from '@8f4e/runtime-web-worker?worker';
 
 import { getCodeBuffer, getMemory } from './compiler-callback';
 
-import type { RuntimeRegistry, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
+import type {
+	EditorConfigSchemaContribution,
+	JSONSchemaLike,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
+} from '@8f4e/editor';
 
 /**
  * Default runtime ID for the application.
@@ -18,22 +23,23 @@ export const DEFAULT_RUNTIME_ID = 'WebWorkerRuntime';
  */
 function createLazyRuntimeEntry(
 	id: string,
-	defaults: Record<string, unknown>,
+	editorConfigSchema: EditorConfigSchemaContribution,
 	loader: () => Promise<RuntimeRegistryEntry>
 ): RuntimeRegistryEntry {
 	let loadPromise: Promise<RuntimeRegistryEntry> | null = null;
 
 	// Minimal permissive stub schema used until the real schema is loaded.
-	// No additionalProperties constraint so valid runtime-specific config properties
-	// are not rejected before the full schema arrives.
+	// No additionalProperties constraint so valid contributed properties are not rejected before the full schema arrives.
 	const stubSchema: JSONSchemaLike = {
 		type: 'object',
 	};
 
 	const entry: RuntimeRegistryEntry = {
 		id,
-		defaults,
-		schema: stubSchema,
+		editorConfigSchema: {
+			...editorConfigSchema,
+			schema: stubSchema,
+		},
 		factory: (store, events) => {
 			let destroyed = false;
 			let destroy: (() => void) | null = null;
@@ -43,8 +49,7 @@ function createLazyRuntimeEntry(
 			}
 
 			loadPromise.then(loadedEntry => {
-				entry.schema = loadedEntry.schema;
-				entry.resolveRuntimeDirectives = loadedEntry.resolveRuntimeDirectives;
+				entry.editorConfigSchema = loadedEntry.editorConfigSchema;
 				entry.getEnvConstants = loadedEntry.getEnvConstants;
 				store.set('runtimeRegistry', { ...store.getState().runtimeRegistry });
 				if (!destroyed) {
@@ -66,7 +71,7 @@ function createLazyRuntimeEntry(
 
 /**
  * Runtime registry for the application.
- * Maps runtime IDs to their configuration entries including defaults, schemas, and factory functions.
+ * Maps runtime IDs to their editor-config schema contributions and factory functions.
  * The default runtime (WebWorkerRuntime) is loaded eagerly; optional runtimes are lazy-loaded
  * on first selection. Each optional runtime starts with a minimal stub schema and replaces it with
  * the full schema after loading.
@@ -74,16 +79,24 @@ function createLazyRuntimeEntry(
 export const runtimeRegistry: RuntimeRegistry = {
 	WebWorkerRuntime: createWebWorkerRuntimeDef(getCodeBuffer, getMemory, WebWorkerRuntime),
 
-	MainThreadRuntime: createLazyRuntimeEntry('MainThreadRuntime', { sampleRate: 50 }, async () => {
-		const { createMainThreadRuntimeDef } = await import('@8f4e/runtime-main-thread/runtime-def');
-		return createMainThreadRuntimeDef(getCodeBuffer, getMemory);
-	}),
+	MainThreadRuntime: createLazyRuntimeEntry(
+		'MainThreadRuntime',
+		{ root: 'mainThreadRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
+		async () => {
+			const { createMainThreadRuntimeDef } = await import('@8f4e/runtime-main-thread/runtime-def');
+			return createMainThreadRuntimeDef(getCodeBuffer, getMemory);
+		}
+	),
 
-	AudioWorkletRuntime: createLazyRuntimeEntry('AudioWorkletRuntime', { sampleRate: 48000 }, async () => {
-		const [{ createAudioWorkletRuntimeDef }, { default: audioWorkletUrl }] = await Promise.all([
-			import('@8f4e/runtime-audio-worklet/runtime-def'),
-			import('@8f4e/runtime-audio-worklet/worklet?url'),
-		]);
-		return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
-	}),
+	AudioWorkletRuntime: createLazyRuntimeEntry(
+		'AudioWorkletRuntime',
+		{ root: 'audioRuntime', defaults: { sampleRate: 48000 }, schema: { type: 'object' } },
+		async () => {
+			const [{ createAudioWorkletRuntimeDef }, { default: audioWorkletUrl }] = await Promise.all([
+				import('@8f4e/runtime-audio-worklet/runtime-def'),
+				import('@8f4e/runtime-audio-worklet/worklet?url'),
+			]);
+			return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
+		}
+	),
 };

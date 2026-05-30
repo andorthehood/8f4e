@@ -1,9 +1,15 @@
 import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
-import type { EditorConfigValidator, RuntimeRegistry, Runtimes, State } from '@8f4e/editor-state-types';
+import type {
+	EditorConfigSchemaContributionRegistry,
+	EditorConfigValidator,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
+	State,
+} from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 
-export const RUNTIME_CONFIG_PATH = 'runtime';
+export const RUNTIME_SELECTION_CONFIG_PATH = 'runtime';
 
 function isRegisteredRuntimeId(runtimeRegistry: RuntimeRegistry, runtimeId: string): boolean {
 	return Object.prototype.hasOwnProperty.call(runtimeRegistry, runtimeId);
@@ -21,19 +27,43 @@ export function resolveSelectedRuntimeId(
 	return defaultRuntimeId;
 }
 
-export function getSelectedRuntimeDefaults(
+export function getSelectedRuntimeEntry(
 	requestedRuntimeId: string | undefined,
 	runtimeRegistry: RuntimeRegistry,
 	defaultRuntimeId: string
-): Runtimes {
+): RuntimeRegistryEntry {
 	const resolvedRuntimeId = resolveSelectedRuntimeId(requestedRuntimeId, runtimeRegistry, defaultRuntimeId);
-	return runtimeRegistry[resolvedRuntimeId].defaults as unknown as Runtimes;
+	return runtimeRegistry[resolvedRuntimeId];
 }
 
-export function createRuntimeEditorConfigValidator(store: StateManager<State>): EditorConfigValidator {
+export function collectRuntimeEditorConfigSchemaContributions(
+	requestedRuntimeId: string | undefined,
+	runtimeRegistry: RuntimeRegistry,
+	defaultRuntimeId: string
+): EditorConfigSchemaContributionRegistry {
+	const contributions: EditorConfigSchemaContributionRegistry = {};
+	const selectedEntry = getSelectedRuntimeEntry(requestedRuntimeId, runtimeRegistry, defaultRuntimeId);
+
+	if (selectedEntry.editorConfigSchema) {
+		contributions[`runtime:${selectedEntry.id}`] = selectedEntry.editorConfigSchema;
+	}
+
+	for (const entry of Object.values(runtimeRegistry)) {
+		if (entry.id === selectedEntry.id || !entry.editorConfigSchema) {
+			continue;
+		}
+		contributions[`runtime:${entry.id}`] = entry.editorConfigSchema;
+	}
+
+	return contributions;
+}
+
+export function createRuntimeSelectionEditorConfigValidator(store: StateManager<State>): EditorConfigValidator {
 	return {
-		knownPaths: [RUNTIME_CONFIG_PATH],
-		matches: path => path === RUNTIME_CONFIG_PATH,
+		get knownPaths() {
+			return [RUNTIME_SELECTION_CONFIG_PATH];
+		},
+		matches: path => path === RUNTIME_SELECTION_CONFIG_PATH,
 		validate: entry => {
 			const { runtimeRegistry } = store.getState();
 			const runtimeIds = Object.keys(runtimeRegistry);
@@ -44,9 +74,10 @@ export function createRuntimeEditorConfigValidator(store: StateManager<State>): 
 
 			return undefined;
 		},
+		parse: entry => entry.value,
 	};
 }
 
-export function registerRuntimeEditorConfigValidator(store: StateManager<State>): void {
-	store.set('editorConfigValidators.runtime', createRuntimeEditorConfigValidator(store));
+export function registerRuntimeSelectionEditorConfigValidator(store: StateManager<State>): void {
+	store.set('editorConfigValidators.runtime', createRuntimeSelectionEditorConfigValidator(store));
 }

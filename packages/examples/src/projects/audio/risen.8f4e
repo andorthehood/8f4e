@@ -101,7 +101,9 @@ note
 ; Project config
 
 ; @config runtime AudioWorkletRuntime
-; ~sampleRate 48000
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress shofar:buffer
+; @config audioRuntime.audioOutBufferRAddress shofar:buffer
 ; @config export.fileName risen
 ; @config font templeos8x8
 noteEnd
@@ -984,8 +986,6 @@ float* in &churchReverb:out
 
 ; Audio buffer
 float[] buffer AUDIO_BUFFER_SIZE
-; ~audioOutput buffer 0 0
-; ~audioOutput buffer 0 1
 int pointer &buffer
 
 ; @plot &buffer count(buffer)

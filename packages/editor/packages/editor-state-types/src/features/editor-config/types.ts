@@ -1,4 +1,19 @@
-export type EditorConfigValue = string | number | EditorConfigObject;
+export interface JSONSchemaLike {
+	type?: 'object' | 'array' | 'string' | 'number' | 'integer' | 'boolean' | 'null';
+	format?: string;
+	properties?: Record<string, JSONSchemaLike>;
+	required?: readonly string[];
+	items?: JSONSchemaLike;
+	additionalProperties?: boolean | JSONSchemaLike;
+	enum?: readonly unknown[];
+	oneOf?: readonly JSONSchemaLike[];
+	anyOf?: readonly JSONSchemaLike[];
+	minimum?: number;
+	pattern?: string;
+}
+
+export type EditorConfigPrimitiveValue = string | number | boolean;
+export type EditorConfigValue = EditorConfigPrimitiveValue | EditorConfigObject;
 
 export interface EditorConfigObject {
 	[key: string]: EditorConfigValue | undefined;
@@ -12,6 +27,16 @@ export interface EditorConfig extends EditorConfigObject {
 	export?: EditorConfigObject & {
 		fileName?: string;
 	};
+}
+
+export interface EditorConfigSchemaContribution {
+	root: string;
+	defaults?: Record<string, unknown>;
+	schema: JSONSchemaLike;
+}
+
+export interface EditorConfigSchemaContributionRegistry {
+	[contributionId: string]: EditorConfigSchemaContribution | undefined;
 }
 
 export interface EditorConfigEntry {

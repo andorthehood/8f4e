@@ -14,14 +14,11 @@ function createParsedBlock(code: string[], overrides: { id?: string; moduleId?: 
 
 describe('@keyPressedMemory directive', () => {
 	it('reports usage outside module blocks', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				createParsedBlock(['function helper', '; @keyPressedMemory keyPressed', 'functionEnd'], {
-					id: 'project_config',
-				}),
-			],
-			{}
-		);
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock(['function helper', '; @keyPressedMemory keyPressed', 'functionEnd'], {
+				id: 'project_config',
+			}),
+		]);
 
 		expect(result.resolved.keyPressedMemoryId).toBeUndefined();
 		expect(result.errors).toHaveLength(1);
@@ -30,19 +27,16 @@ describe('@keyPressedMemory directive', () => {
 	});
 
 	it('allows duplicate identical targets', () => {
-		const result = resolveGlobalEditorDirectives(
-			[
-				createParsedBlock(['module keyboard', '; @keyPressedMemory keyPressed', 'moduleEnd'], {
-					moduleId: 'keyboard',
-					blockType: 'module',
-				}),
-				createParsedBlock(['module keyboard', '; @keyPressedMemory keyPressed', 'moduleEnd'], {
-					moduleId: 'keyboard',
-					blockType: 'module',
-				}),
-			],
-			{}
-		);
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock(['module keyboard', '; @keyPressedMemory keyPressed', 'moduleEnd'], {
+				moduleId: 'keyboard',
+				blockType: 'module',
+			}),
+			createParsedBlock(['module keyboard', '; @keyPressedMemory keyPressed', 'moduleEnd'], {
+				moduleId: 'keyboard',
+				blockType: 'module',
+			}),
+		]);
 
 		expect(result.resolved.keyPressedMemoryId).toBe('keyboard:keyPressed');
 		expect(result.errors).toEqual([]);

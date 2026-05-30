@@ -1,14 +1,35 @@
 // Import the types from the editor
 // Note: Worker import is done at runtime by the host, not here
 import { StateManager } from '@8f4e/state-manager';
+import { resolveSchemaConfigRoot } from '@8f4e/editor';
 
-import {
-	getWebWorkerRuntimeEnvConstantsFromBlocks,
-	resolveWebWorkerRuntimeDirectives,
-	resolveWebWorkerRuntimeDirectivesFromBlocks,
-} from './runtimeDirectives';
+import type {
+	EditorConfig,
+	EditorConfigSchemaContribution,
+	EventDispatcher,
+	RuntimeRegistryEntry,
+	State,
+} from '@8f4e/editor';
 
-import type { State, EventDispatcher, RuntimeRegistryEntry, JSONSchemaLike } from '@8f4e/editor';
+const WEB_WORKER_EDITOR_CONFIG: EditorConfigSchemaContribution = {
+	root: 'workerRuntime',
+	defaults: {
+		sampleRate: 50,
+	},
+	schema: {
+		type: 'object',
+		properties: {
+			sampleRate: { type: 'number', minimum: 1 },
+		},
+		additionalProperties: false,
+	},
+};
+
+function getSampleRate(editorConfig: EditorConfig): number {
+	const config = resolveSchemaConfigRoot(WEB_WORKER_EDITOR_CONFIG, editorConfig);
+
+	return typeof config.sampleRate === 'number' ? config.sampleRate : 50;
+}
 
 // WebWorker Runtime Factory
 export function webWorkerRuntimeFactory(
@@ -47,15 +68,11 @@ export function webWorkerRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
-		const sampleRate = resolveWebWorkerRuntimeDirectives(state).sampleRate;
-		if (sampleRate === undefined) {
-			return;
-		}
 		worker.postMessage({
 			type: 'init',
 			payload: {
 				memoryRef: memory,
-				sampleRate,
+				sampleRate: getSampleRate(state.editorConfig),
 				codeBuffer: getCodeBuffer(),
 				compiledModules: state.compiler.compiledModules,
 			},
@@ -68,9 +85,11 @@ export function webWorkerRuntimeFactory(
 	syncCodeAndSettingsWithRuntime();
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
+	store.subscribe('editorConfig.workerRuntime', syncCodeAndSettingsWithRuntime);
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
+		store.unsubscribe('editorConfig.workerRuntime', syncCodeAndSettingsWithRuntime);
 		if (worker) {
 			worker.removeEventListener('message', onWorkerMessage);
 			worker.terminate();
@@ -90,18 +109,8 @@ export function createWebWorkerRuntimeDef(
 ): RuntimeRegistryEntry {
 	return {
 		id: 'WebWorkerRuntime',
-		defaults: {
-			sampleRate: 50,
-		},
-		schema: {
-			type: 'object',
-			properties: {
-				sampleRate: { type: 'number' },
-			},
-			additionalProperties: false,
-		} as JSONSchemaLike,
-		resolveRuntimeDirectives: codeBlocks => resolveWebWorkerRuntimeDirectivesFromBlocks(codeBlocks),
-		getEnvConstants: codeBlocks => getWebWorkerRuntimeEnvConstantsFromBlocks(codeBlocks),
+		editorConfigSchema: WEB_WORKER_EDITOR_CONFIG,
+		getEnvConstants: editorConfig => [`const SAMPLE_RATE ${getSampleRate(editorConfig)}`],
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return webWorkerRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},

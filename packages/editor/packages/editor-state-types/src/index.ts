@@ -37,7 +37,12 @@ import type {
 import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type { DialogContent, DialogState, DialogButton } from './features/dialog/types';
-import type { EditorConfig, EditorConfigValidatorRegistry } from './features/editor-config/types';
+import type {
+	EditorConfig,
+	EditorConfigSchemaContributionRegistry,
+	EditorConfigValidatorRegistry,
+	JSONSchemaLike,
+} from './features/editor-config/types';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
 import type { LogMessage, ConsoleState } from './features/logger/types';
 import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
@@ -48,14 +53,8 @@ import type {
 	RuntimeFactory,
 	RuntimeRegistryEntry,
 	RuntimeRegistry,
-	WebWorkerRuntime,
-	MainThreadRuntime,
-	AudioWorkletRuntime,
-	Runtimes,
 	RuntimeValuesByRuntimeId,
-	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
-	JSONSchemaLike,
 } from './features/runtime/types';
 import type { ProjectViewport, Viewport, ViewportAnimation } from './features/viewport/types';
 import type {
@@ -126,12 +125,7 @@ export type {
 	RuntimeRegistryEntry,
 	RuntimeRegistry,
 	JSONSchemaLike,
-	WebWorkerRuntime,
-	MainThreadRuntime,
-	AudioWorkletRuntime,
-	Runtimes,
 	RuntimeValuesByRuntimeId,
-	RuntimeDirectiveResolver,
 	RuntimeEnvConstantsContributor,
 };
 
@@ -347,8 +341,7 @@ export interface Options {
 	featureFlags?: FeatureFlagsConfig;
 	callbacks: Callbacks;
 	/**
-	 * Runtime registry mapping runtime IDs to their configuration entries.
-	 * Each entry defines a runtime's defaults, schema, and factory function.
+	 * Runtime registry mapping runtime IDs to runtime implementations.
 	 */
 	runtimeRegistry: RuntimeRegistry;
 	/**
@@ -356,6 +349,8 @@ export interface Options {
 	 * Must match a key in the runtimeRegistry.
 	 */
 	defaultRuntimeId: string;
+	/** Optional host-provided schema contributions for project-level editor config. */
+	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 }
 
 // State interface - complete editor state tree (top-level public API)
@@ -370,6 +365,7 @@ export interface State {
 	editorMode: EditorMode;
 	editorConfig: EditorConfig;
 	editorConfigValidators: EditorConfigValidatorRegistry;
+	editorConfigSchemaContributions: EditorConfigSchemaContributionRegistry;
 	historyStack: Project[];
 	initialProjectState?: Project;
 	redoStack: Project[];
@@ -380,7 +376,7 @@ export interface State {
 	runtime: {
 		values: RuntimeValuesByRuntimeId;
 	};
-	/** Runtime registry for configurable runtime schemas */
+	/** Runtime registry for available runtime implementations */
 	runtimeRegistry: RuntimeRegistry;
 	/** Default runtime ID to use when no runtime is specified */
 	defaultRuntimeId: string;
@@ -390,7 +386,6 @@ export interface State {
 		compilationErrors: CodeError[];
 		editorDirectiveErrors: CodeError[];
 		shaderErrors: CodeError[];
-		runtimeDirectiveErrors: CodeError[];
 	};
 	dialog: DialogState;
 	dialogStack: DialogContent[];

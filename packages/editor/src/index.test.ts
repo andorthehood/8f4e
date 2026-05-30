@@ -94,8 +94,6 @@ describe('editor init', () => {
 			runtimeRegistry: {
 				WebWorkerRuntime: {
 					id: 'WebWorkerRuntime',
-					defaults: {},
-					schema: { type: 'object' },
 					factory: () => () => {},
 				},
 			},
@@ -128,8 +126,6 @@ describe('editor init', () => {
 			runtimeRegistry: {
 				WebWorkerRuntime: {
 					id: 'WebWorkerRuntime',
-					defaults: {},
-					schema: { type: 'object' },
 					factory: () => () => {},
 				},
 			},
@@ -158,8 +154,6 @@ describe('editor init', () => {
 			runtimeRegistry: {
 				WebWorkerRuntime: {
 					id: 'WebWorkerRuntime',
-					defaults: {},
-					schema: { type: 'object' },
 					factory: () => () => {},
 				},
 			},

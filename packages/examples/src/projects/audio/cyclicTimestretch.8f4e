@@ -9,7 +9,9 @@ moduleEnd
 module projectConfig
 ; @pos -53 -63
 ; @config runtime AudioWorkletRuntime
-; ~sampleRate 44100
+; @config audioRuntime.sampleRate 44100
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
+; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName cyclicTimestretch
 
 moduleEnd
@@ -186,8 +188,6 @@ store
 moduleEnd
 module audioout
 ; @pos 191 -63
-; ~audioOutput buffer 0 0
-; ~audioOutput buffer 0 1
 use env
 
 float* in &lowpass:out

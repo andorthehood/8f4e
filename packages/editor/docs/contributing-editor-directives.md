@@ -3,7 +3,6 @@
 This document describes how to add or refactor code-block-local editor directives in the editor codebase.
 
 For user-facing editor directive syntax and semantics, see [editor-directives.md](./editor-directives.md).
-For runtime directives, see [runtime-directives.md](./runtime-directives.md).
 
 ## Goal
 
@@ -168,7 +167,10 @@ Then:
 4. Add tests in the same directive folder
 5. Update the user-facing docs in [editor-directives.md](./editor-directives.md)
 
-If you are adding a runtime directive instead of an editor directive, document it in [runtime-directives.md](./runtime-directives.md) instead.
+If you are adding project-level settings owned by an extension or runtime, prefer a schema-backed `@config` root
+registered through `editorConfigSchemaContributions` instead of adding a new `~` directive.
+Schema fields with `format: 'memory-address'` resolve numeric addresses and `module:memory` references to compiled
+word addresses when read through `resolveSchemaConfigRoot(...)` with state.
 
 If you need to insert or update the directive in source code (e.g., from an effect or action), use the `directiveEditing/` helpers rather than writing inline regex logic.
 
@@ -188,8 +190,8 @@ handles the common syntax:
 ```
 
 Multiple directives may share one comment line. Shared syntax utilities parse
-one directive record per `@name` or `~name` token, and source-editing helpers
-must preserve unrelated directives on the same line.
+one directive record per `@name` token, and source-editing helpers must preserve
+unrelated directives on the same line.
 
 Directives should not re-parse their own comment syntax.
 

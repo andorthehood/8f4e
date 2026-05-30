@@ -9,9 +9,7 @@ type DeepPartial<T> = T extends object
 		}
 	: T;
 
-type ParsedDirectiveLineRecord =
-	| { prefix: '@' | '~'; name: string; args: string[]; isTrailing: false }
-	| { prefix: '@'; name: string; args: string[]; isTrailing: true };
+type ParsedDirectiveLineRecord = { prefix: '@'; name: string; args: string[]; isTrailing: boolean };
 
 function createMockFunction<T extends (...args: unknown[]) => unknown>(): T {
 	return (() => {}) as T;
@@ -32,23 +30,20 @@ function parseDirectiveCommentSegment(segment: string, isTrailing: boolean): Par
 	let current: ParsedDirectiveLineRecord | undefined;
 
 	for (const token of tokens) {
-		const directiveMatch = token.match(/^([@~])(\w+)$/);
+		const directiveMatch = token.match(/^@(\w+)$/);
 		if (directiveMatch) {
-			const [, prefix, name] = directiveMatch;
-			if (isTrailing && prefix !== '@') {
-				return [];
-			}
+			const [, name] = directiveMatch;
 
 			if (current) {
 				directives.push(current);
 			}
 
 			current = {
-				prefix: prefix as '@' | '~',
+				prefix: '@',
 				name,
 				args: [],
 				isTrailing,
-			} as ParsedDirectiveLineRecord;
+			};
 			continue;
 		}
 
@@ -210,7 +205,7 @@ export function createMockEventDispatcher(): EventDispatcher {
 
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const mockRuntimeFactory = () => () => {};
-	const defaultRuntimeSettings = { sampleRate: 50 } as const;
+	const workerRuntimeDefaults = { sampleRate: 50 } as const;
 
 	const defaults: State = {
 		compiler: {
@@ -223,8 +218,11 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		runtimeRegistry: {
 			WebWorkerRuntime: {
 				id: 'WebWorkerRuntime',
-				defaults: defaultRuntimeSettings,
-				schema: { type: 'object', properties: {} },
+				editorConfigSchema: {
+					root: 'workerRuntime',
+					defaults: workerRuntimeDefaults,
+					schema: { type: 'object', properties: {} },
+				},
 				factory: mockRuntimeFactory,
 			},
 		},
@@ -295,6 +293,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		editorMode: 'edit',
 		editorConfig: {},
 		editorConfigValidators: {},
+		editorConfigSchemaContributions: {},
 		historyStack: [],
 		redoStack: [],
 		storageQuota: { usedBytes: 0, totalBytes: 0 },
@@ -303,7 +302,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			compilationErrors: [],
 			editorDirectiveErrors: [],
 			shaderErrors: [],
-			runtimeDirectiveErrors: [],
 		},
 		console: {
 			logs: [],
