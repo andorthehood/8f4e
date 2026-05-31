@@ -669,4 +669,40 @@ describe('normalizeCompileTimeArguments', () => {
 			targetFunction,
 		});
 	});
+
+	it('normalizes inline call arguments as push lines', () => {
+		const targetFunction = { id: 'knownFn', signature: { parameters: ['int'], returns: [] }, wasmIndex: 2 };
+		const context = {
+			namespace: {
+				memory: {},
+				consts: { SIZE: { value: 8, isInteger: true } },
+				moduleName: 'test',
+				namespaces: {},
+				functions: {
+					knownFn: targetFunction,
+				},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: CompilerASTLine = {
+			lineNumberBeforeMacroExpansion: 1,
+			lineNumberAfterMacroExpansion: 1,
+			instruction: 'call',
+			arguments: [classifyIdentifier('knownFn'), classifyIdentifier('SIZE')],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			arguments: [classifyIdentifier('knownFn'), { type: ArgumentType.LITERAL, value: 8, isInteger: true }],
+			targetFunction,
+			inlineArgumentPushes: [
+				{
+					lineNumberBeforeMacroExpansion: 1,
+					lineNumberAfterMacroExpansion: 1,
+					instruction: 'push',
+					arguments: [{ type: ArgumentType.LITERAL, value: 8, isInteger: true }],
+				},
+			],
+		});
+	});
 });

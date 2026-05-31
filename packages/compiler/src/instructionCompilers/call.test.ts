@@ -1,4 +1,5 @@
 import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
+import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
@@ -66,6 +67,53 @@ describe('call instruction compiler', () => {
 
 		expect(context.stack).toHaveLength(1);
 		expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
+	});
+
+	it('emits inline argument pushes before the call', () => {
+		const context = createInstructionCompilerTestContext();
+		const targetFunction = {
+			id: 'foo',
+			signature: { parameters: ['int', 'float'], returns: ['int'] },
+			wasmIndex: 2,
+		} as NonNullable<CompilationContext['namespace']['functions']>[string];
+		context.namespace.functions = {
+			foo: targetFunction,
+		} as CompilationContext['namespace']['functions'];
+
+		analyzeAndCompileInstruction(
+			call,
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'call',
+				arguments: [
+					classifyIdentifier('foo'),
+					{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+					{ type: ArgumentType.LITERAL, value: 1.3, isInteger: false },
+				],
+				targetFunction,
+				inlineArgumentPushes: [
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
+					},
+					{
+						lineNumberBeforeMacroExpansion: 1,
+						lineNumberAfterMacroExpansion: 1,
+						instruction: 'push',
+						arguments: [{ type: ArgumentType.LITERAL, value: 1.3, isInteger: false }],
+					},
+				],
+			} as CompilerASTLine,
+			context
+		);
+
+		expect({
+			stack: context.stack,
+			byteCode: context.byteCode,
+		}).toMatchSnapshot();
 	});
 
 	it('throws on float32 argument passed to float64 parameter', () => {
