@@ -80,7 +80,7 @@
       "push": false
     }
   },
-  "defaultBase": "HEAD~1",
+  "defaultBase": "main",
   "analytics": false,
   "nxCloudId": "6a172ab3f11a1d95830c5447"
 }
