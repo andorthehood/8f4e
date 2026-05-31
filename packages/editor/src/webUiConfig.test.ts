@@ -15,7 +15,7 @@ describe('web-ui editor config', () => {
 						target: { type: 'string' },
 						width: { type: 'integer', minimum: 1 },
 						height: { type: 'integer', minimum: 1 },
-						objectFit: { type: 'string', enum: ['fill', 'cover', 'contain'] },
+						objectFit: { type: 'string', enum: ['fill', 'cover', 'contain', 'none'] },
 					},
 				},
 			},
@@ -32,7 +32,7 @@ describe('web-ui editor config', () => {
 						width: 64,
 						height: 32,
 						filter: 'linear',
-						objectFit: 'cover',
+						objectFit: 'none',
 					},
 				},
 			},
@@ -44,7 +44,7 @@ describe('web-ui editor config', () => {
 			width: 64,
 			height: 32,
 			filter: 'linear',
-			objectFit: 'cover',
+			objectFit: 'none',
 		});
 	});
 
