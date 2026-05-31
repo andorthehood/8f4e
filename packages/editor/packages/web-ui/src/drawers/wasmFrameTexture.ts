@@ -2,7 +2,7 @@ import type { State } from '@8f4e/editor-state-types';
 import type { Engine, Rgba8Texture, Rgba8TextureFilter } from 'glugglug';
 import type { MemoryViews } from '../types';
 
-export type WasmFrameTextureObjectFit = 'fill' | 'cover' | 'contain';
+export type WasmFrameTextureObjectFit = 'fill' | 'cover' | 'contain' | 'none';
 
 export interface WasmFrameTextureOptions {
 	entry: string;
@@ -62,6 +62,15 @@ export function getObjectFitDrawRect(
 ): { x: number; y: number; width: number; height: number } {
 	if (objectFit === 'fill') {
 		return { x: 0, y: 0, width: viewportWidth, height: viewportHeight };
+	}
+
+	if (objectFit === 'none') {
+		return {
+			x: (viewportWidth - sourceWidth) / 2,
+			y: (viewportHeight - sourceHeight) / 2,
+			width: sourceWidth,
+			height: sourceHeight,
+		};
 	}
 
 	const scale =
