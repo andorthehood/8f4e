@@ -28,4 +28,13 @@ describe('getObjectFitDrawRect', () => {
 			height: 180,
 		});
 	});
+
+	it('renders at the source size for none', () => {
+		expect(getObjectFitDrawRect('none', 64, 32, 320, 180)).toEqual({
+			x: 128,
+			y: 74,
+			width: 64,
+			height: 32,
+		});
+	});
 });
