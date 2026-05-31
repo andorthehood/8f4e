@@ -146,10 +146,14 @@ describe('validateInstructionArguments', () => {
 		).toThrowError(SyntaxRulesError);
 	});
 
-	it('rejects too many result types for ifEnd', () => {
+	it('accepts multiple result types for ifEnd', () => {
 		expect(() =>
-			validateInstructionArguments('ifEnd', [classifyIdentifier('int'), classifyIdentifier('float')])
-		).toThrowError(SyntaxRulesError);
+			validateInstructionArguments('ifEnd', [
+				classifyIdentifier('int'),
+				classifyIdentifier('float'),
+				classifyIdentifier('int'),
+			])
+		).not.toThrow();
 	});
 
 	it('rejects non-constant identifiers for const declarations', () => {
