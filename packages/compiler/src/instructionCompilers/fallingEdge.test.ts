@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import fallingEdge from './fallingEdge';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import fallingEdge from './fallingEdge';
 
 describe('fallingEdge instruction compiler', () => {
 	it('compiles the falling edge segment', () => {

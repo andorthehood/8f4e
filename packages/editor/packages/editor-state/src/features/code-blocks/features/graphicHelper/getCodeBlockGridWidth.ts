@@ -1,5 +1,5 @@
-import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
 import { getTabStopsByLine, getVisualLineWidth } from '../../../code-editing/tabLayout';
+import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
 
 /**
  * Computes the grid width required for a code block.

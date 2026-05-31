@@ -1,16 +1,14 @@
+import type { Argument, SourceArgumentShapeRule, SourceArgumentsSpec } from '@8f4e/compiler-spec';
 import {
 	ArgumentType,
 	FUNCTION_TYPE_IDENTIFIERS,
-	SCALAR_TYPE_IDENTIFIERS,
 	getInstructionSpec,
+	SCALAR_TYPE_IDENTIFIERS,
 } from '@8f4e/compiler-spec';
-
-import isConstantName from './isConstantName';
 import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
+import isConstantName from './isConstantName';
 import isMemoryDeclarationInstruction from './isMemoryDeclarationInstruction';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
-
-import type { Argument, SourceArgumentsSpec, SourceArgumentShapeRule } from '@8f4e/compiler-spec';
 
 const supportedScalarTypeIdentifiers: ReadonlySet<string> = new Set(SCALAR_TYPE_IDENTIFIERS);
 const supportedFunctionTypeIdentifiers: ReadonlySet<string> = new Set(FUNCTION_TYPE_IDENTIFIERS);

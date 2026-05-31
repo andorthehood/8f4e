@@ -1,6 +1,5 @@
-import { Engine } from 'glugglug';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 
 export default function drawBlockHighlights(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.graphicHelper.spriteLookups || codeBlock.disabled) {

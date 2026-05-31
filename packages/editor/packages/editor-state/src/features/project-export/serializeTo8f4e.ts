@@ -1,8 +1,6 @@
-import { getDocumentProjectBlockType } from '@8f4e/tokenizer';
-
-import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
-
 import type { CodeBlock, Project } from '@8f4e/editor-state-types';
+import { getDocumentProjectBlockType } from '@8f4e/tokenizer';
+import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
 	// Find first non-empty line (must be opener)

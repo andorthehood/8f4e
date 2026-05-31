@@ -1,10 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-
-import { log, warn, error, info } from './logger';
-
 import type { State } from '@8f4e/editor-state-types';
-
+import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import { error, info, log, warn } from './logger';
 
 describe('logger', () => {
 	let mockState: State;

@@ -1,9 +1,8 @@
+import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
 import { describe, expect, test } from 'vitest';
-import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
 import compile, { serializeDiagnostic } from '../src';
 
@@ -70,22 +69,21 @@ describe('8f4e compiler error fixtures', () => {
 		expect(errorFiles.length).toBeGreaterThan(0);
 	});
 
-	test.each(errorFiles.map(filePath => [path.relative(errorRoot, filePath), filePath]))(
-		'%s',
-		async (_name, filePath) => {
-			let thrownError: unknown;
+	test.each(
+		errorFiles.map(filePath => [path.relative(errorRoot, filePath), filePath])
+	)('%s', async (_name, filePath) => {
+		let thrownError: unknown;
 
-			try {
-				await compileErrorFixture(filePath);
-			} catch (error) {
-				thrownError = error;
-			}
-
-			expect(thrownError).toBeDefined();
-			const snapshotPath = getErrorSnapshotPath(filePath);
-
-			await fs.mkdir(path.dirname(snapshotPath), { recursive: true });
-			await expect(serializeDiagnostic(thrownError)).toMatchFileSnapshot(snapshotPath);
+		try {
+			await compileErrorFixture(filePath);
+		} catch (error) {
+			thrownError = error;
 		}
-	);
+
+		expect(thrownError).toBeDefined();
+		const snapshotPath = getErrorSnapshotPath(filePath);
+
+		await fs.mkdir(path.dirname(snapshotPath), { recursive: true });
+		await expect(serializeDiagnostic(thrownError)).toMatchFileSnapshot(snapshotPath);
+	});
 });

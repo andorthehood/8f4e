@@ -1,8 +1,7 @@
-import br from './br';
+import type { WasmTypeValue } from '../type';
 
 import { WASM_END, WASM_LOOP } from '../wasmInstruction';
-
-import type { WasmTypeValue } from '../type';
+import br from './br';
 
 /**
  * Creates a WebAssembly loop structure with automatic back-edge branching.

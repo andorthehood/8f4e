@@ -1,8 +1,7 @@
-import parsePos from '../directives/pos/data';
-import { getSelectedRuntimeEntry } from '../../../runtime/editorConfig';
-
+import type { CodeBlock, CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import type { State, CodeBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { getSelectedRuntimeEntry } from '../../../runtime/editorConfig';
+import parsePos from '../directives/pos/data';
 
 const AUTO_ENV_CONSTANTS_BLOCK_NAME = 'env';
 const AUTO_ENV_CONSTANTS_BLOCK_ID = `constants_${AUTO_ENV_CONSTANTS_BLOCK_NAME}`;

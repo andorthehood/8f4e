@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import div from './div';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import div from './div';
 
 describe('div instruction compiler', () => {
 	it('emits I32_DIV_S for integer operands', () => {

@@ -1,11 +1,8 @@
-import { describe, expect, it } from 'vitest';
-
-import font from './effect';
-import { fontEditorConfigValidator } from './editorConfig';
-
-import type { EditorConfigEntry } from '@8f4e/editor-state-types';
-import type { State } from '@8f4e/editor-state-types';
+import type { EditorConfigEntry, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import { describe, expect, it } from 'vitest';
+import { fontEditorConfigValidator } from './editorConfig';
+import font from './effect';
 
 function entry(value: string): EditorConfigEntry {
 	return {

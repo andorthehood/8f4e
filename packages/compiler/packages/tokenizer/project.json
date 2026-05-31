@@ -14,8 +14,8 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "eslint src tests --fix",
-				"cwd": "{projectRoot}"
+				"command": "biome check --write packages/compiler/packages/tokenizer/src packages/compiler/packages/tokenizer/tests",
+				"cwd": "{workspaceRoot}"
 			}
 		},
 		"dev": {

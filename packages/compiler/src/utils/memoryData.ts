@@ -1,8 +1,6 @@
-import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
-
-import { getEndByteAddress } from '../semantic/layoutAddresses';
-
 import type { DataStructure, MemoryMap, MemoryValueKind, PointerLocalBinding, StackAddress } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
+import { getEndByteAddress } from '../semantic/layoutAddresses';
 
 export type PointerMetadata =
 	| Pick<

@@ -1,5 +1,3 @@
-import resolveMemoryIdentifier from '../../pureHelpers/resolveMemoryIdentifier';
-
 import type {
 	EditorConfig,
 	EditorConfigEntry,
@@ -10,6 +8,7 @@ import type {
 	JSONSchemaLike,
 	State,
 } from '@8f4e/editor-state-types';
+import resolveMemoryIdentifier from '../../pureHelpers/resolveMemoryIdentifier';
 
 export interface SchemaEditorConfigValidatorOptions {
 	root: string;

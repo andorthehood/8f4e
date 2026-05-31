@@ -1,13 +1,11 @@
+import type { StackItem } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-
 import {
 	areAllOperandsFloat64,
 	areAllOperandsFloats,
 	areAllOperandsIntegers,
 	hasMixedFloatWidth,
 } from './operandTypes';
-
-import type { StackItem } from '@8f4e/compiler-spec';
 
 describe('operandTypes utilities', () => {
 	const intOperand: StackItem = { kind: 'value', valueType: 'int', isNonZero: false };

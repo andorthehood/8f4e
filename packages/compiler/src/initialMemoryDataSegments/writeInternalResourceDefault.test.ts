@@ -1,9 +1,7 @@
-import { describe, expect, test } from 'vitest';
-import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
-
-import writeInternalResourceDefault from './writeInternalResourceDefault';
-
 import type { InternalResource } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
+import { describe, expect, test } from 'vitest';
+import writeInternalResourceDefault from './writeInternalResourceDefault';
 
 function createResource(
 	overrides: Pick<InternalResource, 'byteAddress' | 'default' | 'storageType'>

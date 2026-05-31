@@ -1,11 +1,9 @@
-import { describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
-import drawCrossfades from './crossfades';
-
-import type { Engine } from 'glugglug';
 import type { Crossfade } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
+import { describe, expect, it, vi } from 'vitest';
 import type { MemoryViews } from '../../../types';
+import drawCrossfades from './crossfades';
 
 function createMemoryViews({ float32 = [] }: { float32?: number[] } = {}): MemoryViews {
 	return {

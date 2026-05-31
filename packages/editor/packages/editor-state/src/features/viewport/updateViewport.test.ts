@@ -1,9 +1,7 @@
 import { describe, expect, it } from 'vitest';
-
-import updateViewport from './updateViewport';
-
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import updateViewport from './updateViewport';
 
 describe('updateViewport', () => {
 	it('recomputes viewport geometry and dispatches viewportChanged', () => {

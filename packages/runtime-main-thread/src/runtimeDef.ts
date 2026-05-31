@@ -1,7 +1,4 @@
 // Import the types from the editor
-import createMainThreadRuntime from '@8f4e/runtime-main-thread';
-import { StateManager } from '@8f4e/state-manager';
-import { resolveSchemaConfigRoot } from '@8f4e/editor';
 
 import type {
 	EditorConfig,
@@ -10,6 +7,9 @@ import type {
 	RuntimeRegistryEntry,
 	State,
 } from '@8f4e/editor';
+import { resolveSchemaConfigRoot } from '@8f4e/editor';
+import createMainThreadRuntime from '@8f4e/runtime-main-thread';
+import type { StateManager } from '@8f4e/state-manager';
 
 const MAIN_THREAD_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 	root: 'mainThreadRuntime',

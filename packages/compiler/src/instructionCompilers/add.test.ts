@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import add from './add';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import add from './add';
 
 describe('add instruction compiler', () => {
 	it('emits I32_ADD for integer operands', () => {

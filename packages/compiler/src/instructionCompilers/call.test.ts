@@ -1,10 +1,8 @@
+import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import call from './call';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine, CompilationContext } from '@8f4e/compiler-spec';
+import call from './call';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

@@ -1,11 +1,9 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { WASM_F64_SQRT } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
-import sqrt from './sqrt';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import sqrt from './sqrt';
 
 describe('sqrt instruction compiler', () => {
 	it('emits F32_SQRT for float operands', () => {

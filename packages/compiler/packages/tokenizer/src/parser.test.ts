@@ -1,16 +1,14 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import {
 	ArgumentType,
 	isCompilerDirectiveLine,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 } from '@8f4e/compiler-spec';
-
+import { describe, expect, it } from 'vitest';
 import { compileToAST, compileToASTLines, parseLine } from './parser';
 import { classifyIdentifier } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
 
 describe('parseLine', () => {
 	const fixtures: [number, string, CompilerASTLine][] = [

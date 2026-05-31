@@ -1,11 +1,8 @@
-import { ArgumentType, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { normalizeAndValidateResolvableArgs } from './helpers';
+import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
+import { ArgumentType, ErrorCode, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
-
-import type { CompilerASTLine, CompilationContext } from '@8f4e/compiler-spec';
+import { normalizeAndValidateResolvableArgs } from './helpers';
 
 export default function normalizeClampAddress(line: CompilerASTLine, context: CompilationContext): CompilerASTLine {
 	const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);

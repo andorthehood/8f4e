@@ -1,11 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import type { EventDispatcher, InternalMouseEvent, State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
-
-import codeBlockDragger from './effect';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-
-import type { State, InternalMouseEvent, EventDispatcher } from '@8f4e/editor-state-types';
+import codeBlockDragger from './effect';
 
 describe('codeBlockDragger', () => {
 	let state: State;

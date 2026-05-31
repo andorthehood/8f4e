@@ -1,6 +1,6 @@
-import { WASM_I32_STORE } from '../wasmInstruction';
-import memarg from '../memory/memarg';
 import i32const from '../const/i32const';
+import memarg from '../memory/memarg';
+import { WASM_I32_STORE } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.store instruction to store a 32-bit integer to memory.

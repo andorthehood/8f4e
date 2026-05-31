@@ -1,8 +1,6 @@
 import { expect, test } from 'vitest';
-
-import createFunctionExport from './createFunctionExport';
-
 import { ExportDesc } from '../section';
+import createFunctionExport from './createFunctionExport';
 
 test('createFunctionExport generates correct entry', () => {
 	const exp = createFunctionExport('test', 0);

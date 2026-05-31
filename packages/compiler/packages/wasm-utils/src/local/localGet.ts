@@ -1,5 +1,5 @@
-import { WASM_LOCAL_GET } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
+import { WASM_LOCAL_GET } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly local.get instruction to retrieve a local variable onto the stack.

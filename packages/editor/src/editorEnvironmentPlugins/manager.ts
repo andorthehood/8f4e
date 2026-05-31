@@ -1,9 +1,8 @@
-import { editorEnvironmentPluginRegistry } from './registry';
-import { getActiveCodeBlocksForEnvironmentPlugins } from './codeBlocks';
-
-import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockGraphicData, CodeError, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import type { MemoryViews } from '@8f4e/web-ui';
+import { getActiveCodeBlocksForEnvironmentPlugins } from './codeBlocks';
+import { editorEnvironmentPluginRegistry } from './registry';
 import type { EditorEnvironmentPluginServices } from './services';
 import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEntry } from './types';
 

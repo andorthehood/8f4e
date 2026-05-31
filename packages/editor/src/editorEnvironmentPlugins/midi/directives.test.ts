@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import parseMidiInDirectives from './directives';
-
 import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
+import { describe, expect, it } from 'vitest';
+import parseMidiInDirectives from './directives';
 
 function midiInDirective(args: string[], rawRow = 0): ParsedDirectiveRecord {
 	return {

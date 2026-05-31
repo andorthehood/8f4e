@@ -1,14 +1,10 @@
-import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
-import createStateManager from '@8f4e/state-manager';
-
-import codeBlockCreator from './effect';
-
-import groupCopier from '../group/copier/effect';
-
 import type { State } from '@8f4e/editor-state-types';
-
-import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
+import createStateManager from '@8f4e/state-manager';
+import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import groupCopier from '../group/copier/effect';
+import codeBlockCreator from './effect';
 
 describe('codeBlockCreator - group copy/paste', () => {
 	let mockState: State;

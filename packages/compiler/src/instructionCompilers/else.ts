@@ -1,10 +1,8 @@
+import type { ConditionBlockStackFrame, InstructionCompiler } from '@8f4e/compiler-spec';
 import { WASM_ELSE } from '@8f4e/compiler-wasm-utils';
 
-import { saveByteCode } from './utils/saveByteCode';
-
 import { popBlock, pushBlock } from '../utils/blockStack';
-
-import type { ConditionBlockStackFrame, InstructionCompiler } from '@8f4e/compiler-spec';
+import { saveByteCode } from './utils/saveByteCode';
 
 /**
  * Instruction compiler for `else`.

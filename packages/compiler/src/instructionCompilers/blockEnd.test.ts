@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
-
-import blockEnd from './blockEnd';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import blockEnd from './blockEnd';
 
 describe('blockEnd instruction compiler', () => {
 	it('restores expected result on the stack', () => {

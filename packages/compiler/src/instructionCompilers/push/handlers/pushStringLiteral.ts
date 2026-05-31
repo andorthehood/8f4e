@@ -1,8 +1,6 @@
-import { i32const } from '@8f4e/compiler-wasm-utils';
-
-import { saveByteCode } from '../../utils/saveByteCode';
-
 import type { ArgumentStringLiteral, CodegenContext } from '@8f4e/compiler-spec';
+import { i32const } from '@8f4e/compiler-wasm-utils';
+import { saveByteCode } from '../../utils/saveByteCode';
 
 /**
  * Expands a string literal argument into one i32.const per byte (source order).

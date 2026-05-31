@@ -1,13 +1,3 @@
-import { ArgumentType } from './arguments';
-import {
-	arrayMemoryDeclarationInstructions,
-	memoryDeclarationInstructions,
-	scalarMemoryDeclarationInstructions,
-	type ArrayDeclarationInstruction,
-	type ScalarMemoryDeclarationInstruction,
-} from './memory';
-import { semanticInstructionNames } from './instructions';
-
 import type {
 	Argument,
 	ArgumentCompileTimeExpression,
@@ -15,9 +5,18 @@ import type {
 	ArgumentLiteral,
 	ArgumentStringLiteral,
 } from './arguments';
+import { ArgumentType } from './arguments';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecs';
 import type { DocumentOnlyInstructionName, MacroInstructionName, SemanticInstructionName } from './instructions';
+import { semanticInstructionNames } from './instructions';
+import {
+	type ArrayDeclarationInstruction,
+	arrayMemoryDeclarationInstructions,
+	memoryDeclarationInstructions,
+	type ScalarMemoryDeclarationInstruction,
+	scalarMemoryDeclarationInstructions,
+} from './memory';
 
 type ClampAddressInstructionName = 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress';
 

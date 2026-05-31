@@ -1,12 +1,11 @@
-import semanticConst from './const';
-import semanticUse from './use';
-import semanticModule from './module';
-import semanticConstants from './constants';
-import semanticModuleEnd from './moduleEnd';
-import semanticConstantsEnd from './constantsEnd';
-import semanticRegion from './region';
-
 import type { CompilationContext, NormalizedSemanticInstructionLine } from '@8f4e/compiler-spec';
+import semanticConst from './const';
+import semanticConstants from './constants';
+import semanticConstantsEnd from './constantsEnd';
+import semanticModule from './module';
+import semanticModuleEnd from './moduleEnd';
+import semanticRegion from './region';
+import semanticUse from './use';
 
 export default function applySemanticInstruction(line: NormalizedSemanticInstructionLine, context: CompilationContext) {
 	switch (line.instruction) {

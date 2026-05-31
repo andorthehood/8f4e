@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import { allocateInternalResource } from './internalResources';
-
 import type { CompilationContext } from '@8f4e/compiler-spec';
+import { describe, expect, it } from 'vitest';
+import { allocateInternalResource } from './internalResources';
 
 const createContext = () =>
 	({

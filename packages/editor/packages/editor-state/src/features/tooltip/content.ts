@@ -1,15 +1,14 @@
+import type { CompiledStackAnalysisLine, DataStructure } from '@8f4e/compiler-spec';
+import { getSelectedLineTooltipColors } from './colors';
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getLiveTooltipContent } from './liveValues';
-import { getSelectedLineTooltipColors } from './colors';
-import { getStackAnalysisTooltipContent } from './stackAnalysisTooltip';
 import {
 	getInstructionSpecFromSourceLine,
 	getMemoryDeclarationIdFromSourceLine,
 	getStackSignatureFromSourceLine,
 } from './sourceLine';
+import { getStackAnalysisTooltipContent } from './stackAnalysisTooltip';
 import { getMaxLineLength, getTooltipTextCharacters, wrapTooltipText } from './text';
-
-import type { CompiledStackAnalysisLine, DataStructure } from '@8f4e/compiler-spec';
 import type { SelectedLineTooltipContent, SpriteLookups } from './types';
 
 interface SelectedLineTooltipTextContent {

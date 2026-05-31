@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
-
-import _else from './else';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import _else from './else';
 
 describe('else instruction compiler', () => {
 	it('emits else bytecode and restores block', () => {

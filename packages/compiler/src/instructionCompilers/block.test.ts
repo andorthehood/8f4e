@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import block from './block';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import block from './block';
 
 describe('block instruction compiler', () => {
 	it('emits a typed block for float', () => {

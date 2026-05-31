@@ -1,10 +1,8 @@
+import type { CompilationContext, LoopLine, NormalizedLoopLine } from '@8f4e/compiler-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 
-import { normalizeAndValidateResolvableArgs } from './helpers';
-
 import { getError } from '../../compilerError';
-
-import type { CompilationContext, LoopLine, NormalizedLoopLine } from '@8f4e/compiler-spec';
+import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**
  * Normalizes the optional loop cap argument. Resolved caps must be non-negative integers.

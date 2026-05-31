@@ -1,9 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
-import pointerEvents from './pointerEvents';
-
 import type { State } from '@8f4e/editor-state-types';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { EventDispatcher } from '.';
+import pointerEvents from './pointerEvents';
 
 type MouseLikeListener = (event: MouseEvent | WheelEvent) => void;
 

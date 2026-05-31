@@ -1,16 +1,17 @@
+import type {
+	CodeBlockType,
+	CodeError,
+	GlobalEditorDirectiveContext,
+	GlobalEditorDirectivePlugin,
+	GlobalEditorDirectiveResolutionResult,
+	ParsedDirectiveRecord,
+	ParsedGlobalEditorDirective,
+	ResolvedGlobalEditorDirectives,
+} from '@8f4e/editor-state-types';
 import configDirective from './config/plugin';
 import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
 import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import { parseGlobalEditorDirectives } from './utils';
-
-import type { CodeError, ParsedDirectiveRecord, CodeBlockType } from '@8f4e/editor-state-types';
-import type {
-	GlobalEditorDirectiveContext,
-	GlobalEditorDirectiveResolutionResult,
-	GlobalEditorDirectivePlugin,
-	ParsedGlobalEditorDirective,
-	ResolvedGlobalEditorDirectives,
-} from '@8f4e/editor-state-types';
 
 export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
 	configDirective,

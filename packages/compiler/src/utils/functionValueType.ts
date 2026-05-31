@@ -1,8 +1,8 @@
-import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
+import type { FunctionValueType, LocalBinding, StackItem } from '@8f4e/compiler-spec';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { FunctionValueType, LocalBinding, StackItem } from '@8f4e/compiler-spec';
+import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 
 type PointerFunctionValueType = Extract<FunctionValueType, `${string}*`>;
 

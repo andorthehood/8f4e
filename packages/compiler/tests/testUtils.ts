@@ -1,22 +1,19 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
-import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
-
-import compile, { serializeDiagnostic } from '../src';
-
 import type {
 	AST,
-	CompileResult,
 	CompiledFunction,
 	CompiledModule,
+	CompileResult,
 	CompilerASTLine,
 	DataStructure,
 	InternalResource,
 } from '@8f4e/compiler-spec';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
 import type { ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
+import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
+import { promises as fs } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import compile, { serializeDiagnostic } from '../src';
 
 interface AssertionFailure {
 	assertIndex: number;

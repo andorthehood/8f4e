@@ -1,5 +1,5 @@
+import type { CompilationContext, CompilerASTLine, NormalizedLine } from '@8f4e/compiler-spec';
 import { isMemoryDeclarationLine } from '@8f4e/compiler-spec';
-
 import normalizeCall from './call';
 import normalizeClampAddress from './clampAddress';
 import normalizeConst from './const';
@@ -10,8 +10,6 @@ import normalizeMap from './map';
 import normalizeMemoryCopy from './memoryCopy';
 import normalizeMemoryDeclaration from './memoryDeclaration';
 import normalizePush from './push';
-
-import type { CompilerASTLine, CompilationContext, NormalizedLine } from '@8f4e/compiler-spec';
 
 const instructionNormalizers = {
 	call: normalizeCall,

@@ -1,8 +1,6 @@
-import { describe, it, expect } from 'vitest';
-
-import { getGroupBlocks, getGroupModuleBlocks } from './getGroupBlocks';
-
+import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
+import { getGroupBlocks, getGroupModuleBlocks } from './getGroupBlocks';
 
 describe('getGroupBlocks', () => {
 	it('should return all blocks with matching group name', () => {

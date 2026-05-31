@@ -1,8 +1,6 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { getError } from '../../compilerError';
-
 import type { CallLine, CompilationContext, ResolvedCallLine } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
+import { getError } from '../../compilerError';
 
 /**
  * Semantic normalizer for the `call` instruction.

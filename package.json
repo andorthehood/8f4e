@@ -22,26 +22,19 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "devDependencies": {
-    "@eslint/js": "9.39.4",
+    "@biomejs/biome": "2.4.16",
     "@nx/js": "22.7.2",
     "@nx/vite": "22.7.2",
     "@playwright/test": "1.59.1",
     "@types/audioworklet": "0.0.100",
     "@types/node": "24.12.4",
     "@types/offscreencanvas": "2019.7.3",
-    "@typescript-eslint/eslint-plugin": "8.59.4",
-    "@typescript-eslint/parser": "8.59.4",
     "@vitest/coverage-v8": "4.1.7",
     "@vitest/ui": "4.1.7",
     "concurrently": "9.2.1",
-    "eslint": "9.39.4",
-    "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-prettier": "5.5.5",
-    "globals": "16.5.0",
     "husky": "9.1.7",
     "lint-staged": "17.0.5",
     "nx": "22.7.2",
-    "prettier": "3.8.3",
     "typescript": "6.0.3",
     "vite": "7.3.3",
     "vite-plugin-glsl": "1.6.0",
@@ -55,8 +48,10 @@
     "packages/*/*/*"
   ],
   "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "biome check --write --no-errors-on-unmatched"
+    ],
     "*.ts": [
-      "eslint --cache --fix",
       "bash -c 'npx nx run-many --target=typecheck --all'"
     ]
   },

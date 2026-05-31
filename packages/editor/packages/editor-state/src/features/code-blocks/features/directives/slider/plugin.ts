@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createSliderDirectiveData } from './data';
 import { createSliderDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'slider',

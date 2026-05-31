@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 
 import amigaPeriodIncrement from './amigaPeriodIncrement.ts';
 import expLookupTable from './expLookupTable.ts';
-import minBLEPLUT from './minBLEPLUT.ts';
 import midiFrequenciesLookupTable from './midiFreqLUT_12TET.ts';
+import minBLEPLUT from './minBLEPLUT.ts';
 import sineLookupTable from './sineLookupTable.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

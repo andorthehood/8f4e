@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import { createLibConfig } from '@8f4e/config/vite';
+import { defineConfig } from 'vite';
 
 const baseConfig = createLibConfig({
 	entry: './src/index.ts',

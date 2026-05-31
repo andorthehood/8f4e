@@ -1,12 +1,11 @@
-import { describe, it, expect } from 'vitest';
-
+import { describe, expect, it } from 'vitest';
 import {
-	parseDirectiveLineRecords,
-	parseDirectiveComments,
-	serializeDirectiveComments,
+	createDirectivePlugin,
 	normalizeEditorDirectiveRecords,
+	parseDirectiveComments,
+	parseDirectiveLineRecords,
+	serializeDirectiveComments,
 } from './utils';
-import { createDirectivePlugin } from './utils';
 
 describe('parseDirectiveLineRecords', () => {
 	it('parses a full-line editor directive', () => {
