@@ -32,9 +32,7 @@ describe('exitIfTrue instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 		});

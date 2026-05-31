@@ -104,7 +104,8 @@ export function compileModule(
 	index: number,
 	functions?: FunctionMetadataLookup,
 	internalAllocator = { nextByteAddress: 0 },
-	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
+	typeRegistry?: FunctionTypeRegistry
 ): CompiledModule {
 	// Namespace layout establishes memory byte addresses and sizes for this module.
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
@@ -134,6 +135,7 @@ export function compileModule(
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
+		functionTypeRegistry: typeRegistry,
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
