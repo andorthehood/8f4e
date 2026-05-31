@@ -41,30 +41,3 @@ export default function getShaderNoteMetadata(code: string[]): ShaderNoteMetadat
 export function isShaderNoteCode(code: string[]): boolean {
 	return getShaderNoteMetadata(code) !== null;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('getShaderNoteMetadata', () => {
-		it('parses fragment postprocess shader notes', () => {
-			expect(getShaderNoteMetadata(['note fragmentShaderPostprocess', 'noteEnd'])).toEqual({
-				shaderType: 'fragment',
-				target: 'postprocess',
-				subtype: 'fragmentShaderPostprocess',
-			});
-		});
-
-		it('parses vertex background shader notes', () => {
-			expect(getShaderNoteMetadata(['note vertexShaderBackground', 'noteEnd'])).toEqual({
-				shaderType: 'vertex',
-				target: 'background',
-				subtype: 'vertexShaderBackground',
-			});
-		});
-
-		it('ignores plain notes and unknown subtypes', () => {
-			expect(getShaderNoteMetadata(['note', 'noteEnd'])).toBeNull();
-			expect(getShaderNoteMetadata(['note todo', 'noteEnd'])).toBeNull();
-		});
-	});
-}

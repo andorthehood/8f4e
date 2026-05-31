@@ -21,8 +21,4 @@ export default defineConfig({
 			'~': resolve(__dirname, './src'),
 		},
 	},
-	define: {
-		...(baseConfig as { define?: Record<string, unknown> }).define,
-		'import.meta.vitest': 'undefined',
-	},
 });

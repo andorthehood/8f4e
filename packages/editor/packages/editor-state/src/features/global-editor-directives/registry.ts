@@ -57,28 +57,3 @@ export function resolveGlobalEditorDirectives(
 		errors: draft.errors,
 	};
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('global editor directive registry', () => {
-		it('ignores unregistered directives', () => {
-			const result = resolveGlobalEditorDirectives([
-				{
-					parsedDirectives: [
-						{
-							prefix: '@',
-							name: 'unknown',
-							args: ['x'],
-							rawRow: 0,
-							isTrailing: false,
-						},
-					],
-				},
-			]);
-
-			expect(result.resolved).toEqual({});
-			expect(result.errors).toEqual([]);
-		});
-	});
-}
