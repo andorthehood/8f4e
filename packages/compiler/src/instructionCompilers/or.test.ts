@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import or from './or';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import or from './or';
 
 describe('or instruction compiler', () => {
 	it('emits I32_OR and tracks non-zero state', () => {

@@ -1,11 +1,8 @@
+import type { CompilerASTLines } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-
+import { compileToASTLines } from '../parser';
 import createASTCache from './createASTCache';
 import hashSource from './hashSource';
-
-import { compileToASTLines } from '../parser';
-
-import type { CompilerASTLines } from '@8f4e/compiler-spec';
 
 describe('compileToASTLines cache', () => {
 	it('returns cached AST when source and line metadata are unchanged', () => {

@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import notEqual from './notEqual';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import notEqual from './notEqual';
 
 describe('notEqual instruction compiler', () => {
 	it('emits I32_NE for integer operands', () => {

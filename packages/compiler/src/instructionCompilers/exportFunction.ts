@@ -1,14 +1,12 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { getError } from '../compilerError';
-
 import type { ExportLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
+import { getError } from '../compilerError';
 
 /**
  * Instruction compiler for `#export`.
  * Marks the current function as a WebAssembly export.
  */
-const exportFunction: InstructionCompiler<ExportLine> = function (line, context) {
+const exportFunction: InstructionCompiler<ExportLine> = (line, context) => {
 	const exportName = line.arguments[0]?.value ?? context.currentFunctionId!;
 
 	if (context.currentFunctionImport !== undefined) {

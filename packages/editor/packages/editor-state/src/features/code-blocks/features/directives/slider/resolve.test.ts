@@ -1,9 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-
-import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-
+import { beforeEach, describe, expect, it } from 'vitest';
 import {
 	createMockCodeBlock,
 	createMockState,
@@ -11,6 +7,7 @@ import {
 	findWidgetById,
 	setMockCodeBlockCode,
 } from '~/pureHelpers/testingUtils/testUtils';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 describe('slider directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;

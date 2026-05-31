@@ -1,15 +1,13 @@
+import type { State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import { describe, expect, it } from 'vitest';
-
 import {
 	collectRuntimeEditorConfigSchemaContributions,
 	createRuntimeSelectionEditorConfigValidator,
 	getSelectedRuntimeEntry,
-	resolveSelectedRuntimeId,
 	RUNTIME_SELECTION_CONFIG_PATH,
+	resolveSelectedRuntimeId,
 } from './editorConfig';
-
-import type { State } from '@8f4e/editor-state-types';
-import type { StateManager } from '@8f4e/state-manager';
 
 const runtimeRegistry = {
 	WebWorkerRuntime: {

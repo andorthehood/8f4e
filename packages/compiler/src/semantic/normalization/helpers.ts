@@ -1,16 +1,15 @@
 import {
-	ArgumentType,
-	type ReferenceKind,
-	type CompilerASTLine,
 	type Argument,
 	type ArgumentIdentifier,
+	ArgumentType,
 	type CompilationContext,
+	type CompilerASTLine,
+	ErrorCode,
 	type NormalizedArgumentLiteral,
+	type ReferenceKind,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
 import { getError } from '../../compilerError';
+import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
 
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
 	return Object.keys(context.namespace.namespaces).length > 0;
@@ -211,7 +210,6 @@ export function normalizeAndValidateResolvableArgs<TLine extends CompilerASTLine
 		if (argument?.type === ArgumentType.IDENTIFIER) {
 			const deferred = validateOrDeferUnresolvedIdentifier(argument, line, context);
 			if (deferred) {
-				continue;
 			}
 		}
 	}

@@ -1,8 +1,6 @@
-import { describe, it, expect } from 'vitest';
-
-import updateBlockHighlightsGraphicData from './updateGraphicData';
-
+import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import updateBlockHighlightsGraphicData from './updateGraphicData';
 
 describe('updateBlockHighlightsGraphicData', () => {
 	it('highlights only lines between block start and end instructions', () => {

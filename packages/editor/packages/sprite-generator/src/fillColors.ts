@@ -1,7 +1,7 @@
-import { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug';
 
 import { createAtlasLayout, FILL_COLOR_NAMES } from './atlasLayout.ts';
-import { ColorScheme, Command, DrawingCommand } from './types.ts';
+import { type ColorScheme, Command, type DrawingCommand } from './types.ts';
 
 export type FillSpriteColorName = (typeof FILL_COLOR_NAMES)[number];
 
@@ -25,7 +25,7 @@ export default function generate(
 	];
 }
 
-export const generateLookup = function (characterWidth: number, characterHeight: number) {
+export const generateLookup = (characterWidth: number, characterHeight: number) => {
 	const layout = createAtlasLayout(characterWidth, characterHeight);
 
 	return Object.fromEntries(

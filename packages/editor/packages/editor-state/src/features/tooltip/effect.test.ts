@@ -1,9 +1,7 @@
-import { describe, expect, it } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
-
-import tooltip from './effect';
-
+import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import tooltip from './effect';
 
 function toCharacters(text: string): number[] {
 	return [...text].map(char => char.charCodeAt(0));

@@ -1,9 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
+import { describe, expect, it } from 'vitest';
+import { parseEditorDirectives } from '../utils';
 import { createWatchDirectiveData } from './data';
 import watchDirective from './plugin';
-
-import { parseEditorDirectives } from '../utils';
 
 function parseWatchDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [watchDirective])

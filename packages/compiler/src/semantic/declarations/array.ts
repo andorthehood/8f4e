@@ -1,11 +1,11 @@
 import {
 	ArgumentType,
-	GLOBAL_ALIGNMENT_BOUNDARY,
 	type ArrayDeclarationLine,
 	type CompilationContext,
+	ErrorCode,
+	GLOBAL_ALIGNMENT_BOUNDARY,
 	type MemoryType,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';

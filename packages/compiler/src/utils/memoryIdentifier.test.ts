@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import { isMemoryIdentifier } from './memoryIdentifier';
-
 import type { MemoryMap } from '@8f4e/compiler-spec';
+import { describe, expect, it } from 'vitest';
+import { isMemoryIdentifier } from './memoryIdentifier';
 
 describe('memoryIdentifier utilities', () => {
 	const mockMemory: MemoryMap = {

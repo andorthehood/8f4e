@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
-
-import mapEnd from './mapEnd';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import mapEnd from './mapEnd';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

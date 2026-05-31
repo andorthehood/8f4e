@@ -1,24 +1,22 @@
-import { describe, it, expect } from 'vitest';
-
-import {
-	configAttPc63008x16,
-	configNix8810M168x16,
-	configOlivettiThin8x16,
-	minimalColorScheme,
-	config8x16,
-	configTerminus8x16,
-	configTerminus8x16Bold,
-	config6x10,
-	configTerminus10x18,
-	configTerminus10x18Bold,
-	configKana12x13,
-	configTerminus12x24,
-	configTerminus12x24Bold,
-} from './utils/testFixtures';
+import { describe, expect, it } from 'vitest';
+import type { DrawingCommand } from '../src/types';
 
 import { Command } from '../src/types';
-
-import type { DrawingCommand } from '../src/types';
+import {
+	config6x10,
+	config8x16,
+	configAttPc63008x16,
+	configKana12x13,
+	configNix8810M168x16,
+	configOlivettiThin8x16,
+	configTerminus8x16,
+	configTerminus8x16Bold,
+	configTerminus10x18,
+	configTerminus10x18Bold,
+	configTerminus12x24,
+	configTerminus12x24Bold,
+	minimalColorScheme,
+} from './utils/testFixtures';
 
 describe('Types and Enums', () => {
 	describe('Command enum', () => {

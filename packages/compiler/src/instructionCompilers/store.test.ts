@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
-
-import store from './store';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import store from './store';
 
 describe('store instruction compiler', () => {
 	it('stores to a safe memory address', () => {

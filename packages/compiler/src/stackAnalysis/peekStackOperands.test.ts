@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import { peekStackOperands } from './peekStackOperands';
-
 import type { StackItem } from '@8f4e/compiler-spec';
+import { describe, expect, it } from 'vitest';
+import { peekStackOperands } from './peekStackOperands';
 
 describe('peekStackOperands', () => {
 	it('returns the last N operands in stack order', () => {

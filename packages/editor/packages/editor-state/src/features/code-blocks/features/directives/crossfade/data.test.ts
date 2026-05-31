@@ -1,9 +1,7 @@
 import { describe, expect, it } from 'vitest';
-
+import { parseEditorDirectives } from '../utils';
 import { createCrossfadeDirectiveData } from './data';
 import crossfadeDirective from './plugin';
-
-import { parseEditorDirectives } from '../utils';
 
 function parseCrossfadeDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [crossfadeDirective]).map(directive =>

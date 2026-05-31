@@ -14,7 +14,7 @@ const modulePreserveCaseWords = new Set(['8bit', '16bit', '32bit']);
 const projectUpperCaseWords = new Set(['lt', 'fm', 'xor']);
 
 function collectPaths(sourceDirectory, extension, { excludedDirectories = new Set() } = {}) {
-	return readdirSync(sourceDirectory, { withFileTypes: true }).flatMap((entry) => {
+	return readdirSync(sourceDirectory, { withFileTypes: true }).flatMap(entry => {
 		const entryPath = resolve(sourceDirectory, entry.name);
 
 		if (entry.isDirectory()) {
@@ -36,7 +36,7 @@ function toRelativePosixPath(baseDirectory, filePath) {
 function toTitleCase(value) {
 	return value
 		.split('-')
-		.map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+		.map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
 		.join(' ');
 }
 
@@ -49,7 +49,7 @@ function humanizeSlug(slug, { upperCaseWords, preserveCaseWords = new Set() }) {
 
 	return normalized
 		.split(/\s+/)
-		.map((word) => {
+		.map(word => {
 			const lower = word.toLowerCase();
 
 			if (upperCaseWords.has(lower)) {
@@ -89,12 +89,12 @@ function getCategory(relativePath) {
 function createModuleRegistry() {
 	const sourceDirectory = resolve(packageRoot, 'src/modules');
 	const paths = collectPaths(sourceDirectory, '.8f4em')
-		.map((filePath) => toRelativePosixPath(sourceDirectory, filePath))
+		.map(filePath => toRelativePosixPath(sourceDirectory, filePath))
 		.sort();
 
 	return {
 		modules: paths
-			.map((path) => {
+			.map(path => {
 				const slug = getSlug(path, '.8f4em');
 
 				return {
@@ -115,12 +115,12 @@ function createModuleRegistry() {
 function createProjectRegistry() {
 	const sourceDirectory = resolve(packageRoot, 'src/projects');
 	const paths = collectPaths(sourceDirectory, '.8f4e', { excludedDirectories: new Set(['archived']) })
-		.map((filePath) => toRelativePosixPath(sourceDirectory, filePath))
+		.map(filePath => toRelativePosixPath(sourceDirectory, filePath))
 		.sort();
 
 	return {
 		projects: paths
-			.map((path) => {
+			.map(path => {
 				const slug = getSlug(path, '.8f4e');
 
 				return {

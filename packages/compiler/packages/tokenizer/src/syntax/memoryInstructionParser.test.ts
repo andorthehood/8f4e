@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest';
 import { ArgumentType } from '@8f4e/compiler-spec';
-
+import { describe, expect, it } from 'vitest';
+import { parseMemoryInstructionArgumentsShape } from './memoryInstructionParser';
 import { classifyIdentifier } from './parseArgument';
 import { SyntaxRulesError } from './syntaxError';
-import { parseMemoryInstructionArgumentsShape } from './memoryInstructionParser';
 
 describe('parseMemoryInstructionArgumentsShape', () => {
 	it('throws when first argument is missing', () => {

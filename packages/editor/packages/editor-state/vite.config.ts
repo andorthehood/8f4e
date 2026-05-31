@@ -1,8 +1,7 @@
+import { createLibConfig } from '@8f4e/config/vite';
 import { resolve } from 'path';
 import { fileURLToPath, URL } from 'url';
-
 import { defineConfig } from 'vite';
-import { createLibConfig } from '@8f4e/config/vite';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 

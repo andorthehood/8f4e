@@ -1,10 +1,13 @@
-import { StateManager } from '@8f4e/state-manager';
-
-import findCrossfadeWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
-
-import type { State, CodeBlockGraphicData, Crossfade, InternalMouseEvent } from '@8f4e/editor-state-types';
 import type { DataStructure } from '@8f4e/compiler-spec';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
+import type {
+	CodeBlockGraphicData,
+	Crossfade,
+	EventDispatcher,
+	InternalMouseEvent,
+	State,
+} from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import findCrossfadeWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 interface ActiveCrossfade {
 	crossfade: Crossfade;
@@ -37,7 +40,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 		state.callbacks?.setWordInMemory?.(rightMemory.wordAlignedAddress, rightValue, false);
 	};
 
-	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
+	const onCodeBlockClick = ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) => {
 		const crossfade = findCrossfadeWidgetAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!crossfade || !codeBlock.moduleId) {
@@ -57,7 +60,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 		updateCrossfadeValue(x);
 	};
 
-	const onMouseMove = function (event: InternalMouseEvent) {
+	const onMouseMove = (event: InternalMouseEvent) => {
 		if (!activeCrossfade) {
 			return;
 		}
@@ -66,7 +69,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 		event.stopPropagation = true;
 	};
 
-	const onMouseUp = function () {
+	const onMouseUp = () => {
 		activeCrossfade = null;
 	};
 

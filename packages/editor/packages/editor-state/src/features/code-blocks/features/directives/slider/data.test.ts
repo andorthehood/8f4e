@@ -1,9 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
+import { describe, expect, it } from 'vitest';
+import { parseEditorDirectives } from '../utils';
 import { createSliderDirectiveData } from './data';
 import sliderDirective from './plugin';
-
-import { parseEditorDirectives } from '../utils';
 
 function parseSliderDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [sliderDirective]).map(directive =>

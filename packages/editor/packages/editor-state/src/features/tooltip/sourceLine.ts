@@ -1,9 +1,9 @@
 import {
 	ArgumentType,
-	getInstructionSpec,
-	memoryDeclarationInstructions,
 	type CompilerASTLine,
+	getInstructionSpec,
 	type InstructionSpec,
+	memoryDeclarationInstructions,
 } from '@8f4e/compiler-spec';
 
 import { getInstructionStackSignature } from './stackSignature';

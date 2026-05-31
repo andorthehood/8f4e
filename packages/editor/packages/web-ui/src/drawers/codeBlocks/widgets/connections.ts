@@ -1,6 +1,5 @@
-import { Engine } from 'glugglug';
-
 import type { State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 import type { MemoryViews } from '../../../types';
 
 const WIRE_SPRITE = 'wire';

@@ -1,6 +1,5 @@
-import { BASE_TYPE_METADATA, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
-
 import type { CodegenContext, CompilationContext, InternalResource } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 
 type InternalResourceType = InternalResource['storageType'];
 

@@ -1,5 +1,5 @@
-import type { StateManager } from '@8f4e/state-manager';
 import type { InfoRecord, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 
 interface MidiDevicesOptions {
 	store: StateManager<State>;
@@ -140,7 +140,7 @@ export default function createMidiDeviceManager({
 
 			midiAccess = access;
 			previousStateChangeHandler = access.onstatechange;
-			access.onstatechange = function (event) {
+			access.onstatechange = event => {
 				previousStateChangeHandler?.call(access, event);
 				updateMidiInfo();
 			};

@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import { getEditorConfigKnownPaths, resolveEditorConfigEntries, validateEditorConfigEntries } from './validators';
-
 import type { EditorConfigEntry, EditorConfigValidatorRegistry } from '@8f4e/editor-state-types';
+import { describe, expect, it } from 'vitest';
+import { getEditorConfigKnownPaths, resolveEditorConfigEntries, validateEditorConfigEntries } from './validators';
 
 function entry(path: string, value: string): EditorConfigEntry {
 	return {

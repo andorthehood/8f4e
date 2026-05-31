@@ -1,9 +1,7 @@
-import { instructionParser, isSkipExecutionDirective } from '@8f4e/tokenizer';
-
-import { getGroupModuleBlocks } from '../getGroupBlocks';
-
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
+import { instructionParser, isSkipExecutionDirective } from '@8f4e/tokenizer';
+import { getGroupModuleBlocks } from '../getGroupBlocks';
 
 /**
  * Effect that handles toggling the #skipExecution directive for all code blocks in a group.

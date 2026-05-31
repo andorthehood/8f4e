@@ -1,10 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import type { State } from '@8f4e/editor';
 import createStateManager from '@8f4e/state-manager';
-
+import { describe, expect, it } from 'vitest';
 import { createAudioWorkletRuntimeDef, getAudioInputBuffers, getAudioOutputBuffers } from './runtimeDef';
 import { storeAudioWorkletRuntimeValues } from './runtimeValues';
-
-import type { State } from '@8f4e/editor';
 
 describe('storeAudioWorkletRuntimeValues', () => {
 	it('merges AudioWorklet runtime values into editor state', () => {

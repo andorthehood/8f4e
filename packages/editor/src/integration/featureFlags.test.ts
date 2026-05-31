@@ -1,8 +1,6 @@
-import { describe, test, expect } from 'vitest';
-
-import { validateFeatureFlags } from '../config/featureFlags';
-
 import type { Options } from '@8f4e/editor-state-types';
+import { describe, expect, test } from 'vitest';
+import { validateFeatureFlags } from '../config/featureFlags';
 
 describe('Feature Flags Integration', () => {
 	test('should properly merge feature flags with options', () => {

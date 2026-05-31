@@ -9,7 +9,7 @@
 - From package directory: use `npx nx run runtime-main-thread:<target>` (e.g., `npx nx run runtime-main-thread:dev`).
 
 ## Coding Style
-- TypeScript strict. Use ESLint as the fixer (`npx eslint --fix <files>`) per root config.
+- TypeScript strict. Use Biome as the fixer (`npx biome check --write <files>`) per root config.
 - Keep browser-side logic separated from worker/audio code paths.
 
 ## Testing

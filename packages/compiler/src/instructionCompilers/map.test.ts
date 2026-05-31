@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilationContext, CompilerASTLine, MapBlockState } from '@8f4e/compiler-spec';
 import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
-
-import map from './map';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine, CompilationContext, MapBlockState } from '@8f4e/compiler-spec';
+import map from './map';
 
 function getTopMapState(context: CompilationContext): MapBlockState {
 	const block = context.blockStack[context.blockStack.length - 1];

@@ -1,4 +1,4 @@
-import type { Config, ColorScheme } from '../../src/types';
+import type { ColorScheme, Config } from '../../src/types';
 
 /**
  * Test fixture for a minimal color scheme

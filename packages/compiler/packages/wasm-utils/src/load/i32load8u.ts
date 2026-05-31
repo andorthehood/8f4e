@@ -1,5 +1,5 @@
-import { WASM_I32_LOAD_8_U } from '../wasmInstruction';
 import memarg from '../memory/memarg';
+import { WASM_I32_LOAD_8_U } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.load8_u instruction to load an unsigned 8-bit integer from memory.

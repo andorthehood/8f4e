@@ -1,6 +1,6 @@
 import spriteGenerator from '@8f4e/sprite-generator';
 
-(async function () {
+(async () => {
 	const canvasElement = document.getElementById('test-canvas') as HTMLCanvasElement;
 	const { canvas, spriteLookups } = await spriteGenerator({
 		font: 'ibmvga8x16',

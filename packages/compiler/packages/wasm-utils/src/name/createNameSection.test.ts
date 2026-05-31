@@ -1,9 +1,7 @@
 import { expect, test } from 'vitest';
-
+import { Section } from '../section';
 import createFunctionName from './createFunctionName';
 import createNameSection from './createNameSection';
-
-import { Section } from '../section';
 
 test('createNameSection wraps function names correctly', () => {
 	const names = [createFunctionName(0, 'main')];

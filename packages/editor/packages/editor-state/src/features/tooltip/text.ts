@@ -1,6 +1,5 @@
-import { TOOLTIP_WRAP_WIDTH } from './constants';
-
 import wrapText from '../code-blocks/utils/wrapText';
+import { TOOLTIP_WRAP_WIDTH } from './constants';
 
 /**
  * Wraps tooltip copy to the configured monospace character width.

@@ -1,6 +1,5 @@
-import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
-
 import type { BrowserLocalNoteStorageBlock, CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
 
 const BROWSER_LOCAL_NOTE_HEADER_PREFIX = 'note local.';
 

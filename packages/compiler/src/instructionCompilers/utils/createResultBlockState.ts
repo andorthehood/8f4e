@@ -1,8 +1,7 @@
-import { WASM_TYPE_F32, WASM_TYPE_I32, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
-import { BlockType } from '@8f4e/compiler-spec';
+import type { BlockStack, BlockType } from '@8f4e/compiler-spec';
 
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { BlockStack } from '@8f4e/compiler-spec';
+import { WASM_TYPE_F32, WASM_TYPE_I32, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
 
 type ResultType = 'float' | 'int' | null | undefined;
 type ResultBlockType = typeof BlockType.BLOCK | typeof BlockType.CONDITION;

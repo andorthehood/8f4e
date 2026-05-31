@@ -1,10 +1,8 @@
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 import { WASM_END } from '@8f4e/compiler-wasm-utils';
 
-import { saveByteCode } from './utils/saveByteCode';
-
 import { popBlock } from '../utils/blockStack';
-
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import { saveByteCode } from './utils/saveByteCode';
 
 /**
  * Instruction compiler for `ifEnd`.

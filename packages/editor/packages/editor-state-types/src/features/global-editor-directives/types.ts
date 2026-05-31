@@ -3,8 +3,8 @@
  * Editor directives use `; @<name> <args...>` syntax.
  */
 import type { CodeError } from '../../shared/types';
-import type { EditorConfigEntry } from '../editor-config/types';
 import type { CodeBlockType } from '../code-blocks/types';
+import type { EditorConfigEntry } from '../editor-config/types';
 
 export interface ParsedGlobalEditorDirective {
 	name: string;

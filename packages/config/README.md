@@ -70,20 +70,6 @@ Available helpers:
 - `createUmdBundleConfig()` - UMD bundle for browsers
 - `createWorkerLibConfig()` - Web worker library
 
-### ESLint Configuration
-
-The root `eslint.config.mjs` uses ESLint flat config format and imports shared settings:
-
-```js
-import { prettierOptions, importOrderRule } from '@8f4e/config/eslint';
-```
-
-Available exports:
-- `prettierOptions` - Prettier settings
-- `importOrderRule` - Import ordering rules
-- `sharedRules` - Shared rule configuration (legacy format)
-- `createEslintConfig()` - Factory for legacy ESLint config
-
 ## Philosophy
 
 Only **shared/common defaults** should live in `@8f4e/config`. Package-specific behavior (custom aliases, environment tweaks, include/exclude patterns, etc.) should stay in each package's own config wrapper.

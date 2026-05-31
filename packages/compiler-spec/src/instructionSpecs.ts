@@ -1,11 +1,10 @@
 import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from './constants';
-import { ErrorCode } from './errors';
-import { memoryDeclarationInstructions } from './memory';
-import { BlockType } from './semantic';
-
 import type { ErrorCodeValue } from './errors';
+import { ErrorCode } from './errors';
 import type { MemoryDeclarationInstruction } from './memory';
+import { memoryDeclarationInstructions } from './memory';
 import type { BlockTypeValue, CompilationContext } from './semantic';
+import { BlockType } from './semantic';
 
 export type OperandRule = 'int' | 'float' | 'matching';
 export type SourceArgumentShapeRule =

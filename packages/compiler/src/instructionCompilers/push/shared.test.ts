@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
-
-import { kindToStackItem, resolveArgumentValueKind } from './shared';
-
 import { getDereferencedValueKindFromMetadata } from '../../utils/memoryData';
+import { kindToStackItem, resolveArgumentValueKind } from './shared';
 
 describe('push shared helpers', () => {
 	it('resolves value kinds correctly', () => {

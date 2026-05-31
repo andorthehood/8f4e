@@ -1,11 +1,9 @@
+import type { AnalyzedLine, CompilationContext, CompilerASTLine, InstructionCompiler } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 import { WASM_IF, WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 import { expect } from 'vitest';
-
 import { createCompilationContext } from '../semantic/createCompilationContext';
 import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
-
-import type { CompilerASTLine, AnalyzedLine, CompilationContext, InstructionCompiler } from '@8f4e/compiler-spec';
 
 export default function createInstructionCompilerTestContext(
 	overrides: Partial<CompilationContext> = {}

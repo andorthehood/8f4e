@@ -1,11 +1,8 @@
-import { PIANO_KEYBOARD_MIN_GRID_WIDTH } from './constants';
-
-import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
-import type { PianoDirectiveData } from './data';
-import type { PianoKeyboardKey } from '@8f4e/editor-state-types';
-
+import type { DirectiveDerivedState, DirectiveWidgetContribution, PianoKeyboardKey } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
+import { PIANO_KEYBOARD_MIN_GRID_WIDTH } from './constants';
+import type { PianoDirectiveData } from './data';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 
