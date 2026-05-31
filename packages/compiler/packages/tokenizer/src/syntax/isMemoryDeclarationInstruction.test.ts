@@ -11,8 +11,12 @@ describe('isMemoryDeclarationInstruction', () => {
 		expect(isMemoryDeclarationInstruction('int**')).toBe(true);
 		expect(isMemoryDeclarationInstruction('int8*')).toBe(true);
 		expect(isMemoryDeclarationInstruction('int8**')).toBe(true);
+		expect(isMemoryDeclarationInstruction('int8u*')).toBe(true);
+		expect(isMemoryDeclarationInstruction('int8u**')).toBe(true);
 		expect(isMemoryDeclarationInstruction('int16*')).toBe(true);
 		expect(isMemoryDeclarationInstruction('int16**')).toBe(true);
+		expect(isMemoryDeclarationInstruction('int16u*')).toBe(true);
+		expect(isMemoryDeclarationInstruction('int16u**')).toBe(true);
 		expect(isMemoryDeclarationInstruction('float*')).toBe(true);
 		expect(isMemoryDeclarationInstruction('float**')).toBe(true);
 		expect(isMemoryDeclarationInstruction('float64*')).toBe(true);

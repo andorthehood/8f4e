@@ -102,15 +102,16 @@ int HI LO
 
 ### int8*
 
-The `int8*` and `int8**` instructions declare pointer types whose pointee is a signed 8-bit integer.
+The `int8*` / `int8**` and `int8u*` / `int8u**` instructions declare pointer types whose pointee is an 8-bit integer. The `int8u` variants use unsigned pointee semantics.
 
 The pointer slot itself occupies 4 bytes (one word), identical to `int*` in allocation width. The pointee width is 1 byte.
 
-Dereferencing with `push *name` emits a signed 8-bit load (`i32.load8_s`), which sign-extends the 8-bit value to a 32-bit integer on the stack.
+Dereferencing with `push *name` emits a signed 8-bit load (`i32.load8_s`) for `int8*` and an unsigned 8-bit load (`i32.load8_u`) for `int8u*`.
 
 Pointer-aware metadata reflects the 1-byte pointee type and tracked pointee count:
-- `sizeof(*name)` returns `1` for `int8*` (pointee element word size)
-- `min(*name)` returns `-128` for `int8*` (pointee minimum value)
+- `sizeof(*name)` returns `1` for `int8*` and `int8u*` (pointee element word size)
+- `min(*name)` returns `-128` for `int8*` and `0` for `int8u*` (pointee minimum value)
+- `max(*name)` returns `127` for `int8*` and `255` for `int8u*` (pointee maximum value)
 - `count(*name)` returns the target element count when the pointer is initialized from a known memory start address, or `1` without tracked count metadata
 
 #### Examples
@@ -119,6 +120,10 @@ Pointer-aware metadata reflects the 1-byte pointee type and tracked pointee coun
 int8[] samples 64 0
 int8* ptr &samples
 push *ptr        ; loads a signed 8-bit value, sign-extended to i32
+
+int8u[] unsignedSamples 64 0
+int8u* unsignedPtr &unsignedSamples
+push *unsignedPtr ; loads an unsigned 8-bit value, zero-extended to i32
 
 int8** pptr &ptr
 push *pptr       ; pushes the address stored in ptr
@@ -131,15 +136,16 @@ push count(*ptr)  ; 64 — tracked pointee element count
 
 ### int16*
 
-The `int16*` and `int16**` instructions declare pointer types whose pointee is a signed 16-bit integer.
+The `int16*` / `int16**` and `int16u*` / `int16u**` instructions declare pointer types whose pointee is a 16-bit integer. The `int16u` variants use unsigned pointee semantics.
 
 The pointer slot itself occupies 4 bytes (one word), identical to `int*` in allocation width. The pointee width is 2 bytes.
 
-Dereferencing with `push *name` emits a signed 16-bit load (`i32.load16_s`), which sign-extends the 16-bit value to a 32-bit integer on the stack.
+Dereferencing with `push *name` emits a signed 16-bit load (`i32.load16_s`) for `int16*` and an unsigned 16-bit load (`i32.load16_u`) for `int16u*`.
 
 Pointer-aware metadata reflects the 2-byte pointee type and tracked pointee count:
-- `sizeof(*name)` returns `2` for `int16*` (pointee element word size)
-- `min(*name)` returns `-32768` for `int16*` (pointee minimum value)
+- `sizeof(*name)` returns `2` for `int16*` and `int16u*` (pointee element word size)
+- `min(*name)` returns `-32768` for `int16*` and `0` for `int16u*` (pointee minimum value)
+- `max(*name)` returns `32767` for `int16*` and `65535` for `int16u*` (pointee maximum value)
 - `count(*name)` returns the target element count when the pointer is initialized from a known memory start address, or `1` without tracked count metadata
 
 #### Examples
@@ -148,6 +154,10 @@ Pointer-aware metadata reflects the 2-byte pointee type and tracked pointee coun
 int16[] samples 64 0
 int16* ptr &samples
 push *ptr        ; loads a signed 16-bit value, sign-extended to i32
+
+int16u[] unsignedSamples 64 0
+int16u* unsignedPtr &unsignedSamples
+push *unsignedPtr ; loads an unsigned 16-bit value, zero-extended to i32
 
 int16** pptr &ptr
 push *pptr       ; pushes the address stored in ptr
