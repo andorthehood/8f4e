@@ -186,6 +186,17 @@ push *bytes
 functionEnd int
 ```
 
+Callers can provide arguments on the stack or inline after the function name:
+
+```
+push 21
+call double
+
+call double 21
+```
+
+Inline call arguments are compiled as `push` instructions before the call, so they follow the same value rules as `push`.
+
 ### Notes
 
 - Parameters must be declared immediately after the function declaration

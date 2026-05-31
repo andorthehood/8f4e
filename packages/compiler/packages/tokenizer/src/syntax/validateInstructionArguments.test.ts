@@ -156,6 +156,17 @@ describe('validateInstructionArguments', () => {
 		).not.toThrow();
 	});
 
+	it('accepts inline push values after call targets', () => {
+		expect(() =>
+			validateInstructionArguments('call', [
+				classifyIdentifier('foo'),
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 1.3, isInteger: false },
+				{ type: ArgumentType.STRING_LITERAL, value: 'ok' },
+			])
+		).not.toThrow();
+	});
+
 	it('rejects non-constant identifiers for const declarations', () => {
 		expect(() =>
 			validateInstructionArguments('const', [

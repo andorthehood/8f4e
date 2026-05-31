@@ -20,6 +20,7 @@ export type SourceArgumentShapeRule =
 	| 'typeIdentifier'
 	| 'functionTypeIdentifier'
 	| 'ifResultType'
+	| 'pushValue'
 	| 'regionReference';
 export type ScopeRule =
 	| 'module'
@@ -160,6 +161,7 @@ export interface SourceArgumentsSpec {
 	minArguments?: number;
 	maxArguments?: number;
 	argumentTypes?: SourceArgumentShapeRule[] | SourceArgumentShapeRule;
+	restArgumentType?: SourceArgumentShapeRule;
 }
 
 /** Complete compiler specification for a source instruction. */
@@ -393,7 +395,7 @@ export const instructionSpecs = {
 	},
 	// call (args... -- returns...)
 	call: {
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		sourceArguments: { minArguments: 1, argumentTypes: ['identifier'], restArgumentType: 'pushValue' },
 		scope: 'moduleOrFunction',
 		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
 		docs: { shortDescription: 'Calls a function, consuming its parameters and pushing its return values.' },
