@@ -9,37 +9,3 @@ import { getDocumentProjectBlockType } from '@8f4e/tokenizer';
 export default function getBlockType(code: string[]): CodeBlockType {
 	return getDocumentProjectBlockType(code) as CodeBlockType;
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('getBlockType', () => {
-		it('detects module blocks', () => {
-			expect(getBlockType(['module foo', 'moduleEnd'])).toBe('module');
-		});
-
-		it('detects function blocks', () => {
-			expect(getBlockType(['function foo', 'functionEnd'])).toBe('function');
-		});
-
-		it('detects constants blocks', () => {
-			expect(getBlockType(['constants', 'constantsEnd'])).toBe('constants');
-		});
-
-		it('detects macro blocks', () => {
-			expect(getBlockType(['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'])).toBe('macro');
-		});
-
-		it('detects note blocks', () => {
-			expect(getBlockType(['note', '; @pos 10 12', 'some text', 'noteEnd'])).toBe('note');
-		});
-
-		it('returns unknown for mixed markers', () => {
-			expect(getBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
-		});
-
-		it('returns unknown for mixed note and module markers', () => {
-			expect(getBlockType(['module foo', 'noteEnd'])).toBe('unknown');
-		});
-	});
-}

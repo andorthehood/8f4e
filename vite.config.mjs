@@ -5,9 +5,6 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 export default defineConfig(() => {
 	return {
 		root: 'src',
-		define: {
-			'import.meta.vitest': 'undefined',
-		},
 		plugins: [
 			glsl({
 				include: ['**/*.glsl', '**/*.vert', '**/*.frag'],

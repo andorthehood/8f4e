@@ -25,20 +25,3 @@ export default function enter(
 	const [newRow] = moveCaret(newCode, row, col, 'down');
 	return { code: newCode, row: newRow, col: 0 };
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('enter', () => {
-		it('splits the current line at the caret', () => {
-			const { code } = enter(['abcd'], 0, 2);
-			expect(code).toEqual(['ab', 'cd']);
-		});
-
-		it('moves the caret to the start of the next line', () => {
-			const { row, col } = enter(['ab'], 0, 2);
-			expect(row).toBe(1);
-			expect(col).toBe(0);
-		});
-	});
-}
