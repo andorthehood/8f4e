@@ -322,5 +322,11 @@
 		"version": "1.12.2",
 		"benchmark": "hymnToAurora.8f4e",
 		"emittedBytes": 7242
+	},
+	{
+		"commit": "51c2147a74e48e3e6392a6ea9e23888698d56d71",
+		"version": "1.13.0",
+		"benchmark": "hymnToAurora.8f4e",
+		"emittedBytes": 7242
 	}
 ]
