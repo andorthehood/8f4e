@@ -13,8 +13,8 @@ describe('web-ui editor config', () => {
 					properties: {
 						entry: { type: 'string' },
 						target: { type: 'string' },
-						textureWidth: { type: 'integer', minimum: 1 },
-						textureHeight: { type: 'integer', minimum: 1 },
+						width: { type: 'integer', minimum: 1 },
+						height: { type: 'integer', minimum: 1 },
 						objectFit: { type: 'string', enum: ['fill', 'cover', 'contain'] },
 					},
 				},
@@ -29,8 +29,8 @@ describe('web-ui editor config', () => {
 					background: {
 						entry: 'renderFrame',
 						target: 'screen:rgba',
-						textureWidth: 64,
-						textureHeight: 32,
+						width: 64,
+						height: 32,
 						filter: 'linear',
 						objectFit: 'cover',
 					},
@@ -41,8 +41,8 @@ describe('web-ui editor config', () => {
 		expect(resolveWebUiBackgroundConfig(state)).toEqual({
 			entry: 'renderFrame',
 			target: 'screen:rgba',
-			textureWidth: 64,
-			textureHeight: 32,
+			width: 64,
+			height: 32,
 			filter: 'linear',
 			objectFit: 'cover',
 		});
@@ -55,8 +55,8 @@ describe('web-ui editor config', () => {
 					background: {
 						entry: 'renderFrame',
 						target: 'screen',
-						textureWidth: 64,
-						textureHeight: 32,
+						width: 64,
+						height: 32,
 					},
 				},
 			},

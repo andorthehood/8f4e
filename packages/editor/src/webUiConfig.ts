@@ -13,8 +13,8 @@ export const webUiEditorConfigSchemaContribution: EditorConfigSchemaContribution
 				properties: {
 					entry: { type: 'string' },
 					target: { type: 'string' },
-					textureWidth: { type: 'integer', minimum: 1 },
-					textureHeight: { type: 'integer', minimum: 1 },
+					width: { type: 'integer', minimum: 1 },
+					height: { type: 'integer', minimum: 1 },
 					filter: { type: 'string', enum: ['nearest', 'linear'] },
 					objectFit: { type: 'string', enum: ['fill', 'cover', 'contain'] },
 				},
@@ -54,16 +54,16 @@ export function resolveWebUiBackgroundConfig(state: State): WebUiOptions['frameT
 
 	const target = background.target;
 	const entry = background.entry;
-	const textureWidth = getPositiveInteger(background, 'textureWidth');
-	const textureHeight = getPositiveInteger(background, 'textureHeight');
+	const width = getPositiveInteger(background, 'width');
+	const height = getPositiveInteger(background, 'height');
 
 	if (
 		typeof entry !== 'string' ||
 		!entry ||
 		typeof target !== 'string' ||
 		!isQualifiedMemoryId(target) ||
-		textureWidth === undefined ||
-		textureHeight === undefined
+		width === undefined ||
+		height === undefined
 	) {
 		return undefined;
 	}
@@ -77,8 +77,8 @@ export function resolveWebUiBackgroundConfig(state: State): WebUiOptions['frameT
 	return {
 		entry,
 		target,
-		textureWidth,
-		textureHeight,
+		width,
+		height,
 		...(filter ? { filter } : {}),
 		...(objectFit ? { objectFit } : {}),
 	};
