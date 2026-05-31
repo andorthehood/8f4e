@@ -5,13 +5,13 @@ exports[`if instruction compiler > emits a float if block 1`] = `
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 2,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": true,
+      "expectedResultTypes": [
+        "float",
+      ],
     },
   ],
   "byteCode": [
@@ -21,18 +21,49 @@ exports[`if instruction compiler > emits a float if block 1`] = `
 }
 `;
 
+exports[`if instruction compiler > emits a multi-result if block type index 1`] = `
+{
+  "blockStack": [
+    {
+      "blockType": 0,
+      "expectedResultTypes": [],
+    },
+    {
+      "blockType": 2,
+      "expectedResultTypes": [
+        "int",
+        "float",
+      ],
+    },
+  ],
+  "byteCode": [
+    4,
+    0,
+  ],
+  "typeCount": 1,
+  "typeSignatures": [
+    {
+      "params": [],
+      "results": [
+        127,
+        125,
+      ],
+      "typeIndex": 0,
+    },
+  ],
+}
+`;
+
 exports[`if instruction compiler > emits a void if block when given no arguments 1`] = `
 {
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 2,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
   "byteCode": [
@@ -47,13 +78,11 @@ exports[`if instruction compiler > emits a void if block when the matching ifEnd
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 2,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
   "byteCode": [
@@ -68,13 +97,13 @@ exports[`if instruction compiler > emits an int if block 1`] = `
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 2,
-      "expectedResultIsInteger": true,
-      "hasExpectedResult": true,
+      "expectedResultTypes": [
+        "int",
+      ],
     },
   ],
   "byteCode": [

@@ -13,9 +13,7 @@ describe('functionEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: ['int'], returns: [] },
@@ -56,9 +54,7 @@ describe('functionEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: ['float64'], returns: [] },
@@ -105,9 +101,7 @@ describe('functionEnd instruction compiler', () => {
 				blockStack: [
 					...createInstructionCompilerTestContext().blockStack,
 					{
-						blockType: BlockType.FUNCTION,
-						expectedResultIsInteger: false,
-						hasExpectedResult: false,
+						blockType: BlockType.FUNCTION,expectedResultTypes: [],
 					},
 				],
 				currentFunctionSignature: { parameters: ['int'], returns: [] },

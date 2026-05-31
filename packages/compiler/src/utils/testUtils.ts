@@ -17,8 +17,7 @@ export default function createInstructionCompilerTestContext(
 		blockStack: overrides.blockStack ?? [
 			{
 				blockType: BlockType.MODULE,
-				expectedResultIsInteger: false,
-				hasExpectedResult: false,
+				expectedResultTypes: [],
 			},
 		],
 		codeBlockId: overrides.codeBlockId ?? 'test',

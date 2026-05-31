@@ -5,8 +5,7 @@ exports[`mapEnd instruction compiler > emits DROP + typed zero for zero rows 1`]
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
   "byteCode": [

@@ -12,12 +12,42 @@ describe('ifEnd instruction compiler', () => {
 				...createInstructionCompilerTestContext().blockStack,
 				{
 					blockType: BlockType.CONDITION,
-					expectedResultIsInteger: true,
-					hasExpectedResult: true,
+					expectedResultTypes: ['int'],
 				},
 			],
 		});
 		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
+
+		analyzeAndCompileInstruction(
+			ifEnd,
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'ifEnd',
+				arguments: [],
+			} as CompilerASTLine,
+			context
+		);
+
+		expect({
+			stack: context.stack,
+			blockStack: context.blockStack,
+			byteCode: context.byteCode,
+		}).toMatchSnapshot();
+	});
+
+	it('ends a conditional block with multiple results', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [
+				...createInstructionCompilerTestContext().blockStack,
+				{
+					blockType: BlockType.CONDITION,
+					expectedResultTypes: ['int', 'float'],
+				},
+			],
+		});
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
 		analyzeAndCompileInstruction(
 			ifEnd,

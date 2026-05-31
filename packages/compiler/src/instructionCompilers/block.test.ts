@@ -15,7 +15,7 @@ describe('block instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'block',
 				arguments: [],
-				blockBlock: { matchingBlockEndIndex: 2, resultType: 'float' },
+				blockBlock: { matchingBlockEndIndex: 2, resultTypes: ['float'] },
 			} as CompilerASTLine,
 			context
 		);
@@ -36,7 +36,7 @@ describe('block instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'block',
 				arguments: [],
-				blockBlock: { matchingBlockEndIndex: 2, resultType: 'int' },
+				blockBlock: { matchingBlockEndIndex: 2, resultTypes: ['int'] },
 			} as CompilerASTLine,
 			context
 		);
@@ -57,7 +57,7 @@ describe('block instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'block',
 				arguments: [],
-				blockBlock: { matchingBlockEndIndex: 2, resultType: null },
+				blockBlock: { matchingBlockEndIndex: 2, resultTypes: [] },
 			} as CompilerASTLine,
 			context
 		);

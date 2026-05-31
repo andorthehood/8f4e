@@ -33,44 +33,49 @@ export type CompileTimeValueArgument = ArgumentLiteral | ArgumentIdentifier | Ar
 export type PushArgument = ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression | ArgumentStringLiteral;
 export type PushLine = ASTLineBase<'push', [PushArgument]>;
 
-export type IfBlockResultType = 'int' | 'float' | null;
+export type BlockResultType = 'int' | 'float';
+export type BlockResultTypes = BlockResultType[];
 
 /** Parser metadata linking an `if` line to its closing line and result shape. */
 export interface IfBlockMetadata {
 	matchingIfEndIndex: number;
-	resultType: IfBlockResultType;
+	resultTypes: BlockResultTypes;
 	hasElse: boolean;
 }
 
 /** Parser metadata linking an `ifEnd` line back to its opening `if`. */
 export interface IfEndBlockMetadata {
 	matchingIfIndex: number;
-	resultType: IfBlockResultType;
+	resultTypes: BlockResultTypes;
 }
 
 export type IfLine = ASTLineBase<'if', []> & {
 	ifBlock?: IfBlockMetadata;
 };
-export type IfEndLine = ASTLineBase<'ifEnd', [] | [ArgumentIdentifier]> & {
+export type PairedIfLine = IfLine & {
+	ifBlock: IfBlockMetadata;
+};
+export type IfEndLine = ASTLineBase<'ifEnd', ArgumentIdentifier[]> & {
 	ifEndBlock?: IfEndBlockMetadata;
 };
-
-export type BlockBlockResultType = 'int' | 'float' | null;
 
 /** Parser metadata linking a generic `block` line to its closing line. */
 export interface BlockBlockMetadata {
 	matchingBlockEndIndex: number;
-	resultType: BlockBlockResultType;
+	resultTypes: BlockResultTypes;
 }
 
 /** Parser metadata linking a `blockEnd` line back to its opening `block`. */
 export interface BlockEndBlockMetadata {
 	matchingBlockIndex: number;
-	resultType: BlockBlockResultType;
+	resultTypes: BlockResultTypes;
 }
 
 export type BlockLine = ASTLineBase<'block', []> & {
 	blockBlock?: BlockBlockMetadata;
+};
+export type PairedBlockLine = BlockLine & {
+	blockBlock: BlockBlockMetadata;
 };
 export type BlockEndLine = ASTLineBase<'blockEnd', [] | [ArgumentIdentifier]> & {
 	blockEndBlock?: BlockEndBlockMetadata;

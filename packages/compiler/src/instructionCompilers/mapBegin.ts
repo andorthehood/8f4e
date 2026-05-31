@@ -11,8 +11,7 @@ const mapBegin: InstructionCompiler<MapBeginLine> = (line: MapBeginLine, context
 	const inputType = line.arguments[0].value;
 
 	pushBlock(context, {
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		expectedResultTypes: [],
 		blockType: BlockType.MAP,
 		mapState: {
 			inputIsInteger: inputType === 'int',

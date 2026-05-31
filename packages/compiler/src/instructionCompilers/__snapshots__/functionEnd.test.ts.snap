@@ -5,8 +5,7 @@ exports[`functionEnd instruction compiler > accepts float64 return type and emit
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
   "currentFunctionSignature": {
@@ -31,8 +30,7 @@ exports[`functionEnd instruction compiler > updates function signature and clear
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
   "currentFunctionSignature": {

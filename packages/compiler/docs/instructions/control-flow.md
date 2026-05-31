@@ -114,7 +114,7 @@ ifEnd int
 
 ### ifEnd
 
-The ifEnd instruction ends an if or else block. It accepts an optional result type (`int` or `float`) to declare whether the block must leave a value on the stack. A bare `ifEnd` means the block produces no result.
+The ifEnd instruction ends an if or else block. It accepts zero or more result types (`int` or `float`) to declare the values the block must leave on the stack. A bare `ifEnd` means the block produces no result.
 
 #### Examples
 
@@ -125,6 +125,17 @@ if
 else
  push 2
 ifEnd int
+```
+
+```
+push 1
+if
+ push 10
+ push 20
+else
+ push 30
+ push 40
+ifEnd int int
 ```
 
 ### loop

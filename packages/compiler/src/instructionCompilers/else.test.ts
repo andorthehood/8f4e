@@ -11,9 +11,7 @@ describe('else instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.CONDITION,
-					expectedResultIsInteger: true,
-					hasExpectedResult: true,
+					blockType: BlockType.CONDITION,expectedResultTypes: ['int'],
 				},
 			],
 		});

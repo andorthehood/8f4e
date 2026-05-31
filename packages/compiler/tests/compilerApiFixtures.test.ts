@@ -177,6 +177,54 @@ entryEnd
 		expect(module.memoryMap.cursor.pointeeBaseType).toBe('int8u');
 	});
 
+	test('supports multi-result ifEnd blocks', async () => {
+		const fixture = await instantiateFixtureProgramSource(`
+8f4e/v1
+
+entry main
+module multiResultIf
+int output
+
+push &output
+push 1
+if
+push 10
+push 20
+push 3
+else
+push 30
+push 40
+push 5
+ifEnd int int int
+call packTriple
+store
+moduleEnd
+entryEnd
+
+function packTriple
+param int left
+param int right
+param int last
+push left
+push 1000
+mul
+push right
+push 10
+mul
+add
+push last
+add
+functionEnd int
+`);
+		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);
+		const output = fixture.compileResult.compiledModules.multiResultIf.memoryMap.output.byteAddress;
+
+		getExportedFunction(fixture.instance.exports, 'initDefaults')();
+		getExportedFunction(fixture.instance.exports, 'main')();
+
+		expect(memory.getInt32(output, true)).toBe(10203);
+	});
+
 	test('emits memory.fill before loading passive data defaults', async () => {
 		const { compileResult } = compileFixtureProgramSource(`
 8f4e/v1
