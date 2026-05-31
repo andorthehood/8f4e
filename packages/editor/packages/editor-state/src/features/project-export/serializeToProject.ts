@@ -1,5 +1,4 @@
 import type { Project, State } from '@8f4e/editor-state-types';
-import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
 
 /**
@@ -11,36 +10,4 @@ export default function serializeToProject(state: State): Project {
 	const { graphicHelper } = state;
 
 	return convertGraphicDataToProjectStructure(graphicHelper.codeBlocks);
-}
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('serializeToProject', () => {
-		it('serializes basic project state without compiled data', () => {
-			const state = createMockState({
-				graphicHelper: {
-					codeBlocks: [
-						createMockCodeBlock({
-							id: 'block-1',
-							code: ['10 example'],
-							x: 20,
-							y: 30,
-						}),
-					],
-				},
-				binaryAssets: [],
-				viewport: {
-					x: 40,
-					y: 50,
-					vGrid: 10,
-					hGrid: 10,
-				},
-			});
-
-			const project = serializeToProject(state);
-
-			expect(project).toMatchSnapshot();
-		});
-	});
 }

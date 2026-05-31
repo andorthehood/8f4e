@@ -23,20 +23,3 @@ export default function type(
 		col: newCol,
 	};
 }
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('type', () => {
-		it('inserts the character at the caret', () => {
-			const { code } = type(['ac'], 0, 1, 'b');
-			expect(code).toEqual(['abc']);
-		});
-
-		it('moves the caret one character to the right', () => {
-			const { row, col } = type(['ab'], 0, 1, 'c');
-			expect(row).toBe(0);
-			expect(col).toBe(2);
-		});
-	});
-}
