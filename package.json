@@ -52,7 +52,7 @@
       "biome check --write --no-errors-on-unmatched"
     ],
     "*.ts": [
-      "bash -c 'npx nx run-many --target=typecheck --all'"
+      "bash -c 'npx nx affected --target=typecheck --files \"$@\"' --"
     ]
   },
   "overrides": {
