@@ -190,8 +190,7 @@ export default function traceInstructionFlow(
 			stack: [],
 			blockStack: [
 				{
-					hasExpectedResult: false,
-					expectedResultIsInteger: false,
+					expectedResultTypes: [],
 					blockType: kind === constantsBlockType ? BlockType.CONSTANTS : BlockType.MODULE,
 				},
 			],
@@ -230,8 +229,7 @@ export default function traceInstructionFlow(
 			stack: [],
 			blockStack: [
 				{
-					hasExpectedResult: false,
-					expectedResultIsInteger: false,
+					expectedResultTypes: [],
 					blockType: BlockType.FUNCTION,
 				},
 			],
