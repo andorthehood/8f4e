@@ -8,7 +8,9 @@ import {
 	i32const,
 	i32load,
 	i32load8s,
+	i32load8u,
 	i32load16s,
+	i32load16u,
 	localGet,
 } from '@8f4e/compiler-wasm-utils';
 import type { PointerMetadata } from '../../utils/memoryData';
@@ -66,6 +68,31 @@ function createPointerLoadStep(memoryIndex: number): PointerLoadStep {
 	};
 }
 
+function getFinalDereferenceLoad(
+	pointerMetadata: PointerMetadata,
+	kind: PushValueKind,
+	dereferencedValueWordSize: number,
+	pointeeMemoryIndex: number
+): number[] {
+	if (pointerMetadata.pointeeBaseType === 'int8u') {
+		return i32load8u(0, 0, pointeeMemoryIndex);
+	}
+
+	if (pointerMetadata.pointeeBaseType === 'int16u') {
+		return i32load16u(1, 0, pointeeMemoryIndex);
+	}
+
+	if (dereferencedValueWordSize === 1) {
+		return i32load8s(0, 0, pointeeMemoryIndex);
+	}
+
+	if (dereferencedValueWordSize === 2) {
+		return i32load16s(1, 0, pointeeMemoryIndex);
+	}
+
+	return loadOpcode[kind](pointeeMemoryIndex);
+}
+
 export function buildPointerDereferenceByteCode(
 	context: CodegenContext,
 	lineNumberAfterMacroExpansion: number,
@@ -79,12 +106,7 @@ export function buildPointerDereferenceByteCode(
 	const kind = getDereferencedValueKindFromMetadata(pointerMetadata, dereferenceDepth);
 	const dereferencedValueWordSize = getDereferencedValueWordSizeFromMetadata(pointerMetadata, dereferenceDepth);
 	const pointeeMemoryIndex = 'pointeeMemoryIndex' in pointerMetadata ? (pointerMetadata.pointeeMemoryIndex ?? 0) : 0;
-	const finalLoad =
-		dereferencedValueWordSize === 1
-			? i32load8s(0, 0, pointeeMemoryIndex)
-			: dereferencedValueWordSize === 2
-				? i32load16s(1, 0, pointeeMemoryIndex)
-				: loadOpcode[kind](pointeeMemoryIndex);
+	const finalLoad = getFinalDereferenceLoad(pointerMetadata, kind, dereferencedValueWordSize, pointeeMemoryIndex);
 
 	if (pointerValueSource === 'pointer-slot') {
 		const slotMemoryIndex = 'memoryIndex' in pointerMetadata ? pointerMetadata.memoryIndex : 0;
