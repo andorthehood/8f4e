@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import parseBinaryAssetDirectives from './parseBinaryAssetDirectives';
-
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { describe, expect, it } from 'vitest';
+import parseBinaryAssetDirectives from './parseBinaryAssetDirectives';
 
 describe('parseBinaryAssetDirectives', () => {
 	it('parses definitions and load directives', () => {

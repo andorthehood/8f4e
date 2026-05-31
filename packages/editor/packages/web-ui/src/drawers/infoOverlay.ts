@@ -1,7 +1,6 @@
 import { GLOBAL_ALIGNMENT_BOUNDARY, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
-import { Engine } from 'glugglug';
-
 import type { State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 
 function formatBytes(bytes: number): string {
 	if (bytes < 1000) {

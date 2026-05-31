@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createButtonDirectiveData } from './data';
 import { createButtonDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'button',

@@ -1,6 +1,5 @@
-import { normalizeAndValidateResolvableArgs } from './helpers';
-
 import type { CompilationContext, DefaultLine, NormalizedDefaultLine } from '@8f4e/compiler-spec';
+import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**
  * Normalizes compile-time arguments for the `default` instruction.

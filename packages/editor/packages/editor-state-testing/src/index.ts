@@ -1,7 +1,11 @@
+import type {
+	CodeBlockGraphicData,
+	EventDispatcher,
+	ParsedDirectiveRecord,
+	State,
+	Viewport,
+} from '@8f4e/editor-state-types';
 import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
-
-import type { CodeBlockGraphicData, EventDispatcher, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
-import type { Viewport } from '@8f4e/editor-state-types';
 
 type DeepPartial<T> = T extends object
 	? {
@@ -371,7 +375,7 @@ function mergeDeep<T>(target: T, source: DeepPartial<T>): T {
 	const sourceObj = source as Record<string, unknown>;
 
 	for (const key in sourceObj) {
-		if (!Object.prototype.hasOwnProperty.call(sourceObj, key)) {
+		if (!Object.hasOwn(sourceObj, key)) {
 			continue;
 		}
 

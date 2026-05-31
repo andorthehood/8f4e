@@ -1,10 +1,7 @@
-import { ArgumentType } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
+import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/compiler-spec';
+import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { peekMapBlock } from '../utils/blockStack';
-
-import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `map`.

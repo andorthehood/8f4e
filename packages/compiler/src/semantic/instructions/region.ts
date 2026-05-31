@@ -1,4 +1,4 @@
-import { type CompilationContext, type RegionLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, RegionLine } from '@8f4e/compiler-spec';
 
 import { resolveRegionDirective } from '../memoryRegions';
 

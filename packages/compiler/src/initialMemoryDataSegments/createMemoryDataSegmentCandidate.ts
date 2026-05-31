@@ -1,8 +1,8 @@
+import type { DataStructure } from '@8f4e/compiler-spec';
 import materializeByteChunks from './materializeByteChunks';
-import writeDefaultValue from './writeDefaultValue';
 
 import type { InitialMemoryDataSegmentCandidate } from './types';
-import type { DataStructure } from '@8f4e/compiler-spec';
+import writeDefaultValue from './writeDefaultValue';
 
 export default function createMemoryDataSegmentCandidate(memory: DataStructure): InitialMemoryDataSegmentCandidate[] {
 	const isArray = memory.numberOfElements > 1;

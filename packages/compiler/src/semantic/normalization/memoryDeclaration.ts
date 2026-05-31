@@ -1,21 +1,19 @@
 import {
 	ArgumentType,
+	type CompilationContext,
+	type CompilerASTLine,
+	ErrorCode,
 	isArrayMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
-	type CompilerASTLine,
-	type CompilationContext,
 	type MemoryDeclarationLine,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
+import { getError } from '../../compilerError';
 import {
+	normalizeArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
 	validateOrDeferCompileTimeExpression,
 	validateOrDeferUnresolvedIdentifier,
-	normalizeArgumentsAtIndexes,
 } from './helpers';
-
-import { getError } from '../../compilerError';
 
 function requireResolvedArrayValue(
 	argument: CompilerASTLine['arguments'][number] | undefined,

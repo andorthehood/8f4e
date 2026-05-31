@@ -1,4 +1,4 @@
-import type { CompileOptions, CompiledFunctionLookup, CompiledModuleLookup } from '@8f4e/compiler-spec';
+import type { CompiledFunctionLookup, CompiledModuleLookup, CompileOptions } from '@8f4e/compiler-spec';
 import type { ProjectBlockType, ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
 
 export type { ProjectCodeBlock, ProjectInput };

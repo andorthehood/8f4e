@@ -1,5 +1,4 @@
-import { type CompilationContext, type UseLine } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { type CompilationContext, ErrorCode, type UseLine } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
 

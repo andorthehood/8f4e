@@ -1,23 +1,23 @@
 import compile, {
 	analyzeInstruction,
-	compileCodegenLine,
 	collectNamespacesFromASTs,
+	compileCodegenLine,
 	createCompilationContext,
 	normalizeCompileTimeArguments,
 } from '@8f4e/compiler';
-import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 import {
 	BlockType,
-	isMemoryDeclarationLine,
-	isSemanticInstructionLine,
-	type ConstantsAST,
+	type CompilationContext,
+	type CompileOptions,
 	type CompilerASTLine,
 	type CompilerASTLines,
-	type CompileOptions,
-	type CompilationContext,
 	type CompilerSourceBlockType,
+	type ConstantsAST,
+	isMemoryDeclarationLine,
+	isSemanticInstructionLine,
 	type ModuleAST,
 } from '@8f4e/compiler-spec';
+import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
 import type { ProjectInput } from '../shared/types';
 

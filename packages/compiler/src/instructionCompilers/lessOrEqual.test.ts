@@ -1,11 +1,9 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { WASM_F64_LE } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
-import lessOrEqual from './lessOrEqual';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import lessOrEqual from './lessOrEqual';
 
 describe('lessOrEqual instruction compiler', () => {
 	it('emits I32_LE_S for integer operands', () => {

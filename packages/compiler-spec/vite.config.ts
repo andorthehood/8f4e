@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import { createLibConfig } from '@8f4e/config/vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig(
 	createLibConfig({

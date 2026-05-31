@@ -1,7 +1,7 @@
-import { instructionParser, isSkipExecutionDirective } from '@8f4e/tokenizer';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
+import { instructionParser, isSkipExecutionDirective } from '@8f4e/tokenizer';
 
 /**
  * Effect that handles toggling the #skipExecution directive in module code blocks.

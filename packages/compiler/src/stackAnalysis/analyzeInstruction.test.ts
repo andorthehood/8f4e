@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
-
-import { analyzeInstruction } from './analyzeInstruction';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import { analyzeInstruction } from './analyzeInstruction';
 
 describe('analyzeInstruction', () => {
 	it('records stack before, consumed operands, produced items, and stack after', () => {

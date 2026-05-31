@@ -1,24 +1,18 @@
-import { instructionParser } from '@8f4e/tokenizer';
-import { getModuleId } from '@8f4e/tokenizer';
-import { getFunctionId } from '@8f4e/tokenizer';
-import { getConstantsId } from '@8f4e/tokenizer';
+import type { CompilerSourceBlockType, DocumentBlockType } from '@8f4e/compiler-spec';
 import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
-
-import { insertDependencies } from './insertDependencies';
-import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
-import { pasteMultipleBlocks } from './pasteMultipleBlocks';
-import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
-
-import findEntryNameAtPosition from '../entryOutlines/findEntryNameAtPosition';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import { getConstantsId, getFunctionId, getModuleId, instructionParser } from '@8f4e/tokenizer';
+import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import getCodeBlockId from '../../utils/getCodeBlockId';
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
-import getCodeBlockId from '../../utils/getCodeBlockId';
-import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-
-import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
-import type { CompilerSourceBlockType, DocumentBlockType } from '@8f4e/compiler-spec';
+import findEntryNameAtPosition from '../entryOutlines/findEntryNameAtPosition';
+import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
+import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
+import { insertDependencies } from './insertDependencies';
+import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 
 type NewCodeBlockType = Extract<DocumentBlockType, 'module' | 'function' | 'note'>;
 type RenameableCodeBlockType = Extract<CompilerSourceBlockType, 'module' | 'function'>;

@@ -1,9 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
+import type { State } from '@8f4e/editor-state-types';
+import { describe, expect, it } from 'vitest';
 import { mainMenu } from '../../src/features/menu/menus';
 import { createMockState } from '../../src/pureHelpers/testingUtils/testUtils';
-
-import type { State } from '@8f4e/editor-state-types';
 
 describe('menus - go home entry', () => {
 	it('places "Go @home" directly above "Jump to..."', () => {

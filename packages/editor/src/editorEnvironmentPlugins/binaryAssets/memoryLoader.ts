@@ -1,8 +1,7 @@
-import loadBinaryAssetIntoMemory from './loadBinaryAssetIntoMemory';
-
 import type { BinaryAsset, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { MemoryViews } from '@8f4e/web-ui';
+import loadBinaryAssetIntoMemory from './loadBinaryAssetIntoMemory';
 
 function resolveBinaryAssetTarget(
 	state: State,

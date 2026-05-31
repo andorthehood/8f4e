@@ -1,7 +1,6 @@
-import { createSchemaEditorConfigValidator } from '../editor-config/schemaValidator';
-
 import type { EditorConfigValidator, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import { createSchemaEditorConfigValidator } from '../editor-config/schemaValidator';
 
 export const RECOMPILE_DEBOUNCE_DELAY_CONFIG_PATH = 'recompileDebounceDelay';
 export const DEFAULT_RECOMPILE_DEBOUNCE_DELAY = 500;

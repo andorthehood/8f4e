@@ -1,17 +1,15 @@
-import { StateManager } from '@8f4e/state-manager';
-
+import type { EventDispatcher, InsertTextEvent, MoveCaretEvent, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import backSpace from './backSpace';
 import enter from './enter';
 import { moveCaret } from './moveCaret';
 import { getRawIndexForVisualColumn, getTabStopsByLine, getVisualColumnForRawIndex } from './tabLayout';
 import type from './type';
 
-import type { EventDispatcher, MoveCaretEvent, InsertTextEvent, State } from '@8f4e/editor-state-types';
-
 export default function codeEditing(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
 
-	const onMoveCaret = function (event: MoveCaretEvent) {
+	const onMoveCaret = (event: MoveCaretEvent) => {
 		if (!state.featureFlags.codeLineSelection) {
 			return;
 		}
@@ -47,7 +45,7 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 		store.set('graphicHelper.selectedCodeBlock.cursor.col', newPosition[1]);
 	};
 
-	const onDeleteBackward = function () {
+	const onDeleteBackward = () => {
 		if (!state.featureFlags.editing) {
 			return;
 		}
@@ -64,7 +62,7 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 		store.set('graphicHelper.selectedCodeBlock.lastUpdated', Date.now());
 	};
 
-	const onInsertNewLine = function () {
+	const onInsertNewLine = () => {
 		if (!state.featureFlags.editing) {
 			return;
 		}
@@ -81,7 +79,7 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 		store.set('graphicHelper.selectedCodeBlock.lastUpdated', Date.now());
 	};
 
-	const onInsertText = function (event: InsertTextEvent) {
+	const onInsertText = (event: InsertTextEvent) => {
 		if (!state.featureFlags.editing) {
 			return;
 		}

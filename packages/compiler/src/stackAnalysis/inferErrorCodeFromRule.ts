@@ -1,6 +1,5 @@
-import { ErrorCode, type ErrorCodeValue } from '@8f4e/compiler-spec';
-
 import type { OperandRule } from '@8f4e/compiler-spec';
+import { ErrorCode, type ErrorCodeValue } from '@8f4e/compiler-spec';
 
 export function inferErrorCodeFromRule(rule: OperandRule | OperandRule[]): ErrorCodeValue {
 	if (Array.isArray(rule)) {

@@ -1,12 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes } from '@8f4e/compiler-spec';
-
-import updateOutputsGraphicData from './updateGraphicData';
-
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { DataStructure } from '@8f4e/compiler-spec';
-
+import { MemoryTypes } from '@8f4e/compiler-spec';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
+import updateOutputsGraphicData from './updateGraphicData';
 
 describe('updateOutputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -65,7 +62,6 @@ describe('updateOutputsGraphicData', () => {
 
 		const output = findWidgetById(mockGraphicData.widgets.outputs, 'output1');
 		// Exclude codeBlock and memory from snapshot as they create circular references
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();
 		expect(output?.codeBlock).toBe(mockGraphicData);
@@ -175,7 +171,6 @@ describe('updateOutputsGraphicData', () => {
 
 		// Exclude codeBlock and memory references from snapshot
 		const entries = Object.entries(mockGraphicData.widgets.outputs).map(([key, value]) => {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { codeBlock: _codeBlock, memory: _memory, ...rest } = value;
 			return [key, rest];
 		});
@@ -200,7 +195,6 @@ describe('updateOutputsGraphicData', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		const output = findWidgetById(mockGraphicData.widgets.outputs, 'output1');
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();
 	});

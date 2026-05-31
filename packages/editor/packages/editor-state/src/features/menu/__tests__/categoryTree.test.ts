@@ -1,8 +1,6 @@
-import { describe, it, expect } from 'vitest';
-
-import { normalizeCategory, buildCategoryTree, getNodeAtPath, nodeToMenuItems } from '../categoryTree';
-
+import { describe, expect, it } from 'vitest';
 import type { CategoryItem } from '../categoryTree';
+import { buildCategoryTree, getNodeAtPath, nodeToMenuItems, normalizeCategory } from '../categoryTree';
 
 describe('categoryTree', () => {
 	describe('normalizeCategory', () => {

@@ -1,12 +1,10 @@
-import { describe, expect, it, vi } from 'vitest';
-import { MemoryTypes, type DataStructure } from '@8f4e/compiler-spec';
+import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
-import drawPianoKeyboards from './pianoKeyboards';
-
-import type { Engine } from 'glugglug';
 import type { PianoKeyboard } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
+import { describe, expect, it, vi } from 'vitest';
 import type { MemoryViews } from '../../../types';
+import drawPianoKeyboards from './pianoKeyboards';
 
 function createMemoryViews({ int32 = [], float32 = [] }: { int32?: number[]; float32?: number[] } = {}): MemoryViews {
 	return {

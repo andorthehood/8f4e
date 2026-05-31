@@ -1,11 +1,9 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { WASM_F64_EQ } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
-import equal from './equal';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import equal from './equal';
 
 describe('equal instruction compiler', () => {
 	it('emits I32_EQ for integer operands', () => {

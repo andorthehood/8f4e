@@ -1,14 +1,12 @@
 import {
 	ArgumentType,
 	type CompilationContext,
+	ErrorCode,
 	type MemoryCopyLine,
 	type NormalizedMemoryCopyLine,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { normalizeAndValidateResolvableArgs } from './helpers';
-
 import { getError } from '../../compilerError';
+import { normalizeAndValidateResolvableArgs } from './helpers';
 
 export default function normalizeMemoryCopy(
 	line: MemoryCopyLine,

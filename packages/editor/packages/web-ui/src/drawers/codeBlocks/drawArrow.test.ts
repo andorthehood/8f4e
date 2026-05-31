@@ -1,9 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
-import drawArrow from './drawArrow';
-
 import type { Engine } from 'glugglug';
+import { describe, expect, it, vi } from 'vitest';
+import drawArrow from './drawArrow';
 
 function createMockEngine(): Engine {
 	return {

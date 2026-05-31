@@ -1,8 +1,6 @@
-import { WASM_DROP, WASM_END, WASM_IF, WASM_RETURN, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
-
-import { saveByteCode } from './utils/saveByteCode';
-
 import type { ExitIfTrueLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import { WASM_DROP, WASM_END, WASM_IF, WASM_RETURN, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
+import { saveByteCode } from './utils/saveByteCode';
 
 /**
  * Instruction compiler for `exitIfTrue`.

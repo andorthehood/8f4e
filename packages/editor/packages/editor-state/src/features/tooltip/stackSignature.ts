@@ -1,4 +1,4 @@
-import { getInstructionSpec, resolveInstructionStackEffect, type ResolvedStackEffect } from '@8f4e/compiler-spec';
+import { getInstructionSpec, type ResolvedStackEffect, resolveInstructionStackEffect } from '@8f4e/compiler-spec';
 
 /**
  * Formats a resolved stack effect as a human-readable instruction signature.

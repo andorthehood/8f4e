@@ -1,8 +1,6 @@
-import { localGet } from '@8f4e/compiler-wasm-utils';
-
-import { saveByteCode } from '../../utils/saveByteCode';
-
 import type { CodegenContext, ResolvedLocalPushLine } from '@8f4e/compiler-spec';
+import { localGet } from '@8f4e/compiler-wasm-utils';
+import { saveByteCode } from '../../utils/saveByteCode';
 
 export default function pushLocal(line: ResolvedLocalPushLine, context: CodegenContext): CodegenContext {
 	const { local } = line.resolvedTarget;

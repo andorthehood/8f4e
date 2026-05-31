@@ -1,10 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import type { BlockStack } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
-
+import { describe, expect, it } from 'vitest';
 import { popBlock, pushBlock } from './blockStack';
 import createInstructionCompilerTestContext from './testUtils';
-
-import type { BlockStack } from '@8f4e/compiler-spec';
 
 describe('blockStack utilities', () => {
 	const mockModuleBlock: BlockStack[number] = {

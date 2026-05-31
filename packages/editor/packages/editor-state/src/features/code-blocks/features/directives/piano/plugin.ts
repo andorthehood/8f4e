@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createPianoDirectiveData } from './data';
 import { createPianoDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'piano',

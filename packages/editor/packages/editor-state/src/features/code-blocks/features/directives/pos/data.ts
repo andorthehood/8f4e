@@ -1,7 +1,5 @@
+import type { EditorDirectivePlugin, ParsedDirectiveRecord, ParsedEditorDirective } from '@8f4e/editor-state-types';
 import { parseBlockDirectives } from '../../../utils/parseBlockDirectives';
-
-import type { ParsedDirectiveRecord } from '@8f4e/editor-state-types';
-import type { EditorDirectivePlugin, ParsedEditorDirective } from '@8f4e/editor-state-types';
 
 export interface PosParseResult {
 	x: number;

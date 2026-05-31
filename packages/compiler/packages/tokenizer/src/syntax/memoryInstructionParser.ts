@@ -1,8 +1,6 @@
-import { ArgumentType } from '@8f4e/compiler-spec';
-
-import { SyntaxRulesError, SyntaxErrorCode } from './syntaxError';
-
 import type { Argument, ArgumentLiteral, ArgumentStringLiteral } from '@8f4e/compiler-spec';
+import { ArgumentType } from '@8f4e/compiler-spec';
+import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
 /**
  * A single token within a split-byte sequence.

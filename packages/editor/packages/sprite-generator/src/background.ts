@@ -1,9 +1,9 @@
-import { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug';
 
 import { createAtlasLayout } from './atlasLayout.ts';
 import { drawCharacter } from './font.ts';
 import Glyph from './fonts/types.ts';
-import { ColorScheme, Command, DrawingCommand } from './types.ts';
+import { type ColorScheme, Command, type DrawingCommand } from './types.ts';
 
 export default function generate(
 	glyphs: number[],
@@ -35,7 +35,7 @@ export default function generate(
 	return commands;
 }
 
-export const generateLookup = function (characterWidth: number, characterHeight: number): Record<0, SpriteCoordinates> {
+export const generateLookup = (characterWidth: number, characterHeight: number): Record<0, SpriteCoordinates> => {
 	const layout = createAtlasLayout(characterWidth, characterHeight);
 
 	return {

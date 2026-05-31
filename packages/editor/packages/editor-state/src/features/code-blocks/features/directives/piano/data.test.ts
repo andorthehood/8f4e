@@ -1,9 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
+import { describe, expect, it } from 'vitest';
+import { parseEditorDirectives } from '../utils';
 import { createPianoDirectiveData } from './data';
 import pianoDirective from './plugin';
-
-import { parseEditorDirectives } from '../utils';
 
 function parsePianoDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [pianoDirective]).map(directive =>

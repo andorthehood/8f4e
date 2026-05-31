@@ -1,14 +1,12 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { getError } from '../compilerError';
-
 import type {
-	CompilerASTLine,
 	CodegenContext,
 	CompilationContext,
+	CompilerASTLine,
 	StackItem,
 	StackValueType,
 } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
+import { getError } from '../compilerError';
 
 export type MapKind = 'int32' | 'float32' | 'float64';
 

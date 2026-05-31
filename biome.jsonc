@@ -1,0 +1,85 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"includes": [
+			"**",
+			"!**/.vscode",
+			"!**/jest.config.js",
+			"!**/jest.image.ts",
+			"!logs",
+			"!**/src/fonts/**/generated",
+			"!packages/editor/packages/glugglug"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"lineWidth": 120
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded",
+			"bracketSpacing": true,
+			"quoteProperties": "asNeeded",
+			"quoteStyle": "single",
+			"semicolons": "always",
+			"trailingCommas": "es5"
+		}
+	},
+	"json": {
+		"formatter": {
+			"enabled": false
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"a11y": {
+				"useHtmlLang": "off"
+			},
+			"correctness": {
+				"noUnusedFunctionParameters": "off",
+				"noVoidTypeReturn": "off"
+			},
+			"complexity": {
+				"noImportantStyles": "off",
+				"noUselessSwitchCase": "off",
+				"useLiteralKeys": "off",
+				"useOptionalChain": "off"
+			},
+			"performance": {
+				"noAccumulatingSpread": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off",
+				"useNodejsImportProtocol": "off",
+				"useTemplate": "off"
+			},
+			"suspicious": {
+				"noApproximativeNumericConstant": "off",
+				"noAssignInExpressions": "off",
+				"noConfusingVoidType": "off",
+				"noDuplicateProperties": "off",
+				"noExplicitAny": "off",
+				"noGlobalIsNan": "off",
+				"noImplicitAnyLet": "off",
+				"useIterableCallbackReturn": "off"
+			}
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}

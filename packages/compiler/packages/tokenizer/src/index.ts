@@ -1,5 +1,6 @@
-export { compileToAST, parseLine, instructionParser } from './parser';
-export * from './syntax';
+export { createASTCache } from './cache';
+export { compileToAST, instructionParser, parseLine } from './parser';
+export type { ProjectBlockType, ProjectCodeBlock, ProjectCompilerBlocks, ProjectInput } from './project';
 export {
 	BLOCK_DELIMITERS,
 	FORMAT_HEADER,
@@ -11,5 +12,4 @@ export {
 	parse8f4eProject,
 	pickProjectCompilerBlocks,
 } from './project';
-export type { ProjectBlockType, ProjectCodeBlock, ProjectCompilerBlocks, ProjectInput } from './project';
-export { createASTCache } from './cache';
+export * from './syntax';

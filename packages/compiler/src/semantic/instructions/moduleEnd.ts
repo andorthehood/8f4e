@@ -1,5 +1,4 @@
-import { BlockType, type CompilationContext, type ModuleEndLine } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { BlockType, type CompilationContext, ErrorCode, type ModuleEndLine } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
 import { popBlock } from '../../utils/blockStack';

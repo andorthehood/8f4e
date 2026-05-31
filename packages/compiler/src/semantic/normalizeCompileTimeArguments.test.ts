@@ -1,7 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { ArgumentType, type CompilationContext, type CompilerASTLine, ErrorCode } from '@8f4e/compiler-spec';
 import { classifyIdentifier, parseArgument } from '@8f4e/tokenizer';
-import { ArgumentType, type CompilationContext, type CompilerASTLine } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { describe, expect, it } from 'vitest';
 
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 

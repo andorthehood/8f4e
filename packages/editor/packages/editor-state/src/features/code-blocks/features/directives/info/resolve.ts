@@ -1,8 +1,7 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
+import gapCalculator from '~/features/code-editing/gapCalculator';
 import type { InfoDirectiveData } from './data';
 import type { InfoLayout } from './entries';
-
-import gapCalculator from '~/features/code-editing/gapCalculator';
 
 type DirectiveWidgetResolver = NonNullable<DirectiveWidgetContribution['afterGraphicDataWidthCalculation']>;
 

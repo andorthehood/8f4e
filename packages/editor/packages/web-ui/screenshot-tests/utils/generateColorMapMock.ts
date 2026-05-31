@@ -1,5 +1,5 @@
-import { SpriteLookups } from '@8f4e/sprite-generator';
-import { SpriteLookup } from 'glugglug';
+import type { SpriteLookups } from '@8f4e/sprite-generator';
+import type { SpriteLookup } from 'glugglug';
 
 export function generateColorMapWithAllColors(spriteLookups: SpriteLookups) {
 	return [

@@ -6,7 +6,6 @@ export function createSet<State>(state: State, subscriptions: Set<Subscription<S
 	return function set<P extends Path<State>>(selector: P, value: PathValue<State, P>) {
 		const path = String(selector);
 		const keys = path.split('.');
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let current: any = state;
 
 		if (keys.length === 1) {

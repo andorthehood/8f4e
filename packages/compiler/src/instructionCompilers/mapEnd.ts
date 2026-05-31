@@ -1,3 +1,5 @@
+import type { InstructionCompiler, MapEndLine } from '@8f4e/compiler-spec';
+import type { WASMInstructionCode } from '@8f4e/compiler-wasm-utils';
 import {
 	f32const,
 	f64const,
@@ -13,15 +15,10 @@ import {
 	WASM_I32_OR,
 	WASM_SELECT,
 } from '@8f4e/compiler-wasm-utils';
-
-import { saveByteCode } from './utils/saveByteCode';
-
-import { resolveMapKind } from '../utils/mapValueKind';
 import { popMapBlock } from '../utils/blockStack';
-
-import type { WASMInstructionCode } from '@8f4e/compiler-wasm-utils';
 import type { MapKind } from '../utils/mapValueKind';
-import type { InstructionCompiler, MapEndLine } from '@8f4e/compiler-spec';
+import { resolveMapKind } from '../utils/mapValueKind';
+import { saveByteCode } from './utils/saveByteCode';
 
 const constOp: Record<MapKind, (v: number) => number[]> = {
 	int32: i32const,

@@ -1,3 +1,5 @@
+import type { CodegenContext } from '@8f4e/compiler-spec';
+import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 import {
 	f32const,
 	f32load,
@@ -5,22 +7,18 @@ import {
 	f64load,
 	i32const,
 	i32load,
-	i32load16s,
 	i32load8s,
+	i32load16s,
 	localGet,
 } from '@8f4e/compiler-wasm-utils';
-import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
-
-import { valueKindToWasmType, type PushValueKind } from '../../utils/pushValueKind';
+import type { PointerMetadata } from '../../utils/memoryData';
 import {
 	getDereferencedValueKindFromMetadata,
 	getDereferencedValueWordSizeFromMetadata,
 	getPointerDepthFromMetadata,
 } from '../../utils/memoryData';
+import { type PushValueKind, valueKindToWasmType } from '../../utils/pushValueKind';
 import { guardedAddressOperation } from '../utils/memoryAccessGuard';
-
-import type { CodegenContext } from '@8f4e/compiler-spec';
-import type { PointerMetadata } from '../../utils/memoryData';
 
 type PointerValueSource = 'pointer-slot' | 'pointer-value';
 type PointerLoadStep = { accessByteWidth: number; loadByteCode: number[]; memoryIndex: number };

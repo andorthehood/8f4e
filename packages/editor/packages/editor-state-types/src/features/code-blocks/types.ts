@@ -4,7 +4,7 @@
 
 import type { DataStructure, DocumentBlockType } from '@8f4e/compiler-spec';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
-import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';
+import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
 import type { ContextMenu } from '../menu/types';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 

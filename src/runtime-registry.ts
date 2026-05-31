@@ -1,14 +1,12 @@
-import { createWebWorkerRuntimeDef } from '@8f4e/runtime-web-worker/runtime-def';
-import WebWorkerRuntime from '@8f4e/runtime-web-worker?worker';
-
-import { getCodeBuffer, getMemory } from './compiler-callback';
-
 import type {
 	EditorConfigSchemaContribution,
 	JSONSchemaLike,
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
 } from '@8f4e/editor';
+import { createWebWorkerRuntimeDef } from '@8f4e/runtime-web-worker/runtime-def';
+import WebWorkerRuntime from '@8f4e/runtime-web-worker?worker';
+import { getCodeBuffer, getMemory } from './compiler-callback';
 
 /**
  * Default runtime ID for the application.

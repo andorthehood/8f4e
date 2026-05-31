@@ -1,10 +1,8 @@
-import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
-
-import getCodeBlockGridWidth from '../graphicHelper/getCodeBlockGridWidth';
-import getCodeBlockId from '../../utils/getCodeBlockId';
-import getBlockType from '../../utils/codeParsers/getBlockType';
-
 import type { State } from '@8f4e/editor-state-types';
+import getBlockType from '../../utils/codeParsers/getBlockType';
+import getCodeBlockId from '../../utils/getCodeBlockId';
+import getCodeBlockGridWidth from '../graphicHelper/getCodeBlockGridWidth';
+import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
 
 interface InsertDependenciesParams {
 	dependencies: string[];

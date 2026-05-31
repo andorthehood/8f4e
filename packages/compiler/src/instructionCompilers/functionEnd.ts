@@ -1,15 +1,13 @@
-import { ArgumentType } from '@8f4e/compiler-spec';
-
-import { functionValueTypeToWasmType } from '../utils/functionValueType';
-import { getOrRegisterFunctionType } from '../utils/functionTypeRegistry';
-import { popBlock } from '../utils/blockStack';
-
 import type {
+	ArgumentType,
 	CompilerASTLine,
 	FunctionCodegenContext,
 	FunctionSignature,
 	InstructionCompiler,
 } from '@8f4e/compiler-spec';
+import { popBlock } from '../utils/blockStack';
+import { getOrRegisterFunctionType } from '../utils/functionTypeRegistry';
+import { functionValueTypeToWasmType } from '../utils/functionValueType';
 
 /**
  * Instruction compiler for `functionEnd`.

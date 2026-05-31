@@ -1,10 +1,8 @@
 import { BASE_TYPE_METADATA, type DataStructure } from '@8f4e/compiler-spec';
-
-import { maxLiveMemoryAddressLength, maxLiveMemoryValueLength } from './constants';
-import { getTooltipLineColors } from './colors';
-
 import type { TooltipLiveValueSource } from '@8f4e/editor-state-types';
 import type { SpriteLookup } from 'glugglug';
+import { getTooltipLineColors } from './colors';
+import { maxLiveMemoryAddressLength, maxLiveMemoryValueLength } from './constants';
 import type { SpriteLookups, TooltipLiveValueTarget } from './types';
 
 interface LiveTooltipLine {

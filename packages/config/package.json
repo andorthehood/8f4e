@@ -23,10 +23,6 @@
       "types": "./dist/vite/index.d.ts",
       "default": "./dist/vite/index.js"
     },
-    "./eslint": {
-      "types": "./dist/eslint/index.d.ts",
-      "default": "./dist/eslint/index.js"
-    },
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./tsconfig.node.json": "./tsconfig.node.json",
     "./tsconfig.dom.json": "./tsconfig.dom.json",

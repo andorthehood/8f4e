@@ -1,9 +1,7 @@
+import type { CodeBlockGraphicData, Project } from '@8f4e/editor-state-types';
+import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import { isBrowserLocalNoteBlock } from '../browser-local-notes/browserLocalNotes';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
-
-import type { CodeBlockGraphicData, Project } from '@8f4e/editor-state-types';
-
-import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 /**
  * Converts graphic data code blocks to simplified project structure for serialization.

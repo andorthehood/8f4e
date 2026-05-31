@@ -1,7 +1,5 @@
 // Import the types from the editor
 // Note: Worker import is done at runtime by the host, not here
-import { StateManager } from '@8f4e/state-manager';
-import { resolveSchemaConfigRoot } from '@8f4e/editor';
 
 import type {
 	EditorConfig,
@@ -10,6 +8,8 @@ import type {
 	RuntimeRegistryEntry,
 	State,
 } from '@8f4e/editor';
+import { resolveSchemaConfigRoot } from '@8f4e/editor';
+import type { StateManager } from '@8f4e/state-manager';
 
 const WEB_WORKER_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 	root: 'workerRuntime',

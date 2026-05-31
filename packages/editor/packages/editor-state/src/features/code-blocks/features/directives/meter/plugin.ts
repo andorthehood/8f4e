@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createMeterDirectiveData } from './data';
 import { createMeterDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'meter',

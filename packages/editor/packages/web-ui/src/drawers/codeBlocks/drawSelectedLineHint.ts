@@ -1,10 +1,8 @@
-import formatDebuggerValue, { formatDebuggerValueAtAddress } from './widgets/formatDebuggerValue';
-
-import type { Engine } from 'glugglug';
 import type { DataStructure } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State, TooltipLiveValue } from '@8f4e/editor-state-types';
+import type { Engine, SpriteLookup } from 'glugglug';
 import type { MemoryViews } from '../../types';
-import type { SpriteLookup } from 'glugglug';
+import formatDebuggerValue, { formatDebuggerValueAtAddress } from './widgets/formatDebuggerValue';
 
 function getMemoryForLiveValueLine(state: State, moduleId: string, memoryId: string): DataStructure | undefined {
 	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];

@@ -1,9 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
-import createStateManager from '@8f4e/state-manager';
-
-import { createEditorEnvironmentPluginManager } from './manager';
-
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import createStateManager from '@8f4e/state-manager';
+import { describe, expect, it, vi } from 'vitest';
+import { createEditorEnvironmentPluginManager } from './manager';
 import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEntry } from './types';
 
 function createState(codeBlocks: CodeBlockGraphicData[] = []): State {

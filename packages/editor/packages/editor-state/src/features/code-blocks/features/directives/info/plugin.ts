@@ -1,8 +1,7 @@
+import { createDirectivePlugin } from '../utils';
 import { createInfoDirectiveData } from './data';
 import { getInfoLayout } from './entries';
 import { createInfoDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'info',

@@ -1,4 +1,4 @@
-import { upsertDirective, removeDirective } from '../../directiveEditing';
+import { removeDirective, upsertDirective } from '../../directiveEditing';
 
 /**
  * Inserts or removes @disabled directive from code block lines.

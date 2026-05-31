@@ -1,13 +1,10 @@
-import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
-import createStateManager from '@8f4e/state-manager';
-
-import projectExport from '../effect';
-import { exportFileNameEditorConfigValidator } from '../editorConfig';
-
 import type { State } from '@8f4e/editor-state-types';
-
+import createStateManager from '@8f4e/state-manager';
+import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import { exportFileNameEditorConfigValidator } from '../editorConfig';
+import projectExport from '../effect';
 
 describe('projectExport', () => {
 	let mockState: State;

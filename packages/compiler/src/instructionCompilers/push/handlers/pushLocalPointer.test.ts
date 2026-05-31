@@ -1,11 +1,9 @@
+import type { ResolvedLocalPointerPushLine } from '@8f4e/compiler-spec';
 import { f32load, localGet, WASM_TYPE_F32 } from '@8f4e/compiler-wasm-utils';
 import { describe, it } from 'vitest';
 
-import pushLocalPointer from './pushLocalPointer';
-
 import createInstructionCompilerTestContext, { expectGuardedDereference } from '../../../utils/testUtils';
-
-import type { ResolvedLocalPointerPushLine } from '@8f4e/compiler-spec';
+import pushLocalPointer from './pushLocalPointer';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

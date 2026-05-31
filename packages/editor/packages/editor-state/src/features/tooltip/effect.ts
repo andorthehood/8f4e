@@ -1,15 +1,14 @@
+import type { CompiledStackAnalysisLine } from '@8f4e/compiler-spec';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getSelectedLineTooltipContent } from './content';
 import { createEmptyTooltipState, getTooltipState } from './layout';
 import { getInstructionNameFromSourceLine, getMemoryDeclarationIdFromSourceLine } from './sourceLine';
 
-import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { CompiledStackAnalysisLine } from '@8f4e/compiler-spec';
-
+export { getSelectedLineTooltipColors } from './colors';
 export { TOOLTIP_WRAP_WIDTH } from './constants';
 export { getSelectedLineTooltipContent, getSelectedLineTooltipText } from './content';
-export { getSelectedLineTooltipColors } from './colors';
 export {
 	getInstructionNameFromSourceLine,
 	getInstructionSpecFromSourceLine,

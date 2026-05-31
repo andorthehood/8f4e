@@ -1,7 +1,7 @@
-import { serializeGroupToClipboard } from '../../clipboard/clipboardUtils';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
+import { serializeGroupToClipboard } from '../../clipboard/clipboardUtils';
 
 export default function groupCopier(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();

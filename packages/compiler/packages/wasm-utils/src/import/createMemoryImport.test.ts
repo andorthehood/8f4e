@@ -1,8 +1,6 @@
 import { expect, test } from 'vitest';
-
-import createMemoryImport from './createMemoryImport';
-
 import { ImportDesc } from '../section';
+import createMemoryImport from './createMemoryImport';
 
 test('createMemoryImport generates correct entry', () => {
 	const imp = createMemoryImport('host', 'memory', 1);

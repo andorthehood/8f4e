@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import { getPresentationStops, parsePresentationDirective } from './directives';
-
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { describe, expect, it } from 'vitest';
+import { getPresentationStops, parsePresentationDirective } from './directives';
 
 describe('presentation directives', () => {
 	it('parses a valid presentation directive', () => {

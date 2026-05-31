@@ -1,5 +1,5 @@
+import { getReporters, sharedTestConfig } from '@8f4e/config/vitest';
 import { defineConfig } from 'vitest/config';
-import { sharedTestConfig, getReporters } from '@8f4e/config/vitest';
 
 export default defineConfig({
 	test: {

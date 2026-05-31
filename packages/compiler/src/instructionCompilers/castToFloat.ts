@@ -1,8 +1,6 @@
-import { WASM_F32_CONVERT_I32_S } from '@8f4e/compiler-wasm-utils';
-
-import { saveByteCode } from './utils/saveByteCode';
-
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import { WASM_F32_CONVERT_I32_S } from '@8f4e/compiler-wasm-utils';
+import { saveByteCode } from './utils/saveByteCode';
 
 /**
  * Instruction compiler for `castToFloat`.

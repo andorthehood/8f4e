@@ -1,9 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
+import { describe, expect, it } from 'vitest';
+import { parseEditorDirectives } from '../utils';
 import { createWaveDirectiveData } from './data';
 import waveDirective, { wave2Directive } from './plugin';
-
-import { parseEditorDirectives } from '../utils';
 
 function parseWaveDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [waveDirective])

@@ -1,23 +1,13 @@
-import { StateManager } from '@8f4e/state-manager';
-import { getBlockType } from '@8f4e/tokenizer';
-import { getModuleId, getConstantsId } from '@8f4e/tokenizer';
-import { getFunctionId } from '@8f4e/tokenizer';
-import { getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
-
-import gaps from './gaps';
-import positionOffsetters from './positionOffsetters';
-import getCodeBlockGridWidth from './getCodeBlockGridWidth';
-
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import {
-	deriveDirectiveState,
-	runAfterGraphicDataWidthCalculation,
-	runBeforeGraphicDataWidthCalculation,
-} from '../directives/registry';
-import inputs from '../inputs/updateGraphicData';
-import outputs from '../outputs/updateGraphicData';
-import blockHighlights from '../blockHighlights/updateGraphicData';
-import { CodeBlockClickEvent } from '../codeBlockDragger/effect';
-import wrapText from '../../utils/wrapText';
+	getBlockType,
+	getConstantsId,
+	getFunctionId,
+	getModuleId,
+	getPointerDepth,
+	isMemoryDeclarationInstruction,
+} from '@8f4e/tokenizer';
 import gapCalculator from '../../../code-editing/gapCalculator';
 import highlightSyntax8f4e from '../../../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../../../code-editing/highlightSyntaxGlsl';
@@ -31,15 +21,26 @@ import {
 	getTabStopsByLine,
 	getVisualColumnForRawIndex,
 } from '../../../code-editing/tabLayout';
-import getCodeBlockId from '../../utils/getCodeBlockId';
-import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import parsePos from '../directives/pos/data';
+import { isShaderNoteCode } from '../../../shader-effects/getShaderNoteMetadata';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 import updateViewport from '../../../viewport/updateViewport';
+import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import getCodeBlockId from '../../utils/getCodeBlockId';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
-import { isShaderNoteCode } from '../../../shader-effects/getShaderNoteMetadata';
-
-import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
+import wrapText from '../../utils/wrapText';
+import blockHighlights from '../blockHighlights/updateGraphicData';
+import type { CodeBlockClickEvent } from '../codeBlockDragger/effect';
+import parsePos from '../directives/pos/data';
+import {
+	deriveDirectiveState,
+	runAfterGraphicDataWidthCalculation,
+	runBeforeGraphicDataWidthCalculation,
+} from '../directives/registry';
+import inputs from '../inputs/updateGraphicData';
+import outputs from '../outputs/updateGraphicData';
+import gaps from './gaps';
+import getCodeBlockGridWidth from './getCodeBlockGridWidth';
+import positionOffsetters from './positionOffsetters';
 
 function shouldRenderBlankLineNumber(sourceLine: string): boolean {
 	const instruction = sourceLine.match(/^\s*([^\s;]+)/)?.[1];
@@ -64,7 +65,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	const shouldExpandCodeBlockForEditing = (codeBlock: CodeBlockGraphicData): boolean =>
 		codeBlock === state.graphicHelper.selectedCodeBlock;
 
-	const onCodeBlockClick = function ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) {
+	const onCodeBlockClick = ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) => {
 		if (!state.featureFlags.codeLineSelection) {
 			return;
 		}
@@ -94,7 +95,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		});
 	};
 
-	const updateGraphics = function (graphicData: CodeBlockGraphicData) {
+	const updateGraphics = (graphicData: CodeBlockGraphicData) => {
 		if (!state.graphicHelper.spriteLookups) {
 			return;
 		}
@@ -202,13 +203,13 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.graphicHelper.textureCacheEpoch}`;
 	};
 
-	const updateGraphicsAll = function () {
+	const updateGraphicsAll = () => {
 		for (const graphicData of state.graphicHelper.codeBlocks) {
 			updateGraphics(graphicData);
 		}
 	};
 
-	const recomputePixelCoordinatesAndUpdateGraphics = function () {
+	const recomputePixelCoordinatesAndUpdateGraphics = () => {
 		// When viewport grid dimensions change (e.g., font change), recompute pixel positions
 		// from the stable grid coordinates, then update graphics. Combined into single iteration.
 		for (const codeBlock of state.graphicHelper.codeBlocks) {
@@ -224,7 +225,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		}
 	};
 
-	const centerViewportOnSelectedCodeBlock = function () {
+	const centerViewportOnSelectedCodeBlock = () => {
 		const selectedCodeBlock = state.graphicHelper.selectedCodeBlock;
 		if (!selectedCodeBlock) {
 			return;
@@ -236,14 +237,14 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateViewport(state, x, y, events);
 	};
 
-	const updateSelectedCodeBlock = function () {
+	const updateSelectedCodeBlock = () => {
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
 		}
 		updateGraphics(state.graphicHelper.selectedCodeBlock);
 	};
 
-	const updateProgrammaticSelectedCodeBlock = function () {
+	const updateProgrammaticSelectedCodeBlock = () => {
 		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEdit;
 		if (!block) {
 			return;
@@ -251,7 +252,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(block);
 	};
 
-	const updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger = function () {
+	const updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger = () => {
 		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
 		if (!block) {
 			return;
@@ -259,10 +260,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		updateGraphics(block);
 	};
 
-	const updateHideSelectionTransition = function (
+	const updateHideSelectionTransition = (
 		previousBlock: CodeBlockGraphicData | undefined,
 		nextBlock: CodeBlockGraphicData | undefined
-	) {
+	) => {
 		[previousBlock, nextBlock].forEach(codeBlock => {
 			if (!codeBlock) {
 				return;
@@ -273,12 +274,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	let previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
-	const onSelectedCodeBlockChanged = function () {
+	const onSelectedCodeBlockChanged = () => {
 		updateHideSelectionTransition(previousSelectedCodeBlock, state.graphicHelper.selectedCodeBlock);
 		previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
 	};
 
-	const populateCodeBlocks = async function () {
+	const populateCodeBlocks = async () => {
 		if (!state.initialProjectState) {
 			return;
 		}
@@ -390,7 +391,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	}
 
 	// When user edits code, parse @pos and update runtime position if valid
-	const applyPositionFromCodeEdit = function () {
+	const applyPositionFromCodeEdit = () => {
 		if (!state.graphicHelper.selectedCodeBlock) {
 			return;
 		}

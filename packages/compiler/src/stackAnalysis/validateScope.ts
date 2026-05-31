@@ -1,9 +1,4 @@
-import {
-	type CompilerASTLine,
-	type CompilationContext,
-	type ErrorCodeValue,
-	type ScopeRule,
-} from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine, ErrorCodeValue, ScopeRule } from '@8f4e/compiler-spec';
 
 import { getError } from '../compilerError';
 

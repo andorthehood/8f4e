@@ -1,16 +1,14 @@
 import compile, { deriveEffectiveMemorySize } from '@8f4e/compiler';
-
-import getMemoryValueChanges from './getMemoryValueChanges';
-import getOrCreateMemory from './getOrCreateMemory';
-
 import type {
 	CompileAndUpdateMemoryResult,
+	CompiledModuleLookup,
 	CompileInput,
 	CompileOptions,
-	CompiledModuleLookup,
 	CompilerCache,
 	GetOrCreateWasmInstanceResult,
 } from '@8f4e/compiler-spec';
+import getMemoryValueChanges from './getMemoryValueChanges';
+import getOrCreateMemory from './getOrCreateMemory';
 
 let previousCompiledModules: CompiledModuleLookup | undefined;
 let compilerCache: CompilerCache | undefined;

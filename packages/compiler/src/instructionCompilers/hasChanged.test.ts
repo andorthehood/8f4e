@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import hasChanged from './hasChanged';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import hasChanged from './hasChanged';
 
 describe('hasChanged instruction compiler', () => {
 	it('compiles the change detector segment', () => {

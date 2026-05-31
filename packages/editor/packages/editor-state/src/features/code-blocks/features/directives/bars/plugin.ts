@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createBarsDirectiveData } from './data';
 import { createBarsDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'bars',

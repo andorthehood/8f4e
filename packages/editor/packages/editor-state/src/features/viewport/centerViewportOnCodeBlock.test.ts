@@ -1,8 +1,6 @@
-import { describe, it, expect } from 'vitest';
-
-import centerViewportOnCodeBlock, { CodeBlockBounds } from './centerViewportOnCodeBlock';
-
+import { describe, expect, it } from 'vitest';
 import { createMockViewport } from '~/pureHelpers/testingUtils/testUtils';
+import centerViewportOnCodeBlock, { type CodeBlockBounds } from './centerViewportOnCodeBlock';
 
 function createMockCodeBlock(
 	x: number,

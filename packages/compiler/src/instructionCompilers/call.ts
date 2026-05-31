@@ -1,8 +1,6 @@
-import { call as wasmCall } from '@8f4e/compiler-wasm-utils';
-
-import { saveByteCode } from './utils/saveByteCode';
-
 import type { InstructionCompiler, ResolvedCallLine } from '@8f4e/compiler-spec';
+import { call as wasmCall } from '@8f4e/compiler-wasm-utils';
+import { saveByteCode } from './utils/saveByteCode';
 
 /**
  * Instruction compiler for `call`.

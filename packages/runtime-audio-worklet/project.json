@@ -19,8 +19,8 @@
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "eslint src --fix",
-        "cwd": "{projectRoot}"
+        "command": "biome check --write packages/runtime-audio-worklet/src",
+        "cwd": "{workspaceRoot}"
       }
     },
     "dev": {
@@ -33,6 +33,7 @@
     "test": {
       "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/@8f4e/runtime-audio-worklet"],
+      "dependsOn": ["^build"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
         "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/runtime-audio-worklet"

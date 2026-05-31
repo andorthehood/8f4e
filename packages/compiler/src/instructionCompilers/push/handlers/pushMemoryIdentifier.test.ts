@@ -1,11 +1,9 @@
+import type { ResolvedMemoryPushLine } from '@8f4e/compiler-spec';
 import { i32const, i32load } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
-import pushMemoryIdentifier from './pushMemoryIdentifier';
-
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-
-import type { ResolvedMemoryPushLine } from '@8f4e/compiler-spec';
+import pushMemoryIdentifier from './pushMemoryIdentifier';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import castToFloat from './castToFloat';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import castToFloat from './castToFloat';
 
 describe('castToFloat instruction compiler', () => {
 	it('converts int operand to float', () => {

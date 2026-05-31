@@ -1,7 +1,6 @@
-import { buildCategoryTree, getNodeAtPath, nodeToMenuItems } from '../categoryTree';
-
 import type { MenuGenerator, State } from '@8f4e/editor-state-types';
 import type { CategoryItem } from '../categoryTree';
+import { buildCategoryTree, getNodeAtPath, nodeToMenuItems } from '../categoryTree';
 
 export const projectMenu: MenuGenerator<State> = async (state, payload = {}) => {
 	const { path = [] } = payload as { path?: string[] };

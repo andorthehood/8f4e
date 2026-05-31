@@ -15,8 +15,8 @@
 - Artifacts in `dist/` must exist before root Vite build when APIs change.
 
 ## Coding Style
-- TypeScript (strict). ESLint + `@typescript-eslint` and `import/order`.
-- Use ESLint as the fixer (`npx eslint --fix <files>`); it owns formatting rules such as tabs, single quotes, semicolons, width 120, and trailing commas.
+- TypeScript (strict). Use Biome for linting and import organization.
+- Use Biome as the fixer (`npx biome check --write <files>`); it owns formatting rules such as tabs, single quotes, semicolons, width 120, and trailing commas.
 
 ## Testing
 - Vitest (via Nx). Keep narrow unit tests colocated with the source under test using `*.test.ts` or `__tests__/`.

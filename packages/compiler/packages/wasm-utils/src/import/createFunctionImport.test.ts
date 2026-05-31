@@ -1,8 +1,6 @@
 import { describe, expect, test } from 'vitest';
-
-import createFunctionImport from './createFunctionImport';
-
 import { ImportDesc } from '../section';
+import createFunctionImport from './createFunctionImport';
 
 describe('createFunctionImport', () => {
 	test('generates a function import entry', () => {

@@ -50,7 +50,7 @@ export function getInfoLayout(state: Pick<State, 'info'> | undefined, id: string
 	}
 
 	for (const key in record) {
-		if (Object.prototype.hasOwnProperty.call(record, key) && isRenderableInfoValue(record[key])) {
+		if (Object.hasOwn(record, key) && isRenderableInfoValue(record[key])) {
 			layout.rowCount += 1;
 			layout.keyColumnWidth = Math.max(layout.keyColumnWidth, key.length);
 			layout.maxEntryWidth = Math.max(layout.maxEntryWidth, key.length + 2 + formatInfoValue(record[key]).length);

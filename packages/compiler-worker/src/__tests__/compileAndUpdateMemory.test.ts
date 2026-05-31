@@ -1,6 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-
 import type { CompiledModuleLookup, Module } from '@8f4e/compiler-spec';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
 describe('compileAndUpdateMemory execution entries', () => {

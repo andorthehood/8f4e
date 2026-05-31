@@ -1,13 +1,10 @@
-import { i32store8, localGet, localSet } from '@8f4e/compiler-wasm-utils';
-import { getInstructionSpec } from '@8f4e/compiler-spec';
-
-import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
-import { saveByteCode } from './utils/saveByteCode';
-import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from './utils/memoryAccessGuard';
-
-import { requireStackAddress } from '../utils/stackItem';
-
 import type { InstructionCompiler, StoreBytesLine } from '@8f4e/compiler-spec';
+import { getInstructionSpec } from '@8f4e/compiler-spec';
+import { i32store8, localGet, localSet } from '@8f4e/compiler-wasm-utils';
+import { requireStackAddress } from '../utils/stackItem';
+import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
+import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from './utils/memoryAccessGuard';
+import { saveByteCode } from './utils/saveByteCode';
 
 /**
  * Instruction compiler for `storeBytes`.

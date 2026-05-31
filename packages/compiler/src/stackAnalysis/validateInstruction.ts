@@ -1,13 +1,9 @@
-import { instructionSpecs, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
+import type { CompilationContext, CompilerASTLine, InstructionSpec, InstructionSpecName } from '@8f4e/compiler-spec';
+import { ErrorCode, instructionSpecs, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
+import { getError } from '../compilerError';
 import { peekStackOperands } from './peekStackOperands';
 import { validateOperandTypes } from './validateOperandTypes';
 import { validateScope } from './validateScope';
-
-import { getError } from '../compilerError';
-
-import type { CompilerASTLine, CompilationContext, InstructionSpec, InstructionSpecName } from '@8f4e/compiler-spec';
 
 function resolveInstructionSpec(line: CompilerASTLine): InstructionSpec | undefined {
 	if (isMemoryDeclarationLine(line)) {

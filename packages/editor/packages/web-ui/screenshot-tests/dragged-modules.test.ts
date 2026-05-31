@@ -1,12 +1,11 @@
-import { expect, test } from 'vitest';
-import init from '@8f4e/web-ui';
 import { createMockCodeBlock } from '@8f4e/editor-state-testing';
-
-import createMockStateWithColors from './utils/createMockStateWithColors';
+import init from '@8f4e/web-ui';
+import { expect, test } from 'vitest';
 import createCanvas from './utils/createCanvas';
-import { generateColorMapWithAllColors } from './utils/generateColorMapMock';
 import createMockMemoryViews from './utils/createMockMemoryViews';
 import createMockSpriteData from './utils/createMockSpriteData';
+import createMockStateWithColors from './utils/createMockStateWithColors';
+import { generateColorMapWithAllColors } from './utils/generateColorMapMock';
 
 test('dragged module', async () => {
 	const canvas = createCanvas();

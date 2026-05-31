@@ -1,12 +1,9 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-
+import parse8f4eToProject from '../shared/parse8f4e';
+import type { ProjectInput } from '../shared/types';
 import { compileProject } from './compileProject';
 import traceInstructionFlow from './traceInstructionFlow';
-
-import parse8f4eToProject from '../shared/parse8f4e';
-
-import type { ProjectInput } from '../shared/types';
 
 interface CompileCommandArgs {
 	inputPath?: string;

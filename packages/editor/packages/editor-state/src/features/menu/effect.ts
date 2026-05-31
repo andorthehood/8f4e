@@ -1,13 +1,8 @@
-import { StateManager } from '@8f4e/state-manager';
-
-import * as menus from './menus';
-
-import findCodeBlockAtViewportCoordinates from '../code-blocks/utils/finders/findCodeBlockAtViewportCoordinates';
-
-import type { ContextMenuItem, State } from '@8f4e/editor-state-types';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
-
+import type { ContextMenuItem, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import roundToGrid from '~/features/viewport/roundToGrid';
+import findCodeBlockAtViewportCoordinates from '../code-blocks/utils/finders/findCodeBlockAtViewportCoordinates';
+import * as menus from './menus';
 
 interface MouseEvent {
 	x: number;

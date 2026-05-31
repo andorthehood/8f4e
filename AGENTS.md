@@ -20,13 +20,13 @@
 - `npx nx run-many --target=test --all`: Run Vitest across all packages.
 - `npx nx run @8f4e/examples:test`: Run embedded `#test` modules in example `.8f4em` files through the CLI test runner.
 - `npx nx run-many --target=typecheck --all`: Type-check all packages; also run on pre-commit via Husky/lint-staged.
-- `npx nx run app:lint`: ESLint for the root app. Use `run-many --target=lint --all` to lint all projects if needed.
+- `npx nx run app:lint`: Biome check/fix for the root app. Use `run-many --target=lint --all` to lint all projects if needed.
 - `npx nx graph`: Open Nx project dependency graph.
 - `npx nx run app:kill-dev`: Kill any dev server on port 3000.
 
 ## Coding Style & Naming Conventions
 - Language: TypeScript (ES modules). Target: modern browsers/node.
-- Formatting/linting: use ESLint as the fixer (`npx eslint --fix <files>`). ESLint owns the repo formatting rules (tabs, single quotes, semicolons, trailing commas, width 120); do not run standalone formatters.
+- Formatting/linting: use Biome as the fixer (`npx biome check --write <files>`). Biome owns the repo JS/TS formatting rules (tabs, single quotes, semicolons, trailing commas, width 120, and import organization); do not run standalone formatters.
 - Imports: Prefer workspace aliases `@8f4e/<package>` for inter-package references.
 - Files/dirs: kebab-case for packages, `.ts` for sources; keep `src/` clean and cohesive by domain.
 

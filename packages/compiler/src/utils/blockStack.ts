@@ -1,5 +1,3 @@
-import { BlockType } from '@8f4e/compiler-spec';
-
 import type {
 	BlockStack,
 	BlockTypeValue,
@@ -8,6 +6,7 @@ import type {
 	LoopBlockStackFrame,
 	MapBlockStackFrame,
 } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 
 type BlockContext = CodegenContext | CompilationContext;
 
