@@ -11,9 +11,7 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.MODULE,expectedResultTypes: [],
 				},
 			],
 		});
@@ -37,9 +35,7 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 		});
@@ -63,9 +59,7 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.MODULE,expectedResultTypes: [],
 				},
 			],
 		});
@@ -89,9 +83,7 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.MODULE,expectedResultTypes: [],
 				},
 			],
 		});

@@ -11,9 +11,7 @@ describe('loopEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.LOOP,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.LOOP,expectedResultTypes: [],
 					loopCounterLocalName: '__loopCounter1',
 					loopCounterLocal: { kind: 'value', valueType: 'int', index: 0 },
 				},

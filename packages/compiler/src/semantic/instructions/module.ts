@@ -12,11 +12,7 @@ const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 export default function semanticModule(line: ModuleLine, context: CompilationContext) {
 	const moduleId = line.arguments[0].value;
 
-	pushBlock(context, {
-		hasExpectedResult: false,
-		expectedResultIsInteger: false,
-		blockType: BlockType.MODULE,
-	});
+	pushBlock(context, { expectedResultTypes: [], blockType: BlockType.MODULE });
 
 	context.namespace.moduleName = moduleId;
 	context.codeBlockId = moduleId;

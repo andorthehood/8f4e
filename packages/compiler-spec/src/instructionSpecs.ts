@@ -614,7 +614,7 @@ export const instructionSpecs = {
 	},
 	// ifEnd ( -- ), ifEnd (T -- T)
 	ifEnd: {
-		sourceArguments: { maxArguments: 1, argumentTypes: 'ifResultType' },
+		sourceArguments: { argumentTypes: 'ifResultType' },
 		scope: 'moduleOrFunction',
 		docs: { shortDescription: 'Ends an if block and validates its optional result value.' },
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),

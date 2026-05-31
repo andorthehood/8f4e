@@ -5,13 +5,11 @@ exports[`loop instruction compiler > compiles the loop segment with default cap 
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 1,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
       "loopCounterLocal": {
         "index": 0,
         "isInteger": true,
@@ -62,13 +60,11 @@ exports[`loop instruction compiler > compiles the loop segment with explicit cap
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 1,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
       "loopCounterLocal": {
         "index": 0,
         "isInteger": true,
@@ -118,13 +114,11 @@ exports[`loop instruction compiler > explicit argument overrides context.loopCap
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 1,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
       "loopCounterLocal": {
         "index": 0,
         "isInteger": true,
@@ -174,13 +168,11 @@ exports[`loop instruction compiler > uses context.loopCap when no argument is pr
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 1,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
       "loopCounterLocal": {
         "index": 0,
         "isInteger": true,

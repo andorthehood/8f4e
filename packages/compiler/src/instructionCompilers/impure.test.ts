@@ -10,9 +10,7 @@ describe('impure instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 			mode: 'function',
