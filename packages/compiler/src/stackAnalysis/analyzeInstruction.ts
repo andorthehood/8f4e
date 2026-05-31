@@ -374,24 +374,29 @@ function analyzeExpectedBlockResult(
 	{ restore = false, validateFloatResult = false } = {}
 ): { consumed: Stack; produced: Stack } {
 	const block = context.blockStack[context.blockStack.length - 1];
+	const expectedResultTypes = block?.expectedResultTypes ?? [];
 
-	if (!block?.hasExpectedResult) {
+	if (expectedResultTypes.length === 0) {
 		return { consumed: [], produced: [] };
 	}
 
-	const consumed = consume(context, 1);
-	const operand = consumed[0];
+	const consumed = consume(context, expectedResultTypes.length);
 
-	if (!operand) {
+	if (consumed.length < expectedResultTypes.length) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
-	if (block.expectedResultIsInteger && operand.valueType !== 'int') {
-		throw getError(ErrorCode.ONLY_INTEGERS, line, context);
-	}
+	for (let index = 0; index < expectedResultTypes.length; index++) {
+		const expectedResultType = expectedResultTypes[index];
+		const operand = consumed[index];
 
-	if (validateFloatResult && !block.expectedResultIsInteger && operand.valueType === 'int') {
-		throw getError(ErrorCode.ONLY_FLOATS, line, context);
+		if (expectedResultType === 'int' && operand.valueType !== 'int') {
+			throw getError(ErrorCode.ONLY_INTEGERS, line, context);
+		}
+
+		if (validateFloatResult && expectedResultType === 'float' && operand.valueType === 'int') {
+			throw getError(ErrorCode.ONLY_FLOATS, line, context);
+		}
 	}
 
 	if (!restore) {

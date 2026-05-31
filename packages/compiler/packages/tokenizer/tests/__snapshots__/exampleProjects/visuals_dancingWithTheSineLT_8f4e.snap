@@ -5116,7 +5116,7 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 279,
-      "resultType": null,
+      "resultTypes": [],
       "hasElse": false
     }
   },
@@ -5161,7 +5161,7 @@
     "arguments": [],
     "ifEndBlock": {
       "matchingIfIndex": 275,
-      "resultType": null
+      "resultTypes": []
     }
   },
   {
@@ -5426,7 +5426,7 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 304,
-      "resultType": null,
+      "resultTypes": [],
       "hasElse": false
     }
   },
@@ -5471,7 +5471,7 @@
     "arguments": [],
     "ifEndBlock": {
       "matchingIfIndex": 300,
-      "resultType": null
+      "resultTypes": []
     }
   },
   {
@@ -5736,7 +5736,7 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 329,
-      "resultType": null,
+      "resultTypes": [],
       "hasElse": false
     }
   },
@@ -5781,7 +5781,7 @@
     "arguments": [],
     "ifEndBlock": {
       "matchingIfIndex": 325,
-      "resultType": null
+      "resultTypes": []
     }
   },
   {
@@ -6072,7 +6072,7 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 355,
-      "resultType": null,
+      "resultTypes": [],
       "hasElse": false
     }
   },
@@ -6117,7 +6117,7 @@
     "arguments": [],
     "ifEndBlock": {
       "matchingIfIndex": 351,
-      "resultType": null
+      "resultTypes": []
     }
   },
   {

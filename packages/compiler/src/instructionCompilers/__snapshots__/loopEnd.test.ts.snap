@@ -5,8 +5,7 @@ exports[`loopEnd instruction compiler > ends a loop block 1`] = `
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
   "byteCode": [
