@@ -1,4 +1,4 @@
-import type { IfLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, PairedIfLine } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 import { WASM_IF } from '@8f4e/compiler-wasm-utils';
 import { pushBlock } from '../utils/blockStack';
@@ -9,11 +9,15 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `if`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const _if: InstructionCompiler<IfLine> = (line, context) => {
-	const { blockState, wasmType } = createResultBlockState(line.ifBlock?.resultType, BlockType.CONDITION);
+const _if: InstructionCompiler<PairedIfLine> = (line, context) => {
+	const { blockState, wasmBlockType } = createResultBlockState(
+		line.ifBlock.resultTypes,
+		BlockType.CONDITION,
+		context.functionTypeRegistry
+	);
 
 	pushBlock(context, blockState);
-	return saveByteCode(context, [WASM_IF, wasmType]);
+	return saveByteCode(context, [WASM_IF, ...wasmBlockType]);
 };
 
 export default _if;

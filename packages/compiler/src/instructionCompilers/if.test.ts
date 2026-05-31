@@ -16,7 +16,7 @@ describe('if instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'if',
 				arguments: [],
-				ifBlock: { matchingIfEndIndex: 2, resultType: null, hasElse: false },
+				ifBlock: { matchingIfEndIndex: 2, resultTypes: [], hasElse: false },
 			} as CompilerASTLine,
 			context
 		);
@@ -38,7 +38,7 @@ describe('if instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'if',
 				arguments: [],
-				ifBlock: { matchingIfEndIndex: 2, resultType: null, hasElse: false },
+				ifBlock: { matchingIfEndIndex: 2, resultTypes: [], hasElse: false },
 			} as CompilerASTLine,
 			context
 		);
@@ -60,7 +60,7 @@ describe('if instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'if',
 				arguments: [],
-				ifBlock: { matchingIfEndIndex: 2, resultType: 'float', hasElse: false },
+				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['float'], hasElse: false },
 			} as CompilerASTLine,
 			context
 		);
@@ -82,7 +82,7 @@ describe('if instruction compiler', () => {
 				lineNumberAfterMacroExpansion: 1,
 				instruction: 'if',
 				arguments: [],
-				ifBlock: { matchingIfEndIndex: 2, resultType: 'int', hasElse: false },
+				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['int'], hasElse: false },
 			} as CompilerASTLine,
 			context
 		);
@@ -90,6 +90,36 @@ describe('if instruction compiler', () => {
 		expect({
 			blockStack: context.blockStack,
 			byteCode: context.byteCode,
+		}).toMatchSnapshot();
+	});
+
+	it('emits a multi-result if block type index', () => {
+		const context = createInstructionCompilerTestContext({
+			functionTypeRegistry: {
+				baseTypeIndex: 0,
+				signatures: [],
+				types: [],
+			},
+		});
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
+
+		analyzeAndCompileInstruction(
+			_if,
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'if',
+				arguments: [],
+				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['int', 'float'], hasElse: false },
+			} as CompilerASTLine,
+			context
+		);
+
+		expect({
+			blockStack: context.blockStack,
+			byteCode: context.byteCode,
+			typeSignatures: context.functionTypeRegistry?.signatures,
+			typeCount: context.functionTypeRegistry?.types.length,
 		}).toMatchSnapshot();
 	});
 });

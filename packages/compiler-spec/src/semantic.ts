@@ -415,8 +415,7 @@ export interface MapBlockState {
 
 /** Common result expectation tracked for every open block frame. */
 interface BlockStackFrameBase {
-	expectedResultIsInteger: boolean;
-	hasExpectedResult: boolean;
+	expectedResultTypes: Array<'int' | 'float'>;
 }
 
 /** Block stack frame for an open module block. */

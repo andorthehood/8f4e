@@ -3,10 +3,10 @@ import type {
 	AST,
 	ASTCache,
 	ASTCacheEntry,
-	BlockBlockResultType,
 	BlockEndInstruction,
 	BlockEndLine,
 	BlockLine,
+	BlockResultTypes,
 	BlockStartInstruction,
 	CompilerASTLine,
 	CompilerASTLines,
@@ -15,7 +15,6 @@ import type {
 	FunctionEndLine,
 	FunctionLine,
 	FunctionSignature,
-	IfBlockResultType,
 	IfEndLine,
 	IfLine,
 	ImportLine,
@@ -128,8 +127,8 @@ function isBlockEndInstruction(instruction: string): instruction is BlockEndInst
 	return Object.hasOwn(blockEndToStartInstruction, instruction);
 }
 
-function getResultTypeFromFirstArgument(line: IfEndLine | BlockEndLine): IfBlockResultType {
-	return (line.arguments[0]?.value ?? null) as IfBlockResultType;
+function getResultTypesFromArguments(line: IfEndLine | BlockEndLine): BlockResultTypes {
+	return line.arguments.map(argument => argument.value as BlockResultTypes[number]);
 }
 
 function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): boolean {
@@ -673,25 +672,25 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 		}
 
 		if (parsedLine.instruction === 'ifEnd' && openBlock.instruction === 'if') {
-			const resultType = getResultTypeFromFirstArgument(parsedLine);
+			const resultTypes = getResultTypesFromArguments(parsedLine);
 			openBlock.line.ifBlock = {
 				matchingIfEndIndex: astIndex,
-				resultType,
+				resultTypes,
 				hasElse: Boolean(openBlock.hasElse),
 			};
 			parsedLine.ifEndBlock = {
 				matchingIfIndex: openBlock.astIndex,
-				resultType,
+				resultTypes,
 			};
 		} else if (parsedLine.instruction === 'blockEnd' && openBlock.instruction === 'block') {
-			const resultType = getResultTypeFromFirstArgument(parsedLine) as BlockBlockResultType;
+			const resultTypes = getResultTypesFromArguments(parsedLine);
 			openBlock.line.blockBlock = {
 				matchingBlockEndIndex: astIndex,
-				resultType,
+				resultTypes,
 			};
 			parsedLine.blockEndBlock = {
 				matchingBlockIndex: openBlock.astIndex,
-				resultType,
+				resultTypes,
 			};
 		}
 	}

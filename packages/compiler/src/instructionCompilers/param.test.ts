@@ -13,9 +13,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -44,9 +42,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -75,9 +71,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -108,9 +102,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -141,9 +133,7 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.FUNCTION,expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },

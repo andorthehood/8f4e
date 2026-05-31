@@ -1254,7 +1254,9 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 98,
-      "resultType": "int",
+      "resultTypes": [
+        "int"
+      ],
       "hasElse": true
     }
   },
@@ -1302,7 +1304,9 @@
     ],
     "ifEndBlock": {
       "matchingIfIndex": 94,
-      "resultType": "int"
+      "resultTypes": [
+        "int"
+      ]
     }
   },
   {

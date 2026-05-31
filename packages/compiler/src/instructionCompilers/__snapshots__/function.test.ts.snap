@@ -5,8 +5,7 @@ exports[`function instruction compiler > starts a new function block 1`] = `
   "blockStack": [
     {
       "blockType": 3,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
   "currentFunctionId": "doThing",

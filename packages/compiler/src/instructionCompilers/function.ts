@@ -38,8 +38,7 @@ const _function = ((line: FunctionLine, context: CodegenContext) => {
 
 	pushBlock(context, {
 		blockType: BlockType.FUNCTION,
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		expectedResultTypes: [],
 	});
 
 	return context;
