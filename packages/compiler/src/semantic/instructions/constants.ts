@@ -16,11 +16,7 @@ export default function semanticConstants(line: ConstantsLine, context: Compilat
 		throw getError(ErrorCode.INSTRUCTION_MUST_BE_TOP_LEVEL, line, context);
 	}
 
-	pushBlock(context, {
-		hasExpectedResult: false,
-		expectedResultIsInteger: false,
-		blockType: BlockType.CONSTANTS,
-	});
+	pushBlock(context, { expectedResultTypes: [], blockType: BlockType.CONSTANTS });
 
 	const moduleId = line.arguments[0].value;
 	context.namespace.moduleName = moduleId;

@@ -45,9 +45,7 @@ describe('validateInstruction', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MAP,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.MAP,expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,

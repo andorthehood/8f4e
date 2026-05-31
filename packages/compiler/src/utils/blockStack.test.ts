@@ -6,41 +6,27 @@ import createInstructionCompilerTestContext from './testUtils';
 
 describe('blockStack utilities', () => {
 	const mockModuleBlock: BlockStack[number] = {
-		blockType: BlockType.MODULE,
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		blockType: BlockType.MODULE,expectedResultTypes: [],
 	};
 	const mockFunctionBlock: BlockStack[number] = {
-		blockType: BlockType.FUNCTION,
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		blockType: BlockType.FUNCTION,expectedResultTypes: [],
 	};
 	const mockLoopBlock: BlockStack[number] = {
-		blockType: BlockType.LOOP,
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		blockType: BlockType.LOOP,expectedResultTypes: [],
 		loopCounterLocalName: '__loopCounter1',
 		loopCounterLocal: { kind: 'value', valueType: 'int', index: 0 },
 	};
 	const mockGenericBlock: BlockStack[number] = {
-		blockType: BlockType.BLOCK,
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		blockType: BlockType.BLOCK,expectedResultTypes: [],
 	};
 	const mockConditionBlock: BlockStack[number] = {
-		blockType: BlockType.CONDITION,
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		blockType: BlockType.CONDITION,expectedResultTypes: [],
 	};
 	const mockConstantsBlock: BlockStack[number] = {
-		blockType: BlockType.CONSTANTS,
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		blockType: BlockType.CONSTANTS,expectedResultTypes: [],
 	};
 	const mockMapBlock: BlockStack[number] = {
-		blockType: BlockType.MAP,
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		blockType: BlockType.MAP,expectedResultTypes: [],
 		mapState: {
 			inputIsInteger: true,
 			inputIsFloat64: false,

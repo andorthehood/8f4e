@@ -15,14 +15,10 @@ describe('loopIndex instruction compiler', () => {
 			},
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.MODULE,expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.LOOP,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.LOOP,expectedResultTypes: [],
 					loopCounterLocalName: '__loopCounter2',
 					loopCounterLocal,
 				},
@@ -54,21 +50,15 @@ describe('loopIndex instruction compiler', () => {
 			},
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.MODULE,expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.LOOP,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.LOOP,expectedResultTypes: [],
 					loopCounterLocalName: '__outer',
 					loopCounterLocal: outerLoopCounterLocal,
 				},
 				{
-					blockType: BlockType.LOOP,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.LOOP,expectedResultTypes: [],
 					loopCounterLocalName: '__inner',
 					loopCounterLocal: innerLoopCounterLocal,
 				},
