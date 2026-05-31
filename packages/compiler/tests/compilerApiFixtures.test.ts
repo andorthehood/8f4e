@@ -118,6 +118,38 @@ entryEnd
 		expect(compileResult.codeBuffer.byteLength).toBeLessThan(10_000);
 	});
 
+	test('supports unsigned narrow pointer parameters', async () => {
+		const fixture = await instantiateFixtureProgramSource(`
+8f4e/v1
+
+entry main
+module unsignedPointerParam
+int8u[] bytes 2 255
+int output
+
+push &output
+push &bytes
+call readUnsignedByte
+store
+moduleEnd
+entryEnd
+
+function readUnsignedByte
+#impure
+param int8u* bytes
+push *bytes
+functionEnd int
+`);
+		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);
+		const output = fixture.compileResult.compiledModules.unsignedPointerParam.memoryMap.output.byteAddress;
+
+		getExportedFunction(fixture.instance.exports, 'initDefaults')();
+		getExportedFunction(fixture.instance.exports, 'main')();
+
+		expect(memory.getInt32(output, true)).toBe(255);
+		expect(fixture.compileResult.compiledFunctions!.readUnsignedByte.signature.parameters).toEqual(['int8u*']);
+	});
+
 	test('emits memory.fill before loading passive data defaults', async () => {
 		const { compileResult } = compileFixtureProgramSource(`
 8f4e/v1

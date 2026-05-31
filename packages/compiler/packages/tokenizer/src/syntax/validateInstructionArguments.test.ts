@@ -66,9 +66,16 @@ describe('validateInstructionArguments', () => {
 			validateInstructionArguments('param', [classifyIdentifier('float*'), classifyIdentifier('buffer')])
 		).not.toThrow();
 		expect(() =>
+			validateInstructionArguments('param', [classifyIdentifier('int8u*'), classifyIdentifier('bytes')])
+		).not.toThrow();
+		expect(() =>
 			validateInstructionArguments('local', [classifyIdentifier('int16**'), classifyIdentifier('cursor')])
 		).not.toThrow();
+		expect(() =>
+			validateInstructionArguments('local', [classifyIdentifier('int16u**'), classifyIdentifier('cursor')])
+		).not.toThrow();
 		expect(() => validateInstructionArguments('functionEnd', [classifyIdentifier('float64*')])).not.toThrow();
+		expect(() => validateInstructionArguments('functionEnd', [classifyIdentifier('int8u*')])).not.toThrow();
 	});
 
 	it('still rejects pointer type identifiers where only scalar types are valid', () => {

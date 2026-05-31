@@ -103,6 +103,39 @@ describe('param instruction compiler', () => {
 		expect(context.currentFunctionSignature?.parameters).toEqual(['float*']);
 	});
 
+	it('registers an unsigned narrow pointer function parameter with pointee metadata', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [
+				...createInstructionCompilerTestContext().blockStack,
+				{
+					blockType: BlockType.FUNCTION,
+					expectedResultIsInteger: false,
+					hasExpectedResult: false,
+				},
+			],
+			currentFunctionSignature: { parameters: [], returns: [] },
+			locals: {},
+		});
+
+		analyzeAndCompileInstruction(
+			param,
+			{
+				lineNumberBeforeMacroExpansion: 1,
+				lineNumberAfterMacroExpansion: 1,
+				instruction: 'param',
+				arguments: [classifyIdentifier('int8u*'), classifyIdentifier('bytes')],
+			} as CompilerASTLine,
+			context
+		);
+
+		expect(context.locals.bytes).toMatchObject({
+			pointeeBaseType: 'int8u',
+			pointerDepth: 1,
+			index: 0,
+		});
+		expect(context.currentFunctionSignature?.parameters).toEqual(['int8u*']);
+	});
+
 	it('throws when declared after locals', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [

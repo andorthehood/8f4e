@@ -5,6 +5,7 @@ import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 
 type PointerFunctionValueType = Extract<FunctionValueType, `${string}*`>;
+type PointerFunctionPointeeBaseType = NonNullable<LocalBinding['pointeeBaseType']>;
 
 const POINTER_FUNCTION_VALUE_TYPES = new Set<PointerFunctionValueType>(POINTER_FUNCTION_TYPE_IDENTIFIERS);
 
@@ -14,7 +15,7 @@ function isPointerFunctionValueType(type: FunctionValueType): type is PointerFun
 
 function getPointerParts(type: PointerFunctionValueType) {
 	const pointerDepth = type.endsWith('**') ? 2 : 1;
-	const baseType = type.replace(/\*+$/, '') as 'int' | 'int8' | 'int16' | 'float' | 'float64';
+	const baseType = type.replace(/\*+$/, '') as PointerFunctionPointeeBaseType;
 	return { baseType, pointerDepth };
 }
 
