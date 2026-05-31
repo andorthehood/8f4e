@@ -6,7 +6,11 @@ const events = {
 	off: vi.fn(),
 };
 
-const storeState = {
+const storeState: {
+	globalEditorDirectives: Record<string, unknown>;
+	editorConfig: Record<string, unknown>;
+	info: Record<string, unknown>;
+} = {
 	globalEditorDirectives: {},
 	editorConfig: {},
 	info: {},
@@ -83,6 +87,7 @@ describe('editor init', () => {
 		store.set.mockClear();
 		view.resize.mockClear();
 		view.renderFrame.mockClear();
+		storeState.editorConfig = {};
 		storeState.info = {};
 	});
 
@@ -147,6 +152,7 @@ describe('editor init', () => {
 
 	it('commits sampled render stats into info.graphics', async () => {
 		const { default: init } = await import('./index');
+		const { default: initState } = await import('@8f4e/editor-state');
 		const { default: initView } = await import('@8f4e/web-ui');
 		const canvas = { width: 640, height: 480 } as HTMLCanvasElement;
 
@@ -159,12 +165,19 @@ describe('editor init', () => {
 			},
 			defaultRuntimeId: 'WebWorkerRuntime',
 			renderStatsIntervalFrames: 12,
+			frameTexture: {
+				entry: 'renderFrame',
+				target: 'screen:rgba',
+				textureWidth: 1,
+				textureHeight: 1,
+			},
 			callbacks: {
 				loadSession: async () => null,
 			},
 		});
 
 		const viewOptions = vi.mocked(initView).mock.calls.at(-1)![4]!;
+		const initStateOptions = vi.mocked(initState).mock.calls.at(-1)![1];
 		viewOptions.onRenderStats?.({
 			timeToRenderMs: 10,
 			fps: 50,
@@ -180,6 +193,44 @@ describe('editor init', () => {
 		});
 
 		expect(viewOptions.renderStatsIntervalFrames).toBe(12);
+		expect(viewOptions.frameTexture).toEqual({
+			entry: 'renderFrame',
+			target: 'screen:rgba',
+			textureWidth: 1,
+			textureHeight: 1,
+		});
+		expect(viewOptions.getFrameTexture?.()).toEqual({
+			entry: 'renderFrame',
+			target: 'screen:rgba',
+			textureWidth: 1,
+			textureHeight: 1,
+		});
+		storeState.editorConfig = {
+			webUI: {
+				background: {
+					entry: 'draw',
+					target: 'screen:pixels',
+					textureWidth: 64,
+					textureHeight: 32,
+					filter: 'linear',
+				},
+			},
+		};
+		expect(viewOptions.getFrameTexture?.()).toEqual({
+			entry: 'draw',
+			target: 'screen:pixels',
+			textureWidth: 64,
+			textureHeight: 32,
+			filter: 'linear',
+		});
+		expect(viewOptions.getCodeBuffer?.()).toBeInstanceOf(Uint8Array);
+		expect(viewOptions.getMemory?.()).toBeNull();
+		expect(initStateOptions.editorConfigSchemaContributions?.['web-ui']).toMatchObject({
+			root: 'webUI',
+			schema: {
+				type: 'object',
+			},
+		});
 		expect(store.set).toHaveBeenCalledWith('info.graphics', {
 			timeToRenderMs: 10,
 			fps: 50,

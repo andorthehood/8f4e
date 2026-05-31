@@ -7,6 +7,7 @@ import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
 import drawBackground from './drawers/drawBackground';
 import drawModeOverlay from './drawers/modeOverlay';
+import { createWasmFrameTextureDrawer, type WasmFrameTextureOptions } from './drawers/wasmFrameTexture';
 import type { MemoryViews } from './types';
 
 // Re-export types
@@ -36,6 +37,14 @@ export interface RenderStats {
 export interface WebUiOptions {
 	onRenderStats?: (stats: RenderStats) => void;
 	renderStatsIntervalFrames?: number;
+	frameTexture?: WasmFrameTextureOptions;
+	getFrameTexture?: () => WasmFrameTextureOptions | undefined;
+	getCodeBuffer?: () => Uint8Array;
+	getMemory?: () => WebAssembly.Memory | null;
+	instantiateFrameTextureWasm?: (
+		memory: WebAssembly.Memory,
+		codeBuffer: Uint8Array
+	) => Promise<WebAssembly.Exports> | WebAssembly.Exports;
 }
 
 export default async function init(
@@ -54,6 +63,35 @@ export default async function init(
 }> {
 	const engine = new Engine(canvas, { caching: true });
 	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
+	let viewportWidth = canvas.width;
+	let viewportHeight = canvas.height;
+	const getFrameTexture = options.getFrameTexture ?? (() => options.frameTexture);
+	let frameTextureKey = '';
+	let drawWasmFrameTexture: ((engine: Engine) => void) | undefined;
+	function syncWasmFrameTextureDrawer(): ((engine: Engine) => void) | undefined {
+		const frameTexture = getFrameTexture();
+		const nextFrameTextureKey = frameTexture ? JSON.stringify(frameTexture) : '';
+
+		if (nextFrameTextureKey === frameTextureKey) {
+			return drawWasmFrameTexture;
+		}
+
+		frameTextureKey = nextFrameTextureKey;
+		drawWasmFrameTexture =
+			frameTexture && options.getCodeBuffer && options.getMemory
+				? createWasmFrameTextureDrawer({
+						state,
+						memoryViews,
+						frameTexture,
+						getCodeBuffer: options.getCodeBuffer,
+						getMemory: options.getMemory,
+						getViewportSize: () => ({ width: viewportWidth, height: viewportHeight }),
+						instantiate: options.instantiateFrameTextureWasm,
+					})
+				: undefined;
+
+		return drawWasmFrameTexture;
+	}
 	let renderedFrameCount = 0;
 	let statsSampleStartFrameCount = 0;
 	let statsSampleStartTime = performance.now();
@@ -101,6 +139,7 @@ export default async function init(
 
 	const drawFrame = (timeToRenderMs = 0, vertexCount = 0, maxVertices = 0) => {
 		drawBackground(engine, state);
+		syncWasmFrameTextureDrawer()?.(engine);
 		drawCodeBlocks(engine, state, memoryViews);
 		drawConnections(engine, state, memoryViews);
 		drawContextMenu(engine, state);
@@ -113,6 +152,8 @@ export default async function init(
 
 	return {
 		resize: (width, height) => {
+			viewportWidth = width;
+			viewportHeight = height;
 			engine.resize(width, height);
 		},
 		loadSpriteSheet: spriteData => {
