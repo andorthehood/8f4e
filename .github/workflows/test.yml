@@ -54,9 +54,6 @@ jobs:
       - name: Run Biome check
         run: npx biome ci .
 
-      - name: Run affected linting
-        run: npx nx affected --target=lint
-
       - name: Run affected typecheck
         run: npx nx affected --target=typecheck
 
