@@ -22,6 +22,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
+          fetch-depth: 0
           submodules: recursive
 
       - name: Setup Node.js
@@ -36,12 +37,29 @@ jobs:
       - name: Build config package
         run: npx nx run @8f4e/config:build
 
-      - name: Run linting
+      - name: Set Nx affected SHAs
+        shell: bash
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            echo "NX_BASE=origin/${GITHUB_BASE_REF}" >> "$GITHUB_ENV"
+            echo "NX_HEAD=HEAD" >> "$GITHUB_ENV"
+          elif [[ "${{ github.event.before }}" =~ ^0+$ ]]; then
+            echo "NX_BASE=HEAD~1" >> "$GITHUB_ENV"
+            echo "NX_HEAD=${GITHUB_SHA}" >> "$GITHUB_ENV"
+          else
+            echo "NX_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            echo "NX_HEAD=${GITHUB_SHA}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Run Biome check
         run: npx biome ci .
 
-      - name: Run typecheck
-        run: npx nx run-many --target=typecheck --all
+      - name: Run affected linting
+        run: npx nx affected --target=lint
 
-      - name: Run tests
-        run: npx nx run-many --target=test --all
+      - name: Run affected typecheck
+        run: npx nx affected --target=typecheck
+
+      - name: Run affected tests
+        run: npx nx affected --target=test
         timeout-minutes: 10
