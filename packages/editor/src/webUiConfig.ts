@@ -16,6 +16,7 @@ export const webUiEditorConfigSchemaContribution: EditorConfigSchemaContribution
 					textureWidth: { type: 'integer', minimum: 1 },
 					textureHeight: { type: 'integer', minimum: 1 },
 					filter: { type: 'string', enum: ['nearest', 'linear'] },
+					objectFit: { type: 'string', enum: ['fill', 'cover', 'contain'] },
 				},
 				additionalProperties: false,
 			},
@@ -68,6 +69,10 @@ export function resolveWebUiBackgroundConfig(state: State): WebUiOptions['frameT
 	}
 
 	const filter = background.filter === 'linear' || background.filter === 'nearest' ? background.filter : undefined;
+	const objectFit =
+		background.objectFit === 'fill' || background.objectFit === 'cover' || background.objectFit === 'contain'
+			? background.objectFit
+			: undefined;
 
 	return {
 		entry,
@@ -75,5 +80,6 @@ export function resolveWebUiBackgroundConfig(state: State): WebUiOptions['frameT
 		textureWidth,
 		textureHeight,
 		...(filter ? { filter } : {}),
+		...(objectFit ? { objectFit } : {}),
 	};
 }

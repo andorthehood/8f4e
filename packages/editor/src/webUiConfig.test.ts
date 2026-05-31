@@ -15,6 +15,7 @@ describe('web-ui editor config', () => {
 						target: { type: 'string' },
 						textureWidth: { type: 'integer', minimum: 1 },
 						textureHeight: { type: 'integer', minimum: 1 },
+						objectFit: { type: 'string', enum: ['fill', 'cover', 'contain'] },
 					},
 				},
 			},
@@ -31,6 +32,7 @@ describe('web-ui editor config', () => {
 						textureWidth: 64,
 						textureHeight: 32,
 						filter: 'linear',
+						objectFit: 'cover',
 					},
 				},
 			},
@@ -42,6 +44,7 @@ describe('web-ui editor config', () => {
 			textureWidth: 64,
 			textureHeight: 32,
 			filter: 'linear',
+			objectFit: 'cover',
 		});
 	});
 

@@ -2,12 +2,15 @@ import type { State } from '@8f4e/editor-state-types';
 import type { Engine, Rgba8Texture, Rgba8TextureFilter } from 'glugglug';
 import type { MemoryViews } from '../types';
 
+export type WasmFrameTextureObjectFit = 'fill' | 'cover' | 'contain';
+
 export interface WasmFrameTextureOptions {
 	entry: string;
 	target: string;
 	textureWidth: number;
 	textureHeight: number;
 	filter?: Rgba8TextureFilter;
+	objectFit?: WasmFrameTextureObjectFit;
 }
 
 export interface WasmFrameTextureDrawerOptions {
@@ -50,6 +53,32 @@ function getFrameBufferByteAddress(state: State, target: string): number | undef
 	return typeof memory?.byteAddress === 'number' ? memory.byteAddress : undefined;
 }
 
+export function getObjectFitDrawRect(
+	objectFit: WasmFrameTextureObjectFit,
+	textureWidth: number,
+	textureHeight: number,
+	viewportWidth: number,
+	viewportHeight: number
+): { x: number; y: number; width: number; height: number } {
+	if (objectFit === 'fill') {
+		return { x: 0, y: 0, width: viewportWidth, height: viewportHeight };
+	}
+
+	const scale =
+		objectFit === 'cover'
+			? Math.max(viewportWidth / textureWidth, viewportHeight / textureHeight)
+			: Math.min(viewportWidth / textureWidth, viewportHeight / textureHeight);
+	const width = textureWidth * scale;
+	const height = textureHeight * scale;
+
+	return {
+		x: (viewportWidth - width) / 2,
+		y: (viewportHeight - height) / 2,
+		width,
+		height,
+	};
+}
+
 export function createWasmFrameTextureDrawer({
 	state,
 	memoryViews,
@@ -63,6 +92,7 @@ export function createWasmFrameTextureDrawer({
 	const textureHeight = normalizePositiveInteger(frameTexture.textureHeight);
 	const byteLength = textureWidth * textureHeight * 4;
 	const filter = frameTexture.filter ?? 'nearest';
+	const objectFit = frameTexture.objectFit ?? 'fill';
 	let texture: Rgba8Texture | undefined;
 	let cachedMemory: WebAssembly.Memory | null = null;
 	let cachedCodeBuffer: Uint8Array | undefined;
@@ -156,6 +186,7 @@ export function createWasmFrameTextureDrawer({
 			filter,
 		});
 		const viewport = getViewportSize();
-		engine.drawTexture(texture, 0, 0, viewport.width, viewport.height);
+		const drawRect = getObjectFitDrawRect(objectFit, textureWidth, textureHeight, viewport.width, viewport.height);
+		engine.drawTexture(texture, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
 	};
 }
