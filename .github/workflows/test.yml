@@ -51,8 +51,8 @@ jobs:
             echo "NX_HEAD=${GITHUB_SHA}" >> "$GITHUB_ENV"
           fi
 
-      - name: Run Biome check
-        run: npx biome ci .
+      - name: Run affected Biome checks
+        run: npx nx affected --target=lint
 
       - name: Run affected typecheck
         run: npx nx affected --target=typecheck
