@@ -180,8 +180,8 @@ describe('web-ui init', () => {
 			| {
 					entry: string;
 					target: string;
-					textureWidth: number;
-					textureHeight: number;
+					width: number;
+					height: number;
 			  }
 			| undefined;
 		const canvas = { width: 160, height: 90 } as HTMLCanvasElement;
@@ -210,8 +210,8 @@ describe('web-ui init', () => {
 		frameTexture = {
 			entry: 'renderFrame',
 			target: 'screen:rgba',
-			textureWidth: 1,
-			textureHeight: 1,
+			width: 1,
+			height: 1,
 		};
 
 		view.renderFrame();

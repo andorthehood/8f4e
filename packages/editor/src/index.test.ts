@@ -168,8 +168,8 @@ describe('editor init', () => {
 			frameTexture: {
 				entry: 'renderFrame',
 				target: 'screen:rgba',
-				textureWidth: 1,
-				textureHeight: 1,
+				width: 1,
+				height: 1,
 			},
 			callbacks: {
 				loadSession: async () => null,
@@ -196,22 +196,22 @@ describe('editor init', () => {
 		expect(viewOptions.frameTexture).toEqual({
 			entry: 'renderFrame',
 			target: 'screen:rgba',
-			textureWidth: 1,
-			textureHeight: 1,
+			width: 1,
+			height: 1,
 		});
 		expect(viewOptions.getFrameTexture?.()).toEqual({
 			entry: 'renderFrame',
 			target: 'screen:rgba',
-			textureWidth: 1,
-			textureHeight: 1,
+			width: 1,
+			height: 1,
 		});
 		storeState.editorConfig = {
 			webUI: {
 				background: {
 					entry: 'draw',
 					target: 'screen:pixels',
-					textureWidth: 64,
-					textureHeight: 32,
+					width: 64,
+					height: 32,
 					filter: 'linear',
 					objectFit: 'contain',
 				},
@@ -220,8 +220,8 @@ describe('editor init', () => {
 		expect(viewOptions.getFrameTexture?.()).toEqual({
 			entry: 'draw',
 			target: 'screen:pixels',
-			textureWidth: 64,
-			textureHeight: 32,
+			width: 64,
+			height: 32,
 			filter: 'linear',
 			objectFit: 'contain',
 		});

@@ -7,8 +7,8 @@ export type WasmFrameTextureObjectFit = 'fill' | 'cover' | 'contain';
 export interface WasmFrameTextureOptions {
 	entry: string;
 	target: string;
-	textureWidth: number;
-	textureHeight: number;
+	width: number;
+	height: number;
 	filter?: Rgba8TextureFilter;
 	objectFit?: WasmFrameTextureObjectFit;
 }
@@ -55,8 +55,8 @@ function getFrameBufferByteAddress(state: State, target: string): number | undef
 
 export function getObjectFitDrawRect(
 	objectFit: WasmFrameTextureObjectFit,
-	textureWidth: number,
-	textureHeight: number,
+	sourceWidth: number,
+	sourceHeight: number,
 	viewportWidth: number,
 	viewportHeight: number
 ): { x: number; y: number; width: number; height: number } {
@@ -66,10 +66,10 @@ export function getObjectFitDrawRect(
 
 	const scale =
 		objectFit === 'cover'
-			? Math.max(viewportWidth / textureWidth, viewportHeight / textureHeight)
-			: Math.min(viewportWidth / textureWidth, viewportHeight / textureHeight);
-	const width = textureWidth * scale;
-	const height = textureHeight * scale;
+			? Math.max(viewportWidth / sourceWidth, viewportHeight / sourceHeight)
+			: Math.min(viewportWidth / sourceWidth, viewportHeight / sourceHeight);
+	const width = sourceWidth * scale;
+	const height = sourceHeight * scale;
 
 	return {
 		x: (viewportWidth - width) / 2,
@@ -88,9 +88,9 @@ export function createWasmFrameTextureDrawer({
 	getViewportSize,
 	instantiate = instantiateWasmFrameTexture,
 }: WasmFrameTextureDrawerOptions): (engine: Engine) => void {
-	const textureWidth = normalizePositiveInteger(frameTexture.textureWidth);
-	const textureHeight = normalizePositiveInteger(frameTexture.textureHeight);
-	const byteLength = textureWidth * textureHeight * 4;
+	const sourceWidth = normalizePositiveInteger(frameTexture.width);
+	const sourceHeight = normalizePositiveInteger(frameTexture.height);
+	const byteLength = sourceWidth * sourceHeight * 4;
 	const filter = frameTexture.filter ?? 'nearest';
 	const objectFit = frameTexture.objectFit ?? 'fill';
 	let texture: Rgba8Texture | undefined;
@@ -181,12 +181,12 @@ export function createWasmFrameTextureDrawer({
 		}
 
 		const data = memoryViews.uint8.subarray(byteAddress, byteAddress + byteLength);
-		texture = engine.uploadRgba8Texture(data, textureWidth, textureHeight, {
+		texture = engine.uploadRgba8Texture(data, sourceWidth, sourceHeight, {
 			texture,
 			filter,
 		});
 		const viewport = getViewportSize();
-		const drawRect = getObjectFitDrawRect(objectFit, textureWidth, textureHeight, viewport.width, viewport.height);
+		const drawRect = getObjectFitDrawRect(objectFit, sourceWidth, sourceHeight, viewport.width, viewport.height);
 		engine.drawTexture(texture, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
 	};
 }
