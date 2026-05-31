@@ -167,7 +167,7 @@ functionEnd float
 
 ## param
 
-The param instruction declares a function parameter (`param int name` or `param float name`). Parameters must be declared before any other function body instructions.
+The param instruction declares a function parameter (`param int name`, `param float name`, or a pointer type such as `param int8u* bytes`). Parameters must be declared before any other function body instructions.
 
 ### Examples
 
@@ -177,6 +177,12 @@ param int x
 push x
 push 2
 mul
+functionEnd int
+
+function readUnsignedByte
+#impure
+param int8u* bytes
+push *bytes
 functionEnd int
 ```
 
@@ -188,7 +194,7 @@ functionEnd int
 
 ## functionEnd
 
-The functionEnd instruction ends a function block and declares the return types (`functionEnd int float`).
+The functionEnd instruction ends a function block and declares the return types (`functionEnd int float` or pointer types such as `functionEnd int16u*`).
 
 ### Examples
 
@@ -229,3 +235,4 @@ functionEnd int int
 
 - The stack must match the declared return signature when reaching `functionEnd`
 - Return types are specified as space-separated type names after `functionEnd`
+- Signature types include `int`, `float`, `float64`, and pointer types over `int`, `int8`, `int8u`, `int16`, `int16u`, `float`, and `float64`, with one or two `*` suffixes.
