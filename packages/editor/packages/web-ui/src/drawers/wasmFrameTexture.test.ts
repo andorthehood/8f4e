@@ -37,4 +37,22 @@ describe('getObjectFitDrawRect', () => {
 			height: 32,
 		});
 	});
+
+	it('renders percentage size values relative to the source size', () => {
+		expect(getObjectFitDrawRect('none', 64, 32, 320, 180, '50%')).toEqual({
+			x: 144,
+			y: 82,
+			width: 32,
+			height: 16,
+		});
+	});
+
+	it('renders numeric size values as display pixels', () => {
+		expect(getObjectFitDrawRect('none', 64, 32, 320, 180, 128)).toEqual({
+			x: 96,
+			y: 58,
+			width: 128,
+			height: 64,
+		});
+	});
 });

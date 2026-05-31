@@ -15,6 +15,12 @@ export const webUiEditorConfigSchemaContribution: EditorConfigSchemaContribution
 					target: { type: 'string' },
 					width: { type: 'integer', minimum: 1 },
 					height: { type: 'integer', minimum: 1 },
+					size: {
+						anyOf: [
+							{ type: 'number', minimum: 1 },
+							{ type: 'string', pattern: '^\\d+(?:\\.\\d+)?%$' },
+						],
+					},
 					filter: { type: 'string', enum: ['nearest', 'linear'] },
 					objectFit: { type: 'string', enum: ['fill', 'cover', 'contain', 'none'] },
 				},
@@ -39,6 +45,21 @@ function getPositiveInteger(record: Record<string, unknown>, key: string): numbe
 	return value !== undefined && Number.isInteger(value) && value > 0 ? value : undefined;
 }
 
+function getSize(record: Record<string, unknown>, key: string): number | string | undefined {
+	const value = record[key];
+	if (typeof value === 'number') {
+		return Number.isFinite(value) && value > 0 ? value : undefined;
+	}
+
+	const match = typeof value === 'string' ? value.match(/^(\d+(?:\.\d+)?)%$/) : undefined;
+	if (!match) {
+		return undefined;
+	}
+
+	const percentage = Number(match[1]);
+	return Number.isFinite(percentage) && percentage > 0 ? String(value) : undefined;
+}
+
 function isQualifiedMemoryId(value: string): boolean {
 	const [moduleId, memoryId, extra] = value.split(':');
 	return Boolean(moduleId) && Boolean(memoryId) && extra === undefined;
@@ -56,6 +77,7 @@ export function resolveWebUiBackgroundConfig(state: State): WebUiOptions['frameT
 	const entry = background.entry;
 	const width = getPositiveInteger(background, 'width');
 	const height = getPositiveInteger(background, 'height');
+	const size = getSize(background, 'size');
 
 	if (
 		typeof entry !== 'string' ||
@@ -82,6 +104,7 @@ export function resolveWebUiBackgroundConfig(state: State): WebUiOptions['frameT
 		target,
 		width,
 		height,
+		...(size ? { size } : {}),
 		...(filter ? { filter } : {}),
 		...(objectFit ? { objectFit } : {}),
 	};
