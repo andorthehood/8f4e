@@ -99,6 +99,11 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
 				);
 			}
 			return;
+		case 'pushValue':
+			if (argument.type !== ArgumentType.STRING_LITERAL && !isCompileTimeValue(argument)) {
+				invalid(`Invalid argument for ${instruction}: expected push value.`);
+			}
+			return;
 		case 'typeIdentifier':
 			if (argument.type !== ArgumentType.IDENTIFIER || !supportedScalarTypeIdentifiers.has(argument.value)) {
 				invalid(`Invalid argument for ${instruction}: expected type identifier (int, float, or float64).`);
@@ -154,6 +159,11 @@ export default function validateInstructionArguments(instruction: string, args: 
 		if (isArrayDeclarationInstruction(instruction)) {
 			for (let i = spec.argumentTypes.length; i < args.length; i++) {
 				validateArgumentShape(args[i], 'compileTimeValue', instruction);
+			}
+		}
+		if (spec.restArgumentType) {
+			for (let i = spec.argumentTypes.length; i < args.length; i++) {
+				validateArgumentShape(args[i], spec.restArgumentType, instruction);
 			}
 		}
 		return;
