@@ -95,6 +95,20 @@ describe('parseLine', () => {
 		expect(result.arguments).toEqual([{ type: ArgumentType.STRING_LITERAL, value: 'hello' }]);
 	});
 
+	it('parses inline call arguments', () => {
+		const result = parseLine('call foo 2 1.3', 0);
+		expect(result).toEqual({
+			lineNumberBeforeMacroExpansion: 0,
+			lineNumberAfterMacroExpansion: 0,
+			instruction: 'call',
+			arguments: [
+				classifyIdentifier('foo'),
+				{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
+				{ type: ArgumentType.LITERAL, value: 1.3, isInteger: false },
+			],
+		});
+	});
+
 	it('parses a quoted string with spaces as a single argument', () => {
 		const result = parseLine('push "hello world"', 0);
 		expect(result.arguments).toHaveLength(1);
