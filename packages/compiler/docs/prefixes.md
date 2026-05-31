@@ -75,7 +75,7 @@ push sizeof(samples)
 ## Pointee element word size
 
 - `sizeof(*name)` pushes the element word size (in bytes) of the value pointed to by a pointer-typed memory item.
-- Only valid for pointer identifiers (`int*`, `int8*`, `int16*`, `float*`, `float64*`, etc.).
+- Only valid for pointer identifiers (`int*`, `int8*`, `int8u*`, `int16*`, `int16u*`, `float*`, `float64*`, etc.).
 - On a non-pointer memory identifier, current compiler behavior resolves `sizeof(*name)` to `0`.
 - Metadata queries currently support one leading `*`. For double pointers, `sizeof(*name)` describes the intermediate pointer slot. `sizeof(**name)` is not supported yet.
 
@@ -85,7 +85,9 @@ Examples:
 |---------------------|----------------|-----------------|
 | `int* ptr`          | 4              | 4               |
 | `int8* ptr`         | 4              | 1               |
+| `int8u* ptr`        | 4              | 1               |
 | `int16* ptr`        | 4              | 2               |
+| `int16u* ptr`       | 4              | 2               |
 | `float* ptr`        | 4              | 4               |
 | `float64* ptr`      | 4              | 8               |
 | `int** ptr`         | 4              | 4               |
@@ -130,7 +132,7 @@ push max(unsignedBuffer)
 ## Pointee element max value
 
 - `max(*name)` pushes the maximum finite value for the type pointed to by a pointer-typed memory item.
-- Only valid for pointer identifiers (`int*`, `int8*`, `int16*`, `float*`, `float64*`, etc.).
+- Only valid for pointer identifiers (`int*`, `int8*`, `int8u*`, `int16*`, `int16u*`, `float*`, `float64*`, etc.).
 - On a non-pointer memory identifier, current compiler behavior resolves `max(*name)` to `0`.
 - `max(name)` keeps its existing meaning (max of the memory item's own element type).
 - Metadata queries currently support one leading `*`. For double pointers, `max(*name)` describes the intermediate pointer slot. `max(**name)` is not supported yet.
@@ -141,7 +143,9 @@ Examples:
 |---------------------|---------------------|------------------------------------|
 | `int* ptr`          | 2,147,483,647       | 2,147,483,647                      |
 | `int8* ptr`         | 2,147,483,647       | 127                                |
+| `int8u* ptr`        | 2,147,483,647       | 255                                |
 | `int16* ptr`        | 2,147,483,647       | 32,767                             |
+| `int16u* ptr`       | 2,147,483,647       | 65,535                             |
 | `float* ptr`        | 2,147,483,647       | 3.4028234663852886e+38             |
 | `float64* ptr`      | 2,147,483,647       | 1.7976931348623157e+308            |
 | `float64** ptr`     | 2,147,483,647       | 2,147,483,647                      |
@@ -172,6 +176,8 @@ For signed integers:
 For unsigned integers:
 - `int8u[]`: 0
 - `int16u[]`: 0
+- `int8u*` pointees: 0
+- `int16u*` pointees: 0
 
 For floats:
 - `float` / `float[]`: -3.4028234663852886e+38 (lowest finite float32)
@@ -188,6 +194,9 @@ push min(unsignedBuffer)
 int8* ptr &buffer
 push min(ptr)    ; -2,147,483,648  — min of the pointer slot type (i32)
 push min(*ptr)   ; -128            — min of the int8 it points to
+
+int8u* unsignedPtr &unsignedBuffer
+push min(*unsignedPtr) ; 0          — min of the int8u it points to
 ```
 
 ---

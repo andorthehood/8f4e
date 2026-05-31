@@ -4,8 +4,12 @@ export const scalarMemoryDeclarationInstructions = [
 	'int**',
 	'int8*',
 	'int8**',
+	'int8u*',
+	'int8u**',
 	'int16*',
 	'int16**',
+	'int16u*',
+	'int16u**',
 	'float',
 	'float*',
 	'float**',
@@ -49,7 +53,7 @@ export const memoryDeclarationInstructions = [
 
 export type BaseMemoryType = 'int' | 'int8' | 'int16' | 'float' | 'float64';
 type ReservedUnsignedBaseMemoryType = 'int8u' | 'int16u';
-type PointeeBaseType = BaseMemoryType | ReservedUnsignedBaseMemoryType;
+export type PointeeBaseType = BaseMemoryType | ReservedUnsignedBaseMemoryType;
 type PointerSlotType = 'pointer';
 type BaseTypeMetadataKey = PointeeBaseType | PointerSlotType;
 export type MemoryValueKind = 'int32' | 'float32' | 'float64';
