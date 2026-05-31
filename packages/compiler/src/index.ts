@@ -89,7 +89,8 @@ export function compileModules(
 	options: CompileOptions,
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
-	internalAllocator?: { nextByteAddress: number }
+	internalAllocator?: { nextByteAddress: number },
+	typeRegistry?: FunctionTypeRegistry
 ): CompiledModule[] {
 	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 	const ns: Namespaces =
@@ -108,7 +109,16 @@ export function compileModules(
 	return modules.map((ast, index) => {
 		const moduleStartingByteAddress =
 			ns[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
-		const module = compileModule(ast, ns, moduleStartingByteAddress, index, compiledFunctions, allocator, options);
+		const module = compileModule(
+			ast,
+			ns,
+			moduleStartingByteAddress,
+			index,
+			compiledFunctions,
+			allocator,
+			options,
+			typeRegistry
+		);
 		return module;
 	});
 }
@@ -380,7 +390,8 @@ export default function compile(
 		},
 		namespaces,
 		functionMetadata,
-		internalAllocator
+		internalAllocator,
+		functionTypeRegistry
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],

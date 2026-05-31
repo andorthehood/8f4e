@@ -11,9 +11,7 @@ describe('blockEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.BLOCK,
-					expectedResultIsInteger: true,
-					hasExpectedResult: true,
+					blockType: BlockType.BLOCK,expectedResultTypes: ['int'],
 				},
 			],
 		});

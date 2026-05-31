@@ -39,8 +39,7 @@ const loop: InstructionCompiler<NormalizedLoopLine | LoopLine> = (line, context)
 	context.locals[infiniteLoopProtectionCounterName] = loopCounterLocal;
 
 	const loopBlock: LoopBlockStackFrame = {
-		expectedResultIsInteger: false,
-		hasExpectedResult: false,
+		expectedResultTypes: [],
 		blockType: BlockType.LOOP,
 		loopCounterLocalName: infiniteLoopProtectionCounterName,
 		loopCounterLocal,

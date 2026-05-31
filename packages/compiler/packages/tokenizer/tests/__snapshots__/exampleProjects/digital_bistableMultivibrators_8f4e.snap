@@ -277,7 +277,9 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 26,
-      "resultType": "int",
+      "resultTypes": [
+        "int"
+      ],
       "hasElse": true
     }
   },
@@ -325,7 +327,9 @@
     ],
     "ifEndBlock": {
       "matchingIfIndex": 22,
-      "resultType": "int"
+      "resultTypes": [
+        "int"
+      ]
     }
   },
   {
@@ -495,7 +499,9 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 43,
-      "resultType": "int",
+      "resultTypes": [
+        "int"
+      ],
       "hasElse": true
     }
   },
@@ -543,7 +549,9 @@
     ],
     "ifEndBlock": {
       "matchingIfIndex": 39,
-      "resultType": "int"
+      "resultTypes": [
+        "int"
+      ]
     }
   },
   {
@@ -733,7 +741,7 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 62,
-      "resultType": null,
+      "resultTypes": [],
       "hasElse": false
     }
   },
@@ -780,7 +788,7 @@
     "arguments": [],
     "ifEndBlock": {
       "matchingIfIndex": 58,
-      "resultType": null
+      "resultTypes": []
     }
   },
   {
@@ -978,7 +986,9 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 82,
-      "resultType": "int",
+      "resultTypes": [
+        "int"
+      ],
       "hasElse": true
     }
   },
@@ -1026,7 +1036,9 @@
     ],
     "ifEndBlock": {
       "matchingIfIndex": 78,
-      "resultType": "int"
+      "resultTypes": [
+        "int"
+      ]
     }
   },
   {
@@ -1196,7 +1208,9 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 99,
-      "resultType": "int",
+      "resultTypes": [
+        "int"
+      ],
       "hasElse": true
     }
   },
@@ -1244,7 +1258,9 @@
     ],
     "ifEndBlock": {
       "matchingIfIndex": 95,
-      "resultType": "int"
+      "resultTypes": [
+        "int"
+      ]
     }
   },
   {
@@ -1414,7 +1430,9 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 116,
-      "resultType": "int",
+      "resultTypes": [
+        "int"
+      ],
       "hasElse": true
     }
   },
@@ -1462,7 +1480,9 @@
     ],
     "ifEndBlock": {
       "matchingIfIndex": 112,
-      "resultType": "int"
+      "resultTypes": [
+        "int"
+      ]
     }
   },
   {
@@ -1652,7 +1672,7 @@
     "arguments": [],
     "ifBlock": {
       "matchingIfEndIndex": 135,
-      "resultType": null,
+      "resultTypes": [],
       "hasElse": false
     }
   },
@@ -1699,7 +1719,7 @@
     "arguments": [],
     "ifEndBlock": {
       "matchingIfIndex": 131,
-      "resultType": null
+      "resultTypes": []
     }
   },
   {
