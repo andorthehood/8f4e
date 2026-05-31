@@ -15,6 +15,12 @@ describe('web-ui editor config', () => {
 						target: { type: 'string' },
 						width: { type: 'integer', minimum: 1 },
 						height: { type: 'integer', minimum: 1 },
+						size: {
+							anyOf: [
+								{ type: 'number', minimum: 1 },
+								{ type: 'string', pattern: '^\\d+(?:\\.\\d+)?%$' },
+							],
+						},
 						objectFit: { type: 'string', enum: ['fill', 'cover', 'contain', 'none'] },
 					},
 				},
@@ -31,6 +37,7 @@ describe('web-ui editor config', () => {
 						target: 'screen:rgba',
 						width: 64,
 						height: 32,
+						size: '150%',
 						filter: 'linear',
 						objectFit: 'none',
 					},
@@ -43,6 +50,7 @@ describe('web-ui editor config', () => {
 			target: 'screen:rgba',
 			width: 64,
 			height: 32,
+			size: '150%',
 			filter: 'linear',
 			objectFit: 'none',
 		});

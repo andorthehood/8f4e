@@ -212,6 +212,7 @@ describe('editor init', () => {
 					target: 'screen:pixels',
 					width: 64,
 					height: 32,
+					size: '150%',
 					filter: 'linear',
 					objectFit: 'contain',
 				},
@@ -222,6 +223,7 @@ describe('editor init', () => {
 			target: 'screen:pixels',
 			width: 64,
 			height: 32,
+			size: '150%',
 			filter: 'linear',
 			objectFit: 'contain',
 		});
