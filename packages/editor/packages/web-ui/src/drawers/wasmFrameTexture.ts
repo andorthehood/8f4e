@@ -3,12 +3,14 @@ import type { Engine, Rgba8Texture, Rgba8TextureFilter } from 'glugglug';
 import type { MemoryViews } from '../types';
 
 export type WasmFrameTextureObjectFit = 'fill' | 'cover' | 'contain' | 'none';
+export type WasmFrameTextureSize = number | string;
 
 export interface WasmFrameTextureOptions {
 	entry: string;
 	target: string;
 	width: number;
 	height: number;
+	size?: WasmFrameTextureSize;
 	filter?: Rgba8TextureFilter;
 	objectFit?: WasmFrameTextureObjectFit;
 }
@@ -53,24 +55,55 @@ function getFrameBufferByteAddress(state: State, target: string): number | undef
 	return typeof memory?.byteAddress === 'number' ? memory.byteAddress : undefined;
 }
 
+function resolveSize(value: WasmFrameTextureSize | undefined, sourceWidth: number): number | undefined {
+	if (typeof value === 'number') {
+		return Number.isFinite(value) && value > 0 ? value : undefined;
+	}
+
+	const match = typeof value === 'string' ? value.trim().match(/^(\d+(?:\.\d+)?)%$/) : undefined;
+	if (!match) {
+		return undefined;
+	}
+
+	const percentage = Number(match[1]);
+	return Number.isFinite(percentage) && percentage > 0 ? (sourceWidth * percentage) / 100 : undefined;
+}
+
+function centerDrawRect(
+	width: number,
+	height: number,
+	viewportWidth: number,
+	viewportHeight: number
+): { x: number; y: number; width: number; height: number } {
+	return {
+		x: (viewportWidth - width) / 2,
+		y: (viewportHeight - height) / 2,
+		width,
+		height,
+	};
+}
+
 export function getObjectFitDrawRect(
 	objectFit: WasmFrameTextureObjectFit,
 	sourceWidth: number,
 	sourceHeight: number,
 	viewportWidth: number,
-	viewportHeight: number
+	viewportHeight: number,
+	size?: WasmFrameTextureSize
 ): { x: number; y: number; width: number; height: number } {
+	const resolvedSize = resolveSize(size, sourceWidth);
+	if (resolvedSize) {
+		const width = resolvedSize;
+		const height = (resolvedSize * sourceHeight) / sourceWidth;
+		return centerDrawRect(width, height, viewportWidth, viewportHeight);
+	}
+
 	if (objectFit === 'fill') {
 		return { x: 0, y: 0, width: viewportWidth, height: viewportHeight };
 	}
 
 	if (objectFit === 'none') {
-		return {
-			x: (viewportWidth - sourceWidth) / 2,
-			y: (viewportHeight - sourceHeight) / 2,
-			width: sourceWidth,
-			height: sourceHeight,
-		};
+		return centerDrawRect(sourceWidth, sourceHeight, viewportWidth, viewportHeight);
 	}
 
 	const scale =
@@ -80,12 +113,7 @@ export function getObjectFitDrawRect(
 	const width = sourceWidth * scale;
 	const height = sourceHeight * scale;
 
-	return {
-		x: (viewportWidth - width) / 2,
-		y: (viewportHeight - height) / 2,
-		width,
-		height,
-	};
+	return centerDrawRect(width, height, viewportWidth, viewportHeight);
 }
 
 export function createWasmFrameTextureDrawer({
@@ -195,7 +223,14 @@ export function createWasmFrameTextureDrawer({
 			filter,
 		});
 		const viewport = getViewportSize();
-		const drawRect = getObjectFitDrawRect(objectFit, sourceWidth, sourceHeight, viewport.width, viewport.height);
+		const drawRect = getObjectFitDrawRect(
+			objectFit,
+			sourceWidth,
+			sourceHeight,
+			viewport.width,
+			viewport.height,
+			frameTexture.size
+		);
 		engine.drawTexture(texture, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
 	};
 }
