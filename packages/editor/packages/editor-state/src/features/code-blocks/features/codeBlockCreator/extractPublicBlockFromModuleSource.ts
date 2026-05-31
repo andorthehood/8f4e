@@ -1,11 +1,8 @@
+import type { ProjectCodeBlock } from '@8f4e/tokenizer';
 import { parse8f4eProject } from '@8f4e/tokenizer';
-
+import { FORMAT_HEADER } from '~/features/project-format';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 import removeDirective from '../../utils/removeDirective';
-
-import type { ProjectCodeBlock } from '@8f4e/tokenizer';
-
-import { FORMAT_HEADER } from '~/features/project-format';
 
 const PUBLIC_BLOCK_DIRECTIVE = 'public';
 

@@ -1,8 +1,6 @@
-import { StateManager } from '@8f4e/state-manager';
-
-import getBlockType from '../../utils/codeParsers/getBlockType';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import getBlockType from '../../utils/codeParsers/getBlockType';
 
 /**
  * Effect that keeps the blockType field in sync with code block contents.

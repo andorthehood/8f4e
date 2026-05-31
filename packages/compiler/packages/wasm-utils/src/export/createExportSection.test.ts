@@ -1,9 +1,7 @@
 import { expect, test } from 'vitest';
-
-import createFunctionExport from './createFunctionExport';
-import createExportSection from './createExportSection';
-
 import { Section } from '../section';
+import createExportSection from './createExportSection';
+import createFunctionExport from './createFunctionExport';
 
 test('createExportSection wraps exports correctly', () => {
 	const exports = [createFunctionExport('main', 0)];

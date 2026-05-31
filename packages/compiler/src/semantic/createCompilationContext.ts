@@ -1,6 +1,5 @@
-import { BlockType } from '@8f4e/compiler-spec';
-
 import type { BlockStack, CompilationContext } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 
 type CompilationContextOverrides<TContext extends CompilationContext = CompilationContext> = Partial<
 	Omit<TContext, 'namespace'>

@@ -1,12 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
-
-import loopCap from './loopCap';
+import { describe, expect, it } from 'vitest';
 
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import loopCap from './loopCap';
 
 describe('#loopCap instruction compiler', () => {
 	it('sets loopCap on context when in module block', () => {

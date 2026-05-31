@@ -1,6 +1,5 @@
-import createDeclarationCompiler from './createDeclarationCompiler';
-
 import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
+import createDeclarationCompiler from './createDeclarationCompiler';
 
 /**
  * Instruction compiler for `float`.

@@ -1,9 +1,8 @@
 import { createSet } from './set.js';
 import { createSubscribe } from './subscribe.js';
 import { createSubscribeToValue } from './subscribeToValue.js';
+import type { Matcher, Path, PathValue, Subscription } from './types';
 import { createUnsubscribe } from './unsubscribe.js';
-
-import type { Path, PathValue, Subscription, Matcher } from './types';
 
 export interface StateManager<State> {
 	getState: () => State;

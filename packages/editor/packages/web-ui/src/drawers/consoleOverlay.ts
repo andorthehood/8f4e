@@ -1,6 +1,5 @@
-import { Engine } from 'glugglug';
-
 import type { State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 
 const PADDING_CHARS = 1;
 const ELLIPSIS = '...';

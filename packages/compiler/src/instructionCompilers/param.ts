@@ -1,9 +1,7 @@
+import type { FunctionCodegenContext, FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
-
 import { getError } from '../compilerError';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
-
-import type { FunctionCodegenContext, FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `param`.

@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import formatDebuggerValue from './formatDebuggerValue';
-
 import type { DataStructure } from '@8f4e/compiler-spec';
+import { describe, expect, it } from 'vitest';
+import formatDebuggerValue from './formatDebuggerValue';
 
 function createMemoryViews() {
 	const buffer = new ArrayBuffer(8);

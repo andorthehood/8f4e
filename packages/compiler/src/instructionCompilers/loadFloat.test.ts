@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import loadFloat from './loadFloat';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import loadFloat from './loadFloat';
 
 describe('loadFloat instruction compiler', () => {
 	it('loads from a safe memory address', () => {

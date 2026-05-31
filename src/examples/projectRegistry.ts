@@ -1,6 +1,5 @@
-import { getExampleProjectRegistry } from './exampleProjects';
-
 import type { ExampleProjectRegistryEntry } from './exampleProjects';
+import { getExampleProjectRegistry } from './exampleProjects';
 
 /**
  * Get list of projects with metadata only.

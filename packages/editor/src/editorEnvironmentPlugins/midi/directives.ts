@@ -1,9 +1,8 @@
+import type { CompilerSourceBlockType } from '@8f4e/compiler-spec';
 import { compilerSourceBlockTypes } from '@8f4e/compiler-spec';
 
-import { getActiveCodeBlocksForEnvironmentPlugins } from '../codeBlocks';
-
 import type { CodeBlockGraphicData, CodeError, State } from '@8f4e/editor-state-types';
-import type { CompilerSourceBlockType } from '@8f4e/compiler-spec';
+import { getActiveCodeBlocksForEnvironmentPlugins } from '../codeBlocks';
 import type { MidiInBinding } from './types';
 
 const diagnosticBlockTypes = new Set<string>(compilerSourceBlockTypes);

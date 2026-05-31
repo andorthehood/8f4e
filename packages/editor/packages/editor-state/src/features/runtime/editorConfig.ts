@@ -1,5 +1,3 @@
-import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
-
 import type {
 	EditorConfigSchemaContributionRegistry,
 	EditorConfigValidator,
@@ -8,11 +6,12 @@ import type {
 	State,
 } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
 export const RUNTIME_SELECTION_CONFIG_PATH = 'runtime';
 
 function isRegisteredRuntimeId(runtimeRegistry: RuntimeRegistry, runtimeId: string): boolean {
-	return Object.prototype.hasOwnProperty.call(runtimeRegistry, runtimeId);
+	return Object.hasOwn(runtimeRegistry, runtimeId);
 }
 
 export function resolveSelectedRuntimeId(

@@ -1,5 +1,5 @@
-import { WASM_I32_LOAD_16_S } from '../wasmInstruction';
 import memarg from '../memory/memarg';
+import { WASM_I32_LOAD_16_S } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.load16_s instruction to load a signed 16-bit integer from memory.

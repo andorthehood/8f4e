@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMockState } from '@8f4e/editor-state-testing';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => {
 	const engine = {
@@ -19,6 +19,7 @@ const mocks = vi.hoisted(() => {
 
 	return {
 		engine,
+		// biome-ignore lint/complexity/useArrowFunction: Engine is constructed with new in the code under test.
 		Engine: vi.fn(function () {
 			return engine;
 		}),

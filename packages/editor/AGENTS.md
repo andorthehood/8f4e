@@ -10,7 +10,7 @@
 - Ensure `dist/` exists before root `vite build` after API changes.
 
 ## Coding Style
-- TypeScript (ESM). Use ESLint as the fixer (`npx eslint --fix <files>`); it owns formatting and import-order rules.
+- TypeScript (ESM). Use Biome as the fixer (`npx biome check --write <files>`); it owns formatting and import organization.
 - Prefer alias imports for internal packages.
 
 ## Testing

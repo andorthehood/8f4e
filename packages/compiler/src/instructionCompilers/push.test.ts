@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine, MemoryMap } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
-
-import push from './push';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine, MemoryMap } from '@8f4e/compiler-spec';
+import push from './push';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

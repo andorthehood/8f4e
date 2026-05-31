@@ -1,3 +1,27 @@
+import type {
+	AnalyzedLine,
+	CompilationContext,
+	CompiledFunction,
+	CompiledModule,
+	CompiledStackAnalysisLine,
+	CompileOptions,
+	CompilerASTLine,
+	ConstantsAST,
+	FunctionAST,
+	FunctionCompilationContext,
+	FunctionMetadataLookup,
+	FunctionTypeRegistry,
+	InstructionCompiler,
+	ModuleAST,
+	ModuleCompilationContext,
+	Namespaces,
+} from '@8f4e/compiler-spec';
+import {
+	ErrorCode,
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	isMemoryDeclarationLine,
+	isSemanticInstructionLine,
+} from '@8f4e/compiler-spec';
 import {
 	createFunction,
 	createLocalDeclaration,
@@ -5,37 +29,14 @@ import {
 	WASM_TYPE_F64,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/compiler-spec';
-
-import instructions from './instructionCompilers';
 import { getError } from './compilerError';
-import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
-import { applySemanticLine, layoutNamespace } from './semantic/buildNamespace';
-import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
-import { getMemoryRegionFields } from './semantic/memoryRegions';
-import { createCompilationContext } from './semantic/createCompilationContext';
-
-import type {
-	CompilerASTLine,
-	AnalyzedLine,
-	CompilationContext,
-	ConstantsAST,
-	CompiledModule,
-	CompiledFunction,
-	CompiledStackAnalysisLine,
-	CompileOptions,
-	FunctionMetadataLookup,
-	FunctionCompilationContext,
-	FunctionAST,
-	ModuleAST,
-	FunctionTypeRegistry,
-	InstructionCompiler,
-	ModuleCompilationContext,
-	Namespaces,
-} from '@8f4e/compiler-spec';
 import type { Instruction } from './instructionCompilers';
+import instructions from './instructionCompilers';
+import { applySemanticLine, layoutNamespace } from './semantic/buildNamespace';
+import { createCompilationContext } from './semantic/createCompilationContext';
+import { getMemoryRegionFields } from './semantic/memoryRegions';
+import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
+import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
 type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionId: string;

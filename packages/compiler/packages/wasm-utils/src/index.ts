@@ -1,7 +1,7 @@
-export { default as call } from './call/call';
 export { default as memoryCopy } from './bulkMemory/memoryCopy';
 export { default as memoryFill } from './bulkMemory/memoryFill';
 export { default as memoryInit } from './bulkMemory/memoryInit';
+export { default as call } from './call/call';
 export { default as createCodeSection } from './codeSection/createCodeSection';
 export { default as createFunction } from './codeSection/createFunction';
 export { default as createLocalDeclaration } from './codeSection/createLocalDeclaration';
@@ -33,31 +33,31 @@ export { default as createMemoryImport } from './import/createMemoryImport';
 export { default as f32load } from './load/f32load';
 export { default as f64load } from './load/f64load';
 export { default as i32load } from './load/i32load';
-export { default as i32load16s } from './load/i32load16s';
-export { default as i32load16u } from './load/i32load16u';
 export { default as i32load8s } from './load/i32load8s';
 export { default as i32load8u } from './load/i32load8u';
+export { default as i32load16s } from './load/i32load16s';
+export { default as i32load16u } from './load/i32load16u';
 export { default as localGet } from './local/localGet';
 export { default as localSet } from './local/localSet';
 export { default as createMemorySection } from './memory/memorySection';
 export { default as createFunctionName } from './name/createFunctionName';
 export { default as createNameSection } from './name/createNameSection';
-export { Section, NameSection, ImportDesc, ExportDesc } from './section';
 export type {
-	LocalDeclaration,
+	DataSegment,
 	FunctionBody,
 	FunctionExport,
-	FunctionType,
 	FunctionName,
-	LocalName,
+	FunctionType,
 	Import,
-	DataSegment,
+	LocalDeclaration,
+	LocalName,
 } from './section';
+export { ExportDesc, ImportDesc, NameSection, Section } from './section';
 export { default as f32store } from './store/f32store';
 export { default as f64store } from './store/f64store';
 export { default as i32store } from './store/i32store';
-export { default as i32store16 } from './store/i32store16';
 export { default as i32store8 } from './store/i32store8';
+export { default as i32store16 } from './store/i32store16';
 export * from './type';
 export { default as createFunctionSection } from './typeFunction/createFunctionSection';
 export { default as createFunctionType } from './typeFunction/createFunctionType';

@@ -1,10 +1,9 @@
+import type { CompilableBlockType, DocumentBlockType, Module } from '@8f4e/compiler-spec';
 import {
 	compilableBlockTypes,
 	documentBlockInstructionByType,
 	documentBlockInstructionPairs,
 } from '@8f4e/compiler-spec';
-
-import type { CompilableBlockType, DocumentBlockType, Module } from '@8f4e/compiler-spec';
 
 export const FORMAT_HEADER = '8f4e/v1';
 export const ENTRY_BLOCK_DELIMITER = { type: 'entry', opener: 'entry', closer: 'entryEnd' } as const;

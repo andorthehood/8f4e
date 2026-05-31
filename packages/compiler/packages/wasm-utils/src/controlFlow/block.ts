@@ -1,6 +1,5 @@
-import { WASM_BLOCK, WASM_END } from '../wasmInstruction';
-
 import type { WasmTypeValue } from '../type';
+import { WASM_BLOCK, WASM_END } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly block structure.

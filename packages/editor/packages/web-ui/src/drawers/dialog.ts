@@ -1,6 +1,5 @@
-import { Engine } from 'glugglug';
-
 import type { State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 
 const DIALOG_CORNER = '+';
 

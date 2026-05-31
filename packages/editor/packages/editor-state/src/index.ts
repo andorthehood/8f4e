@@ -1,51 +1,49 @@
-import createStateManager, { StateManager } from '@8f4e/state-manager';
-
-import createDefaultState from './pureHelpers/state/createDefaultState';
-import historyTracking from './features/edit-history/effect';
-import codeEditing from './features/code-editing/effect';
-import _switch from './features/code-blocks/features/directives/switch/interaction';
-import button from './features/code-blocks/features/directives/button/interaction';
-import slider from './features/code-blocks/features/directives/slider/interaction';
-import crossfade from './features/code-blocks/features/directives/crossfade/interaction';
-import viewportDirectiveEffect from './features/code-blocks/features/directives/viewport/effect';
+import type { EventDispatcher, Options, State } from '@8f4e/editor-state-types';
+import createStateManager, { type StateManager } from '@8f4e/state-manager';
+import browserLocalNotes from './features/browser-local-notes/effect';
+import canvasScreenshot from './features/canvas-screenshot/effect';
+import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
+import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
+import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
 import codeBlockCreator from './features/code-blocks/features/codeBlockCreator/effect';
 import codeBlockDragger from './features/code-blocks/features/codeBlockDragger/effect';
 import codeBlockNavigation from './features/code-blocks/features/codeBlockNavigation/effect';
-import compiler from './features/program-compiler/effect';
-import contextMenu from './features/menu/effect';
-import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
-import browserLocalNotes from './features/browser-local-notes/effect';
-import color from './features/color/effect';
-import font from './features/font/effect';
-import projectImport from './features/project-import/effect';
+import button from './features/code-blocks/features/directives/button/interaction';
+import crossfade from './features/code-blocks/features/directives/crossfade/interaction';
 import pianoKeyboard from './features/code-blocks/features/directives/piano/interaction';
-import projectExport from './features/project-export/effect';
-import canvasScreenshot from './features/canvas-screenshot/effect';
-import viewport from './features/viewport/effect';
-import runtime from './features/runtime/effect';
-import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
-import shaderEffectsDeriver from './features/shader-effects/effect';
-import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
-import globalEditorDirectivesEffect from './features/global-editor-directives/effect';
+import slider from './features/code-blocks/features/directives/slider/interaction';
+import _switch from './features/code-blocks/features/directives/switch/interaction';
+import viewportDirectiveEffect from './features/code-blocks/features/directives/viewport/effect';
+import entryOutlines from './features/code-blocks/features/entryOutlines/effect';
+import favoriteToggler from './features/code-blocks/features/favoriteToggler/effect';
+import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
+import groupCopier from './features/code-blocks/features/group/copier/effect';
+import groupDeleter from './features/code-blocks/features/group/deleter/effect';
+import groupNonstickToggler from './features/code-blocks/features/group/nonstickToggler/effect';
+import groupRemover from './features/code-blocks/features/group/remover/effect';
+import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
+import groupUngroupper from './features/code-blocks/features/group/ungroupper/effect';
 import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
-import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
-import entryOutlines from './features/code-blocks/features/entryOutlines/effect';
-import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
-import groupNonstickToggler from './features/code-blocks/features/group/nonstickToggler/effect';
-import groupCopier from './features/code-blocks/features/group/copier/effect';
-import favoriteToggler from './features/code-blocks/features/favoriteToggler/effect';
-import groupRemover from './features/code-blocks/features/group/remover/effect';
-import groupUngroupper from './features/code-blocks/features/group/ungroupper/effect';
-import groupDeleter from './features/code-blocks/features/group/deleter/effect';
-import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
+import codeEditing from './features/code-editing/effect';
+import color from './features/color/effect';
 import dialog from './features/dialog/effect';
-import editorMode from './features/editor-mode/effect';
-import presentation from './features/presentation/effect';
-import tooltip from './features/tooltip/effect';
+import historyTracking from './features/edit-history/effect';
 import { registerEditorConfigSchemaContributionsValidator } from './features/editor-config/schemaContributions';
-
-import type { Options, State, EventDispatcher } from '@8f4e/editor-state-types';
+import editorMode from './features/editor-mode/effect';
+import font from './features/font/effect';
+import globalEditorDirectivesEffect from './features/global-editor-directives/effect';
+import contextMenu from './features/menu/effect';
+import presentation from './features/presentation/effect';
+import compiler from './features/program-compiler/effect';
+import projectExport from './features/project-export/effect';
+import projectImport from './features/project-import/effect';
+import runtime from './features/runtime/effect';
+import shaderEffectsDeriver from './features/shader-effects/effect';
+import tooltip from './features/tooltip/effect';
+import viewport from './features/viewport/effect';
+import createDefaultState from './pureHelpers/state/createDefaultState';
+import { validateFeatureFlags } from './pureHelpers/state/featureFlags';
 
 export {
 	collectSchemaConfigPaths,
@@ -129,15 +127,13 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	return store;
 }
 
-// Export EMPTY_DEFAULT_PROJECT as a value
-export { EMPTY_DEFAULT_PROJECT } from './features/project-import/emptyDefaultProject';
-
-// Export .8f4e format helpers
-export { serializeProjectTo8f4e } from './features/project-export/serializeTo8f4e';
-export { parse8f4eToProject } from './features/project-import/parse8f4e';
-
+export { navigateToCodeBlockInDirection } from './features/code-blocks/features/codeBlockNavigation/effect';
 // Export helper functions
 export { default as findClosestCodeBlockInDirection } from './features/code-blocks/utils/finders/findClosestCodeBlockInDirection';
-export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';
+// Export .8f4e format helpers
+export { serializeProjectTo8f4e } from './features/project-export/serializeTo8f4e';
+// Export EMPTY_DEFAULT_PROJECT as a value
+export { EMPTY_DEFAULT_PROJECT } from './features/project-import/emptyDefaultProject';
+export { parse8f4eToProject } from './features/project-import/parse8f4e';
 export type { CodeBlockBounds } from './features/viewport/centerViewportOnCodeBlock';
-export { navigateToCodeBlockInDirection } from './features/code-blocks/features/codeBlockNavigation/effect';
+export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';

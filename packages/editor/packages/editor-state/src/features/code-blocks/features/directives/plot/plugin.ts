@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createPlotDirectiveData } from './data';
 import { createPlotDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'plot',

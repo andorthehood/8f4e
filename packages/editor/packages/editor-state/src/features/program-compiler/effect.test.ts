@@ -1,12 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi, type MockInstance } from 'vitest';
+import type { State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
-
+import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
+import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { recompileDebounceDelayEditorConfigValidator } from './editorConfig';
 import compilerEffect from './effect';
-
-import type { State } from '@8f4e/editor-state-types';
-
-import { createMockState, createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('program compiler effect', () => {
 	let mockState: State;

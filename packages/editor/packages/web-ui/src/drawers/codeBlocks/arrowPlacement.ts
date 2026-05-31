@@ -1,5 +1,4 @@
-import type { State } from '@8f4e/editor-state-types';
-import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 
 /**
  * Represents the placement coordinates for directional arrow indicators.

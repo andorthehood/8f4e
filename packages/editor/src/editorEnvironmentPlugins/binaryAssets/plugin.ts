@@ -1,7 +1,6 @@
+import type { EditorEnvironmentPluginContext } from '../types';
 import createBinaryAssetDirectiveSync from './directiveSync';
 import createBinaryAssetMemoryLoader from './memoryLoader';
-
-import type { EditorEnvironmentPluginContext } from '../types';
 
 export default function binaryAssetsPlugin({
 	store,

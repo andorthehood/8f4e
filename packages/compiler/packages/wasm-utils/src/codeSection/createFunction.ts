@@ -1,8 +1,7 @@
-import { WASM_END } from '../wasmInstruction';
 import createVector from '../encoding/createVector';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
-
 import type { FunctionBody, LocalDeclaration } from '../section';
+import { WASM_END } from '../wasmInstruction';
 
 /**
  * Creates a complete WebAssembly function body with local declarations and instructions.

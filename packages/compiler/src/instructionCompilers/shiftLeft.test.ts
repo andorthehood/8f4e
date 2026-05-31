@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import shiftLeft from './shiftLeft';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import shiftLeft from './shiftLeft';
 
 describe('shiftLeft instruction compiler', () => {
 	it('emits I32_SHL for integer operands', () => {

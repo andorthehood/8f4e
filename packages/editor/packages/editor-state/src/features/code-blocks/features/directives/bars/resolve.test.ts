@@ -1,16 +1,13 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes, type DataStructure } from '@8f4e/compiler-spec';
-
-import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
-
-import type { CodeBlockGraphicData, State, MemoryIdentifier } from '@8f4e/editor-state-types';
-
+import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
+import type { CodeBlockGraphicData, MemoryIdentifier, State } from '@8f4e/editor-state-types';
+import { beforeEach, describe, expect, it } from 'vitest';
 import {
 	createMockCodeBlock,
 	createMockState,
 	deriveDirectiveStateForMockCodeBlock,
 	setMockCodeBlockCode,
 } from '~/pureHelpers/testingUtils/testUtils';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 describe('bars directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;

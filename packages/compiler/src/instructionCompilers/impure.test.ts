@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
-
-import impure from './impure';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import impure from './impure';
 
 describe('impure instruction compiler', () => {
 	it('sets currentFunctionIsImpure when in function context', () => {

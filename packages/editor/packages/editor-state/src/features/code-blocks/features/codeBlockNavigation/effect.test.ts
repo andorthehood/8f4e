@@ -1,12 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import type { CodeBlockGraphicData, NavigateCodeBlockEvent } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
-
-import codeBlockNavigation, { goHome, jumpToCodeBlock, navigateToCodeBlockInDirection } from './effect';
-
-import type { NavigateCodeBlockEvent, CodeBlockGraphicData } from '@8f4e/editor-state-types';
-
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import codeBlockNavigation, { goHome, jumpToCodeBlock, navigateToCodeBlockInDirection } from './effect';
 
 interface JumpToFavoriteCodeBlockEvent {
 	creationIndex: number;

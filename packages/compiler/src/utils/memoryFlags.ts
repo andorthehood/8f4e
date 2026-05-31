@@ -1,6 +1,5 @@
-import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
-
 import type { BaseMemoryType } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
 
 export default function getMemoryFlags(baseType: BaseMemoryType, pointerDepth: number) {
 	const isPointer = pointerDepth > 0;

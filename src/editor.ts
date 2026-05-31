@@ -1,19 +1,18 @@
 import initEditor from '@8f4e/editor';
-
-import { runtimeRegistry, DEFAULT_RUNTIME_ID } from './runtime-registry';
-import {
-	loadSession,
-	saveSession,
-	loadBrowserLocalNotes,
-	saveBrowserLocalNotes,
-	importProject,
-	exportProject,
-	exportBinaryCode,
-	exportCanvasScreenshot,
-} from './storage-callbacks';
 import { compileCode } from './compiler-callback';
 import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
 import { getListOfProjects, getProject } from './examples/projectRegistry';
+import { DEFAULT_RUNTIME_ID, runtimeRegistry } from './runtime-registry';
+import {
+	exportBinaryCode,
+	exportCanvasScreenshot,
+	exportProject,
+	importProject,
+	loadBrowserLocalNotes,
+	loadSession,
+	saveBrowserLocalNotes,
+	saveSession,
+} from './storage-callbacks';
 
 interface CanvasSize {
 	width: number;

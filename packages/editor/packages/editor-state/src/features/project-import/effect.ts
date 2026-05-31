@@ -1,12 +1,8 @@
-import { StateManager } from '@8f4e/state-manager';
-
-import { parse8f4eToProject } from './parse8f4e';
-
-import { warn, error } from '../logger/logger';
-
 import type { EventDispatcher, Project, State } from '@8f4e/editor-state-types';
-
+import type { StateManager } from '@8f4e/state-manager';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
+import { error, warn } from '../logger/logger';
+import { parse8f4eToProject } from './parse8f4e';
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();

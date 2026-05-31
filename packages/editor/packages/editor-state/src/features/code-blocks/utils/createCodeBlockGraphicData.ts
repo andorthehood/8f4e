@@ -1,8 +1,6 @@
-import { getModuleId, getConstantsId, getFunctionId } from '@8f4e/tokenizer';
-
-import { parseBlockDirectives } from './parseBlockDirectives';
-
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
+import { parseBlockDirectives } from './parseBlockDirectives';
 
 export function createCodeBlockGraphicData(
 	options: Partial<CodeBlockGraphicData> & { cursorY?: number } = {}

@@ -1,6 +1,5 @@
-import { createDirectivePlugin } from '../utils';
-
 import type { ViewportAnchor } from '@8f4e/editor-state-types';
+import { createDirectivePlugin } from '../utils';
 
 const VALID_ANCHORS = new Set<string>(['top-left', 'top-right', 'bottom-left', 'bottom-right']);
 

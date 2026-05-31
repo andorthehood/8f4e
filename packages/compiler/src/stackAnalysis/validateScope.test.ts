@@ -1,10 +1,7 @@
+import { ErrorCode, type InstructionCompiler } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-import { type InstructionCompiler } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { validateScope } from './validateScope';
-
 import createInstructionCompilerTestContext from '../utils/testUtils';
+import { validateScope } from './validateScope';
 
 const line: Parameters<InstructionCompiler>[0] = {
 	lineNumberBeforeMacroExpansion: 1,

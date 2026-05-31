@@ -1,11 +1,9 @@
-import { describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
-import drawConnections from './connections';
-
-import type { Engine } from 'glugglug';
 import type { Input, Output } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
+import { describe, expect, it, vi } from 'vitest';
 import type { MemoryViews } from '../../../types';
+import drawConnections from './connections';
 
 function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryViews {
 	return {

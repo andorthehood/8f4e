@@ -1,9 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
-import drawInfoPanels from './infoPanels';
-
 import type { Engine } from 'glugglug';
+import { describe, expect, it, vi } from 'vitest';
+import drawInfoPanels from './infoPanels';
 
 function createMockEngine(): Engine {
 	return {

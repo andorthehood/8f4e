@@ -1,4 +1,5 @@
 import createModule from './createModule';
+
 class Main extends AudioWorkletProcessor {
 	constructor(...args: ConstructorParameters<typeof AudioWorkletProcessor>) {
 		super(...args);

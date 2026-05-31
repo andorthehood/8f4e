@@ -1,6 +1,5 @@
-import { MemoryTypes } from '@8f4e/compiler-spec';
-
 import type { CompiledModule, DataStructure, InternalResource } from '@8f4e/compiler-spec';
+import { MemoryTypes } from '@8f4e/compiler-spec';
 
 export function createMemory(
 	overrides: Partial<DataStructure> & Pick<DataStructure, 'id' | 'byteAddress'>

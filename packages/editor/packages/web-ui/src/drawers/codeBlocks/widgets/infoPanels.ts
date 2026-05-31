@@ -1,6 +1,5 @@
-import { Engine } from 'glugglug';
-
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 
 function isRenderableInfoValue(value: unknown): value is string | number | boolean {
 	return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
@@ -72,7 +71,7 @@ export default function drawInfoPanels(engine: Engine, state: State, codeBlock: 
 		for (const key in info) {
 			const value = info[key];
 
-			if (!Object.prototype.hasOwnProperty.call(info, key) || !isRenderableInfoValue(value)) {
+			if (!Object.hasOwn(info, key) || !isRenderableInfoValue(value)) {
 				continue;
 			}
 

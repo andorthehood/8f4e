@@ -1,8 +1,6 @@
 import { serializeDiagnostic } from '@8f4e/compiler';
-
-import compileAndUpdateMemory from './compileAndUpdateMemory';
-
 import type { CompileInput, CompileOptions } from '@8f4e/compiler-spec';
+import compileAndUpdateMemory from './compileAndUpdateMemory';
 
 async function compile(input: CompileInput, compilerOptions: CompileOptions) {
 	try {
@@ -41,7 +39,7 @@ async function compile(input: CompileInput, compilerOptions: CompileOptions) {
 	}
 }
 
-self.onmessage = function (event) {
+self.onmessage = event => {
 	switch (event.data.type) {
 		case 'compile':
 			compile(event.data.payload.input, event.data.payload.compilerOptions);

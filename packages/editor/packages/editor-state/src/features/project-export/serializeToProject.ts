@@ -1,8 +1,6 @@
-import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
-
 import type { Project, State } from '@8f4e/editor-state-types';
-
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
 
 /**
  * Serializes current runtime state to the JSON-safe Project shape used for session persistence.

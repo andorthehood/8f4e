@@ -1,12 +1,9 @@
+import type { ArrayDeclarationLine } from '@8f4e/compiler-spec';
+import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-import { ArgumentType } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import array from './array';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
-
-import type { ArrayDeclarationLine } from '@8f4e/compiler-spec';
+import array from './array';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

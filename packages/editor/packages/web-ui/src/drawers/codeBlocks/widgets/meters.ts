@@ -1,9 +1,7 @@
-import { Engine } from 'glugglug';
-
-import { getTypedValueView } from './typedValueView';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 import type { MemoryViews } from '../../../types';
+import { getTypedValueView } from './typedValueView';
 
 const overloadHoldByMeter = new WeakMap<CodeBlockGraphicData['widgets']['arrayMeters'][number], true>();
 

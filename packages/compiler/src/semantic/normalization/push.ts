@@ -1,6 +1,7 @@
 import {
 	ArgumentType,
 	type CompilationContext,
+	ErrorCode,
 	type LocalBinding,
 	type MemoryPointerIdentifier,
 	type NormalizedPushLine,
@@ -10,18 +11,15 @@ import {
 	type ResolvedMemoryPointerPushLine,
 	type ResolvedMemoryPushLine,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
+import { getError } from '../../compilerError';
+import { getDataStructure } from '../../utils/memoryData';
 import {
 	hasCollectedNamespaces,
 	isIntermoduleReferenceKind,
+	normalizeArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
 	validateOrDeferCompileTimeExpression,
-	normalizeArgumentsAtIndexes,
 } from './helpers';
-
-import { getError } from '../../compilerError';
-import { getDataStructure } from '../../utils/memoryData';
 
 function isResolvedPointerLocal(
 	local: LocalBinding | undefined

@@ -1,10 +1,9 @@
-import fetchBinaryAssets from './fetchBinaryAssets';
-import parseBinaryAssetDirectives from './parseBinaryAssetDirectives';
-import resolveMemoryId from './resolveMemoryId';
-
 import type { BinaryAsset, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { EditorEnvironmentPluginContext } from '../types';
+import fetchBinaryAssets from './fetchBinaryAssets';
+import parseBinaryAssetDirectives from './parseBinaryAssetDirectives';
+import resolveMemoryId from './resolveMemoryId';
 
 export default function createBinaryAssetDirectiveSync({
 	store,

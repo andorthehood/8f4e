@@ -1,11 +1,8 @@
+import type { EditorConfigValidator, State } from '@8f4e/editor-state-types';
 import { FONT_NAMES, type Font } from '@8f4e/sprite-generator';
-
-import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
-import { createSchemaEditorConfigValidator } from '../editor-config/schemaValidator';
-
-import type { EditorConfigValidator } from '@8f4e/editor-state-types';
-import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import { createSchemaEditorConfigValidator } from '../editor-config/schemaValidator';
+import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
 const ALLOWED_FONTS = new Set<Font>(FONT_NAMES);
 

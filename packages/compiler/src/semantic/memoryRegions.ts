@@ -1,8 +1,6 @@
+import type { CompilationContext, CompileOptions, CompilerASTLine, RegionLine } from '@8f4e/compiler-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
-
 import { getError } from '../compilerError';
-
-import type { CompilerASTLine, CompileOptions, CompilationContext, RegionLine } from '@8f4e/compiler-spec';
 
 export const DEFAULT_MEMORY_INDEX = 0;
 const RESERVED_REGION_NAMES = new Set(['default', 'memory']);

@@ -1,6 +1,5 @@
-import getCodeBlockGridWidth from '../../features/graphicHelper/getCodeBlockGridWidth';
-
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import getCodeBlockGridWidth from '../../features/graphicHelper/getCodeBlockGridWidth';
 
 export interface GridBounds {
 	x: number;

@@ -1,6 +1,5 @@
-import { parse8f4eProject } from '@8f4e/tokenizer';
-
 import type { Project } from '@8f4e/editor-state-types';
+import { parse8f4eProject } from '@8f4e/tokenizer';
 
 /**
  * Parses .8f4e text format into a Project.

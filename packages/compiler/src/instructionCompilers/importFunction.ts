@@ -1,14 +1,12 @@
-import { DEFAULT_HOST_IMPORT_MODULE_NAME, ErrorCode } from '@8f4e/compiler-spec';
-
-import { getError } from '../compilerError';
-
 import type { ImportLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME, ErrorCode } from '@8f4e/compiler-spec';
+import { getError } from '../compilerError';
 
 /**
  * Instruction compiler for `#import`.
  * Marks the current function as a WebAssembly host import.
  */
-const importFunction: InstructionCompiler<ImportLine> = function (line, context) {
+const importFunction: InstructionCompiler<ImportLine> = (line, context) => {
 	if (context.currentFunctionImport !== undefined) {
 		throw getError(ErrorCode.DUPLICATE_FUNCTION_IMPORT, line, context);
 	}

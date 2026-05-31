@@ -1,5 +1,5 @@
-import { WASM_F64_CONST } from '../wasmInstruction';
 import ieee754_64 from '../encoding/ieee754_64';
+import { WASM_F64_CONST } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly f64.const instruction to push a 64-bit floating-point constant onto the stack.

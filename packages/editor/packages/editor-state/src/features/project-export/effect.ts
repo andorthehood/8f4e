@@ -1,12 +1,9 @@
-import { StateManager } from '@8f4e/state-manager';
-
-import getExportBaseName from './getExportBaseName';
-import serializeToProject from './serializeToProject';
-import { serializeProjectTo8f4e } from './serializeTo8f4e';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import { registerExportFileNameEditorConfigValidator } from './editorConfig';
-
-import type { State } from '@8f4e/editor-state-types';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
+import getExportBaseName from './getExportBaseName';
+import { serializeProjectTo8f4e } from './serializeTo8f4e';
+import serializeToProject from './serializeToProject';
 
 export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
 	registerExportFileNameEditorConfigValidator(store);

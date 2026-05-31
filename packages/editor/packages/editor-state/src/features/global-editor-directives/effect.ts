@@ -1,10 +1,8 @@
-import { resolveGlobalEditorDirectives } from './registry';
-
-import { resolveEditorConfigEntries, validateEditorConfigEntries } from '../editor-config/validators';
-import deepEqual from '../../shared/utils/deepEqual';
-
-import type { StateManager } from '@8f4e/state-manager';
 import type { CodeError, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import deepEqual from '../../shared/utils/deepEqual';
+import { resolveEditorConfigEntries, validateEditorConfigEntries } from '../editor-config/validators';
+import { resolveGlobalEditorDirectives } from './registry';
 
 const GLOBAL_EDITOR_DIRECTIVES_ERROR_OWNER_ID = 'global-editor-directives';
 

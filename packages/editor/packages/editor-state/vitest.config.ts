@@ -1,8 +1,7 @@
+import { createNodePreset } from '@8f4e/config/vitest';
 import { resolve } from 'path';
 import { fileURLToPath, URL } from 'url';
-
 import { defineConfig } from 'vitest/config';
-import { createNodePreset } from '@8f4e/config/vitest';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 

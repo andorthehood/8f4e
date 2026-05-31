@@ -1,6 +1,5 @@
-import { EventDispatcher } from '.';
-
-import type { State, InternalMouseEvent } from '@8f4e/editor-state-types';
+import type { InternalMouseEvent, State } from '@8f4e/editor-state-types';
+import type { EventDispatcher } from '.';
 
 const WHEEL_SCROLL_END_DELAY_MS = 120;
 

@@ -1,10 +1,10 @@
 import {
 	BlockType,
-	compilerSourceBlockInstructionByType,
 	type CompilationContext,
 	type ConstantsLine,
+	compilerSourceBlockInstructionByType,
+	ErrorCode,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
 import { pushBlock } from '../../utils/blockStack';

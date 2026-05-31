@@ -1,6 +1,6 @@
 import type { CompilerASTLine } from './ast';
-import type { CodegenContext, CompilationContext } from './semantic';
 import type { CompilerSourceBlockType } from './instructions';
+import type { CodegenContext, CompilationContext } from './semantic';
 
 /**
  * Internal compiler-stage error shape returned by getError().

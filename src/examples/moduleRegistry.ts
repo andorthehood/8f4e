@@ -1,8 +1,6 @@
 import { extractUseDependencies } from '@8f4e/tokenizer';
-
-import { getExampleModuleManifest, getExampleModuleRegistry } from './exampleModules';
-
 import type { ExampleModuleRegistryEntry } from './exampleModules';
+import { getExampleModuleManifest, getExampleModuleRegistry } from './exampleModules';
 
 // Cache for loaded modules to avoid redundant loading
 const loadedModulesCache: Record<string, string> = {};

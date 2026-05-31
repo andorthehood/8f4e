@@ -1,7 +1,7 @@
+import { execFile } from 'child_process';
+import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { promises as fs } from 'fs';
-import { execFile } from 'child_process';
 import { promisify } from 'util';
 
 import { describe, expect, it } from 'vitest';

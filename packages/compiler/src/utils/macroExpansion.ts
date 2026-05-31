@@ -1,9 +1,7 @@
-import { instructionParser, isComment, isValidInstruction } from '@8f4e/tokenizer';
-import { ErrorCode, documentBlockInstructionByType } from '@8f4e/compiler-spec';
-
-import { getError } from '../compilerError';
-
 import type { CompilerASTLine, ExpandedLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
+import { documentBlockInstructionByType, ErrorCode } from '@8f4e/compiler-spec';
+import { instructionParser, isComment, isValidInstruction } from '@8f4e/tokenizer';
+import { getError } from '../compilerError';
 
 const macroDefinitionInstruction = documentBlockInstructionByType.macro.start;
 const macroDefinitionEndInstruction = documentBlockInstructionByType.macro.end;

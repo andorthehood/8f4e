@@ -1,52 +1,23 @@
 import initState from '@8f4e/editor-state';
-import initView, { type MemoryViews, type RenderStats } from '@8f4e/web-ui';
-import generateSprite from '@8f4e/sprite-generator';
-
-import initEvents from './events';
-import pointerEvents from './events/pointerEvents';
-import keyboardEvents from './events/keyboardEvents';
-import { createEditorEnvironmentPluginManager } from './editorEnvironmentPlugins/manager';
-import { createEditorEnvironmentPluginServices } from './editorEnvironmentPlugins/services';
-import { createMemoryViewManager, MemoryRef } from './memoryViewManager';
-import { createSpriteSheetManager } from './spriteSheetManager';
-import { updateStateWithSpriteData } from './updateStateWithSpriteData';
-
-import type { PostProcessEffect, BackgroundEffect } from 'glugglug';
 import type {
 	Callbacks,
 	EditorConfigSchemaContributionRegistry,
 	InfoRecord,
-	State,
 	RuntimeRegistry,
-} from '@8f4e/editor-state-types';
-
-// Re-export types that consumers might need
-export type {
-	Project,
-	Options,
 	State,
-	CodeError,
-	CompilationResult,
-	CodeBlockGraphicData,
-	ParsedDirectiveRecord,
-	RuntimeFactory,
-	RuntimeRegistry,
-	RuntimeRegistryEntry,
-	RuntimeValuesByRuntimeId,
-	FeatureFlags,
-	FeatureFlagsConfig,
-	EditorMode,
-	EditorConfig,
-	EditorConfigSchemaContribution,
-	EditorConfigSchemaContributionRegistry,
-	JSONSchemaLike,
-	BrowserLocalNoteStorageBlock,
 } from '@8f4e/editor-state-types';
-export type { EventDispatcher } from './events';
-export type { MemoryRef } from './memoryViewManager';
+import generateSprite from '@8f4e/sprite-generator';
+import initView, { type MemoryViews, type RenderStats } from '@8f4e/web-ui';
+import type { BackgroundEffect, PostProcessEffect } from 'glugglug';
+import { createEditorEnvironmentPluginManager } from './editorEnvironmentPlugins/manager';
+import { createEditorEnvironmentPluginServices } from './editorEnvironmentPlugins/services';
+import initEvents from './events';
+import keyboardEvents from './events/keyboardEvents';
+import pointerEvents from './events/pointerEvents';
+import { createMemoryViewManager, type MemoryRef } from './memoryViewManager';
+import { createSpriteSheetManager } from './spriteSheetManager';
+import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
-// Re-export helper functions
-export { updateStateWithSpriteData } from './updateStateWithSpriteData';
 export {
 	collectSchemaConfigPaths,
 	createSchemaEditorConfigValidator,
@@ -55,6 +26,32 @@ export {
 	resolveSchemaConfigRoot,
 	validateSchemaConfigValue,
 } from '@8f4e/editor-state';
+// Re-export types that consumers might need
+export type {
+	BrowserLocalNoteStorageBlock,
+	CodeBlockGraphicData,
+	CodeError,
+	CompilationResult,
+	EditorConfig,
+	EditorConfigSchemaContribution,
+	EditorConfigSchemaContributionRegistry,
+	EditorMode,
+	FeatureFlags,
+	FeatureFlagsConfig,
+	JSONSchemaLike,
+	Options,
+	ParsedDirectiveRecord,
+	Project,
+	RuntimeFactory,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
+	RuntimeValuesByRuntimeId,
+	State,
+} from '@8f4e/editor-state-types';
+export type { EventDispatcher } from './events';
+export type { MemoryRef } from './memoryViewManager';
+// Re-export helper functions
+export { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 export interface Editor {
 	resize: (width: number, height: number) => void;

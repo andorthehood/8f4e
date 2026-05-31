@@ -1,6 +1,5 @@
-import { StateManager } from '@8f4e/state-manager';
-
 import type { State } from '@8f4e/editor';
+import type { StateManager } from '@8f4e/state-manager';
 
 export const AUDIO_WORKLET_RUNTIME_ID = 'AudioWorkletRuntime';
 

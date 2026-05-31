@@ -1,6 +1,6 @@
-import { describe, test, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
-import { validateFeatureFlags, defaultFeatureFlags, FeatureFlagsConfig } from './featureFlags';
+import { defaultFeatureFlags, type FeatureFlagsConfig, validateFeatureFlags } from './featureFlags';
 
 describe('Feature Flags Configuration', () => {
 	test('validateFeatureFlags should return all defaults when given empty config', () => {

@@ -1,5 +1,5 @@
-import { WASM_F32_LOAD } from '../wasmInstruction';
 import memarg from '../memory/memarg';
+import { WASM_F32_LOAD } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly f32.load instruction to load a 32-bit float from memory.

@@ -1,26 +1,24 @@
-import { Engine } from 'glugglug';
-
-import drawConnectors from './widgets/connectors';
-import drawBars from './widgets/bars';
-import drawMeters from './widgets/meters';
-import drawPlotters from './widgets/plotters';
-import drawWaves from './widgets/waves';
-import drawDebuggers from './widgets/debuggers';
-import drawInfoPanels from './widgets/infoPanels';
-import drawSwitches from './widgets/switches';
-import drawButtons from './widgets/buttons';
-import drawSliders from './widgets/sliders';
-import drawCrossfades from './widgets/crossfades';
-import drawErrorMessages from './widgets/errorMessages';
-import drawPianoKeyboards from './widgets/pianoKeyboards';
-import drawArrow from './drawArrow';
-import drawBlockHighlights from './widgets/blockHighlights';
-import drawEntryOutlines from './drawEntryOutlines';
-import drawSelectedOutline from './drawSelectedOutline';
-import drawSelectedLineHint from './drawSelectedLineHint';
-
 import type { State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 import type { MemoryViews } from '../../types';
+import drawArrow from './drawArrow';
+import drawEntryOutlines from './drawEntryOutlines';
+import drawSelectedLineHint from './drawSelectedLineHint';
+import drawSelectedOutline from './drawSelectedOutline';
+import drawBars from './widgets/bars';
+import drawBlockHighlights from './widgets/blockHighlights';
+import drawButtons from './widgets/buttons';
+import drawConnectors from './widgets/connectors';
+import drawCrossfades from './widgets/crossfades';
+import drawDebuggers from './widgets/debuggers';
+import drawErrorMessages from './widgets/errorMessages';
+import drawInfoPanels from './widgets/infoPanels';
+import drawMeters from './widgets/meters';
+import drawPianoKeyboards from './widgets/pianoKeyboards';
+import drawPlotters from './widgets/plotters';
+import drawSliders from './widgets/sliders';
+import drawSwitches from './widgets/switches';
+import drawWaves from './widgets/waves';
 
 const corner = '+';
 

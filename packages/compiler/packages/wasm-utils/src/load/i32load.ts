@@ -1,5 +1,5 @@
-import { WASM_I32_LOAD } from '../wasmInstruction';
 import memarg from '../memory/memarg';
+import { WASM_I32_LOAD } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.load instruction to load a 32-bit integer from memory.

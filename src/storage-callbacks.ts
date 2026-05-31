@@ -1,9 +1,7 @@
+import type { BrowserLocalNoteStorageBlock, Project } from '@8f4e/editor';
 import { parse8f4eToProject } from '@8f4e/editor-state';
-
 import { getCodeBuffer } from './compiler-callback';
 import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
-
-import type { Project, BrowserLocalNoteStorageBlock } from '@8f4e/editor';
 
 // Storage key constants
 const STORAGE_KEYS = {

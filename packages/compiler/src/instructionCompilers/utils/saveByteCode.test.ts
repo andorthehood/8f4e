@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import { saveByteCode } from './saveByteCode';
-
 import type { CompilationContext } from '@8f4e/compiler-spec';
+import { describe, expect, it } from 'vitest';
+import { saveByteCode } from './saveByteCode';
 
 describe('saveByteCode', () => {
 	it('saves bytecode to the context', () => {

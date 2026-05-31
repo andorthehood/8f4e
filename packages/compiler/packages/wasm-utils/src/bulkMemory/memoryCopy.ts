@@ -1,7 +1,7 @@
+import prefixedInstruction from '../encoding/prefixedInstruction';
+import unsignedLEB128 from '../encoding/unsignedLEB128';
 import { WASM_MISC } from '../wasmInstruction';
 import { WASM_MISC_MEMORY_COPY } from '../wasmMiscInstruction';
-import unsignedLEB128 from '../encoding/unsignedLEB128';
-import prefixedInstruction from '../encoding/prefixedInstruction';
 
 /**
  * Creates a WebAssembly memory.copy instruction.

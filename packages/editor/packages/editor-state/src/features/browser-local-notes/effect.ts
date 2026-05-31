@@ -1,26 +1,23 @@
-import { StateManager } from '@8f4e/state-manager';
-
-import {
-	DEFAULT_BROWSER_LOCAL_NOTE,
-	isBrowserLocalNoteBlock,
-	isBrowserLocalNoteCode,
-	serializeBrowserLocalNotes,
-} from './browserLocalNotes';
-
-import { deriveDirectiveState } from '../code-blocks/features/directives/registry';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import upsertPos from '../code-blocks/features/directives/pos/upsert';
-import { parseBlockDirectives } from '../code-blocks/utils/parseBlockDirectives';
-import { createCodeBlockGraphicData } from '../code-blocks/utils/createCodeBlockGraphicData';
+import { deriveDirectiveState } from '../code-blocks/features/directives/registry';
 import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
-import getCodeBlockId from '../code-blocks/utils/getCodeBlockId';
+import { createCodeBlockGraphicData } from '../code-blocks/utils/createCodeBlockGraphicData';
 import {
 	type GridBounds,
 	getCodeBlockGridBounds,
 	getCodeBlockGridSizeFromCode,
 	placeCodeBlockAtFirstFreeGridY,
 } from '../code-blocks/utils/finders/findFirstFreeCodeBlockGridY';
-
-import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import getCodeBlockId from '../code-blocks/utils/getCodeBlockId';
+import { parseBlockDirectives } from '../code-blocks/utils/parseBlockDirectives';
+import {
+	DEFAULT_BROWSER_LOCAL_NOTE,
+	isBrowserLocalNoteBlock,
+	isBrowserLocalNoteCode,
+	serializeBrowserLocalNotes,
+} from './browserLocalNotes';
 
 export default function browserLocalNotes(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();

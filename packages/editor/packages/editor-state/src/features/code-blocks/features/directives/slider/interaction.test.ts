@@ -1,10 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-
-import slider from './interaction';
-
-import type { State, EventDispatcher } from '@8f4e/editor-state-types';
-
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import slider from './interaction';
 
 describe('slider interaction', () => {
 	let mockState: State;
@@ -63,7 +60,6 @@ describe('slider interaction', () => {
 	});
 
 	it('should register event listeners on initialization', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = slider(mockStore as any, mockEvents);
 
 		expect(mockEvents.on).toHaveBeenCalledWith('codeBlockClick', expect.any(Function));
@@ -74,7 +70,6 @@ describe('slider interaction', () => {
 	});
 
 	it('should unregister event listeners on cleanup', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = slider(mockStore as any, mockEvents);
 		cleanup();
 
@@ -84,7 +79,6 @@ describe('slider interaction', () => {
 	});
 
 	it('should set value when slider is clicked', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = slider(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
@@ -122,7 +116,6 @@ describe('slider interaction', () => {
 	});
 
 	it('should clamp value to min when clicked at left edge', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = slider(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
@@ -159,7 +152,6 @@ describe('slider interaction', () => {
 	});
 
 	it('should clamp value to max when clicked at right edge', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = slider(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
@@ -196,7 +188,6 @@ describe('slider interaction', () => {
 	});
 
 	it('should snap to step value when step is provided', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = slider(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
@@ -234,7 +225,6 @@ describe('slider interaction', () => {
 	});
 
 	it('should update value during drag', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = slider(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 		const mouseMoveCallback = onCallbacks.get('mousemove');
@@ -277,7 +267,6 @@ describe('slider interaction', () => {
 	});
 
 	it('should stop updating when mouse is released', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = slider(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 		const mouseMoveCallback = onCallbacks.get('mousemove');

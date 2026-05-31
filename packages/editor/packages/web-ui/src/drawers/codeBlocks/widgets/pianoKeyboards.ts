@@ -1,7 +1,6 @@
-import { Engine } from 'glugglug';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
+import type { Engine } from 'glugglug';
 import type { MemoryViews } from '../../../types';
 
 type PianoKeyboardData = CodeBlockGraphicData['widgets']['pianoKeyboards'][number];

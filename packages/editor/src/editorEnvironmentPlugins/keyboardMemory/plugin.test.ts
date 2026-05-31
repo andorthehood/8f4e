@@ -1,9 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-
-import keyboardMemoryPlugin from './plugin';
-
-import type { StateManager } from '@8f4e/state-manager';
 import type { State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import keyboardMemoryPlugin from './plugin';
 
 type WindowListener = (event: KeyboardEvent) => void;
 

@@ -1,11 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
 import createStateManager from '@8f4e/state-manager';
-
-import browserLocalNotes from './effect';
-
+import { describe, expect, it, vi } from 'vitest';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import browserLocalNotes from './effect';
 
 function getPopulateHandler(events: ReturnType<typeof createMockEventDispatcherWithVitest>) {
 	const handler = events.on.mock.calls.find(([eventName]) => eventName === 'projectCodeBlocksPopulated')?.[1];

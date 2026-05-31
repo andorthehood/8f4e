@@ -1,10 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-
-import crossfade from './interaction';
-
-import type { State, EventDispatcher } from '@8f4e/editor-state-types';
-
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import crossfade from './interaction';
 
 describe('crossfade interaction', () => {
 	let mockState: State;
@@ -89,7 +86,6 @@ describe('crossfade interaction', () => {
 	}
 
 	it('writes silence to both sides when clicked in the center', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = crossfade(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
@@ -101,7 +97,6 @@ describe('crossfade interaction', () => {
 	});
 
 	it('writes fully left when clicked on the left edge', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = crossfade(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
@@ -113,7 +108,6 @@ describe('crossfade interaction', () => {
 	});
 
 	it('updates both values during drag', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = crossfade(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 		const mouseMoveCallback = onCallbacks.get('mousemove');
@@ -127,7 +121,6 @@ describe('crossfade interaction', () => {
 	});
 
 	it('stops updating when the mouse is released', () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const cleanup = crossfade(mockStore as any, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 		const mouseMoveCallback = onCallbacks.get('mousemove');

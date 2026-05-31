@@ -1,3 +1,4 @@
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 import {
 	i32const,
 	localGet,
@@ -11,10 +12,7 @@ import {
 	WASM_IF,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-
 import { saveByteCode } from './utils/saveByteCode';
-
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `abs`.

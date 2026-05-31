@@ -10,7 +10,7 @@
 - Build before integrating in root Vite to ensure alias resolution.
 
 ## Coding Style
-- TypeScript. Use ESLint as the fixer (`npx eslint --fix <files>`); it owns formatting rules such as tabs, single quotes, semicolons, and width 120.
+- TypeScript. Use Biome as the fixer (`npx biome check --write <files>`); it owns formatting rules such as tabs, single quotes, semicolons, and width 120.
 - Keep worklet entrypoints small and dependency-free; avoid DOM APIs.
 
 ## Testing

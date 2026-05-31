@@ -1,11 +1,9 @@
+import type { CompilationContext, CompilerASTLine, OperandRule, StackItem } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
-
-import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 
 import { getError } from '../compilerError';
 import { areAllOperandsFloats, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
-
-import type { CompilerASTLine, CompilationContext, OperandRule, StackItem } from '@8f4e/compiler-spec';
+import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 
 export function validateOperandTypes(
 	operands: StackItem[],

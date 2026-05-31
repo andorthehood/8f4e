@@ -1,11 +1,9 @@
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import resize from './resize';
 import snapToGrid from './snapToGrid';
 import snapToGridConsideringDirection from './snapToGridConsideringDirection';
 import updateViewport from './updateViewport';
-
-import type { StateManager } from '@8f4e/state-manager';
-import type { State } from '@8f4e/editor-state-types';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 interface MouseMoveEvent {
 	buttons: number;

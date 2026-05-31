@@ -63,11 +63,7 @@ export default function parseLiteralMulDivExpression(argument: string): LiteralM
 	}
 
 	const value =
-		operator === '*'
-			? lhs.value * rhs.value
-			: operator === '/'
-				? lhs.value / rhs.value
-				: Math.pow(lhs.value, rhs.value);
+		operator === '*' ? lhs.value * rhs.value : operator === '/' ? lhs.value / rhs.value : lhs.value ** rhs.value;
 	const isFloat64 = lhs.isFloat64 || rhs.isFloat64;
 
 	return {

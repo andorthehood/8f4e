@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const testCases = ['sprite-sheet-with-6x10-font', 'sprite-sheet-with-8x16-font'];
 

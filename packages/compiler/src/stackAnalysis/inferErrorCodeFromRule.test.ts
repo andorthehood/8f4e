@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { ErrorCode } from '@8f4e/compiler-spec';
+import { describe, expect, it } from 'vitest';
 
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 

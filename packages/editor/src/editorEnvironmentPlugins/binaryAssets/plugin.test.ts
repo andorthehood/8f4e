@@ -1,12 +1,10 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { BinaryAsset, EventDispatcher, State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
-
-import binaryAssetsPlugin from './plugin';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { EditorEnvironmentPluginContext } from '../types';
 import fetchBinaryAssets from './fetchBinaryAssets';
 import loadBinaryAssetIntoMemory from './loadBinaryAssetIntoMemory';
-
-import type { BinaryAsset, EventDispatcher, State } from '@8f4e/editor-state-types';
-import type { EditorEnvironmentPluginContext } from '../types';
+import binaryAssetsPlugin from './plugin';
 
 vi.mock('./fetchBinaryAssets', () => ({
 	default: vi.fn(),

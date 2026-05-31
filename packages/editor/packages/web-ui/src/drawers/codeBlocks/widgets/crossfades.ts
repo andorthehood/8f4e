@@ -1,6 +1,5 @@
-import { Engine } from 'glugglug';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 import type { MemoryViews } from '../../../types';
 
 function clamp(value: number, min: number, max: number): number {

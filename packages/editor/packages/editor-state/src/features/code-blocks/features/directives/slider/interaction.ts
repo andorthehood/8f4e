@@ -1,9 +1,12 @@
-import { StateManager } from '@8f4e/state-manager';
-
+import type {
+	CodeBlockGraphicData,
+	EventDispatcher,
+	InternalMouseEvent,
+	Slider,
+	State,
+} from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import findSliderWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
-
-import type { State, CodeBlockGraphicData, InternalMouseEvent, Slider } from '@8f4e/editor-state-types';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 interface ActiveSlider {
 	slider: Slider;
@@ -43,7 +46,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 		state.callbacks?.setWordInMemory?.(slider.wordAlignedAddress, value, shouldWriteInteger);
 	};
 
-	const onCodeBlockClick = function ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) {
+	const onCodeBlockClick = ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) => {
 		const slider = findSliderWidgetAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!slider) {
@@ -58,7 +61,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 		updateSliderValue(x);
 	};
 
-	const onMouseMove = function (event: InternalMouseEvent) {
+	const onMouseMove = (event: InternalMouseEvent) => {
 		if (!activeSlider) {
 			return;
 		}
@@ -68,7 +71,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 		event.stopPropagation = true;
 	};
 
-	const onMouseUp = function () {
+	const onMouseUp = () => {
 		// Clear active slider when mouse is released
 		activeSlider = null;
 	};

@@ -1,14 +1,12 @@
-import { type SpriteLookups } from '@8f4e/sprite-generator';
-import { Engine, PostProcessEffect, BackgroundEffect } from 'glugglug';
-
+import type { State } from '@8f4e/editor-state-types';
+import type { SpriteLookups } from '@8f4e/sprite-generator';
+import { type BackgroundEffect, Engine, type PostProcessEffect } from 'glugglug';
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';
 import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
-import drawModeOverlay from './drawers/modeOverlay';
 import drawBackground from './drawers/drawBackground';
-
-import type { State } from '@8f4e/editor-state-types';
+import drawModeOverlay from './drawers/modeOverlay';
 import type { MemoryViews } from './types';
 
 // Re-export types

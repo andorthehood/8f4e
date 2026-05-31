@@ -1,10 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
-import findClosestCodeBlockInDirection from './findClosestCodeBlockInDirection';
-
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
-
+import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
+import findClosestCodeBlockInDirection from './findClosestCodeBlockInDirection';
 
 describe('findClosestCodeBlockInDirection', () => {
 	describe('right direction', () => {

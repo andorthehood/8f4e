@@ -1,9 +1,7 @@
 import { parseLine } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
-
-import castToFloat64 from './castToFloat64';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
+import castToFloat64 from './castToFloat64';
 
 describe('castToFloat64 instruction compiler', () => {
 	it('converts int operand to float64', () => {

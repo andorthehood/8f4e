@@ -1,10 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-
-import _switch from './interaction';
-
-import type { State, EventDispatcher } from '@8f4e/editor-state-types';
-
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import _switch from './interaction';
 
 describe('switch interaction', () => {
 	let mockState: State;

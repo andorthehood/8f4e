@@ -1,6 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-
 import type { State } from '@8f4e/editor-state-types';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 

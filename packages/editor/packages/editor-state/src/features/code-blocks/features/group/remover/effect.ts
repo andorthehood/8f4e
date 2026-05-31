@@ -1,7 +1,7 @@
-import { removeDirective } from '../../directiveEditing';
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 
 import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
+import { removeDirective } from '../../directiveEditing';
 
 /**
  * Effect that handles removing the ; @group directive from code blocks.

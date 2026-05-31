@@ -1,17 +1,15 @@
-import { describe, it, expect } from 'vitest';
-
-import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
-import {
-	validateDrawingCommand,
-	findCommand,
-	findAllCommands,
-	validateSpriteCoordinates,
-	createMockBitmap,
-} from './utils/testHelpers';
-
+import { describe, expect, it } from 'vitest';
 import { createAtlasLayout } from '../src/atlasLayout';
-import generateIcons, { Icon, generateLookup } from '../src/icons';
+import generateIcons, { generateLookup, Icon } from '../src/icons';
 import { Command } from '../src/types';
+import { characterDimensions6x10, characterDimensions8x16, minimalColorScheme } from './utils/testFixtures';
+import {
+	createMockBitmap,
+	findAllCommands,
+	findCommand,
+	validateDrawingCommand,
+	validateSpriteCoordinates,
+} from './utils/testHelpers';
 
 describe('icons module', () => {
 	const layout8x16 = createAtlasLayout(characterDimensions8x16.width, characterDimensions8x16.height);

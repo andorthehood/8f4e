@@ -5,7 +5,7 @@
  * for library builds and other common use cases in the 8f4e workspace.
  */
 
-import type { UserConfig, LibraryOptions, BuildOptions } from 'vite';
+import type { BuildOptions, LibraryOptions, UserConfig } from 'vite';
 
 /**
  * Shared build options for library packages.

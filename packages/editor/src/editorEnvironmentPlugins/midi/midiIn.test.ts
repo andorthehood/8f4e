@@ -1,10 +1,8 @@
-import { describe, expect, it, vi } from 'vitest';
-import createStateManager from '@8f4e/state-manager';
-
-import createMidiIn from './midiIn';
-
 import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
+import createStateManager from '@8f4e/state-manager';
+import { describe, expect, it, vi } from 'vitest';
 import type { EditorEnvironmentPluginContext } from '../types';
+import createMidiIn from './midiIn';
 
 interface MIDIInputMock {
 	addEventListener: ReturnType<typeof vi.fn>;

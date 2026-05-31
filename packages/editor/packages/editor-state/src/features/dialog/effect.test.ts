@@ -1,12 +1,9 @@
-import { describe, expect, it, type MockInstance } from 'vitest';
-import createStateManager from '@8f4e/state-manager';
-
-import dialog from './effect';
-
 import type { State } from '@8f4e/editor-state-types';
-
+import createStateManager from '@8f4e/state-manager';
+import { describe, expect, it, type MockInstance } from 'vitest';
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import dialog from './effect';
 
 describe('dialog effect', () => {
 	function setup(state: State) {
