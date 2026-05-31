@@ -23,6 +23,15 @@ describe('function value type helpers', () => {
 			},
 		],
 		[
+			'int8u*',
+			{
+				isInteger: true,
+				pointeeBaseType: 'int8u',
+				pointerDepth: 1,
+				index: 2,
+			},
+		],
+		[
 			'float64**',
 			{
 				isInteger: true,
@@ -50,6 +59,15 @@ describe('function value type helpers', () => {
 			},
 		],
 		[
+			'int16u**',
+			{
+				kind: 'address',
+				valueType: 'int',
+				address: { memoryIndex: 0 },
+				pointsTo: { baseType: 'int16u', memoryIndex: 0, pointerDepth: 2 },
+			},
+		],
+		[
 			'float**',
 			{
 				kind: 'address',
@@ -65,6 +83,7 @@ describe('function value type helpers', () => {
 	it.each([
 		['int', WASM_TYPE_I32],
 		['int*', WASM_TYPE_I32],
+		['int8u*', WASM_TYPE_I32],
 		['float', WASM_TYPE_F32],
 		['float64', WASM_TYPE_F64],
 	])('converts %s to a wasm type', (type, expected) => {
@@ -74,6 +93,7 @@ describe('function value type helpers', () => {
 	it('matches scalar and pointer stack items to function value types', () => {
 		const genericAddress = { kind: 'value', valueType: 'int' } as StackItem;
 		const intPointer = functionValueTypeToStackItem('int*');
+		const int8uPointer = functionValueTypeToStackItem('int8u*');
 		const floatPointer = functionValueTypeToStackItem('float*');
 		const intDoublePointer = functionValueTypeToStackItem('int**');
 
@@ -84,6 +104,8 @@ describe('function value type helpers', () => {
 		expect(stackItemMatchesFunctionValueType({ kind: 'value', valueType: 'float' }, 'int*')).toBe(false);
 		expect(stackItemMatchesFunctionValueType(genericAddress, 'int*')).toBe(true);
 		expect(stackItemMatchesFunctionValueType(intPointer, 'int*')).toBe(true);
+		expect(stackItemMatchesFunctionValueType(int8uPointer, 'int8u*')).toBe(true);
+		expect(stackItemMatchesFunctionValueType(int8uPointer, 'int8*')).toBe(false);
 		expect(stackItemMatchesFunctionValueType(intPointer, 'float*')).toBe(false);
 		expect(stackItemMatchesFunctionValueType(floatPointer, 'float**')).toBe(false);
 		expect(stackItemMatchesFunctionValueType(intDoublePointer, 'int*')).toBe(false);

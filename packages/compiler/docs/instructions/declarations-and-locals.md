@@ -211,7 +211,7 @@ float[] samples 4 0.0 0.25 0.5 0.75
 
 ### local
 
-The local instruction declares a local variable inside a module or function (`local int name` or `local float name`).
+The local instruction declares a local variable inside a module or function (`local int name`, `local float name`, or a pointer type such as `local int16u* cursor`).
 
 Local variable names must not collide with any memory declaration identifier in the same namespace. Declaring a local whose name is already used by a `int`, `float`, `int[]`, or any other memory allocation is a compiler error.
 
@@ -219,6 +219,7 @@ Local variable names must not collide with any memory declaration identifier in 
 
 ```
 local int temp
+local int16u* cursor
 ```
 
 ### localSet

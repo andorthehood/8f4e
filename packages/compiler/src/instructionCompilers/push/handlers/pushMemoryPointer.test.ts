@@ -1,5 +1,5 @@
 import type { DataStructure, ResolvedMemoryPointerPushLine } from '@8f4e/compiler-spec';
-import { f64load, i32const, i32load, i32load8s, i32load16s } from '@8f4e/compiler-wasm-utils';
+import { f64load, i32const, i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
@@ -106,6 +106,34 @@ describe('pushMemoryPointer', () => {
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load8s()]);
 	});
 
+	it('dereferences int8u* with i32load8u for the final load', () => {
+		const context = createInstructionCompilerTestContext({
+			namespace: {
+				...createInstructionCompilerTestContext().namespace,
+				memory: {
+					ptr: {
+						id: 'ptr',
+						numberOfElements: 1,
+						elementWordSize: 4,
+						wordAlignedAddress: 0,
+						wordAlignedSize: 1,
+						byteAddress: 8,
+						default: 0,
+						isInteger: true,
+						pointeeBaseType: 'int8u',
+						pointerDepth: 1,
+						isUnsigned: false,
+						type: 'int8*',
+					} as never,
+				},
+			},
+		});
+
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
+
+		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load8u()]);
+	});
+
 	it('dereferences int8** once without the final load', () => {
 		const context = createInstructionCompilerTestContext({
 			namespace: {
@@ -160,6 +188,34 @@ describe('pushMemoryPointer', () => {
 		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load16s()]);
+	});
+
+	it('dereferences int16u* with i32load16u for the final load', () => {
+		const context = createInstructionCompilerTestContext({
+			namespace: {
+				...createInstructionCompilerTestContext().namespace,
+				memory: {
+					ptr: {
+						id: 'ptr',
+						numberOfElements: 1,
+						elementWordSize: 4,
+						wordAlignedAddress: 0,
+						wordAlignedSize: 1,
+						byteAddress: 8,
+						default: 0,
+						isInteger: true,
+						pointeeBaseType: 'int16u',
+						pointerDepth: 1,
+						isUnsigned: false,
+						type: 'int16*',
+					} as never,
+				},
+			},
+		});
+
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
+
+		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load16u()]);
 	});
 
 	it('dereferences int16** twice with i32load16s for the final load', () => {
