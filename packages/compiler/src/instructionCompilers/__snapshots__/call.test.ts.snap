@@ -14,3 +14,25 @@ exports[`call instruction compiler > emits call bytecode and pushes returns 1`] 
   ],
 }
 `;
+
+exports[`call instruction compiler > emits inline argument pushes before the call 1`] = `
+{
+  "byteCode": [
+    65,
+    2,
+    67,
+    102,
+    102,
+    166,
+    63,
+    16,
+    2,
+  ],
+  "stack": [
+    {
+      "kind": "value",
+      "valueType": "int",
+    },
+  ],
+}
+`;
