@@ -213,6 +213,7 @@ describe('editor init', () => {
 					textureWidth: 64,
 					textureHeight: 32,
 					filter: 'linear',
+					objectFit: 'contain',
 				},
 			},
 		};
@@ -222,6 +223,7 @@ describe('editor init', () => {
 			textureWidth: 64,
 			textureHeight: 32,
 			filter: 'linear',
+			objectFit: 'contain',
 		});
 		expect(viewOptions.getCodeBuffer?.()).toBeInstanceOf(Uint8Array);
 		expect(viewOptions.getMemory?.()).toBeNull();
