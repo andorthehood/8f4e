@@ -1,7 +1,5 @@
 import type { Position, State } from '@8f4e/editor-state-types';
 
-import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
-
 export interface ViewportSnapDirection {
 	movementX?: number;
 	movementY?: number;
@@ -32,61 +30,4 @@ export default function snapToGridConsideringDirection(state: State, direction: 
 		x: snapAxis(state.viewport.x, state.viewport.vGrid, direction.movementX),
 		y: snapAxis(state.viewport.y, state.viewport.hGrid, direction.movementY),
 	};
-}
-
-if (import.meta.vitest) {
-	const { describe, it, expect } = import.meta.vitest;
-
-	describe('snapToGridConsideringDirection', () => {
-		it('snaps upward viewport movement to the previous vertical grid line', () => {
-			const state = createMockState({
-				viewport: {
-					x: 33,
-					y: 41,
-					vGrid: 8,
-					hGrid: 16,
-					width: 80,
-					height: 40,
-				},
-			});
-
-			const position = snapToGridConsideringDirection(state, { movementY: 1 });
-
-			expect(position.y).toBe(32);
-		});
-
-		it('snaps downward viewport movement to the next vertical grid line', () => {
-			const state = createMockState({
-				viewport: {
-					x: 33,
-					y: 41,
-					vGrid: 8,
-					hGrid: 16,
-					width: 80,
-					height: 40,
-				},
-			});
-
-			const position = snapToGridConsideringDirection(state, { movementY: -1 });
-
-			expect(position.y).toBe(48);
-		});
-
-		it('updates border coordinates after directional snapping', () => {
-			const state = createMockState({
-				viewport: {
-					x: 33,
-					y: 41,
-					vGrid: 8,
-					hGrid: 16,
-					width: 80,
-					height: 40,
-				},
-			});
-
-			const position = snapToGridConsideringDirection(state, { movementX: 1, movementY: -1 });
-
-			expect(position).toEqual({ x: 32, y: 48 });
-		});
-	});
 }

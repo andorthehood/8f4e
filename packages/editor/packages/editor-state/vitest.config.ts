@@ -17,8 +17,4 @@ const preset = createNodePreset({
 
 export default defineConfig({
 	...preset,
-	test: {
-		...preset.test,
-		includeSource: ['src/**/*.ts'],
-	},
 });

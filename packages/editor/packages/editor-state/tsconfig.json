@@ -5,7 +5,6 @@
 		"rootDir": "src",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-		"types": ["vitest/importMeta"],
 		"paths": {
 			"~/*": ["./src/*"]
 		}
