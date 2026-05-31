@@ -1,6 +1,5 @@
-import { parseViewportBlockAlignment } from '../viewport/blockAlignment';
-
 import type { CodeBlockGraphicData, ParsedDirectiveRecord, ViewportBlockAlignment } from '@8f4e/editor-state-types';
+import { parseViewportBlockAlignment } from '../viewport/blockAlignment';
 
 export const PRESENTATION_DIRECTIVE_NAME = 'stop';
 export type PresentationStopAlignment = ViewportBlockAlignment;

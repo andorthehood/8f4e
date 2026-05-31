@@ -1,9 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
+import { describe, expect, it } from 'vitest';
+import { parseEditorDirectives } from '../utils';
 import { createButtonDirectiveData } from './data';
 import buttonDirective from './plugin';
-
-import { parseEditorDirectives } from '../utils';
 
 function parseButtonDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [buttonDirective])

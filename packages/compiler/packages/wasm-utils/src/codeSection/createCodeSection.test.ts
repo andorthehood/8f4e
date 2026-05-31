@@ -1,9 +1,7 @@
 import { expect, test } from 'vitest';
-
-import createFunction from './createFunction';
-import createCodeSection from './createCodeSection';
-
 import { Section } from '../section';
+import createCodeSection from './createCodeSection';
+import createFunction from './createFunction';
 
 test('createCodeSection wraps function bodies correctly', () => {
 	const bodies = [createFunction([], [65, 1])];

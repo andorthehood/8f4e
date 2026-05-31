@@ -1,7 +1,6 @@
+import type { BinaryAsset } from '@8f4e/editor-state-types';
 import getBinaryAssetFileName from './getBinaryAssetFileName';
 import getBinaryAssetResponse from './getBinaryAssetResponse';
-
-import type { BinaryAsset } from '@8f4e/editor-state-types';
 
 export default async function fetchBinaryAssets(
 	urls: string[],

@@ -1,10 +1,9 @@
+import type { CodeBlockGraphicData, EventDispatcher, InternalMouseEvent, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import findCodeBlockAtViewportCoordinates from '../../utils/finders/findCodeBlockAtViewportCoordinates';
-import { getGroupBlocks } from '../group/getGroupBlocks';
 import upsertPos from '../directives/pos/upsert';
 import { worldPositionToAnchoredPos } from '../directives/viewport/resolve';
-
-import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State, InternalMouseEvent, EventDispatcher } from '@8f4e/editor-state-types';
+import { getGroupBlocks } from '../group/getGroupBlocks';
 
 export interface CodeBlockClickEvent {
 	x: number;

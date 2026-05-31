@@ -1,11 +1,8 @@
-import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryTypes } from '@8f4e/compiler-spec';
-
-import updateInputsGraphicData from './updateGraphicData';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-
+import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
+import updateInputsGraphicData from './updateGraphicData';
 
 describe('updateInputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -61,7 +58,6 @@ describe('updateInputsGraphicData', () => {
 
 		const input = findWidgetById(mockGraphicData.widgets.inputs, 'input1');
 		// Exclude codeBlock from snapshot as it creates circular reference
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
 		expect(input?.codeBlock).toBe(mockGraphicData);
@@ -113,7 +109,6 @@ describe('updateInputsGraphicData', () => {
 		expect(mockGraphicData.widgets.inputs.length).toBe(2);
 		// Exclude codeBlock references from snapshot
 		const entries = Object.entries(mockGraphicData.widgets.inputs).map(([key, value]) => {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { codeBlock: _codeBlock, ...rest } = value;
 			return [key, rest];
 		});
@@ -138,7 +133,6 @@ describe('updateInputsGraphicData', () => {
 		updateInputsGraphicData(mockGraphicData, mockState);
 
 		const input = findWidgetById(mockGraphicData.widgets.inputs, 'input1');
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
 	});

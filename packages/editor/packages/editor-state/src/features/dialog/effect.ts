@@ -1,10 +1,7 @@
-import { StateManager } from '@8f4e/state-manager';
-
-import wrapText from '../code-blocks/utils/wrapText';
-
 import type { DialogContent, EventDispatcher, State } from '@8f4e/editor-state-types';
-
+import type { StateManager } from '@8f4e/state-manager';
 import roundToGrid from '~/features/viewport/roundToGrid';
+import wrapText from '../code-blocks/utils/wrapText';
 
 const DIALOG_MIN_WIDTH_GRID_CELLS = 64;
 const DIALOG_MAX_WIDTH_GRID_CELLS = 96;

@@ -1,7 +1,6 @@
-import { createFunctionType } from '@8f4e/compiler-wasm-utils';
-
 import type { FunctionTypeRegistry, FunctionTypeSignature } from '@8f4e/compiler-spec';
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
+import { createFunctionType } from '@8f4e/compiler-wasm-utils';
 
 function wasmTypeListsEqual(left: WasmTypeValue[], right: WasmTypeValue[]): boolean {
 	return left.length === right.length && left.every((type, index) => type === right[index]);

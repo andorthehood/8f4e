@@ -1,9 +1,7 @@
 import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
-import { isSkipExecutionDirective } from '@8f4e/tokenizer';
-
-import { getGroupBlocks, getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
-
 import type { CodeBlockGraphicData, MenuGenerator } from '@8f4e/editor-state-types';
+import { isSkipExecutionDirective } from '@8f4e/tokenizer';
+import { getGroupBlocks, getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
 
 const functionBlockType = documentBlockInstructionByType.function.type;
 const moduleBlockType = documentBlockInstructionByType.module.type;

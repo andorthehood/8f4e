@@ -8,36 +8,36 @@ import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction
 import type { FillSpriteColorName } from '@8f4e/sprite-generator';
 import type { SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
+import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
-	CodeBlock,
-	CodeBlockType,
-	CodeBlockGraphicData,
-	CodeBlockEntryOutline,
-	ParsedDirectiveRecord,
-	Input,
-	Output,
-	Debugger,
-	InfoPanel,
-	MemoryIdentifier,
-	ArrayPlotter,
 	ArrayBars,
 	ArrayMeter,
+	ArrayPlotter,
 	ArrayWave,
-	TypedValueKind,
-	Switch,
-	Slider,
+	CodeBlock,
+	CodeBlockEntryOutline,
+	CodeBlockGraphicData,
+	CodeBlockType,
 	Crossfade,
+	Debugger,
+	GraphicHelper,
+	InfoPanel,
+	Input,
+	MemoryIdentifier,
+	Output,
+	ParsedDirectiveRecord,
 	PianoKeyboard,
+	PianoKeyboardBlackKey,
 	PianoKeyboardKey,
 	PianoKeyboardWhiteKey,
-	PianoKeyboardBlackKey,
 	PianoKeySprite,
 	PianoPressedOverlayFont,
-	GraphicHelper,
+	Slider,
+	Switch,
+	TypedValueKind,
 } from './features/code-blocks/types';
-import type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent } from './features/code-editing/types';
-import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
-import type { DialogContent, DialogState, DialogButton } from './features/dialog/types';
+import type { InsertTextEvent, MoveCaretEvent, NavigateCodeBlockEvent } from './features/code-editing/types';
+import type { DialogButton, DialogContent, DialogState } from './features/dialog/types';
 import type {
 	EditorConfig,
 	EditorConfigSchemaContributionRegistry,
@@ -45,103 +45,103 @@ import type {
 	JSONSchemaLike,
 } from './features/editor-config/types';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
-import type { LogMessage, ConsoleState } from './features/logger/types';
-import type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu } from './features/menu/types';
-import type { Compiler, CompilationResult } from './features/program-compiler/types';
-import type { Project } from './features/project-import/types';
+import type { ConsoleState, LogMessage } from './features/logger/types';
+import type { ContextMenu, ContextMenuItem, MenuGenerator, MenuStackEntry } from './features/menu/types';
 import type { PresentationState } from './features/presentation/types';
+import type { CompilationResult, Compiler } from './features/program-compiler/types';
+import type { Project } from './features/project-import/types';
 import type {
-	RuntimeFactory,
-	RuntimeRegistryEntry,
-	RuntimeRegistry,
-	RuntimeValuesByRuntimeId,
 	RuntimeEnvConstantsContributor,
+	RuntimeFactory,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
+	RuntimeValuesByRuntimeId,
 } from './features/runtime/types';
 import type { ProjectViewport, Viewport, ViewportAnimation } from './features/viewport/types';
 import type {
-	Size,
-	Position,
-	GridCoordinates,
 	CodeError,
 	EventDispatcher,
-	InternalMouseEvent,
+	GridCoordinates,
 	InternalKeyboardEvent,
+	InternalMouseEvent,
+	Position,
+	Size,
 } from './shared/types';
 
 // Re-export MemoryAction for use by consumers
-export type { CompilerMemoryAction as MemoryAction };
-
 // Re-export shared types
-export type { Size, Position, GridCoordinates, CodeError, EventDispatcher, InternalMouseEvent, InternalKeyboardEvent };
-
 // Re-export viewport types
-export type { ProjectViewport };
-
 // Re-export code-blocks types
+// Re-export menu types
+// Re-export program-compiler spec
+// Re-export browser-local note storage types
+// Re-export dialog types
+// Re-export global-editor-directives types
+// Re-export runtime types
+// Re-export logger types
+// Re-export binary-assets types
+// Re-export code-editing types
+// Re-export project-import types
 export type {
-	CodeBlock,
-	CodeBlockType,
-	CodeBlockGraphicData,
-	CodeBlockEntryOutline,
-	ParsedDirectiveRecord,
-	Input,
-	Output,
-	Debugger,
-	InfoPanel,
-	MemoryIdentifier,
-	ArrayPlotter,
 	ArrayBars,
 	ArrayMeter,
+	ArrayPlotter,
 	ArrayWave,
-	TypedValueKind,
-	Switch,
-	Slider,
+	BinaryAsset,
+	BrowserLocalNoteStorageBlock,
+	CodeBlock,
+	CodeBlockEntryOutline,
+	CodeBlockGraphicData,
+	CodeBlockType,
+	CodeError,
+	CompilationResult,
+	Compiler,
+	CompilerMemoryAction as MemoryAction,
+	ConsoleState,
+	ContextMenu,
+	ContextMenuItem,
 	Crossfade,
+	Debugger,
+	DialogButton,
+	DialogContent,
+	DialogState,
+	EventDispatcher,
+	GraphicHelper,
+	GridCoordinates,
+	InfoPanel,
+	Input,
+	InsertTextEvent,
+	InternalKeyboardEvent,
+	InternalMouseEvent,
+	JSONSchemaLike,
+	LogMessage,
+	MemoryIdentifier,
+	MenuGenerator,
+	MenuStackEntry,
+	MoveCaretEvent,
+	NavigateCodeBlockEvent,
+	Output,
+	ParsedDirectiveRecord,
 	PianoKeyboard,
+	PianoKeyboardBlackKey,
 	PianoKeyboardKey,
 	PianoKeyboardWhiteKey,
-	PianoKeyboardBlackKey,
 	PianoKeySprite,
 	PianoPressedOverlayFont,
-	GraphicHelper,
-};
-
-// Re-export menu types
-export type { ContextMenuItem, MenuGenerator, MenuStackEntry, ContextMenu };
-
-// Re-export program-compiler spec
-export type { Compiler, CompilationResult };
-
-// Re-export browser-local note storage types
-export type { BrowserLocalNoteStorageBlock };
-
-// Re-export dialog types
-export type { DialogButton, DialogContent, DialogState };
-
-// Re-export global-editor-directives types
-export type { ResolvedGlobalEditorDirectives };
-
-// Re-export runtime types
-export type {
-	RuntimeFactory,
-	RuntimeRegistryEntry,
-	RuntimeRegistry,
-	JSONSchemaLike,
-	RuntimeValuesByRuntimeId,
+	Position,
+	Project,
+	ProjectViewport,
+	ResolvedGlobalEditorDirectives,
 	RuntimeEnvConstantsContributor,
+	RuntimeFactory,
+	RuntimeRegistry,
+	RuntimeRegistryEntry,
+	RuntimeValuesByRuntimeId,
+	Size,
+	Slider,
+	Switch,
+	TypedValueKind,
 };
-
-// Re-export logger types
-export type { LogMessage, ConsoleState };
-
-// Re-export binary-assets types
-export type { BinaryAsset };
-
-// Re-export code-editing types
-export type { NavigateCodeBlockEvent, MoveCaretEvent, InsertTextEvent };
-
-// Re-export project-import types
-export type { Project };
 
 export type InfoValue = unknown;
 export type InfoRecord = Record<string, InfoValue>;
@@ -396,28 +396,27 @@ export interface State {
 	presentation: PresentationState;
 }
 
+export type * from './features/binary-assets/types';
+export type * from './features/browser-local-notes/types';
+export type * from './features/code-blocks/features/directives/types';
+export type * from './features/code-blocks/features/graphicHelper/buildDisplayModel';
+export type * from './features/code-blocks/types';
+export type * from './features/code-blocks/utils/types';
+export type * from './features/code-editing/types';
+export type * from './features/editor-config/types';
 export type {
 	EditorConfig,
 	EditorConfigEntry,
 	EditorConfigValidator,
 	EditorConfigValidatorRegistry,
 } from './features/editor-config/types';
-
-export type * from './features/binary-assets/types';
-export type * from './features/code-blocks/types';
-export type * from './features/code-blocks/utils/types';
-export type * from './features/code-blocks/features/directives/types';
-export type * from './features/code-blocks/features/graphicHelper/buildDisplayModel';
-export type * from './features/code-editing/types';
-export type * from './features/browser-local-notes/types';
-export type * from './features/editor-config/types';
 export type * from './features/global-editor-directives/types';
 export type * from './features/logger/types';
 export type * from './features/menu/types';
+export type * from './features/presentation/types';
 export type * from './features/program-compiler/types';
 export type * from './features/project-import/types';
-export type * from './features/presentation/types';
 export type * from './features/runtime/types';
-export type * from './features/viewport/types';
 export type * from './features/viewport/blockAlignment';
+export type * from './features/viewport/types';
 export type * from './shared/types';

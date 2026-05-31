@@ -1,10 +1,8 @@
+import type { MemoryDeclarationLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import float from './float';
-
 import createInstructionCompilerTestContext from '../../utils/testUtils';
-
-import type { MemoryDeclarationLine } from '@8f4e/compiler-spec';
+import float from './float';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

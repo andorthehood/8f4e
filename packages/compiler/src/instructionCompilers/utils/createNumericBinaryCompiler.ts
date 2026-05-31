@@ -1,8 +1,7 @@
-import { saveByteCode } from './saveByteCode';
+import type { InstructionCompiler, StackItem } from '@8f4e/compiler-spec';
 
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../../utils/operandTypes';
-
-import type { InstructionCompiler, StackItem } from '@8f4e/compiler-spec';
+import { saveByteCode } from './saveByteCode';
 
 type NumericBinaryOpcodes = {
 	int32: number;

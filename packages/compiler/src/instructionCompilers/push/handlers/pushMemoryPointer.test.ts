@@ -1,11 +1,9 @@
-import { f64load, i32const, i32load, i32load16s, i32load8s } from '@8f4e/compiler-wasm-utils';
+import type { DataStructure, ResolvedMemoryPointerPushLine } from '@8f4e/compiler-spec';
+import { f64load, i32const, i32load, i32load8s, i32load16s } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
-import pushMemoryPointer from './pushMemoryPointer';
-
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-
-import type { DataStructure, ResolvedMemoryPointerPushLine } from '@8f4e/compiler-spec';
+import pushMemoryPointer from './pushMemoryPointer';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

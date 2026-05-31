@@ -1,8 +1,12 @@
+import type {
+	Argument,
+	CompilationContext,
+	CompileTimeOperand,
+	Const,
+	DataStructure,
+	MemoryAddressRange,
+} from '@8f4e/compiler-spec';
 import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
-
-import { getEndByteAddress } from './layoutAddresses';
-import { getMemoryRegionFields } from './memoryRegions';
-
 import {
 	getElementCount,
 	getElementMaxValue,
@@ -18,15 +22,8 @@ import {
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
 } from '../utils/memoryData';
-
-import type {
-	Argument,
-	CompilationContext,
-	CompileTimeOperand,
-	Const,
-	DataStructure,
-	MemoryAddressRange,
-} from '@8f4e/compiler-spec';
+import { getEndByteAddress } from './layoutAddresses';
+import { getMemoryRegionFields } from './memoryRegions';
 
 function getWordAlignedByteLength(wordAlignedSize: number): number {
 	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
@@ -445,7 +442,7 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 					? lhsConst.value * rhsConst.value
 					: operator === '/'
 						? lhsConst.value / rhsConst.value
-						: Math.pow(lhsConst.value, rhsConst.value);
+						: lhsConst.value ** rhsConst.value;
 	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
 	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
 	const safeRange =

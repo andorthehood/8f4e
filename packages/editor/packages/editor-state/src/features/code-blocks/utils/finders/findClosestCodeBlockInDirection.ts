@@ -1,5 +1,4 @@
-import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
-import type { Direction } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, Direction } from '@8f4e/editor-state-types';
 
 /**
  * Weight factor for alignment preference in distance calculation.

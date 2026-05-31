@@ -1,5 +1,5 @@
-import { WASM_BR_IF } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
+import { WASM_BR_IF } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly br_if (conditional branch) instruction.

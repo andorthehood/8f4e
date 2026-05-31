@@ -1,12 +1,8 @@
 import { arrayMemoryDeclarationInstructions } from '@8f4e/compiler-spec';
-import { StateManager } from '@8f4e/state-manager';
-
+import type { CodeBlockGraphicData, EventDispatcher, PianoKeyboard, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import type { CodeBlockClickEvent } from '../../codeBlockDragger/effect';
 import findPianoKeyboardWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
-
-import { CodeBlockClickEvent } from '../../codeBlockDragger/effect';
-
-import type { CodeBlockGraphicData, PianoKeyboard, State } from '@8f4e/editor-state-types';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
 
 // Data flow must stay one-way:
 // UI key press -> edits code -> runtime updates memory -> UI reflects memory.
@@ -105,7 +101,7 @@ function getClickedKeyOffset(
 
 export default function pianoKeyboard(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
-	const onCodeBlockClick = function ({ x, y, codeBlock }: CodeBlockClickEvent) {
+	const onCodeBlockClick = ({ x, y, codeBlock }: CodeBlockClickEvent) => {
 		const keyboard = findPianoKeyboardWidgetAtViewportCoordinates(state, codeBlock, x, y);
 
 		if (!keyboard) {

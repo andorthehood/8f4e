@@ -1,11 +1,10 @@
-import updateViewport from './updateViewport';
-
 import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import updateViewport from './updateViewport';
 
 const scheduledFrames = new WeakMap<State, number>();
 
 function easeInOutCubic(progress: number): number {
-	return progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+	return progress < 0.5 ? 4 * progress * progress * progress : 1 - (-2 * progress + 2) ** 3 / 2;
 }
 
 function clearScheduledFrame(state: State): void {

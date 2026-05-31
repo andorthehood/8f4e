@@ -1,18 +1,10 @@
-import { describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
+import type { Engine } from 'glugglug';
+import { describe, expect, it, vi } from 'vitest';
+import type { MemoryViews } from '../../../types';
 import drawPlotters from './plotters';
 
-import type { Engine } from 'glugglug';
-import type { MemoryViews } from '../../../types';
-
-function createMemoryViews({
-	int8 = [],
-	int32 = [],
-}: {
-	int8?: number[];
-	int32?: number[];
-} = {}): MemoryViews {
+function createMemoryViews({ int8 = [], int32 = [] }: { int8?: number[]; int32?: number[] } = {}): MemoryViews {
 	return {
 		int8: new Int8Array(int8),
 		int16: new Int16Array(0),

@@ -1,7 +1,6 @@
-import { getStackValueHighlightRange } from './stackAnalysisTooltip';
-import { getStackSignatureFromSourceLine } from './sourceLine';
-
 import type { SpriteLookup } from 'glugglug';
+import { getStackSignatureFromSourceLine } from './sourceLine';
+import { getStackValueHighlightRange } from './stackAnalysisTooltip';
 import type { SpriteLookups, TooltipHighlightRange } from './types';
 
 /**

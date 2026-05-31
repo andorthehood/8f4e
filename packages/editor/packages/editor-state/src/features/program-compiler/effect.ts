@@ -1,15 +1,12 @@
-import { StateManager } from '@8f4e/state-manager';
-import { isCompilableBlockType } from '@8f4e/tokenizer';
+import type { CompileInput, CompilerDiagnostic, Module } from '@8f4e/compiler-spec';
 import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
-
-import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
-
-import { log } from '../logger/logger';
+import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
-
-import type { CompileInput, CompilerDiagnostic, Module } from '@8f4e/compiler-spec';
-import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
+import { log } from '../logger/logger';
+import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
 const moduleBlockType = documentBlockInstructionByType.module.type;
 const constantsBlockType = documentBlockInstructionByType.constants.type;

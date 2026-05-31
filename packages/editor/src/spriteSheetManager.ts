@@ -1,11 +1,9 @@
-import generateSprite from '@8f4e/sprite-generator';
-
-import { updateStateWithSpriteData } from './updateStateWithSpriteData';
-
 import type { State } from '@8f4e/editor-state-types';
+import generateSprite from '@8f4e/sprite-generator';
 import type { StateManager } from '@8f4e/state-manager';
-import type { EventDispatcher } from './events';
 import type { SpriteData } from '@8f4e/web-ui';
+import type { EventDispatcher } from './events';
+import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 type SpriteSheetView = {
 	loadSpriteSheet: (spriteData: SpriteData) => void;

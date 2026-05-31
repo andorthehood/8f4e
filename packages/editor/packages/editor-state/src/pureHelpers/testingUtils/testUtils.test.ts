@@ -1,8 +1,6 @@
-import { describe, it, expect } from 'vitest';
-
-import { createMockCodeBlock } from './testUtils';
-
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { describe, expect, it } from 'vitest';
+import { createMockCodeBlock } from './testUtils';
 
 /**
  * Normalize a block for snapshot testing by converting Maps to arrays

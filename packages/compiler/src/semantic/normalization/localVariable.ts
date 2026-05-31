@@ -1,5 +1,4 @@
-import { type CompilationContext, type LocalSetLine, type ResolvedLocalSetLine } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { type CompilationContext, ErrorCode, type LocalSetLine, type ResolvedLocalSetLine } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
 

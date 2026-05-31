@@ -1,11 +1,9 @@
+import type { ResolvedLocalPushLine } from '@8f4e/compiler-spec';
 import { localGet } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
-import pushLocal from './pushLocal';
-
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-
-import type { ResolvedLocalPushLine } from '@8f4e/compiler-spec';
+import pushLocal from './pushLocal';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 

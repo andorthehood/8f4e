@@ -1,6 +1,5 @@
-import { peekMapBlock } from '../utils/blockStack';
-
 import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/compiler-spec';
+import { peekMapBlock } from '../utils/blockStack';
 
 /**
  * Instruction compiler for `default`.

@@ -1,10 +1,8 @@
-import { describe, it, expect } from 'vitest';
-
-import { serializeGroupToClipboard, parseClipboardData } from './clipboardUtils';
+import { describe, expect, it } from 'vitest';
+import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 import { extractGroupName } from '../group/extractGroupName';
-
-import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
+import { parseClipboardData, serializeGroupToClipboard } from './clipboardUtils';
 
 describe('serializeGroupToClipboard', () => {
 	it('should serialize group blocks with relative coordinates', () => {

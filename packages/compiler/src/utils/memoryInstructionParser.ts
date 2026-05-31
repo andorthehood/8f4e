@@ -1,16 +1,14 @@
-import {
-	parseMemoryInstructionArgumentsShape,
-	SyntaxRulesError,
-	SyntaxErrorCode,
-	type MemoryArgumentShape,
-	type SplitByteToken,
-} from '@8f4e/tokenizer';
+import type { AddressMetadata, CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
-
+import {
+	type MemoryArgumentShape,
+	parseMemoryInstructionArgumentsShape,
+	type SplitByteToken,
+	SyntaxErrorCode,
+	SyntaxRulesError,
+} from '@8f4e/tokenizer';
 import { getError } from '../compilerError';
 import { getEndByteAddress } from '../semantic/layoutAddresses';
-
-import type { CompilerASTLine, AddressMetadata, CompilationContext } from '@8f4e/compiler-spec';
 
 /**
  * Maximum number of bytes allowed in a split-byte default value.
@@ -66,7 +64,6 @@ function getMemoryItemOrThrow(
 function resolveSplitByteTokens(
 	tokens: SplitByteToken[],
 	maxBytes: number,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	lineForError: any,
 	context: CompilationContext
 ): number {

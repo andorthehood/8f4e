@@ -1,8 +1,6 @@
 import { expect, test } from 'vitest';
-
-import block from './block';
-
 import { WASM_TYPE_I32 } from '../type';
+import block from './block';
 
 test('block generates correct structure', () => {
 	const result = block(WASM_TYPE_I32, [65, 42]);

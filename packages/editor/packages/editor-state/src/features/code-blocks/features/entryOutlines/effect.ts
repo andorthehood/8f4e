@@ -1,8 +1,6 @@
-import { StateManager } from '@8f4e/state-manager';
-
-import deriveEntryOutlines from './deriveEntryOutlines';
-
 import type { State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import deriveEntryOutlines from './deriveEntryOutlines';
 
 export default function entryOutlines(store: StateManager<State>): void {
 	const state = store.getState();

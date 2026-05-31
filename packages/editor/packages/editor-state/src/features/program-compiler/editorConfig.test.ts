@@ -1,8 +1,6 @@
-import { describe, expect, it } from 'vitest';
-
-import { RECOMPILE_DEBOUNCE_DELAY_CONFIG_PATH, recompileDebounceDelayEditorConfigValidator } from './editorConfig';
-
 import type { EditorConfigEntry } from '@8f4e/editor-state-types';
+import { describe, expect, it } from 'vitest';
+import { RECOMPILE_DEBOUNCE_DELAY_CONFIG_PATH, recompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
 function entry(value: string): EditorConfigEntry {
 	return {

@@ -1,8 +1,6 @@
-import { StateManager } from '@8f4e/state-manager';
-
+import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
 import { resolveViewportAnchoredPosition } from './resolve';
-
-import type { CodeBlockGraphicData, State, EventDispatcher } from '@8f4e/editor-state-types';
 
 function syncViewportAnchoredBlockList(state: State): void {
 	state.graphicHelper.viewportAnchoredCodeBlocks = state.graphicHelper.codeBlocks.filter(

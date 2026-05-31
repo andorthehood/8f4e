@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config';
 import { createNodePreset } from '@8f4e/config/vitest';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig(
 	createNodePreset({

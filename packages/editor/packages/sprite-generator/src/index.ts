@@ -1,23 +1,21 @@
-import { SpriteCoordinates } from 'glugglug';
-
-import generateFont, { FontLookups, generateLookups as generateLookupsForFonts } from './font.ts';
-import generateFillColors, { generateLookup as generateLookupForFillColors } from './fillColors.ts';
-import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale.ts';
-import generateBackground, { generateLookup as generateLookupForBackground } from './background.ts';
-import generateIcons, { generateLookup as generateLookupForIcons, type IconValue } from './icons.ts';
+import type { SpriteCoordinates } from 'glugglug';
 import { createAtlasLayout } from './atlasLayout.ts';
-import { Command, FONT_NAMES, type Config, type ColorScheme, type ColorSchemeOverrides, type Font } from './types.ts';
-import decodeFontBase64 from './fonts/font-decoder.ts';
+import generateBackground, { generateLookup as generateLookupForBackground } from './background.ts';
 import defaultColorScheme from './defaultColorScheme.ts';
-
-import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii.ts';
+import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale.ts';
 import type { FillSpriteColorName } from './fillColors.ts';
+import generateFillColors, { generateLookup as generateLookupForFillColors } from './fillColors.ts';
+import generateFont, { type FontLookups, generateLookups as generateLookupsForFonts } from './font.ts';
+import decodeFontBase64 from './fonts/font-decoder.ts';
+import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii.ts';
+import generateIcons, { generateLookup as generateLookupForIcons, type IconValue } from './icons.ts';
+import { type ColorScheme, type ColorSchemeOverrides, Command, type Config, FONT_NAMES, type Font } from './types.ts';
 
-export { Icon } from './icons.ts';
-export { FONT_NAMES } from './types.ts';
-export type { FillSpriteColorName } from './fillColors.ts';
-export type { ColorScheme, ColorSchemeOverrides, Font } from './types.ts';
 export { default as defaultColorScheme } from './defaultColorScheme.ts';
+export type { FillSpriteColorName } from './fillColors.ts';
+export { Icon } from './icons.ts';
+export type { ColorScheme, ColorSchemeOverrides, Font } from './types.ts';
+export { FONT_NAMES } from './types.ts';
 
 type FontData = {
 	asciiBitmap: number[];

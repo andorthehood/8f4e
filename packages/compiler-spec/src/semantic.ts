@@ -3,16 +3,16 @@ import type {
 	ArgumentCompileTimeExpression,
 	ArgumentIdentifier,
 	ArgumentLiteral,
-	MemoryPointerIdentifier,
 	ArgumentStringLiteral,
+	MemoryPointerIdentifier,
 } from './arguments';
 import type {
 	ArrayMemoryDeclarationLine,
 	CallLine,
 	CompilerASTLine,
-	ConstLine,
 	ConstantsEndLine,
 	ConstantsLine,
+	ConstLine,
 	DefaultLine,
 	LocalSetLine,
 	LoopLine,
@@ -26,6 +26,7 @@ import type {
 } from './ast';
 import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
+import type { CompiledModuleBlockType, CompilerSourceBlockType } from './instructions';
 import type {
 	ArrayDeclarationInstruction,
 	DataStructure,
@@ -33,7 +34,6 @@ import type {
 	InternalResourceMap,
 	MemoryMap,
 } from './memory';
-import type { CompiledModuleBlockType, CompilerSourceBlockType } from './instructions';
 
 /** Proven byte range associated with an address expression or memory boundary. */
 export interface MemoryAddressRange {

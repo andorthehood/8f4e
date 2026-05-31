@@ -1,5 +1,5 @@
-import { WASM_BR } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
+import { WASM_BR } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly br (branch) instruction for unconditional branching.

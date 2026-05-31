@@ -1,12 +1,9 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-
-import { createRuntimeRunner } from './runtimeRunner';
-
 import { compileProject } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
-
 import type { ProjectInput } from '../shared/types';
+import { createRuntimeRunner } from './runtimeRunner';
 
 interface RunCommandArgs {
 	inputPath?: string;

@@ -1,3 +1,4 @@
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 import {
 	f32load,
 	f32store,
@@ -9,11 +10,8 @@ import {
 	WASM_F32_GT,
 	WASM_I32_GT_S,
 } from '@8f4e/compiler-wasm-utils';
-
-import { saveByteCode } from './utils/saveByteCode';
 import { allocateInternalResource } from './utils/internalResources';
-
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import { saveByteCode } from './utils/saveByteCode';
 
 /**
  * Instruction compiler for `risingEdge`.

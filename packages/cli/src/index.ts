@@ -1,2 +1,2 @@
 export { compileProject } from './compile/compileProject';
-export type { ProjectCodeBlock, ProjectInput, CompileProjectOptions, CompileProjectResult } from './shared/types';
+export type { CompileProjectOptions, CompileProjectResult, ProjectCodeBlock, ProjectInput } from './shared/types';

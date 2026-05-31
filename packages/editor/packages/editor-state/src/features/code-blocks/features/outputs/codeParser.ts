@@ -1,6 +1,5 @@
 import { arrayMemoryDeclarationInstructions, scalarMemoryDeclarationInstructions } from '@8f4e/compiler-spec';
-import { isConstantName } from '@8f4e/tokenizer';
-import { instructionParser } from '@8f4e/tokenizer';
+import { instructionParser, isConstantName } from '@8f4e/tokenizer';
 
 const scalarOutputInstructions = new Set<string>(
 	scalarMemoryDeclarationInstructions.filter(instruction => !instruction.includes('*'))

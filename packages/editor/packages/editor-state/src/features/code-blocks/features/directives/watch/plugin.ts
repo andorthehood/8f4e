@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createWatchDirectiveData } from './data';
 import { createWatchDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'watch',

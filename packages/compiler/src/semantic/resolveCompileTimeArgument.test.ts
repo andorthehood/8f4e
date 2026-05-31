@@ -1,9 +1,7 @@
+import type { CompilationContext } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-
 import { tryResolveCompileTimeArgument } from './resolveCompileTimeArgument';
-
-import type { CompilationContext } from '@8f4e/compiler-spec';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
@@ -323,7 +321,7 @@ describe('tryResolveCompileTimeArgument', () => {
 
 	it('keeps float64 width for exponentiation results', () => {
 		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64^2'))).toEqual({
-			value: Math.pow(3.14159, 2),
+			value: 3.14159 ** 2,
 			isInteger: false,
 		});
 	});

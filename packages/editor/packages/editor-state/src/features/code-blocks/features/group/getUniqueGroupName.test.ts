@@ -1,8 +1,6 @@
-import { describe, it, expect } from 'vitest';
-
-import { getUniqueGroupName, createGroupNameMapping } from './getUniqueGroupName';
-
+import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
+import { createGroupNameMapping, getUniqueGroupName } from './getUniqueGroupName';
 
 describe('getUniqueGroupName', () => {
 	it('should return the original name if no collision', () => {

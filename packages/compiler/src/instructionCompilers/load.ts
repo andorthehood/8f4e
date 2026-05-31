@@ -1,21 +1,18 @@
+import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryLoadVariant } from '@8f4e/compiler-spec';
+import { getInstructionSpec } from '@8f4e/compiler-spec';
 import {
 	f32load,
 	i32load,
-	i32load16s,
-	i32load16u,
 	i32load8s,
 	i32load8u,
+	i32load16s,
+	i32load16u,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { getInstructionSpec } from '@8f4e/compiler-spec';
-
-import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
-import { saveByteCode } from './utils/saveByteCode';
-import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
-
 import { requireStackAddress } from '../utils/stackItem';
-
-import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryLoadVariant } from '@8f4e/compiler-spec';
+import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
+import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
+import { saveByteCode } from './utils/saveByteCode';
 
 type LoadLine = ASTLineBase<LoadInstructionSpecName, []>;
 

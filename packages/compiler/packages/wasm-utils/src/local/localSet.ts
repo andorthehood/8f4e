@@ -1,5 +1,5 @@
-import { WASM_LOCAL_SET } from '../wasmInstruction';
 import unsignedLEB128 from '../encoding/unsignedLEB128';
+import { WASM_LOCAL_SET } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly local.set instruction to store the top stack value into a local variable.

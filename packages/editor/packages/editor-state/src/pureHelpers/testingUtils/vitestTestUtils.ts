@@ -1,8 +1,6 @@
-import { vi } from 'vitest';
-
-import { createMockEventDispatcher } from './testUtils';
-
 import type { EventDispatcher } from '@8f4e/editor-state-types';
+import { vi } from 'vitest';
+import { createMockEventDispatcher } from './testUtils';
 
 /**
  * Wraps a plain event dispatcher with vitest mocks for testing.

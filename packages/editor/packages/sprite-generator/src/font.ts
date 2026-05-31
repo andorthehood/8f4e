@@ -1,7 +1,7 @@
-import { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug';
 
 import { createAtlasLayout, TEXT_COLOR_NAMES } from './atlasLayout.ts';
-import { Command, DrawingCommand, ColorScheme } from './types.ts';
+import { type ColorScheme, Command, type DrawingCommand } from './types.ts';
 
 const ASCII_START = 0;
 const ASCII_END = 127;
@@ -59,7 +59,7 @@ export function drawCharacter(
 	const commands: DrawingCommand[] = [];
 	const char = typeof charCode === 'string' ? charCode.charCodeAt(0) : charCode;
 	for (let i = 0; i < characterHeight; i++) {
-		forEachBit(font[char * characterHeight + i], characterWidth, function (bit, nthBit) {
+		forEachBit(font[char * characterHeight + i], characterWidth, (bit, nthBit) => {
 			if (bit) {
 				commands.push([Command.PIXEL, nthBit, i]);
 			}
@@ -132,7 +132,7 @@ export type FontLookups = {
 	[key in keyof ColorScheme['text'] as `font${Capitalize<string & key>}`]: Record<number | string, SpriteCoordinates>;
 };
 
-export const generateLookups = function (characterWidth: number, characterHeight: number, colors: ColorScheme['text']) {
+export const generateLookups = (characterWidth: number, characterHeight: number, colors: ColorScheme['text']) => {
 	const layout = createAtlasLayout(characterWidth, characterHeight);
 	const { rowsByRole } = buildFontLayout(colors);
 

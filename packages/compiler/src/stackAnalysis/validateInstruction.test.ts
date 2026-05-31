@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { ArgumentType, BlockType, ErrorCode } from '@8f4e/compiler-spec';
-
-import { validateInstruction } from './validateInstruction';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import { validateInstruction } from './validateInstruction';
 
 const pushLine: CompilerASTLine = {
 	lineNumberBeforeMacroExpansion: 1,

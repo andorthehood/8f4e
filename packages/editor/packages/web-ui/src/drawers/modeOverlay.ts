@@ -1,6 +1,5 @@
-import { Engine } from 'glugglug';
-
 import type { State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 
 const EDIT_MODE_HINT = "You're in edit mode, press ESC to enter view mode";
 const VIEW_MODE_HINT = "You're in view mode, press e to edit";

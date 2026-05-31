@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createWaveDirectiveData } from './data';
 import { createWaveDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 function createWaveDirectivePlugin(name: string, heightRows: number) {
 	return createDirectivePlugin(

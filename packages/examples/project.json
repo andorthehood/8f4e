@@ -15,8 +15,8 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "eslint src --fix",
-				"cwd": "{projectRoot}"
+				"command": "biome check --write packages/examples/src",
+				"cwd": "{workspaceRoot}"
 			}
 		},
 		"test": {

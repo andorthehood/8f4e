@@ -14,8 +14,8 @@
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "eslint src --fix",
-        "cwd": "{projectRoot}"
+        "command": "biome check --write packages/editor/src",
+        "cwd": "{workspaceRoot}"
       }
     },
     "dev": {
@@ -28,6 +28,7 @@
     "test": {
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["^build"],
       "options": {
         "command": "vitest run --config vitest.config.ts",
         "cwd": "{projectRoot}"

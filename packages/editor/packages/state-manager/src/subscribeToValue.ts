@@ -1,4 +1,4 @@
-import type { Path, PathValue, Subscription, Matcher } from './types';
+import type { Matcher, Path, PathValue, Subscription } from './types';
 
 export function createSubscribeToValue<State>(subscriptions: Set<Subscription<State>>) {
 	return function subscribeToValue<P extends Path<State>>(

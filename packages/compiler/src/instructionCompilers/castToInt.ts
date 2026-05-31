@@ -1,13 +1,11 @@
+import type { InstructionCompiler } from '@8f4e/compiler-spec';
 import {
 	prefixedInstruction,
 	WASM_MISC,
 	WASM_MISC_I32_TRUNC_SAT_F32_S,
 	WASM_MISC_I32_TRUNC_SAT_F64_S,
 } from '@8f4e/compiler-wasm-utils';
-
 import { saveByteCode } from './utils/saveByteCode';
-
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `castToInt`.

@@ -1,26 +1,27 @@
 import {
 	ArgumentType,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	compilerSourceBlockInstructionByType,
-	hasReferencedNamespaceIds,
-	isNamedScalarMemoryDeclarationLine,
-	isMemoryDeclarationLine,
-	isSemanticInstructionLine,
-	type ConstantsAST,
-	type CompileOptions,
 	type CompilationContext,
+	type CompileOptions,
 	type CompilerASTLine,
-	type FunctionMetadataLookup,
+	type ConstantsAST,
+	compilerSourceBlockInstructionByType,
+	ErrorCode,
 	type FunctionAST,
+	type FunctionMetadataLookup,
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	hasReferencedNamespaceIds,
+	isMemoryDeclarationLine,
+	isNamedScalarMemoryDeclarationLine,
+	isSemanticInstructionLine,
 	type MemoryDeclarationLine,
 	type ModuleAST,
-	type Namespaces,
 	type NamespaceBuildContext,
+	type Namespaces,
 	type SemanticInstructionLine,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-
-import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
+import { getError } from '../compilerError';
+import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
+import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
 import {
@@ -31,10 +32,7 @@ import {
 	resolveMemoryRegionName,
 	validateMemoryRegionOptions,
 } from './memoryRegions';
-import { createCompilationContext } from './createCompilationContext';
-
-import { getError } from '../compilerError';
-import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
+import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 

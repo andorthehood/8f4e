@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest';
-
-import decodeFontBase64 from '../src/fonts/font-decoder';
+import { describe, expect, it } from 'vitest';
+import { fontMetadata as ascii6x10Metadata } from '../src/fonts/6x10/generated/ascii';
+import { fontMetadata as glyphs6x10Metadata } from '../src/fonts/6x10/generated/glyphs';
 import { fontMetadata as asciiAttPc63008x16Metadata } from '../src/fonts/attpc63008x16/generated/ascii';
 import { fontMetadata as glyphsAttPc63008x16Metadata } from '../src/fonts/attpc63008x16/generated/glyphs';
+import decodeFontBase64 from '../src/fonts/font-decoder';
 import { fontMetadata as ascii8x16Metadata } from '../src/fonts/ibmvga8x16/generated/ascii';
 import { fontMetadata as glyphs8x16Metadata } from '../src/fonts/ibmvga8x16/generated/glyphs';
 import { fontMetadata as asciiNix8810M168x16Metadata } from '../src/fonts/nix8810m168x16/generated/ascii';
@@ -13,8 +14,6 @@ import { fontMetadata as asciiTerminus8x16Metadata } from '../src/fonts/terminus
 import { fontMetadata as glyphsTerminus8x16Metadata } from '../src/fonts/terminus8x16/generated/glyphs';
 import { fontMetadata as asciiTerminus8x16BoldMetadata } from '../src/fonts/terminus8x16bold/generated/ascii';
 import { fontMetadata as glyphsTerminus8x16BoldMetadata } from '../src/fonts/terminus8x16bold/generated/glyphs';
-import { fontMetadata as ascii6x10Metadata } from '../src/fonts/6x10/generated/ascii';
-import { fontMetadata as glyphs6x10Metadata } from '../src/fonts/6x10/generated/glyphs';
 import { fontMetadata as asciiTerminus10x18Metadata } from '../src/fonts/terminus10x18/generated/ascii';
 import { fontMetadata as glyphsTerminus10x18Metadata } from '../src/fonts/terminus10x18/generated/glyphs';
 import { fontMetadata as asciiTerminus10x18BoldMetadata } from '../src/fonts/terminus10x18bold/generated/ascii';

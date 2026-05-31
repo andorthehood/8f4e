@@ -1,7 +1,6 @@
-import compileProjectModules from './compileProjectModules';
-
 import type { CompileOptions } from '@8f4e/compiler-spec';
 import type { CompileProjectOptions, CompileProjectResult, ProjectInput } from '../shared/types';
+import compileProjectModules from './compileProjectModules';
 
 export function compileProject(project: ProjectInput, options: CompileProjectOptions = {}): CompileProjectResult {
 	const includeModules = options.includeModules ?? true;

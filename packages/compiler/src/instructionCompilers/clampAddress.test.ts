@@ -1,13 +1,11 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine, MemoryAddressRange } from '@8f4e/compiler-spec';
 import { ArgumentType, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { WASM_I32_LT_S, WASM_I32_LT_U, WASM_MEMORY_SIZE, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
-
-import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
+import { describe, expect, it } from 'vitest';
 
 import normalizeClampAddress from '../semantic/normalization/clampAddress';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine, MemoryAddressRange } from '@8f4e/compiler-spec';
+import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
 const range: MemoryAddressRange = {
 	source: 'memory-start',
