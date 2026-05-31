@@ -5,13 +5,13 @@ exports[`block instruction compiler > emits a typed block for float 1`] = `
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 4,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": true,
+      "expectedResultTypes": [
+        "float",
+      ],
     },
   ],
   "byteCode": [
@@ -26,13 +26,13 @@ exports[`block instruction compiler > emits a typed block for int 1`] = `
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 4,
-      "expectedResultIsInteger": true,
-      "hasExpectedResult": true,
+      "expectedResultTypes": [
+        "int",
+      ],
     },
   ],
   "byteCode": [
@@ -47,13 +47,11 @@ exports[`block instruction compiler > emits a void block when no result type is 
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 4,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
   "byteCode": [

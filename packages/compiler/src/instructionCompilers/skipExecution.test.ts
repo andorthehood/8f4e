@@ -10,9 +10,7 @@ describe('skipExecution instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.MODULE,expectedResultTypes: [],
 				},
 			],
 		});
@@ -55,9 +53,7 @@ describe('skipExecution instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,
-					expectedResultIsInteger: false,
-					hasExpectedResult: false,
+					blockType: BlockType.MODULE,expectedResultTypes: [],
 				},
 			],
 		});

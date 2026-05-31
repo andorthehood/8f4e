@@ -399,7 +399,7 @@ describe('compileToASTLines', () => {
 			arguments: [],
 			ifBlock: {
 				matchingIfEndIndex: 3,
-				resultType: 'int',
+				resultTypes: ['int'],
 				hasElse: false,
 			},
 		});
@@ -407,7 +407,28 @@ describe('compileToASTLines', () => {
 			instruction: 'ifEnd',
 			ifEndBlock: {
 				matchingIfIndex: 1,
-				resultType: 'int',
+				resultTypes: ['int'],
+			},
+		});
+	});
+
+	it('pairs if with multi-result ifEnd metadata', () => {
+		const ast = compileToASTLines(['push 1', 'if', 'push 10', 'push 20', 'ifEnd int float']);
+
+		expect(ast[1]).toMatchObject({
+			instruction: 'if',
+			arguments: [],
+			ifBlock: {
+				matchingIfEndIndex: 4,
+				resultTypes: ['int', 'float'],
+				hasElse: false,
+			},
+		});
+		expect(ast[4]).toMatchObject({
+			instruction: 'ifEnd',
+			ifEndBlock: {
+				matchingIfIndex: 1,
+				resultTypes: ['int', 'float'],
 			},
 		});
 	});
@@ -417,7 +438,7 @@ describe('compileToASTLines', () => {
 
 		expect(ast[1].ifBlock).toMatchObject({
 			matchingIfEndIndex: 5,
-			resultType: null,
+			resultTypes: [],
 			hasElse: true,
 		});
 	});
@@ -438,14 +459,14 @@ describe('compileToASTLines', () => {
 			arguments: [],
 			blockBlock: {
 				matchingBlockEndIndex: 2,
-				resultType: 'int',
+				resultTypes: ['int'],
 			},
 		});
 		expect(ast[2]).toMatchObject({
 			instruction: 'blockEnd',
 			blockEndBlock: {
 				matchingBlockIndex: 0,
-				resultType: 'int',
+				resultTypes: ['int'],
 			},
 		});
 	});
@@ -455,11 +476,11 @@ describe('compileToASTLines', () => {
 
 		expect(ast[0].blockBlock).toMatchObject({
 			matchingBlockEndIndex: 2,
-			resultType: 'float',
+			resultTypes: ['float'],
 		});
 		expect(ast[2].blockEndBlock).toMatchObject({
 			matchingBlockIndex: 0,
-			resultType: 'float',
+			resultTypes: ['float'],
 		});
 	});
 
@@ -468,11 +489,11 @@ describe('compileToASTLines', () => {
 
 		expect(ast[0].blockBlock).toMatchObject({
 			matchingBlockEndIndex: 2,
-			resultType: null,
+			resultTypes: [],
 		});
 		expect(ast[2].blockEndBlock).toMatchObject({
 			matchingBlockIndex: 0,
-			resultType: null,
+			resultTypes: [],
 		});
 	});
 

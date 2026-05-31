@@ -5,13 +5,11 @@ exports[`initBlock instruction compiler > pushes the init block 1`] = `
   "blockStack": [
     {
       "blockType": 0,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
     {
       "blockType": 5,
-      "expectedResultIsInteger": false,
-      "hasExpectedResult": false,
+      "expectedResultTypes": [],
     },
   ],
 }
