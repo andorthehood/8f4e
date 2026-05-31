@@ -1,9 +1,9 @@
-import { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug';
 
 import { createAtlasLayout } from './atlasLayout.ts';
 import { drawCharacter } from './font.ts';
 import Glyph from './fonts/types.ts';
-import { ColorScheme, Command, DrawingCommand } from './types.ts';
+import { type ColorScheme, Command, type DrawingCommand } from './types.ts';
 
 type IconCharacter = {
 	font: 'ascii' | 'glyphs';
@@ -97,7 +97,7 @@ function generateIconPositions(characterWidth: number, characterHeight: number) 
 	}, [] as number[][]);
 }
 
-export const generateLookup = function (characterWidth: number, characterHeight: number) {
+export const generateLookup = (characterWidth: number, characterHeight: number) => {
 	const iconPositions = generateIconPositions(characterWidth, characterHeight);
 
 	return Object.fromEntries(

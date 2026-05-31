@@ -1,8 +1,6 @@
-import { describe, it, expect } from 'vitest';
-
-import { flattenProjectForCompiler } from './effect';
-
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { describe, expect, it } from 'vitest';
+import { flattenProjectForCompiler } from './effect';
 
 describe('flattenProjectForCompiler', () => {
 	it('should exclude unknown blocks from compilation', () => {

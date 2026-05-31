@@ -52,7 +52,7 @@ async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffe
 	}
 }
 
-self.onmessage = function (event) {
+self.onmessage = event => {
 	switch (event.data.type) {
 		case 'init':
 			init(event.data.payload.memoryRef, event.data.payload.sampleRate, event.data.payload.codeBuffer);

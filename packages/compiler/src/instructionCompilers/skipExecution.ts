@@ -5,7 +5,7 @@ import type { InstructionCompiler } from '@8f4e/compiler-spec';
  * Marks a module to skip execution in the group dispatcher while preserving
  * normal compilation and memory initialization behavior.
  */
-const skipExecution: InstructionCompiler = function (line, context) {
+const skipExecution: InstructionCompiler = (line, context) => {
 	// Set the metadata flag (idempotent - multiple calls have no additional effect)
 	context.skipExecutionInCycle = true;
 

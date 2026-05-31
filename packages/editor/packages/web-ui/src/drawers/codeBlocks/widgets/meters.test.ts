@@ -1,11 +1,9 @@
-import { describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
-import drawMeters from './meters';
-
-import type { Engine } from 'glugglug';
 import type { ArrayMeter } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
+import { describe, expect, it, vi } from 'vitest';
 import type { MemoryViews } from '../../../types';
+import drawMeters from './meters';
 
 function createMemoryViews({ float32 = [] }: { float32?: number[] } = {}): MemoryViews {
 	return {

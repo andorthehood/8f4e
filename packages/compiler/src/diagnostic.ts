@@ -6,9 +6,8 @@
  * (tokenizer/syntax or semantic/compiler) produced the error.
  */
 
-import { SyntaxRulesError } from '@8f4e/tokenizer';
-
 import type { CompilerDiagnostic, CompilerStageError } from '@8f4e/compiler-spec';
+import { SyntaxRulesError } from '@8f4e/tokenizer';
 
 const FALLBACK_LINE = {
 	lineNumberBeforeMacroExpansion: 0,

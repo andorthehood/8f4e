@@ -1,41 +1,41 @@
+import type {
+	CodeBlockGraphicData,
+	DirectiveDerivedState,
+	DirectiveDerivedStateDraft,
+	DirectiveDeriveOptions,
+	EditorDirectivePlugin,
+	ParsedDirectiveRecord,
+	State,
+} from '@8f4e/editor-state-types';
+import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
+import buildDisplayModel from '../graphicHelper/buildDisplayModel';
+import alwaysOnTopDirective from './alwaysOnTop/plugin';
+import barsDirective from './bars/plugin';
 import buttonDirective from './button/plugin';
+import crossfadeDirective from './crossfade/plugin';
 import disabledDirective from './disabled/plugin';
 import favoriteDirective from './favorite/plugin';
 import groupDirective from './group/plugin';
-import hideDirective from './hide/plugin';
 import hiddenDirective from './hidden/plugin';
+import hideDirective from './hide/plugin';
 import homeDirective from './home/plugin';
+import infoDirective from './info/plugin';
+import meterDirective from './meter/plugin';
 import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
-import meterDirective from './meter/plugin';
-import barsDirective from './bars/plugin';
 import plotDirective from './plot/plugin';
-import waveDirective, { wave2Directive } from './wave/plugin';
 import sliderDirective from './slider/plugin';
-import crossfadeDirective from './crossfade/plugin';
 import switchDirective from './switch/plugin';
-import watchDirective from './watch/plugin';
-import infoDirective from './info/plugin';
+import { normalizeEditorDirectiveRecords, parseEditorDirectives } from './utils';
 import viewportDirective from './viewport/plugin';
-import alwaysOnTopDirective from './alwaysOnTop/plugin';
-import { parseEditorDirectives, normalizeEditorDirectiveRecords } from './utils';
-
-import buildDisplayModel from '../graphicHelper/buildDisplayModel';
-import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
-
-import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
-import type {
-	DirectiveDeriveOptions,
-	DirectiveDerivedState,
-	DirectiveDerivedStateDraft,
-	EditorDirectivePlugin,
-} from '@8f4e/editor-state-types';
+import watchDirective from './watch/plugin';
+import waveDirective, { wave2Directive } from './wave/plugin';
 
 export type {
-	ParsedEditorDirective,
-	DirectiveLayoutContribution,
 	DirectiveBlockState,
 	DirectiveDerivedState,
+	DirectiveLayoutContribution,
+	ParsedEditorDirective,
 	ViewportAnchor,
 } from '@8f4e/editor-state-types';
 

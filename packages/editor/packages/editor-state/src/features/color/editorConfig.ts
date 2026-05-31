@@ -1,11 +1,8 @@
+import type { EditorConfigValidator, JSONSchemaLike, State } from '@8f4e/editor-state-types';
 import { defaultColorScheme } from '@8f4e/sprite-generator';
-
-import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
-import { collectSchemaConfigPaths, createSchemaEditorConfigValidator } from '../editor-config/schemaValidator';
-
-import type { EditorConfigValidator, JSONSchemaLike } from '@8f4e/editor-state-types';
-import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import { collectSchemaConfigPaths, createSchemaEditorConfigValidator } from '../editor-config/schemaValidator';
+import { formatDidYouMeanSuffix } from '../global-editor-directives/suggestions';
 
 const COLOR_CONFIG_ROOT = 'color';
 

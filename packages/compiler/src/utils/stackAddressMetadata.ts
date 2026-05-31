@@ -1,6 +1,5 @@
-import { getMemoryRegionFields } from '../semantic/memoryRegions';
-
 import type { MemoryAddressRange, StackAddress, StackItem } from '@8f4e/compiler-spec';
+import { getMemoryRegionFields } from '../semantic/memoryRegions';
 
 function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {
 	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > safeRange.safeByteLength) {

@@ -1,8 +1,8 @@
-import { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug';
 
 import { createAtlasLayout } from './atlasLayout.ts';
 import { drawCharacter } from './font.ts';
-import { ColorScheme, Command, DrawingCommand } from './types.ts';
+import { type ColorScheme, Command, type DrawingCommand } from './types.ts';
 
 export function getFeedbackScaleColors(colors: ColorScheme['icons']): string[] {
 	return [
@@ -46,11 +46,11 @@ export default function generate(
 	];
 }
 
-export const generateLookup = function (
+export const generateLookup = (
 	characterWidth: number,
 	characterHeight: number,
 	colors: ColorScheme['icons']
-): Record<number, SpriteCoordinates> {
+): Record<number, SpriteCoordinates> => {
 	const feedbackScaleColors = getFeedbackScaleColors(colors);
 	const layout = createAtlasLayout(characterWidth, characterHeight);
 

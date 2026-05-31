@@ -1,12 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
-
-import _return from './return';
+import { describe, expect, it } from 'vitest';
 
 import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import _return from './return';
 
 describe('return instruction compiler', () => {
 	it('emits WASM return opcode and clears the stack', () => {

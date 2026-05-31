@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// biome-ignore lint/correctness/noUnusedVariables: State brands paths to the shape they belong to.
 export type Path<State> = string & Record<never, never>;
 
 export type PathValue<State, P extends string> = P extends `${infer K}.${infer Rest}`

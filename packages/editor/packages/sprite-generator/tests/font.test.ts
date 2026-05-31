@@ -1,10 +1,8 @@
-import { describe, it, expect } from 'vitest';
-
-import { minimalColorScheme, characterDimensions8x16, characterDimensions6x10 } from './utils/testFixtures';
-import { findAllCommands, createMockBitmap } from './utils/testHelpers';
-
-import generateFonts, { generateLookups, buildFontLayout, drawCharacter, drawCharacterMatrix } from '../src/font';
+import { describe, expect, it } from 'vitest';
+import generateFonts, { buildFontLayout, drawCharacter, drawCharacterMatrix, generateLookups } from '../src/font';
 import { Command } from '../src/types';
+import { characterDimensions6x10, characterDimensions8x16, minimalColorScheme } from './utils/testFixtures';
+import { createMockBitmap, findAllCommands } from './utils/testHelpers';
 
 describe('font module', () => {
 	describe('drawCharacter function', () => {

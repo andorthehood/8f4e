@@ -1,7 +1,6 @@
+import type { EditorEnvironmentPluginContext } from '../types';
 import createMidiDeviceManager from './devices';
 import createMidiIn from './midiIn';
-
-import type { EditorEnvironmentPluginContext } from '../types';
 
 export default function midiPlugin({
 	store,

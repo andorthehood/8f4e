@@ -1,7 +1,6 @@
 import compile from '@8f4e/compiler';
+import type { CompiledModuleLookup, CompileOptions } from '@8f4e/compiler-spec';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
-
-import type { CompileOptions, CompiledModuleLookup } from '@8f4e/compiler-spec';
 import type { ProjectCodeBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {

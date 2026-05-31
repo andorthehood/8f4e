@@ -1,8 +1,6 @@
-import { WASM_F32_SQRT, WASM_F64_SQRT } from '@8f4e/compiler-wasm-utils';
-
-import { saveByteCode } from './utils/saveByteCode';
-
 import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import { WASM_F32_SQRT, WASM_F64_SQRT } from '@8f4e/compiler-wasm-utils';
+import { saveByteCode } from './utils/saveByteCode';
 
 /**
  * Instruction compiler for `sqrt`.

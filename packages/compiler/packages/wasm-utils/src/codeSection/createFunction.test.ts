@@ -1,8 +1,6 @@
 import { expect, test } from 'vitest';
-
-import createFunction from './createFunction';
-
 import { WASM_END } from '../wasmInstruction';
+import createFunction from './createFunction';
 
 test('createFunction wraps body with locals and end', () => {
 	const func = createFunction([], [65, 42]);

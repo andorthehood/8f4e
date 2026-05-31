@@ -1,12 +1,10 @@
+import type { ArgumentStringLiteral } from '@8f4e/compiler-spec';
+import { ArgumentType } from '@8f4e/compiler-spec';
 import { i32const } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
-import { ArgumentType } from '@8f4e/compiler-spec';
-
-import pushStringLiteral from './pushStringLiteral';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';
-
-import type { ArgumentStringLiteral } from '@8f4e/compiler-spec';
+import pushStringLiteral from './pushStringLiteral';
 
 describe('pushStringLiteral', () => {
 	it('emits one i32.const per byte in source order', () => {

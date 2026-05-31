@@ -1,9 +1,5 @@
 // Import the types from the editor
 // Note: audioWorkletUrl is imported at runtime by the host, not here
-import { StateManager } from '@8f4e/state-manager';
-import { resolveSchemaConfigRoot } from '@8f4e/editor';
-
-import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runtimeValues';
 
 import type {
 	EditorConfig,
@@ -12,6 +8,9 @@ import type {
 	RuntimeRegistryEntry,
 	State,
 } from '@8f4e/editor';
+import { resolveSchemaConfigRoot } from '@8f4e/editor';
+import type { StateManager } from '@8f4e/state-manager';
+import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runtimeValues';
 
 const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
 const AUDIO_BUFFER_SIZE = 128;
@@ -123,13 +122,9 @@ export function audioWorkletRuntimeFactory(
 ) {
 	const state = store.getState();
 	// Using any types for Web Audio API types that aren't available in worker context during build
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let audioContext: any | null = null;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let audioWorklet: any | null = null;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let mediaStream: any | null = null;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let mediaStreamSource: any | null = null;
 
 	function showAudioPermissionDialog(text: string) {
@@ -179,7 +174,6 @@ export function audioWorkletRuntimeFactory(
 			}
 
 			if (mediaStream) {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				mediaStream.getTracks().forEach((track: any) => track.stop());
 				mediaStream = null;
 			}
@@ -222,9 +216,8 @@ export function audioWorkletRuntimeFactory(
 			channelCountMode: 'explicit',
 		});
 
-		audioWorklet.port.onmessage = function (event: { data: unknown }) {
+		audioWorklet.port.onmessage = (event: { data: unknown }) => {
 			const { data } = event;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const typedData = data as any;
 			switch (typedData.type) {
 				case 'initialized':
@@ -254,7 +247,6 @@ export function audioWorkletRuntimeFactory(
 		}
 
 		if (mediaStream) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			mediaStream.getTracks().forEach((track: any) => track.stop());
 			mediaStream = null;
 		}

@@ -1,14 +1,12 @@
+import type { Argument, ArgumentIdentifier, ArgumentLiteral } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
-
-import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
+import parseConstantMulDivExpression from './parseConstantMulDivExpression';
 import parseLiteralMulDivExpression from './parseLiteralMulDivExpression';
 import parseNumericLiteralToken, {
 	isNumericLikeInvalidToken,
 	startsWithNumericPrefix,
 } from './parseNumericLiteralToken';
-import parseConstantMulDivExpression from './parseConstantMulDivExpression';
-
-import type { Argument, ArgumentIdentifier, ArgumentLiteral } from '@8f4e/compiler-spec';
+import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
 function classifySimpleIdentifier(value: string): ArgumentIdentifier {
 	return {

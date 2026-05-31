@@ -1,8 +1,6 @@
-import parseInputs from './codeParser';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import parseInputs from './codeParser';
 
 const CONNECTOR_WIDTH_GRID_CELLS = 3;
 

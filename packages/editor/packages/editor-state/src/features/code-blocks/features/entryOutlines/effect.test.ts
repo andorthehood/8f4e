@@ -1,10 +1,8 @@
-import { describe, expect, it } from 'vitest';
-import createStateManager from '@8f4e/state-manager';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
-import entryOutlines from './effect';
-
 import type { State } from '@8f4e/editor-state-types';
+import createStateManager from '@8f4e/state-manager';
+import { describe, expect, it } from 'vitest';
+import entryOutlines from './effect';
 
 describe('entryOutlines effect', () => {
 	it('updates entry outline corners when code blocks change', () => {

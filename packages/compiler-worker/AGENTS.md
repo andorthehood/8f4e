@@ -9,7 +9,7 @@
 - From package directory: use `npx nx run compiler-worker:<target>` (e.g., `npx nx run compiler-worker:dev`).
 
 ## Coding Style
-- TypeScript; use ESLint as the fixer (`npx eslint --fix <files>`) with repo rules.
+- TypeScript; use Biome as the fixer (`npx biome check --write <files>`) with repo rules.
 - Keep worker boundaries explicit; prefer message types in a shared module.
 
 ## Testing

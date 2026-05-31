@@ -1,9 +1,7 @@
-import { describe, it, expect } from 'vitest';
-
+import { describe, expect, it } from 'vitest';
+import { parseEditorDirectives } from '../utils';
 import { createPlotDirectiveData } from './data';
 import plotDirective from './plugin';
-
-import { parseEditorDirectives } from '../utils';
 
 function parsePlotDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [plotDirective]).map(directive =>

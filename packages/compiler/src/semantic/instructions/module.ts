@@ -1,7 +1,7 @@
 import {
 	BlockType,
-	compilerSourceBlockInstructionByType,
 	type CompilationContext,
+	compilerSourceBlockInstructionByType,
 	type ModuleLine,
 } from '@8f4e/compiler-spec';
 

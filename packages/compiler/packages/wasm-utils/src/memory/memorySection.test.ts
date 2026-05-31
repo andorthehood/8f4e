@@ -1,8 +1,6 @@
 import { expect, test } from 'vitest';
-
-import createMemorySection from './memorySection';
-
 import { Section } from '../section';
+import createMemorySection from './memorySection';
 
 test('createMemorySection generates correct section without max', () => {
 	const section = createMemorySection(1);

@@ -1,10 +1,3 @@
-import { getPointerDepth } from '@8f4e/tokenizer';
-
-import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
-import getMemoryFlags from '../../utils/memoryFlags';
-import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
-import { getMemoryRegionFields } from '../memoryRegions';
-
 import type {
 	AddressMetadata,
 	CompilationContext,
@@ -12,6 +5,11 @@ import type {
 	MemoryDeclarationLine,
 	MemoryType,
 } from '@8f4e/compiler-spec';
+import { getPointerDepth } from '@8f4e/tokenizer';
+import getMemoryFlags from '../../utils/memoryFlags';
+import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
+import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
+import { getMemoryRegionFields } from '../memoryRegions';
 
 export type MemoryDeclarationCompiler<TLine extends MemoryDeclarationLine = MemoryDeclarationLine> = (
 	line: TLine,

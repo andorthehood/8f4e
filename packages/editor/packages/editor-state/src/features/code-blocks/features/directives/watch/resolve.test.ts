@@ -1,11 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryTypes } from '@8f4e/compiler-spec';
-
-import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
-
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { DataStructure } from '@8f4e/compiler-spec';
-
+import { MemoryTypes } from '@8f4e/compiler-spec';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { getTabStopsByLine, getVisualLineWidth } from '~/features/code-editing/tabLayout';
 import {
 	createMockCodeBlock,
@@ -14,6 +10,7 @@ import {
 	findWidgetById,
 	setMockCodeBlockCode,
 } from '~/pureHelpers/testingUtils/testUtils';
+import { runAfterGraphicDataWidthCalculation, runBeforeGraphicDataWidthCalculation } from '../registry';
 
 describe('watch directive widget resolution', () => {
 	let mockGraphicData: CodeBlockGraphicData;

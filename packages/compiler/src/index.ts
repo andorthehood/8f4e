@@ -1,54 +1,13 @@
-import { compileToAST, createASTCache } from '@8f4e/tokenizer';
-import {
-	createCodeSection,
-	createFunction,
-	createExportSection,
-	createFunctionExport,
-	createFunctionImport,
-	createImportSection,
-	createMemoryImport,
-	createFunctionSection,
-	createFunctionType,
-	createTypeSection,
-	call,
-	i32const,
-	memoryFill,
-	memoryInit,
-	createDataCountSection,
-	createDataSection,
-	createPassiveDataSegment,
-	WASM_MEMORY_PAGE_SIZE,
-	WASM_TYPE_I32,
-} from '@8f4e/compiler-wasm-utils';
-import {
-	DEFAULT_HOST_IMPORT_MODULE_NAME,
-	ErrorCode,
-	getInstructionSpec,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-} from '@8f4e/compiler-spec';
-
-import { compileModule, compileFunction } from './compiler';
-import { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-import {
-	assertUniqueModuleIds,
-	collectNamespacesFromASTs,
-	collectFunctionMetadataFromAsts,
-} from './semantic/buildNamespace';
-import { HEADER, VERSION } from './consts';
-import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
-import { getError } from './compilerError';
-import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
-
 import type {
-	CompileOptions,
-	CompileInput,
-	CompileResult,
+	AST,
+	CompiledFunctionLookup,
 	CompiledModule,
 	CompiledModuleLookup,
-	CompiledFunctionLookup,
-	AST,
-	ConstantsAST,
+	CompileInput,
+	CompileOptions,
+	CompileResult,
 	CompilerCache,
+	ConstantsAST,
 	FunctionAST,
 	FunctionMetadata,
 	FunctionMetadataLookup,
@@ -57,6 +16,45 @@ import type {
 	Namespaces,
 	ParsedLineMetadata,
 } from '@8f4e/compiler-spec';
+import {
+	DEFAULT_HOST_IMPORT_MODULE_NAME,
+	ErrorCode,
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	getInstructionSpec,
+} from '@8f4e/compiler-spec';
+import {
+	call,
+	createCodeSection,
+	createDataCountSection,
+	createDataSection,
+	createExportSection,
+	createFunction,
+	createFunctionExport,
+	createFunctionImport,
+	createFunctionSection,
+	createFunctionType,
+	createImportSection,
+	createMemoryImport,
+	createPassiveDataSegment,
+	createTypeSection,
+	i32const,
+	memoryFill,
+	memoryInit,
+	WASM_MEMORY_PAGE_SIZE,
+	WASM_TYPE_I32,
+} from '@8f4e/compiler-wasm-utils';
+import { compileToAST, createASTCache } from '@8f4e/tokenizer';
+import { compileFunction, compileModule } from './compiler';
+import { getError } from './compilerError';
+import { HEADER, VERSION } from './consts';
+import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
+import {
+	assertUniqueModuleIds,
+	collectFunctionMetadataFromAsts,
+	collectNamespacesFromASTs,
+} from './semantic/buildNamespace';
+import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
+import { convertExpandedLinesToCode, expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 
 type ExpandedCompilerSource = {
 	code: string[];
@@ -68,23 +66,23 @@ type ModuleCompilerSource = ExpandedCompilerSource & {
 	entryName: string;
 };
 
+export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
+export { compileCodegenLine, compileLine } from './compiler';
+export { getError } from './compilerError';
+export { serializeDiagnostic } from './diagnostic';
+export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
 export { default as instructions } from './instructionCompilers';
 export {
 	assertUniqueModuleIds,
 	collectFunctionMetadataFromAsts,
 	collectNamespacesFromASTs,
 } from './semantic/buildNamespace';
-export { isMemoryDeclarationInstruction } from './semantic/declarations';
-export { compileLine, compileCodegenLine } from './compiler';
-export { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 export { createCompilationContext } from './semantic/createCompilationContext';
-export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
-export { parseMacroDefinitions, expandMacros, convertExpandedLinesToCode } from './utils/macroExpansion';
-export { getError } from './compilerError';
-export { serializeDiagnostic } from './diagnostic';
-export { createInitialMemoryDataSegments };
+export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { default as normalizeCompileTimeArguments } from './semantic/normalizeCompileTimeArguments';
-export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
+export { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
+export { convertExpandedLinesToCode, expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
+export { createInitialMemoryDataSegments };
 
 export function compileModules(
 	modules: Array<ModuleAST | ConstantsAST>,
@@ -118,7 +116,6 @@ export function compileModules(
 function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
 	const strippedModules: CompiledModuleLookup = {};
 	for (const [id, module] of Object.entries(compiledModules)) {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { ast, ...moduleWithoutAST } = module;
 		strippedModules[id] = moduleWithoutAST as CompiledModule;
 	}

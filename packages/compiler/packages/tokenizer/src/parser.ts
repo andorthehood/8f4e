@@ -1,33 +1,13 @@
-import {
-	ArgumentType,
-	DEFAULT_HOST_IMPORT_MODULE_NAME,
-	blockEndToStartInstruction,
-	blockStartInstructions,
-	isCompilerDirectiveLine,
-	isMemoryDeclarationLine,
-	isSemanticInstructionLine,
-} from '@8f4e/compiler-spec';
-
-import instructionParser from './syntax/instructionParser';
-import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
-import isComment from './syntax/isComment';
-import isMemoryDeclarationInstruction from './syntax/isMemoryDeclarationInstruction';
-import isValidInstruction from './syntax/isValidInstruction';
-import { parseArgument } from './syntax/parseArgument';
-import { SyntaxRulesError, SyntaxErrorCode } from './syntax/syntaxError';
-import validateInstructionArguments from './syntax/validateInstructionArguments';
-import { hashSource } from './cache';
-
 import type {
+	Argument,
 	AST,
 	ASTCache,
 	ASTCacheEntry,
-	Argument,
-	BlockEndLine,
+	BlockBlockResultType,
 	BlockEndInstruction,
+	BlockEndLine,
 	BlockLine,
 	BlockStartInstruction,
-	BlockBlockResultType,
 	CompilerASTLine,
 	CompilerASTLines,
 	ConstantsLine,
@@ -35,8 +15,8 @@ import type {
 	FunctionEndLine,
 	FunctionLine,
 	FunctionSignature,
-	IfEndLine,
 	IfBlockResultType,
+	IfEndLine,
 	IfLine,
 	ImportLine,
 	MemoryDeclarationLine,
@@ -44,6 +24,24 @@ import type {
 	ParsedLineMetadata,
 	RegionLine,
 } from '@8f4e/compiler-spec';
+import {
+	ArgumentType,
+	blockEndToStartInstruction,
+	blockStartInstructions,
+	DEFAULT_HOST_IMPORT_MODULE_NAME,
+	isCompilerDirectiveLine,
+	isMemoryDeclarationLine,
+	isSemanticInstructionLine,
+} from '@8f4e/compiler-spec';
+import { hashSource } from './cache';
+import instructionParser from './syntax/instructionParser';
+import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
+import isComment from './syntax/isComment';
+import isMemoryDeclarationInstruction from './syntax/isMemoryDeclarationInstruction';
+import isValidInstruction from './syntax/isValidInstruction';
+import { parseArgument } from './syntax/parseArgument';
+import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
+import validateInstructionArguments from './syntax/validateInstructionArguments';
 
 type IfOpenBlock = {
 	instruction: 'if';
@@ -127,7 +125,7 @@ function isBlockStartInstruction(instruction: string): instruction is BlockStart
 }
 
 function isBlockEndInstruction(instruction: string): instruction is BlockEndInstruction {
-	return Object.prototype.hasOwnProperty.call(blockEndToStartInstruction, instruction);
+	return Object.hasOwn(blockEndToStartInstruction, instruction);
 }
 
 function getResultTypeFromFirstArgument(line: IfEndLine | BlockEndLine): IfBlockResultType {

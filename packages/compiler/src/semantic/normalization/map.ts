@@ -1,8 +1,6 @@
+import type { CompilationContext, MapLine, NormalizedArgumentLiteral, NormalizedMapLine } from '@8f4e/compiler-spec';
 import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
-
 import { normalizeAndValidateResolvableArgs } from './helpers';
-
-import type { CompilationContext, MapLine, NormalizedMapLine, NormalizedArgumentLiteral } from '@8f4e/compiler-spec';
 
 function createImplicitKeyArgument(context: CompilationContext): NormalizedArgumentLiteral {
 	const block = context.blockStack[context.blockStack.length - 1];

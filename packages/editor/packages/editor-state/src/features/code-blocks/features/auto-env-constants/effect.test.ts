@@ -1,13 +1,11 @@
-import { describe, test, expect, beforeEach } from 'vitest';
+import type { CodeBlockGraphicData, EditorConfig, Project, State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
-
-import autoEnvConstants from './effect';
-
-import type { EditorConfig, State, Project, CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { beforeEach, describe, expect, test } from 'vitest';
+import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 
 import createDefaultState from '~/pureHelpers/state/createDefaultState';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
-import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
+import autoEnvConstants from './effect';
 
 const AUTO_ENV_BLOCK_ID = 'constants_env';
 const PROJECT_WITH_CODE_BLOCK: Project = {

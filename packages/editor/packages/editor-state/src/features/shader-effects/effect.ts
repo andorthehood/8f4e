@@ -1,11 +1,8 @@
-import { StateManager } from '@8f4e/state-manager';
-
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import { log } from '../logger/logger';
 import deriveShaderEffects from './deriveShaderEffects';
 import { isShaderNoteCode } from './getShaderNoteMetadata';
-
-import { log } from '../logger/logger';
-
-import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 
 /**
  * Effect that keeps post-process and background effects in sync with shader code blocks.

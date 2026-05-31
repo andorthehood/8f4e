@@ -1,39 +1,36 @@
-import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
-
-import { validateInstruction } from './validateInstruction';
-
-import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
-import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
-import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
-import { validateMapValueKind, resolveMapKind } from '../utils/mapValueKind';
-import { deriveAddStackMetadata, deriveSubStackMetadata } from '../utils/stackAddressMetadata';
-import { getError } from '../compilerError';
-import { getMemoryRegionFields } from '../semantic/memoryRegions';
-import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
-import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
-import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../utils/memoryData';
-
 import type {
-	CompilerASTLine,
 	AnalyzedLine,
 	CompilationContext,
+	CompilerASTLine,
+	DataStructure,
 	FunctionValueType,
+	InstructionSpec,
+	LocalBinding,
 	LocalSetLine,
 	MapEndLine,
 	NormalizedPushLine,
+	PointeeMetadata,
 	ResolvedCallLine,
 	ResolvedPushLine,
 	Stack,
 	StackAnalysisResult,
 	StackItem,
-	StackValueType,
-	StackProducedItemSpec,
 	StackMutationSpec,
-	InstructionSpec,
-	DataStructure,
-	LocalBinding,
-	PointeeMetadata,
+	StackProducedItemSpec,
+	StackValueType,
 } from '@8f4e/compiler-spec';
+import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
+import { getError } from '../compilerError';
+import { getMemoryRegionFields } from '../semantic/memoryRegions';
+import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
+import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
+import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
+import { resolveMapKind, validateMapValueKind } from '../utils/mapValueKind';
+import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../utils/memoryData';
+import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
+import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
+import { deriveAddStackMetadata, deriveSubStackMetadata } from '../utils/stackAddressMetadata';
+import { validateInstruction } from './validateInstruction';
 
 function createStackValue(
 	valueType: StackValueType,

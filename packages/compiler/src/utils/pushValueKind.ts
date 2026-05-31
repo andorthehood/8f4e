@@ -1,6 +1,5 @@
-import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
-
 import type { DataStructure, StackItem } from '@8f4e/compiler-spec';
+import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 
 export type PushValueKind = 'int32' | 'float32' | 'float64';
 

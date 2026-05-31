@@ -1,14 +1,11 @@
-import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest';
+import type { Project, State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
-
-import projectImport from '../effect';
-import compiler from '../../program-compiler/effect';
-
-import type { State, Project } from '@8f4e/editor-state-types';
-
+import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
+import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
-import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
+import compiler from '../../program-compiler/effect';
+import projectImport from '../effect';
 
 describe('projectImport', () => {
 	let mockState: State;

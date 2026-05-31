@@ -1,6 +1,3 @@
-import { instructionSpecs } from './instructionSpecs';
-import { memoryDeclarationInstructions } from './memory';
-
 import type {
 	CodegenInstructionSpecName,
 	InstructionSpec,
@@ -8,7 +5,9 @@ import type {
 	NonCodegenInstructionSpecName,
 	SourceInstructionSpecName,
 } from './instructionSpecs';
+import { instructionSpecs } from './instructionSpecs';
 import type { MemoryDeclarationInstruction } from './memory';
+import { memoryDeclarationInstructions } from './memory';
 
 export type SemanticInstructionName = Extract<NonCodegenInstructionSpecName, SourceInstructionSpecName>;
 export const semanticInstructionNames = Object.keys(instructionSpecs).filter(

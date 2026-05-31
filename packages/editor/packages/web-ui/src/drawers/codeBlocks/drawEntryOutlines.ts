@@ -1,6 +1,5 @@
-import { Engine } from 'glugglug';
-
 import type { CodeBlockEntryOutline, State } from '@8f4e/editor-state-types';
+import type { Engine } from 'glugglug';
 
 function drawOutline(engine: Engine, outline: CodeBlockEntryOutline, thickness: number): void {
 	const left = outline.topLeft.x;

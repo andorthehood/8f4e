@@ -1,6 +1,6 @@
-import { WASM_I32_STORE8 } from '../wasmInstruction';
-import memarg from '../memory/memarg';
 import i32const from '../const/i32const';
+import memarg from '../memory/memarg';
+import { WASM_I32_STORE8 } from '../wasmInstruction';
 
 /**
  * Creates a WebAssembly i32.store8 instruction to store the low byte of a 32-bit integer to memory.

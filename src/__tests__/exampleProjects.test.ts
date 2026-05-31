@@ -1,14 +1,14 @@
 /**
  * Integration tests that verify all example projects compile without errors.
  */
-import { readdirSync, readFileSync } from 'fs';
-import { resolve, dirname, basename } from 'path';
-import { fileURLToPath } from 'url';
 
-import { describe, it, expect } from 'vitest';
 import compile from '@8f4e/compiler';
 import { parse8f4eToProject } from '@8f4e/editor-state';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
+import { readdirSync, readFileSync } from 'fs';
+import { basename, dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { describe, expect, it } from 'vitest';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

@@ -1,12 +1,8 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-
-import pianoKeyboard from './interaction';
-
-import type { State } from '@8f4e/editor-state-types';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import type { EventDispatcher } from '@8f4e/editor-state-types';
-
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
+import pianoKeyboard from './interaction';
 
 describe('pianoKeyboard interaction', () => {
 	let mockStore: StateManager<State>;

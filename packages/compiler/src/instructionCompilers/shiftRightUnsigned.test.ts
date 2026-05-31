@@ -1,10 +1,8 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import shiftRightUnsigned from './shiftRightUnsigned';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import shiftRightUnsigned from './shiftRightUnsigned';
 
 describe('shiftRightUnsigned instruction compiler', () => {
 	it('emits I32_SHR_U for integer operands', () => {

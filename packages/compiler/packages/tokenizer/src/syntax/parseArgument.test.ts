@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { ArgumentType } from '@8f4e/compiler-spec';
+import { describe, expect, it } from 'vitest';
 
 import { classifyIdentifier, decodeStringLiteral, parseArgument } from './parseArgument';
 

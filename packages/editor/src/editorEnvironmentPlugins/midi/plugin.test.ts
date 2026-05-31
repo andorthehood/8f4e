@@ -1,10 +1,8 @@
-import { describe, expect, it, vi } from 'vitest';
-import createStateManager from '@8f4e/state-manager';
-
-import midiPlugin from './plugin';
-
 import type { State } from '@8f4e/editor-state-types';
+import createStateManager from '@8f4e/state-manager';
+import { describe, expect, it, vi } from 'vitest';
 import type { EditorEnvironmentPluginContext } from '../types';
+import midiPlugin from './plugin';
 
 function createContext(): EditorEnvironmentPluginContext {
 	return {

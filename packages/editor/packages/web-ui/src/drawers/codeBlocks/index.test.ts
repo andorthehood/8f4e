@@ -1,11 +1,9 @@
-import { describe, expect, it, vi } from 'vitest';
-import { MemoryTypes, type DataStructure } from '@8f4e/compiler-spec';
+import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-
-import drawModules from './index';
-
 import type { Engine } from 'glugglug';
+import { describe, expect, it, vi } from 'vitest';
 import type { MemoryViews } from '../../types';
+import drawModules from './index';
 
 function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryViews {
 	return {

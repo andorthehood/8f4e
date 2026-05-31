@@ -1,11 +1,9 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { WASM_F64_GT } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
-import greaterThan from './greaterThan';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import greaterThan from './greaterThan';
 
 describe('greaterThan instruction compiler', () => {
 	it('emits I32_GT_S for integer operands', () => {

@@ -1,19 +1,16 @@
-import { getModuleId, getFunctionId } from '@8f4e/tokenizer';
-
-import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
-
-import { type ClipboardCodeBlock } from '../clipboard/clipboardUtils';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import { getFunctionId, getModuleId } from '@8f4e/tokenizer';
+import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import getCodeBlockId from '../../utils/getCodeBlockId';
+import { renameInterModuleReferences } from '../../utils/renameInterModuleReferences';
+import type { ClipboardCodeBlock } from '../clipboard/clipboardUtils';
+import upsertPos from '../directives/pos/upsert';
+import { hasDirective } from '../directives/utils';
 import { extractGroupName } from '../group/extractGroupName';
 import { createGroupNameMapping } from '../group/getUniqueGroupName';
 import { replaceGroupName } from '../group/replaceGroupName';
-import upsertPos from '../directives/pos/upsert';
-import getCodeBlockId from '../../utils/getCodeBlockId';
-import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import { renameInterModuleReferences } from '../../utils/renameInterModuleReferences';
-import { hasDirective } from '../directives/utils';
-
-import type { StateManager } from '@8f4e/state-manager';
-import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 
 /**
  * Updates inter-module references in code when pasting multiple blocks.

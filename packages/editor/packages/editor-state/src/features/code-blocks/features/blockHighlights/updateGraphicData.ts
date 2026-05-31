@@ -1,8 +1,6 @@
-import parseCodeBlocks from './codeParser';
-
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import parseCodeBlocks from './codeParser';
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.widgets.blockHighlights = [];

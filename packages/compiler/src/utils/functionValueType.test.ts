@@ -1,14 +1,12 @@
+import type { FunctionValueType, StackItem } from '@8f4e/compiler-spec';
 import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
-
 import {
 	functionValueTypeToLocalBinding,
 	functionValueTypeToStackItem,
 	functionValueTypeToWasmType,
 	stackItemMatchesFunctionValueType,
 } from './functionValueType';
-
-import type { FunctionValueType, StackItem } from '@8f4e/compiler-spec';
 
 describe('function value type helpers', () => {
 	it.each([

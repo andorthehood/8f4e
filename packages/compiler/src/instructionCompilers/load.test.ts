@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
-
-import load from './load';
+import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import load from './load';
 
 describe('load instruction compiler', () => {
 	it('loads from a safe memory address', () => {

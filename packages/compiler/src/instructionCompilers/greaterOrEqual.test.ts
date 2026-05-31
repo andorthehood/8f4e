@@ -1,11 +1,9 @@
+import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { WASM_F64_GE } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
-import greaterOrEqual from './greaterOrEqual';
-
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
-
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import greaterOrEqual from './greaterOrEqual';
 
 describe('greaterOrEqual instruction compiler', () => {
 	it('emits I32_GE_S for integer operands', () => {

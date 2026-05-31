@@ -1,7 +1,6 @@
+import { createDirectivePlugin } from '../utils';
 import { createCrossfadeDirectiveData } from './data';
 import { createCrossfadeDirectiveWidgetContribution } from './resolve';
-
-import { createDirectivePlugin } from '../utils';
 
 export default createDirectivePlugin(
 	'crossfade',

@@ -1,7 +1,6 @@
 import encodeString from '../encoding/encodeString';
-import { ExportDesc } from '../section';
-
 import type { FunctionExport } from '../section';
+import { ExportDesc } from '../section';
 
 /**
  * Creates a function export entry that makes a function accessible from outside the module.

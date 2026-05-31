@@ -1,14 +1,12 @@
-import findClosestCodeBlockInDirection from '../../utils/finders/findClosestCodeBlockInDirection';
-import { deriveDirectiveState } from '../directives/registry';
+import type { Direction, EventDispatcher, NavigateCodeBlockEvent, State } from '@8f4e/editor-state-types';
+import type { StateManager } from '@8f4e/state-manager';
+import gapCalculator from '../../../code-editing/gapCalculator';
+import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
 import animateViewport from '../../../viewport/animateViewport';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 import centerViewportOnCodeBlockCursor from '../../../viewport/centerViewportOnCodeBlockCursor';
-import gapCalculator from '../../../code-editing/gapCalculator';
-import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
-
-import type { Direction } from '@8f4e/editor-state-types';
-import type { StateManager } from '@8f4e/state-manager';
-import type { State, EventDispatcher, NavigateCodeBlockEvent } from '@8f4e/editor-state-types';
+import findClosestCodeBlockInDirection from '../../utils/finders/findClosestCodeBlockInDirection';
+import { deriveDirectiveState } from '../directives/registry';
 
 type StateSource = StateManager<State> | State;
 type CodeBlockCursor = NonNullable<State['graphicHelper']['selectedCodeBlock']>['cursor'];

@@ -1,6 +1,6 @@
+import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { promises as fs } from 'fs';
 
 import { describe, expect, it } from 'vitest';
 

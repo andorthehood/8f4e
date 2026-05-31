@@ -1,7 +1,6 @@
-import eventCodeToUsbHidUsageId from './eventCodeToUsbHidUsageId';
-
 import type { State } from '@8f4e/editor-state-types';
 import type { EditorEnvironmentPluginContext } from '../types';
+import eventCodeToUsbHidUsageId from './eventCodeToUsbHidUsageId';
 
 function resolveWordAlignedAddress(state: State, memoryId?: string): number | undefined {
 	if (!memoryId) {
