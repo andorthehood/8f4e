@@ -20,7 +20,7 @@ import {
 	type SemanticInstructionLine,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
-import { validateInstruction } from '../stackAnalysis/validateInstruction';
+import { validateInstructionContext } from '../stackAnalysis/validateInstruction';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
@@ -89,7 +89,9 @@ export function assertUniqueModuleIds(asts: readonly (ModuleAST | ConstantsAST)[
 }
 
 export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
-	applySemanticInstruction(normalizeCompileTimeArguments(line, context), context);
+	const normalizedLine = normalizeCompileTimeArguments(line, context);
+	validateInstructionContext(normalizedLine, context);
+	applySemanticInstruction(normalizedLine, context);
 }
 
 function createNamespaceBuildContext(
@@ -131,14 +133,17 @@ function applyNamespaceDeclarationLines(
 	context: NamespaceBuildContext,
 	resolveDeclarationLine: (line: MemoryDeclarationLine) => MemoryDeclarationLine
 ): void {
+	const sourceBlockSpec = compilerSourceBlockInstructionByType[ast.type];
+	const shouldValidateUnhandledLines = sourceBlockSpec.compilationMode === null;
+
 	ast.lines.forEach(originalLine => {
 		if (isSemanticInstructionLine(originalLine)) {
 			applySemanticLine(originalLine, context);
 		} else if (isMemoryDeclarationLine(originalLine)) {
 			const declarationLine = resolveDeclarationLine(originalLine);
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
-		} else if (ast.type === compilerSourceBlockInstructionByType.constants.type) {
-			validateInstruction(normalizeCompileTimeArguments(originalLine, context), context);
+		} else if (shouldValidateUnhandledLines) {
+			validateInstructionContext(normalizeCompileTimeArguments(originalLine, context), context);
 		}
 	});
 

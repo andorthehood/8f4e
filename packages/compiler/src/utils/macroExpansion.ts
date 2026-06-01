@@ -1,11 +1,19 @@
 import type { CompilerASTLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
 import { documentBlockInstructionByType, ErrorCode } from '@8f4e/compiler-spec';
-import { instructionParser, isComment, isValidInstruction } from '@8f4e/tokenizer';
+import { instructionParser, isComment, isInstructionLikeLine } from '@8f4e/tokenizer';
 import { getError } from '../compilerError';
 
 const macroDefinitionInstruction = documentBlockInstructionByType.macro.start;
 const macroDefinitionEndInstruction = documentBlockInstructionByType.macro.end;
 const macroCallInstruction = documentBlockInstructionByType.macro.type;
+
+function parseInstructionLikeLine(line: string): RegExpMatchArray | null {
+	if (isComment(line) || !isInstructionLikeLine(line)) {
+		return null;
+	}
+
+	return line.match(instructionParser)!;
+}
 
 function createMacroErrorLine(lineIndex: number): CompilerASTLine {
 	return {
@@ -37,17 +45,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 		let macroCount = 0;
 
 		code.forEach((line, lineIndex) => {
-			// Skip comments
-			if (isComment(line)) {
-				return;
-			}
-
-			// Skip empty or invalid lines
-			if (!isValidInstruction(line)) {
-				return;
-			}
-
-			const match = line.match(instructionParser);
+			const match = parseInstructionLikeLine(line);
 			if (!match) {
 				return;
 			}
@@ -124,13 +122,7 @@ export function expandMacros(module: Module, macroDefinitions: Map<string, Macro
 	const { code } = module;
 
 	code.forEach((line, lineIndex) => {
-		// For comments and empty lines, preserve as-is
-		if (isComment(line) || !isValidInstruction(line)) {
-			expandedLines.push(line);
-			return;
-		}
-
-		const match = line.match(instructionParser);
+		const match = parseInstructionLikeLine(line);
 		if (!match) {
 			expandedLines.push(line);
 			return;

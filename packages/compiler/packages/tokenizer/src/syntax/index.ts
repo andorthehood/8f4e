@@ -31,6 +31,7 @@ export { default as instructionParser } from './instructionParser';
 export { default as isArrayDeclarationInstruction } from './isArrayDeclarationInstruction';
 export { default as isComment } from './isComment';
 export { default as isConstantName } from './isConstantName';
+export { default as isInstructionLikeLine } from './isInstructionLikeLine';
 export { default as isIntermodularElementCountReference } from './isIntermodularElementCountReference';
 export { default as isIntermodularElementMaxReference } from './isIntermodularElementMaxReference';
 export { default as isIntermodularElementMinReference } from './isIntermodularElementMinReference';
@@ -41,7 +42,6 @@ export { default as isIntermodularReferencePattern } from './isIntermodularRefer
 export { default as isMemoryDeclarationInstruction } from './isMemoryDeclarationInstruction';
 export { default as isMemoryPointerIdentifier, default as isMemoryPointerSyntax } from './isMemoryPointerIdentifier';
 export { default as isSkipExecutionDirective } from './isSkipExecutionDirective';
-export { default as isValidInstruction } from './isValidInstruction';
 export {
 	type MemoryArgumentShape,
 	type ParsedMemoryInstructionArguments,
