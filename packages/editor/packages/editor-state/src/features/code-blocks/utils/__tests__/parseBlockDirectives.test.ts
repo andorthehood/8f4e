@@ -83,6 +83,32 @@ describe('parseBlockDirectives', () => {
 		]);
 	});
 
+	it('should append dash continuation comment arguments to the previous directive', () => {
+		expect(parseBlockDirectives(['; @config', '; - webUI.background.target', '; - frame:buffer'])).toEqual([
+			{
+				prefix: '@',
+				name: 'config',
+				args: ['webUI.background.target', 'frame:buffer'],
+				rawRow: 0,
+				sourceLine: '; @config',
+				isTrailing: false,
+			},
+		]);
+	});
+
+	it('should ignore dash continuation comments without a previous directive', () => {
+		expect(parseBlockDirectives(['; - orphan', '; @favorite'])).toEqual([
+			{
+				prefix: '@',
+				name: 'favorite',
+				args: [],
+				rawRow: 1,
+				sourceLine: '; @favorite',
+				isTrailing: false,
+			},
+		]);
+	});
+
 	it('should handle an empty code array', () => {
 		expect(parseBlockDirectives([])).toEqual([]);
 	});

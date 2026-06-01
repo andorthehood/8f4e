@@ -1,11 +1,4 @@
-import type {
-	CodeBlockGraphicData,
-	EventDispatcher,
-	ParsedDirectiveRecord,
-	State,
-	Viewport,
-} from '@8f4e/editor-state-types';
-import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
+import type { CodeBlockGraphicData, EventDispatcher, State, Viewport } from '@8f4e/editor-state-types';
 
 type DeepPartial<T> = T extends object
 	? {
@@ -13,88 +6,12 @@ type DeepPartial<T> = T extends object
 		}
 	: T;
 
-type ParsedDirectiveLineRecord = { prefix: '@'; name: string; args: string[]; isTrailing: boolean };
-
 function createMockFunction<T extends (...args: unknown[]) => unknown>(): T {
 	return (() => {}) as T;
 }
 
 function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
 	return async () => returnValue;
-}
-
-function parseDirectiveCommentSegment(segment: string, isTrailing: boolean): ParsedDirectiveLineRecord[] {
-	const trimmed = segment.trim();
-	if (!trimmed) {
-		return [];
-	}
-
-	const tokens = trimmed.split(/\s+/);
-	const directives: ParsedDirectiveLineRecord[] = [];
-	let current: ParsedDirectiveLineRecord | undefined;
-
-	for (const token of tokens) {
-		const directiveMatch = token.match(/^@(\w+)$/);
-		if (directiveMatch) {
-			const [, name] = directiveMatch;
-
-			if (current) {
-				directives.push(current);
-			}
-
-			current = {
-				prefix: '@',
-				name,
-				args: [],
-				isTrailing,
-			};
-			continue;
-		}
-
-		if (!current) {
-			return [];
-		}
-
-		current.args.push(token);
-	}
-
-	if (current) {
-		directives.push(current);
-	}
-
-	return directives;
-}
-
-function parseDirectiveLineRecords(line: string): ParsedDirectiveLineRecord[] {
-	if (/^\s*;/.test(line)) {
-		return parseDirectiveCommentSegment(line.replace(/^\s*;\s*/, ''), false);
-	}
-
-	const commentStart = line.indexOf(';');
-	if (commentStart === -1) {
-		return [];
-	}
-
-	return parseDirectiveCommentSegment(line.slice(commentStart + 1), true);
-}
-
-function parseBlockDirectives(code: string[]): ParsedDirectiveRecord[] {
-	const records: ParsedDirectiveRecord[] = [];
-
-	for (let rawRow = 0; rawRow < code.length; rawRow++) {
-		records.push(
-			...parseDirectiveLineRecords(code[rawRow]).map(parsed => ({
-				prefix: parsed.prefix,
-				name: parsed.name,
-				args: parsed.args,
-				rawRow,
-				sourceLine: code[rawRow],
-				isTrailing: parsed.isTrailing,
-			}))
-		);
-	}
-
-	return records;
 }
 
 export function createMockCodeBlock(
@@ -110,10 +27,6 @@ export function createMockCodeBlock(
 	const offsetY = overrides.offsetY ?? 0;
 	const id = overrides.id ?? 'test-block';
 	const code = overrides.code ?? [];
-	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
-	const moduleId = overrides.moduleId ?? derivedModuleId;
-	const derivedFunctionId = getFunctionId(code) || undefined;
-	const functionId = overrides.functionId ?? derivedFunctionId;
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
@@ -138,8 +51,6 @@ export function createMockCodeBlock(
 		offsetY,
 		cursor,
 		id,
-		...(moduleId !== undefined ? { moduleId } : {}),
-		...(functionId !== undefined ? { functionId } : {}),
 		code,
 		codeColors: [],
 		codeToRender: [],
@@ -156,7 +67,7 @@ export function createMockCodeBlock(
 		isFavorite: false,
 		opacity: 1,
 		alwaysOnTop: false,
-		parsedDirectives: parseBlockDirectives(code),
+		parsedDirectives: [],
 		widgets: {
 			blockHighlights: [],
 			inputs: [],
