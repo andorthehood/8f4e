@@ -78,20 +78,46 @@ function parseDirectiveLineRecords(line: string): ParsedDirectiveLineRecord[] {
 	return parseDirectiveCommentSegment(line.slice(commentStart + 1), true);
 }
 
+function parseDirectiveContinuationArgs(line: string): string[] | undefined {
+	const continuationMatch = line.match(/^\s*;\s*-(?:\s+(.*))?$/);
+	if (!continuationMatch) {
+		return undefined;
+	}
+
+	const argsSegment = continuationMatch[1]?.trim();
+	return argsSegment ? argsSegment.split(/\s+/) : [];
+}
+
 function parseBlockDirectives(code: string[]): ParsedDirectiveRecord[] {
 	const records: ParsedDirectiveRecord[] = [];
+	let previousRecord: ParsedDirectiveRecord | undefined;
 
 	for (let rawRow = 0; rawRow < code.length; rawRow++) {
-		records.push(
-			...parseDirectiveLineRecords(code[rawRow]).map(parsed => ({
-				prefix: parsed.prefix,
-				name: parsed.name,
-				args: parsed.args,
-				rawRow,
-				sourceLine: code[rawRow],
-				isTrailing: parsed.isTrailing,
-			}))
-		);
+		const line = code[rawRow];
+		const continuationArgs = parseDirectiveContinuationArgs(line);
+		if (continuationArgs) {
+			if (previousRecord && continuationArgs.length > 0) {
+				previousRecord.args.push(...continuationArgs);
+			}
+			continue;
+		}
+
+		const lineRecords = parseDirectiveLineRecords(line).map(parsed => ({
+			prefix: parsed.prefix,
+			name: parsed.name,
+			args: parsed.args,
+			rawRow,
+			sourceLine: line,
+			isTrailing: parsed.isTrailing,
+		}));
+
+		if (lineRecords.length === 0) {
+			previousRecord = undefined;
+			continue;
+		}
+
+		records.push(...lineRecords);
+		previousRecord = lineRecords[lineRecords.length - 1];
 	}
 
 	return records;
