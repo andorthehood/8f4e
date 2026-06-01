@@ -51,13 +51,6 @@ function startsWithInstruction(line: string, instruction: string): boolean {
 	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
 }
 
-function createProjectCodeBlock(code: string[], entry?: string): ProjectCodeBlock {
-	return {
-		code,
-		...(entry ? { entry } : {}),
-	};
-}
-
 export function getProjectOpenerKeyword(line: string): string | null {
 	for (const opener of closerByOpener.keys()) {
 		if (startsWithInstruction(line, opener)) {
@@ -156,7 +149,10 @@ export function parse8f4eProject(text: string): ProjectInput {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 				}
 
-				codeBlocks.push(createProjectCodeBlock(currentBlockLines, entry));
+				codeBlocks.push({
+					code: currentBlockLines,
+					...(entry ? { entry } : {}),
+				});
 				return i + 1;
 			}
 
