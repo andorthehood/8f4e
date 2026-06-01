@@ -62,6 +62,7 @@ export const ErrorCode = {
 	DUPLICATE_FUNCTION_IMPORT: 60,
 	IMPORT_EXPORT_CONFLICT: 61,
 	IMPORTED_FUNCTION_BODY: 62,
+	MISSING_PROTOTYPE_ID: 63,
 } as const;
 
 export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];

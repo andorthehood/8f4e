@@ -182,6 +182,13 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.MISSING_PROTOTYPE_ID:
+			return {
+				code,
+				message: 'Missing prototype ID. (' + code + ')',
+				line,
+				context,
+			};
 		case ErrorCode.INVALID_FUNCTION_SIGNATURE:
 			return {
 				code,
