@@ -227,6 +227,7 @@ const minBLEPData = generateApproximatePt2MinBlepData();
 
 const minBLEPLUT = `entry main
 module minBLEPLUT
+; @public
 ; @tab 7
 ; PT2-style minBLEP correction table
 ; generated from the approximate JS minBLEP pipeline
