@@ -3,6 +3,7 @@ import {
 	ArgumentType,
 	FUNCTION_TYPE_IDENTIFIERS,
 	getInstructionSpec,
+	isKnownInstructionName,
 	SCALAR_TYPE_IDENTIFIERS,
 } from '@8f4e/compiler-spec';
 import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
@@ -131,6 +132,10 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
 }
 
 export default function validateInstructionArguments(instruction: string, args: Argument[]): void {
+	if (!isKnownInstructionName(instruction)) {
+		throw new SyntaxRulesError(SyntaxErrorCode.UNRECOGNISED_INSTRUCTION);
+	}
+
 	const spec = getInstructionArgumentSpec(instruction);
 	if (!spec) {
 		return;

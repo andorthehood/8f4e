@@ -1,4 +1,4 @@
-import { languageInstructionNames } from '@8f4e/compiler-spec';
+import { knownInstructionNameSet } from '@8f4e/compiler-spec';
 
 import highlightEditorDirective from './highlightEditorDirective';
 
@@ -7,7 +7,7 @@ import highlightEditorDirective from './highlightEditorDirective';
  * @param instructions Instruction mnemonics that should be highlighted.
  * @returns Regular expression used to find instruction boundaries with indices data.
  */
-const getInstructionRegExp = (instructions: string[]) =>
+const getInstructionRegExp = (instructions: Iterable<string>) =>
 	new RegExp(
 		'(?<=^|\\s)(?:' +
 			[...instructions]
@@ -23,7 +23,7 @@ const getInstructionRegExp = (instructions: string[]) =>
 /**
  * 8f4e language instruction keywords to highlight
  */
-const instructionRegExp = getInstructionRegExp(languageInstructionNames);
+const instructionRegExp = getInstructionRegExp(knownInstructionNameSet);
 
 /**
  * Generates a 2D lookup where each cell contains the sprite used to render a code character.
