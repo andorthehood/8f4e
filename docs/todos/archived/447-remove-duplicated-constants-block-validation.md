@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-06-01
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-01
 ---
 
 # TODO: Remove Duplicated Constants Block Validation
@@ -57,10 +57,10 @@ Delete only the duplicated per-line `allowedInConstantsBlocks` validation.
 
 ## Success Criteria
 
-- [ ] `parseConstantsAST()` no longer performs per-line constants content validation.
-- [ ] The shared instruction-spec validation path still rejects invalid constants-block instructions.
-- [ ] Existing constants error fixtures pass unchanged or with only intentional diagnostic-source updates.
-- [ ] No compatibility shims or fallback validation paths are added.
+- [x] `parseConstantsAST()` no longer performs per-line constants content validation.
+- [x] The shared instruction-spec validation path still rejects invalid constants-block instructions.
+- [x] Existing constants error fixtures pass unchanged or with only intentional diagnostic-source updates.
+- [x] No compatibility shims or fallback validation paths are added.
 
 ## Affected Components
 
@@ -73,4 +73,3 @@ Delete only the duplicated per-line `allowedInConstantsBlocks` validation.
 - **Diagnostic timing**: The same invalid source may fail slightly later in compilation. That is acceptable if the diagnostic remains accurate.
 - **Semantic coverage**: Make sure constants ASTs always enter the same semantic validation path before codegen completes.
 - **No compatibility burden**: The software has not been released yet, so update internal APIs directly and do not add compatibility shims.
-

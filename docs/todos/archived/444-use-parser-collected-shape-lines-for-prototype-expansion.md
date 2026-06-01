@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-06-01
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-01
 ---
 
 # TODO: Use Parser-Collected Shape Lines for Prototype Expansion
@@ -52,10 +52,10 @@ Avoid adding project-level preparse flags or raw source fallbacks. The source of
 
 ## Success Criteria
 
-- [ ] The compiler no longer scans a shaped module with `startsWithInstruction(trimmed, 'shape')`.
-- [ ] The compiler no longer calls `parseLine()` while expanding already parsed shape instructions.
-- [ ] Macro-produced shapes still expand correctly.
-- [ ] Prototype shape fixture tests still pass.
+- [x] The compiler no longer scans a shaped module with `startsWithInstruction(trimmed, 'shape')`.
+- [x] The compiler no longer calls `parseLine()` while expanding already parsed shape instructions.
+- [x] Macro-produced shapes still expand correctly.
+- [x] Prototype shape fixture tests still pass.
 
 ## Affected Components
 
@@ -70,4 +70,3 @@ Avoid adding project-level preparse flags or raw source fallbacks. The source of
 - **Source reconstruction**: If expansion still returns source text, it may need line-number metadata to splice replacements without scanning for shape instructions.
 - **Future direction**: A larger follow-up could expand shapes at the AST level and avoid reparsing expanded module source entirely.
 - **No compatibility burden**: The software has not been released yet, so update internal APIs directly and do not add compatibility shims.
-
