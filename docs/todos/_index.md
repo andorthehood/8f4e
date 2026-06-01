@@ -89,6 +89,8 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 447 | Remove duplicated constants block validation | 2026-06-01 | `parseConstantsAST()` now only asserts block type; invalid constants-block contents are rejected by the shared instruction-spec validation path during namespace collection. |
+| 444 | Use parser-collected shape lines for prototype expansion | 2026-06-01 | Module ASTs now carry parser-collected `shapeLines`, and prototype expansion uses those parsed lines instead of rescanning/reparsing shaped module source. |
 | 438 | Add generic function imports | 2026-05-29 | `#import <field-name>` now declares host-provided functions, imported functions participate in normal `call` resolution and stack typing, WebAssembly import/function indexes are emitted correctly, and invalid import shapes have compiler coverage. |
 | 437 | Add execution entries | 2026-05-29 | `entry` / `entryEnd` now partitions modules into exported execution entries, `initDefaults` only initializes memory defaults, old test/init-only grouping was removed, and examples/runtime/CLI paths use the new entry exports. |
 | 150 | Add Test Module Type | 2026-05-29 | Completed by the `entry test` CLI test runner flow and superseded by execution entries plus generic function imports. |

@@ -15,7 +15,6 @@ import type {
 	ModuleAST,
 	Namespaces,
 	PrototypeAST,
-	ShapeLine,
 } from '@8f4e/compiler-spec';
 import {
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
@@ -44,7 +43,7 @@ import {
 	WASM_MEMORY_PAGE_SIZE,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { compileToAST, createASTCache, parseLine } from '@8f4e/tokenizer';
+import { compileToAST, createASTCache } from '@8f4e/tokenizer';
 import { compileFunction, compileModule } from './compiler';
 import { getError } from './compilerError';
 import { HEADER, VERSION } from './consts';
@@ -259,11 +258,6 @@ function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: strin
 	return ast;
 }
 
-function startsWithInstruction(line: string, instruction: string): boolean {
-	const nextCharacter = line[instruction.length];
-	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
-}
-
 function collectPrototypeSources(prototypes: readonly ParsedPrototypeSource[]): Map<string, ParsedPrototypeSource> {
 	const prototypeSourcesById = new Map<string, ParsedPrototypeSource>();
 
@@ -282,22 +276,20 @@ function collectPrototypeSources(prototypes: readonly ParsedPrototypeSource[]): 
 
 function expandModuleSourceShapes(
 	source: ModuleCompilerSource,
+	ast: ModuleAST,
 	prototypeSourcesById: ReadonlyMap<string, ParsedPrototypeSource>
 ): ModuleCompilerSource {
+	if (ast.shapeLines.length === 0) {
+		return source;
+	}
+
+	const shapeLinesByLineNumber = new Map(ast.shapeLines.map(shapeLine => [shapeLine.lineNumber, shapeLine]));
 	const code: string[] = [];
-	let expandedAnyShape = false;
 
 	for (let lineNumber = 0; lineNumber < source.code.length; lineNumber++) {
 		const line = source.code[lineNumber];
-		const trimmed = line.trim();
-
-		if (!startsWithInstruction(trimmed, 'shape')) {
-			code.push(line);
-			continue;
-		}
-
-		const shapeLine = parseLine(line, lineNumber) as ShapeLine;
-		if (shapeLine.instruction !== 'shape') {
+		const shapeLine = shapeLinesByLineNumber.get(lineNumber);
+		if (!shapeLine) {
 			code.push(line);
 			continue;
 		}
@@ -308,16 +300,10 @@ function expandModuleSourceShapes(
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, shapeLine, undefined, { identifier: prototypeId });
 		}
 
-		expandedAnyShape = true;
-
 		for (const declarationLine of prototype.ast.memoryDeclarationLines) {
 			const prototypeLineNumber = declarationLine.lineNumber;
 			code.push(prototype.source.code[prototypeLineNumber] ?? '');
 		}
-	}
-
-	if (!expandedAnyShape) {
-		return source;
 	}
 
 	return {
@@ -382,7 +368,7 @@ export default function compile(
 			return { entryName: source.entryName, ast };
 		}
 
-		const expandedSource = expandModuleSourceShapes(source, prototypeSourcesById);
+		const expandedSource = expandModuleSourceShapes(source, ast, prototypeSourcesById);
 		return {
 			entryName: source.entryName,
 			ast: expandedSource === source ? ast : parseModuleAST(expandedSource.code, cache, expandedSource.cacheKey),

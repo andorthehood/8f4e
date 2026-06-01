@@ -22,6 +22,7 @@ import type {
 	ModuleLine,
 	PrototypeLine,
 	RegionLine,
+	ShapeLine,
 } from '@8f4e/compiler-spec';
 import {
 	ArgumentType,
@@ -80,6 +81,7 @@ type ModuleASTBuilder = {
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
 	containsShape: boolean;
+	shapeLines: ShapeLine[];
 	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
@@ -211,6 +213,7 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 				id: line.arguments[0].value,
 				moduleLine: line,
 				containsShape: false,
+				shapeLines: [],
 				memoryDeclarationLines: [],
 			};
 		case 'function':
@@ -241,6 +244,7 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): void {
 	if (line.instruction === 'shape') {
 		builder.containsShape = true;
+		builder.shapeLines.push(line);
 		return;
 	}
 
@@ -306,6 +310,7 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 				moduleLine: builder.moduleLine,
 				...(builder.regionLine ? { regionLine: builder.regionLine } : {}),
 				containsShape: builder.containsShape,
+				shapeLines: builder.shapeLines,
 				memoryDeclarationLines: builder.memoryDeclarationLines,
 			};
 		case 'function':
