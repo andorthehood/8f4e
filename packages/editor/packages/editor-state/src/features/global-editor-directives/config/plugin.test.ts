@@ -29,6 +29,17 @@ describe('@config directive', () => {
 		expect(result.errors).toEqual([]);
 	});
 
+	it('records config entries with dash continuation arguments', () => {
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock(['module a', '; @config', '; - webUI.background.target', '; - frame:buffer', 'moduleEnd']),
+		]);
+
+		expect(result.resolved.configEntries).toEqual([
+			{ path: 'webUI.background.target', value: 'frame:buffer', rawRow: 1, codeBlockId: 0 },
+		]);
+		expect(result.errors).toEqual([]);
+	});
+
 	it('lets validators handle path-specific meaning', () => {
 		const result = resolveGlobalEditorDirectives([
 			createParsedBlock([
