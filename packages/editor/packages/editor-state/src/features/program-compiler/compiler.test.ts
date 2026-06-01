@@ -182,7 +182,6 @@ describe('flattenProjectForCompiler', () => {
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
 		expect(result.entries.main[0].code).toEqual(['module oscillator', 'shape oscillatorState', 'moduleEnd']);
-		expect(result.entries.main[0].containsShape).toBeUndefined();
 		expect(result.prototypes).toEqual([{ code: ['prototype oscillatorState', 'float phase', 'prototypeEnd'] }]);
 	});
 

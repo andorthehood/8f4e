@@ -79,6 +79,7 @@ type ModuleASTBuilder = {
 	id: string;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
+	containsShape: boolean;
 	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
@@ -209,6 +210,7 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 				type: 'module',
 				id: line.arguments[0].value,
 				moduleLine: line,
+				containsShape: false,
 				memoryDeclarationLines: [],
 			};
 		case 'function':
@@ -237,6 +239,11 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 }
 
 function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): void {
+	if (line.instruction === 'shape') {
+		builder.containsShape = true;
+		return;
+	}
+
 	switch (line.instruction) {
 		case '#region':
 			builder.regionLine = line;
@@ -298,6 +305,7 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 				lines,
 				moduleLine: builder.moduleLine,
 				...(builder.regionLine ? { regionLine: builder.regionLine } : {}),
+				containsShape: builder.containsShape,
 				memoryDeclarationLines: builder.memoryDeclarationLines,
 			};
 		case 'function':

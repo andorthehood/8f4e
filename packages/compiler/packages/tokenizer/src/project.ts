@@ -29,7 +29,6 @@ export interface ProjectCodeBlock {
 	code: string[];
 	disabled?: boolean;
 	entry?: string;
-	containsShape?: boolean;
 }
 
 export interface ProjectInput {
@@ -52,19 +51,9 @@ function startsWithInstruction(line: string, instruction: string): boolean {
 	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
 }
 
-function isShapeInstructionLine(line: string): boolean {
-	return startsWithInstruction(line.trim(), 'shape');
-}
-
-function createProjectCodeBlock(
-	code: string[],
-	openerKeyword: string,
-	containsShape: boolean,
-	entry?: string
-): ProjectCodeBlock {
+function createProjectCodeBlock(code: string[], entry?: string): ProjectCodeBlock {
 	return {
 		code,
-		...(openerKeyword === documentBlockInstructionByType.module.start ? { containsShape } : {}),
 		...(entry ? { entry } : {}),
 	};
 }
@@ -155,7 +144,6 @@ export function parse8f4eProject(text: string): ProjectInput {
 
 		const expectedCloser = getExpectedProjectCloserPrefix(openerKeyword);
 		const currentBlockLines = [openerLine];
-		let containsShape = false;
 
 		for (let i = startIndex + 1; i < lines.length; i += 1) {
 			const line = lines[i];
@@ -168,15 +156,11 @@ export function parse8f4eProject(text: string): ProjectInput {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 				}
 
-				codeBlocks.push(createProjectCodeBlock(currentBlockLines, openerKeyword, containsShape, entry));
+				codeBlocks.push(createProjectCodeBlock(currentBlockLines, entry));
 				return i + 1;
 			}
 
 			if (trimmed !== '') {
-				if (openerKeyword === documentBlockInstructionByType.module.start && isShapeInstructionLine(trimmed)) {
-					containsShape = true;
-				}
-
 				const innerOpener = getProjectOpenerKeyword(trimmed);
 				if (innerOpener) {
 					throw new Error(
@@ -273,13 +257,9 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 				throw new Error('Project module block is missing entry');
 			}
 			const entryName = block.entry;
-			if (block.containsShape === undefined) {
-				throw new Error('Project module block is missing containsShape');
-			}
 			entries[entryName] ??= [];
 			entries[entryName].push({
 				code: block.code,
-				containsShape: block.containsShape,
 			});
 			continue;
 		}

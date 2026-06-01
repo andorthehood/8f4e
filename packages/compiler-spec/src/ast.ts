@@ -259,6 +259,7 @@ export interface ModuleAST {
 	lines: CompilerASTLines;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
+	containsShape: boolean;
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
