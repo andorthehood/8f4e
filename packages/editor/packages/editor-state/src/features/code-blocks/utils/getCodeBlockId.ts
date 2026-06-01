@@ -2,7 +2,7 @@ import { getConstantsId, getFunctionId, getModuleId, getPrototypeId } from '@8f4
 
 /**
  * Retrieves the ID from a code block based on its type.
- * Tries to identify the code block as a module, function, or constants block.
+ * Tries to identify the code block as a module, function, constants, or prototype block.
  * Note blocks do not carry IDs.
  *
  * @param code - Code block represented as an array of lines

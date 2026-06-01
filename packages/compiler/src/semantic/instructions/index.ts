@@ -33,7 +33,7 @@ export default function applySemanticInstruction(line: NormalizedSemanticInstruc
 			return;
 		case 'prototype':
 		case 'prototypeEnd':
-			return;
+			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
 		case 'shape':
 			if (context.mode !== 'module' || !context.insideModuleBlock) {
 				throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
