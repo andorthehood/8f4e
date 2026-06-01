@@ -320,51 +320,15 @@ function collectPrototypeSources(prototypes: readonly ParsedPrototypeSource[]): 
 	return prototypeSourcesById;
 }
 
-function findShapeInstructionLineNumber(source: ModuleCompilerSource): number {
-	for (
-		let lineNumberAfterMacroExpansion = 0;
-		lineNumberAfterMacroExpansion < source.code.length;
-		lineNumberAfterMacroExpansion++
-	) {
-		const line = source.code[lineNumberAfterMacroExpansion];
-		const shapeOffset = line.indexOf('shape');
-		if (shapeOffset === -1) {
-			continue;
-		}
-		if (line.slice(0, shapeOffset).trim() !== '') {
-			continue;
-		}
-
-		const nextCharacter = line[shapeOffset + 'shape'.length];
-		if (nextCharacter === undefined || nextCharacter === ' ' || nextCharacter === '\t') {
-			return lineNumberAfterMacroExpansion;
-		}
-	}
-
-	return -1;
-}
-
 function expandModuleSourceShapes(
 	source: ModuleCompilerSource,
 	prototypeSourcesById: ReadonlyMap<string, ParsedPrototypeSource>
 ): ModuleCompilerSource {
-	const firstShapeLineNumber = findShapeInstructionLineNumber(source);
-	if (firstShapeLineNumber === -1) {
-		return source;
-	}
-
-	const code = source.code.slice(0, firstShapeLineNumber);
-	const lineMetadata: ParsedLineMetadata = Array.from({ length: firstShapeLineNumber }, (_, index) =>
-		getSourceLineMetadata(source, index)
-	);
-
-	const copyOriginalLine = (lineNumberAfterMacroExpansion: number) => {
-		code.push(source.code[lineNumberAfterMacroExpansion] ?? '');
-		lineMetadata.push(getSourceLineMetadata(source, lineNumberAfterMacroExpansion));
-	};
+	let code: string[] | undefined;
+	let lineMetadata: ParsedLineMetadata | undefined;
 
 	for (
-		let lineNumberAfterMacroExpansion = firstShapeLineNumber;
+		let lineNumberAfterMacroExpansion = 0;
 		lineNumberAfterMacroExpansion < source.code.length;
 		lineNumberAfterMacroExpansion++
 	) {
@@ -373,15 +337,28 @@ function expandModuleSourceShapes(
 
 		const nextCharacter = trimmed['shape'.length];
 		if (trimmed !== 'shape' && (!trimmed.startsWith('shape') || (nextCharacter !== ' ' && nextCharacter !== '\t'))) {
-			copyOriginalLine(lineNumberAfterMacroExpansion);
+			if (code && lineMetadata) {
+				code.push(line);
+				lineMetadata.push(getSourceLineMetadata(source, lineNumberAfterMacroExpansion));
+			}
 			continue;
 		}
 
 		const sourceMetadata = getSourceLineMetadata(source, lineNumberAfterMacroExpansion);
 		const shapeLine = parseLine(line, sourceMetadata.callSiteLineNumber, lineNumberAfterMacroExpansion) as ShapeLine;
 		if (shapeLine.instruction !== 'shape') {
-			copyOriginalLine(lineNumberAfterMacroExpansion);
+			if (code && lineMetadata) {
+				code.push(line);
+				lineMetadata.push(sourceMetadata);
+			}
 			continue;
+		}
+
+		if (!code || !lineMetadata) {
+			code = source.code.slice(0, lineNumberAfterMacroExpansion);
+			lineMetadata = Array.from({ length: lineNumberAfterMacroExpansion }, (_, index) =>
+				getSourceLineMetadata(source, index)
+			);
 		}
 
 		const prototypeId = shapeLine.arguments[0].value;
@@ -395,6 +372,10 @@ function expandModuleSourceShapes(
 			code.push(getOriginalSourceLine(prototype.source, prototypeLineNumber));
 			lineMetadata.push(getSourceLineMetadata(prototype.source, prototypeLineNumber));
 		}
+	}
+
+	if (!code || !lineMetadata) {
+		return source;
 	}
 
 	return {
