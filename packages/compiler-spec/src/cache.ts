@@ -1,4 +1,4 @@
-import type { AST, ParsedLineMetadata } from './ast';
+import type { AST } from './ast';
 
 /** Hit and miss counters for AST cache lookups. */
 export interface ASTCacheStats {
@@ -12,7 +12,6 @@ export interface ASTCacheEntry<TAst = AST> {
 	hash?: number;
 	hashInput?: {
 		code: string[];
-		lineMetadata?: ParsedLineMetadata;
 	};
 	lineCount: number;
 }

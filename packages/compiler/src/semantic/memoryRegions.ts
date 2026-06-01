@@ -12,8 +12,7 @@ export interface ResolvedMemoryRegion {
 
 function fallbackLine(): CompilerASTLine {
 	return {
-		lineNumberBeforeMacroExpansion: 0,
-		lineNumberAfterMacroExpansion: 0,
+		lineNumber: 0,
 		instruction: 'block',
 		arguments: [],
 	};

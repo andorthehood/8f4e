@@ -27,8 +27,7 @@ describe('load instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			load,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'load',
 				arguments: [],
 			} as CompilerASTLine,
@@ -48,8 +47,7 @@ describe('load instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			load,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'load8u',
 				arguments: [],
 			} as CompilerASTLine,
@@ -83,8 +81,7 @@ describe('load instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			load,
 			{
-				lineNumberBeforeMacroExpansion: 3,
-				lineNumberAfterMacroExpansion: 3,
+				lineNumber: 3,
 				instruction: 'load',
 				arguments: [],
 			} as CompilerASTLine,
@@ -109,8 +106,7 @@ describe('load instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			load,
 			{
-				lineNumberBeforeMacroExpansion: 4,
-				lineNumberAfterMacroExpansion: 4,
+				lineNumber: 4,
 				instruction: 'load',
 				arguments: [],
 			} as CompilerASTLine,

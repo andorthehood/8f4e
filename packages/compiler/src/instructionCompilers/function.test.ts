@@ -13,8 +13,7 @@ describe('function instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_function,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'function',
 				arguments: [classifyIdentifier('doThing')],
 			} as CompilerASTLine,
@@ -37,8 +36,7 @@ describe('function instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				_function,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'function',
 					arguments: [classifyIdentifier('nested')],
 				} as CompilerASTLine,

@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "call",
-    "lineNumberAfterMacroExpansion": 3,
-    "lineNumberBeforeMacroExpansion": 3,
+    "lineNumber": 3,
   },
   "message": "Insufficient number of elements in the stack for the operation to proceed. (0)",
 }

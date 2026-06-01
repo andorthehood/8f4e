@@ -12,8 +12,7 @@ describe('loop instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loop,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'loop',
 				arguments: [],
 			} as CompilerASTLine,
@@ -34,8 +33,7 @@ describe('loop instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loop,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'loop',
 				arguments: [{ type: ArgumentType.LITERAL, value: 32, isInteger: true }],
 			} as CompilerASTLine,
@@ -57,8 +55,7 @@ describe('loop instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loop,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'loop',
 				arguments: [],
 			} as CompilerASTLine,
@@ -80,8 +77,7 @@ describe('loop instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loop,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'loop',
 				arguments: [{ type: ArgumentType.LITERAL, value: 10, isInteger: true }],
 			} as CompilerASTLine,

@@ -16,8 +16,7 @@ describe('storeBytes instruction compiler', () => {
 			{ kind: 'value', valueType: 'int', isNonZero: false }
 		);
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'storeBytes',
 			arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 		} as CompilerASTLine;
@@ -54,8 +53,7 @@ describe('storeBytes instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			storeBytes,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'storeBytes',
 				arguments: [{ type: ArgumentType.LITERAL, value: 3, isInteger: true }],
 			} as CompilerASTLine,
@@ -91,8 +89,7 @@ describe('storeBytes instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			storeBytes,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'storeBytes',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
 			} as CompilerASTLine,
@@ -127,8 +124,7 @@ describe('storeBytes instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			storeBytes,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'storeBytes',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
 			} as CompilerASTLine,
@@ -160,8 +156,7 @@ describe('storeBytes instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			storeBytes,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'storeBytes',
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
 			} as CompilerASTLine,

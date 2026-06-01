@@ -26,8 +26,7 @@ describe('loadFloat instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loadFloat,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'loadFloat',
 				arguments: [],
 			} as CompilerASTLine,
@@ -47,8 +46,7 @@ describe('loadFloat instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loadFloat,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'loadFloat',
 				arguments: [],
 			} as CompilerASTLine,

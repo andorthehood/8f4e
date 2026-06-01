@@ -15,8 +15,7 @@ describe('div instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			div,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'div',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +38,7 @@ describe('div instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			div,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'div',
 				arguments: [],
 			} as CompilerASTLine,
@@ -63,8 +61,7 @@ describe('div instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			div,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'div',
 				arguments: [],
 			} as CompilerASTLine,
@@ -88,8 +85,7 @@ describe('div instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				div,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'div',
 					arguments: [],
 				} as CompilerASTLine,
@@ -108,8 +104,7 @@ describe('div instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			div,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'div',
 				arguments: [],
 			} as CompilerASTLine,
@@ -129,8 +124,7 @@ describe('div instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			div,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'div',
 				arguments: [],
 			} as CompilerASTLine,

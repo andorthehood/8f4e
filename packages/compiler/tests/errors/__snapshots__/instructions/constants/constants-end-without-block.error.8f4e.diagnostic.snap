@@ -2,8 +2,7 @@
   "code": -1,
   "context": {},
   "line": {
-    "lineNumberAfterMacroExpansion": 0,
-    "lineNumberBeforeMacroExpansion": 0,
+    "lineNumber": 0,
   },
   "message": "Parse error at line 6: closer "constantsEnd" does not match opener "module"",
 }

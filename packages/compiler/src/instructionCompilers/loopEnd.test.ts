@@ -11,7 +11,8 @@ describe('loopEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.LOOP,expectedResultTypes: [],
+					blockType: BlockType.LOOP,
+					expectedResultTypes: [],
 					loopCounterLocalName: '__loopCounter1',
 					loopCounterLocal: { kind: 'value', valueType: 'int', index: 0 },
 				},
@@ -21,8 +22,7 @@ describe('loopEnd instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loopEnd,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'loopEnd',
 				arguments: [],
 			} as CompilerASTLine,
@@ -42,8 +42,7 @@ describe('loopEnd instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				loopEnd,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'loopEnd',
 					arguments: [],
 				} as CompilerASTLine,

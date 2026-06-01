@@ -10,8 +10,7 @@ import type { CompilerDiagnostic, CompilerStageError } from '@8f4e/compiler-spec
 import { SyntaxRulesError } from '@8f4e/tokenizer';
 
 const FALLBACK_LINE = {
-	lineNumberBeforeMacroExpansion: 0,
-	lineNumberAfterMacroExpansion: 0,
+	lineNumber: 0,
 } as const;
 
 const FALLBACK_CONTEXT = {} as const;
@@ -43,8 +42,7 @@ export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 			message: error.message,
 			line: error.line
 				? {
-						lineNumberBeforeMacroExpansion: error.line.lineNumberBeforeMacroExpansion,
-						lineNumberAfterMacroExpansion: error.line.lineNumberAfterMacroExpansion,
+						lineNumber: error.line.lineNumber,
 						instruction: error.line.instruction,
 						arguments: error.line.arguments as unknown[],
 					}

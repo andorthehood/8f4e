@@ -12,10 +12,12 @@ describe('mapEnd instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.MAP,expectedResultTypes: [],
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,
@@ -31,8 +33,7 @@ describe('mapEnd instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				mapEnd,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'mapEnd',
 					arguments: [],
 				} as CompilerASTLine,
@@ -49,8 +50,7 @@ describe('mapEnd instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				mapEnd,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'mapEnd',
 					arguments: [classifyIdentifier('int')],
 				} as CompilerASTLine,
@@ -63,10 +63,12 @@ describe('mapEnd instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.MAP,expectedResultTypes: [],
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,
@@ -81,8 +83,7 @@ describe('mapEnd instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			mapEnd,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'mapEnd',
 				arguments: [classifyIdentifier('int')],
 			} as CompilerASTLine,
