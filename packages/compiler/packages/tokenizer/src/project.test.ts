@@ -37,11 +37,23 @@ describe('parse8f4eProject', () => {
 		const project = parse8f4eProject(text);
 
 		expect(project.codeBlocks).toEqual([
-			{ code: validModuleBlock, entry: 'main' },
+			{ code: validModuleBlock, containsShape: false, entry: 'main' },
 			{ code: validFunctionBlock },
 			{ code: validPrototypeBlock },
 			{ code: validNoteBlock },
 		]);
+	});
+
+	it('marks parsed module blocks that contain shape instructions', () => {
+		const project = parse8f4eProject(
+			['8f4e/v1', '', 'entry main', 'module oscillator', 'shape oscillatorState', 'moduleEnd', 'entryEnd'].join('\n')
+		);
+
+		expect(project.codeBlocks[0]).toEqual({
+			code: ['module oscillator', 'shape oscillatorState', 'moduleEnd'],
+			containsShape: true,
+			entry: 'main',
+		});
 	});
 
 	it('allows empty entries', () => {
