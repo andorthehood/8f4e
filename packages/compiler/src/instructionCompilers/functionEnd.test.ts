@@ -13,7 +13,8 @@ describe('functionEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: ['int'], returns: [] },
@@ -28,8 +29,7 @@ describe('functionEnd instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			functionEnd,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'functionEnd',
 				arguments: [classifyIdentifier('int')],
 			} as CompilerASTLine,
@@ -54,7 +54,8 @@ describe('functionEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: ['float64'], returns: [] },
@@ -69,8 +70,7 @@ describe('functionEnd instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			functionEnd,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'functionEnd',
 				arguments: [classifyIdentifier('float64')],
 			} as CompilerASTLine,
@@ -101,15 +101,15 @@ describe('functionEnd instruction compiler', () => {
 				blockStack: [
 					...createInstructionCompilerTestContext().blockStack,
 					{
-						blockType: BlockType.FUNCTION,expectedResultTypes: [],
+						blockType: BlockType.FUNCTION,
+						expectedResultTypes: [],
 					},
 				],
 				currentFunctionSignature: { parameters: ['int'], returns: [] },
 				functionTypeRegistry,
 			});
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'functionEnd',
 			arguments: [classifyIdentifier('int')],
 		} as CompilerASTLine;
@@ -135,8 +135,7 @@ describe('functionEnd instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				functionEnd,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'functionEnd',
 					arguments: [classifyIdentifier('int')],
 				} as CompilerASTLine,

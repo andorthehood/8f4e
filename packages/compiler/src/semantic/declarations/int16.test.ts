@@ -12,8 +12,7 @@ describe('int16 instruction compiler', () => {
 
 		int16(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int16*',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ptr')],
@@ -34,8 +33,7 @@ describe('int16 instruction compiler', () => {
 
 		int16(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int16**',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('pptr')],
@@ -56,8 +54,7 @@ describe('int16 instruction compiler', () => {
 
 		int16(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int16*',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('p')],

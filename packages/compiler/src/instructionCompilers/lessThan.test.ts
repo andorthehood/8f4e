@@ -16,8 +16,7 @@ describe('lessThan instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			lessThan,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'lessThan',
 				arguments: [],
 			} as CompilerASTLine,
@@ -40,8 +39,7 @@ describe('lessThan instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			lessThan,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'lessThan',
 				arguments: [],
 			} as CompilerASTLine,
@@ -64,8 +62,7 @@ describe('lessThan instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			lessThan,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'lessThan',
 				arguments: [],
 			} as CompilerASTLine,

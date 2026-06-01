@@ -13,7 +13,8 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -23,8 +24,7 @@ describe('param instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			param,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'param',
 				arguments: [classifyIdentifier('int'), classifyIdentifier('value')],
 			} as CompilerASTLine,
@@ -42,7 +42,8 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -52,8 +53,7 @@ describe('param instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			param,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'param',
 				arguments: [classifyIdentifier('float64'), classifyIdentifier('x')],
 			} as CompilerASTLine,
@@ -71,7 +71,8 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -81,8 +82,7 @@ describe('param instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			param,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'param',
 				arguments: [classifyIdentifier('float*'), classifyIdentifier('buffer')],
 			} as CompilerASTLine,
@@ -102,7 +102,8 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -112,8 +113,7 @@ describe('param instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			param,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'param',
 				arguments: [classifyIdentifier('int8u*'), classifyIdentifier('bytes')],
 			} as CompilerASTLine,
@@ -133,7 +133,8 @@ describe('param instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 			currentFunctionSignature: { parameters: [], returns: [] },
@@ -144,8 +145,7 @@ describe('param instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				param,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'param',
 					arguments: [classifyIdentifier('int'), classifyIdentifier('late')],
 				} as CompilerASTLine,

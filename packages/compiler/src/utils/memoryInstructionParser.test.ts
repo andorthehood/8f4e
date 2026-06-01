@@ -28,8 +28,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [{ type: ArgumentType.LITERAL, value: 123, isInteger: true }];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 10,
-				lineNumberAfterMacroExpansion: 10,
+				lineNumber: 10,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -42,8 +41,7 @@ describe('parseMemoryInstructionArguments', () => {
 	it('parses zero arguments as anonymous zero-initialized memory', () => {
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 9,
-				lineNumberAfterMacroExpansion: 9,
+				lineNumber: 9,
 				instruction: 'int',
 				arguments: [],
 			},
@@ -59,8 +57,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [{ type: ArgumentType.STRING_LITERAL, value: 'e' }];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 11,
-				lineNumberAfterMacroExpansion: 11,
+				lineNumber: 11,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -74,8 +71,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [{ type: ArgumentType.STRING_LITERAL, value: 'AB' }];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 12,
-				lineNumberAfterMacroExpansion: 12,
+				lineNumber: 12,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -89,8 +85,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('myId')];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 20,
-				lineNumberAfterMacroExpansion: 20,
+				lineNumber: 20,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -105,8 +100,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 30,
-					lineNumberAfterMacroExpansion: 30,
+					lineNumber: 30,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -120,8 +114,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 31,
-					lineNumberAfterMacroExpansion: 31,
+					lineNumber: 31,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -134,8 +127,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('myVar'), { type: ArgumentType.LITERAL, value: 99, isInteger: true }];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 40,
-				lineNumberAfterMacroExpansion: 40,
+				lineNumber: 40,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -149,8 +141,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('myVar'), { type: ArgumentType.STRING_LITERAL, value: 'e' }];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 41,
-				lineNumberAfterMacroExpansion: 41,
+				lineNumber: 41,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -164,8 +155,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('myVar'), { type: ArgumentType.STRING_LITERAL, value: 'AB' }];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 42,
-				lineNumberAfterMacroExpansion: 42,
+				lineNumber: 42,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -180,8 +170,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 50,
-					lineNumberAfterMacroExpansion: 50,
+					lineNumber: 50,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -198,8 +187,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 55,
-					lineNumberAfterMacroExpansion: 55,
+					lineNumber: 55,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -213,8 +201,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 56,
-					lineNumberAfterMacroExpansion: 56,
+					lineNumber: 56,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -231,8 +218,7 @@ describe('parseMemoryInstructionArguments', () => {
 		];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 60,
-				lineNumberAfterMacroExpansion: 60,
+				lineNumber: 60,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -252,8 +238,7 @@ describe('parseMemoryInstructionArguments', () => {
 		];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 70,
-				lineNumberAfterMacroExpansion: 70,
+				lineNumber: 70,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -270,8 +255,7 @@ describe('parseMemoryInstructionArguments', () => {
 		];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 80,
-				lineNumberAfterMacroExpansion: 80,
+				lineNumber: 80,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -293,8 +277,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 90,
-					lineNumberAfterMacroExpansion: 90,
+					lineNumber: 90,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -307,8 +290,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('myVar'), classifyIdentifier('HI'), classifyIdentifier('LO')];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 100,
-				lineNumberAfterMacroExpansion: 100,
+				lineNumber: 100,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -323,8 +305,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('HI'), classifyIdentifier('LO')];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 110,
-				lineNumberAfterMacroExpansion: 110,
+				lineNumber: 110,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -342,8 +323,7 @@ describe('parseMemoryInstructionArguments', () => {
 		];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 120,
-				lineNumberAfterMacroExpansion: 120,
+				lineNumber: 120,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -359,8 +339,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 130,
-					lineNumberAfterMacroExpansion: 130,
+					lineNumber: 130,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -374,8 +353,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 140,
-					lineNumberAfterMacroExpansion: 140,
+					lineNumber: 140,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -389,8 +367,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 150,
-					lineNumberAfterMacroExpansion: 150,
+					lineNumber: 150,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -403,8 +380,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('ptr'), classifyIdentifier('&myVar')];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 160,
-				lineNumberAfterMacroExpansion: 160,
+				lineNumber: 160,
 				instruction: 'int*',
 				arguments: args,
 			},
@@ -425,8 +401,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 161,
-					lineNumberAfterMacroExpansion: 161,
+					lineNumber: 161,
 					instruction: 'int*',
 					arguments: [classifyIdentifier('ptr'), classifyIdentifier('&this')],
 				},
@@ -436,8 +411,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 162,
-					lineNumberAfterMacroExpansion: 162,
+					lineNumber: 162,
 					instruction: 'int*',
 					arguments: [classifyIdentifier('ptr'), classifyIdentifier('this&')],
 				},
@@ -455,8 +429,7 @@ describe('parseMemoryInstructionArguments', () => {
 
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 163,
-				lineNumberAfterMacroExpansion: 163,
+				lineNumber: 163,
 				instruction: 'int*',
 				arguments: [classifyIdentifier('ptr'), classifyIdentifier('this&')],
 			},
@@ -470,8 +443,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('ptr'), classifyIdentifier('myVar&')];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 165,
-				lineNumberAfterMacroExpansion: 165,
+				lineNumber: 165,
 				instruction: 'int*',
 				arguments: args,
 			},
@@ -486,8 +458,7 @@ describe('parseMemoryInstructionArguments', () => {
 		const args: Argument[] = [classifyIdentifier('n'), classifyIdentifier('count(myVar)')];
 		const result = parseMemoryInstructionArguments(
 			{
-				lineNumberBeforeMacroExpansion: 170,
-				lineNumberAfterMacroExpansion: 170,
+				lineNumber: 170,
 				instruction: 'int',
 				arguments: args,
 			},
@@ -503,8 +474,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 175,
-					lineNumberAfterMacroExpansion: 175,
+					lineNumber: 175,
 					instruction: 'int*',
 					arguments: args,
 				},
@@ -518,8 +488,7 @@ describe('parseMemoryInstructionArguments', () => {
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumberBeforeMacroExpansion: 180,
-					lineNumberAfterMacroExpansion: 180,
+					lineNumber: 180,
 					instruction: 'int',
 					arguments: args,
 				},

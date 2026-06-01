@@ -12,8 +12,7 @@ describe('branch instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			branch,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'branch',
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
 			} as CompilerASTLine,

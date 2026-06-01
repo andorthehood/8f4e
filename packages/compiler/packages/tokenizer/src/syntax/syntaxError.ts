@@ -55,8 +55,7 @@ const SyntaxErrorMessages: Record<SyntaxErrorCodeValue, string> = {
 };
 
 export interface SyntaxErrorLine {
-	lineNumberBeforeMacroExpansion: number;
-	lineNumberAfterMacroExpansion: number;
+	lineNumber: number;
 	instruction?: string;
 	arguments?: unknown[];
 }

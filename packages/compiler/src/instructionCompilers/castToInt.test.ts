@@ -12,8 +12,7 @@ describe('castToInt instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			castToInt,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'castToInt',
 				arguments: [],
 			} as CompilerASTLine,
@@ -33,8 +32,7 @@ describe('castToInt instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			castToInt,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'castToInt',
 				arguments: [],
 			} as CompilerASTLine,

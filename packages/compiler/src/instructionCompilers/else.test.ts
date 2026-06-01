@@ -11,7 +11,8 @@ describe('else instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.CONDITION,expectedResultTypes: ['int'],
+					blockType: BlockType.CONDITION,
+					expectedResultTypes: ['int'],
 				},
 			],
 		});
@@ -20,8 +21,7 @@ describe('else instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_else,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'else',
 				arguments: [],
 			} as CompilerASTLine,
@@ -42,8 +42,7 @@ describe('else instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				_else,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'else',
 					arguments: [],
 				} as CompilerASTLine,

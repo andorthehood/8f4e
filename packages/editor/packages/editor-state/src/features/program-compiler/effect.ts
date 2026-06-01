@@ -144,7 +144,7 @@ export default function compiler(store: StateManager<State>) {
 
 			store.set('codeErrors.compilationErrors', [
 				{
-					lineNumber: diagnostic.line.lineNumberBeforeMacroExpansion,
+					lineNumber: diagnostic.line.lineNumber,
 					codeBlockId: diagnostic.context.codeBlockId || '',
 					codeBlockType: diagnostic.context.codeBlockType,
 					message: diagnostic?.message || String(error) || 'Compilation failed',

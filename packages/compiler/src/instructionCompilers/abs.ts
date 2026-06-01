@@ -22,7 +22,7 @@ const abs: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
 	if (operand.valueType === 'int') {
-		const valueName = '__absify_value' + line.lineNumberAfterMacroExpansion;
+		const valueName = '__absify_value' + line.lineNumber;
 		const valueLocalIndex = Object.keys(context.locals).length;
 
 		context.locals[valueName] = {

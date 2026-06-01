@@ -12,8 +12,7 @@ describe('int8 instruction compiler', () => {
 
 		int8(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8*',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ptr')],
@@ -34,8 +33,7 @@ describe('int8 instruction compiler', () => {
 
 		int8(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8**',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('pptr')],
@@ -56,8 +54,7 @@ describe('int8 instruction compiler', () => {
 
 		int8(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8*',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('p')],

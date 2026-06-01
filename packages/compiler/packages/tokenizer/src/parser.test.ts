@@ -25,8 +25,7 @@ describe('parseLine', () => {
 					},
 				],
 				instruction: 'int',
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				hasExplicitMemoryDefault: true,
 			},
 		],
@@ -43,8 +42,7 @@ describe('parseLine', () => {
 					},
 				],
 				instruction: 'push',
-				lineNumberBeforeMacroExpansion: 100,
-				lineNumberAfterMacroExpansion: 100,
+				lineNumber: 100,
 			},
 		],
 	];
@@ -98,8 +96,7 @@ describe('parseLine', () => {
 	it('parses inline call arguments', () => {
 		const result = parseLine('call foo 2 1.3', 0);
 		expect(result).toEqual({
-			lineNumberBeforeMacroExpansion: 0,
-			lineNumberAfterMacroExpansion: 0,
+			lineNumber: 0,
 			instruction: 'call',
 			arguments: [
 				classifyIdentifier('foo'),
@@ -131,15 +128,14 @@ describe('parseLine', () => {
 
 	it('adds line metadata to parse-time syntax errors', () => {
 		try {
-			parseLine('push 1e309', 7, 12);
+			parseLine('push 1e309', 12);
 			throw new Error('Expected parseLine to throw');
 		} catch (error) {
 			expect(error).toBeInstanceOf(SyntaxRulesError);
 			expect((error as SyntaxRulesError).code).toBe(SyntaxErrorCode.INVALID_NUMERIC_LITERAL);
 			expect((error as SyntaxRulesError).line).toEqual(
 				expect.objectContaining({
-					lineNumberBeforeMacroExpansion: 7,
-					lineNumberAfterMacroExpansion: 12,
+					lineNumber: 12,
 					instruction: 'push',
 				})
 			);
@@ -149,13 +145,12 @@ describe('parseLine', () => {
 	it('exposes instruction in line metadata for argument-level errors', () => {
 		let thrownError: SyntaxRulesError | undefined;
 		try {
-			parseLine('push', 5, 8);
+			parseLine('push', 8);
 		} catch (error) {
 			thrownError = error as SyntaxRulesError;
 		}
 		expect(thrownError).toBeInstanceOf(SyntaxRulesError);
-		expect(thrownError?.line?.lineNumberBeforeMacroExpansion).toBe(5);
-		expect(thrownError?.line?.lineNumberAfterMacroExpansion).toBe(8);
+		expect(thrownError?.line?.lineNumber).toBe(8);
 		expect(thrownError?.line?.instruction).toBe('push');
 	});
 
@@ -342,35 +337,13 @@ describe('compileToASTLines', () => {
 		);
 	});
 
-	it('uses callSiteLineNumber from lineMetadata when provided', () => {
-		const code = ['push 10', 'push 20', 'add'];
-		const lineMetadata = [
-			{ callSiteLineNumber: 5 },
-			{ callSiteLineNumber: 5, macroId: 'double' },
-			{ callSiteLineNumber: 5, macroId: 'double' },
-		];
-
-		const ast = compileToASTLines(code, lineMetadata);
-
-		expect(ast).toHaveLength(3);
-		expect(ast[0].lineNumberBeforeMacroExpansion).toBe(5);
-		expect(ast[1].lineNumberBeforeMacroExpansion).toBe(5);
-		expect(ast[2].lineNumberBeforeMacroExpansion).toBe(5);
-		expect(ast[0].lineNumberAfterMacroExpansion).toBe(0);
-		expect(ast[1].lineNumberAfterMacroExpansion).toBe(1);
-		expect(ast[2].lineNumberAfterMacroExpansion).toBe(2);
-	});
-
-	it('uses actual line numbers when lineMetadata is not provided', () => {
+	it('uses actual line numbers', () => {
 		const ast = compileToASTLines(['push 10', 'push 20', 'add']);
 
 		expect(ast).toHaveLength(3);
-		expect(ast[0].lineNumberBeforeMacroExpansion).toBe(0);
-		expect(ast[1].lineNumberBeforeMacroExpansion).toBe(1);
-		expect(ast[2].lineNumberBeforeMacroExpansion).toBe(2);
-		expect(ast[0].lineNumberAfterMacroExpansion).toBe(0);
-		expect(ast[1].lineNumberAfterMacroExpansion).toBe(1);
-		expect(ast[2].lineNumberAfterMacroExpansion).toBe(2);
+		expect(ast[0].lineNumber).toBe(0);
+		expect(ast[1].lineNumber).toBe(1);
+		expect(ast[2].lineNumber).toBe(2);
 	});
 
 	it('marks directives in module and function prologues', () => {
@@ -553,8 +526,8 @@ describe('compileToASTLines', () => {
 			thrownError = error as SyntaxRulesError;
 		}
 		expect(thrownError).toBeInstanceOf(SyntaxRulesError);
-		expect(thrownError?.line?.lineNumberBeforeMacroExpansion).toBe(1);
-		expect(thrownError?.line?.lineNumberAfterMacroExpansion).toBe(1);
+		expect(thrownError?.line?.lineNumber).toBe(1);
+		expect(thrownError?.line?.lineNumber).toBe(1);
 		expect(thrownError?.line?.instruction).toBe('if');
 	});
 });

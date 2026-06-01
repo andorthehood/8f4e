@@ -11,8 +11,7 @@
       },
     ],
     "instruction": "#export",
-    "lineNumberAfterMacroExpansion": 1,
-    "lineNumberBeforeMacroExpansion": 1,
+    "lineNumber": 1,
   },
   "message": "Duplicate function export name: same. Exported function names must be unique and must not reuse built-in export names. (52)",
 }

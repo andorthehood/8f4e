@@ -37,7 +37,7 @@ const ensureNonZero: InstructionCompiler = (line, context) => {
 		defaultNonZeroValue = line.arguments[0].value;
 	}
 
-	const tempVariableName = '__ensureNonZero_temp_' + line.lineNumberAfterMacroExpansion;
+	const tempVariableName = '__ensureNonZero_temp_' + line.lineNumber;
 	const tempLocalIndex = Object.keys(context.locals).length;
 
 	if (isInteger) {

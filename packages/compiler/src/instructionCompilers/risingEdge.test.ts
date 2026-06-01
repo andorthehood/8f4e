@@ -12,8 +12,7 @@ describe('risingEdge instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			risingEdge,
 			{
-				lineNumberBeforeMacroExpansion: 4,
-				lineNumberAfterMacroExpansion: 4,
+				lineNumber: 4,
 				instruction: 'risingEdge',
 				arguments: [],
 			} as CompilerASTLine,
@@ -35,8 +34,7 @@ describe('risingEdge instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			risingEdge,
 			{
-				lineNumberBeforeMacroExpansion: 4,
-				lineNumberAfterMacroExpansion: 4,
+				lineNumber: 4,
 				instruction: 'risingEdge',
 				arguments: [],
 			} as CompilerASTLine,

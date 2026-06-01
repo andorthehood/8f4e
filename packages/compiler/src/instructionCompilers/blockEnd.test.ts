@@ -11,7 +11,8 @@ describe('blockEnd instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.BLOCK,expectedResultTypes: ['int'],
+					blockType: BlockType.BLOCK,
+					expectedResultTypes: ['int'],
 				},
 			],
 		});
@@ -20,8 +21,7 @@ describe('blockEnd instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			blockEnd,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'blockEnd',
 				arguments: [],
 			} as CompilerASTLine,

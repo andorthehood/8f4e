@@ -26,8 +26,7 @@ describe('call instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			call,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('foo')],
 				targetFunction,
@@ -56,8 +55,7 @@ describe('call instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			call,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('foo64')],
 				targetFunction,
@@ -83,8 +81,7 @@ describe('call instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			call,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'call',
 				arguments: [
 					classifyIdentifier('foo'),
@@ -94,14 +91,12 @@ describe('call instruction compiler', () => {
 				targetFunction,
 				inlineArgumentPushes: [
 					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
+						lineNumber: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
 					},
 					{
-						lineNumberBeforeMacroExpansion: 1,
-						lineNumberAfterMacroExpansion: 1,
+						lineNumber: 1,
 						instruction: 'push',
 						arguments: [{ type: ArgumentType.LITERAL, value: 1.3, isInteger: false }],
 					},
@@ -132,8 +127,7 @@ describe('call instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				call,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'call',
 					arguments: [classifyIdentifier('foo64')],
 					targetFunction,
@@ -157,8 +151,7 @@ describe('call instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			call,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('addr')],
 				targetFunction,

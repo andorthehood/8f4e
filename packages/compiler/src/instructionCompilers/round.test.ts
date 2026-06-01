@@ -12,8 +12,7 @@ describe('round instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			round,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'round',
 				arguments: [],
 			} as CompilerASTLine,
