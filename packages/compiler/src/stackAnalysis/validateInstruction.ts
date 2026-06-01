@@ -1,17 +1,9 @@
-import type { CompilationContext, CompilerASTLine, InstructionSpec, InstructionSpecName } from '@8f4e/compiler-spec';
-import { ErrorCode, instructionSpecs, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine, InstructionSpec } from '@8f4e/compiler-spec';
+import { ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { peekStackOperands } from './peekStackOperands';
 import { validateOperandTypes } from './validateOperandTypes';
 import { validateScope } from './validateScope';
-
-function resolveInstructionSpec(line: CompilerASTLine): InstructionSpec | undefined {
-	if (isMemoryDeclarationLine(line)) {
-		return instructionSpecs.memoryDeclaration;
-	}
-
-	return instructionSpecs[line.instruction as InstructionSpecName];
-}
 
 function validateInstructionContextWithSpec(line: CompilerASTLine, context: CompilationContext, spec: InstructionSpec) {
 	if (context.insideConstantsBlock && !spec.allowedInConstantsBlocks) {
@@ -28,21 +20,13 @@ function validateInstructionContextWithSpec(line: CompilerASTLine, context: Comp
 }
 
 export function validateInstructionContext(line: CompilerASTLine, context: CompilationContext) {
-	const spec = resolveInstructionSpec(line);
-
-	if (!spec) {
-		return;
-	}
+	const spec = getInstructionSpec(line.instruction) as InstructionSpec;
 
 	validateInstructionContextWithSpec(line, context, spec);
 }
 
 export function validateInstruction(line: CompilerASTLine, context: CompilationContext) {
-	const spec = resolveInstructionSpec(line);
-
-	if (!spec) {
-		return;
-	}
+	const spec = getInstructionSpec(line.instruction) as InstructionSpec;
 
 	validateInstructionContextWithSpec(line, context, spec);
 

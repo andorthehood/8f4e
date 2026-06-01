@@ -29,6 +29,7 @@ export const SyntaxErrorCode = {
 	SPLIT_HEX_MIXED_TOKENS: 8,
 	INVALID_BLOCK_STRUCTURE: 9,
 	COMPILER_DIRECTIVE_MUST_BE_PROLOGUE: 10,
+	UNRECOGNISED_INSTRUCTION: 11,
 } as const;
 
 export type SyntaxErrorCodeValue = (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode];
@@ -52,6 +53,7 @@ const SyntaxErrorMessages: Record<SyntaxErrorCodeValue, string> = {
 	[SyntaxErrorCode.INVALID_BLOCK_STRUCTURE]: 'Invalid block structure.',
 	[SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE]:
 		'Compiler directives must appear in the block prologue, immediately after module or function.',
+	[SyntaxErrorCode.UNRECOGNISED_INSTRUCTION]: 'Unrecognised instruction.',
 };
 
 export interface SyntaxErrorLine {
