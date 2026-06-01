@@ -52,16 +52,23 @@ function startsWithInstruction(line: string, instruction: string): boolean {
 	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
 }
 
-export function containsShapeInstruction(code: readonly string[]): boolean {
-	return code.some(line => startsWithInstruction(line.trim(), 'shape'));
+function isShapeInstructionLine(line: string): boolean {
+	return startsWithInstruction(line.trim(), 'shape');
 }
 
-function createProjectCodeBlock(code: string[], openerKeyword: string, entry?: string): ProjectCodeBlock {
+export function containsShapeInstruction(code: readonly string[]): boolean {
+	return code.some(isShapeInstructionLine);
+}
+
+function createProjectCodeBlock(
+	code: string[],
+	openerKeyword: string,
+	containsShape: boolean,
+	entry?: string
+): ProjectCodeBlock {
 	return {
 		code,
-		...(openerKeyword === documentBlockInstructionByType.module.start
-			? { containsShape: containsShapeInstruction(code) }
-			: {}),
+		...(openerKeyword === documentBlockInstructionByType.module.start ? { containsShape } : {}),
 		...(entry ? { entry } : {}),
 	};
 }
@@ -152,6 +159,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 
 		const expectedCloser = getExpectedProjectCloserPrefix(openerKeyword);
 		const currentBlockLines = [openerLine];
+		let containsShape = false;
 
 		for (let i = startIndex + 1; i < lines.length; i += 1) {
 			const line = lines[i];
@@ -164,11 +172,15 @@ export function parse8f4eProject(text: string): ProjectInput {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 				}
 
-				codeBlocks.push(createProjectCodeBlock(currentBlockLines, openerKeyword, entry));
+				codeBlocks.push(createProjectCodeBlock(currentBlockLines, openerKeyword, containsShape, entry));
 				return i + 1;
 			}
 
 			if (trimmed !== '') {
+				if (openerKeyword === documentBlockInstructionByType.module.start && isShapeInstructionLine(trimmed)) {
+					containsShape = true;
+				}
+
 				const innerOpener = getProjectOpenerKeyword(trimmed);
 				if (innerOpener) {
 					throw new Error(
