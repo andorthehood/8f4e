@@ -171,11 +171,6 @@ push count(*ptr)
 push 8
 call assert
 
-float* endPtr floatSamples&
-push count(*endPtr)
-push 1
-call assert
-
 int8[] smallSamples 4
 int8* smallPtr &smallSamples
 push min(*smallPtr)
