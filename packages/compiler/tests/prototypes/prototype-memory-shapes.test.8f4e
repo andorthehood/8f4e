@@ -1,0 +1,66 @@
+8f4e/v1
+
+prototype oscillatorState
+float phase
+float frequency 440
+prototypeEnd
+
+entry test
+module oscA
+shape oscillatorState
+int localA 11
+
+push phase
+push 0.0
+call assertf
+
+push frequency
+push 440.0
+call assertf
+
+push localA
+push 11
+call assert
+
+push &phase
+push &frequency
+lessThan
+push 1
+call assert
+
+push &frequency
+push &localA
+lessThan
+push 1
+call assert
+moduleEnd
+
+module oscB
+int localB 22
+shape oscillatorState
+
+push localB
+push 22
+call assert
+
+push phase
+push 0.0
+call assertf
+
+push frequency
+push 440.0
+call assertf
+
+push &localB
+push &phase
+lessThan
+push 1
+call assert
+
+push &phase
+push &oscA:phase
+notEqual
+push 1
+call assert
+moduleEnd
+entryEnd
