@@ -15,6 +15,8 @@ const mocks = vi.hoisted(() => {
 		clearBackgroundEffect: vi.fn(),
 		clearAllCache: vi.fn(),
 		getCacheStats: vi.fn(() => ({ itemCount: 7, maxItems: 50, accessOrder: [] })),
+		uploadRgba8Texture: vi.fn(() => ({ texture: {}, width: 128, height: 128, filter: 'nearest' })),
+		drawTexture: vi.fn(),
 	};
 
 	return {
@@ -143,5 +145,96 @@ describe('web-ui init', () => {
 			cacheMaxItems: 50,
 		});
 		performanceNow.mockRestore();
+	});
+
+	it('can draw a WebAssembly-generated RGBA8 frame texture', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState();
+		state.compiler.compiledModules = {
+			screen: {
+				memoryMap: {
+					rgba: {
+						byteAddress: 4,
+					},
+				},
+			},
+		} as typeof state.compiler.compiledModules;
+		const memoryBuffer = new ArrayBuffer(24);
+		const memoryViews = {
+			int8: new Int8Array(memoryBuffer),
+			int16: new Int16Array(memoryBuffer),
+			int32: new Int32Array(memoryBuffer),
+			uint8: new Uint8Array(memoryBuffer),
+			uint16: new Uint16Array(memoryBuffer),
+			float32: new Float32Array(memoryBuffer),
+			float64: new Float64Array(memoryBuffer),
+		};
+		memoryViews.uint8.set([1, 2, 3, 4, 5, 6, 7, 8], 4);
+		const memory = { buffer: memoryBuffer } as WebAssembly.Memory;
+		const codeBuffer = new Uint8Array([1, 2, 3]);
+		const renderFrameExport = vi.fn(() => {
+			memoryViews.uint8.set([10, 20, 30, 255], 4);
+		});
+		const instantiateFrameTextureWasm = vi.fn(async () => ({ renderFrame: renderFrameExport }));
+		let frameTexture:
+			| {
+					entry: string;
+					target: string;
+					width: number;
+					height: number;
+			  }
+			| undefined;
+		const canvas = { width: 160, height: 90 } as HTMLCanvasElement;
+
+		const view = await init(
+			state,
+			canvas,
+			memoryViews,
+			{
+				canvas: {} as OffscreenCanvas,
+				spriteLookups: {},
+				characterWidth: 8,
+				characterHeight: 16,
+			},
+			{
+				getFrameTexture: () => frameTexture,
+				getCodeBuffer: () => codeBuffer,
+				getMemory: () => memory,
+				instantiateFrameTextureWasm,
+			}
+		);
+
+		view.renderFrame();
+		expect(instantiateFrameTextureWasm).not.toHaveBeenCalled();
+
+		frameTexture = {
+			entry: 'renderFrame',
+			target: 'screen:rgba',
+			width: 1,
+			height: 1,
+		};
+
+		view.renderFrame();
+		expect(instantiateFrameTextureWasm).toHaveBeenCalledWith(memory, codeBuffer);
+		expect(renderFrameExport).not.toHaveBeenCalled();
+
+		await Promise.resolve();
+		view.resize(320, 180);
+		view.renderFrame();
+
+		expect(renderFrameExport).toHaveBeenCalledTimes(1);
+		expect(mocks.engine.uploadRgba8Texture).toHaveBeenCalledWith(expect.any(Uint8Array), 1, 1, {
+			texture: undefined,
+			filter: 'nearest',
+		});
+		const data = mocks.engine.uploadRgba8Texture.mock.calls.at(-1)?.[0] as Uint8Array;
+		expect([...data]).toEqual([10, 20, 30, 255]);
+		expect(mocks.engine.drawTexture).toHaveBeenCalledWith(
+			{ texture: {}, width: 128, height: 128, filter: 'nearest' },
+			0,
+			0,
+			320,
+			180
+		);
 	});
 });

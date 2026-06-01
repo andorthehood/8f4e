@@ -7,7 +7,7 @@ import type {
 	State,
 } from '@8f4e/editor-state-types';
 import generateSprite from '@8f4e/sprite-generator';
-import initView, { type MemoryViews, type RenderStats } from '@8f4e/web-ui';
+import initView, { type MemoryViews, type RenderStats, type WebUiOptions } from '@8f4e/web-ui';
 import type { BackgroundEffect, PostProcessEffect } from 'glugglug';
 import { createEditorEnvironmentPluginManager } from './editorEnvironmentPlugins/manager';
 import { createEditorEnvironmentPluginServices } from './editorEnvironmentPlugins/services';
@@ -17,6 +17,11 @@ import pointerEvents from './events/pointerEvents';
 import { createMemoryViewManager, type MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
+import {
+	resolveWebUiBackgroundConfig,
+	WEB_UI_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
+	webUiEditorConfigSchemaContribution,
+} from './webUiConfig';
 
 export {
 	collectSchemaConfigPaths,
@@ -73,6 +78,7 @@ interface Options {
 	defaultRuntimeId: string;
 	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 	renderStatsIntervalFrames?: number;
+	frameTexture?: WebUiOptions['frameTexture'];
 }
 
 async function getCanvasPngBlob(canvas: HTMLCanvasElement): Promise<Blob> {
@@ -113,6 +119,10 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	let view: Awaited<ReturnType<typeof initView>>;
 	const exportCanvasScreenshot = options.callbacks.exportCanvasScreenshot;
 	const compileCode = options.callbacks.compileCode;
+	const editorConfigSchemaContributions: EditorConfigSchemaContributionRegistry = {
+		[WEB_UI_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID]: webUiEditorConfigSchemaContribution,
+		...options.editorConfigSchemaContributions,
+	};
 	const pluginServices = createEditorEnvironmentPluginServices({
 		getWasmMemory: () => currentMemoryRef,
 		getCodeBuffer: () => currentCodeBuffer,
@@ -120,6 +130,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	store = initState(events, {
 		...options,
+		editorConfigSchemaContributions,
 		callbacks: {
 			...options.callbacks,
 			compileCode: compileCode
@@ -177,6 +188,10 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 
 	view = await initView(state, canvas, memoryViews, spriteData, {
 		renderStatsIntervalFrames: options.renderStatsIntervalFrames,
+		frameTexture: options.frameTexture,
+		getFrameTexture: () => resolveWebUiBackgroundConfig(state) ?? options.frameTexture,
+		getCodeBuffer: () => currentCodeBuffer,
+		getMemory: () => currentMemoryRef,
 		onRenderStats: stats => {
 			store.set('info.graphics', toGraphicsInfoRecord(stats));
 		},
