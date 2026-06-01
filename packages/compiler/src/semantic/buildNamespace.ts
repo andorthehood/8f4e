@@ -20,6 +20,7 @@ import {
 	type SemanticInstructionLine,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
+import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
@@ -136,6 +137,8 @@ function applyNamespaceDeclarationLines(
 		} else if (isMemoryDeclarationLine(originalLine)) {
 			const declarationLine = resolveDeclarationLine(originalLine);
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
+		} else if (ast.type === compilerSourceBlockInstructionByType.constants.type) {
+			validateInstruction(normalizeCompileTimeArguments(originalLine, context), context);
 		}
 	});
 

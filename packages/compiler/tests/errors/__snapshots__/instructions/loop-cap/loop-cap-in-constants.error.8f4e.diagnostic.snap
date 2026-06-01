@@ -1,6 +1,9 @@
 {
   "code": 34,
-  "context": {},
+  "context": {
+    "codeBlockId": "env",
+    "codeBlockType": "constants",
+  },
   "line": {
     "arguments": [
       {
