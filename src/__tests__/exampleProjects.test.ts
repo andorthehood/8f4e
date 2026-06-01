@@ -60,9 +60,9 @@ describe('Example Projects Compilation', () => {
 					{
 						entries,
 						constants: constantsBlocks,
-						functions: functionBlocks.length > 0 ? functionBlocks : undefined,
-						prototypes: prototypeBlocks.length > 0 ? prototypeBlocks : undefined,
-						macros: macroBlocks.length > 0 ? macroBlocks : undefined,
+						functions: functionBlocks,
+						prototypes: prototypeBlocks,
+						macros: macroBlocks,
 					},
 					COMPILER_OPTIONS
 				);

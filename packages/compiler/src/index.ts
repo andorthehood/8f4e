@@ -390,18 +390,11 @@ export default function compile(
 	const entryModules = Object.entries(input.entries).flatMap(([entryName, modules]) =>
 		modules.map((module, index) => ({ entryName, module, index }))
 	);
-	const constants = input.constants ?? [];
-	const functions = input.functions ?? [];
-	const prototypes = input.prototypes ?? [];
-	const macros = input.macros ?? [];
-	const shouldExpandMacros = input.macros !== undefined;
-	// Parse and expand macros if provided
-	const macroDefinitions = shouldExpandMacros ? parseMacroDefinitions(macros) : new Map();
+	const { constants, functions, prototypes, macros } = input;
+	const macroDefinitions = parseMacroDefinitions(macros);
 
 	const expandedPrototypes = prototypes.map((prototype, index) => {
-		const expanded = shouldExpandMacros
-			? convertExpandedLinesToCode(expandMacros(prototype, macroDefinitions))
-			: { code: prototype.code, lineMetadata: undefined };
+		const expanded = convertExpandedLinesToCode(expandMacros(prototype, macroDefinitions));
 		return {
 			...expanded,
 			cacheKey: `prototype:${index}`,
@@ -416,9 +409,7 @@ export default function compile(
 
 	// Expand macros and prototype shapes in modules
 	const expandedModules = entryModules.map(({ entryName, module, index }) => {
-		const expanded = shouldExpandMacros
-			? convertExpandedLinesToCode(expandMacros(module, macroDefinitions))
-			: { code: module.code, lineMetadata: undefined };
+		const expanded = convertExpandedLinesToCode(expandMacros(module, macroDefinitions));
 		return expandModuleSourceShapes(
 			{
 				...expanded,
@@ -430,9 +421,7 @@ export default function compile(
 	}) satisfies ModuleCompilerSource[];
 
 	const expandedConstants = constants.map((constantsBlock, index) => {
-		const expanded = shouldExpandMacros
-			? convertExpandedLinesToCode(expandMacros(constantsBlock, macroDefinitions))
-			: { code: constantsBlock.code, lineMetadata: undefined };
+		const expanded = convertExpandedLinesToCode(expandMacros(constantsBlock, macroDefinitions));
 		return {
 			...expanded,
 			cacheKey: `constants:${index}`,
@@ -441,9 +430,7 @@ export default function compile(
 
 	// Expand macros in functions
 	const expandedFunctions = functions.map((func, index) => {
-		const expanded = shouldExpandMacros
-			? convertExpandedLinesToCode(expandMacros(func, macroDefinitions))
-			: { code: func.code, lineMetadata: undefined };
+		const expanded = convertExpandedLinesToCode(expandMacros(func, macroDefinitions));
 		return {
 			...expanded,
 			cacheKey: `function:${index}`,
