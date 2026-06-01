@@ -6,8 +6,7 @@ import { getError } from './compilerError';
 
 describe('getError', () => {
 	const line = {
-		lineNumberBeforeMacroExpansion: 1,
-		lineNumberAfterMacroExpansion: 1,
+		lineNumber: 1,
 		instruction: 'push',
 		arguments: [],
 	} as CompilerASTLine;
@@ -54,8 +53,7 @@ describe('getError', () => {
 
 	it('includes the undeclared identifier when provided', () => {
 		const localLine = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'push',
 			arguments: [classifyIdentifier('missingLocal')],
 		} as CompilerASTLine;
@@ -67,8 +65,7 @@ describe('getError', () => {
 
 	it('keeps the generic undeclared identifier message when no identifier is available', () => {
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'use',
 			arguments: [],
 		} as CompilerASTLine;
@@ -80,8 +77,7 @@ describe('getError', () => {
 
 	it('includes the duplicate identifier when provided', () => {
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'module',
 			arguments: [classifyIdentifier('same')],
 		} as CompilerASTLine;

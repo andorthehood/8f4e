@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "use",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Undeclared identifier: missingNamespace. (5)",
 }

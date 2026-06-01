@@ -4,8 +4,7 @@ import createInstructionCompilerTestContext from '../utils/testUtils';
 import { validateScope } from './validateScope';
 
 const line: Parameters<InstructionCompiler>[0] = {
-	lineNumberBeforeMacroExpansion: 1,
-	lineNumberAfterMacroExpansion: 1,
+	lineNumber: 1,
 	instruction: 'test' as never,
 	arguments: [],
 };

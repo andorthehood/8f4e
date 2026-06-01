@@ -5,8 +5,7 @@ import { getStackAnalysisTooltipContent, getStackAnalysisTooltipText } from './s
 describe('stack analysis tooltip text', () => {
 	it('formats selected line stack analysis', () => {
 		const stackAnalysisLine = {
-			lineNumberBeforeMacroExpansion: 2,
-			lineNumberAfterMacroExpansion: 2,
+			lineNumber: 2,
 			instruction: 'add',
 			stackAnalysis: {
 				stackBefore: [
@@ -39,8 +38,7 @@ describe('stack analysis tooltip text', () => {
 
 	it('formats long stack analysis as multiline blocks', () => {
 		const stackAnalysisLine = {
-			lineNumberBeforeMacroExpansion: 6,
-			lineNumberAfterMacroExpansion: 6,
+			lineNumber: 6,
 			instruction: 'drop',
 			stackAnalysis: {
 				stackBefore: [

@@ -3,8 +3,7 @@
   "context": {},
   "line": {
     "instruction": "param",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Missing required argument for param.",
 }

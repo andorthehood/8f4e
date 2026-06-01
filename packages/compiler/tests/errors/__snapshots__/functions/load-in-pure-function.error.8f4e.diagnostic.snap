@@ -7,8 +7,7 @@
   "line": {
     "arguments": [],
     "instruction": "load",
-    "lineNumberAfterMacroExpansion": 4,
-    "lineNumberBeforeMacroExpansion": 4,
+    "lineNumber": 4,
   },
   "message": "Memory IO in functions requires #impure. (21)",
 }

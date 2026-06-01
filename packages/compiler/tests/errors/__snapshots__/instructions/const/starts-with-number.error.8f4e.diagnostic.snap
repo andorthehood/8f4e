@@ -3,8 +3,7 @@
   "context": {},
   "line": {
     "instruction": "const",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Identifiers cannot start with numbers: 123ABC",
 }

@@ -47,7 +47,7 @@ const load: InstructionCompiler<LoadLine> = (line, context) => {
 		guardedLoad(context, {
 			accessByteWidth,
 			memoryIndex,
-			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+			lineNumber: line.lineNumber,
 			resultType: WASM_TYPE_I32,
 			loadByteCode: instructions,
 		})

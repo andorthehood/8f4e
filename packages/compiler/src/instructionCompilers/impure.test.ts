@@ -10,7 +10,8 @@ describe('impure instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 			mode: 'function',
@@ -20,8 +21,7 @@ describe('impure instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			impure,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: '#impure',
 				arguments: [],
 				isBlockPrologue: true,
@@ -39,8 +39,7 @@ describe('impure instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				impure,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: '#impure',
 					arguments: [],
 				} as CompilerASTLine,

@@ -13,8 +13,7 @@ describe('mapBegin instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			mapBegin,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('int')],
 			} as CompilerASTLine,
@@ -32,8 +31,7 @@ describe('mapBegin instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			mapBegin,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('float')],
 			} as CompilerASTLine,
@@ -51,8 +49,7 @@ describe('mapBegin instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			mapBegin,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('float64')],
 			} as CompilerASTLine,

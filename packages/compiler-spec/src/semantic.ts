@@ -175,7 +175,6 @@ export interface CompilationContext {
 	currentFunctionExportName?: string;
 	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
-	currentMacroId?: string;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;

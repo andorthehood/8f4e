@@ -12,8 +12,7 @@ describe('if instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_if,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: [], hasElse: false },
@@ -34,8 +33,7 @@ describe('if instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_if,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: [], hasElse: false },
@@ -56,8 +54,7 @@ describe('if instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_if,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['float'], hasElse: false },
@@ -78,8 +75,7 @@ describe('if instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_if,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['int'], hasElse: false },
@@ -106,8 +102,7 @@ describe('if instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_if,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['int', 'float'], hasElse: false },

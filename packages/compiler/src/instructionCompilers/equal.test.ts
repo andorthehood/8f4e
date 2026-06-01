@@ -16,8 +16,7 @@ describe('equal instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			equal,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'equal',
 				arguments: [],
 			} as CompilerASTLine,
@@ -40,8 +39,7 @@ describe('equal instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			equal,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'equal',
 				arguments: [],
 			} as CompilerASTLine,
@@ -64,8 +62,7 @@ describe('equal instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			equal,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'equal',
 				arguments: [],
 			} as CompilerASTLine,

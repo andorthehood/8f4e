@@ -16,8 +16,7 @@ describe('greaterOrEqual instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterOrEqual,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterOrEqual',
 				arguments: [],
 			} as CompilerASTLine,
@@ -40,8 +39,7 @@ describe('greaterOrEqual instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterOrEqual,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterOrEqual',
 				arguments: [],
 			} as CompilerASTLine,
@@ -64,8 +62,7 @@ describe('greaterOrEqual instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterOrEqual,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterOrEqual',
 				arguments: [],
 			} as CompilerASTLine,

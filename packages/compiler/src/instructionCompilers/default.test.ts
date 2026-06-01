@@ -10,10 +10,12 @@ describe('default instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.MAP,expectedResultTypes: [],
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,
@@ -27,8 +29,7 @@ describe('default instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_default,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'default',
 				arguments: [{ type: ArgumentType.LITERAL, value: 99, isInteger: true }],
 			} as CompilerASTLine,
@@ -47,8 +48,7 @@ describe('default instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				_default,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'default',
 					arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
 				} as CompilerASTLine,

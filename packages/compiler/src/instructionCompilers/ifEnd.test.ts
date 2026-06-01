@@ -21,8 +21,7 @@ describe('ifEnd instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			ifEnd,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'ifEnd',
 				arguments: [],
 			} as CompilerASTLine,
@@ -52,8 +51,7 @@ describe('ifEnd instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			ifEnd,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'ifEnd',
 				arguments: [],
 			} as CompilerASTLine,
@@ -74,8 +72,7 @@ describe('ifEnd instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				ifEnd,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'ifEnd',
 					arguments: [],
 				} as CompilerASTLine,

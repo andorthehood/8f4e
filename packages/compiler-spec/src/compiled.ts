@@ -6,8 +6,7 @@ import type { InternalResourceMap, MemoryMap } from './memory';
 import type { StackAnalysisResult } from './semantic';
 
 export type CompiledStackAnalysisLine = {
-	lineNumberBeforeMacroExpansion: number;
-	lineNumberAfterMacroExpansion: number;
+	lineNumber: number;
 	instruction: string;
 	stackAnalysis: StackAnalysisResult;
 };

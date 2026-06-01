@@ -14,8 +14,7 @@ describe('local instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			local,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'local',
 				arguments: [classifyIdentifier('int'), classifyIdentifier('count')],
 			} as CompilerASTLine,
@@ -54,8 +53,7 @@ describe('local instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				local,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'local',
 					arguments: [classifyIdentifier('int'), classifyIdentifier('count')],
 				} as CompilerASTLine,
@@ -75,8 +73,7 @@ describe('local instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			local,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'local',
 				arguments: [classifyIdentifier('float64**'), classifyIdentifier('cursor')],
 			} as CompilerASTLine,

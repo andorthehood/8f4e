@@ -1,5 +1,3 @@
-import type { ParsedLineMetadata } from '@8f4e/compiler-spec';
-
 function appendHashInput(hash: number, input: string): number {
 	let nextHash = hash;
 	for (let index = 0; index < input.length; index++) {
@@ -9,18 +7,11 @@ function appendHashInput(hash: number, input: string): number {
 	return nextHash >>> 0;
 }
 
-export default function hashSource(code: string[], lineMetadata: ParsedLineMetadata | undefined): number {
+export default function hashSource(code: string[]): number {
 	let hash = 2166136261;
 	hash = appendHashInput(hash, `${code.length}\0`);
 	for (const line of code) {
 		hash = appendHashInput(hash, `${line.length}\0${line}\0`);
-	}
-
-	hash = appendHashInput(hash, `${lineMetadata?.length ?? 0}\0`);
-	if (lineMetadata) {
-		for (const metadata of lineMetadata) {
-			hash = appendHashInput(hash, `${metadata.callSiteLineNumber}\0${metadata.macroId ?? ''}\0`);
-		}
 	}
 
 	return hash >>> 0;
