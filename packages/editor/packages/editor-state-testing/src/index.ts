@@ -1,5 +1,4 @@
 import type { CodeBlockGraphicData, EventDispatcher, State, Viewport } from '@8f4e/editor-state-types';
-import { parseDirectiveRecords } from '@8f4e/editor-state-types';
 import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
 
 type DeepPartial<T> = T extends object
@@ -75,7 +74,7 @@ export function createMockCodeBlock(
 		isFavorite: false,
 		opacity: 1,
 		alwaysOnTop: false,
-		parsedDirectives: parseDirectiveRecords(code),
+		parsedDirectives: [],
 		widgets: {
 			blockHighlights: [],
 			inputs: [],

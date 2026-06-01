@@ -7,6 +7,25 @@ import {
 	runBeforeGraphicDataWidthCalculation,
 } from '../registry';
 
+function createInfoBlock(overrides: Parameters<typeof createMockCodeBlock>[0] = {}) {
+	const code = overrides.code ?? ['module foo', '; @info foo', 'moduleEnd'];
+
+	return createMockCodeBlock({
+		...overrides,
+		code,
+		parsedDirectives: [
+			{
+				prefix: '@',
+				name: 'info',
+				args: ['foo'],
+				rawRow: 1,
+				sourceLine: code[1],
+				isTrailing: false,
+			},
+		],
+	});
+}
+
 describe('info directive widget resolution', () => {
 	it('adds an info panel sized from state.info entries', () => {
 		const state = createMockState({
@@ -19,7 +38,7 @@ describe('info directive widget resolution', () => {
 				},
 			},
 		});
-		const graphicData = createMockCodeBlock({
+		const graphicData = createInfoBlock({
 			code: ['module foo', '; @info foo', 'moduleEnd'],
 			width: 240,
 			lineNumberColumnWidth: 1,
@@ -52,7 +71,7 @@ describe('info directive widget resolution', () => {
 				},
 			},
 		});
-		const graphicData = createMockCodeBlock({
+		const graphicData = createInfoBlock({
 			code: ['module foo', '; @info foo', 'moduleEnd'],
 			lineNumberColumnWidth: 1,
 			gaps: new Map([[1, { size: 1 }]]),
@@ -72,7 +91,7 @@ describe('info directive widget resolution', () => {
 				},
 			},
 		});
-		const graphicData = createMockCodeBlock({
+		const graphicData = createInfoBlock({
 			code: ['module foo', '; @info foo', 'moduleEnd'],
 			lastUpdated: 1000,
 		});
@@ -101,7 +120,7 @@ describe('info directive widget resolution', () => {
 				},
 			},
 		});
-		const graphicData = createMockCodeBlock({
+		const graphicData = createInfoBlock({
 			code: ['module foo', '; @info foo', 'moduleEnd'],
 			lastUpdated: 1000,
 		});

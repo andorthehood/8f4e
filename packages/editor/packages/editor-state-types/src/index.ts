@@ -68,12 +68,6 @@ import type {
 	Size,
 } from './shared/types';
 
-export {
-	type ParsedDirectiveLineRecord,
-	parseDirectiveLineRecords,
-	parseDirectiveRecords,
-} from './features/code-blocks/utils/directives';
-
 // Re-export MemoryAction for use by consumers
 // Re-export shared types
 // Re-export viewport types
