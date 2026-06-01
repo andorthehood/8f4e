@@ -68,7 +68,6 @@ type ParsedPrototypeSource = {
 	ast: PrototypeAST;
 	source: {
 		code: string[];
-		cacheKey: string;
 	};
 };
 
@@ -276,10 +275,6 @@ function startsWithInstruction(line: string, instruction: string): boolean {
 	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
 }
 
-function getOriginalSourceLine(source: { code: string[] }, lineNumber: number): string {
-	return source.code[lineNumber] ?? '';
-}
-
 function collectPrototypeSources(prototypes: readonly ParsedPrototypeSource[]): Map<string, ParsedPrototypeSource> {
 	const prototypeSourcesById = new Map<string, ParsedPrototypeSource>();
 
@@ -327,7 +322,7 @@ function expandModuleSourceShapes(
 		expandedAnyShape = true;
 		for (const declarationLine of prototype.ast.memoryDeclarationLines) {
 			const prototypeLineNumber = declarationLine.lineNumber;
-			code.push(getOriginalSourceLine(prototype.source, prototypeLineNumber));
+			code.push(prototype.source.code[prototypeLineNumber] ?? '');
 		}
 	}
 
@@ -363,7 +358,7 @@ export default function compile(
 
 	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) => ({
 		ast: parsePrototypeAST(code, cache, cacheKey),
-		source: { code, cacheKey },
+		source: { code },
 	})) satisfies ParsedPrototypeSource[];
 	const prototypeSourcesById = collectPrototypeSources(astPrototypes);
 
