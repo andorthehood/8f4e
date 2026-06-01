@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockEventDispatcher, createMockState, createMockViewport } from './index';
 
 describe('editor-state testing utilities', () => {
-	it('creates code blocks with derived grid, cursor, module id, and empty parsed directives', () => {
+	it('creates code blocks with derived grid, cursor, and empty parsed directives', () => {
 		const block = createMockCodeBlock({
 			x: 16,
 			y: 32,
@@ -15,8 +15,16 @@ describe('editor-state testing utilities', () => {
 		expect(block.gridX).toBe(2);
 		expect(block.gridY).toBe(2);
 		expect(block.cursor).toEqual({ col: 0, row: 0, x: 56, y: 20 });
-		expect(block.moduleId).toBe('synth');
 		expect(block.parsedDirectives).toEqual([]);
+	});
+
+	it('allows tests to provide code block ids explicitly', () => {
+		const block = createMockCodeBlock({
+			code: ['module synth', 'moduleEnd'],
+			moduleId: 'synth',
+		});
+
+		expect(block.moduleId).toBe('synth');
 	});
 
 	it('allows tests to provide directive records explicitly', () => {

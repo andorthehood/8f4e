@@ -1,5 +1,4 @@
 import type { CodeBlockGraphicData, EventDispatcher, State, Viewport } from '@8f4e/editor-state-types';
-import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
 
 type DeepPartial<T> = T extends object
 	? {
@@ -28,10 +27,6 @@ export function createMockCodeBlock(
 	const offsetY = overrides.offsetY ?? 0;
 	const id = overrides.id ?? 'test-block';
 	const code = overrides.code ?? [];
-	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
-	const moduleId = overrides.moduleId ?? derivedModuleId;
-	const derivedFunctionId = getFunctionId(code) || undefined;
-	const functionId = overrides.functionId ?? derivedFunctionId;
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
@@ -56,8 +51,6 @@ export function createMockCodeBlock(
 		offsetY,
 		cursor,
 		id,
-		...(moduleId !== undefined ? { moduleId } : {}),
-		...(functionId !== undefined ? { functionId } : {}),
 		code,
 		codeColors: [],
 		codeToRender: [],
