@@ -56,10 +56,6 @@ function isShapeInstructionLine(line: string): boolean {
 	return startsWithInstruction(line.trim(), 'shape');
 }
 
-export function containsShapeInstruction(code: readonly string[]): boolean {
-	return code.some(isShapeInstructionLine);
-}
-
 function createProjectCodeBlock(
 	code: string[],
 	openerKeyword: string,
@@ -277,10 +273,13 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 				throw new Error('Project module block is missing entry');
 			}
 			const entryName = block.entry;
+			if (block.containsShape === undefined) {
+				throw new Error('Project module block is missing containsShape');
+			}
 			entries[entryName] ??= [];
 			entries[entryName].push({
 				code: block.code,
-				containsShape: block.containsShape ?? containsShapeInstruction(block.code),
+				containsShape: block.containsShape,
 			});
 			continue;
 		}
