@@ -280,7 +280,7 @@ function parsePrototypeAST(
 ): PrototypeAST {
 	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
 	if (ast.type !== 'prototype') {
-		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
+		throw getError(ErrorCode.MISSING_PROTOTYPE_ID, ast.lines[0], undefined);
 	}
 	for (const line of ast.lines) {
 		if (line.instruction === 'prototype' || line.instruction === 'prototypeEnd') {
