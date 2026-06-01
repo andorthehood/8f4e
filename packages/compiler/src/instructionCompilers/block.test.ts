@@ -11,8 +11,7 @@ describe('block instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			block,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultTypes: ['float'] },
@@ -32,8 +31,7 @@ describe('block instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			block,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultTypes: ['int'] },
@@ -53,8 +51,7 @@ describe('block instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			block,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultTypes: [] },

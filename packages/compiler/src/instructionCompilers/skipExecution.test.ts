@@ -10,7 +10,8 @@ describe('skipExecution instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 			],
 		});
@@ -18,8 +19,7 @@ describe('skipExecution instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			skipExecution,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: '#skipExecution',
 				arguments: [],
 				isBlockPrologue: true,
@@ -39,8 +39,7 @@ describe('skipExecution instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				skipExecution,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: '#skipExecution',
 					arguments: [],
 				} as CompilerASTLine,
@@ -53,7 +52,8 @@ describe('skipExecution instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 			],
 		});
@@ -61,8 +61,7 @@ describe('skipExecution instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			skipExecution,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: '#skipExecution',
 				arguments: [],
 				isBlockPrologue: true,
@@ -75,8 +74,7 @@ describe('skipExecution instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			skipExecution,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: '#skipExecution',
 				arguments: [],
 				isBlockPrologue: true,

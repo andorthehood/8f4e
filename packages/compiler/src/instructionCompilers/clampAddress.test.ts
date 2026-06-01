@@ -20,8 +20,7 @@ function createLine(
 	accessByteWidth?: number
 ) {
 	return {
-		lineNumberBeforeMacroExpansion: 1,
-		lineNumberAfterMacroExpansion: 1,
+		lineNumber: 1,
 		instruction,
 		arguments:
 			accessByteWidth === undefined ? [] : [{ type: ArgumentType.LITERAL, value: accessByteWidth, isInteger: true }],

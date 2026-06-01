@@ -18,8 +18,7 @@ describe('pushLocalPointer', () => {
 
 		pushLocalPointer(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('*lut')],
 				resolvedTarget: { kind: 'local-pointer', local },
@@ -45,8 +44,7 @@ describe('pushLocalPointer', () => {
 
 		pushLocalPointer(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('*bytes')],
 				resolvedTarget: { kind: 'local-pointer', local },

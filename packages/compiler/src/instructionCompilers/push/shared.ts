@@ -41,7 +41,7 @@ export const loadOpcode: Record<PushValueKind, (memoryIndex: number) => number[]
 
 function buildGuardedPointerLoadChain(
 	context: CodegenContext,
-	lineNumberAfterMacroExpansion: number,
+	lineNumber: number,
 	kind: PushValueKind,
 	steps: PointerLoadStep[]
 ): number[] {
@@ -52,7 +52,7 @@ function buildGuardedPointerLoadChain(
 			guardedAddressOperation(context, {
 				accessByteWidth: step.accessByteWidth,
 				memoryIndex: step.memoryIndex,
-				lineNumberAfterMacroExpansion,
+				lineNumber,
 				resultType,
 				buildTrueBranch: addressLocalIndex => [...localGet(addressLocalIndex), ...step.loadByteCode, ...continuation],
 			}),
@@ -95,7 +95,7 @@ function getFinalDereferenceLoad(
 
 export function buildPointerDereferenceByteCode(
 	context: CodegenContext,
-	lineNumberAfterMacroExpansion: number,
+	lineNumber: number,
 	pointerMetadata: PointerMetadata,
 	baseAddressByteCode: number[],
 	pointerValueSource: PointerValueSource,
@@ -133,9 +133,6 @@ export function buildPointerDereferenceByteCode(
 
 	return {
 		kind,
-		byteCode: [
-			...baseAddressByteCode,
-			...buildGuardedPointerLoadChain(context, lineNumberAfterMacroExpansion, kind, guardedLoadSteps),
-		],
+		byteCode: [...baseAddressByteCode, ...buildGuardedPointerLoadChain(context, lineNumber, kind, guardedLoadSteps)],
 	};
 }

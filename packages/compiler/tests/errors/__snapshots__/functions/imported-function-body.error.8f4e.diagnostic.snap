@@ -13,8 +13,7 @@
       },
     ],
     "instruction": "push",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Imported functions cannot have a function body. Only function directives, param declarations, and functionEnd are allowed. (62)",
 }

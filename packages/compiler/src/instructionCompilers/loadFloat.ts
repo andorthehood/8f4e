@@ -30,7 +30,7 @@ const loadFloat: InstructionCompiler<LoadFloatLine> = (line, context) => {
 		guardedLoad(context, {
 			accessByteWidth,
 			memoryIndex,
-			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+			lineNumber: line.lineNumber,
 			resultType: WASM_TYPE_F32,
 			loadByteCode: instructions,
 		})

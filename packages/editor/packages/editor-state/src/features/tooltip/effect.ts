@@ -35,12 +35,12 @@ function getSelectedCodeBlockStackAnalysisLine(
 		}
 
 		return state.compiler.compiledFunctions?.[functionId]?.stackAnalysis?.find(
-			line => line.lineNumberBeforeMacroExpansion === selectedCodeBlock.cursor.row
+			line => line.lineNumber === selectedCodeBlock.cursor.row
 		);
 	}
 
 	return state.compiler.compiledModules[moduleId]?.stackAnalysis?.find(
-		line => line.lineNumberBeforeMacroExpansion === selectedCodeBlock.cursor.row
+		line => line.lineNumber === selectedCodeBlock.cursor.row
 	);
 }
 

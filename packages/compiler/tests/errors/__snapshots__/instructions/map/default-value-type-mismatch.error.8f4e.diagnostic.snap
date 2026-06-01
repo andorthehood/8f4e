@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "mapEnd",
-    "lineNumberAfterMacroExpansion": 6,
-    "lineNumberBeforeMacroExpansion": 6,
+    "lineNumber": 6,
   },
   "message": "The operation only accepts integer values as operands. (2)",
 }

@@ -25,8 +25,7 @@ describe('tooltip effect', () => {
 					test: {
 						stackAnalysis: [
 							{
-								lineNumberBeforeMacroExpansion: 2,
-								lineNumberAfterMacroExpansion: 2,
+								lineNumber: 2,
 								instruction: 'add',
 								stackAnalysis: {
 									stackBefore: [
@@ -106,8 +105,7 @@ describe('tooltip effect', () => {
 					helper: {
 						stackAnalysis: [
 							{
-								lineNumberBeforeMacroExpansion: 3,
-								lineNumberAfterMacroExpansion: 3,
+								lineNumber: 3,
 								instruction: 'add',
 								stackAnalysis: {
 									stackBefore: [

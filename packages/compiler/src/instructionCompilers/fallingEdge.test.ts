@@ -12,8 +12,7 @@ describe('fallingEdge instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			fallingEdge,
 			{
-				lineNumberBeforeMacroExpansion: 5,
-				lineNumberAfterMacroExpansion: 5,
+				lineNumber: 5,
 				instruction: 'fallingEdge',
 				arguments: [],
 			} as CompilerASTLine,

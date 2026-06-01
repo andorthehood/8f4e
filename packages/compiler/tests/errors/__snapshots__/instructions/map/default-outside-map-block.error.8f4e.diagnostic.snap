@@ -13,8 +13,7 @@
       },
     ],
     "instruction": "default",
-    "lineNumberAfterMacroExpansion": 3,
-    "lineNumberBeforeMacroExpansion": 3,
+    "lineNumber": 3,
   },
   "message": "This instruction can only be used within a block or a module. (13)",
 }

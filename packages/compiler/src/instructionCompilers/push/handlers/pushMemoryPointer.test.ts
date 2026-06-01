@@ -13,8 +13,7 @@ function createResolvedMemoryPointerPushLine(
 	dereferenceDepth = 1
 ): ResolvedMemoryPointerPushLine {
 	return {
-		lineNumberBeforeMacroExpansion: 1,
-		lineNumberAfterMacroExpansion: 1,
+		lineNumber: 1,
 		instruction: 'push',
 		arguments: [classifyIdentifier(`${'*'.repeat(dereferenceDepth)}${memoryId}`)],
 		resolvedTarget: { kind: 'memory-pointer', memoryItem },

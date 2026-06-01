@@ -12,7 +12,8 @@ describe('return instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 		});
@@ -21,8 +22,7 @@ describe('return instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_return,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'return',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +39,7 @@ describe('return instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		// default context has MODULE block, not FUNCTION
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'return',
 			arguments: [],
 		} as CompilerASTLine;

@@ -16,7 +16,7 @@ describe('program compiler effect', () => {
 
 		mockCompileCode = vi.fn().mockRejectedValue({
 			message: 'Memory access is not allowed in pure functions. (19)',
-			line: { lineNumberBeforeMacroExpansion: 2 },
+			line: { lineNumber: 2 },
 			context: {
 				codeBlockId: 'helper',
 				codeBlockType: 'function',
@@ -75,7 +75,7 @@ describe('program compiler effect', () => {
 	it('reads line number from syntax errors that expose line directly (no longer defaults to 0)', async () => {
 		mockCompileCode.mockRejectedValue({
 			message: 'Too many arguments for if.',
-			line: { lineNumberBeforeMacroExpansion: 3, lineNumberAfterMacroExpansion: 3, instruction: 'if' },
+			line: { lineNumber: 3, instruction: 'if' },
 			context: {},
 		});
 

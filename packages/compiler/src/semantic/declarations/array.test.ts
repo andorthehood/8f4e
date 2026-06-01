@@ -13,8 +13,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('values'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
@@ -30,8 +29,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int[]',
 				hasExplicitMemoryDefault: true,
 				arguments: [
@@ -58,8 +56,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [
@@ -83,8 +80,7 @@ describe('array declaration compiler', () => {
 		try {
 			array(
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'int[]',
 					hasExplicitMemoryDefault: false,
 					arguments: [
@@ -109,8 +105,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('bytes'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
@@ -131,8 +126,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('bytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
@@ -153,8 +147,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int16[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('shorts'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
@@ -175,8 +168,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int16[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('shorts'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
@@ -197,8 +189,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int32[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ints'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
@@ -219,8 +210,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8u[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('unsignedBytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
@@ -240,8 +230,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int16u[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('unsignedShorts'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
@@ -261,8 +250,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('signedBytes'), { type: ArgumentType.LITERAL, value: 5, isInteger: true }],
@@ -279,8 +267,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'float64[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('doubles'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
@@ -302,8 +289,7 @@ describe('array declaration compiler', () => {
 		// Three int32 variables to force an odd word offset
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ints'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
@@ -313,8 +299,7 @@ describe('array declaration compiler', () => {
 
 		array(
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'float64[]',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('doubles'), { type: ArgumentType.LITERAL, value: 2, isInteger: true }],

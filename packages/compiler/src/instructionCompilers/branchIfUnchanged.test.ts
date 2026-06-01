@@ -13,8 +13,7 @@ describe('branchIfUnchanged instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			branchIfUnchanged,
 			{
-				lineNumberBeforeMacroExpansion: 4,
-				lineNumberAfterMacroExpansion: 4,
+				lineNumber: 4,
 				instruction: 'branchIfUnchanged',
 				arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
 			} as CompilerASTLine,

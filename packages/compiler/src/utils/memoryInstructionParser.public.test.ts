@@ -22,8 +22,7 @@ describe('parseMemoryInstructionArguments', () => {
 		instruction: CompilerASTLine['instruction'],
 		args: CompilerASTLine['arguments']
 	) => ({
-		lineNumberBeforeMacroExpansion: lineNumber,
-		lineNumberAfterMacroExpansion: lineNumber,
+		lineNumber: lineNumber,
 		instruction,
 		arguments: args,
 	});

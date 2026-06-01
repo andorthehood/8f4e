@@ -7,8 +7,7 @@ import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } fr
 import memoryCopy from './memoryCopy';
 
 const line = {
-	lineNumberBeforeMacroExpansion: 1,
-	lineNumberAfterMacroExpansion: 1,
+	lineNumber: 1,
 	instruction: 'memoryCopy',
 	arguments: [{ type: ArgumentType.LITERAL, value: 20, isInteger: true }],
 } as CompilerASTLine;

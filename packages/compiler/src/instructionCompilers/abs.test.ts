@@ -12,8 +12,7 @@ describe('abs instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			abs,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'abs',
 				arguments: [],
 			} as CompilerASTLine,
@@ -33,8 +32,7 @@ describe('abs instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			abs,
 			{
-				lineNumberBeforeMacroExpansion: 3,
-				lineNumberAfterMacroExpansion: 3,
+				lineNumber: 3,
 				instruction: 'abs',
 				arguments: [],
 			} as CompilerASTLine,
@@ -55,8 +53,7 @@ describe('abs instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			abs,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'abs',
 				arguments: [],
 			} as CompilerASTLine,

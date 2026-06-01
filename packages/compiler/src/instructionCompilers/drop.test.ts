@@ -15,8 +15,7 @@ describe('drop instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			drop,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'drop',
 				arguments: [],
 			} as CompilerASTLine,

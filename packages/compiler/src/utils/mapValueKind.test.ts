@@ -5,8 +5,7 @@ import { resolveMapKind, validateMapValueKind } from './mapValueKind';
 
 describe('map value kind helpers', () => {
 	const line = {
-		lineNumberBeforeMacroExpansion: 1,
-		lineNumberAfterMacroExpansion: 1,
+		lineNumber: 1,
 		instruction: 'map',
 		arguments: [],
 	} as CompilerASTLine;

@@ -6,15 +6,13 @@ import createInstructionCompilerTestContext from '../utils/testUtils';
 import { validateInstruction } from './validateInstruction';
 
 const pushLine: CompilerASTLine = {
-	lineNumberBeforeMacroExpansion: 1,
-	lineNumberAfterMacroExpansion: 1,
+	lineNumber: 1,
 	instruction: 'push',
 	arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
 };
 
 const mapLine: CompilerASTLine = {
-	lineNumberBeforeMacroExpansion: 1,
-	lineNumberAfterMacroExpansion: 1,
+	lineNumber: 1,
 	instruction: 'map',
 	arguments: [
 		{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
@@ -45,7 +43,8 @@ describe('validateInstruction', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MAP,expectedResultTypes: [],
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,

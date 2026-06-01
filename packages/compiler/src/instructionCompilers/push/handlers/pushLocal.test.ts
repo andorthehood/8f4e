@@ -18,8 +18,7 @@ describe('pushLocal', () => {
 
 		pushLocal(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('temp')],
 				resolvedTarget: { kind: 'local', local },

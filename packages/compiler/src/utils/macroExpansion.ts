@@ -1,4 +1,4 @@
-import type { CompilerASTLine, ExpandedLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
 import { documentBlockInstructionByType, ErrorCode } from '@8f4e/compiler-spec';
 import { instructionParser, isComment, isValidInstruction } from '@8f4e/tokenizer';
 import { getError } from '../compilerError';
@@ -9,8 +9,7 @@ const macroCallInstruction = documentBlockInstructionByType.macro.type;
 
 function createMacroErrorLine(lineIndex: number): CompilerASTLine {
 	return {
-		lineNumberBeforeMacroExpansion: lineIndex,
-		lineNumberAfterMacroExpansion: lineIndex,
+		lineNumber: lineIndex,
 		instruction: 'block',
 		arguments: [],
 	};
@@ -113,34 +112,27 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 
 /**
  * Expand macros in a single source module.
- * Each `macro <name>` instruction is replaced with the macro body,
- * preserving the call-site line number for error mapping.
+ * Each `macro <name>` instruction is replaced with the macro body.
  *
  * @param module Source module to expand
  * @param macroDefinitions Map of macro definitions
- * @returns Array of expanded lines with metadata
+ * @returns Array of expanded source lines
  * @throws Error if an undefined macro is referenced
  */
-export function expandMacros(module: Module, macroDefinitions: Map<string, MacroDefinition>): ExpandedLine[] {
-	const expandedLines: ExpandedLine[] = [];
+export function expandMacros(module: Module, macroDefinitions: Map<string, MacroDefinition>): string[] {
+	const expandedLines: string[] = [];
 	const { code } = module;
 
 	code.forEach((line, lineIndex) => {
 		// For comments and empty lines, preserve as-is
 		if (isComment(line) || !isValidInstruction(line)) {
-			expandedLines.push({
-				line,
-				callSiteLineNumber: lineIndex,
-			});
+			expandedLines.push(line);
 			return;
 		}
 
 		const match = line.match(instructionParser);
 		if (!match) {
-			expandedLines.push({
-				line,
-				callSiteLineNumber: lineIndex,
-			});
+			expandedLines.push(line);
 			return;
 		}
 
@@ -157,42 +149,14 @@ export function expandMacros(module: Module, macroDefinitions: Map<string, Macro
 				throw getError(ErrorCode.UNDEFINED_MACRO, createMacroErrorLine(lineIndex));
 			}
 
-			// Expand macro body, all lines map back to the call site
 			macroDef.body.forEach(macroLine => {
-				expandedLines.push({
-					line: macroLine,
-					callSiteLineNumber: lineIndex,
-					macroId: macroName,
-				});
+				expandedLines.push(macroLine);
 			});
 		} else {
 			// Regular instruction, not a macro call
-			expandedLines.push({
-				line,
-				callSiteLineNumber: lineIndex,
-			});
+			expandedLines.push(line);
 		}
 	});
 
 	return expandedLines;
-}
-
-/**
- * Convert expanded lines back to plain string array and metadata.
- * This is used to integrate with the existing compiler flow.
- *
- * @param expandedLines Array of expanded lines
- * @returns Object containing code array and mapping metadata
- */
-export function convertExpandedLinesToCode(expandedLines: ExpandedLine[]): {
-	code: string[];
-	lineMetadata: Array<{ callSiteLineNumber: number; macroId?: string }>;
-} {
-	return {
-		code: expandedLines.map(el => el.line),
-		lineMetadata: expandedLines.map(el => ({
-			callSiteLineNumber: el.callSiteLineNumber,
-			macroId: el.macroId,
-		})),
-	};
 }

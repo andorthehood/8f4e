@@ -13,8 +13,7 @@ describe('sqrt instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			sqrt,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'sqrt',
 				arguments: [],
 			} as CompilerASTLine,
@@ -34,8 +33,7 @@ describe('sqrt instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			sqrt,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'sqrt',
 				arguments: [],
 			} as CompilerASTLine,

@@ -15,8 +15,7 @@ describe('sub instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			sub,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'sub',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +38,7 @@ describe('sub instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			sub,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'sub',
 				arguments: [],
 			} as CompilerASTLine,
@@ -63,8 +61,7 @@ describe('sub instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			sub,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'sub',
 				arguments: [],
 			} as CompilerASTLine,
@@ -95,8 +92,7 @@ describe('sub instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			sub,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'sub',
 				arguments: [],
 			} as CompilerASTLine,
@@ -136,8 +132,7 @@ describe('sub instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			sub,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'sub',
 				arguments: [],
 			} as CompilerASTLine,

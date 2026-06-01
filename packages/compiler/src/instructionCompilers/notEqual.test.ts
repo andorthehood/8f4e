@@ -15,8 +15,7 @@ describe('notEqual instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			notEqual,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'notEqual',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +38,7 @@ describe('notEqual instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			notEqual,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'notEqual',
 				arguments: [],
 			} as CompilerASTLine,
@@ -63,8 +61,7 @@ describe('notEqual instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			notEqual,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'notEqual',
 				arguments: [],
 			} as CompilerASTLine,

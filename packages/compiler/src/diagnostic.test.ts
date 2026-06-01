@@ -6,8 +6,7 @@ import { getError } from './compilerError';
 import { serializeDiagnostic } from './diagnostic';
 
 const stubLine = {
-	lineNumberBeforeMacroExpansion: 3,
-	lineNumberAfterMacroExpansion: 5,
+	lineNumber: 5,
 	instruction: 'push',
 	arguments: [],
 } as CompilerASTLine;
@@ -16,8 +15,7 @@ describe('serializeDiagnostic', () => {
 	describe('syntax errors', () => {
 		it('serializes a SyntaxRulesError with line into CompilerDiagnostic', () => {
 			const err = new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT, 'Missing arg.', {
-				lineNumberBeforeMacroExpansion: 3,
-				lineNumberAfterMacroExpansion: 5,
+				lineNumber: 5,
 				instruction: 'if',
 			});
 
@@ -27,8 +25,7 @@ describe('serializeDiagnostic', () => {
 				code: SyntaxErrorCode.MISSING_ARGUMENT,
 				message: 'Missing arg.',
 				line: {
-					lineNumberBeforeMacroExpansion: 3,
-					lineNumberAfterMacroExpansion: 5,
+					lineNumber: 5,
 					instruction: 'if',
 				},
 				context: {},
@@ -43,8 +40,7 @@ describe('serializeDiagnostic', () => {
 			expect(result.code).toBe(SyntaxErrorCode.INVALID_IDENTIFIER);
 			expect(result.message).toBe('Invalid identifier.');
 			expect(result.line).toEqual({
-				lineNumberBeforeMacroExpansion: 0,
-				lineNumberAfterMacroExpansion: 0,
+				lineNumber: 0,
 			});
 			expect(result.context).toEqual({});
 		});
@@ -59,8 +55,7 @@ describe('serializeDiagnostic', () => {
 			expect(result.code).toBe(ErrorCode.MEMORY_ACCESS_IN_PURE_FUNCTION);
 			expect(result.message).toContain('Memory declarations are not allowed in functions');
 			expect(result.line).toEqual({
-				lineNumberBeforeMacroExpansion: 3,
-				lineNumberAfterMacroExpansion: 5,
+				lineNumber: 5,
 				instruction: 'push',
 				arguments: [],
 			});
@@ -86,8 +81,7 @@ describe('serializeDiagnostic', () => {
 	describe('unified shape contract', () => {
 		it('syntax and compiler errors both expose code, message, line, context at top level', () => {
 			const syntaxErr = new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT, 'Missing.', {
-				lineNumberBeforeMacroExpansion: 7,
-				lineNumberAfterMacroExpansion: 7,
+				lineNumber: 7,
 			});
 			const compilerErr = getError(ErrorCode.UNDEFINED_FUNCTION, stubLine);
 
@@ -111,8 +105,7 @@ describe('serializeDiagnostic', () => {
 			expect(result.code).toBe(-1);
 			expect(result.message).toBe('Unexpected crash');
 			expect(result.line).toEqual({
-				lineNumberBeforeMacroExpansion: 0,
-				lineNumberAfterMacroExpansion: 0,
+				lineNumber: 0,
 			});
 			expect(result.context).toEqual({});
 		});
@@ -123,8 +116,7 @@ describe('serializeDiagnostic', () => {
 			expect(result.code).toBe(-1);
 			expect(result.message).toBe('something went wrong');
 			expect(result.line).toEqual({
-				lineNumberBeforeMacroExpansion: 0,
-				lineNumberAfterMacroExpansion: 0,
+				lineNumber: 0,
 			});
 			expect(result.context).toEqual({});
 		});

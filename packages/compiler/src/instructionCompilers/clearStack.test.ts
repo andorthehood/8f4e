@@ -15,8 +15,7 @@ describe('clearStack instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			clearStack,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'clearStack',
 				arguments: [],
 			} as CompilerASTLine,
