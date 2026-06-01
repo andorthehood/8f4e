@@ -4,6 +4,7 @@ import {
 	normalizeEditorDirectiveRecords,
 	parseDirectiveComments,
 	parseDirectiveLineRecords,
+	parseEditorDirectives,
 	serializeDirectiveComments,
 } from './utils';
 
@@ -106,6 +107,23 @@ describe('parseDirectiveComments', () => {
 		expect(parseDirectiveComments('; @stop 1 01 @favorite')).toEqual([
 			{ name: 'stop', args: ['1', '01'] },
 			{ name: 'favorite', args: [] },
+		]);
+	});
+});
+
+describe('parseEditorDirectives', () => {
+	it('appends dash continuation comment arguments to the previous directive', () => {
+		const configPlugin = createDirectivePlugin('config', () => undefined);
+
+		expect(
+			parseEditorDirectives(['; @config', '; - webUI.background.target', '; - frame:buffer'], [configPlugin])
+		).toEqual([
+			{
+				name: 'config',
+				rawRow: 0,
+				args: ['webUI.background.target', 'frame:buffer'],
+				sourceLine: '; @config',
+			},
 		]);
 	});
 });

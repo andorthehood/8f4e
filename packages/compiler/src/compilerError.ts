@@ -531,6 +531,18 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.POINTEE_ELEMENT_COUNT_UNKNOWN:
+			return {
+				code,
+				message:
+					'Pointee element count is unknown' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Pass the length explicitly or use count() on a named memory declaration. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.ARRAY_INITIALIZER_TOO_LONG:
 			return {
 				code,
