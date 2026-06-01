@@ -98,6 +98,7 @@ export interface Connection {
 /** Source module payload consumed by the compiler. */
 export interface Module {
 	code: string[];
+	containsShape?: boolean;
 }
 
 /** Executable modules partitioned by host-callable execution entry. */
