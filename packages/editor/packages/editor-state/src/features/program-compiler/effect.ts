@@ -12,6 +12,7 @@ const moduleBlockType = documentBlockInstructionByType.module.type;
 const constantsBlockType = documentBlockInstructionByType.constants.type;
 const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
+const prototypeBlockType = documentBlockInstructionByType.prototype.type;
 
 /**
  * Converts code blocks into compiler input entries plus shared functions, constants, and macros.
@@ -25,6 +26,7 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 	const moduleEntries: Record<string, CodeBlockGraphicData[]> = {};
 	const constants: Module[] = [];
 	const functions: CodeBlockGraphicData[] = [];
+	const prototypes: Module[] = [];
 	const macros: CodeBlockGraphicData[] = [];
 
 	const sortedEnabled = [...codeBlocks]
@@ -43,6 +45,8 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 			constants.push({ code: block.code });
 		} else if (block.blockType === functionBlockType) {
 			functions.push(block);
+		} else if (block.blockType === prototypeBlockType) {
+			prototypes.push({ code: block.code });
 		} else if (block.blockType === macroBlockType) {
 			macros.push(block);
 		}
@@ -53,7 +57,7 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 	);
 	entries.main ??= [];
 
-	return { entries, constants, functions, macros };
+	return { entries, constants, functions, prototypes, macros };
 }
 
 export default function compiler(store: StateManager<State>) {

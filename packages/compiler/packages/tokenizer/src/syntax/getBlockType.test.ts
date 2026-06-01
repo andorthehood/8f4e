@@ -15,6 +15,10 @@ describe('getBlockType', () => {
 		expect(getBlockType(['constants', 'constantsEnd'])).toBe('constants');
 	});
 
+	it('detects prototype blocks', () => {
+		expect(getBlockType(['prototype shape', 'int x', 'prototypeEnd'])).toBe('prototype');
+	});
+
 	it('returns unknown for blocks without proper markers', () => {
 		expect(getBlockType(['int x 5', 'add'])).toBe('unknown');
 	});
@@ -33,6 +37,7 @@ describe('isCompilableBlockType', () => {
 		expect(isCompilableBlockType('module')).toBe(true);
 		expect(isCompilableBlockType('function')).toBe(true);
 		expect(isCompilableBlockType('constants')).toBe(true);
+		expect(isCompilableBlockType('prototype')).toBe(true);
 		expect(isCompilableBlockType('macro')).toBe(true);
 	});
 

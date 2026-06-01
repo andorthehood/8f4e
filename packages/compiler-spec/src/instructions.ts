@@ -32,6 +32,7 @@ export const compilerBlockInstructionPairs = [
 	{ start: 'function', end: 'functionEnd' },
 	{ start: 'module', end: 'moduleEnd' },
 	{ start: 'constants', end: 'constantsEnd' },
+	{ start: 'prototype', end: 'prototypeEnd' },
 	{ start: 'mapBegin', end: 'mapEnd' },
 ] as const;
 
@@ -47,20 +48,25 @@ export const blockEndToStartInstruction = Object.fromEntries(
 ) as Record<BlockEndInstruction, BlockStartInstruction>;
 
 export const compilerSourceBlockInstructionPairs = [
-	{ type: 'module', start: 'module', end: 'moduleEnd' },
-	{ type: 'function', start: 'function', end: 'functionEnd' },
-	{ type: 'constants', start: 'constants', end: 'constantsEnd' },
+	{ type: 'module', start: 'module', end: 'moduleEnd', compilesToModule: true, compilationMode: 'module' },
+	{ type: 'function', start: 'function', end: 'functionEnd', compilesToModule: false, compilationMode: 'function' },
+	{ type: 'constants', start: 'constants', end: 'constantsEnd', compilesToModule: true, compilationMode: null },
+	{ type: 'prototype', start: 'prototype', end: 'prototypeEnd', compilesToModule: false, compilationMode: null },
 ] as const;
 
-export type CompilerSourceBlockType = (typeof compilerSourceBlockInstructionPairs)[number]['type'];
+type CompilerSourceBlockInstructionPair = (typeof compilerSourceBlockInstructionPairs)[number];
+type CompiledModuleSourceBlockPair = Extract<CompilerSourceBlockInstructionPair, { compilesToModule: true }>;
+
+export type CompilerSourceBlockType = CompilerSourceBlockInstructionPair['type'];
+export type CompilerSourceCompilationMode = Exclude<CompilerSourceBlockInstructionPair['compilationMode'], null>;
 export const compilerSourceBlockTypes = compilerSourceBlockInstructionPairs.map(
 	({ type }) => type
 ) as CompilerSourceBlockType[];
 
-export type CompiledModuleBlockType = Exclude<CompilerSourceBlockType, 'function'>;
-export const compiledModuleBlockTypes = compilerSourceBlockTypes.filter(
-	(type): type is CompiledModuleBlockType => type !== 'function'
-);
+export type CompiledModuleBlockType = CompiledModuleSourceBlockPair['type'];
+export const compiledModuleBlockTypes = compilerSourceBlockInstructionPairs
+	.filter((pair): pair is CompiledModuleSourceBlockPair => pair.compilesToModule)
+	.map(({ type }) => type) as CompiledModuleBlockType[];
 
 export const compilerSourceBlockInstructionByType = Object.fromEntries(
 	compilerSourceBlockInstructionPairs.map(pair => [pair.type, pair])

@@ -10,6 +10,7 @@ import {
 const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
 const validMacroBlock = ['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'];
+const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd'];
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
 
 describe('parse8f4eProject', () => {
@@ -27,6 +28,8 @@ describe('parse8f4eProject', () => {
 			'# project directive-style comment before a function',
 			...validFunctionBlock,
 			'',
+			...validPrototypeBlock,
+			'',
 			...validNoteBlock,
 			'; trailing project comment',
 		].join('\n');
@@ -35,6 +38,7 @@ describe('parse8f4eProject', () => {
 		expect(project.codeBlocks).toEqual([
 			{ code: validModuleBlock, entry: 'main' },
 			{ code: validFunctionBlock },
+			{ code: validPrototypeBlock },
 			{ code: validNoteBlock },
 		]);
 	});
@@ -75,6 +79,7 @@ describe('project block classification', () => {
 		expect(getDocumentProjectBlockType(validFunctionBlock)).toBe('function');
 		expect(getDocumentProjectBlockType(['constants', 'constantsEnd'])).toBe('constants');
 		expect(getDocumentProjectBlockType(validMacroBlock)).toBe('macro');
+		expect(getDocumentProjectBlockType(validPrototypeBlock)).toBe('prototype');
 		expect(getDocumentProjectBlockType(validNoteBlock)).toBe('note');
 		expect(getDocumentProjectBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
 	});
@@ -84,6 +89,7 @@ describe('project block classification', () => {
 		expect(getProjectBlockType(validFunctionBlock)).toBe('function');
 		expect(getProjectBlockType(['constants', 'constantsEnd'])).toBe('constants');
 		expect(getProjectBlockType(validMacroBlock)).toBe('macro');
+		expect(getProjectBlockType(validPrototypeBlock)).toBe('prototype');
 		expect(getProjectBlockType(validNoteBlock)).toBe('unknown');
 	});
 
@@ -91,6 +97,7 @@ describe('project block classification', () => {
 		const blocks = [
 			{ code: validModuleBlock, entry: 'main' },
 			{ code: validFunctionBlock },
+			{ code: validPrototypeBlock },
 			{ code: validMacroBlock },
 			{ code: validNoteBlock },
 			{ code: validModuleBlock, entry: 'main', disabled: true },
@@ -100,6 +107,7 @@ describe('project block classification', () => {
 			entries: { main: [{ code: validModuleBlock }] },
 			constantsBlocks: [],
 			functionBlocks: [{ code: validFunctionBlock }],
+			prototypeBlocks: [{ code: validPrototypeBlock }],
 			macroBlocks: [{ code: validMacroBlock }],
 		});
 	});

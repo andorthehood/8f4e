@@ -1,4 +1,5 @@
-import type { CompilationContext, NormalizedSemanticInstructionLine } from '@8f4e/compiler-spec';
+import { type CompilationContext, ErrorCode, type NormalizedSemanticInstructionLine } from '@8f4e/compiler-spec';
+import { getError } from '../../compilerError';
 import semanticConst from './const';
 import semanticConstants from './constants';
 import semanticConstantsEnd from './constantsEnd';
@@ -29,5 +30,14 @@ export default function applySemanticInstruction(line: NormalizedSemanticInstruc
 			return;
 		case 'constantsEnd':
 			semanticConstantsEnd(line, context);
+			return;
+		case 'prototype':
+		case 'prototypeEnd':
+			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
+		case 'shape':
+			if (context.mode !== 'module' || !context.insideModuleBlock) {
+				throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
+			}
+			return;
 	}
 }

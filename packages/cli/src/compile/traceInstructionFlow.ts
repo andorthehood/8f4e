@@ -131,7 +131,9 @@ export default function traceInstructionFlow(
 	project: ProjectInput,
 	compilerOptions: CompileOptions
 ): InstructionFlowTrace {
-	const { entries, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
+	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks(
+		project.codeBlocks
+	);
 
 	const hasModuleBlocks = Object.values(entries).some(entry => entry.length > 0);
 	if (!hasModuleBlocks && constantsBlocks.length === 0) {
@@ -146,6 +148,7 @@ export default function traceInstructionFlow(
 			entries,
 			constants: constantsBlocks,
 			functions: functionBlocks,
+			prototypes: prototypeBlocks,
 			macros: macroBlocks,
 		},
 		{

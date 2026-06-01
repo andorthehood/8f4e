@@ -106,7 +106,8 @@ export type ModuleEntries = Record<string, Module[]>;
 /** Top-level source payload consumed by the compiler. */
 export interface CompileInput {
 	entries: ModuleEntries;
-	functions?: Module[];
-	constants?: Module[];
-	macros?: Module[];
+	functions: Module[];
+	constants: Module[];
+	prototypes: Module[];
+	macros: Module[];
 }
