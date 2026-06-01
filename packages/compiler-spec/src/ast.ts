@@ -259,6 +259,8 @@ export interface ModuleAST {
 	lines: CompilerASTLines;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
+	/** Parser metadata used to skip prototype shape expansion work when a module has no shape instructions. */
+	containsShape: boolean;
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 

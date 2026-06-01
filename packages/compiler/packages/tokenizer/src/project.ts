@@ -149,7 +149,10 @@ export function parse8f4eProject(text: string): ProjectInput {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 				}
 
-				codeBlocks.push({ code: currentBlockLines, ...(entry ? { entry } : {}) });
+				codeBlocks.push({
+					code: currentBlockLines,
+					...(entry ? { entry } : {}),
+				});
 				return i + 1;
 			}
 
@@ -251,7 +254,9 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 			}
 			const entryName = block.entry;
 			entries[entryName] ??= [];
-			entries[entryName].push({ code: block.code });
+			entries[entryName].push({
+				code: block.code,
+			});
 			continue;
 		}
 		if (blockType === documentBlockInstructionByType.constants.type) {
