@@ -17,6 +17,11 @@ describe('getCodeBlockId', () => {
 		expect(getCodeBlockId(code)).toBe('constants_env');
 	});
 
+	it('returns prototype ID for prototype blocks', () => {
+		const code = ['prototype oscillatorState', '', 'prototypeEnd'];
+		expect(getCodeBlockId(code)).toBe('prototype_oscillatorState');
+	});
+
 	it('returns empty string for note blocks', () => {
 		expect(getCodeBlockId(['note', '', 'noteEnd'])).toBe('');
 		expect(getCodeBlockId(['note fragmentShaderPostprocess', '', 'noteEnd'])).toBe('');

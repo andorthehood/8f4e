@@ -51,15 +51,18 @@ describe('Example Projects Compilation', () => {
 	describe('Module Compilation', () => {
 		projects.forEach((project, index) => {
 			it(`should compile module blocks in project ${index}`, () => {
-				const { entries, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(project.codeBlocks);
+				const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks(
+					project.codeBlocks
+				);
 				const moduleCount = Object.values(entries).reduce((sum, group) => sum + group.length, 0);
 
 				const result = compile(
 					{
 						entries,
 						constants: constantsBlocks,
-						functions: functionBlocks.length > 0 ? functionBlocks : undefined,
-						macros: macroBlocks.length > 0 ? macroBlocks : undefined,
+						functions: functionBlocks,
+						prototypes: prototypeBlocks,
+						macros: macroBlocks,
 					},
 					COMPILER_OPTIONS
 				);

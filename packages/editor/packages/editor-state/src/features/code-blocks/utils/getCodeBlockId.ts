@@ -1,8 +1,8 @@
-import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
+import { getConstantsId, getFunctionId, getModuleId, getPrototypeId } from '@8f4e/tokenizer';
 
 /**
  * Retrieves the ID from a code block based on its type.
- * Tries to identify the code block as a module, function, or constants block.
+ * Tries to identify the code block as a module, function, constants, or prototype block.
  * Note blocks do not carry IDs.
  *
  * @param code - Code block represented as an array of lines
@@ -22,6 +22,11 @@ export default function getCodeBlockId(code: string[]): string {
 	const constantsId = getConstantsId(code);
 	if (constantsId) {
 		return `constants_${constantsId}`;
+	}
+
+	const prototypeId = getPrototypeId(code);
+	if (prototypeId) {
+		return `prototype_${prototypeId}`;
 	}
 
 	return '';

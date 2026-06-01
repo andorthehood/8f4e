@@ -58,6 +58,19 @@ describe('menus - go home entry', () => {
 		expect(newNoteItem?.payload).toEqual({ isNew: true, blockType: 'note' });
 	});
 
+	it('shows "New Prototype" when editing is enabled', () => {
+		const mockState = createMockState({
+			editorMode: 'edit',
+		});
+
+		const menu = mainMenu(mockState as State);
+		const newPrototypeItem = menu.find(item => item.title === 'New Prototype');
+
+		expect(newPrototypeItem).toBeDefined();
+		expect(newPrototypeItem?.action).toBe('addCodeBlock');
+		expect(newPrototypeItem?.payload).toEqual({ isNew: true, blockType: 'prototype' });
+	});
+
 	it('uses "New Module" as the module creation action', () => {
 		const mockState = createMockState({
 			editorMode: 'edit',
