@@ -58,18 +58,18 @@ import {
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 import { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 
-type ExpandedCompilerSource = {
+type ModuleCompilerSource = {
 	code: string[];
 	cacheKey: string;
-};
-
-type ModuleCompilerSource = ExpandedCompilerSource & {
 	entryName: string;
 };
 
 type ParsedPrototypeSource = {
 	ast: PrototypeAST;
-	source: ExpandedCompilerSource;
+	source: {
+		code: string[];
+		cacheKey: string;
+	};
 };
 
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
@@ -276,7 +276,7 @@ function startsWithInstruction(line: string, instruction: string): boolean {
 	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
 }
 
-function getOriginalSourceLine(source: ExpandedCompilerSource, lineNumber: number): string {
+function getOriginalSourceLine(source: { code: string[] }, lineNumber: number): string {
 	return source.code[lineNumber] ?? '';
 }
 
@@ -359,7 +359,7 @@ export default function compile(
 			code: expandMacros(prototype, macroDefinitions),
 			cacheKey: `prototype:${index}`,
 		};
-	}) satisfies ExpandedCompilerSource[];
+	});
 
 	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) => ({
 		ast: parsePrototypeAST(code, cache, cacheKey),
@@ -384,7 +384,7 @@ export default function compile(
 			code: expandMacros(constantsBlock, macroDefinitions),
 			cacheKey: `constants:${index}`,
 		};
-	}) satisfies ExpandedCompilerSource[];
+	});
 
 	// Expand macros in functions
 	const expandedFunctions = functions.map((func, index) => {
@@ -392,7 +392,7 @@ export default function compile(
 			code: expandMacros(func, macroDefinitions),
 			cacheKey: `function:${index}`,
 		};
-	}) satisfies ExpandedCompilerSource[];
+	});
 
 	const astModuleEntries = expandedModules.map(({ entryName, code, cacheKey }) => ({
 		entryName,
