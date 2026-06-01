@@ -217,7 +217,6 @@ function serializeAstLine(line: CompilerASTLine): Record<string, unknown> {
 	const lineSnapshot: Record<string, unknown> = { ...line };
 
 	delete lineSnapshot.lineNumber;
-	delete lineSnapshot.lineNumber;
 	delete lineSnapshot.ifBlock;
 	delete lineSnapshot.ifEndBlock;
 	delete lineSnapshot.blockBlock;
