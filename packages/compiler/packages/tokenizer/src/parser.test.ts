@@ -87,6 +87,12 @@ describe('parseLine', () => {
 		expect(() => parseLine('map "AB" 1', 0)).toThrowError(SyntaxRulesError);
 	});
 
+	it('rejects unknown instruction names in tokenizer', () => {
+		expect(() => parseLine('constructor', 0)).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
+		);
+	});
+
 	it('parses a quoted string argument as STRING_LITERAL', () => {
 		const result = parseLine('push "hello"', 0);
 		expect(result.instruction).toBe('push');
@@ -525,10 +531,6 @@ describe('compileToASTLines', () => {
 
 	it('rejects unexpected blockEnd without a matching block', () => {
 		expect(() => compileToASTLines(['blockEnd'])).toThrowError(SyntaxRulesError);
-	});
-
-	it('does not treat inherited object keys as block end instructions', () => {
-		expect(() => compileToASTLines(['block', 'constructor', 'blockEnd'])).not.toThrow();
 	});
 
 	it('rejects unclosed block blocks', () => {

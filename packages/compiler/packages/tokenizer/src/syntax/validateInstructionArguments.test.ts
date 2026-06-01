@@ -2,7 +2,7 @@ import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
 import { classifyIdentifier } from './parseArgument';
-import { SyntaxRulesError } from './syntaxError';
+import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 import validateInstructionArguments from './validateInstructionArguments';
 
 const { parseCompileTimeOperand } = await import('./parseArgument');
@@ -11,6 +11,12 @@ describe('validateInstructionArguments', () => {
 	it('enforces missing arguments for known instruction arity', () => {
 		expect(() => validateInstructionArguments('push', [])).toThrowError(SyntaxRulesError);
 		expect(() => validateInstructionArguments('map', [])).toThrowError(SyntaxRulesError);
+	});
+
+	it('rejects unknown instruction names before argument validation', () => {
+		expect(() => validateInstructionArguments('unknownInstruction', [])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
+		);
 	});
 
 	it('accepts one-argument map rows', () => {

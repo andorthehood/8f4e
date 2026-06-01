@@ -281,7 +281,7 @@ functionEnd
 
 ## Error Handling
 
-If an unknown compiler directive is encountered, the compiler will throw an `UNRECOGNISED_INSTRUCTION` error.
+If an unknown compiler directive is encountered, the tokenizer will throw an `UNRECOGNISED_INSTRUCTION` syntax error.
 
 If a module-scoped directive like `#skipExecution` is used outside of a module block, the compiler will throw a `COMPILER_DIRECTIVE_INVALID_CONTEXT` error.
 

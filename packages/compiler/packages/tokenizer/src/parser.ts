@@ -38,8 +38,8 @@ import { hashSource } from './cache';
 import instructionParser from './syntax/instructionParser';
 import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
 import isComment from './syntax/isComment';
+import isInstructionLikeLine from './syntax/isInstructionLikeLine';
 import isMemoryDeclarationInstruction from './syntax/isMemoryDeclarationInstruction';
-import isValidInstruction from './syntax/isValidInstruction';
 import { parseArgument } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';
@@ -440,7 +440,7 @@ function foldArgumentContinuationLines(code: string[]): SourceLine[] {
 	let previousSourceLine: SourceLine | undefined;
 
 	for (const [lineNumber, line] of code.map((sourceLine, index) => [index, sourceLine] as const)) {
-		if (isComment(line) || !isValidInstruction(line)) {
+		if (isComment(line) || !isInstructionLikeLine(line)) {
 			continue;
 		}
 

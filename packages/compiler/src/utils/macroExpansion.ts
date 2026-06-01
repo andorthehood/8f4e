@@ -1,6 +1,6 @@
 import type { CompilerASTLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
 import { documentBlockInstructionByType, ErrorCode } from '@8f4e/compiler-spec';
-import { instructionParser, isComment, isValidInstruction } from '@8f4e/tokenizer';
+import { instructionParser, isComment, isInstructionLikeLine } from '@8f4e/tokenizer';
 import { getError } from '../compilerError';
 
 const macroDefinitionInstruction = documentBlockInstructionByType.macro.start;
@@ -43,7 +43,7 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 			}
 
 			// Skip empty or invalid lines
-			if (!isValidInstruction(line)) {
+			if (!isInstructionLikeLine(line)) {
 				return;
 			}
 
@@ -125,7 +125,7 @@ export function expandMacros(module: Module, macroDefinitions: Map<string, Macro
 
 	code.forEach((line, lineIndex) => {
 		// For comments and empty lines, preserve as-is
-		if (isComment(line) || !isValidInstruction(line)) {
+		if (isComment(line) || !isInstructionLikeLine(line)) {
 			expandedLines.push(line);
 			return;
 		}

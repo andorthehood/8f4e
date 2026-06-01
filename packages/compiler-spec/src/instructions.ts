@@ -116,12 +116,14 @@ export type Instruction =
 	| MacroInstructionName
 	| DocumentOnlyInstructionName;
 
-export const languageInstructionNames = Array.from(
-	new Set([
-		...codegenInstructionNames,
-		...memoryDeclarationInstructions,
-		...semanticInstructionNames,
-		...macroInstructionNames,
-		...documentOnlyInstructionNames,
-	])
-) as Instruction[];
+export const knownInstructionNameSet: ReadonlySet<string> = new Set([
+	...codegenInstructionNames,
+	...memoryDeclarationInstructions,
+	...semanticInstructionNames,
+	...macroInstructionNames,
+	...documentOnlyInstructionNames,
+]);
+
+export function isKnownInstructionName(instruction: string): instruction is Instruction {
+	return knownInstructionNameSet.has(instruction);
+}
