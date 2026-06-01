@@ -236,6 +236,10 @@ function analyzePush(line: NormalizedPushLine, context: CompilationContext): Sta
 function analyzeCall(line: ResolvedCallLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const { parameters, returns } = line.targetFunction.signature;
 
+	for (const inlinePushLine of line.inlineArgumentPushes ?? []) {
+		analyzePush(inlinePushLine, context);
+	}
+
 	if (context.stack.length < parameters.length) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
