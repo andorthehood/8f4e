@@ -21,7 +21,6 @@ import {
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	ErrorCode,
 	GLOBAL_ALIGNMENT_BOUNDARY,
-	getInstructionSpec,
 	isMemoryDeclarationLine,
 } from '@8f4e/compiler-spec';
 import {
@@ -232,16 +231,6 @@ function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: strin
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'constants') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
-	}
-	for (const line of ast.lines) {
-		if (line.instruction === 'constants') {
-			continue;
-		}
-
-		const spec = getInstructionSpec(line.instruction) as { allowedInConstantsBlocks?: boolean } | undefined;
-		if (spec?.allowedInConstantsBlocks !== true) {
-			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, undefined);
-		}
 	}
 	return ast;
 }
