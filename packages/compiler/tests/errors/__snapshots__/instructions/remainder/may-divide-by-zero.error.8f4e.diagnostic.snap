@@ -7,8 +7,7 @@
   "line": {
     "arguments": [],
     "instruction": "remainder",
-    "lineNumberAfterMacroExpansion": 9,
-    "lineNumberBeforeMacroExpansion": 9,
+    "lineNumber": 9,
   },
   "message": "Possible division by zero. (14)",
 }

@@ -111,7 +111,7 @@ function traceAst(
 		}
 
 		entries.push({
-			lineNumber: line.lineNumberBeforeMacroExpansion + 1,
+			lineNumber: line.lineNumber + 1,
 			instruction: line.instruction,
 			arguments: serializeArguments(line),
 			stackBefore,

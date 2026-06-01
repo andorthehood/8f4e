@@ -19,8 +19,7 @@
       },
     ],
     "instruction": "map",
-    "lineNumberAfterMacroExpansion": 5,
-    "lineNumberBeforeMacroExpansion": 5,
+    "lineNumber": 5,
   },
   "message": "Undeclared identifier: MISSING_CONST. (5)",
 }

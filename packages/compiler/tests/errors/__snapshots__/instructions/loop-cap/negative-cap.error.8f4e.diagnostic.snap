@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "loop",
-    "lineNumberAfterMacroExpansion": 3,
-    "lineNumberBeforeMacroExpansion": 3,
+    "lineNumber": 3,
   },
   "message": "Expected value, got an identifier. (8)",
 }

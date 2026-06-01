@@ -35,7 +35,7 @@ const memoryCopy: InstructionCompiler<NormalizedMemoryCopyLine> = (line, context
 			byteLength,
 			destinationMemoryIndex,
 			sourceMemoryIndex,
-			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+			lineNumber: line.lineNumber,
 			memoryCopyByteCode,
 		})
 	);

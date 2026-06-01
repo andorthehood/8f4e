@@ -13,8 +13,7 @@
       },
     ],
     "instruction": "map",
-    "lineNumberAfterMacroExpansion": 4,
-    "lineNumberBeforeMacroExpansion": 4,
+    "lineNumber": 4,
   },
   "message": "This instruction can only be used within a block or a module. (13)",
 }

@@ -13,8 +13,7 @@ describe('ensureNonZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			ensureNonZero,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'ensureNonZero',
 				arguments: [],
 			} as CompilerASTLine,
@@ -35,8 +34,7 @@ describe('ensureNonZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			ensureNonZero,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'ensureNonZero',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2.5, isInteger: false }],
 			} as CompilerASTLine,
@@ -57,8 +55,7 @@ describe('ensureNonZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			ensureNonZero,
 			{
-				lineNumberBeforeMacroExpansion: 3,
-				lineNumberAfterMacroExpansion: 3,
+				lineNumber: 3,
 				instruction: 'ensureNonZero',
 				arguments: [
 					{

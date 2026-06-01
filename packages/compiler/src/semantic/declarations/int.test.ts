@@ -12,8 +12,7 @@ describe('int instruction compiler', () => {
 
 		int(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('counter')],

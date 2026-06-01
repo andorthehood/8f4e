@@ -12,8 +12,7 @@ describe('float instruction compiler', () => {
 
 		float(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'float',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('temperature')],

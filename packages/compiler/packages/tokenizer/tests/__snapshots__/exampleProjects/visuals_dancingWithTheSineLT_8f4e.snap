@@ -1,13 +1,11 @@
 [
   {
-    "lineNumberBeforeMacroExpansion": 0,
-    "lineNumberAfterMacroExpansion": 0,
+    "lineNumber": 0,
     "instruction": "8f4e/v1",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 2,
-    "lineNumberAfterMacroExpansion": 2,
+    "lineNumber": 2,
     "instruction": "entry",
     "arguments": [
       {
@@ -19,8 +17,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 3,
-    "lineNumberAfterMacroExpansion": 3,
+    "lineNumber": 3,
     "instruction": "module",
     "arguments": [
       {
@@ -32,14 +29,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 8,
-    "lineNumberAfterMacroExpansion": 8,
+    "lineNumber": 8,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 9,
-    "lineNumberAfterMacroExpansion": 9,
+    "lineNumber": 9,
     "instruction": "module",
     "arguments": [
       {
@@ -51,8 +46,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 12,
-    "lineNumberAfterMacroExpansion": 12,
+    "lineNumber": 12,
     "instruction": "float",
     "arguments": [
       {
@@ -70,8 +64,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 13,
-    "lineNumberAfterMacroExpansion": 13,
+    "lineNumber": 13,
     "instruction": "float",
     "arguments": [
       {
@@ -89,8 +82,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 14,
-    "lineNumberAfterMacroExpansion": 14,
+    "lineNumber": 14,
     "instruction": "float",
     "arguments": [
       {
@@ -108,8 +100,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 15,
-    "lineNumberAfterMacroExpansion": 15,
+    "lineNumber": 15,
     "instruction": "float",
     "arguments": [
       {
@@ -127,8 +118,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 16,
-    "lineNumberAfterMacroExpansion": 16,
+    "lineNumber": 16,
     "instruction": "float",
     "arguments": [
       {
@@ -146,8 +136,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 17,
-    "lineNumberAfterMacroExpansion": 17,
+    "lineNumber": 17,
     "instruction": "float",
     "arguments": [
       {
@@ -165,8 +154,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 18,
-    "lineNumberAfterMacroExpansion": 18,
+    "lineNumber": 18,
     "instruction": "float",
     "arguments": [
       {
@@ -184,8 +172,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 19,
-    "lineNumberAfterMacroExpansion": 19,
+    "lineNumber": 19,
     "instruction": "float",
     "arguments": [
       {
@@ -203,8 +190,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 20,
-    "lineNumberAfterMacroExpansion": 20,
+    "lineNumber": 20,
     "instruction": "float",
     "arguments": [
       {
@@ -222,8 +208,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 21,
-    "lineNumberAfterMacroExpansion": 21,
+    "lineNumber": 21,
     "instruction": "float",
     "arguments": [
       {
@@ -241,8 +226,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 22,
-    "lineNumberAfterMacroExpansion": 22,
+    "lineNumber": 22,
     "instruction": "float",
     "arguments": [
       {
@@ -260,8 +244,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 23,
-    "lineNumberAfterMacroExpansion": 23,
+    "lineNumber": 23,
     "instruction": "float",
     "arguments": [
       {
@@ -279,8 +262,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 24,
-    "lineNumberAfterMacroExpansion": 24,
+    "lineNumber": 24,
     "instruction": "float",
     "arguments": [
       {
@@ -298,8 +280,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 25,
-    "lineNumberAfterMacroExpansion": 25,
+    "lineNumber": 25,
     "instruction": "float",
     "arguments": [
       {
@@ -317,8 +298,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 26,
-    "lineNumberAfterMacroExpansion": 26,
+    "lineNumber": 26,
     "instruction": "float",
     "arguments": [
       {
@@ -336,8 +316,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 27,
-    "lineNumberAfterMacroExpansion": 27,
+    "lineNumber": 27,
     "instruction": "float",
     "arguments": [
       {
@@ -355,8 +334,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 28,
-    "lineNumberAfterMacroExpansion": 28,
+    "lineNumber": 28,
     "instruction": "float",
     "arguments": [
       {
@@ -374,8 +352,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 29,
-    "lineNumberAfterMacroExpansion": 29,
+    "lineNumber": 29,
     "instruction": "float",
     "arguments": [
       {
@@ -393,8 +370,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 30,
-    "lineNumberAfterMacroExpansion": 30,
+    "lineNumber": 30,
     "instruction": "float",
     "arguments": [
       {
@@ -412,8 +388,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 31,
-    "lineNumberAfterMacroExpansion": 31,
+    "lineNumber": 31,
     "instruction": "float",
     "arguments": [
       {
@@ -431,8 +406,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 32,
-    "lineNumberAfterMacroExpansion": 32,
+    "lineNumber": 32,
     "instruction": "float",
     "arguments": [
       {
@@ -450,8 +424,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 33,
-    "lineNumberAfterMacroExpansion": 33,
+    "lineNumber": 33,
     "instruction": "float",
     "arguments": [
       {
@@ -469,8 +442,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 34,
-    "lineNumberAfterMacroExpansion": 34,
+    "lineNumber": 34,
     "instruction": "float",
     "arguments": [
       {
@@ -488,8 +460,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 35,
-    "lineNumberAfterMacroExpansion": 35,
+    "lineNumber": 35,
     "instruction": "float",
     "arguments": [
       {
@@ -507,8 +478,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 36,
-    "lineNumberAfterMacroExpansion": 36,
+    "lineNumber": 36,
     "instruction": "float",
     "arguments": [
       {
@@ -526,8 +496,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 37,
-    "lineNumberAfterMacroExpansion": 37,
+    "lineNumber": 37,
     "instruction": "float",
     "arguments": [
       {
@@ -545,8 +514,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 38,
-    "lineNumberAfterMacroExpansion": 38,
+    "lineNumber": 38,
     "instruction": "float",
     "arguments": [
       {
@@ -564,8 +532,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 39,
-    "lineNumberAfterMacroExpansion": 39,
+    "lineNumber": 39,
     "instruction": "float",
     "arguments": [
       {
@@ -583,8 +550,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 40,
-    "lineNumberAfterMacroExpansion": 40,
+    "lineNumber": 40,
     "instruction": "float",
     "arguments": [
       {
@@ -602,8 +568,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 41,
-    "lineNumberAfterMacroExpansion": 41,
+    "lineNumber": 41,
     "instruction": "float",
     "arguments": [
       {
@@ -621,8 +586,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 42,
-    "lineNumberAfterMacroExpansion": 42,
+    "lineNumber": 42,
     "instruction": "float",
     "arguments": [
       {
@@ -640,8 +604,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 43,
-    "lineNumberAfterMacroExpansion": 43,
+    "lineNumber": 43,
     "instruction": "float",
     "arguments": [
       {
@@ -659,8 +622,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 44,
-    "lineNumberAfterMacroExpansion": 44,
+    "lineNumber": 44,
     "instruction": "float",
     "arguments": [
       {
@@ -678,8 +640,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 45,
-    "lineNumberAfterMacroExpansion": 45,
+    "lineNumber": 45,
     "instruction": "float",
     "arguments": [
       {
@@ -697,8 +658,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 46,
-    "lineNumberAfterMacroExpansion": 46,
+    "lineNumber": 46,
     "instruction": "float",
     "arguments": [
       {
@@ -716,8 +676,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 47,
-    "lineNumberAfterMacroExpansion": 47,
+    "lineNumber": 47,
     "instruction": "float",
     "arguments": [
       {
@@ -735,8 +694,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 48,
-    "lineNumberAfterMacroExpansion": 48,
+    "lineNumber": 48,
     "instruction": "float",
     "arguments": [
       {
@@ -754,8 +712,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 49,
-    "lineNumberAfterMacroExpansion": 49,
+    "lineNumber": 49,
     "instruction": "float",
     "arguments": [
       {
@@ -773,8 +730,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 50,
-    "lineNumberAfterMacroExpansion": 50,
+    "lineNumber": 50,
     "instruction": "float",
     "arguments": [
       {
@@ -792,8 +748,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 51,
-    "lineNumberAfterMacroExpansion": 51,
+    "lineNumber": 51,
     "instruction": "float",
     "arguments": [
       {
@@ -811,8 +766,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 52,
-    "lineNumberAfterMacroExpansion": 52,
+    "lineNumber": 52,
     "instruction": "float",
     "arguments": [
       {
@@ -830,8 +784,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 53,
-    "lineNumberAfterMacroExpansion": 53,
+    "lineNumber": 53,
     "instruction": "float",
     "arguments": [
       {
@@ -849,8 +802,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 54,
-    "lineNumberAfterMacroExpansion": 54,
+    "lineNumber": 54,
     "instruction": "float",
     "arguments": [
       {
@@ -868,8 +820,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 55,
-    "lineNumberAfterMacroExpansion": 55,
+    "lineNumber": 55,
     "instruction": "float",
     "arguments": [
       {
@@ -887,8 +838,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 56,
-    "lineNumberAfterMacroExpansion": 56,
+    "lineNumber": 56,
     "instruction": "float",
     "arguments": [
       {
@@ -906,8 +856,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 57,
-    "lineNumberAfterMacroExpansion": 57,
+    "lineNumber": 57,
     "instruction": "float",
     "arguments": [
       {
@@ -925,8 +874,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 58,
-    "lineNumberAfterMacroExpansion": 58,
+    "lineNumber": 58,
     "instruction": "float",
     "arguments": [
       {
@@ -944,8 +892,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 59,
-    "lineNumberAfterMacroExpansion": 59,
+    "lineNumber": 59,
     "instruction": "float",
     "arguments": [
       {
@@ -963,8 +910,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 60,
-    "lineNumberAfterMacroExpansion": 60,
+    "lineNumber": 60,
     "instruction": "float",
     "arguments": [
       {
@@ -982,8 +928,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 61,
-    "lineNumberAfterMacroExpansion": 61,
+    "lineNumber": 61,
     "instruction": "float",
     "arguments": [
       {
@@ -1001,8 +946,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 62,
-    "lineNumberAfterMacroExpansion": 62,
+    "lineNumber": 62,
     "instruction": "float",
     "arguments": [
       {
@@ -1020,8 +964,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 63,
-    "lineNumberAfterMacroExpansion": 63,
+    "lineNumber": 63,
     "instruction": "float",
     "arguments": [
       {
@@ -1039,8 +982,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 64,
-    "lineNumberAfterMacroExpansion": 64,
+    "lineNumber": 64,
     "instruction": "float",
     "arguments": [
       {
@@ -1058,8 +1000,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 65,
-    "lineNumberAfterMacroExpansion": 65,
+    "lineNumber": 65,
     "instruction": "float",
     "arguments": [
       {
@@ -1077,8 +1018,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 66,
-    "lineNumberAfterMacroExpansion": 66,
+    "lineNumber": 66,
     "instruction": "float",
     "arguments": [
       {
@@ -1096,8 +1036,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 67,
-    "lineNumberAfterMacroExpansion": 67,
+    "lineNumber": 67,
     "instruction": "float",
     "arguments": [
       {
@@ -1115,8 +1054,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 68,
-    "lineNumberAfterMacroExpansion": 68,
+    "lineNumber": 68,
     "instruction": "float",
     "arguments": [
       {
@@ -1134,8 +1072,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 69,
-    "lineNumberAfterMacroExpansion": 69,
+    "lineNumber": 69,
     "instruction": "float",
     "arguments": [
       {
@@ -1153,8 +1090,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 70,
-    "lineNumberAfterMacroExpansion": 70,
+    "lineNumber": 70,
     "instruction": "float",
     "arguments": [
       {
@@ -1172,8 +1108,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 71,
-    "lineNumberAfterMacroExpansion": 71,
+    "lineNumber": 71,
     "instruction": "float",
     "arguments": [
       {
@@ -1191,8 +1126,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 72,
-    "lineNumberAfterMacroExpansion": 72,
+    "lineNumber": 72,
     "instruction": "float",
     "arguments": [
       {
@@ -1210,8 +1144,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 73,
-    "lineNumberAfterMacroExpansion": 73,
+    "lineNumber": 73,
     "instruction": "float",
     "arguments": [
       {
@@ -1229,8 +1162,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 74,
-    "lineNumberAfterMacroExpansion": 74,
+    "lineNumber": 74,
     "instruction": "float",
     "arguments": [
       {
@@ -1248,8 +1180,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 75,
-    "lineNumberAfterMacroExpansion": 75,
+    "lineNumber": 75,
     "instruction": "float",
     "arguments": [
       {
@@ -1267,8 +1198,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 76,
-    "lineNumberAfterMacroExpansion": 76,
+    "lineNumber": 76,
     "instruction": "float",
     "arguments": [
       {
@@ -1286,8 +1216,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 77,
-    "lineNumberAfterMacroExpansion": 77,
+    "lineNumber": 77,
     "instruction": "float",
     "arguments": [
       {
@@ -1305,8 +1234,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 78,
-    "lineNumberAfterMacroExpansion": 78,
+    "lineNumber": 78,
     "instruction": "float",
     "arguments": [
       {
@@ -1324,8 +1252,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 79,
-    "lineNumberAfterMacroExpansion": 79,
+    "lineNumber": 79,
     "instruction": "float",
     "arguments": [
       {
@@ -1343,8 +1270,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 80,
-    "lineNumberAfterMacroExpansion": 80,
+    "lineNumber": 80,
     "instruction": "float",
     "arguments": [
       {
@@ -1362,8 +1288,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 81,
-    "lineNumberAfterMacroExpansion": 81,
+    "lineNumber": 81,
     "instruction": "float",
     "arguments": [
       {
@@ -1381,8 +1306,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 82,
-    "lineNumberAfterMacroExpansion": 82,
+    "lineNumber": 82,
     "instruction": "float",
     "arguments": [
       {
@@ -1400,8 +1324,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 83,
-    "lineNumberAfterMacroExpansion": 83,
+    "lineNumber": 83,
     "instruction": "float",
     "arguments": [
       {
@@ -1419,8 +1342,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 84,
-    "lineNumberAfterMacroExpansion": 84,
+    "lineNumber": 84,
     "instruction": "float",
     "arguments": [
       {
@@ -1438,8 +1360,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 85,
-    "lineNumberAfterMacroExpansion": 85,
+    "lineNumber": 85,
     "instruction": "float",
     "arguments": [
       {
@@ -1457,8 +1378,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 86,
-    "lineNumberAfterMacroExpansion": 86,
+    "lineNumber": 86,
     "instruction": "float",
     "arguments": [
       {
@@ -1476,8 +1396,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 87,
-    "lineNumberAfterMacroExpansion": 87,
+    "lineNumber": 87,
     "instruction": "float",
     "arguments": [
       {
@@ -1495,8 +1414,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 88,
-    "lineNumberAfterMacroExpansion": 88,
+    "lineNumber": 88,
     "instruction": "float",
     "arguments": [
       {
@@ -1514,8 +1432,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 89,
-    "lineNumberAfterMacroExpansion": 89,
+    "lineNumber": 89,
     "instruction": "float",
     "arguments": [
       {
@@ -1533,8 +1450,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 90,
-    "lineNumberAfterMacroExpansion": 90,
+    "lineNumber": 90,
     "instruction": "float",
     "arguments": [
       {
@@ -1552,8 +1468,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 91,
-    "lineNumberAfterMacroExpansion": 91,
+    "lineNumber": 91,
     "instruction": "float",
     "arguments": [
       {
@@ -1571,8 +1486,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 92,
-    "lineNumberAfterMacroExpansion": 92,
+    "lineNumber": 92,
     "instruction": "float",
     "arguments": [
       {
@@ -1590,8 +1504,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 93,
-    "lineNumberAfterMacroExpansion": 93,
+    "lineNumber": 93,
     "instruction": "float",
     "arguments": [
       {
@@ -1609,8 +1522,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 94,
-    "lineNumberAfterMacroExpansion": 94,
+    "lineNumber": 94,
     "instruction": "float",
     "arguments": [
       {
@@ -1628,8 +1540,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 95,
-    "lineNumberAfterMacroExpansion": 95,
+    "lineNumber": 95,
     "instruction": "float",
     "arguments": [
       {
@@ -1647,8 +1558,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 96,
-    "lineNumberAfterMacroExpansion": 96,
+    "lineNumber": 96,
     "instruction": "float",
     "arguments": [
       {
@@ -1666,8 +1576,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 97,
-    "lineNumberAfterMacroExpansion": 97,
+    "lineNumber": 97,
     "instruction": "float",
     "arguments": [
       {
@@ -1685,8 +1594,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 98,
-    "lineNumberAfterMacroExpansion": 98,
+    "lineNumber": 98,
     "instruction": "float",
     "arguments": [
       {
@@ -1704,8 +1612,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 99,
-    "lineNumberAfterMacroExpansion": 99,
+    "lineNumber": 99,
     "instruction": "float",
     "arguments": [
       {
@@ -1723,8 +1630,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 100,
-    "lineNumberAfterMacroExpansion": 100,
+    "lineNumber": 100,
     "instruction": "float",
     "arguments": [
       {
@@ -1742,8 +1648,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 101,
-    "lineNumberAfterMacroExpansion": 101,
+    "lineNumber": 101,
     "instruction": "float",
     "arguments": [
       {
@@ -1761,8 +1666,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 102,
-    "lineNumberAfterMacroExpansion": 102,
+    "lineNumber": 102,
     "instruction": "float",
     "arguments": [
       {
@@ -1780,8 +1684,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 103,
-    "lineNumberAfterMacroExpansion": 103,
+    "lineNumber": 103,
     "instruction": "float",
     "arguments": [
       {
@@ -1799,8 +1702,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 104,
-    "lineNumberAfterMacroExpansion": 104,
+    "lineNumber": 104,
     "instruction": "float",
     "arguments": [
       {
@@ -1818,8 +1720,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 105,
-    "lineNumberAfterMacroExpansion": 105,
+    "lineNumber": 105,
     "instruction": "float",
     "arguments": [
       {
@@ -1837,8 +1738,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 106,
-    "lineNumberAfterMacroExpansion": 106,
+    "lineNumber": 106,
     "instruction": "float",
     "arguments": [
       {
@@ -1856,8 +1756,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 107,
-    "lineNumberAfterMacroExpansion": 107,
+    "lineNumber": 107,
     "instruction": "float",
     "arguments": [
       {
@@ -1875,8 +1774,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 108,
-    "lineNumberAfterMacroExpansion": 108,
+    "lineNumber": 108,
     "instruction": "float",
     "arguments": [
       {
@@ -1894,8 +1792,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 109,
-    "lineNumberAfterMacroExpansion": 109,
+    "lineNumber": 109,
     "instruction": "float",
     "arguments": [
       {
@@ -1913,8 +1810,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 110,
-    "lineNumberAfterMacroExpansion": 110,
+    "lineNumber": 110,
     "instruction": "float",
     "arguments": [
       {
@@ -1932,8 +1828,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 111,
-    "lineNumberAfterMacroExpansion": 111,
+    "lineNumber": 111,
     "instruction": "float",
     "arguments": [
       {
@@ -1951,8 +1846,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 112,
-    "lineNumberAfterMacroExpansion": 112,
+    "lineNumber": 112,
     "instruction": "float",
     "arguments": [
       {
@@ -1970,8 +1864,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 113,
-    "lineNumberAfterMacroExpansion": 113,
+    "lineNumber": 113,
     "instruction": "float",
     "arguments": [
       {
@@ -1989,8 +1882,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 114,
-    "lineNumberAfterMacroExpansion": 114,
+    "lineNumber": 114,
     "instruction": "float",
     "arguments": [
       {
@@ -2008,8 +1900,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 115,
-    "lineNumberAfterMacroExpansion": 115,
+    "lineNumber": 115,
     "instruction": "float",
     "arguments": [
       {
@@ -2027,8 +1918,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 116,
-    "lineNumberAfterMacroExpansion": 116,
+    "lineNumber": 116,
     "instruction": "float",
     "arguments": [
       {
@@ -2046,8 +1936,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 117,
-    "lineNumberAfterMacroExpansion": 117,
+    "lineNumber": 117,
     "instruction": "float",
     "arguments": [
       {
@@ -2065,8 +1954,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 118,
-    "lineNumberAfterMacroExpansion": 118,
+    "lineNumber": 118,
     "instruction": "float",
     "arguments": [
       {
@@ -2084,8 +1972,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 119,
-    "lineNumberAfterMacroExpansion": 119,
+    "lineNumber": 119,
     "instruction": "float",
     "arguments": [
       {
@@ -2103,8 +1990,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 120,
-    "lineNumberAfterMacroExpansion": 120,
+    "lineNumber": 120,
     "instruction": "float",
     "arguments": [
       {
@@ -2122,8 +2008,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 121,
-    "lineNumberAfterMacroExpansion": 121,
+    "lineNumber": 121,
     "instruction": "float",
     "arguments": [
       {
@@ -2141,8 +2026,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 122,
-    "lineNumberAfterMacroExpansion": 122,
+    "lineNumber": 122,
     "instruction": "float",
     "arguments": [
       {
@@ -2160,8 +2044,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 123,
-    "lineNumberAfterMacroExpansion": 123,
+    "lineNumber": 123,
     "instruction": "float",
     "arguments": [
       {
@@ -2179,8 +2062,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 124,
-    "lineNumberAfterMacroExpansion": 124,
+    "lineNumber": 124,
     "instruction": "float",
     "arguments": [
       {
@@ -2198,8 +2080,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 125,
-    "lineNumberAfterMacroExpansion": 125,
+    "lineNumber": 125,
     "instruction": "float",
     "arguments": [
       {
@@ -2217,8 +2098,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 126,
-    "lineNumberAfterMacroExpansion": 126,
+    "lineNumber": 126,
     "instruction": "float",
     "arguments": [
       {
@@ -2236,8 +2116,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 127,
-    "lineNumberAfterMacroExpansion": 127,
+    "lineNumber": 127,
     "instruction": "float",
     "arguments": [
       {
@@ -2255,8 +2134,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 128,
-    "lineNumberAfterMacroExpansion": 128,
+    "lineNumber": 128,
     "instruction": "float",
     "arguments": [
       {
@@ -2274,8 +2152,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 129,
-    "lineNumberAfterMacroExpansion": 129,
+    "lineNumber": 129,
     "instruction": "float",
     "arguments": [
       {
@@ -2293,8 +2170,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 130,
-    "lineNumberAfterMacroExpansion": 130,
+    "lineNumber": 130,
     "instruction": "float",
     "arguments": [
       {
@@ -2312,8 +2188,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 131,
-    "lineNumberAfterMacroExpansion": 131,
+    "lineNumber": 131,
     "instruction": "float",
     "arguments": [
       {
@@ -2331,8 +2206,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 132,
-    "lineNumberAfterMacroExpansion": 132,
+    "lineNumber": 132,
     "instruction": "float",
     "arguments": [
       {
@@ -2350,8 +2224,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 133,
-    "lineNumberAfterMacroExpansion": 133,
+    "lineNumber": 133,
     "instruction": "float",
     "arguments": [
       {
@@ -2369,8 +2242,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 134,
-    "lineNumberAfterMacroExpansion": 134,
+    "lineNumber": 134,
     "instruction": "float",
     "arguments": [
       {
@@ -2388,8 +2260,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 135,
-    "lineNumberAfterMacroExpansion": 135,
+    "lineNumber": 135,
     "instruction": "float",
     "arguments": [
       {
@@ -2407,8 +2278,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 136,
-    "lineNumberAfterMacroExpansion": 136,
+    "lineNumber": 136,
     "instruction": "float",
     "arguments": [
       {
@@ -2426,8 +2296,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 137,
-    "lineNumberAfterMacroExpansion": 137,
+    "lineNumber": 137,
     "instruction": "float",
     "arguments": [
       {
@@ -2445,8 +2314,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 138,
-    "lineNumberAfterMacroExpansion": 138,
+    "lineNumber": 138,
     "instruction": "float",
     "arguments": [
       {
@@ -2464,8 +2332,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 139,
-    "lineNumberAfterMacroExpansion": 139,
+    "lineNumber": 139,
     "instruction": "float",
     "arguments": [
       {
@@ -2483,8 +2350,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 140,
-    "lineNumberAfterMacroExpansion": 140,
+    "lineNumber": 140,
     "instruction": "float",
     "arguments": [
       {
@@ -2502,8 +2368,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 141,
-    "lineNumberAfterMacroExpansion": 141,
+    "lineNumber": 141,
     "instruction": "float",
     "arguments": [
       {
@@ -2521,8 +2386,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 142,
-    "lineNumberAfterMacroExpansion": 142,
+    "lineNumber": 142,
     "instruction": "float",
     "arguments": [
       {
@@ -2540,8 +2404,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 143,
-    "lineNumberAfterMacroExpansion": 143,
+    "lineNumber": 143,
     "instruction": "float",
     "arguments": [
       {
@@ -2559,8 +2422,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 144,
-    "lineNumberAfterMacroExpansion": 144,
+    "lineNumber": 144,
     "instruction": "float",
     "arguments": [
       {
@@ -2578,8 +2440,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 145,
-    "lineNumberAfterMacroExpansion": 145,
+    "lineNumber": 145,
     "instruction": "float",
     "arguments": [
       {
@@ -2597,8 +2458,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 146,
-    "lineNumberAfterMacroExpansion": 146,
+    "lineNumber": 146,
     "instruction": "float",
     "arguments": [
       {
@@ -2616,8 +2476,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 147,
-    "lineNumberAfterMacroExpansion": 147,
+    "lineNumber": 147,
     "instruction": "float",
     "arguments": [
       {
@@ -2635,8 +2494,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 148,
-    "lineNumberAfterMacroExpansion": 148,
+    "lineNumber": 148,
     "instruction": "float",
     "arguments": [
       {
@@ -2654,8 +2512,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 149,
-    "lineNumberAfterMacroExpansion": 149,
+    "lineNumber": 149,
     "instruction": "float",
     "arguments": [
       {
@@ -2673,8 +2530,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 150,
-    "lineNumberAfterMacroExpansion": 150,
+    "lineNumber": 150,
     "instruction": "float",
     "arguments": [
       {
@@ -2692,8 +2548,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 151,
-    "lineNumberAfterMacroExpansion": 151,
+    "lineNumber": 151,
     "instruction": "float",
     "arguments": [
       {
@@ -2711,8 +2566,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 152,
-    "lineNumberAfterMacroExpansion": 152,
+    "lineNumber": 152,
     "instruction": "float",
     "arguments": [
       {
@@ -2730,8 +2584,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 153,
-    "lineNumberAfterMacroExpansion": 153,
+    "lineNumber": 153,
     "instruction": "float",
     "arguments": [
       {
@@ -2749,8 +2602,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 154,
-    "lineNumberAfterMacroExpansion": 154,
+    "lineNumber": 154,
     "instruction": "float",
     "arguments": [
       {
@@ -2768,8 +2620,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 155,
-    "lineNumberAfterMacroExpansion": 155,
+    "lineNumber": 155,
     "instruction": "float",
     "arguments": [
       {
@@ -2787,8 +2638,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 156,
-    "lineNumberAfterMacroExpansion": 156,
+    "lineNumber": 156,
     "instruction": "float",
     "arguments": [
       {
@@ -2806,8 +2656,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 157,
-    "lineNumberAfterMacroExpansion": 157,
+    "lineNumber": 157,
     "instruction": "float",
     "arguments": [
       {
@@ -2825,8 +2674,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 158,
-    "lineNumberAfterMacroExpansion": 158,
+    "lineNumber": 158,
     "instruction": "float",
     "arguments": [
       {
@@ -2844,8 +2692,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 159,
-    "lineNumberAfterMacroExpansion": 159,
+    "lineNumber": 159,
     "instruction": "float",
     "arguments": [
       {
@@ -2863,8 +2710,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 160,
-    "lineNumberAfterMacroExpansion": 160,
+    "lineNumber": 160,
     "instruction": "float",
     "arguments": [
       {
@@ -2882,8 +2728,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 161,
-    "lineNumberAfterMacroExpansion": 161,
+    "lineNumber": 161,
     "instruction": "float",
     "arguments": [
       {
@@ -2901,8 +2746,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 162,
-    "lineNumberAfterMacroExpansion": 162,
+    "lineNumber": 162,
     "instruction": "float",
     "arguments": [
       {
@@ -2920,8 +2764,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 163,
-    "lineNumberAfterMacroExpansion": 163,
+    "lineNumber": 163,
     "instruction": "float",
     "arguments": [
       {
@@ -2939,8 +2782,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 164,
-    "lineNumberAfterMacroExpansion": 164,
+    "lineNumber": 164,
     "instruction": "float",
     "arguments": [
       {
@@ -2958,8 +2800,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 165,
-    "lineNumberAfterMacroExpansion": 165,
+    "lineNumber": 165,
     "instruction": "float",
     "arguments": [
       {
@@ -2977,8 +2818,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 166,
-    "lineNumberAfterMacroExpansion": 166,
+    "lineNumber": 166,
     "instruction": "float",
     "arguments": [
       {
@@ -2996,8 +2836,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 167,
-    "lineNumberAfterMacroExpansion": 167,
+    "lineNumber": 167,
     "instruction": "float",
     "arguments": [
       {
@@ -3015,8 +2854,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 168,
-    "lineNumberAfterMacroExpansion": 168,
+    "lineNumber": 168,
     "instruction": "float",
     "arguments": [
       {
@@ -3034,8 +2872,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 169,
-    "lineNumberAfterMacroExpansion": 169,
+    "lineNumber": 169,
     "instruction": "float",
     "arguments": [
       {
@@ -3053,8 +2890,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 170,
-    "lineNumberAfterMacroExpansion": 170,
+    "lineNumber": 170,
     "instruction": "float",
     "arguments": [
       {
@@ -3072,8 +2908,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 171,
-    "lineNumberAfterMacroExpansion": 171,
+    "lineNumber": 171,
     "instruction": "float",
     "arguments": [
       {
@@ -3091,8 +2926,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 172,
-    "lineNumberAfterMacroExpansion": 172,
+    "lineNumber": 172,
     "instruction": "float",
     "arguments": [
       {
@@ -3110,8 +2944,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 173,
-    "lineNumberAfterMacroExpansion": 173,
+    "lineNumber": 173,
     "instruction": "float",
     "arguments": [
       {
@@ -3129,8 +2962,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 174,
-    "lineNumberAfterMacroExpansion": 174,
+    "lineNumber": 174,
     "instruction": "float",
     "arguments": [
       {
@@ -3148,8 +2980,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 175,
-    "lineNumberAfterMacroExpansion": 175,
+    "lineNumber": 175,
     "instruction": "float",
     "arguments": [
       {
@@ -3167,8 +2998,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 176,
-    "lineNumberAfterMacroExpansion": 176,
+    "lineNumber": 176,
     "instruction": "float",
     "arguments": [
       {
@@ -3186,8 +3016,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 177,
-    "lineNumberAfterMacroExpansion": 177,
+    "lineNumber": 177,
     "instruction": "float",
     "arguments": [
       {
@@ -3205,8 +3034,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 178,
-    "lineNumberAfterMacroExpansion": 178,
+    "lineNumber": 178,
     "instruction": "float",
     "arguments": [
       {
@@ -3224,8 +3052,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 179,
-    "lineNumberAfterMacroExpansion": 179,
+    "lineNumber": 179,
     "instruction": "float",
     "arguments": [
       {
@@ -3243,8 +3070,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 180,
-    "lineNumberAfterMacroExpansion": 180,
+    "lineNumber": 180,
     "instruction": "float",
     "arguments": [
       {
@@ -3262,8 +3088,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 181,
-    "lineNumberAfterMacroExpansion": 181,
+    "lineNumber": 181,
     "instruction": "float",
     "arguments": [
       {
@@ -3281,8 +3106,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 182,
-    "lineNumberAfterMacroExpansion": 182,
+    "lineNumber": 182,
     "instruction": "float",
     "arguments": [
       {
@@ -3300,8 +3124,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 183,
-    "lineNumberAfterMacroExpansion": 183,
+    "lineNumber": 183,
     "instruction": "float",
     "arguments": [
       {
@@ -3319,8 +3142,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 184,
-    "lineNumberAfterMacroExpansion": 184,
+    "lineNumber": 184,
     "instruction": "float",
     "arguments": [
       {
@@ -3338,8 +3160,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 185,
-    "lineNumberAfterMacroExpansion": 185,
+    "lineNumber": 185,
     "instruction": "float",
     "arguments": [
       {
@@ -3357,8 +3178,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 186,
-    "lineNumberAfterMacroExpansion": 186,
+    "lineNumber": 186,
     "instruction": "float",
     "arguments": [
       {
@@ -3376,8 +3196,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 187,
-    "lineNumberAfterMacroExpansion": 187,
+    "lineNumber": 187,
     "instruction": "float",
     "arguments": [
       {
@@ -3395,8 +3214,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 188,
-    "lineNumberAfterMacroExpansion": 188,
+    "lineNumber": 188,
     "instruction": "float",
     "arguments": [
       {
@@ -3414,8 +3232,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 189,
-    "lineNumberAfterMacroExpansion": 189,
+    "lineNumber": 189,
     "instruction": "float",
     "arguments": [
       {
@@ -3433,8 +3250,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 190,
-    "lineNumberAfterMacroExpansion": 190,
+    "lineNumber": 190,
     "instruction": "float",
     "arguments": [
       {
@@ -3452,8 +3268,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 191,
-    "lineNumberAfterMacroExpansion": 191,
+    "lineNumber": 191,
     "instruction": "float",
     "arguments": [
       {
@@ -3471,8 +3286,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 192,
-    "lineNumberAfterMacroExpansion": 192,
+    "lineNumber": 192,
     "instruction": "float",
     "arguments": [
       {
@@ -3490,8 +3304,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 193,
-    "lineNumberAfterMacroExpansion": 193,
+    "lineNumber": 193,
     "instruction": "float",
     "arguments": [
       {
@@ -3509,8 +3322,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 194,
-    "lineNumberAfterMacroExpansion": 194,
+    "lineNumber": 194,
     "instruction": "float",
     "arguments": [
       {
@@ -3528,8 +3340,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 195,
-    "lineNumberAfterMacroExpansion": 195,
+    "lineNumber": 195,
     "instruction": "float",
     "arguments": [
       {
@@ -3547,8 +3358,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 196,
-    "lineNumberAfterMacroExpansion": 196,
+    "lineNumber": 196,
     "instruction": "float",
     "arguments": [
       {
@@ -3566,8 +3376,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 197,
-    "lineNumberAfterMacroExpansion": 197,
+    "lineNumber": 197,
     "instruction": "float",
     "arguments": [
       {
@@ -3585,8 +3394,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 198,
-    "lineNumberAfterMacroExpansion": 198,
+    "lineNumber": 198,
     "instruction": "float",
     "arguments": [
       {
@@ -3604,8 +3412,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 199,
-    "lineNumberAfterMacroExpansion": 199,
+    "lineNumber": 199,
     "instruction": "float",
     "arguments": [
       {
@@ -3623,8 +3430,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 200,
-    "lineNumberAfterMacroExpansion": 200,
+    "lineNumber": 200,
     "instruction": "float",
     "arguments": [
       {
@@ -3642,8 +3448,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 201,
-    "lineNumberAfterMacroExpansion": 201,
+    "lineNumber": 201,
     "instruction": "float",
     "arguments": [
       {
@@ -3661,8 +3466,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 202,
-    "lineNumberAfterMacroExpansion": 202,
+    "lineNumber": 202,
     "instruction": "float",
     "arguments": [
       {
@@ -3680,8 +3484,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 203,
-    "lineNumberAfterMacroExpansion": 203,
+    "lineNumber": 203,
     "instruction": "float",
     "arguments": [
       {
@@ -3699,8 +3502,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 204,
-    "lineNumberAfterMacroExpansion": 204,
+    "lineNumber": 204,
     "instruction": "float",
     "arguments": [
       {
@@ -3718,8 +3520,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 205,
-    "lineNumberAfterMacroExpansion": 205,
+    "lineNumber": 205,
     "instruction": "float",
     "arguments": [
       {
@@ -3737,8 +3538,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 206,
-    "lineNumberAfterMacroExpansion": 206,
+    "lineNumber": 206,
     "instruction": "float",
     "arguments": [
       {
@@ -3756,8 +3556,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 207,
-    "lineNumberAfterMacroExpansion": 207,
+    "lineNumber": 207,
     "instruction": "float",
     "arguments": [
       {
@@ -3775,8 +3574,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 208,
-    "lineNumberAfterMacroExpansion": 208,
+    "lineNumber": 208,
     "instruction": "float",
     "arguments": [
       {
@@ -3794,8 +3592,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 209,
-    "lineNumberAfterMacroExpansion": 209,
+    "lineNumber": 209,
     "instruction": "float",
     "arguments": [
       {
@@ -3813,8 +3610,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 210,
-    "lineNumberAfterMacroExpansion": 210,
+    "lineNumber": 210,
     "instruction": "float",
     "arguments": [
       {
@@ -3832,8 +3628,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 211,
-    "lineNumberAfterMacroExpansion": 211,
+    "lineNumber": 211,
     "instruction": "float",
     "arguments": [
       {
@@ -3851,8 +3646,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 212,
-    "lineNumberAfterMacroExpansion": 212,
+    "lineNumber": 212,
     "instruction": "float",
     "arguments": [
       {
@@ -3870,8 +3664,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 213,
-    "lineNumberAfterMacroExpansion": 213,
+    "lineNumber": 213,
     "instruction": "float",
     "arguments": [
       {
@@ -3889,8 +3682,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 214,
-    "lineNumberAfterMacroExpansion": 214,
+    "lineNumber": 214,
     "instruction": "float",
     "arguments": [
       {
@@ -3908,8 +3700,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 215,
-    "lineNumberAfterMacroExpansion": 215,
+    "lineNumber": 215,
     "instruction": "float",
     "arguments": [
       {
@@ -3927,8 +3718,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 216,
-    "lineNumberAfterMacroExpansion": 216,
+    "lineNumber": 216,
     "instruction": "float",
     "arguments": [
       {
@@ -3946,8 +3736,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 217,
-    "lineNumberAfterMacroExpansion": 217,
+    "lineNumber": 217,
     "instruction": "float",
     "arguments": [
       {
@@ -3965,8 +3754,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 218,
-    "lineNumberAfterMacroExpansion": 218,
+    "lineNumber": 218,
     "instruction": "float",
     "arguments": [
       {
@@ -3984,8 +3772,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 219,
-    "lineNumberAfterMacroExpansion": 219,
+    "lineNumber": 219,
     "instruction": "float",
     "arguments": [
       {
@@ -4003,8 +3790,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 220,
-    "lineNumberAfterMacroExpansion": 220,
+    "lineNumber": 220,
     "instruction": "float",
     "arguments": [
       {
@@ -4022,8 +3808,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 221,
-    "lineNumberAfterMacroExpansion": 221,
+    "lineNumber": 221,
     "instruction": "float",
     "arguments": [
       {
@@ -4041,8 +3826,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 222,
-    "lineNumberAfterMacroExpansion": 222,
+    "lineNumber": 222,
     "instruction": "float",
     "arguments": [
       {
@@ -4060,8 +3844,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 223,
-    "lineNumberAfterMacroExpansion": 223,
+    "lineNumber": 223,
     "instruction": "float",
     "arguments": [
       {
@@ -4079,8 +3862,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 224,
-    "lineNumberAfterMacroExpansion": 224,
+    "lineNumber": 224,
     "instruction": "float",
     "arguments": [
       {
@@ -4098,8 +3880,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 225,
-    "lineNumberAfterMacroExpansion": 225,
+    "lineNumber": 225,
     "instruction": "float",
     "arguments": [
       {
@@ -4117,8 +3898,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 226,
-    "lineNumberAfterMacroExpansion": 226,
+    "lineNumber": 226,
     "instruction": "float",
     "arguments": [
       {
@@ -4136,8 +3916,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 227,
-    "lineNumberAfterMacroExpansion": 227,
+    "lineNumber": 227,
     "instruction": "float",
     "arguments": [
       {
@@ -4155,8 +3934,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 228,
-    "lineNumberAfterMacroExpansion": 228,
+    "lineNumber": 228,
     "instruction": "float",
     "arguments": [
       {
@@ -4174,8 +3952,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 229,
-    "lineNumberAfterMacroExpansion": 229,
+    "lineNumber": 229,
     "instruction": "float",
     "arguments": [
       {
@@ -4193,8 +3970,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 230,
-    "lineNumberAfterMacroExpansion": 230,
+    "lineNumber": 230,
     "instruction": "float",
     "arguments": [
       {
@@ -4212,8 +3988,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 231,
-    "lineNumberAfterMacroExpansion": 231,
+    "lineNumber": 231,
     "instruction": "float",
     "arguments": [
       {
@@ -4231,8 +4006,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 232,
-    "lineNumberAfterMacroExpansion": 232,
+    "lineNumber": 232,
     "instruction": "float",
     "arguments": [
       {
@@ -4250,8 +4024,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 233,
-    "lineNumberAfterMacroExpansion": 233,
+    "lineNumber": 233,
     "instruction": "float",
     "arguments": [
       {
@@ -4269,8 +4042,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 234,
-    "lineNumberAfterMacroExpansion": 234,
+    "lineNumber": 234,
     "instruction": "float",
     "arguments": [
       {
@@ -4288,8 +4060,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 235,
-    "lineNumberAfterMacroExpansion": 235,
+    "lineNumber": 235,
     "instruction": "float",
     "arguments": [
       {
@@ -4307,8 +4078,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 236,
-    "lineNumberAfterMacroExpansion": 236,
+    "lineNumber": 236,
     "instruction": "float",
     "arguments": [
       {
@@ -4326,8 +4096,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 237,
-    "lineNumberAfterMacroExpansion": 237,
+    "lineNumber": 237,
     "instruction": "float",
     "arguments": [
       {
@@ -4345,8 +4114,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 238,
-    "lineNumberAfterMacroExpansion": 238,
+    "lineNumber": 238,
     "instruction": "float",
     "arguments": [
       {
@@ -4364,8 +4132,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 239,
-    "lineNumberAfterMacroExpansion": 239,
+    "lineNumber": 239,
     "instruction": "float",
     "arguments": [
       {
@@ -4383,8 +4150,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 240,
-    "lineNumberAfterMacroExpansion": 240,
+    "lineNumber": 240,
     "instruction": "float",
     "arguments": [
       {
@@ -4402,8 +4168,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 241,
-    "lineNumberAfterMacroExpansion": 241,
+    "lineNumber": 241,
     "instruction": "float",
     "arguments": [
       {
@@ -4421,8 +4186,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 242,
-    "lineNumberAfterMacroExpansion": 242,
+    "lineNumber": 242,
     "instruction": "float",
     "arguments": [
       {
@@ -4440,8 +4204,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 243,
-    "lineNumberAfterMacroExpansion": 243,
+    "lineNumber": 243,
     "instruction": "float",
     "arguments": [
       {
@@ -4459,8 +4222,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 244,
-    "lineNumberAfterMacroExpansion": 244,
+    "lineNumber": 244,
     "instruction": "float",
     "arguments": [
       {
@@ -4478,8 +4240,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 245,
-    "lineNumberAfterMacroExpansion": 245,
+    "lineNumber": 245,
     "instruction": "float",
     "arguments": [
       {
@@ -4497,8 +4258,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 246,
-    "lineNumberAfterMacroExpansion": 246,
+    "lineNumber": 246,
     "instruction": "float",
     "arguments": [
       {
@@ -4516,8 +4276,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 247,
-    "lineNumberAfterMacroExpansion": 247,
+    "lineNumber": 247,
     "instruction": "float",
     "arguments": [
       {
@@ -4535,8 +4294,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 248,
-    "lineNumberAfterMacroExpansion": 248,
+    "lineNumber": 248,
     "instruction": "float",
     "arguments": [
       {
@@ -4554,8 +4312,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 249,
-    "lineNumberAfterMacroExpansion": 249,
+    "lineNumber": 249,
     "instruction": "float",
     "arguments": [
       {
@@ -4573,8 +4330,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 250,
-    "lineNumberAfterMacroExpansion": 250,
+    "lineNumber": 250,
     "instruction": "float",
     "arguments": [
       {
@@ -4592,8 +4348,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 251,
-    "lineNumberAfterMacroExpansion": 251,
+    "lineNumber": 251,
     "instruction": "float",
     "arguments": [
       {
@@ -4611,8 +4366,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 252,
-    "lineNumberAfterMacroExpansion": 252,
+    "lineNumber": 252,
     "instruction": "float",
     "arguments": [
       {
@@ -4630,8 +4384,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 253,
-    "lineNumberAfterMacroExpansion": 253,
+    "lineNumber": 253,
     "instruction": "float",
     "arguments": [
       {
@@ -4649,8 +4402,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 254,
-    "lineNumberAfterMacroExpansion": 254,
+    "lineNumber": 254,
     "instruction": "float",
     "arguments": [
       {
@@ -4668,8 +4420,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 255,
-    "lineNumberAfterMacroExpansion": 255,
+    "lineNumber": 255,
     "instruction": "float",
     "arguments": [
       {
@@ -4687,8 +4438,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 256,
-    "lineNumberAfterMacroExpansion": 256,
+    "lineNumber": 256,
     "instruction": "float",
     "arguments": [
       {
@@ -4706,8 +4456,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 257,
-    "lineNumberAfterMacroExpansion": 257,
+    "lineNumber": 257,
     "instruction": "float",
     "arguments": [
       {
@@ -4725,8 +4474,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 258,
-    "lineNumberAfterMacroExpansion": 258,
+    "lineNumber": 258,
     "instruction": "float",
     "arguments": [
       {
@@ -4744,8 +4492,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 259,
-    "lineNumberAfterMacroExpansion": 259,
+    "lineNumber": 259,
     "instruction": "float",
     "arguments": [
       {
@@ -4763,8 +4510,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 260,
-    "lineNumberAfterMacroExpansion": 260,
+    "lineNumber": 260,
     "instruction": "float",
     "arguments": [
       {
@@ -4782,8 +4528,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 261,
-    "lineNumberAfterMacroExpansion": 261,
+    "lineNumber": 261,
     "instruction": "float",
     "arguments": [
       {
@@ -4801,8 +4546,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 262,
-    "lineNumberAfterMacroExpansion": 262,
+    "lineNumber": 262,
     "instruction": "float",
     "arguments": [
       {
@@ -4820,8 +4564,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 263,
-    "lineNumberAfterMacroExpansion": 263,
+    "lineNumber": 263,
     "instruction": "float",
     "arguments": [
       {
@@ -4839,8 +4582,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 264,
-    "lineNumberAfterMacroExpansion": 264,
+    "lineNumber": 264,
     "instruction": "float",
     "arguments": [
       {
@@ -4858,8 +4600,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 265,
-    "lineNumberAfterMacroExpansion": 265,
+    "lineNumber": 265,
     "instruction": "float",
     "arguments": [
       {
@@ -4877,8 +4618,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 266,
-    "lineNumberAfterMacroExpansion": 266,
+    "lineNumber": 266,
     "instruction": "float",
     "arguments": [
       {
@@ -4896,8 +4636,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 267,
-    "lineNumberAfterMacroExpansion": 267,
+    "lineNumber": 267,
     "instruction": "float",
     "arguments": [
       {
@@ -4915,14 +4654,12 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 269,
-    "lineNumberAfterMacroExpansion": 269,
+    "lineNumber": 269,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 270,
-    "lineNumberAfterMacroExpansion": 270,
+    "lineNumber": 270,
     "instruction": "module",
     "arguments": [
       {
@@ -4934,8 +4671,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 275,
-    "lineNumberAfterMacroExpansion": 275,
+    "lineNumber": 275,
     "instruction": "float*",
     "arguments": [
       {
@@ -4960,8 +4696,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 276,
-    "lineNumberAfterMacroExpansion": 276,
+    "lineNumber": 276,
     "instruction": "float*",
     "arguments": [
       {
@@ -4986,8 +4721,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 277,
-    "lineNumberAfterMacroExpansion": 277,
+    "lineNumber": 277,
     "instruction": "float*",
     "arguments": [
       {
@@ -5012,8 +4746,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 278,
-    "lineNumberAfterMacroExpansion": 278,
+    "lineNumber": 278,
     "instruction": "int",
     "arguments": [
       {
@@ -5026,8 +4759,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 282,
-    "lineNumberAfterMacroExpansion": 282,
+    "lineNumber": 282,
     "instruction": "push",
     "arguments": [
       {
@@ -5041,8 +4773,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 283,
-    "lineNumberAfterMacroExpansion": 283,
+    "lineNumber": 283,
     "instruction": "push",
     "arguments": [
       {
@@ -5054,8 +4785,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 284,
-    "lineNumberAfterMacroExpansion": 284,
+    "lineNumber": 284,
     "instruction": "push",
     "arguments": [
       {
@@ -5066,20 +4796,17 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 285,
-    "lineNumberAfterMacroExpansion": 285,
+    "lineNumber": 285,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 286,
-    "lineNumberAfterMacroExpansion": 286,
+    "lineNumber": 286,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 288,
-    "lineNumberAfterMacroExpansion": 288,
+    "lineNumber": 288,
     "instruction": "push",
     "arguments": [
       {
@@ -5091,8 +4818,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 289,
-    "lineNumberAfterMacroExpansion": 289,
+    "lineNumber": 289,
     "instruction": "push",
     "arguments": [
       {
@@ -5104,14 +4830,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 290,
-    "lineNumberAfterMacroExpansion": 290,
+    "lineNumber": 290,
     "instruction": "equal",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 291,
-    "lineNumberAfterMacroExpansion": 291,
+    "lineNumber": 291,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -5121,8 +4845,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 292,
-    "lineNumberAfterMacroExpansion": 292,
+    "lineNumber": 292,
     "instruction": "push",
     "arguments": [
       {
@@ -5136,8 +4859,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 293,
-    "lineNumberAfterMacroExpansion": 293,
+    "lineNumber": 293,
     "instruction": "push",
     "arguments": [
       {
@@ -5149,14 +4871,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 294,
-    "lineNumberAfterMacroExpansion": 294,
+    "lineNumber": 294,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 295,
-    "lineNumberAfterMacroExpansion": 295,
+    "lineNumber": 295,
     "instruction": "ifEnd",
     "arguments": [],
     "ifEndBlock": {
@@ -5165,8 +4885,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 297,
-    "lineNumberAfterMacroExpansion": 297,
+    "lineNumber": 297,
     "instruction": "push",
     "arguments": [
       {
@@ -5180,8 +4899,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 298,
-    "lineNumberAfterMacroExpansion": 298,
+    "lineNumber": 298,
     "instruction": "push",
     "arguments": [
       {
@@ -5195,8 +4913,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 299,
-    "lineNumberAfterMacroExpansion": 299,
+    "lineNumber": 299,
     "instruction": "push",
     "arguments": [
       {
@@ -5207,32 +4924,27 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 300,
-    "lineNumberAfterMacroExpansion": 300,
+    "lineNumber": 300,
     "instruction": "mul",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 301,
-    "lineNumberAfterMacroExpansion": 301,
+    "lineNumber": 301,
     "instruction": "castToInt",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 302,
-    "lineNumberAfterMacroExpansion": 302,
+    "lineNumber": 302,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 304,
-    "lineNumberAfterMacroExpansion": 304,
+    "lineNumber": 304,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 305,
-    "lineNumberAfterMacroExpansion": 305,
+    "lineNumber": 305,
     "instruction": "module",
     "arguments": [
       {
@@ -5244,8 +4956,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 307,
-    "lineNumberAfterMacroExpansion": 307,
+    "lineNumber": 307,
     "instruction": "float*",
     "arguments": [
       {
@@ -5270,8 +4981,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 308,
-    "lineNumberAfterMacroExpansion": 308,
+    "lineNumber": 308,
     "instruction": "float*",
     "arguments": [
       {
@@ -5296,8 +5006,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 309,
-    "lineNumberAfterMacroExpansion": 309,
+    "lineNumber": 309,
     "instruction": "float*",
     "arguments": [
       {
@@ -5322,8 +5031,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 310,
-    "lineNumberAfterMacroExpansion": 310,
+    "lineNumber": 310,
     "instruction": "int",
     "arguments": [
       {
@@ -5336,8 +5044,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 314,
-    "lineNumberAfterMacroExpansion": 314,
+    "lineNumber": 314,
     "instruction": "push",
     "arguments": [
       {
@@ -5351,8 +5058,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 315,
-    "lineNumberAfterMacroExpansion": 315,
+    "lineNumber": 315,
     "instruction": "push",
     "arguments": [
       {
@@ -5364,8 +5070,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 316,
-    "lineNumberAfterMacroExpansion": 316,
+    "lineNumber": 316,
     "instruction": "push",
     "arguments": [
       {
@@ -5376,20 +5081,17 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 317,
-    "lineNumberAfterMacroExpansion": 317,
+    "lineNumber": 317,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 318,
-    "lineNumberAfterMacroExpansion": 318,
+    "lineNumber": 318,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 320,
-    "lineNumberAfterMacroExpansion": 320,
+    "lineNumber": 320,
     "instruction": "push",
     "arguments": [
       {
@@ -5401,8 +5103,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 321,
-    "lineNumberAfterMacroExpansion": 321,
+    "lineNumber": 321,
     "instruction": "push",
     "arguments": [
       {
@@ -5414,14 +5115,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 322,
-    "lineNumberAfterMacroExpansion": 322,
+    "lineNumber": 322,
     "instruction": "equal",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 323,
-    "lineNumberAfterMacroExpansion": 323,
+    "lineNumber": 323,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -5431,8 +5130,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 324,
-    "lineNumberAfterMacroExpansion": 324,
+    "lineNumber": 324,
     "instruction": "push",
     "arguments": [
       {
@@ -5446,8 +5144,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 325,
-    "lineNumberAfterMacroExpansion": 325,
+    "lineNumber": 325,
     "instruction": "push",
     "arguments": [
       {
@@ -5459,14 +5156,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 326,
-    "lineNumberAfterMacroExpansion": 326,
+    "lineNumber": 326,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 327,
-    "lineNumberAfterMacroExpansion": 327,
+    "lineNumber": 327,
     "instruction": "ifEnd",
     "arguments": [],
     "ifEndBlock": {
@@ -5475,8 +5170,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 329,
-    "lineNumberAfterMacroExpansion": 329,
+    "lineNumber": 329,
     "instruction": "push",
     "arguments": [
       {
@@ -5490,8 +5184,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 330,
-    "lineNumberAfterMacroExpansion": 330,
+    "lineNumber": 330,
     "instruction": "push",
     "arguments": [
       {
@@ -5505,8 +5198,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 331,
-    "lineNumberAfterMacroExpansion": 331,
+    "lineNumber": 331,
     "instruction": "push",
     "arguments": [
       {
@@ -5517,32 +5209,27 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 332,
-    "lineNumberAfterMacroExpansion": 332,
+    "lineNumber": 332,
     "instruction": "mul",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 333,
-    "lineNumberAfterMacroExpansion": 333,
+    "lineNumber": 333,
     "instruction": "castToInt",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 334,
-    "lineNumberAfterMacroExpansion": 334,
+    "lineNumber": 334,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 336,
-    "lineNumberAfterMacroExpansion": 336,
+    "lineNumber": 336,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 337,
-    "lineNumberAfterMacroExpansion": 337,
+    "lineNumber": 337,
     "instruction": "module",
     "arguments": [
       {
@@ -5554,8 +5241,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 340,
-    "lineNumberAfterMacroExpansion": 340,
+    "lineNumber": 340,
     "instruction": "float*",
     "arguments": [
       {
@@ -5580,8 +5266,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 341,
-    "lineNumberAfterMacroExpansion": 341,
+    "lineNumber": 341,
     "instruction": "float*",
     "arguments": [
       {
@@ -5606,8 +5291,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 342,
-    "lineNumberAfterMacroExpansion": 342,
+    "lineNumber": 342,
     "instruction": "float*",
     "arguments": [
       {
@@ -5632,8 +5316,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 343,
-    "lineNumberAfterMacroExpansion": 343,
+    "lineNumber": 343,
     "instruction": "int",
     "arguments": [
       {
@@ -5646,8 +5329,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 347,
-    "lineNumberAfterMacroExpansion": 347,
+    "lineNumber": 347,
     "instruction": "push",
     "arguments": [
       {
@@ -5661,8 +5343,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 348,
-    "lineNumberAfterMacroExpansion": 348,
+    "lineNumber": 348,
     "instruction": "push",
     "arguments": [
       {
@@ -5674,8 +5355,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 349,
-    "lineNumberAfterMacroExpansion": 349,
+    "lineNumber": 349,
     "instruction": "push",
     "arguments": [
       {
@@ -5686,20 +5366,17 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 350,
-    "lineNumberAfterMacroExpansion": 350,
+    "lineNumber": 350,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 351,
-    "lineNumberAfterMacroExpansion": 351,
+    "lineNumber": 351,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 353,
-    "lineNumberAfterMacroExpansion": 353,
+    "lineNumber": 353,
     "instruction": "push",
     "arguments": [
       {
@@ -5711,8 +5388,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 354,
-    "lineNumberAfterMacroExpansion": 354,
+    "lineNumber": 354,
     "instruction": "push",
     "arguments": [
       {
@@ -5724,14 +5400,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 355,
-    "lineNumberAfterMacroExpansion": 355,
+    "lineNumber": 355,
     "instruction": "equal",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 356,
-    "lineNumberAfterMacroExpansion": 356,
+    "lineNumber": 356,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -5741,8 +5415,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 357,
-    "lineNumberAfterMacroExpansion": 357,
+    "lineNumber": 357,
     "instruction": "push",
     "arguments": [
       {
@@ -5756,8 +5429,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 358,
-    "lineNumberAfterMacroExpansion": 358,
+    "lineNumber": 358,
     "instruction": "push",
     "arguments": [
       {
@@ -5769,14 +5441,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 359,
-    "lineNumberAfterMacroExpansion": 359,
+    "lineNumber": 359,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 360,
-    "lineNumberAfterMacroExpansion": 360,
+    "lineNumber": 360,
     "instruction": "ifEnd",
     "arguments": [],
     "ifEndBlock": {
@@ -5785,8 +5455,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 362,
-    "lineNumberAfterMacroExpansion": 362,
+    "lineNumber": 362,
     "instruction": "push",
     "arguments": [
       {
@@ -5800,8 +5469,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 363,
-    "lineNumberAfterMacroExpansion": 363,
+    "lineNumber": 363,
     "instruction": "push",
     "arguments": [
       {
@@ -5815,8 +5483,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 364,
-    "lineNumberAfterMacroExpansion": 364,
+    "lineNumber": 364,
     "instruction": "push",
     "arguments": [
       {
@@ -5827,32 +5494,27 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 365,
-    "lineNumberAfterMacroExpansion": 365,
+    "lineNumber": 365,
     "instruction": "mul",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 366,
-    "lineNumberAfterMacroExpansion": 366,
+    "lineNumber": 366,
     "instruction": "castToInt",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 367,
-    "lineNumberAfterMacroExpansion": 367,
+    "lineNumber": 367,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 369,
-    "lineNumberAfterMacroExpansion": 369,
+    "lineNumber": 369,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 370,
-    "lineNumberAfterMacroExpansion": 370,
+    "lineNumber": 370,
     "instruction": "module",
     "arguments": [
       {
@@ -5864,8 +5526,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 373,
-    "lineNumberAfterMacroExpansion": 373,
+    "lineNumber": 373,
     "instruction": "float*",
     "arguments": [
       {
@@ -5890,8 +5551,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 374,
-    "lineNumberAfterMacroExpansion": 374,
+    "lineNumber": 374,
     "instruction": "float*",
     "arguments": [
       {
@@ -5916,8 +5576,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 375,
-    "lineNumberAfterMacroExpansion": 375,
+    "lineNumber": 375,
     "instruction": "float*",
     "arguments": [
       {
@@ -5942,8 +5601,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 376,
-    "lineNumberAfterMacroExpansion": 376,
+    "lineNumber": 376,
     "instruction": "float*",
     "arguments": [
       {
@@ -5968,8 +5626,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 378,
-    "lineNumberAfterMacroExpansion": 378,
+    "lineNumber": 378,
     "instruction": "int",
     "arguments": [
       {
@@ -5982,8 +5639,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 383,
-    "lineNumberAfterMacroExpansion": 383,
+    "lineNumber": 383,
     "instruction": "push",
     "arguments": [
       {
@@ -5997,8 +5653,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 384,
-    "lineNumberAfterMacroExpansion": 384,
+    "lineNumber": 384,
     "instruction": "push",
     "arguments": [
       {
@@ -6010,8 +5665,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 385,
-    "lineNumberAfterMacroExpansion": 385,
+    "lineNumber": 385,
     "instruction": "push",
     "arguments": [
       {
@@ -6022,20 +5676,17 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 386,
-    "lineNumberAfterMacroExpansion": 386,
+    "lineNumber": 386,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 387,
-    "lineNumberAfterMacroExpansion": 387,
+    "lineNumber": 387,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 389,
-    "lineNumberAfterMacroExpansion": 389,
+    "lineNumber": 389,
     "instruction": "push",
     "arguments": [
       {
@@ -6047,8 +5698,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 390,
-    "lineNumberAfterMacroExpansion": 390,
+    "lineNumber": 390,
     "instruction": "push",
     "arguments": [
       {
@@ -6060,14 +5710,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 391,
-    "lineNumberAfterMacroExpansion": 391,
+    "lineNumber": 391,
     "instruction": "equal",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 392,
-    "lineNumberAfterMacroExpansion": 392,
+    "lineNumber": 392,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -6077,8 +5725,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 393,
-    "lineNumberAfterMacroExpansion": 393,
+    "lineNumber": 393,
     "instruction": "push",
     "arguments": [
       {
@@ -6092,8 +5739,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 394,
-    "lineNumberAfterMacroExpansion": 394,
+    "lineNumber": 394,
     "instruction": "push",
     "arguments": [
       {
@@ -6105,14 +5751,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 395,
-    "lineNumberAfterMacroExpansion": 395,
+    "lineNumber": 395,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 396,
-    "lineNumberAfterMacroExpansion": 396,
+    "lineNumber": 396,
     "instruction": "ifEnd",
     "arguments": [],
     "ifEndBlock": {
@@ -6121,8 +5765,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 398,
-    "lineNumberAfterMacroExpansion": 398,
+    "lineNumber": 398,
     "instruction": "push",
     "arguments": [
       {
@@ -6136,8 +5779,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 399,
-    "lineNumberAfterMacroExpansion": 399,
+    "lineNumber": 399,
     "instruction": "push",
     "arguments": [
       {
@@ -6151,8 +5793,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 400,
-    "lineNumberAfterMacroExpansion": 400,
+    "lineNumber": 400,
     "instruction": "push",
     "arguments": [
       {
@@ -6163,38 +5804,32 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 401,
-    "lineNumberAfterMacroExpansion": 401,
+    "lineNumber": 401,
     "instruction": "mul",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 402,
-    "lineNumberAfterMacroExpansion": 402,
+    "lineNumber": 402,
     "instruction": "castToInt",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 403,
-    "lineNumberAfterMacroExpansion": 403,
+    "lineNumber": 403,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 405,
-    "lineNumberAfterMacroExpansion": 405,
+    "lineNumber": 405,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 406,
-    "lineNumberAfterMacroExpansion": 406,
+    "lineNumber": 406,
     "instruction": "entryEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 408,
-    "lineNumberAfterMacroExpansion": 408,
+    "lineNumber": 408,
     "instruction": "constants",
     "arguments": [
       {
@@ -6206,8 +5841,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 414,
-    "lineNumberAfterMacroExpansion": 414,
+    "lineNumber": 414,
     "instruction": "const",
     "arguments": [
       {
@@ -6224,8 +5858,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 415,
-    "lineNumberAfterMacroExpansion": 415,
+    "lineNumber": 415,
     "instruction": "const",
     "arguments": [
       {
@@ -6242,8 +5875,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 417,
-    "lineNumberAfterMacroExpansion": 417,
+    "lineNumber": 417,
     "instruction": "constantsEnd",
     "arguments": []
   }

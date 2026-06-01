@@ -15,8 +15,7 @@ describe('or instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			or,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'or',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +38,7 @@ describe('or instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			or,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'or',
 				arguments: [],
 			} as CompilerASTLine,

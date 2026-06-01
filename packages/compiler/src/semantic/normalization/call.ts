@@ -13,8 +13,7 @@ import normalizePush from './push';
 
 function createInlinePushLine(line: CallLine, argument: PushArgument): PushLine {
 	return {
-		lineNumberBeforeMacroExpansion: line.lineNumberBeforeMacroExpansion,
-		lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+		lineNumber: line.lineNumber,
 		instruction: 'push',
 		arguments: [argument],
 	};

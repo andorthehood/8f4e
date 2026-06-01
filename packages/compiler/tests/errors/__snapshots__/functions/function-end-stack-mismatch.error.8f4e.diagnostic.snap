@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "functionEnd",
-    "lineNumberAfterMacroExpansion": 4,
-    "lineNumberBeforeMacroExpansion": 4,
+    "lineNumber": 4,
   },
   "message": "Stack elements do not match function return signature. (18)",
 }

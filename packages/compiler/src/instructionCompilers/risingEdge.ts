@@ -20,9 +20,9 @@ import { saveByteCode } from './utils/saveByteCode';
 const risingEdge: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-	const currentValueName = '__risingEdgeDetector_currentValue' + lineNumberAfterMacroExpansion;
-	const previousValueName = '__risingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
+	const lineNumber = line.lineNumber;
+	const currentValueName = '__risingEdgeDetector_currentValue' + lineNumber;
+	const previousValueName = '__risingEdgeDetector_previousValue' + lineNumber;
 	const isInteger = operand.valueType === 'int';
 	const memoryType = isInteger ? 'int' : 'float';
 	const previousValue = allocateInternalResource(context, previousValueName, memoryType);

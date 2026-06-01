@@ -11,7 +11,8 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 			],
 		});
@@ -19,8 +20,7 @@ describe('#loopCap instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loopCap,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
 				isBlockPrologue: true,
@@ -35,7 +35,8 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 		});
@@ -43,8 +44,7 @@ describe('#loopCap instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loopCap,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2048, isInteger: true }],
 				isBlockPrologue: true,
@@ -59,7 +59,8 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 			],
 		});
@@ -67,8 +68,7 @@ describe('#loopCap instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loopCap,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
 				isBlockPrologue: true,
@@ -83,7 +83,8 @@ describe('#loopCap instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 			],
 		});
@@ -91,8 +92,7 @@ describe('#loopCap instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loopCap,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
 				isBlockPrologue: true,
@@ -105,8 +105,7 @@ describe('#loopCap instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loopCap,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: '#loopCap',
 				arguments: [{ type: ArgumentType.LITERAL, value: 100, isInteger: true }],
 				isBlockPrologue: true,
@@ -122,8 +121,7 @@ describe('#loopCap instruction compiler', () => {
 			blockStack: [],
 		});
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: '#loopCap',
 			arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
 		} as CompilerASTLine;

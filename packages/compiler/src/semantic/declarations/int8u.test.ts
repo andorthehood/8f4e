@@ -12,8 +12,7 @@ describe('int8u instruction compiler', () => {
 
 		int8u(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8u*',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ptr')],
@@ -34,8 +33,7 @@ describe('int8u instruction compiler', () => {
 
 		int8u(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'int8u**',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('pptr')],

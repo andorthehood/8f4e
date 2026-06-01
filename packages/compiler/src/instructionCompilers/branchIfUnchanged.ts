@@ -24,9 +24,9 @@ const branchIfUnchanged: InstructionCompiler<BranchIfUnchangedLine> = (line, con
 	const depth = line.arguments[0].value;
 	const isInteger = operand.valueType === 'int';
 	const type = isInteger ? 'int' : 'float';
-	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-	const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumberAfterMacroExpansion;
-	const currentValueMemoryName = '__branchIfUnchanged_currentValue' + lineNumberAfterMacroExpansion;
+	const lineNumber = line.lineNumber;
+	const previousValueMemoryName = '__branchIfUnchanged_previousValue' + lineNumber;
+	const currentValueMemoryName = '__branchIfUnchanged_currentValue' + lineNumber;
 	const previousValue = allocateInternalResource(context, previousValueMemoryName, type);
 	const currentValueLocalIndex = Object.keys(context.locals).length;
 

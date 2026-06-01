@@ -149,7 +149,7 @@ export function getError(
 			return {
 				code,
 				message:
-					line.lineNumberBeforeMacroExpansion +
+					line.lineNumber +
 					': Expected 0 elements on the stack, found ' +
 					stack.length +
 					' [' +

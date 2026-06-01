@@ -20,9 +20,9 @@ import { saveByteCode } from './utils/saveByteCode';
 const fallingEdge: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-	const currentValueName = '__fallingEdgeDetector_currentValue' + lineNumberAfterMacroExpansion;
-	const previousValueName = '__fallingEdgeDetector_previousValue' + lineNumberAfterMacroExpansion;
+	const lineNumber = line.lineNumber;
+	const currentValueName = '__fallingEdgeDetector_currentValue' + lineNumber;
+	const previousValueName = '__fallingEdgeDetector_previousValue' + lineNumber;
 	const isInteger = operand.valueType === 'int';
 	const memoryType = isInteger ? 'int' : 'float';
 	const previousValue = allocateInternalResource(context, previousValueName, memoryType);

@@ -9,8 +9,7 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 function resolvedMemoryPushLine(id: string, memoryItem: MemoryMap[string]): CompilerASTLine {
 	return {
-		lineNumberBeforeMacroExpansion: 1,
-		lineNumberAfterMacroExpansion: 1,
+		lineNumber: 1,
 		instruction: 'push',
 		arguments: [classifyIdentifier(id)],
 		resolvedTarget: { kind: 'memory', memoryItem },
@@ -19,8 +18,7 @@ function resolvedMemoryPushLine(id: string, memoryItem: MemoryMap[string]): Comp
 
 function resolvedMemoryPointerPushLine(id: string, memoryItem: MemoryMap[string]): CompilerASTLine {
 	return {
-		lineNumberBeforeMacroExpansion: 1,
-		lineNumberAfterMacroExpansion: 1,
+		lineNumber: 1,
 		instruction: 'push',
 		arguments: [classifyIdentifier(`*${id}`)],
 		resolvedTarget: { kind: 'memory-pointer', memoryItem },
@@ -34,8 +32,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 5, isInteger: true }],
 			} as CompilerASTLine,
@@ -54,8 +51,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 42, isInteger: true }],
 			} as CompilerASTLine,
@@ -74,8 +70,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [
 					{
@@ -117,8 +112,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.STRING_LITERAL, value: 'hi' }],
 			} as CompilerASTLine,
@@ -137,8 +131,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [
 					{
@@ -164,8 +157,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [
 					{
@@ -188,8 +180,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [
 					{
@@ -215,8 +206,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [
 					{
@@ -239,8 +229,7 @@ describe('push instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			push,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 3.14, isInteger: false }],
 			} as CompilerASTLine,

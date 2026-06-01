@@ -16,8 +16,7 @@
       },
     ],
     "instruction": "int",
-    "lineNumberAfterMacroExpansion": 3,
-    "lineNumberBeforeMacroExpansion": 3,
+    "lineNumber": 3,
   },
   "message": "This instruction is not allowed inside this block type. (34)",
 }

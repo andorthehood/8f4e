@@ -25,7 +25,7 @@ type NumericWasmValueType = typeof WASM_TYPE_I32 | typeof WASM_TYPE_F32 | typeof
 type GuardedLoadOptions = {
 	accessByteWidth: number;
 	memoryIndex: number;
-	lineNumberAfterMacroExpansion: number;
+	lineNumber: number;
 	resultType: NumericWasmValueType;
 	loadByteCode: number[];
 };
@@ -33,7 +33,7 @@ type GuardedLoadOptions = {
 type GuardedAddressOperationOptions = {
 	accessByteWidth: number;
 	memoryIndex: number;
-	lineNumberAfterMacroExpansion: number;
+	lineNumber: number;
 	resultType: NumericWasmValueType;
 	buildTrueBranch: (addressLocalIndex: number) => number[];
 	falseByteCode?: number[];
@@ -43,7 +43,7 @@ type GuardedStoreOptions = {
 	value: StackItem;
 	accessByteWidth: number;
 	memoryIndex: number;
-	lineNumberAfterMacroExpansion: number;
+	lineNumber: number;
 	storeByteCode: number[];
 };
 
@@ -51,7 +51,7 @@ type GuardedMemoryCopyOptions = {
 	byteLength: number;
 	destinationMemoryIndex: number;
 	sourceMemoryIndex: number;
-	lineNumberAfterMacroExpansion: number;
+	lineNumber: number;
 	memoryCopyByteCode: number[];
 };
 
@@ -142,13 +142,9 @@ export function guardedAddressOperation(
 	context: MemoryGuardContext,
 	options: GuardedAddressOperationOptions
 ): number[] {
-	const addressLocal = getOrCreateMemoryGuardLocal(
-		context,
-		`__memoryGuardAddr_${options.lineNumberAfterMacroExpansion}`,
-		{
-			valueType: 'int',
-		}
-	);
+	const addressLocal = getOrCreateMemoryGuardLocal(context, `__memoryGuardAddr_${options.lineNumber}`, {
+		valueType: 'int',
+	});
 
 	return [
 		...localSet(addressLocal.index),
@@ -162,18 +158,10 @@ export function guardedAddressOperation(
 }
 
 export function guardedStore(context: MemoryGuardContext, options: GuardedStoreOptions): number[] {
-	const addressLocal = getOrCreateMemoryGuardLocal(
-		context,
-		`__memoryGuardAddr_${options.lineNumberAfterMacroExpansion}`,
-		{
-			valueType: 'int',
-		}
-	);
-	const valueLocal = getOrCreateMemoryGuardLocal(
-		context,
-		`__memoryGuardValue_${options.lineNumberAfterMacroExpansion}`,
-		options.value
-	);
+	const addressLocal = getOrCreateMemoryGuardLocal(context, `__memoryGuardAddr_${options.lineNumber}`, {
+		valueType: 'int',
+	});
+	const valueLocal = getOrCreateMemoryGuardLocal(context, `__memoryGuardValue_${options.lineNumber}`, options.value);
 
 	return [
 		...localSet(valueLocal.index),
@@ -192,20 +180,12 @@ export function isSafeMemoryCopy(destination: StackItem, source: StackItem, byte
 }
 
 export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedMemoryCopyOptions): number[] {
-	const destinationLocal = getOrCreateMemoryGuardLocal(
-		context,
-		`__memoryCopyDestination_${options.lineNumberAfterMacroExpansion}`,
-		{
-			valueType: 'int',
-		}
-	);
-	const sourceLocal = getOrCreateMemoryGuardLocal(
-		context,
-		`__memoryCopySource_${options.lineNumberAfterMacroExpansion}`,
-		{
-			valueType: 'int',
-		}
-	);
+	const destinationLocal = getOrCreateMemoryGuardLocal(context, `__memoryCopyDestination_${options.lineNumber}`, {
+		valueType: 'int',
+	});
+	const sourceLocal = getOrCreateMemoryGuardLocal(context, `__memoryCopySource_${options.lineNumber}`, {
+		valueType: 'int',
+	});
 
 	return [
 		...localSet(sourceLocal.index),

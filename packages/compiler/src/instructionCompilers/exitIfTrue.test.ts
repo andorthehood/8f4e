@@ -15,8 +15,7 @@ describe('exitIfTrue instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			exitIfTrue,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'exitIfTrue',
 				arguments: [],
 			} as CompilerASTLine,
@@ -32,7 +31,8 @@ describe('exitIfTrue instruction compiler', () => {
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
 				{
-					blockType: BlockType.FUNCTION,expectedResultTypes: [],
+					blockType: BlockType.FUNCTION,
+					expectedResultTypes: [],
 				},
 			],
 		});
@@ -42,8 +42,7 @@ describe('exitIfTrue instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				exitIfTrue,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'exitIfTrue',
 					arguments: [],
 				} as CompilerASTLine,

@@ -12,8 +12,7 @@ describe('notZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			notZero,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'notZero',
 				arguments: [],
 			} as CompilerASTLine,
@@ -33,8 +32,7 @@ describe('notZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			notZero,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'notZero',
 				arguments: [],
 			} as CompilerASTLine,
@@ -54,8 +52,7 @@ describe('notZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			notZero,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'notZero',
 				arguments: [],
 			} as CompilerASTLine,

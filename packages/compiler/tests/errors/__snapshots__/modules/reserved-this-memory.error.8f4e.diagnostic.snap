@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "int",
-    "lineNumberAfterMacroExpansion": 1,
-    "lineNumberBeforeMacroExpansion": 1,
+    "lineNumber": 1,
   },
   "message": "Reserved identifier cannot be used as a memory allocation name: this. (38)",
 }

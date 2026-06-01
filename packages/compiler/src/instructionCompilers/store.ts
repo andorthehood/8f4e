@@ -40,7 +40,7 @@ const store: InstructionCompiler<StoreLine> = (line, context) => {
 			value: operand1Value,
 			accessByteWidth,
 			memoryIndex,
-			lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+			lineNumber: line.lineNumber,
 			storeByteCode: instructions,
 		})
 	);

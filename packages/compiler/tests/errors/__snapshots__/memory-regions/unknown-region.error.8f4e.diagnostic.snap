@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "#region",
-    "lineNumberAfterMacroExpansion": 1,
-    "lineNumberBeforeMacroExpansion": 1,
+    "lineNumber": 1,
   },
   "message": "Unknown memory region: missingMemory. (55)",
 }

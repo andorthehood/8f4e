@@ -14,7 +14,6 @@ import type {
 	FunctionTypeRegistry,
 	ModuleAST,
 	Namespaces,
-	ParsedLineMetadata,
 	PrototypeAST,
 	ShapeLine,
 } from '@8f4e/compiler-spec';
@@ -57,21 +56,19 @@ import {
 	collectNamespacesFromASTs,
 } from './semantic/buildNamespace';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
-import { convertExpandedLinesToCode, expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
+import { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 
-type ExpandedCompilerSource = {
+type ModuleCompilerSource = {
 	code: string[];
-	lineMetadata: ParsedLineMetadata | undefined;
 	cacheKey: string;
-};
-
-type ModuleCompilerSource = ExpandedCompilerSource & {
 	entryName: string;
 };
 
 type ParsedPrototypeSource = {
 	ast: PrototypeAST;
-	source: ExpandedCompilerSource;
+	source: {
+		code: string[];
+	};
 };
 
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
@@ -89,7 +86,7 @@ export { createCompilationContext } from './semantic/createCompilationContext';
 export { isMemoryDeclarationInstruction } from './semantic/declarations';
 export { default as normalizeCompileTimeArguments } from './semantic/normalizeCompileTimeArguments';
 export { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
-export { convertExpandedLinesToCode, expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
+export { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 export { createInitialMemoryDataSegments };
 
 export function compileModules(
@@ -223,26 +220,16 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
-function parseModuleAST(
-	code: string[],
-	lineMetadata: ParsedLineMetadata | undefined,
-	cache: CompilerCache,
-	cacheKey: string
-): ModuleAST {
-	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
+function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string): ModuleAST {
+	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'module') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
 	}
 	return ast;
 }
 
-function parseConstantsAST(
-	code: string[],
-	lineMetadata: ParsedLineMetadata | undefined,
-	cache: CompilerCache,
-	cacheKey: string
-): ConstantsAST {
-	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
+function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: string): ConstantsAST {
+	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'constants') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
 	}
@@ -259,26 +246,16 @@ function parseConstantsAST(
 	return ast;
 }
 
-function parseFunctionAST(
-	code: string[],
-	lineMetadata: ParsedLineMetadata | undefined,
-	cache: CompilerCache,
-	cacheKey: string
-): FunctionAST {
-	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
+function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string): FunctionAST {
+	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'function') {
 		throw getError(ErrorCode.MISSING_FUNCTION_ID, ast.lines[0], undefined);
 	}
 	return ast;
 }
 
-function parsePrototypeAST(
-	code: string[],
-	lineMetadata: ParsedLineMetadata | undefined,
-	cache: CompilerCache,
-	cacheKey: string
-): PrototypeAST {
-	const ast = compileToAST(code, lineMetadata, cache.ast, cacheKey);
+function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: string): PrototypeAST {
+	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'prototype') {
 		throw getError(ErrorCode.MISSING_PROTOTYPE_ID, ast.lines[0], undefined);
 	}
@@ -296,17 +273,6 @@ function parsePrototypeAST(
 function startsWithInstruction(line: string, instruction: string): boolean {
 	const nextCharacter = line[instruction.length];
 	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
-}
-
-function getSourceLineMetadata(
-	source: ExpandedCompilerSource,
-	lineNumberAfterMacroExpansion: number
-): ParsedLineMetadata[number] {
-	return source.lineMetadata?.[lineNumberAfterMacroExpansion] ?? { callSiteLineNumber: lineNumberAfterMacroExpansion };
-}
-
-function getOriginalSourceLine(source: ExpandedCompilerSource, lineNumberAfterMacroExpansion: number): string {
-	return source.code[lineNumberAfterMacroExpansion] ?? '';
 }
 
 function collectPrototypeSources(prototypes: readonly ParsedPrototypeSource[]): Map<string, ParsedPrototypeSource> {
@@ -330,28 +296,20 @@ function expandModuleSourceShapes(
 	prototypeSourcesById: ReadonlyMap<string, ParsedPrototypeSource>
 ): ModuleCompilerSource {
 	const code: string[] = [];
-	const lineMetadata: ParsedLineMetadata = [];
 	let expandedAnyShape = false;
 
-	for (
-		let lineNumberAfterMacroExpansion = 0;
-		lineNumberAfterMacroExpansion < source.code.length;
-		lineNumberAfterMacroExpansion++
-	) {
-		const line = source.code[lineNumberAfterMacroExpansion];
+	for (let lineNumber = 0; lineNumber < source.code.length; lineNumber++) {
+		const line = source.code[lineNumber];
 		const trimmed = line.trim();
 
 		if (!startsWithInstruction(trimmed, 'shape')) {
 			code.push(line);
-			lineMetadata.push(getSourceLineMetadata(source, lineNumberAfterMacroExpansion));
 			continue;
 		}
 
-		const sourceMetadata = getSourceLineMetadata(source, lineNumberAfterMacroExpansion);
-		const shapeLine = parseLine(line, sourceMetadata.callSiteLineNumber, lineNumberAfterMacroExpansion) as ShapeLine;
+		const shapeLine = parseLine(line, lineNumber) as ShapeLine;
 		if (shapeLine.instruction !== 'shape') {
 			code.push(line);
-			lineMetadata.push(sourceMetadata);
 			continue;
 		}
 
@@ -363,9 +321,8 @@ function expandModuleSourceShapes(
 
 		expandedAnyShape = true;
 		for (const declarationLine of prototype.ast.memoryDeclarationLines) {
-			const prototypeLineNumber = declarationLine.lineNumberAfterMacroExpansion;
-			code.push(getOriginalSourceLine(prototype.source, prototypeLineNumber));
-			lineMetadata.push(getSourceLineMetadata(prototype.source, prototypeLineNumber));
+			const prototypeLineNumber = declarationLine.lineNumber;
+			code.push(prototype.source.code[prototypeLineNumber] ?? '');
 		}
 	}
 
@@ -376,7 +333,6 @@ function expandModuleSourceShapes(
 	return {
 		...source,
 		code,
-		lineMetadata,
 	};
 }
 
@@ -394,25 +350,23 @@ export default function compile(
 	const macroDefinitions = parseMacroDefinitions(macros);
 
 	const expandedPrototypes = prototypes.map((prototype, index) => {
-		const expanded = convertExpandedLinesToCode(expandMacros(prototype, macroDefinitions));
 		return {
-			...expanded,
+			code: expandMacros(prototype, macroDefinitions),
 			cacheKey: `prototype:${index}`,
 		};
-	}) satisfies ExpandedCompilerSource[];
+	});
 
-	const astPrototypes = expandedPrototypes.map(({ code, lineMetadata, cacheKey }) => ({
-		ast: parsePrototypeAST(code, lineMetadata, cache, cacheKey),
-		source: { code, lineMetadata, cacheKey },
+	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) => ({
+		ast: parsePrototypeAST(code, cache, cacheKey),
+		source: { code },
 	})) satisfies ParsedPrototypeSource[];
 	const prototypeSourcesById = collectPrototypeSources(astPrototypes);
 
 	// Expand macros and prototype shapes in modules
 	const expandedModules = entryModules.map(({ entryName, module, index }) => {
-		const expanded = convertExpandedLinesToCode(expandMacros(module, macroDefinitions));
 		return expandModuleSourceShapes(
 			{
-				...expanded,
+				code: expandMacros(module, macroDefinitions),
 				cacheKey: `entry:${entryName}:module:${index}`,
 				entryName,
 			},
@@ -421,30 +375,25 @@ export default function compile(
 	}) satisfies ModuleCompilerSource[];
 
 	const expandedConstants = constants.map((constantsBlock, index) => {
-		const expanded = convertExpandedLinesToCode(expandMacros(constantsBlock, macroDefinitions));
 		return {
-			...expanded,
+			code: expandMacros(constantsBlock, macroDefinitions),
 			cacheKey: `constants:${index}`,
 		};
-	}) satisfies ExpandedCompilerSource[];
+	});
 
 	// Expand macros in functions
 	const expandedFunctions = functions.map((func, index) => {
-		const expanded = convertExpandedLinesToCode(expandMacros(func, macroDefinitions));
 		return {
-			...expanded,
+			code: expandMacros(func, macroDefinitions),
 			cacheKey: `function:${index}`,
 		};
-	}) satisfies ExpandedCompilerSource[];
+	});
 
-	// Compile to AST with line metadata for error mapping.
-	const astModuleEntries = expandedModules.map(({ entryName, code, lineMetadata, cacheKey }) => ({
+	const astModuleEntries = expandedModules.map(({ entryName, code, cacheKey }) => ({
 		entryName,
-		ast: parseModuleAST(code, lineMetadata, cache, cacheKey),
+		ast: parseModuleAST(code, cache, cacheKey),
 	}));
-	const astConstants = expandedConstants.map(({ code, lineMetadata, cacheKey }) =>
-		parseConstantsAST(code, lineMetadata, cache, cacheKey)
-	);
+	const astConstants = expandedConstants.map(({ code, cacheKey }) => parseConstantsAST(code, cache, cacheKey));
 	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
@@ -460,9 +409,7 @@ export default function compile(
 	);
 
 	// Compile functions first with WASM indices and type registry
-	const astFunctions = expandedFunctions.map(({ code, lineMetadata, cacheKey }) =>
-		parseFunctionAST(code, lineMetadata, cache, cacheKey)
-	);
+	const astFunctions = expandedFunctions.map(({ code, cacheKey }) => parseFunctionAST(code, cache, cacheKey));
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;

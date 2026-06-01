@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "#export",
-    "lineNumberAfterMacroExpansion": 1,
-    "lineNumberBeforeMacroExpansion": 1,
+    "lineNumber": 1,
   },
   "message": "#export can only be used within a function block. (51)",
 }

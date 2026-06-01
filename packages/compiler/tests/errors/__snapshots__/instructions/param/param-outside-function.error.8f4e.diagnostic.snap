@@ -20,8 +20,7 @@
       },
     ],
     "instruction": "param",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "This instruction can only be used within a block or a module. (13)",
 }

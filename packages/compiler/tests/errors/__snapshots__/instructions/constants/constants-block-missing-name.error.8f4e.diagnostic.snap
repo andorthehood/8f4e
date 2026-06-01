@@ -3,8 +3,7 @@
   "context": {},
   "line": {
     "instruction": "constants",
-    "lineNumberAfterMacroExpansion": 0,
-    "lineNumberBeforeMacroExpansion": 0,
+    "lineNumber": 0,
   },
   "message": "Missing required argument for constants.",
 }

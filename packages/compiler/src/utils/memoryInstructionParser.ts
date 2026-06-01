@@ -102,14 +102,14 @@ function resolveSplitByteTokens(
  */
 function resolveIdFromShape(
 	firstArg: MemoryArgumentShape,
-	lineNumberAfterMacroExpansion: number,
+	lineNumber: number,
 	lineForError: CompilerASTLine,
 	context: CompilationContext
 ): string {
 	switch (firstArg.type) {
 		case 'literal':
 		case 'split-byte-tokens':
-			return '__anonymous__' + lineNumberAfterMacroExpansion;
+			return '__anonymous__' + lineNumber;
 		case 'constant-identifier':
 			// Bare constant-style names cannot be memory allocation names.
 			throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
@@ -181,13 +181,13 @@ export default function parseMemoryInstructionArguments(
 	line: CompilerASTLine,
 	context: CompilationContext
 ): { id: string; defaultValue: number; defaultAddress?: AddressMetadata } {
-	const { arguments: args, lineNumberAfterMacroExpansion } = line;
+	const { arguments: args, lineNumber } = line;
 	const lineForError = line;
 
 	// Zero-argument scalar declaration: bare anonymous zero-initialized allocation (e.g. `int`, `float`).
 	if (args.length === 0) {
 		return {
-			id: '__anonymous__' + lineNumberAfterMacroExpansion,
+			id: '__anonymous__' + lineNumber,
 			defaultValue: 0,
 		};
 	}
@@ -206,7 +206,7 @@ export default function parseMemoryInstructionArguments(
 		throw error;
 	}
 
-	const id = resolveIdFromShape(shape.firstArg, lineNumberAfterMacroExpansion, lineForError, context);
+	const id = resolveIdFromShape(shape.firstArg, lineNumber, lineForError, context);
 
 	// Anonymous split-byte sequence (e.g. `int 0xA8 0xFF` or `int HI LO`):
 	if (shape.firstArg.type === 'split-byte-tokens') {
