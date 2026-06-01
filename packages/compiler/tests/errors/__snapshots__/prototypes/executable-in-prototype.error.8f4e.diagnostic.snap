@@ -10,8 +10,8 @@
       },
     ],
     "instruction": "push",
-    "lineNumberAfterMacroExpansion": 1,
-    "lineNumberBeforeMacroExpansion": 1,
+    "lineNumberAfterMacroExpansion": 2,
+    "lineNumberBeforeMacroExpansion": 2,
   },
   "message": "This instruction is not allowed inside this block type. (34)",
 }
