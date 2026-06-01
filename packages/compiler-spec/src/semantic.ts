@@ -20,9 +20,12 @@ import type {
 	MemoryCopyLine,
 	ModuleEndLine,
 	ModuleLine,
+	PrototypeEndLine,
+	PrototypeLine,
 	PushArgument,
 	PushLine,
 	RegionLine,
+	ShapeLine,
 	UseLine,
 } from './ast';
 import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
@@ -138,7 +141,7 @@ export interface CollectedNamespace {
 
 export type Namespaces = Record<string, CollectedNamespace>;
 
-export type CompilationMode = Exclude<CompilerSourceBlockType, 'constants'>;
+export type CompilationMode = Exclude<CompilerSourceBlockType, 'constants' | 'prototype'>;
 
 /** Shared mutable compiler state threaded through semantic analysis and code generation. */
 export interface CompilationContext {
@@ -297,7 +300,10 @@ export type NormalizedSemanticInstructionLine =
 	| RegionLine
 	| ModuleEndLine
 	| ConstantsLine
-	| ConstantsEndLine;
+	| ConstantsEndLine
+	| PrototypeLine
+	| PrototypeEndLine
+	| ShapeLine;
 
 export type ResolvedLocalSetLine = LocalSetLine & {
 	local: LocalBinding;

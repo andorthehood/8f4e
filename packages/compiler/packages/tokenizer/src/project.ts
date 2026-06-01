@@ -21,6 +21,7 @@ const projectBlockDelimiters = [
 const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
 const moduleBlockType = documentBlockInstructionByType.module.type;
+const prototypeBlockType = documentBlockInstructionByType.prototype.type;
 const closerByOpener = new Map<string, string>(projectBlockDelimiters.map(({ opener, closer }) => [opener, closer]));
 const openerByCloser = new Map<string, string>(projectBlockDelimiters.map(({ opener, closer }) => [closer, opener]));
 
@@ -39,6 +40,7 @@ export interface ProjectCompilerBlocks {
 	entries: Record<string, Module[]>;
 	constantsBlocks: Module[];
 	functionBlocks: Module[];
+	prototypeBlocks: Module[];
 	macroBlocks: Module[];
 }
 
@@ -234,6 +236,7 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 	const entries: Record<string, Module[]> = { main: [] };
 	const constantsBlocks: Module[] = [];
 	const functionBlocks: Module[] = [];
+	const prototypeBlocks: Module[] = [];
 	const macroBlocks: Module[] = [];
 
 	for (const block of blocks) {
@@ -259,10 +262,14 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 			functionBlocks.push({ code: block.code });
 			continue;
 		}
+		if (blockType === prototypeBlockType) {
+			prototypeBlocks.push({ code: block.code });
+			continue;
+		}
 		if (blockType === macroBlockType) {
 			macroBlocks.push({ code: block.code });
 		}
 	}
 
-	return { entries, constantsBlocks, functionBlocks, macroBlocks };
+	return { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks };
 }
