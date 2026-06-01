@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/editor-state-testing",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "private": true,
   "description": "Framework-agnostic testing utilities for editor state consumers",
   "type": "module",
@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/editor-state-types": "*",
-    "@8f4e/tokenizer": "*"
+    "@8f4e/editor-state-types": "*"
   },
   "devDependencies": {
     "@types/node": "24.12.4",

@@ -1,0 +1,14 @@
+8f4e/v1
+
+entry main
+module countPointerParamCaller
+int8u[] grid 4
+push &grid
+call readCell
+moduleEnd
+entryEnd
+
+function readCell
+param int8u* grid
+push count(*grid)
+functionEnd int
