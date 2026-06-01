@@ -293,11 +293,6 @@ function parsePrototypeAST(
 	return ast;
 }
 
-function startsWithInstruction(line: string, instruction: string): boolean {
-	const nextCharacter = line[instruction.length];
-	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
-}
-
 function getSourceLineMetadata(
 	source: ExpandedCompilerSource,
 	lineNumberAfterMacroExpansion: number
@@ -325,33 +320,67 @@ function collectPrototypeSources(prototypes: readonly ParsedPrototypeSource[]): 
 	return prototypeSourcesById;
 }
 
-function expandModuleSourceShapes(
-	source: ModuleCompilerSource,
-	prototypeSourcesById: ReadonlyMap<string, ParsedPrototypeSource>
-): ModuleCompilerSource {
-	const code: string[] = [];
-	const lineMetadata: ParsedLineMetadata = [];
-	let expandedAnyShape = false;
-
+function findShapeInstructionLineNumber(source: ModuleCompilerSource): number {
 	for (
 		let lineNumberAfterMacroExpansion = 0;
 		lineNumberAfterMacroExpansion < source.code.length;
 		lineNumberAfterMacroExpansion++
 	) {
 		const line = source.code[lineNumberAfterMacroExpansion];
+		const shapeOffset = line.indexOf('shape');
+		if (shapeOffset === -1) {
+			continue;
+		}
+		if (line.slice(0, shapeOffset).trim() !== '') {
+			continue;
+		}
+
+		const nextCharacter = line[shapeOffset + 'shape'.length];
+		if (nextCharacter === undefined || nextCharacter === ' ' || nextCharacter === '\t') {
+			return lineNumberAfterMacroExpansion;
+		}
+	}
+
+	return -1;
+}
+
+function expandModuleSourceShapes(
+	source: ModuleCompilerSource,
+	prototypeSourcesById: ReadonlyMap<string, ParsedPrototypeSource>
+): ModuleCompilerSource {
+	const firstShapeLineNumber = findShapeInstructionLineNumber(source);
+	if (firstShapeLineNumber === -1) {
+		return source;
+	}
+
+	const code = source.code.slice(0, firstShapeLineNumber);
+	const lineMetadata: ParsedLineMetadata = Array.from({ length: firstShapeLineNumber }, (_, index) =>
+		getSourceLineMetadata(source, index)
+	);
+
+	const copyOriginalLine = (lineNumberAfterMacroExpansion: number) => {
+		code.push(source.code[lineNumberAfterMacroExpansion] ?? '');
+		lineMetadata.push(getSourceLineMetadata(source, lineNumberAfterMacroExpansion));
+	};
+
+	for (
+		let lineNumberAfterMacroExpansion = firstShapeLineNumber;
+		lineNumberAfterMacroExpansion < source.code.length;
+		lineNumberAfterMacroExpansion++
+	) {
+		const line = source.code[lineNumberAfterMacroExpansion];
 		const trimmed = line.trim();
 
-		if (!startsWithInstruction(trimmed, 'shape')) {
-			code.push(line);
-			lineMetadata.push(getSourceLineMetadata(source, lineNumberAfterMacroExpansion));
+		const nextCharacter = trimmed['shape'.length];
+		if (trimmed !== 'shape' && (!trimmed.startsWith('shape') || (nextCharacter !== ' ' && nextCharacter !== '\t'))) {
+			copyOriginalLine(lineNumberAfterMacroExpansion);
 			continue;
 		}
 
 		const sourceMetadata = getSourceLineMetadata(source, lineNumberAfterMacroExpansion);
 		const shapeLine = parseLine(line, sourceMetadata.callSiteLineNumber, lineNumberAfterMacroExpansion) as ShapeLine;
 		if (shapeLine.instruction !== 'shape') {
-			code.push(line);
-			lineMetadata.push(sourceMetadata);
+			copyOriginalLine(lineNumberAfterMacroExpansion);
 			continue;
 		}
 
@@ -361,16 +390,11 @@ function expandModuleSourceShapes(
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, shapeLine, undefined, { identifier: prototypeId });
 		}
 
-		expandedAnyShape = true;
 		for (const declarationLine of prototype.ast.memoryDeclarationLines) {
 			const prototypeLineNumber = declarationLine.lineNumberAfterMacroExpansion;
 			code.push(getOriginalSourceLine(prototype.source, prototypeLineNumber));
 			lineMetadata.push(getSourceLineMetadata(prototype.source, prototypeLineNumber));
 		}
-	}
-
-	if (!expandedAnyShape) {
-		return source;
 	}
 
 	return {
