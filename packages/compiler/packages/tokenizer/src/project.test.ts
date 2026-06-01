@@ -36,7 +36,7 @@ describe('parse8f4eProject', () => {
 		const project = parse8f4eProject(text);
 
 		expect(project.codeBlocks).toEqual([
-			{ code: validModuleBlock, containsShape: false, entry: 'main' },
+			{ code: validModuleBlock, entry: 'main' },
 			{ code: validFunctionBlock },
 			{ code: validPrototypeBlock },
 			{ code: validNoteBlock },
@@ -50,7 +50,6 @@ describe('parse8f4eProject', () => {
 
 		expect(project.codeBlocks[0]).toEqual({
 			code: ['module oscillator', 'shape oscillatorState', 'moduleEnd'],
-			containsShape: true,
 			entry: 'main',
 		});
 	});
@@ -107,16 +106,16 @@ describe('project block classification', () => {
 
 	it('splits project blocks into compiler inputs', () => {
 		const blocks = [
-			{ code: validModuleBlock, containsShape: false, entry: 'main' },
+			{ code: validModuleBlock, entry: 'main' },
 			{ code: validFunctionBlock },
 			{ code: validPrototypeBlock },
 			{ code: validMacroBlock },
 			{ code: validNoteBlock },
-			{ code: validModuleBlock, containsShape: false, entry: 'main', disabled: true },
+			{ code: validModuleBlock, entry: 'main', disabled: true },
 		];
 
 		expect(pickProjectCompilerBlocks(blocks)).toEqual({
-			entries: { main: [{ code: validModuleBlock, containsShape: false }] },
+			entries: { main: [{ code: validModuleBlock }] },
 			constantsBlocks: [],
 			functionBlocks: [{ code: validFunctionBlock }],
 			prototypeBlocks: [{ code: validPrototypeBlock }],
@@ -127,31 +126,22 @@ describe('project block classification', () => {
 	it('splits modules into their execution entries', () => {
 		expect(
 			pickProjectCompilerBlocks([
-				{ code: validModuleBlock, containsShape: false, entry: 'main' },
-				{ code: ['module other', 'moduleEnd'], containsShape: false, entry: 'test' },
+				{ code: validModuleBlock, entry: 'main' },
+				{ code: ['module other', 'moduleEnd'], entry: 'test' },
 			]).entries
 		).toEqual({
-			main: [{ code: validModuleBlock, containsShape: false }],
-			test: [{ code: ['module other', 'moduleEnd'], containsShape: false }],
+			main: [{ code: validModuleBlock }],
+			test: [{ code: ['module other', 'moduleEnd'] }],
 		});
 	});
 
 	it('does not infer execution entries from module directives', () => {
-		expect(
-			pickProjectCompilerBlocks([{ code: ['module regular', 'moduleEnd'], containsShape: false, entry: 'main' }])
-				.entries
-		).toEqual({
-			main: [{ code: ['module regular', 'moduleEnd'], containsShape: false }],
+		expect(pickProjectCompilerBlocks([{ code: ['module regular', 'moduleEnd'], entry: 'main' }]).entries).toEqual({
+			main: [{ code: ['module regular', 'moduleEnd'] }],
 		});
 	});
 
 	it('rejects module blocks without an entry', () => {
-		expect(() => pickProjectCompilerBlocks([{ code: validModuleBlock, containsShape: false }])).toThrow(
-			'missing entry'
-		);
-	});
-
-	it('rejects module blocks without tokenizer shape metadata', () => {
-		expect(() => pickProjectCompilerBlocks([{ code: validModuleBlock, entry: 'main' }])).toThrow('containsShape');
+		expect(() => pickProjectCompilerBlocks([{ code: validModuleBlock }])).toThrow('missing entry');
 	});
 });

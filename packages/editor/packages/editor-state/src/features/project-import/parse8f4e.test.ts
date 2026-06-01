@@ -10,7 +10,7 @@ describe('parse8f4eToProject', () => {
 		const text = '8f4e/v1\n\nentry main\n' + validBlock.join('\n') + '\nentryEnd';
 		const project = parse8f4eToProject(text);
 		expect(project.codeBlocks).toHaveLength(1);
-		expect(project.codeBlocks[0]).toEqual({ code: validBlock, containsShape: false, entry: 'main' });
+		expect(project.codeBlocks[0]).toEqual({ code: validBlock, entry: 'main' });
 	});
 
 	it('parses multiple blocks', () => {
@@ -60,7 +60,7 @@ describe('parse8f4eToProject', () => {
 		};
 		const text = serializeProjectTo8f4e(project);
 		const parsed = parse8f4eToProject(text);
-		expect(parsed.codeBlocks[0]).toEqual({ code: validBlock, containsShape: false, entry: 'main' });
+		expect(parsed.codeBlocks[0]).toEqual({ code: validBlock, entry: 'main' });
 		expect(parsed.codeBlocks[1].code).toEqual(validFunctionBlock);
 		expect(parsed.codeBlocks[2].code).toEqual(validNoteBlock);
 	});
