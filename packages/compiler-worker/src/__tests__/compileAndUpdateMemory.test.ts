@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup, Module } from '@8f4e/compiler-spec';
+import type { CompiledModuleLookup, CompileInput, Module } from '@8f4e/compiler-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
@@ -24,7 +24,13 @@ moduleEnd
 				.split('\n'),
 		},
 	];
-	const createInput = (modules: Module[]) => ({ entries: { init: modules } });
+	const createInput = (modules: Module[]): CompileInput => ({
+		entries: { init: modules },
+		constants: [],
+		functions: [],
+		prototypes: [],
+		macros: [],
+	});
 
 	const getAddresses = (compiledModules: CompiledModuleLookup) => ({
 		base: compiledModules.setup.memoryMap.base.byteAddress / 4,
@@ -89,7 +95,13 @@ moduleEnd
 describe('compileAndUpdateMemory float64 incremental patching', () => {
 	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
-	const createInput = (modules: Module[]) => ({ entries: { main: modules } });
+	const createInput = (modules: Module[]): CompileInput => ({
+		entries: { main: modules },
+		constants: [],
+		functions: [],
+		prototypes: [],
+		macros: [],
+	});
 
 	beforeEach(async () => {
 		vi.resetModules();
