@@ -1,6 +1,17 @@
+import type { CompileInput, Module } from '@8f4e/compiler-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
+
+function createInput(modules: Module[]): CompileInput {
+	return {
+		entries: { main: modules },
+		constants: [],
+		functions: [],
+		prototypes: [],
+		macros: [],
+	};
+}
 
 describe('automatic memory sizing', () => {
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
@@ -17,12 +28,9 @@ describe('automatic memory sizing', () => {
 			},
 		];
 
-		const result = await compileAndUpdateMemory(
-			{ entries: { main: modules } },
-			{
-				startingMemoryWordAddress: 0,
-			}
-		);
+		const result = await compileAndUpdateMemory(createInput(modules), {
+			startingMemoryWordAddress: 0,
+		});
 
 		// Should have successfully compiled
 		expect(result.compiledModules).toBeDefined();
@@ -42,12 +50,9 @@ describe('automatic memory sizing', () => {
 			},
 		];
 
-		const result = await compileAndUpdateMemory(
-			{ entries: { main: modules } },
-			{
-				startingMemoryWordAddress: 0,
-			}
-		);
+		const result = await compileAndUpdateMemory(createInput(modules), {
+			startingMemoryWordAddress: 0,
+		});
 
 		// Should allocate at least 64 KiB (1 page)
 		expect(result.memoryRef.buffer.byteLength).toBe(65536);

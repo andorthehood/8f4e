@@ -110,7 +110,9 @@ describe('program compiler effect', () => {
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
 				entries: { main: expect.any(Array) },
+				constants: expect.any(Array),
 				functions: expect.any(Array),
+				prototypes: expect.any(Array),
 				macros: expect.any(Array),
 			}),
 			{
@@ -152,7 +154,9 @@ describe('program compiler effect', () => {
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
 				entries: { main: expect.any(Array) },
+				constants: expect.any(Array),
 				functions: expect.any(Array),
+				prototypes: expect.any(Array),
 				macros: expect.any(Array),
 			}),
 			{
@@ -186,7 +190,9 @@ describe('program compiler effect', () => {
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
 				entries: { main: expect.any(Array) },
+				constants: expect.any(Array),
 				functions: expect.any(Array),
+				prototypes: expect.any(Array),
 				macros: expect.any(Array),
 			}),
 			{
@@ -202,7 +208,9 @@ describe('program compiler effect', () => {
 		expect(mockCompileCode).toHaveBeenLastCalledWith(
 			expect.objectContaining({
 				entries: { main: expect.any(Array) },
+				constants: expect.any(Array),
 				functions: expect.any(Array),
+				prototypes: expect.any(Array),
 				macros: expect.any(Array),
 			}),
 			{
