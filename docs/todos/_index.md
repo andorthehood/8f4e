@@ -71,6 +71,7 @@ Active todo files are listed below.
 | 439 | Migrate @midiIn to config directive | 🟡 | 1-2d | 2026-05-30 | Move browser MIDI input routing from a standalone editor directive into a MIDI-owned schema-backed `@config` root. |
 | 440 | Migrate keyboard memory directives to config | 🟡 | 4-8h | 2026-05-30 | Replace `@keyCodeMemory` and `@keyPressedMemory` with keyboard-owned schema-backed config paths. |
 | 441 | Migrate binary asset directives to config | 🟡 | 1-2d | 2026-05-30 | Replace `@defAsset` and `@loadAsset` raw directive parsing with binary-asset-owned schema-backed config paths. |
+| 443 | Add prototype body expansion | 🟡 | 1-2d | 2026-06-01 | Let prototypes define executable body lines that consuming modules can explicitly expand after importing the prototype memory shape. |
 
 ### 🟢 Low Priority
 
