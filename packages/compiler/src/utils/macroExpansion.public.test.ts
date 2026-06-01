@@ -1,6 +1,6 @@
 import type { Module } from '@8f4e/compiler-spec';
 import { describe, expect, test } from 'vitest';
-import { convertExpandedLinesToCode, expandMacros, parseMacroDefinitions } from './macroExpansion';
+import { expandMacros, parseMacroDefinitions } from './macroExpansion';
 
 describe('parseMacroDefinitions', () => {
 	test('should parse a simple macro definition', () => {
@@ -158,20 +158,20 @@ describe('expandMacros', () => {
 
 		expect(expanded.length).toBe(8);
 		// Line 0: module test
-		expect(expanded[0]).toEqual({ line: 'module test', callSiteLineNumber: 0 });
+		expect(expanded[0]).toBe('module test');
 		// Line 1: int result 0
-		expect(expanded[1]).toEqual({ line: 'int result 0', callSiteLineNumber: 1 });
+		expect(expanded[1]).toBe('int result 0');
 		// Line 2: cycle
-		expect(expanded[2]).toEqual({ line: 'cycle', callSiteLineNumber: 2 });
+		expect(expanded[2]).toBe('cycle');
 		// Line 3: push 5
-		expect(expanded[3]).toEqual({ line: 'push 5', callSiteLineNumber: 3 });
+		expect(expanded[3]).toBe('push 5');
 		// Line 4: macro add10 expands to two lines, both map to line 4
-		expect(expanded[4]).toEqual({ line: 'push 10', callSiteLineNumber: 4, macroId: 'add10' });
-		expect(expanded[5]).toEqual({ line: 'add', callSiteLineNumber: 4, macroId: 'add10' });
+		expect(expanded[4]).toBe('push 10');
+		expect(expanded[5]).toBe('add');
 		// Line 5: store result
-		expect(expanded[6]).toEqual({ line: 'store result', callSiteLineNumber: 5 });
+		expect(expanded[6]).toBe('store result');
 		// Line 6: cycleEnd
-		expect(expanded[7]).toEqual({ line: 'cycleEnd', callSiteLineNumber: 6 });
+		expect(expanded[7]).toBe('cycleEnd');
 	});
 
 	test('should expand multiple macro calls', () => {
@@ -192,15 +192,15 @@ describe('expandMacros', () => {
 
 		expect(expanded.length).toBe(6);
 		// Line 0: module test
-		expect(expanded[0]).toEqual({ line: 'module test', callSiteLineNumber: 0 });
+		expect(expanded[0]).toBe('module test');
 		// Line 1: push 5
-		expect(expanded[1]).toEqual({ line: 'push 5', callSiteLineNumber: 1 });
+		expect(expanded[1]).toBe('push 5');
 		// Line 2: first macro double
-		expect(expanded[2]).toEqual({ line: 'push 2', callSiteLineNumber: 2, macroId: 'double' });
-		expect(expanded[3]).toEqual({ line: 'mul', callSiteLineNumber: 2, macroId: 'double' });
+		expect(expanded[2]).toBe('push 2');
+		expect(expanded[3]).toBe('mul');
 		// Line 3: second macro double
-		expect(expanded[4]).toEqual({ line: 'push 2', callSiteLineNumber: 3, macroId: 'double' });
-		expect(expanded[5]).toEqual({ line: 'mul', callSiteLineNumber: 3, macroId: 'double' });
+		expect(expanded[4]).toBe('push 2');
+		expect(expanded[5]).toBe('mul');
 	});
 
 	test('should throw error on undefined macro', () => {
@@ -234,32 +234,10 @@ describe('expandMacros', () => {
 		const expanded = expandMacros(modules[0], macroMap);
 
 		expect(expanded.length).toBe(5);
-		expect(expanded[0]).toEqual({ line: 'module test', callSiteLineNumber: 0 });
-		expect(expanded[1]).toEqual({ line: '; This is a comment', callSiteLineNumber: 1 });
-		expect(expanded[2]).toEqual({ line: 'push 10', callSiteLineNumber: 2, macroId: 'add10' });
-		expect(expanded[3]).toEqual({ line: 'add', callSiteLineNumber: 2, macroId: 'add10' });
-		expect(expanded[4]).toEqual({ line: '', callSiteLineNumber: 3 });
-	});
-});
-
-describe('convertExpandedLinesToCode', () => {
-	test('should convert expanded lines to code and metadata', () => {
-		const expandedLines = [
-			{ line: 'module test', callSiteLineNumber: 0 },
-			{ line: 'push 10', callSiteLineNumber: 1, macroId: 'add10' },
-			{ line: 'add', callSiteLineNumber: 1, macroId: 'add10' },
-			{ line: 'store result', callSiteLineNumber: 2 },
-		];
-
-		const result = convertExpandedLinesToCode(expandedLines);
-
-		expect(result.code).toEqual(['module test', 'push 10', 'add', 'store result']);
-
-		expect(result.lineMetadata).toEqual([
-			{ callSiteLineNumber: 0 },
-			{ callSiteLineNumber: 1, macroId: 'add10' },
-			{ callSiteLineNumber: 1, macroId: 'add10' },
-			{ callSiteLineNumber: 2 },
-		]);
+		expect(expanded[0]).toBe('module test');
+		expect(expanded[1]).toBe('; This is a comment');
+		expect(expanded[2]).toBe('push 10');
+		expect(expanded[3]).toBe('add');
+		expect(expanded[4]).toBe('');
 	});
 });

@@ -15,8 +15,7 @@ describe('remainder instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			remainder,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'remainder',
 				arguments: [],
 			} as CompilerASTLine,
@@ -40,8 +39,7 @@ describe('remainder instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				remainder,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'remainder',
 					arguments: [],
 				} as CompilerASTLine,
@@ -60,8 +58,7 @@ describe('remainder instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			remainder,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'remainder',
 				arguments: [],
 			} as CompilerASTLine,

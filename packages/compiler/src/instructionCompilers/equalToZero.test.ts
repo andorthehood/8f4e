@@ -13,8 +13,7 @@ describe('equalToZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			equalToZero,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'equalToZero',
 				arguments: [],
 			} as CompilerASTLine,
@@ -32,8 +31,7 @@ describe('equalToZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			equalToZero,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'equalToZero',
 				arguments: [],
 			} as CompilerASTLine,
@@ -51,8 +49,7 @@ describe('equalToZero instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			equalToZero,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'equalToZero',
 				arguments: [],
 			} as CompilerASTLine,

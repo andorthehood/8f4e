@@ -15,8 +15,7 @@ describe('shiftRightUnsigned instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			shiftRightUnsigned,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'shiftRightUnsigned',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +38,7 @@ describe('shiftRightUnsigned instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			shiftRightUnsigned,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'shiftRightUnsigned',
 				arguments: [],
 			} as CompilerASTLine,

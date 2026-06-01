@@ -16,8 +16,7 @@ describe('greaterThan instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterThan,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterThan',
 				arguments: [],
 			} as CompilerASTLine,
@@ -40,8 +39,7 @@ describe('greaterThan instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterThan,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterThan',
 				arguments: [],
 			} as CompilerASTLine,
@@ -64,8 +62,7 @@ describe('greaterThan instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterThan,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterThan',
 				arguments: [],
 			} as CompilerASTLine,

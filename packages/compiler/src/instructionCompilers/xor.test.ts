@@ -15,8 +15,7 @@ describe('xor instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			xor,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'xor',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +38,7 @@ describe('xor instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			xor,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'xor',
 				arguments: [],
 			} as CompilerASTLine,

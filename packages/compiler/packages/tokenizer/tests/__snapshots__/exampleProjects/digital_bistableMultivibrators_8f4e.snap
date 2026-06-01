@@ -1,13 +1,11 @@
 [
   {
-    "lineNumberBeforeMacroExpansion": 0,
-    "lineNumberAfterMacroExpansion": 0,
+    "lineNumber": 0,
     "instruction": "8f4e/v1",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 2,
-    "lineNumberAfterMacroExpansion": 2,
+    "lineNumber": 2,
     "instruction": "entry",
     "arguments": [
       {
@@ -19,8 +17,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 3,
-    "lineNumberAfterMacroExpansion": 3,
+    "lineNumber": 3,
     "instruction": "module",
     "arguments": [
       {
@@ -32,14 +29,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 9,
-    "lineNumberAfterMacroExpansion": 9,
+    "lineNumber": 9,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 10,
-    "lineNumberAfterMacroExpansion": 10,
+    "lineNumber": 10,
     "instruction": "module",
     "arguments": [
       {
@@ -51,14 +46,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 18,
-    "lineNumberAfterMacroExpansion": 18,
+    "lineNumber": 18,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 19,
-    "lineNumberAfterMacroExpansion": 19,
+    "lineNumber": 19,
     "instruction": "module",
     "arguments": [
       {
@@ -70,8 +63,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 23,
-    "lineNumberAfterMacroExpansion": 23,
+    "lineNumber": 23,
     "instruction": "int",
     "arguments": [
       {
@@ -84,14 +76,12 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 28,
-    "lineNumberAfterMacroExpansion": 28,
+    "lineNumber": 28,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 29,
-    "lineNumberAfterMacroExpansion": 29,
+    "lineNumber": 29,
     "instruction": "module",
     "arguments": [
       {
@@ -103,8 +93,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 32,
-    "lineNumberAfterMacroExpansion": 32,
+    "lineNumber": 32,
     "instruction": "int",
     "arguments": [
       {
@@ -117,14 +106,12 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 37,
-    "lineNumberAfterMacroExpansion": 37,
+    "lineNumber": 37,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 38,
-    "lineNumberAfterMacroExpansion": 38,
+    "lineNumber": 38,
     "instruction": "module",
     "arguments": [
       {
@@ -136,8 +123,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 42,
-    "lineNumberAfterMacroExpansion": 42,
+    "lineNumber": 42,
     "instruction": "int*",
     "arguments": [
       {
@@ -162,8 +148,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 43,
-    "lineNumberAfterMacroExpansion": 43,
+    "lineNumber": 43,
     "instruction": "int",
     "arguments": [
       {
@@ -176,8 +161,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 44,
-    "lineNumberAfterMacroExpansion": 44,
+    "lineNumber": 44,
     "instruction": "int*",
     "arguments": [
       {
@@ -202,8 +186,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 48,
-    "lineNumberAfterMacroExpansion": 48,
+    "lineNumber": 48,
     "instruction": "push",
     "arguments": [
       {
@@ -217,8 +200,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 49,
-    "lineNumberAfterMacroExpansion": 49,
+    "lineNumber": 49,
     "instruction": "push",
     "arguments": [
       {
@@ -232,8 +214,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 50,
-    "lineNumberAfterMacroExpansion": 50,
+    "lineNumber": 50,
     "instruction": "push",
     "arguments": [
       {
@@ -247,14 +228,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 51,
-    "lineNumberAfterMacroExpansion": 51,
+    "lineNumber": 51,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 52,
-    "lineNumberAfterMacroExpansion": 52,
+    "lineNumber": 52,
     "instruction": "push",
     "arguments": [
       {
@@ -265,14 +244,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 53,
-    "lineNumberAfterMacroExpansion": 53,
+    "lineNumber": 53,
     "instruction": "equal",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 54,
-    "lineNumberAfterMacroExpansion": 54,
+    "lineNumber": 54,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -284,8 +261,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 55,
-    "lineNumberAfterMacroExpansion": 55,
+    "lineNumber": 55,
     "instruction": "push",
     "arguments": [
       {
@@ -296,14 +272,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 56,
-    "lineNumberAfterMacroExpansion": 56,
+    "lineNumber": 56,
     "instruction": "else",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 57,
-    "lineNumberAfterMacroExpansion": 57,
+    "lineNumber": 57,
     "instruction": "push",
     "arguments": [
       {
@@ -314,8 +288,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 58,
-    "lineNumberAfterMacroExpansion": 58,
+    "lineNumber": 58,
     "instruction": "ifEnd",
     "arguments": [
       {
@@ -333,20 +306,17 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 59,
-    "lineNumberAfterMacroExpansion": 59,
+    "lineNumber": 59,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 61,
-    "lineNumberAfterMacroExpansion": 61,
+    "lineNumber": 61,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 62,
-    "lineNumberAfterMacroExpansion": 62,
+    "lineNumber": 62,
     "instruction": "module",
     "arguments": [
       {
@@ -358,8 +328,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 66,
-    "lineNumberAfterMacroExpansion": 66,
+    "lineNumber": 66,
     "instruction": "int*",
     "arguments": [
       {
@@ -384,8 +353,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 67,
-    "lineNumberAfterMacroExpansion": 67,
+    "lineNumber": 67,
     "instruction": "int",
     "arguments": [
       {
@@ -398,8 +366,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 68,
-    "lineNumberAfterMacroExpansion": 68,
+    "lineNumber": 68,
     "instruction": "int*",
     "arguments": [
       {
@@ -424,8 +391,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 72,
-    "lineNumberAfterMacroExpansion": 72,
+    "lineNumber": 72,
     "instruction": "push",
     "arguments": [
       {
@@ -439,8 +405,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 73,
-    "lineNumberAfterMacroExpansion": 73,
+    "lineNumber": 73,
     "instruction": "push",
     "arguments": [
       {
@@ -454,8 +419,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 74,
-    "lineNumberAfterMacroExpansion": 74,
+    "lineNumber": 74,
     "instruction": "push",
     "arguments": [
       {
@@ -469,14 +433,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 75,
-    "lineNumberAfterMacroExpansion": 75,
+    "lineNumber": 75,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 76,
-    "lineNumberAfterMacroExpansion": 76,
+    "lineNumber": 76,
     "instruction": "push",
     "arguments": [
       {
@@ -487,14 +449,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 77,
-    "lineNumberAfterMacroExpansion": 77,
+    "lineNumber": 77,
     "instruction": "equal",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 78,
-    "lineNumberAfterMacroExpansion": 78,
+    "lineNumber": 78,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -506,8 +466,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 79,
-    "lineNumberAfterMacroExpansion": 79,
+    "lineNumber": 79,
     "instruction": "push",
     "arguments": [
       {
@@ -518,14 +477,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 80,
-    "lineNumberAfterMacroExpansion": 80,
+    "lineNumber": 80,
     "instruction": "else",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 81,
-    "lineNumberAfterMacroExpansion": 81,
+    "lineNumber": 81,
     "instruction": "push",
     "arguments": [
       {
@@ -536,8 +493,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 82,
-    "lineNumberAfterMacroExpansion": 82,
+    "lineNumber": 82,
     "instruction": "ifEnd",
     "arguments": [
       {
@@ -555,20 +511,17 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 83,
-    "lineNumberAfterMacroExpansion": 83,
+    "lineNumber": 83,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 85,
-    "lineNumberAfterMacroExpansion": 85,
+    "lineNumber": 85,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 86,
-    "lineNumberAfterMacroExpansion": 86,
+    "lineNumber": 86,
     "instruction": "module",
     "arguments": [
       {
@@ -580,8 +533,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 89,
-    "lineNumberAfterMacroExpansion": 89,
+    "lineNumber": 89,
     "instruction": "int*",
     "arguments": [
       {
@@ -606,8 +558,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 90,
-    "lineNumberAfterMacroExpansion": 90,
+    "lineNumber": 90,
     "instruction": "int[]",
     "arguments": [
       {
@@ -625,8 +576,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 91,
-    "lineNumberAfterMacroExpansion": 91,
+    "lineNumber": 91,
     "instruction": "int",
     "arguments": [
       {
@@ -647,8 +597,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 95,
-    "lineNumberAfterMacroExpansion": 95,
+    "lineNumber": 95,
     "instruction": "push",
     "arguments": [
       {
@@ -662,8 +611,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 96,
-    "lineNumberAfterMacroExpansion": 96,
+    "lineNumber": 96,
     "instruction": "push",
     "arguments": [
       {
@@ -675,8 +623,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 97,
-    "lineNumberAfterMacroExpansion": 97,
+    "lineNumber": 97,
     "instruction": "push",
     "arguments": [
       {
@@ -689,20 +636,17 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 98,
-    "lineNumberAfterMacroExpansion": 98,
+    "lineNumber": 98,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 99,
-    "lineNumberAfterMacroExpansion": 99,
+    "lineNumber": 99,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 101,
-    "lineNumberAfterMacroExpansion": 101,
+    "lineNumber": 101,
     "instruction": "push",
     "arguments": [
       {
@@ -714,8 +658,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 102,
-    "lineNumberAfterMacroExpansion": 102,
+    "lineNumber": 102,
     "instruction": "push",
     "arguments": [
       {
@@ -729,14 +672,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 103,
-    "lineNumberAfterMacroExpansion": 103,
+    "lineNumber": 103,
     "instruction": "greaterThan",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 104,
-    "lineNumberAfterMacroExpansion": 104,
+    "lineNumber": 104,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -746,8 +687,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 105,
-    "lineNumberAfterMacroExpansion": 105,
+    "lineNumber": 105,
     "instruction": "push",
     "arguments": [
       {
@@ -761,8 +701,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 106,
-    "lineNumberAfterMacroExpansion": 106,
+    "lineNumber": 106,
     "instruction": "push",
     "arguments": [
       {
@@ -776,14 +715,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 107,
-    "lineNumberAfterMacroExpansion": 107,
+    "lineNumber": 107,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 108,
-    "lineNumberAfterMacroExpansion": 108,
+    "lineNumber": 108,
     "instruction": "ifEnd",
     "arguments": [],
     "ifEndBlock": {
@@ -792,8 +729,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 110,
-    "lineNumberAfterMacroExpansion": 110,
+    "lineNumber": 110,
     "instruction": "push",
     "arguments": [
       {
@@ -805,8 +741,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 111,
-    "lineNumberAfterMacroExpansion": 111,
+    "lineNumber": 111,
     "instruction": "push",
     "arguments": [
       {
@@ -820,20 +755,17 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 112,
-    "lineNumberAfterMacroExpansion": 112,
+    "lineNumber": 112,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 114,
-    "lineNumberAfterMacroExpansion": 114,
+    "lineNumber": 114,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 115,
-    "lineNumberAfterMacroExpansion": 115,
+    "lineNumber": 115,
     "instruction": "module",
     "arguments": [
       {
@@ -845,8 +777,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 120,
-    "lineNumberAfterMacroExpansion": 120,
+    "lineNumber": 120,
     "instruction": "int",
     "arguments": [
       {
@@ -859,8 +790,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 121,
-    "lineNumberAfterMacroExpansion": 121,
+    "lineNumber": 121,
     "instruction": "int",
     "arguments": [
       {
@@ -873,14 +803,12 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 129,
-    "lineNumberAfterMacroExpansion": 129,
+    "lineNumber": 129,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 130,
-    "lineNumberAfterMacroExpansion": 130,
+    "lineNumber": 130,
     "instruction": "module",
     "arguments": [
       {
@@ -892,8 +820,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 133,
-    "lineNumberAfterMacroExpansion": 133,
+    "lineNumber": 133,
     "instruction": "int*",
     "arguments": [
       {
@@ -918,8 +845,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 134,
-    "lineNumberAfterMacroExpansion": 134,
+    "lineNumber": 134,
     "instruction": "int",
     "arguments": [
       {
@@ -932,8 +858,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 136,
-    "lineNumberAfterMacroExpansion": 136,
+    "lineNumber": 136,
     "instruction": "push",
     "arguments": [
       {
@@ -947,8 +872,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 137,
-    "lineNumberAfterMacroExpansion": 137,
+    "lineNumber": 137,
     "instruction": "push",
     "arguments": [
       {
@@ -962,8 +886,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 138,
-    "lineNumberAfterMacroExpansion": 138,
+    "lineNumber": 138,
     "instruction": "push",
     "arguments": [
       {
@@ -974,14 +897,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 139,
-    "lineNumberAfterMacroExpansion": 139,
+    "lineNumber": 139,
     "instruction": "equal",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 140,
-    "lineNumberAfterMacroExpansion": 140,
+    "lineNumber": 140,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -993,8 +914,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 141,
-    "lineNumberAfterMacroExpansion": 141,
+    "lineNumber": 141,
     "instruction": "push",
     "arguments": [
       {
@@ -1005,14 +925,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 142,
-    "lineNumberAfterMacroExpansion": 142,
+    "lineNumber": 142,
     "instruction": "else",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 143,
-    "lineNumberAfterMacroExpansion": 143,
+    "lineNumber": 143,
     "instruction": "push",
     "arguments": [
       {
@@ -1023,8 +941,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 144,
-    "lineNumberAfterMacroExpansion": 144,
+    "lineNumber": 144,
     "instruction": "ifEnd",
     "arguments": [
       {
@@ -1042,20 +959,17 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 145,
-    "lineNumberAfterMacroExpansion": 145,
+    "lineNumber": 145,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 147,
-    "lineNumberAfterMacroExpansion": 147,
+    "lineNumber": 147,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 148,
-    "lineNumberAfterMacroExpansion": 148,
+    "lineNumber": 148,
     "instruction": "module",
     "arguments": [
       {
@@ -1067,8 +981,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 152,
-    "lineNumberAfterMacroExpansion": 152,
+    "lineNumber": 152,
     "instruction": "int*",
     "arguments": [
       {
@@ -1093,8 +1006,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 153,
-    "lineNumberAfterMacroExpansion": 153,
+    "lineNumber": 153,
     "instruction": "int",
     "arguments": [
       {
@@ -1107,8 +1019,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 154,
-    "lineNumberAfterMacroExpansion": 154,
+    "lineNumber": 154,
     "instruction": "int*",
     "arguments": [
       {
@@ -1133,8 +1044,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 157,
-    "lineNumberAfterMacroExpansion": 157,
+    "lineNumber": 157,
     "instruction": "push",
     "arguments": [
       {
@@ -1148,8 +1058,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 158,
-    "lineNumberAfterMacroExpansion": 158,
+    "lineNumber": 158,
     "instruction": "push",
     "arguments": [
       {
@@ -1163,8 +1072,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 159,
-    "lineNumberAfterMacroExpansion": 159,
+    "lineNumber": 159,
     "instruction": "push",
     "arguments": [
       {
@@ -1178,14 +1086,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 160,
-    "lineNumberAfterMacroExpansion": 160,
+    "lineNumber": 160,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 161,
-    "lineNumberAfterMacroExpansion": 161,
+    "lineNumber": 161,
     "instruction": "push",
     "arguments": [
       {
@@ -1196,14 +1102,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 162,
-    "lineNumberAfterMacroExpansion": 162,
+    "lineNumber": 162,
     "instruction": "greaterOrEqual",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 163,
-    "lineNumberAfterMacroExpansion": 163,
+    "lineNumber": 163,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -1215,8 +1119,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 164,
-    "lineNumberAfterMacroExpansion": 164,
+    "lineNumber": 164,
     "instruction": "push",
     "arguments": [
       {
@@ -1227,14 +1130,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 165,
-    "lineNumberAfterMacroExpansion": 165,
+    "lineNumber": 165,
     "instruction": "else",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 166,
-    "lineNumberAfterMacroExpansion": 166,
+    "lineNumber": 166,
     "instruction": "push",
     "arguments": [
       {
@@ -1245,8 +1146,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 167,
-    "lineNumberAfterMacroExpansion": 167,
+    "lineNumber": 167,
     "instruction": "ifEnd",
     "arguments": [
       {
@@ -1264,20 +1164,17 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 168,
-    "lineNumberAfterMacroExpansion": 168,
+    "lineNumber": 168,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 170,
-    "lineNumberAfterMacroExpansion": 170,
+    "lineNumber": 170,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 171,
-    "lineNumberAfterMacroExpansion": 171,
+    "lineNumber": 171,
     "instruction": "module",
     "arguments": [
       {
@@ -1289,8 +1186,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 175,
-    "lineNumberAfterMacroExpansion": 175,
+    "lineNumber": 175,
     "instruction": "int*",
     "arguments": [
       {
@@ -1315,8 +1211,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 176,
-    "lineNumberAfterMacroExpansion": 176,
+    "lineNumber": 176,
     "instruction": "int",
     "arguments": [
       {
@@ -1329,8 +1224,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 177,
-    "lineNumberAfterMacroExpansion": 177,
+    "lineNumber": 177,
     "instruction": "int*",
     "arguments": [
       {
@@ -1355,8 +1249,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 180,
-    "lineNumberAfterMacroExpansion": 180,
+    "lineNumber": 180,
     "instruction": "push",
     "arguments": [
       {
@@ -1370,8 +1263,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 181,
-    "lineNumberAfterMacroExpansion": 181,
+    "lineNumber": 181,
     "instruction": "push",
     "arguments": [
       {
@@ -1385,8 +1277,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 182,
-    "lineNumberAfterMacroExpansion": 182,
+    "lineNumber": 182,
     "instruction": "push",
     "arguments": [
       {
@@ -1400,14 +1291,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 183,
-    "lineNumberAfterMacroExpansion": 183,
+    "lineNumber": 183,
     "instruction": "mul",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 184,
-    "lineNumberAfterMacroExpansion": 184,
+    "lineNumber": 184,
     "instruction": "push",
     "arguments": [
       {
@@ -1418,14 +1307,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 185,
-    "lineNumberAfterMacroExpansion": 185,
+    "lineNumber": 185,
     "instruction": "greaterOrEqual",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 186,
-    "lineNumberAfterMacroExpansion": 186,
+    "lineNumber": 186,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -1437,8 +1324,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 187,
-    "lineNumberAfterMacroExpansion": 187,
+    "lineNumber": 187,
     "instruction": "push",
     "arguments": [
       {
@@ -1449,14 +1335,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 188,
-    "lineNumberAfterMacroExpansion": 188,
+    "lineNumber": 188,
     "instruction": "else",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 189,
-    "lineNumberAfterMacroExpansion": 189,
+    "lineNumber": 189,
     "instruction": "push",
     "arguments": [
       {
@@ -1467,8 +1351,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 190,
-    "lineNumberAfterMacroExpansion": 190,
+    "lineNumber": 190,
     "instruction": "ifEnd",
     "arguments": [
       {
@@ -1486,20 +1369,17 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 191,
-    "lineNumberAfterMacroExpansion": 191,
+    "lineNumber": 191,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 193,
-    "lineNumberAfterMacroExpansion": 193,
+    "lineNumber": 193,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 194,
-    "lineNumberAfterMacroExpansion": 194,
+    "lineNumber": 194,
     "instruction": "module",
     "arguments": [
       {
@@ -1511,8 +1391,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 197,
-    "lineNumberAfterMacroExpansion": 197,
+    "lineNumber": 197,
     "instruction": "int*",
     "arguments": [
       {
@@ -1537,8 +1416,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 198,
-    "lineNumberAfterMacroExpansion": 198,
+    "lineNumber": 198,
     "instruction": "int[]",
     "arguments": [
       {
@@ -1556,8 +1434,7 @@
     "hasExplicitMemoryDefault": false
   },
   {
-    "lineNumberBeforeMacroExpansion": 199,
-    "lineNumberAfterMacroExpansion": 199,
+    "lineNumber": 199,
     "instruction": "int",
     "arguments": [
       {
@@ -1578,8 +1455,7 @@
     "hasExplicitMemoryDefault": true
   },
   {
-    "lineNumberBeforeMacroExpansion": 203,
-    "lineNumberAfterMacroExpansion": 203,
+    "lineNumber": 203,
     "instruction": "push",
     "arguments": [
       {
@@ -1593,8 +1469,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 204,
-    "lineNumberAfterMacroExpansion": 204,
+    "lineNumber": 204,
     "instruction": "push",
     "arguments": [
       {
@@ -1606,8 +1481,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 205,
-    "lineNumberAfterMacroExpansion": 205,
+    "lineNumber": 205,
     "instruction": "push",
     "arguments": [
       {
@@ -1620,20 +1494,17 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 206,
-    "lineNumberAfterMacroExpansion": 206,
+    "lineNumber": 206,
     "instruction": "add",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 207,
-    "lineNumberAfterMacroExpansion": 207,
+    "lineNumber": 207,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 209,
-    "lineNumberAfterMacroExpansion": 209,
+    "lineNumber": 209,
     "instruction": "push",
     "arguments": [
       {
@@ -1645,8 +1516,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 210,
-    "lineNumberAfterMacroExpansion": 210,
+    "lineNumber": 210,
     "instruction": "push",
     "arguments": [
       {
@@ -1660,14 +1530,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 211,
-    "lineNumberAfterMacroExpansion": 211,
+    "lineNumber": 211,
     "instruction": "greaterThan",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 212,
-    "lineNumberAfterMacroExpansion": 212,
+    "lineNumber": 212,
     "instruction": "if",
     "arguments": [],
     "ifBlock": {
@@ -1677,8 +1545,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 213,
-    "lineNumberAfterMacroExpansion": 213,
+    "lineNumber": 213,
     "instruction": "push",
     "arguments": [
       {
@@ -1692,8 +1559,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 214,
-    "lineNumberAfterMacroExpansion": 214,
+    "lineNumber": 214,
     "instruction": "push",
     "arguments": [
       {
@@ -1707,14 +1573,12 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 215,
-    "lineNumberAfterMacroExpansion": 215,
+    "lineNumber": 215,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 216,
-    "lineNumberAfterMacroExpansion": 216,
+    "lineNumber": 216,
     "instruction": "ifEnd",
     "arguments": [],
     "ifEndBlock": {
@@ -1723,8 +1587,7 @@
     }
   },
   {
-    "lineNumberBeforeMacroExpansion": 218,
-    "lineNumberAfterMacroExpansion": 218,
+    "lineNumber": 218,
     "instruction": "push",
     "arguments": [
       {
@@ -1736,8 +1599,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 219,
-    "lineNumberAfterMacroExpansion": 219,
+    "lineNumber": 219,
     "instruction": "push",
     "arguments": [
       {
@@ -1751,26 +1613,22 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 220,
-    "lineNumberAfterMacroExpansion": 220,
+    "lineNumber": 220,
     "instruction": "store",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 222,
-    "lineNumberAfterMacroExpansion": 222,
+    "lineNumber": 222,
     "instruction": "moduleEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 223,
-    "lineNumberAfterMacroExpansion": 223,
+    "lineNumber": 223,
     "instruction": "entryEnd",
     "arguments": []
   },
   {
-    "lineNumberBeforeMacroExpansion": 225,
-    "lineNumberAfterMacroExpansion": 225,
+    "lineNumber": 225,
     "instruction": "constants",
     "arguments": [
       {
@@ -1782,8 +1640,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 231,
-    "lineNumberAfterMacroExpansion": 231,
+    "lineNumber": 231,
     "instruction": "const",
     "arguments": [
       {
@@ -1800,8 +1657,7 @@
     ]
   },
   {
-    "lineNumberBeforeMacroExpansion": 233,
-    "lineNumberAfterMacroExpansion": 233,
+    "lineNumber": 233,
     "instruction": "constantsEnd",
     "arguments": []
   }

@@ -19,8 +19,7 @@
       },
     ],
     "instruction": "int[]",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Memory declarations are not allowed in functions. (20)",
 }

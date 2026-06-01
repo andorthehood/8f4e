@@ -11,8 +11,7 @@
       },
     ],
     "instruction": "shape",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Undeclared identifier: missing. (5)",
 }

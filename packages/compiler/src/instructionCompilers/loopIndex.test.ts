@@ -15,10 +15,12 @@ describe('loopIndex instruction compiler', () => {
 			},
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.LOOP,expectedResultTypes: [],
+					blockType: BlockType.LOOP,
+					expectedResultTypes: [],
 					loopCounterLocalName: '__loopCounter2',
 					loopCounterLocal,
 				},
@@ -28,8 +30,7 @@ describe('loopIndex instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loopIndex,
 			{
-				lineNumberBeforeMacroExpansion: 10,
-				lineNumberAfterMacroExpansion: 10,
+				lineNumber: 10,
 				instruction: 'loopIndex',
 				arguments: [],
 			} as CompilerASTLine,
@@ -50,15 +51,18 @@ describe('loopIndex instruction compiler', () => {
 			},
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.LOOP,expectedResultTypes: [],
+					blockType: BlockType.LOOP,
+					expectedResultTypes: [],
 					loopCounterLocalName: '__outer',
 					loopCounterLocal: outerLoopCounterLocal,
 				},
 				{
-					blockType: BlockType.LOOP,expectedResultTypes: [],
+					blockType: BlockType.LOOP,
+					expectedResultTypes: [],
 					loopCounterLocalName: '__inner',
 					loopCounterLocal: innerLoopCounterLocal,
 				},
@@ -68,8 +72,7 @@ describe('loopIndex instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			loopIndex,
 			{
-				lineNumberBeforeMacroExpansion: 10,
-				lineNumberAfterMacroExpansion: 10,
+				lineNumber: 10,
 				instruction: 'loopIndex',
 				arguments: [],
 			} as CompilerASTLine,
@@ -86,8 +89,7 @@ describe('loopIndex instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				loopIndex,
 				{
-					lineNumberBeforeMacroExpansion: 10,
-					lineNumberAfterMacroExpansion: 10,
+					lineNumber: 10,
 					instruction: 'loopIndex',
 					arguments: [],
 				} as CompilerASTLine,

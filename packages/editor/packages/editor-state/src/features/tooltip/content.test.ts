@@ -32,8 +32,7 @@ describe('selected line tooltip content', () => {
 			'add',
 			TOOLTIP_WRAP_WIDTH,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'add',
 				stackAnalysis: {
 					stackBefore: [

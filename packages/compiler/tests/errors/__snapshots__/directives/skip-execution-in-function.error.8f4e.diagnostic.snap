@@ -7,8 +7,7 @@
   "line": {
     "arguments": [],
     "instruction": "#skipExecution",
-    "lineNumberAfterMacroExpansion": 1,
-    "lineNumberBeforeMacroExpansion": 1,
+    "lineNumber": 1,
   },
   "message": "This compiler directive can only be used within a module block. (31)",
 }

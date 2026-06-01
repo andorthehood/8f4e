@@ -13,7 +13,7 @@ export default function pushMemoryPointer(
 	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(
 		context,
-		line.lineNumberAfterMacroExpansion,
+		line.lineNumber,
 		memoryItem,
 		i32const(memoryItem.byteAddress),
 		'pointer-slot',

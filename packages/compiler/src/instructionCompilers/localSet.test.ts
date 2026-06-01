@@ -19,8 +19,7 @@ describe('localSet instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			_localSet,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'localSet',
 				arguments: [classifyIdentifier('value')],
 				local,
