@@ -29,6 +29,7 @@ export interface ProjectCodeBlock {
 	code: string[];
 	disabled?: boolean;
 	entry?: string;
+	containsShape?: boolean;
 }
 
 export interface ProjectInput {
@@ -53,6 +54,16 @@ function startsWithInstruction(line: string, instruction: string): boolean {
 
 export function containsShapeInstruction(code: readonly string[]): boolean {
 	return code.some(line => startsWithInstruction(line.trim(), 'shape'));
+}
+
+function createProjectCodeBlock(code: string[], openerKeyword: string, entry?: string): ProjectCodeBlock {
+	return {
+		code,
+		...(openerKeyword === documentBlockInstructionByType.module.start
+			? { containsShape: containsShapeInstruction(code) }
+			: {}),
+		...(entry ? { entry } : {}),
+	};
 }
 
 export function getProjectOpenerKeyword(line: string): string | null {
@@ -153,7 +164,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 				}
 
-				codeBlocks.push({ code: currentBlockLines, ...(entry ? { entry } : {}) });
+				codeBlocks.push(createProjectCodeBlock(currentBlockLines, openerKeyword, entry));
 				return i + 1;
 			}
 
@@ -255,7 +266,10 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 			}
 			const entryName = block.entry;
 			entries[entryName] ??= [];
-			entries[entryName].push({ code: block.code, containsShape: containsShapeInstruction(block.code) });
+			entries[entryName].push({
+				code: block.code,
+				containsShape: block.containsShape ?? containsShapeInstruction(block.code),
+			});
 			continue;
 		}
 		if (blockType === documentBlockInstructionByType.constants.type) {
