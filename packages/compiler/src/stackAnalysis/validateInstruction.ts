@@ -13,13 +13,7 @@ function resolveInstructionSpec(line: CompilerASTLine): InstructionSpec | undefi
 	return instructionSpecs[line.instruction as InstructionSpecName];
 }
 
-export function validateInstruction(line: CompilerASTLine, context: CompilationContext) {
-	const spec = resolveInstructionSpec(line);
-
-	if (!spec) {
-		return;
-	}
-
+function validateInstructionContextWithSpec(line: CompilerASTLine, context: CompilationContext, spec: InstructionSpec) {
 	if (context.insideConstantsBlock && !spec.allowedInConstantsBlocks) {
 		throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
 	}
@@ -31,6 +25,26 @@ export function validateInstruction(line: CompilerASTLine, context: CompilationC
 	if (spec.scope) {
 		validateScope(spec.scope, line, context, spec.onInvalidScope ?? ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK);
 	}
+}
+
+export function validateInstructionContext(line: CompilerASTLine, context: CompilationContext) {
+	const spec = resolveInstructionSpec(line);
+
+	if (!spec) {
+		return;
+	}
+
+	validateInstructionContextWithSpec(line, context, spec);
+}
+
+export function validateInstruction(line: CompilerASTLine, context: CompilationContext) {
+	const spec = resolveInstructionSpec(line);
+
+	if (!spec) {
+		return;
+	}
+
+	validateInstructionContextWithSpec(line, context, spec);
 
 	const validatedOperands = spec.validateOperands?.(line, context);
 	const operandsNeeded = validatedOperands?.minOperands ?? spec.minOperands ?? 0;
