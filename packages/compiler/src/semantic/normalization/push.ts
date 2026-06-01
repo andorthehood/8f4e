@@ -44,6 +44,19 @@ function validateDereferenceDepth(
 	}
 }
 
+function throwIfPointeeCountIsUnknown(line: PushLine, context: CompilationContext): void {
+	const argument = line.arguments[0];
+	if (argument?.type !== ArgumentType.IDENTIFIER || argument.referenceKind !== 'pointee-element-count') {
+		return;
+	}
+
+	const base = argument.targetMemoryId;
+	const pointerMetadata = getDataStructure(context.namespace.memory, base) ?? context.locals[base];
+	if (pointerMetadata?.pointeeBaseType && pointerMetadata.pointeeElementCount === undefined) {
+		throw getError(ErrorCode.POINTEE_ELEMENT_COUNT_UNKNOWN, line, context, { identifier: argument.value });
+	}
+}
+
 /**
  * Normalizes compile-time arguments for the `push` instruction.
  * The value argument (index 0) is normalized.
@@ -54,6 +67,8 @@ function validateDereferenceDepth(
 export default function normalizePush(line: PushLine, context: CompilationContext): NormalizedPushLine {
 	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0]);
 	const normalizedPushLine = normalized as PushLine;
+
+	throwIfPointeeCountIsUnknown(normalizedPushLine, context);
 
 	const argument = normalized.arguments[0];
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
