@@ -21,12 +21,14 @@ import type {
 	MemoryDeclarationLine,
 	ModuleLine,
 	ParsedLineMetadata,
+	PrototypeLine,
 	RegionLine,
 } from '@8f4e/compiler-spec';
 import {
 	ArgumentType,
 	blockEndToStartInstruction,
 	blockStartInstructions,
+	compilerSourceBlockInstructionPairs,
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	isCompilerDirectiveLine,
 	isMemoryDeclarationLine,
@@ -63,7 +65,7 @@ type OtherOpenBlock = {
 type OpenBlock = IfOpenBlock | GenericOpenBlock | OtherOpenBlock;
 
 type SourceBlockPrologue = {
-	instruction: 'module' | 'function' | 'constants';
+	instruction: (typeof compilerSourceBlockInstructionPairs)[number]['start'];
 	blockDepth: number;
 	isOpen: boolean;
 };
@@ -102,7 +104,14 @@ type ConstantsASTBuilder = {
 	constantsLine: ConstantsLine;
 };
 
-type SourceBlockASTBuilder = ModuleASTBuilder | FunctionASTBuilder | ConstantsASTBuilder;
+type PrototypeASTBuilder = {
+	type: 'prototype';
+	id: string;
+	prototypeLine: PrototypeLine;
+	memoryDeclarationLines: MemoryDeclarationLine[];
+};
+
+type SourceBlockASTBuilder = ModuleASTBuilder | FunctionASTBuilder | ConstantsASTBuilder | PrototypeASTBuilder;
 
 type ParsedCompilerSource = {
 	lines: CompilerASTLines;
@@ -116,8 +125,12 @@ type SourceLine = {
 };
 
 const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
-const sourceBlockStartInstructionSet = new Set(['module', 'function', 'constants']);
-const sourceBlockEndInstructionSet = new Set(['moduleEnd', 'functionEnd', 'constantsEnd']);
+const sourceBlockStartInstructionSet: ReadonlySet<string> = new Set(
+	compilerSourceBlockInstructionPairs.map(({ start }) => start)
+);
+const sourceBlockEndInstructionSet: ReadonlySet<string> = new Set(
+	compilerSourceBlockInstructionPairs.map(({ end }) => end)
+);
 
 function isBlockStartInstruction(instruction: string): instruction is BlockStartInstruction {
 	return blockStartInstructionSet.has(instruction as BlockStartInstruction);
@@ -215,6 +228,13 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 				id: line.arguments[0].value,
 				constantsLine: line,
 			};
+		case 'prototype':
+			return {
+				type: 'prototype',
+				id: line.arguments[0].value,
+				prototypeLine: line,
+				memoryDeclarationLines: [],
+			};
 		default:
 			return undefined;
 	}
@@ -265,6 +285,11 @@ function applySourceBlockASTLine(builder: SourceBlockASTBuilder, line: CompilerA
 			return;
 		case 'constants':
 			return;
+		case 'prototype':
+			if (isMemoryDeclarationLine(line)) {
+				builder.memoryDeclarationLines.push(line);
+			}
+			return;
 	}
 }
 
@@ -307,6 +332,14 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 				id: builder.id,
 				lines,
 				constantsLine: builder.constantsLine,
+			};
+		case 'prototype':
+			return {
+				type: 'prototype',
+				id: builder.id,
+				lines,
+				prototypeLine: builder.prototypeLine,
+				memoryDeclarationLines: builder.memoryDeclarationLines,
 			};
 	}
 }
@@ -592,7 +625,7 @@ function parseCompilerSource(code: string[], lineMetadata?: ParsedLineMetadata):
 
 			if (sourceBlockStartInstructionSet.has(parsedLine.instruction)) {
 				sourceBlockPrologueStack.push({
-					instruction: parsedLine.instruction as 'module' | 'function' | 'constants',
+					instruction: parsedLine.instruction as SourceBlockPrologue['instruction'],
 					blockDepth: blockStack.length,
 					isOpen: true,
 				});

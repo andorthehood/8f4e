@@ -16,6 +16,12 @@ export const mainMenu: MenuGenerator = state => [
 					close: true,
 				},
 				{
+					title: 'New Prototype',
+					action: 'addCodeBlock',
+					payload: { isNew: true, blockType: 'prototype' },
+					close: true,
+				},
+				{
 					title: 'New Note',
 					action: 'addCodeBlock',
 					payload: { isNew: true, blockType: 'note' },
