@@ -20,8 +20,7 @@
       },
     ],
     "instruction": "param",
-    "lineNumberAfterMacroExpansion": 10,
-    "lineNumberBeforeMacroExpansion": 10,
+    "lineNumber": 10,
   },
   "message": "Function signature overflow. Maximum 8 parameters and 8 return values. (17)",
 }

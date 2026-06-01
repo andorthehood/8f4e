@@ -12,8 +12,7 @@ describe('float64 instruction compiler', () => {
 
 		float64(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'float64',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('value')],
@@ -29,8 +28,7 @@ describe('float64 instruction compiler', () => {
 
 		float64(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'float64',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('value')],
@@ -46,8 +44,7 @@ describe('float64 instruction compiler', () => {
 
 		float64(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'float64',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('value')],
@@ -64,8 +61,7 @@ describe('float64 instruction compiler', () => {
 		// First float64 (starts at word 0, even)
 		float64(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'float64',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('a')],
@@ -76,8 +72,7 @@ describe('float64 instruction compiler', () => {
 		// Three int32 variables (odd count) push the offset to an odd word boundary
 		int(
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'int',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('x')],
@@ -86,8 +81,7 @@ describe('float64 instruction compiler', () => {
 		);
 		int(
 			{
-				lineNumberBeforeMacroExpansion: 3,
-				lineNumberAfterMacroExpansion: 3,
+				lineNumber: 3,
 				instruction: 'int',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('y')],
@@ -96,8 +90,7 @@ describe('float64 instruction compiler', () => {
 		);
 		int(
 			{
-				lineNumberBeforeMacroExpansion: 4,
-				lineNumberAfterMacroExpansion: 4,
+				lineNumber: 4,
 				instruction: 'int',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('z')],
@@ -108,8 +101,7 @@ describe('float64 instruction compiler', () => {
 		// Second float64 must still be 8-byte aligned despite odd preceding offset
 		float64(
 			{
-				lineNumberBeforeMacroExpansion: 5,
-				lineNumberAfterMacroExpansion: 5,
+				lineNumber: 5,
 				instruction: 'float64',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('b')],
@@ -127,8 +119,7 @@ describe('float64 instruction compiler', () => {
 
 		float64(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'float64*',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('ptr')],
@@ -148,8 +139,7 @@ describe('float64 instruction compiler', () => {
 
 		float64(
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'float64**',
 				hasExplicitMemoryDefault: false,
 				arguments: [classifyIdentifier('pptr')],

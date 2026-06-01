@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "#import",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Duplicate function import directive. Imported functions can only declare one #import. (60)",
 }

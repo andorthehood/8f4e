@@ -21,9 +21,9 @@ import { saveByteCode } from './utils/saveByteCode';
 const hasChanged: InstructionCompiler = (line, context) => {
 	const [operand] = line.stackAnalysis.consumedOperands;
 
-	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
-	const currentValueName = '__hasChangedDetector_currentValue' + lineNumberAfterMacroExpansion;
-	const previousValueName = '__hasChangedDetector_previousValue' + lineNumberAfterMacroExpansion;
+	const lineNumber = line.lineNumber;
+	const currentValueName = '__hasChangedDetector_currentValue' + lineNumber;
+	const previousValueName = '__hasChangedDetector_previousValue' + lineNumber;
 	const isInteger = operand.valueType === 'int';
 	const memoryType = isInteger ? 'int' : 'float';
 	const previousValue = allocateInternalResource(context, previousValueName, memoryType);

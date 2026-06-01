@@ -16,8 +16,7 @@ describe('and instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			and,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'and',
 				arguments: [],
 			} as CompilerASTLine,
@@ -37,8 +36,7 @@ describe('and instruction compiler', () => {
 			{ kind: 'value', valueType: 'float', isNonZero: false }
 		);
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'and',
 			arguments: [],
 		} as CompilerASTLine;
@@ -58,8 +56,7 @@ describe('and instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			and,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'and',
 				arguments: [],
 			} as CompilerASTLine,

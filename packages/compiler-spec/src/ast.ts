@@ -21,13 +21,10 @@ import {
 type ClampAddressInstructionName = 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress';
 
 export type ASTLineBase<Instruction extends string, Arguments extends Array<Argument>> = {
-	lineNumberBeforeMacroExpansion: number;
-	lineNumberAfterMacroExpansion: number;
+	lineNumber: number;
 	instruction: Instruction;
 	arguments: Arguments;
 };
-
-export type ParsedLineMetadata = Array<{ callSiteLineNumber: number; macroId?: string }>;
 
 export type CompileTimeValueArgument = ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression;
 export type PushArgument = ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression | ArgumentStringLiteral;

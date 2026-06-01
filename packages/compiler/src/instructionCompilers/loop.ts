@@ -30,7 +30,7 @@ const loop: InstructionCompiler<NormalizedLoopLine | LoopLine> = (line, context)
 	}
 	const effectiveCap = capArg !== undefined ? (capArg.value as number) : (context.loopCap ?? DEFAULT_LOOP_CAP);
 
-	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumberAfterMacroExpansion;
+	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
 	const counterLocalIndex = Object.keys(context.locals).length;
 	const loopCounterLocal = {
 		isInteger: true,

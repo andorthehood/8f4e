@@ -55,8 +55,7 @@ const importedFunctionAllowedInstructions = new Set([
 function getFallbackErrorLine(ast: { lines: readonly CompilerASTLine[] }): CompilerASTLine {
 	return (
 		ast.lines[0] ?? {
-			lineNumberBeforeMacroExpansion: 0,
-			lineNumberAfterMacroExpansion: 0,
+			lineNumber: 0,
 			instruction: 'block',
 			arguments: [],
 		}
@@ -75,8 +74,7 @@ export function compileCodegenLine(line: AnalyzedLine, context: CompilationConte
 
 function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAnalysisLine {
 	return {
-		lineNumberBeforeMacroExpansion: line.lineNumberBeforeMacroExpansion,
-		lineNumberAfterMacroExpansion: line.lineNumberAfterMacroExpansion,
+		lineNumber: line.lineNumber,
 		instruction: line.instruction,
 		stackAnalysis: line.stackAnalysis,
 	};

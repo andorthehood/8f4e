@@ -15,8 +15,7 @@ describe('add instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			add,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'add',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +38,7 @@ describe('add instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			add,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'add',
 				arguments: [],
 			} as CompilerASTLine,
@@ -63,8 +61,7 @@ describe('add instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			add,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'add',
 				arguments: [],
 			} as CompilerASTLine,
@@ -95,8 +92,7 @@ describe('add instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			add,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'add',
 				arguments: [],
 			} as CompilerASTLine,
@@ -136,8 +132,7 @@ describe('add instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			add,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'add',
 				arguments: [],
 			} as CompilerASTLine,

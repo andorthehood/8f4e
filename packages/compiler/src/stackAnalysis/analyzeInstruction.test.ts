@@ -14,8 +14,7 @@ describe('analyzeInstruction', () => {
 		);
 
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'add',
 			arguments: [],
 		} as CompilerASTLine;
@@ -40,8 +39,7 @@ describe('analyzeInstruction', () => {
 	it('owns stack errors before codegen runs', () => {
 		const context = createInstructionCompilerTestContext();
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'add',
 			arguments: [],
 		} as CompilerASTLine;
@@ -52,8 +50,7 @@ describe('analyzeInstruction', () => {
 	it('records push-produced stack metadata', () => {
 		const context = createInstructionCompilerTestContext();
 		const line = {
-			lineNumberBeforeMacroExpansion: 1,
-			lineNumberAfterMacroExpansion: 1,
+			lineNumber: 1,
 			instruction: 'push',
 			arguments: [{ type: ArgumentType.LITERAL, value: 7, isInteger: true }],
 		} as CompilerASTLine;

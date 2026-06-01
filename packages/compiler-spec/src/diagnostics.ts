@@ -19,8 +19,7 @@ export interface CompilerStageError {
  * once serialized. Consumers must not special-case either stage.
  */
 export interface CompilerDiagnosticLine {
-	lineNumberBeforeMacroExpansion: number;
-	lineNumberAfterMacroExpansion: number;
+	lineNumber: number;
 	instruction?: string;
 	arguments?: unknown[];
 }
