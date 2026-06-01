@@ -193,6 +193,17 @@ describe('compileToAST', () => {
 		}
 		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['counter', 'sourceStart']);
 		expect(ast.memoryDeclarationLines[1].referencedNamespaceIds).toEqual(['source']);
+		expect(ast.containsShape).toBe(false);
+	});
+
+	it('marks module ASTs when the source-block parse path sees a shape instruction', () => {
+		const ast = compileToAST(['module oscillator', 'shape oscillatorState', 'moduleEnd']);
+
+		expect(ast).toMatchObject({
+			type: 'module',
+			id: 'oscillator',
+			containsShape: true,
+		});
 	});
 
 	it('constructs function metadata from the source-block parse path', () => {
