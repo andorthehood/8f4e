@@ -51,6 +51,10 @@ function startsWithInstruction(line: string, instruction: string): boolean {
 	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
 }
 
+export function containsShapeInstruction(code: readonly string[]): boolean {
+	return code.some(line => startsWithInstruction(line.trim(), 'shape'));
+}
+
 export function getProjectOpenerKeyword(line: string): string | null {
 	for (const opener of closerByOpener.keys()) {
 		if (startsWithInstruction(line, opener)) {
@@ -251,7 +255,7 @@ export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCo
 			}
 			const entryName = block.entry;
 			entries[entryName] ??= [];
-			entries[entryName].push({ code: block.code });
+			entries[entryName].push({ code: block.code, containsShape: containsShapeInstruction(block.code) });
 			continue;
 		}
 		if (blockType === documentBlockInstructionByType.constants.type) {

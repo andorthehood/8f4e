@@ -88,4 +88,20 @@ describe('compile prototype validation', () => {
 			line: expect.objectContaining({ instruction: 'shape' }),
 		});
 	});
+
+	it('expands macro-produced shapes when the module shape hint is false', () => {
+		const result = compile(
+			{
+				...emptyCompileInput,
+				entries: {
+					main: [{ code: ['module main', 'macro addStateShape', 'moduleEnd'], containsShape: false }],
+				},
+				prototypes: [{ code: ['prototype state', 'int value 7', 'prototypeEnd'] }],
+				macros: [{ code: ['defineMacro addStateShape', 'shape state', 'defineMacroEnd'] }],
+			},
+			{ disableSharedMemory: true }
+		);
+
+		expect(result.compiledModules.main.memoryMap.value.default).toBe(7);
+	});
 });
