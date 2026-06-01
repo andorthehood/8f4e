@@ -6,6 +6,7 @@ const midiFrequencies = new Array(128).fill(0).map((value, note) => {
 
 const midiFrequenciesLookupTable = `entry main
 module midiLUT
+; @public
 ; @tab 7 18
 ${midiFrequencies
 	.map((value, index) => {

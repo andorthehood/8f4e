@@ -4,6 +4,7 @@ const exp = new Array(512).fill(0).map((value, index) => {
 
 const expLookupTable = `entry main
 module expLUT
+; @public
 
 ${exp
 	.map(value => {
