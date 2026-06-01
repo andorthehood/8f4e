@@ -2,7 +2,7 @@ import type { CompilerSourceBlockType, DocumentBlockType } from '@8f4e/compiler-
 import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { getConstantsId, getFunctionId, getModuleId, instructionParser } from '@8f4e/tokenizer';
+import { getConstantsId, getFunctionId, getModuleId, getPrototypeId, instructionParser } from '@8f4e/tokenizer';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { parseClipboardData } from '../clipboard/clipboardUtils';
@@ -14,12 +14,13 @@ import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSo
 import { insertDependencies } from './insertDependencies';
 import { pasteMultipleBlocks } from './pasteMultipleBlocks';
 
-type NewCodeBlockType = Extract<DocumentBlockType, 'module' | 'function' | 'note'>;
-type RenameableCodeBlockType = Extract<CompilerSourceBlockType, 'module' | 'function'>;
+type NewCodeBlockType = Extract<DocumentBlockType, 'module' | 'function' | 'note' | 'prototype'>;
+type RenameableCodeBlockType = Extract<CompilerSourceBlockType, 'module' | 'function' | 'prototype'>;
 
 const functionBlock = documentBlockInstructionByType.function;
 const moduleBlock = documentBlockInstructionByType.module;
 const noteBlock = documentBlockInstructionByType.note;
+const prototypeBlock = documentBlockInstructionByType.prototype;
 
 const nameList = [
 	'quark',
@@ -145,6 +146,8 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		if (isNew && !hasExplicitCode) {
 			if (blockType === functionBlock.type) {
 				code = [functionBlock.start + ' ' + getRandomCodeBlockId(), '', '', functionBlock.end];
+			} else if (blockType === prototypeBlock.type) {
+				code = [prototypeBlock.start + ' ' + getRandomCodeBlockId(), '', '', prototypeBlock.end];
 			} else if (blockType === noteBlock.type) {
 				code = [noteBlock.start, '', '', noteBlock.end];
 			} else {
@@ -177,12 +180,19 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		// Update ID based on block type
 		const moduleId = getModuleId(code);
 		const functionId = getFunctionId(code);
+		const prototypeId = getPrototypeId(code);
 
 		if (functionId) {
 			code = changeCodeBlockIdInCode(
 				code,
 				functionBlock.start,
 				incrementCodeBlockIdUntilUnique(state, functionBlock.type, functionId)
+			);
+		} else if (prototypeId) {
+			code = changeCodeBlockIdInCode(
+				code,
+				prototypeBlock.start,
+				incrementCodeBlockIdUntilUnique(state, prototypeBlock.type, prototypeId)
 			);
 		} else if (moduleId) {
 			code = changeCodeBlockIdInCode(
@@ -211,7 +221,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			code,
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
 			id: getCodeBlockId(code),
-			moduleId: getModuleId(code) || getConstantsId(code) || undefined,
+			moduleId: getModuleId(code) || getConstantsId(code) || getPrototypeId(code) || undefined,
 			gridX,
 			gridY,
 			x: pixelX,

@@ -18,6 +18,10 @@ describe('getBlockType', () => {
 		expect(getBlockType(['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'])).toBe('macro');
 	});
 
+	it('detects prototype blocks', () => {
+		expect(getBlockType(['prototype oscillatorState', 'float phase', 'prototypeEnd'])).toBe('prototype');
+	});
+
 	it('detects note blocks', () => {
 		expect(getBlockType(['note', '; @pos 10 12', 'some text', 'noteEnd'])).toBe('note');
 	});

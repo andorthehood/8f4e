@@ -89,6 +89,9 @@ export type ModuleLine = ASTLineBase<'module', [ArgumentIdentifier]>;
 export type ModuleEndLine = ASTLineBase<'moduleEnd', []>;
 export type ConstantsLine = ASTLineBase<'constants', [ArgumentIdentifier]>;
 export type ConstantsEndLine = ASTLineBase<'constantsEnd', []>;
+export type PrototypeLine = ASTLineBase<'prototype', [ArgumentIdentifier]>;
+export type PrototypeEndLine = ASTLineBase<'prototypeEnd', []>;
+export type ShapeLine = ASTLineBase<'shape', [ArgumentIdentifier]>;
 export type ReferencedNamespaceIdsMetadata = {
 	referencedNamespaceIds?: readonly string[];
 };
@@ -170,7 +173,10 @@ export type SemanticInstructionLine =
 	| RegionLine
 	| ModuleEndLine
 	| ConstantsLine
-	| ConstantsEndLine;
+	| ConstantsEndLine
+	| PrototypeLine
+	| PrototypeEndLine
+	| ShapeLine;
 
 type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| PushLine
@@ -186,6 +192,9 @@ type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| ModuleEndLine
 	| ConstantsLine
 	| ConstantsEndLine
+	| PrototypeLine
+	| PrototypeEndLine
+	| ShapeLine
 	| UseLine
 	| LocalDeclarationLine
 	| ParamLine
@@ -278,7 +287,16 @@ export interface ConstantsAST {
 	constantsLine: ConstantsLine;
 }
 
-export type AST = ModuleAST | FunctionAST | ConstantsAST;
+/** Parsed AST for a reusable memory-shape prototype block. */
+export interface PrototypeAST {
+	type: 'prototype';
+	id: string;
+	lines: CompilerASTLines;
+	prototypeLine: PrototypeLine;
+	memoryDeclarationLines: readonly MemoryDeclarationLine[];
+}
+
+export type AST = ModuleAST | FunctionAST | ConstantsAST | PrototypeAST;
 
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
 const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);

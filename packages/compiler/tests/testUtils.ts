@@ -322,7 +322,8 @@ export function compileFixtureProgramSource(
 		...(options.extraCodeBlocks ?? []),
 		...(options.includeAssertions ? [assertFunctionBlock, assertFloatFunctionBlock, assertFloat64FunctionBlock] : []),
 	];
-	const { entries, constantsBlocks, functionBlocks, macroBlocks } = pickProjectCompilerBlocks(codeBlocks);
+	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } =
+		pickProjectCompilerBlocks(codeBlocks);
 
 	return {
 		source: normalizedSource,
@@ -332,6 +333,7 @@ export function compileFixtureProgramSource(
 				entries,
 				constants: constantsBlocks,
 				functions: functionBlocks,
+				prototypes: prototypeBlocks,
 				macros: macroBlocks,
 			},
 			{

@@ -32,6 +32,7 @@ export const compilerBlockInstructionPairs = [
 	{ start: 'function', end: 'functionEnd' },
 	{ start: 'module', end: 'moduleEnd' },
 	{ start: 'constants', end: 'constantsEnd' },
+	{ start: 'prototype', end: 'prototypeEnd' },
 	{ start: 'mapBegin', end: 'mapEnd' },
 ] as const;
 
@@ -50,6 +51,7 @@ export const compilerSourceBlockInstructionPairs = [
 	{ type: 'module', start: 'module', end: 'moduleEnd' },
 	{ type: 'function', start: 'function', end: 'functionEnd' },
 	{ type: 'constants', start: 'constants', end: 'constantsEnd' },
+	{ type: 'prototype', start: 'prototype', end: 'prototypeEnd' },
 ] as const;
 
 export type CompilerSourceBlockType = (typeof compilerSourceBlockInstructionPairs)[number]['type'];
@@ -57,9 +59,9 @@ export const compilerSourceBlockTypes = compilerSourceBlockInstructionPairs.map(
 	({ type }) => type
 ) as CompilerSourceBlockType[];
 
-export type CompiledModuleBlockType = Exclude<CompilerSourceBlockType, 'function'>;
+export type CompiledModuleBlockType = Exclude<CompilerSourceBlockType, 'function' | 'prototype'>;
 export const compiledModuleBlockTypes = compilerSourceBlockTypes.filter(
-	(type): type is CompiledModuleBlockType => type !== 'function'
+	(type): type is CompiledModuleBlockType => type !== 'function' && type !== 'prototype'
 );
 
 export const compilerSourceBlockInstructionByType = Object.fromEntries(

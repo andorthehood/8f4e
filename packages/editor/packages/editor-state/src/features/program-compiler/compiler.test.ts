@@ -164,6 +164,27 @@ describe('flattenProjectForCompiler', () => {
 		expect(result.constants?.[0].code).toEqual(['constants enabled', 'constantsEnd']);
 	});
 
+	it('should include prototype blocks separately', () => {
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
+			{
+				code: ['prototype oscillatorState', 'float phase', 'prototypeEnd'],
+				blockType: 'prototype',
+				creationIndex: 0,
+			} as CodeBlockGraphicData,
+			{
+				code: ['module oscillator', 'shape oscillatorState', 'moduleEnd'],
+				blockType: 'module',
+				entry: 'main',
+				creationIndex: 1,
+			} as CodeBlockGraphicData,
+		];
+
+		const result = flattenProjectForCompiler(mockCodeBlocks);
+
+		expect(result.entries.main[0].code).toEqual(['module oscillator', 'shape oscillatorState', 'moduleEnd']);
+		expect(result.prototypes).toEqual([{ code: ['prototype oscillatorState', 'float phase', 'prototypeEnd'] }]);
+	});
+
 	it('should preserve creationIndex order across mixed block types', () => {
 		const mockCodeBlocks: CodeBlockGraphicData[] = [
 			{
