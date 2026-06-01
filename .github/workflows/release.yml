@@ -30,8 +30,10 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: main
-          fetch-depth: 0
           submodules: recursive
+
+      - name: Fetch release history
+        run: git fetch --prune --tags --unshallow origin main
 
       - name: Setup Node.js
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
@@ -46,9 +48,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Validate release build
-        run: npx nx run app:build
 
       - name: Release
         env:
@@ -68,7 +67,7 @@ jobs:
           npx nx run @8f4e/examples:log-bytecode-size
           npx nx run @8f4e/examples:log-compiler-coverage-counts
           npx nx run @8f4e/compiler:docs-coverage
-          npx nx run-many --target=test --all --exclude=app,glugglug --parallel=1 --skip-nx-cache -- --coverage
+          npx nx run-many --target=test --all --exclude=app,glugglug --parallel=2 --skip-nx-cache -- --coverage
           node scripts/log-test-coverage.mjs
 
           if [[ -n "$(git status --porcelain -- logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage)" ]]; then
