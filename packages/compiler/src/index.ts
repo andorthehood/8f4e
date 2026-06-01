@@ -62,7 +62,6 @@ type ModuleCompilerSource = {
 	code: string[];
 	cacheKey: string;
 	entryName: string;
-	containsShape?: boolean;
 };
 
 type ParsedPrototypeSource = {
@@ -296,10 +295,6 @@ function expandModuleSourceShapes(
 	source: ModuleCompilerSource,
 	prototypeSourcesById: ReadonlyMap<string, ParsedPrototypeSource>
 ): ModuleCompilerSource {
-	if (source.containsShape === false) {
-		return source;
-	}
-
 	const code: string[] = [];
 	let expandedAnyShape = false;
 
@@ -369,19 +364,12 @@ export default function compile(
 	const prototypeSourcesById = collectPrototypeSources(astPrototypes);
 
 	// Expand macros and prototype shapes in modules
-	const expandedModules = entryModules.map(({ entryName, module, index }) => {
-		const source = {
+	const expandedModuleSources = entryModules.map(({ entryName, module, index }) => {
+		return {
 			code: expandMacros(module, macroDefinitions),
 			cacheKey: `entry:${entryName}:module:${index}`,
 			entryName,
-			containsShape: macroDefinitions.size === 0 ? module.containsShape : undefined,
 		};
-
-		if (source.containsShape === false) {
-			return source;
-		}
-
-		return expandModuleSourceShapes(source, prototypeSourcesById);
 	}) satisfies ModuleCompilerSource[];
 
 	const expandedConstants = constants.map((constantsBlock, index) => {
@@ -399,10 +387,18 @@ export default function compile(
 		};
 	});
 
-	const astModuleEntries = expandedModules.map(({ entryName, code, cacheKey }) => ({
-		entryName,
-		ast: parseModuleAST(code, cache, cacheKey),
-	}));
+	const astModuleEntries = expandedModuleSources.map(source => {
+		const ast = parseModuleAST(source.code, cache, source.cacheKey);
+		if (!ast.containsShape) {
+			return { entryName: source.entryName, ast };
+		}
+
+		const expandedSource = expandModuleSourceShapes(source, prototypeSourcesById);
+		return {
+			entryName: source.entryName,
+			ast: expandedSource === source ? ast : parseModuleAST(expandedSource.code, cache, expandedSource.cacheKey),
+		};
+	});
 	const astConstants = expandedConstants.map(({ code, cacheKey }) => parseConstantsAST(code, cache, cacheKey));
 	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);

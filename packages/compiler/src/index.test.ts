@@ -89,12 +89,12 @@ describe('compile prototype validation', () => {
 		});
 	});
 
-	it('expands macro-produced shapes when the module shape hint is false', () => {
+	it('expands macro-produced shapes after macro expansion reaches the tokenizer', () => {
 		const result = compile(
 			{
 				...emptyCompileInput,
 				entries: {
-					main: [{ code: ['module main', 'macro addStateShape', 'moduleEnd'], containsShape: false }],
+					main: [{ code: ['module main', 'macro addStateShape', 'moduleEnd'] }],
 				},
 				prototypes: [{ code: ['prototype state', 'int value 7', 'prototypeEnd'] }],
 				macros: [{ code: ['defineMacro addStateShape', 'shape state', 'defineMacroEnd'] }],
