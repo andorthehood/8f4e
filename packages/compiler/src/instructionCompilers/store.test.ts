@@ -30,8 +30,7 @@ describe('store instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			store,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'store',
 				arguments: [],
 			} as CompilerASTLine,
@@ -54,8 +53,7 @@ describe('store instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			store,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'store',
 				arguments: [],
 			} as CompilerASTLine,
@@ -92,8 +90,7 @@ describe('store instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			store,
 			{
-				lineNumberBeforeMacroExpansion: 3,
-				lineNumberAfterMacroExpansion: 3,
+				lineNumber: 3,
 				instruction: 'store',
 				arguments: [],
 			} as CompilerASTLine,
@@ -130,8 +127,7 @@ describe('store instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			store,
 			{
-				lineNumberBeforeMacroExpansion: 4,
-				lineNumberAfterMacroExpansion: 4,
+				lineNumber: 4,
 				instruction: 'store',
 				arguments: [],
 			} as CompilerASTLine,
@@ -152,8 +148,7 @@ describe('store instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			store,
 			{
-				lineNumberBeforeMacroExpansion: 5,
-				lineNumberAfterMacroExpansion: 5,
+				lineNumber: 5,
 				instruction: 'store',
 				arguments: [],
 			} as CompilerASTLine,
@@ -183,8 +178,7 @@ describe('store instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			store,
 			{
-				lineNumberBeforeMacroExpansion: 6,
-				lineNumberAfterMacroExpansion: 6,
+				lineNumber: 6,
 				instruction: 'store',
 				arguments: [],
 			} as CompilerASTLine,

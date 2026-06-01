@@ -20,10 +20,12 @@ describe('map instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.MAP,expectedResultTypes: [],
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,
@@ -37,8 +39,7 @@ describe('map instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			map,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'map',
 				arguments: [
 					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
@@ -55,10 +56,12 @@ describe('map instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.MAP,expectedResultTypes: [],
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,
@@ -72,8 +75,7 @@ describe('map instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			map,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'map',
 				arguments: [
 					{ type: ArgumentType.STRING_LITERAL, value: 'A' },
@@ -97,10 +99,12 @@ describe('map instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.MAP,expectedResultTypes: [],
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,
@@ -121,8 +125,7 @@ describe('map instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			map,
 			{
-				lineNumberBeforeMacroExpansion: 2,
-				lineNumberAfterMacroExpansion: 2,
+				lineNumber: 2,
 				instruction: 'map',
 				arguments: [
 					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
@@ -144,10 +147,12 @@ describe('map instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{
-					blockType: BlockType.MODULE,expectedResultTypes: [],
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
 				},
 				{
-					blockType: BlockType.MAP,expectedResultTypes: [],
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
 					mapState: {
 						inputIsInteger: true,
 						inputIsFloat64: false,
@@ -162,8 +167,7 @@ describe('map instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				map,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'map',
 					arguments: [
 						{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
@@ -182,8 +186,7 @@ describe('map instruction compiler', () => {
 			analyzeAndCompileInstruction(
 				map,
 				{
-					lineNumberBeforeMacroExpansion: 1,
-					lineNumberAfterMacroExpansion: 1,
+					lineNumber: 1,
 					instruction: 'map',
 					arguments: [
 						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },

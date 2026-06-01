@@ -12,8 +12,7 @@ describe('hasChanged instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			hasChanged,
 			{
-				lineNumberBeforeMacroExpansion: 3,
-				lineNumberAfterMacroExpansion: 3,
+				lineNumber: 3,
 				instruction: 'hasChanged',
 				arguments: [],
 			} as CompilerASTLine,

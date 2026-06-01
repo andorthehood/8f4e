@@ -10,7 +10,7 @@ export default function pushLocalPointer(line: ResolvedLocalPointerPushLine, con
 	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(
 		context,
-		line.lineNumberAfterMacroExpansion,
+		line.lineNumber,
 		local,
 		localGet(local.index),
 		'pointer-value',

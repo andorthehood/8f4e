@@ -15,8 +15,7 @@ describe('mul instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			mul,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'mul',
 				arguments: [],
 			} as CompilerASTLine,
@@ -39,8 +38,7 @@ describe('mul instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			mul,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'mul',
 				arguments: [],
 			} as CompilerASTLine,
@@ -63,8 +61,7 @@ describe('mul instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			mul,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'mul',
 				arguments: [],
 			} as CompilerASTLine,
@@ -87,8 +84,7 @@ describe('mul instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			mul,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'mul',
 				arguments: [],
 			} as CompilerASTLine,

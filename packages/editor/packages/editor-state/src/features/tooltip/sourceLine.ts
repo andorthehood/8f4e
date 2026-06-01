@@ -65,8 +65,7 @@ function getStackSignatureLineFromSourceLine(line: string, instruction: string):
 	}
 
 	return {
-		lineNumberBeforeMacroExpansion: 0,
-		lineNumberAfterMacroExpansion: 0,
+		lineNumber: 0,
 		instruction: 'storeBytes',
 		arguments: [{ type: ArgumentType.LITERAL, value: count, isInteger: true }],
 	};
