@@ -226,6 +226,20 @@ describe('compileToAST', () => {
 		expect(ast.lines[0].instruction).toBe('const');
 	});
 
+	it('constructs prototype metadata from the source-block parse path', () => {
+		const ast = compileToAST(['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd']);
+
+		expect(ast).toMatchObject({
+			type: 'prototype',
+			id: 'oscillatorState',
+			prototypeLine: { instruction: 'prototype' },
+		});
+		if (ast.type !== 'prototype') {
+			throw new Error('Expected prototype AST');
+		}
+		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['phase', 'frequency']);
+	});
+
 	it('constructs imported function metadata from the source-block parse path', () => {
 		const ast = compileToAST(['function hostLog', '#import "log.value"', 'param int value', 'functionEnd']);
 

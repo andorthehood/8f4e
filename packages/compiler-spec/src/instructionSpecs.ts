@@ -856,6 +856,25 @@ export const instructionSpecs = {
 		sourceArguments: noSourceArguments,
 		docs: { shortDescription: 'Ends a module block.' },
 	},
+	// prototype <id> ( -- )
+	prototype: {
+		codegen: false,
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		docs: { shortDescription: 'Starts a reusable module memory shape block.' },
+	},
+	// prototypeEnd ( -- )
+	prototypeEnd: {
+		codegen: false,
+		sourceArguments: noSourceArguments,
+		docs: { shortDescription: 'Ends a reusable module memory shape block.' },
+	},
+	// shape <prototypeId> ( -- )
+	shape: {
+		codegen: false,
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		scope: 'module',
+		docs: { shortDescription: 'Expands a prototype memory shape into the current module.' },
+	},
 	// notEqual (int int -- int), notEqual (float float -- int), notEqual (float64 float64 -- int)
 	notEqual: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Compares two values and pushes 1 when they are not equal, otherwise 0.',
