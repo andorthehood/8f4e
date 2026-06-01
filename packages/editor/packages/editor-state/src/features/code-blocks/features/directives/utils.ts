@@ -1,65 +1,16 @@
-import type { EditorDirectivePlugin, ParsedDirectiveRecord, ParsedEditorDirective } from '@8f4e/editor-state-types';
+import {
+	type EditorDirectivePlugin,
+	type ParsedDirectiveRecord,
+	type ParsedEditorDirective,
+	parseDirectiveLineRecords,
+	parseDirectiveRecords,
+} from '@8f4e/editor-state-types';
+
+export { parseDirectiveLineRecords, parseDirectiveRecords } from '@8f4e/editor-state-types';
 
 export interface DirectiveComment {
 	name: string;
 	args: string[];
-}
-
-type ParsedDirectiveLineRecord = { prefix: '@'; name: string; args: string[]; isTrailing: boolean };
-
-function parseDirectiveCommentSegment(segment: string, isTrailing: boolean): ParsedDirectiveLineRecord[] {
-	const trimmed = segment.trim();
-	if (!trimmed) {
-		return [];
-	}
-
-	const tokens = trimmed.split(/\s+/);
-	const directives: ParsedDirectiveLineRecord[] = [];
-	let current: ParsedDirectiveLineRecord | undefined;
-
-	for (const token of tokens) {
-		const directiveMatch = token.match(/^@(\w+)$/);
-		if (directiveMatch) {
-			const [, name] = directiveMatch;
-
-			if (current) {
-				directives.push(current);
-			}
-
-			current = {
-				prefix: '@',
-				name,
-				args: [],
-				isTrailing,
-			};
-			continue;
-		}
-
-		if (!current) {
-			return [];
-		}
-
-		current.args.push(token);
-	}
-
-	if (current) {
-		directives.push(current);
-	}
-
-	return directives;
-}
-
-export function parseDirectiveLineRecords(line: string): ParsedDirectiveLineRecord[] {
-	if (/^\s*;/.test(line)) {
-		return parseDirectiveCommentSegment(line.replace(/^\s*;\s*/, ''), false);
-	}
-
-	const commentStart = line.indexOf(';');
-	if (commentStart === -1) {
-		return [];
-	}
-
-	return parseDirectiveCommentSegment(line.slice(commentStart + 1), true);
 }
 
 export function parseDirectiveComments(line: string): DirectiveComment[] {
@@ -129,19 +80,7 @@ export function normalizeEditorDirectiveRecords(
 }
 
 export function parseEditorDirectives(code: string[], plugins: EditorDirectivePlugin[]): ParsedEditorDirective[] {
-	return normalizeEditorDirectiveRecords(
-		code.flatMap((line, rawRow) => {
-			return parseDirectiveLineRecords(line).map(parsed => ({
-				prefix: parsed.prefix,
-				name: parsed.name,
-				args: parsed.args,
-				rawRow,
-				sourceLine: line,
-				isTrailing: parsed.isTrailing,
-			}));
-		}),
-		plugins
-	);
+	return normalizeEditorDirectiveRecords(parseDirectiveRecords(code), plugins);
 }
 
 export function hasDirective(code: string[], name: string): boolean {
