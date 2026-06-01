@@ -4,8 +4,7 @@
   "line": {
     "arguments": [],
     "instruction": "block",
-    "lineNumberAfterMacroExpansion": 0,
-    "lineNumberBeforeMacroExpansion": 0,
+    "lineNumber": 0,
   },
   "message": "Duplicate memory region name: sampleMemory. (54)",
 }

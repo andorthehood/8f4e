@@ -13,8 +13,7 @@ describe('branchIfTrue instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			branchIfTrue,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'branchIfTrue',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2, isInteger: true }],
 			} as CompilerASTLine,

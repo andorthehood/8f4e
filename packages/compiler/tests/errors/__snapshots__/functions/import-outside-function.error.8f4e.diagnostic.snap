@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "#import",
-    "lineNumberAfterMacroExpansion": 1,
-    "lineNumberBeforeMacroExpansion": 1,
+    "lineNumber": 1,
   },
   "message": "#import can only be used within a function block. (59)",
 }

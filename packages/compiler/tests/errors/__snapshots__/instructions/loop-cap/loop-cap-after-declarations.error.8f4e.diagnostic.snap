@@ -3,8 +3,7 @@
   "context": {},
   "line": {
     "instruction": "#loopCap",
-    "lineNumberAfterMacroExpansion": 3,
-    "lineNumberBeforeMacroExpansion": 3,
+    "lineNumber": 3,
   },
   "message": "Compiler directives must appear in the block prologue, immediately after module or function.",
 }

@@ -3,8 +3,7 @@
   "context": {},
   "line": {
     "instruction": "#impure",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Compiler directives must appear in the block prologue, immediately after module or function.",
 }

@@ -16,7 +16,7 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const accessByteWidth = operation.accessByteWidth;
 
-	const lineNumberAfterMacroExpansion = line.lineNumberAfterMacroExpansion;
+	const lineNumber = line.lineNumber;
 	const address = requireStackAddress(
 		line.stackAnalysis.consumedOperands[line.stackAnalysis.consumedOperands.length - 1],
 		line,
@@ -25,10 +25,10 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 	const addressIsSafe = isSafeMemoryAccess(address, count);
 	const memoryIndex = address.address.memoryIndex;
 
-	const tempAddrLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesAddr_${lineNumberAfterMacroExpansion}`, {
+	const tempAddrLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesAddr_${lineNumber}`, {
 		valueType: 'int',
 	});
-	const tempByteLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesByte_${lineNumberAfterMacroExpansion}`, {
+	const tempByteLocal = getOrCreateMemoryGuardLocal(context, `__storeBytesByte_${lineNumber}`, {
 		valueType: 'int',
 	});
 

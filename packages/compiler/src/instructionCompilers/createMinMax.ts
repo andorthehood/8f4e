@@ -25,8 +25,8 @@ const createMinMax =
 		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
 
 		if (isInteger) {
-			const leftName = `__${instruction}_left${line.lineNumberAfterMacroExpansion}`;
-			const rightName = `__${instruction}_right${line.lineNumberAfterMacroExpansion}`;
+			const leftName = `__${instruction}_left${line.lineNumber}`;
+			const rightName = `__${instruction}_right${line.lineNumber}`;
 			const leftLocalIndex = Object.keys(context.locals).length;
 			const rightLocalIndex = leftLocalIndex + 1;
 

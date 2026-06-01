@@ -14,8 +14,7 @@
       },
     ],
     "instruction": "#export",
-    "lineNumberAfterMacroExpansion": 2,
-    "lineNumberBeforeMacroExpansion": 2,
+    "lineNumber": 2,
   },
   "message": "Imported functions cannot also be exported. (61)",
 }

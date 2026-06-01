@@ -16,8 +16,7 @@ describe('greaterOrEqualUnsigned instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterOrEqualUnsigned,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterOrEqualUnsigned',
 				arguments: [],
 			} as CompilerASTLine,
@@ -40,8 +39,7 @@ describe('greaterOrEqualUnsigned instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterOrEqualUnsigned,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterOrEqualUnsigned',
 				arguments: [],
 			} as CompilerASTLine,
@@ -64,8 +62,7 @@ describe('greaterOrEqualUnsigned instruction compiler', () => {
 		analyzeAndCompileInstruction(
 			greaterOrEqualUnsigned,
 			{
-				lineNumberBeforeMacroExpansion: 1,
-				lineNumberAfterMacroExpansion: 1,
+				lineNumber: 1,
 				instruction: 'greaterOrEqualUnsigned',
 				arguments: [],
 			} as CompilerASTLine,

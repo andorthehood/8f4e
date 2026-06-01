@@ -216,8 +216,7 @@ function serializeInternalResource(resource: InternalResource): Record<string, u
 function serializeAstLine(line: CompilerASTLine): Record<string, unknown> {
 	const lineSnapshot: Record<string, unknown> = { ...line };
 
-	delete lineSnapshot.lineNumberAfterMacroExpansion;
-	delete lineSnapshot.lineNumberBeforeMacroExpansion;
+	delete lineSnapshot.lineNumber;
 	delete lineSnapshot.ifBlock;
 	delete lineSnapshot.ifEndBlock;
 	delete lineSnapshot.blockBlock;

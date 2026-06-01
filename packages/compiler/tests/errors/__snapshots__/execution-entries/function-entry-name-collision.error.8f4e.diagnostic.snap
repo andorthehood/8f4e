@@ -11,8 +11,7 @@
       },
     ],
     "instruction": "function",
-    "lineNumberAfterMacroExpansion": 0,
-    "lineNumberBeforeMacroExpansion": 0,
+    "lineNumber": 0,
   },
   "message": "Duplicate identifier: main. Module and function IDs must be unique. (45)",
 }
