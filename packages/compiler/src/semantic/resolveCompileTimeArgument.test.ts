@@ -248,6 +248,27 @@ describe('tryResolveCompileTimeArgument', () => {
 		});
 	});
 
+	it('does not resolve count(*localPointer) without element count metadata', () => {
+		const localPointerContext = {
+			...mockContext,
+			locals: {
+				localFloatPtr: {
+					kind: 'value',
+					valueType: 'int',
+					pointeeBaseType: 'float',
+					pointerDepth: 1,
+					index: 0,
+				},
+			},
+		} as unknown as CompilationContext;
+
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('count(*localFloatPtr)'))).toBeUndefined();
+		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*localFloatPtr)'))).toEqual({
+			value: 4,
+			isInteger: true,
+		});
+	});
+
 	it('resolves non-word-sized pointee widths from local pointer bindings', () => {
 		const localPointerContext = {
 			...mockContext,

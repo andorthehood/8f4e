@@ -12,8 +12,6 @@ import {
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
-	getPointeeElementCount,
-	getPointeeElementCountFromMetadata,
 	getPointeeElementIsIntegerFromMetadata,
 	getPointeeElementMaxValue,
 	getPointeeElementMaxValueFromMetadata,
@@ -24,6 +22,12 @@ import {
 } from '../utils/memoryData';
 import { getEndByteAddress } from './layoutAddresses';
 import { getMemoryRegionFields } from './memoryRegions';
+
+function hasKnownPointeeElementCount(
+	pointerMetadata: { pointeeBaseType?: unknown; pointeeElementCount?: number } | undefined
+): pointerMetadata is { pointeeBaseType: unknown; pointeeElementCount: number } {
+	return !!pointerMetadata?.pointeeBaseType && pointerMetadata.pointeeElementCount !== undefined;
+}
 
 function getWordAlignedByteLength(wordAlignedSize: number): number {
 	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
@@ -195,15 +199,16 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 		return undefined;
 	}
 
-	// count(*name) — known pointee element count, or 1 for pointer values without count provenance
+	// count(*name) — known pointee element count
 	if (operand.referenceKind === 'pointee-element-count') {
 		const base = operand.targetMemoryId;
-		if (Object.hasOwn(memory, base)) {
-			return { value: getPointeeElementCount(memory, base), isInteger: true };
+		const memoryItem = memory[base];
+		if (hasKnownPointeeElementCount(memoryItem)) {
+			return { value: memoryItem.pointeeElementCount, isInteger: true };
 		}
 		const local = context.locals[base];
-		if (local?.pointeeBaseType) {
-			return { value: getPointeeElementCountFromMetadata(local), isInteger: true };
+		if (hasKnownPointeeElementCount(local)) {
+			return { value: local.pointeeElementCount, isInteger: true };
 		}
 		return undefined;
 	}
