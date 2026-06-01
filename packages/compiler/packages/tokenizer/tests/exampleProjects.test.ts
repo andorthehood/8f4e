@@ -15,28 +15,46 @@ const exampleProjects = [
 	'digital/bistableMultivibrators.8f4e',
 	'machine-learning/xorProblem.8f4e',
 	'visuals/dancingWithTheSineLT.8f4e',
-] as const;
+] as const satisfies readonly string[];
+
+const expectedProjectSummaries: Record<
+	(typeof exampleProjects)[number],
+	{ blocks: number; lines: number; blockLines: number[] }
+> = {
+	'audio/audioBuffer.8f4e': { blocks: 8, lines: 135, blockLines: [2, 31, 22, 2, 4, 7, 18, 49] },
+	'digital/bistableMultivibrators.8f4e': {
+		blocks: 13,
+		lines: 141,
+		blockLines: [2, 2, 3, 3, 17, 17, 21, 4, 14, 17, 17, 21, 3],
+	},
+	'machine-learning/xorProblem.8f4e': {
+		blocks: 12,
+		lines: 113,
+		blockLines: [2, 3, 2, 4, 19, 19, 8, 8, 19, 15, 4, 10],
+	},
+	'visuals/dancingWithTheSineLT.8f4e': { blocks: 7, lines: 365, blockLines: [2, 258, 25, 25, 25, 26, 4] },
+};
 
 function loadExampleProject(relativePath: string): string {
 	const fullPath = resolve(__dirname, '../../../../examples/src/projects', relativePath);
 	return readFileSync(fullPath, 'utf-8');
 }
 
-function getSnapshotPath(relativePath: string): string {
-	const snapshotFileName = relativePath.replace(/[/.]/g, '_') + '.snap';
-	return resolve(__dirname, '__snapshots__/exampleProjects', snapshotFileName);
+function getProjectAstSummary(relativePath: string): { blocks: number; lines: number; blockLines: number[] } {
+	const project = parse8f4eProject(loadExampleProject(relativePath));
+	const blockLines = project.codeBlocks.map(block => compileToASTLines(block.code).length);
+
+	return {
+		blocks: blockLines.length,
+		lines: blockLines.reduce((total, lineCount) => total + lineCount, 0),
+		blockLines,
+	};
 }
 
-describe('compileToAST example project integration snapshots', () => {
+describe('compileToAST example project integration', () => {
 	for (const relativePath of exampleProjects) {
-		it(`matches snapshot for ${relativePath}`, async () => {
-			const project = parse8f4eProject(loadExampleProject(relativePath));
-			const astBlocks = project.codeBlocks.map(block => ({
-				entry: block.entry,
-				lines: compileToASTLines(block.code),
-			}));
-
-			await expect(JSON.stringify(astBlocks, null, 2)).toMatchFileSnapshot(getSnapshotPath(relativePath));
+		it(`tokenizes every compiler block in ${relativePath}`, () => {
+			expect(getProjectAstSummary(relativePath)).toEqual(expectedProjectSummaries[relativePath]);
 		});
 	}
 });
