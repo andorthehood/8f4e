@@ -23,6 +23,14 @@ push 3
 call add
 ```
 
+Inline call arguments are emitted as `push` instructions immediately before the call:
+
+```
+call add 2 3
+```
+
+This is equivalent to the previous example. Inline arguments use normal `push` semantics, so literals, constants, locals, memory identifiers, pointers, and strings behave the same as if each value had been written on its own `push` line.
+
 Calls can target 8f4e-defined functions, host-provided imported functions, or execution entries.
 
 ### Imported functions

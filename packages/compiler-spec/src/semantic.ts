@@ -20,6 +20,7 @@ import type {
 	MemoryCopyLine,
 	ModuleEndLine,
 	ModuleLine,
+	PushArgument,
 	PushLine,
 	RegionLine,
 	UseLine,
@@ -358,8 +359,10 @@ export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 };
 
-export type ResolvedCallLine = CallLine & {
+export type ResolvedCallLine = Omit<CallLine, 'arguments'> & {
+	arguments: [ArgumentIdentifier, ...PushArgument[]];
 	targetFunction: FunctionMetadata;
+	inlineArgumentPushes?: CodegenPushLine[];
 };
 
 export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstLine
