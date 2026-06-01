@@ -43,6 +43,17 @@ describe('parse8f4eProject', () => {
 		]);
 	});
 
+	it('marks parsed module blocks that contain shape instructions', () => {
+		const project = parse8f4eProject(
+			['8f4e/v1', '', 'entry main', 'module oscillator', 'shape oscillatorState', 'moduleEnd', 'entryEnd'].join('\n')
+		);
+
+		expect(project.codeBlocks[0]).toEqual({
+			code: ['module oscillator', 'shape oscillatorState', 'moduleEnd'],
+			entry: 'main',
+		});
+	});
+
 	it('allows empty entries', () => {
 		const project = parse8f4eProject(['8f4e/v1', '', 'entry main', 'entryEnd'].join('\n'));
 

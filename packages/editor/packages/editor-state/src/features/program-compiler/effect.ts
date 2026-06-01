@@ -53,7 +53,12 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 	}
 
 	const entries = Object.fromEntries(
-		Object.entries(moduleEntries).map(([entryName, modules]) => [entryName, sortCodeBlocksByGridPosition(modules)])
+		Object.entries(moduleEntries).map(([entryName, modules]) => [
+			entryName,
+			sortCodeBlocksByGridPosition(modules).map(module => ({
+				code: module.code,
+			})),
+		])
 	);
 	entries.main ??= [];
 
