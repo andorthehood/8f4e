@@ -102,13 +102,6 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.UNRECOGNISED_INSTRUCTION:
-			return {
-				code,
-				message: 'Unrecognised instruction. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.EXPECTED_VALUE:
 			return {
 				code,

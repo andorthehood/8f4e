@@ -64,10 +64,6 @@ function getFallbackErrorLine(ast: { lines: readonly CompilerASTLine[] }): Compi
 
 export function compileCodegenLine(line: AnalyzedLine, context: CompilationContext) {
 	const instruction = line.instruction as Instruction;
-
-	if (!instructions[instruction]) {
-		throw getError(ErrorCode.UNRECOGNISED_INSTRUCTION, line, context);
-	}
 	const compileInstruction = instructions[instruction] as InstructionCompiler;
 	compileInstruction(line, context);
 }
