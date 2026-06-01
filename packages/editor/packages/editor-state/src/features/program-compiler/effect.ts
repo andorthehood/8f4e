@@ -2,7 +2,7 @@ import type { CompileInput, CompilerDiagnostic, Module } from '@8f4e/compiler-sp
 import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { isCompilableBlockType } from '@8f4e/tokenizer';
+import { containsShapeInstruction, isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 import { log } from '../logger/logger';
@@ -53,7 +53,13 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 	}
 
 	const entries = Object.fromEntries(
-		Object.entries(moduleEntries).map(([entryName, modules]) => [entryName, sortCodeBlocksByGridPosition(modules)])
+		Object.entries(moduleEntries).map(([entryName, modules]) => [
+			entryName,
+			sortCodeBlocksByGridPosition(modules).map(module => ({
+				code: module.code,
+				containsShape: containsShapeInstruction(module.code),
+			})),
+		])
 	);
 	entries.main ??= [];
 

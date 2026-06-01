@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+	containsShapeInstruction,
 	getDocumentProjectBlockType,
 	getProjectBlockType,
 	parse8f4eProject,
@@ -93,6 +94,14 @@ describe('project block classification', () => {
 		expect(getProjectBlockType(validNoteBlock)).toBe('unknown');
 	});
 
+	it('detects shape instructions in module source', () => {
+		expect(containsShapeInstruction(['module oscillator', 'shape oscillatorState', 'moduleEnd'])).toBe(true);
+		expect(containsShapeInstruction(['module oscillator', '  shape oscillatorState', 'moduleEnd'])).toBe(true);
+		expect(
+			containsShapeInstruction(['module oscillator', '; shape oscillatorState', 'shapeName local', 'moduleEnd'])
+		).toBe(false);
+	});
+
 	it('splits project blocks into compiler inputs', () => {
 		const blocks = [
 			{ code: validModuleBlock, entry: 'main' },
@@ -104,7 +113,7 @@ describe('project block classification', () => {
 		];
 
 		expect(pickProjectCompilerBlocks(blocks)).toEqual({
-			entries: { main: [{ code: validModuleBlock }] },
+			entries: { main: [{ code: validModuleBlock, containsShape: false }] },
 			constantsBlocks: [],
 			functionBlocks: [{ code: validFunctionBlock }],
 			prototypeBlocks: [{ code: validPrototypeBlock }],
@@ -119,14 +128,14 @@ describe('project block classification', () => {
 				{ code: ['module other', 'moduleEnd'], entry: 'test' },
 			]).entries
 		).toEqual({
-			main: [{ code: validModuleBlock }],
-			test: [{ code: ['module other', 'moduleEnd'] }],
+			main: [{ code: validModuleBlock, containsShape: false }],
+			test: [{ code: ['module other', 'moduleEnd'], containsShape: false }],
 		});
 	});
 
 	it('does not infer execution entries from module directives', () => {
 		expect(pickProjectCompilerBlocks([{ code: ['module regular', 'moduleEnd'], entry: 'main' }]).entries).toEqual({
-			main: [{ code: ['module regular', 'moduleEnd'] }],
+			main: [{ code: ['module regular', 'moduleEnd'], containsShape: false }],
 		});
 	});
 

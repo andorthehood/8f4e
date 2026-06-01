@@ -67,6 +67,7 @@ type ExpandedCompilerSource = {
 
 type ModuleCompilerSource = ExpandedCompilerSource & {
 	entryName: string;
+	containsShape?: boolean;
 };
 
 type ParsedPrototypeSource = {
@@ -324,6 +325,10 @@ function expandModuleSourceShapes(
 	source: ModuleCompilerSource,
 	prototypeSourcesById: ReadonlyMap<string, ParsedPrototypeSource>
 ): ModuleCompilerSource {
+	if (source.containsShape === false) {
+		return source;
+	}
+
 	let code: string[] | undefined;
 	let lineMetadata: ParsedLineMetadata | undefined;
 
@@ -415,14 +420,18 @@ export default function compile(
 	// Expand macros and prototype shapes in modules
 	const expandedModules = entryModules.map(({ entryName, module, index }) => {
 		const expanded = convertExpandedLinesToCode(expandMacros(module, macroDefinitions));
-		return expandModuleSourceShapes(
-			{
-				...expanded,
-				cacheKey: `entry:${entryName}:module:${index}`,
-				entryName,
-			},
-			prototypeSourcesById
-		);
+		const source = {
+			...expanded,
+			cacheKey: `entry:${entryName}:module:${index}`,
+			entryName,
+			containsShape: macroDefinitions.size === 0 ? module.containsShape : undefined,
+		};
+
+		if (source.containsShape === false) {
+			return source;
+		}
+
+		return expandModuleSourceShapes(source, prototypeSourcesById);
 	}) satisfies ModuleCompilerSource[];
 
 	const expandedConstants = constants.map((constantsBlock, index) => {
