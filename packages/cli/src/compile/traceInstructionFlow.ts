@@ -151,10 +151,7 @@ export default function traceInstructionFlow(
 			prototypes: prototypeBlocks,
 			macros: macroBlocks,
 		},
-		{
-			...compilerOptions,
-			includeAST: true,
-		}
+		compilerOptions
 	);
 
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);
