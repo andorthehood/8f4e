@@ -1,0 +1,79 @@
+{
+	"name": "8f4e-vscode-extension",
+	"version": "0.1.0",
+	"private": true,
+	"description": "VS Code custom editor for 8f4e files",
+	"type": "module",
+	"main": "./dist/extension.cjs",
+	"publisher": "8f4e",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andorthehood/8f4e.git",
+		"directory": "packages/vscode-extension"
+	},
+	"engines": {
+		"vscode": "^1.95.0"
+	},
+	"activationEvents": [
+		"onCustomEditor:8f4e.editor",
+		"onCommand:8f4e.openInEditor",
+		"onLanguage:8f4e"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "8f4e.openInEditor",
+				"title": "Open in 8f4e Editor"
+			}
+		],
+		"customEditors": [
+			{
+				"viewType": "8f4e.editor",
+				"displayName": "8f4e Editor",
+				"selector": [
+					{
+						"filenamePattern": "*.8f4e"
+					}
+				],
+				"priority": "option"
+			}
+		],
+		"languages": [
+			{
+				"id": "8f4e",
+				"aliases": ["8f4e"],
+				"extensions": [".8f4e"]
+			}
+		],
+		"menus": {
+			"editor/title": [
+				{
+					"command": "8f4e.openInEditor",
+					"when": "resourceExtname == .8f4e",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"build": "vite build --config vite.extension.config.ts && vite build --config vite.webview.config.ts",
+		"install:local": "npm run package && node scripts/install-local-vsix.mjs",
+		"lint": "biome check --write src",
+		"package": "vsce package --no-dependencies --skip-license --out dist/8f4e-vscode-extension-0.1.0.vsix",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@8f4e/compiler": "*",
+		"@8f4e/compiler-spec": "*",
+		"@8f4e/editor": "*",
+		"@8f4e/editor-state": "*",
+		"@8f4e/runtime-audio-worklet": "*",
+		"@8f4e/runtime-main-thread": "*",
+		"@8f4e/runtime-web-worker": "*",
+		"@types/node": "24.12.4",
+		"@types/vscode": "1.95.0",
+		"@vscode/vsce": "3.9.1",
+		"vite": "7.3.3"
+	}
+}
