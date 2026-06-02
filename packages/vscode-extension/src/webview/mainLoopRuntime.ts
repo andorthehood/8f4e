@@ -8,7 +8,7 @@ import type {
 import { resolveSchemaConfigRoot } from '@8f4e/editor';
 import type { StateManager } from '@8f4e/state-manager';
 
-interface MainLoopFallbackRuntimeOptions {
+interface MainLoopRuntimeOptions {
 	id: string;
 	configRoot: string;
 	defaultSampleRate: number;
@@ -16,13 +16,13 @@ interface MainLoopFallbackRuntimeOptions {
 	getMemory: () => WebAssembly.Memory | null;
 }
 
-export function createMainLoopFallbackRuntimeDef({
+export function createMainLoopRuntimeDef({
 	id,
 	configRoot,
 	defaultSampleRate,
 	getCodeBuffer,
 	getMemory,
-}: MainLoopFallbackRuntimeOptions): RuntimeRegistryEntry {
+}: MainLoopRuntimeOptions): RuntimeRegistryEntry {
 	const editorConfigSchema: EditorConfigSchemaContribution = {
 		root: configRoot,
 		defaults: {
@@ -47,11 +47,11 @@ export function createMainLoopFallbackRuntimeDef({
 		editorConfigSchema,
 		getEnvConstants: editorConfig => [`const SAMPLE_RATE ${getSampleRate(editorConfig)}`],
 		factory: (store, events) =>
-			mainLoopFallbackRuntimeFactory(store, events, getCodeBuffer, getMemory, getSampleRate, configRoot),
+			mainLoopRuntimeFactory(store, events, getCodeBuffer, getMemory, getSampleRate, configRoot),
 	};
 }
 
-function mainLoopFallbackRuntimeFactory(
+function mainLoopRuntimeFactory(
 	store: StateManager<State>,
 	events: EventDispatcher,
 	getCodeBuffer: () => Uint8Array,
@@ -87,7 +87,7 @@ function mainLoopFallbackRuntimeFactory(
 		const token = ++syncToken;
 
 		if (!memory || codeBuffer.length === 0) {
-			console.warn('[Runtime] Memory or code not yet created, skipping fallback runtime init');
+			console.warn('[Runtime] Memory or code not yet created, skipping main-loop runtime init');
 			return;
 		}
 
@@ -123,7 +123,7 @@ function mainLoopFallbackRuntimeFactory(
 			}, 10000);
 			events.dispatch('runtimeInitialized');
 		} catch (error) {
-			console.error('Fallback runtime error:', error);
+			console.error('Main-loop runtime error:', error);
 		}
 	}
 

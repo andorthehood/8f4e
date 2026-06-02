@@ -114,7 +114,7 @@ function scriptProcessorAudioRuntimeFactory(
 		const token = ++syncToken;
 
 		if (!memory || codeBuffer.length === 0) {
-			console.warn('[Runtime] Memory or code not yet created, skipping audio fallback runtime init');
+			console.warn('[Runtime] Memory or code not yet created, skipping script-processor audio runtime init');
 			return;
 		}
 
@@ -135,7 +135,7 @@ function scriptProcessorAudioRuntimeFactory(
 			storeAudioRuntimeValues(store, state, { audioBufferSize: AUDIO_BUFFER_SIZE });
 			events.dispatch('runtimeInitialized', { sampleRate: audioContext.sampleRate });
 		} catch (error) {
-			console.error('Audio fallback runtime error:', error);
+			console.error('Script-processor audio runtime error:', error);
 		}
 	}
 
@@ -274,7 +274,7 @@ function scriptProcessorAudioRuntimeFactory(
 	}
 
 	showAudioPermissionDialog(
-		'This project is using the AudioWorklet runtime, to start the program with audio playback, please click anywhere on the screen to continue.'
+		'This project is using the VS Code audio runtime. To start the program with audio playback, please click anywhere on the screen to continue.'
 	);
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
