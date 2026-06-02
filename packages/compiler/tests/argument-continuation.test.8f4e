@@ -14,8 +14,7 @@ float*
 - &continuationPointerSource:samples
 
 push readHead
-push &continuationPointerSource:samples
-call assert
+call assert &continuationPointerSource:samples
 moduleEnd
 
 module splitByteDefaultAssertions
@@ -25,15 +24,13 @@ int color
 - 0xFF
 
 push color
-push -1459683328
-call assert
+call assert -1459683328
 moduleEnd
 
 module continuedNegativeLiteralAssertions
 ; A continuation marker before a negative literal should be treated as syntax, not as the literal sign.
 push
 - -1
-push -1
-call assert
+call assert -1
 moduleEnd
 entryEnd

@@ -1,9 +1,7 @@
 {
-  "functionAst": {},
-  "functionOverview": {},
-  "moduleAst": {
-    "branchAssertions": {
-      "id": "branchAssertions",
+  "functionAst": {
+    "packTriple": {
+      "id": "packTriple",
       "lines": [
         {
           "arguments": [
@@ -11,10 +9,10 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "branchAssertions",
+              "value": "packTriple",
             },
           ],
-          "instruction": "module",
+          "instruction": "function",
         },
         {
           "arguments": [
@@ -22,35 +20,58 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "output",
+              "value": "int",
             },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "int",
-        },
-        {
-          "arguments": [],
-          "instruction": "block",
-        },
-        {
-          "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "instruction": "branch",
-        },
-        {
-          "arguments": [
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
+              "referenceKind": "plain",
               "scope": "local",
-              "targetMemoryId": "output",
               "type": "identifier",
-              "value": "&output",
+              "value": "left",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "right",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "last",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "left",
             },
           ],
           "instruction": "push",
@@ -60,18 +81,14 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 1,
+              "value": 1000,
             },
           ],
           "instruction": "push",
         },
         {
           "arguments": [],
-          "instruction": "store",
-        },
-        {
-          "arguments": [],
-          "instruction": "blockEnd",
+          "instruction": "mul",
         },
         {
           "arguments": [
@@ -79,76 +96,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "output",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [],
-          "instruction": "moduleEnd",
-        },
-      ],
-      "type": "module",
-    },
-    "countedLoopAssertions": {
-      "id": "countedLoopAssertions",
-      "lines": [
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "countedLoopAssertions",
-            },
-          ],
-          "instruction": "module",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "counter",
-            },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "int",
-        },
-        {
-          "arguments": [],
-          "instruction": "loop",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "counter",
+              "value": "right",
             },
           ],
           "instruction": "push",
@@ -165,30 +113,11 @@
         },
         {
           "arguments": [],
-          "instruction": "equal",
+          "instruction": "mul",
         },
         {
-          "arguments": [
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "instruction": "branchIfTrue",
-        },
-        {
-          "arguments": [
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
-            },
-          ],
-          "instruction": "push",
+          "arguments": [],
+          "instruction": "add",
         },
         {
           "arguments": [
@@ -196,17 +125,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "counter",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
+              "value": "last",
             },
           ],
           "instruction": "push",
@@ -216,52 +135,36 @@
           "instruction": "add",
         },
         {
-          "arguments": [],
-          "instruction": "store",
-        },
-        {
-          "arguments": [],
-          "instruction": "loopEnd",
-        },
-        {
           "arguments": [
             {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "counter",
+              "value": "int",
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 10,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [],
-          "instruction": "moduleEnd",
+          "instruction": "functionEnd",
         },
       ],
-      "type": "module",
+      "type": "function",
     },
+  },
+  "functionOverview": {
+    "packTriple": {
+      "id": "packTriple",
+      "signature": {
+        "parameters": [
+          "int",
+          "int",
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+  },
+  "moduleAst": {
     "ifFloatAssertions": {
       "id": "ifFloatAssertions",
       "lines": [
@@ -346,20 +249,15 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 1.1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assertf",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1.1,
             },
           ],
           "instruction": "call",
@@ -434,20 +332,15 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": -1.1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assertf",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1.1,
             },
           ],
           "instruction": "call",
@@ -543,20 +436,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
             },
           ],
           "instruction": "call",
@@ -631,20 +519,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": -1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1,
             },
           ],
           "instruction": "call",
@@ -790,20 +673,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
             },
           ],
           "instruction": "call",
@@ -928,20 +806,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": -1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -1,
             },
           ],
           "instruction": "call",
@@ -953,8 +826,8 @@
       ],
       "type": "module",
     },
-    "loopCapAssertions": {
-      "id": "loopCapAssertions",
+    "multiResultIfAssertions": {
+      "id": "multiResultIfAssertions",
       "lines": [
         {
           "arguments": [
@@ -962,50 +835,10 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "loopCapAssertions",
+              "value": "multiResultIfAssertions",
             },
           ],
           "instruction": "module",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "counter",
-            },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "int",
-        },
-        {
-          "arguments": [],
-          "instruction": "loop",
-        },
-        {
-          "arguments": [
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "counter",
-            },
-          ],
-          "instruction": "push",
         },
         {
           "arguments": [
@@ -1019,23 +852,14 @@
         },
         {
           "arguments": [],
-          "instruction": "add",
-        },
-        {
-          "arguments": [],
-          "instruction": "store",
-        },
-        {
-          "arguments": [],
-          "instruction": "loopEnd",
+          "instruction": "if",
         },
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "counter",
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
             },
           ],
           "instruction": "push",
@@ -1045,7 +869,51 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 1000,
+              "value": 20,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "else",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 30,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 40,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 5,
             },
           ],
           "instruction": "push",
@@ -1056,7 +924,46 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "ifEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "packTriple",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10203,
             },
           ],
           "instruction": "call",
@@ -1070,14 +977,65 @@
     },
   },
   "moduleMemory": {
-    "branchAssertions": {
+    "ifFloatAssertions": {
       "internalResources": {},
       "memoryMap": {
-        "output": {
-          "byteAddress": 4,
+        "falsyInput": {
+          "byteAddress": 16,
           "default": 0,
           "elementWordSize": 4,
-          "id": "output",
+          "hasExplicitDefault": true,
+          "id": "falsyInput",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+        },
+        "truthyInput": {
+          "byteAddress": 12,
+          "default": 1,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "truthyInput",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 3,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "ifIntAssertions": {
+      "internalResources": {},
+      "memoryMap": {
+        "falsyInput": {
+          "byteAddress": 8,
+          "default": 0,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "falsyInput",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 2,
+          "wordAlignedSize": 1,
+        },
+        "truthyInput": {
+          "byteAddress": 4,
+          "default": 1,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "truthyInput",
           "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -1089,147 +1047,15 @@
         },
       },
     },
-    "countedLoopAssertions": {
-      "internalResources": {},
-      "memoryMap": {
-        "counter": {
-          "byteAddress": 40,
-          "default": 0,
-          "elementWordSize": 4,
-          "id": "counter",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 10,
-          "wordAlignedSize": 1,
-        },
-      },
-    },
-    "ifFloatAssertions": {
-      "internalResources": {},
-      "memoryMap": {
-        "falsyInput": {
-          "byteAddress": 20,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "falsyInput",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 5,
-          "wordAlignedSize": 1,
-        },
-        "truthyInput": {
-          "byteAddress": 16,
-          "default": 1,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "truthyInput",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 4,
-          "wordAlignedSize": 1,
-        },
-      },
-    },
-    "ifIntAssertions": {
-      "internalResources": {},
-      "memoryMap": {
-        "falsyInput": {
-          "byteAddress": 12,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "falsyInput",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 3,
-          "wordAlignedSize": 1,
-        },
-        "truthyInput": {
-          "byteAddress": 8,
-          "default": 1,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "truthyInput",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 2,
-          "wordAlignedSize": 1,
-        },
-      },
-    },
     "ifVoidAssertions": {
       "internalResources": {},
       "memoryMap": {
         "falsyInput": {
-          "byteAddress": 32,
+          "byteAddress": 28,
           "default": 0,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "falsyInput",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 8,
-          "wordAlignedSize": 1,
-        },
-        "falsyOutput": {
-          "byteAddress": 36,
-          "default": 0,
-          "elementWordSize": 4,
-          "id": "falsyOutput",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 9,
-          "wordAlignedSize": 1,
-        },
-        "truthyInput": {
-          "byteAddress": 24,
-          "default": 1,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "truthyInput",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 6,
-          "wordAlignedSize": 1,
-        },
-        "truthyOutput": {
-          "byteAddress": 28,
-          "default": 0,
-          "elementWordSize": 4,
-          "id": "truthyOutput",
           "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -1239,39 +1065,67 @@
           "wordAlignedAddress": 7,
           "wordAlignedSize": 1,
         },
-      },
-    },
-    "loopCapAssertions": {
-      "internalResources": {},
-      "memoryMap": {
-        "counter": {
-          "byteAddress": 44,
+        "falsyOutput": {
+          "byteAddress": 32,
           "default": 0,
           "elementWordSize": 4,
-          "id": "counter",
+          "id": "falsyOutput",
           "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 11,
+          "wordAlignedAddress": 8,
+          "wordAlignedSize": 1,
+        },
+        "truthyInput": {
+          "byteAddress": 20,
+          "default": 1,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "truthyInput",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+        },
+        "truthyOutput": {
+          "byteAddress": 24,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "truthyOutput",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
         },
       },
     },
+    "multiResultIfAssertions": {
+      "internalResources": {},
+      "memoryMap": {},
+    },
   },
   "overview": {
-    "compiledFunctions": [],
+    "compiledFunctions": [
+      "packTriple",
+    ],
     "compiledModules": [
-      "branchAssertions",
-      "countedLoopAssertions",
       "ifFloatAssertions",
       "ifIntAssertions",
       "ifVoidAssertions",
-      "loopCapAssertions",
+      "multiResultIfAssertions",
     ],
-    "requiredMemoryBytes": 48,
+    "requiredMemoryBytes": 36,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",

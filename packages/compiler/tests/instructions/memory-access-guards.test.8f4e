@@ -6,54 +6,45 @@ module guardedIntLoadAssertions
 ; Unsafe integer loads should return zero instead of trapping.
 push -1
 load
-push 0
-call assert
+call assert 0
 
 push 65533
 load
-push 0
-call assert
+call assert 0
 
 push 2147483647
 load
-push 0
-call assert
+call assert 0
 moduleEnd
 
 module guardedFloatLoadAssertions
 ; Unsafe float loads should return zero instead of trapping.
 push -1
 loadFloat
-push 0.0
-call assertf
+call assertf 0.0
 
 push 65533
 loadFloat
-push 0.0
-call assertf
+call assertf 0.0
 
 push 2147483647
 loadFloat
-push 0.0
-call assertf
+call assertf 0.0
 moduleEnd
 
 module guardedLocalPointerDereferenceAssertions
 ; Unsafe pointer dereferences inside impure functions should return zero.
 push -1
 call readGuardedPointer
-push 0
-call assert
+call assert 0
 
 push 65533
 call readGuardedPointer
-push 0
-call assert
+call assert 0
 
 push 2147483647
 call readGuardedPointer
-push 0
-call assert
+call assert 0
 moduleEnd
 entryEnd
 

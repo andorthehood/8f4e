@@ -21,12 +21,10 @@ int bufferCount count(countSizeSource:buffer)
 int dataCount count(countSizeSource:data)
 
 push bufferCount
-push 10
-call assert
+call assert 10
 
 push dataCount
-push 7
-call assert
+call assert 7
 
 ; sizeof(...) returns the element byte width.
 int intElementSize sizeof(countSizeSource:buffer)
@@ -35,20 +33,16 @@ int pointerElementSize sizeof(pointerSizeSource:ptr)
 int doubledShortSize 2*sizeof(shortSizeSource:buffer)
 
 push intElementSize
-push 4
-call assert
+call assert 4
 
 push floatElementSize
-push 4
-call assert
+call assert 4
 
 push pointerElementSize
-push 4
-call assert
+call assert 4
 
 push doubledShortSize
-push 4
-call assert
+call assert 4
 moduleEnd
 
 module outOfOrderCountSizeAssertions
@@ -57,12 +51,10 @@ int laterCount count(lateCountSizeSource:buffer)
 int laterSize sizeof(lateCountSizeSource:buffer)
 
 push laterCount
-push 8
-call assert
+call assert 8
 
 push laterSize
-push 4
-call assert
+call assert 4
 moduleEnd
 
 module lateCountSizeSource
@@ -76,16 +68,13 @@ int size count(combinedCountSizeSource:buffer)
 int elemSize sizeof(combinedCountSizeSource:buffer)
 
 push *ptr
-push 12
-call assert
+call assert 12
 
 push size
-push 12
-call assert
+call assert 12
 
 push elemSize
-push 4
-call assert
+call assert 4
 moduleEnd
 
 module combinedCountSizeSource

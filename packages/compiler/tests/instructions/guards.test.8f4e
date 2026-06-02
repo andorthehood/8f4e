@@ -6,35 +6,29 @@ module ensureNonZeroIntAssertions
 ; ensureNonZero leaves non-zero integers unchanged and replaces zero with one.
 push 69
 ensureNonZero
-push 69
-call assert
+call assert 69
 
 push 0
 ensureNonZero
-push 1
-call assert
+call assert 1
 
 push -420
 ensureNonZero
-push -420
-call assert
+call assert -420
 moduleEnd
 
 module ensureNonZeroFloatAssertions
 ; ensureNonZero leaves non-zero floats unchanged and replaces zero with 1.0.
 push 69.1
 ensureNonZero
-push 69.1
-call assertf
+call assertf 69.1
 
 push 0.0
 ensureNonZero
-push 1.0
-call assertf
+call assertf 1.0
 
 push -420.1
 ensureNonZero
-push -420.1
-call assertf
+call assertf -420.1
 moduleEnd
 entryEnd

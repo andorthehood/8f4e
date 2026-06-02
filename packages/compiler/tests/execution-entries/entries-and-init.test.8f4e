@@ -41,24 +41,20 @@ function test
 ; initDefaults runs before this function, but it should not execute the user-authored init entry.
 push &userInitEntryCounter:value
 load
-push 0
-call assert
+call assert 0
 
 call main
 push &mainEntryCounter:value
 load
-push 1
-call assert
+call assert 1
 
 call aux
 push &auxEntryCounter:value
 load
-push 2
-call assert
+call assert 2
 
 call init
 push &userInitEntryCounter:value
 load
-push 7
-call assert
+call assert 7
 functionEnd

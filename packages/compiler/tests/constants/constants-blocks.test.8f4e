@@ -42,16 +42,13 @@ float tau TAU
 float gravity GRAVITY
 
 push pi
-push 3.14159
-call assertf
+call assertf 3.14159
 
 push tau
-push 6.28318
-call assertf
+call assertf 6.28318
 
 push gravity
-push 9.81
-call assertf
+call assertf 9.81
 moduleEnd
 
 module constantLastWinsAssertions
@@ -61,8 +58,7 @@ use second
 int result VALUE
 
 push result
-push 20
-call assert
+call assert 20
 moduleEnd
 
 module moduleConstImportAssertions
@@ -75,8 +71,7 @@ use moduleConstImportAssertions
 int result SECRET
 
 push result
-push 99
-call assert
+call assert 99
 moduleEnd
 
 module sameModuleDerivedConstAssertions
@@ -86,8 +81,7 @@ const DOUBLE BASE
 int result DOUBLE
 
 push result
-push 10
-call assert
+call assert 10
 moduleEnd
 
 module importedConstDerivedConstAssertions
@@ -97,8 +91,7 @@ const BAR SECRET
 int result BAR
 
 push result
-push 99
-call assert
+call assert 99
 moduleEnd
 
 module constantsCanUseConstantsAssertions
@@ -109,12 +102,10 @@ int size SIZE
 int half HALF
 
 push size
-push 48
-call assert
+call assert 48
 
 push half
-push 4
-call assert
+call assert 4
 moduleEnd
 
 module sameNameAsModule
@@ -122,8 +113,7 @@ module sameNameAsModule
 int result 1
 
 push result
-push 1
-call assert
+call assert 1
 moduleEnd
 
 module validConstNameAssertions
@@ -132,11 +122,9 @@ const MY_CONSTANT 100
 const CONST123 123
 
 push MY_CONSTANT
-push 100
-call assert
+call assert 100
 
 push CONST123
-push 123
-call assert
+call assert 123
 moduleEnd
 entryEnd
