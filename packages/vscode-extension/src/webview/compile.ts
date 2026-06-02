@@ -13,22 +13,9 @@ let compilerCache: CompilerCache | undefined;
 let memoryRef: WebAssembly.Memory | null = null;
 let codeBuffer = new Uint8Array();
 let currentMemorySize = 0;
-let supportsSharedMemoryCache: boolean | undefined;
 
 export function getMemory(): WebAssembly.Memory | null {
 	return memoryRef;
-}
-
-export function getSharedMemory(): WebAssembly.Memory | null {
-	if (!memoryRef || !isSharedMemory(memoryRef)) {
-		return null;
-	}
-
-	return memoryRef;
-}
-
-export function hasSharedMemorySupport(): boolean {
-	return supportsSharedMemory();
 }
 
 export function getCodeBuffer(): Uint8Array {
@@ -45,7 +32,7 @@ export async function compileCode(
 			input,
 			{
 				...compilerOptions,
-				disableSharedMemory: !supportsSharedMemory(),
+				disableSharedMemory: true,
 			},
 			compilerCache
 		);
@@ -91,10 +78,6 @@ function recreateMemory(allocatedMemoryBytes: number): MemoryAction {
 		maximum: pages,
 	};
 
-	if (supportsSharedMemory()) {
-		descriptor.shared = true;
-	}
-
 	memoryRef = new WebAssembly.Memory(descriptor);
 	currentMemorySize = allocatedMemoryBytes;
 
@@ -110,34 +93,6 @@ function recreateMemory(allocatedMemoryBytes: number): MemoryAction {
 			prevBytes: previousMemorySize,
 		},
 	};
-}
-
-function supportsSharedMemory(): boolean {
-	if (supportsSharedMemoryCache !== undefined) {
-		return supportsSharedMemoryCache;
-	}
-
-	if (typeof SharedArrayBuffer === 'undefined') {
-		supportsSharedMemoryCache = false;
-		return supportsSharedMemoryCache;
-	}
-
-	try {
-		const testMemory = new WebAssembly.Memory({
-			initial: 1,
-			maximum: 1,
-			shared: true,
-		});
-		supportsSharedMemoryCache = testMemory.buffer instanceof SharedArrayBuffer;
-	} catch {
-		supportsSharedMemoryCache = false;
-	}
-
-	return supportsSharedMemoryCache;
-}
-
-function isSharedMemory(memory: WebAssembly.Memory): boolean {
-	return typeof SharedArrayBuffer !== 'undefined' && memory.buffer instanceof SharedArrayBuffer;
 }
 
 async function instantiateCode(

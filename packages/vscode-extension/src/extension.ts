@@ -183,9 +183,6 @@ class EightF4eEditorProvider implements vscode.CustomTextEditorProvider {
 		const scriptUri = webview.asWebviewUri(
 			vscode.Uri.joinPath(this.context.extensionUri, 'media', 'editor', 'editor.js')
 		);
-		const audioWorkletUri = webview.asWebviewUri(
-			vscode.Uri.joinPath(this.context.extensionUri, 'media', 'editor', 'assets', 'audio-worklet.js')
-		);
 		const csp = [
 			`default-src * data: blob: ${webview.cspSource}`,
 			'connect-src * data: blob:',
@@ -234,9 +231,6 @@ class EightF4eEditorProvider implements vscode.CustomTextEditorProvider {
 	<div id="app">
 		<canvas id="glcanvas"></canvas>
 	</div>
-	<script>
-		globalThis.__8f4eAudioWorkletUri = ${JSON.stringify(audioWorkletUri.toString())};
-	</script>
 	<script type="module" src="${scriptUri}"></script>
 </body>
 </html>`;
