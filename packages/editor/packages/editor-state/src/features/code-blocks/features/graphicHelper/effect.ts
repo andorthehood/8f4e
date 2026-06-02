@@ -41,6 +41,7 @@ import outputs from '../outputs/updateGraphicData';
 import gaps from './gaps';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 import positionOffsetters from './positionOffsetters';
+import shape from './shape/updateGraphicData';
 
 function shouldRenderBlankLineNumber(sourceLine: string): boolean {
 	const instruction = sourceLine.match(/^\s*([^\s;]+)/)?.[1];
@@ -173,6 +174,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return lineColors;
 		});
 
+		shape(graphicData, state.graphicHelper.codeBlocks, directiveState);
 		gaps(graphicData, directiveState);
 		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
 
