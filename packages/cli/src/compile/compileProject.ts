@@ -8,7 +8,6 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 
 	const compilerOptions: CompileOptions = {
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,
-		includeAST: options.compilerOptions?.includeAST,
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 	};
 

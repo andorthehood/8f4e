@@ -25,7 +25,7 @@ export interface CompiledModule {
 	memoryMap: MemoryMap;
 	internalResources?: InternalResourceMap;
 	wordAlignedSize: number;
-	ast?: ModuleAST | ConstantsAST;
+	ast: ModuleAST | ConstantsAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
 }
