@@ -27,10 +27,10 @@ export function createRequestBridge(vscode: VsCodeApi): {
 			return new Promise<T>((resolve, reject) => {
 				pendingRequests.set(id, { resolve: resolve as (value: unknown) => void, reject });
 				vscode.postMessage({
+					...payload,
 					type: 'request',
 					id,
 					command,
-					...payload,
 				});
 			});
 		},

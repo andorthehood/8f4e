@@ -60,7 +60,6 @@ class EightF4eEditorProvider implements vscode.CustomTextEditorProvider {
 			enableScripts: true,
 			localResourceRoots: [vscode.Uri.joinPath(this.context.extensionUri, 'media', 'editor')],
 		};
-		webviewPanel.webview.html = this.renderHtml(webviewPanel.webview);
 
 		const postDocument = () => {
 			if (!ready) {
@@ -109,6 +108,8 @@ class EightF4eEditorProvider implements vscode.CustomTextEditorProvider {
 					break;
 			}
 		});
+
+		webviewPanel.webview.html = this.renderHtml(webviewPanel.webview);
 	}
 
 	private async handleRequest(
