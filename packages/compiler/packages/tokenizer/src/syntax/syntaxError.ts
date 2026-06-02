@@ -30,6 +30,7 @@ export const SyntaxErrorCode = {
 	INVALID_BLOCK_STRUCTURE: 9,
 	COMPILER_DIRECTIVE_MUST_BE_PROLOGUE: 10,
 	UNRECOGNISED_INSTRUCTION: 11,
+	INSTRUCTION_NOT_ALLOWED_IN_BLOCK: 12,
 } as const;
 
 export type SyntaxErrorCodeValue = (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode];
@@ -54,6 +55,7 @@ const SyntaxErrorMessages: Record<SyntaxErrorCodeValue, string> = {
 	[SyntaxErrorCode.COMPILER_DIRECTIVE_MUST_BE_PROLOGUE]:
 		'Compiler directives must appear in the block prologue, immediately after module or function.',
 	[SyntaxErrorCode.UNRECOGNISED_INSTRUCTION]: 'Unrecognised instruction.',
+	[SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK]: 'Instruction is not allowed in this block.',
 };
 
 export interface SyntaxErrorLine {

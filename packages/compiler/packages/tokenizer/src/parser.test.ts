@@ -244,6 +244,18 @@ describe('compileToAST', () => {
 		expect(ast.lines[0].instruction).toBe('const');
 	});
 
+	it('rejects memory declarations in function blocks', () => {
+		expect(() => compileToAST(['function mix', 'int value', 'functionEnd'])).toThrow(
+			expect.objectContaining({
+				code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+				line: expect.objectContaining({
+					lineNumber: 1,
+					instruction: 'int',
+				}),
+			})
+		);
+	});
+
 	it('constructs prototype metadata from the source-block parse path', () => {
 		const ast = compileToAST(['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd']);
 

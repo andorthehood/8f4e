@@ -44,7 +44,6 @@ export interface InstantiatedFixtureProgram extends CompiledFixtureProgram {
 export interface FixtureProgramCompileOptions {
 	extraCodeBlocks?: ProjectCodeBlock[];
 	includeAssertions?: boolean;
-	includeAST?: boolean;
 	includeStackAnalysis?: boolean;
 	cache?: CompileResult['cache'];
 }
@@ -337,7 +336,6 @@ export function compileFixtureProgramSource(
 			},
 			{
 				disableSharedMemory: true,
-				includeAST: options.includeAST,
 				includeStackAnalysis: options.includeStackAnalysis,
 				memoryRegions,
 			},
@@ -382,7 +380,6 @@ export async function runFixtureProgramFile(filePath: string): Promise<FixturePr
 	try {
 		instantiatedFixture = await instantiateFixtureProgramSource(source, {
 			includeAssertions: true,
-			includeAST: true,
 			hostImports: {
 				assert(received: number, expected: number) {
 					const assertIndex = assertionCount;

@@ -2,7 +2,6 @@ import type {
 	AST,
 	CompiledFunctionLookup,
 	CompiledModule,
-	CompiledModuleLookup,
 	CompileInput,
 	CompileOptions,
 	CompileResult,
@@ -13,7 +12,6 @@ import type {
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
 	ModuleAST,
-	Namespaces,
 	PrototypeAST,
 } from '@8f4e/compiler-spec';
 import {
@@ -44,7 +42,8 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import { compileToAST, createASTCache } from '@8f4e/tokenizer';
-import { compileFunction, compileModule } from './compiler';
+import { compileFunction } from './compileFunction';
+import { compileModules } from './compileModules';
 import { getError } from './compilerError';
 import { HEADER, VERSION } from './consts';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
@@ -70,7 +69,10 @@ type ParsedPrototypeSource = {
 };
 
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
-export { compileCodegenLine, compileLine } from './compiler';
+export { compileFunction } from './compileFunction';
+export { compileCodegenLine, compileLine } from './compileLine';
+export { compileModule } from './compileModule';
+export { compileModules } from './compileModules';
 export { getError } from './compilerError';
 export { serializeDiagnostic } from './diagnostic';
 export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
@@ -86,54 +88,6 @@ export { default as normalizeCompileTimeArguments } from './semantic/normalizeCo
 export { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 export { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 export { createInitialMemoryDataSegments };
-
-export function compileModules(
-	modules: Array<ModuleAST | ConstantsAST>,
-	options: CompileOptions,
-	namespaces?: Namespaces,
-	compiledFunctions?: FunctionMetadataLookup,
-	internalAllocator?: { nextByteAddress: number },
-	typeRegistry?: FunctionTypeRegistry
-): CompiledModule[] {
-	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
-	const ns: Namespaces =
-		namespaces ?? collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options);
-	const allocator = internalAllocator ?? {
-		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
-			if (namespace.memoryIndex !== 0) {
-				return max;
-			}
-			const byteAddress = namespace.byteAddress ?? 0;
-			const wordAlignedSize = namespace.wordAlignedSize ?? 0;
-			return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
-		}, 0),
-	};
-
-	return modules.map((ast, index) => {
-		const moduleStartingByteAddress =
-			ns[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
-		const module = compileModule(
-			ast,
-			ns,
-			moduleStartingByteAddress,
-			index,
-			compiledFunctions,
-			allocator,
-			options,
-			typeRegistry
-		);
-		return module;
-	});
-}
-
-function stripASTFromCompiledModules(compiledModules: CompiledModuleLookup): CompiledModuleLookup {
-	const strippedModules: CompiledModuleLookup = {};
-	for (const [id, module] of Object.entries(compiledModules)) {
-		const { ast, ...moduleWithoutAST } = module;
-		strippedModules[id] = moduleWithoutAST as CompiledModule;
-	}
-	return strippedModules;
-}
 
 function createCompilerCache(): CompilerCache {
 	return {
@@ -499,10 +453,7 @@ export default function compile(
 	];
 
 	// Strip AST from final result if not requested
-	const compiledModulesMap = Object.fromEntries(compiledModules.map(({ id, ...rest }) => [id, { id, ...rest }]));
-	const finalCompiledModules = options.includeAST
-		? compiledModulesMap
-		: stripASTFromCompiledModules(compiledModulesMap);
+	const compiledModulesMap = Object.fromEntries(compiledModules.map(module => [module.id, module]));
 
 	const memoryImports = Array.from({ length: maxUsedMemoryIndex + 1 }, (_, memoryIndex) => {
 		const requiredBytes = requiredMemoryBytesByIndex[memoryIndex] ?? 0;
@@ -554,7 +505,7 @@ export default function compile(
 				? createDataSection(initialMemoryDataSegments.map(segment => createPassiveDataSegment(segment.bytes)))
 				: []),
 		]),
-		compiledModules: finalCompiledModules,
+		compiledModules: compiledModulesMap,
 		compiledFunctions: compiledFunctionsMap,
 		requiredMemoryBytes,
 		...(Object.keys(requiredMemoryBytesByRegion).length > 0 ? { requiredMemoryBytesByRegion } : {}),
