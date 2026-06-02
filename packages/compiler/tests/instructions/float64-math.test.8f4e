@@ -7,45 +7,38 @@ module float64ComparisonAssertions
 push 1.5f64
 push 1.5f64
 equal
-push 1
-call assert
+call assert 1
 
 push 1.25f64
 push 2.5f64
 lessThan
-push 1
-call assert
+call assert 1
 
 push 2.5f64
 push 1.25f64
 greaterThan
-push 1
-call assert
+call assert 1
 
 push 1.25f64
 push 1.25f64
 lessOrEqual
-push 1
-call assert
+call assert 1
 
 push 2.5f64
 push 1.25f64
 greaterOrEqual
-push 1
-call assert
+call assert 1
 
 push 2.5f64
 push 1.25f64
 greaterOrEqualUnsigned
-push 1
-call assert
+call assert 1
 moduleEnd
 
 module float64SqrtAssertions
 ; sqrt should operate on float64 values when given a float64 operand.
 push 2.0f64
 sqrt
-push 1.4142135623730951f64
-call assertf64
+call assertf64 1.4142135623730951f64
 moduleEnd
 entryEnd

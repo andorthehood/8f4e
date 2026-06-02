@@ -7,14 +7,12 @@ module andAssertions
 push 1
 push 0
 and
-push 0
-call assert
+call assert 0
 
 push 3
 push 6
 and
-push 2
-call assert
+call assert 2
 moduleEnd
 
 ; `or` should return the bits present in either operand.
@@ -22,14 +20,12 @@ module orAssertions
 push 1
 push 0
 or
-push 1
-call assert
+call assert 1
 
 push 3
 push 6
 or
-push 7
-call assert
+call assert 7
 moduleEnd
 
 ; `xor` should return only bits that differ between operands.
@@ -37,14 +33,12 @@ module xorAssertions
 push 1
 push 0
 xor
-push 1
-call assert
+call assert 1
 
 push 3
 push 6
 xor
-push 5
-call assert
+call assert 5
 moduleEnd
 
 ; shiftLeft moves integer bits left by the requested amount.
@@ -52,20 +46,17 @@ module shiftLeftAssertions
 push 1
 push 1
 shiftLeft
-push 2
-call assert
+call assert 2
 
 push 1
 push 2
 shiftLeft
-push 4
-call assert
+call assert 4
 
 push 3
 push 3
 shiftLeft
-push 24
-call assert
+call assert 24
 moduleEnd
 
 ; shiftRight moves integer bits right by the requested amount.
@@ -73,19 +64,16 @@ module shiftRightAssertions
 push 1
 push 1
 shiftRight
-push 0
-call assert
+call assert 0
 
 push 8
 push 2
 shiftRight
-push 2
-call assert
+call assert 2
 
 push 12
 push 3
 shiftRight
-push 1
-call assert
+call assert 1
 moduleEnd
 entryEnd

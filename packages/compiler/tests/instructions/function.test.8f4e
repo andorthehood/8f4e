@@ -5,21 +5,18 @@ entry test
 module functionReturnConstant
 ; A function without parameters can return a constant value.
 call getFortyTwoForFunctionTest
-push 42
-call assert
+call assert 42
 moduleEnd
 
 module functionWithParameter
 ; A function with one parameter should consume one stack argument.
 push 5
 call doubleForFunctionTest
-push 10
-call assert
+call assert 10
 
 push 10
 call doubleForFunctionTest
-push 20
-call assert
+call assert 20
 moduleEnd
 
 module functionWithTwoParameters
@@ -27,14 +24,12 @@ module functionWithTwoParameters
 push 3
 push 4
 call addForFunctionTest
-push 7
-call assert
+call assert 7
 
 push -5
 push 10
 call addForFunctionTest
-push 5
-call assert
+call assert 5
 moduleEnd
 entryEnd
 

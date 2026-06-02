@@ -1,0 +1,48 @@
+8f4e/v1
+
+prototype baryon
+int foo 1
+int he 2
+int bar 3
+prototypeEnd
+
+entry test
+module tau
+shape baryon
+
+int he 10
+int bar 44
+int bar 8
+int bar 16
+
+; it preserves inherited shape declarations that are not locally redeclared
+push foo
+call assert 1
+
+; it uses the later local declaration for a shape field redeclared in the module
+push he
+call assert 10
+
+; it keeps the last local declaration addressable when the same field is redeclared more than once
+push bar
+call assert 16
+moduleEnd
+
+module boson
+int* test2 &tau:foo
+int* test1 &tau:bar
+int* test3 &tau:he
+
+; intermodule pointers resolve to the inherited declaration
+push *test2
+call assert 1
+
+; intermodule pointers resolve to the final local declaration for repeated names
+push *test1
+call assert 16
+
+; intermodule pointers resolve to the local declaration that overrides a shape field
+push *test3
+call assert 10
+moduleEnd
+entryEnd

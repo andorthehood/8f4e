@@ -5,21 +5,18 @@ entry test
 module callConstantFunction
 ; Calling a zero-parameter function should push its return value.
 call getFortyTwo
-push 42
-call assert
+call assert 42
 moduleEnd
 
 module callFunctionWithParameter
 ; Function parameters should receive stack arguments in declaration order.
 push 5
 call double
-push 10
-call assert
+call assert 10
 
 push 10
 call double
-push 20
-call assert
+call assert 20
 moduleEnd
 
 module callMultipleFunctions
@@ -27,30 +24,26 @@ module callMultipleFunctions
 call getTwo
 call getThree
 add
-push 5
-call assert
+call assert 5
 moduleEnd
 
 module callNestedFunction
 ; Functions can call other functions after signatures and indexes are collected.
 call compute
-push 42
-call assert
+call assert 42
 moduleEnd
 
 module callFloat64RoundTrip
 ; Float64 parameters and returns should preserve double precision through calls.
 push 3.141592653589793f64
 call identityFloat64
-push 3.141592653589793f64
-call assertf64
+call assertf64 3.141592653589793f64
 moduleEnd
 
 module callFloat64ReturningFunction
 ; Float64-returning functions should keep float64 arithmetic in the callee.
 call getDoublePI
-push 6.28318530717958f64
-call assertf64
+call assertf64 6.28318530717958f64
 moduleEnd
 
 module callPointerParamsWithLocalDereference
@@ -66,8 +59,7 @@ push &lut
 push 0
 push delta
 call readScaledBlep
-push 0.5
-call assertf
+call assertf 0.5
 moduleEnd
 
 module callImpureFunctionWithExplicitLoadAndStore
@@ -82,8 +74,7 @@ push gain
 call scaleInto
 
 push output
-push 1.75
-call assertf
+call assertf 1.75
 moduleEnd
 entryEnd
 

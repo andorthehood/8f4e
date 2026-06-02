@@ -13,8 +13,7 @@ memoryCopy 20
 
 push &target
 load
-push 10
-call assert
+call assert 10
 
 push &target
 push 1
@@ -22,8 +21,7 @@ push sizeof(target)
 mul
 add
 load
-push 20
-call assert
+call assert 20
 
 push &target
 push 2
@@ -31,8 +29,7 @@ push sizeof(target)
 mul
 add
 load
-push 30
-call assert
+call assert 30
 
 push &target
 push 3
@@ -40,8 +37,7 @@ push sizeof(target)
 mul
 add
 load
-push 40
-call assert
+call assert 40
 
 push &target
 push 4
@@ -49,8 +45,7 @@ push sizeof(target)
 mul
 add
 load
-push 50
-call assert
+call assert 50
 moduleEnd
 
 module guardedMemoryCopyAssertions
@@ -66,8 +61,7 @@ memoryCopy 8
 
 push &target
 load
-push 1
-call assert
+call assert 1
 
 push &target
 push 1
@@ -75,7 +69,6 @@ push sizeof(target)
 mul
 add
 load
-push 2
-call assert
+call assert 2
 moduleEnd
 entryEnd

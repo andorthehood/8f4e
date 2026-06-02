@@ -9,92 +9,74 @@ const TEST2 420.69
 const TEST3 69
 
 push TEST1
-push 420
-call assert
+call assert 420
 
 push TEST2
-push 420.69
-call assertf
+call assertf 420.69
 
 int output3 TEST3
 push output3
-push 69
-call assert
+call assert 69
 moduleEnd
 
 module fractionLiteralAssertions
 ; Fraction literals work in push, memory declarations, and constants.
 push 1/16
-push 0.0625
-call assertf
+call assertf 0.0625
 
 int intFraction 1/16
 push intFraction
-push 0
-call assert
+call assert 0
 
 float floatFraction 1/16
 push floatFraction
-push 0.0625
-call assertf
+call assertf 0.0625
 
 int intWholeFraction 8/2
 push intWholeFraction
-push 4
-call assert
+call assert 4
 
 float negativeFraction -1/2
 push negativeFraction
-push -0.5
-call assertf
+call assertf -0.5
 
 const MY_FRACTION 1/8
 push MY_FRACTION
-push 0.125
-call assertf
+call assertf 0.125
 moduleEnd
 
 module literalMulDivExpressionAssertions
 ; Literal-only multiplication and division fold in const, push, and memory contexts.
 const MUL_RESULT 16*2
 push MUL_RESULT
-push 32
-call assert
+call assert 32
 
 const DIV_RESULT 8/2
 push DIV_RESULT
-push 4
-call assert
+call assert 4
 
 push 16*2
-push 32
-call assert
+call assert 32
 
 push 1/2
-push 0.5
-call assertf
+call assertf 0.5
 
 push 0x10*2
-push 32
-call assert
+call assert 32
 
 push 0x10/2
-push 8
-call assert
+call assert 8
 
 push 3.5*4
-push 14.0
-call assertf
+call assertf 14.0
 
 int multipliedDefault 4*3
 push multipliedDefault
-push 12
-call assert
+call assert 12
 
 int[] literalSizedBuffer 4*2
 push count(literalSizedBuffer)
-push 8
-call assert
+call assert 8
 moduleEnd
 
 module constantExpressionAssertions
@@ -102,32 +84,26 @@ module constantExpressionAssertions
 const SIZE 8
 int[] dividedBuffer SIZE/2
 push count(dividedBuffer)
-push 4
-call assert
+call assert 4
 
 int[] multipliedBuffer SIZE*2
 push count(multipliedBuffer)
-push 16
-call assert
+call assert 16
 
 const HALF SIZE/2
 push HALF
-push 4
-call assert
+call assert 4
 
 const SIGNED -1/SIZE
 push SIGNED
-push -0.125
-call assertf
+call assertf -0.125
 
 push SIZE/2
-push 4
-call assert
+call assert 4
 
 int defaultFromExpression SIZE/2
 push defaultFromExpression
-push 4
-call assert
+call assert 4
 moduleEnd
 
 module sizeAndCountExpressionAssertions
@@ -135,99 +111,81 @@ module sizeAndCountExpressionAssertions
 int16[] samples 4
 const BYTE_SIZE 123*sizeof(samples)
 push BYTE_SIZE
-push 246
-call assert
+call assert 246
 
 const SAMPLE_BYTES sizeof(samples)*2
 push SAMPLE_BYTES
-push 4
-call assert
+call assert 4
 
 const SIZE 8
 const TOTAL SIZE*sizeof(samples)
 push TOTAL
-push 16
-call assert
+call assert 16
 
 push sizeof(samples)*4
-push 8
-call assert
+call assert 8
 
 push SIZE*sizeof(samples)
-push 16
-call assert
+call assert 16
 
 push 123*sizeof(samples)
-push 246
-call assert
+call assert 246
 
 push 2*SIZE
-push 16
-call assert
+call assert 16
 
 float[] floatSamples 8
 float* ptr &floatSamples
 push count(*ptr)
-push 8
-call assert
+call assert 8
 
 int8[] smallSamples 4
 int8* smallPtr &smallSamples
 push min(*smallPtr)
-push -128
-call assert
+call assert -128
 
 int[] sizeofBuffer sizeof(samples)*2
 push count(sizeofBuffer)
-push 4
-call assert
+call assert 4
 
 int[] source 8
 int[] dest count(source)*2
 push count(dest)
-push 16
-call assert
+call assert 16
 moduleEnd
 
 module exponentExpressionAssertions
 ; Exponent expressions are supported for constants, push values, and buffer sizes.
 const WIDTH 2^16
 push WIDTH
-push 65536
-call assert
+call assert 65536
 
 const SIZE 4
 const TOTAL SIZE^3
 push TOTAL
-push 64
-call assert
+call assert 64
 
 const EXP 8
 const RESULT 2^EXP
 push RESULT
-push 256
-call assert
+call assert 256
 
 push 2^SIZE
-push 16
-call assert
+call assert 16
 
 const MEMORY_EXP 3
 int defaultFromExponent MEMORY_EXP^2
 push defaultFromExponent
-push 9
-call assert
+call assert 9
 
 const BUFFER_BASE 2
 int[] exponentialBuffer BUFFER_BASE^3
 push count(exponentialBuffer)
-push 8
-call assert
+call assert 8
 
 int32[] samples 4
 const SIZEOF_POWER sizeof(samples)^2
 push SIZEOF_POWER
-push 16
-call assert
+call assert 16
 moduleEnd
 entryEnd

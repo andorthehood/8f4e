@@ -16,8 +16,7 @@ storeBytes 5
 
 push &dest
 load8u
-push 111
-call assert
+call assert 111
 
 push &dest
 push 1
@@ -25,8 +24,7 @@ push sizeof(dest)
 mul
 add
 load8u
-push 108
-call assert
+call assert 108
 
 push &dest
 push 2
@@ -34,8 +32,7 @@ push sizeof(dest)
 mul
 add
 load8u
-push 108
-call assert
+call assert 108
 
 push &dest
 push 3
@@ -43,8 +40,7 @@ push sizeof(dest)
 mul
 add
 load8u
-push 101
-call assert
+call assert 101
 
 push &dest
 push 4
@@ -52,8 +48,7 @@ push sizeof(dest)
 mul
 add
 load8u
-push 72
-call assert
+call assert 72
 
 push &dest
 push 5
@@ -61,8 +56,7 @@ push sizeof(dest)
 mul
 add
 load8u
-push 0
-call assert
+call assert 0
 moduleEnd
 
 module storeBytesTruncationAssertions
@@ -76,8 +70,7 @@ storeBytes 2
 
 push &buf
 load8u
-push 1
-call assert
+call assert 1
 
 push &buf
 push 1
@@ -85,8 +78,7 @@ push sizeof(buf)
 mul
 add
 load8u
-push 0
-call assert
+call assert 0
 moduleEnd
 
 module storeBytesZeroCountAssertions
@@ -97,7 +89,6 @@ push &dest
 storeBytes 0
 
 push dest
-push 42
-call assert
+call assert 42
 moduleEnd
 entryEnd

@@ -1,0 +1,39 @@
+8f4e/v1
+
+; describe loop
+entry test
+module countedLoopAssertions
+; it terminates through branchIfTrue once the counter reaches the target
+int counter
+loop
+push counter
+push 10
+equal
+branchIfTrue 1
+
+push &counter
+push counter
+push 1
+add
+store
+loopEnd
+
+push counter
+call assert 10
+moduleEnd
+
+module loopCapAssertions
+; it stops an otherwise unbounded loop at the default compiler cap
+int counter
+loop
+push &counter
+push counter
+push 1
+add
+store
+loopEnd
+
+push counter
+call assert 1000
+moduleEnd
+entryEnd

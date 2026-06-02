@@ -6,8 +6,7 @@ module castToIntSaturatesOutOfRangeFloat32
 ; castToInt should saturate positive out-of-range float32 values.
 push 2147483648.0
 castToInt
-push 2147483647
-call assert
+call assert 2147483647
 moduleEnd
 
 module castToIntConvertsNaNToZero
@@ -15,8 +14,7 @@ module castToIntConvertsNaNToZero
 push -1.0
 sqrt
 castToInt
-push 0
-call assert
+call assert 0
 moduleEnd
 
 module minMaxIntAssertions
@@ -24,14 +22,12 @@ module minMaxIntAssertions
 push 10
 push -3
 min
-push -3
-call assert
+call assert -3
 
 push 10
 push -3
 max
-push 10
-call assert
+call assert 10
 moduleEnd
 
 module minMaxFloatAssertions
@@ -39,14 +35,12 @@ module minMaxFloatAssertions
 push 0.5
 push 0.7
 min
-push 0.5
-call assertf
+call assertf 0.5
 
 push 0.5
 push 0.7
 max
-push 0.7
-call assertf
+call assertf 0.7
 moduleEnd
 
 module minMaxFloat64Assertions
@@ -54,14 +48,12 @@ module minMaxFloat64Assertions
 push 1.25f64
 push 1.125f64
 min
-push 1.125f64
-call assertf64
+call assertf64 1.125f64
 
 push 1.25f64
 push 1.125f64
 max
-push 1.25f64
-call assertf64
+call assertf64 1.25f64
 moduleEnd
 
 module remainderWithNonZeroConstant
@@ -69,7 +61,6 @@ module remainderWithNonZeroConstant
 push 5
 push 2
 remainder
-push 1
-call assert
+call assert 1
 moduleEnd
 entryEnd

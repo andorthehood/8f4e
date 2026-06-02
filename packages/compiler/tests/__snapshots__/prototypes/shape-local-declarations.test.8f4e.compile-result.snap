@@ -2,8 +2,8 @@
   "functionAst": {},
   "functionOverview": {},
   "moduleAst": {
-    "float64StoreAssertions": {
-      "id": "float64StoreAssertions",
+    "boson": {
+      "id": "boson",
       "lines": [
         {
           "arguments": [
@@ -11,7 +11,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "float64StoreAssertions",
+              "value": "boson",
             },
           ],
           "instruction": "module",
@@ -22,41 +22,47 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "dest",
+              "value": "test2",
             },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "float64",
-        },
-        {
-          "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
+              "isEndAddress": false,
+              "referenceKind": "intermodular-reference",
+              "scope": "intermodule",
+              "targetMemoryId": "foo",
+              "targetModuleId": "tau",
               "type": "identifier",
-              "value": "src",
-            },
-            {
-              "isInteger": false,
-              "type": "literal",
-              "value": 1.5,
+              "value": "&tau:foo",
             },
           ],
           "hasExplicitMemoryDefault": true,
-          "instruction": "float64",
+          "instruction": "int*",
+          "referencedNamespaceIds": [
+            "tau",
+          ],
         },
         {
           "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "test1",
+            },
             {
               "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "dest",
+              "referenceKind": "intermodular-reference",
+              "scope": "intermodule",
+              "targetMemoryId": "bar",
+              "targetModuleId": "tau",
               "type": "identifier",
-              "value": "&dest",
+              "value": "&tau:bar",
             },
           ],
-          "instruction": "push",
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int*",
+          "referencedNamespaceIds": [
+            "tau",
+          ],
         },
         {
           "arguments": [
@@ -64,73 +70,36 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "src",
+              "value": "test3",
             },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "store",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "dest",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assertf64",
-            },
-            {
-              "isFloat64": true,
-              "isInteger": false,
-              "type": "literal",
-              "value": 1.5,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [
             {
               "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "dest",
+              "referenceKind": "intermodular-reference",
+              "scope": "intermodule",
+              "targetMemoryId": "he",
+              "targetModuleId": "tau",
               "type": "identifier",
-              "value": "&dest",
+              "value": "&tau:he",
             },
           ],
-          "instruction": "push",
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int*",
+          "referencedNamespaceIds": [
+            "tau",
+          ],
         },
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 8,
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "test2",
+              "type": "identifier",
+              "value": "*test2",
             },
           ],
           "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "ensureNonZero",
-        },
-        {
-          "arguments": [],
-          "instruction": "remainder",
         },
         {
           "arguments": [
@@ -143,7 +112,7 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 0,
+              "value": 1,
             },
           ],
           "instruction": "call",
@@ -151,33 +120,15 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
               "scope": "local",
-              "targetMemoryId": "src",
+              "targetMemoryId": "test1",
               "type": "identifier",
-              "value": "&src",
+              "value": "*test1",
             },
           ],
           "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 8,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "ensureNonZero",
-        },
-        {
-          "arguments": [],
-          "instruction": "remainder",
         },
         {
           "arguments": [
@@ -190,7 +141,36 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 0,
+              "value": 16,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "test3",
+              "type": "identifier",
+              "value": "*test3",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
             },
           ],
           "instruction": "call",
@@ -202,8 +182,8 @@
       ],
       "type": "module",
     },
-    "floatStoreAssertions": {
-      "id": "floatStoreAssertions",
+    "tau": {
+      "id": "tau",
       "lines": [
         {
           "arguments": [
@@ -211,7 +191,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "floatStoreAssertions",
+              "value": "tau",
             },
           ],
           "instruction": "module",
@@ -222,129 +202,12 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "dest",
-            },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "float",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "src",
-            },
-            {
-              "isInteger": false,
-              "type": "literal",
-              "value": 3.14,
-            },
-          ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "float",
-        },
-        {
-          "arguments": [
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "dest",
-              "type": "identifier",
-              "value": "&dest",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "src",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "store",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "dest",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assertf",
-            },
-            {
-              "isInteger": false,
-              "type": "literal",
-              "value": 3.14,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [],
-          "instruction": "moduleEnd",
-        },
-      ],
-      "type": "module",
-    },
-    "intStoreAssertions": {
-      "id": "intStoreAssertions",
-      "lines": [
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "intStoreAssertions",
-            },
-          ],
-          "instruction": "module",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "dest",
-            },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "int",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "src",
+              "value": "foo",
             },
             {
               "isInteger": true,
               "type": "literal",
-              "value": 42,
+              "value": 1,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -353,15 +216,19 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
+              "referenceKind": "plain",
               "scope": "local",
-              "targetMemoryId": "dest",
               "type": "identifier",
-              "value": "&dest",
+              "value": "he",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
             },
           ],
-          "instruction": "push",
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
         },
         {
           "arguments": [
@@ -369,14 +236,16 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "src",
+              "value": "bar",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "store",
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
         },
         {
           "arguments": [
@@ -384,7 +253,75 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "dest",
+              "value": "he",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bar",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 44,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bar",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bar",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "foo",
             },
           ],
           "instruction": "push",
@@ -400,7 +337,61 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 42,
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "he",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "bar",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "call",
@@ -414,84 +405,86 @@
     },
   },
   "moduleMemory": {
-    "float64StoreAssertions": {
+    "boson": {
       "internalResources": {},
       "memoryMap": {
-        "dest": {
-          "byteAddress": 24,
-          "default": 0,
-          "elementWordSize": 8,
-          "id": "dest",
-          "isFloat64": true,
-          "isInteger": false,
+        "test1": {
+          "byteAddress": 36,
+          "default": 28,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "test1",
+          "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
           "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "float64",
-          "wordAlignedAddress": 6,
-          "wordAlignedSize": 3,
+          "pointeeBaseType": "int",
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 9,
+          "wordAlignedSize": 1,
         },
-        "src": {
+        "test2": {
           "byteAddress": 32,
-          "default": 1.5,
-          "elementWordSize": 8,
+          "default": 4,
+          "elementWordSize": 4,
           "hasExplicitDefault": true,
-          "id": "src",
-          "isFloat64": true,
-          "isInteger": false,
+          "id": "test2",
+          "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
           "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "float64",
+          "pointeeBaseType": "int",
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "int*",
           "wordAlignedAddress": 8,
-          "wordAlignedSize": 2,
-        },
-      },
-    },
-    "floatStoreAssertions": {
-      "internalResources": {},
-      "memoryMap": {
-        "dest": {
-          "byteAddress": 12,
-          "default": 0,
-          "elementWordSize": 4,
-          "id": "dest",
-          "isInteger": false,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "float",
-          "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
         },
-        "src": {
-          "byteAddress": 16,
-          "default": 3.14,
+        "test3": {
+          "byteAddress": 40,
+          "default": 16,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
-          "id": "src",
-          "isInteger": false,
+          "id": "test3",
+          "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
           "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "float",
-          "wordAlignedAddress": 4,
+          "pointeeBaseType": "int",
+          "pointeeMemoryIndex": 0,
+          "pointerDepth": 1,
+          "type": "int*",
+          "wordAlignedAddress": 10,
           "wordAlignedSize": 1,
         },
       },
     },
-    "intStoreAssertions": {
+    "tau": {
       "internalResources": {},
       "memoryMap": {
-        "dest": {
-          "byteAddress": 4,
-          "default": 0,
+        "bar": {
+          "byteAddress": 28,
+          "default": 16,
           "elementWordSize": 4,
-          "id": "dest",
+          "hasExplicitDefault": true,
+          "id": "bar",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 7,
+          "wordAlignedSize": 1,
+        },
+        "foo": {
+          "byteAddress": 4,
+          "default": 1,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "foo",
           "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -501,19 +494,19 @@
           "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
         },
-        "src": {
-          "byteAddress": 8,
-          "default": 42,
+        "he": {
+          "byteAddress": 16,
+          "default": 10,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
-          "id": "src",
+          "id": "he",
           "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 2,
+          "wordAlignedAddress": 4,
           "wordAlignedSize": 1,
         },
       },
@@ -522,11 +515,10 @@
   "overview": {
     "compiledFunctions": [],
     "compiledModules": [
-      "float64StoreAssertions",
-      "floatStoreAssertions",
-      "intStoreAssertions",
+      "boson",
+      "tau",
     ],
-    "requiredMemoryBytes": 40,
+    "requiredMemoryBytes": 44,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",

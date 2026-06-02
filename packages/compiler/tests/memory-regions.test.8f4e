@@ -26,8 +26,7 @@ load
 store
 
 push result
-push 42
-call assert
+call assert 42
 moduleEnd
 
 module regionPointerReader
@@ -40,8 +39,7 @@ push *ptr
 store
 
 push result
-push 11
-call assert
+call assert 11
 moduleEnd
 
 module regionCopySource
@@ -60,8 +58,7 @@ memoryCopy 4
 
 push &copy
 load8u
-push 1
-call assert
+call assert 1
 
 push &copy
 push 1
@@ -69,8 +66,7 @@ push sizeof(copy)
 mul
 add
 load8u
-push 2
-call assert
+call assert 2
 
 push &copy
 push 2
@@ -78,8 +74,7 @@ push sizeof(copy)
 mul
 add
 load8u
-push 3
-call assert
+call assert 3
 
 push &copy
 push 3
@@ -87,8 +82,7 @@ push sizeof(copy)
 mul
 add
 load8u
-push 4
-call assert
+call assert 4
 moduleEnd
 
 module numericDefaultRegion
@@ -97,8 +91,7 @@ module numericDefaultRegion
 int value 7
 
 push value
-push 7
-call assert
+call assert 7
 moduleEnd
 
 module numericCustomRegion
@@ -107,8 +100,7 @@ module numericCustomRegion
 int pixel 9
 
 push pixel
-push 9
-call assert
+call assert 9
 moduleEnd
 
 module regionInternalResource
@@ -128,7 +120,6 @@ ifEnd int
 store
 
 push output
-push 0
-call assert
+call assert 0
 moduleEnd
 entryEnd

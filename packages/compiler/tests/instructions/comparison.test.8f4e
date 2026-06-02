@@ -7,44 +7,37 @@ module equalAssertions
 push 420
 push 420
 equal
-push 1
-call assert
+call assert 1
 
 push 420
 push -420
 equal
-push 0
-call assert
+call assert 0
 
 push 69
 push 96
 equal
-push 0
-call assert
+call assert 0
 
 push 0
 push 0
 equal
-push 1
-call assert
+call assert 1
 moduleEnd
 
 module equalToZeroAssertions
 ; equalToZero returns true only for zero.
 push 420
 equalToZero
-push 0
-call assert
+call assert 0
 
 push -69
 equalToZero
-push 0
-call assert
+call assert 0
 
 push 0
 equalToZero
-push 1
-call assert
+call assert 1
 moduleEnd
 
 module greaterThanIntAssertions
@@ -52,32 +45,27 @@ module greaterThanIntAssertions
 push 420
 push 420
 greaterThan
-push 0
-call assert
+call assert 0
 
 push 420
 push 0
 greaterThan
-push 1
-call assert
+call assert 1
 
 push 0
 push 0
 greaterThan
-push 0
-call assert
+call assert 0
 
 push 0
 push 69
 greaterThan
-push 0
-call assert
+call assert 0
 
 push 0
 push -69
 greaterThan
-push 1
-call assert
+call assert 1
 moduleEnd
 
 module greaterThanFloatAssertions
@@ -85,32 +73,27 @@ module greaterThanFloatAssertions
 push 420.1
 push 420.1
 greaterThan
-push 0
-call assert
+call assert 0
 
 push 420.1
 push 0.001
 greaterThan
-push 1
-call assert
+call assert 1
 
 push 0.001
 push 0.001
 greaterThan
-push 0
-call assert
+call assert 0
 
 push 0.001
 push 69.1
 greaterThan
-push 0
-call assert
+call assert 0
 
 push 0.001
 push -69.1
 greaterThan
-push 1
-call assert
+call assert 1
 moduleEnd
 
 module greaterOrEqualIntAssertions
@@ -118,32 +101,27 @@ module greaterOrEqualIntAssertions
 push 420
 push 420
 greaterOrEqual
-push 1
-call assert
+call assert 1
 
 push 420
 push 0
 greaterOrEqual
-push 1
-call assert
+call assert 1
 
 push 0
 push 0
 greaterOrEqual
-push 1
-call assert
+call assert 1
 
 push 0
 push 69
 greaterOrEqual
-push 0
-call assert
+call assert 0
 
 push 0
 push -69
 greaterOrEqual
-push 1
-call assert
+call assert 1
 moduleEnd
 
 module greaterOrEqualFloatAssertions
@@ -151,31 +129,26 @@ module greaterOrEqualFloatAssertions
 push 420.1
 push 420.1
 greaterOrEqual
-push 1
-call assert
+call assert 1
 
 push 420.1
 push 0.001
 greaterOrEqual
-push 1
-call assert
+call assert 1
 
 push 0.001
 push 0.001
 greaterOrEqual
-push 1
-call assert
+call assert 1
 
 push 0.001
 push 69.1
 greaterOrEqual
-push 0
-call assert
+call assert 0
 
 push 0.001
 push -69.1
 greaterOrEqual
-push 1
-call assert
+call assert 1
 moduleEnd
 entryEnd

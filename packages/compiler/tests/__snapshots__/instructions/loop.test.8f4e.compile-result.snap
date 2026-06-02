@@ -1,7 +1,9 @@
 {
-  "functionAst": {
-    "test": {
-      "id": "test",
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "countedLoopAssertions": {
+      "id": "countedLoopAssertions",
       "lines": [
         {
           "arguments": [
@@ -9,29 +11,25 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "test",
+              "value": "countedLoopAssertions",
             },
           ],
-          "instruction": "function",
-        },
-        {
-          "arguments": [],
-          "instruction": "#export",
-          "isBlockPrologue": true,
-        },
-        {
-          "arguments": [],
-          "instruction": "#impure",
-          "isBlockPrologue": true,
+          "instruction": "module",
         },
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 3,
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "counter",
             },
           ],
+          "hasExplicitMemoryDefault": false,
+          "instruction": "int",
+        },
+        {
+          "arguments": [],
           "instruction": "loop",
         },
         {
@@ -40,10 +38,76 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "main",
+              "value": "counter",
             },
           ],
-          "instruction": "call",
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "branchIfTrue",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "counter",
+              "type": "identifier",
+              "value": "&counter",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "counter",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [],
+          "instruction": "store",
         },
         {
           "arguments": [],
@@ -52,20 +116,13 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "intermodular-reference",
-              "scope": "intermodule",
-              "targetMemoryId": "counter",
-              "targetModuleId": "activeEntryModule",
+              "referenceKind": "plain",
+              "scope": "local",
               "type": "identifier",
-              "value": "&activeEntryModule:counter",
+              "value": "counter",
             },
           ],
           "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "load",
         },
         {
           "arguments": [
@@ -78,136 +135,10 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 3,
+              "value": 10,
             },
           ],
           "instruction": "call",
-        },
-        {
-          "arguments": [
-            {
-              "isEndAddress": false,
-              "referenceKind": "intermodular-reference",
-              "scope": "intermodule",
-              "targetMemoryId": "counter",
-              "targetModuleId": "skippedEntryModule",
-              "type": "identifier",
-              "value": "&skippedEntryModule:counter",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "load",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [],
-          "instruction": "functionEnd",
-        },
-      ],
-      "type": "function",
-    },
-  },
-  "functionOverview": {
-    "test": {
-      "exportName": "test",
-      "id": "test",
-      "signature": {
-        "parameters": [],
-        "returns": [],
-      },
-    },
-  },
-  "moduleAst": {
-    "activeEntryModule": {
-      "id": "activeEntryModule",
-      "lines": [
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "activeEntryModule",
-            },
-          ],
-          "instruction": "module",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "counter",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
-            },
-          ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "int",
-        },
-        {
-          "arguments": [
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "counter",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "add",
-        },
-        {
-          "arguments": [],
-          "instruction": "store",
         },
         {
           "arguments": [],
@@ -216,8 +147,8 @@
       ],
       "type": "module",
     },
-    "skippedEntryModule": {
-      "id": "skippedEntryModule",
+    "loopCapAssertions": {
+      "id": "loopCapAssertions",
       "lines": [
         {
           "arguments": [
@@ -225,15 +156,10 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "skippedEntryModule",
+              "value": "loopCapAssertions",
             },
           ],
           "instruction": "module",
-        },
-        {
-          "arguments": [],
-          "instruction": "#skipExecution",
-          "isBlockPrologue": true,
         },
         {
           "arguments": [
@@ -243,14 +169,13 @@
               "type": "identifier",
               "value": "counter",
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
-            },
           ],
-          "hasExplicitMemoryDefault": true,
+          "hasExplicitMemoryDefault": false,
           "instruction": "int",
+        },
+        {
+          "arguments": [],
+          "instruction": "loop",
         },
         {
           "arguments": [
@@ -293,6 +218,37 @@
         {
           "arguments": [],
           "instruction": "store",
+        },
+        {
+          "arguments": [],
+          "instruction": "loopEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "counter",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1000,
+            },
+          ],
+          "instruction": "call",
         },
         {
           "arguments": [],
@@ -303,14 +259,13 @@
     },
   },
   "moduleMemory": {
-    "activeEntryModule": {
+    "countedLoopAssertions": {
       "internalResources": {},
       "memoryMap": {
         "counter": {
           "byteAddress": 4,
           "default": 0,
           "elementWordSize": 4,
-          "hasExplicitDefault": true,
           "id": "counter",
           "isInteger": true,
           "isUnsigned": false,
@@ -323,14 +278,13 @@
         },
       },
     },
-    "skippedEntryModule": {
+    "loopCapAssertions": {
       "internalResources": {},
       "memoryMap": {
         "counter": {
           "byteAddress": 8,
           "default": 0,
           "elementWordSize": 4,
-          "hasExplicitDefault": true,
           "id": "counter",
           "isInteger": true,
           "isUnsigned": false,
@@ -345,12 +299,10 @@
     },
   },
   "overview": {
-    "compiledFunctions": [
-      "test",
-    ],
+    "compiledFunctions": [],
     "compiledModules": [
-      "activeEntryModule",
-      "skippedEntryModule",
+      "countedLoopAssertions",
+      "loopCapAssertions",
     ],
     "requiredMemoryBytes": 12,
     "requiredMemoryBytesByRegion": {},

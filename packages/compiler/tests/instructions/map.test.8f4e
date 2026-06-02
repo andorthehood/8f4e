@@ -15,8 +15,7 @@ map 1 100
 map 2 200
 map 3 300
 mapEnd int
-push 100
-call assert
+call assert 100
 
 push &input
 push 2
@@ -27,8 +26,7 @@ map 1 100
 map 2 200
 map 3 300
 mapEnd int
-push 200
-call assert
+call assert 200
 
 push &input
 push 3
@@ -39,8 +37,7 @@ map 1 100
 map 2 200
 map 3 300
 mapEnd int
-push 300
-call assert
+call assert 300
 
 push &input
 push 99
@@ -51,8 +48,7 @@ map 1 100
 map 2 200
 map 3 300
 mapEnd int
-push 0
-call assert
+call assert 0
 moduleEnd
 
 module mapCharLiteralAssertions
@@ -66,8 +62,7 @@ push input
 mapBegin int
 map "A" "B"
 mapEnd int
-push 66
-call assert
+call assert 66
 
 push &input
 push 66
@@ -76,8 +71,7 @@ push input
 mapBegin int
 map "A" "B"
 mapEnd int
-push 0
-call assert
+call assert 0
 moduleEnd
 
 module mapDefaultAssertions
@@ -92,8 +86,7 @@ mapBegin int
 map 1 10
 default 999
 mapEnd int
-push 10
-call assert
+call assert 10
 
 push &input
 push 0
@@ -103,8 +96,7 @@ mapBegin int
 map 1 10
 default 999
 mapEnd int
-push 999
-call assert
+call assert 999
 
 push &input
 push 42
@@ -114,8 +106,7 @@ mapBegin int
 map 1 10
 default 999
 mapEnd int
-push 999
-call assert
+call assert 999
 moduleEnd
 
 module mapIntFloatAssertions
@@ -130,8 +121,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-push 0.5
-call assertf
+call assertf 0.5
 
 push &input
 push 1
@@ -141,8 +131,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-push 1.5
-call assertf
+call assertf 1.5
 
 push &input
 push 2
@@ -152,8 +141,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-push 0.0
-call assertf
+call assertf 0.0
 moduleEnd
 
 module mapFloatFloatAssertions
@@ -168,8 +156,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-push 10.0
-call assertf
+call assertf 10.0
 
 push &input
 push 1.5
@@ -179,8 +166,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-push 20.0
-call assertf
+call assertf 20.0
 
 push &input
 push 0.0
@@ -190,8 +176,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-push 0.0
-call assertf
+call assertf 0.0
 moduleEnd
 
 module mapImplicitDefaultAssertions
@@ -205,8 +190,7 @@ push input
 mapBegin int
 map 7 42
 mapEnd int
-push 42
-call assert
+call assert 42
 
 push &input
 push 0
@@ -215,8 +199,7 @@ push input
 mapBegin int
 map 7 42
 mapEnd int
-push 0
-call assert
+call assert 0
 moduleEnd
 
 module mapImplicitKeyAssertions
@@ -232,8 +215,7 @@ map 100
 map 200
 map 300
 mapEnd int
-push 100
-call assert
+call assert 100
 
 push &input
 push 2
@@ -244,8 +226,7 @@ map 100
 map 200
 map 300
 mapEnd int
-push 300
-call assert
+call assert 300
 
 push &input
 push 9
@@ -256,8 +237,7 @@ map 100
 map 200
 map 300
 mapEnd int
-push 0
-call assert
+call assert 0
 moduleEnd
 
 module mapImplicitKeyMixedRowsAssertions
@@ -273,8 +253,7 @@ map 10
 map 9 99
 map 30
 mapEnd int
-push 30
-call assert
+call assert 30
 
 push &input
 push 9
@@ -285,8 +264,7 @@ map 10
 map 9 99
 map 30
 mapEnd int
-push 99
-call assert
+call assert 99
 moduleEnd
 
 module mapImplicitFloatKeyAssertions
@@ -301,8 +279,7 @@ mapBegin float
 map 0.5
 map 1.5
 mapEnd float
-push 1.5
-call assertf
+call assertf 1.5
 moduleEnd
 
 module mapFirstMatchAssertions
@@ -313,8 +290,7 @@ mapBegin int
 map 1 10
 map 1 20
 mapEnd int
-push 10
-call assert
+call assert 10
 moduleEnd
 
 module mapZeroRowsAssertions
@@ -323,14 +299,12 @@ int input 5
 push input
 mapBegin int
 mapEnd int
-push 0
-call assert
+call assert 0
 
 push input
 mapBegin int
 default 42
 mapEnd int
-push 42
-call assert
+call assert 42
 moduleEnd
 entryEnd

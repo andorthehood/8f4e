@@ -43,20 +43,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
             },
           ],
           "instruction": "call",
@@ -88,20 +83,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 2,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
             },
           ],
           "instruction": "call",
@@ -154,20 +144,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
             },
           ],
           "instruction": "call",
@@ -199,20 +184,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 7,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 7,
             },
           ],
           "instruction": "call",
@@ -265,20 +245,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 2,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
             },
           ],
           "instruction": "call",
@@ -310,20 +285,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "call",
@@ -355,20 +325,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 24,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 24,
             },
           ],
           "instruction": "call",
@@ -421,20 +386,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
             },
           ],
           "instruction": "call",
@@ -466,20 +426,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 2,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
             },
           ],
           "instruction": "call",
@@ -511,20 +466,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
             },
           ],
           "instruction": "call",
@@ -577,20 +527,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
             },
           ],
           "instruction": "call",
@@ -622,20 +567,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 5,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 5,
             },
           ],
           "instruction": "call",

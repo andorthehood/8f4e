@@ -5,17 +5,14 @@ entry test
 module pushLocalAssertions
 ; Function locals should round-trip through localSet and push.
 call readIntLocal
-push 7
-call assert
+call assert 7
 
 call readFloatLocal
-push 1.5
-call assertf
+call assertf 1.5
 
 push 2.0f64
 call doubleFloat64
-push 4.0f64
-call assertf64
+call assertf64 4.0f64
 moduleEnd
 
 module localShadowMemoryAssertions
@@ -23,8 +20,7 @@ module localShadowMemoryAssertions
 int value 42
 push 7
 call shadowValue
-push 7
-call assert
+call assert 7
 moduleEnd
 
 module pointerDereferenceDepthAssertions
@@ -34,12 +30,10 @@ float* ptr &value
 float** pptr &ptr
 
 push *pptr
-push &value
-call assert
+call assert &value
 
 push **pptr
-push 1.5
-call assertf
+call assertf 1.5
 moduleEnd
 entryEnd
 

@@ -7,8 +7,7 @@ module floatMulAssertions
 push 4.001
 push 0.5
 mul
-push 2.0
-call assertf
+call assertf 2.0
 moduleEnd
 
 module floatDivAssertions
@@ -17,117 +16,97 @@ push 420.001
 push 69.001
 ensureNonZero
 div
-push 6.0869
-call assertf
+call assertf 6.0869
 moduleEnd
 
 module floatAbsAssertions
 ; abs returns positive float magnitudes.
 push 1.1
 abs
-push 1.1
-call assertf
+call assertf 1.1
 
 push -1.1
 abs
-push 1.1
-call assertf
+call assertf 1.1
 
 push -69.1
 abs
-push 69.1
-call assertf
+call assertf 69.1
 
 push 420.1
 abs
-push 420.1
-call assertf
+call assertf 420.1
 moduleEnd
 
 module castToFloatAssertions
 ; castToFloat should preserve integer magnitude when converting to float.
 push 1
 castToFloat
-push 1.0
-call assertf
+call assertf 1.0
 
 push -69
 castToFloat
-push -69.0
-call assertf
+call assertf -69.0
 
 push 0
 castToFloat
-push 0.0
-call assertf
+call assertf 0.0
 
 push 420
 castToFloat
-push 420.0
-call assertf
+call assertf 420.0
 moduleEnd
 
 module castToIntAssertions
 ; castToInt truncates toward zero.
 push 1.1
 castToInt
-push 1
-call assert
+call assert 1
 
 push -69.69
 castToInt
-push -69
-call assert
+call assert -69
 
 push 0.001
 castToInt
-push 0
-call assert
+call assert 0
 
 push 420.99
 castToInt
-push 420
-call assert
+call assert 420
 moduleEnd
 
 module roundAssertions
 ; round follows the compiler's current half-down behavior.
 push 4.1
 round
-push 4.0
-call assertf
+call assertf 4.0
 
 push 4.5
 round
-push 4.0
-call assertf
+call assertf 4.0
 
 push 4.51
 round
-push 5.0
-call assertf
+call assertf 5.0
 
 push 4.6
 round
-push 5.0
-call assertf
+call assertf 5.0
 
 push 4.9
 round
-push 5.0
-call assertf
+call assertf 5.0
 moduleEnd
 
 module sqrtAssertions
 ; sqrt returns approximate float square roots.
 push 4.001
 sqrt
-push 2.0
-call assertf
+call assertf 2.0
 
 push 16.001
 sqrt
-push 4.0
-call assertf
+call assertf 4.0
 moduleEnd
 entryEnd
