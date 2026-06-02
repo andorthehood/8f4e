@@ -1,8 +1,8 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync, statSync } from 'node:fs';
 import { delimiter } from 'node:path';
 
-const vsixPath = 'dist/8f4e-vscode-extension-0.1.0.vsix';
+const vsixPath = resolveVsixPath();
 const cliPath = findVsCodeCli();
 
 if (!cliPath) {
@@ -24,6 +24,25 @@ if ((result.status ?? 1) !== 0) {
 }
 
 process.exit(0);
+
+function resolveVsixPath() {
+	if (process.env.VSIX_PATH) {
+		return process.env.VSIX_PATH;
+	}
+
+	const distPath = 'dist';
+	const vsixFiles = readdirSync(distPath)
+		.filter(fileName => fileName.endsWith('.vsix'))
+		.map(fileName => `${distPath}/${fileName}`)
+		.sort((left, right) => statSync(right).mtimeMs - statSync(left).mtimeMs);
+
+	if (vsixFiles.length === 0) {
+		console.error('No VSIX package found in dist/. Run the package target before installing.');
+		process.exit(1);
+	}
+
+	return vsixFiles[0];
+}
 
 function findVsCodeCli() {
 	const candidates = [
