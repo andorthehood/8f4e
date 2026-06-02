@@ -135,12 +135,12 @@ module notes
 ; pointer logic.
 moduleEnd
 entryEnd
+
 constants env
 ; @pos -52 1
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/19/2026, 1:30:23 PM
 
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
