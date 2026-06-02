@@ -33,11 +33,9 @@ loopEnd
 
 push &activeEntryModule:counter
 load
-push 3
-call assert
+call assert 3
 
 push &skippedEntryModule:counter
 load
-push 0
-call assert
+call assert 0
 functionEnd

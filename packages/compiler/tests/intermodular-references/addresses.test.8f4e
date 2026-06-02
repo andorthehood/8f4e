@@ -15,12 +15,10 @@ int* bufferStart &addressSource:buffer
 int* moduleStart &addressSource:
 
 push *bufferStart
-push 11
-call assert
+call assert 11
 
 push *moduleStart
-push 11
-call assert
+call assert 11
 
 ; End-address references should point at the final word-aligned element.
 int* bufferEnd addressSource:buffer&
@@ -28,16 +26,13 @@ int* scalarEnd addressSource:scalar&
 int* moduleEnd addressSource:&
 
 push *bufferEnd
-push 33
-call assert
+call assert 33
 
 push *scalarEnd
-push 42
-call assert
+call assert 42
 
 push *moduleEnd
-push 99
-call assert
+call assert 99
 moduleEnd
 
 module outOfOrderAddressAssertions
@@ -46,12 +41,10 @@ int* start &lateAddressSource:buffer
 int* end lateAddressSource:buffer&
 
 push *start
-push 5
-call assert
+call assert 5
 
 push *end
-push 8
-call assert
+call assert 8
 moduleEnd
 
 module lateAddressSource
@@ -75,20 +68,16 @@ int* third &nthAddressSource:2
 push first
 push base
 equal
-push 1
-call assert
+call assert 1
 
 push *first
-push 10
-call assert
+call assert 10
 
 push *second
-push 20
-call assert
+call assert 20
 
 push *third
-push 30
-call assert
+call assert 30
 moduleEnd
 
 module nthArraySource
@@ -101,8 +90,7 @@ module nthArrayAssertions
 int* scalar &nthArraySource:1
 
 push *scalar
-push 60
-call assert
+call assert 60
 moduleEnd
 
 module sameModuleAddressAssertions
@@ -112,12 +100,10 @@ int* startPtr &buffer
 int* endPtr buffer&
 
 push *startPtr
-push 1
-call assert
+call assert 1
 
 push *endPtr
-push 5
-call assert
+call assert 5
 moduleEnd
 
 module currentModuleShorthandAssertions
@@ -130,12 +116,10 @@ int* moduleEndPtr this&
 int* second &this:1
 
 push *moduleStart
-push 10
-call assert
+call assert 10
 
 push *second
-push 20
-call assert
+call assert 20
 
 push moduleEndPtr
 push &moduleEndPtr

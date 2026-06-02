@@ -1,0 +1,18 @@
+8f4e/v1
+
+; describe branch
+entry test
+module branchAssertions
+; it exits the current block before later instructions run
+int output
+block
+branch 0
+push &output
+push 1
+store
+blockEnd
+
+push output
+call assert 0
+moduleEnd
+entryEnd

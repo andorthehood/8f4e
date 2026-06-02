@@ -1,0 +1,110 @@
+8f4e/v1
+
+; describe if
+entry test
+module ifIntAssertions
+; it produces integer values from both branches
+int truthyInput 1
+push truthyInput
+if
+push 1
+else
+push -1
+ifEnd int
+call assert 1
+
+int falsyInput 0
+push falsyInput
+if
+push 1
+else
+push -1
+ifEnd int
+call assert -1
+moduleEnd
+
+module ifFloatAssertions
+; it produces float values from both branches
+int truthyInput 1
+push truthyInput
+if
+push 1.1
+else
+push -1.1
+ifEnd float
+call assertf 1.1
+
+int falsyInput 0
+push falsyInput
+if
+push 1.1
+else
+push -1.1
+ifEnd float
+call assertf -1.1
+moduleEnd
+
+module ifVoidAssertions
+; it performs side effects in either branch for void blocks
+int truthyInput 1
+int truthyOutput
+push truthyInput
+if
+push &truthyOutput
+push 1
+store
+else
+push &truthyOutput
+push -1
+store
+ifEnd
+push truthyOutput
+call assert 1
+
+int falsyInput 0
+int falsyOutput
+push falsyInput
+if
+push &falsyOutput
+push 1
+store
+else
+push &falsyOutput
+push -1
+store
+ifEnd
+push falsyOutput
+call assert -1
+moduleEnd
+
+module multiResultIfAssertions
+; it preserves multiple produced values in order
+push 1
+if
+push 10
+push 20
+push 3
+else
+push 30
+push 40
+push 5
+ifEnd int int int
+call packTriple
+call assert 10203
+moduleEnd
+entryEnd
+
+function packTriple
+param int left
+param int right
+param int last
+push left
+push 1000
+mul
+push right
+push 10
+mul
+add
+push last
+add
+functionEnd int

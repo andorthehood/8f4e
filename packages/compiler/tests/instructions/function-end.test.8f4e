@@ -5,36 +5,31 @@ entry test
 module functionEndIntReturn
 ; functionEnd int should return an integer stack value to the caller.
 call getFunctionEndFortyTwo
-push 42
-call assert
+call assert 42
 moduleEnd
 
 module functionEndFloatReturn
 ; functionEnd float should return a float stack value to the caller.
 call getFunctionEndPi
-push 3.14
-call assertf
+call assertf 3.14
 moduleEnd
 
 module functionEndStackValidationRuntimeResult
 ; functionEnd should accept a computed stack value when the result type matches.
 call addTwoForFunctionEnd
-push 8
-call assert
+call assert 8
 moduleEnd
 
 module functionEndFloat64Return
 ; functionEnd float64 should return a double-precision stack value to the caller.
 call getFunctionEndDouble
-push 3.14f64
-call assertf64
+call assertf64 3.14f64
 moduleEnd
 
 module functionEndFloat64SignatureSnapshot
 ; The compile-result snapshot records the float64 return signature for this function.
 call getDoubleForSignatureSnapshot
-push 3.14f64
-call assertf64
+call assertf64 3.14f64
 moduleEnd
 entryEnd
 
