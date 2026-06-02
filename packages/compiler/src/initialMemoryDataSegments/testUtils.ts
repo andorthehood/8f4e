@@ -1,5 +1,5 @@
-import type { CompiledModule, DataStructure, InternalResource } from '@8f4e/compiler-spec';
-import { MemoryTypes } from '@8f4e/compiler-spec';
+import type { CompiledModule, DataStructure, InternalResource, ModuleAST } from '@8f4e/compiler-spec';
+import { ArgumentType, MemoryTypes } from '@8f4e/compiler-spec';
 
 export function createMemory(
 	overrides: Partial<DataStructure> & Pick<DataStructure, 'id' | 'byteAddress'>
@@ -36,6 +36,26 @@ export function createInternalResource(
 
 export function createCompiledModule(overrides: Partial<CompiledModule>): CompiledModule {
 	const byteAddress = overrides.byteAddress ?? 0;
+	const ast: ModuleAST = {
+		type: 'module',
+		id: 'test',
+		lines: [],
+		moduleLine: {
+			lineNumber: 0,
+			instruction: 'module',
+			arguments: [
+				{
+					type: ArgumentType.IDENTIFIER,
+					value: 'test',
+					referenceKind: 'plain',
+					scope: 'local',
+				},
+			],
+		},
+		containsShape: false,
+		shapeLines: [],
+		memoryDeclarationLines: [],
+	};
 
 	return {
 		index: 0,
@@ -47,6 +67,7 @@ export function createCompiledModule(overrides: Partial<CompiledModule>): Compil
 		wordAlignedAddress: byteAddress / 4,
 		memoryMap: {},
 		wordAlignedSize: 0,
+		ast,
 		...overrides,
 	};
 }
