@@ -76,6 +76,3 @@ jobs:
           fi
 
           git push origin HEAD:main --follow-tags --no-verify --atomic
-
-      - name: Trigger Cloudflare Pages deploy
-        run: curl --fail-with-body --silent --show-error -X POST "${{ secrets.CLOUDFLARE_PAGES_DEPLOY_HOOK_URL }}"
