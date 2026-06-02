@@ -131,7 +131,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "; @favorite",
         "; Auto-generated environment constants",
         "; Changes will be overwritten",
-        "; Last updated: 2/19/2026, 1:23:48 PM",
         "",
         "const SAMPLE_RATE 48000",
         "const AUDIO_BUFFER_SIZE 128",
@@ -248,6 +247,353 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
   ],
   "compiledModules": {
     "audioout": {
+      "ast": {
+        "containsShape": false,
+        "id": "audioout",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "audioout",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "env",
+              },
+            ],
+            "instruction": "use",
+            "lineNumber": 3,
+            "referencedNamespaceIds": [
+              "env",
+            ],
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "in",
+              },
+              {
+                "isEndAddress": false,
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetMemoryId": "out",
+                "targetModuleId": "phaseAccumulator",
+                "type": "identifier",
+                "value": "&phaseAccumulator:out",
+              },
+            ],
+            "hasExplicitMemoryDefault": true,
+            "instruction": "float*",
+            "lineNumber": 5,
+            "referencedNamespaceIds": [
+              "phaseAccumulator",
+            ],
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "buffer",
+              },
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "AUDIO_BUFFER_SIZE",
+              },
+            ],
+            "hasExplicitMemoryDefault": false,
+            "instruction": "float[]",
+            "lineNumber": 8,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "pointer",
+              },
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "&buffer",
+              },
+            ],
+            "hasExplicitMemoryDefault": true,
+            "instruction": "int",
+            "lineNumber": 9,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "pointer",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 15,
+          },
+          {
+            "arguments": [
+              {
+                "dereferenceDepth": 1,
+                "referenceKind": "memory-pointer",
+                "scope": "local",
+                "targetMemoryId": "in",
+                "type": "identifier",
+                "value": "*in",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 16,
+          },
+          {
+            "arguments": [],
+            "instruction": "store",
+            "lineNumber": 17,
+          },
+          {
+            "arguments": [
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "pointer",
+                "type": "identifier",
+                "value": "&pointer",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 22,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "pointer",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 23,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "element-word-size",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "sizeof(buffer)",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 24,
+          },
+          {
+            "arguments": [],
+            "instruction": "add",
+            "lineNumber": 25,
+          },
+          {
+            "arguments": [],
+            "instruction": "store",
+            "lineNumber": 26,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "pointer",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 31,
+          },
+          {
+            "arguments": [
+              {
+                "isEndAddress": true,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "buffer&",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 32,
+          },
+          {
+            "arguments": [],
+            "instruction": "greaterThan",
+            "lineNumber": 33,
+          },
+          {
+            "arguments": [],
+            "ifBlock": {
+              "hasElse": false,
+              "matchingIfEndIndex": 20,
+              "resultTypes": [],
+            },
+            "instruction": "if",
+            "lineNumber": 34,
+          },
+          {
+            "arguments": [
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "pointer",
+                "type": "identifier",
+                "value": "&pointer",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 35,
+          },
+          {
+            "arguments": [
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "&buffer",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 36,
+          },
+          {
+            "arguments": [],
+            "instruction": "store",
+            "lineNumber": 37,
+          },
+          {
+            "arguments": [],
+            "ifEndBlock": {
+              "matchingIfIndex": 16,
+              "resultTypes": [],
+            },
+            "instruction": "ifEnd",
+            "lineNumber": 38,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 40,
+          },
+        ],
+        "memoryDeclarationLines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "in",
+              },
+              {
+                "isEndAddress": false,
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetMemoryId": "out",
+                "targetModuleId": "phaseAccumulator",
+                "type": "identifier",
+                "value": "&phaseAccumulator:out",
+              },
+            ],
+            "hasExplicitMemoryDefault": true,
+            "instruction": "float*",
+            "lineNumber": 5,
+            "referencedNamespaceIds": [
+              "phaseAccumulator",
+            ],
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "buffer",
+              },
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "AUDIO_BUFFER_SIZE",
+              },
+            ],
+            "hasExplicitMemoryDefault": false,
+            "instruction": "float[]",
+            "lineNumber": 8,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "pointer",
+              },
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "&buffer",
+              },
+            ],
+            "hasExplicitMemoryDefault": true,
+            "instruction": "int",
+            "lineNumber": 9,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "audioout",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "shapeLines": [],
+        "type": "module",
+      },
       "byteAddress": 20,
       "cycleFunction": [
         87,
@@ -398,6 +744,44 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "wordAlignedSize": 130,
     },
     "notes": {
+      "ast": {
+        "containsShape": false,
+        "id": "notes",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "notes",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 8,
+          },
+        ],
+        "memoryDeclarationLines": [],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "notes",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "shapeLines": [],
+        "type": "module",
+      },
       "byteAddress": 540,
       "cycleFunction": [
         2,
@@ -415,6 +799,421 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "wordAlignedSize": 0,
     },
     "phaseAccumulator": {
+      "ast": {
+        "containsShape": false,
+        "id": "phaseAccumulator",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "phaseAccumulator",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "env",
+              },
+            ],
+            "instruction": "use",
+            "lineNumber": 2,
+            "referencedNamespaceIds": [
+              "env",
+            ],
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "defaultFreq",
+              },
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 440,
+              },
+            ],
+            "hasExplicitMemoryDefault": true,
+            "instruction": "float",
+            "lineNumber": 4,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "frequency",
+              },
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "defaultFreq",
+                "type": "identifier",
+                "value": "&defaultFreq",
+              },
+            ],
+            "hasExplicitMemoryDefault": true,
+            "instruction": "float*",
+            "lineNumber": 5,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "phase",
+              },
+            ],
+            "hasExplicitMemoryDefault": false,
+            "instruction": "float",
+            "lineNumber": 6,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "out",
+              },
+            ],
+            "hasExplicitMemoryDefault": false,
+            "instruction": "float",
+            "lineNumber": 7,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "math",
+              },
+            ],
+            "instruction": "use",
+            "lineNumber": 9,
+            "referencedNamespaceIds": [
+              "math",
+            ],
+          },
+          {
+            "arguments": [
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "phase",
+                "type": "identifier",
+                "value": "&phase",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 13,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "phase",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 14,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "TAU",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 15,
+          },
+          {
+            "arguments": [
+              {
+                "dereferenceDepth": 1,
+                "referenceKind": "memory-pointer",
+                "scope": "local",
+                "targetMemoryId": "frequency",
+                "type": "identifier",
+                "value": "*frequency",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 16,
+          },
+          {
+            "arguments": [],
+            "instruction": "mul",
+            "lineNumber": 17,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SAMPLE_RATE",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 18,
+          },
+          {
+            "arguments": [],
+            "instruction": "castToFloat",
+            "lineNumber": 19,
+          },
+          {
+            "arguments": [],
+            "instruction": "ensureNonZero",
+            "lineNumber": 20,
+          },
+          {
+            "arguments": [],
+            "instruction": "div",
+            "lineNumber": 21,
+          },
+          {
+            "arguments": [],
+            "instruction": "add",
+            "lineNumber": 22,
+          },
+          {
+            "arguments": [],
+            "instruction": "store",
+            "lineNumber": 23,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "phase",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 26,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "PI",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 27,
+          },
+          {
+            "arguments": [],
+            "instruction": "greaterThan",
+            "lineNumber": 28,
+          },
+          {
+            "arguments": [],
+            "ifBlock": {
+              "hasElse": false,
+              "matchingIfEndIndex": 25,
+              "resultTypes": [],
+            },
+            "instruction": "if",
+            "lineNumber": 29,
+          },
+          {
+            "arguments": [
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "phase",
+                "type": "identifier",
+                "value": "&phase",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 30,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "NEG_PI",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 31,
+          },
+          {
+            "arguments": [],
+            "instruction": "store",
+            "lineNumber": 32,
+          },
+          {
+            "arguments": [],
+            "ifEndBlock": {
+              "matchingIfIndex": 21,
+              "resultTypes": [],
+            },
+            "instruction": "ifEnd",
+            "lineNumber": 33,
+          },
+          {
+            "arguments": [
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "out",
+                "type": "identifier",
+                "value": "&out",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 35,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "phase",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 36,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "sine",
+              },
+            ],
+            "instruction": "call",
+            "lineNumber": 39,
+          },
+          {
+            "arguments": [],
+            "instruction": "store",
+            "lineNumber": 40,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 42,
+          },
+        ],
+        "memoryDeclarationLines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "defaultFreq",
+              },
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 440,
+              },
+            ],
+            "hasExplicitMemoryDefault": true,
+            "instruction": "float",
+            "lineNumber": 4,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "frequency",
+              },
+              {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "defaultFreq",
+                "type": "identifier",
+                "value": "&defaultFreq",
+              },
+            ],
+            "hasExplicitMemoryDefault": true,
+            "instruction": "float*",
+            "lineNumber": 5,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "phase",
+              },
+            ],
+            "hasExplicitMemoryDefault": false,
+            "instruction": "float",
+            "lineNumber": 6,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "out",
+              },
+            ],
+            "hasExplicitMemoryDefault": false,
+            "instruction": "float",
+            "lineNumber": 7,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "phaseAccumulator",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "shapeLines": [],
+        "type": "module",
+      },
       "byteAddress": 4,
       "cycleFunction": [
         93,
@@ -586,6 +1385,44 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "wordAlignedSize": 4,
     },
     "projectConfig": {
+      "ast": {
+        "containsShape": false,
+        "id": "projectConfig",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "projectConfig",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 7,
+          },
+        ],
+        "memoryDeclarationLines": [],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "projectConfig",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "shapeLines": [],
+        "type": "module",
+      },
       "byteAddress": 4,
       "cycleFunction": [
         2,
