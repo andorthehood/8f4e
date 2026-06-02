@@ -566,6 +566,13 @@ function parseCompilerSource(code: string[]): ParsedCompilerSource {
 			currentSourceBlockPrologue.isOpen = false;
 		}
 
+		if (currentSourceBlockPrologue?.instruction === 'function' && isMemoryDeclarationLine(parsedLine)) {
+			throw new SyntaxRulesError(SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, undefined, {
+				lineNumber,
+				instruction: parsedLine.instruction,
+			});
+		}
+
 		ast.push(parsedLine);
 		if (!astBuilder) {
 			const candidateBuilder = createSourceBlockASTBuilder(parsedLine);
