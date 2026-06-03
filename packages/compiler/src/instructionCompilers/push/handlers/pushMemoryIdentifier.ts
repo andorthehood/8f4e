@@ -6,9 +6,9 @@ import { loadOpcode, resolveMemoryValueKind } from '../shared';
 /**
  * Emits bytecode for pushing a resolved memory value by identifier.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export default function pushMemoryIdentifier(line: ResolvedMemoryPushLine, context: CodegenContext): CodegenContext {
 	const { memoryItem } = line.resolvedTarget;

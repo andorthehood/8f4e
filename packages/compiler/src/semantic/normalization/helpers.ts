@@ -14,7 +14,7 @@ import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
 /**
  * Returns whether namespace discovery has populated any module or constants namespaces.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @returns Whether the check succeeds.
  */
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
@@ -29,7 +29,7 @@ function getTargetModuleNamespace(context: CompilationContext, targetModuleId: s
 /**
  * Returns whether an identifier reference kind targets another namespace.
  *
- * @param referenceKind - referenceKind value used by this operation.
+ * @param referenceKind - reference kind value to use.
  * @returns Whether the check succeeds.
  */
 export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolean {
@@ -49,9 +49,10 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
  * It does not evaluate the query value itself during namespace discovery; numeric resolution
  * of sizeof/count/max/min forms is handled by tryResolveCompileTimeArgument.
  *
- * @param identifier - identifier value used by this operation.
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param identifier - identifier value to use.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export function validateIntermoduleAddressReference(
 	identifier: ArgumentIdentifier,
@@ -110,8 +111,8 @@ export function validateIntermoduleAddressReference(
  * Attempts to fold one argument to a normalized literal, leaving unresolved arguments unchanged.
  *
  * @param argument - Argument whose resolved value or metadata should be used.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export function normalizeArgument(
 	argument: Argument,
@@ -146,8 +147,8 @@ export function normalizeArgument(
  * Returns true if the argument was deferred, false if it should continue processing.
  *
  * @param argument - Argument whose resolved value or metadata should be used.
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
  * @returns Whether the check succeeds.
  */
 export function validateOrDeferCompileTimeExpression(
@@ -176,8 +177,8 @@ export function validateOrDeferCompileTimeExpression(
  * Returns true if the argument was deferred, false if processing should continue.
  *
  * @param argument - Argument whose resolved value or metadata should be used.
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
  * @returns Whether the check succeeds.
  */
 export function validateOrDeferUnresolvedIdentifier(
@@ -200,10 +201,10 @@ export function validateOrDeferUnresolvedIdentifier(
  * are responsible for invoking validateOrDefer* helpers when that behavior
  * is required.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
  * @param indexes - Argument indexes that should be normalized.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function normalizeArgumentsAtIndexes<TLine extends CompilerASTLine>(
 	line: TLine,
@@ -230,10 +231,10 @@ export function normalizeArgumentsAtIndexes<TLine extends CompilerASTLine>(
  * Normalizes arguments at the given indexes, then validates any remaining unresolved
  * compile-time expressions or identifiers as either deferrable namespace references or errors.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
  * @param indexes - Argument indexes that should be normalized.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function normalizeAndValidateResolvableArgs<TLine extends CompilerASTLine>(
 	line: TLine,

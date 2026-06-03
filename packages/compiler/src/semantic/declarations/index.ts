@@ -47,8 +47,8 @@ export const memoryDeclarationInstructions = new Set<MemoryDeclarationInstructio
 /**
  * Returns whether an instruction name is a memory declaration instruction.
  *
- * @param instruction - instruction value used by this operation.
- * @returns The result of the operation.
+ * @param instruction - instruction value to use.
+ * @returns The computed result.
  */
 export function isMemoryDeclarationInstruction(instruction: string): instruction is MemoryDeclarationInstruction {
 	return memoryDeclarationInstructions.has(instruction as MemoryDeclarationInstruction);
@@ -57,8 +57,9 @@ export function isMemoryDeclarationInstruction(instruction: string): instruction
 /**
  * Validates and applies one semantic memory declaration line to the namespace context.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export function applyMemoryDeclarationLine(line: MemoryDeclarationLine, context: CompilationContext) {
 	validateInstruction(line, context);

@@ -33,6 +33,10 @@ function isCodegenPushLine(line: NormalizedPushLine): line is CodegenPushLine {
  * before codegen runs. This is the semantic ownership boundary for function
  * existence validation; codegen only handles stack shape, parameter/return
  * type compatibility, and lowering.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Normalized call line.
  */
 export default function normalizeCall(line: CallLine, context: CompilationContext): CallLine | ResolvedCallLine {
 	if (!context.namespace.functions) {

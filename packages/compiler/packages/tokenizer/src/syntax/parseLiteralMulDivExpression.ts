@@ -14,6 +14,9 @@ export type LiteralMulDivResult = {
  * Returns the folded result, or `null` if the argument is not a literal arithmetic expression.
  * Throws `SyntaxRulesError` when a literal-only numeric expression contains an invalid
  * numeric operand or divides by zero.
+ *
+ * @param argument - Parsed argument to process.
+ * @returns Parsed literal mul div expression.
  */
 export default function parseLiteralMulDivExpression(argument: string): LiteralMulDivResult | null {
 	// Require exactly one *, /, or ^ across the whole string

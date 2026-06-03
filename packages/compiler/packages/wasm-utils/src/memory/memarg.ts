@@ -7,6 +7,11 @@ const MULTI_MEMORY_MEMARG_FLAG = 0x40;
 
 /**
  * Encodes a WebAssembly memory argument with alignment, offset, and optional memory index fields.
+ *
+ * @param alignment - Memory alignment exponent to encode.
+ * @param offset - Memory offset to encode.
+ * @param memoryIndex - Memory index to encode.
+ * @returns The computed result.
  */
 export default function memarg(alignment: number, offset: number, memoryIndex = 0): number[] {
 	if (memoryIndex === 0) {

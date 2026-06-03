@@ -99,7 +99,13 @@ function withSyntaxLine(error: SyntaxRulesError, lineNumber: number, instruction
 	});
 }
 
-/** Tokenizes a physical line and attaches line metadata to tokenizer-level syntax errors. */
+/**
+ * Tokenizes a physical line and attaches line metadata to tokenizer-level syntax errors.
+ *
+ * @param line - Source AST line being processed.
+ * @param lineNumber - One-based source line number for diagnostics.
+ * @returns Instruction tokens parsed from the physical source line.
+ */
 export function parseInstructionTokens(line: string, lineNumber: number): string[] {
 	try {
 		return tokenizeInstruction(line);
@@ -111,7 +117,13 @@ export function parseInstructionTokens(line: string, lineNumber: number): string
 	}
 }
 
-/** Parses and syntax-validates one logical source line into an AST line. */
+/**
+ * Parses and syntax-validates one logical source line into an AST line.
+ *
+ * @param line - Source AST line being processed.
+ * @param lineNumber - One-based source line number for diagnostics.
+ * @returns Parsed compiler AST line.
+ */
 export function parseLine(line: string, lineNumber: number): CompilerASTLine {
 	let instruction: string | undefined;
 	try {

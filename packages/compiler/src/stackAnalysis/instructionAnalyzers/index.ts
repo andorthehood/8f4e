@@ -31,8 +31,8 @@ import type { InstructionAnalysisResult } from './types';
 /**
  * Dispatches a compiler AST line to the instruction-specific or spec-derived stack analyzer.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
  * @returns The stack-analysis result for the instruction.
  */
 export function analyzeByInstruction(line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {

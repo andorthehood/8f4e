@@ -6,7 +6,13 @@ import { consume, produce } from '../stack';
 import type { InstructionAnalysisResult } from '../types';
 import { knownIntegerResult } from './shared';
 
-/** Analyzes `remainder` stack effects, known integer propagation, and zero-divisor failures. */
+/**
+ * Analyzes `remainder` stack effects, known integer propagation, and zero-divisor failures.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Stack-analysis result for the remainder instruction.
+ */
 export function analyzeRemainder(line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 2);
 	const divisor = consumed[1];

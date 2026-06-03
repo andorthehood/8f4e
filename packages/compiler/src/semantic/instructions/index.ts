@@ -8,7 +8,13 @@ import semanticRegion from './region';
 import semanticShape from './shape';
 import semanticUse from './use';
 
-/** Dispatches normalized semantic instructions to their declaration or namespace handlers. */
+/**
+ * Dispatches normalized semantic instructions to their declaration or namespace handlers.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
+ */
 export default function applySemanticInstruction(line: NormalizedSemanticInstructionLine, context: CompilationContext) {
 	switch (line.instruction) {
 		case 'const':

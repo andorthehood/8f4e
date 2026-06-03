@@ -14,7 +14,12 @@ function isArgumentContinuationCandidate(line: string): boolean {
 	return /^\s*-(?=\s|;|$)/.test(line);
 }
 
-/** Removes comments and folds argument-continuation lines into logical source lines. */
+/**
+ * Removes comments and folds argument-continuation lines into logical source lines.
+ *
+ * @param code - Source lines to process.
+ * @returns Logical source lines after comments and continuations are processed.
+ */
 export function foldArgumentContinuationLines(code: string[]): SourceLine[] {
 	const sourceLines: SourceLine[] = [];
 	let previousSourceLine: SourceLine | undefined;

@@ -1,7 +1,13 @@
 import type { PointeeBaseType } from '@8f4e/compiler-spec';
 import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
 
-/** Builds semantic memory flags from a base type and pointer depth. */
+/**
+ * Builds semantic memory flags from a base type and pointer depth.
+ *
+ * @param baseType - Memory base type to encode.
+ * @param pointerDepth - Pointer depth to encode.
+ * @returns Resolved memory flags.
+ */
 export default function getMemoryFlags(baseType: PointeeBaseType, pointerDepth: number) {
 	const isPointer = pointerDepth > 0;
 	const isInteger = BASE_TYPE_METADATA[baseType].isInteger || isPointer;

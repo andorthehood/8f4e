@@ -5,9 +5,9 @@ import { saveByteCode } from '../../utils/saveByteCode';
 /**
  * Emits bytecode for pushing a local value onto the stack.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export default function pushLocal(line: ResolvedLocalPushLine, context: CodegenContext): CodegenContext {
 	const { local } = line.resolvedTarget;

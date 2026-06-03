@@ -5,8 +5,9 @@ import { resolveRegionDirective } from '../memoryRegions';
 /**
  * Applies the `#region` directive to switch the active memory region for subsequent declarations.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export default function semanticRegion(line: RegionLine, context: CompilationContext) {
 	const region = resolveRegionDirective(line, context);

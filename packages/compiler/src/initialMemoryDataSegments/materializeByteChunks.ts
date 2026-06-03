@@ -6,7 +6,7 @@ export type ByteChunk = Uint8Array | number;
  *
  * @param chunks - Byte chunks to merge into a contiguous buffer.
  * @param byteLength - Number of bytes to materialize or validate.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export default function materializeByteChunks(chunks: ByteChunk[], byteLength: number): Uint8Array {
 	const bytes = new Uint8Array(byteLength);

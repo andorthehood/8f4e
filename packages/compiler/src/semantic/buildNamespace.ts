@@ -53,7 +53,7 @@ type FunctionMetadataCollectionOptions = {
  *
  * @param asts - Validated ASTs being processed.
  * @param options - Compiler options for this compilation pass.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function collectFunctionMetadataFromAsts(
 	asts: readonly ValidatedFunctionAST[],
@@ -101,6 +101,7 @@ export function collectFunctionMetadataFromAsts(
  * Ensures module source blocks declare unique ids before namespace discovery.
  *
  * @param asts - Validated ASTs being processed.
+ * @returns Nothing.
  */
 export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[]): void {
 	const seenModuleIds = new Set<string>();
@@ -121,8 +122,9 @@ export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | Valid
 /**
  * Normalizes and applies one semantic instruction, trusting tokenizer placement validation.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
 	const normalizedLine = normalizeCompileTimeArguments(line, context);
@@ -240,7 +242,7 @@ function discoverNamespace(
  * @param functions - Function metadata lookup available to compilation.
  * @param options - Compiler options for this compilation pass.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function layoutNamespace(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
@@ -316,10 +318,10 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
  * @param asts - Validated ASTs being processed.
  * @param startingByteAddress - Absolute byte address where layout should begin.
  * @param compiledFunctions - Compiled function metadata available to module compilation.
- * @param layoutAsts - layoutAsts value used by this operation.
+ * @param layoutAsts - layout asts value to use.
  * @param options - Compiler options for this compilation pass.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function collectNamespacesFromASTs(
 	asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[],

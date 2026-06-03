@@ -36,7 +36,7 @@ export function getCustomMemoryRegionName(memoryRegions: readonly string[], memo
  *
  * @param memoryIndex - Memory index to resolve.
  * @param memoryRegionName - Configured memory region name to resolve.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function getMemoryRegionFields(memoryIndex: number, memoryRegionName?: string): ResolvedMemoryRegion {
 	return {
@@ -49,7 +49,8 @@ export function getMemoryRegionFields(memoryIndex: number, memoryRegionName?: st
  * Validates configured memory region names before semantic compilation uses them.
  *
  * @param options - Compiler options for this compilation pass.
- * @param line - Compiler line being processed.
+ * @param line - AST line being processed.
+ * @returns Nothing.
  */
 export function validateMemoryRegionOptions(
 	options?: Pick<CompileOptions, 'memoryRegions'>,
@@ -73,9 +74,9 @@ export function validateMemoryRegionOptions(
  *
  * @param memoryIndex - Memory index to resolve.
  * @param memoryRegions - Configured custom memory region names.
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export function resolveMemoryRegionByIndex(
 	memoryIndex: number,
@@ -100,9 +101,9 @@ export function resolveMemoryRegionByIndex(
  *
  * @param memoryRegionName - Configured memory region name to resolve.
  * @param memoryRegions - Configured custom memory region names.
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export function resolveMemoryRegionName(
 	memoryRegionName: string,
@@ -124,9 +125,9 @@ export function resolveMemoryRegionName(
 /**
  * Resolves the active memory region from a parsed `#region` directive line.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export function resolveRegionDirective(line: RegionLine, context: CompilationContext): ResolvedMemoryRegion {
 	const [argument] = line.arguments;
@@ -140,7 +141,7 @@ export function resolveRegionDirective(line: RegionLine, context: CompilationCon
 /**
  * Returns metadata for the default WebAssembly memory region.
  *
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function getDefaultMemoryRegion(): ResolvedMemoryRegion {
 	return { memoryIndex: DEFAULT_MEMORY_INDEX };

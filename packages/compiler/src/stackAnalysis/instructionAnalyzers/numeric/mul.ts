@@ -4,7 +4,13 @@ import { consume, produce } from '../stack';
 import type { InstructionAnalysisResult } from '../types';
 import { numericResult } from './shared';
 
-/** Analyzes `mul` stack effects and known integer propagation. */
+/**
+ * Analyzes `mul` stack effects and known integer propagation.
+ *
+ * @param _line - Unused source AST line kept for handler signature consistency.
+ * @param context - Compilation context used by the operation.
+ * @returns Stack-analysis result for the mul instruction.
+ */
 export function analyzeMul(_line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 2);
 	const produced = [
