@@ -153,6 +153,7 @@ export interface CompilationContext {
 	internalAllocator: InternalAllocator;
 	stack: Stack;
 	blockStack: BlockStack;
+	activeLoopBlocks: LoopBlockStackFrame[];
 	insideModuleBlock: boolean;
 	insideFunctionBlock: boolean;
 	insideGenericBlock: boolean;

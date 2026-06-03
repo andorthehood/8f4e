@@ -12,11 +12,20 @@ type BlockContext = CodegenContext | CompilationContext;
 
 export function pushBlock(context: BlockContext, block: BlockStack[number]) {
 	context.blockStack.push(block);
+	if (block.blockType === BlockType.LOOP) {
+		context.activeLoopBlocks.push(block);
+	}
 	updateBlockContextFlag(context, block.blockType, true);
 }
 
 export function popBlock(context: BlockContext) {
 	const block = context.blockStack.pop();
+
+	if (block?.blockType === BlockType.LOOP) {
+		context.activeLoopBlocks.pop();
+		context.insideLoopBlock = context.activeLoopBlocks.length > 0;
+		return block;
+	}
 
 	if (block && !context.blockStack.some(remainingBlock => remainingBlock.blockType === block.blockType)) {
 		updateBlockContextFlag(context, block.blockType, false);
@@ -34,7 +43,7 @@ export function popMapBlock(context: BlockContext): MapBlockStackFrame {
 }
 
 export function findNearestLoopBlock(context: BlockContext): LoopBlockStackFrame {
-	return [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP) as LoopBlockStackFrame;
+	return context.activeLoopBlocks[context.activeLoopBlocks.length - 1];
 }
 
 function updateBlockContextFlag(context: BlockContext, blockType: BlockTypeValue, isInside: boolean) {
