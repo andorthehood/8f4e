@@ -4,6 +4,13 @@ import { ArgumentType, ErrorCode, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8
 import { getError } from '../../compilerError';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
+/**
+ * Normalizes and validates optional access-width arguments for clamp-address instructions.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The result of the operation.
+ */
 export default function normalizeClampAddress(line: CompilerASTLine, context: CompilationContext): CompilerASTLine {
 	const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);
 	const argument = normalized.arguments[0];
