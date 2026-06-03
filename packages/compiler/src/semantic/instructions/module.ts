@@ -9,7 +9,12 @@ import { pushBlock } from '../../utils/blockStack';
 
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 
-/** Applies the `module` semantic instruction to initialize the active namespace context. */
+/**
+ * Applies the `module` semantic instruction to initialize the active namespace context.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ */
 export default function semanticModule(line: ModuleLine, context: CompilationContext) {
 	const moduleId = line.arguments[0].value;
 

@@ -74,7 +74,11 @@ export type CompiledSubProgram = {
 	cache: CompilerCache;
 };
 
-/** Creates the default compiler cache used for validated AST reuse. */
+/**
+ * Creates the default compiler cache used for validated AST reuse.
+ *
+ * @returns A compiler cache ready to store validated ASTs.
+ */
 export function createCompilerCache(): CompilerCache {
 	return {
 		ast: createASTCache<ValidatedAST>(),
@@ -149,7 +153,14 @@ function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): R
 	return prototypeShapesById;
 }
 
-/** Compiles one source program into linkable module, function, memory, and data-segment artifacts. */
+/**
+ * Compiles one source program into linkable module, function, memory, and data-segment artifacts.
+ *
+ * @param input - Compiler input program to compile.
+ * @param options - Compiler options for this compilation pass.
+ * @param cache - Compiler cache used for reusable validated ASTs.
+ * @returns The compiled sub-program artifacts.
+ */
 export function compileSubProgram(
 	input: CompileInput,
 	options: CompileOptions,

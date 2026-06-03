@@ -3,7 +3,13 @@ import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
 import { consume } from './stack';
 
-/** Consumes the assigned value and checks it against the resolved local binding type. */
+/**
+ * Consumes the assigned value and checks it against the resolved local binding type.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The stack items produced or consumed by the operation.
+ */
 export function analyzeLocalSet(
 	line: CompilerASTLine,
 	context: CompilationContext

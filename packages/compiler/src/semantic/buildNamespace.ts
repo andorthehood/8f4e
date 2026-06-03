@@ -50,6 +50,10 @@ type FunctionMetadataCollectionOptions = {
  * This allows semantic normalization (e.g. `call` target validation) and
  * function-body codegen to rely on the same registry before full function
  * compilation completes.
+ *
+ * @param asts - Validated ASTs being processed.
+ * @param options - Compiler options for this compilation pass.
+ * @returns The result of the operation.
  */
 export function collectFunctionMetadataFromAsts(
 	asts: readonly ValidatedFunctionAST[],
@@ -93,7 +97,11 @@ export function collectFunctionMetadataFromAsts(
 	return result;
 }
 
-/** Ensures module source blocks declare unique ids before namespace discovery. */
+/**
+ * Ensures module source blocks declare unique ids before namespace discovery.
+ *
+ * @param asts - Validated ASTs being processed.
+ */
 export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[]): void {
 	const seenModuleIds = new Set<string>();
 
@@ -110,7 +118,12 @@ export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | Valid
 	}
 }
 
-/** Normalizes and applies one semantic instruction, trusting tokenizer placement validation. */
+/**
+ * Normalizes and applies one semantic instruction, trusting tokenizer placement validation.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ */
 export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
 	const normalizedLine = normalizeCompileTimeArguments(line, context);
 	applySemanticInstruction(normalizedLine, context);
@@ -218,7 +231,17 @@ function discoverNamespace(
 	return context;
 }
 
-/** Applies semantic declarations and resolves scalar defaults for one namespace AST. */
+/**
+ * Applies semantic declarations and resolves scalar defaults for one namespace AST.
+ *
+ * @param ast - Validated AST being processed.
+ * @param namespaces - Collected namespaces used for symbol and memory resolution.
+ * @param startingByteAddress - Absolute byte address where layout should begin.
+ * @param functions - Function metadata lookup available to compilation.
+ * @param options - Compiler options for this compilation pass.
+ * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
+ * @returns The result of the operation.
+ */
 export function layoutNamespace(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
@@ -287,7 +310,17 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
 	};
 }
 
-/** Discovers and lays out namespaces for modules and constants, deferring intermodule dependencies as needed. */
+/**
+ * Discovers and lays out namespaces for modules and constants, deferring intermodule dependencies as needed.
+ *
+ * @param asts - Validated ASTs being processed.
+ * @param startingByteAddress - Absolute byte address where layout should begin.
+ * @param compiledFunctions - Compiled function metadata available to module compilation.
+ * @param layoutAsts - layoutAsts value used by this operation.
+ * @param options - Compiler options for this compilation pass.
+ * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
+ * @returns The result of the operation.
+ */
 export function collectNamespacesFromASTs(
 	asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
