@@ -1,7 +1,6 @@
 import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/compiler-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
-import { peekMapBlock } from '../utils/blockStack';
 
 /**
  * Instruction compiler for `map`.
@@ -10,7 +9,7 @@ import { peekMapBlock } from '../utils/blockStack';
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const map: InstructionCompiler<NormalizedMapLine> = (line: NormalizedMapLine, context) => {
-	const { mapState } = peekMapBlock(context);
+	const { mapState } = context.activeMapBlock!;
 	const keyArg = line.arguments[0];
 	const valueArg = line.arguments[1];
 

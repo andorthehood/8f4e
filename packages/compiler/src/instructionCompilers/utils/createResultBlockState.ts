@@ -2,7 +2,7 @@ import type { BlockResultTypes, BlockStack, BlockType, FunctionTypeRegistry } fr
 
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import { signedLEB128, WASM_TYPE_F32, WASM_TYPE_I32, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
-import { getOrRegisterFunctionType } from '../../utils/functionTypeRegistry';
+import { getOrRegisterFunctionType } from './functionTypeRegistry';
 
 type ResultBlockType = typeof BlockType.BLOCK | typeof BlockType.CONDITION;
 
@@ -17,6 +17,11 @@ function resultTypeToWasmType(resultType: BlockResultTypes[number]): WasmTypeVal
 
 /**
  * Creates the compiler block-stack metadata and matching WASM block result type.
+ *
+ * @param resultTypes - Result types expected from the block.
+ * @param blockType - Project block type to inspect.
+ * @param typeRegistry - Function type registry used for multi-value result signatures.
+ * @returns Created result block state.
  */
 export default function createResultBlockState<TBlockType extends ResultBlockType>(
 	resultTypes: BlockResultTypes,

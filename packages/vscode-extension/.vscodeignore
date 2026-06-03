@@ -1,0 +1,10 @@
+src/**
+scripts/**
+*.config.ts
+tsconfig.json
+project.json
+.gitignore
+node_modules/**
+media/editor/**/*.map
+dist/**/*.map
+dist/*.vsix

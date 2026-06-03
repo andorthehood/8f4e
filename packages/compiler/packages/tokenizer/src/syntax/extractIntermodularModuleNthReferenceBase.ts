@@ -2,6 +2,9 @@
  * Extracts the module name and item index from an intermodular module nth-item reference.
  * Input must have already been validated by isIntermodularModuleNthReference.
  * Example: '&module:2' → { module: 'module', index: 2 }
+ *
+ * @param value - Value to inspect.
+ * @returns Extracted intermodular module nth reference base.
  */
 export default function extractIntermodularModuleNthReferenceBase(value: string): { module: string; index: number } {
 	// value is like &module:0

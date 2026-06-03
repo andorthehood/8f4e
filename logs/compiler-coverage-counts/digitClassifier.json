@@ -1176,5 +1176,100 @@
 				"maxRangesPerFunction": 27
 			}
 		}
+	},
+	{
+		"commit": "b31f595ecbed20e4ad8364f4dca64dab97188768",
+		"version": "1.16.5",
+		"benchmark": "digitClassifier.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 219,
+				"functionEntries": 243875,
+				"rangeExecutions": 564612,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 50,
+				"functionEntries": 115550,
+				"rangeExecutions": 468784,
+				"maxRangesPerFunction": 30
+			}
+		}
+	},
+	{
+		"commit": "7611958f62050ee47dbc8e7da841b48a1a0e2e0b",
+		"version": "1.16.6",
+		"benchmark": "digitClassifier.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 211,
+				"functionEntries": 229263,
+				"rangeExecutions": 540241,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 58,
+				"functionEntries": 133849,
+				"rangeExecutions": 494966,
+				"maxRangesPerFunction": 27
+			}
+		}
+	},
+	{
+		"commit": "51a72be5284ccc7fec3d8f0f86e81cfb2d2288e0",
+		"version": "1.16.7",
+		"benchmark": "digitClassifier.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 218,
+				"functionEntries": 228094,
+				"rangeExecutions": 534956,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 58,
+				"functionEntries": 133849,
+				"rangeExecutions": 494966,
+				"maxRangesPerFunction": 27
+			}
+		}
+	},
+	{
+		"commit": "c1ae738375f2379dc75699e993fa91b9577adfd5",
+		"version": "1.16.8",
+		"benchmark": "digitClassifier.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 217,
+				"functionEntries": 228093,
+				"rangeExecutions": 534955,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 58,
+				"functionEntries": 133849,
+				"rangeExecutions": 494966,
+				"maxRangesPerFunction": 27
+			}
+		}
+	},
+	{
+		"commit": "a33298551853385cbcd75627b78a84feb3cfd991",
+		"version": "1.16.9",
+		"benchmark": "digitClassifier.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 217,
+				"functionEntries": 228093,
+				"rangeExecutions": 534955,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 57,
+				"functionEntries": 133725,
+				"rangeExecutions": 494842,
+				"maxRangesPerFunction": 27
+			}
+		}
 	}
 ]

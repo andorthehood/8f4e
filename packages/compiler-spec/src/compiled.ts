@@ -1,5 +1,5 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { AST, ConstantsAST, FunctionAST, ModuleAST } from './ast';
+import type { ValidatedAST, ValidatedConstantsAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
 import type { InternalResourceMap, MemoryMap } from './memory';
@@ -25,7 +25,7 @@ export interface CompiledModule {
 	memoryMap: MemoryMap;
 	internalResources?: InternalResourceMap;
 	wordAlignedSize: number;
-	ast?: ModuleAST | ConstantsAST;
+	ast: ValidatedModuleAST | ValidatedConstantsAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
 }
@@ -66,7 +66,7 @@ export interface CompiledFunction extends FunctionMetadata {
 	locals: Array<{ isInteger: boolean; count: number }>;
 	exportName?: string;
 	typeIndex: number;
-	ast: FunctionAST;
+	ast: ValidatedFunctionAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 }
 
@@ -74,7 +74,7 @@ export type CompiledFunctionLookup = Record<string, CompiledFunction>;
 
 /** Reusable compiler caches returned from a compile operation. */
 export interface CompilerCache {
-	ast: ASTCache<AST>;
+	ast: ASTCache<ValidatedAST>;
 }
 
 export type CompileResult = {

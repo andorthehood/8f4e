@@ -18,6 +18,7 @@ import type {
 	LoopLine,
 	MapLine,
 	MemoryCopyLine,
+	MemoryDeclarationLine,
 	ModuleEndLine,
 	ModuleLine,
 	PrototypeEndLine,
@@ -27,6 +28,7 @@ import type {
 	RegionLine,
 	ShapeLine,
 	UseLine,
+	ValidatedPrototypeAST,
 } from './ast';
 import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
@@ -151,6 +153,12 @@ export interface CompilationContext {
 	internalAllocator: InternalAllocator;
 	stack: Stack;
 	blockStack: BlockStack;
+	/** Cached active block counts keyed by block type, maintained with block stack mutations. */
+	activeBlockDepths: Record<BlockTypeValue, number>;
+	/** Open loop frames in nesting order, used to access the innermost loop without scanning. */
+	activeLoopBlocks: LoopBlockStackFrame[];
+	/** Current map frame; maps are non-nestable by placement rules. */
+	activeMapBlock?: MapBlockStackFrame;
 	insideModuleBlock: boolean;
 	insideFunctionBlock: boolean;
 	insideGenericBlock: boolean;
@@ -175,6 +183,9 @@ export interface CompilationContext {
 	currentFunctionExportName?: string;
 	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>;
+	expandPrototypeShapes?: boolean;
+	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;
@@ -377,7 +388,7 @@ export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstL
 		: TLine extends CallLine
 			? ResolvedCallLine | CallLine
 			: TLine extends MapLine
-				? NormalizedMapLine | MapLine
+				? NormalizedMapLine
 				: TLine extends LocalSetLine
 					? ResolvedLocalSetLine
 					: TLine extends PushLine

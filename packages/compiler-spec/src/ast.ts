@@ -7,7 +7,7 @@ import type {
 } from './arguments';
 import { ArgumentType } from './arguments';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
-import type { NoSourceArgumentInstructionName } from './instructionSpecs';
+import type { NoSourceArgumentInstructionName } from './instructionSpecTypes';
 import type { DocumentOnlyInstructionName, MacroInstructionName, SemanticInstructionName } from './instructions';
 import { semanticInstructionNames } from './instructions';
 import {
@@ -241,6 +241,9 @@ export type CompilerASTLines = CompilerASTLine[];
  * Namespace references are added by semantic normalization for instructions that
  * may depend on other modules or constants blocks, so callers can avoid probing
  * optional metadata by hand.
+ *
+ * @param line - Parsed compiler AST line to inspect.
+ * @returns True when the line carries resolved namespace reference ids.
  */
 export function hasReferencedNamespaceIds(
 	line: CompilerASTLine | undefined
@@ -259,10 +262,6 @@ export interface ModuleAST {
 	lines: CompilerASTLines;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
-	/** Parser metadata used to skip prototype shape expansion work when a module has no shape instructions. */
-	containsShape: boolean;
-	/** Parser-collected shape instructions used to expand prototypes without reparsing module source. */
-	shapeLines: readonly ShapeLine[];
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
@@ -299,6 +298,17 @@ export interface PrototypeAST {
 
 export type AST = ModuleAST | FunctionAST | ConstantsAST | PrototypeAST;
 
+declare const validatedASTBrand: unique symbol;
+
+/** AST produced by the tokenizer after source-level syntax and block validation. */
+export type ValidatedAST<TAST extends AST = AST> = TAST & {
+	readonly [validatedASTBrand]: true;
+};
+export type ValidatedModuleAST = ValidatedAST<ModuleAST>;
+export type ValidatedFunctionAST = ValidatedAST<FunctionAST>;
+export type ValidatedConstantsAST = ValidatedAST<ConstantsAST>;
+export type ValidatedPrototypeAST = ValidatedAST<PrototypeAST>;
+
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
 const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
@@ -308,12 +318,20 @@ const semanticInstructionSet = new Set<string>(semanticInstructionNames);
  * Checks whether a parsed line is a semantic instruction handled before code generation.
  * These lines affect compiler state, namespaces, or constants rather than directly
  * producing WebAssembly instructions.
+ *
+ * @param line - Parsed compiler AST line to inspect.
+ * @returns True when the line is a semantic instruction.
  */
 export function isSemanticInstructionLine(line: CompilerASTLine | undefined): line is SemanticInstructionLine {
 	return line !== undefined && semanticInstructionSet.has(line.instruction as SemanticInstructionName);
 }
 
-/** Checks whether a parsed line is a compiler directive instruction. */
+/**
+ * Checks whether a parsed line is a compiler directive instruction.
+ *
+ * @param line - Parsed compiler AST line to inspect.
+ * @returns True when the instruction is a compiler directive.
+ */
 export function isCompilerDirectiveLine(line: CompilerASTLine | undefined): line is CompilerDirectiveLine {
 	return line !== undefined && line.instruction.startsWith('#');
 }
@@ -322,17 +340,30 @@ export function isCompilerDirectiveLine(line: CompilerASTLine | undefined): line
  * Checks whether a parsed line declares scalar or array memory.
  * The parser keeps declarations in the same AST union as executable lines; this
  * guard narrows them before layout and namespace collection.
+ *
+ * @param line - Parsed compiler AST line to inspect.
+ * @returns True when the line declares memory.
  */
 export function isMemoryDeclarationLine(line: CompilerASTLine | undefined): line is MemoryDeclarationLine {
 	return line !== undefined && memoryDeclarationInstructionSet.has(line.instruction);
 }
 
-/** Checks whether a parsed line declares scalar memory. */
+/**
+ * Checks whether a parsed line declares scalar memory.
+ *
+ * @param line - Parsed compiler AST line to inspect.
+ * @returns True when the line declares scalar memory.
+ */
 export function isScalarMemoryDeclarationLine(line: CompilerASTLine | undefined): line is ScalarMemoryDeclarationLine {
 	return line !== undefined && scalarMemoryDeclarationInstructionSet.has(line.instruction);
 }
 
-/** Checks whether a parsed line declares array memory. */
+/**
+ * Checks whether a parsed line declares array memory.
+ *
+ * @param line - Parsed compiler AST line to inspect.
+ * @returns True when the line declares array memory.
+ */
 export function isArrayMemoryDeclarationLine(line: CompilerASTLine | undefined): line is ArrayMemoryDeclarationLine {
 	return line !== undefined && arrayMemoryDeclarationInstructionSet.has(line.instruction);
 }
@@ -341,6 +372,9 @@ export function isArrayMemoryDeclarationLine(line: CompilerASTLine | undefined):
  * Checks whether a scalar memory declaration starts with an identifier name.
  * Scalar declarations may also be anonymous literal data, so code that needs a
  * named memory binding must use this narrower guard.
+ *
+ * @param line - Parsed compiler AST line to inspect.
+ * @returns True when the line declares named scalar memory.
  */
 export function isNamedScalarMemoryDeclarationLine(
 	line: CompilerASTLine | undefined

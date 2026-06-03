@@ -1,8 +1,8 @@
 import type { InstructionCompiler, ResolvedLocalSetLine } from '@8f4e/compiler-spec';
 import { localSet } from '@8f4e/compiler-wasm-utils';
 
-import { requireStackAddress } from '../utils/stackItem';
 import { saveByteCode } from './utils/saveByteCode';
+import { requireStackAddress } from './utils/stackItem';
 
 /**
  * Instruction compiler for `localSet`.

@@ -2,19 +2,19 @@
  * Compiler (semantic) errors — raised after syntax is already valid.
  *
  * Use this module for errors that require semantic analysis or compiler state:
- *   - undeclared or duplicate identifiers
- *   - type mismatches
- *   - invalid instruction in the current scope
- *   - stack mismatches or overflows
- *   - function memory declarations or memory IO without the required directive
- *   - constant resolution failures
- *   - any error that cannot be detected from token/argument shape alone
+ *  - undeclared or duplicate identifiers
+ *  - type mismatches
+ *  - invalid instruction in the current scope
+ *  - stack mismatches or overflows
+ *  - function memory declarations or memory IO without the required directive
+ *  - constant resolution failures
+ *  - any error that cannot be detected from token/argument shape alone
  *
  * Boundary rule:
- *   If detecting the error requires symbol resolution, scope validation, stack
- *   state, type checking, or runtime-model knowledge → it belongs here.
- *   If the error can be detected from the raw token or argument structure alone,
- *   before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
+ *  If detecting the error requires symbol resolution, scope validation, stack
+ *  state, type checking, or runtime-model knowledge → it belongs here.
+ *  If the error can be detected from the raw token or argument structure alone,
+ *  before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
  */
 
 import type {
@@ -32,6 +32,15 @@ interface ErrorDetails {
 	identifier?: string;
 }
 
+/**
+ * Creates a compiler-stage diagnostic for a semantic or code-generation error.
+ *
+ * @param code - Compiler error code to materialize.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @param details - Optional dynamic details to include in the diagnostic.
+ * @returns The compiler error instance.
+ */
 export function getError(
 	code: ErrorCodeValue,
 	line: CompilerASTLine,
@@ -154,13 +163,6 @@ export function getError(
 				context,
 			};
 		}
-		case ErrorCode.MISSING_BLOCK_START_INSTRUCTION:
-			return {
-				code,
-				message: 'Missing block start instruction. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.DIVISION_BY_ZERO:
 			return {
 				code,
@@ -246,13 +248,6 @@ export function getError(
 			return {
 				code,
 				message: 'Duplicate parameter name. Each parameter must have a unique name. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.INSTRUCTION_MUST_BE_TOP_LEVEL:
-			return {
-				code,
-				message: 'This instruction must be used at the top level. (' + code + ')',
 				line,
 				context,
 			};

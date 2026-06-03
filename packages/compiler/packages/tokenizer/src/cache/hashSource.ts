@@ -7,6 +7,12 @@ function appendHashInput(hash: number, input: string): number {
 	return nextHash >>> 0;
 }
 
+/**
+ * Checks hash source.
+ *
+ * @param code - Source lines to process.
+ * @returns Whether the h source condition is true.
+ */
 export default function hashSource(code: string[]): number {
 	let hash = 2166136261;
 	hash = appendHashInput(hash, `${code.length}\0`);

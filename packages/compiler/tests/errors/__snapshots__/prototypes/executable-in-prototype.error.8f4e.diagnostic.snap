@@ -1,16 +1,9 @@
 {
-  "code": 34,
+  "code": 12,
   "context": {},
   "line": {
-    "arguments": [
-      {
-        "isInteger": true,
-        "type": "literal",
-        "value": 1,
-      },
-    ],
     "instruction": "push",
     "lineNumber": 2,
   },
-  "message": "This instruction is not allowed inside this block type. (34)",
+  "message": "Instruction is not allowed in this block.",
 }

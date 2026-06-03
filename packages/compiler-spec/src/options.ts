@@ -10,8 +10,6 @@ export interface CompileOptions {
 	 * indices 1..N by array position.
 	 */
 	memoryRegions?: string[];
-	/** Whether to include AST in compiled modules. Default is false to reduce payload size. */
-	includeAST?: boolean;
 	/** Whether to include per-instruction stack analysis in compiled modules and functions. Default is false. */
 	includeStackAnalysis?: boolean;
 	/** Disable shared memory for tests (wabt doesn't support shared memory). Default is false (shared enabled). */

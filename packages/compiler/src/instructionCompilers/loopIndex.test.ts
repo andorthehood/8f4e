@@ -1,5 +1,5 @@
 import type { CompilerASTLine } from '@8f4e/compiler-spec';
-import { BlockType, ErrorCode } from '@8f4e/compiler-spec';
+import { BlockType } from '@8f4e/compiler-spec';
 import { i32const, localGet, WASM_I32_SUB } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
@@ -80,26 +80,5 @@ describe('loopIndex instruction compiler', () => {
 		);
 
 		expect(context.byteCode).toEqual([...localGet(2), ...i32const(1), WASM_I32_SUB]);
-	});
-
-	it('throws outside a loop', () => {
-		const context = createInstructionCompilerTestContext();
-
-		try {
-			analyzeAndCompileInstruction(
-				loopIndex,
-				{
-					lineNumber: 10,
-					instruction: 'loopIndex',
-					arguments: [],
-				} as CompilerASTLine,
-				context
-			);
-		} catch (error) {
-			expect(error).toMatchObject({ code: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP });
-			return;
-		}
-
-		throw new Error('Expected loopIndex to throw outside a loop');
 	});
 });

@@ -975,6 +975,7 @@ ifEnd
 
 moduleEnd
 entryEnd
+
 defineMacro adsrEnv
 ; @pos -75 74
 ; @hide
@@ -1223,7 +1224,6 @@ constants env
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/22/2026, 8:54:07 AM
 
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
