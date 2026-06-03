@@ -23,6 +23,7 @@ import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionS
 import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
+import { peekMapBlock } from '../utils/blockStack';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
 import { resolveMapKind, validateMapValueKind } from '../utils/mapValueKind';
@@ -259,11 +260,7 @@ function analyzeCall(line: ResolvedCallLine, context: CompilationContext): { con
 }
 
 function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
-	const block = context.blockStack[context.blockStack.length - 1];
-
-	if (!block || block.blockType !== BlockType.MAP) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
+	const { mapState } = peekMapBlock(context);
 
 	const outputType = line.arguments[0].value;
 	const outputIsInteger = outputType === 'int';
@@ -271,7 +268,6 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 	const outputKind = resolveMapKind({
 		valueType: outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float',
 	});
-	const mapState = block.mapState;
 	const inputKind = resolveMapKind({
 		valueType: mapState.inputIsInteger ? 'int' : mapState.inputIsFloat64 ? 'float64' : 'float',
 	});
