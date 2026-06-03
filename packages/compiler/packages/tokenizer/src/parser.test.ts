@@ -199,23 +199,21 @@ describe('compileToAST', () => {
 		}
 		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['counter', 'sourceStart']);
 		expect(ast.memoryDeclarationLines[1].referencedNamespaceIds).toEqual(['source']);
-		expect(ast.containsShape).toBe(false);
-		expect(ast.shapeLines).toEqual([]);
 	});
 
-	it('collects module shape metadata when the source-block parse path sees shape instructions', () => {
+	it('keeps shape instructions in module lines without adding module metadata', () => {
 		const ast = compileToAST(['module oscillator', 'shape oscillatorState', 'shape envelopeState', 'moduleEnd']);
 
 		expect(ast).toMatchObject({
 			type: 'module',
 			id: 'oscillator',
-			containsShape: true,
 		});
 		if (ast.type !== 'module') {
 			throw new Error('Expected module AST');
 		}
-		expect(ast.shapeLines.map(line => line.arguments[0].value)).toEqual(['oscillatorState', 'envelopeState']);
-		expect(ast.shapeLines.map(line => line.lineNumber)).toEqual([1, 2]);
+		const shapeInstructionLines = ast.lines.filter(line => line.instruction === 'shape');
+		expect(shapeInstructionLines.map(line => line.arguments[0].value)).toEqual(['oscillatorState', 'envelopeState']);
+		expect(shapeInstructionLines.map(line => line.lineNumber)).toEqual([1, 2]);
 	});
 
 	it('constructs function metadata from the source-block parse path', () => {
@@ -254,6 +252,23 @@ describe('compileToAST', () => {
 				}),
 			})
 		);
+	});
+
+	it('rejects shape instructions outside module blocks based on compiler spec scope', () => {
+		for (const code of [
+			['shape oscillatorState'],
+			['function mix', 'shape oscillatorState', 'functionEnd'],
+			['prototype oscillatorState', 'shape oscillatorState', 'prototypeEnd'],
+		]) {
+			expect(() => compileToAST(code)).toThrow(
+				expect.objectContaining({
+					code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+					line: expect.objectContaining({
+						instruction: 'shape',
+					}),
+				})
+			);
+		}
 	});
 
 	it('constructs prototype metadata from the source-block parse path', () => {

@@ -259,10 +259,6 @@ export interface ModuleAST {
 	lines: CompilerASTLines;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
-	/** Parser metadata used to skip prototype shape expansion work when a module has no shape instructions. */
-	containsShape: boolean;
-	/** Parser-collected shape instructions used to expand prototypes without reparsing module source. */
-	shapeLines: readonly ShapeLine[];
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
@@ -298,6 +294,17 @@ export interface PrototypeAST {
 }
 
 export type AST = ModuleAST | FunctionAST | ConstantsAST | PrototypeAST;
+
+declare const validatedASTBrand: unique symbol;
+
+/** AST produced by the tokenizer after source-level syntax and block validation. */
+export type ValidatedAST<TAST extends AST = AST> = TAST & {
+	readonly [validatedASTBrand]: true;
+};
+export type ValidatedModuleAST = ValidatedAST<ModuleAST>;
+export type ValidatedFunctionAST = ValidatedAST<FunctionAST>;
+export type ValidatedConstantsAST = ValidatedAST<ConstantsAST>;
+export type ValidatedPrototypeAST = ValidatedAST<PrototypeAST>;
 
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
 const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);

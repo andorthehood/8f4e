@@ -18,6 +18,7 @@ import type {
 	LoopLine,
 	MapLine,
 	MemoryCopyLine,
+	MemoryDeclarationLine,
 	ModuleEndLine,
 	ModuleLine,
 	PrototypeEndLine,
@@ -27,6 +28,7 @@ import type {
 	RegionLine,
 	ShapeLine,
 	UseLine,
+	ValidatedPrototypeAST,
 } from './ast';
 import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
@@ -175,6 +177,9 @@ export interface CompilationContext {
 	currentFunctionExportName?: string;
 	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>;
+	expandPrototypeShapes?: boolean;
+	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;

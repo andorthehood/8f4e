@@ -50,8 +50,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": []
       },
       "index": 0,
@@ -147,8 +145,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": [
           {
             "lineNumber": 8,
@@ -227,8 +223,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": []
       },
       "index": 2,
@@ -348,8 +342,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": [
           {
             "lineNumber": 6,
@@ -746,8 +738,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": [
           {
             "lineNumber": 4,
@@ -1171,8 +1161,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": [
           {
             "lineNumber": 4,
@@ -1420,8 +1408,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": [
           {
             "lineNumber": 3,
@@ -1644,8 +1630,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": [
           {
             "lineNumber": 3,
@@ -2045,8 +2029,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": [
           {
             "lineNumber": 4,
@@ -2383,8 +2365,6 @@
             }
           ]
         },
-        "containsShape": false,
-        "shapeLines": [],
         "memoryDeclarationLines": [
           {
             "lineNumber": 3,

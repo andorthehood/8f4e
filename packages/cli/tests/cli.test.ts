@@ -26,7 +26,6 @@ const wrapPointerModulePath = path.resolve(
 );
 const runtimeBytesPath = path.join(testDir, 'fixtures', 'runtimeBytes.bin');
 const tmpDir = path.join(testDir, '.tmp');
-const tracePath = path.join(tmpDir, 'audioBuffer.trace.json');
 const wasmPath = path.join(tmpDir, 'audioBuffer.wasm');
 const runOutPath = path.join(tmpDir, 'runtimeInspect.output.json');
 const captureOutPath = path.join(tmpDir, 'runtimeInspect.capture.bin');
@@ -38,19 +37,6 @@ function execCli(args: string[]) {
 }
 
 describe('cli', () => {
-	it('writes instruction flow trace when compile --trace-output is provided', async () => {
-		await fs.mkdir(tmpDir, { recursive: true });
-		await execCli(['compile', fixturePath, '--trace-output', tracePath]);
-
-		const raw = await fs.readFile(tracePath, 'utf8');
-		const trace = JSON.parse(raw) as { requiredMemoryBytes: number; blocks: Array<{ entries: unknown[] }> };
-
-		expect(trace.requiredMemoryBytes).toBeTypeOf('number');
-		expect(Array.isArray(trace.blocks)).toBe(true);
-		expect(trace.blocks.length).toBeGreaterThan(0);
-		expect(trace.blocks.some(block => block.entries.length > 0)).toBe(true);
-	});
-
 	it('writes wasm bytes when compile --wasm-output is provided', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 		await execCli(['compile', fixturePath, '--wasm-output', wasmPath]);

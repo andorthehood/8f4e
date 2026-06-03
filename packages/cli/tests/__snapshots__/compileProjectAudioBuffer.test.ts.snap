@@ -248,7 +248,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
   "compiledModules": {
     "audioout": {
       "ast": {
-        "containsShape": false,
         "id": "audioout",
         "lines": [
           {
@@ -591,7 +590,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
-        "shapeLines": [],
         "type": "module",
       },
       "byteAddress": 20,
@@ -745,7 +743,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
     },
     "notes": {
       "ast": {
-        "containsShape": false,
         "id": "notes",
         "lines": [
           {
@@ -779,7 +776,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
-        "shapeLines": [],
         "type": "module",
       },
       "byteAddress": 540,
@@ -800,7 +796,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
     },
     "phaseAccumulator": {
       "ast": {
-        "containsShape": false,
         "id": "phaseAccumulator",
         "lines": [
           {
@@ -1211,7 +1206,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
-        "shapeLines": [],
         "type": "module",
       },
       "byteAddress": 4,
@@ -1386,7 +1380,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
     },
     "projectConfig": {
       "ast": {
-        "containsShape": false,
         "id": "projectConfig",
         "lines": [
           {
@@ -1420,7 +1413,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
-        "shapeLines": [],
         "type": "module",
       },
       "byteAddress": 4,

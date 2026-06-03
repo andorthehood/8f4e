@@ -2,12 +2,13 @@ import type {
 	CompiledModule,
 	CompiledStackAnalysisLine,
 	CompileOptions,
-	ConstantsAST,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
-	ModuleAST,
 	ModuleCompilationContext,
 	Namespaces,
+	ValidatedConstantsAST,
+	ValidatedModuleAST,
+	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import {
 	ErrorCode,
@@ -31,19 +32,20 @@ import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArgume
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
 export function compileModule(
-	ast: ModuleAST | ConstantsAST,
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
 	functions?: FunctionMetadataLookup,
 	internalAllocator = { nextByteAddress: 0 },
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
-	typeRegistry?: FunctionTypeRegistry
+	typeRegistry?: FunctionTypeRegistry,
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule {
 	// Namespace layout establishes memory byte addresses and sizes for this module.
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
 	// the compilation loop below, so consts are not copied from the layout context.
-	const layoutContext = layoutNamespace(ast, namespaces, startingByteAddress, functions, options);
+	const layoutContext = layoutNamespace(ast, namespaces, startingByteAddress, functions, options, prototypeShapes);
 	const namespace = namespaces[ast.id];
 	const memoryIndex = namespace?.memoryIndex ?? layoutContext.currentMemoryIndex;
 	const memoryRegionName = namespace?.memoryRegionName ?? layoutContext.currentMemoryRegionName;

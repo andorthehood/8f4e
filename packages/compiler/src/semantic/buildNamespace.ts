@@ -3,10 +3,8 @@ import {
 	type CompilationContext,
 	type CompileOptions,
 	type CompilerASTLine,
-	type ConstantsAST,
 	compilerSourceBlockInstructionByType,
 	ErrorCode,
-	type FunctionAST,
 	type FunctionMetadataLookup,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	hasReferencedNamespaceIds,
@@ -14,10 +12,13 @@ import {
 	isNamedScalarMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	type MemoryDeclarationLine,
-	type ModuleAST,
 	type NamespaceBuildContext,
 	type Namespaces,
 	type SemanticInstructionLine,
+	type ValidatedConstantsAST,
+	type ValidatedFunctionAST,
+	type ValidatedModuleAST,
+	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { validateInstructionContext } from '../stackAnalysis/validateInstruction';
@@ -44,7 +45,7 @@ const moduleBlock = compilerSourceBlockInstructionByType.module;
  * compilation completes.
  */
 export function collectFunctionMetadataFromAsts(
-	asts: readonly FunctionAST[],
+	asts: readonly ValidatedFunctionAST[],
 	importedFunctionBaseIndex: number,
 	definedFunctionBaseIndex = importedFunctionBaseIndex
 ): FunctionMetadataLookup {
@@ -72,7 +73,7 @@ export function collectFunctionMetadataFromAsts(
 	return result;
 }
 
-export function assertUniqueModuleIds(asts: readonly (ModuleAST | ConstantsAST)[]): void {
+export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[]): void {
 	const seenModuleIds = new Set<string>();
 
 	for (const ast of asts) {
@@ -95,11 +96,13 @@ export function applySemanticLine(line: SemanticInstructionLine, context: Compil
 }
 
 function createNamespaceBuildContext(
-	ast: ModuleAST | ConstantsAST,
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
+	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine
 ): NamespaceBuildContext {
 	const defaultRegion = getDefaultMemoryRegion();
 	return createCompilationContext<NamespaceBuildContext>({
@@ -125,13 +128,15 @@ function createNamespaceBuildContext(
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
 		codeBlockType: ast.type,
+		prototypeShapes,
+		expandPrototypeShapes: true,
+		resolveMemoryDeclarationLine,
 	});
 }
 
 function applyNamespaceDeclarationLines(
-	ast: ModuleAST | ConstantsAST,
-	context: NamespaceBuildContext,
-	resolveDeclarationLine: (line: MemoryDeclarationLine) => MemoryDeclarationLine
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	context: NamespaceBuildContext
 ): void {
 	const sourceBlockSpec = compilerSourceBlockInstructionByType[ast.type];
 	const shouldValidateUnhandledLines = sourceBlockSpec.compilationMode === null;
@@ -140,7 +145,7 @@ function applyNamespaceDeclarationLines(
 		if (isSemanticInstructionLine(originalLine)) {
 			applySemanticLine(originalLine, context);
 		} else if (isMemoryDeclarationLine(originalLine)) {
-			const declarationLine = resolveDeclarationLine(originalLine);
+			const declarationLine = context.resolveMemoryDeclarationLine?.(originalLine) ?? originalLine;
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
 		} else if (shouldValidateUnhandledLines) {
 			validateInstructionContext(normalizeCompileTimeArguments(originalLine, context), context);
@@ -150,7 +155,10 @@ function applyNamespaceDeclarationLines(
 	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
 }
 
-function resolveScalarMemoryDefaults(ast: ModuleAST | ConstantsAST, context: NamespaceBuildContext): void {
+function resolveScalarMemoryDefaults(
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	context: NamespaceBuildContext
+): void {
 	ast.lines.forEach(originalLine => {
 		if (!isMemoryDeclarationLine(originalLine) || originalLine.instruction.endsWith('[]')) {
 			return;
@@ -168,34 +176,51 @@ function resolveScalarMemoryDefaults(ast: ModuleAST | ConstantsAST, context: Nam
 }
 
 function discoverNamespace(
-	ast: ModuleAST | ConstantsAST,
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): NamespaceBuildContext {
-	const context = createNamespaceBuildContext(ast, namespaces, startingByteAddress, functions, options);
-	applyNamespaceDeclarationLines(ast, context, toNamespaceDiscoveryMemoryDeclarationLine);
+	const context = createNamespaceBuildContext(
+		ast,
+		namespaces,
+		startingByteAddress,
+		functions,
+		options,
+		prototypeShapes,
+		toNamespaceDiscoveryMemoryDeclarationLine
+	);
+	applyNamespaceDeclarationLines(ast, context);
 
 	return context;
 }
 
 export function layoutNamespace(
-	ast: ModuleAST | ConstantsAST,
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): NamespaceBuildContext {
-	const context = createNamespaceBuildContext(ast, namespaces, startingByteAddress, functions, options);
-	applyNamespaceDeclarationLines(ast, context, line => line);
+	const context = createNamespaceBuildContext(
+		ast,
+		namespaces,
+		startingByteAddress,
+		functions,
+		options,
+		prototypeShapes
+	);
+	applyNamespaceDeclarationLines(ast, context);
 	resolveScalarMemoryDefaults(ast, context);
 
 	return context;
 }
 
 function getModuleRegionFromAst(
-	ast: ModuleAST | ConstantsAST,
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	options: Pick<CompileOptions, 'memoryRegions'>
 ): { memoryIndex: number; memoryRegionName?: string } {
 	const regionLine = ast.type === moduleBlock.type ? ast.regionLine : undefined;
@@ -241,11 +266,12 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
 }
 
 export function collectNamespacesFromASTs(
-	asts: readonly (ModuleAST | ConstantsAST)[],
+	asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
 	compiledFunctions?: FunctionMetadataLookup,
-	layoutAsts: readonly (ModuleAST | ConstantsAST)[] = asts,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	layoutAsts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[] = asts,
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): Namespaces {
 	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
 	const namespaces: Namespaces = {};
@@ -255,11 +281,18 @@ export function collectNamespacesFromASTs(
 
 	while (pendingAsts.length > 0 && madeProgress) {
 		madeProgress = false;
-		const deferredAsts: Array<ModuleAST | ConstantsAST> = [];
+		const deferredAsts: Array<ValidatedModuleAST | ValidatedConstantsAST> = [];
 
 		for (const ast of pendingAsts) {
 			try {
-				const context = discoverNamespace(ast, namespaces, startingByteAddress, compiledFunctions, options);
+				const context = discoverNamespace(
+					ast,
+					namespaces,
+					startingByteAddress,
+					compiledFunctions,
+					options,
+					prototypeShapes
+				);
 				if (!context.namespace.moduleName) {
 					continue;
 				}
@@ -291,7 +324,7 @@ export function collectNamespacesFromASTs(
 	}
 
 	if (pendingAsts.length > 0) {
-		layoutNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options);
+		layoutNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options, prototypeShapes);
 	}
 
 	const nextStartingByteAddressByMemoryIndex: Record<number, number> = {
@@ -300,7 +333,14 @@ export function collectNamespacesFromASTs(
 	for (const ast of layoutAsts) {
 		const region = getModuleRegionFromAst(ast, options);
 		const nextStartingByteAddress = nextStartingByteAddressByMemoryIndex[region.memoryIndex] ?? startingByteAddress;
-		const context = layoutNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions, options);
+		const context = layoutNamespace(
+			ast,
+			namespaces,
+			nextStartingByteAddress,
+			compiledFunctions,
+			options,
+			prototypeShapes
+		);
 		if (!context.namespace.moduleName) {
 			continue;
 		}

@@ -22,7 +22,7 @@ import type {
 	ModuleLine,
 	PrototypeLine,
 	RegionLine,
-	ShapeLine,
+	ValidatedAST,
 } from '@8f4e/compiler-spec';
 import {
 	ArgumentType,
@@ -30,6 +30,7 @@ import {
 	blockStartInstructions,
 	compilerSourceBlockInstructionPairs,
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
+	getInstructionSpec,
 	isCompilerDirectiveLine,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
@@ -80,8 +81,6 @@ type ModuleASTBuilder = {
 	id: string;
 	moduleLine: ModuleLine;
 	regionLine?: RegionLine;
-	containsShape: boolean;
-	shapeLines: ShapeLine[];
 	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
@@ -139,6 +138,20 @@ function isBlockStartInstruction(instruction: string): instruction is BlockStart
 
 function isBlockEndInstruction(instruction: string): instruction is BlockEndInstruction {
 	return Object.hasOwn(blockEndToStartInstruction, instruction);
+}
+
+function validateShapeSourceBlockScope(line: CompilerASTLine, sourceBlock: SourceBlockPrologue | undefined): void {
+	if (line.instruction !== 'shape') {
+		return;
+	}
+
+	const scope = getInstructionSpec(line.instruction)?.scope;
+	if (scope !== 'module' || sourceBlock?.instruction !== scope) {
+		throw new SyntaxRulesError(SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, undefined, {
+			lineNumber: line.lineNumber,
+			instruction: line.instruction,
+		});
+	}
 }
 
 function getResultTypesFromArguments(line: IfEndLine | BlockEndLine): BlockResultTypes {
@@ -212,8 +225,6 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 				type: 'module',
 				id: line.arguments[0].value,
 				moduleLine: line,
-				containsShape: false,
-				shapeLines: [],
 				memoryDeclarationLines: [],
 			};
 		case 'function':
@@ -242,12 +253,6 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 }
 
 function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): void {
-	if (line.instruction === 'shape') {
-		builder.containsShape = true;
-		builder.shapeLines.push(line);
-		return;
-	}
-
 	switch (line.instruction) {
 		case '#region':
 			builder.regionLine = line;
@@ -309,8 +314,6 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 				lines,
 				moduleLine: builder.moduleLine,
 				...(builder.regionLine ? { regionLine: builder.regionLine } : {}),
-				containsShape: builder.containsShape,
-				shapeLines: builder.shapeLines,
 				memoryDeclarationLines: builder.memoryDeclarationLines,
 			};
 		case 'function':
@@ -572,6 +575,7 @@ function parseCompilerSource(code: string[]): ParsedCompilerSource {
 				instruction: parsedLine.instruction,
 			});
 		}
+		validateShapeSourceBlockScope(parsedLine, currentSourceBlockPrologue);
 
 		ast.push(parsedLine);
 		if (!astBuilder) {
@@ -762,7 +766,7 @@ export function compileToASTLines(
 	return ast;
 }
 
-export function compileToAST(code: string[], cache?: ASTCache<AST>, cacheKey?: string): AST {
+export function compileToAST(code: string[], cache?: ASTCache<ValidatedAST>, cacheKey?: string): ValidatedAST {
 	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
 	const cachedLookup = getASTCacheLookupResult(cached, code);
 	if (cachedLookup.ast) {
@@ -774,10 +778,10 @@ export function compileToAST(code: string[], cache?: ASTCache<AST>, cacheKey?: s
 	}
 
 	const parsedSource = parseCompilerSource(code);
-	const group = toAST(parsedSource);
+	const group = toAST(parsedSource) as ValidatedAST;
 
 	if (cache && cacheKey !== undefined) {
-		const entry: ASTCacheEntry<AST> = {
+		const entry: ASTCacheEntry<ValidatedAST> = {
 			ast: group,
 			hashInput: {
 				code,
