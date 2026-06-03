@@ -32,27 +32,45 @@ import { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 
 /** Expanded module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
+	/** Macro-expanded source lines for one module block. */
 	code: string[];
+	/** Stable key used for tokenizer AST cache lookups. */
 	cacheKey: string;
+	/** Host-callable execution entry that owns this module. */
 	entryName: string;
 };
 
 /** Compiled units and layout metadata for one independently compiled source program. */
 export type CompiledSubProgram = {
+	/** Host-callable execution entry names emitted for this sub-program. */
 	entryNames: string[];
+	/** Number of user-defined host imports placed before built-in functions. */
 	importedFunctionCount: number;
+	/** Number of compiler-generated functions prepended before user-defined functions. */
 	builtInFunctionCount: number;
+	/** Compiled module bodies in emitted function order. */
 	compiledModules: CompiledModule[];
+	/** Compiled modules keyed by module id for public result metadata. */
 	compiledModulesMap: CompiledModuleLookup;
+	/** All compiled user functions, including host imports and defined bodies. */
 	compiledFunctions: CompiledFunction[];
+	/** Compiled user functions keyed by function id for public result metadata. */
 	compiledFunctionsMap: CompiledFunctionLookup;
+	/** User functions represented as WebAssembly imports. */
 	importedUserFunctions: CompiledFunction[];
+	/** User functions emitted with local WebAssembly bodies. */
 	definedFunctions: CompiledFunction[];
+	/** Shared function type registry populated while compiling functions and modules. */
 	functionTypeRegistry: FunctionTypeRegistry;
+	/** Required memory bytes keyed by WebAssembly memory index. */
 	requiredMemoryBytesByIndex: Record<number, number>;
+	/** Required bytes for the default WebAssembly memory. */
 	requiredMemoryBytes: number;
+	/** Required bytes keyed by configured non-default memory region name. */
 	requiredMemoryBytesByRegion: Record<string, number>;
+	/** Passive data segments used to initialize compiled module memory. */
 	initialMemoryDataSegments: InitialMemoryDataSegment[];
+	/** Compiler cache used while parsing this sub-program. */
 	cache: CompilerCache;
 };
 
