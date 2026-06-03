@@ -62,25 +62,7 @@ type ModuleCompilerSource = {
 };
 
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
-export { compileFunction } from './compileFunction';
-export { compileCodegenLine, compileLine } from './compileLine';
-export { compileModule } from './compileModule';
-export { compileModules } from './compileModules';
-export { getError } from './compilerError';
 export { serializeDiagnostic } from './diagnostic';
-export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
-export { default as instructions } from './instructionCompilers';
-export {
-	assertUniqueModuleIds,
-	collectFunctionMetadataFromAsts,
-	collectNamespacesFromASTs,
-} from './semantic/buildNamespace';
-export { createCompilationContext } from './semantic/createCompilationContext';
-export { isMemoryDeclarationInstruction } from './semantic/declarations';
-export { default as normalizeCompileTimeArguments } from './semantic/normalizeCompileTimeArguments';
-export { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
-export { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
-export { createInitialMemoryDataSegments };
 
 function createCompilerCache(): CompilerCache {
 	return {
