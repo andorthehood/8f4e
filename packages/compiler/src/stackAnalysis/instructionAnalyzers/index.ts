@@ -13,16 +13,20 @@ import { analyzeLocalSet } from './localSet';
 import { analyzeLoopIndex } from './loopIndex';
 import { analyzeMapEnd } from './mapEnd';
 import { analyzeClampAddress } from './memory';
-import {
-	analyzeAbs,
-	analyzeAdd,
-	analyzeBitwiseShift,
-	analyzeDiv,
-	analyzeMulMinMax,
-	analyzeOrXor,
-	analyzeRemainder,
-	analyzeSub,
-} from './numeric';
+import { analyzeAbs } from './numeric/abs';
+import { analyzeAdd } from './numeric/add';
+import { analyzeAnd } from './numeric/and';
+import { analyzeDiv } from './numeric/div';
+import { analyzeMax } from './numeric/max';
+import { analyzeMin } from './numeric/min';
+import { analyzeMul } from './numeric/mul';
+import { analyzeOr } from './numeric/or';
+import { analyzeRemainder } from './numeric/remainder';
+import { analyzeShiftLeft } from './numeric/shiftLeft';
+import { analyzeShiftRight } from './numeric/shiftRight';
+import { analyzeShiftRightUnsigned } from './numeric/shiftRightUnsigned';
+import { analyzeSub } from './numeric/sub';
+import { analyzeXor } from './numeric/xor';
 import { analyzePush } from './push';
 import { analyzeFromSpec } from './spec';
 import type { InstructionAnalysisResult } from './types';
@@ -45,19 +49,25 @@ export function analyzeByInstruction(line: CompilerASTLine, context: Compilation
 		case 'sub':
 			return analyzeSub(line, context);
 		case 'min':
+			return analyzeMin(line, context);
 		case 'max':
+			return analyzeMax(line, context);
 		case 'mul':
-			return analyzeMulMinMax(line, context);
+			return analyzeMul(line, context);
 		case 'div':
 			return analyzeDiv(line, context);
 		case 'and':
+			return analyzeAnd(line, context);
 		case 'shiftLeft':
+			return analyzeShiftLeft(line, context);
 		case 'shiftRight':
+			return analyzeShiftRight(line, context);
 		case 'shiftRightUnsigned':
-			return analyzeBitwiseShift(line, context);
+			return analyzeShiftRightUnsigned(line, context);
 		case 'or':
+			return analyzeOr(line, context);
 		case 'xor':
-			return analyzeOrXor(line, context);
+			return analyzeXor(line, context);
 		case 'remainder':
 			return analyzeRemainder(line, context);
 		case 'abs':
