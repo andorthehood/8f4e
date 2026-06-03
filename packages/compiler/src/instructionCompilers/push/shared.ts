@@ -27,12 +27,14 @@ type PointerLoadStep = { accessByteWidth: number; loadByteCode: number[]; memory
 
 export { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../../utils/pushValueKind';
 
+/** Numeric constant emitters keyed by resolved value kind. */
 export const constOpcode: Record<PushValueKind, (value: number) => number[]> = {
 	int32: i32const,
 	float32: f32const,
 	float64: f64const,
 };
 
+/** Memory load emitters keyed by resolved value kind. */
 export const loadOpcode: Record<PushValueKind, (memoryIndex: number) => number[]> = {
 	int32: memoryIndex => i32load(2, 0, memoryIndex),
 	float32: memoryIndex => f32load(2, 0, memoryIndex),
@@ -93,6 +95,17 @@ function getFinalDereferenceLoad(
 	return loadOpcode[kind](pointeeMemoryIndex);
 }
 
+/**
+ * Builds bytecode for loading through a pointer with optional guarded access checks.
+ *
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param lineNumber - Source line number used for generated guard diagnostics.
+ * @param pointerMetadata - Pointer metadata to inspect.
+ * @param baseAddressByteCode - Bytecode that leaves the base pointer address on the stack.
+ * @param pointerValueSource - Source of the pointer value being dereferenced.
+ * @param dereferenceDepth - Pointer dereference depth requested by the instruction.
+ * @returns The result of the operation.
+ */
 export function buildPointerDereferenceByteCode(
 	context: CodegenContext,
 	lineNumber: number,

@@ -1,6 +1,12 @@
 import type { OperandRule } from '@8f4e/compiler-spec';
 import { ErrorCode, type ErrorCodeValue } from '@8f4e/compiler-spec';
 
+/**
+ * Maps an operand rule from the compiler spec to the semantic error emitted when it fails.
+ *
+ * @param rule - Operand rule from the compiler spec.
+ * @returns The compiler error instance.
+ */
 export function inferErrorCodeFromRule(rule: OperandRule | OperandRule[]): ErrorCodeValue {
 	if (Array.isArray(rule)) {
 		return ErrorCode.TYPE_MISMATCH;

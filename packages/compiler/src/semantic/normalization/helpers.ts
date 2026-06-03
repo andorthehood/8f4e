@@ -11,6 +11,12 @@ import {
 import { getError } from '../../compilerError';
 import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
 
+/**
+ * Returns whether namespace discovery has populated any module or constants namespaces.
+ *
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns Whether the check succeeds.
+ */
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
 	return Object.keys(context.namespace.namespaces).length > 0;
 }
@@ -20,6 +26,12 @@ function getTargetModuleNamespace(context: CompilationContext, targetModuleId: s
 	return targetNamespace?.kind === 'module' ? targetNamespace : undefined;
 }
 
+/**
+ * Returns whether an identifier reference kind targets another namespace.
+ *
+ * @param referenceKind - referenceKind value used by this operation.
+ * @returns Whether the check succeeds.
+ */
 export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolean {
 	return (
 		referenceKind === 'intermodular-module-reference' ||
@@ -36,6 +48,10 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
  * target existing modules and memory once namespace collection is complete.
  * It does not evaluate the query value itself during namespace discovery; numeric resolution
  * of sizeof/count/max/min forms is handled by tryResolveCompileTimeArgument.
+ *
+ * @param identifier - identifier value used by this operation.
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
  */
 export function validateIntermoduleAddressReference(
 	identifier: ArgumentIdentifier,
@@ -90,6 +106,13 @@ export function validateIntermoduleAddressReference(
 	}
 }
 
+/**
+ * Attempts to fold one argument to a normalized literal, leaving unresolved arguments unchanged.
+ *
+ * @param argument - Argument whose resolved value or metadata should be used.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The result of the operation.
+ */
 export function normalizeArgument(
 	argument: Argument,
 	context: CompilationContext
@@ -121,6 +144,11 @@ export function normalizeArgument(
  * Validates an unresolved compile-time expression argument, deferring namespace references during discovery.
  * Throws UNDECLARED_IDENTIFIER if the expression cannot be deferred and cannot be resolved.
  * Returns true if the argument was deferred, false if it should continue processing.
+ *
+ * @param argument - Argument whose resolved value or metadata should be used.
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns Whether the check succeeds.
  */
 export function validateOrDeferCompileTimeExpression(
 	argument: Extract<Argument, { type: typeof ArgumentType.COMPILE_TIME_EXPRESSION }>,
@@ -146,6 +174,11 @@ export function validateOrDeferCompileTimeExpression(
  * (e.g. map, default). Throws UNDECLARED_IDENTIFIER unless the identifier is deferred
  * as a namespace reference during discovery.
  * Returns true if the argument was deferred, false if processing should continue.
+ *
+ * @param argument - Argument whose resolved value or metadata should be used.
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns Whether the check succeeds.
  */
 export function validateOrDeferUnresolvedIdentifier(
 	argument: Extract<Argument, { type: typeof ArgumentType.IDENTIFIER }>,
@@ -166,6 +199,11 @@ export function validateOrDeferUnresolvedIdentifier(
  * throw or defer unresolved compile-time expressions or identifiers. Callers
  * are responsible for invoking validateOrDefer* helpers when that behavior
  * is required.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param indexes - Argument indexes that should be normalized.
+ * @returns The result of the operation.
  */
 export function normalizeArgumentsAtIndexes<TLine extends CompilerASTLine>(
 	line: TLine,
@@ -191,6 +229,11 @@ export function normalizeArgumentsAtIndexes<TLine extends CompilerASTLine>(
 /**
  * Normalizes arguments at the given indexes, then validates any remaining unresolved
  * compile-time expressions or identifiers as either deferrable namespace references or errors.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param indexes - Argument indexes that should be normalized.
+ * @returns The result of the operation.
  */
 export function normalizeAndValidateResolvableArgs<TLine extends CompilerASTLine>(
 	line: TLine,
