@@ -14,12 +14,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import {
-	DEFAULT_HOST_IMPORT_MODULE_NAME,
-	ErrorCode,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	isMemoryDeclarationLine,
-} from '@8f4e/compiler-spec';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import {
 	call,
 	createCodeSection,
@@ -55,6 +50,7 @@ import {
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 import { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 
+/** Expanded module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
 	code: string[];
 	cacheKey: string;
@@ -64,14 +60,17 @@ type ModuleCompilerSource = {
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
 export { serializeDiagnostic } from './diagnostic';
 
+/** Creates the default compiler cache used for validated AST reuse. */
 function createCompilerCache(): CompilerCache {
 	return {
 		ast: createASTCache<ValidatedAST>(),
 	};
 }
 
+/** Built-in WebAssembly export names that user functions are not allowed to reuse. */
 const RESERVED_EXPORT_NAMES = new Set(['initDefaults']);
 
+/** Ensures user function exports do not collide with each other or generated entry exports. */
 function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, entryNames: readonly string[]): void {
 	const seen = new Set<string>();
 	const builtInExportNames = new Set([...RESERVED_EXPORT_NAMES, ...entryNames]);
@@ -91,6 +90,7 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, entr
 	}
 }
 
+/** Creates synthetic metadata for generated entry dispatcher functions. */
 function createEntryFunctionMetadata(
 	entryNames: readonly string[],
 	importedFunctionCount: number
@@ -107,6 +107,7 @@ function createEntryFunctionMetadata(
 	);
 }
 
+/** Rejects user functions whose ids collide with generated entry dispatcher names. */
 function assertNoFunctionEntryNameCollisions(
 	functions: readonly ValidatedFunctionAST[],
 	entryMetadata: FunctionMetadataLookup
@@ -118,6 +119,7 @@ function assertNoFunctionEntryNameCollisions(
 	}
 }
 
+/** Calculates required byte size for each WebAssembly memory index. */
 function getRequiredMemoryBytesByIndex(
 	items: Array<{ memoryIndex: number; byteAddress?: number; wordAlignedSize?: number }>
 ): Record<number, number> {
@@ -129,6 +131,7 @@ function getRequiredMemoryBytesByIndex(
 	}, {});
 }
 
+/** Converts non-default memory byte requirements into configured memory region names. */
 function getRequiredMemoryBytesByRegion(
 	requiredMemoryBytesByIndex: Record<number, number>,
 	memoryRegions: readonly string[]
@@ -147,46 +150,7 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
-function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedModuleAST {
-	const ast = compileToAST(code, cache.ast, cacheKey);
-	if (ast.type !== 'module') {
-		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
-	}
-	return ast;
-}
-
-function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedConstantsAST {
-	const ast = compileToAST(code, cache.ast, cacheKey);
-	if (ast.type !== 'constants') {
-		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
-	}
-	return ast;
-}
-
-function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedFunctionAST {
-	const ast = compileToAST(code, cache.ast, cacheKey);
-	if (ast.type !== 'function') {
-		throw getError(ErrorCode.MISSING_FUNCTION_ID, ast.lines[0], undefined);
-	}
-	return ast;
-}
-
-function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedPrototypeAST {
-	const ast = compileToAST(code, cache.ast, cacheKey);
-	if (ast.type !== 'prototype') {
-		throw getError(ErrorCode.MISSING_PROTOTYPE_ID, ast.lines[0], undefined);
-	}
-	for (const line of ast.lines) {
-		if (line.instruction === 'prototype' || line.instruction === 'prototypeEnd') {
-			continue;
-		}
-		if (!isMemoryDeclarationLine(line)) {
-			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, undefined);
-		}
-	}
-	return ast;
-}
-
+/** Indexes prototype ASTs by id and rejects duplicate prototype declarations. */
 function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
 	const prototypeShapesById: Record<string, ValidatedPrototypeAST> = {};
 
@@ -203,6 +167,7 @@ function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): R
 	return prototypeShapesById;
 }
 
+/** Compiles modules, constants, functions, and prototypes into a complete WebAssembly program. */
 export default function compile(
 	input: CompileInput,
 	options: CompileOptions,
@@ -223,7 +188,9 @@ export default function compile(
 		};
 	});
 
-	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) => parsePrototypeAST(code, cache, cacheKey));
+	const astPrototypes = expandedPrototypes.map(
+		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedPrototypeAST
+	);
 	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
 
 	// Expand macros in modules
@@ -251,13 +218,15 @@ export default function compile(
 	});
 
 	const astModuleEntries = expandedModuleSources.map(source => {
-		const ast = parseModuleAST(source.code, cache, source.cacheKey);
+		const ast = compileToAST(source.code, cache.ast, source.cacheKey) as ValidatedModuleAST;
 		return {
 			entryName: source.entryName,
 			ast,
 		};
 	});
-	const astConstants = expandedConstants.map(({ code, cacheKey }) => parseConstantsAST(code, cache, cacheKey));
+	const astConstants = expandedConstants.map(
+		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedConstantsAST
+	);
 	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
@@ -274,7 +243,9 @@ export default function compile(
 	);
 
 	// Compile functions first with WASM indices and type registry
-	const astFunctions = expandedFunctions.map(({ code, cacheKey }) => parseFunctionAST(code, cache, cacheKey));
+	const astFunctions = expandedFunctions.map(
+		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedFunctionAST
+	);
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;

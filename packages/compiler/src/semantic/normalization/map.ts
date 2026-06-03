@@ -1,23 +1,17 @@
 import type { CompilationContext, MapLine, NormalizedArgumentLiteral, NormalizedMapLine } from '@8f4e/compiler-spec';
-import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
+import { ArgumentType } from '@8f4e/compiler-spec';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
+/** Creates the implicit key argument for one-argument `map` rows from the active map state. */
 function createImplicitKeyArgument(context: CompilationContext): NormalizedArgumentLiteral {
-	const block = context.blockStack[context.blockStack.length - 1];
-	const mapState = block?.blockType === BlockType.MAP ? block.mapState : undefined;
+	const { mapState } = context.activeMapBlock!;
 
 	return {
 		type: ArgumentType.LITERAL,
-		value: mapState?.rows.length ?? 0,
-		isInteger: !!mapState?.inputIsInteger,
-		...(mapState?.inputIsFloat64 ? { isFloat64: true } : {}),
+		value: mapState.rows.length,
+		isInteger: mapState.inputIsInteger,
+		...(mapState.inputIsFloat64 ? { isFloat64: true } : {}),
 	};
-}
-
-function isInsideMapBlock(context: CompilationContext): boolean {
-	const block = context.blockStack[context.blockStack.length - 1];
-
-	return block?.blockType === BlockType.MAP;
 }
 
 /**
@@ -26,12 +20,8 @@ function isInsideMapBlock(context: CompilationContext): boolean {
  * current zero-based map row count as the implicit key and normalize the lone
  * argument as the value.
  */
-export default function normalizeMap(line: MapLine, context: CompilationContext): NormalizedMapLine | MapLine {
+export default function normalizeMap(line: MapLine, context: CompilationContext): NormalizedMapLine {
 	if (line.arguments.length === 1) {
-		if (!isInsideMapBlock(context)) {
-			return line;
-		}
-
 		const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);
 
 		return {
