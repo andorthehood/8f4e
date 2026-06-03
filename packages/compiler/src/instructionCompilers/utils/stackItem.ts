@@ -1,6 +1,6 @@
 import type { CodegenContext, CompilationContext, CompilerASTLine, StackAddress, StackItem } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { getError } from '../../compilerError';
 
 export function requireStackAddress(
 	item: StackItem,

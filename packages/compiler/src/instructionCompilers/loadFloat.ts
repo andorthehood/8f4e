@@ -1,10 +1,10 @@
 import type { ASTLineBase, FloatLoadInstructionSpecName, InstructionCompiler } from '@8f4e/compiler-spec';
 import { getInstructionSpec } from '@8f4e/compiler-spec';
 import { f32load, WASM_TYPE_F32 } from '@8f4e/compiler-wasm-utils';
-import { requireStackAddress } from '../utils/stackItem';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
+import { requireStackAddress } from './utils/stackItem';
 
 type LoadFloatLine = ASTLineBase<FloatLoadInstructionSpecName, []>;
 
