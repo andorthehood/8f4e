@@ -4,8 +4,8 @@ import { fileURLToPath } from 'url';
 
 import { describe, expect, it } from 'vitest';
 
-import { compileToASTLines } from '../src/parser';
-import { parse8f4eProject } from '../src/project';
+import { compileToAST } from '../src';
+import { parse8f4eProject } from '../src/projectParsing';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -42,7 +42,7 @@ function loadExampleProject(relativePath: string): string {
 
 function getProjectAstSummary(relativePath: string): { blocks: number; lines: number; blockLines: number[] } {
 	const project = parse8f4eProject(loadExampleProject(relativePath));
-	const blockLines = project.codeBlocks.map(block => compileToASTLines(block.code).length);
+	const blockLines = project.codeBlocks.map(block => compileToAST(block.code).lines.length);
 
 	return {
 		blocks: blockLines.length,
