@@ -11,6 +11,10 @@ import { getError } from '../../compilerError';
  * values already by the time the namespace is registered. Declaration order matters:
  * only consts imported by a `use` that appears before a subsequent `const` reference
  * are in scope for that reference.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export default function semanticUse(line: UseLine, context: CompilationContext) {
 	const namespaceId = line.arguments[0].value;

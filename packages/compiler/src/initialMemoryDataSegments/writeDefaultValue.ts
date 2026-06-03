@@ -7,6 +7,7 @@ import type { DataStructure } from '@8f4e/compiler-spec';
  * @param memory - Memory declaration or data structure being materialized.
  * @param byteAddress - Byte address where the value should be written.
  * @param value - Default value to write.
+ * @returns Nothing.
  */
 export default function writeDefaultValue(
 	view: DataView,

@@ -6,7 +6,13 @@ import { consume, produce } from '../stack';
 import type { InstructionAnalysisResult } from '../types';
 import { numericResult } from './shared';
 
-/** Analyzes `div` stack effects, known integer propagation, and zero-divisor failures. */
+/**
+ * Analyzes `div` stack effects, known integer propagation, and zero-divisor failures.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Stack-analysis result for the div instruction.
+ */
 export function analyzeDiv(line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 2);
 	const right = consumed[1];

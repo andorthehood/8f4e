@@ -6,6 +6,9 @@
  * etc.
  *
  * Rejects named memory references like &module:buffer and module-base references like &module:.
+ *
+ * @param value - Value to inspect.
+ * @returns Whether the intermodular module nth reference condition is true.
  */
 export default function isIntermodularModuleNthReference(value: string): boolean {
 	return /^&[^\s&:.]+:[0-9]+$/.test(value);

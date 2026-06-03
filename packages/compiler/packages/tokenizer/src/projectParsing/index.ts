@@ -51,6 +51,12 @@ function startsWithInstruction(line: string, instruction: string): boolean {
 	return line === instruction || (line.startsWith(instruction) && (nextCharacter === ' ' || nextCharacter === '\t'));
 }
 
+/**
+ * Gets project opener keyword.
+ *
+ * @param line - Source AST line being processed.
+ * @returns Resolved project opener keyword.
+ */
 export function getProjectOpenerKeyword(line: string): string | null {
 	for (const opener of closerByOpener.keys()) {
 		if (startsWithInstruction(line, opener)) {
@@ -60,6 +66,12 @@ export function getProjectOpenerKeyword(line: string): string | null {
 	return null;
 }
 
+/**
+ * Gets project closer keyword.
+ *
+ * @param line - Source AST line being processed.
+ * @returns Resolved project closer keyword.
+ */
 export function getProjectCloserKeyword(line: string): string | null {
 	for (const closer of openerByCloser.keys()) {
 		if (startsWithInstruction(line, closer)) {
@@ -69,6 +81,12 @@ export function getProjectCloserKeyword(line: string): string | null {
 	return null;
 }
 
+/**
+ * Gets expected project closer prefix.
+ *
+ * @param opener - Project block opener keyword.
+ * @returns Resolved expected project closer prefix.
+ */
 export function getExpectedProjectCloserPrefix(opener: string): string {
 	return closerByOpener.get(opener) ?? opener + 'End';
 }
@@ -88,6 +106,12 @@ function isProjectGapLine(trimmedLine: string): boolean {
 	);
 }
 
+/**
+ * Gets project block type.
+ *
+ * @param code - Source lines to process.
+ * @returns Resolved project block type.
+ */
 export function getProjectBlockType(code: string[]): ProjectBlockType {
 	for (const line of code) {
 		const trimmed = line.trim();
@@ -101,6 +125,12 @@ export function getProjectBlockType(code: string[]): ProjectBlockType {
 	return 'unknown';
 }
 
+/**
+ * Gets document project block type.
+ *
+ * @param code - Source lines to process.
+ * @returns Resolved document project block type.
+ */
 export function getDocumentProjectBlockType(code: string[]): DocumentBlockType | 'unknown' {
 	const trimmedLines = code.map(line => line.trim());
 	const markerMatches = BLOCK_DELIMITERS.map(({ type, opener, closer }) => ({
@@ -118,6 +148,12 @@ export function getDocumentProjectBlockType(code: string[]): DocumentBlockType |
 	return match.hasOpener && match.hasCloser ? match.type : 'unknown';
 }
 
+/**
+ * Parses 8f4e project.
+ *
+ * @param text - text value to use.
+ * @returns Parsed 8f4e project.
+ */
 export function parse8f4eProject(text: string): ProjectInput {
 	const lines = text.split('\n');
 
@@ -235,6 +271,12 @@ export function parse8f4eProject(text: string): ProjectInput {
 	return { codeBlocks };
 }
 
+/**
+ * Runs pick project compiler blocks.
+ *
+ * @param blocks - Project code blocks to group.
+ * @returns The computed result.
+ */
 export function pickProjectCompilerBlocks(blocks: ProjectCodeBlock[]): ProjectCompilerBlocks {
 	const entries: Record<string, Module[]> = { main: [] };
 	const constantsBlocks: Module[] = [];
