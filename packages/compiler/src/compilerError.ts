@@ -36,8 +36,8 @@ interface ErrorDetails {
  * Creates a compiler-stage diagnostic for a semantic or code-generation error.
  *
  * @param code - Compiler error code to materialize.
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
  * @param details - Optional dynamic details to include in the diagnostic.
  * @returns The compiler error instance.
  */

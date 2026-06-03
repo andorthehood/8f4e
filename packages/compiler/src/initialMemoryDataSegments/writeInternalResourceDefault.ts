@@ -5,6 +5,7 @@ import type { InternalResource } from '@8f4e/compiler-spec';
  *
  * @param view - DataView receiving the encoded bytes.
  * @param resource - Internal resource declaration to materialize.
+ * @returns Nothing.
  */
 export default function writeInternalResourceDefault(view: DataView, resource: InternalResource) {
 	if (resource.storageType === 'float64') {

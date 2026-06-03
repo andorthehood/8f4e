@@ -166,7 +166,7 @@ export function getPointeeElementIsIntegerFromMetadata(pointerMetadata: PointerM
  * Resolves the memory value kind produced by dereferencing pointer metadata once.
  *
  * @param pointerMetadata - Pointer metadata to inspect.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function getPointeeValueKindFromMetadata(pointerMetadata: PointerMetadata | undefined): MemoryValueKind {
 	if (!pointerMetadata?.pointeeBaseType) return 'float32';
@@ -195,7 +195,7 @@ export function getDereferencedValueWordSizeFromMetadata(
  *
  * @param pointerMetadata - Pointer metadata to inspect.
  * @param dereferenceDepth - Pointer dereference depth requested by the instruction.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function getDereferencedValueKindFromMetadata(
 	pointerMetadata: PointerMetadata | undefined,

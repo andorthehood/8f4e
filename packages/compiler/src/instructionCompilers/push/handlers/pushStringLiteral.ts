@@ -9,6 +9,10 @@ import { saveByteCode } from '../../utils/saveByteCode';
  * the high surrogate value is clamped to 0..255. For ASCII/Latin-1 strings this
  * produces the expected byte sequence.
  * No null terminator is appended.
+ *
+ * @param argument - Parsed argument to process.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export default function pushStringLiteral(argument: ArgumentStringLiteral, context: CodegenContext): CodegenContext {
 	// Array.from iterates by UTF-16 code unit; & 0xff clamps each to 0..255

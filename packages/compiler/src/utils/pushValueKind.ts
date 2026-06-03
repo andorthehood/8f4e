@@ -8,7 +8,7 @@ export type PushValueKind = 'int32' | 'float32' | 'float64';
  * Resolves the pushed scalar kind for a declared memory item.
  *
  * @param memoryItem - Memory item whose scalar kind should be resolved.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function resolveMemoryValueKind(memoryItem: DataStructure): PushValueKind {
 	if (memoryItem.isInteger) return 'int32';
@@ -20,7 +20,7 @@ export function resolveMemoryValueKind(memoryItem: DataStructure): PushValueKind
  * Resolves the pushed scalar kind for a parsed literal or compile-time argument.
  *
  * @param argument - Argument whose resolved value or metadata should be used.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function resolveArgumentValueKind(argument: { isInteger: boolean; isFloat64?: boolean }): PushValueKind {
 	if (argument.isFloat64) return 'float64';
@@ -31,7 +31,7 @@ export function resolveArgumentValueKind(argument: { isInteger: boolean; isFloat
  * Maps a push scalar kind to its emitted WASM value type.
  *
  * @param kind - Scalar value kind to convert.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function valueKindToWasmType(
 	kind: PushValueKind
@@ -51,7 +51,7 @@ type StackItemExtras = Pick<StackItem, 'isNonZero' | 'knownIntegerValue'> &
  *
  * @param kind - Scalar value kind to convert.
  * @param extras - Optional stack metadata to attach to the produced item.
- * @returns The stack items produced or consumed by the operation.
+ * @returns The relevant stack items for the analysis step.
  */
 export function kindToStackItem(kind: PushValueKind, extras?: StackItemExtras): StackItem {
 	if (kind === 'int32' && extras?.address) {

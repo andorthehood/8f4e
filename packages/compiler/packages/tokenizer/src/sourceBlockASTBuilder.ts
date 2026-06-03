@@ -59,7 +59,12 @@ type PrototypeASTBuilder = {
 /** Source block builder selected from the first valid source block in parsed input. */
 export type SourceBlockASTBuilder = ModuleASTBuilder | FunctionASTBuilder | ConstantsASTBuilder | PrototypeASTBuilder;
 
-/** Creates the source-block builder represented by a parsed block-start line. */
+/**
+ * Creates the source-block builder represented by a parsed block-start line.
+ *
+ * @param line - Source AST line being processed.
+ * @returns Source-block AST builder for the line, or `undefined` when the line is not a source-block opener.
+ */
 export function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuilder | undefined {
 	switch (line.instruction) {
 		case 'module':
@@ -131,7 +136,13 @@ function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine
 	}
 }
 
-/** Routes a parsed line into the active source-block builder. */
+/**
+ * Routes a parsed line into the active source-block builder.
+ *
+ * @param builder - Source-block AST builder to update.
+ * @param line - Source AST line being processed.
+ * @returns Nothing.
+ */
 export function applySourceBlockASTLine(builder: SourceBlockASTBuilder, line: CompilerASTLine): void {
 	switch (builder.type) {
 		case 'module':

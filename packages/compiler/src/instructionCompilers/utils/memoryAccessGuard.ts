@@ -60,9 +60,10 @@ type MemoryGuardContext = CodegenContext | CompilationContext;
 /**
  * Allocates or reuses a hidden local used by emitted memory guard bytecode.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @param name - Local name used for the generated guard slot.
  * @param item - Memory item that needs a guard local.
+ * @returns Resolved or create memory guard local.
  */
 export function getOrCreateMemoryGuardLocal(
 	context: MemoryGuardContext,
@@ -107,7 +108,7 @@ export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number):
  *
  * @param accessByteWidth - Byte width of the memory access being protected.
  * @param memoryIndex - Memory index to resolve.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function linearLastValidStartAddress(accessByteWidth: number, memoryIndex = 0): number[] {
 	return [
@@ -155,9 +156,9 @@ function zeroValue(type: NumericWasmValueType): number[] {
 /**
  * Builds a guarded load that returns a zero value when the address is out of bounds.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @param options - Compiler options for this compilation pass.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function guardedLoad(context: MemoryGuardContext, options: GuardedLoadOptions): number[] {
 	return guardedAddressOperation(context, {
@@ -169,9 +170,9 @@ export function guardedLoad(context: MemoryGuardContext, options: GuardedLoadOpt
 /**
  * Builds a guarded address operation with caller-provided bytecode for the in-bounds branch.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @param options - Compiler options for this compilation pass.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function guardedAddressOperation(
 	context: MemoryGuardContext,
@@ -195,9 +196,9 @@ export function guardedAddressOperation(
 /**
  * Builds a guarded store that skips writing when the address is out of bounds.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @param options - Compiler options for this compilation pass.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function guardedStore(context: MemoryGuardContext, options: GuardedStoreOptions): number[] {
 	const addressLocal = getOrCreateMemoryGuardLocal(context, `__memoryGuardAddr_${options.lineNumber}`, {
@@ -232,9 +233,9 @@ export function isSafeMemoryCopy(destination: StackItem, source: StackItem, byte
 /**
  * Builds a guarded memory.copy that skips copying when either range is out of bounds.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @param options - Compiler options for this compilation pass.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedMemoryCopyOptions): number[] {
 	const destinationLocal = getOrCreateMemoryGuardLocal(context, `__memoryCopyDestination_${options.lineNumber}`, {
@@ -265,9 +266,9 @@ export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedM
  * @param addressLocalIndex - Local index holding the guarded destination address.
  * @param valueLocalIndex - Local index holding the guarded value to store.
  * @param accessByteWidth - Byte width of the memory access being protected.
- * @param storeByteCode - storeByteCode value used by this operation.
+ * @param storeByteCode - store byte code value to use.
  * @param memoryIndex - Memory index to resolve.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function guardedStoreFromLocals(
 	addressLocalIndex: number,

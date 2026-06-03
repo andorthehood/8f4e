@@ -5,8 +5,9 @@ import { getError } from '../compilerError';
 /**
  * Throws when a function attempts memory IO without the `#impure` directive.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export default function assertFunctionMemoryIoAllowed(
 	line: CompilerASTLine,

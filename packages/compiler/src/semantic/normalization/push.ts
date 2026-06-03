@@ -62,6 +62,10 @@ function throwIfPointeeCountIsUnknown(line: PushLine, context: CompilationContex
  * For identifier arguments, validates that the identifier is a known memory item, pointer,
  * memory reference, local, or valid intermodule reference.
  * Throws UNDECLARED_IDENTIFIER for unrecognized identifiers.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Normalized push line.
  */
 export default function normalizePush(line: PushLine, context: CompilationContext): NormalizedPushLine {
 	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0]);
