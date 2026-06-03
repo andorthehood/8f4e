@@ -7,7 +7,7 @@ import type {
 } from './arguments';
 import { ArgumentType } from './arguments';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
-import type { NoSourceArgumentInstructionName } from './instructionSpecs';
+import type { NoSourceArgumentInstructionName } from './instructionSpecTypes';
 import type { DocumentOnlyInstructionName, MacroInstructionName, SemanticInstructionName } from './instructions';
 import { semanticInstructionNames } from './instructions';
 import {
