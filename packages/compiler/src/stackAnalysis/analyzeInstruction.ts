@@ -356,13 +356,7 @@ function analyzeLocalSet(line: CompilerASTLine, context: CompilationContext): { 
 	return { consumed, produced: [] };
 }
 
-function analyzeLoopIndex(line: CompilerASTLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
-	const loopBlock = [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP);
-
-	if (!loopBlock || !context.locals[loopBlock.loopCounterLocalName]) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP, line, context);
-	}
-
+function analyzeLoopIndex(context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const produced: Stack = [createStackValue('int', { isNonZero: false })];
 	produce(context, produced);
 	return { consumed: [], produced };
@@ -704,7 +698,7 @@ function analyzeByInstruction(
 			return analyzeCall(line as ResolvedCallLine, context);
 		}
 		case 'loopIndex': {
-			return analyzeLoopIndex(line, context);
+			return analyzeLoopIndex(context);
 		}
 		case 'mapEnd': {
 			return analyzeMapEnd(line as MapEndLine, context);
