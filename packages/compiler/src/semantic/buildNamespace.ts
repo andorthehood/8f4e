@@ -17,6 +17,7 @@ import {
 	type ModuleAST,
 	type NamespaceBuildContext,
 	type Namespaces,
+	type PrototypeAST,
 	type SemanticInstructionLine,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
@@ -99,7 +100,8 @@ function createNamespaceBuildContext(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>
 ): NamespaceBuildContext {
 	const defaultRegion = getDefaultMemoryRegion();
 	return createCompilationContext<NamespaceBuildContext>({
@@ -125,6 +127,8 @@ function createNamespaceBuildContext(
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
 		codeBlockType: ast.type,
+		prototypeShapes,
+		expandPrototypeShapes: true,
 	});
 }
 
@@ -172,9 +176,17 @@ function discoverNamespace(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>
 ): NamespaceBuildContext {
-	const context = createNamespaceBuildContext(ast, namespaces, startingByteAddress, functions, options);
+	const context = createNamespaceBuildContext(
+		ast,
+		namespaces,
+		startingByteAddress,
+		functions,
+		options,
+		prototypeShapes
+	);
 	applyNamespaceDeclarationLines(ast, context, toNamespaceDiscoveryMemoryDeclarationLine);
 
 	return context;
@@ -185,9 +197,17 @@ export function layoutNamespace(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>
 ): NamespaceBuildContext {
-	const context = createNamespaceBuildContext(ast, namespaces, startingByteAddress, functions, options);
+	const context = createNamespaceBuildContext(
+		ast,
+		namespaces,
+		startingByteAddress,
+		functions,
+		options,
+		prototypeShapes
+	);
 	applyNamespaceDeclarationLines(ast, context, line => line);
 	resolveScalarMemoryDefaults(ast, context);
 
@@ -240,15 +260,35 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
 	};
 }
 
+function toNamespaceDiscoveryPrototypeShapes(
+	prototypeShapes: Readonly<Record<string, PrototypeAST>> | undefined
+): Readonly<Record<string, PrototypeAST>> | undefined {
+	if (!prototypeShapes) {
+		return undefined;
+	}
+
+	return Object.fromEntries(
+		Object.entries(prototypeShapes).map(([id, prototype]) => [
+			id,
+			{
+				...prototype,
+				memoryDeclarationLines: prototype.memoryDeclarationLines.map(toNamespaceDiscoveryMemoryDeclarationLine),
+			},
+		])
+	);
+}
+
 export function collectNamespacesFromASTs(
 	asts: readonly (ModuleAST | ConstantsAST)[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
 	compiledFunctions?: FunctionMetadataLookup,
 	layoutAsts: readonly (ModuleAST | ConstantsAST)[] = asts,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>
 ): Namespaces {
 	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
 	const namespaces: Namespaces = {};
+	const discoveryPrototypeShapes = toNamespaceDiscoveryPrototypeShapes(prototypeShapes);
 
 	let pendingAsts = [...asts];
 	let madeProgress = true;
@@ -259,7 +299,14 @@ export function collectNamespacesFromASTs(
 
 		for (const ast of pendingAsts) {
 			try {
-				const context = discoverNamespace(ast, namespaces, startingByteAddress, compiledFunctions, options);
+				const context = discoverNamespace(
+					ast,
+					namespaces,
+					startingByteAddress,
+					compiledFunctions,
+					options,
+					discoveryPrototypeShapes
+				);
 				if (!context.namespace.moduleName) {
 					continue;
 				}
@@ -291,7 +338,7 @@ export function collectNamespacesFromASTs(
 	}
 
 	if (pendingAsts.length > 0) {
-		layoutNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options);
+		layoutNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options, prototypeShapes);
 	}
 
 	const nextStartingByteAddressByMemoryIndex: Record<number, number> = {
@@ -300,7 +347,14 @@ export function collectNamespacesFromASTs(
 	for (const ast of layoutAsts) {
 		const region = getModuleRegionFromAst(ast, options);
 		const nextStartingByteAddress = nextStartingByteAddressByMemoryIndex[region.memoryIndex] ?? startingByteAddress;
-		const context = layoutNamespace(ast, namespaces, nextStartingByteAddress, compiledFunctions, options);
+		const context = layoutNamespace(
+			ast,
+			namespaces,
+			nextStartingByteAddress,
+			compiledFunctions,
+			options,
+			prototypeShapes
+		);
 		if (!context.namespace.moduleName) {
 			continue;
 		}

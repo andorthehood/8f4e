@@ -1,6 +1,9 @@
 {
   "code": 5,
-  "context": {},
+  "context": {
+    "codeBlockId": "missingShape",
+    "codeBlockType": "module",
+  },
   "line": {
     "arguments": [
       {
