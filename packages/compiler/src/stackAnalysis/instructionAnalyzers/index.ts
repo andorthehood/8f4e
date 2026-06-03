@@ -32,11 +32,6 @@ import { analyzeFromSpec } from './spec';
 import type { InstructionAnalysisResult } from './types';
 
 export function analyzeByInstruction(line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
-	const specResult = analyzeFromSpec(line, context, getInstructionSpec(line.instruction));
-	if (specResult) {
-		return specResult;
-	}
-
 	switch (line.instruction) {
 		case 'push': {
 			return {
@@ -91,6 +86,6 @@ export function analyzeByInstruction(line: CompilerASTLine, context: Compilation
 		case 'mapEnd':
 			return analyzeMapEnd(line as MapEndLine, context);
 		default:
-			return { consumed: [], produced: [] };
+			return analyzeFromSpec(line, context, getInstructionSpec(line.instruction)) ?? { consumed: [], produced: [] };
 	}
 }
