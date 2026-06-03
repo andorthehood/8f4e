@@ -4,10 +4,6 @@ import { getError } from '../../compilerError';
 import { popBlock } from '../../utils/blockStack';
 
 export default function semanticModuleEnd(line: ModuleEndLine, context: CompilationContext) {
-	if (!context.insideModuleBlock) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
-
 	const block = popBlock(context);
 
 	if (!block || block.blockType !== BlockType.MODULE) {
