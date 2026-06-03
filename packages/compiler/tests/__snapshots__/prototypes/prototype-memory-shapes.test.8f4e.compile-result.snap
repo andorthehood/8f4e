@@ -22,28 +22,10 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "phase",
+              "value": "oscillatorState",
             },
           ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "float",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "frequency",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 440,
-            },
-          ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "float",
+          "instruction": "shape",
         },
         {
           "arguments": [
@@ -279,28 +261,10 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "phase",
+              "value": "oscillatorState",
             },
           ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "float",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "frequency",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 440,
-            },
-          ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "float",
+          "instruction": "shape",
         },
         {
           "arguments": [

@@ -1,18 +1,18 @@
 import type {
-	AST,
 	CompiledFunctionLookup,
 	CompiledModule,
 	CompileInput,
 	CompileOptions,
 	CompileResult,
 	CompilerCache,
-	ConstantsAST,
-	FunctionAST,
 	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
-	ModuleAST,
-	PrototypeAST,
+	ValidatedAST,
+	ValidatedConstantsAST,
+	ValidatedFunctionAST,
+	ValidatedModuleAST,
+	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import {
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
@@ -61,37 +61,12 @@ type ModuleCompilerSource = {
 	entryName: string;
 };
 
-type ParsedPrototypeSource = {
-	ast: PrototypeAST;
-	source: {
-		code: string[];
-	};
-};
-
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
-export { compileFunction } from './compileFunction';
-export { compileCodegenLine, compileLine } from './compileLine';
-export { compileModule } from './compileModule';
-export { compileModules } from './compileModules';
-export { getError } from './compilerError';
 export { serializeDiagnostic } from './diagnostic';
-export type { InitialMemoryDataSegment } from './initialMemoryDataSegments';
-export { default as instructions } from './instructionCompilers';
-export {
-	assertUniqueModuleIds,
-	collectFunctionMetadataFromAsts,
-	collectNamespacesFromASTs,
-} from './semantic/buildNamespace';
-export { createCompilationContext } from './semantic/createCompilationContext';
-export { isMemoryDeclarationInstruction } from './semantic/declarations';
-export { default as normalizeCompileTimeArguments } from './semantic/normalizeCompileTimeArguments';
-export { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
-export { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
-export { createInitialMemoryDataSegments };
 
 function createCompilerCache(): CompilerCache {
 	return {
-		ast: createASTCache<AST>(),
+		ast: createASTCache<ValidatedAST>(),
 	};
 }
 
@@ -133,7 +108,7 @@ function createEntryFunctionMetadata(
 }
 
 function assertNoFunctionEntryNameCollisions(
-	functions: readonly FunctionAST[],
+	functions: readonly ValidatedFunctionAST[],
 	entryMetadata: FunctionMetadataLookup
 ): void {
 	for (const ast of functions) {
@@ -172,7 +147,7 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
-function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string): ModuleAST {
+function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedModuleAST {
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'module') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
@@ -180,7 +155,7 @@ function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string):
 	return ast;
 }
 
-function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: string): ConstantsAST {
+function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedConstantsAST {
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'constants') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
@@ -188,7 +163,7 @@ function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: strin
 	return ast;
 }
 
-function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string): FunctionAST {
+function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedFunctionAST {
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'function') {
 		throw getError(ErrorCode.MISSING_FUNCTION_ID, ast.lines[0], undefined);
@@ -196,7 +171,7 @@ function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string
 	return ast;
 }
 
-function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: string): PrototypeAST {
+function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedPrototypeAST {
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'prototype') {
 		throw getError(ErrorCode.MISSING_PROTOTYPE_ID, ast.lines[0], undefined);
@@ -212,58 +187,20 @@ function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: strin
 	return ast;
 }
 
-function collectPrototypeSources(prototypes: readonly ParsedPrototypeSource[]): Map<string, ParsedPrototypeSource> {
-	const prototypeSourcesById = new Map<string, ParsedPrototypeSource>();
+function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
+	const prototypeShapesById: Record<string, ValidatedPrototypeAST> = {};
 
 	for (const prototype of prototypes) {
-		const existing = prototypeSourcesById.get(prototype.ast.id);
+		const existing = prototypeShapesById[prototype.id];
 		if (existing) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, prototype.ast.prototypeLine, undefined, {
-				identifier: prototype.ast.id,
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, prototype.prototypeLine, undefined, {
+				identifier: prototype.id,
 			});
 		}
-		prototypeSourcesById.set(prototype.ast.id, prototype);
+		prototypeShapesById[prototype.id] = prototype;
 	}
 
-	return prototypeSourcesById;
-}
-
-function expandModuleSourceShapes(
-	source: ModuleCompilerSource,
-	ast: ModuleAST,
-	prototypeSourcesById: ReadonlyMap<string, ParsedPrototypeSource>
-): ModuleCompilerSource {
-	if (ast.shapeLines.length === 0) {
-		return source;
-	}
-
-	const shapeLinesByLineNumber = new Map(ast.shapeLines.map(shapeLine => [shapeLine.lineNumber, shapeLine]));
-	const code: string[] = [];
-
-	for (let lineNumber = 0; lineNumber < source.code.length; lineNumber++) {
-		const line = source.code[lineNumber];
-		const shapeLine = shapeLinesByLineNumber.get(lineNumber);
-		if (!shapeLine) {
-			code.push(line);
-			continue;
-		}
-
-		const prototypeId = shapeLine.arguments[0].value;
-		const prototype = prototypeSourcesById.get(prototypeId);
-		if (!prototype) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, shapeLine, undefined, { identifier: prototypeId });
-		}
-
-		for (const declarationLine of prototype.ast.memoryDeclarationLines) {
-			const prototypeLineNumber = declarationLine.lineNumber;
-			code.push(prototype.source.code[prototypeLineNumber] ?? '');
-		}
-	}
-
-	return {
-		...source,
-		code,
-	};
+	return prototypeShapesById;
 }
 
 export default function compile(
@@ -286,13 +223,10 @@ export default function compile(
 		};
 	});
 
-	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) => ({
-		ast: parsePrototypeAST(code, cache, cacheKey),
-		source: { code },
-	})) satisfies ParsedPrototypeSource[];
-	const prototypeSourcesById = collectPrototypeSources(astPrototypes);
+	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) => parsePrototypeAST(code, cache, cacheKey));
+	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
 
-	// Expand macros and prototype shapes in modules
+	// Expand macros in modules
 	const expandedModuleSources = entryModules.map(({ entryName, module, index }) => {
 		return {
 			code: expandMacros(module, macroDefinitions),
@@ -318,14 +252,9 @@ export default function compile(
 
 	const astModuleEntries = expandedModuleSources.map(source => {
 		const ast = parseModuleAST(source.code, cache, source.cacheKey);
-		if (!ast.containsShape) {
-			return { entryName: source.entryName, ast };
-		}
-
-		const expandedSource = expandModuleSourceShapes(source, ast, prototypeSourcesById);
 		return {
 			entryName: source.entryName,
-			ast: expandedSource === source ? ast : parseModuleAST(expandedSource.code, cache, expandedSource.cacheKey),
+			ast,
 		};
 	});
 	const astConstants = expandedConstants.map(({ code, cacheKey }) => parseConstantsAST(code, cache, cacheKey));
@@ -340,7 +269,8 @@ export default function compile(
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
 		astModules,
-		options
+		options,
+		prototypeShapesById
 	);
 
 	// Compile functions first with WASM indices and type registry
@@ -396,7 +326,8 @@ export default function compile(
 		namespaces,
 		functionMetadata,
 		internalAllocator,
-		functionTypeRegistry
+		functionTypeRegistry,
+		prototypeShapesById
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],
@@ -452,7 +383,6 @@ export default function compile(
 		]),
 	];
 
-	// Strip AST from final result if not requested
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(module => [module.id, module]));
 
 	const memoryImports = Array.from({ length: maxUsedMemoryIndex + 1 }, (_, memoryIndex) => {
