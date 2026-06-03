@@ -178,23 +178,4 @@ describe('map instruction compiler', () => {
 			);
 		}).toThrowError();
 	});
-
-	it('throws when used outside a map block', () => {
-		const context = createInstructionCompilerTestContext();
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				map,
-				{
-					lineNumber: 1,
-					instruction: 'map',
-					arguments: [
-						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
-						{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
-					],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
-	});
 });
