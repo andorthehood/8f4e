@@ -25,12 +25,12 @@ import { getMemoryRegionFields } from '../semantic/memoryRegions';
 import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
 import { peekMapBlock } from '../utils/blockStack';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
-import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
 import { resolveMapKind, validateMapValueKind } from '../utils/mapValueKind';
 import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../utils/memoryData';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
-import { deriveAddStackMetadata, deriveSubStackMetadata } from '../utils/stackAddressMetadata';
+import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
+import { deriveAddStackMetadata, deriveSubStackMetadata } from './utils/stackAddressMetadata';
 import { validateInstruction } from './validateInstruction';
 
 function createStackValue(
