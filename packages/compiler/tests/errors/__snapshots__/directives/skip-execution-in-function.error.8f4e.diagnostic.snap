@@ -1,13 +1,9 @@
 {
-  "code": 31,
-  "context": {
-    "codeBlockId": "bad",
-    "codeBlockType": "function",
-  },
+  "code": 12,
+  "context": {},
   "line": {
-    "arguments": [],
     "instruction": "#skipExecution",
     "lineNumber": 1,
   },
-  "message": "This compiler directive can only be used within a module block. (31)",
+  "message": "Instruction is not allowed in this block.",
 }

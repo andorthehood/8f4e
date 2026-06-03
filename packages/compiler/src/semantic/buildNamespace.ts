@@ -21,8 +21,6 @@ import {
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
-import { validateInstructionContext } from '../stackAnalysis/validateInstruction';
-import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
@@ -35,6 +33,7 @@ import {
 	validateMemoryRegionOptions,
 } from './memoryRegions';
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
+import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
@@ -73,6 +72,7 @@ export function collectFunctionMetadataFromAsts(
 	return result;
 }
 
+/** Ensures module source blocks declare unique ids before namespace discovery. */
 export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[]): void {
 	const seenModuleIds = new Set<string>();
 
@@ -89,9 +89,9 @@ export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | Valid
 	}
 }
 
+/** Normalizes and applies one semantic instruction, trusting tokenizer placement validation. */
 export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
 	const normalizedLine = normalizeCompileTimeArguments(line, context);
-	validateInstructionContext(normalizedLine, context);
 	applySemanticInstruction(normalizedLine, context);
 }
 
@@ -148,7 +148,7 @@ function applyNamespaceDeclarationLines(
 			const declarationLine = context.resolveMemoryDeclarationLine?.(originalLine) ?? originalLine;
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
 		} else if (shouldValidateUnhandledLines) {
-			validateInstructionContext(normalizeCompileTimeArguments(originalLine, context), context);
+			normalizeCompileTimeArguments(originalLine, context);
 		}
 	});
 

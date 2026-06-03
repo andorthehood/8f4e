@@ -50,22 +50,18 @@ export function getPointerDepthFromMetadata(pointerMetadata: PointerMetadata | u
 	return pointerMetadata.pointerDepth;
 }
 
-export function getDataStructure(memoryMap: MemoryMap, id: string) {
-	return memoryMap[id];
-}
-
 export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getDataStructure(memoryMap, id);
+	const memoryItem = memoryMap[id];
 	return memoryItem ? memoryItem.byteAddress : 0;
 }
 
 export function getMemoryStringLastByteAddress(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getDataStructure(memoryMap, id);
+	const memoryItem = memoryMap[id];
 	return memoryItem ? getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize) : 0;
 }
 
 export function getElementCount(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getDataStructure(memoryMap, id);
+	const memoryItem = memoryMap[id];
 	return memoryItem ? memoryItem.numberOfElements : 0;
 }
 
@@ -75,11 +71,11 @@ export function getPointeeElementCountFromMetadata(pointerMetadata: PointerMetad
 }
 
 export function getPointeeElementCount(memoryMap: MemoryMap, id: string): number {
-	return getPointeeElementCountFromMetadata(getDataStructure(memoryMap, id));
+	return getPointeeElementCountFromMetadata(memoryMap[id]);
 }
 
 export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getDataStructure(memoryMap, id);
+	const memoryItem = memoryMap[id];
 	return memoryItem ? memoryItem.elementWordSize : 0;
 }
 
@@ -90,7 +86,7 @@ export function getPointeeElementWordSizeFromMetadata(pointerMetadata: PointerMe
 }
 
 export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
-	return getPointeeElementWordSizeFromMetadata(getDataStructure(memoryMap, id));
+	return getPointeeElementWordSizeFromMetadata(memoryMap[id]);
 }
 
 export function getPointeeElementIsIntegerFromMetadata(pointerMetadata: PointerMetadata | undefined): boolean {
@@ -124,7 +120,7 @@ export function getDereferencedValueKindFromMetadata(
 }
 
 export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getDataStructure(memoryMap, id);
+	const memoryItem = memoryMap[id];
 	if (!memoryItem) return 0;
 
 	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
@@ -139,11 +135,11 @@ export function getPointeeElementMaxValueFromMetadata(pointerMetadata: PointerMe
 }
 
 export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): number {
-	return getPointeeElementMaxValueFromMetadata(getDataStructure(memoryMap, id));
+	return getPointeeElementMaxValueFromMetadata(memoryMap[id]);
 }
 
 export function getElementMinValue(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = getDataStructure(memoryMap, id);
+	const memoryItem = memoryMap[id];
 	if (!memoryItem) return 0;
 
 	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
@@ -158,5 +154,5 @@ export function getPointeeElementMinValueFromMetadata(pointerMetadata: PointerMe
 }
 
 export function getPointeeElementMinValue(memoryMap: MemoryMap, id: string): number {
-	return getPointeeElementMinValueFromMetadata(getDataStructure(memoryMap, id));
+	return getPointeeElementMinValueFromMetadata(memoryMap[id]);
 }

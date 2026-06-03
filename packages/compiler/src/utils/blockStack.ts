@@ -1,42 +1,49 @@
-import type {
-	BlockStack,
-	BlockTypeValue,
-	CodegenContext,
-	CompilationContext,
-	LoopBlockStackFrame,
-	MapBlockStackFrame,
-} from '@8f4e/compiler-spec';
+import type { BlockStack, BlockTypeValue, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 
+/** Context shape shared by semantic analysis and codegen while mutating block state. */
 type BlockContext = CodegenContext | CompilationContext;
 
+/** Pushes a compiler block and updates all cached active-block state. */
 export function pushBlock(context: BlockContext, block: BlockStack[number]) {
 	context.blockStack.push(block);
+	context.activeBlockDepths[block.blockType]++;
+
+	if (block.blockType === BlockType.LOOP) {
+		context.activeLoopBlocks.push(block);
+	}
+
+	if (block.blockType === BlockType.MAP) {
+		context.activeMapBlock = block;
+	}
+
 	updateBlockContextFlag(context, block.blockType, true);
 }
 
+/** Pops the innermost compiler block and updates all cached active-block state. */
 export function popBlock(context: BlockContext) {
 	const block = context.blockStack.pop();
 
-	if (block && !context.blockStack.some(remainingBlock => remainingBlock.blockType === block.blockType)) {
-		updateBlockContextFlag(context, block.blockType, false);
+	if (!block) {
+		return block;
 	}
+
+	context.activeBlockDepths[block.blockType]--;
+
+	if (block?.blockType === BlockType.LOOP) {
+		context.activeLoopBlocks.pop();
+	}
+
+	if (block.blockType === BlockType.MAP) {
+		context.activeMapBlock = undefined;
+	}
+
+	updateBlockContextFlag(context, block.blockType, context.activeBlockDepths[block.blockType] > 0);
 
 	return block;
 }
 
-export function peekMapBlock(context: BlockContext): MapBlockStackFrame {
-	return context.blockStack[context.blockStack.length - 1] as MapBlockStackFrame;
-}
-
-export function popMapBlock(context: BlockContext): MapBlockStackFrame {
-	return popBlock(context) as MapBlockStackFrame;
-}
-
-export function findNearestLoopBlock(context: BlockContext): LoopBlockStackFrame {
-	return [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP) as LoopBlockStackFrame;
-}
-
+/** Synchronizes legacy inside-block booleans with the cached block depth for a block type. */
 function updateBlockContextFlag(context: BlockContext, blockType: BlockTypeValue, isInside: boolean) {
 	switch (blockType) {
 		case BlockType.MODULE:

@@ -7,8 +7,8 @@ import {
 	SyntaxErrorCode,
 	SyntaxRulesError,
 } from '@8f4e/tokenizer';
-import { getError } from '../compilerError';
-import { getEndByteAddress } from '../semantic/layoutAddresses';
+import { getError } from '../../compilerError';
+import { getEndByteAddress } from '../layoutAddresses';
 
 /**
  * Maximum number of bytes allowed in a split-byte default value.
@@ -167,6 +167,7 @@ function resolveMemoryDefaultValue(
 	}
 }
 
+/** Reads address metadata already attached during semantic argument normalization. */
 function getNormalizedAddressMetadata(
 	argument: CompilerASTLine['arguments'][number] | undefined
 ): AddressMetadata | undefined {
@@ -177,6 +178,7 @@ function getNormalizedAddressMetadata(
 	return argument.address as AddressMetadata | undefined;
 }
 
+/** Resolves tokenizer-classified memory declaration arguments into semantic allocation data. */
 export default function parseMemoryInstructionArguments(
 	line: CompilerASTLine,
 	context: CompilationContext

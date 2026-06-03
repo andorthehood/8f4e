@@ -19,17 +19,17 @@ import type {
 	StackProducedItemSpec,
 	StackValueType,
 } from '@8f4e/compiler-spec';
-import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
+import { ArgumentType, BASE_TYPE_METADATA, ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
-import { deriveKnownIntegerValue } from '../utils/knownIntegerValue';
 import { resolveMapKind, validateMapValueKind } from '../utils/mapValueKind';
 import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../utils/memoryData';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
-import { deriveAddStackMetadata, deriveSubStackMetadata } from '../utils/stackAddressMetadata';
+import { deriveKnownIntegerValue } from './utils/knownIntegerValue';
+import { deriveAddStackMetadata, deriveSubStackMetadata } from './utils/stackAddressMetadata';
 import { validateInstruction } from './validateInstruction';
 
 function createStackValue(
@@ -258,12 +258,9 @@ function analyzeCall(line: ResolvedCallLine, context: CompilationContext): { con
 	return { consumed, produced };
 }
 
+/** Validates active map input/output values and produces the map result stack item. */
 function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
-	const block = context.blockStack[context.blockStack.length - 1];
-
-	if (!block || block.blockType !== BlockType.MAP) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
+	const { mapState } = context.activeMapBlock!;
 
 	const outputType = line.arguments[0].value;
 	const outputIsInteger = outputType === 'int';
@@ -271,7 +268,6 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 	const outputKind = resolveMapKind({
 		valueType: outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float',
 	});
-	const mapState = block.mapState;
 	const inputKind = resolveMapKind({
 		valueType: mapState.inputIsInteger ? 'int' : mapState.inputIsFloat64 ? 'float64' : 'float',
 	});
@@ -307,8 +303,8 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 	return { consumed, produced };
 }
 
+/** Consumes and validates function return values against the parsed function signature. */
 function analyzeFunctionEnd(line: CompilerASTLine, context: CompilationContext): Stack {
-	assertTopBlock(line, context, BlockType.FUNCTION);
 	const returnTypes = line.arguments.map(arg => ('value' in arg ? (arg.value as FunctionValueType) : undefined));
 
 	if (returnTypes.length > 8) {
@@ -330,18 +326,6 @@ function analyzeFunctionEnd(line: CompilerASTLine, context: CompilationContext):
 	return consume(context, returnTypes.length);
 }
 
-function assertTopBlock(
-	line: CompilerASTLine,
-	context: CompilationContext,
-	blockType: (typeof BlockType)[keyof typeof BlockType]
-) {
-	const block = context.blockStack[context.blockStack.length - 1];
-
-	if (!block || block.blockType !== blockType) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
-}
-
 function analyzeLocalSet(line: CompilerASTLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
@@ -360,13 +344,8 @@ function analyzeLocalSet(line: CompilerASTLine, context: CompilationContext): { 
 	return { consumed, produced: [] };
 }
 
-function analyzeLoopIndex(line: CompilerASTLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
-	const loopBlock = [...context.blockStack].reverse().find(block => block.blockType === BlockType.LOOP);
-
-	if (!loopBlock || !context.locals[loopBlock.loopCounterLocalName]) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP, line, context);
-	}
-
+/** Produces the current loop index value after tokenizer placement has guaranteed a loop. */
+function analyzeLoopIndex(context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const produced: Stack = [createStackValue('int', { isNonZero: false })];
 	produce(context, produced);
 	return { consumed: [], produced };
@@ -483,6 +462,7 @@ function analyzeStackEffectFromSpec(
 	};
 }
 
+/** Applies stack-analysis behavior declared in the central instruction spec when available. */
 function analyzeFromSpec(
 	line: CompilerASTLine,
 	context: CompilationContext,
@@ -490,7 +470,6 @@ function analyzeFromSpec(
 ): { consumed: Stack; produced: Stack; dropped?: Stack } | undefined {
 	const effects = spec?.effects;
 	if (effects?.blockClose) {
-		assertTopBlock(line, context, effects.blockClose.blockType);
 		return analyzeExpectedBlockResult(line, context, {
 			restore: effects.blockClose.restoreResult,
 			validateFloatResult: effects.blockClose.validateFloatResult,
@@ -708,7 +687,7 @@ function analyzeByInstruction(
 			return analyzeCall(line as ResolvedCallLine, context);
 		}
 		case 'loopIndex': {
-			return analyzeLoopIndex(line, context);
+			return analyzeLoopIndex(context);
 		}
 		case 'mapEnd': {
 			return analyzeMapEnd(line as MapEndLine, context);

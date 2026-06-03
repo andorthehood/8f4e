@@ -2,7 +2,6 @@ import type { MemoryMap } from '@8f4e/compiler-spec';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import {
-	getDataStructure,
 	getDataStructureByteAddress,
 	getDereferencedValueKindFromMetadata,
 	getDereferencedValueWordSizeFromMetadata,
@@ -34,16 +33,6 @@ describe('memoryData utilities', () => {
 			elementWordSize: 4,
 		} as unknown as MemoryMap[string],
 	};
-
-	describe('getDataStructure', () => {
-		it('returns the memory item for existing identifier', () => {
-			expect(getDataStructure(mockMemory, 'myVar')).toBe(mockMemory.myVar);
-		});
-
-		it('returns undefined for non-existing identifier', () => {
-			expect(getDataStructure(mockMemory, 'nonExisting')).toBeUndefined();
-		});
-	});
 
 	describe('getDataStructureByteAddress', () => {
 		it('returns byte address for existing identifier', () => {
