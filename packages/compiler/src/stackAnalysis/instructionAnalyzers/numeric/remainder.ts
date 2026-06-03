@@ -1,0 +1,28 @@
+import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/compiler-spec';
+import { getError } from '../../../compilerError';
+import { deriveKnownIntegerValue } from '../../utils/knownIntegerValue';
+import { consume, produce } from '../stack';
+import type { InstructionAnalysisResult } from '../types';
+import { knownIntegerResult } from './shared';
+
+/** Analyzes `remainder` stack effects, known integer propagation, and zero-divisor failures. */
+export function analyzeRemainder(line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
+	const consumed = consume(context, 2);
+	const divisor = consumed[1];
+
+	if (!divisor.isNonZero) {
+		throw getError(ErrorCode.DIVISION_BY_ZERO, line, context);
+	}
+
+	const integerMetadata = deriveKnownIntegerValue(consumed[0], divisor, (dividend, divisorValue) => {
+		if (divisorValue === 0) {
+			return undefined;
+		}
+
+		return (dividend % divisorValue) | 0;
+	});
+	const produced = [knownIntegerResult(integerMetadata.knownIntegerValue)];
+	produce(context, produced);
+	return { consumed, produced };
+}
