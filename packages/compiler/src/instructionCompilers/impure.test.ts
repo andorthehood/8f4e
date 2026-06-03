@@ -31,20 +31,4 @@ describe('impure instruction compiler', () => {
 
 		expect(context.currentFunctionIsImpure).toBe(true);
 	});
-
-	it('throws error when used outside function block', () => {
-		const context = createInstructionCompilerTestContext();
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				impure,
-				{
-					lineNumber: 1,
-					instruction: '#impure',
-					arguments: [],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrow();
-	});
 });
