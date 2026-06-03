@@ -6,8 +6,3 @@ export function analyzeExitIfTrue(_line: CompilerASTLine, context: CompilationCo
 	const consumed = consume(context, 1);
 	return { consumed, produced: [], dropped: cloneStack(context.stack) };
 }
-
-export function analyzeReturn(_line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
-	const consumed = consume(context, context.stack.length);
-	return { consumed, produced: [], dropped: consumed };
-}

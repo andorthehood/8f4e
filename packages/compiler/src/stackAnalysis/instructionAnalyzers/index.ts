@@ -7,18 +7,15 @@ import type {
 } from '@8f4e/compiler-spec';
 import { getInstructionSpec } from '@8f4e/compiler-spec';
 import { analyzeCall } from './call';
-import { analyzeExitIfTrue, analyzeReturn } from './controlFlow';
+import { analyzeExitIfTrue } from './controlFlow';
 import { analyzeFunctionEnd } from './functionEnd';
 import { analyzeLocalSet } from './localSet';
-import { analyzeLoopIndex } from './loopIndex';
 import { analyzeMapEnd } from './mapEnd';
 import { analyzeClampAddress } from './memory';
 import { analyzeAbs } from './numeric/abs';
 import { analyzeAdd } from './numeric/add';
 import { analyzeAnd } from './numeric/and';
 import { analyzeDiv } from './numeric/div';
-import { analyzeMax } from './numeric/max';
-import { analyzeMin } from './numeric/min';
 import { analyzeMul } from './numeric/mul';
 import { analyzeOr } from './numeric/or';
 import { analyzeRemainder } from './numeric/remainder';
@@ -43,10 +40,6 @@ export function analyzeByInstruction(line: CompilerASTLine, context: Compilation
 			return analyzeAdd(line, context);
 		case 'sub':
 			return analyzeSub(line, context);
-		case 'min':
-			return analyzeMin(line, context);
-		case 'max':
-			return analyzeMax(line, context);
 		case 'mul':
 			return analyzeMul(line, context);
 		case 'div':
@@ -75,14 +68,10 @@ export function analyzeByInstruction(line: CompilerASTLine, context: Compilation
 			return analyzeLocalSet(line, context);
 		case 'exitIfTrue':
 			return analyzeExitIfTrue(line, context);
-		case 'return':
-			return analyzeReturn(line, context);
 		case 'functionEnd':
 			return { consumed: analyzeFunctionEnd(line, context), produced: [] };
 		case 'call':
 			return analyzeCall(line as ResolvedCallLine, context);
-		case 'loopIndex':
-			return analyzeLoopIndex(context);
 		case 'mapEnd':
 			return analyzeMapEnd(line as MapEndLine, context);
 		default:
