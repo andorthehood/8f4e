@@ -1,11 +1,4 @@
-import type {
-	BlockStack,
-	BlockTypeValue,
-	CodegenContext,
-	CompilationContext,
-	LoopBlockStackFrame,
-	MapBlockStackFrame,
-} from '@8f4e/compiler-spec';
+import type { BlockStack, BlockTypeValue, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 
 /** Context shape shared by semantic analysis and codegen while mutating block state. */
@@ -48,16 +41,6 @@ export function popBlock(context: BlockContext) {
 	updateBlockContextFlag(context, block.blockType, context.activeBlockDepths[block.blockType] > 0);
 
 	return block;
-}
-
-/** Pops the active map block frame; tokenizer placement guarantees map nesting is valid. */
-export function popMapBlock(context: BlockContext): MapBlockStackFrame {
-	return popBlock(context) as MapBlockStackFrame;
-}
-
-/** Returns the innermost active loop block frame without scanning the full block stack. */
-export function findNearestLoopBlock(context: BlockContext): LoopBlockStackFrame {
-	return context.activeLoopBlocks[context.activeLoopBlocks.length - 1];
 }
 
 /** Synchronizes legacy inside-block booleans with the cached block depth for a block type. */

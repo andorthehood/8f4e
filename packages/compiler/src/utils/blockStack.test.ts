@@ -1,7 +1,7 @@
 import type { BlockStack } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-import { findNearestLoopBlock, popBlock, pushBlock } from './blockStack';
+import { popBlock, pushBlock } from './blockStack';
 import createInstructionCompilerTestContext from './testUtils';
 
 describe('blockStack utilities', () => {
@@ -99,7 +99,7 @@ describe('blockStack utilities', () => {
 			expect(context.insideLoopBlock).toBe(false);
 		});
 
-		it('tracks the nearest active loop without scanning the block stack', () => {
+		it('tracks active loop blocks without scanning the block stack', () => {
 			const context = createInstructionCompilerTestContext({ blockStack: [] });
 			const outerLoopBlock: typeof mockLoopBlock = {
 				...mockLoopBlock,
@@ -117,13 +117,12 @@ describe('blockStack utilities', () => {
 			pushBlock(context, innerLoopBlock);
 
 			expect(context.activeLoopBlocks).toEqual([outerLoopBlock, innerLoopBlock]);
-			expect(findNearestLoopBlock(context)).toBe(innerLoopBlock);
 
 			expect(popBlock(context)).toBe(innerLoopBlock);
-			expect(findNearestLoopBlock(context)).toBe(outerLoopBlock);
+			expect(context.activeLoopBlocks).toEqual([outerLoopBlock]);
 
 			expect(popBlock(context)).toBe(mockGenericBlock);
-			expect(findNearestLoopBlock(context)).toBe(outerLoopBlock);
+			expect(context.activeLoopBlocks).toEqual([outerLoopBlock]);
 
 			expect(popBlock(context)).toBe(outerLoopBlock);
 			expect(context.activeLoopBlocks).toEqual([]);
