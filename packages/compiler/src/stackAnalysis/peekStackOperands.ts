@@ -5,7 +5,7 @@ import type { StackItem } from '@8f4e/compiler-spec';
  *
  * @param stack - Stack to inspect or clone.
  * @param count - Number of stack items to inspect or consume.
- * @returns The stack items produced or consumed by the operation.
+ * @returns The relevant stack items for the analysis step.
  */
 export function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
 	if (stack.length < count) {

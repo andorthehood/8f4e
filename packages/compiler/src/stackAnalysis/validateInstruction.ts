@@ -4,7 +4,13 @@ import { getError } from '../compilerError';
 import { peekStackOperands } from './peekStackOperands';
 import { validateOperandTypes } from './validateOperandTypes';
 
-/** Validates stack operand count and type requirements declared by the instruction spec. */
+/**
+ * Validates stack operand count and type requirements declared by the instruction spec.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
+ */
 export function validateInstruction(line: CompilerASTLine, context: CompilationContext) {
 	const spec = getInstructionSpec(line.instruction) as InstructionSpec;
 

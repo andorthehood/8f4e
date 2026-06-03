@@ -248,7 +248,12 @@ function getResultTypesFromArguments(line: IfEndLine | BlockEndLine): BlockResul
 	return line.arguments.map(argument => argument.value as BlockResultTypes[number]);
 }
 
-/** Runs the tokenizer's main loop, producing AST lines while validating block structure and placement. */
+/**
+ * Runs the tokenizer's main loop, producing AST lines while validating block structure and placement.
+ *
+ * @param code - Source lines to process.
+ * @returns Parsed instruction stream plus source-block metadata collected by the tokenizer.
+ */
 export function mainTokenizerLoop(code: string[]): MainTokenizerLoopResult {
 	const ast: CompilerASTLines = [];
 	let astBuilder: SourceBlockASTBuilder | undefined;

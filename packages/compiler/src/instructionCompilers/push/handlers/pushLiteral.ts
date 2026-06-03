@@ -6,8 +6,8 @@ import { constOpcode, resolveArgumentValueKind } from '../shared';
  * Emits bytecode for pushing a numeric literal onto the stack.
  *
  * @param argument - Argument whose resolved value or metadata should be used.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export default function pushLiteral(argument: NormalizedArgumentLiteral, context: CodegenContext): CodegenContext {
 	const kind = resolveArgumentValueKind(argument);

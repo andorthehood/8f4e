@@ -131,6 +131,13 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
 	}
 }
 
+/**
+ * Validates instruction arguments.
+ *
+ * @param instruction - Instruction name to inspect.
+ * @param args - Parsed instruction arguments to validate.
+ * @returns Nothing.
+ */
 export default function validateInstructionArguments(instruction: string, args: Argument[]): void {
 	if (!isKnownInstructionName(instruction)) {
 		throw new SyntaxRulesError(SyntaxErrorCode.UNRECOGNISED_INSTRUCTION);

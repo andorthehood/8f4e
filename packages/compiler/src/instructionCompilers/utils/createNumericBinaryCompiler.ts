@@ -26,6 +26,8 @@ type NumericBinaryCompilerOptions = {
 /**
  * Creates instruction compilers for two-operand numeric operations that share opcode selection.
  * Stack effects and validation are owned by stack analysis; codegen only reads the analyzed operands.
+ *
+ * @returns Created numeric binary compiler.
  */
 export default function createNumericBinaryCompiler({
 	opcodes,

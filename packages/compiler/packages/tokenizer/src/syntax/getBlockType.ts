@@ -39,6 +39,9 @@ export function getBlockType(code: string[]): CodeBlockType {
  * (modules, functions, constants, and macros).
  * Constants blocks are treated as modules by the compiler.
  * Accepts undefined for safe use with optional chaining.
+ *
+ * @param blockType - Project block type to inspect.
+ * @returns Whether the compilable block type condition is true.
  */
 export function isCompilableBlockType(blockType: string | undefined): blockType is CompilableBlockType {
 	return blockType !== undefined && (compilableBlockTypes as readonly string[]).includes(blockType);

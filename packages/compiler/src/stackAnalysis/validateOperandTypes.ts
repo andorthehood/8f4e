@@ -10,8 +10,9 @@ import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
  *
  * @param operands - Stack operands to inspect.
  * @param rule - Operand rule from the compiler spec.
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export function validateOperandTypes(
 	operands: StackItem[],

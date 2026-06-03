@@ -29,7 +29,14 @@ import { getCustomMemoryRegionName } from './semantic/memoryRegions';
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
 export { serializeDiagnostic } from './diagnostic';
 
-/** Compiles source input into a complete WebAssembly binary program. */
+/**
+ * Compiles source input into a complete WebAssembly binary program.
+ *
+ * @param input - Compiler input program to process.
+ * @param options - Compiler options for the operation.
+ * @param cache - Optional compiler cache used to reuse parsed artifacts.
+ * @returns Compiled WebAssembly program and related metadata.
+ */
 export default function compile(
 	input: CompileInput,
 	options: CompileOptions,

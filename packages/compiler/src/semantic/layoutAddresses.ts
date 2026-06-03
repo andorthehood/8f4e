@@ -4,7 +4,7 @@ import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
  * Converts a word offset relative to a byte base into an absolute byte address.
  *
  * @param startingByteAddress - Absolute byte address where layout should begin.
- * @param wordOffset - wordOffset value used by this operation.
+ * @param wordOffset - word offset value to use.
  * @returns The resolved numeric value.
  */
 export function getByteAddressFromWordOffset(startingByteAddress: number, wordOffset: number): number {
@@ -15,7 +15,7 @@ export function getByteAddressFromWordOffset(startingByteAddress: number, wordOf
  * Returns the final byte address occupied by a word-aligned allocation.
  *
  * @param byteAddress - Byte address where the value should be written.
- * @param wordAlignedSize - wordAlignedSize value used by this operation.
+ * @param wordAlignedSize - word aligned size value to use.
  * @returns The resolved numeric value.
  */
 export function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
@@ -39,7 +39,7 @@ export function getAbsoluteWordOffset(startingByteAddress: number, localWordOffs
 /**
  * Aligns 64-bit allocations to an even absolute word offset.
  *
- * @param absoluteWordOffset - absoluteWordOffset value used by this operation.
+ * @param absoluteWordOffset - absolute word offset value to use.
  * @param elementWordSize - Word size used to align the absolute offset.
  * @returns The resolved numeric value.
  */

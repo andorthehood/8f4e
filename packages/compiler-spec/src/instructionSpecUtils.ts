@@ -42,6 +42,10 @@ interface LoadInstructionOptions<TLoadVariant extends MemoryLoadVariant, TResult
  * Returns a spec augmented with user-facing documentation and a fixed stack effect.
  * This keeps the large instruction table compact while preserving both the
  * human-readable signature and the machine-readable stack mutation metadata.
+ *
+ * @param spec - Base instruction spec to augment.
+ * @param options - Documentation text, stack labels, and optional mutation metadata.
+ * @returns The augmented instruction spec.
  */
 export function withDocsAndStack<TSpec extends Partial<InstructionSpec>>(
 	spec: TSpec,
@@ -54,12 +58,23 @@ export function withDocsAndStack<TSpec extends Partial<InstructionSpec>>(
 	};
 }
 
-/** Creates a fixed stack effect spec from stack labels and optional mutation metadata. */
+/**
+ * Creates a fixed stack effect spec from stack labels and optional mutation metadata.
+ *
+ * @param options - Stack input labels, output labels, and optional mutation metadata.
+ * @returns A fixed stack effect spec.
+ */
 export function stack({ inputs, outputs, effect }: StackOptions): StackEffectSpec {
 	return { inputs, outputs, ...(effect ? { effect } : {}) };
 }
 
-/** Creates mutation metadata for an instruction's analysis-stack behavior. */
+/**
+ * Creates mutation metadata for an instruction's analysis-stack behavior.
+ *
+ * @param consumes - Stack values consumed by the instruction.
+ * @param produces - Stack values produced by the instruction.
+ * @returns Stack mutation metadata for an instruction spec.
+ */
 export function stackMutation(
 	consumes: StackConsumeSpec,
 	produces: readonly StackProducedItemSpec[] = []
@@ -97,6 +112,10 @@ function memoryLoad<TLoadVariant extends MemoryLoadVariant, TResultType extends 
  * Builds a complete instruction spec for a memory load variant.
  * All load instructions consume a pointer from the stack, emit one typed value,
  * and share the same source-argument and scope rules from the provided base spec.
+ *
+ * @param baseSpec - Instruction spec fields shared by the load variant.
+ * @param options - Memory load variant, access width, result type, docs, and stack metadata.
+ * @returns A complete memory load instruction spec.
  */
 export function loadInstruction<
 	TSpec extends Partial<InstructionSpec>,
@@ -123,6 +142,10 @@ export function loadInstruction<
  * Creates the block-close effect metadata for an instruction spec.
  * Closing instructions use this metadata during semantic analysis to check the
  * active block type and optionally restore or validate the block result value.
+ *
+ * @param blockType - Block type closed by the instruction.
+ * @param options - Result restoration and float validation behavior.
+ * @returns Block-close effect metadata for an instruction spec.
  */
 export function blockClose(
 	blockType: BlockTypeValue,
@@ -135,6 +158,10 @@ export function blockClose(
  * Resolves the stack effect for an instruction spec, including line-dependent signatures.
  * Most instructions have a fixed signature, but some derive their display or
  * analysis shape from source arguments; those specs provide `stack.resolve`.
+ *
+ * @param spec - Instruction spec to read.
+ * @param line - AST line used by line-dependent stack resolvers.
+ * @returns The resolved stack effect, when the instruction has stack metadata.
  */
 export function resolveInstructionStackEffect<TLine>(
 	spec: InstructionSpec<TLine>,
