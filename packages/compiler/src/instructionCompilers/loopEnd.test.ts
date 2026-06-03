@@ -34,20 +34,4 @@ describe('loopEnd instruction compiler', () => {
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});
-
-	it('throws when missing loop block', () => {
-		const context = createInstructionCompilerTestContext();
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				loopEnd,
-				{
-					lineNumber: 1,
-					instruction: 'loopEnd',
-					arguments: [],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
-	});
 });

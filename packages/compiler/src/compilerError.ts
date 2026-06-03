@@ -154,13 +154,6 @@ export function getError(
 				context,
 			};
 		}
-		case ErrorCode.MISSING_BLOCK_START_INSTRUCTION:
-			return {
-				code,
-				message: 'Missing block start instruction. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.DIVISION_BY_ZERO:
 			return {
 				code,
