@@ -36,16 +36,31 @@ function getDeclarationCompiler(instruction: MemoryDeclarationInstruction): Memo
 	return int as MemoryDeclarationCompiler;
 }
 
+/** Semantic declaration compilers keyed by memory declaration instruction. */
 export const declarationCompilers = Object.fromEntries(
 	specMemoryDeclarationInstructions.map(instruction => [instruction, getDeclarationCompiler(instruction)])
 ) as Record<MemoryDeclarationInstruction, MemoryDeclarationCompiler>;
 
+/** Set of instructions handled by semantic memory declaration compilers. */
 export const memoryDeclarationInstructions = new Set<MemoryDeclarationInstruction>(specMemoryDeclarationInstructions);
 
+/**
+ * Returns whether an instruction name is a memory declaration instruction.
+ *
+ * @param instruction - instruction value to use.
+ * @returns The computed result.
+ */
 export function isMemoryDeclarationInstruction(instruction: string): instruction is MemoryDeclarationInstruction {
 	return memoryDeclarationInstructions.has(instruction as MemoryDeclarationInstruction);
 }
 
+/**
+ * Validates and applies one semantic memory declaration line to the namespace context.
+ *
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
+ */
 export function applyMemoryDeclarationLine(line: MemoryDeclarationLine, context: CompilationContext) {
 	validateInstruction(line, context);
 	const compileDeclaration = declarationCompilers[

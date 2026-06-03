@@ -42,23 +42,6 @@ describe('mapEnd instruction compiler', () => {
 		}).toThrowError();
 	});
 
-	it('throws when used outside a map block', () => {
-		const context = createInstructionCompilerTestContext();
-		context.stack.push({ kind: 'value', valueType: 'int' });
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				mapEnd,
-				{
-					lineNumber: 1,
-					instruction: 'mapEnd',
-					arguments: [classifyIdentifier('int')],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
-	});
-
 	it('emits DROP + typed zero for zero rows', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [

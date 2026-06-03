@@ -8,6 +8,13 @@ import {
 import { getError } from '../../compilerError';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
+/**
+ * Normalizes and validates the byte-length argument for `memoryCopy`.
+ *
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
+ */
 export default function normalizeMemoryCopy(
 	line: MemoryCopyLine,
 	context: CompilationContext

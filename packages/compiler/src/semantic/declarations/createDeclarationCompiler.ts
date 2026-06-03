@@ -6,11 +6,12 @@ import type {
 	MemoryType,
 } from '@8f4e/compiler-spec';
 import { getPointerDepth } from '@8f4e/tokenizer';
-import getMemoryFlags from '../../utils/memoryFlags';
-import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
+import getMemoryFlags from '../utils/memoryFlags';
+import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
+/** Function signature shared by semantic memory declaration compilers. */
 export type MemoryDeclarationCompiler<TLine extends MemoryDeclarationLine = MemoryDeclarationLine> = (
 	line: TLine,
 	context: CompilationContext
@@ -74,6 +75,9 @@ function getPointeeElementCount(
  *
  * All declaration compilers share the same five-step pattern; only the base
  * type, truncation behaviour, and non-pointer element word size differ.
+ *
+ * @param options - Compiler options for this compilation pass.
+ * @returns The computed result.
  */
 export default function createDeclarationCompiler(options: DeclarationCompilerOptions): MemoryDeclarationCompiler {
 	const { baseType, truncate, nonPointerElementWordSize } = options;

@@ -9,10 +9,10 @@ import {
 	i32load16u,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { requireStackAddress } from '../utils/stackItem';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
+import { requireStackAddress } from './utils/stackItem';
 
 type LoadLine = ASTLineBase<LoadInstructionSpecName, []>;
 

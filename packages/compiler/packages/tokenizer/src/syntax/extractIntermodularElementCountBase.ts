@@ -2,6 +2,9 @@
  * Extracts the module and memory identifiers from an inter-modular element count reference.
  * Input: count(module:memory)
  * Output: { module: 'module', memory: 'memory' }
+ *
+ * @param value - Value to inspect.
+ * @returns Extracted intermodular element count base.
  */
 export default function extractIntermodularElementCountBase(value: string): {
 	module: string;

@@ -1,12 +1,15 @@
 import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from './constants';
-import type { ErrorCodeValue } from './errors';
-import { ErrorCode } from './errors';
+import type { InstructionSpecLookup, InstructionSpecName } from './instructionSpecTypes';
+import { blockClose, loadInstruction, stack, stackMutation, withDocsAndStack } from './instructionSpecUtils';
 import type { MemoryDeclarationInstruction } from './memory';
 import { memoryDeclarationInstructions } from './memory';
 import type { BlockTypeValue, CompilationContext } from './semantic';
 import { BlockType } from './semantic';
 
+/** Operand categories that instruction specs can require from the analysis stack. */
 export type OperandRule = 'int' | 'float' | 'matching';
+
+/** Source argument shapes that the tokenizer can validate before semantic resolution. */
 export type SourceArgumentShapeRule =
 	| 'identifier'
 	| 'identifierOrStringLiteral'
@@ -22,22 +25,69 @@ export type SourceArgumentShapeRule =
 	| 'ifResultType'
 	| 'pushValue'
 	| 'regionReference';
-export type ScopeRule =
-	| 'module'
-	| 'moduleOnly'
-	| 'function'
-	| 'moduleOrFunction'
-	| 'block'
-	| 'constants'
-	| 'map'
-	| 'loop';
 
+/** Top-level source block kinds that own independently parsed compiler ASTs. */
+export type SourceBlockPlacement = 'module' | 'function' | 'constants' | 'prototype';
+
+/** Nested block kinds tracked inside module and function source blocks. */
+export type NestedBlockPlacement = 'loop' | 'map' | 'block' | 'if';
+
+/** Any block kind known to tokenizer placement validation. */
+export type BlockPlacement = SourceBlockPlacement | NestedBlockPlacement;
+
+/** Declarative placement rules consumed by the tokenizer while parsing source lines. */
+export type InstructionPlacement = {
+	/** Allows the instruction outside any currently open source block. */
+	topLevel?: boolean;
+	/** Source block kinds where the instruction may appear. */
+	sourceBlocks?: readonly SourceBlockPlacement[];
+	/** Nested block kind that must already be open for the instruction to appear. */
+	requiredNestedBlock?: NestedBlockPlacement;
+	/** Nested block kinds that reject the instruction while they are open. */
+	disallowedNestedBlocks?: readonly NestedBlockPlacement[];
+	/** Block lifecycle metadata for instructions that open, close, or branch within blocks. */
+	block?: {
+		/** Block kind represented by this instruction. */
+		kind: BlockPlacement;
+		/** Whether this instruction starts, ends, or branches within the block. */
+		role: 'start' | 'end' | 'branch';
+		/** Allowed immediate parent block kinds for a block-start instruction. */
+		parents?: readonly BlockPlacement[];
+		/** Whether this block kind may be nested inside itself. */
+		nestable?: boolean;
+	};
+};
+
+/** Minimal line shape needed by the stack signature resolver for `storeBytes`. */
 type StoreBytesSourceLine = { arguments: [{ value: number }] };
+
+/** Shared source-argument spec for instructions that must not receive source arguments. */
 const noSourceArguments = { maxArguments: 0 } as const satisfies SourceArgumentsSpec;
+
+/** Placement shortcut for instructions allowed only inside modules. */
+const modulePlacement = { sourceBlocks: ['module'] } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for instructions allowed only inside functions. */
+const functionPlacement = { sourceBlocks: ['function'] } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for instructions shared by module and function bodies. */
+const moduleOrFunctionPlacement = { sourceBlocks: ['module', 'function'] } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for constants and imports that may seed source block namespaces. */
+const constantsPlacement = {
+	topLevel: true,
+	sourceBlocks: ['module', 'function', 'constants'],
+} as const satisfies InstructionPlacement;
+
+/** Placement shortcut for instructions that require an active loop block. */
+const loopPlacement = { requiredNestedBlock: 'loop' } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for instructions that require an active map block. */
+const mapPlacement = { requiredNestedBlock: 'map' } as const satisfies InstructionPlacement;
 
 /** Defines where and how an instruction may be used during validation. */
 export interface ValidationSpec<TLine = unknown> {
-	scope?: ScopeRule;
+	placement?: InstructionPlacement;
 	minOperands?: number;
 	operandTypes?: OperandRule[] | OperandRule;
 	validateOperands?: (
@@ -47,9 +97,6 @@ export interface ValidationSpec<TLine = unknown> {
 		minOperands?: number;
 		operandTypes?: OperandRule[] | OperandRule;
 	};
-	onInvalidScope?: ErrorCodeValue;
-	allowedInConstantsBlocks?: boolean;
-	allowedInMapBlocks?: boolean;
 }
 
 /** Human-readable documentation attached to an instruction spec. */
@@ -57,6 +104,7 @@ export interface InstructionDocumentation {
 	shortDescription: string;
 }
 
+/** Label language used for user-facing and machine-readable stack signatures. */
 export type StackValueLabel =
 	| '...'
 	| 'T'
@@ -76,6 +124,7 @@ export interface ResolvedStackEffect {
 	outputs: readonly StackValueLabel[];
 }
 
+/** Describes how many analysis-stack values an instruction consumes. */
 export type StackConsumeSpec =
 	| number
 	| 'all'
@@ -84,6 +133,7 @@ export type StackConsumeSpec =
 			add: number;
 	  };
 
+/** Describes values produced on the analysis stack after an instruction runs. */
 export type StackProducedItemSpec =
 	| {
 			kind: 'int';
@@ -126,8 +176,10 @@ export interface BlockCloseEffectSpec {
 	validateFloatResult?: boolean;
 }
 
+/** WebAssembly load opcode families represented by compiler memory effects. */
 export type MemoryLoadVariant = 'i32' | 'i32_8s' | 'i32_8u' | 'i32_16s' | 'i32_16u' | 'f32';
 
+/** Semantic memory operation metadata attached to memory-related instruction specs. */
 export type MemoryOperationEffectSpec =
 	| {
 			kind: 'load';
@@ -174,167 +226,50 @@ export interface InstructionSpec<TLine = unknown> extends ValidationSpec<TLine> 
 	effects?: InstructionEffectsSpec;
 }
 
-/** Options used to attach documentation and a fixed stack effect to a spec. */
-interface DocsAndStackOptions {
-	shortDescription: string;
-	inputs: readonly StackValueLabel[];
-	outputs: readonly StackValueLabel[];
-	effect?: StackMutationSpec;
-}
-
-/** Options used to create a fixed stack effect spec. */
-interface StackOptions {
-	inputs: readonly StackValueLabel[];
-	outputs: readonly StackValueLabel[];
-	effect?: StackMutationSpec;
-}
-
-/**
- * Returns a spec augmented with user-facing documentation and a fixed stack effect.
- * This keeps the large instruction table compact while preserving both the
- * human-readable signature and the machine-readable stack mutation metadata.
- */
-function withDocsAndStack<TSpec extends Partial<InstructionSpec>>(
-	spec: TSpec,
-	{ shortDescription, inputs, outputs, effect }: DocsAndStackOptions
-): TSpec & { docs: InstructionDocumentation; stack: StackEffectSpec } {
-	return {
-		...spec,
-		docs: { shortDescription },
-		stack: { inputs, outputs, ...(effect ? { effect } : {}) },
-	};
-}
-
-/** Creates a fixed stack effect spec from stack labels and optional mutation metadata. */
-function stack({ inputs, outputs, effect }: StackOptions): StackEffectSpec {
-	return { inputs, outputs, ...(effect ? { effect } : {}) };
-}
-
-/** Creates mutation metadata for an instruction's analysis-stack behavior. */
-function stackMutation(consumes: StackConsumeSpec, produces: readonly StackProducedItemSpec[] = []): StackMutationSpec {
-	return { consumes, produces };
-}
-
-/**
- * Creates the memory-effect metadata shared by load instruction specs.
- * The semantic compiler uses this data to validate address operands, infer the
- * loaded value type, and apply the correct access width for narrow integer loads.
- */
-function memoryLoad<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>(
-	loadVariant: TLoadVariant,
-	accessByteWidth: number,
-	resultType: TResultType
-): {
-	memory: Extract<MemoryOperationEffectSpec, { kind: 'load' }> & {
-		loadVariant: TLoadVariant;
-		resultType: TResultType;
-	};
-} {
-	return {
-		memory: {
-			kind: 'load',
-			accessByteWidth,
-			loadVariant,
-			resultType,
-			addressOperandIndex: 0,
-		},
-	};
-}
-
-/** Builder options for memory load instruction specs. */
-interface LoadInstructionOptions<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'> {
-	loadVariant: TLoadVariant;
-	accessByteWidth: number;
-	resultType: TResultType;
-	shortDescription: string;
-	output: StackValueLabel;
-	effect: StackMutationSpec;
-}
-
-/**
- * Builds a complete instruction spec for a memory load variant.
- * All load instructions consume a pointer from the stack, emit one typed value,
- * and share the same source-argument and scope rules from `loadSpec`.
- */
-function loadInstruction<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>({
-	loadVariant,
-	accessByteWidth,
-	resultType,
-	shortDescription,
-	output,
-	effect,
-}: LoadInstructionOptions<TLoadVariant, TResultType>) {
-	return withDocsAndStack(
-		{ ...loadSpec, effects: memoryLoad(loadVariant, accessByteWidth, resultType) },
-		{ shortDescription, inputs: ['ptr'], outputs: [output], effect }
-	);
-}
-
-/**
- * Creates the block-close effect metadata for an instruction spec.
- * Closing instructions use this metadata during semantic analysis to check the
- * active block type and optionally restore or validate the block result value.
- */
-function blockClose(
-	blockType: BlockTypeValue,
-	{ restoreResult = false, validateFloatResult = false } = {}
-): { blockClose: BlockCloseEffectSpec } {
-	return { blockClose: { blockType, restoreResult, validateFloatResult } };
-}
-
-/**
- * Resolves the stack effect for an instruction spec, including line-dependent signatures.
- * Most instructions have a fixed signature, but some derive their display or
- * analysis shape from source arguments; those specs provide `stack.resolve`.
- */
-export function resolveInstructionStackEffect<TLine>(
-	spec: InstructionSpec<TLine>,
-	line: TLine
-): ResolvedStackEffect | undefined {
-	if (!spec.stack) {
-		return undefined;
-	}
-
-	return spec.stack.resolve?.(line) ?? spec.stack;
-}
-
+/** Shared spec for binary operations that require two operands of the same type. */
 const binaryMatchingSpec = {
 	sourceArguments: noSourceArguments,
-	scope: 'moduleOrFunction',
+	placement: moduleOrFunctionPlacement,
 	minOperands: 2,
 	operandTypes: 'matching',
 } satisfies InstructionSpec;
 
+/** Shared spec for binary operations that require two integer operands. */
 const binaryIntegerSpec = {
 	sourceArguments: noSourceArguments,
-	scope: 'moduleOrFunction',
+	placement: moduleOrFunctionPlacement,
 	minOperands: 2,
 	operandTypes: 'int',
 } satisfies InstructionSpec;
 
+/** Shared validation spec for unary stack operations available in modules and functions. */
 const unaryModuleOrFunctionSpec = {
-	scope: 'moduleOrFunction',
+	placement: moduleOrFunctionPlacement,
 	minOperands: 1,
 } satisfies ValidationSpec;
 
+/** Unary module/function spec variant for instructions that take no source arguments. */
 const unaryNoSourceModuleOrFunctionSpec = {
 	...unaryModuleOrFunctionSpec,
 	sourceArguments: noSourceArguments,
 } satisfies InstructionSpec;
 
+/** Shared validation and placement rules for load instructions. */
 const loadSpec = {
 	sourceArguments: noSourceArguments,
-	scope: 'moduleOrFunction',
+	placement: moduleOrFunctionPlacement,
 	minOperands: 1,
 	operandTypes: 'int',
 } satisfies InstructionSpec;
 
+/** Shared spec for source memory declarations represented by multiple declaration keywords. */
 const memoryDeclarationSpec = {
 	codegen: false,
 	sourceInstruction: false,
-	scope: 'module',
+	placement: { sourceBlocks: ['module', 'prototype'] },
 } satisfies InstructionSpec;
 
+/** Central compiler spec table for parsing, placement, stack effects, and semantic effects. */
 export const instructionSpecs = {
 	// abs (int -- int), abs (float -- float), abs (float64 -- float64)
 	abs: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
@@ -357,14 +292,26 @@ export const instructionSpecs = {
 	// block ( -- )
 	block: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: {
+			...moduleOrFunctionPlacement,
+			block: {
+				kind: 'block',
+				role: 'start',
+				parents: ['module', 'function', 'loop', 'block', 'if'],
+				nestable: true,
+			},
+		},
 		docs: { shortDescription: 'Starts a block that can be exited with branch instructions.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// blockEnd ( -- ), blockEnd (T -- T)
 	blockEnd: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'ifResultType' },
-		scope: 'moduleOrFunction',
+		placement: {
+			...moduleOrFunctionPlacement,
+			requiredNestedBlock: 'block',
+			block: { kind: 'block', role: 'end' },
+		},
 		docs: { shortDescription: 'Ends a block and validates its optional result value.' },
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
 		effects: blockClose(BlockType.BLOCK, { restoreResult: true }),
@@ -372,14 +319,14 @@ export const instructionSpecs = {
 	// branch ( -- )
 	branch: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Branches out of one or more enclosing blocks.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// branchIfTrue (int -- )
 	branchIfTrue: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Branches out of enclosing blocks when the condition is non-zero.' },
@@ -388,7 +335,7 @@ export const instructionSpecs = {
 	// branchIfUnchanged (T -- )
 	branchIfUnchanged: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
-		scope: 'module',
+		placement: modulePlacement,
 		minOperands: 1,
 		docs: { shortDescription: 'Branches when the consumed value matches the previous value seen by this instruction.' },
 		stack: stack({ inputs: ['T'], outputs: [], effect: stackMutation(1) }),
@@ -396,15 +343,14 @@ export const instructionSpecs = {
 	// call (args... -- returns...)
 	call: {
 		sourceArguments: { minArguments: 1, argumentTypes: ['identifier'], restArgumentType: 'pushValue' },
-		scope: 'moduleOrFunction',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Calls a function, consuming its parameters and pushing its return values.' },
 		stack: stack({ inputs: ['args...'], outputs: ['returns...'] }),
 	},
 	// castToFloat (int -- float)
 	castToFloat: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Converts an integer stack value to a float.' },
@@ -424,7 +370,7 @@ export const instructionSpecs = {
 	// castToInt (float -- int), castToInt (float64 -- int)
 	castToInt: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		operandTypes: 'float',
 		docs: { shortDescription: 'Converts a floating-point stack value to an integer.' },
@@ -437,7 +383,7 @@ export const instructionSpecs = {
 	// clampAddress (ptr -- ptr)
 	clampAddress: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Clamps a pointer so it stays inside the active memory range.' },
@@ -446,7 +392,7 @@ export const instructionSpecs = {
 	// clampModuleAddress (ptr -- ptr)
 	clampModuleAddress: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
-		scope: 'module',
+		placement: modulePlacement,
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Clamps a pointer so it stays inside module memory.' },
@@ -455,7 +401,7 @@ export const instructionSpecs = {
 	// clampGlobalAddress (ptr -- ptr)
 	clampGlobalAddress: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Clamps a pointer so it stays inside global memory.' },
@@ -464,7 +410,7 @@ export const instructionSpecs = {
 	// clearStack (... -- )
 	clearStack: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Removes every value from the stack.' },
 		stack: stack({ inputs: ['...'], outputs: [], effect: { consumes: 'all', produces: [], dropped: 'consumed' } }),
 	},
@@ -476,27 +422,30 @@ export const instructionSpecs = {
 			maxArguments: 2,
 			argumentTypes: ['constantIdentifier', 'compileTimeValue'],
 		},
-		allowedInConstantsBlocks: true,
+		placement: constantsPlacement,
 		docs: { shortDescription: 'Declares a compile-time constant.' },
 	},
 	// constants <id> ( -- )
 	constants: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		placement: { block: { kind: 'constants', role: 'start', parents: [], nestable: false } },
 		docs: { shortDescription: 'Starts a constants block.' },
 	},
 	// constantsEnd ( -- )
 	constantsEnd: {
 		codegen: false,
 		sourceArguments: noSourceArguments,
-		allowedInConstantsBlocks: true,
+		placement: {
+			sourceBlocks: ['constants'],
+			block: { kind: 'constants', role: 'end' },
+		},
 		docs: { shortDescription: 'Ends a constants block.' },
 	},
 	// default ( -- )
 	default: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'compileTimeValue' },
-		scope: 'map',
-		allowedInMapBlocks: true,
+		placement: mapPlacement,
 		docs: { shortDescription: 'Defines the fallback value for a map block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
@@ -516,7 +465,11 @@ export const instructionSpecs = {
 	// else ( -- )
 	else: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: {
+			...moduleOrFunctionPlacement,
+			requiredNestedBlock: 'if',
+			block: { kind: 'if', role: 'branch' },
+		},
 		docs: { shortDescription: 'Starts the alternate branch of the current if block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 		effects: blockClose(BlockType.CONDITION, { validateFloatResult: true }),
@@ -548,8 +501,7 @@ export const instructionSpecs = {
 	// exitIfTrue (int -- )
 	exitIfTrue: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOnly',
-		onInvalidScope: ErrorCode.EXIT_IF_TRUE_OUTSIDE_MODULE,
+		placement: modulePlacement,
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Exits the enclosing module when the condition is non-zero.' },
@@ -558,7 +510,7 @@ export const instructionSpecs = {
 	// fallingEdge (int -- int), fallingEdge (float -- int)
 	fallingEdge: {
 		sourceArguments: noSourceArguments,
-		scope: 'module',
+		placement: modulePlacement,
 		minOperands: 1,
 		docs: { shortDescription: 'Detects when a signal changes from a non-zero value to zero.' },
 		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
@@ -566,13 +518,16 @@ export const instructionSpecs = {
 	// function <id> ( -- )
 	function: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		placement: { block: { kind: 'function', role: 'start', parents: [], nestable: false } },
 		docs: { shortDescription: 'Starts a function block.' },
 	},
 	// functionEnd (returns... -- )
 	functionEnd: {
 		sourceArguments: { argumentTypes: 'functionTypeIdentifier' },
-		scope: 'function',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+		placement: {
+			...functionPlacement,
+			block: { kind: 'function', role: 'end' },
+		},
 		docs: { shortDescription: 'Ends a function and records its return signature.' },
 		stack: stack({ inputs: ['returns...'], outputs: [] }),
 	},
@@ -600,7 +555,7 @@ export const instructionSpecs = {
 	// hasChanged (int -- int), hasChanged (float -- int)
 	hasChanged: {
 		sourceArguments: noSourceArguments,
-		scope: 'module',
+		placement: modulePlacement,
 		minOperands: 1,
 		docs: { shortDescription: 'Pushes 1 when the consumed value differs from its previous value.' },
 		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
@@ -608,7 +563,15 @@ export const instructionSpecs = {
 	// if (int -- )
 	if: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: {
+			...moduleOrFunctionPlacement,
+			block: {
+				kind: 'if',
+				role: 'start',
+				parents: ['module', 'function', 'loop', 'block', 'if'],
+				nestable: true,
+			},
+		},
 		minOperands: 1,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Starts a conditional block when the condition is non-zero.' },
@@ -617,7 +580,11 @@ export const instructionSpecs = {
 	// ifEnd ( -- ), ifEnd (T -- T)
 	ifEnd: {
 		sourceArguments: { argumentTypes: 'ifResultType' },
-		scope: 'moduleOrFunction',
+		placement: {
+			...moduleOrFunctionPlacement,
+			requiredNestedBlock: 'if',
+			block: { kind: 'if', role: 'end' },
+		},
 		docs: { shortDescription: 'Ends an if block and validates its optional result value.' },
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
 		effects: blockClose(BlockType.CONDITION, { restoreResult: true, validateFloatResult: true }),
@@ -637,7 +604,7 @@ export const instructionSpecs = {
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load (ptr -- int)
-	load: loadInstruction({
+	load: loadInstruction(loadSpec, {
 		loadVariant: 'i32',
 		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -646,7 +613,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load8u (ptr -- int)
-	load8u: loadInstruction({
+	load8u: loadInstruction(loadSpec, {
 		loadVariant: 'i32_8u',
 		accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -655,7 +622,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load16u (ptr -- int)
-	load16u: loadInstruction({
+	load16u: loadInstruction(loadSpec, {
 		loadVariant: 'i32_16u',
 		accessByteWidth: HALF_WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -664,7 +631,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load8s (ptr -- int)
-	load8s: loadInstruction({
+	load8s: loadInstruction(loadSpec, {
 		loadVariant: 'i32_8s',
 		accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -673,7 +640,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load16s (ptr -- int)
-	load16s: loadInstruction({
+	load16s: loadInstruction(loadSpec, {
 		loadVariant: 'i32_16s',
 		accessByteWidth: HALF_WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -682,7 +649,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// loadFloat (ptr -- float)
-	loadFloat: loadInstruction({
+	loadFloat: loadInstruction(loadSpec, {
 		loadVariant: 'f32',
 		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'float',
@@ -697,16 +664,14 @@ export const instructionSpecs = {
 			maxArguments: 2,
 			argumentTypes: ['functionTypeIdentifier', 'identifier'],
 		},
-		scope: 'moduleOrFunction',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Declares a local variable in the current function or module block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// localSet (T -- )
 	localSet: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
-		scope: 'moduleOrFunction',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		docs: { shortDescription: 'Stores the top stack value into a local variable.' },
 		stack: stack({ inputs: ['T'], outputs: [] }),
@@ -714,15 +679,22 @@ export const instructionSpecs = {
 	// loop ( -- )
 	loop: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeIntegerCompileTimeValue' },
-		scope: 'moduleOrFunction',
+		placement: {
+			...moduleOrFunctionPlacement,
+			block: {
+				kind: 'loop',
+				role: 'start',
+				parents: ['module', 'function', 'loop', 'block', 'if'],
+				nestable: true,
+			},
+		},
 		docs: { shortDescription: 'Starts a loop block that repeats until a branch exits it.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #loopCap ( -- )
 	'#loopCap': {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
-		scope: 'moduleOrFunction',
-		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
+		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Sets the loop iteration cap for loops in the current block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
@@ -730,16 +702,14 @@ export const instructionSpecs = {
 	'#region': {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'regionReference' },
-		scope: 'module',
-		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
+		placement: modulePlacement,
 		docs: { shortDescription: 'Selects the memory region used by subsequent module declarations.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #export [exportName] ( -- )
 	'#export': {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'identifier' },
-		scope: 'function',
-		onInvalidScope: ErrorCode.EXPORT_DIRECTIVE_INVALID_CONTEXT,
+		placement: functionPlacement,
 		docs: {
 			shortDescription: 'Exports the current function under the provided name, or the function name if omitted.',
 		},
@@ -752,8 +722,7 @@ export const instructionSpecs = {
 			maxArguments: 1,
 			argumentTypes: 'identifierOrStringLiteral',
 		},
-		scope: 'function',
-		onInvalidScope: ErrorCode.IMPORT_DIRECTIVE_INVALID_CONTEXT,
+		placement: functionPlacement,
 		docs: {
 			shortDescription: 'Declares that the current function is provided by a WebAssembly host import.',
 		},
@@ -762,23 +731,25 @@ export const instructionSpecs = {
 	// #skipExecution ( -- )
 	'#skipExecution': {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOnly',
-		onInvalidScope: ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT,
+		placement: modulePlacement,
 		docs: { shortDescription: 'Skips the current module during main execution.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// #impure ( -- )
 	'#impure': {
 		sourceArguments: noSourceArguments,
-		scope: 'function',
-		onInvalidScope: ErrorCode.IMPURE_DIRECTIVE_INVALID_CONTEXT,
+		placement: functionPlacement,
 		docs: { shortDescription: 'Allows the current function to perform explicit memory IO.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// loopEnd ( -- ), loopEnd (T -- T)
 	loopEnd: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: {
+			...moduleOrFunctionPlacement,
+			requiredNestedBlock: 'loop',
+			block: { kind: 'loop', role: 'end' },
+		},
 		docs: { shortDescription: 'Ends a loop block and branches back to the start of the loop.' },
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
 		effects: blockClose(BlockType.LOOP, { restoreResult: true }),
@@ -786,31 +757,37 @@ export const instructionSpecs = {
 	// loopIndex ( -- int)
 	loopIndex: {
 		sourceArguments: noSourceArguments,
-		scope: 'loop',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_LOOP,
+		placement: loopPlacement,
 		docs: { shortDescription: 'Pushes the current zero-based loop iteration index.' },
-		stack: stack({ inputs: [], outputs: ['int'] }),
+		stack: stack({ inputs: [], outputs: ['int'], effect: stackMutation(0, [{ kind: 'int', isNonZero: false }]) }),
 	},
 	// map ( -- )
 	map: {
 		sourceArguments: { minArguments: 1, maxArguments: 2, argumentTypes: 'mapValue' },
-		scope: 'map',
-		allowedInMapBlocks: true,
+		placement: mapPlacement,
 		docs: { shortDescription: 'Starts a map case inside a map block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// mapBegin ( -- )
 	mapBegin: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'typeIdentifier' },
-		scope: 'moduleOrFunction',
+		placement: {
+			...moduleOrFunctionPlacement,
+			disallowedNestedBlocks: ['map'],
+			block: {
+				kind: 'map',
+				role: 'start',
+				parents: ['module', 'function', 'loop', 'block', 'if'],
+				nestable: false,
+			},
+		},
 		docs: { shortDescription: 'Starts a map block that chooses a value from map cases.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// mapEnd (int -- T), mapEnd (float -- T), mapEnd (float64 -- T)
 	mapEnd: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'typeIdentifier' },
-		scope: 'map',
-		allowedInMapBlocks: true,
+		placement: mapPlacement,
 		minOperands: 1,
 		docs: { shortDescription: 'Ends a map block and leaves the selected mapped value on the stack.' },
 		stack: stack({ inputs: ['T'], outputs: ['T'] }),
@@ -818,8 +795,7 @@ export const instructionSpecs = {
 	// memoryCopy (ptr ptr -- )
 	memoryCopy: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
-		scope: 'moduleOrFunction',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+		placement: moduleOrFunctionPlacement,
 		minOperands: 2,
 		operandTypes: 'int',
 		docs: { shortDescription: 'Copies memory from one pointer range to another.' },
@@ -831,12 +807,14 @@ export const instructionSpecs = {
 		shortDescription: 'Pushes the smaller of two values of the same type.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
+		effect: stackMutation(2, [{ kind: 'same', isNonZero: false }]),
 	}),
 	// max (int int -- int), max (float float -- float), max (float64 float64 -- float64)
 	max: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes the larger of two values of the same type.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
+		effect: stackMutation(2, [{ kind: 'same', isNonZero: false }]),
 	}),
 	// mul (int int -- int), mul (float float -- float), mul (float64 float64 -- float64)
 	mul: withDocsAndStack(binaryMatchingSpec, {
@@ -848,31 +826,41 @@ export const instructionSpecs = {
 	module: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		placement: { block: { kind: 'module', role: 'start', parents: [], nestable: false } },
 		docs: { shortDescription: 'Starts a module block.' },
 	},
 	// moduleEnd ( -- )
 	moduleEnd: {
 		codegen: false,
 		sourceArguments: noSourceArguments,
+		placement: {
+			...modulePlacement,
+			block: { kind: 'module', role: 'end' },
+		},
 		docs: { shortDescription: 'Ends a module block.' },
 	},
 	// prototype <id> ( -- )
 	prototype: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		placement: { block: { kind: 'prototype', role: 'start', parents: [], nestable: false } },
 		docs: { shortDescription: 'Starts a reusable module memory shape block.' },
 	},
 	// prototypeEnd ( -- )
 	prototypeEnd: {
 		codegen: false,
 		sourceArguments: noSourceArguments,
+		placement: {
+			sourceBlocks: ['prototype'],
+			block: { kind: 'prototype', role: 'end' },
+		},
 		docs: { shortDescription: 'Ends a reusable module memory shape block.' },
 	},
 	// shape <prototypeId> ( -- )
 	shape: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
-		scope: 'module',
+		placement: modulePlacement,
 		docs: { shortDescription: 'Expands a prototype memory shape into the current module.' },
 	},
 	// notEqual (int int -- int), notEqual (float float -- int), notEqual (float64 float64 -- int)
@@ -902,15 +890,14 @@ export const instructionSpecs = {
 			maxArguments: 2,
 			argumentTypes: ['functionTypeIdentifier', 'identifier'],
 		},
-		scope: 'function',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+		placement: functionPlacement,
 		docs: { shortDescription: 'Declares a parameter for the current function.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// push ( -- T)
 	push: {
 		sourceArguments: { minArguments: 1, maxArguments: 1 },
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Pushes a literal, memory value, local value, address, or constant onto the stack.' },
 		stack: stack({ inputs: [], outputs: ['T'] }),
 	},
@@ -923,15 +910,18 @@ export const instructionSpecs = {
 	// return (returns... -- never)
 	return: {
 		sourceArguments: noSourceArguments,
-		scope: 'function',
-		onInvalidScope: ErrorCode.RETURN_OUTSIDE_FUNCTION,
+		placement: functionPlacement,
 		docs: { shortDescription: 'Returns from the current function with the values on the stack.' },
-		stack: stack({ inputs: ['returns...'], outputs: ['never'] }),
+		stack: stack({
+			inputs: ['returns...'],
+			outputs: ['never'],
+			effect: { consumes: 'all', produces: [], dropped: 'consumed' },
+		}),
 	},
 	// risingEdge (int -- int), risingEdge (float -- int)
 	risingEdge: {
 		sourceArguments: noSourceArguments,
-		scope: 'module',
+		placement: modulePlacement,
 		minOperands: 1,
 		docs: { shortDescription: 'Detects when a signal changes from zero to a non-zero value.' },
 		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
@@ -939,7 +929,7 @@ export const instructionSpecs = {
 	// round (float -- float)
 	round: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		operandTypes: 'float',
 		docs: { shortDescription: 'Rounds a float value to the nearest whole value.' },
@@ -970,7 +960,7 @@ export const instructionSpecs = {
 	// sqrt (float -- float)
 	sqrt: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
+		placement: moduleOrFunctionPlacement,
 		minOperands: 1,
 		operandTypes: 'float',
 		docs: { shortDescription: 'Pushes the square root of a float value.' },
@@ -983,8 +973,7 @@ export const instructionSpecs = {
 	// store (ptr int -- ), store (ptr float -- ), store (ptr float64 -- )
 	store: {
 		sourceArguments: noSourceArguments,
-		scope: 'moduleOrFunction',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+		placement: moduleOrFunctionPlacement,
 		minOperands: 2,
 		operandTypes: ['int'],
 		docs: { shortDescription: 'Stores a value at the memory address on the stack.' },
@@ -994,8 +983,7 @@ export const instructionSpecs = {
 	// storeBytes (int... ptr -- )
 	storeBytes: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
-		scope: 'moduleOrFunction',
-		onInvalidScope: ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK,
+		placement: moduleOrFunctionPlacement,
 		validateOperands: line => {
 			const count = (line as StoreBytesSourceLine).arguments[0].value;
 			return {
@@ -1030,7 +1018,7 @@ export const instructionSpecs = {
 	use: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
-		allowedInConstantsBlocks: true,
+		placement: constantsPlacement,
 		docs: { shortDescription: 'Imports declarations from another module or constants block.' },
 	},
 	// xor (int int -- int)
@@ -1047,60 +1035,15 @@ export const instructionSpecs = {
 	}),
 } satisfies Record<string, InstructionSpec>;
 
-export type InstructionSpecName = keyof typeof instructionSpecs;
-export type CodegenInstructionSpecName = {
-	[TInstruction in InstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends { codegen: false }
-		? never
-		: TInstruction;
-}[InstructionSpecName];
-
-export type NonCodegenInstructionSpecName = Exclude<InstructionSpecName, CodegenInstructionSpecName>;
-export type SourceInstructionSpecName = {
-	[TInstruction in InstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends { sourceInstruction: false }
-		? never
-		: TInstruction;
-}[InstructionSpecName];
-
-export type NoSourceArgumentInstructionName = {
-	[TInstruction in CodegenInstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends {
-		sourceArguments: typeof noSourceArguments;
-	}
-		? TInstruction
-		: never;
-}[CodegenInstructionSpecName];
-
-type MemoryOperationForSpec<TSpec> = TSpec extends { effects: { memory: infer TMemory } } ? TMemory : never;
-
-export type InstructionNamesByMemoryOperation<TOperation extends MemoryOperationEffectSpec> = {
-	[TInstruction in InstructionSpecName]: [MemoryOperationForSpec<(typeof instructionSpecs)[TInstruction]>] extends [
-		never,
-	]
-		? never
-		: MemoryOperationForSpec<(typeof instructionSpecs)[TInstruction]> extends TOperation
-			? TInstruction
-			: never;
-}[InstructionSpecName];
-
-export type LoadInstructionSpecName = InstructionNamesByMemoryOperation<
-	Extract<MemoryOperationEffectSpec, { kind: 'load' }> & { resultType: 'int' }
->;
-
-export type FloatLoadInstructionSpecName = InstructionNamesByMemoryOperation<
-	Extract<MemoryOperationEffectSpec, { kind: 'load' }> & { resultType: 'float' }
->;
-
-type InstructionSpecLookup<TInstruction extends string> = TInstruction extends InstructionSpecName
-	? (typeof instructionSpecs)[TInstruction]
-	: TInstruction extends MemoryDeclarationInstruction
-		? typeof instructionSpecs.memoryDeclaration
-		: InstructionSpec | undefined;
-
 /**
  * Returns the registered instruction spec for a language instruction or memory declaration.
  * The conditional return type preserves precise results for known instruction names while
  * still allowing loose string lookups for parser and tooling callers.
  * Memory declaration instructions are represented by many source keywords, but
  * they intentionally share the single `memoryDeclaration` spec entry.
+ *
+ * @param instruction - Instruction keyword or memory declaration keyword to look up.
+ * @returns The matching instruction spec, or undefined for unknown instructions.
  */
 export function getInstructionSpec<TInstruction extends string>(
 	instruction: TInstruction

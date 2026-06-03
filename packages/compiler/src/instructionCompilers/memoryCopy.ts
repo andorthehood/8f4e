@@ -1,10 +1,10 @@
 import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/compiler-spec';
 import { getInstructionSpec } from '@8f4e/compiler-spec';
 import { i32const, memoryCopy as wasmMemoryCopy } from '@8f4e/compiler-wasm-utils';
-import { requireStackAddress } from '../utils/stackItem';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { guardedMemoryCopy, isSafeMemoryCopy } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
+import { requireStackAddress } from './utils/stackItem';
 
 /**
  * Instruction compiler for `memoryCopy`.

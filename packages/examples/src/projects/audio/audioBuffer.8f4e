@@ -103,12 +103,12 @@ module notes
 ; (audioout)
 moduleEnd
 entryEnd
+
 constants env
 ; @pos -49 1
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
-; Last updated: 2/19/2026, 1:23:48 PM
 
 const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128

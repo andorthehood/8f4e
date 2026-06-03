@@ -2,8 +2,15 @@ import materializeByteChunks from './materializeByteChunks';
 
 import type { InitialMemoryDataSegment } from './types';
 
+/** Maximum zero-filled gap to fold between neighboring passive data segments. */
 export const MAX_ZERO_GAP_BYTES_TO_MERGE = 32;
 
+/**
+ * Sorts and merges compatible initial memory data segments, filling small gaps with zeros.
+ *
+ * @param segments - Initial memory data segments to merge.
+ * @returns The materialized initial memory data segment data.
+ */
 export default function mergeAdjacentInitialMemoryDataSegments(
 	segments: InitialMemoryDataSegment[]
 ): InitialMemoryDataSegment[] {

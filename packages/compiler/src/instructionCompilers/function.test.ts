@@ -28,20 +28,4 @@ describe('function instruction compiler', () => {
 			locals: context.locals,
 		}).toMatchSnapshot();
 	});
-
-	it('throws when declared inside a module', () => {
-		const context = createInstructionCompilerTestContext();
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				_function,
-				{
-					lineNumber: 1,
-					instruction: 'function',
-					arguments: [classifyIdentifier('nested')],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
-	});
 });

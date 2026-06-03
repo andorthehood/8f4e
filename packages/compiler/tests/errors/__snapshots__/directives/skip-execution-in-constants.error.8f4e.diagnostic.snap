@@ -1,13 +1,9 @@
 {
-  "code": 34,
-  "context": {
-    "codeBlockId": "env",
-    "codeBlockType": "constants",
-  },
+  "code": 12,
+  "context": {},
   "line": {
-    "arguments": [],
     "instruction": "#skipExecution",
     "lineNumber": 1,
   },
-  "message": "This instruction is not allowed inside this block type. (34)",
+  "message": "Instruction is not allowed in this block.",
 }

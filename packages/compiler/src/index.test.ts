@@ -33,12 +33,12 @@ describe('compile prototype validation', () => {
 		}
 
 		expect(serializeDiagnostic(thrownError)).toMatchObject({
-			code: ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+			code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
 			line: expect.objectContaining({ instruction: 'prototype' }),
 		});
 	});
 
-	it('reports a prototype-specific diagnostic when prototype inputs are not prototype blocks', () => {
+	it('reports a tokenizer diagnostic when a prototype is missing an id', () => {
 		let thrownError: unknown;
 
 		try {
@@ -46,7 +46,7 @@ describe('compile prototype validation', () => {
 				{
 					...emptyCompileInput,
 					entries: { main: [] },
-					prototypes: [{ code: ['module notPrototype', 'moduleEnd'] }],
+					prototypes: [{ code: ['prototype', 'prototypeEnd'] }],
 				},
 				{ disableSharedMemory: true }
 			);
@@ -55,9 +55,9 @@ describe('compile prototype validation', () => {
 		}
 
 		expect(serializeDiagnostic(thrownError)).toMatchObject({
-			code: ErrorCode.MISSING_PROTOTYPE_ID,
-			message: `Missing prototype ID. (${ErrorCode.MISSING_PROTOTYPE_ID})`,
-			line: expect.objectContaining({ instruction: 'module' }),
+			code: SyntaxErrorCode.MISSING_ARGUMENT,
+			message: 'Missing required argument for prototype.',
+			line: expect.objectContaining({ instruction: 'prototype' }),
 		});
 	});
 
@@ -103,5 +103,74 @@ describe('compile prototype validation', () => {
 		);
 
 		expect(result.compiledModules.main.memoryMap.value.default).toBe(7);
+	});
+
+	it('rejects function ids that collide with generated entry function ids during semantic metadata collection', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [{ code: ['function main', 'functionEnd'] }],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.DUPLICATE_IDENTIFIER,
+			line: expect.objectContaining({ instruction: 'function' }),
+		});
+	});
+
+	it('rejects duplicate function export names during semantic metadata collection', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [
+						{ code: ['function first', '#export shared', 'functionEnd'] },
+						{ code: ['function second', '#export shared', 'functionEnd'] },
+					],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.DUPLICATE_EXPORT_NAME,
+			line: expect.objectContaining({ instruction: '#export' }),
+		});
+	});
+
+	it('rejects function exports that collide with generated entry exports', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [{ code: ['function entryAlias', '#export main', 'functionEnd'] }],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.DUPLICATE_EXPORT_NAME,
+			line: expect.objectContaining({ instruction: '#export' }),
+		});
 	});
 });
