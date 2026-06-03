@@ -49,6 +49,7 @@ import { parseArgument } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';
 
+/** Open-block stack frame for an `if` block while matching branches and result metadata. */
 type IfOpenBlock = {
 	instruction: 'if';
 	astIndex: number;
@@ -56,25 +57,30 @@ type IfOpenBlock = {
 	hasElse: boolean;
 };
 
+/** Open-block stack frame for a generic `block` while matching its end metadata. */
 type GenericOpenBlock = {
 	instruction: 'block';
 	astIndex: number;
 	line: BlockLine;
 };
 
+/** Open-block stack frame for blocks that do not need tokenizer-side line metadata. */
 type OtherOpenBlock = {
 	instruction: Exclude<BlockStartInstruction, 'if' | 'block'>;
 	astIndex: number;
 };
 
+/** Any currently open block tracked by the tokenizer's single parsing pass. */
 type OpenBlock = IfOpenBlock | GenericOpenBlock | OtherOpenBlock;
 
+/** Tracks a source block prologue so directives can be restricted to the top of a block. */
 type SourceBlockPrologue = {
 	instruction: (typeof compilerSourceBlockInstructionPairs)[number]['start'];
 	blockDepth: number;
 	isOpen: boolean;
 };
 
+/** Cached placement state maintained by the tokenizer's main loop. */
 type ParserBlockState = {
 	currentSourceBlock?: SourceBlockPlacement;
 	loopDepth: number;
@@ -83,11 +89,13 @@ type ParserBlockState = {
 	ifDepth: number;
 };
 
+/** Result of validating a cached AST entry against the current source lines. */
 type ASTCacheLookupResult<TAst> = {
 	ast?: TAst;
 	hash?: number;
 };
 
+/** Accumulates module-specific lines while the tokenizer builds a validated AST. */
 type ModuleASTBuilder = {
 	type: 'module';
 	id: string;
@@ -96,6 +104,7 @@ type ModuleASTBuilder = {
 	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
+/** Accumulates function-specific metadata while the tokenizer builds a validated AST. */
 type FunctionASTBuilder = {
 	type: 'function';
 	id: string;
@@ -111,12 +120,14 @@ type FunctionASTBuilder = {
 	};
 };
 
+/** Accumulates constants-block metadata while the tokenizer builds a validated AST. */
 type ConstantsASTBuilder = {
 	type: 'constants';
 	id: string;
 	constantsLine: ConstantsLine;
 };
 
+/** Accumulates prototype memory declarations while the tokenizer builds a validated AST. */
 type PrototypeASTBuilder = {
 	type: 'prototype';
 	id: string;
@@ -124,34 +135,45 @@ type PrototypeASTBuilder = {
 	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
+/** Source block builder selected from the first valid source block in parsed input. */
 type SourceBlockASTBuilder = ModuleASTBuilder | FunctionASTBuilder | ConstantsASTBuilder | PrototypeASTBuilder;
 
+/** Parsed source lines plus the source-block builder needed to materialize the final AST. */
 type ParsedCompilerSource = {
 	lines: CompilerASTLines;
 	astBuilder?: SourceBlockASTBuilder;
 };
 
+/** Physical source line after comment filtering and argument-continuation folding. */
 type SourceLine = {
 	line: string;
 	lineNumber: number;
 };
 
+/** Fast membership lookup for block-start instructions. */
 const blockStartInstructionSet = new Set<BlockStartInstruction>(blockStartInstructions);
+
+/** Fast membership lookup for top-level source block start instructions. */
 const sourceBlockStartInstructionSet: ReadonlySet<string> = new Set(
 	compilerSourceBlockInstructionPairs.map(({ start }) => start)
 );
+
+/** Fast membership lookup for top-level source block end instructions. */
 const sourceBlockEndInstructionSet: ReadonlySet<string> = new Set(
 	compilerSourceBlockInstructionPairs.map(({ end }) => end)
 );
 
+/** Narrows an instruction string to block-start instructions known by the compiler spec. */
 function isBlockStartInstruction(instruction: string): instruction is BlockStartInstruction {
 	return blockStartInstructionSet.has(instruction as BlockStartInstruction);
 }
 
+/** Narrows an instruction string to block-end instructions known by the compiler spec. */
 function isBlockEndInstruction(instruction: string): instruction is BlockEndInstruction {
 	return Object.hasOwn(blockEndToStartInstruction, instruction);
 }
 
+/** Creates the tokenizer's cached block-placement state. */
 function createParserBlockState(): ParserBlockState {
 	return {
 		loopDepth: 0,
@@ -161,6 +183,7 @@ function createParserBlockState(): ParserBlockState {
 	};
 }
 
+/** Throws the placement syntax error with the source line metadata attached. */
 function throwInstructionNotAllowedInBlock(line: CompilerASTLine): never {
 	throw new SyntaxRulesError(SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, undefined, {
 		lineNumber: line.lineNumber,
@@ -168,6 +191,7 @@ function throwInstructionNotAllowedInBlock(line: CompilerASTLine): never {
 	});
 }
 
+/** Reads placement rules for regular instructions and shared memory declarations. */
 function getInstructionPlacement(line: CompilerASTLine): InstructionPlacement | undefined {
 	if (isMemoryDeclarationLine(line)) {
 		return getInstructionSpec('memoryDeclaration')?.placement;
@@ -176,6 +200,7 @@ function getInstructionPlacement(line: CompilerASTLine): InstructionPlacement | 
 	return getInstructionSpec(line.instruction)?.placement;
 }
 
+/** Reads cached nested-block depth for a block kind without scanning the open-block stack. */
 function getNestedBlockDepth(state: ParserBlockState, block: NestedBlockPlacement): number {
 	switch (block) {
 		case 'loop':
@@ -189,18 +214,22 @@ function getNestedBlockDepth(state: ParserBlockState, block: NestedBlockPlacemen
 	}
 }
 
+/** Narrows a placement kind to source blocks that own independent ASTs. */
 function isSourceBlockPlacement(block: string): block is SourceBlockPlacement {
 	return block === 'module' || block === 'function' || block === 'constants' || block === 'prototype';
 }
 
+/** Reads block metadata for a block-start instruction from the compiler spec. */
 function getBlockStartPlacement(instruction: BlockStartInstruction): InstructionPlacement['block'] | undefined {
 	return getInstructionSpec(instruction)?.placement?.block;
 }
 
+/** Resolves the placement kind of the current immediate parent block. */
 function getOpenBlockPlacementKind(block: OpenBlock | undefined): BlockPlacement | undefined {
 	return block ? getBlockStartPlacement(block.instruction)?.kind : undefined;
 }
 
+/** Validates the immediate parent constraint for block-start instructions. */
 function validatePlacementParent(
 	line: CompilerASTLine,
 	placement: InstructionPlacement,
@@ -223,6 +252,7 @@ function validatePlacementParent(
 	}
 }
 
+/** Applies compiler-spec placement rules using tokenizer-maintained block state. */
 function validateInstructionPlacement(
 	line: CompilerASTLine,
 	state: ParserBlockState,
@@ -258,6 +288,7 @@ function validateInstructionPlacement(
 	validatePlacementParent(line, placement, parentBlockKind);
 }
 
+/** Updates cached block-placement state when a block starts or ends. */
 function updateParserBlockState(state: ParserBlockState, instruction: BlockStartInstruction, delta: 1 | -1): void {
 	const block = getBlockStartPlacement(instruction);
 	if (!block) {
@@ -285,10 +316,12 @@ function updateParserBlockState(state: ParserBlockState, instruction: BlockStart
 	}
 }
 
+/** Converts parsed block-end result arguments into the metadata stored on matched block lines. */
 function getResultTypesFromArguments(line: IfEndLine | BlockEndLine): BlockResultTypes {
 	return line.arguments.map(argument => argument.value as BlockResultTypes[number]);
 }
 
+/** Determines whether a memory declaration includes a default value source argument. */
 function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): boolean {
 	if (isArrayDeclarationInstruction(instruction)) {
 		return args.length > 2;
@@ -308,6 +341,7 @@ function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): b
 	return args.length > 1;
 }
 
+/** Returns a cached AST only after the cheap line-count and hash checks pass. */
 function getASTCacheLookupResult<TAst>(
 	cached: ASTCacheEntry<TAst> | undefined,
 	code: string[]
@@ -332,6 +366,7 @@ function getASTCacheLookupResult<TAst>(
 	};
 }
 
+/** Adds namespace references discovered from syntax-level arguments to a line accumulator. */
 function addReferencedNamespaceIdsFromArgument(referencedNamespaceIds: Set<string>, argument: Argument): void {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		for (const moduleId of argument.intermoduleIds) {
@@ -349,6 +384,7 @@ function addReferencedNamespaceIdsFromArgument(referencedNamespaceIds: Set<strin
 	}
 }
 
+/** Creates the source-block builder represented by a parsed block-start line. */
 function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuilder | undefined {
 	switch (line.instruction) {
 		case 'module':
@@ -383,6 +419,7 @@ function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockASTBuild
 	}
 }
 
+/** Records module-only metadata while source lines are streamed into a module builder. */
 function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): void {
 	switch (line.instruction) {
 		case '#region':
@@ -397,6 +434,7 @@ function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): v
 	builder.memoryDeclarationLines.push(line);
 }
 
+/** Records function signature, import, export, and end metadata for a function builder. */
 function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine): void {
 	switch (line.instruction) {
 		case 'param':
@@ -418,6 +456,7 @@ function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine
 	}
 }
 
+/** Routes a parsed line into the active source-block builder. */
 function applySourceBlockASTLine(builder: SourceBlockASTBuilder, line: CompilerASTLine): void {
 	switch (builder.type) {
 		case 'module':
@@ -436,6 +475,7 @@ function applySourceBlockASTLine(builder: SourceBlockASTBuilder, line: CompilerA
 	}
 }
 
+/** Materializes the final validated AST from accumulated source-block metadata. */
 function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBuilder): AST {
 	switch (builder.type) {
 		case 'module':
@@ -486,6 +526,7 @@ function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlockASTBu
 	}
 }
 
+/** Converts parsed source into an AST and reports missing source blocks as syntax errors. */
 function toAST(parsedSource: ParsedCompilerSource): AST {
 	const { lines, astBuilder } = parsedSource;
 	const firstLine = lines[0];
@@ -547,6 +588,7 @@ function tokenizeInstruction(line: string): string[] {
 	return tokens;
 }
 
+/** Recreates a syntax error with source line metadata from the parser context. */
 function withSyntaxLine(error: SyntaxRulesError, lineNumber: number, instruction?: string): SyntaxRulesError {
 	return new SyntaxRulesError(error.code, error.message, {
 		lineNumber,
@@ -554,6 +596,7 @@ function withSyntaxLine(error: SyntaxRulesError, lineNumber: number, instruction
 	});
 }
 
+/** Tokenizes a physical line and attaches line metadata to tokenizer-level syntax errors. */
 function parseInstructionTokens(line: string, lineNumber: number): string[] {
 	try {
 		return tokenizeInstruction(line);
@@ -565,10 +608,12 @@ function parseInstructionTokens(line: string, lineNumber: number): string[] {
 	}
 }
 
+/** Detects physical lines that append one argument to the preceding instruction. */
 function isArgumentContinuationCandidate(line: string): boolean {
 	return /^\s*-(?=\s|;|$)/.test(line);
 }
 
+/** Removes comments and folds argument-continuation lines into logical source lines. */
 function foldArgumentContinuationLines(code: string[]): SourceLine[] {
 	const sourceLines: SourceLine[] = [];
 	let previousSourceLine: SourceLine | undefined;
@@ -622,6 +667,7 @@ function foldArgumentContinuationLines(code: string[]): SourceLine[] {
 	return sourceLines;
 }
 
+/** Parses and syntax-validates one logical source line into an AST line. */
 export function parseLine(line: string, lineNumber: number): CompilerASTLine {
 	let instruction: string | undefined;
 	try {
@@ -670,6 +716,7 @@ export function parseLine(line: string, lineNumber: number): CompilerASTLine {
 	}
 }
 
+/** Parses source into AST lines while validating block structure and placement in one pass. */
 function parseCompilerSource(code: string[]): ParsedCompilerSource {
 	const ast: CompilerASTLines = [];
 	let astBuilder: SourceBlockASTBuilder | undefined;
@@ -863,6 +910,7 @@ function parseCompilerSource(code: string[]): ParsedCompilerSource {
 	return { lines: ast, astBuilder };
 }
 
+/** Compiles source to validated AST lines, using the optional cache for repeated parses. */
 export function compileToASTLines(
 	code: string[],
 	cache?: ASTCache<CompilerASTLines>,
@@ -898,6 +946,7 @@ export function compileToASTLines(
 	return ast;
 }
 
+/** Compiles source into a validated source-block AST, using the optional cache when available. */
 export function compileToAST(code: string[], cache?: ASTCache<ValidatedAST>, cacheKey?: string): ValidatedAST {
 	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
 	const cachedLookup = getASTCacheLookupResult(cached, code);

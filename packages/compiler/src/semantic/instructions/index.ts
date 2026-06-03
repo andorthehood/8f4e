@@ -8,6 +8,7 @@ import semanticRegion from './region';
 import semanticShape from './shape';
 import semanticUse from './use';
 
+/** Dispatches normalized semantic instructions to their declaration or namespace handlers. */
 export default function applySemanticInstruction(line: NormalizedSemanticInstructionLine, context: CompilationContext) {
 	switch (line.instruction) {
 		case 'const':

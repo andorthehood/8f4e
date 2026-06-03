@@ -153,8 +153,11 @@ export interface CompilationContext {
 	internalAllocator: InternalAllocator;
 	stack: Stack;
 	blockStack: BlockStack;
+	/** Cached active block counts keyed by block type, maintained with block stack mutations. */
 	activeBlockDepths: Record<BlockTypeValue, number>;
+	/** Open loop frames in nesting order, used to access the innermost loop without scanning. */
 	activeLoopBlocks: LoopBlockStackFrame[];
+	/** Current map frame; maps are non-nestable by placement rules. */
 	activeMapBlock?: MapBlockStackFrame;
 	insideModuleBlock: boolean;
 	insideFunctionBlock: boolean;

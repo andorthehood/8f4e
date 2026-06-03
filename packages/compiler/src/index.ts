@@ -50,6 +50,7 @@ import {
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 import { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 
+/** Expanded module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
 	code: string[];
 	cacheKey: string;
@@ -59,14 +60,17 @@ type ModuleCompilerSource = {
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';
 export { serializeDiagnostic } from './diagnostic';
 
+/** Creates the default compiler cache used for validated AST reuse. */
 function createCompilerCache(): CompilerCache {
 	return {
 		ast: createASTCache<ValidatedAST>(),
 	};
 }
 
+/** Built-in WebAssembly export names that user functions are not allowed to reuse. */
 const RESERVED_EXPORT_NAMES = new Set(['initDefaults']);
 
+/** Ensures user function exports do not collide with each other or generated entry exports. */
 function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, entryNames: readonly string[]): void {
 	const seen = new Set<string>();
 	const builtInExportNames = new Set([...RESERVED_EXPORT_NAMES, ...entryNames]);
@@ -86,6 +90,7 @@ function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, entr
 	}
 }
 
+/** Creates synthetic metadata for generated entry dispatcher functions. */
 function createEntryFunctionMetadata(
 	entryNames: readonly string[],
 	importedFunctionCount: number
@@ -102,6 +107,7 @@ function createEntryFunctionMetadata(
 	);
 }
 
+/** Rejects user functions whose ids collide with generated entry dispatcher names. */
 function assertNoFunctionEntryNameCollisions(
 	functions: readonly ValidatedFunctionAST[],
 	entryMetadata: FunctionMetadataLookup
@@ -113,6 +119,7 @@ function assertNoFunctionEntryNameCollisions(
 	}
 }
 
+/** Calculates required byte size for each WebAssembly memory index. */
 function getRequiredMemoryBytesByIndex(
 	items: Array<{ memoryIndex: number; byteAddress?: number; wordAlignedSize?: number }>
 ): Record<number, number> {
@@ -124,6 +131,7 @@ function getRequiredMemoryBytesByIndex(
 	}, {});
 }
 
+/** Converts non-default memory byte requirements into configured memory region names. */
 function getRequiredMemoryBytesByRegion(
 	requiredMemoryBytesByIndex: Record<number, number>,
 	memoryRegions: readonly string[]
@@ -142,10 +150,12 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
+/** Parses source into the validated AST type expected by the current compiler pass. */
 function parseCompilerAST<TAST extends ValidatedAST>(code: string[], cache: CompilerCache, cacheKey: string): TAST {
 	return compileToAST(code, cache.ast, cacheKey) as TAST;
 }
 
+/** Indexes prototype ASTs by id and rejects duplicate prototype declarations. */
 function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
 	const prototypeShapesById: Record<string, ValidatedPrototypeAST> = {};
 
@@ -162,6 +172,7 @@ function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): R
 	return prototypeShapesById;
 }
 
+/** Compiles modules, constants, functions, and prototypes into a complete WebAssembly program. */
 export default function compile(
 	input: CompileInput,
 	options: CompileOptions,

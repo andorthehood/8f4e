@@ -8,8 +8,10 @@ import type {
 } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 
+/** Context shape shared by semantic analysis and codegen while mutating block state. */
 type BlockContext = CodegenContext | CompilationContext;
 
+/** Pushes a compiler block and updates all cached active-block state. */
 export function pushBlock(context: BlockContext, block: BlockStack[number]) {
 	context.blockStack.push(block);
 	context.activeBlockDepths[block.blockType]++;
@@ -25,6 +27,7 @@ export function pushBlock(context: BlockContext, block: BlockStack[number]) {
 	updateBlockContextFlag(context, block.blockType, true);
 }
 
+/** Pops the innermost compiler block and updates all cached active-block state. */
 export function popBlock(context: BlockContext) {
 	const block = context.blockStack.pop();
 
@@ -47,18 +50,22 @@ export function popBlock(context: BlockContext) {
 	return block;
 }
 
+/** Returns the active map block frame; tokenizer placement guarantees it exists at call sites. */
 export function peekMapBlock(context: BlockContext): MapBlockStackFrame {
 	return context.activeMapBlock!;
 }
 
+/** Pops the active map block frame; tokenizer placement guarantees map nesting is valid. */
 export function popMapBlock(context: BlockContext): MapBlockStackFrame {
 	return popBlock(context) as MapBlockStackFrame;
 }
 
+/** Returns the innermost active loop block frame without scanning the full block stack. */
 export function findNearestLoopBlock(context: BlockContext): LoopBlockStackFrame {
 	return context.activeLoopBlocks[context.activeLoopBlocks.length - 1];
 }
 
+/** Synchronizes legacy inside-block booleans with the cached block depth for a block type. */
 function updateBlockContextFlag(context: BlockContext, blockType: BlockTypeValue, isInside: boolean) {
 	switch (blockType) {
 		case BlockType.MODULE:

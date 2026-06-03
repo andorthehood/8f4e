@@ -3,6 +3,7 @@ import { ArgumentType } from '@8f4e/compiler-spec';
 import { peekMapBlock } from '../../utils/blockStack';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
+/** Creates the implicit key argument for one-argument `map` rows from the active map state. */
 function createImplicitKeyArgument(context: CompilationContext): NormalizedArgumentLiteral {
 	const { mapState } = peekMapBlock(context);
 

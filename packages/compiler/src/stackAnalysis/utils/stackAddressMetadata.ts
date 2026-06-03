@@ -1,6 +1,7 @@
 import type { MemoryAddressRange, StackAddress, StackItem } from '@8f4e/compiler-spec';
 import { getMemoryRegionFields } from '../../semantic/memoryRegions';
 
+/** Shifts a proven safe range forward by a known byte offset, dropping it when unsafe. */
 function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {
 	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > safeRange.safeByteLength) {
 		return undefined;
@@ -13,6 +14,7 @@ function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): Memo
 	};
 }
 
+/** Derives known-value and address-range metadata for stack addition. */
 export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem): Partial<StackItem> {
 	const knownIntegerValue =
 		operand1.knownIntegerValue !== undefined && operand2.knownIntegerValue !== undefined
@@ -47,6 +49,7 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 	} as Partial<StackAddress>;
 }
 
+/** Derives known-value and address-range metadata for stack subtraction. */
 export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem): Partial<StackItem> {
 	const knownIntegerValue =
 		operand1.knownIntegerValue !== undefined && operand2.knownIntegerValue !== undefined
