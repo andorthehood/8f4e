@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import WASM_MEMORY_PAGE_SIZE from './consts';
+import { WASM_MEMORY_PAGE_SIZE } from './consts';
 import { deriveEffectiveMemorySize } from './deriveEffectiveMemorySize';
 
 describe('deriveEffectiveMemorySize', () => {

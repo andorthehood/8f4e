@@ -1,5 +1,4 @@
 import type {
-	CompiledFunctionLookup,
 	CompiledModule,
 	CompileInput,
 	CompileOptions,
@@ -30,9 +29,11 @@ import {
 	createMemoryImport,
 	createPassiveDataSegment,
 	createTypeSection,
+	createWasmVersion,
 	i32const,
 	memoryFill,
 	memoryInit,
+	WASM_HEADER,
 	WASM_MEMORY_PAGE_SIZE,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
@@ -40,7 +41,6 @@ import { compileToAST, createASTCache } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
 import { compileModules } from './compileModules';
 import { getError } from './compilerError';
-import { HEADER, VERSION } from './consts';
 import { createInitialMemoryDataSegments } from './initialMemoryDataSegments';
 import {
 	assertUniqueModuleIds,
@@ -68,27 +68,7 @@ function createCompilerCache(): CompilerCache {
 }
 
 /** Built-in WebAssembly export names that user functions are not allowed to reuse. */
-const RESERVED_EXPORT_NAMES = new Set(['initDefaults']);
-
-/** Ensures user function exports do not collide with each other or generated entry exports. */
-function assertUniqueFunctionExportNames(functions: CompiledFunctionLookup, entryNames: readonly string[]): void {
-	const seen = new Set<string>();
-	const builtInExportNames = new Set([...RESERVED_EXPORT_NAMES, ...entryNames]);
-
-	for (const compiledFunction of Object.values(functions)) {
-		const exportName = compiledFunction.exportName;
-		if (!exportName) {
-			continue;
-		}
-
-		const exportLine = compiledFunction.ast.exportLine ?? compiledFunction.ast.lines[0];
-		if (builtInExportNames.has(exportName) || seen.has(exportName)) {
-			throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, exportLine, undefined, { identifier: exportName });
-		}
-
-		seen.add(exportName);
-	}
-}
+const RESERVED_EXPORT_NAMES = ['initDefaults'];
 
 /** Creates synthetic metadata for generated entry dispatcher functions. */
 function createEntryFunctionMetadata(
@@ -105,18 +85,6 @@ function createEntryFunctionMetadata(
 			} satisfies FunctionMetadata,
 		])
 	);
-}
-
-/** Rejects user functions whose ids collide with generated entry dispatcher names. */
-function assertNoFunctionEntryNameCollisions(
-	functions: readonly ValidatedFunctionAST[],
-	entryMetadata: FunctionMetadataLookup
-): void {
-	for (const ast of functions) {
-		if (entryMetadata[ast.id]) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, undefined, { identifier: ast.id });
-		}
-	}
 }
 
 /** Calculates required byte size for each WebAssembly memory index. */
@@ -254,8 +222,12 @@ export default function compile(
 	// Collect pre-codegen function metadata so `call` target validation and
 	// function-body codegen can rely on the same registry before compilation finishes.
 	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
-	assertNoFunctionEntryNameCollisions(astFunctions, entryFunctionMetadata);
-	const userFunctionMetadata = collectFunctionMetadataFromAsts(astFunctions, 0, userDefinedFunctionBaseIndex);
+	const userFunctionMetadata = collectFunctionMetadataFromAsts(astFunctions, {
+		importedFunctionBaseIndex: 0,
+		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
+		reservedFunctionIds: entryNames,
+		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
+	});
 	const functionMetadata = { ...entryFunctionMetadata, ...userFunctionMetadata };
 
 	// Create a shared type registry for all functions
@@ -278,7 +250,6 @@ export default function compile(
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
-	assertUniqueFunctionExportNames(compiledFunctionsMap, entryNames);
 	const requiredMemoryBytesByIndexFromNamespaces = getRequiredMemoryBytesByIndex(Object.values(namespaces));
 	const totalModuleBytes = requiredMemoryBytesByIndexFromNamespaces[0] ?? 0;
 	const internalAllocator = { nextByteAddress: totalModuleBytes };
@@ -381,11 +352,12 @@ export default function compile(
 		createFunctionExport('initDefaults', importedFunctionCount),
 		...entryNames.map((entryName, index) => createFunctionExport(entryName, importedFunctionCount + 1 + index)),
 	];
+	const wasmVersion = createWasmVersion(1);
 
 	return {
 		codeBuffer: Uint8Array.from([
-			...HEADER,
-			...VERSION,
+			...WASM_HEADER,
+			...wasmVersion,
 			...createTypeSection([
 				createFunctionType([], []),
 				createFunctionType([WASM_TYPE_I32], [WASM_TYPE_I32]),
