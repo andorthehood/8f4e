@@ -52,8 +52,6 @@ export function createCompiledModule(overrides: Partial<CompiledModule>): Compil
 				},
 			],
 		},
-		containsShape: false,
-		shapeLines: [],
 		memoryDeclarationLines: [],
 	};
 

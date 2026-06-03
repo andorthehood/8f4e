@@ -202,50 +202,10 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "foo",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
+              "value": "baryon",
             },
           ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "int",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "he",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 2,
-            },
-          ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "int",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "bar",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 3,
-            },
-          ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "int",
+          "instruction": "shape",
         },
         {
           "arguments": [
