@@ -1,19 +1,9 @@
 {
-  "code": 13,
-  "context": {
-    "codeBlockId": "mapDefaultOutsideBlock",
-    "codeBlockType": "module",
-  },
+  "code": 12,
+  "context": {},
   "line": {
-    "arguments": [
-      {
-        "isInteger": true,
-        "type": "literal",
-        "value": 10,
-      },
-    ],
     "instruction": "default",
     "lineNumber": 3,
   },
-  "message": "This instruction can only be used within a block or a module. (13)",
+  "message": "Instruction is not allowed in this block.",
 }

@@ -7,7 +7,7 @@ import hashSource from './hashSource';
 describe('compileToASTLines cache', () => {
 	it('returns cached AST when source is unchanged', () => {
 		const cache = createASTCache<CompilerASTLines>();
-		const code = ['push 10', 'push 20', 'add'];
+		const code = ['module test', 'push 10', 'push 20', 'add', 'moduleEnd'];
 		const first = compileToASTLines(code, cache, 'module:0');
 		const second = compileToASTLines(code, cache, 'module:0');
 
@@ -22,7 +22,7 @@ describe('compileToASTLines cache', () => {
 
 	it('stores obvious cache misses without hashing the source', () => {
 		const cache = createASTCache<CompilerASTLines>();
-		const code = ['push 10'];
+		const code = ['module test', 'push 10', 'moduleEnd'];
 		const ast = compileToASTLines(code, cache, 'module:0');
 		const entry = cache.entries.get('module:0');
 
@@ -38,31 +38,31 @@ describe('compileToASTLines cache', () => {
 
 	it('reparses when source changes for the same cache key', () => {
 		const cache = createASTCache<CompilerASTLines>();
-		const first = compileToASTLines(['push 10'], cache, 'module:0');
-		const second = compileToASTLines(['push 20'], cache, 'module:0');
+		const first = compileToASTLines(['module test', 'push 10', 'moduleEnd'], cache, 'module:0');
+		const second = compileToASTLines(['module test', 'push 20', 'moduleEnd'], cache, 'module:0');
 
 		expect(second).not.toBe(first);
-		expect(second[0].arguments[0]).toMatchObject({ value: 20 });
+		expect(second[1].arguments[0]).toMatchObject({ value: 20 });
 		expect(cache.stats).toEqual({ hits: 0, misses: 2 });
 	});
 
 	it('reparses when source line count changes for the same cache key', () => {
 		const cache = createASTCache<CompilerASTLines>();
-		const first = compileToASTLines(['push 10'], cache, 'module:0');
-		const second = compileToASTLines(['push 10', 'push 20'], cache, 'module:0');
+		const first = compileToASTLines(['module test', 'push 10', 'moduleEnd'], cache, 'module:0');
+		const second = compileToASTLines(['module test', 'push 10', 'push 20', 'moduleEnd'], cache, 'module:0');
 
 		expect(second).not.toBe(first);
 		expect(cache.entries.get('module:0')).toMatchObject({
 			ast: second,
-			lineCount: 2,
+			lineCount: 4,
 		});
 		expect(cache.stats).toEqual({ hits: 0, misses: 2 });
 	});
 
 	it('keeps distinct cache keys independent', () => {
 		const cache = createASTCache<CompilerASTLines>();
-		const moduleAst = compileToASTLines(['push 10'], cache, 'module:0');
-		const functionAst = compileToASTLines(['push 10'], cache, 'function:0');
+		const moduleAst = compileToASTLines(['module test', 'push 10', 'moduleEnd'], cache, 'module:0');
+		const functionAst = compileToASTLines(['function test', 'push 10', 'functionEnd'], cache, 'function:0');
 
 		expect(functionAst).not.toBe(moduleAst);
 		expect(cache.entries.get('module:0')?.ast).toBe(moduleAst);

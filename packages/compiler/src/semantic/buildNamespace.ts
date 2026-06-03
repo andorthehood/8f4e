@@ -21,7 +21,6 @@ import {
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
-import { validateInstructionContext } from '../stackAnalysis/validateInstruction';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
@@ -91,7 +90,6 @@ export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | Valid
 
 export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
 	const normalizedLine = normalizeCompileTimeArguments(line, context);
-	validateInstructionContext(normalizedLine, context);
 	applySemanticInstruction(normalizedLine, context);
 }
 
@@ -148,7 +146,7 @@ function applyNamespaceDeclarationLines(
 			const declarationLine = context.resolveMemoryDeclarationLine?.(originalLine) ?? originalLine;
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
 		} else if (shouldValidateUnhandledLines) {
-			validateInstructionContext(normalizeCompileTimeArguments(originalLine, context), context);
+			normalizeCompileTimeArguments(originalLine, context);
 		}
 	});
 

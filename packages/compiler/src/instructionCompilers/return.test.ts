@@ -2,7 +2,6 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 import _return from './return';
 
@@ -33,19 +32,5 @@ describe('return instruction compiler', () => {
 			byteCode: context.byteCode,
 			stack: context.stack,
 		}).toMatchSnapshot();
-	});
-
-	it('throws when used outside a function', () => {
-		const context = createInstructionCompilerTestContext();
-		// default context has MODULE block, not FUNCTION
-		const line = {
-			lineNumber: 1,
-			instruction: 'return',
-			arguments: [],
-		} as CompilerASTLine;
-
-		expect(() => {
-			validateInstruction(line, context);
-		}).toThrowError();
 	});
 });

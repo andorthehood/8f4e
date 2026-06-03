@@ -30,24 +30,6 @@ describe('skipExecution instruction compiler', () => {
 		expect(context.skipExecutionInCycle).toBe(true);
 	});
 
-	it('throws error when used outside module block', () => {
-		const context = createInstructionCompilerTestContext({
-			blockStack: [],
-		});
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				skipExecution,
-				{
-					lineNumber: 1,
-					instruction: '#skipExecution',
-					arguments: [],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrow();
-	});
-
 	it('is idempotent - multiple calls have same effect', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [

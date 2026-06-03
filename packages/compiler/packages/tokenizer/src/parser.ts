@@ -6,6 +6,7 @@ import type {
 	BlockEndInstruction,
 	BlockEndLine,
 	BlockLine,
+	BlockPlacement,
 	BlockResultTypes,
 	BlockStartInstruction,
 	CompilerASTLine,
@@ -18,10 +19,13 @@ import type {
 	IfEndLine,
 	IfLine,
 	ImportLine,
+	InstructionPlacement,
 	MemoryDeclarationLine,
 	ModuleLine,
+	NestedBlockPlacement,
 	PrototypeLine,
 	RegionLine,
+	SourceBlockPlacement,
 	ValidatedAST,
 } from '@8f4e/compiler-spec';
 import {
@@ -69,6 +73,14 @@ type SourceBlockPrologue = {
 	instruction: (typeof compilerSourceBlockInstructionPairs)[number]['start'];
 	blockDepth: number;
 	isOpen: boolean;
+};
+
+type ParserBlockState = {
+	currentSourceBlock?: SourceBlockPlacement;
+	loopDepth: number;
+	mapDepth: number;
+	blockDepth: number;
+	ifDepth: number;
 };
 
 type ASTCacheLookupResult<TAst> = {
@@ -140,17 +152,136 @@ function isBlockEndInstruction(instruction: string): instruction is BlockEndInst
 	return Object.hasOwn(blockEndToStartInstruction, instruction);
 }
 
-function validateShapeSourceBlockScope(line: CompilerASTLine, sourceBlock: SourceBlockPrologue | undefined): void {
-	if (line.instruction !== 'shape') {
+function createParserBlockState(): ParserBlockState {
+	return {
+		loopDepth: 0,
+		mapDepth: 0,
+		blockDepth: 0,
+		ifDepth: 0,
+	};
+}
+
+function throwInstructionNotAllowedInBlock(line: CompilerASTLine): never {
+	throw new SyntaxRulesError(SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, undefined, {
+		lineNumber: line.lineNumber,
+		instruction: line.instruction,
+	});
+}
+
+function getInstructionPlacement(line: CompilerASTLine): InstructionPlacement | undefined {
+	if (isMemoryDeclarationLine(line)) {
+		return getInstructionSpec('memoryDeclaration')?.placement;
+	}
+
+	return getInstructionSpec(line.instruction)?.placement;
+}
+
+function getNestedBlockDepth(state: ParserBlockState, block: NestedBlockPlacement): number {
+	switch (block) {
+		case 'loop':
+			return state.loopDepth;
+		case 'map':
+			return state.mapDepth;
+		case 'block':
+			return state.blockDepth;
+		case 'if':
+			return state.ifDepth;
+	}
+}
+
+function isSourceBlockPlacement(block: string): block is SourceBlockPlacement {
+	return block === 'module' || block === 'function' || block === 'constants' || block === 'prototype';
+}
+
+function getBlockStartPlacement(instruction: BlockStartInstruction): InstructionPlacement['block'] | undefined {
+	return getInstructionSpec(instruction)?.placement?.block;
+}
+
+function getOpenBlockPlacementKind(block: OpenBlock | undefined): BlockPlacement | undefined {
+	return block ? getBlockStartPlacement(block.instruction)?.kind : undefined;
+}
+
+function validatePlacementParent(
+	line: CompilerASTLine,
+	placement: InstructionPlacement,
+	parentBlockKind: BlockPlacement | undefined
+): void {
+	const block = placement.block;
+	if (!block || block.role !== 'start' || !block.parents) {
 		return;
 	}
 
-	const scope = getInstructionSpec(line.instruction)?.scope;
-	if (scope !== 'module' || sourceBlock?.instruction !== scope) {
-		throw new SyntaxRulesError(SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, undefined, {
-			lineNumber: line.lineNumber,
-			instruction: line.instruction,
-		});
+	if (block.parents.length === 0) {
+		if (parentBlockKind !== undefined) {
+			throwInstructionNotAllowedInBlock(line);
+		}
+		return;
+	}
+
+	if (!parentBlockKind || !block.parents.includes(parentBlockKind)) {
+		throwInstructionNotAllowedInBlock(line);
+	}
+}
+
+function validateInstructionPlacement(
+	line: CompilerASTLine,
+	state: ParserBlockState,
+	parentBlockKind: BlockPlacement | undefined
+): void {
+	const placement = getInstructionPlacement(line);
+	if (!placement) {
+		return;
+	}
+
+	if (state.mapDepth > 0 && placement.requiredNestedBlock !== 'map' && placement.block?.kind !== 'map') {
+		throwInstructionNotAllowedInBlock(line);
+	}
+
+	if (state.currentSourceBlock) {
+		if (placement.sourceBlocks && !placement.sourceBlocks.includes(state.currentSourceBlock)) {
+			throwInstructionNotAllowedInBlock(line);
+		}
+	} else if (!placement.topLevel && placement.block?.role !== 'start') {
+		throwInstructionNotAllowedInBlock(line);
+	}
+
+	if (placement.requiredNestedBlock && getNestedBlockDepth(state, placement.requiredNestedBlock) === 0) {
+		throwInstructionNotAllowedInBlock(line);
+	}
+
+	for (const block of placement.disallowedNestedBlocks ?? []) {
+		if (getNestedBlockDepth(state, block) > 0) {
+			throwInstructionNotAllowedInBlock(line);
+		}
+	}
+
+	validatePlacementParent(line, placement, parentBlockKind);
+}
+
+function updateParserBlockState(state: ParserBlockState, instruction: BlockStartInstruction, delta: 1 | -1): void {
+	const block = getBlockStartPlacement(instruction);
+	if (!block) {
+		return;
+	}
+
+	if (isSourceBlockPlacement(block.kind)) {
+		state.currentSourceBlock = delta === 1 ? block.kind : undefined;
+		return;
+	}
+
+	switch (block.kind) {
+		case 'loop':
+			state.loopDepth += delta;
+			return;
+		case 'map':
+			state.mapDepth += delta;
+			return;
+		case 'block':
+			state.blockDepth += delta;
+			return;
+		case 'if':
+			state.ifDepth += delta;
+			return;
 	}
 }
 
@@ -544,6 +675,7 @@ function parseCompilerSource(code: string[]): ParsedCompilerSource {
 	let astBuilder: SourceBlockASTBuilder | undefined;
 	let onlySemanticLinesBeforeSourceBlock = true;
 	const blockStack: OpenBlock[] = [];
+	const parserBlockState = createParserBlockState();
 	const sourceBlockPrologueStack: SourceBlockPrologue[] = [];
 	const sourceLines = foldArgumentContinuationLines(code);
 
@@ -569,13 +701,11 @@ function parseCompilerSource(code: string[]): ParsedCompilerSource {
 			currentSourceBlockPrologue.isOpen = false;
 		}
 
-		if (currentSourceBlockPrologue?.instruction === 'function' && isMemoryDeclarationLine(parsedLine)) {
-			throw new SyntaxRulesError(SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, undefined, {
-				lineNumber,
-				instruction: parsedLine.instruction,
-			});
-		}
-		validateShapeSourceBlockScope(parsedLine, currentSourceBlockPrologue);
+		validateInstructionPlacement(
+			parsedLine,
+			parserBlockState,
+			getOpenBlockPlacementKind(blockStack[blockStack.length - 1])
+		);
 
 		ast.push(parsedLine);
 		if (!astBuilder) {
@@ -616,6 +746,7 @@ function parseCompilerSource(code: string[]): ParsedCompilerSource {
 						astIndex,
 					});
 			}
+			updateParserBlockState(parserBlockState, parsedLine.instruction, 1);
 
 			if (sourceBlockStartInstructionSet.has(parsedLine.instruction)) {
 				sourceBlockPrologueStack.push({
@@ -685,6 +816,7 @@ function parseCompilerSource(code: string[]): ParsedCompilerSource {
 				}
 			);
 		}
+		updateParserBlockState(parserBlockState, openBlock.instruction, -1);
 
 		if (sourceBlockEndInstructionSet.has(endInstruction)) {
 			sourceBlockPrologueStack.pop();

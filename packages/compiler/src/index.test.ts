@@ -1,4 +1,3 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
 import { SyntaxErrorCode } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 import compile, { serializeDiagnostic } from '.';
@@ -33,12 +32,12 @@ describe('compile prototype validation', () => {
 		}
 
 		expect(serializeDiagnostic(thrownError)).toMatchObject({
-			code: ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+			code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
 			line: expect.objectContaining({ instruction: 'prototype' }),
 		});
 	});
 
-	it('reports a prototype-specific diagnostic when prototype inputs are not prototype blocks', () => {
+	it('reports a tokenizer diagnostic when a prototype is missing an id', () => {
 		let thrownError: unknown;
 
 		try {
@@ -46,7 +45,7 @@ describe('compile prototype validation', () => {
 				{
 					...emptyCompileInput,
 					entries: { main: [] },
-					prototypes: [{ code: ['module notPrototype', 'moduleEnd'] }],
+					prototypes: [{ code: ['prototype', 'prototypeEnd'] }],
 				},
 				{ disableSharedMemory: true }
 			);
@@ -55,9 +54,9 @@ describe('compile prototype validation', () => {
 		}
 
 		expect(serializeDiagnostic(thrownError)).toMatchObject({
-			code: ErrorCode.MISSING_PROTOTYPE_ID,
-			message: `Missing prototype ID. (${ErrorCode.MISSING_PROTOTYPE_ID})`,
-			line: expect.objectContaining({ instruction: 'module' }),
+			code: SyntaxErrorCode.MISSING_ARGUMENT,
+			message: 'Missing required argument for prototype.',
+			line: expect.objectContaining({ instruction: 'prototype' }),
 		});
 	});
 
