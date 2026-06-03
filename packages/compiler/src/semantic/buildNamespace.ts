@@ -101,7 +101,8 @@ function createNamespaceBuildContext(
 	startingByteAddress = 0,
 	functions?: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
-	prototypeShapes?: Readonly<Record<string, PrototypeAST>>
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>,
+	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine
 ): NamespaceBuildContext {
 	const defaultRegion = getDefaultMemoryRegion();
 	return createCompilationContext<NamespaceBuildContext>({
@@ -129,14 +130,11 @@ function createNamespaceBuildContext(
 		codeBlockType: ast.type,
 		prototypeShapes,
 		expandPrototypeShapes: true,
+		resolveMemoryDeclarationLine,
 	});
 }
 
-function applyNamespaceDeclarationLines(
-	ast: ModuleAST | ConstantsAST,
-	context: NamespaceBuildContext,
-	resolveDeclarationLine: (line: MemoryDeclarationLine) => MemoryDeclarationLine
-): void {
+function applyNamespaceDeclarationLines(ast: ModuleAST | ConstantsAST, context: NamespaceBuildContext): void {
 	const sourceBlockSpec = compilerSourceBlockInstructionByType[ast.type];
 	const shouldValidateUnhandledLines = sourceBlockSpec.compilationMode === null;
 
@@ -144,7 +142,7 @@ function applyNamespaceDeclarationLines(
 		if (isSemanticInstructionLine(originalLine)) {
 			applySemanticLine(originalLine, context);
 		} else if (isMemoryDeclarationLine(originalLine)) {
-			const declarationLine = resolveDeclarationLine(originalLine);
+			const declarationLine = context.resolveMemoryDeclarationLine?.(originalLine) ?? originalLine;
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
 		} else if (shouldValidateUnhandledLines) {
 			validateInstructionContext(normalizeCompileTimeArguments(originalLine, context), context);
@@ -185,9 +183,10 @@ function discoverNamespace(
 		startingByteAddress,
 		functions,
 		options,
-		prototypeShapes
+		prototypeShapes,
+		toNamespaceDiscoveryMemoryDeclarationLine
 	);
-	applyNamespaceDeclarationLines(ast, context, toNamespaceDiscoveryMemoryDeclarationLine);
+	applyNamespaceDeclarationLines(ast, context);
 
 	return context;
 }
@@ -208,7 +207,7 @@ export function layoutNamespace(
 		options,
 		prototypeShapes
 	);
-	applyNamespaceDeclarationLines(ast, context, line => line);
+	applyNamespaceDeclarationLines(ast, context);
 	resolveScalarMemoryDefaults(ast, context);
 
 	return context;
@@ -260,24 +259,6 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
 	};
 }
 
-function toNamespaceDiscoveryPrototypeShapes(
-	prototypeShapes: Readonly<Record<string, PrototypeAST>> | undefined
-): Readonly<Record<string, PrototypeAST>> | undefined {
-	if (!prototypeShapes) {
-		return undefined;
-	}
-
-	return Object.fromEntries(
-		Object.entries(prototypeShapes).map(([id, prototype]) => [
-			id,
-			{
-				...prototype,
-				memoryDeclarationLines: prototype.memoryDeclarationLines.map(toNamespaceDiscoveryMemoryDeclarationLine),
-			},
-		])
-	);
-}
-
 export function collectNamespacesFromASTs(
 	asts: readonly (ModuleAST | ConstantsAST)[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
@@ -288,7 +269,6 @@ export function collectNamespacesFromASTs(
 ): Namespaces {
 	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
 	const namespaces: Namespaces = {};
-	const discoveryPrototypeShapes = toNamespaceDiscoveryPrototypeShapes(prototypeShapes);
 
 	let pendingAsts = [...asts];
 	let madeProgress = true;
@@ -305,7 +285,7 @@ export function collectNamespacesFromASTs(
 					startingByteAddress,
 					compiledFunctions,
 					options,
-					discoveryPrototypeShapes
+					prototypeShapes
 				);
 				if (!context.namespace.moduleName) {
 					continue;
