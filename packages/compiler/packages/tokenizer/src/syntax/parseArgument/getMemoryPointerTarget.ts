@@ -1,6 +1,11 @@
 import { SyntaxErrorCode, SyntaxRulesError } from '../syntaxError';
 
-/** Reads the target memory id and dereference depth from a memory-pointer identifier token. */
+/**
+ * Reads the target memory id and dereference depth from a memory-pointer identifier token.
+ *
+ * @param value - Memory-pointer identifier token such as `*buffer` or `**cursor`.
+ * @returns Target memory id and dereference depth parsed from the token.
+ */
 export function getMemoryPointerTarget(value: string): { targetMemoryId: string; dereferenceDepth: number } {
 	const dereferenceDepth = getLeadingPointerDepth(value);
 	if (dereferenceDepth > 2) {

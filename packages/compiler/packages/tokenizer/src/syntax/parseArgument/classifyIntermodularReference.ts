@@ -1,7 +1,12 @@
 import type { ArgumentIdentifier } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 
-/** Classifies intermodular module-base and memory-reference identifier forms. */
+/**
+ * Classifies intermodular module-base and memory-reference identifier forms.
+ *
+ * @param value - Identifier token that may refer to another module or one of its memory items.
+ * @returns Classified intermodular identifier, or `null` when the token is not an intermodular reference.
+ */
 export function classifyIntermodularReference(value: string): ArgumentIdentifier | null {
 	if (value.startsWith('&')) {
 		return classifyStartAddressIntermodularReference(value);

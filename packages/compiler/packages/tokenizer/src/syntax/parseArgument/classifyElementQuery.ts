@@ -2,7 +2,12 @@ import type { ArgumentIdentifier } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { SyntaxErrorCode, SyntaxRulesError } from '../syntaxError';
 
-/** Classifies local, intermodular, and pointee metadata query identifier forms. */
+/**
+ * Classifies local, intermodular, and pointee metadata query identifier forms.
+ *
+ * @param value - Identifier token that may contain a metadata query.
+ * @returns Classified metadata-query identifier, or `null` when the token is not a metadata query.
+ */
 export function classifyElementQuery(value: string): ArgumentIdentifier | null {
 	switch (value[0]) {
 		case 'c':
