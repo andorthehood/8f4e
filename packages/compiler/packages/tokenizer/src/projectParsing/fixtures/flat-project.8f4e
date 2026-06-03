@@ -1,0 +1,33 @@
+8f4e/v1
+
+entry main
+module counter
+int count
+moduleEnd
+entryEnd
+
+constants env
+const int tableSize 16
+constantsEnd
+
+function increment
+param int value
+push value
+push 1
+add
+functionEnd int
+
+prototype oscillatorState
+float phase
+float frequency 440
+prototypeEnd
+
+defineMacro double
+push 2
+mul
+defineMacroEnd
+
+note
+; @pos 1 2
+remember to tune this later
+noteEnd
