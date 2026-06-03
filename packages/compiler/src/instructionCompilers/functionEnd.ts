@@ -6,8 +6,8 @@ import type {
 	InstructionCompiler,
 } from '@8f4e/compiler-spec';
 import { popBlock } from '../utils/blockStack';
-import { getOrRegisterFunctionType } from '../utils/functionTypeRegistry';
 import { functionValueTypeToWasmType } from '../utils/functionValueType';
+import { getOrRegisterFunctionType } from './utils/functionTypeRegistry';
 
 /**
  * Instruction compiler for `functionEnd`.
