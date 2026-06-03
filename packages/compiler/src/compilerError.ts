@@ -2,19 +2,19 @@
  * Compiler (semantic) errors — raised after syntax is already valid.
  *
  * Use this module for errors that require semantic analysis or compiler state:
- *   - undeclared or duplicate identifiers
- *   - type mismatches
- *   - invalid instruction in the current scope
- *   - stack mismatches or overflows
- *   - function memory declarations or memory IO without the required directive
- *   - constant resolution failures
- *   - any error that cannot be detected from token/argument shape alone
+ *  - undeclared or duplicate identifiers
+ *  - type mismatches
+ *  - invalid instruction in the current scope
+ *  - stack mismatches or overflows
+ *  - function memory declarations or memory IO without the required directive
+ *  - constant resolution failures
+ *  - any error that cannot be detected from token/argument shape alone
  *
  * Boundary rule:
- *   If detecting the error requires symbol resolution, scope validation, stack
- *   state, type checking, or runtime-model knowledge → it belongs here.
- *   If the error can be detected from the raw token or argument structure alone,
- *   before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
+ *  If detecting the error requires symbol resolution, scope validation, stack
+ *  state, type checking, or runtime-model knowledge → it belongs here.
+ *  If the error can be detected from the raw token or argument structure alone,
+ *  before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
  */
 
 import type {
@@ -32,7 +32,15 @@ interface ErrorDetails {
 	identifier?: string;
 }
 
-/** Creates a compiler-stage diagnostic for a semantic or code-generation error. */
+/**
+ * Creates a compiler-stage diagnostic for a semantic or code-generation error.
+ *
+ * @param code - Compiler error code to materialize.
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param details - Optional dynamic details to include in the diagnostic.
+ * @returns The compiler error instance.
+ */
 export function getError(
 	code: ErrorCodeValue,
 	line: CompilerASTLine,

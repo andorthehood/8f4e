@@ -75,6 +75,9 @@ function getPointeeElementCount(
  *
  * All declaration compilers share the same five-step pattern; only the base
  * type, truncation behaviour, and non-pointer element word size differ.
+ *
+ * @param options - Compiler options for this compilation pass.
+ * @returns The result of the operation.
  */
 export default function createDeclarationCompiler(options: DeclarationCompilerOptions): MemoryDeclarationCompiler {
 	const { baseType, truncate, nonPointerElementWordSize } = options;

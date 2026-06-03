@@ -5,7 +5,14 @@ import { getError } from '../compilerError';
 import { areAllOperandsFloats, areAllOperandsIntegers, hasMixedFloatWidth } from '../utils/operandTypes';
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
 
-/** Enforces operand type rules from the instruction spec against already-peeked stack operands. */
+/**
+ * Enforces operand type rules from the instruction spec against already-peeked stack operands.
+ *
+ * @param operands - Stack operands to inspect.
+ * @param rule - Operand rule from the compiler spec.
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ */
 export function validateOperandTypes(
 	operands: StackItem[],
 	rule: OperandRule | OperandRule[],

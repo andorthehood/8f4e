@@ -5,7 +5,13 @@ import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from 
 import { analyzePush } from './push';
 import { consume, produce } from './stack';
 
-/** Applies function-call stack effects after validating arguments against the resolved target signature. */
+/**
+ * Applies function-call stack effects after validating arguments against the resolved target signature.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The stack items produced or consumed by the operation.
+ */
 export function analyzeCall(line: ResolvedCallLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const { parameters, returns } = line.targetFunction.signature;
 

@@ -37,7 +37,17 @@ const importedFunctionAllowedInstructions = new Set([
 	'functionEnd',
 ]);
 
-/** Compiles one validated function AST into a WebAssembly function body or import metadata. */
+/**
+ * Compiles one validated function AST into a WebAssembly function body or import metadata.
+ *
+ * @param ast - Validated AST being processed.
+ * @param namespaces - Collected namespaces used for symbol and memory resolution.
+ * @param wasmIndex - Assigned WASM function index.
+ * @param typeRegistry - Function type registry used for WASM block signatures.
+ * @param functions - Function metadata lookup available to compilation.
+ * @param options - Compiler options for this compilation pass.
+ * @returns The compiled function artifact.
+ */
 export function compileFunction(
 	ast: ValidatedFunctionAST,
 	namespaces: Namespaces,

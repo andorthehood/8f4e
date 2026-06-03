@@ -26,7 +26,12 @@ function isCompilerStageError(value: unknown): value is CompilerStageError {
 	);
 }
 
-/** Serializes thrown compiler or tokenizer errors into the shared diagnostic DTO. */
+/**
+ * Serializes thrown compiler or tokenizer errors into the shared diagnostic DTO.
+ *
+ * @param error - Diagnostic or thrown error to serialize.
+ * @returns The result of the operation.
+ */
 export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 	if (error instanceof SyntaxRulesError) {
 		return {
