@@ -9,14 +9,6 @@ cli compile path/to/project.8f4e --wasm-output path/to/module.wasm
 ```
 
 ```bash
-cli compile path/to/project.8f4e --trace-output path/to/instruction-flow.json
-```
-
-```bash
-cli compile path/to/project.8f4e --wasm-output path/to/module.wasm --trace-output path/to/instruction-flow.json
-```
-
-```bash
 cli run path/to/project.8f4e --cycles 16 --dump main:counter
 ```
 
@@ -27,12 +19,6 @@ cli capture path/to/project.8f4e --buffer audioout:buffer --cycles 128 --repeat 
 ## Output
 
 When `--wasm-output` is used, the CLI writes a decoded WebAssembly binary (`.wasm`) file.
-
-When `--trace-output` is used, the CLI writes a separate JSON file containing per-instruction flow data:
-
-- stack types before/after each instruction (`int`, `float32`, `float64`)
-- emitted bytecode for each instruction
-- line number, instruction id, and parsed arguments
 
 When `capture` is used, the CLI:
 
@@ -46,6 +32,6 @@ When `capture` is used, the CLI:
 ## Notes
 
 - No schema validation is performed.
-- `compile` requires at least one of `--wasm-output` or `--trace-output`.
+- `compile` requires `--wasm-output`.
 - `run` requires at least one `--dump`.
 - `capture` requires `--buffer` and `--out`.
