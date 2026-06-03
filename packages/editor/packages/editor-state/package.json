@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/editor-state",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "private": true,
   "description": "8f4e editor state management package",
   "type": "module",
