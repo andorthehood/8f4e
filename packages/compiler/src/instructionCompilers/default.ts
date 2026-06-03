@@ -1,5 +1,4 @@
 import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/compiler-spec';
-import { peekMapBlock } from '../utils/blockStack';
 
 /**
  * Instruction compiler for `default`.
@@ -8,7 +7,7 @@ import { peekMapBlock } from '../utils/blockStack';
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
 const _default: InstructionCompiler<NormalizedDefaultLine> = (line: NormalizedDefaultLine, context) => {
-	const { mapState } = peekMapBlock(context);
+	const { mapState } = context.activeMapBlock!;
 
 	const valueArg = line.arguments[0];
 	const defaultValue = valueArg.value;

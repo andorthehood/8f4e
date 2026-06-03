@@ -50,11 +50,6 @@ export function popBlock(context: BlockContext) {
 	return block;
 }
 
-/** Returns the active map block frame; tokenizer placement guarantees it exists at call sites. */
-export function peekMapBlock(context: BlockContext): MapBlockStackFrame {
-	return context.activeMapBlock!;
-}
-
 /** Pops the active map block frame; tokenizer placement guarantees map nesting is valid. */
 export function popMapBlock(context: BlockContext): MapBlockStackFrame {
 	return popBlock(context) as MapBlockStackFrame;

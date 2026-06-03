@@ -1,7 +1,7 @@
 import type { BlockStack } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-import { findNearestLoopBlock, peekMapBlock, popBlock, pushBlock } from './blockStack';
+import { findNearestLoopBlock, popBlock, pushBlock } from './blockStack';
 import createInstructionCompilerTestContext from './testUtils';
 
 describe('blockStack utilities', () => {
@@ -136,7 +136,6 @@ describe('blockStack utilities', () => {
 			pushBlock(context, mockMapBlock);
 
 			expect(context.activeMapBlock).toBe(mockMapBlock);
-			expect(peekMapBlock(context)).toBe(mockMapBlock);
 
 			expect(popBlock(context)).toBe(mockMapBlock);
 			expect(context.activeMapBlock).toBeUndefined();
