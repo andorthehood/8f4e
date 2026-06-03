@@ -23,7 +23,6 @@ import { ArgumentType, BASE_TYPE_METADATA, ErrorCode, getInstructionSpec } from 
 import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
-import { peekMapBlock } from '../utils/blockStack';
 import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 import { resolveMapKind, validateMapValueKind } from '../utils/mapValueKind';
 import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../utils/memoryData';
@@ -261,7 +260,7 @@ function analyzeCall(line: ResolvedCallLine, context: CompilationContext): { con
 
 /** Validates active map input/output values and produces the map result stack item. */
 function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
-	const { mapState } = peekMapBlock(context);
+	const { mapState } = context.activeMapBlock!;
 
 	const outputType = line.arguments[0].value;
 	const outputIsInteger = outputType === 'int';

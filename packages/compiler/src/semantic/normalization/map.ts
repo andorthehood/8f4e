@@ -1,11 +1,10 @@
 import type { CompilationContext, MapLine, NormalizedArgumentLiteral, NormalizedMapLine } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
-import { peekMapBlock } from '../../utils/blockStack';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /** Creates the implicit key argument for one-argument `map` rows from the active map state. */
 function createImplicitKeyArgument(context: CompilationContext): NormalizedArgumentLiteral {
-	const { mapState } = peekMapBlock(context);
+	const { mapState } = context.activeMapBlock!;
 
 	return {
 		type: ArgumentType.LITERAL,
