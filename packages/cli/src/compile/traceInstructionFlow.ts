@@ -12,10 +12,8 @@ import {
 	type CompilerASTLine,
 	type CompilerASTLines,
 	type CompilerSourceBlockType,
-	type ConstantsAST,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
-	type ModuleAST,
 } from '@8f4e/compiler-spec';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
 
@@ -155,9 +153,7 @@ export default function traceInstructionFlow(
 	);
 
 	const compiledModules = Object.values(compileResult.compiledModules).sort((a, b) => a.index - b.index);
-	const moduleAsts = compiledModules
-		.map(module => module.ast)
-		.filter((ast): ast is ModuleAST | ConstantsAST => ast !== undefined);
+	const moduleAsts = compiledModules.map(module => module.ast);
 	const namespaces = collectNamespacesFromASTs(
 		moduleAsts,
 		undefined,
