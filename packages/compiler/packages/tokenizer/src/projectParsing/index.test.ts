@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-	getDocumentProjectBlockType,
-	getProjectBlockType,
-	parse8f4eProject,
-	pickProjectCompilerBlocks,
-} from './project';
+import { getDocumentProjectBlockType, getProjectBlockType, parse8f4eProject, pickProjectCompilerBlocks } from '.';
 
 const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
