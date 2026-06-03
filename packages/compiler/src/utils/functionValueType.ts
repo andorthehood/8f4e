@@ -19,6 +19,7 @@ function getPointerParts(type: PointerFunctionValueType) {
 	return { baseType, pointerDepth };
 }
 
+/** Converts a function signature value type into the local binding shape used during semantic analysis. */
 export function functionValueTypeToLocalBinding(type: FunctionValueType, index: number): LocalBinding {
 	if (type === 'int') {
 		return { isInteger: true, index };
@@ -45,6 +46,7 @@ export function functionValueTypeToLocalBinding(type: FunctionValueType, index: 
 	};
 }
 
+/** Converts a function signature value type into the equivalent stack item shape. */
 export function functionValueTypeToStackItem(type: FunctionValueType): StackItem {
 	return localBindingToStackItem(functionValueTypeToLocalBinding(type, 0));
 }
@@ -73,6 +75,7 @@ function localBindingToStackItem(binding: LocalBinding): StackItem {
 	};
 }
 
+/** Maps a function signature value type to the binary WASM value type emitted for calls and exports. */
 export function functionValueTypeToWasmType(type: FunctionValueType): WasmTypeValue {
 	if (type === 'float64') {
 		return WASM_TYPE_F64;
@@ -85,6 +88,7 @@ export function functionValueTypeToWasmType(type: FunctionValueType): WasmTypeVa
 	return WASM_TYPE_I32;
 }
 
+/** Checks whether a stack item can satisfy a function parameter or return type. */
 export function stackItemMatchesFunctionValueType(stackItem: StackItem, type: FunctionValueType): boolean {
 	if (type === 'int') {
 		return stackItem.valueType === 'int';

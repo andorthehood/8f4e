@@ -2,6 +2,7 @@ import type { CodegenContext, CompilationContext, CompilerASTLine } from '@8f4e/
 import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 
+/** Throws when a function attempts memory IO without the `#impure` directive. */
 export default function assertFunctionMemoryIoAllowed(
 	line: CompilerASTLine,
 	context: CodegenContext | CompilationContext

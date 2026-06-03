@@ -28,6 +28,7 @@ import { analyzePush } from './push';
 import { analyzeFromSpec } from './spec';
 import type { InstructionAnalysisResult } from './types';
 
+/** Dispatches a compiler AST line to the instruction-specific or spec-derived stack analyzer. */
 export function analyzeByInstruction(line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	switch (line.instruction) {
 		case 'push': {

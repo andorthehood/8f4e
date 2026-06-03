@@ -8,6 +8,7 @@ import {
 import { getError } from '../../compilerError';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
+/** Normalizes and validates the byte-length argument for `memoryCopy`. */
 export default function normalizeMemoryCopy(
 	line: MemoryCopyLine,
 	context: CompilationContext

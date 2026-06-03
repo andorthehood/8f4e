@@ -11,6 +11,7 @@ import { getMemoryRegionFields } from '../memoryRegions';
 import getMemoryFlags from '../utils/memoryFlags';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
+/** Function signature shared by semantic memory declaration compilers. */
 export type MemoryDeclarationCompiler<TLine extends MemoryDeclarationLine = MemoryDeclarationLine> = (
 	line: TLine,
 	context: CompilationContext

@@ -25,6 +25,7 @@ const instructionNormalizers = {
 	push: normalizePush,
 } as const;
 
+/** Dispatches line-specific semantic normalization before analysis and codegen. */
 export default function dispatchNormalization<TLine extends CompilerASTLine>(
 	line: TLine,
 	context: CompilationContext

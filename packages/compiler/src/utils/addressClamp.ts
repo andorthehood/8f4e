@@ -10,11 +10,13 @@ import { getMemoryRegionFields } from '../semantic/memoryRegions';
 
 const DEFAULT_ACCESS_BYTE_WIDTH = WORD_MEMORY_ACCESS_WIDTH;
 
+/** Resolves the byte width protected by a clamp instruction, defaulting to one word. */
 export function getClampAccessByteWidth(line: CompilerASTLine): number {
 	const argument = line.arguments[0];
 	return argument?.type === ArgumentType.LITERAL ? argument.value : DEFAULT_ACCESS_BYTE_WIDTH;
 }
 
+/** Builds the safe address range for the current module memory allocation. */
 export function getModuleAddressRange(context: CodegenContext | CompilationContext): MemoryAddressRange {
 	return {
 		source: 'module-start',
@@ -29,6 +31,7 @@ function clampKnownIntegerValue(value: number | undefined, lower: number, upper:
 	return value === undefined ? undefined : Math.min(Math.max(value, lower), upper);
 }
 
+/** Converts a stack operand into the address item produced after applying an optional clamp range. */
 export function getClampedAddressStackItem(
 	operand: StackItem,
 	range: MemoryAddressRange | undefined,

@@ -4,6 +4,7 @@ import materializeByteChunks from './materializeByteChunks';
 import type { InitialMemoryDataSegmentCandidate } from './types';
 import writeDefaultValue from './writeDefaultValue';
 
+/** Creates initial data segment candidates for explicit or non-zero memory defaults. */
 export default function createMemoryDataSegmentCandidate(memory: DataStructure): InitialMemoryDataSegmentCandidate[] {
 	const isArray = memory.numberOfElements > 1;
 	if (isArray && memory.hasExplicitDefault !== true) {
