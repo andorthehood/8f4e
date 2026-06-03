@@ -1,4 +1,4 @@
-import type { InstructionCompiler, MapEndLine } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, MapBlockStackFrame, MapEndLine } from '@8f4e/compiler-spec';
 import type { WASMInstructionCode } from '@8f4e/compiler-wasm-utils';
 import {
 	f32const,
@@ -15,7 +15,7 @@ import {
 	WASM_I32_OR,
 	WASM_SELECT,
 } from '@8f4e/compiler-wasm-utils';
-import { popMapBlock } from '../utils/blockStack';
+import { popBlock } from '../utils/blockStack';
 import type { MapKind } from '../utils/mapValueKind';
 import { resolveMapKind } from '../utils/mapValueKind';
 import { saveByteCode } from './utils/saveByteCode';
@@ -57,7 +57,7 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
 	const outputIsFloat64 = outputType === 'float64';
 	const outputKind = resolveMapKind({ valueType: outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float' });
 
-	const { mapState } = popMapBlock(context);
+	const { mapState } = popBlock(context) as MapBlockStackFrame;
 
 	const inputKind = resolveMapKind({
 		valueType: mapState.inputIsInteger ? 'int' : mapState.inputIsFloat64 ? 'float64' : 'float',
