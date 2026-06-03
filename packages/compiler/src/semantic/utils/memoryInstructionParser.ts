@@ -7,8 +7,8 @@ import {
 	SyntaxErrorCode,
 	SyntaxRulesError,
 } from '@8f4e/tokenizer';
-import { getError } from '../compilerError';
-import { getEndByteAddress } from '../semantic/layoutAddresses';
+import { getError } from '../../compilerError';
+import { getEndByteAddress } from '../layoutAddresses';
 
 /**
  * Maximum number of bytes allowed in a split-byte default value.

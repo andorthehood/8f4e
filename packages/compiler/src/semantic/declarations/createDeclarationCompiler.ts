@@ -6,10 +6,10 @@ import type {
 	MemoryType,
 } from '@8f4e/compiler-spec';
 import { getPointerDepth } from '@8f4e/tokenizer';
-import getMemoryFlags from '../../utils/memoryFlags';
-import parseMemoryInstructionArguments from '../../utils/memoryInstructionParser';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
+import getMemoryFlags from '../utils/memoryFlags';
+import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 
 export type MemoryDeclarationCompiler<TLine extends MemoryDeclarationLine = MemoryDeclarationLine> = (
 	line: TLine,
