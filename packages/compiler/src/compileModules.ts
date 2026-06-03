@@ -12,6 +12,18 @@ import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { compileModule } from './compileModule';
 import { collectNamespacesFromASTs } from './semantic/buildNamespace';
 
+/**
+ * Compiles validated module ASTs using a shared namespace, allocator, and function type registry.
+ *
+ * @param modules - modules value used by this operation.
+ * @param options - Compiler options for this compilation pass.
+ * @param namespaces - Collected namespaces used for symbol and memory resolution.
+ * @param compiledFunctions - Compiled function metadata available to module compilation.
+ * @param internalAllocator - Allocator state for compiler-generated memory resources.
+ * @param typeRegistry - Function type registry used for WASM block signatures.
+ * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
+ * @returns The compiled module artifact.
+ */
 export function compileModules(
 	modules: Array<ValidatedModuleAST | ValidatedConstantsAST>,
 	options: CompileOptions,

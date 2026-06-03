@@ -474,6 +474,13 @@ function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: 
 	};
 }
 
+/**
+ * Attempts to fold an argument into a compile-time constant using the current semantic context.
+ *
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param argument - Argument whose resolved value or metadata should be used.
+ * @returns The result of the operation.
+ */
 export function tryResolveCompileTimeArgument(context: CompilationContext, argument: Argument): Const | undefined {
 	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		const leftConst = resolveCompileTimeOperand(argument.left, context);

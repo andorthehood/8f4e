@@ -57,6 +57,13 @@ type GuardedMemoryCopyOptions = {
 
 type MemoryGuardContext = CodegenContext | CompilationContext;
 
+/**
+ * Allocates or reuses a hidden local used by emitted memory guard bytecode.
+ *
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param name - Local name used for the generated guard slot.
+ * @param item - Memory item that needs a guard local.
+ */
 export function getOrCreateMemoryGuardLocal(
 	context: MemoryGuardContext,
 	name: string,
@@ -77,6 +84,13 @@ export function getOrCreateMemoryGuardLocal(
 	return local;
 }
 
+/**
+ * Returns whether stack analysis proves an address can safely access the requested byte width.
+ *
+ * @param address - Resolved address metadata to inspect.
+ * @param accessByteWidth - Byte width of the memory access being protected.
+ * @returns Whether the check succeeds.
+ */
 export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number): boolean {
 	if (address.kind !== 'address') {
 		return false;
@@ -88,6 +102,13 @@ export function isSafeMemoryAccess(address: StackItem, accessByteWidth: number):
 	);
 }
 
+/**
+ * Builds bytecode for the last valid start address for an access width in a linear memory.
+ *
+ * @param accessByteWidth - Byte width of the memory access being protected.
+ * @param memoryIndex - Memory index to resolve.
+ * @returns The result of the operation.
+ */
 export function linearLastValidStartAddress(accessByteWidth: number, memoryIndex = 0): number[] {
 	return [
 		WASM_MEMORY_SIZE,
@@ -131,6 +152,13 @@ function zeroValue(type: NumericWasmValueType): number[] {
 	return type === WASM_TYPE_F32 ? f32const(0) : i32const(0);
 }
 
+/**
+ * Builds a guarded load that returns a zero value when the address is out of bounds.
+ *
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param options - Compiler options for this compilation pass.
+ * @returns The result of the operation.
+ */
 export function guardedLoad(context: MemoryGuardContext, options: GuardedLoadOptions): number[] {
 	return guardedAddressOperation(context, {
 		...options,
@@ -138,6 +166,13 @@ export function guardedLoad(context: MemoryGuardContext, options: GuardedLoadOpt
 	});
 }
 
+/**
+ * Builds a guarded address operation with caller-provided bytecode for the in-bounds branch.
+ *
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param options - Compiler options for this compilation pass.
+ * @returns The result of the operation.
+ */
 export function guardedAddressOperation(
 	context: MemoryGuardContext,
 	options: GuardedAddressOperationOptions
@@ -157,6 +192,13 @@ export function guardedAddressOperation(
 	];
 }
 
+/**
+ * Builds a guarded store that skips writing when the address is out of bounds.
+ *
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param options - Compiler options for this compilation pass.
+ * @returns The result of the operation.
+ */
 export function guardedStore(context: MemoryGuardContext, options: GuardedStoreOptions): number[] {
 	const addressLocal = getOrCreateMemoryGuardLocal(context, `__memoryGuardAddr_${options.lineNumber}`, {
 		valueType: 'int',
@@ -175,10 +217,25 @@ export function guardedStore(context: MemoryGuardContext, options: GuardedStoreO
 	];
 }
 
+/**
+ * Returns whether stack analysis proves both memory-copy ranges are in bounds.
+ *
+ * @param destination - Destination address metadata for the memory copy.
+ * @param source - Source address metadata for the memory copy.
+ * @param byteLength - Number of bytes to materialize or validate.
+ * @returns Whether the check succeeds.
+ */
 export function isSafeMemoryCopy(destination: StackItem, source: StackItem, byteLength: number): boolean {
 	return byteLength > 0 && isSafeMemoryAccess(destination, byteLength) && isSafeMemoryAccess(source, byteLength);
 }
 
+/**
+ * Builds a guarded memory.copy that skips copying when either range is out of bounds.
+ *
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @param options - Compiler options for this compilation pass.
+ * @returns The result of the operation.
+ */
 export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedMemoryCopyOptions): number[] {
 	const destinationLocal = getOrCreateMemoryGuardLocal(context, `__memoryCopyDestination_${options.lineNumber}`, {
 		valueType: 'int',
@@ -202,6 +259,16 @@ export function guardedMemoryCopy(context: MemoryGuardContext, options: GuardedM
 	];
 }
 
+/**
+ * Builds a guarded store using address and value locals already populated by surrounding bytecode.
+ *
+ * @param addressLocalIndex - Local index holding the guarded destination address.
+ * @param valueLocalIndex - Local index holding the guarded value to store.
+ * @param accessByteWidth - Byte width of the memory access being protected.
+ * @param storeByteCode - storeByteCode value used by this operation.
+ * @param memoryIndex - Memory index to resolve.
+ * @returns The result of the operation.
+ */
 export function guardedStoreFromLocals(
 	addressLocalIndex: number,
 	valueLocalIndex: number,

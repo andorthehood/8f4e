@@ -5,6 +5,13 @@ import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRa
 import { consume, produce } from './stack';
 import type { InstructionAnalysisResult } from './types';
 
+/**
+ * Consumes an address-like value and produces the stack item representing the clamped address range.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The stack-analysis result for the instruction.
+ */
 export function analyzeClampAddress(line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 1);
 	const accessByteWidth = getClampAccessByteWidth(line);

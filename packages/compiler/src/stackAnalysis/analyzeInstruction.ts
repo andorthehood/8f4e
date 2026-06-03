@@ -3,6 +3,13 @@ import { analyzeByInstruction } from './instructionAnalyzers';
 import { cloneStack } from './instructionAnalyzers/stack';
 import { validateInstruction } from './validateInstruction';
 
+/**
+ * Validates one AST line, updates stack state, and records the before/after stack analysis metadata.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The result of the operation.
+ */
 export function analyzeInstruction(line: CompilerASTLine, context: CompilationContext): AnalyzedLine {
 	validateInstruction(line, context);
 
