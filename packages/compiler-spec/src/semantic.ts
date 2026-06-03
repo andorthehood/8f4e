@@ -382,7 +382,7 @@ export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstL
 		: TLine extends CallLine
 			? ResolvedCallLine | CallLine
 			: TLine extends MapLine
-				? NormalizedMapLine | MapLine
+				? NormalizedMapLine
 				: TLine extends LocalSetLine
 					? ResolvedLocalSetLine
 					: TLine extends PushLine
