@@ -7,6 +7,8 @@ export * from './diagnostics';
 export * from './errors';
 export * from './functionTypes';
 export * from './instructionSpecs';
+export * from './instructionSpecTypes';
+export * from './instructionSpecUtils';
 export * from './instructions';
 export * from './macros';
 export * from './memory';

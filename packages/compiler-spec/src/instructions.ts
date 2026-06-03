@@ -1,11 +1,11 @@
+import type { InstructionSpec } from './instructionSpecs';
+import { instructionSpecs } from './instructionSpecs';
 import type {
 	CodegenInstructionSpecName,
-	InstructionSpec,
 	InstructionSpecName,
 	NonCodegenInstructionSpecName,
 	SourceInstructionSpecName,
-} from './instructionSpecs';
-import { instructionSpecs } from './instructionSpecs';
+} from './instructionSpecTypes';
 import type { MemoryDeclarationInstruction } from './memory';
 import { memoryDeclarationInstructions } from './memory';
 
