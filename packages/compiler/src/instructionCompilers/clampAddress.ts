@@ -1,5 +1,4 @@
 import type { CompilerASTLine, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
-import { requireStackAddress } from '../utils/stackItem';
 import {
 	clampAddressByteCode,
 	getClampAccessByteWidth,
@@ -8,6 +7,7 @@ import {
 } from './utils/addressClamp';
 import { linearLastValidStartAddress } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
+import { requireStackAddress } from './utils/stackItem';
 
 function clampToRange(
 	line: CompilerASTLine,
