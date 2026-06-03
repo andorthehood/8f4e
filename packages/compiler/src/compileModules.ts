@@ -6,6 +6,7 @@ import type {
 	FunctionTypeRegistry,
 	ModuleAST,
 	Namespaces,
+	PrototypeAST,
 } from '@8f4e/compiler-spec';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { compileModule } from './compileModule';
@@ -17,11 +18,13 @@ export function compileModules(
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
 	internalAllocator?: { nextByteAddress: number },
-	typeRegistry?: FunctionTypeRegistry
+	typeRegistry?: FunctionTypeRegistry,
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>
 ): CompiledModule[] {
 	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 	const ns: Namespaces =
-		namespaces ?? collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options);
+		namespaces ??
+		collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options, prototypeShapes);
 	const allocator = internalAllocator ?? {
 		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
 			if (namespace.memoryIndex !== 0) {
@@ -44,7 +47,8 @@ export function compileModules(
 			compiledFunctions,
 			allocator,
 			options,
-			typeRegistry
+			typeRegistry,
+			prototypeShapes
 		);
 		return module;
 	});

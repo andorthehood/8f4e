@@ -50,6 +50,7 @@ export function createCompilationContext<TContext extends CompilationContext = C
 		currentMemoryIndex: 0,
 		memoryRegions: [],
 		mode: 'module',
+		expandPrototypeShapes: false,
 	};
 
 	const context = {

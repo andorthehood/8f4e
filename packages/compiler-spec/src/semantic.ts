@@ -20,6 +20,7 @@ import type {
 	MemoryCopyLine,
 	ModuleEndLine,
 	ModuleLine,
+	PrototypeAST,
 	PrototypeEndLine,
 	PrototypeLine,
 	PushArgument,
@@ -175,6 +176,8 @@ export interface CompilationContext {
 	currentFunctionExportName?: string;
 	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>;
+	expandPrototypeShapes?: boolean;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;

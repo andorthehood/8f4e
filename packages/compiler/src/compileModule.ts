@@ -8,6 +8,7 @@ import type {
 	ModuleAST,
 	ModuleCompilationContext,
 	Namespaces,
+	PrototypeAST,
 } from '@8f4e/compiler-spec';
 import {
 	ErrorCode,
@@ -38,12 +39,13 @@ export function compileModule(
 	functions?: FunctionMetadataLookup,
 	internalAllocator = { nextByteAddress: 0 },
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
-	typeRegistry?: FunctionTypeRegistry
+	typeRegistry?: FunctionTypeRegistry,
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>
 ): CompiledModule {
 	// Namespace layout establishes memory byte addresses and sizes for this module.
 	// Semantic instructions (const, use, module/moduleEnd) are applied during
 	// the compilation loop below, so consts are not copied from the layout context.
-	const layoutContext = layoutNamespace(ast, namespaces, startingByteAddress, functions, options);
+	const layoutContext = layoutNamespace(ast, namespaces, startingByteAddress, functions, options, prototypeShapes);
 	const namespace = namespaces[ast.id];
 	const memoryIndex = namespace?.memoryIndex ?? layoutContext.currentMemoryIndex;
 	const memoryRegionName = namespace?.memoryRegionName ?? layoutContext.currentMemoryRegionName;
