@@ -1,4 +1,4 @@
-import WASM_MEMORY_PAGE_SIZE from './consts';
+import { WASM_MEMORY_PAGE_SIZE } from './consts';
 
 /**
  * Derives the effective memory size from a required memory footprint.

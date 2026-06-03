@@ -25,6 +25,13 @@ const instructionNormalizers = {
 	push: normalizePush,
 } as const;
 
+/**
+ * Dispatches line-specific semantic normalization before analysis and codegen.
+ *
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
+ */
 export default function dispatchNormalization<TLine extends CompilerASTLine>(
 	line: TLine,
 	context: CompilationContext

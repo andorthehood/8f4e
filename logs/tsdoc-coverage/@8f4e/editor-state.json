@@ -1042,5 +1042,235 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "b31f595ecbed20e4ad8364f4dca64dab97188768",
+		"recordedAt": "2026-06-02T23:49:40.441Z",
+		"coverage": {
+			"documented": 165,
+			"total": 976,
+			"percentage": 16.9,
+			"byKind": {
+				"variable": {
+					"documented": 11,
+					"total": 91,
+					"percentage": 12.1
+				},
+				"function": {
+					"documented": 135,
+					"total": 472,
+					"percentage": 28.6
+				},
+				"property-signature": {
+					"documented": 10,
+					"total": 329,
+					"percentage": 3
+				},
+				"interface": {
+					"documented": 8,
+					"total": 51,
+					"percentage": 15.7
+				},
+				"type": {
+					"documented": 1,
+					"total": 29,
+					"percentage": 3.4
+				},
+				"accessor": {
+					"documented": 0,
+					"total": 3,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "7611958f62050ee47dbc8e7da841b48a1a0e2e0b",
+		"recordedAt": "2026-06-03T14:56:49.231Z",
+		"coverage": {
+			"documented": 165,
+			"total": 976,
+			"percentage": 16.9,
+			"byKind": {
+				"variable": {
+					"documented": 11,
+					"total": 91,
+					"percentage": 12.1
+				},
+				"function": {
+					"documented": 135,
+					"total": 472,
+					"percentage": 28.6
+				},
+				"property-signature": {
+					"documented": 10,
+					"total": 329,
+					"percentage": 3
+				},
+				"interface": {
+					"documented": 8,
+					"total": 51,
+					"percentage": 15.7
+				},
+				"type": {
+					"documented": 1,
+					"total": 29,
+					"percentage": 3.4
+				},
+				"accessor": {
+					"documented": 0,
+					"total": 3,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "51a72be5284ccc7fec3d8f0f86e81cfb2d2288e0",
+		"recordedAt": "2026-06-03T16:10:03.962Z",
+		"coverage": {
+			"documented": 165,
+			"total": 976,
+			"percentage": 16.9,
+			"byKind": {
+				"variable": {
+					"documented": 11,
+					"total": 91,
+					"percentage": 12.1
+				},
+				"function": {
+					"documented": 135,
+					"total": 472,
+					"percentage": 28.6
+				},
+				"property-signature": {
+					"documented": 10,
+					"total": 329,
+					"percentage": 3
+				},
+				"interface": {
+					"documented": 8,
+					"total": 51,
+					"percentage": 15.7
+				},
+				"type": {
+					"documented": 1,
+					"total": 29,
+					"percentage": 3.4
+				},
+				"accessor": {
+					"documented": 0,
+					"total": 3,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "c1ae738375f2379dc75699e993fa91b9577adfd5",
+		"recordedAt": "2026-06-03T16:57:20.874Z",
+		"coverage": {
+			"documented": 165,
+			"total": 976,
+			"percentage": 16.9,
+			"byKind": {
+				"variable": {
+					"documented": 11,
+					"total": 91,
+					"percentage": 12.1
+				},
+				"function": {
+					"documented": 135,
+					"total": 472,
+					"percentage": 28.6
+				},
+				"property-signature": {
+					"documented": 10,
+					"total": 329,
+					"percentage": 3
+				},
+				"interface": {
+					"documented": 8,
+					"total": 51,
+					"percentage": 15.7
+				},
+				"type": {
+					"documented": 1,
+					"total": 29,
+					"percentage": 3.4
+				},
+				"accessor": {
+					"documented": 0,
+					"total": 3,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "a33298551853385cbcd75627b78a84feb3cfd991",
+		"recordedAt": "2026-06-03T21:00:56.044Z",
+		"coverage": {
+			"documented": 165,
+			"total": 976,
+			"percentage": 16.9,
+			"byKind": {
+				"variable": {
+					"documented": 11,
+					"total": 91,
+					"percentage": 12.1
+				},
+				"function": {
+					"documented": 135,
+					"total": 472,
+					"percentage": 28.6
+				},
+				"property-signature": {
+					"documented": 10,
+					"total": 329,
+					"percentage": 3
+				},
+				"interface": {
+					"documented": 8,
+					"total": 51,
+					"percentage": 15.7
+				},
+				"type": {
+					"documented": 1,
+					"total": 29,
+					"percentage": 3.4
+				},
+				"accessor": {
+					"documented": 0,
+					"total": 3,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]

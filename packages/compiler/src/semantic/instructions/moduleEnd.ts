@@ -1,16 +1,14 @@
-import { BlockType, type CompilationContext, ErrorCode, type ModuleEndLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, ModuleEndLine } from '@8f4e/compiler-spec';
 
-import { getError } from '../../compilerError';
 import { popBlock } from '../../utils/blockStack';
 
-export default function semanticModuleEnd(line: ModuleEndLine, context: CompilationContext) {
-	if (!context.insideModuleBlock) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
-
-	const block = popBlock(context);
-
-	if (!block || block.blockType !== BlockType.MODULE) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
+/**
+ * Closes the active module block after tokenizer placement has matched the block structure.
+ *
+ * @param _line - Unused source AST line kept for handler signature consistency.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
+ */
+export default function semanticModuleEnd(_line: ModuleEndLine, context: CompilationContext) {
+	popBlock(context);
 }

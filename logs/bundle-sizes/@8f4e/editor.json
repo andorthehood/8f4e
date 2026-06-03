@@ -943,5 +943,80 @@
 			"gzip": 4909,
 			"brotli": 4359
 		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-06-02T23:49:35.263Z",
+		"commit": "b31f595ecbed20e4ad8364f4dca64dab97188768",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor@2.2.4",
+		"packageName": "@8f4e/editor",
+		"projectName": "@8f4e/editor",
+		"version": "2.2.4",
+		"bytes": {
+			"raw": 15599,
+			"gzip": 4909,
+			"brotli": 4359
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-06-03T14:56:44.382Z",
+		"commit": "7611958f62050ee47dbc8e7da841b48a1a0e2e0b",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor@2.2.5",
+		"packageName": "@8f4e/editor",
+		"projectName": "@8f4e/editor",
+		"version": "2.2.5",
+		"bytes": {
+			"raw": 15599,
+			"gzip": 4909,
+			"brotli": 4359
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-06-03T16:09:58.418Z",
+		"commit": "51a72be5284ccc7fec3d8f0f86e81cfb2d2288e0",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor@2.2.6",
+		"packageName": "@8f4e/editor",
+		"projectName": "@8f4e/editor",
+		"version": "2.2.6",
+		"bytes": {
+			"raw": 15599,
+			"gzip": 4909,
+			"brotli": 4359
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-06-03T16:57:15.179Z",
+		"commit": "c1ae738375f2379dc75699e993fa91b9577adfd5",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor@2.2.7",
+		"packageName": "@8f4e/editor",
+		"projectName": "@8f4e/editor",
+		"version": "2.2.7",
+		"bytes": {
+			"raw": 15599,
+			"gzip": 4909,
+			"brotli": 4359
+		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-06-03T21:00:50.430Z",
+		"commit": "a33298551853385cbcd75627b78a84feb3cfd991",
+		"branch": "main",
+		"releaseTag": "@8f4e/editor@2.2.8",
+		"packageName": "@8f4e/editor",
+		"projectName": "@8f4e/editor",
+		"version": "2.2.8",
+		"bytes": {
+			"raw": 15599,
+			"gzip": 4909,
+			"brotli": 4359
+		}
 	}
 ]

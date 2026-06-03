@@ -1,13 +1,20 @@
-import { type CompilationContext, ErrorCode, type NormalizedSemanticInstructionLine } from '@8f4e/compiler-spec';
-import { getError } from '../../compilerError';
+import type { CompilationContext, NormalizedSemanticInstructionLine } from '@8f4e/compiler-spec';
 import semanticConst from './const';
 import semanticConstants from './constants';
 import semanticConstantsEnd from './constantsEnd';
 import semanticModule from './module';
 import semanticModuleEnd from './moduleEnd';
 import semanticRegion from './region';
+import semanticShape from './shape';
 import semanticUse from './use';
 
+/**
+ * Dispatches normalized semantic instructions to their declaration or namespace handlers.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
+ */
 export default function applySemanticInstruction(line: NormalizedSemanticInstructionLine, context: CompilationContext) {
 	switch (line.instruction) {
 		case 'const':
@@ -31,13 +38,8 @@ export default function applySemanticInstruction(line: NormalizedSemanticInstruc
 		case 'constantsEnd':
 			semanticConstantsEnd(line, context);
 			return;
-		case 'prototype':
-		case 'prototypeEnd':
-			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
 		case 'shape':
-			if (context.mode !== 'module' || !context.insideModuleBlock) {
-				throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
-			}
+			semanticShape(line, context);
 			return;
 	}
 }

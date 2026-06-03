@@ -34,7 +34,6 @@ param int value
 functionEnd int
 `,
 			{
-				includeAST: true,
 				hostImports: {
 					record: (value: number) => calls.push(value),
 					'add.one': (value: number) => value + 1,

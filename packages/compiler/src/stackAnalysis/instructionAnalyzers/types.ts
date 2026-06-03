@@ -1,0 +1,14 @@
+import type { CompilationContext, CompilerASTLine, Stack } from '@8f4e/compiler-spec';
+
+/** Stack delta produced by analyzing one compiler instruction. */
+export type InstructionAnalysisResult = {
+	consumed: Stack;
+	produced: Stack;
+	dropped?: Stack;
+};
+
+/** Function shape shared by stack analyzers that handle specific compiler instructions. */
+export type InstructionAnalyzer<TLine extends CompilerASTLine = CompilerASTLine> = (
+	line: TLine,
+	context: CompilationContext
+) => InstructionAnalysisResult;

@@ -43,6 +43,10 @@ function requireResolvedArrayValue(
  * Scalar declarations normalize the name/default slots; array declarations normalize
  * the element-count slot and all inline initializer values.
  * Validates intermodule references in default/initializer values if present.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Normalized memory declaration line.
  */
 export default function normalizeMemoryDeclaration(
 	line: MemoryDeclarationLine,

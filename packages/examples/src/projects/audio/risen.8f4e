@@ -1019,6 +1019,7 @@ ifEnd
 
 moduleEnd
 entryEnd
+
 function sin
 ; @pos 119 31
 ; Polynomial approximation

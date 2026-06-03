@@ -148,4 +148,5 @@ const instructions = {
 
 export default instructions;
 
+/** Instruction names with registered codegen handlers. */
 export type Instruction = keyof typeof instructions;

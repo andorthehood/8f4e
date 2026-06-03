@@ -1,24 +1,14 @@
 import type { CodegenContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-spec';
-import { BlockType, compilerSourceBlockInstructionByType, ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { BlockType, compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
 import { pushBlock } from '../utils/blockStack';
 
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
-
-// Note: This instruction does not use the shared instruction scope rule because it requires inverted scope validation:
-// it must NOT be inside a module or function, which is the opposite of the standard scope rules
-// that instruction specs support. The shared validator is designed for positive scope assertions
-// (must be inside X), not negative ones (must NOT be inside X).
 
 /**
  * Instruction compiler for `function`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
 const _function = ((line: FunctionLine, context: CodegenContext) => {
-	if (context.insideModuleBlock || context.insideFunctionBlock) {
-		throw getError(ErrorCode.INSTRUCTION_INVALID_OUTSIDE_BLOCK, line, context);
-	}
-
 	const functionId = line.arguments[0].value;
 
 	context.currentFunctionId = functionId;

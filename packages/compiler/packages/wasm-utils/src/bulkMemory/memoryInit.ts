@@ -7,6 +7,10 @@ import { WASM_MISC_MEMORY_INIT } from '../wasmMiscInstruction';
  * Creates a WebAssembly memory.init instruction.
  *
  * Stack: destination memory offset, source data offset, byte count.
+ *
+ * @param dataSegmentIndex - Data segment index for the instruction.
+ * @param memoryIndex - Memory index to encode.
+ * @returns Encoded memory init instruction bytes.
  */
 export default function memoryInit(dataSegmentIndex = 0, memoryIndex = 0): number[] {
 	return [
