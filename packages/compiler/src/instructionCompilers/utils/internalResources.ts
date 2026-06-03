@@ -5,10 +5,12 @@ type InternalResourceType = InternalResource['storageType'];
 
 type InternalResourceContext = CodegenContext | CompilationContext;
 
+/** Creates a stable internal resource id for compiler-generated module state. */
 export function getInternalResourceId(context: InternalResourceContext, baseId: string): string {
 	return `${context.codeBlockId ?? context.namespace.moduleName ?? 'global'}::${baseId}`;
 }
 
+/** Allocates or reuses a compiler-generated internal resource in the current context. */
 export function allocateInternalResource(
 	context: InternalResourceContext,
 	baseId: string,

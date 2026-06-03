@@ -8,6 +8,7 @@ import type {
 import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 
+/** Internal scalar kind used to choose typed WASM operations for map rows and values. */
 export type MapKind = 'int32' | 'float32' | 'float64';
 
 interface MapValueKind {

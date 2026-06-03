@@ -3,6 +3,7 @@ import type { InternalResource } from '@8f4e/compiler-spec';
 import type { InitialMemoryDataSegmentCandidate } from './types';
 import writeInternalResourceDefault from './writeInternalResourceDefault';
 
+/** Creates an initial data segment candidate for a non-zero internal resource default. */
 export default function createInternalResourceDataSegmentCandidate(
 	resource: InternalResource
 ): InitialMemoryDataSegmentCandidate | undefined {

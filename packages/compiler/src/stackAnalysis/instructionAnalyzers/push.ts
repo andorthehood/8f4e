@@ -146,6 +146,7 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 	}
 }
 
+/** Produces stack items for a normalized push line and appends them to the current stack. */
 export function analyzePush(line: NormalizedPushLine, context: CompilationContext): Stack {
 	const produced = 'resolvedTarget' in line ? pushResolvedTargetStackItems(line) : pushLiteralStackItems(line);
 	produce(context, produced);

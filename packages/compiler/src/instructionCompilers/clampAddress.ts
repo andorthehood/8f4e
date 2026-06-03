@@ -22,6 +22,7 @@ function clampToRange(
 	);
 }
 
+/** Clamps the top stack address to its inferred safe or explicit clamp range. */
 export const clampAddress: InstructionCompiler = (line, context) => {
 	const [rawOperand] = line.stackAnalysis.consumedOperands;
 	const operand = requireStackAddress(rawOperand, line, context);
@@ -30,12 +31,14 @@ export const clampAddress: InstructionCompiler = (line, context) => {
 	return clampToRange(line, context, operand, range!);
 };
 
+/** Clamps the top stack address to the active module's memory range. */
 export const clampModuleAddress: InstructionCompiler = (line, context) => {
 	const [rawOperand] = line.stackAnalysis.consumedOperands;
 	const operand = requireStackAddress(rawOperand, line, context);
 	return clampToRange(line, context, operand, getModuleAddressRange(context));
 };
 
+/** Clamps the top stack address to the whole linear memory range for its access width. */
 export const clampGlobalAddress: InstructionCompiler = (line, context) => {
 	const [rawOperand] = line.stackAnalysis.consumedOperands;
 	const operand = requireStackAddress(rawOperand, line, context);

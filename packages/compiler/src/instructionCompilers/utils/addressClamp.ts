@@ -6,6 +6,7 @@ export { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRa
 
 import type { CodegenContext, CompilationContext, CompilerASTLine, MemoryAddressRange } from '@8f4e/compiler-spec';
 
+/** Builds bytecode that clamps the top stack address between lower and upper bounds. */
 export function clampAddressByteCode(
 	context: CodegenContext | CompilationContext,
 	line: CompilerASTLine,
@@ -34,6 +35,7 @@ export function clampAddressByteCode(
 	];
 }
 
+/** Builds bytecode for the last valid starting byte address in a memory range. */
 export function rangeUpperByteAddressCode(range: MemoryAddressRange, accessByteWidth: number): number[] {
 	return i32const(range.byteAddress + Math.max(0, range.safeByteLength - accessByteWidth));
 }

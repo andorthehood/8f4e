@@ -218,6 +218,7 @@ function discoverNamespace(
 	return context;
 }
 
+/** Applies semantic declarations and resolves scalar defaults for one namespace AST. */
 export function layoutNamespace(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
@@ -286,6 +287,7 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
 	};
 }
 
+/** Discovers and lays out namespaces for modules and constants, deferring intermodule dependencies as needed. */
 export function collectNamespacesFromASTs(
 	asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,

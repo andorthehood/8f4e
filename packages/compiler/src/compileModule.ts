@@ -31,6 +31,7 @@ import { getMemoryRegionFields } from './semantic/memoryRegions';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
+/** Compiles one validated module or constants AST into its WebAssembly cycle function and memory metadata. */
 export function compileModule(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,

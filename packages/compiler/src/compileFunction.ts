@@ -37,6 +37,7 @@ const importedFunctionAllowedInstructions = new Set([
 	'functionEnd',
 ]);
 
+/** Compiles one validated function AST into a WebAssembly function body or import metadata. */
 export function compileFunction(
 	ast: ValidatedFunctionAST,
 	namespaces: Namespaces,

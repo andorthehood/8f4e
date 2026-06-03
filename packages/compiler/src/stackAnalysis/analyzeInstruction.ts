@@ -3,6 +3,7 @@ import { analyzeByInstruction } from './instructionAnalyzers';
 import { cloneStack } from './instructionAnalyzers/stack';
 import { validateInstruction } from './validateInstruction';
 
+/** Validates one AST line, updates stack state, and records the before/after stack analysis metadata. */
 export function analyzeInstruction(line: CompilerASTLine, context: CompilationContext): AnalyzedLine {
 	validateInstruction(line, context);
 

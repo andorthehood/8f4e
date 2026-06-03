@@ -32,6 +32,7 @@ interface ErrorDetails {
 	identifier?: string;
 }
 
+/** Creates a compiler-stage diagnostic for a semantic or code-generation error. */
 export function getError(
 	code: ErrorCodeValue,
 	line: CompilerASTLine,

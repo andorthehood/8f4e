@@ -12,6 +12,7 @@ import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { compileModule } from './compileModule';
 import { collectNamespacesFromASTs } from './semantic/buildNamespace';
 
+/** Compiles validated module ASTs using a shared namespace, allocator, and function type registry. */
 export function compileModules(
 	modules: Array<ValidatedModuleAST | ValidatedConstantsAST>,
 	options: CompileOptions,

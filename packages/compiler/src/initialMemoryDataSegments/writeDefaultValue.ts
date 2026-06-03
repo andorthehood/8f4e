@@ -1,5 +1,6 @@
 import type { DataStructure } from '@8f4e/compiler-spec';
 
+/** Writes one memory declaration default value into a data segment byte view. */
 export default function writeDefaultValue(
 	view: DataView,
 	memory: Pick<DataStructure, 'isInteger' | 'isUnsigned' | 'elementWordSize'>,

@@ -11,6 +11,7 @@ import {
 import { getError } from '../../compilerError';
 import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
 
+/** Returns whether namespace discovery has populated any module or constants namespaces. */
 export function hasCollectedNamespaces(context: CompilationContext): boolean {
 	return Object.keys(context.namespace.namespaces).length > 0;
 }
@@ -20,6 +21,7 @@ function getTargetModuleNamespace(context: CompilationContext, targetModuleId: s
 	return targetNamespace?.kind === 'module' ? targetNamespace : undefined;
 }
 
+/** Returns whether an identifier reference kind targets another namespace. */
 export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolean {
 	return (
 		referenceKind === 'intermodular-module-reference' ||
@@ -90,6 +92,7 @@ export function validateIntermoduleAddressReference(
 	}
 }
 
+/** Attempts to fold one argument to a normalized literal, leaving unresolved arguments unchanged. */
 export function normalizeArgument(
 	argument: Argument,
 	context: CompilationContext

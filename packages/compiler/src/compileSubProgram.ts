@@ -32,27 +32,45 @@ import { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 
 /** Expanded module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
+	/** Source lines after macro expansion. */
 	code: string[];
+	/** Stable cache namespace for the expanded source lines. */
 	cacheKey: string;
+	/** Public entry that should dispatch to the compiled module. */
 	entryName: string;
 };
 
 /** Compiled units and layout metadata for one independently compiled source program. */
 export type CompiledSubProgram = {
+	/** Public entry names generated for this source program. */
 	entryNames: string[];
+	/** Number of imported user functions emitted before built-ins and defined functions. */
 	importedFunctionCount: number;
+	/** Number of built-in helper functions emitted before user-defined functions. */
 	builtInFunctionCount: number;
+	/** Compiled module bodies in source order. */
 	compiledModules: CompiledModule[];
+	/** Compiled module lookup keyed by module id. */
 	compiledModulesMap: CompiledModuleLookup;
+	/** Compiled user functions in source order. */
 	compiledFunctions: CompiledFunction[];
+	/** Compiled function lookup keyed by function id. */
 	compiledFunctionsMap: CompiledFunctionLookup;
+	/** User functions imported from the host environment. */
 	importedUserFunctions: CompiledFunction[];
+	/** User functions defined by the source program. */
 	definedFunctions: CompiledFunction[];
+	/** Function type table accumulated while compiling calls and definitions. */
 	functionTypeRegistry: FunctionTypeRegistry;
+	/** Required linear-memory byte size keyed by WebAssembly memory index. */
 	requiredMemoryBytesByIndex: Record<number, number>;
+	/** Required byte size for default memory. */
 	requiredMemoryBytes: number;
+	/** Required byte size keyed by configured custom memory region name. */
 	requiredMemoryBytesByRegion: Record<string, number>;
+	/** Initial data segments that materialize memory defaults. */
 	initialMemoryDataSegments: InitialMemoryDataSegment[];
+	/** Cache instance carrying validated AST entries for this compilation. */
 	cache: CompilerCache;
 };
 
