@@ -19,7 +19,7 @@ import type {
 	StackProducedItemSpec,
 	StackValueType,
 } from '@8f4e/compiler-spec';
-import { ArgumentType, BASE_TYPE_METADATA, BlockType, ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
+import { ArgumentType, BASE_TYPE_METADATA, ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { getMemoryRegionFields } from '../semantic/memoryRegions';
 import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
@@ -304,7 +304,6 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 }
 
 function analyzeFunctionEnd(line: CompilerASTLine, context: CompilationContext): Stack {
-	assertTopBlock(line, context, BlockType.FUNCTION);
 	const returnTypes = line.arguments.map(arg => ('value' in arg ? (arg.value as FunctionValueType) : undefined));
 
 	if (returnTypes.length > 8) {
@@ -324,18 +323,6 @@ function analyzeFunctionEnd(line: CompilerASTLine, context: CompilationContext):
 	}
 
 	return consume(context, returnTypes.length);
-}
-
-function assertTopBlock(
-	line: CompilerASTLine,
-	context: CompilationContext,
-	blockType: (typeof BlockType)[keyof typeof BlockType]
-) {
-	const block = context.blockStack[context.blockStack.length - 1];
-
-	if (!block || block.blockType !== blockType) {
-		throw getError(ErrorCode.MISSING_BLOCK_START_INSTRUCTION, line, context);
-	}
 }
 
 function analyzeLocalSet(line: CompilerASTLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
@@ -480,7 +467,6 @@ function analyzeFromSpec(
 ): { consumed: Stack; produced: Stack; dropped?: Stack } | undefined {
 	const effects = spec?.effects;
 	if (effects?.blockClose) {
-		assertTopBlock(line, context, effects.blockClose.blockType);
 		return analyzeExpectedBlockResult(line, context, {
 			restore: effects.blockClose.restoreResult,
 			validateFloatResult: effects.blockClose.validateFloatResult,

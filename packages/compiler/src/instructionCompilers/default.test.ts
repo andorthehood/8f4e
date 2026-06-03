@@ -37,7 +37,7 @@ describe('default instruction compiler', () => {
 		);
 
 		expect({
-			mapState: context.blockStack[context.blockStack.length - 1].mapState,
+			mapState: context.activeMapBlock?.mapState,
 		}).toMatchSnapshot();
 	});
 });

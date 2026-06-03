@@ -12,30 +12,43 @@ type BlockContext = CodegenContext | CompilationContext;
 
 export function pushBlock(context: BlockContext, block: BlockStack[number]) {
 	context.blockStack.push(block);
+	context.activeBlockDepths[block.blockType]++;
+
 	if (block.blockType === BlockType.LOOP) {
 		context.activeLoopBlocks.push(block);
 	}
+
+	if (block.blockType === BlockType.MAP) {
+		context.activeMapBlock = block;
+	}
+
 	updateBlockContextFlag(context, block.blockType, true);
 }
 
 export function popBlock(context: BlockContext) {
 	const block = context.blockStack.pop();
 
-	if (block?.blockType === BlockType.LOOP) {
-		context.activeLoopBlocks.pop();
-		context.insideLoopBlock = context.activeLoopBlocks.length > 0;
+	if (!block) {
 		return block;
 	}
 
-	if (block && !context.blockStack.some(remainingBlock => remainingBlock.blockType === block.blockType)) {
-		updateBlockContextFlag(context, block.blockType, false);
+	context.activeBlockDepths[block.blockType]--;
+
+	if (block?.blockType === BlockType.LOOP) {
+		context.activeLoopBlocks.pop();
 	}
+
+	if (block.blockType === BlockType.MAP) {
+		context.activeMapBlock = undefined;
+	}
+
+	updateBlockContextFlag(context, block.blockType, context.activeBlockDepths[block.blockType] > 0);
 
 	return block;
 }
 
 export function peekMapBlock(context: BlockContext): MapBlockStackFrame {
-	return context.blockStack[context.blockStack.length - 1] as MapBlockStackFrame;
+	return context.activeMapBlock!;
 }
 
 export function popMapBlock(context: BlockContext): MapBlockStackFrame {
