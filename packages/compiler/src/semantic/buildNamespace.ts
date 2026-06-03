@@ -37,6 +37,14 @@ import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
+/** Inputs for collecting function metadata and validating whole-program function names. */
+type FunctionMetadataCollectionOptions = {
+	importedFunctionBaseIndex: number;
+	definedFunctionBaseIndex: number;
+	reservedFunctionIds: readonly string[];
+	reservedExportNames: readonly string[];
+};
+
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
  * This allows semantic normalization (e.g. `call` target validation) and
@@ -45,26 +53,39 @@ const moduleBlock = compilerSourceBlockInstructionByType.module;
  */
 export function collectFunctionMetadataFromAsts(
 	asts: readonly ValidatedFunctionAST[],
-	importedFunctionBaseIndex: number,
-	definedFunctionBaseIndex = importedFunctionBaseIndex
+	options: FunctionMetadataCollectionOptions
 ): FunctionMetadataLookup {
 	const result: FunctionMetadataLookup = {};
+	const seenFunctionIds = new Set(options.reservedFunctionIds);
+	const seenExportNames = new Set(options.reservedExportNames);
 	let importedFunctionIndex = 0;
 	let definedFunctionIndex = 0;
 
 	for (const ast of asts) {
 		const id = ast.id;
-		if (result[id]) {
+		if (seenFunctionIds.has(id)) {
 			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, undefined, { identifier: id });
 		}
+		seenFunctionIds.add(id);
 
 		const importedFunction = ast.import;
+		// Imported functions cannot be valid exports; keep that conflict in per-function directive validation.
+		const exportName = importedFunction ? undefined : ast.exportName;
+		if (exportName) {
+			if (seenExportNames.has(exportName)) {
+				throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, ast.exportLine ?? ast.functionLine, undefined, {
+					identifier: exportName,
+				});
+			}
+			seenExportNames.add(exportName);
+		}
+
 		result[id] = {
 			id,
 			signature: ast.signature,
 			wasmIndex: importedFunction
-				? importedFunctionBaseIndex + importedFunctionIndex++
-				: definedFunctionBaseIndex + definedFunctionIndex++,
+				? options.importedFunctionBaseIndex + importedFunctionIndex++
+				: options.definedFunctionBaseIndex + definedFunctionIndex++,
 			...(importedFunction ? { import: importedFunction } : {}),
 		};
 	}
