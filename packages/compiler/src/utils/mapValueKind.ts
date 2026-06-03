@@ -21,6 +21,9 @@ function normalizeMapValueKind(valueKind: MapValueKind | StackItem): MapValueKin
 
 /**
  * Resolves map value metadata to the internal map kind used for typed WASM emission.
+ *
+ * @param valueKind - Map or stack value metadata to resolve.
+ * @returns The result of the operation.
  */
 export function resolveMapKind(valueKind: MapValueKind | StackItem): MapKind {
 	const normalizedValueKind = normalizeMapValueKind(valueKind);
@@ -33,6 +36,11 @@ export function resolveMapKind(valueKind: MapValueKind | StackItem): MapKind {
 
 /**
  * Validates that a map input, row value, or default value matches the expected map kind.
+ *
+ * @param valueKind - Map or stack value metadata to resolve.
+ * @param expectedKind - Map kind that the value must match.
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
  */
 export function validateMapValueKind(
 	valueKind: MapValueKind | StackItem,

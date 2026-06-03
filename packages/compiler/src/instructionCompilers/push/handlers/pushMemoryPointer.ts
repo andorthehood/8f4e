@@ -4,7 +4,13 @@ import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../utils/saveByteCode';
 import { buildPointerDereferenceByteCode } from '../shared';
 
-/** Emits bytecode for pushing the value reached by dereferencing a memory pointer. */
+/**
+ * Emits bytecode for pushing the value reached by dereferencing a memory pointer.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The result of the operation.
+ */
 export default function pushMemoryPointer(
 	line: ResolvedMemoryPointerPushLine,
 	context: CodegenContext

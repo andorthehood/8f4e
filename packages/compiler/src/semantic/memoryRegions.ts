@@ -20,12 +20,24 @@ function fallbackLine(): CompilerASTLine {
 	};
 }
 
-/** Returns the configured region name for a non-default memory index. */
+/**
+ * Returns the configured region name for a non-default memory index.
+ *
+ * @param memoryRegions - Configured custom memory region names.
+ * @param memoryIndex - Memory index to resolve.
+ * @returns The resolved string value.
+ */
 export function getCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string {
 	return memoryRegions[memoryIndex - 1]!;
 }
 
-/** Builds the optional memory region fields stored on namespaces and memory metadata. */
+/**
+ * Builds the optional memory region fields stored on namespaces and memory metadata.
+ *
+ * @param memoryIndex - Memory index to resolve.
+ * @param memoryRegionName - Configured memory region name to resolve.
+ * @returns The result of the operation.
+ */
 export function getMemoryRegionFields(memoryIndex: number, memoryRegionName?: string): ResolvedMemoryRegion {
 	return {
 		memoryIndex,
@@ -33,7 +45,12 @@ export function getMemoryRegionFields(memoryIndex: number, memoryRegionName?: st
 	};
 }
 
-/** Validates configured memory region names before semantic compilation uses them. */
+/**
+ * Validates configured memory region names before semantic compilation uses them.
+ *
+ * @param options - Compiler options for this compilation pass.
+ * @param line - Compiler line being processed.
+ */
 export function validateMemoryRegionOptions(
 	options?: Pick<CompileOptions, 'memoryRegions'>,
 	line: CompilerASTLine = fallbackLine()
@@ -51,7 +68,15 @@ export function validateMemoryRegionOptions(
 	}
 }
 
-/** Resolves a numeric region directive argument into memory region metadata. */
+/**
+ * Resolves a numeric region directive argument into memory region metadata.
+ *
+ * @param memoryIndex - Memory index to resolve.
+ * @param memoryRegions - Configured custom memory region names.
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The result of the operation.
+ */
 export function resolveMemoryRegionByIndex(
 	memoryIndex: number,
 	memoryRegions: readonly string[],
@@ -70,7 +95,15 @@ export function resolveMemoryRegionByIndex(
 	};
 }
 
-/** Resolves a named region directive argument into memory region metadata. */
+/**
+ * Resolves a named region directive argument into memory region metadata.
+ *
+ * @param memoryRegionName - Configured memory region name to resolve.
+ * @param memoryRegions - Configured custom memory region names.
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The result of the operation.
+ */
 export function resolveMemoryRegionName(
 	memoryRegionName: string,
 	memoryRegions: readonly string[],
@@ -88,7 +121,13 @@ export function resolveMemoryRegionName(
 	};
 }
 
-/** Resolves the active memory region from a parsed `#region` directive line. */
+/**
+ * Resolves the active memory region from a parsed `#region` directive line.
+ *
+ * @param line - Compiler line being processed.
+ * @param context - Current compiler context consulted or updated by the operation.
+ * @returns The result of the operation.
+ */
 export function resolveRegionDirective(line: RegionLine, context: CompilationContext): ResolvedMemoryRegion {
 	const [argument] = line.arguments;
 	if (argument.type === ArgumentType.LITERAL) {
@@ -98,7 +137,11 @@ export function resolveRegionDirective(line: RegionLine, context: CompilationCon
 	return resolveMemoryRegionName(argument.value, context.memoryRegions, line, context);
 }
 
-/** Returns metadata for the default WebAssembly memory region. */
+/**
+ * Returns metadata for the default WebAssembly memory region.
+ *
+ * @returns The result of the operation.
+ */
 export function getDefaultMemoryRegion(): ResolvedMemoryRegion {
 	return { memoryIndex: DEFAULT_MEMORY_INDEX };
 }

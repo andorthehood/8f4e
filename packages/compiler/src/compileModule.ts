@@ -31,7 +31,20 @@ import { getMemoryRegionFields } from './semantic/memoryRegions';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
-/** Compiles one validated module or constants AST into its WebAssembly cycle function and memory metadata. */
+/**
+ * Compiles one validated module or constants AST into its WebAssembly cycle function and memory metadata.
+ *
+ * @param ast - Validated AST being processed.
+ * @param namespaces - Collected namespaces used for symbol and memory resolution.
+ * @param startingByteAddress - Absolute byte address where layout should begin.
+ * @param index - WASM index or source index assigned to the compiled item.
+ * @param functions - Function metadata lookup available to compilation.
+ * @param internalAllocator - Allocator state for compiler-generated memory resources.
+ * @param options - Compiler options for this compilation pass.
+ * @param typeRegistry - Function type registry used for WASM block signatures.
+ * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
+ * @returns The compiled module artifact.
+ */
 export function compileModule(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,

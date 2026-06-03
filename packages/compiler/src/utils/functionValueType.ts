@@ -19,7 +19,13 @@ function getPointerParts(type: PointerFunctionValueType) {
 	return { baseType, pointerDepth };
 }
 
-/** Converts a function signature value type into the local binding shape used during semantic analysis. */
+/**
+ * Converts a function signature value type into the local binding shape used during semantic analysis.
+ *
+ * @param type - Function value type to convert.
+ * @param index - WASM index or source index assigned to the compiled item.
+ * @returns The result of the operation.
+ */
 export function functionValueTypeToLocalBinding(type: FunctionValueType, index: number): LocalBinding {
 	if (type === 'int') {
 		return { isInteger: true, index };
@@ -46,7 +52,12 @@ export function functionValueTypeToLocalBinding(type: FunctionValueType, index: 
 	};
 }
 
-/** Converts a function signature value type into the equivalent stack item shape. */
+/**
+ * Converts a function signature value type into the equivalent stack item shape.
+ *
+ * @param type - Function value type to convert.
+ * @returns The stack items produced or consumed by the operation.
+ */
 export function functionValueTypeToStackItem(type: FunctionValueType): StackItem {
 	return localBindingToStackItem(functionValueTypeToLocalBinding(type, 0));
 }
@@ -75,7 +86,12 @@ function localBindingToStackItem(binding: LocalBinding): StackItem {
 	};
 }
 
-/** Maps a function signature value type to the binary WASM value type emitted for calls and exports. */
+/**
+ * Maps a function signature value type to the binary WASM value type emitted for calls and exports.
+ *
+ * @param type - Function value type to convert.
+ * @returns The matching WASM value type.
+ */
 export function functionValueTypeToWasmType(type: FunctionValueType): WasmTypeValue {
 	if (type === 'float64') {
 		return WASM_TYPE_F64;
@@ -88,7 +104,13 @@ export function functionValueTypeToWasmType(type: FunctionValueType): WasmTypeVa
 	return WASM_TYPE_I32;
 }
 
-/** Checks whether a stack item can satisfy a function parameter or return type. */
+/**
+ * Checks whether a stack item can satisfy a function parameter or return type.
+ *
+ * @param stackItem - Stack item being checked.
+ * @param type - Function value type to convert.
+ * @returns Whether the check succeeds.
+ */
 export function stackItemMatchesFunctionValueType(stackItem: StackItem, type: FunctionValueType): boolean {
 	if (type === 'int') {
 		return stackItem.valueType === 'int';
