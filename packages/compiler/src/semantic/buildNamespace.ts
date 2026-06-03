@@ -21,7 +21,6 @@ import {
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
-import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
@@ -34,6 +33,7 @@ import {
 	validateMemoryRegionOptions,
 } from './memoryRegions';
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
+import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
