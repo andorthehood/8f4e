@@ -28,7 +28,7 @@ describe('parse8f4eToProject', () => {
 
 	it('parses empty file (header only)', () => {
 		const project = parse8f4eToProject('8f4e/v1\n');
-		expect(project).toEqual({ codeBlocks: [] });
+		expect(project).toEqual({ codeBlocks: [], groups: [] });
 	});
 
 	it('throws on invalid header', () => {

@@ -1,0 +1,71 @@
+{
+  "codeBlocks": [
+    {
+      "code": [
+        "module root",
+        "int tick",
+        "moduleEnd",
+      ],
+      "entry": "main",
+    },
+  ],
+  "groups": [
+    {
+      "codeBlocks": [
+        {
+          "code": [
+            "module voice",
+            "float phase",
+            "moduleEnd",
+          ],
+          "entry": "main",
+        },
+        {
+          "code": [
+            "function sineApprox",
+            "param float x",
+            "push x",
+            "functionEnd float",
+          ],
+          "entry": "main",
+        },
+        {
+          "code": [
+            "constants audioConstants",
+            "const int sampleRate 48000",
+            "constantsEnd",
+          ],
+          "entry": "main",
+        },
+      ],
+      "entry": "main",
+      "groups": [
+        {
+          "codeBlocks": [
+            {
+              "code": [
+                "prototype oscillatorState",
+                "float phase",
+                "float frequency 440",
+                "prototypeEnd",
+              ],
+              "entry": "main",
+            },
+            {
+              "code": [
+                "defineMacro resetPhase",
+                "push 0",
+                "defineMacroEnd",
+              ],
+              "entry": "main",
+            },
+          ],
+          "entry": "main",
+          "groups": [],
+          "name": "oscillator",
+        },
+      ],
+      "name": "audio",
+    },
+  ],
+}

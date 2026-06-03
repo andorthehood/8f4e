@@ -1,0 +1,33 @@
+8f4e/v1
+
+entry main
+module root
+int tick
+moduleEnd
+
+group audio
+module voice
+float phase
+moduleEnd
+
+function sineApprox
+param float x
+push x
+functionEnd float
+
+constants audioConstants
+const int sampleRate 48000
+constantsEnd
+
+group oscillator
+prototype oscillatorState
+float phase
+float frequency 440
+prototypeEnd
+
+defineMacro resetPhase
+push 0
+defineMacroEnd
+groupEnd
+groupEnd
+entryEnd
