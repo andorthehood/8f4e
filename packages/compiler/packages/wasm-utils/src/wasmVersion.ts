@@ -1,4 +1,9 @@
-/** Encodes a WebAssembly binary version number as little-endian bytes. */
+/**
+ * Encodes a WebAssembly binary version number as little-endian bytes.
+ *
+ * @param version - WebAssembly binary version number.
+ * @returns Created wasm version.
+ */
 export function createWasmVersion(version: number): number[] {
 	const value = version >>> 0;
 

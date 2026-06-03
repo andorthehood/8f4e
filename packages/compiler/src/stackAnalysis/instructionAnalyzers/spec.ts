@@ -123,7 +123,14 @@ function analyzeStackEffectFromSpec(
 	};
 }
 
-/** Applies stack-analysis behavior declared in the central instruction spec when available. */
+/**
+ * Applies stack-analysis behavior declared in the central instruction spec when available.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @param spec - Instruction specification that drives the operation.
+ * @returns Stack-analysis result for the from spec instruction.
+ */
 export function analyzeFromSpec(
 	line: CompilerASTLine,
 	context: CompilationContext,

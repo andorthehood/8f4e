@@ -5,6 +5,12 @@ import { expect } from 'vitest';
 import { createCompilationContext } from '../semantic/createCompilationContext';
 import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
 
+/**
+ * Creates a compilation context fixture for instruction compiler tests.
+ *
+ * @param overrides - Context fields to override on the generated fixture.
+ * @returns A compilation context with default module-scoped state.
+ */
 export default function createInstructionCompilerTestContext(
 	overrides: Partial<CompilationContext> = {}
 ): CompilationContext {
@@ -25,6 +31,14 @@ export default function createInstructionCompilerTestContext(
 	});
 }
 
+/**
+ * Runs stack analysis for a line and immediately compiles it with the provided compiler.
+ *
+ * @param compileInstruction - Instruction compiler under test.
+ * @param line - Source AST line to analyze and compile.
+ * @param context - Compilation context mutated by analysis and compilation.
+ * @returns The updated compilation context.
+ */
 export function analyzeAndCompileInstruction<TLine extends CompilerASTLine>(
 	compileInstruction: InstructionCompiler<TLine>,
 	line: TLine,
@@ -34,6 +48,13 @@ export function analyzeAndCompileInstruction<TLine extends CompilerASTLine>(
 	return context;
 }
 
+/**
+ * Counts occurrences of one bytecode sequence inside another.
+ *
+ * @param haystack - Bytecode sequence to search.
+ * @param needle - Bytecode subsequence to count.
+ * @returns The number of matching subsequences.
+ */
 export function countByteCodeSequence(haystack: number[], needle: number[]): number {
 	let count = 0;
 	for (let i = 0; i <= haystack.length - needle.length; i++) {
@@ -44,10 +65,24 @@ export function countByteCodeSequence(haystack: number[], needle: number[]): num
 	return count;
 }
 
+/**
+ * Checks whether one bytecode sequence contains another.
+ *
+ * @param haystack - Bytecode sequence to search.
+ * @param needle - Bytecode subsequence to find.
+ * @returns True when the subsequence occurs at least once.
+ */
 export function containsByteCodeSequence(haystack: number[], needle: number[]): boolean {
 	return countByteCodeSequence(haystack, needle) > 0;
 }
 
+/**
+ * Asserts the bytecode shape emitted for guarded memory dereferences.
+ *
+ * @param byteCode - Compiled bytecode to inspect.
+ * @param options - Expected prefix, final load sequence, guard count, and result type.
+ * @returns Nothing.
+ */
 export function expectGuardedDereference(
 	byteCode: number[],
 	options: { prefix: number[]; finalLoad: number[]; guardCount: number; resultType: number }

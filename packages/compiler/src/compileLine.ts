@@ -14,8 +14,9 @@ import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 /**
  * Emits bytecode for one already-analyzed instruction line.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export function compileCodegenLine(line: AnalyzedLine, context: CompilationContext) {
 	const instruction = line.instruction as Instruction;
@@ -26,8 +27,8 @@ export function compileCodegenLine(line: AnalyzedLine, context: CompilationConte
 /**
  * Converts an analyzed instruction into the stack-analysis shape exposed in compile results.
  *
- * @param line - Compiler line being processed.
- * @returns The stack items produced or consumed by the operation.
+ * @param line - AST line being processed.
+ * @returns The relevant stack items for the analysis step.
  */
 export function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAnalysisLine {
 	return {
@@ -40,9 +41,9 @@ export function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAn
 /**
  * Applies semantic lines or analyzes and emits one codegen line for the active compilation context.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export function compileLine(line: CompilerASTLine, context: CompilationContext): AnalyzedLine | undefined {
 	if (isSemanticInstructionLine(line)) {

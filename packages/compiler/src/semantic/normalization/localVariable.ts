@@ -5,6 +5,10 @@ import { getError } from '../../compilerError';
 /**
  * Validates that localSet targets an already-declared local.
  * This keeps local existence checks in semantic normalization instead of the dispatcher/codegen layers.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Normalized local variable access line.
  */
 export default function normalizeLocalVariableAccess(
 	line: LocalSetLine,

@@ -3,6 +3,9 @@ import instructionParser from './instructionParser';
 /**
  * Extracts dependency identifiers from `use` instructions in source code.
  * Keeps source order and deduplicates repeated entries.
+ *
+ * @param source - Source text to inspect.
+ * @returns Extracted use dependencies.
  */
 export default function extractUseDependencies(source: string): string[] {
 	const dependencies: string[] = [];

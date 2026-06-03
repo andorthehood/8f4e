@@ -6,7 +6,7 @@ import { resolveCompileTimeOperand } from './resolveCompileTimeOperand';
 /**
  * Attempts to fold an argument into a compile-time constant using the current semantic context.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @param argument - Argument whose resolved value or metadata should be used.
  * @returns Resolved compile-time constant, or `undefined` when the argument cannot be folded.
  */

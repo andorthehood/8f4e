@@ -1,5 +1,10 @@
 import type { ASTCache, ValidatedAST } from '@8f4e/compiler-spec';
 
+/**
+ * Creates astcache.
+ *
+ * @returns Created astcache.
+ */
 export default function createASTCache<TAst = ValidatedAST>(): ASTCache<TAst> {
 	return {
 		entries: new Map(),

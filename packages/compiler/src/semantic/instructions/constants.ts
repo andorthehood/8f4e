@@ -9,7 +9,13 @@ import { pushBlock } from '../../utils/blockStack';
 
 const constantsBlockType = compilerSourceBlockInstructionByType.constants.type;
 
-/** Opens a constants namespace block after tokenizer placement has accepted its position. */
+/**
+ * Opens a constants namespace block after tokenizer placement has accepted its position.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
+ */
 export default function semanticConstants(line: ConstantsLine, context: CompilationContext) {
 	pushBlock(context, { expectedResultTypes: [], blockType: BlockType.CONSTANTS });
 

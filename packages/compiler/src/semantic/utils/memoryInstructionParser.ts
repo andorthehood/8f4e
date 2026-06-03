@@ -178,7 +178,13 @@ function getNormalizedAddressMetadata(
 	return argument.address as AddressMetadata | undefined;
 }
 
-/** Resolves tokenizer-classified memory declaration arguments into semantic allocation data. */
+/**
+ * Resolves tokenizer-classified memory declaration arguments into semantic allocation data.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Parsed memory instruction arguments.
+ */
 export default function parseMemoryInstructionArguments(
 	line: CompilerASTLine,
 	context: CompilationContext

@@ -19,6 +19,10 @@ function createImplicitKeyArgument(context: CompilationContext): NormalizedArgum
  * Two-argument rows normalize both key and value. One-argument rows use the
  * current zero-based map row count as the implicit key and normalize the lone
  * argument as the value.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Normalized map line.
  */
 export default function normalizeMap(line: MapLine, context: CompilationContext): NormalizedMapLine {
 	if (line.arguments.length === 1) {

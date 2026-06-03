@@ -52,7 +52,12 @@ function getBlockState(blockStack: BlockStack): {
 	return { activeBlockDepths, activeLoopBlocks, activeMapBlock };
 }
 
-/** Creates a compilation context with namespace defaults and derived block-state caches. */
+/**
+ * Creates a compilation context with namespace defaults and derived block-state caches.
+ *
+ * @param overrides - overrides value to use.
+ * @returns Created compilation context.
+ */
 export function createCompilationContext<TContext extends CompilationContext = CompilationContext>(
 	overrides: CompilationContextOverrides<TContext> = {}
 ): TContext {

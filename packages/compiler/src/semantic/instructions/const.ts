@@ -14,6 +14,10 @@ import type { CompilationContext, NormalizedConstLine } from '@8f4e/compiler-spe
  * `use` then imports consts from other modules' validated namespaces by merging into
  * `context.namespace.consts`; it never creates or validates const values itself, only
  * copies already-resolved literals from a validated namespace.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export default function semanticConst(line: NormalizedConstLine, context: CompilationContext) {
 	const constName = line.arguments[0].value;
