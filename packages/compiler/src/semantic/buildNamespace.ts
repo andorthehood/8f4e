@@ -72,6 +72,7 @@ export function collectFunctionMetadataFromAsts(
 	return result;
 }
 
+/** Ensures module source blocks declare unique ids before namespace discovery. */
 export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[]): void {
 	const seenModuleIds = new Set<string>();
 
@@ -88,6 +89,7 @@ export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | Valid
 	}
 }
 
+/** Normalizes and applies one semantic instruction, trusting tokenizer placement validation. */
 export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
 	const normalizedLine = normalizeCompileTimeArguments(line, context);
 	applySemanticInstruction(normalizedLine, context);

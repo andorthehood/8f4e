@@ -2,10 +2,12 @@ import type { FunctionTypeRegistry, FunctionTypeSignature } from '@8f4e/compiler
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import { createFunctionType } from '@8f4e/compiler-wasm-utils';
 
+/** Compares two WebAssembly type lists by value and order. */
 function wasmTypeListsEqual(left: WasmTypeValue[], right: WasmTypeValue[]): boolean {
 	return left.length === right.length && left.every((type, index) => type === right[index]);
 }
 
+/** Returns an existing function type index or appends the signature to the shared registry. */
 export function getOrRegisterFunctionType(registry: FunctionTypeRegistry, signature: FunctionTypeSignature): number {
 	const registeredSignature = registry.signatures.find(
 		existing =>
