@@ -295,6 +295,17 @@ export interface PrototypeAST {
 
 export type AST = ModuleAST | FunctionAST | ConstantsAST | PrototypeAST;
 
+declare const validatedASTBrand: unique symbol;
+
+/** AST produced by the tokenizer after source-level syntax and block validation. */
+export type ValidatedAST<TAST extends AST = AST> = TAST & {
+	readonly [validatedASTBrand]: true;
+};
+export type ValidatedModuleAST = ValidatedAST<ModuleAST>;
+export type ValidatedFunctionAST = ValidatedAST<FunctionAST>;
+export type ValidatedConstantsAST = ValidatedAST<ConstantsAST>;
+export type ValidatedPrototypeAST = ValidatedAST<PrototypeAST>;
+
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
 const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);
 const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);

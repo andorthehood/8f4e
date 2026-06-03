@@ -1,18 +1,18 @@
 import type {
-	AST,
 	CompiledFunctionLookup,
 	CompiledModule,
 	CompileInput,
 	CompileOptions,
 	CompileResult,
 	CompilerCache,
-	ConstantsAST,
-	FunctionAST,
 	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
-	ModuleAST,
-	PrototypeAST,
+	ValidatedAST,
+	ValidatedConstantsAST,
+	ValidatedFunctionAST,
+	ValidatedModuleAST,
+	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import {
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
@@ -84,7 +84,7 @@ export { createInitialMemoryDataSegments };
 
 function createCompilerCache(): CompilerCache {
 	return {
-		ast: createASTCache<AST>(),
+		ast: createASTCache<ValidatedAST>(),
 	};
 }
 
@@ -126,7 +126,7 @@ function createEntryFunctionMetadata(
 }
 
 function assertNoFunctionEntryNameCollisions(
-	functions: readonly FunctionAST[],
+	functions: readonly ValidatedFunctionAST[],
 	entryMetadata: FunctionMetadataLookup
 ): void {
 	for (const ast of functions) {
@@ -165,7 +165,7 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
-function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string): ModuleAST {
+function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedModuleAST {
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'module') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
@@ -173,7 +173,7 @@ function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string):
 	return ast;
 }
 
-function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: string): ConstantsAST {
+function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedConstantsAST {
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'constants') {
 		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
@@ -181,7 +181,7 @@ function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: strin
 	return ast;
 }
 
-function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string): FunctionAST {
+function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedFunctionAST {
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'function') {
 		throw getError(ErrorCode.MISSING_FUNCTION_ID, ast.lines[0], undefined);
@@ -189,7 +189,7 @@ function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string
 	return ast;
 }
 
-function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: string): PrototypeAST {
+function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedPrototypeAST {
 	const ast = compileToAST(code, cache.ast, cacheKey);
 	if (ast.type !== 'prototype') {
 		throw getError(ErrorCode.MISSING_PROTOTYPE_ID, ast.lines[0], undefined);
@@ -205,8 +205,8 @@ function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: strin
 	return ast;
 }
 
-function collectPrototypeShapes(prototypes: readonly PrototypeAST[]): Record<string, PrototypeAST> {
-	const prototypeShapesById: Record<string, PrototypeAST> = {};
+function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
+	const prototypeShapesById: Record<string, ValidatedPrototypeAST> = {};
 
 	for (const prototype of prototypes) {
 		const existing = prototypeShapesById[prototype.id];

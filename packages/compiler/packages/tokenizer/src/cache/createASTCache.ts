@@ -1,6 +1,6 @@
-import type { AST, ASTCache } from '@8f4e/compiler-spec';
+import type { ASTCache, ValidatedAST } from '@8f4e/compiler-spec';
 
-export default function createASTCache<TAst = AST>(): ASTCache<TAst> {
+export default function createASTCache<TAst = ValidatedAST>(): ASTCache<TAst> {
 	return {
 		entries: new Map(),
 		stats: {

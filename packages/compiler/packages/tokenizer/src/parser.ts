@@ -22,6 +22,7 @@ import type {
 	ModuleLine,
 	PrototypeLine,
 	RegionLine,
+	ValidatedAST,
 } from '@8f4e/compiler-spec';
 import {
 	ArgumentType,
@@ -765,7 +766,7 @@ export function compileToASTLines(
 	return ast;
 }
 
-export function compileToAST(code: string[], cache?: ASTCache<AST>, cacheKey?: string): AST {
+export function compileToAST(code: string[], cache?: ASTCache<ValidatedAST>, cacheKey?: string): ValidatedAST {
 	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
 	const cachedLookup = getASTCacheLookupResult(cached, code);
 	if (cachedLookup.ast) {
@@ -777,10 +778,10 @@ export function compileToAST(code: string[], cache?: ASTCache<AST>, cacheKey?: s
 	}
 
 	const parsedSource = parseCompilerSource(code);
-	const group = toAST(parsedSource);
+	const group = toAST(parsedSource) as ValidatedAST;
 
 	if (cache && cacheKey !== undefined) {
-		const entry: ASTCacheEntry<AST> = {
+		const entry: ASTCacheEntry<ValidatedAST> = {
 			ast: group,
 			hashInput: {
 				code,

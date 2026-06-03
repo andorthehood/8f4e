@@ -21,7 +21,6 @@ import type {
 	MemoryDeclarationLine,
 	ModuleEndLine,
 	ModuleLine,
-	PrototypeAST,
 	PrototypeEndLine,
 	PrototypeLine,
 	PushArgument,
@@ -29,6 +28,7 @@ import type {
 	RegionLine,
 	ShapeLine,
 	UseLine,
+	ValidatedPrototypeAST,
 } from './ast';
 import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
@@ -177,7 +177,7 @@ export interface CompilationContext {
 	currentFunctionExportName?: string;
 	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
-	prototypeShapes?: Readonly<Record<string, PrototypeAST>>;
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>;
 	expandPrototypeShapes?: boolean;
 	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine;
 	skipExecutionInCycle?: boolean;
