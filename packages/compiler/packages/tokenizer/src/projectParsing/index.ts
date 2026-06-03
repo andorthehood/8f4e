@@ -128,7 +128,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 	const codeBlocks: ProjectCodeBlock[] = [];
 	const seenEntryNames = new Set<string>();
 
-	function readDocumentBlock(startIndex: number, entry?: string): number {
+	function readProjectCodeBlock(startIndex: number, entry?: string): number {
 		const openerLine = lines[startIndex];
 		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
 		if (!openerKeyword || openerKeyword === ENTRY_BLOCK_DELIMITER.opener) {
@@ -186,7 +186,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 			if (opener === documentBlockInstructionByType.module.start) {
 				throw new Error(`Parse error at line ${i + 1}: module blocks must be inside an entry block`);
 			}
-			i = readDocumentBlock(i);
+			i = readProjectCodeBlock(i);
 			continue;
 		}
 
@@ -224,7 +224,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 				);
 			}
 
-			i = readDocumentBlock(i, entryName);
+			i = readProjectCodeBlock(i, entryName);
 		}
 
 		if (!entryClosed) {
