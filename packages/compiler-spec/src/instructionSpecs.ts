@@ -1,5 +1,6 @@
 import { BYTE_MEMORY_ACCESS_WIDTH, HALF_WORD_MEMORY_ACCESS_WIDTH, WORD_MEMORY_ACCESS_WIDTH } from './constants';
 import type { InstructionSpecLookup, InstructionSpecName } from './instructionSpecTypes';
+import { blockClose, loadInstruction, stack, stackMutation, withDocsAndStack } from './instructionSpecUtils';
 import type { MemoryDeclarationInstruction } from './memory';
 import { memoryDeclarationInstructions } from './memory';
 import type { BlockTypeValue, CompilationContext } from './semantic';
@@ -223,130 +224,6 @@ export interface InstructionSpec<TLine = unknown> extends ValidationSpec<TLine> 
 	docs?: InstructionDocumentation;
 	stack?: StackEffectSpec<TLine>;
 	effects?: InstructionEffectsSpec;
-}
-
-/** Options used to attach documentation and a fixed stack effect to a spec. */
-interface DocsAndStackOptions {
-	shortDescription: string;
-	inputs: readonly StackValueLabel[];
-	outputs: readonly StackValueLabel[];
-	effect?: StackMutationSpec;
-}
-
-/** Options used to create a fixed stack effect spec. */
-interface StackOptions {
-	inputs: readonly StackValueLabel[];
-	outputs: readonly StackValueLabel[];
-	effect?: StackMutationSpec;
-}
-
-/**
- * Returns a spec augmented with user-facing documentation and a fixed stack effect.
- * This keeps the large instruction table compact while preserving both the
- * human-readable signature and the machine-readable stack mutation metadata.
- */
-function withDocsAndStack<TSpec extends Partial<InstructionSpec>>(
-	spec: TSpec,
-	{ shortDescription, inputs, outputs, effect }: DocsAndStackOptions
-): TSpec & { docs: InstructionDocumentation; stack: StackEffectSpec } {
-	return {
-		...spec,
-		docs: { shortDescription },
-		stack: { inputs, outputs, ...(effect ? { effect } : {}) },
-	};
-}
-
-/** Creates a fixed stack effect spec from stack labels and optional mutation metadata. */
-function stack({ inputs, outputs, effect }: StackOptions): StackEffectSpec {
-	return { inputs, outputs, ...(effect ? { effect } : {}) };
-}
-
-/** Creates mutation metadata for an instruction's analysis-stack behavior. */
-function stackMutation(consumes: StackConsumeSpec, produces: readonly StackProducedItemSpec[] = []): StackMutationSpec {
-	return { consumes, produces };
-}
-
-/**
- * Creates the memory-effect metadata shared by load instruction specs.
- * The semantic compiler uses this data to validate address operands, infer the
- * loaded value type, and apply the correct access width for narrow integer loads.
- */
-function memoryLoad<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>(
-	loadVariant: TLoadVariant,
-	accessByteWidth: number,
-	resultType: TResultType
-): {
-	memory: Extract<MemoryOperationEffectSpec, { kind: 'load' }> & {
-		loadVariant: TLoadVariant;
-		resultType: TResultType;
-	};
-} {
-	return {
-		memory: {
-			kind: 'load',
-			accessByteWidth,
-			loadVariant,
-			resultType,
-			addressOperandIndex: 0,
-		},
-	};
-}
-
-/** Builder options for memory load instruction specs. */
-interface LoadInstructionOptions<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'> {
-	loadVariant: TLoadVariant;
-	accessByteWidth: number;
-	resultType: TResultType;
-	shortDescription: string;
-	output: StackValueLabel;
-	effect: StackMutationSpec;
-}
-
-/**
- * Builds a complete instruction spec for a memory load variant.
- * All load instructions consume a pointer from the stack, emit one typed value,
- * and share the same source-argument and scope rules from `loadSpec`.
- */
-function loadInstruction<TLoadVariant extends MemoryLoadVariant, TResultType extends 'int' | 'float'>({
-	loadVariant,
-	accessByteWidth,
-	resultType,
-	shortDescription,
-	output,
-	effect,
-}: LoadInstructionOptions<TLoadVariant, TResultType>) {
-	return withDocsAndStack(
-		{ ...loadSpec, effects: memoryLoad(loadVariant, accessByteWidth, resultType) },
-		{ shortDescription, inputs: ['ptr'], outputs: [output], effect }
-	);
-}
-
-/**
- * Creates the block-close effect metadata for an instruction spec.
- * Closing instructions use this metadata during semantic analysis to check the
- * active block type and optionally restore or validate the block result value.
- */
-function blockClose(
-	blockType: BlockTypeValue,
-	{ restoreResult = false, validateFloatResult = false } = {}
-): { blockClose: BlockCloseEffectSpec } {
-	return { blockClose: { blockType, restoreResult, validateFloatResult } };
-}
-
-/**
- * Resolves the stack effect for an instruction spec, including line-dependent signatures.
- * Most instructions have a fixed signature, but some derive their display or
- * analysis shape from source arguments; those specs provide `stack.resolve`.
- */
-export function resolveInstructionStackEffect<TLine>(
-	spec: InstructionSpec<TLine>,
-	line: TLine
-): ResolvedStackEffect | undefined {
-	if (!spec.stack) {
-		return undefined;
-	}
-
-	return spec.stack.resolve?.(line) ?? spec.stack;
 }
 
 /** Shared spec for binary operations that require two operands of the same type. */
@@ -727,7 +604,7 @@ export const instructionSpecs = {
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load (ptr -- int)
-	load: loadInstruction({
+	load: loadInstruction(loadSpec, {
 		loadVariant: 'i32',
 		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -736,7 +613,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load8u (ptr -- int)
-	load8u: loadInstruction({
+	load8u: loadInstruction(loadSpec, {
 		loadVariant: 'i32_8u',
 		accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -745,7 +622,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load16u (ptr -- int)
-	load16u: loadInstruction({
+	load16u: loadInstruction(loadSpec, {
 		loadVariant: 'i32_16u',
 		accessByteWidth: HALF_WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -754,7 +631,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load8s (ptr -- int)
-	load8s: loadInstruction({
+	load8s: loadInstruction(loadSpec, {
 		loadVariant: 'i32_8s',
 		accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -763,7 +640,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// load16s (ptr -- int)
-	load16s: loadInstruction({
+	load16s: loadInstruction(loadSpec, {
 		loadVariant: 'i32_16s',
 		accessByteWidth: HALF_WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'int',
@@ -772,7 +649,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
 	// loadFloat (ptr -- float)
-	loadFloat: loadInstruction({
+	loadFloat: loadInstruction(loadSpec, {
 		loadVariant: 'f32',
 		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
 		resultType: 'float',
