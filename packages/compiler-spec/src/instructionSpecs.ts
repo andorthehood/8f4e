@@ -881,7 +881,7 @@ export const instructionSpecs = {
 		sourceArguments: noSourceArguments,
 		placement: loopPlacement,
 		docs: { shortDescription: 'Pushes the current zero-based loop iteration index.' },
-		stack: stack({ inputs: [], outputs: ['int'] }),
+		stack: stack({ inputs: [], outputs: ['int'], effect: stackMutation(0, [{ kind: 'int', isNonZero: false }]) }),
 	},
 	// map ( -- )
 	map: {
@@ -929,12 +929,14 @@ export const instructionSpecs = {
 		shortDescription: 'Pushes the smaller of two values of the same type.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
+		effect: stackMutation(2, [{ kind: 'same', isNonZero: false }]),
 	}),
 	// max (int int -- int), max (float float -- float), max (float64 float64 -- float64)
 	max: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes the larger of two values of the same type.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
+		effect: stackMutation(2, [{ kind: 'same', isNonZero: false }]),
 	}),
 	// mul (int int -- int), mul (float float -- float), mul (float64 float64 -- float64)
 	mul: withDocsAndStack(binaryMatchingSpec, {
@@ -1032,7 +1034,11 @@ export const instructionSpecs = {
 		sourceArguments: noSourceArguments,
 		placement: functionPlacement,
 		docs: { shortDescription: 'Returns from the current function with the values on the stack.' },
-		stack: stack({ inputs: ['returns...'], outputs: ['never'] }),
+		stack: stack({
+			inputs: ['returns...'],
+			outputs: ['never'],
+			effect: { consumes: 'all', produces: [], dropped: 'consumed' },
+		}),
 	},
 	// risingEdge (int -- int), risingEdge (float -- int)
 	risingEdge: {
