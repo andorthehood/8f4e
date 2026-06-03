@@ -18,6 +18,7 @@ import type {
 	LoopLine,
 	MapLine,
 	MemoryCopyLine,
+	MemoryDeclarationLine,
 	ModuleEndLine,
 	ModuleLine,
 	PrototypeAST,
@@ -178,6 +179,7 @@ export interface CompilationContext {
 	functionTypeRegistry?: FunctionTypeRegistry;
 	prototypeShapes?: Readonly<Record<string, PrototypeAST>>;
 	expandPrototypeShapes?: boolean;
+	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;

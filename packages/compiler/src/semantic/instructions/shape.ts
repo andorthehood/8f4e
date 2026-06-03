@@ -16,6 +16,7 @@ export default function semanticShape(line: ShapeLine, context: CompilationConte
 	}
 
 	for (const declarationLine of prototype.memoryDeclarationLines) {
-		applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
+		const resolvedDeclarationLine = context.resolveMemoryDeclarationLine?.(declarationLine) ?? declarationLine;
+		applyMemoryDeclarationLine(normalizeCompileTimeArguments(resolvedDeclarationLine, context), context);
 	}
 }
