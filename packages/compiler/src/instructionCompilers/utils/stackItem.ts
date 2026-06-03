@@ -2,7 +2,14 @@ import type { CodegenContext, CompilationContext, CompilerASTLine, StackAddress,
 import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
 
-/** Converts an integer-compatible stack item into an address or throws on non-addressable values. */
+/**
+ * Converts an integer-compatible stack item into an address or throws on non-addressable values.
+ *
+ * @param item - Stack item to inspect.
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
+ */
 export function requireStackAddress(
 	item: StackItem,
 	line: CompilerASTLine,

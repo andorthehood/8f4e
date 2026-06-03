@@ -12,8 +12,9 @@ const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 /**
  * Applies the `module` semantic instruction to initialize the active namespace context.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
  */
 export default function semanticModule(line: ModuleLine, context: CompilationContext) {
 	const moduleId = line.arguments[0].value;

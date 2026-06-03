@@ -1041,6 +1041,9 @@ export const instructionSpecs = {
  * still allowing loose string lookups for parser and tooling callers.
  * Memory declaration instructions are represented by many source keywords, but
  * they intentionally share the single `memoryDeclaration` spec entry.
+ *
+ * @param instruction - Instruction keyword or memory declaration keyword to look up.
+ * @returns The matching instruction spec, or undefined for unknown instructions.
  */
 export function getInstructionSpec<TInstruction extends string>(
 	instruction: TInstruction

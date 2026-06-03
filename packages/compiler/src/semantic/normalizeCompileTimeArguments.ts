@@ -4,9 +4,9 @@ import dispatchNormalization from './normalization';
 /**
  * Dispatches compile-time argument normalization for one AST line.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The result of the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
  */
 export default function normalizeCompileTimeArguments<TLine extends CompilerASTLine>(
 	line: TLine,

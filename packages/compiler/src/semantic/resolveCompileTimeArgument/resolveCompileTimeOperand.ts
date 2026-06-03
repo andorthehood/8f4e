@@ -1,12 +1,5 @@
-import type {
-	Argument,
-	CompilationContext,
-	CompileTimeOperand,
-	Const,
-	DataStructure,
-	MemoryAddressRange,
-} from '@8f4e/compiler-spec';
-import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompileTimeOperand, Const } from '@8f4e/compiler-spec';
+import { ArgumentType } from '@8f4e/compiler-spec';
 import {
 	getElementCount,
 	getElementMaxValue,
@@ -19,9 +12,15 @@ import {
 	getPointeeElementMinValueFromMetadata,
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
-} from '../utils/memoryData';
-import { getEndByteAddress } from './layoutAddresses';
-import { getMemoryRegionFields } from './memoryRegions';
+} from '../../utils/memoryData';
+import { getEndByteAddress } from '../layoutAddresses';
+import { getMemoryRegionFields } from '../memoryRegions';
+import {
+	getWordAlignedByteLength,
+	memoryEndAddressConst,
+	memoryStartAddressConst,
+	moduleAddressConst,
+} from './addressConsts';
 
 function hasKnownPointeeElementCount(
 	pointerMetadata: { pointeeBaseType?: unknown; pointeeElementCount?: number } | undefined
@@ -29,101 +28,16 @@ function hasKnownPointeeElementCount(
 	return !!pointerMetadata?.pointeeBaseType && pointerMetadata.pointeeElementCount !== undefined;
 }
 
-function getWordAlignedByteLength(wordAlignedSize: number): number {
-	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
-}
-
-function getEndAddressSafeByteLength(wordAlignedSize: number): number {
-	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
-}
-
-function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
-	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
-	return {
-		value: memoryItem.byteAddress,
-		isInteger: true,
-		address: {
-			...memoryRegionFields,
-			safeRange: {
-				source: 'memory-start',
-				...memoryRegionFields,
-				byteAddress: memoryItem.byteAddress,
-				safeByteLength: getWordAlignedByteLength(memoryItem.wordAlignedSize),
-				...(moduleId ? { moduleId } : {}),
-				...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
-			},
-		},
-	};
-}
-
-function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
-	const byteAddress = getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
-	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
-	return {
-		value: byteAddress,
-		isInteger: true,
-		address: {
-			...memoryRegionFields,
-			safeRange: {
-				source: 'memory-end',
-				...memoryRegionFields,
-				byteAddress,
-				safeByteLength: getEndAddressSafeByteLength(memoryItem.wordAlignedSize),
-				...(moduleId ? { moduleId } : {}),
-				...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
-			},
-		},
-	};
-}
-
-function moduleAddressConst(
-	source: 'module-start' | 'module-end',
-	byteAddress: number,
-	wordAlignedSize: number,
-	moduleId?: string,
-	memoryIndex = 0,
-	memoryRegionName?: string
-): Const {
-	const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
-	return {
-		value: byteAddress,
-		isInteger: true,
-		address: {
-			...memoryRegionFields,
-			safeRange: {
-				source,
-				...memoryRegionFields,
-				byteAddress,
-				safeByteLength:
-					source === 'module-start'
-						? getWordAlignedByteLength(wordAlignedSize)
-						: getEndAddressSafeByteLength(wordAlignedSize),
-				...(moduleId ? { moduleId } : {}),
-			},
-		},
-	};
-}
-
-function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {
-	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > safeRange.safeByteLength) {
-		return undefined;
-	}
-
-	return {
-		...safeRange,
-		byteAddress: safeRange.byteAddress + byteOffset,
-		safeByteLength: safeRange.safeByteLength - byteOffset,
-	};
-}
-
 /**
  * Tries to resolve a single pre-classified compile-time operand to a `Const` value.
  * Dispatches on the operand's AST classification (`type` and `referenceKind`) directly,
- * without re-parsing raw token values. Handles numeric literals, constant identifiers,
- * and memory metadata queries (sizeof, count, max, min — including pointee forms).
- * Returns `undefined` if the operand cannot be resolved from the available context.
+ * without re-parsing raw token values.
+ *
+ * @param operand - Parsed compile-time operand to resolve.
+ * @param context - Current semantic compilation context.
+ * @returns Resolved constant, or `undefined` when the operand is not available yet.
  */
-function resolveCompileTimeOperand(operand: CompileTimeOperand, context: CompilationContext): Const | undefined {
+export function resolveCompileTimeOperand(operand: CompileTimeOperand, context: CompilationContext): Const | undefined {
 	const { namespace } = context;
 	if (operand.type === ArgumentType.LITERAL) {
 		return {
@@ -435,71 +349,4 @@ function resolveCompileTimeOperand(operand: CompileTimeOperand, context: Compila
 	}
 
 	return undefined;
-}
-
-function evaluateConstantExpression(lhsConst: Const, rhsConst: Const, operator: '+' | '-' | '*' | '/' | '^'): Const {
-	const value =
-		operator === '+'
-			? lhsConst.value + rhsConst.value
-			: operator === '-'
-				? lhsConst.value - rhsConst.value
-				: operator === '*'
-					? lhsConst.value * rhsConst.value
-					: operator === '/'
-						? lhsConst.value / rhsConst.value
-						: lhsConst.value ** rhsConst.value;
-	const isFloat64 = !!lhsConst.isFloat64 || !!rhsConst.isFloat64;
-	const isInteger = !isFloat64 && lhsConst.isInteger && rhsConst.isInteger && Number.isInteger(value);
-	const safeRange =
-		isInteger && operator === '+' && lhsConst.address?.safeRange && rhsConst.isInteger
-			? shiftSafeRange(lhsConst.address.safeRange, rhsConst.value)
-			: isInteger && operator === '+' && rhsConst.address?.safeRange && lhsConst.isInteger
-				? shiftSafeRange(rhsConst.address.safeRange, lhsConst.value)
-				: isInteger && operator === '-' && lhsConst.address?.safeRange && rhsConst.isInteger
-					? shiftSafeRange(lhsConst.address.safeRange, -rhsConst.value)
-					: undefined;
-
-	return {
-		value,
-		isInteger,
-		...(isFloat64 ? { isFloat64: true } : {}),
-		...(safeRange
-			? {
-					address: {
-						...getMemoryRegionFields(safeRange.memoryIndex, safeRange.memoryRegionName),
-						safeRange,
-					},
-				}
-			: {}),
-	};
-}
-
-/**
- * Attempts to fold an argument into a compile-time constant using the current semantic context.
- *
- * @param context - Current compiler context consulted or updated by the operation.
- * @param argument - Argument whose resolved value or metadata should be used.
- * @returns The result of the operation.
- */
-export function tryResolveCompileTimeArgument(context: CompilationContext, argument: Argument): Const | undefined {
-	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const leftConst = resolveCompileTimeOperand(argument.left, context);
-		const rightConst = resolveCompileTimeOperand(argument.right, context);
-
-		if (leftConst === undefined || rightConst === undefined) {
-			return undefined;
-		}
-
-		if (argument.operator === '/' && rightConst.value === 0) {
-			return undefined;
-		}
-
-		return evaluateConstantExpression(leftConst, rightConst, argument.operator);
-	}
-
-	if (argument.type !== ArgumentType.IDENTIFIER) {
-		return undefined;
-	}
-
-	return resolveCompileTimeOperand(argument, context);
 }

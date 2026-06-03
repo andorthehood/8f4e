@@ -3,6 +3,9 @@
  * Inputs:
  * - &module:
  * - module:&
+ *
+ * @param value - Value to inspect.
+ * @returns Extracted intermodular module reference base.
  */
 export default function extractIntermodularModuleReferenceBase(value: string): {
 	module: string;

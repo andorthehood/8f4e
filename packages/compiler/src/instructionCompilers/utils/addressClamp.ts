@@ -9,11 +9,11 @@ import type { CodegenContext, CompilationContext, CompilerASTLine, MemoryAddress
 /**
  * Builds bytecode that clamps the top stack address between lower and upper bounds.
  *
- * @param context - Current compiler context consulted or updated by the operation.
- * @param line - Compiler line being processed.
+ * @param context - Compilation context used by the operation.
+ * @param line - AST line being processed.
  * @param lowerByteAddress - Inclusive lower byte address for the clamp range.
  * @param upperByteAddressCode - Bytecode that leaves the inclusive upper byte address on the stack.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function clampAddressByteCode(
 	context: CodegenContext | CompilationContext,
@@ -48,7 +48,7 @@ export function clampAddressByteCode(
  *
  * @param range - Optional safe memory range to preserve on the produced address.
  * @param accessByteWidth - Byte width of the memory access being protected.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function rangeUpperByteAddressCode(range: MemoryAddressRange, accessByteWidth: number): number[] {
 	return i32const(range.byteAddress + Math.max(0, range.safeByteLength - accessByteWidth));

@@ -6,6 +6,9 @@
  * Enforces exactly one colon separator inside the parentheses.
  * Rejects extra separators/forms (e.g., max(module:path:to:memory)).
  * Rejects patterns with spaces.
+ *
+ * @param value - Value to inspect.
+ * @returns Whether the intermodular element max reference condition is true.
  */
 export default function isIntermodularElementMaxReference(value: string): boolean {
 	// Match max(<module>:<memory>)

@@ -48,6 +48,9 @@ function findOperatorOutsideParens(value: string): number {
  * a constant identifier, or a metadata query such as `sizeof(name)` or `count(name)`.
  *
  * Returns the parsed expression or `null` if the value is not a single-operator expression.
+ *
+ * @param value - Value to inspect.
+ * @returns Parsed constant mul div expression.
  */
 export default function parseConstantMulDivExpression(value: string): CompileTimeMulDivExpression | null {
 	const operatorIndex = findOperatorOutsideParens(value);

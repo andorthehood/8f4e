@@ -124,6 +124,12 @@ export const knownInstructionNameSet: ReadonlySet<string> = new Set([
 	...documentOnlyInstructionNames,
 ]);
 
+/**
+ * Checks whether a string is one of the compiler's registered instruction names.
+ *
+ * @param instruction - Instruction keyword to inspect.
+ * @returns True when the keyword belongs to a known compiler instruction.
+ */
 export function isKnownInstructionName(instruction: string): instruction is Instruction {
 	return knownInstructionNameSet.has(instruction);
 }

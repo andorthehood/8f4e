@@ -6,6 +6,10 @@ import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**
  * Normalizes the optional loop cap argument. Resolved caps must be non-negative integers.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Normalized loop line.
  */
 export default function normalizeLoop(line: LoopLine, context: CompilationContext): NormalizedLoopLine | LoopLine {
 	if (line.arguments.length === 0) {

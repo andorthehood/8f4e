@@ -15,7 +15,7 @@ import { collectNamespacesFromASTs } from './semantic/buildNamespace';
 /**
  * Compiles validated module ASTs using a shared namespace, allocator, and function type registry.
  *
- * @param modules - modules value used by this operation.
+ * @param modules - modules value to use.
  * @param options - Compiler options for this compilation pass.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param compiledFunctions - Compiled function metadata available to module compilation.

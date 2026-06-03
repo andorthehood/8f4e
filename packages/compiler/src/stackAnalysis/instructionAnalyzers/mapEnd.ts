@@ -2,7 +2,13 @@ import type { CompilationContext, MapEndLine, Stack } from '@8f4e/compiler-spec'
 import { resolveMapKind, validateMapValueKind } from '../../utils/mapValueKind';
 import { consume, createStackValue, produce } from './stack';
 
-/** Validates active map input/output values and produces the map result stack item. */
+/**
+ * Validates active map input/output values and produces the map result stack item.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Stack-analysis result for the map end instruction.
+ */
 export function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const { mapState } = context.activeMapBlock!;
 

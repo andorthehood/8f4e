@@ -56,7 +56,14 @@ function getASTCacheLookupResult<TAst>(
 	};
 }
 
-/** Compiles source into a validated source-block AST, using the optional cache when available. */
+/**
+ * Compiles source into a validated source-block AST, using the optional cache when available.
+ *
+ * @param code - Source lines to process.
+ * @param cache - Optional compiler cache used to reuse parsed artifacts.
+ * @param cacheKey - Optional cache key for the source block.
+ * @returns Validated AST for the source block.
+ */
 export function compileToAST(code: string[], cache?: ASTCache<ValidatedAST>, cacheKey?: string): ValidatedAST {
 	const cached = cacheKey !== undefined ? cache?.entries.get(cacheKey) : undefined;
 	const cachedLookup = getASTCacheLookupResult(cached, code);

@@ -7,7 +7,13 @@ function wasmTypeListsEqual(left: WasmTypeValue[], right: WasmTypeValue[]): bool
 	return left.length === right.length && left.every((type, index) => type === right[index]);
 }
 
-/** Returns an existing function type index or appends the signature to the shared registry. */
+/**
+ * Returns an existing function type index or appends the signature to the shared registry.
+ *
+ * @param registry - Function type registry to consult or update.
+ * @param signature - Function signature to register.
+ * @returns Resolved or register function type.
+ */
 export function getOrRegisterFunctionType(registry: FunctionTypeRegistry, signature: FunctionTypeSignature): number {
 	const registeredSignature = registry.signatures.find(
 		existing =>

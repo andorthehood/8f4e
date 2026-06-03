@@ -4,7 +4,13 @@ import { BlockType } from '@8f4e/compiler-spec';
 /** Context shape shared by semantic analysis and codegen while mutating block state. */
 type BlockContext = CodegenContext | CompilationContext;
 
-/** Pushes a compiler block and updates all cached active-block state. */
+/**
+ * Pushes a compiler block and updates all cached active-block state.
+ *
+ * @param context - Compilation context used by the operation.
+ * @param block - block value to use.
+ * @returns The computed result.
+ */
 export function pushBlock(context: BlockContext, block: BlockStack[number]) {
 	context.blockStack.push(block);
 	context.activeBlockDepths[block.blockType]++;
@@ -20,7 +26,12 @@ export function pushBlock(context: BlockContext, block: BlockStack[number]) {
 	updateBlockContextFlag(context, block.blockType, true);
 }
 
-/** Pops the innermost compiler block and updates all cached active-block state. */
+/**
+ * Pops the innermost compiler block and updates all cached active-block state.
+ *
+ * @param context - Compilation context used by the operation.
+ * @returns The computed result.
+ */
 export function popBlock(context: BlockContext) {
 	const block = context.blockStack.pop();
 

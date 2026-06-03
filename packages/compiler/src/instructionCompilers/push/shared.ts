@@ -98,13 +98,13 @@ function getFinalDereferenceLoad(
 /**
  * Builds bytecode for loading through a pointer with optional guarded access checks.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @param lineNumber - Source line number used for generated guard diagnostics.
  * @param pointerMetadata - Pointer metadata to inspect.
  * @param baseAddressByteCode - Bytecode that leaves the base pointer address on the stack.
  * @param pointerValueSource - Source of the pointer value being dereferenced.
  * @param dereferenceDepth - Pointer dereference depth requested by the instruction.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function buildPointerDereferenceByteCode(
 	context: CodegenContext,

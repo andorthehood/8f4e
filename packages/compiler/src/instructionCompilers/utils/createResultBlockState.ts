@@ -17,6 +17,11 @@ function resultTypeToWasmType(resultType: BlockResultTypes[number]): WasmTypeVal
 
 /**
  * Creates the compiler block-stack metadata and matching WASM block result type.
+ *
+ * @param resultTypes - Result types expected from the block.
+ * @param blockType - Project block type to inspect.
+ * @param typeRegistry - Function type registry used for multi-value result signatures.
+ * @returns Created result block state.
  */
 export default function createResultBlockState<TBlockType extends ResultBlockType>(
 	resultTypes: BlockResultTypes,

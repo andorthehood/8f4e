@@ -7,10 +7,22 @@ export type ParsedNumericLiteralToken = {
 	isHex?: boolean;
 };
 
+/**
+ * Runs starts with numeric prefix.
+ *
+ * @param argument - Parsed argument to process.
+ * @returns The computed result.
+ */
 export function startsWithNumericPrefix(argument: string): boolean {
 	return /^-?(?:\d|\.\d)/.test(argument);
 }
 
+/**
+ * Checks is numeric like invalid token.
+ *
+ * @param argument - Parsed argument to process.
+ * @returns Whether the numeric like invalid token condition is true.
+ */
 export function isNumericLikeInvalidToken(argument: string): boolean {
 	return (
 		startsWithNumericPrefix(argument) &&
@@ -22,6 +34,12 @@ export function isNumericLikeInvalidToken(argument: string): boolean {
 	);
 }
 
+/**
+ * Parses numeric literal token.
+ *
+ * @param argument - Parsed argument to process.
+ * @returns Parsed numeric literal token.
+ */
 export default function parseNumericLiteralToken(argument: string): ParsedNumericLiteralToken | null {
 	if (/^-?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?\d+)?f64$/.test(argument)) {
 		const value = parseFloat(argument.slice(0, -3));

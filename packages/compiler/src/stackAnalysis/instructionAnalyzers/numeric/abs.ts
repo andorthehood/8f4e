@@ -2,7 +2,13 @@ import type { CompilationContext, CompilerASTLine, Stack } from '@8f4e/compiler-
 import { consume, createStackValue, produce } from '../stack';
 import type { InstructionAnalysisResult } from '../types';
 
-/** Analyzes `abs` stack effects and known integer propagation. */
+/**
+ * Analyzes `abs` stack effects and known integer propagation.
+ *
+ * @param _line - Unused source AST line kept for handler signature consistency.
+ * @param context - Compilation context used by the operation.
+ * @returns Stack-analysis result for the abs instruction.
+ */
 export function analyzeAbs(_line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];

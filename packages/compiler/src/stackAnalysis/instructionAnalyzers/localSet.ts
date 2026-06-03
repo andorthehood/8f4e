@@ -6,9 +6,9 @@ import { consume } from './stack';
 /**
  * Consumes the assigned value and checks it against the resolved local binding type.
  *
- * @param line - Compiler line being processed.
- * @param context - Current compiler context consulted or updated by the operation.
- * @returns The stack items produced or consumed by the operation.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns The relevant stack items for the analysis step.
  */
 export function analyzeLocalSet(
 	line: CompilerASTLine,

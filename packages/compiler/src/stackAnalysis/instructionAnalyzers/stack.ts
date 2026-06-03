@@ -5,7 +5,7 @@ import type { CompilationContext, Stack, StackItem, StackValueType } from '@8f4e
  *
  * @param valueType - Stack value type for the item being created.
  * @param metadata - Optional known-value metadata to copy onto the stack item.
- * @returns The stack items produced or consumed by the operation.
+ * @returns The relevant stack items for the analysis step.
  */
 export function createStackValue(
 	valueType: StackValueType,
@@ -23,7 +23,7 @@ export function createStackValue(
  * Clones stack items deeply enough to snapshot mutable address metadata safely.
  *
  * @param stack - Stack to inspect or clone.
- * @returns The stack items produced or consumed by the operation.
+ * @returns The relevant stack items for the analysis step.
  */
 export function cloneStack(stack: Stack): Stack {
 	return stack.map(item => ({
@@ -36,9 +36,9 @@ export function cloneStack(stack: Stack): Stack {
 /**
  * Removes and returns the requested number of items from the top of the semantic stack.
  *
- * @param context - Current compiler context consulted or updated by the operation.
+ * @param context - Compilation context used by the operation.
  * @param count - Number of stack items to inspect or consume.
- * @returns The stack items produced or consumed by the operation.
+ * @returns The relevant stack items for the analysis step.
  */
 export function consume(context: CompilationContext, count: number): Stack {
 	if (count === 0) {
@@ -51,8 +51,9 @@ export function consume(context: CompilationContext, count: number): Stack {
 /**
  * Appends newly produced items to the semantic stack.
  *
- * @param context - Current compiler context consulted or updated by the operation.
- * @param items - items value used by this operation.
+ * @param context - Compilation context used by the operation.
+ * @param items - items value to use.
+ * @returns Nothing.
  */
 export function produce(context: CompilationContext, items: Stack): void {
 	context.stack.push(...items);

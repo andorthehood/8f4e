@@ -7,6 +7,9 @@
  * Enforces exactly one colon separator (module:memory only).
  * Rejects multi-separator forms (e.g., &module:path:to:memory).
  * Rejects patterns with spaces or double ampersands.
+ *
+ * @param value - Value to inspect.
+ * @returns Whether the intermodular reference condition is true.
  */
 export default function isIntermodularReference(value: string): boolean {
 	// Match &<module>:<memory> (start) or <module>:<memory>& (end)

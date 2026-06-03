@@ -14,7 +14,13 @@ function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): Memo
 	};
 }
 
-/** Derives known-value and address-range metadata for stack addition. */
+/**
+ * Derives known-value and address-range metadata for stack addition.
+ *
+ * @param operand1 - First stack operand.
+ * @param operand2 - Second stack operand.
+ * @returns The computed result.
+ */
 export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem): Partial<StackItem> {
 	const knownIntegerValue =
 		operand1.knownIntegerValue !== undefined && operand2.knownIntegerValue !== undefined
@@ -49,7 +55,13 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 	} as Partial<StackAddress>;
 }
 
-/** Derives known-value and address-range metadata for stack subtraction. */
+/**
+ * Derives known-value and address-range metadata for stack subtraction.
+ *
+ * @param operand1 - First stack operand.
+ * @param operand2 - Second stack operand.
+ * @returns The computed result.
+ */
 export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem): Partial<StackItem> {
 	const knownIntegerValue =
 		operand1.knownIntegerValue !== undefined && operand2.knownIntegerValue !== undefined

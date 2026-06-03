@@ -24,7 +24,7 @@ function getPointerParts(type: PointerFunctionValueType) {
  *
  * @param type - Function value type to convert.
  * @param index - WASM index or source index assigned to the compiled item.
- * @returns The result of the operation.
+ * @returns The computed result.
  */
 export function functionValueTypeToLocalBinding(type: FunctionValueType, index: number): LocalBinding {
 	if (type === 'int') {
@@ -56,7 +56,7 @@ export function functionValueTypeToLocalBinding(type: FunctionValueType, index: 
  * Converts a function signature value type into the equivalent stack item shape.
  *
  * @param type - Function value type to convert.
- * @returns The stack items produced or consumed by the operation.
+ * @returns The relevant stack items for the analysis step.
  */
 export function functionValueTypeToStackItem(type: FunctionValueType): StackItem {
 	return localBindingToStackItem(functionValueTypeToLocalBinding(type, 0));
