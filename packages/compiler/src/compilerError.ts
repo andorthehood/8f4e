@@ -154,13 +154,6 @@ export function getError(
 				context,
 			};
 		}
-		case ErrorCode.MISSING_BLOCK_START_INSTRUCTION:
-			return {
-				code,
-				message: 'Missing block start instruction. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.DIVISION_BY_ZERO:
 			return {
 				code,
@@ -246,13 +239,6 @@ export function getError(
 			return {
 				code,
 				message: 'Duplicate parameter name. Each parameter must have a unique name. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.INSTRUCTION_MUST_BE_TOP_LEVEL:
-			return {
-				code,
-				message: 'This instruction must be used at the top level. (' + code + ')',
 				line,
 				context,
 			};

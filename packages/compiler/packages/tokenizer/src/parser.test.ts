@@ -254,7 +254,7 @@ describe('compileToAST', () => {
 		);
 	});
 
-	it('rejects shape instructions outside module blocks based on compiler spec scope', () => {
+	it('rejects shape instructions outside module blocks based on compiler spec placement', () => {
 		for (const code of [
 			['shape oscillatorState'],
 			['function mix', 'shape oscillatorState', 'functionEnd'],
@@ -269,6 +269,89 @@ describe('compileToAST', () => {
 				})
 			);
 		}
+	});
+
+	it('rejects source blocks nested inside source blocks', () => {
+		for (const code of [
+			['module synth', 'function helper', 'functionEnd', 'moduleEnd'],
+			['function helper', 'module synth', 'moduleEnd', 'functionEnd'],
+			['module synth', 'constants values', 'constantsEnd', 'moduleEnd'],
+			['prototype shape', 'module synth', 'moduleEnd', 'prototypeEnd'],
+		]) {
+			expect(() => compileToAST(code)).toThrow(
+				expect.objectContaining({
+					code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+				})
+			);
+		}
+	});
+
+	it('rejects instructions that are not allowed in constants blocks', () => {
+		expect(() => compileToAST(['constants values', 'push 1', 'constantsEnd'])).toThrow(
+			expect.objectContaining({
+				code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+				line: expect.objectContaining({
+					lineNumber: 1,
+					instruction: 'push',
+				}),
+			})
+		);
+	});
+
+	it('rejects instructions that are not allowed in map blocks', () => {
+		expect(() =>
+			compileToAST(['module synth', 'mapBegin int', 'push 1', 'map 0 10', 'mapEnd int', 'moduleEnd'])
+		).toThrow(
+			expect.objectContaining({
+				code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+				line: expect.objectContaining({
+					lineNumber: 2,
+					instruction: 'push',
+				}),
+			})
+		);
+	});
+
+	it('rejects instructions outside their required parser block placement', () => {
+		for (const code of [
+			['module synth', 'loopIndex', 'moduleEnd'],
+			['module synth', 'return', 'moduleEnd'],
+			['function helper', 'exitIfTrue', 'functionEnd'],
+		]) {
+			expect(() => compileToAST(code)).toThrow(
+				expect.objectContaining({
+					code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+				})
+			);
+		}
+	});
+
+	it('rejects nested map blocks', () => {
+		expect(() =>
+			compileToAST([
+				'module synth',
+				'mapBegin int',
+				'mapBegin int',
+				'map 0 10',
+				'mapEnd int',
+				'mapEnd int',
+				'moduleEnd',
+			])
+		).toThrow(
+			expect.objectContaining({
+				code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+				line: expect.objectContaining({
+					lineNumber: 2,
+					instruction: 'mapBegin',
+				}),
+			})
+		);
+	});
+
+	it('allows loop nesting under modules, functions, and loops', () => {
+		expect(() =>
+			compileToAST(['function helper', 'loop', 'loop', 'loopIndex', 'loopEnd', 'loopEnd', 'functionEnd'])
+		).not.toThrow();
 	});
 
 	it('constructs prototype metadata from the source-block parse path', () => {
@@ -322,12 +405,12 @@ describe('compileToAST', () => {
 
 describe('compileToASTLines', () => {
 	it('folds dash argument continuation lines into the previous instruction', () => {
-		const split = compileToASTLines(['float*', '- readHead', '- &source:samples']);
-		const singleLine = compileToASTLines(['float* readHead &source:samples']);
+		const split = compileToASTLines(['module test', 'float*', '- readHead', '- &source:samples', 'moduleEnd']);
+		const singleLine = compileToASTLines(['module test', 'float* readHead &source:samples', 'moduleEnd']);
 
-		expect(split).toEqual(singleLine);
-		expect(split).toHaveLength(1);
-		expect(split[0]).toMatchObject({
+		expect(split).toHaveLength(3);
+		expect(split[1]).toEqual(singleLine[1]);
+		expect(split[1]).toMatchObject({
 			instruction: 'float*',
 			arguments: [
 				{ type: ArgumentType.IDENTIFIER, value: 'readHead' },
@@ -339,21 +422,21 @@ describe('compileToASTLines', () => {
 	});
 
 	it('allows dash argument continuation after any source instruction', () => {
-		const ast = compileToASTLines(['push', '- 1']);
+		const ast = compileToASTLines(['module test', 'push', '- 1', 'moduleEnd']);
 
-		expect(ast).toEqual(compileToASTLines(['push 1']));
+		expect(ast[1]).toEqual(compileToASTLines(['module test', 'push 1', 'moduleEnd'])[1]);
 	});
 
 	it.each([
 		{
 			name: 'negative numeric literal',
-			split: ['push', '- -1'],
-			singleLine: ['push -1'],
+			split: ['module test', 'push', '- -1', 'moduleEnd'],
+			singleLine: ['module test', 'push -1', 'moduleEnd'],
 		},
 		{
 			name: 'quoted string literal with spaces',
-			split: ['push', '- "hello world"'],
-			singleLine: ['push "hello world"'],
+			split: ['module test', 'push', '- "hello world"', 'moduleEnd'],
+			singleLine: ['module test', 'push "hello world"', 'moduleEnd'],
 		},
 		{
 			name: 'compile-time expression',
@@ -362,21 +445,21 @@ describe('compileToASTLines', () => {
 		},
 		{
 			name: 'array declaration with hex and negative initializer values',
-			split: ['int[]', '- values', '- 4', '- 0xA8', '- -1'],
-			singleLine: ['int[] values 4 0xA8 -1'],
+			split: ['module test', 'int[]', '- values', '- 4', '- 0xA8', '- -1', 'moduleEnd'],
+			singleLine: ['module test', 'int[] values 4 0xA8 -1', 'moduleEnd'],
 		},
 	])('preserves $name continuation arguments', ({ split, singleLine }) => {
-		expect(compileToASTLines(split)).toEqual(compileToASTLines(singleLine));
+		expect(compileToASTLines(split)[1]).toEqual(compileToASTLines(singleLine)[1]);
 	});
 
 	it('rejects bare dash argument continuation lines', () => {
-		expect(() => compileToASTLines(['push 1', '-'])).toThrow(
+		expect(() => compileToASTLines(['module test', 'push 1', '-', 'moduleEnd'])).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.MISSING_ARGUMENT })
 		);
 	});
 
 	it('rejects dash argument continuation lines with multiple arguments', () => {
-		expect(() => compileToASTLines(['push', '- 1 2'])).toThrow(
+		expect(() => compileToASTLines(['module test', 'push', '- 1 2', 'moduleEnd'])).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.INVALID_ARGUMENT })
 		);
 	});
@@ -388,12 +471,14 @@ describe('compileToASTLines', () => {
 	});
 
 	it('uses actual line numbers', () => {
-		const ast = compileToASTLines(['push 10', 'push 20', 'add']);
+		const ast = compileToASTLines(['module test', 'push 10', 'push 20', 'add', 'moduleEnd']);
 
-		expect(ast).toHaveLength(3);
+		expect(ast).toHaveLength(5);
 		expect(ast[0].lineNumber).toBe(0);
 		expect(ast[1].lineNumber).toBe(1);
 		expect(ast[2].lineNumber).toBe(2);
+		expect(ast[3].lineNumber).toBe(3);
+		expect(ast[4].lineNumber).toBe(4);
 	});
 
 	it('marks directives in module and function prologues', () => {
@@ -443,52 +528,60 @@ describe('compileToASTLines', () => {
 	});
 
 	it('pairs if with ifEnd metadata without rewriting source arguments', () => {
-		const ast = compileToASTLines(['push 1', 'if', 'push 10', 'ifEnd int']);
+		const ast = compileToASTLines(['module test', 'push 1', 'if', 'push 10', 'ifEnd int', 'moduleEnd']);
 
-		expect(ast[1]).toMatchObject({
-			instruction: 'if',
-			arguments: [],
-			ifBlock: {
-				matchingIfEndIndex: 3,
-				resultTypes: ['int'],
-				hasElse: false,
-			},
-		});
-		expect(ast[3]).toMatchObject({
-			instruction: 'ifEnd',
-			ifEndBlock: {
-				matchingIfIndex: 1,
-				resultTypes: ['int'],
-			},
-		});
-	});
-
-	it('pairs if with multi-result ifEnd metadata', () => {
-		const ast = compileToASTLines(['push 1', 'if', 'push 10', 'push 20', 'ifEnd int float']);
-
-		expect(ast[1]).toMatchObject({
+		expect(ast[2]).toMatchObject({
 			instruction: 'if',
 			arguments: [],
 			ifBlock: {
 				matchingIfEndIndex: 4,
-				resultTypes: ['int', 'float'],
+				resultTypes: ['int'],
 				hasElse: false,
 			},
 		});
 		expect(ast[4]).toMatchObject({
 			instruction: 'ifEnd',
 			ifEndBlock: {
-				matchingIfIndex: 1,
+				matchingIfIndex: 2,
+				resultTypes: ['int'],
+			},
+		});
+	});
+
+	it('pairs if with multi-result ifEnd metadata', () => {
+		const ast = compileToASTLines([
+			'module test',
+			'push 1',
+			'if',
+			'push 10',
+			'push 20',
+			'ifEnd int float',
+			'moduleEnd',
+		]);
+
+		expect(ast[2]).toMatchObject({
+			instruction: 'if',
+			arguments: [],
+			ifBlock: {
+				matchingIfEndIndex: 5,
+				resultTypes: ['int', 'float'],
+				hasElse: false,
+			},
+		});
+		expect(ast[5]).toMatchObject({
+			instruction: 'ifEnd',
+			ifEndBlock: {
+				matchingIfIndex: 2,
 				resultTypes: ['int', 'float'],
 			},
 		});
 	});
 
 	it('tracks else on the paired if metadata', () => {
-		const ast = compileToASTLines(['push 1', 'if', 'push 10', 'else', 'push 20', 'ifEnd']);
+		const ast = compileToASTLines(['module test', 'push 1', 'if', 'push 10', 'else', 'push 20', 'ifEnd', 'moduleEnd']);
 
-		expect(ast[1].ifBlock).toMatchObject({
-			matchingIfEndIndex: 5,
+		expect(ast[2].ifBlock).toMatchObject({
+			matchingIfEndIndex: 6,
 			resultTypes: [],
 			hasElse: true,
 		});
@@ -499,51 +592,51 @@ describe('compileToASTLines', () => {
 	});
 
 	it('rejects unclosed if blocks', () => {
-		expect(() => compileToASTLines(['push 1', 'if', 'push 10'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['module test', 'push 1', 'if', 'push 10'])).toThrowError(SyntaxRulesError);
 	});
 
 	it('pairs block with blockEnd metadata without rewriting source arguments', () => {
-		const ast = compileToASTLines(['block', 'push 10', 'blockEnd int']);
+		const ast = compileToASTLines(['module test', 'block', 'push 10', 'blockEnd int', 'moduleEnd']);
 
-		expect(ast[0]).toMatchObject({
+		expect(ast[1]).toMatchObject({
 			instruction: 'block',
 			arguments: [],
 			blockBlock: {
-				matchingBlockEndIndex: 2,
+				matchingBlockEndIndex: 3,
 				resultTypes: ['int'],
 			},
 		});
-		expect(ast[2]).toMatchObject({
+		expect(ast[3]).toMatchObject({
 			instruction: 'blockEnd',
 			blockEndBlock: {
-				matchingBlockIndex: 0,
+				matchingBlockIndex: 1,
 				resultTypes: ['int'],
 			},
 		});
 	});
 
 	it('pairs block with blockEnd float metadata', () => {
-		const ast = compileToASTLines(['block', 'push 1.0', 'blockEnd float']);
+		const ast = compileToASTLines(['module test', 'block', 'push 1.0', 'blockEnd float', 'moduleEnd']);
 
-		expect(ast[0].blockBlock).toMatchObject({
-			matchingBlockEndIndex: 2,
+		expect(ast[1].blockBlock).toMatchObject({
+			matchingBlockEndIndex: 3,
 			resultTypes: ['float'],
 		});
-		expect(ast[2].blockEndBlock).toMatchObject({
-			matchingBlockIndex: 0,
+		expect(ast[3].blockEndBlock).toMatchObject({
+			matchingBlockIndex: 1,
 			resultTypes: ['float'],
 		});
 	});
 
 	it('pairs bare block with bare blockEnd as no-result', () => {
-		const ast = compileToASTLines(['block', 'push 1', 'blockEnd']);
+		const ast = compileToASTLines(['module test', 'block', 'push 1', 'blockEnd', 'moduleEnd']);
 
-		expect(ast[0].blockBlock).toMatchObject({
-			matchingBlockEndIndex: 2,
+		expect(ast[1].blockBlock).toMatchObject({
+			matchingBlockEndIndex: 3,
 			resultTypes: [],
 		});
-		expect(ast[2].blockEndBlock).toMatchObject({
-			matchingBlockIndex: 0,
+		expect(ast[3].blockEndBlock).toMatchObject({
+			matchingBlockIndex: 1,
 			resultTypes: [],
 		});
 	});
@@ -553,7 +646,9 @@ describe('compileToASTLines', () => {
 	});
 
 	it('rejects blockEnd with an invalid type argument', () => {
-		expect(() => compileToASTLines(['block', 'blockEnd void'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['module test', 'block', 'blockEnd void', 'moduleEnd'])).toThrowError(
+			SyntaxRulesError
+		);
 	});
 
 	it('rejects unexpected blockEnd without a matching block', () => {
@@ -561,19 +656,18 @@ describe('compileToASTLines', () => {
 	});
 
 	it('rejects unclosed block blocks', () => {
-		expect(() => compileToASTLines(['block', 'push 1'])).toThrowError(SyntaxRulesError);
+		expect(() => compileToASTLines(['module test', 'block', 'push 1'])).toThrowError(SyntaxRulesError);
 	});
 
 	it('exposes line location in block structure errors via the line property', () => {
 		let thrownError: SyntaxRulesError | undefined;
 		try {
-			compileToASTLines(['push 1', 'if', 'push 10']);
+			compileToASTLines(['module test', 'push 1', 'if', 'push 10']);
 		} catch (error) {
 			thrownError = error as SyntaxRulesError;
 		}
 		expect(thrownError).toBeInstanceOf(SyntaxRulesError);
-		expect(thrownError?.line?.lineNumber).toBe(1);
-		expect(thrownError?.line?.lineNumber).toBe(1);
+		expect(thrownError?.line?.lineNumber).toBe(2);
 		expect(thrownError?.line?.instruction).toBe('if');
 	});
 });

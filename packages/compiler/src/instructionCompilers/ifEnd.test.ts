@@ -64,20 +64,4 @@ describe('ifEnd instruction compiler', () => {
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});
-
-	it('throws when missing condition block', () => {
-		const context = createInstructionCompilerTestContext();
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				ifEnd,
-				{
-					lineNumber: 1,
-					instruction: 'ifEnd',
-					arguments: [],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
-	});
 });

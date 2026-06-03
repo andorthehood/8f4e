@@ -5,11 +5,11 @@ import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 import map from './map';
 
-function getTopMapState(context: CompilationContext): MapBlockState {
-	const block = context.blockStack[context.blockStack.length - 1];
+function getActiveMapState(context: CompilationContext): MapBlockState {
+	const block = context.activeMapBlock;
 
-	if (block?.blockType !== BlockType.MAP) {
-		throw new Error('Expected top block to be a map block');
+	if (!block) {
+		throw new Error('Expected active map block');
 	}
 
 	return block.mapState;
@@ -49,7 +49,7 @@ describe('map instruction compiler', () => {
 			context
 		);
 
-		expect(getTopMapState(context).rows).toMatchSnapshot();
+		expect(getActiveMapState(context).rows).toMatchSnapshot();
 	});
 
 	it('accepts single-character string literals as ASCII int key/value', () => {
@@ -85,7 +85,7 @@ describe('map instruction compiler', () => {
 			context
 		);
 
-		expect(getTopMapState(context).rows).toEqual([
+		expect(getActiveMapState(context).rows).toEqual([
 			{
 				keyValue: 65,
 				valueValue: 66,
@@ -135,7 +135,7 @@ describe('map instruction compiler', () => {
 			context
 		);
 
-		expect(getTopMapState(context).rows.at(-1)).toEqual({
+		expect(getActiveMapState(context).rows.at(-1)).toEqual({
 			keyValue: 1,
 			valueValue: 200,
 			valueIsInteger: true,
@@ -171,25 +171,6 @@ describe('map instruction compiler', () => {
 					instruction: 'map',
 					arguments: [
 						{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
-						{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
-					],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
-	});
-
-	it('throws when used outside a map block', () => {
-		const context = createInstructionCompilerTestContext();
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				map,
-				{
-					lineNumber: 1,
-					instruction: 'map',
-					arguments: [
-						{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 						{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
 					],
 				} as CompilerASTLine,

@@ -1,10 +1,10 @@
 import type { ASTLineBase, InstructionCompiler } from '@8f4e/compiler-spec';
 import { DOUBLE_WORD_MEMORY_ACCESS_WIDTH, getInstructionSpec, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 import { f32store, f64store, i32store } from '@8f4e/compiler-wasm-utils';
-import { requireStackAddress } from '../utils/stackItem';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { guardedStore, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
+import { requireStackAddress } from './utils/stackItem';
 
 type StoreLine = ASTLineBase<'store', []>;
 

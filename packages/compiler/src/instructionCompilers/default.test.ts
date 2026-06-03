@@ -37,23 +37,7 @@ describe('default instruction compiler', () => {
 		);
 
 		expect({
-			mapState: context.blockStack[context.blockStack.length - 1].mapState,
+			mapState: context.activeMapBlock?.mapState,
 		}).toMatchSnapshot();
-	});
-
-	it('throws when used outside a map block', () => {
-		const context = createInstructionCompilerTestContext();
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				_default,
-				{
-					lineNumber: 1,
-					instruction: 'default',
-					arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
 	});
 });
