@@ -1,3 +1,4 @@
+import { ErrorCode } from '@8f4e/compiler-spec';
 import { SyntaxErrorCode } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 import compile, { serializeDiagnostic } from '.';
@@ -102,5 +103,74 @@ describe('compile prototype validation', () => {
 		);
 
 		expect(result.compiledModules.main.memoryMap.value.default).toBe(7);
+	});
+
+	it('rejects function ids that collide with generated entry function ids during semantic metadata collection', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [{ code: ['function main', 'functionEnd'] }],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.DUPLICATE_IDENTIFIER,
+			line: expect.objectContaining({ instruction: 'function' }),
+		});
+	});
+
+	it('rejects duplicate function export names during semantic metadata collection', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [
+						{ code: ['function first', '#export shared', 'functionEnd'] },
+						{ code: ['function second', '#export shared', 'functionEnd'] },
+					],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.DUPLICATE_EXPORT_NAME,
+			line: expect.objectContaining({ instruction: '#export' }),
+		});
+	});
+
+	it('rejects function exports that collide with generated entry exports', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [{ code: ['function entryAlias', '#export main', 'functionEnd'] }],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.DUPLICATE_EXPORT_NAME,
+			line: expect.objectContaining({ instruction: '#export' }),
+		});
 	});
 });

@@ -8,7 +8,7 @@ export { default as createLocalDeclaration } from './codeSection/createLocalDecl
 export { default as f32const } from './const/f32const';
 export { default as f64const } from './const/f64const';
 export { default as i32const } from './const/i32const';
-export { default as WASM_MEMORY_PAGE_SIZE } from './consts';
+export { WASM_HEADER, WASM_MEMORY_PAGE_SIZE } from './consts';
 export { default as block } from './controlFlow/block';
 export { default as br } from './controlFlow/br';
 export { default as br_if } from './controlFlow/br_if';
@@ -64,3 +64,4 @@ export { default as createFunctionType } from './typeFunction/createFunctionType
 export { default as createTypeSection } from './typeFunction/createTypeSection';
 export * from './wasmInstruction';
 export * from './wasmMiscInstruction';
+export { createWasmVersion } from './wasmVersion';
