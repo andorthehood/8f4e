@@ -3,11 +3,11 @@ import type {
 	CompiledFunction,
 	CompiledStackAnalysisLine,
 	CompileOptions,
-	FunctionAST,
 	FunctionCompilationContext,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
 	Namespaces,
+	ValidatedFunctionAST,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 import {
@@ -38,7 +38,7 @@ const importedFunctionAllowedInstructions = new Set([
 ]);
 
 export function compileFunction(
-	ast: FunctionAST,
+	ast: ValidatedFunctionAST,
 	namespaces: Namespaces,
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
