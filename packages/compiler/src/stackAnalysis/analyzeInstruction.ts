@@ -259,6 +259,7 @@ function analyzeCall(line: ResolvedCallLine, context: CompilationContext): { con
 	return { consumed, produced };
 }
 
+/** Validates active map input/output values and produces the map result stack item. */
 function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const { mapState } = peekMapBlock(context);
 
@@ -303,6 +304,7 @@ function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consume
 	return { consumed, produced };
 }
 
+/** Consumes and validates function return values against the parsed function signature. */
 function analyzeFunctionEnd(line: CompilerASTLine, context: CompilationContext): Stack {
 	const returnTypes = line.arguments.map(arg => ('value' in arg ? (arg.value as FunctionValueType) : undefined));
 
@@ -343,6 +345,7 @@ function analyzeLocalSet(line: CompilerASTLine, context: CompilationContext): { 
 	return { consumed, produced: [] };
 }
 
+/** Produces the current loop index value after tokenizer placement has guaranteed a loop. */
 function analyzeLoopIndex(context: CompilationContext): { consumed: Stack; produced: Stack } {
 	const produced: Stack = [createStackValue('int', { isNonZero: false })];
 	produce(context, produced);
@@ -460,6 +463,7 @@ function analyzeStackEffectFromSpec(
 	};
 }
 
+/** Applies stack-analysis behavior declared in the central instruction spec when available. */
 function analyzeFromSpec(
 	line: CompilerASTLine,
 	context: CompilationContext,

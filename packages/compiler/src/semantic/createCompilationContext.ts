@@ -7,12 +7,14 @@ import type {
 } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 
+/** Partial context shape used by tests and compiler stages when seeding a compilation context. */
 type CompilationContextOverrides<TContext extends CompilationContext = CompilationContext> = Partial<
 	Omit<TContext, 'namespace'>
 > & {
 	namespace?: Partial<TContext['namespace']>;
 };
 
+/** Creates an all-zero active block depth map keyed by compiler block type. */
 function createEmptyBlockDepths(): Record<BlockTypeValue, number> {
 	return {
 		[BlockType.MODULE]: 0,
@@ -25,6 +27,7 @@ function createEmptyBlockDepths(): Record<BlockTypeValue, number> {
 	};
 }
 
+/** Derives cached active block state from an already-seeded block stack. */
 function getBlockState(blockStack: BlockStack): {
 	activeBlockDepths: Record<BlockTypeValue, number>;
 	activeLoopBlocks: LoopBlockStackFrame[];
@@ -49,6 +52,7 @@ function getBlockState(blockStack: BlockStack): {
 	return { activeBlockDepths, activeLoopBlocks, activeMapBlock };
 }
 
+/** Creates a compilation context with namespace defaults and derived block-state caches. */
 export function createCompilationContext<TContext extends CompilationContext = CompilationContext>(
 	overrides: CompilationContextOverrides<TContext> = {}
 ): TContext {

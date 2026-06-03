@@ -4,7 +4,10 @@ import { memoryDeclarationInstructions } from './memory';
 import type { BlockTypeValue, CompilationContext } from './semantic';
 import { BlockType } from './semantic';
 
+/** Operand categories that instruction specs can require from the analysis stack. */
 export type OperandRule = 'int' | 'float' | 'matching';
+
+/** Source argument shapes that the tokenizer can validate before semantic resolution. */
 export type SourceArgumentShapeRule =
 	| 'identifier'
 	| 'identifierOrStringLiteral'
@@ -20,33 +23,64 @@ export type SourceArgumentShapeRule =
 	| 'ifResultType'
 	| 'pushValue'
 	| 'regionReference';
+
+/** Top-level source block kinds that own independently parsed compiler ASTs. */
 export type SourceBlockPlacement = 'module' | 'function' | 'constants' | 'prototype';
+
+/** Nested block kinds tracked inside module and function source blocks. */
 export type NestedBlockPlacement = 'loop' | 'map' | 'block' | 'if';
+
+/** Any block kind known to tokenizer placement validation. */
 export type BlockPlacement = SourceBlockPlacement | NestedBlockPlacement;
 
+/** Declarative placement rules consumed by the tokenizer while parsing source lines. */
 export type InstructionPlacement = {
+	/** Allows the instruction outside any currently open source block. */
 	topLevel?: boolean;
+	/** Source block kinds where the instruction may appear. */
 	sourceBlocks?: readonly SourceBlockPlacement[];
+	/** Nested block kind that must already be open for the instruction to appear. */
 	requiredNestedBlock?: NestedBlockPlacement;
+	/** Nested block kinds that reject the instruction while they are open. */
 	disallowedNestedBlocks?: readonly NestedBlockPlacement[];
+	/** Block lifecycle metadata for instructions that open, close, or branch within blocks. */
 	block?: {
+		/** Block kind represented by this instruction. */
 		kind: BlockPlacement;
+		/** Whether this instruction starts, ends, or branches within the block. */
 		role: 'start' | 'end' | 'branch';
+		/** Allowed immediate parent block kinds for a block-start instruction. */
 		parents?: readonly BlockPlacement[];
+		/** Whether this block kind may be nested inside itself. */
 		nestable?: boolean;
 	};
 };
 
+/** Minimal line shape needed by the stack signature resolver for `storeBytes`. */
 type StoreBytesSourceLine = { arguments: [{ value: number }] };
+
+/** Shared source-argument spec for instructions that must not receive source arguments. */
 const noSourceArguments = { maxArguments: 0 } as const satisfies SourceArgumentsSpec;
+
+/** Placement shortcut for instructions allowed only inside modules. */
 const modulePlacement = { sourceBlocks: ['module'] } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for instructions allowed only inside functions. */
 const functionPlacement = { sourceBlocks: ['function'] } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for instructions shared by module and function bodies. */
 const moduleOrFunctionPlacement = { sourceBlocks: ['module', 'function'] } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for constants and imports that may seed source block namespaces. */
 const constantsPlacement = {
 	topLevel: true,
 	sourceBlocks: ['module', 'function', 'constants'],
 } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for instructions that require an active loop block. */
 const loopPlacement = { requiredNestedBlock: 'loop' } as const satisfies InstructionPlacement;
+
+/** Placement shortcut for instructions that require an active map block. */
 const mapPlacement = { requiredNestedBlock: 'map' } as const satisfies InstructionPlacement;
 
 /** Defines where and how an instruction may be used during validation. */
@@ -68,6 +102,7 @@ export interface InstructionDocumentation {
 	shortDescription: string;
 }
 
+/** Label language used for user-facing and machine-readable stack signatures. */
 export type StackValueLabel =
 	| '...'
 	| 'T'
@@ -87,6 +122,7 @@ export interface ResolvedStackEffect {
 	outputs: readonly StackValueLabel[];
 }
 
+/** Describes how many analysis-stack values an instruction consumes. */
 export type StackConsumeSpec =
 	| number
 	| 'all'
@@ -95,6 +131,7 @@ export type StackConsumeSpec =
 			add: number;
 	  };
 
+/** Describes values produced on the analysis stack after an instruction runs. */
 export type StackProducedItemSpec =
 	| {
 			kind: 'int';
@@ -137,8 +174,10 @@ export interface BlockCloseEffectSpec {
 	validateFloatResult?: boolean;
 }
 
+/** WebAssembly load opcode families represented by compiler memory effects. */
 export type MemoryLoadVariant = 'i32' | 'i32_8s' | 'i32_8u' | 'i32_16s' | 'i32_16u' | 'f32';
 
+/** Semantic memory operation metadata attached to memory-related instruction specs. */
 export type MemoryOperationEffectSpec =
 	| {
 			kind: 'load';
@@ -309,6 +348,7 @@ export function resolveInstructionStackEffect<TLine>(
 	return spec.stack.resolve?.(line) ?? spec.stack;
 }
 
+/** Shared spec for binary operations that require two operands of the same type. */
 const binaryMatchingSpec = {
 	sourceArguments: noSourceArguments,
 	placement: moduleOrFunctionPlacement,
@@ -316,6 +356,7 @@ const binaryMatchingSpec = {
 	operandTypes: 'matching',
 } satisfies InstructionSpec;
 
+/** Shared spec for binary operations that require two integer operands. */
 const binaryIntegerSpec = {
 	sourceArguments: noSourceArguments,
 	placement: moduleOrFunctionPlacement,
@@ -323,16 +364,19 @@ const binaryIntegerSpec = {
 	operandTypes: 'int',
 } satisfies InstructionSpec;
 
+/** Shared validation spec for unary stack operations available in modules and functions. */
 const unaryModuleOrFunctionSpec = {
 	placement: moduleOrFunctionPlacement,
 	minOperands: 1,
 } satisfies ValidationSpec;
 
+/** Unary module/function spec variant for instructions that take no source arguments. */
 const unaryNoSourceModuleOrFunctionSpec = {
 	...unaryModuleOrFunctionSpec,
 	sourceArguments: noSourceArguments,
 } satisfies InstructionSpec;
 
+/** Shared validation and placement rules for load instructions. */
 const loadSpec = {
 	sourceArguments: noSourceArguments,
 	placement: moduleOrFunctionPlacement,
@@ -340,12 +384,14 @@ const loadSpec = {
 	operandTypes: 'int',
 } satisfies InstructionSpec;
 
+/** Shared spec for source memory declarations represented by multiple declaration keywords. */
 const memoryDeclarationSpec = {
 	codegen: false,
 	sourceInstruction: false,
 	placement: { sourceBlocks: ['module', 'prototype'] },
 } satisfies InstructionSpec;
 
+/** Central compiler spec table for parsing, placement, stack effects, and semantic effects. */
 export const instructionSpecs = {
 	// abs (int -- int), abs (float -- float), abs (float64 -- float64)
 	abs: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
@@ -1105,20 +1151,27 @@ export const instructionSpecs = {
 	}),
 } satisfies Record<string, InstructionSpec>;
 
+/** Names of every instruction entry registered in the compiler spec table. */
 export type InstructionSpecName = keyof typeof instructionSpecs;
+
+/** Instruction spec names that should be dispatched to code generation. */
 export type CodegenInstructionSpecName = {
 	[TInstruction in InstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends { codegen: false }
 		? never
 		: TInstruction;
 }[InstructionSpecName];
 
+/** Instruction spec names that exist only for parsing or semantic passes. */
 export type NonCodegenInstructionSpecName = Exclude<InstructionSpecName, CodegenInstructionSpecName>;
+
+/** Instruction names that may appear as source instructions after tokenization. */
 export type SourceInstructionSpecName = {
 	[TInstruction in InstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends { sourceInstruction: false }
 		? never
 		: TInstruction;
 }[InstructionSpecName];
 
+/** Codegen instruction names whose specs reject all source arguments. */
 export type NoSourceArgumentInstructionName = {
 	[TInstruction in CodegenInstructionSpecName]: (typeof instructionSpecs)[TInstruction] extends {
 		sourceArguments: typeof noSourceArguments;
@@ -1127,8 +1180,10 @@ export type NoSourceArgumentInstructionName = {
 		: never;
 }[CodegenInstructionSpecName];
 
+/** Extracts memory-effect metadata from an instruction spec when present. */
 type MemoryOperationForSpec<TSpec> = TSpec extends { effects: { memory: infer TMemory } } ? TMemory : never;
 
+/** Instruction names whose memory-effect metadata matches the requested operation shape. */
 export type InstructionNamesByMemoryOperation<TOperation extends MemoryOperationEffectSpec> = {
 	[TInstruction in InstructionSpecName]: [MemoryOperationForSpec<(typeof instructionSpecs)[TInstruction]>] extends [
 		never,
@@ -1139,14 +1194,17 @@ export type InstructionNamesByMemoryOperation<TOperation extends MemoryOperation
 			: never;
 }[InstructionSpecName];
 
+/** Integer-producing load instruction names. */
 export type LoadInstructionSpecName = InstructionNamesByMemoryOperation<
 	Extract<MemoryOperationEffectSpec, { kind: 'load' }> & { resultType: 'int' }
 >;
 
+/** Float-producing load instruction names. */
 export type FloatLoadInstructionSpecName = InstructionNamesByMemoryOperation<
 	Extract<MemoryOperationEffectSpec, { kind: 'load' }> & { resultType: 'float' }
 >;
 
+/** Lookup result type for known instructions, memory declarations, and loose parser strings. */
 type InstructionSpecLookup<TInstruction extends string> = TInstruction extends InstructionSpecName
 	? (typeof instructionSpecs)[TInstruction]
 	: TInstruction extends MemoryDeclarationInstruction
