@@ -74,7 +74,7 @@
     "@8f4e/editor-state": "*",
     "@8f4e/runtime-main-thread": "*",
     "@types/node": "24.12.4",
-    "@types/vscode": "1.95.0",
+    "@types/vscode": "1.120.0",
     "@vscode/vsce": "3.9.1",
     "vite": "7.3.3"
   }
