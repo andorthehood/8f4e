@@ -1,4 +1,4 @@
-import type { CompiledModule, DataStructure, InternalResource, ModuleAST } from '@8f4e/compiler-spec';
+import type { CompiledModule, DataStructure, InternalResource, ValidatedModuleAST } from '@8f4e/compiler-spec';
 import { ArgumentType, MemoryTypes } from '@8f4e/compiler-spec';
 
 export function createMemory(
@@ -36,7 +36,7 @@ export function createInternalResource(
 
 export function createCompiledModule(overrides: Partial<CompiledModule>): CompiledModule {
 	const byteAddress = overrides.byteAddress ?? 0;
-	const ast: ModuleAST = {
+	const ast = {
 		type: 'module',
 		id: 'test',
 		lines: [],
@@ -52,10 +52,8 @@ export function createCompiledModule(overrides: Partial<CompiledModule>): Compil
 				},
 			],
 		},
-		containsShape: false,
-		shapeLines: [],
 		memoryDeclarationLines: [],
-	};
+	} as unknown as ValidatedModuleAST;
 
 	return {
 		index: 0,

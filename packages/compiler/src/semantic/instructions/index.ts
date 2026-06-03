@@ -6,6 +6,7 @@ import semanticConstantsEnd from './constantsEnd';
 import semanticModule from './module';
 import semanticModuleEnd from './moduleEnd';
 import semanticRegion from './region';
+import semanticShape from './shape';
 import semanticUse from './use';
 
 export default function applySemanticInstruction(line: NormalizedSemanticInstructionLine, context: CompilationContext) {
@@ -35,9 +36,7 @@ export default function applySemanticInstruction(line: NormalizedSemanticInstruc
 		case 'prototypeEnd':
 			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
 		case 'shape':
-			if (context.mode !== 'module' || !context.insideModuleBlock) {
-				throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, context);
-			}
+			semanticShape(line, context);
 			return;
 	}
 }

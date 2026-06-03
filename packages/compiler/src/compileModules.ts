@@ -1,27 +1,30 @@
 import type {
 	CompiledModule,
 	CompileOptions,
-	ConstantsAST,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
-	ModuleAST,
 	Namespaces,
+	ValidatedConstantsAST,
+	ValidatedModuleAST,
+	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { compileModule } from './compileModule';
 import { collectNamespacesFromASTs } from './semantic/buildNamespace';
 
 export function compileModules(
-	modules: Array<ModuleAST | ConstantsAST>,
+	modules: Array<ValidatedModuleAST | ValidatedConstantsAST>,
 	options: CompileOptions,
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
 	internalAllocator?: { nextByteAddress: number },
-	typeRegistry?: FunctionTypeRegistry
+	typeRegistry?: FunctionTypeRegistry,
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule[] {
 	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 	const ns: Namespaces =
-		namespaces ?? collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options);
+		namespaces ??
+		collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options, prototypeShapes);
 	const allocator = internalAllocator ?? {
 		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
 			if (namespace.memoryIndex !== 0) {
@@ -44,7 +47,8 @@ export function compileModules(
 			compiledFunctions,
 			allocator,
 			options,
-			typeRegistry
+			typeRegistry,
+			prototypeShapes
 		);
 		return module;
 	});
