@@ -1,4 +1,4 @@
-import type { BlockStack, CompilationContext } from '@8f4e/compiler-spec';
+import type { BlockStack, CompilationContext, LoopBlockStackFrame } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 
 type CompilationContextOverrides<TContext extends CompilationContext = CompilationContext> = Partial<
@@ -19,6 +19,18 @@ function getBlockContextFlags(blockStack: BlockStack) {
 	};
 }
 
+function getActiveLoopBlocks(blockStack: BlockStack): LoopBlockStackFrame[] {
+	const activeLoopBlocks: LoopBlockStackFrame[] = [];
+
+	for (const block of blockStack) {
+		if (block.blockType === BlockType.LOOP) {
+			activeLoopBlocks.push(block);
+		}
+	}
+
+	return activeLoopBlocks;
+}
+
 export function createCompilationContext<TContext extends CompilationContext = CompilationContext>(
 	overrides: CompilationContextOverrides<TContext> = {}
 ): TContext {
@@ -37,6 +49,7 @@ export function createCompilationContext<TContext extends CompilationContext = C
 		byteCode: [],
 		stack: [],
 		blockStack: [],
+		activeLoopBlocks: [],
 		insideModuleBlock: false,
 		insideFunctionBlock: false,
 		insideGenericBlock: false,
@@ -62,9 +75,11 @@ export function createCompilationContext<TContext extends CompilationContext = C
 		},
 	};
 	const blockContextFlags = getBlockContextFlags(context.blockStack);
+	const activeLoopBlocks = overrides.activeLoopBlocks ?? getActiveLoopBlocks(context.blockStack);
 
 	return {
 		...context,
+		activeLoopBlocks,
 		insideModuleBlock: overrides.insideModuleBlock ?? blockContextFlags.insideModuleBlock,
 		insideFunctionBlock: overrides.insideFunctionBlock ?? blockContextFlags.insideFunctionBlock,
 		insideGenericBlock: overrides.insideGenericBlock ?? blockContextFlags.insideGenericBlock,
