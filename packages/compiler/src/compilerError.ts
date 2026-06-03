@@ -249,13 +249,6 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.INSTRUCTION_MUST_BE_TOP_LEVEL:
-			return {
-				code,
-				message: 'This instruction must be used at the top level. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.DUPLICATE_MACRO_NAME:
 			return {
 				code,
