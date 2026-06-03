@@ -150,11 +150,6 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
-/** Parses source into the validated AST type expected by the current compiler pass. */
-function parseCompilerAST<TAST extends ValidatedAST>(code: string[], cache: CompilerCache, cacheKey: string): TAST {
-	return compileToAST(code, cache.ast, cacheKey) as TAST;
-}
-
 /** Indexes prototype ASTs by id and rejects duplicate prototype declarations. */
 function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
 	const prototypeShapesById: Record<string, ValidatedPrototypeAST> = {};
@@ -193,8 +188,8 @@ export default function compile(
 		};
 	});
 
-	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) =>
-		parseCompilerAST<ValidatedPrototypeAST>(code, cache, cacheKey)
+	const astPrototypes = expandedPrototypes.map(
+		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedPrototypeAST
 	);
 	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
 
@@ -223,14 +218,14 @@ export default function compile(
 	});
 
 	const astModuleEntries = expandedModuleSources.map(source => {
-		const ast = parseCompilerAST<ValidatedModuleAST>(source.code, cache, source.cacheKey);
+		const ast = compileToAST(source.code, cache.ast, source.cacheKey) as ValidatedModuleAST;
 		return {
 			entryName: source.entryName,
 			ast,
 		};
 	});
-	const astConstants = expandedConstants.map(({ code, cacheKey }) =>
-		parseCompilerAST<ValidatedConstantsAST>(code, cache, cacheKey)
+	const astConstants = expandedConstants.map(
+		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedConstantsAST
 	);
 	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);
@@ -248,8 +243,8 @@ export default function compile(
 	);
 
 	// Compile functions first with WASM indices and type registry
-	const astFunctions = expandedFunctions.map(({ code, cacheKey }) =>
-		parseCompilerAST<ValidatedFunctionAST>(code, cache, cacheKey)
+	const astFunctions = expandedFunctions.map(
+		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedFunctionAST
 	);
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
