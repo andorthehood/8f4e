@@ -3,12 +3,22 @@ import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { getEndByteAddress } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
 
-/** Converts word-aligned size to the byte length that is safe from the memory start address. */
+/**
+ * Converts word-aligned size to the byte length that is safe from the memory start address.
+ *
+ * @param wordAlignedSize - Size measured in aligned memory words.
+ * @returns Safe byte length available from the start address.
+ */
 export function getWordAlignedByteLength(wordAlignedSize: number): number {
 	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
 }
 
-/** Converts word-aligned size to the byte length that is safe from the memory end address. */
+/**
+ * Converts word-aligned size to the byte length that is safe from the memory end address.
+ *
+ * @param wordAlignedSize - Size measured in aligned memory words.
+ * @returns Safe byte length available from the end address.
+ */
 export function getEndAddressSafeByteLength(wordAlignedSize: number): number {
 	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
 }
