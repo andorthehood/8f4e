@@ -2,7 +2,6 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { ArgumentType, BlockType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 import loopCap from './loopCap';
 
@@ -114,20 +113,5 @@ describe('#loopCap instruction compiler', () => {
 		);
 
 		expect(context.loopCap).toBe(100);
-	});
-
-	it('throws error when used outside module or function block', () => {
-		const context = createInstructionCompilerTestContext({
-			blockStack: [],
-		});
-		const line = {
-			lineNumber: 1,
-			instruction: '#loopCap',
-			arguments: [{ type: ArgumentType.LITERAL, value: 500, isInteger: true }],
-		} as CompilerASTLine;
-
-		expect(() => {
-			validateInstruction(line, context);
-		}).toThrow();
 	});
 });

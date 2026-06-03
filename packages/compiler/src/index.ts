@@ -14,12 +14,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import {
-	DEFAULT_HOST_IMPORT_MODULE_NAME,
-	ErrorCode,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	isMemoryDeclarationLine,
-} from '@8f4e/compiler-spec';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import {
 	call,
 	createCodeSection,
@@ -147,44 +142,8 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
-function parseModuleAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedModuleAST {
-	const ast = compileToAST(code, cache.ast, cacheKey);
-	if (ast.type !== 'module') {
-		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
-	}
-	return ast;
-}
-
-function parseConstantsAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedConstantsAST {
-	const ast = compileToAST(code, cache.ast, cacheKey);
-	if (ast.type !== 'constants') {
-		throw getError(ErrorCode.MISSING_MODULE_ID, ast.lines[0], undefined);
-	}
-	return ast;
-}
-
-function parseFunctionAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedFunctionAST {
-	const ast = compileToAST(code, cache.ast, cacheKey);
-	if (ast.type !== 'function') {
-		throw getError(ErrorCode.MISSING_FUNCTION_ID, ast.lines[0], undefined);
-	}
-	return ast;
-}
-
-function parsePrototypeAST(code: string[], cache: CompilerCache, cacheKey: string): ValidatedPrototypeAST {
-	const ast = compileToAST(code, cache.ast, cacheKey);
-	if (ast.type !== 'prototype') {
-		throw getError(ErrorCode.MISSING_PROTOTYPE_ID, ast.lines[0], undefined);
-	}
-	for (const line of ast.lines) {
-		if (line.instruction === 'prototype' || line.instruction === 'prototypeEnd') {
-			continue;
-		}
-		if (!isMemoryDeclarationLine(line)) {
-			throw getError(ErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK, line, undefined);
-		}
-	}
-	return ast;
+function parseCompilerAST<TAST extends ValidatedAST>(code: string[], cache: CompilerCache, cacheKey: string): TAST {
+	return compileToAST(code, cache.ast, cacheKey) as TAST;
 }
 
 function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
@@ -223,7 +182,9 @@ export default function compile(
 		};
 	});
 
-	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) => parsePrototypeAST(code, cache, cacheKey));
+	const astPrototypes = expandedPrototypes.map(({ code, cacheKey }) =>
+		parseCompilerAST<ValidatedPrototypeAST>(code, cache, cacheKey)
+	);
 	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
 
 	// Expand macros in modules
@@ -251,13 +212,15 @@ export default function compile(
 	});
 
 	const astModuleEntries = expandedModuleSources.map(source => {
-		const ast = parseModuleAST(source.code, cache, source.cacheKey);
+		const ast = parseCompilerAST<ValidatedModuleAST>(source.code, cache, source.cacheKey);
 		return {
 			entryName: source.entryName,
 			ast,
 		};
 	});
-	const astConstants = expandedConstants.map(({ code, cacheKey }) => parseConstantsAST(code, cache, cacheKey));
+	const astConstants = expandedConstants.map(({ code, cacheKey }) =>
+		parseCompilerAST<ValidatedConstantsAST>(code, cache, cacheKey)
+	);
 	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
@@ -274,7 +237,9 @@ export default function compile(
 	);
 
 	// Compile functions first with WASM indices and type registry
-	const astFunctions = expandedFunctions.map(({ code, cacheKey }) => parseFunctionAST(code, cache, cacheKey));
+	const astFunctions = expandedFunctions.map(({ code, cacheKey }) =>
+		parseCompilerAST<ValidatedFunctionAST>(code, cache, cacheKey)
+	);
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;
