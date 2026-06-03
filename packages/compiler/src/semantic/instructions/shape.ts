@@ -4,6 +4,7 @@ import { getError } from '../../compilerError';
 import { applyMemoryDeclarationLine } from '../declarations';
 import normalizeCompileTimeArguments from '../normalizeCompileTimeArguments';
 
+/** Expands a prototype `shape` instruction into semantic memory declarations. */
 export default function semanticShape(line: ShapeLine, context: CompilationContext) {
 	if (!context.expandPrototypeShapes) {
 		return;

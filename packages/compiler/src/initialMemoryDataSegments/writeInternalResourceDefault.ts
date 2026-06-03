@@ -1,5 +1,6 @@
 import type { InternalResource } from '@8f4e/compiler-spec';
 
+/** Writes one internal resource default value into a data segment byte view. */
 export default function writeInternalResourceDefault(view: DataView, resource: InternalResource) {
 	if (resource.storageType === 'float64') {
 		view.setFloat64(resource.byteAddress, resource.default, true);

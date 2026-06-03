@@ -1,5 +1,6 @@
 import type { StackItem } from '@8f4e/compiler-spec';
 
+/** Reads the top stack operands without mutating the stack, returning an empty list when unavailable. */
 export function peekStackOperands(stack: StackItem[], count: number): StackItem[] {
 	if (stack.length < count) {
 		return [];
