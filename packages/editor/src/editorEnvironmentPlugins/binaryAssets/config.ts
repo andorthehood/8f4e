@@ -20,7 +20,7 @@ const BINARY_ASSET_SCHEMA = {
 	additionalProperties: false,
 };
 
-export const binEditorConfigSchemaContribution: EditorConfigSchemaContribution = {
+export const binaryAssetsEditorConfigSchemaContribution: EditorConfigSchemaContribution = {
 	root: 'bin',
 	schema: {
 		type: 'object',
