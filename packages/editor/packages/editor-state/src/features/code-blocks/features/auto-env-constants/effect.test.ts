@@ -56,7 +56,10 @@ describe('autoEnvConstants', () => {
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerRuntime',
+			editorConfig: {
+				...createDefaultState().editorConfig,
+				runtime: 'WebWorkerRuntime',
+			},
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
 			},
@@ -123,7 +126,6 @@ describe('autoEnvConstants', () => {
 				factory: () => () => {},
 			},
 		});
-		store.set('defaultRuntimeId', 'SecondaryRuntime');
 		store.set('editorConfig.runtime', 'SecondaryRuntime');
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 

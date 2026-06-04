@@ -10,7 +10,7 @@ Manages the lifecycle of runtime instances that execute compiled 8f4e programs. 
 - **Runtime Selection**: Determines which runtime to use from `state.editorConfig.runtime`
 - **Lifecycle Management**: Creates and destroys runtime instances as needed
 - **Runtime Switching**: Recreates runtime when the selected runtime changes
-- **Fallback Handling**: Falls back to default runtime ID if unknown runtime is requested
+- **No Default Runtime**: Does not initialize a runtime unless `state.editorConfig.runtime` names a registered runtime
 - **Initialization Locking**: Prevents concurrent initialization attempts
 
 ## Runtime Registry
@@ -48,7 +48,6 @@ strings must match exactly. Each entry contains a `factory` function that create
 ### State Touched
 
 - `state.runtimeRegistry` - Registry of available runtime factories
-- `state.defaultRuntimeId` - Fallback runtime identifier
 - `state.editorConfig.runtime` - Selected runtime id
 
 ## Integration Points
@@ -82,5 +81,5 @@ Runtime lifecycle events are logged:
 - Only one runtime can be active at a time
 - Runtime switching requires destroying previous runtime completely
 - Initialization is locked to prevent race conditions
-- Unknown runtimes fall back to default silently (with log message)
+- Missing or unknown runtime selections leave the editor without an active runtime
 - Runtime factories must be registered before runtime feature initializes

@@ -89,10 +89,13 @@ export default function drawInfoOverlay(
 
 	// Runtime stats
 
-	const selectedRuntimeId = state.editorConfig.runtime ?? state.defaultRuntimeId;
+	const selectedRuntimeId =
+		state.editorConfig.runtime && Object.hasOwn(state.runtimeRegistry, state.editorConfig.runtime)
+			? state.editorConfig.runtime
+			: undefined;
 
 	debugText.push('');
-	debugText.push('Runtime: ' + selectedRuntimeId);
+	debugText.push('Runtime: ' + (selectedRuntimeId ?? 'None'));
 
 	const timerExpectedIntervalTimeMs = getRuntimeInfoNumber(state, 'timerExpectedIntervalTimeMs');
 	if (timerExpectedIntervalTimeMs) {
