@@ -1,0 +1,98 @@
+{
+  "constantsBlocks": [],
+  "entries": {
+    "main": [],
+    "test": [
+      {
+        "code": [
+          "module harness",
+          "int failures",
+          "moduleEnd",
+        ],
+      },
+    ],
+  },
+  "functionBlocks": [],
+  "groups": [
+    {
+      "constantsBlocks": [],
+      "entry": "main",
+      "functionBlocks": [],
+      "groups": [],
+      "macroBlocks": [],
+      "modules": [
+        {
+          "code": [
+            "module kick",
+            "int trigger",
+            "moduleEnd",
+          ],
+        },
+      ],
+      "name": "audio",
+      "prototypeBlocks": [],
+    },
+    {
+      "constantsBlocks": [],
+      "entry": "main",
+      "functionBlocks": [],
+      "groups": [
+        {
+          "constantsBlocks": [],
+          "entry": "main",
+          "functionBlocks": [
+            {
+              "code": [
+                "function clamp01",
+                "param float value",
+                "push value",
+                "functionEnd float",
+              ],
+            },
+          ],
+          "groups": [],
+          "macroBlocks": [],
+          "modules": [],
+          "name": "shaderHelpers",
+          "prototypeBlocks": [],
+        },
+      ],
+      "macroBlocks": [],
+      "modules": [
+        {
+          "code": [
+            "module scope",
+            "int brightness",
+            "moduleEnd",
+          ],
+        },
+      ],
+      "name": "visuals",
+      "prototypeBlocks": [],
+    },
+    {
+      "constantsBlocks": [],
+      "entry": "test",
+      "functionBlocks": [
+        {
+          "code": [
+            "function assertEqual",
+            "param int left",
+            "param int right",
+            "push left",
+            "push right",
+            "equal",
+            "functionEnd int",
+          ],
+        },
+      ],
+      "groups": [],
+      "macroBlocks": [],
+      "modules": [],
+      "name": "assertions",
+      "prototypeBlocks": [],
+    },
+  ],
+  "macroBlocks": [],
+  "prototypeBlocks": [],
+}

@@ -1,17 +1,11 @@
 import type { ASTCache, ASTCacheEntry, ValidatedAST } from '@8f4e/compiler-spec';
 
 export { createASTCache } from './cache';
-
-import { hashSource } from './cache';
-import { mainTokenizerLoop } from './mainTokenizerLoop';
-
-export { parseLine } from './parseLine';
-
-import { createASTFromBuilder } from './sourceBlockASTBuilder';
-import instructionParser from './syntax/instructionParser';
-import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
-
-export type { ProjectBlockType, ProjectCodeBlock, ProjectCompilerBlocks, ProjectInput } from './projectParsing';
+export type {
+	ProjectBlockType,
+	ProjectCodeBlock,
+	ProjectInput,
+} from './projectParsing';
 export {
 	BLOCK_DELIMITERS,
 	FORMAT_HEADER,
@@ -23,6 +17,16 @@ export {
 	parse8f4eProject,
 	pickProjectCompilerBlocks,
 } from './projectParsing';
+
+import { hashSource } from './cache';
+import { mainTokenizerLoop } from './mainTokenizerLoop';
+
+export { parseLine } from './parseLine';
+
+import { createASTFromBuilder } from './sourceBlockASTBuilder';
+import instructionParser from './syntax/instructionParser';
+import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
+
 export * from './syntax';
 
 /** Result of validating a cached AST entry against the current source lines. */
