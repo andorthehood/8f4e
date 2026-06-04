@@ -21,12 +21,10 @@ describe('drawModeOverlay', () => {
 				modeToggling: true,
 			},
 			editorMode: 'view',
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontDebugInfo: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontDebugInfo: {},
+			} as never,
 			presentation: {
 				canPresent: false,
 			},
@@ -48,12 +46,10 @@ describe('drawModeOverlay', () => {
 				modeToggling: true,
 			},
 			editorMode: 'view',
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontDebugInfo: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontDebugInfo: {},
+			} as never,
 			presentation: {
 				canPresent: true,
 			},
@@ -76,12 +72,10 @@ describe('drawModeOverlay', () => {
 				modeToggling: true,
 			},
 			editorMode: 'view',
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontDebugInfo: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontDebugInfo: {},
+			} as never,
 		});
 
 		drawModeOverlay(engine, state);

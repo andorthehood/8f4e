@@ -3,9 +3,7 @@
  */
 
 import type { DataStructure, DocumentBlockType } from '@8f4e/compiler-spec';
-import type { SpriteLookups } from '@8f4e/sprite-generator';
-import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
-import type { ContextMenu } from '../menu/types';
+import type { SpriteLookup } from 'glugglug';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
@@ -448,7 +446,6 @@ export interface CodeBlockEntryOutline {
  * Graphic helper state for rendering code blocks and UI elements.
  */
 export type GraphicHelper = {
-	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
 	codeBlocks: CodeBlockGraphicData[];
 	/**
@@ -474,7 +471,6 @@ export type GraphicHelper = {
 	 * This is a runtime-only value and is NOT persisted.
 	 */
 	nextCodeBlockCreationIndex: number;
-	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;
 	/** When true, blocks hidden by `; @hidden` stay visible regardless of selection. */
@@ -485,8 +481,4 @@ export type GraphicHelper = {
 	 * Use this for operations like drag-end position updates that should save but not recompile.
 	 */
 	selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger?: CodeBlockGraphicData;
-	/** Post-process effects configuration for custom visual effects */
-	postProcessEffects: PostProcessEffect[];
-	/** Background effects configuration for custom visual effects */
-	backgroundEffects: BackgroundEffect[];
 };

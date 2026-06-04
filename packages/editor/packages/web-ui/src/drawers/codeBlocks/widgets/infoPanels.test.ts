@@ -25,16 +25,14 @@ describe('drawInfoPanels', () => {
 					foo: 1.234567,
 				},
 			},
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontCode: {},
-					fontCodeComment: {},
-					fontInfoKey: {},
-					fontInfoValue: {},
-					fontNumbers: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontCode: {},
+				fontCodeComment: {},
+				fontInfoKey: {},
+				fontInfoValue: {},
+				fontNumbers: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -59,16 +57,14 @@ describe('drawInfoPanels', () => {
 	it('skips missing info records', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontCode: {},
-					fontCodeComment: {},
-					fontInfoKey: {},
-					fontInfoValue: {},
-					fontNumbers: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontCode: {},
+				fontCodeComment: {},
+				fontInfoKey: {},
+				fontInfoValue: {},
+				fontNumbers: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -90,16 +86,14 @@ describe('drawInfoPanels', () => {
 					longKey: 'overflow',
 				},
 			},
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontCode: {},
-					fontCodeComment: {},
-					fontInfoKey: {},
-					fontInfoValue: {},
-					fontNumbers: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontCode: {},
+				fontCodeComment: {},
+				fontInfoKey: {},
+				fontInfoValue: {},
+				fontNumbers: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {

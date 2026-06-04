@@ -15,11 +15,9 @@ describe('drawArrow', () => {
 	it('renders ASCII characters for off-screen directions', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fontArrow: {},
-				} as never,
-			},
+			spriteLookups: {
+				fontArrow: {},
+			} as never,
 			viewport: {
 				width: 1024,
 				height: 768,
@@ -42,7 +40,7 @@ describe('drawArrow', () => {
 		drawArrow(engine, createMockCodeBlock({ x: 1200, y: -100 }), state);
 
 		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			state.graphicHelper.spriteLookups?.fontArrow
+			state.spriteLookups?.fontArrow
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(512, 0, '^');
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(1016, 384, '>');

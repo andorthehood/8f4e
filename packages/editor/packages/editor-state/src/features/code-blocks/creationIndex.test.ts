@@ -6,8 +6,8 @@ import projectImport from '~/features/project-import/effect';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import graphicHelper from './effect';
 import codeBlockCreator from './features/codeBlockCreator/effect';
-import graphicHelper from './features/graphicHelper/effect';
 
 describe('creationIndex', () => {
 	let mockState: State;

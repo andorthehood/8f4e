@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import type { DirectiveDerivedState } from '../directives/registry';
+import type { DirectiveDerivedState } from './features/directives/registry';
 import gaps from './gaps';
+import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
 
 describe('gaps', () => {
 	it('inserts directive gaps using display rows', async () => {
