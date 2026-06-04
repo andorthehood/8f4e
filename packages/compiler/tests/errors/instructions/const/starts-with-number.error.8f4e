@@ -2,7 +2,9 @@
 
 entry main
 module numericConstName
-; Const identifiers should reject names that start with a number.
+; Const identifiers should
+; reject names that start with a
+; number.
 const 123ABC 100
 moduleEnd
 entryEnd

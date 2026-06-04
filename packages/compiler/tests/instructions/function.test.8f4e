@@ -1,15 +1,20 @@
 8f4e/v1
 
-; User-defined functions can return values and consume parameters.
+; User-defined functions can
+; return values and consume
+; parameters.
 entry test
 module functionReturnConstant
-; A function without parameters can return a constant value.
+; A function without parameters
+; can return a constant value.
 call getFortyTwoForFunctionTest
 call assert 42
 moduleEnd
 
 module functionWithParameter
-; A function with one parameter should consume one stack argument.
+; A function with one parameter
+; should consume one stack
+; argument.
 push 5
 call doubleForFunctionTest
 call assert 10
@@ -20,7 +25,9 @@ call assert 20
 moduleEnd
 
 module functionWithTwoParameters
-; A function with two parameters should consume both stack arguments in order.
+; A function with two parameters
+; should consume both stack
+; arguments in order.
 push 3
 push 4
 call addForFunctionTest

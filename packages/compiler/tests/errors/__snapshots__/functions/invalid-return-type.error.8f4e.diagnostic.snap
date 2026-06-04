@@ -3,7 +3,7 @@
   "context": {},
   "line": {
     "instruction": "functionEnd",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Invalid argument for functionEnd: expected function type identifier.",
 }

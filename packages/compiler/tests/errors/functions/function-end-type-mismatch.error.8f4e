@@ -6,6 +6,7 @@ moduleEnd
 entryEnd
 
 function typeMismatch
-; functionEnd int should reject a float stack value.
+; functionEnd int should reject
+; a float stack value.
 push 1.5
 functionEnd int

@@ -17,7 +17,7 @@ cli capture path/to/project.8f4e --buffer audioout:buffer --cycles 128 --repeat 
 ```
 
 ```bash
-cli format path/to/module.8f4em --comment-width 64 --write
+cli format path/to/module.8f4em --comment-width 32 --write
 ```
 
 ## Output
@@ -25,7 +25,7 @@ cli format path/to/module.8f4em --comment-width 64 --write
 When `--wasm-output` is used, the CLI writes a decoded WebAssembly binary (`.wasm`) file.
 
 When `format` is used, the CLI wraps long semicolon comments to the requested `--comment-width` or the default width
-of 64. It writes to stdout by default, writes to a separate file with `--out`, or updates the input file with `--write`.
+of 32. It writes to stdout by default, writes to a separate file with `--out`, or updates the input file with `--write`.
 
 When `capture` is used, the CLI:
 

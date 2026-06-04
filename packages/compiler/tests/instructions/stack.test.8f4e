@@ -1,9 +1,14 @@
 8f4e/v1
 
-; Stack instructions should leave modules with an empty stack after assertions.
+; Stack instructions should
+; leave modules with an empty
+; stack
+; after assertions.
 entry test
 module dropAssertions
-; drop removes the top value so later assertions can run on a clean stack.
+; drop removes the top value so
+; later assertions can run on a
+; clean stack.
 push 1
 drop
 
@@ -14,7 +19,8 @@ call assert 4
 moduleEnd
 
 module clearStackAssertions
-; clearStack removes all values currently on the stack.
+; clearStack removes all values
+; currently on the stack.
 push 1
 push 1
 clearStack
@@ -26,7 +32,9 @@ call assert 7
 moduleEnd
 
 module blockIntAssertions
-; blockEnd can return integer values from a nested stack region.
+; blockEnd can return integer
+; values from a nested stack
+; region.
 block
  push 69
 blockEnd int
@@ -44,7 +52,9 @@ call assert -420
 moduleEnd
 
 module blockFloatAssertions
-; blockEnd can return float values from a nested stack region.
+; blockEnd can return float
+; values from a nested stack
+; region.
 block
  push 69.1
 blockEnd float

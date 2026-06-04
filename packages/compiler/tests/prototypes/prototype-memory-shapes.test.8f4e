@@ -1,6 +1,7 @@
 8f4e/v1
 
-; describes a reusable module memory shape with defaults
+; describes a reusable module
+; memory shape with defaults
 prototype oscillatorState
 float phase
 float frequency 440
@@ -11,25 +12,32 @@ module oscA
 shape oscillatorState
 int localA 11
 
-; it expands prototype fields before local declarations
+; it expands prototype fields
+; before local declarations
 push phase
 call assertf 0.0
 
-; it preserves default values from prototype fields
+; it preserves default values
+; from prototype fields
 push frequency
 call assertf 440.0
 
-; it preserves declarations written in the consuming module
+; it preserves declarations
+; written in the consuming
+; module
 push localA
 call assert 11
 
-; it lays out expanded prototype fields in declaration order
+; it lays out expanded prototype
+; fields in declaration order
 push &phase
 push &frequency
 lessThan
 call assert 1
 
-; it lays out local declarations after a leading shape instruction
+; it lays out local declarations
+; after a leading shape
+; instruction
 push &frequency
 push &localA
 lessThan
@@ -40,25 +48,33 @@ module oscB
 int localB 22
 shape oscillatorState
 
-; it preserves declarations that appear before a shape instruction
+; it preserves declarations that
+; appear before a shape
+; instruction
 push localB
 call assert 22
 
-; it expands prototype fields after earlier local declarations
+; it expands prototype fields
+; after earlier local
+; declarations
 push phase
 call assertf 0.0
 
-; it reuses prototype defaults in each consuming module
+; it reuses prototype defaults
+; in each consuming module
 push frequency
 call assertf 440.0
 
-; it lays out shape fields after preceding local declarations
+; it lays out shape fields after
+; preceding local declarations
 push &localB
 push &phase
 lessThan
 call assert 1
 
-; it allocates separate storage for each module that uses the shape
+; it allocates separate storage
+; for each module that uses the
+; shape
 push &phase
 push &oscA:phase
 notEqual

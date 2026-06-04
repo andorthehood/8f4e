@@ -3,7 +3,7 @@
   "context": {},
   "line": {
     "instruction": "map",
-    "lineNumber": 4,
+    "lineNumber": 5,
   },
   "message": "Instruction is not allowed in this block.",
 }

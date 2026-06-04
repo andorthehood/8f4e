@@ -95,18 +95,19 @@ describe('cli', () => {
 		);
 	});
 
-	it('uses a 64 character default format comment width', async () => {
+	it('uses a 32 character default format comment width', async () => {
 		await fs.mkdir(tmpDir, { recursive: true });
 		const formatInputPath = path.join(tmpDir, 'format-default-width.8f4em');
 		await fs.writeFile(
 			formatInputPath,
-			'; This comment should wrap using the default formatter width of sixty four characters\n'
+			'; This comment should wrap using the default formatter width of thirty two characters\n'
 		);
 
 		const { stdout } = await execCli(['format', formatInputPath]);
 
 		expect(stdout).toBe(
-			['; This comment should wrap using the default formatter width of', '; sixty four characters'].join('\n') + '\n'
+			['; This comment should wrap using', '; the default formatter width of', '; thirty two characters'].join('\n') +
+				'\n'
 		);
 	});
 
