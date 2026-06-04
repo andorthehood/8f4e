@@ -1,7 +1,8 @@
 8f4e/v1
 
 constants
-; constants blocks should require an identifier.
+; constants blocks should
+; require an identifier.
 const PI 3.14159
 constantsEnd
 

@@ -6,7 +6,8 @@ int[] buffer 5 0
 moduleEnd
 
 module sizeofUnknownModuleTarget
-; sizeof(...) should reject unknown modules.
+; sizeof(...) should reject
+; unknown modules.
 int size sizeof(missingModule:buffer)
 moduleEnd
 entryEnd

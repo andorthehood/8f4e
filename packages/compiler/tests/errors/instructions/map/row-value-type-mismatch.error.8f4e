@@ -2,7 +2,8 @@
 
 entry main
 module mapRowValueTypeMismatch
-; map row values should match the map output type.
+; map row values should match
+; the map output type.
 int x
 push x
 mapBegin int

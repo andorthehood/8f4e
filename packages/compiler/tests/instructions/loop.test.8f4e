@@ -3,7 +3,10 @@
 ; describe loop
 entry test
 module countedLoopAssertions
-; it terminates through branchIfTrue once the counter reaches the target
+; it terminates through
+; branchIfTrue once the counter
+; reaches
+; the target
 int counter
 loop
 push counter
@@ -23,7 +26,10 @@ call assert 10
 moduleEnd
 
 module loopCapAssertions
-; it stops an otherwise unbounded loop at the default compiler cap
+; it stops an otherwise
+; unbounded loop at the default
+; compiler
+; cap
 int counter
 loop
 push &counter

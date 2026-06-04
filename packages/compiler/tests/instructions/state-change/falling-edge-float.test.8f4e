@@ -1,6 +1,7 @@
 8f4e/v1
 
-; fallingEdge should report when a float input moves downward.
+; fallingEdge should report when
+; a float input moves downward.
 entry stateChangeStep
 module fallingEdgeFloatState
 float input

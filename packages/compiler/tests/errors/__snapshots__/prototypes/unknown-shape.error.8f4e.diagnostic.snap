@@ -14,7 +14,7 @@
       },
     ],
     "instruction": "shape",
-    "lineNumber": 2,
+    "lineNumber": 4,
   },
   "message": "Undeclared identifier: missing. (5)",
 }

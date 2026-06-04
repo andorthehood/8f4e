@@ -16,7 +16,7 @@
       },
     ],
     "instruction": "push",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Memory IO in functions requires #impure. (21)",
 }

@@ -1,6 +1,8 @@
 8f4e/v1
 
-; branchIfUnchanged should branch until the tracked value changes.
+; branchIfUnchanged should
+; branch until the tracked value
+; changes.
 entry stateChangeStep
 module branchIfUnchangedState
 int input

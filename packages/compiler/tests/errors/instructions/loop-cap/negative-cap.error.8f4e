@@ -2,7 +2,8 @@
 
 entry main
 module negativeLoopCap
-; Resolved loop counts should reject negative values.
+; Resolved loop counts should
+; reject negative values.
 const LOOP_COUNT -1
 loop LOOP_COUNT
 loopEnd

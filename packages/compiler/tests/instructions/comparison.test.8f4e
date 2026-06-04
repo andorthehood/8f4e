@@ -1,9 +1,14 @@
 8f4e/v1
 
-; Comparison instructions return integer booleans and are checked with assert.
+; Comparison instructions return
+; integer booleans and are
+; checked with assert.
 entry test
 module equalAssertions
-; equal returns true for matching integer operands and false otherwise.
+; equal returns true for
+; matching integer operands and
+; false
+; otherwise.
 push 420
 push 420
 equal
@@ -26,7 +31,8 @@ call assert 1
 moduleEnd
 
 module equalToZeroAssertions
-; equalToZero returns true only for zero.
+; equalToZero returns true only
+; for zero.
 push 420
 equalToZero
 call assert 0
@@ -41,7 +47,8 @@ call assert 1
 moduleEnd
 
 module greaterThanIntAssertions
-; greaterThan compares signed integers.
+; greaterThan compares signed
+; integers.
 push 420
 push 420
 greaterThan
@@ -69,7 +76,9 @@ call assert 1
 moduleEnd
 
 module greaterThanFloatAssertions
-; greaterThan compares floats and still returns an integer boolean.
+; greaterThan compares floats
+; and still returns an integer
+; boolean.
 push 420.1
 push 420.1
 greaterThan
@@ -97,7 +106,9 @@ call assert 1
 moduleEnd
 
 module greaterOrEqualIntAssertions
-; greaterOrEqual returns true for equal or greater signed integers.
+; greaterOrEqual returns true
+; for equal or greater signed
+; integers.
 push 420
 push 420
 greaterOrEqual
@@ -125,7 +136,8 @@ call assert 1
 moduleEnd
 
 module greaterOrEqualFloatAssertions
-; greaterOrEqual returns true for equal or greater floats.
+; greaterOrEqual returns true
+; for equal or greater floats.
 push 420.1
 push 420.1
 greaterOrEqual

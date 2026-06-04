@@ -6,7 +6,9 @@ int[] buffer 5 0
 moduleEnd
 
 module countMultiDotTarget
-; count(...) should reject references with extra path segments.
+; count(...) should reject
+; references with extra path
+; segments.
 int size count(countMultiDotSource:buffer.extra)
 moduleEnd
 entryEnd

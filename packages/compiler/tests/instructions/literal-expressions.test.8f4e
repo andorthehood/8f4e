@@ -1,9 +1,14 @@
 8f4e/v1
 
-; Literal and constant expressions are executed as regular language tests.
+; Literal and constant
+; expressions are executed as
+; regular
+; language tests.
 entry test
 module validConstantNameAssertions
-; Constants with valid names are available as int, float, and declaration defaults.
+; Constants with valid names are
+; available as int, float, and
+; declaration defaults.
 const TEST1 420
 const TEST2 420.69
 const TEST3 69
@@ -20,7 +25,9 @@ call assert 69
 moduleEnd
 
 module fractionLiteralAssertions
-; Fraction literals work in push, memory declarations, and constants.
+; Fraction literals work in
+; push, memory declarations, and
+; constants.
 push 1/16
 call assertf 0.0625
 
@@ -46,7 +53,10 @@ call assertf 0.125
 moduleEnd
 
 module literalMulDivExpressionAssertions
-; Literal-only multiplication and division fold in const, push, and memory contexts.
+; Literal-only multiplication
+; and division fold in const,
+; push,
+; and memory contexts.
 const MUL_RESULT 16*2
 push MUL_RESULT
 call assert 32
@@ -80,7 +90,9 @@ call assert 8
 moduleEnd
 
 module constantExpressionAssertions
-; Constants can reference constants and shape memory sizes.
+; Constants can reference
+; constants and shape memory
+; sizes.
 const SIZE 8
 int[] dividedBuffer SIZE/2
 push count(dividedBuffer)
@@ -107,7 +119,9 @@ call assert 4
 moduleEnd
 
 module sizeAndCountExpressionAssertions
-; sizeof and count expressions work in constants, push, and buffer sizing.
+; sizeof and count expressions
+; work in constants, push, and
+; buffer sizing.
 int16[] samples 4
 const BYTE_SIZE 123*sizeof(samples)
 push BYTE_SIZE
@@ -155,7 +169,10 @@ call assert 16
 moduleEnd
 
 module exponentExpressionAssertions
-; Exponent expressions are supported for constants, push values, and buffer sizes.
+; Exponent expressions are
+; supported for constants, push
+; values,
+; and buffer sizes.
 const WIDTH 2^16
 push WIDTH
 call assert 65536

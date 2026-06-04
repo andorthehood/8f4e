@@ -3,7 +3,7 @@
   "context": {},
   "line": {
     "instruction": "const",
-    "lineNumber": 2,
+    "lineNumber": 5,
   },
   "message": "Invalid argument for const: expected constant identifier.",
 }

@@ -6,7 +6,8 @@ moduleEnd
 entryEnd
 
 function tooManyParams
-; Functions should reject more than eight parameters.
+; Functions should reject more
+; than eight parameters.
 param int p1
 param int p2
 param int p3

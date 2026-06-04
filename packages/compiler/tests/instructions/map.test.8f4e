@@ -1,9 +1,14 @@
 8f4e/v1
 
-; map runtime behavior is asserted through source-level fixtures.
+; map runtime behavior is
+; asserted through source-level
+; fixtures.
 entry test
 module mapIntIntAssertions
-; Integer maps return matching values and fall back to implicit zero.
+; Integer maps return matching
+; values and fall back to
+; implicit
+; zero.
 int input
 
 push &input
@@ -52,7 +57,9 @@ call assert 0
 moduleEnd
 
 module mapCharLiteralAssertions
-; Single-character literals map through their ASCII integer values.
+; Single-character literals map
+; through their ASCII integer
+; values.
 int input
 
 push &input
@@ -75,7 +82,8 @@ call assert 0
 moduleEnd
 
 module mapDefaultAssertions
-; Explicit defaults are returned when no row matches.
+; Explicit defaults are returned
+; when no row matches.
 int input
 
 push &input
@@ -110,7 +118,8 @@ call assert 999
 moduleEnd
 
 module mapIntFloatAssertions
-; Integer keys can map to float outputs.
+; Integer keys can map to float
+; outputs.
 int input
 
 push &input
@@ -145,7 +154,8 @@ call assertf 0.0
 moduleEnd
 
 module mapFloatFloatAssertions
-; Float keys can map to float outputs.
+; Float keys can map to float
+; outputs.
 float input
 
 push &input
@@ -180,7 +190,8 @@ call assertf 0.0
 moduleEnd
 
 module mapImplicitDefaultAssertions
-; Missing rows use the implicit zero default.
+; Missing rows use the implicit
+; zero default.
 int input
 
 push &input
@@ -203,7 +214,10 @@ call assert 0
 moduleEnd
 
 module mapImplicitKeyAssertions
-; Single-argument map rows use their zero-based row index as the key.
+; Single-argument map rows use
+; their zero-based row index as
+; the
+; key.
 int input
 
 push &input
@@ -241,7 +255,10 @@ call assert 0
 moduleEnd
 
 module mapImplicitKeyMixedRowsAssertions
-; Explicit rows do not change the zero-based row index used by implicit rows.
+; Explicit rows do not change
+; the zero-based row index used
+; by
+; implicit rows.
 int input
 
 push &input
@@ -268,7 +285,9 @@ call assert 99
 moduleEnd
 
 module mapImplicitFloatKeyAssertions
-; Float maps also derive numeric implicit keys from the row index.
+; Float maps also derive numeric
+; implicit keys from the row
+; index.
 float input
 
 push &input
@@ -283,7 +302,8 @@ call assertf 1.5
 moduleEnd
 
 module mapFirstMatchAssertions
-; Duplicate keys use the first matching row.
+; Duplicate keys use the first
+; matching row.
 int input 1
 push input
 mapBegin int
@@ -294,7 +314,9 @@ call assert 10
 moduleEnd
 
 module mapZeroRowsAssertions
-; Empty maps return either implicit zero or an explicit default.
+; Empty maps return either
+; implicit zero or an explicit
+; default.
 int input 5
 push input
 mapBegin int
