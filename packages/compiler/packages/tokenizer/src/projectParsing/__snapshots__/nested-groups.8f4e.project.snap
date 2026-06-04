@@ -7,6 +7,7 @@
         "moduleEnd",
       ],
       "entry": "main",
+      "id": 4,
     },
   ],
   "groups": [
@@ -19,6 +20,7 @@
             "moduleEnd",
           ],
           "entry": "main",
+          "id": 9,
         },
         {
           "code": [
@@ -28,6 +30,7 @@
             "functionEnd float",
           ],
           "entry": "main",
+          "id": 13,
         },
         {
           "code": [
@@ -36,6 +39,7 @@
             "constantsEnd",
           ],
           "entry": "main",
+          "id": 18,
         },
       ],
       "entry": "main",
@@ -50,6 +54,7 @@
                 "prototypeEnd",
               ],
               "entry": "main",
+              "id": 23,
             },
             {
               "code": [
@@ -58,6 +63,7 @@
                 "defineMacroEnd",
               ],
               "entry": "main",
+              "id": 28,
             },
           ],
           "entry": "main",

@@ -70,6 +70,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 				}
 
 				targetCodeBlocks.push({
+					id: startIndex + 1,
 					code: currentBlockLines,
 					...(entry ? { entry } : {}),
 				});

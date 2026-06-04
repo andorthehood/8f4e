@@ -50,7 +50,8 @@
             }
           ]
         },
-        "memoryDeclarationLines": []
+        "memoryDeclarationLines": [],
+        "projectBlockId": 4
       },
       "index": 0,
       "executionEntryName": "main"
@@ -13160,7 +13161,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 10
       },
       "index": 1,
       "executionEntryName": "main"
@@ -13702,7 +13704,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 271
       },
       "index": 2,
       "executionEntryName": "main"
@@ -14244,7 +14247,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 306
       },
       "index": 3,
       "executionEntryName": "main"
@@ -14786,7 +14790,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 338
       },
       "index": 4,
       "executionEntryName": "main"
@@ -15395,7 +15400,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 371
       },
       "index": 5,
       "executionEntryName": "main"
