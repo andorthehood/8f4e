@@ -120,14 +120,12 @@ describe('drawPianoKeyboards', () => {
 				vGrid: 1,
 				hGrid: 4,
 			},
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontCode: {},
-					fontPianoKeyWhitePressedOverlay: {},
-					fontPianoKeyBlackPressedOverlay: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontCode: {},
+				fontPianoKeyWhitePressedOverlay: {},
+				fontPianoKeyBlackPressedOverlay: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -165,14 +163,12 @@ describe('drawPianoKeyboards', () => {
 				vGrid: 1,
 				hGrid: 4,
 			},
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontCode: {},
-					fontPianoKeyWhitePressedOverlay: {},
-					fontPianoKeyBlackPressedOverlay: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontCode: {},
+				fontPianoKeyWhitePressedOverlay: {},
+				fontPianoKeyBlackPressedOverlay: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -196,14 +192,12 @@ describe('drawPianoKeyboards', () => {
 				vGrid: 1,
 				hGrid: 4,
 			},
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontCode: {},
-					fontPianoKeyWhitePressedOverlay: {},
-					fontPianoKeyBlackPressedOverlay: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontCode: {},
+				fontPianoKeyWhitePressedOverlay: {},
+				fontPianoKeyBlackPressedOverlay: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {

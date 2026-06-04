@@ -15,11 +15,9 @@ describe('drawArrow', () => {
 	it('renders ASCII characters for off-screen directions', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fontArrow: {},
-				} as never,
-			},
+			spriteLookups: {
+				fontArrow: {},
+			} as never,
 			viewport: {
 				width: 1024,
 				height: 768,
