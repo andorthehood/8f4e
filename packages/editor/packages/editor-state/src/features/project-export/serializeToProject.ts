@@ -7,7 +7,7 @@ import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
  * @returns Project object ready for session persistence or `.8f4e` conversion
  */
 export default function serializeToProject(state: State): Project {
-	const { graphicHelper } = state;
+	const { codeBlockRendering } = state;
 
-	return convertGraphicDataToProjectStructure(graphicHelper.codeBlocks);
+	return convertGraphicDataToProjectStructure(codeBlockRendering.codeBlocks);
 }

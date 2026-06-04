@@ -36,9 +36,9 @@ test('dragged module', async () => {
 			codeColors: generateColorMapWithAllColors(mockState.spriteLookups),
 		});
 
-		mockState.graphicHelper.draggedCodeBlock = codeBlockMock;
+		mockState.codeBlockRendering.draggedCodeBlock = codeBlockMock;
 
-		mockState.graphicHelper.codeBlocks.push(codeBlockMock);
+		mockState.codeBlockRendering.codeBlocks.push(codeBlockMock);
 	}
 
 	await expect(canvas).toMatchScreenshot();

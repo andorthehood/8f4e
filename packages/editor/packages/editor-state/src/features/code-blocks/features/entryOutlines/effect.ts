@@ -7,16 +7,19 @@ export default function entryOutlines(store: StateManager<State>): void {
 
 	function syncEntryOutlines(): void {
 		store.set(
-			'graphicHelper.entryOutlines',
-			deriveEntryOutlines(state.graphicHelper.codeBlocks, state.viewport.vGrid * 8, state.viewport.hGrid * 4)
+			'codeBlockRendering.entryOutlines',
+			deriveEntryOutlines(state.codeBlockRendering.codeBlocks, state.viewport.vGrid * 8, state.viewport.hGrid * 4)
 		);
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', syncEntryOutlines);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', syncEntryOutlines);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', syncEntryOutlines);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', syncEntryOutlines);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', syncEntryOutlines);
+	store.subscribe('codeBlockRendering.codeBlocks', syncEntryOutlines);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncEntryOutlines);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', syncEntryOutlines);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', syncEntryOutlines);
+	store.subscribe(
+		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+		syncEntryOutlines
+	);
 
 	syncEntryOutlines();
 }

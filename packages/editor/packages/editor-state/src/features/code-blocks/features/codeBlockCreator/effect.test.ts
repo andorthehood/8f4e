@@ -37,11 +37,11 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			expect(mockReadClipboard).toHaveBeenCalled();
 
 			// Verify code block was added with clipboard content (now includes @pos)
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].code[0]).toBe('module test');
-			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
-			expect(mockState.graphicHelper.codeBlocks[0].code[2]).toBe('');
-			expect(mockState.graphicHelper.codeBlocks[0].code[3]).toBe('moduleEnd');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[0]).toBe('module test');
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[2]).toBe('');
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[3]).toBe('moduleEnd');
 		});
 
 		it('should fail silently when readClipboardText is not provided', async () => {
@@ -57,7 +57,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Verify no code block was added
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(0);
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(0);
 		});
 
 		it('should fail silently when clipboard read fails', async () => {
@@ -77,7 +77,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			expect(mockReadClipboard).toHaveBeenCalled();
 
 			// Verify no code block was added (silent failure)
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(0);
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(0);
 		});
 	});
 
@@ -91,15 +91,15 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].entry).toBe('entry');
-			expect(mockState.graphicHelper.codeBlocks[0].code[0]).toMatch(/^module \w+$/);
-			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
-			expect(mockState.graphicHelper.codeBlocks[0].code.at(-1)).toBe('moduleEnd');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
+			expect(mockState.codeBlockRendering.codeBlocks[0].entry).toBe('entry');
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[0]).toMatch(/^module \w+$/);
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
+			expect(mockState.codeBlockRendering.codeBlocks[0].code.at(-1)).toBe('moduleEnd');
 		});
 
 		it('increments the entry name when creating outside entries and the default new entry name is already used', async () => {
-			mockState.graphicHelper.codeBlocks = [
+			mockState.codeBlockRendering.codeBlocks = [
 				createMockCodeBlock({
 					code: ['module existing', 'moduleEnd'],
 					blockType: 'module',
@@ -115,12 +115,12 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
-			expect(mockState.graphicHelper.codeBlocks[1].entry).toBe('entry2');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(2);
+			expect(mockState.codeBlockRendering.codeBlocks[1].entry).toBe('entry2');
 		});
 
 		it('assigns a regular new module to the containing non-main entry', async () => {
-			mockState.graphicHelper.entryOutlines = [
+			mockState.codeBlockRendering.entryOutlines = [
 				{
 					entryName: 'fx',
 					topLeft: { x: 0, y: 0 },
@@ -138,12 +138,12 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].entry).toBe('fx');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
+			expect(mockState.codeBlockRendering.codeBlocks[0].entry).toBe('fx');
 		});
 
 		it('uses the first overlapping entry outline at the new module position', async () => {
-			mockState.graphicHelper.entryOutlines = [
+			mockState.codeBlockRendering.entryOutlines = [
 				{
 					entryName: 'first',
 					topLeft: { x: 0, y: 0 },
@@ -168,12 +168,12 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].entry).toBe('first');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
+			expect(mockState.codeBlockRendering.codeBlocks[0].entry).toBe('first');
 		});
 
 		it('stores the main entry explicitly', async () => {
-			mockState.graphicHelper.entryOutlines = [
+			mockState.codeBlockRendering.entryOutlines = [
 				{
 					entryName: 'main',
 					topLeft: { x: 0, y: 0 },
@@ -191,8 +191,8 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: true, blockType: 'module' });
 
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].entry).toBe('main');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
+			expect(mockState.codeBlockRendering.codeBlocks[0].entry).toBe('main');
 		});
 	});
 
@@ -207,7 +207,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 				code: ['module test', '', 'moduleEnd'],
 				blockType: 'module',
 			});
-			mockState.graphicHelper.codeBlocks = [testCodeBlock];
+			mockState.codeBlockRendering.codeBlocks = [testCodeBlock];
 
 			codeBlockCreator(store, mockEvents);
 
@@ -219,7 +219,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const copyCodeBlockCallback = copyCodeBlockCall![1];
 
 			// Trigger copy
-			copyCodeBlockCallback({ codeBlock: mockState.graphicHelper.codeBlocks[0] });
+			copyCodeBlockCallback({ codeBlock: mockState.codeBlockRendering.codeBlocks[0] });
 
 			// Wait for async operation
 			await new Promise(resolve => setTimeout(resolve, 0));
@@ -237,7 +237,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 				code: ['module test', '', 'moduleEnd'],
 				blockType: 'module',
 			});
-			mockState.graphicHelper.codeBlocks = [testCodeBlock];
+			mockState.codeBlockRendering.codeBlocks = [testCodeBlock];
 
 			codeBlockCreator(store, mockEvents);
 
@@ -247,7 +247,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Trigger copy - should not throw
 			expect(() => {
-				copyCodeBlockCallback({ codeBlock: mockState.graphicHelper.codeBlocks[0] });
+				copyCodeBlockCallback({ codeBlock: mockState.codeBlockRendering.codeBlocks[0] });
 			}).not.toThrow();
 		});
 
@@ -261,7 +261,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 				code: ['module test', '', 'moduleEnd'],
 				blockType: 'module',
 			});
-			mockState.graphicHelper.codeBlocks = [testCodeBlock];
+			mockState.codeBlockRendering.codeBlocks = [testCodeBlock];
 
 			codeBlockCreator(store, mockEvents);
 
@@ -270,7 +270,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const copyCodeBlockCallback = copyCodeBlockCall![1];
 
 			// Trigger copy
-			copyCodeBlockCallback({ codeBlock: mockState.graphicHelper.codeBlocks[0] });
+			copyCodeBlockCallback({ codeBlock: mockState.codeBlockRendering.codeBlocks[0] });
 
 			// Wait for async operation
 			await new Promise(resolve => setTimeout(resolve, 0));
@@ -308,15 +308,19 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
 
 			// Verify all modules were added
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_main');
-			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_dep1');
-			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('module_dep2');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(3);
+			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_main');
+			expect(mockState.codeBlockRendering.codeBlocks[1].id).toBe('module_dep1');
+			expect(mockState.codeBlockRendering.codeBlocks[2].id).toBe('module_dep2');
 
 			// Verify positions - dep1 should be to the right of main
-			expect(mockState.graphicHelper.codeBlocks[1].gridX).toBeGreaterThan(mockState.graphicHelper.codeBlocks[0].gridX);
+			expect(mockState.codeBlockRendering.codeBlocks[1].gridX).toBeGreaterThan(
+				mockState.codeBlockRendering.codeBlocks[0].gridX
+			);
 			// Verify positions - dep2 should be to the right of dep1
-			expect(mockState.graphicHelper.codeBlocks[2].gridX).toBeGreaterThan(mockState.graphicHelper.codeBlocks[1].gridX);
+			expect(mockState.codeBlockRendering.codeBlocks[2].gridX).toBeGreaterThan(
+				mockState.codeBlockRendering.codeBlocks[1].gridX
+			);
 		});
 
 		it('should skip dependencies that already exist', async () => {
@@ -341,7 +345,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 				code: ['module dep1', '', 'moduleEnd'],
 				blockType: 'module',
 			});
-			mockState.graphicHelper.codeBlocks = [existingDep1];
+			mockState.codeBlockRendering.codeBlocks = [existingDep1];
 
 			codeBlockCreator(store, mockEvents);
 
@@ -353,10 +357,10 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
 
 			// Verify only main and dep2 were added (dep1 already existed)
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_dep1'); // Existing
-			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_main'); // New
-			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('module_dep2'); // New
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(3);
+			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_dep1'); // Existing
+			expect(mockState.codeBlockRendering.codeBlocks[1].id).toBe('module_main'); // New
+			expect(mockState.codeBlockRendering.codeBlocks[2].id).toBe('module_dep2'); // New
 		});
 
 		it('should work without dependencies field', async () => {
@@ -375,8 +379,8 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockBySlugCallback({ codeBlockSlug: 'simple', x: 100, y: 100 });
 
 			// Verify only the main module was added
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_simple');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
+			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_simple');
 		});
 
 		it('should handle dependency loading errors gracefully', async () => {
@@ -406,9 +410,9 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
 
 			// Verify main and dep1 were added, but missing was skipped
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_main');
-			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_dep1');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(2);
+			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_main');
+			expect(mockState.codeBlockRendering.codeBlocks[1].id).toBe('module_dep1');
 
 			// Verify warning was logged
 			expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to load dependency: missing', expect.any(Error));
@@ -441,11 +445,11 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			await addCodeBlockBySlugCallback({ codeBlockSlug: 'main', x: 100, y: 100 });
 
 			// Verify both modules were added
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(2);
 
 			// Calculate expected positions
-			const mainModule = mockState.graphicHelper.codeBlocks[0];
-			const dep1Module = mockState.graphicHelper.codeBlocks[1];
+			const mainModule = mockState.codeBlockRendering.codeBlocks[0];
+			const dep1Module = mockState.codeBlockRendering.codeBlocks[1];
 
 			// Main module should be at the clicked grid position
 			expect(mainModule.gridX).toBeCloseTo(Math.round((mockState.viewport.x + 100) / mockState.viewport.vGrid), 0);
@@ -475,7 +479,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 				code: ['module sine', '', 'moduleEnd'],
 				blockType: 'module',
 			});
-			mockState.graphicHelper.codeBlocks = [existingSineModule];
+			mockState.codeBlockRendering.codeBlocks = [existingSineModule];
 
 			codeBlockCreator(store, mockEvents);
 
@@ -490,13 +494,13 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			// because the existing 'sine' is a module, not a function
 			// Note: IDs are now type-scoped, so existing `module_sine` does not force
 			// incrementing `function_sine`.
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(3);
-			expect(mockState.graphicHelper.codeBlocks[0].id).toBe('module_sine'); // Existing module
-			expect(mockState.graphicHelper.codeBlocks[0].blockType).toBe('module');
-			expect(mockState.graphicHelper.codeBlocks[1].id).toBe('module_main'); // New module
-			expect(mockState.graphicHelper.codeBlocks[2].id).toBe('function_sine'); // New function
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(3);
+			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_sine'); // Existing module
+			expect(mockState.codeBlockRendering.codeBlocks[0].blockType).toBe('module');
+			expect(mockState.codeBlockRendering.codeBlocks[1].id).toBe('module_main'); // New module
+			expect(mockState.codeBlockRendering.codeBlocks[2].id).toBe('function_sine'); // New function
 			// Check the code contains function markers
-			expect(mockState.graphicHelper.codeBlocks[2].code.join('\n')).toContain('function sine');
+			expect(mockState.codeBlockRendering.codeBlocks[2].code.join('\n')).toContain('function sine');
 		});
 	});
 });
@@ -514,7 +518,7 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 	it('should toggle disabled state from false to true', () => {
 		const codeBlock = createMockCodeBlock({ disabled: false });
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		codeBlockCreator(store, mockEvents);
 
@@ -530,7 +534,7 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 	it('should toggle disabled state from true to false', () => {
 		const codeBlock = createMockCodeBlock({ disabled: true });
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		codeBlockCreator(store, mockEvents);
 
@@ -545,7 +549,7 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 	it('should update lastUpdated for cache invalidation', () => {
 		const codeBlock = createMockCodeBlock({ disabled: false, lastUpdated: 1000 });
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		codeBlockCreator(store, mockEvents);
 
@@ -560,7 +564,7 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 	it('should trigger store update', () => {
 		const codeBlock = createMockCodeBlock({ disabled: false });
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		codeBlockCreator(store, mockEvents);
 
@@ -572,12 +576,12 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 		toggleCallback({ codeBlock });
 
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	});
 
 	it('should not toggle when editing is disabled', () => {
 		const codeBlock = createMockCodeBlock({ disabled: false });
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = false;
 
 		codeBlockCreator(store, mockEvents);
@@ -593,7 +597,7 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 	it('should add @disabled directive when enabling disabled', () => {
 		const codeBlock = createMockCodeBlock({ code: ['module test', 'moduleEnd'], disabled: false });
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		codeBlockCreator(store, mockEvents);
 
@@ -609,7 +613,7 @@ describe('codeBlockCreator - toggleCodeBlockDisabled', () => {
 
 	it('should remove @disabled directive when disabling disabled', () => {
 		const codeBlock = createMockCodeBlock({ code: ['module test', '; @disabled', 'moduleEnd'], disabled: true });
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		codeBlockCreator(store, mockEvents);
 

@@ -64,7 +64,7 @@ describe('editor-state testing utilities', () => {
 		expect(state.info.compiler?.compilationTimeMs).toBe(120);
 		expect(state.viewport.width).toBe(400);
 		expect(state.viewport.height).toBe(768);
-		expect(state.graphicHelper.outputsByWordAddress).not.toBe(secondState.graphicHelper.outputsByWordAddress);
+		expect(state.codeBlockRendering.outputsByWordAddress).not.toBe(secondState.codeBlockRendering.outputsByWordAddress);
 	});
 
 	it('creates no-op event dispatchers and viewports', () => {

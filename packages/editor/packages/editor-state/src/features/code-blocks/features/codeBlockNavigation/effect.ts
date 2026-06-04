@@ -9,25 +9,25 @@ import findClosestCodeBlockInDirection from '../../utils/finders/findClosestCode
 import { deriveDirectiveState } from '../directives/registry';
 
 type StateSource = StateManager<State> | State;
-type CodeBlockCursor = NonNullable<State['graphicHelper']['selectedCodeBlock']>['cursor'];
+type CodeBlockCursor = NonNullable<State['codeBlockRendering']['selectedCodeBlock']>['cursor'];
 type CodeBlockCursorUpdate = Partial<CodeBlockCursor> & Pick<CodeBlockCursor, 'row' | 'col'>;
 
 function getState(source: StateSource): State {
 	return 'getState' in source ? source.getState() : source;
 }
 
-function setSelectedCodeBlock(source: StateSource, codeBlock: State['graphicHelper']['selectedCodeBlock']): void {
+function setSelectedCodeBlock(source: StateSource, codeBlock: State['codeBlockRendering']['selectedCodeBlock']): void {
 	if ('set' in source) {
-		source.set('graphicHelper.selectedCodeBlock', codeBlock);
+		source.set('codeBlockRendering.selectedCodeBlock', codeBlock);
 		return;
 	}
 
-	source.graphicHelper.selectedCodeBlock = codeBlock;
+	source.codeBlockRendering.selectedCodeBlock = codeBlock;
 }
 
 function setSelectedCodeBlockCursor(
 	source: StateSource,
-	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	block: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	cursor: CodeBlockCursorUpdate
 ): void {
 	const nextCursor = {
@@ -35,8 +35,8 @@ function setSelectedCodeBlockCursor(
 		...cursor,
 	};
 
-	if ('set' in source && getState(source).graphicHelper.selectedCodeBlock === block) {
-		source.set('graphicHelper.selectedCodeBlock.cursor', nextCursor);
+	if ('set' in source && getState(source).codeBlockRendering.selectedCodeBlock === block) {
+		source.set('codeBlockRendering.selectedCodeBlock.cursor', nextCursor);
 		return;
 	}
 
@@ -45,8 +45,8 @@ function setSelectedCodeBlockCursor(
 
 function alignTargetBlockCursorForHorizontalNavigation(
 	source: StateSource,
-	sourceBlock: State['graphicHelper']['selectedCodeBlock'],
-	targetBlock: State['graphicHelper']['selectedCodeBlock']
+	sourceBlock: State['codeBlockRendering']['selectedCodeBlock'],
+	targetBlock: State['codeBlockRendering']['selectedCodeBlock']
 ): void {
 	if (!sourceBlock || !targetBlock) {
 		return;
@@ -75,7 +75,7 @@ function alignTargetBlockCursorForHorizontalNavigation(
 
 function setBlockCursorToDisplayRow(
 	source: StateSource,
-	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	block: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	displayRow: number,
 	sourceCol?: number
 ): void {
@@ -96,7 +96,7 @@ function setBlockCursorToDisplayRow(
 
 function getSelectedBlockDisplayRow(
 	state: State,
-	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>
+	block: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>
 ): number {
 	const physicalRow = Math.max(Math.floor(block.cursor.y / state.viewport.hGrid), 0);
 	return reverseGapCalculator(physicalRow, block.gaps);
@@ -104,7 +104,7 @@ function getSelectedBlockDisplayRow(
 
 function moveSelectionToCurrentBlockVerticalEdge(
 	source: StateSource,
-	block: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	block: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	direction: 'up' | 'down'
 ): boolean {
 	const state = getState(source);
@@ -125,8 +125,8 @@ function moveSelectionToCurrentBlockVerticalEdge(
 
 function alignTargetBlockCursorForVerticalNavigation(
 	source: StateSource,
-	sourceBlock: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
-	targetBlock: NonNullable<State['graphicHelper']['selectedCodeBlock']>,
+	sourceBlock: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
+	targetBlock: NonNullable<State['codeBlockRendering']['selectedCodeBlock']>,
 	direction: 'up' | 'down'
 ): void {
 	const targetDirectiveState = deriveDirectiveState(targetBlock.code, targetBlock.parsedDirectives, {
@@ -163,13 +163,13 @@ export function navigateToCodeBlockInDirection(
 ): boolean {
 	const state = getState(stateSource);
 	// Only proceed if a code block is currently selected
-	if (!state.graphicHelper.selectedCodeBlock) {
+	if (!state.codeBlockRendering.selectedCodeBlock) {
 		return false;
 	}
 
 	// Get the current viewport's code blocks
-	const codeBlocks = state.graphicHelper.codeBlocks;
-	const currentBlock = state.graphicHelper.selectedCodeBlock;
+	const codeBlocks = state.codeBlockRendering.codeBlocks;
+	const currentBlock = state.codeBlockRendering.selectedCodeBlock;
 
 	// Find the closest code block in the specified direction
 	if (
@@ -219,7 +219,7 @@ export function jumpToCodeBlock(
 	events?: EventDispatcher
 ): boolean {
 	const state = getState(stateSource);
-	const codeBlocks = state.graphicHelper.codeBlocks;
+	const codeBlocks = state.codeBlockRendering.codeBlocks;
 
 	// Try to resolve by creationIndex first (primary identifier)
 	let targetBlock = codeBlocks.find(block => block.creationIndex === creationIndex);
@@ -251,7 +251,7 @@ export function jumpToCodeBlock(
  */
 export function goHome(stateSource: StateSource, events?: EventDispatcher): void {
 	const state = getState(stateSource);
-	const homeBlock = state.graphicHelper.codeBlocks.find(block => block.isHome);
+	const homeBlock = state.codeBlockRendering.codeBlocks.find(block => block.isHome);
 
 	if (homeBlock) {
 		setSelectedCodeBlock(stateSource, homeBlock);
