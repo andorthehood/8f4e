@@ -6,7 +6,7 @@ import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEnt
 
 function createState(codeBlocks: CodeBlockGraphicData[] = []): State {
 	return {
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks,
 		},
 		codeErrors: {
@@ -72,7 +72,7 @@ describe('editor environment plugin manager', () => {
 
 		expect(load).not.toHaveBeenCalled();
 
-		store.set('graphicHelper.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
+		store.set('codeBlockRendering.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
 		await flushPromises();
 
 		expect(load).toHaveBeenCalledTimes(1);
@@ -112,7 +112,7 @@ describe('editor environment plugin manager', () => {
 		});
 		await flushPromises();
 
-		store.set('graphicHelper.codeBlocks', []);
+		store.set('codeBlockRendering.codeBlocks', []);
 
 		expect(dispose).toHaveBeenCalledTimes(1);
 	});
@@ -147,7 +147,7 @@ describe('editor environment plugin manager', () => {
 
 		expect(store.getState().codeErrors.editorDirectiveErrors).toEqual([{ ...pluginError, ownerId: 'test-plugin' }]);
 
-		store.set('graphicHelper.codeBlocks', []);
+		store.set('codeBlockRendering.codeBlocks', []);
 
 		expect(store.getState().codeErrors.editorDirectiveErrors).toEqual([]);
 	});
@@ -178,8 +178,8 @@ describe('editor environment plugin manager', () => {
 			registry,
 		});
 
-		store.set('graphicHelper.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
-		store.set('graphicHelper.codeBlocks', []);
+		store.set('codeBlockRendering.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
+		store.set('codeBlockRendering.codeBlocks', []);
 
 		resolveLoad({ default: start });
 		await flushPromises();

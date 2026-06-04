@@ -64,7 +64,7 @@ export default function historyTracking(store: StateManager<State>, events: Even
 		}
 	}
 
-	store.subscribe('graphicHelper.selectedCodeBlock.code', onCodeChange);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onCodeChange);
 	events.on('undo', undo);
 	events.on('redo', redo);
 }

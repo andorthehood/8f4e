@@ -60,10 +60,10 @@ function getLineNumberPrefix(
 	return `${displayRow}`.padStart(lineNumberColumnWidth, '0') + ' ';
 }
 
-export default function graphicHelper(store: StateManager<State>, events: EventDispatcher) {
+export default function codeBlockRendering(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
 	const shouldExpandCodeBlockForEditing = (codeBlock: CodeBlockGraphicData): boolean =>
-		codeBlock === state.graphicHelper.selectedCodeBlock;
+		codeBlock === state.codeBlockRendering.selectedCodeBlock;
 
 	const onCodeBlockClick = ({ relativeX = 0, relativeY = 0, codeBlock }: CodeBlockClickEvent) => {
 		if (!state.featureFlags.codeLineSelection) {
@@ -84,11 +84,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			tabStopsByLine[Math.min(row, codeBlock.code.length - 1)] || []
 		);
 		const [boundedRow, boundedCol] = moveCaret(codeBlock.code, row, col, 'jump');
-		if (codeBlock !== state.graphicHelper.selectedCodeBlock) {
+		if (codeBlock !== state.codeBlockRendering.selectedCodeBlock) {
 			return;
 		}
 
-		store.set('graphicHelper.selectedCodeBlock.cursor', {
+		store.set('codeBlockRendering.selectedCodeBlock.cursor', {
 			...codeBlock.cursor,
 			row: boundedRow,
 			col: boundedCol,
@@ -108,7 +108,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		const displayModel = directiveState.displayModel;
 
 		graphicData.disabled = directiveState.blockState.disabled;
-		graphicData.hidden = directiveState.blockState.hidden && state.graphicHelper.selectedCodeBlock !== graphicData;
+		graphicData.hidden = directiveState.blockState.hidden && state.codeBlockRendering.selectedCodeBlock !== graphicData;
 		graphicData.isHome = directiveState.blockState.isHome;
 		graphicData.homeAlignment = directiveState.blockState.homeAlignment;
 		graphicData.isFavorite = directiveState.blockState.isFavorite;
@@ -200,11 +200,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		graphicData.viewportAnchor = directiveState.blockState.viewportAnchor;
 		graphicData.alwaysOnTop = directiveState.blockState.alwaysOnTop ?? false;
 
-		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.graphicHelper.textureCacheEpoch}`;
+		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.codeBlockRendering.textureCacheEpoch}`;
 	};
 
 	const updateGraphicsAll = () => {
-		for (const graphicData of state.graphicHelper.codeBlocks) {
+		for (const graphicData of state.codeBlockRendering.codeBlocks) {
 			updateGraphics(graphicData);
 		}
 	};
@@ -212,7 +212,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	const recomputePixelCoordinatesAndUpdateGraphics = () => {
 		// When viewport grid dimensions change (e.g., font change), recompute pixel positions
 		// from the stable grid coordinates, then update graphics. Combined into single iteration.
-		for (const codeBlock of state.graphicHelper.codeBlocks) {
+		for (const codeBlock of state.codeBlockRendering.codeBlocks) {
 			if (!codeBlock.viewportAnchor) {
 				// World-space blocks: derive pixel position directly from grid coordinates.
 				codeBlock.x = codeBlock.gridX * state.viewport.vGrid;
@@ -226,7 +226,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	const centerViewportOnSelectedCodeBlock = () => {
-		const selectedCodeBlock = state.graphicHelper.selectedCodeBlock;
+		const selectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
 		if (!selectedCodeBlock) {
 			return;
 		}
@@ -238,14 +238,14 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	const updateSelectedCodeBlock = () => {
-		if (!state.graphicHelper.selectedCodeBlock) {
+		if (!state.codeBlockRendering.selectedCodeBlock) {
 			return;
 		}
-		updateGraphics(state.graphicHelper.selectedCodeBlock);
+		updateGraphics(state.codeBlockRendering.selectedCodeBlock);
 	};
 
 	const updateProgrammaticSelectedCodeBlock = () => {
-		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEdit;
+		const block = state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit;
 		if (!block) {
 			return;
 		}
@@ -253,7 +253,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	const updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger = () => {
-		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
+		const block = state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
 		if (!block) {
 			return;
 		}
@@ -273,10 +273,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		});
 	};
 
-	let previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
+	let previousSelectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
 	const onSelectedCodeBlockChanged = () => {
-		updateHideSelectionTransition(previousSelectedCodeBlock, state.graphicHelper.selectedCodeBlock);
-		previousSelectedCodeBlock = state.graphicHelper.selectedCodeBlock;
+		updateHideSelectionTransition(previousSelectedCodeBlock, state.codeBlockRendering.selectedCodeBlock);
+		previousSelectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
 	};
 
 	const populateCodeBlocks = async () => {
@@ -284,15 +284,15 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		state.graphicHelper.outputsByWordAddress.clear();
-		state.graphicHelper.draggedCodeBlock = undefined;
-		state.graphicHelper.nextCodeBlockCreationIndex = 0;
-		store.set('graphicHelper.selectedCodeBlock', undefined);
-		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', undefined);
+		state.codeBlockRendering.outputsByWordAddress.clear();
+		state.codeBlockRendering.draggedCodeBlock = undefined;
+		state.codeBlockRendering.nextCodeBlockCreationIndex = 0;
+		store.set('codeBlockRendering.selectedCodeBlock', undefined);
+		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', undefined);
 
 		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
-			const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
-			state.graphicHelper.nextCodeBlockCreationIndex++;
+			const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
+			state.codeBlockRendering.nextCodeBlockCreationIndex++;
 
 			// Parse @pos directive from code, default to (0,0) if missing or invalid
 			const blockParsedDirectives = parseBlockDirectives(codeBlock.code);
@@ -341,12 +341,12 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 		// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
 		const partitionedCodeBlocks = [...codeBlocks.filter(b => !b.alwaysOnTop), ...codeBlocks.filter(b => b.alwaysOnTop)];
 
-		store.set('graphicHelper.codeBlocks', partitionedCodeBlocks);
+		store.set('codeBlockRendering.codeBlocks', partitionedCodeBlocks);
 
 		// Center viewport on first @home block, or default to (0,0)
 		const homeBlock = codeBlocks.find(block => block.isHome);
 		if (homeBlock) {
-			store.set('graphicHelper.selectedCodeBlock', homeBlock);
+			store.set('codeBlockRendering.selectedCodeBlock', homeBlock);
 			const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock, {
 				alignment: homeBlock.homeAlignment,
 			});
@@ -364,7 +364,7 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 			...state.codeErrors.editorDirectiveErrors,
 			...state.codeErrors.shaderErrors,
 		];
-		state.graphicHelper.codeBlocks.forEach(codeBlock => {
+		state.codeBlockRendering.codeBlocks.forEach(codeBlock => {
 			codeBlock.widgets.errorMessages = [];
 			codeErrors.forEach(codeError => {
 				const matchesCodeBlock =
@@ -392,10 +392,10 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 
 	// When user edits code, parse @pos and update runtime position if valid
 	const applyPositionFromCodeEdit = () => {
-		if (!state.graphicHelper.selectedCodeBlock) {
+		if (!state.codeBlockRendering.selectedCodeBlock) {
 			return;
 		}
-		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		const codeBlock = state.codeBlockRendering.selectedCodeBlock;
 		const posResult = parsePos(codeBlock.parsedDirectives);
 
 		// Only update position if @pos is valid
@@ -418,22 +418,25 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on('spriteSheetRerendered', () => {
-		state.graphicHelper.textureCacheEpoch += 1;
+		state.codeBlockRendering.textureCacheEpoch += 1;
 		recomputePixelCoordinatesAndUpdateGraphics();
 		centerViewportOnSelectedCodeBlock();
 	});
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);
-	store.subscribe('graphicHelper.codeBlocks', updateGraphicsAll);
+	store.subscribe('codeBlockRendering.codeBlocks', updateGraphicsAll);
 	store.subscribe('info', updateGraphicsAll);
-	store.subscribe('graphicHelper.selectedCodeBlock', onSelectedCodeBlockChanged);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', updateSelectedCodeBlock);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', applyPositionFromCodeEdit);
-	store.subscribe('graphicHelper.selectedCodeBlock.cursor', updateSelectedCodeBlock);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.cursor', updateProgrammaticSelectedCodeBlock);
+	store.subscribe('codeBlockRendering.selectedCodeBlock', onSelectedCodeBlockChanged);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', updateSelectedCodeBlock);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', applyPositionFromCodeEdit);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.cursor', updateSelectedCodeBlock);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
 	store.subscribe(
-		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+		'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.cursor',
+		updateProgrammaticSelectedCodeBlock
+	);
+	store.subscribe(
+		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
 		updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger
 	);
 }

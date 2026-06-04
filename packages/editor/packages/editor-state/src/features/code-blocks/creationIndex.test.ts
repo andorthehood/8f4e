@@ -6,7 +6,7 @@ import projectImport from '~/features/project-import/effect';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
-import graphicHelper from './effect';
+import codeBlockRendering from './effect';
 import codeBlockCreator from './features/codeBlockCreator/effect';
 
 describe('creationIndex', () => {
@@ -33,16 +33,16 @@ describe('creationIndex', () => {
 			const addCodeBlockHandler = addCodeBlockCall![1];
 
 			// Initial state should have nextCodeBlockCreationIndex = 0
-			expect(mockState.graphicHelper.nextCodeBlockCreationIndex).toBe(0);
+			expect(mockState.codeBlockRendering.nextCodeBlockCreationIndex).toBe(0);
 
 			// Add first code block
 			addCodeBlockHandler({ x: 0, y: 0, isNew: true });
 
 			// Verify first code block got creationIndex 0
-			const codeBlocks = mockState.graphicHelper.codeBlocks;
+			const codeBlocks = mockState.codeBlockRendering.codeBlocks;
 			expect(codeBlocks.length).toBe(1);
 			expect(codeBlocks[0].creationIndex).toBe(0);
-			expect(mockState.graphicHelper.nextCodeBlockCreationIndex).toBe(1);
+			expect(mockState.codeBlockRendering.nextCodeBlockCreationIndex).toBe(1);
 		});
 
 		it('should increment creationIndex for each new code block', () => {
@@ -57,13 +57,13 @@ describe('creationIndex', () => {
 			addCodeBlockHandler({ x: 100, y: 0, isNew: true });
 			addCodeBlockHandler({ x: 200, y: 0, isNew: true });
 
-			const codeBlocks = mockState.graphicHelper.codeBlocks;
+			const codeBlocks = mockState.codeBlockRendering.codeBlocks;
 			expect(codeBlocks.length).toBe(3);
 
 			// Verify each block has a unique, incrementing creationIndex
 			const creationIndexes = codeBlocks.map(b => b.creationIndex).sort((a, b) => a - b);
 			expect(creationIndexes).toEqual([0, 1, 2]);
-			expect(mockState.graphicHelper.nextCodeBlockCreationIndex).toBe(3);
+			expect(mockState.codeBlockRendering.nextCodeBlockCreationIndex).toBe(3);
 		});
 
 		it('should leave gaps in creationIndex when blocks are deleted', () => {
@@ -81,7 +81,7 @@ describe('creationIndex', () => {
 			addCodeBlockHandler({ x: 200, y: 0, isNew: true });
 
 			// Delete the middle one (creationIndex 1)
-			const codeBlocks = mockState.graphicHelper.codeBlocks;
+			const codeBlocks = mockState.codeBlockRendering.codeBlocks;
 			const middleBlock = codeBlocks.find(b => b.creationIndex === 1);
 			deleteCodeBlockHandler({ codeBlock: middleBlock });
 
@@ -89,17 +89,17 @@ describe('creationIndex', () => {
 			addCodeBlockHandler({ x: 300, y: 0, isNew: true });
 
 			// Verify the new block gets creationIndex 3 (not 1, leaving a gap)
-			const updatedCodeBlocks = mockState.graphicHelper.codeBlocks;
+			const updatedCodeBlocks = mockState.codeBlockRendering.codeBlocks;
 			const creationIndexes = updatedCodeBlocks.map(b => b.creationIndex).sort((a, b) => a - b);
 			expect(creationIndexes).toEqual([0, 2, 3]);
-			expect(mockState.graphicHelper.nextCodeBlockCreationIndex).toBe(4);
+			expect(mockState.codeBlockRendering.nextCodeBlockCreationIndex).toBe(4);
 		});
 	});
 
 	describe('projectImport', () => {
 		it('should assign creationIndex to code blocks when loading a project', () => {
 			projectImport(store, mockEvents);
-			graphicHelper(store, mockEvents);
+			codeBlockRendering(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
@@ -116,25 +116,25 @@ describe('creationIndex', () => {
 
 			loadProjectCallback({ project: projectWithBlocks });
 
-			const codeBlocks = mockState.graphicHelper.codeBlocks;
+			const codeBlocks = mockState.codeBlockRendering.codeBlocks;
 			expect(codeBlocks.length).toBe(3);
 
 			// Verify each block has a creationIndex
 			const creationIndexes = codeBlocks.map(b => b.creationIndex).sort((a, b) => a - b);
 			expect(creationIndexes).toEqual([0, 1, 2]);
-			expect(mockState.graphicHelper.nextCodeBlockCreationIndex).toBe(3);
+			expect(mockState.codeBlockRendering.nextCodeBlockCreationIndex).toBe(3);
 		});
 
 		it('should reset creationIndex counter when loading a new project', () => {
 			projectImport(store, mockEvents);
-			graphicHelper(store, mockEvents);
+			codeBlockRendering(store, mockEvents);
 
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 			const loadProjectCallback = loadProjectCall![1];
 
 			// Set a high nextCodeBlockCreationIndex
-			mockState.graphicHelper.nextCodeBlockCreationIndex = 100;
+			mockState.codeBlockRendering.nextCodeBlockCreationIndex = 100;
 
 			const project: Project = {
 				...EMPTY_DEFAULT_PROJECT,
@@ -144,7 +144,7 @@ describe('creationIndex', () => {
 			loadProjectCallback({ project });
 
 			// Counter should be reset to the number of loaded blocks
-			expect(mockState.graphicHelper.nextCodeBlockCreationIndex).toBe(1);
+			expect(mockState.codeBlockRendering.nextCodeBlockCreationIndex).toBe(1);
 		});
 	});
 

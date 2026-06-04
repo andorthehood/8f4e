@@ -17,7 +17,7 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 	 * Recompute shader effects from all shader blocks
 	 */
 	function recomputeShaderEffects(): void {
-		const { postProcessEffects, backgroundEffects, errors } = deriveShaderEffects(state.graphicHelper.codeBlocks);
+		const { postProcessEffects, backgroundEffects, errors } = deriveShaderEffects(state.codeBlockRendering.codeBlocks);
 
 		log(state, 'Recomputed shader effects', 'Shaders');
 
@@ -33,16 +33,16 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 		events.dispatch('loadBackgroundEffect', backgroundEffects[0] ?? null);
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', () => {
+	store.subscribe('codeBlockRendering.codeBlocks', () => {
 		recomputeShaderEffects();
 	});
-	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
-		if (isShaderNoteCode(state.graphicHelper.selectedCodeBlock?.code ?? [])) {
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', () => {
+		if (isShaderNoteCode(state.codeBlockRendering.selectedCodeBlock?.code ?? [])) {
 			recomputeShaderEffects();
 		}
 	});
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
-		if (isShaderNoteCode(state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.code ?? [])) {
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', () => {
+		if (isShaderNoteCode(state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit?.code ?? [])) {
 			recomputeShaderEffects();
 		}
 	});

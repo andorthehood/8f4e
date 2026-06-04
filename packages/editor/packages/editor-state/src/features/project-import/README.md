@@ -47,7 +47,7 @@ Handles loading projects into the editor from persistent storage, `.8f4e` file u
 ### State Touched
 
 - `state.initialProjectState` - Initial project loaded on startup
-- `state.graphicHelper` - Populated from loaded code blocks
+- `state.codeBlockRendering` - Populated from loaded code blocks
 - `state.binaryAssets` - Runtime asset metadata populated by the editor environment binary-assets plugin when asset directives are active
 
 ## Integration Points

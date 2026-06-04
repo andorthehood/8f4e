@@ -57,7 +57,7 @@ test('font color rendering', async () => {
 		const codeLines = ['', colorName, ...lines.map(line => line.join('')), ''];
 		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		mockState.graphicHelper.codeBlocks.push(
+		mockState.codeBlockRendering.codeBlocks.push(
 			createMockCodeBlock({
 				id: `codeBlock${index}`,
 				x: (index % 4) * 8 * 32,

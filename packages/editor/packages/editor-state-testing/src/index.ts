@@ -142,7 +142,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			},
 		},
 		defaultRuntimeId: 'WebWorkerRuntime',
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks: [],
 			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],

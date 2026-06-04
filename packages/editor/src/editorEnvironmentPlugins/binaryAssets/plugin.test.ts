@@ -25,7 +25,7 @@ function createState({
 	byteAddress?: number;
 } = {}): State {
 	return {
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks: [
 				{
 					moduleId: 'samples',
@@ -162,7 +162,7 @@ describe('binary assets plugin', () => {
 		});
 		await flushPromises();
 
-		store.set('graphicHelper.codeBlocks', [
+		store.set('codeBlockRendering.codeBlocks', [
 			{
 				moduleId: 'samples',
 				code: [
@@ -172,7 +172,7 @@ describe('binary assets plugin', () => {
 					'moduleEnd',
 				],
 			},
-		] as State['graphicHelper']['codeBlocks']);
+		] as State['codeBlockRendering']['codeBlocks']);
 		await flushPromises();
 
 		store.set('compiler.compiledModules', {
@@ -232,7 +232,7 @@ describe('binary assets plugin', () => {
 		await flushPromises();
 		expect(store.getState().binaryAssets[0].assetByteLength).toBe(12);
 
-		store.set('graphicHelper.codeBlocks', [
+		store.set('codeBlockRendering.codeBlocks', [
 			{
 				moduleId: 'samples',
 				code: [
@@ -242,7 +242,7 @@ describe('binary assets plugin', () => {
 					'moduleEnd',
 				],
 			},
-		] as State['graphicHelper']['codeBlocks']);
+		] as State['codeBlockRendering']['codeBlocks']);
 
 		expect(store.getState().binaryAssets).toEqual([]);
 
@@ -286,14 +286,14 @@ describe('binary assets plugin', () => {
 		});
 		expect(store.getState().binaryAssets).toEqual([]);
 
-		store.set('graphicHelper.codeBlocks', [
-			...store.getState().graphicHelper.codeBlocks,
+		store.set('codeBlockRendering.codeBlocks', [
+			...store.getState().codeBlockRendering.codeBlocks,
 			{
 				id: 'constants_env',
 				moduleId: 'env',
 				code: ['constants env', 'constantsEnd'],
 			},
-		] as State['graphicHelper']['codeBlocks']);
+		] as State['codeBlockRendering']['codeBlocks']);
 		expect(store.getState().binaryAssets).toEqual([]);
 
 		resolveFetch([

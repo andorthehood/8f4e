@@ -2,7 +2,7 @@ import type { EventDispatcher, Options, State } from '@8f4e/editor-state-types';
 import createStateManager, { type StateManager } from '@8f4e/state-manager';
 import browserLocalNotes from './features/browser-local-notes/effect';
 import canvasScreenshot from './features/canvas-screenshot/effect';
-import graphicHelper from './features/code-blocks/effect';
+import codeBlockRendering from './features/code-blocks/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
 import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
@@ -112,7 +112,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
 	globalEditorDirectivesEffect(store);
 	compiler(store);
-	graphicHelper(store, events);
+	codeBlockRendering(store, events);
 	viewportDirectiveEffect(store, events);
 	entryOutlines(store);
 	browserLocalNotes(store, events);
