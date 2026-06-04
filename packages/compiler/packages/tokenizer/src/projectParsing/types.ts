@@ -1,6 +1,7 @@
 import type { CompilableBlockType, Module } from '@8f4e/compiler-spec';
 
 export interface ProjectCodeBlock {
+	id: number;
 	code: string[];
 	disabled?: boolean;
 	entry?: string;

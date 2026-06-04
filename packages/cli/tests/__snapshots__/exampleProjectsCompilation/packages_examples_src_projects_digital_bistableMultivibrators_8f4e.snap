@@ -50,7 +50,8 @@
             }
           ]
         },
-        "memoryDeclarationLines": []
+        "memoryDeclarationLines": [],
+        "projectBlockId": 4
       },
       "index": 0,
       "executionEntryName": "main"
@@ -102,7 +103,8 @@
             }
           ]
         },
-        "memoryDeclarationLines": []
+        "memoryDeclarationLines": [],
+        "projectBlockId": 11
       },
       "index": 1,
       "executionEntryName": "main"
@@ -197,7 +199,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 20
       },
       "index": 2,
       "executionEntryName": "main"
@@ -292,7 +295,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 30
       },
       "index": 3,
       "executionEntryName": "main"
@@ -679,7 +683,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 39
       },
       "index": 4,
       "executionEntryName": "main"
@@ -1066,7 +1071,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 63
       },
       "index": 5,
       "executionEntryName": "main"
@@ -1543,7 +1549,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 87
       },
       "index": 6,
       "executionEntryName": "main"
@@ -1679,7 +1686,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 116
       },
       "index": 7,
       "executionEntryName": "main"
@@ -1973,7 +1981,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 131
       },
       "index": 8,
       "executionEntryName": "main"
@@ -2363,7 +2372,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 149
       },
       "index": 9,
       "executionEntryName": "main"
@@ -2753,7 +2763,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 172
       },
       "index": 10,
       "executionEntryName": "main"
@@ -3232,7 +3243,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 195
       },
       "index": 11,
       "executionEntryName": "main"

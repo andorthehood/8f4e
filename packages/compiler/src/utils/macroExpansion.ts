@@ -1,4 +1,4 @@
-import type { CompilerASTLine, MacroDefinition, Module } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, CompilerDiagnosticContext, MacroDefinition, Module } from '@8f4e/compiler-spec';
 import { documentBlockInstructionByType, ErrorCode } from '@8f4e/compiler-spec';
 import { instructionParser, isComment, isInstructionLikeLine } from '@8f4e/tokenizer';
 import { getError } from '../compilerError';
@@ -21,6 +21,10 @@ function createMacroErrorLine(lineIndex: number): CompilerASTLine {
 		instruction: 'block',
 		arguments: [],
 	};
+}
+
+function getMacroDiagnosticContext(module: Module): CompilerDiagnosticContext {
+	return module.projectBlockId !== undefined ? { projectBlockId: module.projectBlockId } : {};
 }
 
 /**
@@ -54,7 +58,11 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 
 			if (instruction === macroDefinitionInstruction) {
 				if (insideMacro) {
-					throw getError(ErrorCode.NESTED_MACRO_DEFINITION, createMacroErrorLine(lineIndex));
+					throw getError(
+						ErrorCode.NESTED_MACRO_DEFINITION,
+						createMacroErrorLine(lineIndex),
+						getMacroDiagnosticContext(module)
+					);
 				}
 
 				if (macroCount > 0) {
@@ -69,7 +77,11 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				}
 
 				if (macroMap.has(macroName)) {
-					throw getError(ErrorCode.DUPLICATE_MACRO_NAME, createMacroErrorLine(lineIndex));
+					throw getError(
+						ErrorCode.DUPLICATE_MACRO_NAME,
+						createMacroErrorLine(lineIndex),
+						getMacroDiagnosticContext(module)
+					);
 				}
 
 				currentMacro = {
@@ -81,7 +93,11 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 				macroCount++;
 			} else if (instruction === macroDefinitionEndInstruction) {
 				if (!insideMacro || !currentMacro) {
-					throw getError(ErrorCode.MISSING_MACRO_END, createMacroErrorLine(lineIndex));
+					throw getError(
+						ErrorCode.MISSING_MACRO_END,
+						createMacroErrorLine(lineIndex),
+						getMacroDiagnosticContext(module)
+					);
 				}
 
 				macroMap.set(currentMacro.name, currentMacro);
@@ -90,7 +106,11 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 			} else if (insideMacro) {
 				// Check for nested macro calls or definitions inside macro body
 				if (instruction === macroCallInstruction) {
-					throw getError(ErrorCode.NESTED_MACRO_CALL, createMacroErrorLine(lineIndex));
+					throw getError(
+						ErrorCode.NESTED_MACRO_CALL,
+						createMacroErrorLine(lineIndex),
+						getMacroDiagnosticContext(module)
+					);
 				}
 
 				// Add line to current macro body
@@ -101,7 +121,11 @@ export function parseMacroDefinitions(macros: Module[]): Map<string, MacroDefini
 		// Check if any macro was left unclosed
 		if (insideMacro) {
 			const macro = currentMacro!;
-			throw getError(ErrorCode.MISSING_MACRO_END, createMacroErrorLine(macro.definitionLineNumber));
+			throw getError(
+				ErrorCode.MISSING_MACRO_END,
+				createMacroErrorLine(macro.definitionLineNumber),
+				getMacroDiagnosticContext(module)
+			);
 		}
 	});
 
@@ -138,7 +162,7 @@ export function expandMacros(module: Module, macroDefinitions: Map<string, Macro
 
 			const macroDef = macroDefinitions.get(macroName);
 			if (!macroDef) {
-				throw getError(ErrorCode.UNDEFINED_MACRO, createMacroErrorLine(lineIndex));
+				throw getError(ErrorCode.UNDEFINED_MACRO, createMacroErrorLine(lineIndex), getMacroDiagnosticContext(module));
 			}
 
 			macroDef.body.forEach(macroLine => {

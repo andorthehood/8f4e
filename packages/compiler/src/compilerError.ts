@@ -21,6 +21,7 @@ import type {
 	CodegenContext,
 	CompilationContext,
 	CompilerASTLine,
+	CompilerDiagnosticContext,
 	CompilerStageError,
 	ErrorCodeValue,
 } from '@8f4e/compiler-spec';
@@ -44,7 +45,7 @@ interface ErrorDetails {
 export function getError(
 	code: ErrorCodeValue,
 	line: CompilerASTLine,
-	context?: CodegenContext | CompilationContext,
+	context?: CodegenContext | CompilationContext | CompilerDiagnosticContext,
 	details?: ErrorDetails
 ): CompilerStageError {
 	switch (code) {

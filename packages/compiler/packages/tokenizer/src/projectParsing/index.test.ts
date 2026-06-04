@@ -52,7 +52,9 @@ describe('projectParsing index', () => {
 		expect(getExpectedProjectCloserPrefix('entry')).toBe('entryEnd');
 		expect(getDocumentProjectBlockType(project.codeBlocks[0].code)).toBe('module');
 		expect(getProjectBlockType(project.codeBlocks[0].code)).toBe('module');
-		expect(pickProjectCompilerBlocks(project).entries.main).toEqual([{ code: ['module counter', 'moduleEnd'] }]);
+		expect(pickProjectCompilerBlocks(project).entries.main).toEqual([
+			{ code: ['module counter', 'moduleEnd'], projectBlockId: 4 },
+		]);
 	});
 });
 
@@ -79,10 +81,10 @@ describe('parse8f4eProject', () => {
 		const project = parse8f4eProject(text);
 
 		expect(project.codeBlocks).toEqual([
-			{ code: validModuleBlock, entry: 'main' },
-			{ code: validFunctionBlock },
-			{ code: validPrototypeBlock },
-			{ code: validNoteBlock },
+			{ id: 6, code: validModuleBlock, entry: 'main' },
+			{ id: 15, code: validFunctionBlock },
+			{ id: 19, code: validPrototypeBlock },
+			{ id: 24, code: validNoteBlock },
 		]);
 		expect(project.groups).toEqual([]);
 	});
@@ -93,6 +95,7 @@ describe('parse8f4eProject', () => {
 		);
 
 		expect(project.codeBlocks[0]).toEqual({
+			id: 4,
 			code: ['module oscillator', 'shape oscillatorState', 'moduleEnd'],
 			entry: 'main',
 		});
@@ -134,16 +137,16 @@ describe('parse8f4eProject', () => {
 				name: 'audio',
 				entry: 'main',
 				codeBlocks: [
-					{ code: validModuleBlock, entry: 'main' },
-					{ code: validFunctionBlock, entry: 'main' },
+					{ id: 5, code: validModuleBlock, entry: 'main' },
+					{ id: 10, code: validFunctionBlock, entry: 'main' },
 				],
 				groups: [
 					{
 						name: 'oscillator',
 						entry: 'main',
 						codeBlocks: [
-							{ code: validPrototypeBlock, entry: 'main' },
-							{ code: validMacroBlock, entry: 'main' },
+							{ id: 14, code: validPrototypeBlock, entry: 'main' },
+							{ id: 18, code: validMacroBlock, entry: 'main' },
 						],
 						groups: [],
 					},

@@ -85,6 +85,7 @@ export function compileModule(
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
 		functionTypeRegistry: typeRegistry,
+		projectBlockId: ast.projectBlockId,
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];

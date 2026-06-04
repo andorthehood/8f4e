@@ -40,6 +40,7 @@ type WebAssemblyApiLike = {
 };
 
 const assertFunctionBlock: ProjectCodeBlock = {
+	id: -1,
 	code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
 };
 
