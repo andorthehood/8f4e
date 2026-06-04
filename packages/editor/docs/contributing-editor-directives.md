@@ -169,8 +169,10 @@ Then:
 
 If you are adding project-level settings owned by an extension or runtime, prefer a schema-backed `@config` root
 registered through `editorConfigSchemaContributions` instead of adding a new `~` directive.
-Schema fields with `format: 'memory-address'` resolve numeric addresses and `module:memory` references to compiled
-word addresses when read through `resolveSchemaConfigRoot(...)` with state.
+Schema fields with `format: 'memory-address'` resolve numeric addresses and memory references to compiled word addresses
+when read through `resolveSchemaConfigRoot(...)` with state. When a config directive appears in a module block,
+memory-formatted values can use a local memory name; the config parser normalizes it to `module:memory` before consumers
+receive `state.editorConfig`.
 
 If you need to insert or update the directive in source code (e.g., from an effect or action), use the `directiveEditing/` helpers rather than writing inline regex logic.
 

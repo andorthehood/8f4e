@@ -18,6 +18,7 @@ export default createGlobalEditorDirectivePlugin('config', (directive, draft, co
 			value,
 			rawRow: directive.rawRow,
 			codeBlockId: context.codeBlockId,
+			...(context.moduleId ? { moduleId: context.moduleId } : {}),
 		},
 	];
 });
