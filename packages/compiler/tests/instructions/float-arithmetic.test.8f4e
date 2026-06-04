@@ -1,9 +1,14 @@
 8f4e/v1
 
-; Float instruction behavior is checked through the shared imported assertf helper.
+; Float instruction behavior is
+; checked through the shared
+; imported assertf helper.
 entry test
 module floatMulAssertions
-; Float multiplication is approximate because WebAssembly stores these values as floats.
+; Float multiplication is
+; approximate because
+; WebAssembly stores
+; these values as floats.
 push 4.001
 push 0.5
 mul
@@ -11,7 +16,9 @@ call assertf 2.0
 moduleEnd
 
 module floatDivAssertions
-; Float division uses assertf for tolerance-based comparison.
+; Float division uses assertf
+; for tolerance-based
+; comparison.
 push 420.001
 push 69.001
 ensureNonZero
@@ -20,7 +27,8 @@ call assertf 6.0869
 moduleEnd
 
 module floatAbsAssertions
-; abs returns positive float magnitudes.
+; abs returns positive float
+; magnitudes.
 push 1.1
 abs
 call assertf 1.1
@@ -39,7 +47,10 @@ call assertf 420.1
 moduleEnd
 
 module castToFloatAssertions
-; castToFloat should preserve integer magnitude when converting to float.
+; castToFloat should preserve
+; integer magnitude when
+; converting
+; to float.
 push 1
 castToFloat
 call assertf 1.0
@@ -58,7 +69,8 @@ call assertf 420.0
 moduleEnd
 
 module castToIntAssertions
-; castToInt truncates toward zero.
+; castToInt truncates toward
+; zero.
 push 1.1
 castToInt
 call assert 1
@@ -77,7 +89,8 @@ call assert 420
 moduleEnd
 
 module roundAssertions
-; round follows the compiler's current half-down behavior.
+; round follows the compiler's
+; current half-down behavior.
 push 4.1
 round
 call assertf 4.0
@@ -100,7 +113,8 @@ call assertf 5.0
 moduleEnd
 
 module sqrtAssertions
-; sqrt returns approximate float square roots.
+; sqrt returns approximate float
+; square roots.
 push 4.001
 sqrt
 call assertf 2.0

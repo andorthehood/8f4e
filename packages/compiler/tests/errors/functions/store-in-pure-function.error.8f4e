@@ -6,7 +6,8 @@ moduleEnd
 entryEnd
 
 function invalid
-; Pure functions should reject memory writes.
+; Pure functions should reject
+; memory writes.
 param int* x
 param int y
 push x

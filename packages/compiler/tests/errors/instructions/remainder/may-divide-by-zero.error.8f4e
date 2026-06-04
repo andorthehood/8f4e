@@ -2,7 +2,8 @@
 
 entry main
 module remainderMayDivideByZero
-; remainder should reject divisors that might be zero.
+; remainder should reject
+; divisors that might be zero.
 int input1
 int input2
 int output

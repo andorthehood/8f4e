@@ -2,7 +2,9 @@
 
 entry main
 module mapMultiCharacterStringKey
-; map keys should reject multi-character string literals.
+; map keys should reject
+; multi-character string
+; literals.
 int x
 push x
 mapBegin int

@@ -1,7 +1,9 @@
 8f4e/v1
 
 constants env
-; #loopCap should not be accepted inside constants blocks.
+; #loopCap should not be
+; accepted inside constants
+; blocks.
 #loopCap 500
 const SAMPLE_RATE 48000
 constantsEnd

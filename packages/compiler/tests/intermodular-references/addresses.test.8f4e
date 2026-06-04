@@ -1,16 +1,24 @@
 8f4e/v1
 
-; Intermodule address references should resolve to usable memory addresses.
+; Intermodule address references
+; should resolve to usable
+; memory
+; addresses.
 entry test
 module addressSource
-; The source module gives start, end, scalar-end, and module-end references visible values.
+; The source module gives start,
+; end, scalar-end, and
+; module-end
+; references visible values.
 int[] buffer 3 11 22 33
 int scalar 42
 int tail 99
 moduleEnd
 
 module addressReferenceAssertions
-; Start-address references should point at the first value.
+; Start-address references
+; should point at the first
+; value.
 int* bufferStart &addressSource:buffer
 int* moduleStart &addressSource:
 
@@ -20,7 +28,10 @@ call assert 11
 push *moduleStart
 call assert 11
 
-; End-address references should point at the final word-aligned element.
+; End-address references should
+; point at the final
+; word-aligned
+; element.
 int* bufferEnd addressSource:buffer&
 int* scalarEnd addressSource:scalar&
 int* moduleEnd addressSource:&
@@ -36,7 +47,10 @@ call assert 99
 moduleEnd
 
 module outOfOrderAddressAssertions
-; Named start and end references can resolve to modules declared later in the entry.
+; Named start and end references
+; can resolve to modules
+; declared
+; later in the entry.
 int* start &lateAddressSource:buffer
 int* end lateAddressSource:buffer&
 
@@ -52,14 +66,19 @@ int[] buffer 4 5 6 7 8
 moduleEnd
 
 module nthAddressSource
-; Nth references address memory declarations by declaration slot, not by array element.
+; Nth references address memory
+; declarations by declaration
+; slot, not by array element.
 int a 10
 int b 20
 int c 30
 moduleEnd
 
 module nthAddressAssertions
-; &module:0 is the first memory item and matches the module base address.
+; &module:0 is the first memory
+; item and matches the module
+; base
+; address.
 int* first &nthAddressSource:0
 int* base &nthAddressSource:
 int* second &nthAddressSource:1
@@ -81,7 +100,9 @@ call assert 30
 moduleEnd
 
 module nthArraySource
-; Arrays count as one declaration slot for nth references.
+; Arrays count as one
+; declaration slot for nth
+; references.
 int[] buffer 10 0
 int scalar 60
 moduleEnd
@@ -94,7 +115,9 @@ call assert 60
 moduleEnd
 
 module sameModuleAddressAssertions
-; Same-module start and end references should resolve in declaration initializers.
+; Same-module start and end
+; references should resolve in
+; declaration initializers.
 int[] buffer 5 1 2 3 4 5
 int* startPtr &buffer
 int* endPtr buffer&
@@ -107,7 +130,10 @@ call assert 5
 moduleEnd
 
 module currentModuleShorthandAssertions
-; Current-module shorthand references should resolve start, end, and nth declaration addresses.
+; Current-module shorthand
+; references should resolve
+; start, end,
+; and nth declaration addresses.
 int a 10
 int b 20
 int[] tail 2 30 40

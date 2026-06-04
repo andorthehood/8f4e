@@ -6,6 +6,7 @@ moduleEnd
 entryEnd
 
 function invalid
-; Memory declarations should be rejected in functions.
+; Memory declarations should be
+; rejected in functions.
 int x 0
 functionEnd

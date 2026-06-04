@@ -6,7 +6,8 @@ int[] buffer 5 0
 moduleEnd
 
 module minUnknownModuleTarget
-; min(...) should reject unknown modules.
+; min(...) should reject unknown
+; modules.
 int minValue min(missingModule:buffer)
 moduleEnd
 entryEnd

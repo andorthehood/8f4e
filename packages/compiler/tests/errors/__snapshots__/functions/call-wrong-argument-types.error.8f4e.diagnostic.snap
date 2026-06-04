@@ -14,7 +14,7 @@
       },
     ],
     "instruction": "call",
-    "lineNumber": 4,
+    "lineNumber": 6,
   },
   "message": "Type mismatch. (19)",
 }

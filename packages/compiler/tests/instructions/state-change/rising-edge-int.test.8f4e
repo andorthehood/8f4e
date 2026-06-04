@@ -1,6 +1,7 @@
 8f4e/v1
 
-; risingEdge should report when an integer input moves upward.
+; risingEdge should report when
+; an integer input moves upward.
 entry stateChangeStep
 module risingEdgeIntState
 int input

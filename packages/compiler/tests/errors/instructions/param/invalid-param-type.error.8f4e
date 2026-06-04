@@ -6,6 +6,7 @@ moduleEnd
 entryEnd
 
 function invalid
-; param should reject unknown value types.
+; param should reject unknown
+; value types.
 param invalidType x
 functionEnd

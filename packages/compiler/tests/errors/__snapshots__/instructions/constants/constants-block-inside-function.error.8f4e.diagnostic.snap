@@ -4,5 +4,5 @@
   "line": {
     "lineNumber": 0,
   },
-  "message": "Parse error at line 10: mixed block type markers (found opener "constants nested" inside "function" block)",
+  "message": "Parse error at line 11: mixed block type markers (found opener "constants nested" inside "function" block)",
 }

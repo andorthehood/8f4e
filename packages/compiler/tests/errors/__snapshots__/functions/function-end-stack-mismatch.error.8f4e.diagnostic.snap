@@ -14,7 +14,7 @@
       },
     ],
     "instruction": "functionEnd",
-    "lineNumber": 4,
+    "lineNumber": 5,
   },
   "message": "Stack elements do not match function return signature. (18)",
 }

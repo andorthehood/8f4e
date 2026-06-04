@@ -14,7 +14,7 @@
       },
     ],
     "instruction": "push",
-    "lineNumber": 2,
+    "lineNumber": 4,
   },
   "message": "Undeclared identifier: undeclared. (5)",
 }
