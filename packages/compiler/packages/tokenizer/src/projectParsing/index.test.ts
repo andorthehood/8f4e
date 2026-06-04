@@ -1,12 +1,60 @@
+import { readdirSync, readFileSync } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { describe, expect, it } from 'vitest';
 
-import { getDocumentProjectBlockType, getProjectBlockType, parse8f4eProject, pickProjectCompilerBlocks } from '.';
+import parse8f4eProject, {
+	BLOCK_DELIMITERS,
+	FORMAT_HEADER,
+	getDocumentProjectBlockType,
+	getExpectedProjectCloserPrefix,
+	getProjectBlockType,
+	getProjectCloserKeyword,
+	getProjectOpenerKeyword,
+	pickProjectCompilerBlocks,
+} from './index';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const fixtureDirectory = path.join(__dirname, 'fixtures');
+const snapshotDirectory = path.join(__dirname, '__snapshots__');
 
 const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
 const validMacroBlock = ['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'];
 const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd'];
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
+
+function readProjectFixtureNames(): string[] {
+	return readdirSync(fixtureDirectory, { withFileTypes: true })
+		.filter(entry => entry.isFile() && entry.name.endsWith('.8f4e'))
+		.map(entry => entry.name)
+		.sort();
+}
+
+function readProjectFixture(name: string): string {
+	return readFileSync(path.join(fixtureDirectory, name), 'utf8');
+}
+
+function getSnapshotPath(fixtureName: string, snapshotName: string): string {
+	return path.join(snapshotDirectory, `${fixtureName}.${snapshotName}.snap`);
+}
+
+describe('projectParsing index', () => {
+	it('exports the project parser subsystem surface', () => {
+		const project = parse8f4eProject(
+			['8f4e/v1', '', 'entry main', 'module counter', 'moduleEnd', 'entryEnd'].join('\n')
+		);
+
+		expect(FORMAT_HEADER).toBe('8f4e/v1');
+		expect(BLOCK_DELIMITERS.length).toBeGreaterThan(0);
+		expect(getProjectOpenerKeyword('group audio')).toBe('group');
+		expect(getProjectCloserKeyword('groupEnd')).toBe('groupEnd');
+		expect(getExpectedProjectCloserPrefix('entry')).toBe('entryEnd');
+		expect(getDocumentProjectBlockType(project.codeBlocks[0].code)).toBe('module');
+		expect(getProjectBlockType(project.codeBlocks[0].code)).toBe('module');
+		expect(pickProjectCompilerBlocks(project).entries.main).toEqual([{ code: ['module counter', 'moduleEnd'] }]);
+	});
+});
 
 describe('parse8f4eProject', () => {
 	it('parses multiple document blocks', () => {
@@ -36,6 +84,7 @@ describe('parse8f4eProject', () => {
 			{ code: validPrototypeBlock },
 			{ code: validNoteBlock },
 		]);
+		expect(project.groups).toEqual([]);
 	});
 
 	it('marks parsed module blocks that contain shape instructions', () => {
@@ -53,10 +102,54 @@ describe('parse8f4eProject', () => {
 		const project = parse8f4eProject(['8f4e/v1', '', 'entry main', 'entryEnd'].join('\n'));
 
 		expect(project.codeBlocks).toEqual([]);
+		expect(project.groups).toEqual([]);
 	});
 
 	it('parses empty files with only a header', () => {
 		expect(parse8f4eProject('8f4e/v1\n').codeBlocks).toEqual([]);
+		expect(parse8f4eProject('8f4e/v1\n').groups).toEqual([]);
+	});
+
+	it('parses nested groups under entries', () => {
+		const project = parse8f4eProject(
+			[
+				'8f4e/v1',
+				'',
+				'entry main',
+				'group audio',
+				...validModuleBlock,
+				...validFunctionBlock,
+				'group oscillator',
+				...validPrototypeBlock,
+				...validMacroBlock,
+				'groupEnd',
+				'groupEnd',
+				'entryEnd',
+			].join('\n')
+		);
+
+		expect(project.codeBlocks).toEqual([]);
+		expect(project.groups).toEqual([
+			{
+				name: 'audio',
+				entry: 'main',
+				codeBlocks: [
+					{ code: validModuleBlock, entry: 'main' },
+					{ code: validFunctionBlock, entry: 'main' },
+				],
+				groups: [
+					{
+						name: 'oscillator',
+						entry: 'main',
+						codeBlocks: [
+							{ code: validPrototypeBlock, entry: 'main' },
+							{ code: validMacroBlock, entry: 'main' },
+						],
+						groups: [],
+					},
+				],
+			},
+		]);
 	});
 
 	it('throws on invalid project shape', () => {
@@ -71,72 +164,39 @@ describe('parse8f4eProject', () => {
 			parse8f4eProject('8f4e/v1\n\nentry main\nmodule foo\nfunction bar\nfunctionEnd\nmoduleEnd\nentryEnd')
 		).toThrow('mixed block type markers');
 		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\nfunction foo\nfunctionEnd\nentryEnd')).toThrow(
-			'can only contain module blocks'
+			'can only contain module or group blocks'
 		);
 		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\nentryEnd\n\nentry main\nentryEnd')).toThrow(
 			'duplicate entry'
 		);
+		expect(() => parse8f4eProject('8f4e/v1\n\ngroup audio\ngroupEnd')).toThrow(
+			'group blocks must be inside an entry block'
+		);
+		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\ngroup\ngroupEnd\nentryEnd')).toThrow(
+			'group requires exactly one name'
+		);
+		expect(() =>
+			parse8f4eProject('8f4e/v1\n\nentry main\ngroup audio\nentry nested\nentryEnd\ngroupEnd\nentryEnd')
+		).toThrow('entry blocks cannot be nested inside groups');
+		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\ngroup audio\nmoduleEnd\ngroupEnd\nentryEnd')).toThrow(
+			'does not match opener "group"'
+		);
 	});
 });
 
-describe('project block classification', () => {
-	it('detects document block types', () => {
-		expect(getDocumentProjectBlockType(validModuleBlock)).toBe('module');
-		expect(getDocumentProjectBlockType(validFunctionBlock)).toBe('function');
-		expect(getDocumentProjectBlockType(['constants', 'constantsEnd'])).toBe('constants');
-		expect(getDocumentProjectBlockType(validMacroBlock)).toBe('macro');
-		expect(getDocumentProjectBlockType(validPrototypeBlock)).toBe('prototype');
-		expect(getDocumentProjectBlockType(validNoteBlock)).toBe('note');
-		expect(getDocumentProjectBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
+describe('parse8f4eProject fixtures', () => {
+	const fixtureNames = readProjectFixtureNames();
+
+	it('has project fixtures', () => {
+		expect(fixtureNames.length).toBeGreaterThan(0);
 	});
 
-	it('detects compiler input block types', () => {
-		expect(getProjectBlockType(validModuleBlock)).toBe('module');
-		expect(getProjectBlockType(validFunctionBlock)).toBe('function');
-		expect(getProjectBlockType(['constants', 'constantsEnd'])).toBe('constants');
-		expect(getProjectBlockType(validMacroBlock)).toBe('macro');
-		expect(getProjectBlockType(validPrototypeBlock)).toBe('prototype');
-		expect(getProjectBlockType(validNoteBlock)).toBe('unknown');
-	});
+	it.each(fixtureNames)('matches parser snapshots for %s', async fixtureName => {
+		const project = parse8f4eProject(readProjectFixture(fixtureName));
 
-	it('splits project blocks into compiler inputs', () => {
-		const blocks = [
-			{ code: validModuleBlock, entry: 'main' },
-			{ code: validFunctionBlock },
-			{ code: validPrototypeBlock },
-			{ code: validMacroBlock },
-			{ code: validNoteBlock },
-			{ code: validModuleBlock, entry: 'main', disabled: true },
-		];
-
-		expect(pickProjectCompilerBlocks(blocks)).toEqual({
-			entries: { main: [{ code: validModuleBlock }] },
-			constantsBlocks: [],
-			functionBlocks: [{ code: validFunctionBlock }],
-			prototypeBlocks: [{ code: validPrototypeBlock }],
-			macroBlocks: [{ code: validMacroBlock }],
-		});
-	});
-
-	it('splits modules into their execution entries', () => {
-		expect(
-			pickProjectCompilerBlocks([
-				{ code: validModuleBlock, entry: 'main' },
-				{ code: ['module other', 'moduleEnd'], entry: 'test' },
-			]).entries
-		).toEqual({
-			main: [{ code: validModuleBlock }],
-			test: [{ code: ['module other', 'moduleEnd'] }],
-		});
-	});
-
-	it('does not infer execution entries from module directives', () => {
-		expect(pickProjectCompilerBlocks([{ code: ['module regular', 'moduleEnd'], entry: 'main' }]).entries).toEqual({
-			main: [{ code: ['module regular', 'moduleEnd'] }],
-		});
-	});
-
-	it('rejects module blocks without an entry', () => {
-		expect(() => pickProjectCompilerBlocks([{ code: validModuleBlock }])).toThrow('missing entry');
+		await expect(project).toMatchFileSnapshot(getSnapshotPath(fixtureName, 'project'));
+		await expect(pickProjectCompilerBlocks(project)).toMatchFileSnapshot(
+			getSnapshotPath(fixtureName, 'compiler-blocks')
+		);
 	});
 });
