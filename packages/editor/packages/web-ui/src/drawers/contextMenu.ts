@@ -2,7 +2,7 @@ import type { State } from '@8f4e/editor-state-types';
 import type { Engine } from 'glugglug';
 
 export default function drawContextMenu(engine: Engine, state: State): void {
-	const { open, items, x, y, highlightedItem, itemWidth } = state.graphicHelper.contextMenu;
+	const { open, items, x, y, highlightedItem, itemWidth } = state.contextMenu;
 
 	if (!open || !state.graphicHelper.spriteLookups) {
 		return;

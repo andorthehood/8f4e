@@ -359,6 +359,7 @@ export interface Options {
 export interface State {
 	compiler: Compiler;
 	graphicHelper: GraphicHelper;
+	contextMenu: ContextMenu;
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
 	tooltip: TooltipState;
