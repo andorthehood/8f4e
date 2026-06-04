@@ -14,7 +14,7 @@
       },
     ],
     "instruction": "loop",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Type mismatch. (19)",
 }

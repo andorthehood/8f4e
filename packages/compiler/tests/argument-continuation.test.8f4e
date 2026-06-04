@@ -1,14 +1,21 @@
 8f4e/v1
 
-; Continuation lines append one argument to the previous instruction.
+; Continuation lines append one
+; argument to the previous
+; instruction.
 entry test
 module continuationPointerSource
-; The split pointer declaration below should resolve the same intermodule address as a single-line declaration.
+; The split pointer declaration
+; below should resolve the same
+; intermodule address as a
+; single-line declaration.
 float[] samples 8 0.0
 moduleEnd
 
 module splitPointerDeclarationAssertions
-; Declaration arguments can be continued one argument per line.
+; Declaration arguments can be
+; continued one argument per
+; line.
 float*
 - readHead
 - &continuationPointerSource:samples
@@ -18,7 +25,9 @@ call assert &continuationPointerSource:samples
 moduleEnd
 
 module splitByteDefaultAssertions
-; Split-byte defaults can be supplied by continuation lines.
+; Split-byte defaults can be
+; supplied by continuation
+; lines.
 int color
 - 0xA8
 - 0xFF
@@ -28,7 +37,10 @@ call assert -1459683328
 moduleEnd
 
 module continuedNegativeLiteralAssertions
-; A continuation marker before a negative literal should be treated as syntax, not as the literal sign.
+; A continuation marker before a
+; negative literal should be
+; treated as syntax, not as the
+; literal sign.
 push
 - -1
 call assert -1

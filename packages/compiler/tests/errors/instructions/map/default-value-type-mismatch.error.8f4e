@@ -2,7 +2,8 @@
 
 entry main
 module mapDefaultValueTypeMismatch
-; default should match the map output type.
+; default should match the map
+; output type.
 int x
 push x
 mapBegin int

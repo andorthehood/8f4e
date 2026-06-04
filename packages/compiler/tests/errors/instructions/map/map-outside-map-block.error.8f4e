@@ -2,7 +2,8 @@
 
 entry main
 module mapOutsideMapBlock
-; map should only be valid inside mapBegin/mapEnd.
+; map should only be valid
+; inside mapBegin/mapEnd.
 int x
 push x
 map 1 10

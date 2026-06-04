@@ -1,15 +1,24 @@
 8f4e/v1
 
-; Function calls are checked through executable source fixtures instead of the old module tester.
+; Function calls are checked
+; through executable source
+; fixtures
+; instead of the old module
+; tester.
 entry test
 module callConstantFunction
-; Calling a zero-parameter function should push its return value.
+; Calling a zero-parameter
+; function should push its
+; return
+; value.
 call getFortyTwo
 call assert 42
 moduleEnd
 
 module callFunctionWithParameter
-; Function parameters should receive stack arguments in declaration order.
+; Function parameters should
+; receive stack arguments in
+; declaration order.
 push 5
 call double
 call assert 10
@@ -20,7 +29,8 @@ call assert 20
 moduleEnd
 
 module callMultipleFunctions
-; Multiple calls can contribute values to the same expression.
+; Multiple calls can contribute
+; values to the same expression.
 call getTwo
 call getThree
 add
@@ -28,26 +38,36 @@ call assert 5
 moduleEnd
 
 module callNestedFunction
-; Functions can call other functions after signatures and indexes are collected.
+; Functions can call other
+; functions after signatures and
+; indexes are collected.
 call compute
 call assert 42
 moduleEnd
 
 module callFloat64RoundTrip
-; Float64 parameters and returns should preserve double precision through calls.
+; Float64 parameters and returns
+; should preserve double
+; precision through calls.
 push 3.141592653589793f64
 call identityFloat64
 call assertf64 3.141592653589793f64
 moduleEnd
 
 module callFloat64ReturningFunction
-; Float64-returning functions should keep float64 arithmetic in the callee.
+; Float64-returning functions
+; should keep float64 arithmetic
+; in
+; the callee.
 call getDoublePI
 call assertf64 6.28318530717958f64
 moduleEnd
 
 module callPointerParamsWithLocalDereference
-; Impure functions can dereference pointer parameters and use pointee metadata.
+; Impure functions can
+; dereference pointer parameters
+; and use
+; pointee metadata.
 float[] lut 32
 float delta 0.5
 
@@ -63,7 +83,10 @@ call assertf 0.5
 moduleEnd
 
 module callImpureFunctionWithExplicitLoadAndStore
-; Impure functions can explicitly load and store through pointer parameters.
+; Impure functions can
+; explicitly load and store
+; through pointer
+; parameters.
 float input 3.5
 float output
 float gain 0.5

@@ -14,7 +14,7 @@
       },
     ],
     "instruction": "loop",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Expected value, got an identifier. (8)",
 }

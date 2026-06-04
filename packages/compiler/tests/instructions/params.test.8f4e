@@ -1,9 +1,14 @@
 8f4e/v1
 
-; Param instructions should expose callable function signatures and preserve argument behavior.
+; Param instructions should
+; expose callable function
+; signatures
+; and preserve argument
+; behavior.
 entry test
 module paramOrderAssertions
-; Parameters can be read in declaration order.
+; Parameters can be read in
+; declaration order.
 push 2
 push 3
 call addParams
@@ -11,7 +16,9 @@ call assert 5
 moduleEnd
 
 module paramDifferentOrderAssertions
-; Parameters can be read in a different order from declaration.
+; Parameters can be read in a
+; different order from
+; declaration.
 push 10
 push 3
 call subtractReverse
@@ -19,7 +26,8 @@ call assert -7
 moduleEnd
 
 module paramPartialUseAssertions
-; Functions may use only some of their parameters.
+; Functions may use only some of
+; their parameters.
 push 6
 push 99
 call useFirst
@@ -27,14 +35,17 @@ call assert 12
 moduleEnd
 
 module paramRepeatedUseAssertions
-; A single parameter can be read multiple times.
+; A single parameter can be read
+; multiple times.
 push 7
 call squareParam
 call assert 49
 moduleEnd
 
 module namedParamAssertions
-; Descriptive parameter names should work like any other identifiers.
+; Descriptive parameter names
+; should work like any other
+; identifiers.
 push 4
 push 5
 call calculateArea
@@ -42,7 +53,9 @@ call assert 20
 moduleEnd
 
 module localAfterParamAssertions
-; Locals declared after params should work with localSet and push.
+; Locals declared after params
+; should work with localSet and
+; push.
 push 8
 push 9
 call addParamsWithLocal
@@ -50,7 +63,8 @@ call assert 17
 moduleEnd
 
 module mixedWidthParamAssertions
-; Int, float, and float64 params can appear together.
+; Int, float, and float64 params
+; can appear together.
 push 3
 push 2.0
 push 1.5f64
@@ -59,7 +73,8 @@ call assertf64 9.0f64
 moduleEnd
 
 module noParamFunctionAssertions
-; Functions with no params still have a callable signature.
+; Functions with no params still
+; have a callable signature.
 call noParams
 call assert 42
 moduleEnd

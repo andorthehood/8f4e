@@ -1,9 +1,14 @@
 8f4e/v1
 
-; storeBytes writes integer stack values into byte-addressed memory.
+; storeBytes writes integer
+; stack values into
+; byte-addressed
+; memory.
 entry test
 module storeBytesPopOrderAssertions
-; Values are popped from the top of the stack into consecutive destination bytes.
+; Values are popped from the top
+; of the stack into consecutive
+; destination bytes.
 int8[] dest 8
 
 push 72
@@ -60,7 +65,10 @@ call assert 0
 moduleEnd
 
 module storeBytesTruncationAssertions
-; Values larger than a byte should be truncated to their low byte.
+; Values larger than a byte
+; should be truncated to their
+; low
+; byte.
 int8[] buf 4
 
 push 256
@@ -82,7 +90,9 @@ call assert 0
 moduleEnd
 
 module storeBytesZeroCountAssertions
-; A zero byte count should only drop the address and leave memory unchanged.
+; A zero byte count should only
+; drop the address and leave
+; memory unchanged.
 int dest 42
 
 push &dest

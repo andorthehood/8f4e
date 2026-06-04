@@ -6,7 +6,8 @@ int[] buffer 5 0
 moduleEnd
 
 module sizeofUnknownMemoryTarget
-; sizeof(...) should reject unknown memory identifiers.
+; sizeof(...) should reject
+; unknown memory identifiers.
 int size sizeof(sizeofUnknownMemorySource:missing)
 moduleEnd
 entryEnd
