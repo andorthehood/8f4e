@@ -113,4 +113,69 @@ describe('editor config schema contributions', () => {
 			audioOutBufferLAddress: 32,
 		});
 	});
+
+	it('validates dynamic object properties from additionalProperties schemas', () => {
+		const dynamicStore = {
+			getState: () =>
+				({
+					editorConfigSchemaContributions: {
+						midi: {
+							root: 'midi',
+							schema: {
+								type: 'object',
+								properties: {
+									inputs: {
+										type: 'object',
+										additionalProperties: {
+											type: 'object',
+											properties: {
+												port: { type: 'integer', minimum: 0 },
+												callback: { type: 'string', pattern: '^[A-Za-z_][A-Za-z0-9_]*$' },
+											},
+											additionalProperties: false,
+										},
+									},
+								},
+								additionalProperties: false,
+							},
+						},
+					},
+				}) as State,
+		} as StateManager<State>;
+		const validator = createEditorConfigSchemaContributionsValidator(dynamicStore);
+
+		expect(validator.knownPaths).toEqual(['midi.inputs.*.port', 'midi.inputs.*.callback']);
+		expect(
+			validator.validate({
+				path: 'midi.inputs.0.port',
+				value: '0',
+				rawRow: 1,
+				codeBlockId: 'config',
+			})
+		).toBeUndefined();
+		expect(
+			validator.validate({
+				path: 'midi.inputs.0.callback',
+				value: 'onMidiIn',
+				rawRow: 1,
+				codeBlockId: 'config',
+			})
+		).toBeUndefined();
+		expect(
+			validator.validate({
+				path: 'midi.inputs.0.callback',
+				value: 'bad-name',
+				rawRow: 1,
+				codeBlockId: 'config',
+			})
+		).toBe("@config midi.inputs.0.callback: invalid string value 'bad-name'");
+		expect(
+			validator.validate({
+				path: 'midi.inputs.0.unknown',
+				value: '1',
+				rawRow: 1,
+				codeBlockId: 'config',
+			})
+		).toBe("@config: unknown config path 'midi.inputs.0.unknown'");
+	});
 });
