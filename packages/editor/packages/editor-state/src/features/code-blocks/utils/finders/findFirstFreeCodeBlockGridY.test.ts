@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import getCodeBlockGridWidth from '../../features/graphicHelper/getCodeBlockGridWidth';
+import getCodeBlockGridWidth from '../../getCodeBlockGridWidth';
 import findFirstFreeCodeBlockGridY, {
 	getCodeBlockGridBounds,
 	getCodeBlockGridSizeFromCode,

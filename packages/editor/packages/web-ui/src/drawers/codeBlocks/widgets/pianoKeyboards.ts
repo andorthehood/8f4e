@@ -61,10 +61,10 @@ export default function drawer(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
-	const spriteLookups = state.graphicHelper.spriteLookups;
+	const spriteLookups = state.spriteLookups;
 
 	for (const {
 		x,

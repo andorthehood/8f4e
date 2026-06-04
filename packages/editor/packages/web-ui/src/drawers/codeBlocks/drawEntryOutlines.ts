@@ -16,13 +16,13 @@ function drawOutline(engine: Engine, outline: CodeBlockEntryOutline, thickness: 
 }
 
 export default function drawEntryOutlines(engine: Engine, state: State): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
 	const thickness = 1;
 
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+	engine.setSpriteLookup(state.spriteLookups.fillColors);
 
 	for (const outline of state.graphicHelper.entryOutlines) {
 		drawOutline(engine, outline, thickness);

@@ -7,7 +7,7 @@ import type {
 	ParsedDirectiveRecord,
 	State,
 } from '@8f4e/editor-state-types';
-import buildDisplayModel from '../graphicHelper/buildDisplayModel';
+import buildDisplayModel from '../../buildDisplayModel';
 import alwaysOnTopDirective from './alwaysOnTop/plugin';
 import barsDirective from './bars/plugin';
 import buttonDirective from './button/plugin';

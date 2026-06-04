@@ -2,6 +2,7 @@ import type { EventDispatcher, Options, State } from '@8f4e/editor-state-types';
 import createStateManager, { type StateManager } from '@8f4e/state-manager';
 import browserLocalNotes from './features/browser-local-notes/effect';
 import canvasScreenshot from './features/canvas-screenshot/effect';
+import graphicHelper from './features/code-blocks/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
 import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
@@ -16,7 +17,6 @@ import _switch from './features/code-blocks/features/directives/switch/interacti
 import viewportDirectiveEffect from './features/code-blocks/features/directives/viewport/effect';
 import entryOutlines from './features/code-blocks/features/entryOutlines/effect';
 import favoriteToggler from './features/code-blocks/features/favoriteToggler/effect';
-import graphicHelper from './features/code-blocks/features/graphicHelper/effect';
 import groupCopier from './features/code-blocks/features/group/copier/effect';
 import groupDeleter from './features/code-blocks/features/group/deleter/effect';
 import groupNonstickToggler from './features/code-blocks/features/group/nonstickToggler/effect';
