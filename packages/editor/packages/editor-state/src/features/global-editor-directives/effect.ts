@@ -16,7 +16,7 @@ function withOwnerId(errors: CodeError[]): CodeError[] {
 /**
  * Global-editor-directives effect.
  *
- * Scans all code blocks in `graphicHelper.codeBlocks` for global `; @<name>`
+ * Scans all code blocks in `codeBlockRendering.codeBlocks` for global `; @<name>`
  * editor directives and updates `state.globalEditorDirectives` with the resolved values.
  *
  * Conflicting directive values are written to `state.codeErrors.editorDirectiveErrors`.
@@ -24,7 +24,7 @@ function withOwnerId(errors: CodeError[]): CodeError[] {
 export default function globalEditorDirectivesEffect(store: StateManager<State>): void {
 	function resolve(): void {
 		const state = store.getState();
-		const { resolved, errors } = resolveGlobalEditorDirectives(state.graphicHelper.codeBlocks);
+		const { resolved, errors } = resolveGlobalEditorDirectives(state.codeBlockRendering.codeBlocks);
 		const { configEntries, ...globalEditorDirectives } = resolved;
 		const nextEditorConfig = resolveEditorConfigEntries(configEntries ?? [], state.editorConfigValidators);
 		const nextErrors = [...errors, ...validateEditorConfigEntries(configEntries ?? [], state.editorConfigValidators)];
@@ -52,8 +52,8 @@ export default function globalEditorDirectivesEffect(store: StateManager<State>)
 		}
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', resolve);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', resolve);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', resolve);
+	store.subscribe('codeBlockRendering.codeBlocks', resolve);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', resolve);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', resolve);
 	store.subscribe('editorConfigSchemaContributions', resolve);
 }

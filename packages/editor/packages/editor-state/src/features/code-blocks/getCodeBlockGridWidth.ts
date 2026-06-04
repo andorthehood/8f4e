@@ -3,7 +3,7 @@ import { CODE_BLOCK_MIN_GRID_WIDTH } from './utils/constants';
 
 /**
  * Computes the grid width required for a code block.
- * Matches the sizing logic used by graphicHelper effect.
+ * Matches the sizing logic used by codeBlockRendering effect.
  *
  * @param code - Code block represented as an array of lines
  * @param minGridWidth - Minimum grid width (defaults to CODE_BLOCK_MIN_GRID_WIDTH)
@@ -14,7 +14,7 @@ export default function getCodeBlockGridWidth(code: string[], minGridWidth = COD
 	const lineNumberColumnWidth = code.length.toString().length;
 	const tabStopsByLine = getTabStopsByLine(code);
 
-	// Prepare code with line numbers (matching graphicHelper logic)
+	// Prepare code with line numbers (matching codeBlockRendering logic)
 	const codeWithLineNumbers = code.map((line, index) => {
 		const prefix = `${index}`.padStart(lineNumberColumnWidth, '0') + ' ';
 		return prefix.length + getVisualLineWidth(line, tabStopsByLine[index] || []);

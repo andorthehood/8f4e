@@ -23,7 +23,7 @@ describe('plot directive widget resolution', () => {
 		});
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,

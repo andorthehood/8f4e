@@ -41,7 +41,7 @@ This feature contains several subfeatures under `features/` that handle specific
 - `codeBlockDragger` - Drag and drop operations
 - `codeBlockNavigation` - Keyboard navigation between blocks
 - `debuggers` - Runtime debugging overlays
-- `graphicHelper` - Visual properties computation
+- `codeBlockRendering` - Visual properties computation
 - `inputs` - Audio input routing
 - `outputs` - Audio output routing
 - `pianoKeyboard` - Piano keyboard interface
@@ -57,8 +57,8 @@ This feature contains several subfeatures under `features/` that handle specific
 
 ### State Touched
 
-- `state.graphicHelper.codeBlocks` - Array of all code blocks with their visual and code data
-- `state.graphicHelper.selectedCodeBlock` - Currently selected block reference
+- `state.codeBlockRendering.codeBlocks` - Array of all code blocks with their visual and code data
+- `state.codeBlockRendering.selectedCodeBlock` - Currently selected block reference
 - Block-specific properties: position, size, color, blockType, code, cursor, widgets (inputs/outputs/buttons/switches)
 
 ## Integration Points

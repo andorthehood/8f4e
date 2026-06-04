@@ -75,7 +75,7 @@ export default function tooltip(store: StateManager<State>): void {
 	const state = store.getState();
 
 	function syncSelectedLineTooltip(): void {
-		const selectedCodeBlock = state.graphicHelper.selectedCodeBlock;
+		const selectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
 
 		if (!state.featureFlags.codeLineSelection || !selectedCodeBlock) {
 			store.set('tooltip', createEmptyTooltipState());
@@ -96,10 +96,10 @@ export default function tooltip(store: StateManager<State>): void {
 		store.set('tooltip', getTooltipState(content, state, selectedCodeBlock));
 	}
 
-	store.subscribe('graphicHelper.selectedCodeBlock', syncSelectedLineTooltip);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', syncSelectedLineTooltip);
-	store.subscribe('graphicHelper.selectedCodeBlock.cursor.row', syncSelectedLineTooltip);
-	store.subscribe('graphicHelper.selectedCodeBlock.cursor.y', syncSelectedLineTooltip);
+	store.subscribe('codeBlockRendering.selectedCodeBlock', syncSelectedLineTooltip);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncSelectedLineTooltip);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.cursor.row', syncSelectedLineTooltip);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.cursor.y', syncSelectedLineTooltip);
 	store.subscribe('featureFlags.codeLineSelection', syncSelectedLineTooltip);
 	store.subscribe('compiler.compiledModules', syncSelectedLineTooltip);
 	store.subscribe('compiler.compiledFunctions', syncSelectedLineTooltip);

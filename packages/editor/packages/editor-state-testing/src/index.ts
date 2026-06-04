@@ -141,7 +141,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				factory: mockRuntimeFactory,
 			},
 		},
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks: [],
 			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],

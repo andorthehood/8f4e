@@ -21,7 +21,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '; @watch x', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 
@@ -40,7 +40,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '; @watch x', '', '; @watch y', '; @watch z', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 
@@ -58,7 +58,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 
@@ -76,7 +76,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '; @group mygroup', '; @watch x', '; @favorite', '; @watch y', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 
@@ -94,7 +94,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '; @watch x  ', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 
@@ -112,7 +112,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '  ; @watch x', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 
@@ -131,7 +131,7 @@ describe('clearDebugProbes', () => {
 			blockType: 'module',
 			lastUpdated: 1000,
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 
@@ -149,7 +149,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '; @watch x', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 
@@ -161,7 +161,7 @@ describe('clearDebugProbes', () => {
 
 		clearCallback({ codeBlock });
 
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	});
 
 	it('should not clear when editing is disabled', () => {
@@ -169,7 +169,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '; @watch x', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = false;
 
 		clearDebugProbes(store, mockEvents);
@@ -188,7 +188,7 @@ describe('clearDebugProbes', () => {
 			code: ['module test', '; @watch', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		clearDebugProbes(store, mockEvents);
 

@@ -22,12 +22,12 @@ Manages viewport interactions and transformations: panning, resizing, snap-to-gr
 
 ### State Touched
 
-- `state.graphicHelper.viewport.x` - Viewport horizontal position (pixels)
-- `state.graphicHelper.viewport.y` - Viewport vertical position (pixels)
-- `state.graphicHelper.viewport.vGrid` - Vertical grid size (pixels)
-- `state.graphicHelper.viewport.hGrid` - Horizontal grid size (pixels)
-- `state.graphicHelper.viewport.width` - Viewport width (pixels)
-- `state.graphicHelper.viewport.height` - Viewport height (pixels)
+- `state.codeBlockRendering.viewport.x` - Viewport horizontal position (pixels)
+- `state.codeBlockRendering.viewport.y` - Viewport vertical position (pixels)
+- `state.codeBlockRendering.viewport.vGrid` - Vertical grid size (pixels)
+- `state.codeBlockRendering.viewport.hGrid` - Horizontal grid size (pixels)
+- `state.codeBlockRendering.viewport.width` - Viewport width (pixels)
+- `state.codeBlockRendering.viewport.height` - Viewport height (pixels)
 
 ## Coordinate Systems
 

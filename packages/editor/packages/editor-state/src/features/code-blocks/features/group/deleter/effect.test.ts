@@ -30,12 +30,12 @@ describe('groupDeleter', () => {
 			blockType: 'function',
 		});
 
-		// Set groupName on blocks (normally done by graphicHelper)
+		// Set groupName on blocks (normally done by codeBlockRendering)
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 		codeBlock3.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
 
 		groupDeleter(store, mockEvents);
 
@@ -47,7 +47,7 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: codeBlock1 });
 
 		const state = store.getState();
-		expect(state.graphicHelper.codeBlocks).toEqual([]);
+		expect(state.codeBlockRendering.codeBlocks).toEqual([]);
 	});
 
 	it('should not delete blocks with different group name', () => {
@@ -68,7 +68,7 @@ describe('groupDeleter', () => {
 		codeBlock2.groupName = 'otherGroup';
 		codeBlock3.groupName = undefined;
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
 
 		groupDeleter(store, mockEvents);
 
@@ -79,8 +79,8 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: codeBlock1 });
 
 		const state = store.getState();
-		expect(state.graphicHelper.codeBlocks).toEqual([codeBlock2, codeBlock3]);
-		expect(state.graphicHelper.codeBlocks).toHaveLength(2);
+		expect(state.codeBlockRendering.codeBlocks).toEqual([codeBlock2, codeBlock3]);
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(2);
 	});
 
 	it('should work with mixed block types in a group', () => {
@@ -101,7 +101,7 @@ describe('groupDeleter', () => {
 		functionBlock.groupName = 'myGroup';
 		envBlock.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [moduleBlock, functionBlock, envBlock];
+		mockState.codeBlockRendering.codeBlocks = [moduleBlock, functionBlock, envBlock];
 
 		groupDeleter(store, mockEvents);
 
@@ -112,7 +112,7 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: moduleBlock });
 
 		const state = store.getState();
-		expect(state.graphicHelper.codeBlocks).toEqual([]);
+		expect(state.codeBlockRendering.codeBlocks).toEqual([]);
 	});
 
 	it('should clear selectedCodeBlock if it is deleted', () => {
@@ -128,8 +128,8 @@ describe('groupDeleter', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.graphicHelper.selectedCodeBlock = codeBlock1;
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.selectedCodeBlock = codeBlock1;
 
 		groupDeleter(store, mockEvents);
 
@@ -140,7 +140,7 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: codeBlock1 });
 
 		const state = store.getState();
-		expect(state.graphicHelper.selectedCodeBlock).toBeUndefined();
+		expect(state.codeBlockRendering.selectedCodeBlock).toBeUndefined();
 	});
 
 	it('should clear draggedCodeBlock if it is deleted', () => {
@@ -156,8 +156,8 @@ describe('groupDeleter', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.graphicHelper.draggedCodeBlock = codeBlock2;
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.draggedCodeBlock = codeBlock2;
 
 		groupDeleter(store, mockEvents);
 
@@ -168,7 +168,7 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: codeBlock1 });
 
 		const state = store.getState();
-		expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+		expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 	});
 
 	it('should clear selectedCodeBlockForProgrammaticEdit if it is deleted', () => {
@@ -184,8 +184,8 @@ describe('groupDeleter', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
-		mockState.graphicHelper.selectedCodeBlockForProgrammaticEdit = codeBlock1;
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = codeBlock1;
 
 		groupDeleter(store, mockEvents);
 
@@ -196,7 +196,7 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: codeBlock1 });
 
 		const state = store.getState();
-		expect(state.graphicHelper.selectedCodeBlockForProgrammaticEdit).toBeUndefined();
+		expect(state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit).toBeUndefined();
 	});
 
 	it('should do nothing when codeBlock has no groupName', () => {
@@ -212,7 +212,7 @@ describe('groupDeleter', () => {
 		codeBlock1.groupName = undefined;
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
 
 		groupDeleter(store, mockEvents);
 
@@ -223,7 +223,7 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: codeBlock1 });
 
 		const state = store.getState();
-		expect(state.graphicHelper.codeBlocks).toEqual([codeBlock1, codeBlock2]);
+		expect(state.codeBlockRendering.codeBlocks).toEqual([codeBlock1, codeBlock2]);
 	});
 
 	it('should do nothing when editing is disabled', () => {
@@ -239,7 +239,7 @@ describe('groupDeleter', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
 		mockState.featureFlags.editing = false;
 
 		groupDeleter(store, mockEvents);
@@ -251,7 +251,7 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: codeBlock1 });
 
 		const state = store.getState();
-		expect(state.graphicHelper.codeBlocks).toEqual([codeBlock1, codeBlock2]);
+		expect(state.codeBlockRendering.codeBlocks).toEqual([codeBlock1, codeBlock2]);
 	});
 
 	it('should preserve non-group blocks when deleting a group', () => {
@@ -277,7 +277,7 @@ describe('groupDeleter', () => {
 		standaloneBlock.groupName = undefined;
 		otherGroupBlock.groupName = 'otherGroup';
 
-		mockState.graphicHelper.codeBlocks = [groupBlock1, groupBlock2, standaloneBlock, otherGroupBlock];
+		mockState.codeBlockRendering.codeBlocks = [groupBlock1, groupBlock2, standaloneBlock, otherGroupBlock];
 
 		groupDeleter(store, mockEvents);
 
@@ -288,8 +288,8 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: groupBlock1 });
 
 		const state = store.getState();
-		expect(state.graphicHelper.codeBlocks).toEqual([standaloneBlock, otherGroupBlock]);
-		expect(state.graphicHelper.codeBlocks).toHaveLength(2);
+		expect(state.codeBlockRendering.codeBlocks).toEqual([standaloneBlock, otherGroupBlock]);
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(2);
 	});
 
 	it('should handle deleting a large group efficiently', () => {
@@ -309,7 +309,7 @@ describe('groupDeleter', () => {
 			blockType: 'module',
 		});
 
-		mockState.graphicHelper.codeBlocks = [...groupBlocks, otherBlock];
+		mockState.codeBlockRendering.codeBlocks = [...groupBlocks, otherBlock];
 
 		groupDeleter(store, mockEvents);
 
@@ -320,7 +320,7 @@ describe('groupDeleter', () => {
 		deleteCallback({ codeBlock: groupBlocks[0] });
 
 		const state = store.getState();
-		expect(state.graphicHelper.codeBlocks).toEqual([otherBlock]);
-		expect(state.graphicHelper.codeBlocks).toHaveLength(1);
+		expect(state.codeBlockRendering.codeBlocks).toEqual([otherBlock]);
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(1);
 	});
 });

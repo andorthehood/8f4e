@@ -21,7 +21,7 @@ export default function createBinaryAssetDirectiveSync({
 
 	async function syncBinaryAssetsFromDirectives(): Promise<void> {
 		const state = store.getState();
-		const parsed = parseBinaryAssetDirectives(state.graphicHelper.codeBlocks);
+		const parsed = parseBinaryAssetDirectives(state.codeBlockRendering.codeBlocks);
 		const loadRequests = parsed.loadDirectives
 			.map(loadDirective => {
 				const definition = parsed.definitionsById.get(loadDirective.assetId);
@@ -102,14 +102,14 @@ export default function createBinaryAssetDirectiveSync({
 		}
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', syncBinaryAssetsFromDirectives);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', syncBinaryAssetsFromDirectives);
+	store.subscribe('codeBlockRendering.codeBlocks', syncBinaryAssetsFromDirectives);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncBinaryAssetsFromDirectives);
 
 	void syncBinaryAssetsFromDirectives();
 
 	return () => {
 		fetchGeneration++;
-		store.unsubscribe('graphicHelper.codeBlocks', syncBinaryAssetsFromDirectives);
-		store.unsubscribe('graphicHelper.selectedCodeBlock.code', syncBinaryAssetsFromDirectives);
+		store.unsubscribe('codeBlockRendering.codeBlocks', syncBinaryAssetsFromDirectives);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', syncBinaryAssetsFromDirectives);
 	};
 }

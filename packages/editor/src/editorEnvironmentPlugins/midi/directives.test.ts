@@ -23,7 +23,7 @@ function codeBlock(id: string, directives: ParsedDirectiveRecord[]): CodeBlockGr
 
 function stateWithBlocks(blocks: CodeBlockGraphicData[]): State {
 	return {
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks: blocks,
 		},
 	} as unknown as State;
