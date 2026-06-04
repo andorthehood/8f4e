@@ -60,6 +60,7 @@ Supported paths:
 - `runtime` - runtime host loaded for the project.
 - `color.<path>` - editor color scheme override. See [Color Paths](./color-paths.md) for the full list of color paths.
 - `export.fileName` - base file name used by editor export actions.
+- `midi.inputs.<id>.port` / `midi.inputs.<id>.callback` - browser MIDI input bindings.
 
 Examples:
 
@@ -69,6 +70,8 @@ Examples:
 ; @config export.fileName samplePlayer
 ; @config color.text.code #cccccc
 ; @config color.fill.moduleBackground rgba(0,0,0,0.9)
+; @config midi.inputs.0.port 0
+; @config midi.inputs.0.callback onMidiIn
 ```
 
 Supported `font` values:
@@ -228,24 +231,26 @@ Notes:
 - `pressedKeysListMemoryId` is used as both keyboard id and pressed-key array memory id.
 - `startingMidiNote` defaults to `0`.
 
-### `@midiIn`
+### MIDI Input Config
 
-Bind a browser MIDI input port to an exported 8f4e function.
+MIDI input bindings are configured through `@config`.
 
 ```txt
-; @midiIn <port> <callbackExportName>
+; @config midi.inputs.<id>.port <port>
+; @config midi.inputs.<id>.callback <callbackExportName>
 ```
 
 Notes:
 
-- The MIDI plugin is activated by `@midiIn`; `; @info midi` can display available ports while MIDI is active.
+- The MIDI plugin is activated by `@config midi...`; `; @info midi` can display available ports while MIDI is active.
+- `<id>` is a binding identifier such as `0`, `1`, etc.
 - `<port>` is the numeric input index shown by `; @info midi`.
-- MIDI entries are shown as `0`, `1`, etc.; only entries marked `(in)` can be used with `@midiIn`.
+- MIDI entries are shown as `0`, `1`, etc.; only entries marked `(in)` can be used as input ports.
 - Indexes are stable while the MIDI plugin is active; disconnected port indexes are not reused until the plugin is restarted.
 - `<callbackExportName>` must be a callable WebAssembly export created with `#export`.
 - The callback receives three integer arguments: `status`, `data1`, and `data2`.
 - MIDI messages with fewer than three bytes pass missing bytes as `0`.
-- Multiple `@midiIn` directives can bind the same input port to different callbacks.
+- Multiple bindings can bind the same input port to different callbacks.
 - The same callback export can be bound to multiple input ports.
 - The MIDI plugin runs on the main thread and calls exported functions against the shared WebAssembly memory.
 
@@ -253,8 +258,10 @@ Example:
 
 ```txt
 ; @info midi
-; @midiIn 0 onMidiIn
-; @midiIn 0 onPitchBend
+; @config midi.inputs.0.port 0
+; @config midi.inputs.0.callback onMidiIn
+; @config midi.inputs.1.port 0
+; @config midi.inputs.1.callback onPitchBend
 ```
 
 ### `@offset`
