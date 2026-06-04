@@ -8,39 +8,39 @@ import {
 	getPointerDepth,
 	isMemoryDeclarationInstruction,
 } from '@8f4e/tokenizer';
-import gapCalculator from '../../../code-editing/gapCalculator';
-import highlightSyntax8f4e from '../../../code-editing/highlightSyntax8f4e';
-import highlightSyntaxGlsl from '../../../code-editing/highlightSyntaxGlsl';
-import highlightSyntaxNote from '../../../code-editing/highlightSyntaxNote';
-import { moveCaret } from '../../../code-editing/moveCaret';
-import reverseGapCalculator from '../../../code-editing/reverseGapCalculator';
+import gapCalculator from '../code-editing/gapCalculator';
+import highlightSyntax8f4e from '../code-editing/highlightSyntax8f4e';
+import highlightSyntaxGlsl from '../code-editing/highlightSyntaxGlsl';
+import highlightSyntaxNote from '../code-editing/highlightSyntaxNote';
+import { moveCaret } from '../code-editing/moveCaret';
+import reverseGapCalculator from '../code-editing/reverseGapCalculator';
 import {
 	expandLineColorsToCells,
 	expandLineToCells,
 	getRawIndexForVisualColumn,
 	getTabStopsByLine,
 	getVisualColumnForRawIndex,
-} from '../../../code-editing/tabLayout';
-import { isShaderNoteCode } from '../../../shader-effects/getShaderNoteMetadata';
-import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
-import updateViewport from '../../../viewport/updateViewport';
-import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import getCodeBlockId from '../../utils/getCodeBlockId';
-import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
-import wrapText from '../../utils/wrapText';
-import blockHighlights from '../blockHighlights/updateGraphicData';
-import type { CodeBlockClickEvent } from '../codeBlockDragger/effect';
-import parsePos from '../directives/pos/data';
+} from '../code-editing/tabLayout';
+import { isShaderNoteCode } from '../shader-effects/getShaderNoteMetadata';
+import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
+import updateViewport from '../viewport/updateViewport';
+import blockHighlights from './features/blockHighlights/updateGraphicData';
+import type { CodeBlockClickEvent } from './features/codeBlockDragger/effect';
+import parsePos from './features/directives/pos/data';
 import {
 	deriveDirectiveState,
 	runAfterGraphicDataWidthCalculation,
 	runBeforeGraphicDataWidthCalculation,
-} from '../directives/registry';
-import inputs from '../inputs/updateGraphicData';
-import outputs from '../outputs/updateGraphicData';
+} from './features/directives/registry';
+import inputs from './features/inputs/updateGraphicData';
+import outputs from './features/outputs/updateGraphicData';
 import gaps from './gaps';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 import positionOffsetters from './positionOffsetters';
+import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
+import getCodeBlockId from './utils/getCodeBlockId';
+import { parseBlockDirectives } from './utils/parseBlockDirectives';
+import wrapText from './utils/wrapText';
 
 function shouldRenderBlankLineNumber(sourceLine: string): boolean {
 	const instruction = sourceLine.match(/^\s*([^\s;]+)/)?.[1];

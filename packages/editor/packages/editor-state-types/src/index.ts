@@ -398,8 +398,8 @@ export interface State {
 
 export type * from './features/binary-assets/types';
 export type * from './features/browser-local-notes/types';
+export type * from './features/code-blocks/buildDisplayModel';
 export type * from './features/code-blocks/features/directives/types';
-export type * from './features/code-blocks/features/graphicHelper/buildDisplayModel';
 export type * from './features/code-blocks/types';
 export type * from './features/code-blocks/utils/types';
 export type * from './features/code-editing/types';
