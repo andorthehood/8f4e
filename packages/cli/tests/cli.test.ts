@@ -29,6 +29,7 @@ const tmpDir = path.join(testDir, '.tmp');
 const wasmPath = path.join(tmpDir, 'audioBuffer.wasm');
 const runOutPath = path.join(tmpDir, 'runtimeInspect.output.json');
 const captureOutPath = path.join(tmpDir, 'runtimeInspect.capture.bin');
+const formatOutPath = path.join(tmpDir, 'formatted.8f4em');
 
 function execCli(args: string[]) {
 	return execFileAsync(process.execPath, [path.join(packageRoot, 'bin', 'cli.js'), ...args], {
@@ -59,6 +60,78 @@ describe('cli', () => {
 		await fs.writeFile(invalidProjectPath, 'module main\nmoduleEnd\n');
 
 		await expect(execCli(['compile', invalidProjectPath, '--wasm-output', wasmPath])).rejects.toThrow('Command failed');
+	});
+
+	it('formats long semicolon comments to stdout', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const formatInputPath = path.join(tmpDir, 'format-stdout.8f4em');
+		await fs.writeFile(
+			formatInputPath,
+			[
+				'module formatFixture',
+				'; This comment should wrap into multiple lines when width is set low enough',
+				'load ; This trailing comment should also wrap after the instruction prefix',
+				'push "; this is a string literal, not a comment delimiter"',
+				'; @info this directive-shaped comment should stay on one long line',
+				'moduleEnd',
+			].join('\n') + '\n'
+		);
+
+		const { stdout } = await execCli(['format', formatInputPath, '--comment-width', '36']);
+
+		expect(stdout).toBe(
+			[
+				'module formatFixture',
+				'; This comment should wrap into',
+				'; multiple lines when width is set',
+				'; low enough',
+				'load ; This trailing comment should',
+				'     ; also wrap after the',
+				'     ; instruction prefix',
+				'push "; this is a string literal, not a comment delimiter"',
+				'; @info this directive-shaped comment should stay on one long line',
+				'moduleEnd',
+			].join('\n') + '\n'
+		);
+	});
+
+	it('uses a 64 character default format comment width', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const formatInputPath = path.join(tmpDir, 'format-default-width.8f4em');
+		await fs.writeFile(
+			formatInputPath,
+			'; This comment should wrap using the default formatter width of sixty four characters\n'
+		);
+
+		const { stdout } = await execCli(['format', formatInputPath]);
+
+		expect(stdout).toBe(
+			['; This comment should wrap using the default formatter width of', '; sixty four characters'].join('\n') + '\n'
+		);
+	});
+
+	it('writes formatted code to an output file', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const formatInputPath = path.join(tmpDir, 'format-out.8f4em');
+		await fs.writeFile(formatInputPath, '; This comment should wrap into a small output file\n');
+
+		await execCli(['format', formatInputPath, '--comment-width', '24', '--out', formatOutPath]);
+
+		expect(await fs.readFile(formatOutPath, 'utf8')).toBe(
+			['; This comment should', '; wrap into a small', '; output file'].join('\n') + '\n'
+		);
+	});
+
+	it('formats code in place with --write', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const formatInputPath = path.join(tmpDir, 'format-write.8f4em');
+		await fs.writeFile(formatInputPath, '; This comment should wrap when the file is written in place\n');
+
+		await execCli(['format', formatInputPath, '--comment-width', '28', '--write']);
+
+		expect(await fs.readFile(formatInputPath, 'utf8')).toBe(
+			['; This comment should wrap', '; when the file is written', '; in place'].join('\n') + '\n'
+		);
 	});
 
 	it('runs cycles, applies sets, and dumps requested ids as JSON', async () => {

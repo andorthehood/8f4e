@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { getCaptureUsage, runCaptureCommand } from './capture/command';
 import { getCompileUsage, runCompileCommand } from './compile/command';
+import { getFormatUsage, runFormatCommand } from './format/command';
 import { getRunUsage, runRunCommand } from './run/command';
 import { getTestUsage, runTestCommand } from './test/command';
 
@@ -11,6 +12,7 @@ function getUsage(): string {
 		`  ${getRunUsage().replace('Usage: ', '')}`,
 		`  ${getCaptureUsage().replace('Usage: ', '')}`,
 		`  ${getTestUsage().replace('Usage: ', '')}`,
+		`  ${getFormatUsage().replace('Usage: ', '')}`,
 	].join('\n');
 }
 
@@ -39,6 +41,11 @@ async function run(): Promise<void> {
 
 	if (subcommand === 'test') {
 		await runTestCommand(args);
+		return;
+	}
+
+	if (subcommand === 'format') {
+		await runFormatCommand(args);
 		return;
 	}
 
