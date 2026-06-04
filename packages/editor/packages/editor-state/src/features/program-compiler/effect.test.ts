@@ -36,8 +36,8 @@ describe('program compiler effect', () => {
 			blockType: 'function',
 		});
 
-		mockState.graphicHelper.codeBlocks.push(helperBlock);
-		mockState.graphicHelper.selectedCodeBlockForProgrammaticEdit = helperBlock;
+		mockState.codeBlockRendering.codeBlocks.push(helperBlock);
+		mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = helperBlock;
 
 		store = createStateManager(mockState);
 		subscribeSpy = vi.spyOn(store, 'subscribe') as MockInstance;
@@ -51,7 +51,7 @@ describe('program compiler effect', () => {
 	async function triggerProgrammaticCompile(delayMs = 500): Promise<void> {
 		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
 		expect(programmaticChangeCall).toBeDefined();
 
@@ -230,7 +230,7 @@ describe('program compiler effect', () => {
 		mockState.editorConfig.recompileDebounceDelay = 120;
 		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
 		expect(programmaticChangeCall).toBeDefined();
 
@@ -245,7 +245,7 @@ describe('program compiler effect', () => {
 	it('uses the default recompile debounce delay when the config value is absent', async () => {
 		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
 		expect(programmaticChangeCall).toBeDefined();
 

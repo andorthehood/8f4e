@@ -16,7 +16,7 @@ function centerCurrentStop(
 		return;
 	}
 
-	store.set('graphicHelper.selectedCodeBlock', stop.codeBlock);
+	store.set('codeBlockRendering.selectedCodeBlock', stop.codeBlock);
 	const { x, y } = centerViewportOnCodeBlock(state.viewport, stop.codeBlock, {
 		alignment: stop.alignment,
 	});
@@ -25,7 +25,7 @@ function centerCurrentStop(
 
 export default function presentation(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
-	let stops = getPresentationStops(state.graphicHelper.codeBlocks);
+	let stops = getPresentationStops(state.codeBlockRendering.codeBlocks);
 	let stopIndex = 0;
 	let timeoutId: ReturnType<typeof setTimeout> | undefined;
 	let returnToViewportTimeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -33,7 +33,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	let isReturningToStartViewport = false;
 
 	function refreshStops(): void {
-		stops = getPresentationStops(state.graphicHelper.codeBlocks);
+		stops = getPresentationStops(state.codeBlockRendering.codeBlocks);
 		state.presentation.canPresent = stops.length > 0;
 	}
 
@@ -80,7 +80,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		isReturningToStartViewport = false;
 		if (options.restoreStartViewport && presentationStartViewport) {
 			isReturningToStartViewport = true;
-			store.set('graphicHelper.selectedCodeBlock', undefined);
+			store.set('codeBlockRendering.selectedCodeBlock', undefined);
 			animateViewport(state, presentationStartViewport.x, presentationStartViewport.y, events);
 			returnToViewportTimeoutId = setTimeout(() => {
 				isReturningToStartViewport = false;
@@ -198,7 +198,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 	}
 
 	store.subscribe('editorMode', onPresentationChanged);
-	store.subscribe('graphicHelper.codeBlocks', syncStops);
+	store.subscribe('codeBlockRendering.codeBlocks', syncStops);
 	events.on('viewportResized', onViewportResized);
 	events.on('previousPresentationStop', onPreviousPresentationStop);
 	events.on('nextPresentationStop', onNextPresentationStop);
@@ -210,7 +210,7 @@ export default function presentation(store: StateManager<State>, events: EventDi
 		stopViewportAnimation(state);
 		clearPresentationState();
 		store.unsubscribe('editorMode', onPresentationChanged);
-		store.unsubscribe('graphicHelper.codeBlocks', syncStops);
+		store.unsubscribe('codeBlockRendering.codeBlocks', syncStops);
 		events.off('viewportResized', onViewportResized);
 		events.off('previousPresentationStop', onPreviousPresentationStop);
 		events.off('nextPresentationStop', onNextPresentationStop);

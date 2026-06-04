@@ -30,7 +30,7 @@ A single post-process effect is derived from shader notes:
 
 ### State Touched
 
-- `state.graphicHelper.codeBlocks` - Source of shader notes
+- `state.codeBlockRendering.codeBlocks` - Source of shader notes
 - `state.postProcessEffects` - Derived array of effect descriptors (if stored)
 - Shader compilation errors are added to error state
 

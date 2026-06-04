@@ -6,5 +6,5 @@ export function checkIfCodeBlockIdIsTaken(
 	id: string
 ): boolean {
 	const typedId = `${blockType}_${id}`;
-	return state.graphicHelper.codeBlocks.some(codeBlock => codeBlock.id === typedId);
+	return state.codeBlockRendering.codeBlocks.some(codeBlock => codeBlock.id === typedId);
 }

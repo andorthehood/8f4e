@@ -21,7 +21,7 @@ describe('skipExecutionToggler', () => {
 			code: ['module test', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -40,7 +40,7 @@ describe('skipExecutionToggler', () => {
 			code: ['module test', '#skipExecution', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -58,7 +58,7 @@ describe('skipExecutionToggler', () => {
 			code: ['module test', '#skipExecution', '', '#skipExecution', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -76,7 +76,7 @@ describe('skipExecutionToggler', () => {
 			code: ['module test', '#skipExecution  ', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -94,7 +94,7 @@ describe('skipExecutionToggler', () => {
 			code: ['module test', '  #skipExecution', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -113,7 +113,7 @@ describe('skipExecutionToggler', () => {
 			blockType: 'module',
 			lastUpdated: 1000,
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -131,7 +131,7 @@ describe('skipExecutionToggler', () => {
 			code: ['module test', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		skipExecutionToggler(store, mockEvents);
 
@@ -143,7 +143,7 @@ describe('skipExecutionToggler', () => {
 
 		toggleCallback({ codeBlock });
 
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	});
 
 	it('should not toggle when editing is disabled', () => {
@@ -151,7 +151,7 @@ describe('skipExecutionToggler', () => {
 			code: ['module test', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = false;
 
 		skipExecutionToggler(store, mockEvents);

@@ -21,7 +21,7 @@ describe('menus - go home entry', () => {
 	it('shows "Go @home" even when no home block exists', () => {
 		const mockState = createMockState({
 			editorMode: 'edit',
-			graphicHelper: { codeBlocks: [] },
+			codeBlockRendering: { codeBlocks: [] },
 		});
 
 		const menu = mainMenu(mockState as State);

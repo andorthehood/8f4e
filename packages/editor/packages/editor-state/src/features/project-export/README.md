@@ -32,7 +32,7 @@ WASM export is separate from project serialization and writes compiled binary mo
 ## State Sources
 
 Serializes from:
-- `state.graphicHelper.codeBlocks` - Code block data
+- `state.codeBlockRendering.codeBlocks` - Code block data
 
 ## Integration Points
 

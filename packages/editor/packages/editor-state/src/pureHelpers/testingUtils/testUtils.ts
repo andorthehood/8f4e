@@ -187,12 +187,12 @@ export function findWidgetById<T extends { id: string }>(array: T[], id: string)
 }
 
 /**
- * Helper to create a mock viewport for testing (GraphicHelper viewport type)
+ * Helper to create a mock viewport for testing (code block rendering viewport type)
  * @param x - X coordinate (defaults to 0)
  * @param y - Y coordinate (defaults to 0)
  * @param width - Viewport width (defaults to 800)
  * @param height - Viewport height (defaults to 600)
- * @returns A GraphicHelper viewport object
+ * @returns A code block rendering viewport object
  *
  * @example
  * const viewport = createMockViewport();
@@ -269,7 +269,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				factory: mockRuntimeFactory,
 			},
 		},
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks: [],
 			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],

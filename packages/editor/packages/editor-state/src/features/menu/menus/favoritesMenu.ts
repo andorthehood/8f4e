@@ -14,7 +14,7 @@ import deriveFavorites from '../../code-blocks/features/favorites/deriveFavorite
  * @returns Array of context menu items
  */
 export const favoritesMenu: MenuGenerator = state => {
-	const favorites = deriveFavorites(state.graphicHelper.codeBlocks);
+	const favorites = deriveFavorites(state.codeBlockRendering.codeBlocks);
 
 	// If no favorites, show a disabled placeholder
 	if (favorites.length === 0) {

@@ -209,8 +209,8 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 			});
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', sync);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', sync);
+	store.subscribe('codeBlockRendering.codeBlocks', sync);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', sync);
 	store.subscribe('compiler.isCompiling', sync);
 	sync();
 
@@ -220,8 +220,8 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 			disposed = true;
 			syncGeneration++;
 			removeInputListeners(activeListeners);
-			store.unsubscribe('graphicHelper.codeBlocks', sync);
-			store.unsubscribe('graphicHelper.selectedCodeBlock.code', sync);
+			store.unsubscribe('codeBlockRendering.codeBlocks', sync);
+			store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', sync);
 			store.unsubscribe('compiler.isCompiling', sync);
 		},
 	};

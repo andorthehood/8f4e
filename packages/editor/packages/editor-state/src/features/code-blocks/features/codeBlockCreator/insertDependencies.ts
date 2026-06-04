@@ -49,7 +49,7 @@ export async function insertDependencies({
 			// Skip if a code block with this moduleId and type already exists
 			// Filter by block type first, then check IDs of matching type
 			// Use getBlockType to parse the type from code rather than relying on stored blockType
-			const existsAlready = state.graphicHelper.codeBlocks.some(block => {
+			const existsAlready = state.codeBlockRendering.codeBlocks.some(block => {
 				const blockType = getBlockType(block.code);
 				if (blockType !== dependencyBlockType) {
 					return false;

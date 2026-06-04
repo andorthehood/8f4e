@@ -31,9 +31,9 @@ describe('entryOutlines effect', () => {
 		});
 
 		entryOutlines(store);
-		store.set('graphicHelper.codeBlocks', [first, second]);
+		store.set('codeBlockRendering.codeBlocks', [first, second]);
 
-		expect(state.graphicHelper.entryOutlines).toEqual([
+		expect(state.codeBlockRendering.entryOutlines).toEqual([
 			{
 				entryName: 'main',
 				topLeft: { x: -48, y: -32 },

@@ -21,7 +21,7 @@ export default function groupSkipExecutionToggler(store: StateManager<State>, ev
 		}
 
 		// Find all module blocks in the same group
-		const groupBlocks = getGroupModuleBlocks(state.graphicHelper.codeBlocks, codeBlock.groupName);
+		const groupBlocks = getGroupModuleBlocks(state.codeBlockRendering.codeBlocks, codeBlock.groupName);
 
 		if (groupBlocks.length === 0) {
 			return;
@@ -33,7 +33,7 @@ export default function groupSkipExecutionToggler(store: StateManager<State>, ev
 		// Apply the same operation to all group blocks
 		for (const block of groupBlocks) {
 			// Set target code block for programmatic edit to avoid re-rendering all code blocks
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = block;
+			state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = block;
 
 			if (allSkipped) {
 				// Remove all #skipExecution directive lines
@@ -60,7 +60,7 @@ export default function groupSkipExecutionToggler(store: StateManager<State>, ev
 			block.lastUpdated = Date.now();
 
 			// Trigger store update to re-render only the specific code block
-			store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', block);
+			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block);
 		}
 	}
 
