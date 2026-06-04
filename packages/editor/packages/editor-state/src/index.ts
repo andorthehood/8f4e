@@ -5,7 +5,6 @@ import canvasScreenshot from './features/canvas-screenshot/effect';
 import codeBlockRendering from './features/code-blocks/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
-import clearDebugProbes from './features/code-blocks/features/clearDebugProbes/effect';
 import codeBlockCreator from './features/code-blocks/features/codeBlockCreator/effect';
 import codeBlockDragger from './features/code-blocks/features/codeBlockDragger/effect';
 import codeBlockNavigation from './features/code-blocks/features/codeBlockNavigation/effect';
@@ -93,7 +92,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	contextMenu(store, events);
 	codeBlockCreator(store, events);
 	skipExecutionToggler(store, events);
-	clearDebugProbes(store, events);
 	groupSkipExecutionToggler(store, events);
 	groupNonstickToggler(store, events);
 	groupCopier(store, events);
