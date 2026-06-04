@@ -20,6 +20,7 @@ describe('program compiler effect', () => {
 			context: {
 				codeBlockId: 'helper',
 				codeBlockType: 'function',
+				projectBlockId: 0,
 			},
 		});
 
@@ -65,7 +66,7 @@ describe('program compiler effect', () => {
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
 				lineNumber: 2,
-				codeBlockId: 'helper',
+				codeBlockId: 0,
 				codeBlockType: 'function',
 				message: 'Memory access is not allowed in pure functions. (19)',
 			},
@@ -76,7 +77,7 @@ describe('program compiler effect', () => {
 		mockCompileCode.mockRejectedValue({
 			message: 'Too many arguments for if.',
 			line: { lineNumber: 3, instruction: 'if' },
-			context: {},
+			context: { projectBlockId: 0 },
 		});
 
 		await triggerProgrammaticCompile();
@@ -84,7 +85,7 @@ describe('program compiler effect', () => {
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
 				lineNumber: 3,
-				codeBlockId: '',
+				codeBlockId: 0,
 				codeBlockType: undefined,
 				message: 'Too many arguments for if.',
 			},

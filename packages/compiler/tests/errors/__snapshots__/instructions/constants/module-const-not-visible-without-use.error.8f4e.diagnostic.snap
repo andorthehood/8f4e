@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "moduleB",
     "codeBlockType": "module",
+    "projectBlockId": 8,
   },
   "line": {
     "arguments": [

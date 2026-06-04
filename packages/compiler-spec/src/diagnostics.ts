@@ -2,6 +2,13 @@ import type { CompilerASTLine } from './ast';
 import type { CompilerSourceBlockType } from './instructions';
 import type { CodegenContext, CompilationContext } from './semantic';
 
+/** Source block context attached to a serialized compiler diagnostic. */
+export interface CompilerDiagnosticContext {
+	codeBlockId?: string;
+	codeBlockType?: CompilerSourceBlockType;
+	projectBlockId?: number;
+}
+
 /**
  * Internal compiler-stage error shape returned by getError().
  * This is not the public cross-stage contract; consumers should use CompilerDiagnostic.
@@ -9,7 +16,7 @@ import type { CodegenContext, CompilationContext } from './semantic';
 export interface CompilerStageError {
 	message: string;
 	line: CompilerASTLine;
-	context?: CodegenContext | CompilationContext;
+	context?: CodegenContext | CompilationContext | CompilerDiagnosticContext;
 	code: number;
 }
 
@@ -22,12 +29,6 @@ export interface CompilerDiagnosticLine {
 	lineNumber: number;
 	instruction?: string;
 	arguments?: unknown[];
-}
-
-/** Source block context attached to a serialized compiler diagnostic. */
-export interface CompilerDiagnosticContext {
-	codeBlockId?: string;
-	codeBlockType?: CompilerSourceBlockType;
 }
 
 /** Serializable compiler diagnostic shared across syntax and semantic stages. */

@@ -71,6 +71,7 @@ describe('compile prototype validation', () => {
 					entries: {
 						main: [
 							{
+								projectBlockId: 42,
 								code: ['module main', 'shape', 'moduleEnd'],
 							},
 						],
@@ -86,6 +87,7 @@ describe('compile prototype validation', () => {
 			code: SyntaxErrorCode.MISSING_ARGUMENT,
 			message: 'Missing required argument for shape.',
 			line: expect.objectContaining({ instruction: 'shape' }),
+			context: expect.objectContaining({ projectBlockId: 42 }),
 		});
 	});
 
@@ -134,10 +136,10 @@ describe('compile prototype validation', () => {
 			compile(
 				{
 					...emptyCompileInput,
-					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					entries: { main: [{ code: ['module main', 'moduleEnd'], projectBlockId: 10 }] },
 					functions: [
-						{ code: ['function first', '#export shared', 'functionEnd'] },
-						{ code: ['function second', '#export shared', 'functionEnd'] },
+						{ code: ['function first', '#export shared', 'functionEnd'], projectBlockId: 20 },
+						{ code: ['function second', '#export shared', 'functionEnd'], projectBlockId: 21 },
 					],
 				},
 				{ disableSharedMemory: true }
@@ -149,6 +151,7 @@ describe('compile prototype validation', () => {
 		expect(serializeDiagnostic(thrownError)).toMatchObject({
 			code: ErrorCode.DUPLICATE_EXPORT_NAME,
 			line: expect.objectContaining({ instruction: '#export' }),
+			context: expect.objectContaining({ projectBlockId: 21 }),
 		});
 	});
 

@@ -1,6 +1,8 @@
 {
   "code": 12,
-  "context": {},
+  "context": {
+    "projectBlockId": 8,
+  },
   "line": {
     "instruction": "push",
     "lineNumber": 4,

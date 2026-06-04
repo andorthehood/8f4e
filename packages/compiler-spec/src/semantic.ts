@@ -176,6 +176,7 @@ export interface CompilationContext {
 	mode: CompilationMode;
 	codeBlockId?: string;
 	codeBlockType?: CompilerSourceBlockType;
+	projectBlockId?: number;
 	currentFunctionId?: string;
 	currentFunctionSignature?: FunctionSignature;
 	currentFunctionTypeIndex?: number;

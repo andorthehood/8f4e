@@ -6,6 +6,7 @@
         "const int tableSize 16",
         "constantsEnd",
       ],
+      "projectBlockId": 9,
     },
   ],
   "entries": {
@@ -16,6 +17,7 @@
           "int count",
           "moduleEnd",
         ],
+        "projectBlockId": 4,
       },
     ],
   },
@@ -29,6 +31,7 @@
         "add",
         "functionEnd int",
       ],
+      "projectBlockId": 13,
     },
   ],
   "groups": [],
@@ -40,6 +43,7 @@
         "mul",
         "defineMacroEnd",
       ],
+      "projectBlockId": 25,
     },
   ],
   "prototypeBlocks": [
@@ -50,6 +54,7 @@
         "float frequency 440",
         "prototypeEnd",
       ],
+      "projectBlockId": 20,
     },
   ],
 }

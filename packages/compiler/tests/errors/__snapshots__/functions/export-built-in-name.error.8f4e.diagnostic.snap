@@ -1,6 +1,9 @@
 {
   "code": 52,
-  "context": {},
+  "context": {
+    "codeBlockType": "function",
+    "projectBlockId": 8,
+  },
   "line": {
     "arguments": [
       {

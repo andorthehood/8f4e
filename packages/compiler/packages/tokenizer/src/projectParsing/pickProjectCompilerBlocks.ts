@@ -21,11 +21,26 @@ type ProjectCompilerBlockTarget = {
 	macroBlocks: Module[];
 };
 
+function assertProjectBlockId(block: ProjectCodeBlock): void {
+	if (!Number.isInteger(block.id)) {
+		throw new Error('Project code block is missing numeric id');
+	}
+}
+
+function toCompilerModule(block: ProjectCodeBlock): Module {
+	return {
+		code: block.code,
+		projectBlockId: block.id,
+	};
+}
+
 function addCompilerBlockToTarget(
 	block: ProjectCodeBlock,
 	target: ProjectCompilerBlockTarget,
 	moduleBlocks?: Module[]
 ): void {
+	assertProjectBlockId(block);
+
 	if (block.disabled) {
 		return;
 	}
@@ -35,23 +50,23 @@ function addCompilerBlockToTarget(
 		if (!block.entry) {
 			throw new Error('Project module block is missing entry');
 		}
-		moduleBlocks?.push({ code: block.code });
+		moduleBlocks?.push(toCompilerModule(block));
 		return;
 	}
 	if (blockType === documentBlockInstructionByType.constants.type) {
-		target.constantsBlocks.push({ code: block.code });
+		target.constantsBlocks.push(toCompilerModule(block));
 		return;
 	}
 	if (blockType === functionBlockType) {
-		target.functionBlocks.push({ code: block.code });
+		target.functionBlocks.push(toCompilerModule(block));
 		return;
 	}
 	if (blockType === prototypeBlockType) {
-		target.prototypeBlocks.push({ code: block.code });
+		target.prototypeBlocks.push(toCompilerModule(block));
 		return;
 	}
 	if (blockType === macroBlockType) {
-		target.macroBlocks.push({ code: block.code });
+		target.macroBlocks.push(toCompilerModule(block));
 	}
 }
 
@@ -89,6 +104,8 @@ export function pickProjectCompilerBlocks(project: ProjectInput): ProjectCompile
 	const target = { constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks };
 
 	for (const block of project.codeBlocks) {
+		assertProjectBlockId(block);
+
 		if (block.disabled) {
 			continue;
 		}
@@ -100,9 +117,7 @@ export function pickProjectCompilerBlocks(project: ProjectInput): ProjectCompile
 			}
 			const entryName = block.entry;
 			entries[entryName] ??= [];
-			entries[entryName].push({
-				code: block.code,
-			});
+			entries[entryName].push(toCompilerModule(block));
 			continue;
 		}
 		addCompilerBlockToTarget(block, target);

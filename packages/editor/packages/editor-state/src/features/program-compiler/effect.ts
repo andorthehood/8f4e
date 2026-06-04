@@ -14,6 +14,13 @@ const functionBlockType = documentBlockInstructionByType.function.type;
 const macroBlockType = documentBlockInstructionByType.macro.type;
 const prototypeBlockType = documentBlockInstructionByType.prototype.type;
 
+function toCompilerModule(block: CodeBlockGraphicData): Module {
+	return {
+		code: block.code,
+		projectBlockId: block.creationIndex,
+	};
+}
+
 /**
  * Converts code blocks into compiler input entries plus shared functions, constants, and macros.
  *
@@ -25,9 +32,9 @@ const prototypeBlockType = documentBlockInstructionByType.prototype.type;
 export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): CompileInput {
 	const moduleEntries: Record<string, CodeBlockGraphicData[]> = {};
 	const constants: Module[] = [];
-	const functions: CodeBlockGraphicData[] = [];
+	const functions: Module[] = [];
 	const prototypes: Module[] = [];
-	const macros: CodeBlockGraphicData[] = [];
+	const macros: Module[] = [];
 
 	const sortedEnabled = [...codeBlocks]
 		.filter(block => !block.disabled)
@@ -42,22 +49,20 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 			moduleEntries[entryName] ??= [];
 			moduleEntries[entryName].push(block);
 		} else if (block.blockType === constantsBlockType) {
-			constants.push({ code: block.code });
+			constants.push(toCompilerModule(block));
 		} else if (block.blockType === functionBlockType) {
-			functions.push(block);
+			functions.push(toCompilerModule(block));
 		} else if (block.blockType === prototypeBlockType) {
-			prototypes.push({ code: block.code });
+			prototypes.push(toCompilerModule(block));
 		} else if (block.blockType === macroBlockType) {
-			macros.push(block);
+			macros.push(toCompilerModule(block));
 		}
 	}
 
 	const entries = Object.fromEntries(
 		Object.entries(moduleEntries).map(([entryName, modules]) => [
 			entryName,
-			sortCodeBlocksByGridPosition(modules).map(module => ({
-				code: module.code,
-			})),
+			sortCodeBlocksByGridPosition(modules).map(toCompilerModule),
 		])
 	);
 	entries.main ??= [];
@@ -144,7 +149,7 @@ export default function compiler(store: StateManager<State>) {
 			store.set('codeErrors.compilationErrors', [
 				{
 					lineNumber: diagnostic.line.lineNumber,
-					codeBlockId: diagnostic.context.codeBlockId || '',
+					codeBlockId: diagnostic.context.projectBlockId ?? diagnostic.context.codeBlockId ?? '',
 					codeBlockType: diagnostic.context.codeBlockType,
 					message: diagnostic?.message || String(error) || 'Compilation failed',
 				},
