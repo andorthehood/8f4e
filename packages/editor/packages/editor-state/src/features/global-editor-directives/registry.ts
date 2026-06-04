@@ -9,15 +9,9 @@ import type {
 	ResolvedGlobalEditorDirectives,
 } from '@8f4e/editor-state-types';
 import configDirective from './config/plugin';
-import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
-import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import { parseGlobalEditorDirectives } from './utils';
 
-export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
-	configDirective,
-	keyCodeMemoryDirective,
-	keyPressedMemoryDirective,
-];
+export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [configDirective];
 
 export function resolveGlobalEditorDirectives(
 	codeBlocks: {
