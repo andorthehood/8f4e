@@ -76,6 +76,9 @@ function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
 describe('drawModules', () => {
 	it('draws precomputed entry outlines before rendering code blocks', () => {
 		const state = createMockState({
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 			graphicHelper: {
 				codeBlocks: [],
 				entryOutlines: [
@@ -87,9 +90,6 @@ describe('drawModules', () => {
 						bottomLeft: { x: 8, y: 96 },
 					},
 				],
-				spriteLookups: {
-					fillColors: {},
-				} as never,
 			},
 			viewport: {
 				vGrid: 8,
@@ -145,16 +145,16 @@ describe('drawModules', () => {
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
 			graphicHelper: {
 				codeBlocks: [hiddenBlock],
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-				} as never,
 			},
 			featureFlags: {
 				positionOffsetters: true,
@@ -182,17 +182,17 @@ describe('drawModules', () => {
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
 			graphicHelper: {
 				codeBlocks: [hiddenBlock],
 				showHiddenCodeBlocks: true,
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-				} as never,
 			},
 			featureFlags: {
 				positionOffsetters: true,
@@ -262,17 +262,17 @@ describe('drawModules', () => {
 			},
 		] as never;
 		const state = createMockState({
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontPianoKeyWhitePressedOverlay: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
 			graphicHelper: {
 				codeBlocks: [block],
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontPianoKeyWhitePressedOverlay: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-				} as never,
 			},
 		});
 		const engine = createMockEngine({ drawCachedGroup: false });
@@ -308,19 +308,19 @@ describe('drawModules', () => {
 			codeColors: [],
 		});
 		const state = createMockState({
+			spriteLookups: {
+				fillColors,
+				fontCode,
+				fontNumbers: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+				fontTooltipHighlight,
+				fontTooltipText,
+			} as never,
 			graphicHelper: {
 				codeBlocks: [block],
 				selectedCodeBlock: block,
-				spriteLookups: {
-					fillColors,
-					fontCode,
-					fontNumbers: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-					fontTooltipHighlight,
-					fontTooltipText,
-				} as never,
 			},
 			featureFlags: {
 				codeLineSelection: true,
@@ -452,19 +452,19 @@ describe('drawModules', () => {
 					} as never,
 				},
 			},
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+				fontTooltipHighlight: {},
+				fontTooltipText: {},
+			} as never,
 			graphicHelper: {
 				codeBlocks: [block],
 				selectedCodeBlock: block,
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-					fontTooltipHighlight: {},
-					fontTooltipText: {},
-				} as never,
 			},
 			featureFlags: {
 				codeLineSelection: true,
@@ -553,11 +553,11 @@ describe('drawModules', () => {
 			height: 80,
 		});
 		const state = createMockState({
+			spriteLookups: {
+				fontArrow: {},
+			} as never,
 			graphicHelper: {
 				codeBlocks: [offscreenBlock],
-				spriteLookups: {
-					fontArrow: {},
-				} as never,
 			},
 			viewport: {
 				width: 1024,

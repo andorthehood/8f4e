@@ -29,11 +29,9 @@ describe('drawPlotters', () => {
 	it('renders one sample per point for short arrays', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 			viewport: {
 				hGrid: 4,
 				vGrid: 8,
@@ -76,11 +74,9 @@ describe('drawPlotters', () => {
 	it('matches sparse background width to the rendered trace width', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 			viewport: {
 				hGrid: 4,
 				vGrid: 8,
@@ -120,11 +116,9 @@ describe('drawPlotters', () => {
 	it('renders dense arrays as per-column min/max envelopes instead of truncating', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 			viewport: {
 				hGrid: 4,
 				vGrid: 8,
