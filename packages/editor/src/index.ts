@@ -75,7 +75,6 @@ interface Options {
 		exportCanvasScreenshot?: (blob: Blob, fileName: string) => Promise<void>;
 	};
 	runtimeRegistry: RuntimeRegistry;
-	defaultRuntimeId: string;
 	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 	renderStatsIntervalFrames?: number;
 	frameTexture?: WebUiOptions['frameTexture'];
