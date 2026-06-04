@@ -23,7 +23,7 @@ export default function groupUngroupper(store: StateManager<State>, events: Even
 		}
 
 		// Find all code blocks with the same group name
-		const groupBlocks = getGroupBlocks(state.graphicHelper.codeBlocks, groupName);
+		const groupBlocks = getGroupBlocks(state.codeBlockRendering.codeBlocks, groupName);
 
 		// Remove ; @group directive from all blocks in the group
 		groupBlocks.forEach(block => {
@@ -36,7 +36,7 @@ export default function groupUngroupper(store: StateManager<State>, events: Even
 
 		// Trigger store update to refresh all affected blocks
 		// Using codeBlocks array update to ensure all blocks are refreshed
-		store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
+		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
 	}
 
 	events.on('ungroupByName', onUngroupByName);

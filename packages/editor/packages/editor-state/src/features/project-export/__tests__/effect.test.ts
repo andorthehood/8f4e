@@ -53,9 +53,9 @@ describe('projectExport', () => {
 
 			projectExport(store, mockEvents);
 
-			expect(subscribeSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', expect.any(Function));
+			expect(subscribeSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlock.code', expect.any(Function));
 			expect(subscribeSpy).toHaveBeenCalledWith(
-				'graphicHelper.selectedCodeBlockForProgrammaticEdit.code',
+				'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code',
 				expect.any(Function)
 			);
 
@@ -198,7 +198,7 @@ describe('projectExport', () => {
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });
 			mockState.callbacks.saveSession = mockSaveSession;
 			mockState.callbacks.getStorageQuota = mockGetStorageQuota;
-			mockState.graphicHelper.codeBlocks = [
+			mockState.codeBlockRendering.codeBlocks = [
 				createMockCodeBlock({
 					blockType: 'module',
 					code: ['module other', 'moduleEnd'],
@@ -263,10 +263,12 @@ describe('projectExport', () => {
 			projectExport(store, mockEvents);
 
 			// Find the code change callback
-			const codeChangeCall = subscribeSpy.mock.calls.find(call => call[0] === 'graphicHelper.selectedCodeBlock.code');
+			const codeChangeCall = subscribeSpy.mock.calls.find(
+				call => call[0] === 'codeBlockRendering.selectedCodeBlock.code'
+			);
 			expect(codeChangeCall).toBeDefined();
 			const programmaticChangeCall = subscribeSpy.mock.calls.find(
-				call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+				call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 			);
 			expect(programmaticChangeCall).toBeDefined();
 

@@ -104,7 +104,7 @@ export function pasteMultipleBlocks(
 	}
 
 	// Create group name mapping to avoid collisions
-	const groupNameMapping = createGroupNameMapping(pastedGroupNames, state.graphicHelper.codeBlocks);
+	const groupNameMapping = createGroupNameMapping(pastedGroupNames, state.codeBlockRendering.codeBlocks);
 
 	// First pass: determine ID mappings for all pasted blocks
 	// We need to handle cases where multiple pasted blocks have the same original ID
@@ -198,8 +198,8 @@ export function pasteMultipleBlocks(
 		// Parse disabled state from @disabled directive in code
 		const disabled = hasDirective(code, 'disabled');
 
-		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
-		state.graphicHelper.nextCodeBlockCreationIndex++;
+		const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
+		state.codeBlockRendering.nextCodeBlockCreationIndex++;
 
 		const codeBlock = createCodeBlockGraphicData({
 			code,
@@ -214,16 +214,16 @@ export function pasteMultipleBlocks(
 		});
 
 		// Add block immediately so next iteration's ID uniqueness check sees it
-		state.graphicHelper.codeBlocks.push(codeBlock);
+		state.codeBlockRendering.codeBlocks.push(codeBlock);
 		newBlocks.push(codeBlock);
 	}
 
 	// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
 	const sorted = [
-		...state.graphicHelper.codeBlocks.filter(b => !b.alwaysOnTop),
-		...state.graphicHelper.codeBlocks.filter(b => b.alwaysOnTop),
+		...state.codeBlockRendering.codeBlocks.filter(b => !b.alwaysOnTop),
+		...state.codeBlockRendering.codeBlocks.filter(b => b.alwaysOnTop),
 	];
 
 	// Trigger single store update with all new blocks
-	store.set('graphicHelper.codeBlocks', sorted);
+	store.set('codeBlockRendering.codeBlocks', sorted);
 }

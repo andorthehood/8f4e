@@ -50,7 +50,7 @@ describe('browser-local note placement', () => {
 			callbacks: {
 				loadBrowserLocalNotes,
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [existingTopBlock, existingBottomBlock],
 				nextCodeBlockCreationIndex: 2,
 			},
@@ -63,13 +63,13 @@ describe('browser-local note placement', () => {
 		await getPopulateHandler(events)();
 
 		expect(loadBrowserLocalNotes).toHaveBeenCalledOnce();
-		expect(state.graphicHelper.codeBlocks).toHaveLength(4);
-		expect(state.graphicHelper.codeBlocks[2].gridX).toBe(0);
-		expect(state.graphicHelper.codeBlocks[2].gridY).toBe(13);
-		expect(state.graphicHelper.codeBlocks[2].code).toContain('; @pos 0 13');
-		expect(state.graphicHelper.codeBlocks[3].gridX).toBe(0);
-		expect(state.graphicHelper.codeBlocks[3].gridY).toBe(18);
-		expect(state.graphicHelper.codeBlocks[3].code).toContain('; @pos 0 18');
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(4);
+		expect(state.codeBlockRendering.codeBlocks[2].gridX).toBe(0);
+		expect(state.codeBlockRendering.codeBlocks[2].gridY).toBe(13);
+		expect(state.codeBlockRendering.codeBlocks[2].code).toContain('; @pos 0 13');
+		expect(state.codeBlockRendering.codeBlocks[3].gridX).toBe(0);
+		expect(state.codeBlockRendering.codeBlocks[3].gridY).toBe(18);
+		expect(state.codeBlockRendering.codeBlocks[3].code).toContain('; @pos 0 18');
 	});
 
 	it('preserves stored coordinates when the preferred slot is already free', async () => {
@@ -84,7 +84,7 @@ describe('browser-local note placement', () => {
 			callbacks: {
 				loadBrowserLocalNotes,
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [
 					createMockCodeBlock({
 						id: 'existing',
@@ -104,9 +104,9 @@ describe('browser-local note placement', () => {
 
 		await getPopulateHandler(events)();
 
-		expect(state.graphicHelper.codeBlocks[1].gridX).toBe(20);
-		expect(state.graphicHelper.codeBlocks[1].gridY).toBe(7);
-		expect(state.graphicHelper.codeBlocks[1].code).toContain('; @pos 20 7');
+		expect(state.codeBlockRendering.codeBlocks[1].gridX).toBe(20);
+		expect(state.codeBlockRendering.codeBlocks[1].gridY).toBe(7);
+		expect(state.codeBlockRendering.codeBlocks[1].code).toContain('; @pos 20 7');
 	});
 
 	it('does not reposition viewport-anchored browser-local notes', async () => {
@@ -121,7 +121,7 @@ describe('browser-local note placement', () => {
 			callbacks: {
 				loadBrowserLocalNotes,
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [
 					createMockCodeBlock({
 						id: 'existing',
@@ -141,10 +141,10 @@ describe('browser-local note placement', () => {
 
 		await getPopulateHandler(events)();
 
-		expect(state.graphicHelper.codeBlocks[1].viewportAnchor).toBe('top-right');
-		expect(state.graphicHelper.codeBlocks[1].gridX).toBe(4);
-		expect(state.graphicHelper.codeBlocks[1].gridY).toBe(5);
-		expect(state.graphicHelper.codeBlocks[1].code).toContain('; @pos 4 5');
+		expect(state.codeBlockRendering.codeBlocks[1].viewportAnchor).toBe('top-right');
+		expect(state.codeBlockRendering.codeBlocks[1].gridX).toBe(4);
+		expect(state.codeBlockRendering.codeBlocks[1].gridY).toBe(5);
+		expect(state.codeBlockRendering.codeBlocks[1].code).toContain('; @pos 4 5');
 	});
 
 	it('uses the default local editor config note when storage has no valid local notes', async () => {
@@ -167,8 +167,8 @@ describe('browser-local note placement', () => {
 
 		await getPopulateHandler(events)();
 
-		expect(state.graphicHelper.codeBlocks).toHaveLength(1);
-		expect(state.graphicHelper.codeBlocks[0].code[0]).toBe('note local.editorConfig');
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(1);
+		expect(state.codeBlockRendering.codeBlocks[0].code[0]).toBe('note local.editorConfig');
 	});
 });
 
@@ -179,7 +179,7 @@ describe('browser-local note persistence', () => {
 			callbacks: {
 				saveBrowserLocalNotes,
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [],
 			},
 		});
@@ -187,7 +187,7 @@ describe('browser-local note persistence', () => {
 		const events = createMockEventDispatcherWithVitest();
 
 		browserLocalNotes(store, events);
-		store.set('graphicHelper.codeBlocks', [
+		store.set('codeBlockRendering.codeBlocks', [
 			createMockCodeBlock({
 				code: ['module projectBlock', 'moduleEnd'],
 			}),
@@ -222,7 +222,7 @@ describe('browser-local note persistence', () => {
 		await populateBrowserLocalNotes();
 		saveBrowserLocalNotes.mockClear();
 
-		store.set('graphicHelper.codeBlocks', [
+		store.set('codeBlockRendering.codeBlocks', [
 			createMockCodeBlock({
 				code: ['module projectOnly', 'moduleEnd'],
 			}),
@@ -231,7 +231,7 @@ describe('browser-local note persistence', () => {
 
 		await populateBrowserLocalNotes();
 
-		expect(state.graphicHelper.codeBlocks.map(block => block.code[0])).toEqual([
+		expect(state.codeBlockRendering.codeBlocks.map(block => block.code[0])).toEqual([
 			'module projectOnly',
 			'note local.scratchpad',
 		]);
@@ -258,12 +258,12 @@ describe('browser-local note persistence', () => {
 		await getPopulateHandler(events)();
 		saveBrowserLocalNotes.mockClear();
 
-		const codeBlock = state.graphicHelper.codeBlocks[0];
-		state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger = codeBlock;
+		const codeBlock = state.codeBlockRendering.codeBlocks[0];
+		state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger = codeBlock;
 		codeBlock.code = ['note local.editorConfig', '; @pos 3 4', 'noteEnd'];
 		codeBlock.gridX = 3;
 		codeBlock.gridY = 4;
-		store.set('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', codeBlock.code);
+		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', codeBlock.code);
 
 		expect(saveBrowserLocalNotes).toHaveBeenCalledWith([
 			{
@@ -295,8 +295,8 @@ describe('browser-local note persistence', () => {
 		await getPopulateHandler(events)();
 		saveBrowserLocalNotes.mockClear();
 
-		const codeBlock = state.graphicHelper.codeBlocks[0];
-		store.set('graphicHelper.codeBlocks', []);
+		const codeBlock = state.codeBlockRendering.codeBlocks[0];
+		store.set('codeBlockRendering.codeBlocks', []);
 		getEventHandler(events, 'deleteCodeBlock')({ codeBlock });
 
 		expect(saveBrowserLocalNotes).toHaveBeenCalledWith([]);

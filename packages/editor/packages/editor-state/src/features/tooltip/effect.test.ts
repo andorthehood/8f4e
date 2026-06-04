@@ -44,7 +44,7 @@ describe('tooltip effect', () => {
 					} as never,
 				},
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				selectedCodeBlock: selectedBlock,
 			},
 			tooltip: {
@@ -124,7 +124,7 @@ describe('tooltip effect', () => {
 					} as never,
 				},
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				selectedCodeBlock: selectedBlock,
 			},
 			tooltip: {
@@ -177,7 +177,7 @@ describe('tooltip effect', () => {
 					} as never,
 				},
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				selectedCodeBlock: selectedBlock,
 			},
 			spriteLookups: {
@@ -216,7 +216,7 @@ describe('tooltip effect', () => {
 		expect(state.tooltip.lineCount).toBe(state.tooltip.text.length);
 		expect(state.tooltip.widthChars).toBeGreaterThanOrEqual(19);
 
-		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', 1);
 
 		expect(state.tooltip.liveValues).toEqual([]);
 	});
@@ -232,7 +232,7 @@ describe('tooltip effect', () => {
 			},
 		});
 		const state = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				selectedCodeBlock: selectedBlock,
 			},
 			tooltip: {
@@ -249,7 +249,7 @@ describe('tooltip effect', () => {
 			'type and pushes the result.',
 		]);
 
-		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', 1);
 
 		expect(state.tooltip.text).toEqual(['drop (T -- )', 'Removes the top value from the', 'stack.']);
 	});
@@ -273,7 +273,7 @@ describe('tooltip effect', () => {
 					'module-b': {} as never,
 				},
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				selectedCodeBlock: selectedBlock,
 			},
 			tooltip: {
@@ -286,7 +286,7 @@ describe('tooltip effect', () => {
 
 		expect(state.tooltip.text).toEqual(['Starts a module block.', 'execution order: 2']);
 
-		store.set('graphicHelper.selectedCodeBlock.cursor.row', 1);
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', 1);
 
 		expect(state.tooltip.text).not.toContain('execution order: 2');
 	});
@@ -302,7 +302,7 @@ describe('tooltip effect', () => {
 			},
 		});
 		const state = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				selectedCodeBlock: selectedBlock,
 			},
 			tooltip: {
@@ -313,7 +313,7 @@ describe('tooltip effect', () => {
 
 		tooltip(store);
 
-		store.set('graphicHelper.selectedCodeBlock.code', ['drop']);
+		store.set('codeBlockRendering.selectedCodeBlock.code', ['drop']);
 
 		expect(state.tooltip.text).toEqual(['drop (T -- )', 'Removes the top value from the', 'stack.']);
 	});
@@ -324,7 +324,7 @@ describe('tooltip effect', () => {
 			featureFlags: {
 				codeLineSelection: false,
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				selectedCodeBlock: selectedBlock,
 			},
 			tooltip: {

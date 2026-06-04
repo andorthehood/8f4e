@@ -154,15 +154,15 @@ export function createEditorEnvironmentPluginManager(
 		}
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', syncPlugins);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', syncPlugins);
+	store.subscribe('codeBlockRendering.codeBlocks', syncPlugins);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncPlugins);
 
 	syncPlugins();
 
 	return () => {
 		disposed = true;
-		store.unsubscribe('graphicHelper.codeBlocks', syncPlugins);
-		store.unsubscribe('graphicHelper.selectedCodeBlock.code', syncPlugins);
+		store.unsubscribe('codeBlockRendering.codeBlocks', syncPlugins);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', syncPlugins);
 
 		for (const entry of registry) {
 			disposePlugin(entry);

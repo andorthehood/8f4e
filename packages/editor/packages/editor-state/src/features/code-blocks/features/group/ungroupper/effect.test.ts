@@ -30,12 +30,12 @@ describe('groupUngroupper', () => {
 			blockType: 'function',
 		});
 
-		// Set groupName on blocks (normally done by graphicHelper)
+		// Set groupName on blocks (normally done by codeBlockRendering)
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 		codeBlock3.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
 
 		groupUngroupper(store, mockEvents);
 
@@ -64,7 +64,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'otherGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
 
 		groupUngroupper(store, mockEvents);
 
@@ -91,7 +91,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
 
 		groupUngroupper(store, mockEvents);
 
@@ -113,7 +113,7 @@ describe('groupUngroupper', () => {
 
 		codeBlock1.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1];
 
 		groupUngroupper(store, mockEvents);
 
@@ -141,7 +141,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
 
 		groupUngroupper(store, mockEvents);
 
@@ -163,7 +163,7 @@ describe('groupUngroupper', () => {
 
 		codeBlock1.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1];
 
 		groupUngroupper(store, mockEvents);
 
@@ -175,7 +175,7 @@ describe('groupUngroupper', () => {
 
 		ungroupCallback({ codeBlock: codeBlock1 });
 
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.codeBlocks', mockState.graphicHelper.codeBlocks);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.codeBlocks', mockState.codeBlockRendering.codeBlocks);
 	});
 
 	it('should be no-op when selected block has no group name', () => {
@@ -184,7 +184,7 @@ describe('groupUngroupper', () => {
 			blockType: 'module',
 		});
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1];
 
 		groupUngroupper(store, mockEvents);
 
@@ -207,7 +207,7 @@ describe('groupUngroupper', () => {
 
 		codeBlock1.groupName = 'nonexistentGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1];
 
 		groupUngroupper(store, mockEvents);
 
@@ -220,7 +220,7 @@ describe('groupUngroupper', () => {
 		ungroupCallback({ codeBlock: codeBlock1 });
 
 		// Store update should still happen, but no code changes
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.codeBlocks', mockState.graphicHelper.codeBlocks);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.codeBlocks', mockState.codeBlockRendering.codeBlocks);
 		expect(codeBlock1.code).toEqual(['module test1', '', 'moduleEnd']);
 	});
 
@@ -237,7 +237,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
 		mockState.featureFlags.editing = false;
 
 		groupUngroupper(store, mockEvents);
@@ -265,7 +265,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'myGroup';
 		codeBlock2.groupName = 'myGroup';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
 
 		groupUngroupper(store, mockEvents);
 
@@ -292,7 +292,7 @@ describe('groupUngroupper', () => {
 		codeBlock1.groupName = 'audio-chain_1';
 		codeBlock2.groupName = 'audio-chain_1';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2];
 
 		groupUngroupper(store, mockEvents);
 
@@ -324,7 +324,7 @@ describe('groupUngroupper', () => {
 		codeBlock2.groupName = 'myGroup2';
 		codeBlock3.groupName = 'myGroupExtended';
 
-		mockState.graphicHelper.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock1, codeBlock2, codeBlock3];
 
 		groupUngroupper(store, mockEvents);
 

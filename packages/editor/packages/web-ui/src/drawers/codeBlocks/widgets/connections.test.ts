@@ -95,7 +95,7 @@ describe('drawConnections', () => {
 			spriteLookups: {
 				fillColors: {},
 			} as never,
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [inputBlock, outputBlock],
 				selectedCodeBlock: inputBlock,
 				outputsByWordAddress: new Map([[80, output]]),
