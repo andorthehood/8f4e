@@ -85,7 +85,7 @@ export function createEditorConfigSchemaContributionsValidator(store: StateManag
 			const contribution = getContributionForPath(registry, entry.path);
 			const schema = contribution && getSchemaForConfigPath(contribution.root, contribution.schema, entry.path);
 
-			return schema ? parseSchemaConfigValue(entry.value, schema) : entry.value;
+			return schema ? parseSchemaConfigValue(entry.value, schema, entry) : entry.value;
 		},
 	};
 }

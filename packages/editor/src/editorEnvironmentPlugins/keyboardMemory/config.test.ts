@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { getKeyboardMemoryConfig, keyboardEditorConfigSchemaContribution } from './config';
 
 describe('keyboard memory editor config', () => {
-	it('contributes a schema for module-qualified keyboard memory targets', () => {
+	it('contributes a schema for keyboard memory targets', () => {
 		expect(keyboardEditorConfigSchemaContribution).toMatchObject({
 			root: 'keyboard',
 			schema: {

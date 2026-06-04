@@ -77,6 +77,24 @@ describe('editor config schema contributions', () => {
 			})
 		).toBe('audioout:buffer');
 		expect(
+			validator.parse?.({
+				path: 'audioRuntime.audioOutBufferLAddress',
+				value: 'buffer',
+				rawRow: 1,
+				codeBlockId: 'config',
+				moduleId: 'audioout',
+			})
+		).toBe('audioout:buffer');
+		expect(
+			validator.validate({
+				path: 'audioRuntime.audioOutBufferLAddress',
+				value: 'buffer',
+				rawRow: 1,
+				codeBlockId: 'config',
+				moduleId: 'audioout',
+			})
+		).toBeUndefined();
+		expect(
 			validator.validate({
 				path: 'audioRuntime.audioOutBufferLAddress',
 				value: 'audioout',
@@ -177,5 +195,55 @@ describe('editor config schema contributions', () => {
 				codeBlockId: 'config',
 			})
 		).toBe("@config: unknown config path 'midi.inputs.0.unknown'");
+	});
+
+	it('parses module-memory-id formatted config values against the directive module', () => {
+		const validator = createEditorConfigSchemaContributionsValidator({
+			getState: () =>
+				({
+					editorConfigSchemaContributions: {
+						keyboard: {
+							root: 'keyboard',
+							schema: {
+								type: 'object',
+								properties: {
+									keyCodeMemory: {
+										type: 'string',
+										format: 'module-memory-id',
+									},
+								},
+								additionalProperties: false,
+							},
+						},
+					},
+				}) as State,
+		} as StateManager<State>);
+
+		expect(
+			validator.validate({
+				path: 'keyboard.keyCodeMemory',
+				value: 'keyCode',
+				rawRow: 1,
+				codeBlockId: 'keyboard',
+				moduleId: 'keyboard',
+			})
+		).toBeUndefined();
+		expect(
+			validator.parse?.({
+				path: 'keyboard.keyCodeMemory',
+				value: 'keyCode',
+				rawRow: 1,
+				codeBlockId: 'keyboard',
+				moduleId: 'keyboard',
+			})
+		).toBe('keyboard:keyCode');
+		expect(
+			validator.validate({
+				path: 'keyboard.keyCodeMemory',
+				value: 'keyCode',
+				rawRow: 1,
+				codeBlockId: 'note',
+			})
+		).toBe("@config keyboard.keyCodeMemory: memory value 'keyCode' must include a module id outside module blocks");
 	});
 });
