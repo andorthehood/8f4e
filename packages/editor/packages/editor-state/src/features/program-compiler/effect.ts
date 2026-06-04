@@ -84,7 +84,7 @@ export default function compiler(store: StateManager<State>) {
 	async function onForceCompile() {
 		scheduleRecompile.cancel();
 
-		const compilerInput = flattenProjectForCompiler(state.graphicHelper.codeBlocks);
+		const compilerInput = flattenProjectForCompiler(state.codeBlockRendering.codeBlocks);
 		const compilationStart = performance.now();
 
 		store.set('compiler.isCompiling', true);
@@ -162,18 +162,18 @@ export default function compiler(store: StateManager<State>) {
 		onForceCompile();
 	}
 
-	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
-		if (state.graphicHelper.selectedCodeBlock?.disabled) {
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', () => {
+		if (state.codeBlockRendering.selectedCodeBlock?.disabled) {
 			return;
 		}
 
-		if (!isCompilableBlockType(state.graphicHelper.selectedCodeBlock?.blockType)) {
+		if (!isCompilableBlockType(state.codeBlockRendering.selectedCodeBlock?.blockType)) {
 			return;
 		}
 		scheduleRecompile();
 	});
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
-		if (!isCompilableBlockType(state.graphicHelper.selectedCodeBlockForProgrammaticEdit?.blockType)) {
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', () => {
+		if (!isCompilableBlockType(state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit?.blockType)) {
 			return;
 		}
 		scheduleRecompile();

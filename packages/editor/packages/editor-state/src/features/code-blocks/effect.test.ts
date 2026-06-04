@@ -4,9 +4,9 @@ import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultPro
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
-import graphicHelperEffect from './effect';
+import codeBlockRenderingEffect from './effect';
 
-describe('graphic helper error mapping', () => {
+describe('code block rendering error mapping', () => {
 	it('maps typed compiler errors to function blocks', () => {
 		const functionBlock = createMockCodeBlock({
 			id: 'function_helper',
@@ -14,7 +14,7 @@ describe('graphic helper error mapping', () => {
 			blockType: 'function',
 		});
 		const state = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [functionBlock],
 			},
 			codeErrors: {
@@ -31,7 +31,7 @@ describe('graphic helper error mapping', () => {
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
 
-		graphicHelperEffect(store, events);
+		codeBlockRenderingEffect(store, events);
 
 		expect(functionBlock.widgets.errorMessages).toHaveLength(1);
 		expect(functionBlock.widgets.errorMessages[0].lineNumber).toBe(2);
@@ -39,7 +39,7 @@ describe('graphic helper error mapping', () => {
 	});
 });
 
-describe('graphic helper hidden directive', () => {
+describe('code block rendering hidden directive', () => {
 	it('shows a hidden block only while selected', () => {
 		const hiddenBlock = createMockCodeBlock({
 			code: ['module hidden', '; @hidden', 'moduleEnd'],
@@ -52,7 +52,7 @@ describe('graphic helper hidden directive', () => {
 			code: ['module other', 'moduleEnd'],
 		});
 		const state = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [hiddenBlock, otherBlock],
 			},
 			spriteLookups: {
@@ -67,20 +67,20 @@ describe('graphic helper hidden directive', () => {
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
 
-		graphicHelperEffect(store, events);
-		store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
+		codeBlockRenderingEffect(store, events);
+		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
 
 		expect(hiddenBlock.hidden).toBe(true);
 
-		store.set('graphicHelper.selectedCodeBlock', hiddenBlock);
+		store.set('codeBlockRendering.selectedCodeBlock', hiddenBlock);
 		expect(hiddenBlock.hidden).toBe(false);
 
-		store.set('graphicHelper.selectedCodeBlock', otherBlock);
+		store.set('codeBlockRendering.selectedCodeBlock', otherBlock);
 		expect(hiddenBlock.hidden).toBe(true);
 	});
 });
 
-describe('graphic helper cursor selection', () => {
+describe('code block rendering cursor selection', () => {
 	it('updates the selected code block cursor through the store when a line is clicked', () => {
 		const selectedBlock = createMockCodeBlock({
 			code: ['zero', 'one', 'two'],
@@ -90,7 +90,7 @@ describe('graphic helper cursor selection', () => {
 			featureFlags: {
 				codeLineSelection: true,
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [selectedBlock],
 				selectedCodeBlock: selectedBlock,
 			},
@@ -103,8 +103,8 @@ describe('graphic helper cursor selection', () => {
 		const events = createMockEventDispatcherWithVitest();
 		const onSelectedRowChanged = vi.fn();
 
-		store.subscribe('graphicHelper.selectedCodeBlock.cursor.row', onSelectedRowChanged);
-		graphicHelperEffect(store, events);
+		store.subscribe('codeBlockRendering.selectedCodeBlock.cursor.row', onSelectedRowChanged);
+		codeBlockRenderingEffect(store, events);
 
 		const codeBlockClickHandler = (events.on as Mock).mock.calls.find(
 			([eventName]) => eventName === 'codeBlockClick'
@@ -121,13 +121,13 @@ describe('graphic helper cursor selection', () => {
 	});
 });
 
-describe('graphic helper line numbers', () => {
+describe('code block rendering line numbers', () => {
 	it('renders blank line-number gutters for pointer declaration instructions', () => {
 		const pointerBlock = createMockCodeBlock({
 			code: ['module demo', 'int* ptr &buffer', 'float* out &buffer', 'push 1', 'moduleEnd'],
 		});
 		const state = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [pointerBlock],
 			},
 			spriteLookups: {
@@ -142,8 +142,8 @@ describe('graphic helper line numbers', () => {
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
 
-		graphicHelperEffect(store, events);
-		store.set('graphicHelper.codeBlocks', state.graphicHelper.codeBlocks);
+		codeBlockRenderingEffect(store, events);
+		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
 
 		const renderedLines = pointerBlock.codeToRender.map(line =>
 			line.map(cell => String.fromCharCode(Number(cell))).join('')
@@ -156,7 +156,7 @@ describe('graphic helper line numbers', () => {
 	});
 });
 
-describe('graphic helper home directive', () => {
+describe('code block rendering home directive', () => {
 	it('centers the initial viewport using the home alignment hint', () => {
 		const state = createMockState({
 			initialProjectState: {
@@ -190,14 +190,14 @@ describe('graphic helper home directive', () => {
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
 
-		graphicHelperEffect(store, events);
+		codeBlockRenderingEffect(store, events);
 		store.set('initialProjectState', state.initialProjectState);
 
-		expect(state.graphicHelper.codeBlocks).toHaveLength(1);
-		const [homeBlock] = state.graphicHelper.codeBlocks;
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(1);
+		const [homeBlock] = state.codeBlockRendering.codeBlocks;
 		expect(homeBlock.isHome).toBe(true);
 		expect(homeBlock.homeAlignment).toBe('top');
-		expect(state.graphicHelper.selectedCodeBlock).toBe(homeBlock);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(homeBlock);
 		expect(centerViewportOnCodeBlock(state.viewport, homeBlock, { alignment: 'top' })).toEqual({
 			x: state.viewport.x,
 			y: state.viewport.y,
@@ -237,11 +237,11 @@ describe('graphic helper home directive', () => {
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
 
-		graphicHelperEffect(store, events);
+		codeBlockRenderingEffect(store, events);
 		store.set('initialProjectState', state.initialProjectState);
 
-		const [homeBlock] = state.graphicHelper.codeBlocks;
-		expect(state.graphicHelper.selectedCodeBlock).toBe(homeBlock);
+		const [homeBlock] = state.codeBlockRendering.codeBlocks;
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(homeBlock);
 
 		state.viewport.vGrid = 6;
 		state.viewport.hGrid = 12;
@@ -270,7 +270,7 @@ describe('graphic helper home directive', () => {
 			y: 320,
 		});
 		const state = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [selectedBlock],
 				selectedCodeBlock: selectedBlock,
 			},
@@ -296,7 +296,7 @@ describe('graphic helper home directive', () => {
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
 
-		graphicHelperEffect(store, events);
+		codeBlockRenderingEffect(store, events);
 		state.viewport.vGrid = 6;
 		state.viewport.hGrid = 12;
 		const spriteSheetRerenderedHandler = (events.on as Mock).mock.calls.find(

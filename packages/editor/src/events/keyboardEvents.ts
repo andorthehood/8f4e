@@ -93,8 +93,8 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 
 		if (key === 'F9') {
 			event.preventDefault();
-			if (!state.graphicHelper.showHiddenCodeBlocks) {
-				store.set('graphicHelper.showHiddenCodeBlocks', true);
+			if (!state.codeBlockRendering.showHiddenCodeBlocks) {
+				store.set('codeBlockRendering.showHiddenCodeBlocks', true);
 			}
 			return;
 		}
@@ -203,8 +203,8 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 
 		event.preventDefault();
 
-		if (store.getState().graphicHelper.showHiddenCodeBlocks) {
-			store.set('graphicHelper.showHiddenCodeBlocks', false);
+		if (store.getState().codeBlockRendering.showHiddenCodeBlocks) {
+			store.set('codeBlockRendering.showHiddenCodeBlocks', false);
 		}
 	}
 

@@ -17,10 +17,10 @@ import type {
 	CodeBlock,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
+	CodeBlockRendering,
 	CodeBlockType,
 	Crossfade,
 	Debugger,
-	GraphicHelper,
 	InfoPanel,
 	Input,
 	MemoryIdentifier,
@@ -92,6 +92,7 @@ export type {
 	CodeBlock,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
+	CodeBlockRendering,
 	CodeBlockType,
 	CodeError,
 	CompilationResult,
@@ -106,7 +107,6 @@ export type {
 	DialogContent,
 	DialogState,
 	EventDispatcher,
-	GraphicHelper,
 	GridCoordinates,
 	InfoPanel,
 	Input,
@@ -358,7 +358,7 @@ export interface Options {
 // State interface - complete editor state tree (top-level public API)
 export interface State {
 	compiler: Compiler;
-	graphicHelper: GraphicHelper;
+	codeBlockRendering: CodeBlockRendering;
 	contextMenu: ContextMenu;
 	spriteLookups?: SpriteLookups;
 	/** Post-process effects configuration for custom visual effects */

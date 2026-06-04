@@ -71,7 +71,7 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
  * This effect automatically maintains a constants block named 'env' that contains
  * environment values like contributed runtime values and binary asset sizes.
  * The env block is added to the project's codeBlocks array when the project is loaded,
- * and its content is updated in graphicHelper.codeBlocks when contributed environment constants or binary assets change.
+ * and its content is updated in codeBlockRendering.codeBlocks when contributed environment constants or binary assets change.
  *
  * @param store - State manager instance
  */
@@ -91,12 +91,12 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 	}
 
 	/**
-	 * Updates the env constants block code in graphicHelper.codeBlocks.
+	 * Updates the env constants block code in codeBlockRendering.codeBlocks.
 	 * This avoids triggering an infinite loop by not modifying initialProjectState.
 	 */
-	function updateEnvConstantsBlockInGraphicHelper(): void {
+	function updateEnvConstantsBlockInCodeBlockRendering(): void {
 		const state = store.getState();
-		const targetBlock = state.graphicHelper.codeBlocks.find(block => isEnvBlock(block));
+		const targetBlock = state.codeBlockRendering.codeBlocks.find(block => isEnvBlock(block));
 
 		if (!targetBlock) {
 			return;
@@ -111,7 +111,7 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		targetBlock.code = newCode;
 		targetBlock.lastUpdated = performance.now();
 
-		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', targetBlock);
+		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', targetBlock);
 	}
 
 	/**
@@ -146,10 +146,10 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 	// Ensure env block exists when project is loaded
 	store.subscribe('initialProjectState', ensureEnvBlockInProject);
 
-	// Update env block code in graphicHelper.codeBlocks when editor config, runtime registry, or binary assets change.
+	// Update env block code in codeBlockRendering.codeBlocks when editor config, runtime registry, or binary assets change.
 	// This avoids the infinite loop caused by modifying initialProjectState.
-	store.subscribe('graphicHelper.selectedCodeBlock.code', updateEnvConstantsBlockInGraphicHelper);
-	store.subscribe('editorConfig', updateEnvConstantsBlockInGraphicHelper);
-	store.subscribe('runtimeRegistry', updateEnvConstantsBlockInGraphicHelper);
-	store.subscribe('binaryAssets', updateEnvConstantsBlockInGraphicHelper);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', updateEnvConstantsBlockInCodeBlockRendering);
+	store.subscribe('editorConfig', updateEnvConstantsBlockInCodeBlockRendering);
+	store.subscribe('runtimeRegistry', updateEnvConstantsBlockInCodeBlockRendering);
+	store.subscribe('binaryAssets', updateEnvConstantsBlockInCodeBlockRendering);
 }

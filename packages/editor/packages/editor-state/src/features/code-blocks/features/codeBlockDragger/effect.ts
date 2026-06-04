@@ -26,16 +26,16 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			return;
 		}
 
-		state.graphicHelper.draggedCodeBlock = findCodeBlockAtViewportCoordinates(state, x, y);
-		const draggedCodeBlock = state.graphicHelper.draggedCodeBlock;
+		state.codeBlockRendering.draggedCodeBlock = findCodeBlockAtViewportCoordinates(state, x, y);
+		const draggedCodeBlock = state.codeBlockRendering.draggedCodeBlock;
 
 		if (!draggedCodeBlock) {
-			store.set('graphicHelper.selectedCodeBlock', undefined);
+			store.set('codeBlockRendering.selectedCodeBlock', undefined);
 			dragSet = [];
 			didDrag = false;
 			return;
 		}
-		store.set('graphicHelper.selectedCodeBlock', state.graphicHelper.draggedCodeBlock);
+		store.set('codeBlockRendering.selectedCodeBlock', state.codeBlockRendering.draggedCodeBlock);
 		didDrag = false;
 
 		// Compute drag set based on nonstick flag and modifier
@@ -48,7 +48,7 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			if (draggedCodeBlock.groupNonstick) {
 				// Nonstick group: single-block by default, Alt for group drag
 				if (altKey) {
-					dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+					dragSet = getGroupBlocks(state.codeBlockRendering.codeBlocks, draggedCodeBlock.groupName);
 				} else {
 					dragSet = [draggedCodeBlock];
 				}
@@ -57,7 +57,7 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 				if (altKey) {
 					dragSet = [draggedCodeBlock];
 				} else {
-					dragSet = getGroupBlocks(state.graphicHelper.codeBlocks, draggedCodeBlock.groupName);
+					dragSet = getGroupBlocks(state.codeBlockRendering.codeBlocks, draggedCodeBlock.groupName);
 				}
 			}
 		} else {
@@ -79,19 +79,19 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		// Bring dragged module forward within its z-order partition.
 		// Normal blocks move to the end of the normal segment (before always-on-top blocks).
 		// Always-on-top blocks move to the end of the always-on-top segment (end of array).
-		const allOthers = state.graphicHelper.codeBlocks.filter(block => block !== draggedCodeBlock);
+		const allOthers = state.codeBlockRendering.codeBlocks.filter(block => block !== draggedCodeBlock);
 		if (draggedCodeBlock.alwaysOnTop) {
-			state.graphicHelper.codeBlocks = [...allOthers, draggedCodeBlock];
+			state.codeBlockRendering.codeBlocks = [...allOthers, draggedCodeBlock];
 		} else {
 			const normalOthers = allOthers.filter(block => !block.alwaysOnTop);
 			const topBlocks = allOthers.filter(block => block.alwaysOnTop);
-			state.graphicHelper.codeBlocks = [...normalOthers, draggedCodeBlock, ...topBlocks];
+			state.codeBlockRendering.codeBlocks = [...normalOthers, draggedCodeBlock, ...topBlocks];
 		}
 	}
 
 	function onMouseMove(event: InternalMouseEvent) {
 		const { movementX, movementY } = event;
-		if (state.graphicHelper.draggedCodeBlock && dragSet.length > 0) {
+		if (state.codeBlockRendering.draggedCodeBlock && dragSet.length > 0) {
 			if (movementX !== 0 || movementY !== 0) {
 				didDrag = true;
 			}
@@ -106,17 +106,17 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 	}
 
 	function onMouseUp() {
-		if (!state.graphicHelper.draggedCodeBlock || dragSet.length === 0) {
+		if (!state.codeBlockRendering.draggedCodeBlock || dragSet.length === 0) {
 			return;
 		}
 
 		if (!didDrag) {
-			state.graphicHelper.draggedCodeBlock = undefined;
+			state.codeBlockRendering.draggedCodeBlock = undefined;
 			dragSet = [];
 			return;
 		}
 
-		const primaryBlock = state.graphicHelper.draggedCodeBlock;
+		const primaryBlock = state.codeBlockRendering.draggedCodeBlock;
 		const vGrid = state.viewport.vGrid;
 		const hGrid = state.viewport.hGrid;
 
@@ -167,10 +167,10 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			block.gridY = gridY;
 			block.lastUpdated = Date.now();
 			block.code = upsertPos(block.code, gridX, gridY);
-			store.set('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', block);
+			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', block);
 		}
 
-		state.graphicHelper.draggedCodeBlock = undefined;
+		state.codeBlockRendering.draggedCodeBlock = undefined;
 		dragSet = [];
 		didDrag = false;
 	}

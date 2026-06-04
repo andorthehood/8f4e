@@ -6,7 +6,7 @@ export default function createDefaultState() {
 			isCompiling: false,
 			compiledModules: {},
 		},
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks: [],
 			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],

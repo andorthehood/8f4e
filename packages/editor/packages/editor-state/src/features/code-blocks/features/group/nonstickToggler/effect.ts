@@ -27,7 +27,7 @@ export default function groupNonstickToggler(store: StateManager<State>, events:
 		}
 
 		// Find all blocks in the same group
-		const groupBlocks = getGroupBlocks(state.graphicHelper.codeBlocks, codeBlock.groupName);
+		const groupBlocks = getGroupBlocks(state.codeBlockRendering.codeBlocks, codeBlock.groupName);
 
 		if (groupBlocks.length === 0) {
 			return;
@@ -46,7 +46,7 @@ export default function groupNonstickToggler(store: StateManager<State>, events:
 			if (updatedCode.every((line, i) => line === block.code[i])) continue;
 
 			// Set target code block for programmatic edit
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = block;
+			state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = block;
 
 			block.code = updatedCode;
 
@@ -54,7 +54,7 @@ export default function groupNonstickToggler(store: StateManager<State>, events:
 			block.lastUpdated = Date.now();
 
 			// Trigger store update to re-render the specific code block
-			store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', block);
+			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block);
 		}
 	}
 

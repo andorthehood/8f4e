@@ -23,41 +23,41 @@ export default function groupDeleter(store: StateManager<State>, events: EventDi
 		}
 
 		// Find all code blocks with the same group name
-		const groupBlocks = getGroupBlocks(state.graphicHelper.codeBlocks, groupName);
+		const groupBlocks = getGroupBlocks(state.codeBlockRendering.codeBlocks, groupName);
 
 		// Create a Set of blocks to delete for O(1) lookup
 		const blocksToDelete = new Set(groupBlocks);
 
 		// Filter out all blocks in the group
-		const remainingBlocks = state.graphicHelper.codeBlocks.filter(block => !blocksToDelete.has(block));
+		const remainingBlocks = state.codeBlockRendering.codeBlocks.filter(block => !blocksToDelete.has(block));
 
 		// Clear selected/dragged references if they point to deleted blocks
-		if (state.graphicHelper.selectedCodeBlock && blocksToDelete.has(state.graphicHelper.selectedCodeBlock)) {
-			store.set('graphicHelper.selectedCodeBlock', undefined);
+		if (state.codeBlockRendering.selectedCodeBlock && blocksToDelete.has(state.codeBlockRendering.selectedCodeBlock)) {
+			store.set('codeBlockRendering.selectedCodeBlock', undefined);
 		}
 
-		if (state.graphicHelper.draggedCodeBlock && blocksToDelete.has(state.graphicHelper.draggedCodeBlock)) {
-			state.graphicHelper.draggedCodeBlock = undefined;
+		if (state.codeBlockRendering.draggedCodeBlock && blocksToDelete.has(state.codeBlockRendering.draggedCodeBlock)) {
+			state.codeBlockRendering.draggedCodeBlock = undefined;
 		}
 
 		// Clear programmatic selection if it points to a deleted block
 		if (
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit &&
-			blocksToDelete.has(state.graphicHelper.selectedCodeBlockForProgrammaticEdit)
+			state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit &&
+			blocksToDelete.has(state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit)
 		) {
-			state.graphicHelper.selectedCodeBlockForProgrammaticEdit = undefined;
+			state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = undefined;
 		}
 
 		// Clear non-compiler programmatic selection if it points to a deleted block
 		if (
-			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger &&
-			blocksToDelete.has(state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger)
+			state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger &&
+			blocksToDelete.has(state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger)
 		) {
-			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger = undefined;
+			state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger = undefined;
 		}
 
 		// Update the code blocks array
-		store.set('graphicHelper.codeBlocks', remainingBlocks);
+		store.set('codeBlockRendering.codeBlocks', remainingBlocks);
 	}
 
 	events.on('deleteGroup', onDeleteGroup);

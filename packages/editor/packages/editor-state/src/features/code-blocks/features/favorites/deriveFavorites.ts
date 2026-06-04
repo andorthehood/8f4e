@@ -24,7 +24,7 @@ export interface Favorite {
  *
  * @example
  * ```typescript
- * const favorites = deriveFavorites(state.graphicHelper.codeBlocks);
+ * const favorites = deriveFavorites(state.codeBlockRendering.codeBlocks);
  * // Returns: [{ creationIndex: 5, id: 'osc', blockType: 'module' }, ...]
  * ```
  */

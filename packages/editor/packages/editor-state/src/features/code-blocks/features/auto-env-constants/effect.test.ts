@@ -146,16 +146,16 @@ describe('autoEnvConstants', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT });
 
-		// Simulate graphicHelper populating codeBlocks from initialProjectState
+		// Simulate codeBlockRendering populating codeBlocks from initialProjectState
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
-			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
+			store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
 		}
 
-		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock?.code ?? [])]);
+		store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(envCodeBlock?.code ?? [])]);
 		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
+		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const magicNumberLine = envBlock?.code.find(line => line.includes('RUNTIME_MAGIC'));
 		expect(magicNumberLine).toBe('const RUNTIME_MAGIC 77');
 		const unusedRuntimeLine = envBlock?.code.find(line => line.includes('UNUSED_RUNTIME_MAGIC'));
@@ -206,10 +206,10 @@ describe('autoEnvConstants', () => {
 		autoEnvConstants(store);
 		store.set('initialProjectState', { ...PROJECT_WITH_CODE_BLOCK });
 
-		// Simulate graphicHelper populating codeBlocks from initialProjectState
+		// Simulate codeBlockRendering populating codeBlocks from initialProjectState
 		const envCodeBlock = state.initialProjectState?.codeBlocks.find(block => block.code[0]?.includes('constants env'));
 		if (envCodeBlock) {
-			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
+			store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(envCodeBlock.code)]);
 		}
 
 		// Add binary asset
@@ -222,7 +222,7 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
+		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
 		expect(assetSizeLine).toBe('const ASSET_0_SIZE 88200');
 	});
@@ -236,13 +236,13 @@ describe('autoEnvConstants', () => {
 		if (envCodeBlock) {
 			codeWithCustomPos = [...envCodeBlock.code];
 			codeWithCustomPos[1] = '; @pos 12 -7';
-			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
+			store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
 		}
 
-		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
+		store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
 		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
+		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
 	});
 
@@ -254,13 +254,13 @@ describe('autoEnvConstants', () => {
 		let codeWithoutPos: string[] = [];
 		if (envCodeBlock) {
 			codeWithoutPos = envCodeBlock.code.filter(line => !line.includes('@pos'));
-			store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
+			store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
 		}
 
-		store.set('graphicHelper.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
+		store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
 		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
-		const envBlock = state.graphicHelper.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
+		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');
 	});
 

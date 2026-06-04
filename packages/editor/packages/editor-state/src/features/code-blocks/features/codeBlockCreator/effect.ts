@@ -101,7 +101,7 @@ function incrementCodeBlockIdUntilUnique(state: State, blockType: RenameableCode
 
 function getUniqueEntryName(state: State): string {
 	const usedEntryNames = new Set(
-		state.graphicHelper.codeBlocks
+		state.codeBlockRendering.codeBlocks
 			.filter(block => block.blockType === moduleBlock.type || getModuleId(block.code))
 			.map(block => block.entry)
 	);
@@ -117,7 +117,7 @@ function getUniqueEntryName(state: State): string {
 function getEntryNameForNewModule(state: State, x: number, y: number, newEntry?: boolean): string {
 	return newEntry
 		? getUniqueEntryName(state)
-		: (findEntryNameAtPosition(state.graphicHelper.entryOutlines, x, y) ?? getUniqueEntryName(state));
+		: (findEntryNameAtPosition(state.codeBlockRendering.entryOutlines, x, y) ?? getUniqueEntryName(state));
 }
 
 export default function codeBlockCreator(store: StateManager<State>, events: EventDispatcher): void {
@@ -202,8 +202,8 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			);
 		}
 
-		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
-		state.graphicHelper.nextCodeBlockCreationIndex++;
+		const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
+		state.codeBlockRendering.nextCodeBlockCreationIndex++;
 
 		// Calculate grid position
 		const gridX = Math.round((state.viewport.x + x) / state.viewport.vGrid);
@@ -238,10 +238,10 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		});
 
 		// Insert new block before any always-on-top blocks to maintain z-order partition.
-		const existingBlocks = state.graphicHelper.codeBlocks;
+		const existingBlocks = state.codeBlockRendering.codeBlocks;
 		const normalBlocks = existingBlocks.filter(b => !b.alwaysOnTop);
 		const topBlocks = existingBlocks.filter(b => b.alwaysOnTop);
-		store.set('graphicHelper.codeBlocks', [...normalBlocks, codeBlock, ...topBlocks]);
+		store.set('codeBlockRendering.codeBlocks', [...normalBlocks, codeBlock, ...topBlocks]);
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
@@ -250,8 +250,8 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		}
 
 		store.set(
-			'graphicHelper.codeBlocks',
-			state.graphicHelper.codeBlocks.filter(block => block !== codeBlock)
+			'codeBlockRendering.codeBlocks',
+			state.codeBlockRendering.codeBlocks.filter(block => block !== codeBlock)
 		);
 	}
 
@@ -277,7 +277,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		// Update lastUpdated to invalidate cache
 		codeBlock.lastUpdated = Date.now();
 		// Use selectedCodeBlockForProgrammaticEdit to trigger graphics update
-		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	}
 
 	async function onAddCodeBlockBySlug({

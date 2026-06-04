@@ -443,9 +443,9 @@ export interface CodeBlockEntryOutline {
 }
 
 /**
- * Graphic helper state for rendering code blocks and UI elements.
+ * Code block rendering state for rendering code blocks and UI elements.
  */
-export type GraphicHelper = {
+export type CodeBlockRendering = {
 	outputsByWordAddress: Map<number, Output>;
 	codeBlocks: CodeBlockGraphicData[];
 	/**
