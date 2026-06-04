@@ -13,7 +13,7 @@ export interface JSONSchemaLike {
 }
 
 export type EditorConfigPrimitiveValue = string | number | boolean;
-export type EditorConfigValue = EditorConfigPrimitiveValue | EditorConfigObject;
+export type EditorConfigValue = EditorConfigPrimitiveValue | EditorConfigObject | EditorConfigValue[];
 
 export interface EditorConfigObject {
 	[key: string]: EditorConfigValue | undefined;

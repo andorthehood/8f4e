@@ -31,6 +31,18 @@ function getDirectiveNamesFromBlock(block: CodeBlockGraphicData | undefined, nam
 	}
 }
 
+function getConfigPathsFromBlock(block: CodeBlockGraphicData | undefined, paths: Set<string>): void {
+	if (!block) {
+		return;
+	}
+
+	for (const directive of block.parsedDirectives ?? []) {
+		if (directive.prefix === '@' && directive.name === 'config' && directive.args[0]) {
+			paths.add(directive.args[0]);
+		}
+	}
+}
+
 function getActiveEditorDirectiveNames(state: State): Set<string> {
 	const names = new Set<string>();
 
@@ -41,8 +53,36 @@ function getActiveEditorDirectiveNames(state: State): Set<string> {
 	return names;
 }
 
+function getActiveEditorConfigPaths(state: State): Set<string> {
+	const paths = new Set<string>();
+
+	for (const block of getActiveCodeBlocksForEnvironmentPlugins(state)) {
+		getConfigPathsFromBlock(block, paths);
+	}
+
+	return paths;
+}
+
 function hasMatchingDirective(entry: EditorEnvironmentPluginRegistryEntry, activeNames: Set<string>): boolean {
 	return entry.editorDirectives.some(name => activeNames.has(name));
+}
+
+function isConfigPathUnderTrigger(path: string, trigger: string): boolean {
+	return path === trigger || path.startsWith(`${trigger}.`);
+}
+
+function hasMatchingConfigPath(entry: EditorEnvironmentPluginRegistryEntry, activePaths: Set<string>): boolean {
+	return (entry.editorConfigPaths ?? []).some(trigger =>
+		Array.from(activePaths).some(path => isConfigPathUnderTrigger(path, trigger))
+	);
+}
+
+function shouldStartPlugin(
+	entry: EditorEnvironmentPluginRegistryEntry,
+	activeNames: Set<string>,
+	activeConfigPaths: Set<string>
+): boolean {
+	return hasMatchingDirective(entry, activeNames) || hasMatchingConfigPath(entry, activeConfigPaths);
 }
 
 export function createEditorEnvironmentPluginManager(
@@ -91,7 +131,8 @@ export function createEditorEnvironmentPluginManager(
 					return;
 				}
 
-				if (!hasMatchingDirective(entry, getActiveEditorDirectiveNames(store.getState()))) {
+				const state = store.getState();
+				if (!shouldStartPlugin(entry, getActiveEditorDirectiveNames(state), getActiveEditorConfigPaths(state))) {
 					activePlugins.delete(entry.id);
 					setPluginErrors(entry.id, []);
 					return;
@@ -117,7 +158,10 @@ export function createEditorEnvironmentPluginManager(
 					return;
 				}
 
-				if (!hasMatchingDirective(entry, getActiveEditorDirectiveNames(store.getState()))) {
+				const latestState = store.getState();
+				if (
+					!shouldStartPlugin(entry, getActiveEditorDirectiveNames(latestState), getActiveEditorConfigPaths(latestState))
+				) {
 					if (typeof dispose === 'function') {
 						dispose();
 					}
@@ -145,8 +189,9 @@ export function createEditorEnvironmentPluginManager(
 		}
 
 		const activeNames = getActiveEditorDirectiveNames(store.getState());
+		const activeConfigPaths = getActiveEditorConfigPaths(store.getState());
 		for (const entry of registry) {
-			if (hasMatchingDirective(entry, activeNames)) {
+			if (shouldStartPlugin(entry, activeNames, activeConfigPaths)) {
 				startPlugin(entry);
 			} else {
 				disposePlugin(entry);

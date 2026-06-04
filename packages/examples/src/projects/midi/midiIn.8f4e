@@ -80,7 +80,8 @@ functionEnd
 note
 ; @pos -83 19
 
-; @midiIn 0 onMidiEvent
+; @config midi.inputs.0.port 0
+; @config midi.inputs.0.callback onMidiEvent
 
 ; @info midi
 
