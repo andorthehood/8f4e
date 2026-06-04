@@ -102,7 +102,6 @@ describe('editor init', () => {
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerRuntime',
 			callbacks: {
 				loadSession: async () => null,
 			},
@@ -134,7 +133,6 @@ describe('editor init', () => {
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerRuntime',
 			callbacks: {
 				loadSession: async () => null,
 				exportCanvasScreenshot,
@@ -163,7 +161,6 @@ describe('editor init', () => {
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerRuntime',
 			renderStatsIntervalFrames: 12,
 			frameTexture: {
 				entry: 'renderFrame',

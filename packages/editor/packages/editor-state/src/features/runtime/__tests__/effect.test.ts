@@ -24,7 +24,6 @@ describe('Runtime System', () => {
 						factory: mainThreadRuntimeFactory,
 					},
 				},
-				defaultRuntimeId: 'AudioWorkletRuntime',
 			});
 
 			const store = createStateManager(state);
@@ -73,7 +72,6 @@ describe('Runtime System', () => {
 						factory: webWorkerRuntimeFactory,
 					},
 				},
-				defaultRuntimeId: 'AudioWorkletRuntime',
 			});
 
 			const store = createStateManager(state);
@@ -122,7 +120,7 @@ describe('Runtime System', () => {
 						factory: () => () => {},
 					},
 				},
-				defaultRuntimeId: 'WebWorkerRuntime',
+				editorConfig: { runtime: 'WebWorkerRuntime' },
 			});
 
 			const store = createStateManager(state);
@@ -135,6 +133,29 @@ describe('Runtime System', () => {
 				'runtime:WebWorkerRuntime',
 				'runtime:AudioWorkletRuntime',
 			]);
+		});
+
+		it('should not initialize a runtime when no runtime is selected', async () => {
+			const webWorkerRuntimeFactory = vi.fn(() => () => {});
+			const state = createMockState({
+				runtimeRegistry: {
+					WebWorkerRuntime: {
+						id: 'WebWorkerRuntime',
+						factory: webWorkerRuntimeFactory,
+					},
+				},
+			});
+
+			const store = createStateManager(state);
+			const events = createMockEventDispatcherWithVitest();
+
+			await runtimeEffect(store, events);
+
+			store.set('compiler.isCompiling', true);
+			store.set('compiler.isCompiling', false);
+			await new Promise(resolve => setTimeout(resolve, 10));
+
+			expect(webWorkerRuntimeFactory).not.toHaveBeenCalled();
 		});
 	});
 });

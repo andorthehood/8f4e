@@ -29,12 +29,8 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
 	lines.push('; Changes will be overwritten');
 	lines.push('');
 
-	const runtimeEntry = getSelectedRuntimeEntry(
-		state.editorConfig.runtime,
-		state.runtimeRegistry,
-		state.defaultRuntimeId
-	);
-	lines.push(...(runtimeEntry.getEnvConstants?.(state.editorConfig) ?? []));
+	const runtimeEntry = getSelectedRuntimeEntry(state.editorConfig.runtime, state.runtimeRegistry);
+	lines.push(...(runtimeEntry?.getEnvConstants?.(state.editorConfig) ?? []));
 
 	// Binary asset sizes
 	const binaryAssets = state.binaryAssets || [];
