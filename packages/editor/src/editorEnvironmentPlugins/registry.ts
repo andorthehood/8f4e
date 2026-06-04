@@ -13,7 +13,8 @@ export const editorEnvironmentPluginRegistry: EditorEnvironmentPluginRegistryEnt
 	},
 	{
 		id: 'midi',
-		editorDirectives: ['midiIn'],
+		editorDirectives: [],
+		editorConfigPaths: ['midi'],
 		load: () => import('./midi/plugin'),
 	},
 ];

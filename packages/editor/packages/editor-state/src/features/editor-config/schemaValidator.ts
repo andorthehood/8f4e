@@ -81,6 +81,10 @@ function resolveFormattedConfigValues(value: unknown, schema: JSONSchemaLike, st
 		return resolveMemoryAddressConfigValue(state, value);
 	}
 
+	if (Array.isArray(value)) {
+		return value.map(item => (schema.items ? resolveFormattedConfigValues(item, schema.items, state) : item));
+	}
+
 	if (!isRecord(value)) {
 		return value;
 	}
@@ -90,6 +94,14 @@ function resolveFormattedConfigValues(value: unknown, schema: JSONSchemaLike, st
 		for (const [key, childSchema] of Object.entries(option.properties ?? {})) {
 			if (key in resolved) {
 				resolved[key] = resolveFormattedConfigValues(resolved[key], childSchema, state);
+			}
+		}
+
+		if (option.additionalProperties && typeof option.additionalProperties === 'object') {
+			for (const [key, childValue] of Object.entries(resolved)) {
+				if (!(key in (option.properties ?? {}))) {
+					resolved[key] = resolveFormattedConfigValues(childValue, option.additionalProperties, state);
+				}
 			}
 		}
 	}
@@ -116,6 +128,15 @@ export function collectSchemaConfigPaths(root: string, schema: JSONSchemaLike): 
 				for (const [key, childSchema] of Object.entries(option.properties ?? {})) {
 					visit(`${currentPath}.${key}`, childSchema);
 				}
+
+				if (option.additionalProperties && typeof option.additionalProperties === 'object') {
+					visit(`${currentPath}.*`, option.additionalProperties);
+				}
+				continue;
+			}
+
+			if (option.type === 'array' && option.items) {
+				visit(`${currentPath}.*`, option.items);
 				continue;
 			}
 
@@ -147,6 +168,18 @@ export function getSchemaForConfigPath(root: string, schema: JSONSchemaLike, pat
 			const childSchema = currentSchema.properties?.[segment];
 			if (childSchema) {
 				nextSchemas.push(childSchema);
+			}
+
+			if (currentSchema.type === 'array' && currentSchema.items && /^\d+$/.test(segment)) {
+				nextSchemas.push(currentSchema.items);
+			}
+
+			if (
+				currentSchema.additionalProperties &&
+				typeof currentSchema.additionalProperties === 'object' &&
+				!childSchema
+			) {
+				nextSchemas.push(currentSchema.additionalProperties);
 			}
 		}
 

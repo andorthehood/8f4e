@@ -31,6 +31,10 @@ function createCodeBlockWithEditorDirective(name: string, args: string[] = []): 
 	} as unknown as CodeBlockGraphicData;
 }
 
+function createCodeBlockWithConfigPath(path: string): CodeBlockGraphicData {
+	return createCodeBlockWithEditorDirective('config', [path, 'value']);
+}
+
 async function flushPromises(): Promise<void> {
 	await Promise.resolve();
 	await Promise.resolve();
@@ -87,6 +91,37 @@ describe('editor environment plugin manager', () => {
 				services,
 			})
 		);
+
+		cleanup();
+	});
+
+	it('lazy-loads a plugin when one of its editor config trigger paths appears', async () => {
+		const dispose = vi.fn();
+		const start = vi.fn(() => dispose);
+		const load = vi.fn(async () => ({ default: start }));
+		const registry: EditorEnvironmentPluginRegistryEntry[] = [
+			{
+				id: 'test-plugin',
+				editorDirectives: [],
+				editorConfigPaths: ['testPlugin'],
+				load,
+			},
+		];
+		const store = createStateManager(createState());
+
+		const cleanup = createEditorEnvironmentPluginManager(store, events, {
+			window: windowMock,
+			navigator: navigatorMock,
+			memoryViews: memoryViewsMock,
+			services,
+			registry,
+		});
+
+		store.set('codeBlockRendering.codeBlocks', [createCodeBlockWithConfigPath('testPlugin.inputs.0.port')]);
+		await flushPromises();
+
+		expect(load).toHaveBeenCalledTimes(1);
+		expect(start).toHaveBeenCalledTimes(1);
 
 		cleanup();
 	});
