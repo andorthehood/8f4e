@@ -34,7 +34,7 @@ describe('groupCopier', () => {
 			groupName: 'audio',
 		});
 
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupCopier(store, mockEvents);
 
@@ -62,7 +62,7 @@ describe('groupCopier', () => {
 			groupName: undefined,
 		});
 
-		mockState.graphicHelper.codeBlocks = [block1];
+		mockState.codeBlockRendering.codeBlocks = [block1];
 
 		groupCopier(store, mockEvents);
 

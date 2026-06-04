@@ -90,7 +90,11 @@ export default function drawSelectedLineHint(
 ): void {
 	const spriteLookups = state.spriteLookups;
 
-	if (!spriteLookups || !state.featureFlags.codeLineSelection || state.graphicHelper.selectedCodeBlock !== codeBlock) {
+	if (
+		!spriteLookups ||
+		!state.featureFlags.codeLineSelection ||
+		state.codeBlockRendering.selectedCodeBlock !== codeBlock
+	) {
 		return;
 	}
 

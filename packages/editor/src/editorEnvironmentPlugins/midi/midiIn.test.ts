@@ -31,7 +31,7 @@ function codeBlock(id: string, directives: ParsedDirectiveRecord[]): CodeBlockGr
 
 function createStore(blocks: CodeBlockGraphicData[]) {
 	return createStateManager({
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks: blocks,
 		},
 		compiler: {

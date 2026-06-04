@@ -3,7 +3,7 @@ import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 
-function updateParsedDirectivesForBlock(block: State['graphicHelper']['codeBlocks'][number] | undefined): void {
+function updateParsedDirectivesForBlock(block: State['codeBlockRendering']['codeBlocks'][number] | undefined): void {
 	if (!block) {
 		return;
 	}
@@ -14,21 +14,21 @@ function updateParsedDirectivesForBlock(block: State['graphicHelper']['codeBlock
 export default function parsedDirectivesUpdater(store: StateManager<State>): void {
 	function updateAllBlocks(): void {
 		const state = store.getState();
-		for (const block of state.graphicHelper.codeBlocks) {
+		for (const block of state.codeBlockRendering.codeBlocks) {
 			updateParsedDirectivesForBlock(block);
 		}
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', updateAllBlocks);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', () => {
-		updateParsedDirectivesForBlock(store.getState().graphicHelper.selectedCodeBlock);
+	store.subscribe('codeBlockRendering.codeBlocks', updateAllBlocks);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', () => {
+		updateParsedDirectivesForBlock(store.getState().codeBlockRendering.selectedCodeBlock);
 	});
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', () => {
-		updateParsedDirectivesForBlock(store.getState().graphicHelper.selectedCodeBlockForProgrammaticEdit);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', () => {
+		updateParsedDirectivesForBlock(store.getState().codeBlockRendering.selectedCodeBlockForProgrammaticEdit);
 	});
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', () => {
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', () => {
 		updateParsedDirectivesForBlock(
-			store.getState().graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
+			store.getState().codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
 		);
 	});
 }
