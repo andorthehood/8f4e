@@ -1,10 +1,10 @@
 import type { State } from '@8f4e/editor-state-types';
 import { describe, expect, it, vi } from 'vitest';
-import { binEditorConfigSchemaContribution, resolveBinaryAssetLoadRequests } from './config';
+import { binaryAssetsEditorConfigSchemaContribution, resolveBinaryAssetLoadRequests } from './config';
 
 describe('binary asset editor config', () => {
 	it('declares dynamic binary asset config entries', () => {
-		expect(binEditorConfigSchemaContribution).toMatchObject({
+		expect(binaryAssetsEditorConfigSchemaContribution).toMatchObject({
 			root: 'bin',
 			schema: {
 				type: 'object',
