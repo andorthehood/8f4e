@@ -1,5 +1,5 @@
 import type { EditorEnvironmentPluginContext } from '../types';
-import createBinaryAssetDirectiveSync from './directiveSync';
+import createBinaryAssetConfigSync from './configSync';
 import createBinaryAssetMemoryLoader from './memoryLoader';
 
 export default function binaryAssetsPlugin({
@@ -9,7 +9,7 @@ export default function binaryAssetsPlugin({
 }: EditorEnvironmentPluginContext): () => void {
 	const assetStore = new Map<string, ArrayBuffer>();
 	let disposed = false;
-	const cleanupDirectiveSync = createBinaryAssetDirectiveSync({
+	const cleanupConfigSync = createBinaryAssetConfigSync({
 		store,
 		assetStore,
 		setErrors,
@@ -23,7 +23,7 @@ export default function binaryAssetsPlugin({
 
 	return () => {
 		disposed = true;
-		cleanupDirectiveSync();
+		cleanupConfigSync();
 		cleanupMemoryLoader();
 		assetStore.clear();
 		setErrors([]);

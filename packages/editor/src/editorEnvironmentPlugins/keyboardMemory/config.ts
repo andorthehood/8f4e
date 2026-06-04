@@ -4,7 +4,7 @@ export const KEYBOARD_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID = 'keyboard';
 
 const MODULE_MEMORY_ID_SCHEMA = {
 	type: 'string' as const,
-	pattern: '^[^:\\s]+:[^:\\s]+$',
+	format: 'module-memory-id',
 };
 
 export const keyboardEditorConfigSchemaContribution: EditorConfigSchemaContribution = {

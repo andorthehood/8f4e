@@ -1,11 +1,10 @@
 import type { BinaryAsset, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { EditorEnvironmentPluginContext } from '../types';
+import { resolveBinaryAssetLoadRequests } from './config';
 import fetchBinaryAssets from './fetchBinaryAssets';
-import parseBinaryAssetDirectives from './parseBinaryAssetDirectives';
-import resolveMemoryId from './resolveMemoryId';
 
-export default function createBinaryAssetDirectiveSync({
+export default function createBinaryAssetConfigSync({
 	store,
 	assetStore,
 	setErrors,
@@ -19,41 +18,15 @@ export default function createBinaryAssetDirectiveSync({
 	let lastLoadSignature = '';
 	let fetchGeneration = 0;
 
-	async function syncBinaryAssetsFromDirectives(): Promise<void> {
-		const state = store.getState();
-		const parsed = parseBinaryAssetDirectives(state.codeBlockRendering.codeBlocks);
-		const loadRequests = parsed.loadDirectives
-			.map(loadDirective => {
-				const definition = parsed.definitionsById.get(loadDirective.assetId);
-				if (!definition) {
-					console.warn('Unknown @loadAsset id:', loadDirective.assetId);
-					return null;
-				}
-
-				const memoryId = resolveMemoryId(loadDirective.memoryRef, loadDirective.moduleId);
-				if (!memoryId) {
-					console.warn(
-						'Invalid @loadAsset memoryRef (must use &memoryRef in module/constants blocks):',
-						loadDirective.memoryRef
-					);
-					return null;
-				}
-
-				return {
-					id: definition.id,
-					url: definition.url,
-					memoryId,
-				};
-			})
-			.filter((asset): asset is NonNullable<typeof asset> => asset !== null);
-
+	async function syncBinaryAssetsFromConfig(): Promise<void> {
+		const loadRequests = resolveBinaryAssetLoadRequests(store.getState());
 		const nextLoadSignature = loadRequests.map(asset => `${asset.id}|${asset.url}|${asset.memoryId}`).join('\n');
 		if (nextLoadSignature === lastLoadSignature) {
 			return;
 		}
 		lastLoadSignature = nextLoadSignature;
-		// Only invalidate in-flight fetches when asset directives actually change.
-		// Project loads can trigger unrelated code-block updates while a fetch is pending.
+		// Only invalidate in-flight fetches when asset config actually changes.
+		// Project loads can trigger unrelated updates while a fetch is pending.
 		const generation = ++fetchGeneration;
 		setErrors([]);
 
@@ -73,7 +46,7 @@ export default function createBinaryAssetDirectiveSync({
 
 		try {
 			const fetchedAssets = await fetchBinaryAssets(uniqueUrls, assetStore);
-			// Ignore stale fetch results from a previous project/directive set.
+			// Ignore stale fetch results from a previous project/config set.
 			if (isDisposed() || generation !== fetchGeneration) {
 				return;
 			}
@@ -102,14 +75,12 @@ export default function createBinaryAssetDirectiveSync({
 		}
 	}
 
-	store.subscribe('codeBlockRendering.codeBlocks', syncBinaryAssetsFromDirectives);
-	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncBinaryAssetsFromDirectives);
+	store.subscribe('editorConfig.bin', syncBinaryAssetsFromConfig);
 
-	void syncBinaryAssetsFromDirectives();
+	void syncBinaryAssetsFromConfig();
 
 	return () => {
 		fetchGeneration++;
-		store.unsubscribe('codeBlockRendering.codeBlocks', syncBinaryAssetsFromDirectives);
-		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', syncBinaryAssetsFromDirectives);
+		store.unsubscribe('editorConfig.bin', syncBinaryAssetsFromConfig);
 	};
 }

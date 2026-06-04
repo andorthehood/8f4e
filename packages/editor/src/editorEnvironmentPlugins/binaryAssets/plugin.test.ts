@@ -26,12 +26,15 @@ function createState({
 } = {}): State {
 	return {
 		codeBlockRendering: {
-			codeBlocks: [
-				{
-					moduleId: 'samples',
-					code: ['module samples', `; @defAsset amen ${url}`, '; @loadAsset amen &buffer', 'moduleEnd'],
+			codeBlocks: [],
+		},
+		editorConfig: {
+			bin: {
+				amen: {
+					url,
+					memory: 'samples:buffer',
 				},
-			],
+			},
 		},
 		compiler: {
 			compiledModules: {
@@ -71,7 +74,7 @@ describe('binary assets plugin', () => {
 		loadBinaryAssetIntoMemoryMock.mockReset();
 	});
 
-	it('fetches directive assets and loads them into resolved memory', async () => {
+	it('fetches configured assets and loads them into resolved memory', async () => {
 		const fetchedAsset: BinaryAsset = {
 			url: 'https://example.com/amen.pcm',
 			fileName: 'amen.pcm',
@@ -162,17 +165,12 @@ describe('binary assets plugin', () => {
 		});
 		await flushPromises();
 
-		store.set('codeBlockRendering.codeBlocks', [
-			{
-				moduleId: 'samples',
-				code: [
-					'module samples',
-					'; @defAsset amen https://example.com/pneumatic/sample_1.pcm',
-					'; @loadAsset amen &buffer',
-					'moduleEnd',
-				],
+		store.set('editorConfig.bin', {
+			amen: {
+				url: 'https://example.com/pneumatic/sample_1.pcm',
+				memory: 'samples:buffer',
 			},
-		] as State['codeBlockRendering']['codeBlocks']);
+		} as State['editorConfig']['bin']);
 		await flushPromises();
 
 		store.set('compiler.compiledModules', {
@@ -232,17 +230,12 @@ describe('binary assets plugin', () => {
 		await flushPromises();
 		expect(store.getState().binaryAssets[0].assetByteLength).toBe(12);
 
-		store.set('codeBlockRendering.codeBlocks', [
-			{
-				moduleId: 'samples',
-				code: [
-					'module samples',
-					'; @defAsset amen https://example.com/pneumatic/sample_1.pcm',
-					'; @loadAsset amen &buffer',
-					'moduleEnd',
-				],
+		store.set('editorConfig.bin', {
+			amen: {
+				url: 'https://example.com/pneumatic/sample_1.pcm',
+				memory: 'samples:buffer',
 			},
-		] as State['codeBlockRendering']['codeBlocks']);
+		} as State['editorConfig']['bin']);
 
 		expect(store.getState().binaryAssets).toEqual([]);
 
@@ -265,7 +258,7 @@ describe('binary assets plugin', () => {
 		);
 	});
 
-	it('keeps pending fetch alive when unrelated code block changes preserve asset directives', async () => {
+	it('keeps pending fetch alive when unrelated code block changes preserve asset config', async () => {
 		let resolveFetch: (assets: BinaryAsset[]) => void = () => {};
 		fetchBinaryAssetsMock.mockReturnValueOnce(
 			new Promise(resolve => {
