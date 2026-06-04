@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { CODE_BLOCK_MIN_GRID_WIDTH } from '../../utils/constants';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
+import { CODE_BLOCK_MIN_GRID_WIDTH } from './utils/constants';
 
 describe('getCodeBlockGridWidth', () => {
 	it('returns minGridWidth when code is shorter', () => {

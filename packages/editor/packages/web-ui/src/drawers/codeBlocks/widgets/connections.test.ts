@@ -92,13 +92,13 @@ describe('drawConnections', () => {
 					},
 				},
 			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 			graphicHelper: {
 				codeBlocks: [inputBlock, outputBlock],
 				selectedCodeBlock: inputBlock,
 				outputsByWordAddress: new Map([[80, output]]),
-				spriteLookups: {
-					fillColors: {},
-				} as never,
 			},
 		});
 		const engine = createMockEngine();

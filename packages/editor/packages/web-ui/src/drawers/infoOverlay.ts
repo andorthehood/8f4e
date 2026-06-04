@@ -34,7 +34,7 @@ export default function drawInfoOverlay(
 		maxVertices,
 	}: { timeToRender: number; fps: number; vertices: number; maxVertices: number }
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
@@ -118,7 +118,7 @@ export default function drawInfoOverlay(
 	engine.startGroup(0, state.viewport.roundedHeight - state.viewport.hGrid * (debugText.length + 1));
 
 	for (let i = 0; i < debugText.length; i++) {
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+		engine.setSpriteLookup(state.spriteLookups.fillColors);
 		engine.drawSprite(
 			0,
 			i * state.viewport.hGrid,
@@ -127,7 +127,7 @@ export default function drawInfoOverlay(
 			state.viewport.hGrid
 		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontDebugInfo);
+		engine.setSpriteLookup(state.spriteLookups.fontDebugInfo);
 		engine.drawText(state.viewport.vGrid, i * state.viewport.hGrid, debugText[i]);
 	}
 

@@ -51,7 +51,7 @@ describe('drawCrossfades', () => {
 				vGrid: 2,
 				hGrid: 8,
 			},
-			graphicHelper: { spriteLookups: { fillColors: {} } as never },
+			spriteLookups: { fillColors: {} } as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			moduleId: 'test-block',
@@ -74,7 +74,7 @@ describe('drawCrossfades', () => {
 				vGrid: 2,
 				hGrid: 8,
 			},
-			graphicHelper: { spriteLookups: { fillColors: {} } as never },
+			spriteLookups: { fillColors: {} } as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			moduleId: 'test-block',

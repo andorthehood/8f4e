@@ -88,7 +88,7 @@ export default function tooltip(store: StateManager<State>): void {
 			line,
 			TOOLTIP_WRAP_WIDTH,
 			getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock),
-			state.graphicHelper.spriteLookups,
+			state.spriteLookups,
 			selectedCodeBlock.moduleId,
 			getSelectedMemoryDeclaration(state, selectedCodeBlock.moduleId, memoryId),
 			getSelectedModuleExecutionOrder(state, selectedCodeBlock, line)
@@ -103,7 +103,7 @@ export default function tooltip(store: StateManager<State>): void {
 	store.subscribe('featureFlags.codeLineSelection', syncSelectedLineTooltip);
 	store.subscribe('compiler.compiledModules', syncSelectedLineTooltip);
 	store.subscribe('compiler.compiledFunctions', syncSelectedLineTooltip);
-	store.subscribe('graphicHelper.spriteLookups', syncSelectedLineTooltip);
+	store.subscribe('spriteLookups', syncSelectedLineTooltip);
 	store.subscribe('viewport.vGrid', syncSelectedLineTooltip);
 	store.subscribe('viewport.hGrid', syncSelectedLineTooltip);
 

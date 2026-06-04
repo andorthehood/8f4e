@@ -13,6 +13,6 @@ test('context menu', async () => {
 	const spriteData = await createMockSpriteData(mockState);
 
 	await init(mockState, canvas, memoryViews, spriteData);
-	mockState.graphicHelper.contextMenu = generateContextMenuMock();
+	mockState.contextMenu = generateContextMenuMock();
 	await expect(canvas).toMatchScreenshot();
 });

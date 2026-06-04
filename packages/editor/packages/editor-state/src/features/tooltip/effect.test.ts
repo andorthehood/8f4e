@@ -179,11 +179,11 @@ describe('tooltip effect', () => {
 			},
 			graphicHelper: {
 				selectedCodeBlock: selectedBlock,
-				spriteLookups: {
-					fontTooltipText,
-					fontTooltipHighlight,
-				} as never,
 			},
+			spriteLookups: {
+				fontTooltipText,
+				fontTooltipHighlight,
+			} as never,
 			tooltip: {
 				text: [],
 			},

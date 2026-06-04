@@ -5,8 +5,8 @@
  */
 
 import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-spec';
-import type { FillSpriteColorName } from '@8f4e/sprite-generator';
-import type { SpriteLookup } from 'glugglug';
+import type { FillSpriteColorName, SpriteLookups } from '@8f4e/sprite-generator';
+import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
@@ -359,6 +359,12 @@ export interface Options {
 export interface State {
 	compiler: Compiler;
 	graphicHelper: GraphicHelper;
+	contextMenu: ContextMenu;
+	spriteLookups?: SpriteLookups;
+	/** Post-process effects configuration for custom visual effects */
+	postProcessEffects: PostProcessEffect[];
+	/** Background effects configuration for custom visual effects */
+	backgroundEffects: BackgroundEffect[];
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
 	tooltip: TooltipState;
@@ -398,8 +404,8 @@ export interface State {
 
 export type * from './features/binary-assets/types';
 export type * from './features/browser-local-notes/types';
+export type * from './features/code-blocks/buildDisplayModel';
 export type * from './features/code-blocks/features/directives/types';
-export type * from './features/code-blocks/features/graphicHelper/buildDisplayModel';
 export type * from './features/code-blocks/types';
 export type * from './features/code-blocks/utils/types';
 export type * from './features/code-editing/types';
