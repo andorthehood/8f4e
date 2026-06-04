@@ -3,7 +3,7 @@
  */
 
 import type { DataStructure, DocumentBlockType } from '@8f4e/compiler-spec';
-import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
+import type { SpriteLookup } from 'glugglug';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
@@ -481,8 +481,4 @@ export type GraphicHelper = {
 	 * Use this for operations like drag-end position updates that should save but not recompile.
 	 */
 	selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger?: CodeBlockGraphicData;
-	/** Post-process effects configuration for custom visual effects */
-	postProcessEffects: PostProcessEffect[];
-	/** Background effects configuration for custom visual effects */
-	backgroundEffects: BackgroundEffect[];
 };
