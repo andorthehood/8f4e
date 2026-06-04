@@ -22,8 +22,8 @@ export default function shaderEffectsDeriver(store: StateManager<State>, events:
 		log(state, 'Recomputed shader effects', 'Shaders');
 
 		// Update the post-process effects
-		state.graphicHelper.postProcessEffects = postProcessEffects;
-		state.graphicHelper.backgroundEffects = backgroundEffects;
+		state.postProcessEffects = postProcessEffects;
+		state.backgroundEffects = backgroundEffects;
 
 		// Clear any stale shader-related errors, then apply new ones
 		state.codeErrors.shaderErrors = errors;

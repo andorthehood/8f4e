@@ -15,8 +15,6 @@ export default function createDefaultState() {
 			outputsByWordAddress: new Map(),
 			showHiddenCodeBlocks: false,
 			selectedCodeBlockForProgrammaticEdit: undefined,
-			postProcessEffects: [],
-			backgroundEffects: [],
 		},
 		contextMenu: {
 			highlightedItem: 0,
@@ -27,6 +25,8 @@ export default function createDefaultState() {
 			y: 0,
 			menuStack: [],
 		},
+		postProcessEffects: [],
+		backgroundEffects: [],
 		info: {
 			compiler: {
 				isCompiling: false,

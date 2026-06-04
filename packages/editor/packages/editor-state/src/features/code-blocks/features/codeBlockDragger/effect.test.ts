@@ -26,9 +26,9 @@ describe('codeBlockDragger', () => {
 				selectedCodeBlock: undefined,
 				nextCodeBlockCreationIndex: 0,
 				outputsByWordAddress: new Map(),
-				postProcessEffects: [],
-				backgroundEffects: [],
 			},
+			postProcessEffects: [],
+			backgroundEffects: [],
 			contextMenu: {
 				highlightedItem: 0,
 				itemWidth: 200,
