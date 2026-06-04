@@ -232,6 +232,12 @@ describe('editor init', () => {
 				type: 'object',
 			},
 		});
+		expect(initStateOptions.editorConfigSchemaContributions?.keyboard).toMatchObject({
+			root: 'keyboard',
+			schema: {
+				type: 'object',
+			},
+		});
 		expect(store.set).toHaveBeenCalledWith('info.graphics', {
 			timeToRenderMs: 10,
 			fps: 50,
