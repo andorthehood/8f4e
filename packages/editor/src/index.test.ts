@@ -232,6 +232,12 @@ describe('editor init', () => {
 				type: 'object',
 			},
 		});
+		expect(initStateOptions.editorConfigSchemaContributions?.bin).toMatchObject({
+			root: 'bin',
+			schema: {
+				type: 'object',
+			},
+		});
 		expect(initStateOptions.editorConfigSchemaContributions?.keyboard).toMatchObject({
 			root: 'keyboard',
 			schema: {

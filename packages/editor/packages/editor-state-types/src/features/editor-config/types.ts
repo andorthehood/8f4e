@@ -44,6 +44,7 @@ export interface EditorConfigEntry {
 	value: string;
 	rawRow: number;
 	codeBlockId: string | number;
+	moduleId?: string;
 }
 
 export type EditorConfigValidator = {

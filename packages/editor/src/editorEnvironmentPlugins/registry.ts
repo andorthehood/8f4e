@@ -9,7 +9,8 @@ export const editorEnvironmentPluginRegistry: EditorEnvironmentPluginRegistryEnt
 	},
 	{
 		id: 'binary-assets',
-		editorDirectives: ['defAsset', 'loadAsset'],
+		editorDirectives: [],
+		editorConfigPaths: ['bin'],
 		load: () => import('./binaryAssets/plugin'),
 	},
 	{
