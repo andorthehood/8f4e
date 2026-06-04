@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-05-30
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-04
 ---
 
 # TODO: Migrate keyboard memory directives to config
@@ -97,3 +97,4 @@ The keyboard memory plugin should own this schema and read the resolved config i
 ## Notes
 
 - This is separate from MIDI because keyboard memory writes are continuous browser input state, while MIDI routes callback invocations to exported Wasm functions.
+- Completed by migrating keyboard memory targets to schema-backed `@config keyboard...` entries, removing live `@keyCodeMemory` / `@keyPressedMemory` support, and verifying the keyboard plugin activates from config paths.
