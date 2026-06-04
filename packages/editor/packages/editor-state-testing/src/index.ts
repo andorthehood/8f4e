@@ -150,8 +150,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
 			showHiddenCodeBlocks: false,
-			postProcessEffects: [],
-			backgroundEffects: [],
 		},
 		contextMenu: {
 			highlightedItem: 0,
@@ -162,6 +160,8 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			y: 0,
 			menuStack: [],
 		},
+		postProcessEffects: [],
+		backgroundEffects: [],
 		info: {
 			compiler: {
 				isCompiling: false,

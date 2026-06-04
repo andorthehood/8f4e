@@ -6,7 +6,7 @@
 
 import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-spec';
 import type { FillSpriteColorName, SpriteLookups } from '@8f4e/sprite-generator';
-import type { SpriteLookup } from 'glugglug';
+import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
@@ -361,6 +361,10 @@ export interface State {
 	graphicHelper: GraphicHelper;
 	contextMenu: ContextMenu;
 	spriteLookups?: SpriteLookups;
+	/** Post-process effects configuration for custom visual effects */
+	postProcessEffects: PostProcessEffect[];
+	/** Background effects configuration for custom visual effects */
+	backgroundEffects: BackgroundEffect[];
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
 	tooltip: TooltipState;
