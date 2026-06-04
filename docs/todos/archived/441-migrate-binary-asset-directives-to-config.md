@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-30
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-04
 ---
 
 # TODO: Migrate binary asset directives to config
@@ -112,3 +112,4 @@ The exact path shape should prioritize readable code blocks, stable asset ids, a
 ## Notes
 
 - This TODO is intentionally separate from keyboard and MIDI because binary assets interact with storage, compiler memory maps, and generated env constants.
+- Completed by migrating binary asset configuration to schema-backed `@config bin...` entries, removing live `@defAsset` / `@loadAsset` parsing, and verifying no compatibility support remains for the old binary asset directive/config names.
