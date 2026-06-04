@@ -50,7 +50,8 @@
             }
           ]
         },
-        "memoryDeclarationLines": []
+        "memoryDeclarationLines": [],
+        "projectBlockId": 4
       },
       "index": 0,
       "executionEntryName": "main"
@@ -171,7 +172,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 11
       },
       "index": 1,
       "executionEntryName": "main"
@@ -223,7 +225,8 @@
             }
           ]
         },
-        "memoryDeclarationLines": []
+        "memoryDeclarationLines": [],
+        "projectBlockId": 22
       },
       "index": 2,
       "executionEntryName": "main"
@@ -379,7 +382,8 @@
             ],
             "hasExplicitMemoryDefault": true
           }
-        ]
+        ],
+        "projectBlockId": 32
       },
       "index": 3,
       "executionEntryName": "main"
@@ -802,7 +806,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 42
       },
       "index": 4,
       "executionEntryName": "main"
@@ -1225,7 +1230,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 67
       },
       "index": 5,
       "executionEntryName": "main"
@@ -1447,7 +1453,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 92
       },
       "index": 6,
       "executionEntryName": "main"
@@ -1669,7 +1676,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 104
       },
       "index": 7,
       "executionEntryName": "main"
@@ -2093,7 +2101,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 116
       },
       "index": 8,
       "executionEntryName": "main"
@@ -2404,7 +2413,8 @@
             ],
             "hasExplicitMemoryDefault": false
           }
-        ]
+        ],
+        "projectBlockId": 141
       },
       "index": 9,
       "executionEntryName": "main"

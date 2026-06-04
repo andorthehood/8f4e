@@ -7,6 +7,7 @@
         "moduleEnd",
       ],
       "entry": "main",
+      "id": 4,
     },
     {
       "code": [
@@ -14,6 +15,7 @@
         "const int tableSize 16",
         "constantsEnd",
       ],
+      "id": 9,
     },
     {
       "code": [
@@ -24,6 +26,7 @@
         "add",
         "functionEnd int",
       ],
+      "id": 13,
     },
     {
       "code": [
@@ -32,6 +35,7 @@
         "float frequency 440",
         "prototypeEnd",
       ],
+      "id": 20,
     },
     {
       "code": [
@@ -40,6 +44,7 @@
         "mul",
         "defineMacroEnd",
       ],
+      "id": 25,
     },
     {
       "code": [
@@ -48,6 +53,7 @@
         "remember to tune this later",
         "noteEnd",
       ],
+      "id": 30,
     },
   ],
   "groups": [],

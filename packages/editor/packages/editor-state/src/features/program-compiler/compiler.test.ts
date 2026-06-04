@@ -27,8 +27,10 @@ describe('flattenProjectForCompiler', () => {
 
 		expect(result.entries.main).toHaveLength(1);
 		expect(result.entries.main[0].code).toEqual(['module test', 'moduleEnd']);
+		expect(result.entries.main[0].projectBlockId).toBe(0);
 		expect(result.functions).toHaveLength(1);
 		expect(result.functions[0].code).toEqual(['function helper', 'functionEnd']);
+		expect(result.functions[0].projectBlockId).toBe(2);
 	});
 
 	it('should exclude note blocks from compilation', () => {
@@ -182,7 +184,9 @@ describe('flattenProjectForCompiler', () => {
 		const result = flattenProjectForCompiler(mockCodeBlocks);
 
 		expect(result.entries.main[0].code).toEqual(['module oscillator', 'shape oscillatorState', 'moduleEnd']);
-		expect(result.prototypes).toEqual([{ code: ['prototype oscillatorState', 'float phase', 'prototypeEnd'] }]);
+		expect(result.prototypes).toEqual([
+			{ code: ['prototype oscillatorState', 'float phase', 'prototypeEnd'], projectBlockId: 0 },
+		]);
 	});
 
 	it('should preserve creationIndex order across mixed block types', () => {
