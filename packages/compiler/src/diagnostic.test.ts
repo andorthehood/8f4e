@@ -14,10 +14,17 @@ const stubLine = {
 describe('serializeDiagnostic', () => {
 	describe('syntax errors', () => {
 		it('serializes a SyntaxRulesError with line into CompilerDiagnostic', () => {
-			const err = new SyntaxRulesError(SyntaxErrorCode.MISSING_ARGUMENT, 'Missing arg.', {
-				lineNumber: 5,
-				instruction: 'if',
-			});
+			const err = new SyntaxRulesError(
+				SyntaxErrorCode.MISSING_ARGUMENT,
+				'Missing arg.',
+				{
+					lineNumber: 5,
+					instruction: 'if',
+				},
+				{
+					projectBlockId: 12,
+				}
+			);
 
 			const result = serializeDiagnostic(err);
 
@@ -28,7 +35,9 @@ describe('serializeDiagnostic', () => {
 					lineNumber: 5,
 					instruction: 'if',
 				},
-				context: {},
+				context: {
+					projectBlockId: 12,
+				},
 			});
 		});
 

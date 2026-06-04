@@ -1,6 +1,8 @@
 {
   "code": 10,
-  "context": {},
+  "context": {
+    "projectBlockId": 8,
+  },
   "line": {
     "instruction": "#impure",
     "lineNumber": 2,

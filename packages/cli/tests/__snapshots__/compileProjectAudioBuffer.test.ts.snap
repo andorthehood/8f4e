@@ -15,6 +15,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "moduleEnd",
       ],
       "entry": "main",
+      "id": 4,
     },
     {
       "code": [
@@ -63,6 +64,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "moduleEnd",
       ],
       "entry": "main",
+      "id": 12,
     },
     {
       "code": [
@@ -109,6 +111,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "moduleEnd",
       ],
       "entry": "main",
+      "id": 55,
     },
     {
       "code": [
@@ -123,6 +126,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "moduleEnd",
       ],
       "entry": "main",
+      "id": 96,
     },
     {
       "code": [
@@ -137,6 +141,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "constantsEnd",
       ],
+      "id": 107,
     },
     {
       "code": [
@@ -150,6 +155,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "loopEnd",
         "functionEnd",
       ],
+      "id": 118,
     },
     {
       "code": [
@@ -175,6 +181,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "constantsEnd",
       ],
+      "id": 128,
     },
     {
       "code": [
@@ -243,6 +250,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "functionEnd float",
       ],
+      "id": 150,
     },
   ],
   "compiledModules": {
@@ -590,6 +598,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
+        "projectBlockId": 55,
         "type": "module",
       },
       "byteAddress": 20,
@@ -776,6 +785,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
+        "projectBlockId": 96,
         "type": "module",
       },
       "byteAddress": 540,
@@ -1206,6 +1216,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
+        "projectBlockId": 12,
         "type": "module",
       },
       "byteAddress": 4,
@@ -1413,6 +1424,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
+        "projectBlockId": 4,
         "type": "module",
       },
       "byteAddress": 4,

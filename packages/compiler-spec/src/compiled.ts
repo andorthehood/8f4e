@@ -97,6 +97,7 @@ export interface Connection {
 /** Source module payload consumed by the compiler. */
 export interface Module {
 	code: string[];
+	projectBlockId?: number;
 }
 
 /** Executable modules partitioned by host-callable execution entry. */
