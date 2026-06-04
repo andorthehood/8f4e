@@ -32,7 +32,7 @@ describe('groupSkipExecutionToggler', () => {
 			blockType: 'module',
 			groupName: 'other-group',
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2, block3];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2, block3];
 
 		groupSkipExecutionToggler(store, mockEvents);
 
@@ -61,7 +61,7 @@ describe('groupSkipExecutionToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupSkipExecutionToggler(store, mockEvents);
 
@@ -87,7 +87,7 @@ describe('groupSkipExecutionToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupSkipExecutionToggler(store, mockEvents);
 
@@ -113,7 +113,7 @@ describe('groupSkipExecutionToggler', () => {
 			blockType: 'function',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [moduleBlock, functionBlock];
+		mockState.codeBlockRendering.codeBlocks = [moduleBlock, functionBlock];
 
 		groupSkipExecutionToggler(store, mockEvents);
 
@@ -135,7 +135,7 @@ describe('groupSkipExecutionToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1];
+		mockState.codeBlockRendering.codeBlocks = [block1];
 		mockState.featureFlags.editing = false;
 
 		groupSkipExecutionToggler(store, mockEvents);
@@ -154,7 +154,7 @@ describe('groupSkipExecutionToggler', () => {
 			code: ['module test1', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [block1];
+		mockState.codeBlockRendering.codeBlocks = [block1];
 
 		groupSkipExecutionToggler(store, mockEvents);
 
@@ -180,7 +180,7 @@ describe('groupSkipExecutionToggler', () => {
 			groupName: 'audio-chain',
 			lastUpdated: 1000,
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupSkipExecutionToggler(store, mockEvents);
 
@@ -205,7 +205,7 @@ describe('groupSkipExecutionToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupSkipExecutionToggler(store, mockEvents);
 
@@ -219,7 +219,7 @@ describe('groupSkipExecutionToggler', () => {
 
 		// Should be called twice - once for each block
 		expect(setSpy).toHaveBeenCalledTimes(2);
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', block1);
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', block2);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block1);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block2);
 	});
 });

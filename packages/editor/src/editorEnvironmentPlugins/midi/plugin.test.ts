@@ -8,7 +8,7 @@ function createContext(): EditorEnvironmentPluginContext {
 	return {
 		store: createStateManager({
 			info: {},
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [],
 			},
 			compiler: {

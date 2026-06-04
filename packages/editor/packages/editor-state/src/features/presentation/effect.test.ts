@@ -55,7 +55,7 @@ describe('presentation effect', () => {
 			},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5), createCodeBlock(2, 400, 500, 2, 3)],
 				selectedCodeBlock: undefined,
 			},
@@ -85,15 +85,15 @@ describe('presentation effect', () => {
 					state.editorMode = value as State['editorMode'];
 					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
 				}
-				if (path === 'graphicHelper.selectedCodeBlock') {
-					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				if (path === 'codeBlockRendering.selectedCodeBlock') {
+					state.codeBlockRendering.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
 				}
 			}),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
 				if (path === 'editorMode') {
 					modeSubscribers.push(callback as (value: State['editorMode']) => void);
 				}
-				if (path === 'graphicHelper.codeBlocks') {
+				if (path === 'codeBlockRendering.codeBlocks') {
 					codeBlockSubscribers.push(callback as (value: CodeBlockGraphicData[]) => void);
 				}
 				return { selector: path, callback };
@@ -112,7 +112,7 @@ describe('presentation effect', () => {
 
 		store.set('editorMode', 'presentation');
 		scheduledFrame?.(16);
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[0]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[0]);
 		expect(state.viewportAnimation.durationMs).toBe(2000);
 		expect(state.presentation.activeStopIndex).toBe(0);
 		expect(state.presentation.totalStops).toBe(2);
@@ -123,13 +123,13 @@ describe('presentation effect', () => {
 
 		vi.advanceTimersByTime(2000);
 		scheduledFrame?.(2016);
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[0]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[0]);
 		expect(state.viewport.x).toBe(10);
 		expect(state.viewport.y).toBe(140);
 
 		vi.advanceTimersByTime(3000);
 		scheduledFrame?.(5016);
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 		expect(state.presentation.activeStopIndex).toBe(1);
 		expect(state.presentation.totalStops).toBe(2);
 		expect(state.presentation.remainingMs).toBe(3000);
@@ -154,7 +154,7 @@ describe('presentation effect', () => {
 			},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5, 'left'), createCodeBlock(2, 400, 500, 2, 3, 'right')],
 				selectedCodeBlock: undefined,
 			},
@@ -184,8 +184,8 @@ describe('presentation effect', () => {
 					state.editorMode = value as State['editorMode'];
 					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
 				}
-				if (path === 'graphicHelper.selectedCodeBlock') {
-					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				if (path === 'codeBlockRendering.selectedCodeBlock') {
+					state.codeBlockRendering.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
 				}
 			}),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
@@ -211,7 +211,7 @@ describe('presentation effect', () => {
 
 		vi.advanceTimersByTime(5000);
 		scheduledFrame?.(5016);
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 		expect(state.viewportAnimation.targetX).toBe(235);
 		expect(state.presentation.activeStopIndex).toBe(1);
 	});
@@ -229,7 +229,7 @@ describe('presentation effect', () => {
 			},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5, 'top'), createCodeBlock(2, 400, 500, 2, 3, 'bottom')],
 				selectedCodeBlock: undefined,
 			},
@@ -258,8 +258,8 @@ describe('presentation effect', () => {
 					state.editorMode = value as State['editorMode'];
 					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
 				}
-				if (path === 'graphicHelper.selectedCodeBlock') {
-					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				if (path === 'codeBlockRendering.selectedCodeBlock') {
+					state.codeBlockRendering.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
 				}
 			}),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
@@ -285,7 +285,7 @@ describe('presentation effect', () => {
 
 		vi.advanceTimersByTime(5000);
 		scheduledFrame?.(5016);
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 		expect(state.viewportAnimation.targetY).toBe(390);
 		expect(state.presentation.activeStopIndex).toBe(1);
 	});
@@ -300,7 +300,7 @@ describe('presentation effect', () => {
 			},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5), createCodeBlock(2, 400, 500, 2, 3)],
 				selectedCodeBlock: undefined,
 			},
@@ -329,8 +329,8 @@ describe('presentation effect', () => {
 					state.editorMode = value as State['editorMode'];
 					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
 				}
-				if (path === 'graphicHelper.selectedCodeBlock') {
-					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				if (path === 'codeBlockRendering.selectedCodeBlock') {
+					state.codeBlockRendering.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
 				}
 			}),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
@@ -356,7 +356,7 @@ describe('presentation effect', () => {
 		store.set('editorMode', 'presentation');
 
 		eventHandlers.get('nextPresentationStop')?.();
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 		expect(state.presentation.activeStopIndex).toBe(1);
 		expect(state.presentation.totalStops).toBe(2);
 		expect(state.presentation.remainingMs).toBe(3000);
@@ -364,7 +364,7 @@ describe('presentation effect', () => {
 		expect(state.viewportAnimation.targetY).toBe(440);
 
 		eventHandlers.get('previousPresentationStop')?.();
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[0]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[0]);
 		expect(state.presentation.activeStopIndex).toBe(0);
 		expect(state.presentation.remainingMs).toBe(5000);
 		expect(state.viewportAnimation.targetX).toBe(10);
@@ -381,7 +381,7 @@ describe('presentation effect', () => {
 			},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5), createCodeBlock(2, 400, 500, 2, 3)],
 				selectedCodeBlock: undefined,
 			},
@@ -410,8 +410,8 @@ describe('presentation effect', () => {
 					state.editorMode = value as State['editorMode'];
 					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
 				}
-				if (path === 'graphicHelper.selectedCodeBlock') {
-					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				if (path === 'codeBlockRendering.selectedCodeBlock') {
+					state.codeBlockRendering.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
 				}
 			}),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
@@ -438,15 +438,15 @@ describe('presentation effect', () => {
 
 		vi.advanceTimersByTime(4000);
 		eventHandlers.get('nextPresentationStop')?.();
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 		expect(state.presentation.deadlineAt).toBe(Date.now() + 3000);
 
 		vi.advanceTimersByTime(2999);
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 
 		vi.advanceTimersByTime(1);
 		expect(state.editorMode).toBe('view');
-		expect(state.graphicHelper.selectedCodeBlock).toBeUndefined();
+		expect(state.codeBlockRendering.selectedCodeBlock).toBeUndefined();
 		expect(state.viewportAnimation.targetX).toBe(50);
 		expect(state.viewportAnimation.targetY).toBe(60);
 		expect(state.presentation.totalStops).toBe(0);
@@ -462,7 +462,7 @@ describe('presentation effect', () => {
 			},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 2), createCodeBlock(2, 400, 500, 2, 3)],
 				selectedCodeBlock: undefined,
 			},
@@ -491,8 +491,8 @@ describe('presentation effect', () => {
 					state.editorMode = value as State['editorMode'];
 					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
 				}
-				if (path === 'graphicHelper.selectedCodeBlock') {
-					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				if (path === 'codeBlockRendering.selectedCodeBlock') {
+					state.codeBlockRendering.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
 				}
 			}),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
@@ -514,12 +514,12 @@ describe('presentation effect', () => {
 		store.set('editorMode', 'presentation');
 
 		vi.advanceTimersByTime(2000);
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 		expect(state.presentation.activeStopIndex).toBe(1);
 
 		vi.advanceTimersByTime(3000);
 		expect(state.editorMode).toBe('view');
-		expect(state.graphicHelper.selectedCodeBlock).toBeUndefined();
+		expect(state.codeBlockRendering.selectedCodeBlock).toBeUndefined();
 		expect(state.viewportAnimation.targetX).toBe(80);
 		expect(state.viewportAnimation.targetY).toBe(120);
 		expect(state.presentation.totalStops).toBe(0);
@@ -532,7 +532,7 @@ describe('presentation effect', () => {
 			callbacks: {},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: { codeBlocks: [] },
+			codeBlockRendering: { codeBlocks: [] },
 			viewport: createMockViewport(0, 0, 300, 200),
 			viewportAnimation: {
 				startX: 0,
@@ -590,7 +590,7 @@ describe('presentation effect', () => {
 			callbacks: {},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [],
 			},
 			viewport: createMockViewport(0, 0, 300, 200),
@@ -616,7 +616,7 @@ describe('presentation effect', () => {
 			getState: () => state,
 			set: vi.fn(),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
-				if (path === 'graphicHelper.codeBlocks') {
+				if (path === 'codeBlockRendering.codeBlocks') {
 					codeBlockSubscribers.push(callback as (value: CodeBlockGraphicData[]) => void);
 				}
 				return { selector: path, callback };
@@ -633,12 +633,12 @@ describe('presentation effect', () => {
 		presentation(store, events);
 		expect(state.presentation.canPresent).toBe(false);
 
-		state.graphicHelper.codeBlocks = [createCodeBlock(1, 100, 200, 1, 5)];
-		codeBlockSubscribers.forEach(callback => callback(state.graphicHelper.codeBlocks));
+		state.codeBlockRendering.codeBlocks = [createCodeBlock(1, 100, 200, 1, 5)];
+		codeBlockSubscribers.forEach(callback => callback(state.codeBlockRendering.codeBlocks));
 		expect(state.presentation.canPresent).toBe(true);
 
-		state.graphicHelper.codeBlocks = [];
-		codeBlockSubscribers.forEach(callback => callback(state.graphicHelper.codeBlocks));
+		state.codeBlockRendering.codeBlocks = [];
+		codeBlockSubscribers.forEach(callback => callback(state.codeBlockRendering.codeBlocks));
 		expect(state.presentation.canPresent).toBe(false);
 	});
 
@@ -655,7 +655,7 @@ describe('presentation effect', () => {
 			},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 2)],
 				selectedCodeBlock: undefined,
 			},
@@ -684,8 +684,8 @@ describe('presentation effect', () => {
 					state.editorMode = value as State['editorMode'];
 					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
 				}
-				if (path === 'graphicHelper.selectedCodeBlock') {
-					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				if (path === 'codeBlockRendering.selectedCodeBlock') {
+					state.codeBlockRendering.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
 				}
 			}),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
@@ -732,7 +732,7 @@ describe('presentation effect', () => {
 			},
 			featureFlags: {},
 			editorMode: 'view',
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [createCodeBlock(1, 100, 200, 1, 5), createCodeBlock(2, 400, 500, 2, 3)],
 				selectedCodeBlock: undefined,
 			},
@@ -761,8 +761,8 @@ describe('presentation effect', () => {
 					state.editorMode = value as State['editorMode'];
 					modeSubscribers.forEach(callback => callback(value as State['editorMode']));
 				}
-				if (path === 'graphicHelper.selectedCodeBlock') {
-					state.graphicHelper.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
+				if (path === 'codeBlockRendering.selectedCodeBlock') {
+					state.codeBlockRendering.selectedCodeBlock = value as CodeBlockGraphicData | undefined;
 				}
 			}),
 			subscribe: vi.fn((path: string, callback: (value: unknown) => void) => {
@@ -786,7 +786,7 @@ describe('presentation effect', () => {
 		vi.advanceTimersByTime(5000);
 		scheduledFrame?.(5016);
 
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 		expect(state.presentation.activeStopIndex).toBe(1);
 
 		store.set('editorMode', 'view');
@@ -796,7 +796,7 @@ describe('presentation effect', () => {
 		store.set('editorMode', 'presentation');
 		scheduledFrame?.(5032);
 
-		expect(state.graphicHelper.selectedCodeBlock).toBe(state.graphicHelper.codeBlocks[1]);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
 		expect(state.presentation.activeStopIndex).toBe(1);
 		expect(state.presentation.totalStops).toBe(2);
 		expect(state.presentation.remainingMs).toBe(3000);

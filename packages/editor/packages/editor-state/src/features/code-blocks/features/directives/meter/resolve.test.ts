@@ -27,7 +27,7 @@ describe('meter directive widget resolution', () => {
 				vGrid: 10,
 				hGrid: 20,
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,

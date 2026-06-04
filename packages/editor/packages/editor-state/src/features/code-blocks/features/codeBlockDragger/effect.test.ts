@@ -19,7 +19,7 @@ describe('codeBlockDragger', () => {
 			featureFlags: {
 				moduleDragging: true,
 			},
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [],
 				viewportAnchoredCodeBlocks: [],
 				draggedCodeBlock: undefined,
@@ -78,7 +78,7 @@ describe('codeBlockDragger', () => {
 				blockType: 'module',
 			});
 
-			state.graphicHelper.codeBlocks = [block1];
+			state.codeBlockRendering.codeBlocks = [block1];
 
 			codeBlockDragger(store, events);
 
@@ -95,7 +95,7 @@ describe('codeBlockDragger', () => {
 				altKey: false,
 			});
 
-			expect(state.graphicHelper.draggedCodeBlock).toBe(block1);
+			expect(state.codeBlockRendering.draggedCodeBlock).toBe(block1);
 
 			// Mousemove
 			mousemoveHandlers[0]({
@@ -120,7 +120,7 @@ describe('codeBlockDragger', () => {
 			expect(block1.gridY).toBe(6); // Math.round(110 / 20)
 			expect(block1.x).toBe(60); // 6 * 10
 			expect(block1.y).toBe(120); // 6 * 20
-			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 		});
 	});
 
@@ -148,7 +148,7 @@ describe('codeBlockDragger', () => {
 				groupName: 'audio',
 			});
 
-			state.graphicHelper.codeBlocks = [block1, block2];
+			state.codeBlockRendering.codeBlocks = [block1, block2];
 
 			codeBlockDragger(store, events);
 
@@ -218,7 +218,7 @@ describe('codeBlockDragger', () => {
 				blockType: 'module',
 			});
 
-			state.graphicHelper.codeBlocks = [block1, block2, block3];
+			state.codeBlockRendering.codeBlocks = [block1, block2, block3];
 
 			codeBlockDragger(store, events);
 
@@ -235,7 +235,7 @@ describe('codeBlockDragger', () => {
 				altKey: false,
 			});
 
-			expect(state.graphicHelper.draggedCodeBlock).toBe(block1);
+			expect(state.codeBlockRendering.draggedCodeBlock).toBe(block1);
 
 			// Mousemove
 			mousemoveHandlers[0]({
@@ -277,7 +277,7 @@ describe('codeBlockDragger', () => {
 			expect(block3.gridX).toBe(15);
 			expect(block3.gridY).toBe(15);
 
-			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 		});
 
 		it('should not group drag if block has no group name even without Alt key', () => {
@@ -301,7 +301,7 @@ describe('codeBlockDragger', () => {
 				blockType: 'module',
 			});
 
-			state.graphicHelper.codeBlocks = [block1, block2];
+			state.codeBlockRendering.codeBlocks = [block1, block2];
 
 			codeBlockDragger(store, events);
 
@@ -361,7 +361,7 @@ describe('codeBlockDragger', () => {
 				groupName: 'visual',
 			});
 
-			state.graphicHelper.codeBlocks = [block1, block2];
+			state.codeBlockRendering.codeBlocks = [block1, block2];
 
 			codeBlockDragger(store, events);
 
@@ -423,7 +423,7 @@ describe('codeBlockDragger', () => {
 				groupName: 'audio',
 			});
 
-			state.graphicHelper.codeBlocks = [block1, block2];
+			state.codeBlockRendering.codeBlocks = [block1, block2];
 
 			codeBlockDragger(store, events);
 
@@ -440,7 +440,7 @@ describe('codeBlockDragger', () => {
 				altKey: true,
 			});
 
-			expect(state.graphicHelper.draggedCodeBlock).toBe(block1);
+			expect(state.codeBlockRendering.draggedCodeBlock).toBe(block1);
 
 			// Mousemove
 			mousemoveHandlers[0]({
@@ -477,7 +477,7 @@ describe('codeBlockDragger', () => {
 			expect(block2.x).toBe(100);
 			expect(block2.y).toBe(200);
 
-			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 		});
 
 		it('should drag single block by default for nonstick groups (Alt reverses to group drag)', () => {
@@ -505,7 +505,7 @@ describe('codeBlockDragger', () => {
 				groupNonstick: true,
 			});
 
-			state.graphicHelper.codeBlocks = [block1, block2];
+			state.codeBlockRendering.codeBlocks = [block1, block2];
 
 			codeBlockDragger(store, events);
 
@@ -568,7 +568,7 @@ describe('codeBlockDragger', () => {
 				groupNonstick: true,
 			});
 
-			state.graphicHelper.codeBlocks = [block1, block2];
+			state.codeBlockRendering.codeBlocks = [block1, block2];
 
 			codeBlockDragger(store, events);
 
@@ -618,7 +618,7 @@ describe('codeBlockDragger', () => {
 				blockType: 'module',
 			});
 
-			state.graphicHelper.codeBlocks = [block1];
+			state.codeBlockRendering.codeBlocks = [block1];
 
 			codeBlockDragger(store, events);
 
@@ -667,7 +667,7 @@ describe('codeBlockDragger', () => {
 				blockType: 'module',
 			});
 
-			state.graphicHelper.codeBlocks = [block1];
+			state.codeBlockRendering.codeBlocks = [block1];
 
 			codeBlockDragger(store, events);
 
@@ -684,7 +684,7 @@ describe('codeBlockDragger', () => {
 				altKey: false,
 			});
 
-			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 		});
 	});
 
@@ -700,7 +700,7 @@ describe('codeBlockDragger', () => {
 				blockType: 'module',
 			});
 
-			state.graphicHelper.codeBlocks = [block1];
+			state.codeBlockRendering.codeBlocks = [block1];
 
 			codeBlockDragger(store, events);
 
@@ -717,7 +717,7 @@ describe('codeBlockDragger', () => {
 				altKey: false,
 			});
 
-			expect(state.graphicHelper.selectedCodeBlock).toBe(block1);
+			expect(state.codeBlockRendering.selectedCodeBlock).toBe(block1);
 		});
 
 		it('should not update block position metadata on click without drag', () => {
@@ -733,7 +733,7 @@ describe('codeBlockDragger', () => {
 			});
 			const originalCode = [...block1.code];
 
-			state.graphicHelper.codeBlocks = [block1];
+			state.codeBlockRendering.codeBlocks = [block1];
 
 			codeBlockDragger(store, events);
 
@@ -755,7 +755,7 @@ describe('codeBlockDragger', () => {
 			expect(block1.code).toEqual(originalCode);
 			expect(block1.gridX).toBe(5);
 			expect(block1.gridY).toBe(5);
-			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 		});
 
 		it('should clear selected code block when mousedown is on empty space', () => {
@@ -769,8 +769,8 @@ describe('codeBlockDragger', () => {
 				blockType: 'module',
 			});
 
-			state.graphicHelper.codeBlocks = [block1];
-			state.graphicHelper.selectedCodeBlock = block1;
+			state.codeBlockRendering.codeBlocks = [block1];
+			state.codeBlockRendering.selectedCodeBlock = block1;
 
 			codeBlockDragger(store, events);
 
@@ -787,8 +787,8 @@ describe('codeBlockDragger', () => {
 				altKey: false,
 			});
 
-			expect(state.graphicHelper.selectedCodeBlock).toBeUndefined();
-			expect(state.graphicHelper.draggedCodeBlock).toBeUndefined();
+			expect(state.codeBlockRendering.selectedCodeBlock).toBeUndefined();
+			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 		});
 	});
 });

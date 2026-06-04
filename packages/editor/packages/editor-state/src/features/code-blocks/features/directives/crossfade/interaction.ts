@@ -56,7 +56,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 		}
 
 		activeCrossfade = { crossfade, codeBlock, leftMemory, rightMemory };
-		state.graphicHelper.draggedCodeBlock = undefined;
+		state.codeBlockRendering.draggedCodeBlock = undefined;
 		updateCrossfadeValue(x);
 	};
 

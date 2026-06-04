@@ -79,7 +79,7 @@ describe('drawModules', () => {
 			spriteLookups: {
 				fillColors: {},
 			} as never,
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [],
 				entryOutlines: [
 					{
@@ -153,7 +153,7 @@ describe('drawModules', () => {
 				fontLineNumber: {},
 				fontCodeComment: {},
 			} as never,
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [hiddenBlock],
 			},
 			featureFlags: {
@@ -190,7 +190,7 @@ describe('drawModules', () => {
 				fontLineNumber: {},
 				fontCodeComment: {},
 			} as never,
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [hiddenBlock],
 				showHiddenCodeBlocks: true,
 			},
@@ -271,7 +271,7 @@ describe('drawModules', () => {
 				fontLineNumber: {},
 				fontCodeComment: {},
 			} as never,
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [block],
 			},
 		});
@@ -318,7 +318,7 @@ describe('drawModules', () => {
 				fontTooltipHighlight,
 				fontTooltipText,
 			} as never,
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [block],
 				selectedCodeBlock: block,
 			},
@@ -462,7 +462,7 @@ describe('drawModules', () => {
 				fontTooltipHighlight: {},
 				fontTooltipText: {},
 			} as never,
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [block],
 				selectedCodeBlock: block,
 			},
@@ -556,7 +556,7 @@ describe('drawModules', () => {
 			spriteLookups: {
 				fontArrow: {},
 			} as never,
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [offscreenBlock],
 			},
 			viewport: {

@@ -48,7 +48,7 @@ describe('menus - clipboard callback disabled state', () => {
 			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'module' });
 			const mockState = createMockState({
 				callbacks: { writeClipboardText: undefined },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
+				codeBlockRendering: { selectedCodeBlock: mockCodeBlock },
 			});
 
 			const menu = moduleMenu(mockState as State);
@@ -62,7 +62,7 @@ describe('menus - clipboard callback disabled state', () => {
 			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'module' });
 			const mockState = createMockState({
 				callbacks: { writeClipboardText: async () => {} },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
+				codeBlockRendering: { selectedCodeBlock: mockCodeBlock },
 			});
 
 			const menu = moduleMenu(mockState as State);
@@ -76,7 +76,7 @@ describe('menus - clipboard callback disabled state', () => {
 			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'function' });
 			const mockState = createMockState({
 				callbacks: { writeClipboardText: undefined },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
+				codeBlockRendering: { selectedCodeBlock: mockCodeBlock },
 			});
 
 			const menu = moduleMenu(mockState as State);
@@ -90,7 +90,7 @@ describe('menus - clipboard callback disabled state', () => {
 			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'note' });
 			const mockState = createMockState({
 				callbacks: { writeClipboardText: undefined },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
+				codeBlockRendering: { selectedCodeBlock: mockCodeBlock },
 			});
 
 			const menu = moduleMenu(mockState as State);

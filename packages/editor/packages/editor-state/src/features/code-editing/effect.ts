@@ -14,11 +14,11 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 			return;
 		}
 
-		if (!state.graphicHelper.selectedCodeBlock) {
+		if (!state.codeBlockRendering.selectedCodeBlock) {
 			return;
 		}
 
-		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		const codeBlock = state.codeBlockRendering.selectedCodeBlock;
 		const tabStopsByLine = getTabStopsByLine(codeBlock.code);
 
 		let newPosition: [number, number];
@@ -41,8 +41,8 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 		} else {
 			newPosition = moveCaret(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.direction);
 		}
-		store.set('graphicHelper.selectedCodeBlock.cursor.row', newPosition[0]);
-		store.set('graphicHelper.selectedCodeBlock.cursor.col', newPosition[1]);
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', newPosition[0]);
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.col', newPosition[1]);
 	};
 
 	const onDeleteBackward = () => {
@@ -50,16 +50,16 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 			return;
 		}
 
-		if (!state.graphicHelper.selectedCodeBlock) {
+		if (!state.codeBlockRendering.selectedCodeBlock) {
 			return;
 		}
 
-		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		const codeBlock = state.codeBlockRendering.selectedCodeBlock;
 		const bp = backSpace(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
-		store.set('graphicHelper.selectedCodeBlock.cursor.row', bp.row);
-		store.set('graphicHelper.selectedCodeBlock.cursor.col', bp.col);
-		store.set('graphicHelper.selectedCodeBlock.code', bp.code);
-		store.set('graphicHelper.selectedCodeBlock.lastUpdated', Date.now());
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', bp.row);
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.col', bp.col);
+		store.set('codeBlockRendering.selectedCodeBlock.code', bp.code);
+		store.set('codeBlockRendering.selectedCodeBlock.lastUpdated', Date.now());
 	};
 
 	const onInsertNewLine = () => {
@@ -67,16 +67,16 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 			return;
 		}
 
-		if (!state.graphicHelper.selectedCodeBlock) {
+		if (!state.codeBlockRendering.selectedCodeBlock) {
 			return;
 		}
 
-		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		const codeBlock = state.codeBlockRendering.selectedCodeBlock;
 		const ent = enter(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
-		store.set('graphicHelper.selectedCodeBlock.cursor.row', ent.row);
-		store.set('graphicHelper.selectedCodeBlock.cursor.col', ent.col);
-		store.set('graphicHelper.selectedCodeBlock.code', ent.code);
-		store.set('graphicHelper.selectedCodeBlock.lastUpdated', Date.now());
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', ent.row);
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.col', ent.col);
+		store.set('codeBlockRendering.selectedCodeBlock.code', ent.code);
+		store.set('codeBlockRendering.selectedCodeBlock.lastUpdated', Date.now());
 	};
 
 	const onInsertText = (event: InsertTextEvent) => {
@@ -84,16 +84,16 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 			return;
 		}
 
-		if (!state.graphicHelper.selectedCodeBlock) {
+		if (!state.codeBlockRendering.selectedCodeBlock) {
 			return;
 		}
 
-		const codeBlock = state.graphicHelper.selectedCodeBlock;
+		const codeBlock = state.codeBlockRendering.selectedCodeBlock;
 		const bp = type(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col, event.text);
-		store.set('graphicHelper.selectedCodeBlock.cursor.row', bp.row);
-		store.set('graphicHelper.selectedCodeBlock.cursor.col', bp.col);
-		store.set('graphicHelper.selectedCodeBlock.code', bp.code);
-		store.set('graphicHelper.selectedCodeBlock.lastUpdated', Date.now());
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', bp.row);
+		store.set('codeBlockRendering.selectedCodeBlock.cursor.col', bp.col);
+		store.set('codeBlockRendering.selectedCodeBlock.code', bp.code);
+		store.set('codeBlockRendering.selectedCodeBlock.lastUpdated', Date.now());
 	};
 
 	events.on<MoveCaretEvent>('moveCaret', onMoveCaret);

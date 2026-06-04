@@ -38,6 +38,6 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 		};
 
 		graphicData.widgets.outputs.push(out);
-		state.graphicHelper.outputsByWordAddress.set(memory.byteAddress, out);
+		state.codeBlockRendering.outputsByWordAddress.set(memory.byteAddress, out);
 	});
 }

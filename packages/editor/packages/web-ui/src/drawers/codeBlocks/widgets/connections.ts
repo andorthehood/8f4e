@@ -14,8 +14,8 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 
 	engine.startGroup(-state.viewport.x, -state.viewport.y);
 
-	for (const codeBlock of state.graphicHelper.codeBlocks) {
-		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
+	for (const codeBlock of state.codeBlockRendering.codeBlocks) {
+		const isSelected = codeBlock === state.codeBlockRendering.selectedCodeBlock;
 
 		if (!codeBlock.moduleId) {
 			continue;
@@ -28,7 +28,7 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 				continue;
 			}
 
-			const output = state.graphicHelper.outputsByWordAddress.get(outputAddress);
+			const output = state.codeBlockRendering.outputsByWordAddress.get(outputAddress);
 
 			if (!output) {
 				continue;

@@ -24,7 +24,7 @@ export default function drawEntryOutlines(engine: Engine, state: State): void {
 
 	engine.setSpriteLookup(state.spriteLookups.fillColors);
 
-	for (const outline of state.graphicHelper.entryOutlines) {
+	for (const outline of state.codeBlockRendering.entryOutlines) {
 		drawOutline(engine, outline, thickness);
 	}
 }

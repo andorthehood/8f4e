@@ -21,7 +21,7 @@ describe('switch interaction', () => {
 		getWordFromMemory = vi.fn((wordAlignedAddress: number) => memoryStore.get(wordAlignedAddress) ?? 0);
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,
