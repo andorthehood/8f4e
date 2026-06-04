@@ -270,7 +270,7 @@ Good:
 - generic directive syntax parsing
 - directive-owned argument interpretation and widget logic
 - directive-owned tests
-- action features remain separate (e.g., `clearDebugProbes`, group togglers) but delegate source edits to `directiveEditing/`
+- action features remain separate (e.g., group togglers) but delegate source edits to `directiveEditing/`
 
 Bad:
 
