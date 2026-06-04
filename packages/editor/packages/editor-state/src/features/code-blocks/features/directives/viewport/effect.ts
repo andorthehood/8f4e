@@ -3,7 +3,7 @@ import type { StateManager } from '@8f4e/state-manager';
 import { resolveViewportAnchoredPosition } from './resolve';
 
 function syncViewportAnchoredBlockList(state: State): void {
-	state.graphicHelper.viewportAnchoredCodeBlocks = state.graphicHelper.codeBlocks.filter(
+	state.codeBlockRendering.viewportAnchoredCodeBlocks = state.codeBlockRendering.codeBlocks.filter(
 		block => block.viewportAnchor !== undefined
 	);
 }
@@ -13,7 +13,7 @@ function syncViewportAnchoredBlock(state: State, block: CodeBlockGraphicData | u
 		return;
 	}
 
-	const anchoredBlocks = state.graphicHelper.viewportAnchoredCodeBlocks;
+	const anchoredBlocks = state.codeBlockRendering.viewportAnchoredCodeBlocks;
 	const existingIndex = anchoredBlocks.indexOf(block);
 
 	if (block.viewportAnchor) {
@@ -29,13 +29,13 @@ function syncViewportAnchoredBlock(state: State, block: CodeBlockGraphicData | u
 }
 
 function recomputeViewportAnchoredPositions(state: State): void {
-	for (const codeBlock of state.graphicHelper.viewportAnchoredCodeBlocks) {
+	for (const codeBlock of state.codeBlockRendering.viewportAnchoredCodeBlocks) {
 		recomputeViewportAnchoredPosition(state, codeBlock);
 	}
 }
 
 function recomputeViewportAnchoredPosition(state: State, block: CodeBlockGraphicData | undefined): void {
-	if (!block || !block.viewportAnchor || block === state.graphicHelper.draggedCodeBlock) {
+	if (!block || !block.viewportAnchor || block === state.codeBlockRendering.draggedCodeBlock) {
 		return;
 	}
 
@@ -65,20 +65,23 @@ export default function viewportDirectiveEffect(store: StateManager<State>, even
 	};
 
 	const syncSelectedCodeBlock = () => {
-		syncViewportAnchoredBlock(state, state.graphicHelper.selectedCodeBlock);
-		recomputeViewportAnchoredPosition(state, state.graphicHelper.selectedCodeBlock);
+		syncViewportAnchoredBlock(state, state.codeBlockRendering.selectedCodeBlock);
+		recomputeViewportAnchoredPosition(state, state.codeBlockRendering.selectedCodeBlock);
 	};
 
 	const syncProgrammaticSelectedCodeBlock = () => {
-		syncViewportAnchoredBlock(state, state.graphicHelper.selectedCodeBlockForProgrammaticEdit);
-		recomputeViewportAnchoredPosition(state, state.graphicHelper.selectedCodeBlockForProgrammaticEdit);
+		syncViewportAnchoredBlock(state, state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit);
+		recomputeViewportAnchoredPosition(state, state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit);
 	};
 
 	const syncProgrammaticSelectedCodeBlockWithoutCompilerTrigger = () => {
-		syncViewportAnchoredBlock(state, state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger);
+		syncViewportAnchoredBlock(
+			state,
+			state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
+		);
 		recomputeViewportAnchoredPosition(
 			state,
-			state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
+			state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
 		);
 	};
 
@@ -86,11 +89,11 @@ export default function viewportDirectiveEffect(store: StateManager<State>, even
 		recomputeViewportAnchoredPositions(state);
 	};
 
-	store.subscribe('graphicHelper.codeBlocks', syncAllBlocks);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', syncSelectedCodeBlock);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', syncProgrammaticSelectedCodeBlock);
+	store.subscribe('codeBlockRendering.codeBlocks', syncAllBlocks);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncSelectedCodeBlock);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', syncProgrammaticSelectedCodeBlock);
 	store.subscribe(
-		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
 		syncProgrammaticSelectedCodeBlockWithoutCompilerTrigger
 	);
 	events.on('spriteSheetRerendered', recomputeAnchoredPositions);

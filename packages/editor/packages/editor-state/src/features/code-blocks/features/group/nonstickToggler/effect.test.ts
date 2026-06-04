@@ -32,7 +32,7 @@ describe('groupNonstickToggler', () => {
 			blockType: 'module',
 			groupName: 'other-group',
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2, block3];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2, block3];
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -63,7 +63,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'audio-chain',
 			groupNonstick: true,
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -90,7 +90,7 @@ describe('groupNonstickToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -111,7 +111,7 @@ describe('groupNonstickToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1];
+		mockState.codeBlockRendering.codeBlocks = [block1];
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -136,7 +136,7 @@ describe('groupNonstickToggler', () => {
 			blockType: 'function',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [moduleBlock, functionBlock];
+		mockState.codeBlockRendering.codeBlocks = [moduleBlock, functionBlock];
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -157,7 +157,7 @@ describe('groupNonstickToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1];
+		mockState.codeBlockRendering.codeBlocks = [block1];
 		mockState.featureFlags.editing = false;
 
 		groupNonstickToggler(store, mockEvents);
@@ -176,7 +176,7 @@ describe('groupNonstickToggler', () => {
 			code: ['module test1', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [block1];
+		mockState.codeBlockRendering.codeBlocks = [block1];
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -202,7 +202,7 @@ describe('groupNonstickToggler', () => {
 			groupName: 'audio-chain',
 			lastUpdated: 1000,
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -227,7 +227,7 @@ describe('groupNonstickToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1, block2];
+		mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 		groupNonstickToggler(store, mockEvents);
 
@@ -241,8 +241,8 @@ describe('groupNonstickToggler', () => {
 
 		// Should be called twice - once for each block
 		expect(setSpy).toHaveBeenCalledTimes(2);
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', block1);
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', block2);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block1);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block2);
 	});
 
 	it('should skip blocks with a bare ; @group directive (no group name)', () => {
@@ -251,7 +251,7 @@ describe('groupNonstickToggler', () => {
 			blockType: 'module',
 			groupName: 'audio-chain',
 		});
-		mockState.graphicHelper.codeBlocks = [block1];
+		mockState.codeBlockRendering.codeBlocks = [block1];
 
 		groupNonstickToggler(store, mockEvents);
 

@@ -5,7 +5,7 @@ import serializeToProject from './serializeToProject';
 describe('serializeToProject', () => {
 	it('serializes basic project state without compiled data', () => {
 		const state = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [
 					createMockCodeBlock({
 						id: 'block-1',

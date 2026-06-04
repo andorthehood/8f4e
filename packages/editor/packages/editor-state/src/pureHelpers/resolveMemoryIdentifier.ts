@@ -59,7 +59,7 @@ export default function resolveMemoryIdentifier(
 	}
 
 	if (operator === '*' && memory.pointeeBaseType) {
-		memory = state.graphicHelper.outputsByWordAddress.get(
+		memory = state.codeBlockRendering.outputsByWordAddress.get(
 			state.callbacks?.getWordFromMemory?.(memory.wordAlignedAddress) || 0
 		)?.memory;
 	}

@@ -149,7 +149,7 @@ export default function pianoKeyboard(store: StateManager<State>, events: EventD
 
 		codeBlock.code = codeWithUpdatedDefaults;
 
-		store.set('graphicHelper.selectedCodeBlock.code', codeBlock.code);
+		store.set('codeBlockRendering.selectedCodeBlock.code', codeBlock.code);
 	};
 
 	events.on('codeBlockClick', onCodeBlockClick);

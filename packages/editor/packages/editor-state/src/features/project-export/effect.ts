@@ -64,10 +64,10 @@ export default function projectExport(store: StateManager<State>, events: EventD
 		});
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', onSaveSession);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', onSaveSession);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', onSaveSession);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', onSaveSession);
+	store.subscribe('codeBlockRendering.codeBlocks', onSaveSession);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onSaveSession);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onSaveSession);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', onSaveSession);
 	events.on('saveSession', onSaveSession);
 	events.on('exportProject', onExportProject);
 	events.on('exportWasm', onExportWasm);
