@@ -16,39 +16,36 @@ function isRegisteredRuntimeId(runtimeRegistry: RuntimeRegistry, runtimeId: stri
 
 export function resolveSelectedRuntimeId(
 	requestedRuntimeId: string | undefined,
-	runtimeRegistry: RuntimeRegistry,
-	defaultRuntimeId: string
-): string {
+	runtimeRegistry: RuntimeRegistry
+): string | undefined {
 	if (requestedRuntimeId && isRegisteredRuntimeId(runtimeRegistry, requestedRuntimeId)) {
 		return requestedRuntimeId;
 	}
 
-	return defaultRuntimeId;
+	return undefined;
 }
 
 export function getSelectedRuntimeEntry(
 	requestedRuntimeId: string | undefined,
-	runtimeRegistry: RuntimeRegistry,
-	defaultRuntimeId: string
-): RuntimeRegistryEntry {
-	const resolvedRuntimeId = resolveSelectedRuntimeId(requestedRuntimeId, runtimeRegistry, defaultRuntimeId);
-	return runtimeRegistry[resolvedRuntimeId];
+	runtimeRegistry: RuntimeRegistry
+): RuntimeRegistryEntry | undefined {
+	const resolvedRuntimeId = resolveSelectedRuntimeId(requestedRuntimeId, runtimeRegistry);
+	return resolvedRuntimeId ? runtimeRegistry[resolvedRuntimeId] : undefined;
 }
 
 export function collectRuntimeEditorConfigSchemaContributions(
 	requestedRuntimeId: string | undefined,
-	runtimeRegistry: RuntimeRegistry,
-	defaultRuntimeId: string
+	runtimeRegistry: RuntimeRegistry
 ): EditorConfigSchemaContributionRegistry {
 	const contributions: EditorConfigSchemaContributionRegistry = {};
-	const selectedEntry = getSelectedRuntimeEntry(requestedRuntimeId, runtimeRegistry, defaultRuntimeId);
+	const selectedEntry = getSelectedRuntimeEntry(requestedRuntimeId, runtimeRegistry);
 
-	if (selectedEntry.editorConfigSchema) {
+	if (selectedEntry?.editorConfigSchema) {
 		contributions[`runtime:${selectedEntry.id}`] = selectedEntry.editorConfigSchema;
 	}
 
 	for (const entry of Object.values(runtimeRegistry)) {
-		if (entry.id === selectedEntry.id || !entry.editorConfigSchema) {
+		if (entry.id === selectedEntry?.id || !entry.editorConfigSchema) {
 			continue;
 		}
 		contributions[`runtime:${entry.id}`] = entry.editorConfigSchema;

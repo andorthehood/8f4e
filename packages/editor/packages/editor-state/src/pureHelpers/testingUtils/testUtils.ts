@@ -269,7 +269,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				factory: mockRuntimeFactory,
 			},
 		},
-		defaultRuntimeId: 'WebWorkerRuntime',
 		codeBlockRendering: {
 			codeBlocks: [],
 			entryOutlines: [],

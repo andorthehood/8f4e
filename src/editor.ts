@@ -2,7 +2,7 @@ import initEditor from '@8f4e/editor';
 import { compileCode } from './compiler-callback';
 import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
 import { getListOfProjects, getProject } from './examples/projectRegistry';
-import { DEFAULT_RUNTIME_ID, runtimeRegistry } from './runtime-registry';
+import { runtimeRegistry } from './runtime-registry';
 import {
 	exportBinaryCode,
 	exportCanvasScreenshot,
@@ -47,7 +47,6 @@ async function init(options: InitOptions = {}) {
 	applyCanvasSize(canvas, initialCanvasSize);
 	const editor = await initEditor(canvas, {
 		runtimeRegistry,
-		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		callbacks: {
 			getListOfModules,
 			getModule,

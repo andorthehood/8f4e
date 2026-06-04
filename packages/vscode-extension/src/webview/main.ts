@@ -28,7 +28,6 @@ type ExtensionMessage =
 
 const vscode = getVsCodeApi();
 const bridge = createRequestBridge(vscode);
-const DEFAULT_RUNTIME_ID = 'MainThreadRuntime';
 let editor: Editor | null = null;
 let loadedProjectSource = '';
 let localNotes: BrowserLocalNoteStorageBlock[] | null = null;
@@ -92,7 +91,6 @@ async function init(): Promise<void> {
 			saveBrowserLocalNotes,
 			saveSession,
 		},
-		defaultRuntimeId: DEFAULT_RUNTIME_ID,
 		runtimeRegistry,
 	});
 
