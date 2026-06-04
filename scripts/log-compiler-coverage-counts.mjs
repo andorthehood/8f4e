@@ -45,7 +45,7 @@ async function main() {
 		for (const benchmarkCase of benchmarkCases) {
 			const rawProject = await fs.readFile(benchmarkCase.filePath, 'utf8');
 			const project = parse8f4eProject(rawProject);
-			const compilerBlocks = pickProjectCompilerBlocks(project.codeBlocks);
+			const compilerBlocks = pickProjectCompilerBlocks(project);
 			parsedCases.push({
 				...benchmarkCase,
 				...compilerBlocks,
