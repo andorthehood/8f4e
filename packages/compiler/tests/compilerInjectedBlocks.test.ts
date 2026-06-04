@@ -20,7 +20,7 @@ moduleEnd
 entryEnd
 `,
 			{
-				extraCodeBlocks: [{ code: ['defineMacro addTen', 'push 10', 'add', 'defineMacroEnd'] }],
+				extraCodeBlocks: [{ id: -10, code: ['defineMacro addTen', 'push 10', 'add', 'defineMacroEnd'] }],
 			}
 		);
 		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);

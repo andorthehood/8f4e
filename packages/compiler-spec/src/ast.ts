@@ -255,8 +255,13 @@ export function hasReferencedNamespaceIds(
 	);
 }
 
+/** Compiler project/source metadata carried with a parsed source block. */
+export interface SourceBlockMetadata {
+	projectBlockId?: number;
+}
+
 /** Parsed AST for a module block and its memory declarations. */
-export interface ModuleAST {
+export interface ModuleAST extends SourceBlockMetadata {
 	type: 'module';
 	id: string;
 	lines: CompilerASTLines;
@@ -266,7 +271,7 @@ export interface ModuleAST {
 }
 
 /** Parsed AST for a function block and its resolved signature. */
-export interface FunctionAST {
+export interface FunctionAST extends SourceBlockMetadata {
 	type: 'function';
 	id: string;
 	lines: CompilerASTLines;
@@ -280,7 +285,7 @@ export interface FunctionAST {
 }
 
 /** Parsed AST for a constants block. */
-export interface ConstantsAST {
+export interface ConstantsAST extends SourceBlockMetadata {
 	type: 'constants';
 	id: string;
 	lines: CompilerASTLines;
@@ -288,7 +293,7 @@ export interface ConstantsAST {
 }
 
 /** Parsed AST for a reusable memory-shape prototype block. */
-export interface PrototypeAST {
+export interface PrototypeAST extends SourceBlockMetadata {
 	type: 'prototype';
 	id: string;
 	lines: CompilerASTLines;

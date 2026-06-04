@@ -3,6 +3,7 @@ import {
 	type CompilationContext,
 	type CompileOptions,
 	type CompilerASTLine,
+	type CompilerDiagnosticContext,
 	compilerSourceBlockInstructionByType,
 	ErrorCode,
 	type FunctionMetadataLookup,
@@ -37,6 +38,15 @@ import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
+function getAstDiagnosticContext(
+	ast: ValidatedFunctionAST | ValidatedModuleAST | ValidatedConstantsAST | ValidatedPrototypeAST
+): CompilerDiagnosticContext {
+	return {
+		codeBlockType: ast.type,
+		...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
+	};
+}
+
 /** Inputs for collecting function metadata and validating whole-program function names. */
 type FunctionMetadataCollectionOptions = {
 	importedFunctionBaseIndex: number;
@@ -68,7 +78,9 @@ export function collectFunctionMetadataFromAsts(
 	for (const ast of asts) {
 		const id = ast.id;
 		if (seenFunctionIds.has(id)) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, undefined, { identifier: id });
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
+				identifier: id,
+			});
 		}
 		seenFunctionIds.add(id);
 
@@ -77,9 +89,14 @@ export function collectFunctionMetadataFromAsts(
 		const exportName = importedFunction ? undefined : ast.exportName;
 		if (exportName) {
 			if (seenExportNames.has(exportName)) {
-				throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, ast.exportLine ?? ast.functionLine, undefined, {
-					identifier: exportName,
-				});
+				throw getError(
+					ErrorCode.DUPLICATE_EXPORT_NAME,
+					ast.exportLine ?? ast.functionLine,
+					getAstDiagnosticContext(ast),
+					{
+						identifier: exportName,
+					}
+				);
 			}
 			seenExportNames.add(exportName);
 		}
@@ -113,7 +130,7 @@ export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | Valid
 
 		const id = ast.id;
 		if (seenModuleIds.has(id)) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.moduleLine, undefined, { identifier: id });
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.moduleLine, getAstDiagnosticContext(ast), { identifier: id });
 		}
 		seenModuleIds.add(id);
 	}
@@ -164,6 +181,7 @@ function createNamespaceBuildContext(
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
 		codeBlockType: ast.type,
+		projectBlockId: ast.projectBlockId,
 		prototypeShapes,
 		expandPrototypeShapes: true,
 		resolveMemoryDeclarationLine,
