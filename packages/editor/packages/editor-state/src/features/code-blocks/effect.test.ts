@@ -3,7 +3,7 @@ import { describe, expect, it, type Mock, vi } from 'vitest';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
-import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
+import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import graphicHelperEffect from './effect';
 
 describe('graphic helper error mapping', () => {
