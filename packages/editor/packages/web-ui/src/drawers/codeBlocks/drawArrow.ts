@@ -20,8 +20,8 @@ const ARROW_CHARACTERS = {
 export default function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state: State): void {
 	const arrowPlacement = calculateArrowPlacement(codeBlock, state);
 
-	if (state.graphicHelper.spriteLookups?.fontArrow) {
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontArrow);
+	if (state.spriteLookups?.fontArrow) {
+		engine.setSpriteLookup(state.spriteLookups.fontArrow);
 	}
 
 	if (arrowPlacement.top) {

@@ -11,7 +11,7 @@ import type { SpriteData } from '@8f4e/web-ui';
  * @param spriteData The sprite data containing lookups and character dimensions
  */
 export function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
-	state.graphicHelper.spriteLookups = spriteData.spriteLookups;
+	state.spriteLookups = spriteData.spriteLookups;
 	state.viewport.hGrid = spriteData.characterHeight;
 	state.viewport.vGrid = spriteData.characterWidth;
 }
