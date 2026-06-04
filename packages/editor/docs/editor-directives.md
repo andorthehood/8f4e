@@ -784,7 +784,8 @@ Select the runtime host the editor should load for the project.
 
 - `runtimeId` must be a known runtime id such as `WebWorkerRuntime`, `MainThreadRuntime`, or `AudioWorkletRuntime`
 - Duplicate declarations use normal config last-write-wins behavior
-- Unknown runtime ids produce an editor error and the editor falls back to the default runtime
+- If no runtime is configured, the editor does not load a runtime
+- Unknown runtime ids produce an editor error and no runtime is loaded
 
 **Example**:
 
