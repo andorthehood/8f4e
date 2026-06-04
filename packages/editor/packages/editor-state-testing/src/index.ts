@@ -149,18 +149,18 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			textureCacheEpoch: 0,
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
-			contextMenu: {
-				highlightedItem: 0,
-				itemWidth: 200,
-				items: [],
-				open: false,
-				x: 0,
-				y: 0,
-				menuStack: [],
-			},
 			showHiddenCodeBlocks: false,
 			postProcessEffects: [],
 			backgroundEffects: [],
+		},
+		contextMenu: {
+			highlightedItem: 0,
+			itemWidth: 200,
+			items: [],
+			open: false,
+			x: 0,
+			y: 0,
+			menuStack: [],
 		},
 		info: {
 			compiler: {

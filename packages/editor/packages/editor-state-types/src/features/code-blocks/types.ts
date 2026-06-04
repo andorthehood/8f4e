@@ -5,7 +5,6 @@
 import type { DataStructure, DocumentBlockType } from '@8f4e/compiler-spec';
 import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
-import type { ContextMenu } from '../menu/types';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
@@ -474,7 +473,6 @@ export type GraphicHelper = {
 	 * This is a runtime-only value and is NOT persisted.
 	 */
 	nextCodeBlockCreationIndex: number;
-	contextMenu: ContextMenu;
 	draggedCodeBlock?: CodeBlockGraphicData;
 	selectedCodeBlock?: CodeBlockGraphicData;
 	/** When true, blocks hidden by `; @hidden` stay visible regardless of selection. */
