@@ -1029,8 +1029,12 @@ store
 moduleEnd
 module keyboard
 ; @pos 113 46
-; @keyPressedMemory keyPressed
-; @keyCodeMemory keyCode
+; @config 
+; - keyboard.keyPressedMemory
+; - keyboard:keyPressed
+; @config 
+; - keyboard.keyCodeMemory 
+; - keyboard:keyCode
 
 int keyPressed
 int keyCode

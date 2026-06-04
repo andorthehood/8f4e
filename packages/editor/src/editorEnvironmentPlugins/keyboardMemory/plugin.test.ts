@@ -56,9 +56,11 @@ describe('keyboardMemoryPlugin', () => {
 	it('writes keyCode and keyPressed values and tracks latest still-pressed key', () => {
 		const setWordInMemory = vi.fn();
 		const state = {
-			globalEditorDirectives: {
-				keyCodeMemoryId: 'keys:code',
-				keyPressedMemoryId: 'keys:pressed',
+			editorConfig: {
+				keyboard: {
+					keyCodeMemory: 'keys:code',
+					keyPressedMemory: 'keys:pressed',
+				},
 			},
 			compiler: {
 				compiledModules: {
@@ -84,6 +86,8 @@ describe('keyboardMemoryPlugin', () => {
 			events: {} as never,
 			window: mockWindow as unknown as Window,
 			navigator: {} as Navigator,
+			memoryViews: {} as never,
+			services: {} as never,
 			setErrors: () => {},
 		});
 
@@ -104,9 +108,11 @@ describe('keyboardMemoryPlugin', () => {
 	it('clears pressed flag on blur and skips unresolved memory ids silently', () => {
 		const setWordInMemory = vi.fn();
 		const state = {
-			globalEditorDirectives: {
-				keyCodeMemoryId: 'missing:code',
-				keyPressedMemoryId: 'keys:pressed',
+			editorConfig: {
+				keyboard: {
+					keyCodeMemory: 'missing:code',
+					keyPressedMemory: 'keys:pressed',
+				},
 			},
 			compiler: {
 				compiledModules: {
@@ -131,6 +137,8 @@ describe('keyboardMemoryPlugin', () => {
 			events: {} as never,
 			window: mockWindow as unknown as Window,
 			navigator: {} as Navigator,
+			memoryViews: {} as never,
+			services: {} as never,
 			setErrors: () => {},
 		});
 

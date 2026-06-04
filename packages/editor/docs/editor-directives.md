@@ -60,6 +60,7 @@ Supported paths:
 - `runtime` - runtime host loaded for the project.
 - `color.<path>` - editor color scheme override. See [Color Paths](./color-paths.md) for the full list of color paths.
 - `export.fileName` - base file name used by editor export actions.
+- `keyboard.keyCodeMemory` / `keyboard.keyPressedMemory` - module-qualified memory ids for browser keyboard state.
 - `midi.inputs.<id>.port` / `midi.inputs.<id>.callback` - browser MIDI input bindings.
 
 Examples:
@@ -70,6 +71,8 @@ Examples:
 ; @config export.fileName samplePlayer
 ; @config color.text.code #cccccc
 ; @config color.fill.moduleBackground rgba(0,0,0,0.9)
+; @config keyboard.keyCodeMemory keyboard:keyCode
+; @config keyboard.keyPressedMemory keyboard:keyPressed
 ; @config midi.inputs.0.port 0
 ; @config midi.inputs.0.callback onMidiIn
 ```
@@ -230,6 +233,23 @@ Notes:
 
 - `pressedKeysListMemoryId` is used as both keyboard id and pressed-key array memory id.
 - `startingMidiNote` defaults to `0`.
+
+### Keyboard Memory Config
+
+Keyboard memory targets are configured through `@config`.
+
+```txt
+; @config keyboard.keyCodeMemory <moduleId>:<memoryId>
+; @config keyboard.keyPressedMemory <moduleId>:<memoryId>
+```
+
+Notes:
+
+- The keyboard memory plugin is activated by `@config keyboard...`.
+- `keyboard.keyCodeMemory` receives the latest USB HID usage id.
+- `keyboard.keyPressedMemory` receives `1` while a tracked key is pressed and `0` when all tracked keys are released or the window blurs.
+- Values must be module-qualified memory ids such as `keyboard:keyCode`.
+- The plugin runs on the main thread and writes integer values into shared WebAssembly memory.
 
 ### MIDI Input Config
 
