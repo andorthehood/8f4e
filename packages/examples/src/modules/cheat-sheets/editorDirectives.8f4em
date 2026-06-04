@@ -13,8 +13,10 @@ constants editorDirectives
 ; @ config color.<path> <value>	Override a named editor color.
 ; @ config font <font>	Change the editor font.
 ; @ config export.fileName <fileName>	Set the export file name for the project.
-; @ config keyboard.keyCodeMemory <moduleId>:<memoryId>	Store keyboard key codes in a module memory.
-; @ config keyboard.keyPressedMemory <moduleId>:<memoryId>	Store pressed-key state in a module memory.
+; @ config bin.<id>.url <url>	Define a binary asset URL.
+; @ config bin.<id>.memory <memoryId>	Load a binary asset into memory.
+; @ config keyboard.keyCodeMemory <memoryId>	Store keyboard key codes in a module memory.
+; @ config keyboard.keyPressedMemory <memoryId>	Store pressed-key state in a module memory.
 ; @ config runtime <runtimeId>	Select the runtime backend for the project.
 ;
 ; Code block directives
@@ -41,6 +43,6 @@ constants editorDirectives
 ;
 ; Notes
 ; @ watch can also be written as a trailing comment on a code line.
-; @ config keyboard... values must use module-qualified memory ids.
+; @ config memory values may be local in module blocks or module-qualified from any block.
 
 constantsEnd

@@ -19,12 +19,12 @@ module dx7colors
 moduleEnd
 module keyboard
 ; @pos 113 46
-; @config 
+; @config
 ; - keyboard.keyPressedMemory 
-; - keyboard:keyPressed
+; - keyPressed
 ; @config 
 ; - keyboard.keyCodeMemory 
-; - keyboard:keyCode
+; - keyCode
 
 int keyPressed
 int keyCode

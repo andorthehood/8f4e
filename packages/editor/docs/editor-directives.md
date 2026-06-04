@@ -60,7 +60,9 @@ Supported paths:
 - `runtime` - runtime host loaded for the project.
 - `color.<path>` - editor color scheme override. See [Color Paths](./color-paths.md) for the full list of color paths.
 - `export.fileName` - base file name used by editor export actions.
-- `keyboard.keyCodeMemory` / `keyboard.keyPressedMemory` - module-qualified memory ids for browser keyboard state.
+- `bin.<id>.url` / `bin.<id>.memory` - binary asset URL and memory load target.
+- `bin.<id>.memories.<name>` - additional memory load targets for the same binary asset.
+- `keyboard.keyCodeMemory` / `keyboard.keyPressedMemory` - memory ids for browser keyboard state.
 - `midi.inputs.<id>.port` / `midi.inputs.<id>.callback` - browser MIDI input bindings.
 
 Examples:
@@ -71,6 +73,8 @@ Examples:
 ; @config export.fileName samplePlayer
 ; @config color.text.code #cccccc
 ; @config color.fill.moduleBackground rgba(0,0,0,0.9)
+; @config bin.amen.url https://static.example.com/amen.pcm
+; @config bin.amen.memory pcmPlayer:buffer
 ; @config keyboard.keyCodeMemory keyboard:keyCode
 ; @config keyboard.keyPressedMemory keyboard:keyPressed
 ; @config midi.inputs.0.port 0
@@ -248,7 +252,7 @@ Notes:
 - The keyboard memory plugin is activated by `@config keyboard...`.
 - `keyboard.keyCodeMemory` receives the latest USB HID usage id.
 - `keyboard.keyPressedMemory` receives `1` while a tracked key is pressed and `0` when all tracked keys are released or the window blurs.
-- Values must be module-qualified memory ids such as `keyboard:keyCode`.
+- Values may use local memory ids inside a module block, or module-qualified memory ids such as `keyboard:keyCode` from any block.
 - The plugin runs on the main thread and writes integer values into shared WebAssembly memory.
 
 ### MIDI Input Config
@@ -326,37 +330,30 @@ int\tbar
 moduleEnd
 ```
 
-### `@defAsset`
+### Binary Asset Config
 
-Define a named binary asset URL for later loading.
+Define a named binary asset URL and load it into a memory location.
 
 ```txt
-; @defAsset <id> <url>
+; @config bin.<id>.url <url>
+; @config bin.<id>.memory <memoryId>
 ```
 
 Notes:
 
-- Allowed in any block type.
-- If the same `id` is defined multiple times, the last definition wins.
 - Asset size constants are auto-generated in the env block as `ASSET_<ID>_SIZE`.
+- `memory` may use a local memory id inside a module block, or a module-qualified memory id from any block.
+- Invalid paths/values are reported through config validation.
+- This is editor metadata only and does not affect compiler output.
+- Assets with a `url` but no load target are not fetched.
 
-### `@loadAsset`
-
-Load a previously defined asset into a memory location.
+Multiple loads for one asset are supported with named load targets:
 
 ```txt
-; @loadAsset <id> <memoryRef>
+; @config bin.<id>.memories.<name> <memoryId>
 ```
 
-Notes:
-
-- Allowed in any block type.
-- Directives are evaluated in project order and use last-write-wins for duplicate paths.
-- Invalid paths/values are ignored with a console warning.
-- This is editor metadata only and does not affect compiler output.
-- `<memoryRef>` must be an `&...` memory reference.
-- Unknown asset ids are logged and skipped.
-- Multiple loads for one asset are supported, but the recommended pattern is one load per asset and sharing that memory from other modules to reduce memory usage.
+The recommended pattern is one load per asset and sharing that memory from other modules to reduce memory usage.
 
 ### `@favorite`
 
