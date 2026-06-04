@@ -6,6 +6,8 @@ moduleEnd
 entryEnd
 
 function invalid
-; Array declarations are memory declarations and should be rejected in functions.
+; Array declarations are memory
+; declarations and should be
+; rejected in functions.
 int[] buffer 10
 functionEnd

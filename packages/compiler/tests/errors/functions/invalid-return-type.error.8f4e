@@ -6,6 +6,7 @@ moduleEnd
 entryEnd
 
 function invalid
-; functionEnd should reject unknown return types.
+; functionEnd should reject
+; unknown return types.
 push 1
 functionEnd invalidType

@@ -1,6 +1,9 @@
 8f4e/v1
 
-; #skipExecution keeps a module compiled and initialized, but leaves it out of its entry dispatcher.
+; #skipExecution keeps a module
+; compiled and initialized, but
+; leaves it out of its entry
+; dispatcher.
 entry main
 module activeEntryModule
 int counter 0

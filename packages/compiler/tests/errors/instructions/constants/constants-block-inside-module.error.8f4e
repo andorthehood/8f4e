@@ -2,7 +2,8 @@
 
 entry main
 module constantsBlockInsideModule
-; constants blocks should not be nested in modules.
+; constants blocks should not be
+; nested in modules.
 constants nested
 const X 1
 constantsEnd

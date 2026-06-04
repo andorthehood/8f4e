@@ -6,7 +6,8 @@ int[] buffer 5 0
 moduleEnd
 
 module maxUnknownModuleTarget
-; max(...) should reject unknown modules.
+; max(...) should reject unknown
+; modules.
 int maxValue max(missingModule:buffer)
 moduleEnd
 entryEnd

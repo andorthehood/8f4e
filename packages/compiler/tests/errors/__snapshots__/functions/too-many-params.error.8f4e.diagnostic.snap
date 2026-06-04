@@ -20,7 +20,7 @@
       },
     ],
     "instruction": "param",
-    "lineNumber": 10,
+    "lineNumber": 11,
   },
   "message": "Function signature overflow. Maximum 8 parameters and 8 return values. (17)",
 }

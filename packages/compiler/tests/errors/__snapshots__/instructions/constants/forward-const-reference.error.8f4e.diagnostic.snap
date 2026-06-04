@@ -20,7 +20,7 @@
       },
     ],
     "instruction": "const",
-    "lineNumber": 2,
+    "lineNumber": 4,
   },
   "message": "Undeclared identifier: A. (5)",
 }

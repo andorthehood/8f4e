@@ -2,7 +2,8 @@
 
 entry main
 module undefinedCall
-; Calls should reject unknown function identifiers.
+; Calls should reject unknown
+; function identifiers.
 push 5
 call missingFunction
 moduleEnd

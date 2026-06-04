@@ -1,16 +1,22 @@
 8f4e/v1
 
-; Numeric edge cases are executable fixtures so the real Wasm runtime path is covered.
+; Numeric edge cases are
+; executable fixtures so the
+; real Wasm
+; runtime path is covered.
 entry test
 module castToIntSaturatesOutOfRangeFloat32
-; castToInt should saturate positive out-of-range float32 values.
+; castToInt should saturate
+; positive out-of-range float32
+; values.
 push 2147483648.0
 castToInt
 call assert 2147483647
 moduleEnd
 
 module castToIntConvertsNaNToZero
-; castToInt should convert NaN float32 values to zero.
+; castToInt should convert NaN
+; float32 values to zero.
 push -1.0
 sqrt
 castToInt
@@ -18,7 +24,9 @@ call assert 0
 moduleEnd
 
 module minMaxIntAssertions
-; min and max should select the smaller and larger signed integer operands.
+; min and max should select the
+; smaller and larger signed
+; integer operands.
 push 10
 push -3
 min
@@ -31,7 +39,9 @@ call assert 10
 moduleEnd
 
 module minMaxFloatAssertions
-; min and max should select the smaller and larger float32 operands.
+; min and max should select the
+; smaller and larger float32
+; operands.
 push 0.5
 push 0.7
 min
@@ -44,7 +54,9 @@ call assertf 0.7
 moduleEnd
 
 module minMaxFloat64Assertions
-; min and max should select the smaller and larger float64 operands.
+; min and max should select the
+; smaller and larger float64
+; operands.
 push 1.25f64
 push 1.125f64
 min
@@ -57,7 +69,9 @@ call assertf64 1.25f64
 moduleEnd
 
 module remainderWithNonZeroConstant
-; Remainder should run when the divisor is a known non-zero constant.
+; Remainder should run when the
+; divisor is a known non-zero
+; constant.
 push 5
 push 2
 remainder

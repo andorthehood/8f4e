@@ -20,7 +20,7 @@ function parsePositiveInteger(raw: string, flag: string): number {
 function parseFormatArgs(args: string[]): FormatCommandArgs {
 	let inputPath: string | undefined;
 	let outPath: string | undefined;
-	let commentWidth = 64;
+	let commentWidth = 32;
 	let write = false;
 
 	for (let i = 0; i < args.length; i += 1) {

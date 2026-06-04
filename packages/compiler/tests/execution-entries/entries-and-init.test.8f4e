@@ -1,6 +1,10 @@
 8f4e/v1
 
-; Entries compile into independent exported dispatchers, and functions can call them explicitly.
+; Entries compile into
+; independent exported
+; dispatchers, and
+; functions can call them
+; explicitly.
 entry main
 module mainEntryCounter
 int value 0
@@ -38,7 +42,10 @@ entryEnd
 function test
 #export
 #impure
-; initDefaults runs before this function, but it should not execute the user-authored init entry.
+; initDefaults runs before this
+; function, but it should not
+; execute the user-authored init
+; entry.
 push &userInitEntryCounter:value
 load
 call assert 0

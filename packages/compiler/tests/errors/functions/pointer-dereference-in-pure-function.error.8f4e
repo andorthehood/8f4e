@@ -6,7 +6,8 @@ moduleEnd
 entryEnd
 
 function invalid
-; Pointer dereference is memory IO and requires #impure.
+; Pointer dereference is memory
+; IO and requires #impure.
 param float* x
 push *x
 functionEnd float

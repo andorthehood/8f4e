@@ -30,7 +30,7 @@
       },
     ],
     "instruction": "const",
-    "lineNumber": 2,
+    "lineNumber": 3,
   },
   "message": "Undeclared identifier: UNDEFINED_CONST/2. (5)",
 }

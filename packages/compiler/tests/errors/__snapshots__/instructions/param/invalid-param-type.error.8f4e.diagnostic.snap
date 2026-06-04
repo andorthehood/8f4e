@@ -3,7 +3,7 @@
   "context": {},
   "line": {
     "instruction": "param",
-    "lineNumber": 2,
+    "lineNumber": 3,
   },
   "message": "Invalid argument for param: expected function type identifier.",
 }

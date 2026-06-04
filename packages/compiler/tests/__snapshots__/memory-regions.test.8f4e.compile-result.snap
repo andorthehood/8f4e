@@ -1148,11 +1148,11 @@
     },
     "regionInternalResource": {
       "internalResources": {
-        "regionInternalResource::__hasChangedDetector_previousValue8": {
+        "regionInternalResource::__hasChangedDetector_previousValue12": {
           "byteAddress": 28,
           "default": 0,
           "elementWordSize": 4,
-          "id": "regionInternalResource::__hasChangedDetector_previousValue8",
+          "id": "regionInternalResource::__hasChangedDetector_previousValue12",
           "memoryIndex": 0,
           "storageType": "int",
           "wordAlignedAddress": 7,

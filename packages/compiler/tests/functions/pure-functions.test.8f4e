@@ -1,16 +1,22 @@
 8f4e/v1
 
-; Pure functions should compile, expose stable signatures in snapshots, and run through normal calls.
+; Pure functions should compile,
+; expose stable signatures in
+; snapshots, and run through
+; normal calls.
 entry test
 module zeroValueFunctionAssertions
-; Functions with no parameters and no returns can be called without affecting the stack.
+; Functions with no parameters
+; and no returns can be called
+; without affecting the stack.
 call noop
 call getZero
 call assert 0
 moduleEnd
 
 module intParameterFunctionAssertions
-; Integer parameters are passed in declaration order.
+; Integer parameters are passed
+; in declaration order.
 push 3
 push 4
 call addInts
@@ -22,7 +28,8 @@ call assert 25
 moduleEnd
 
 module floatParameterFunctionAssertions
-; Float parameters and returns should stay on the float path.
+; Float parameters and returns
+; should stay on the float path.
 push 3.0
 push 2.0
 call multiplyFloats
@@ -30,7 +37,10 @@ call assertf 6.0
 moduleEnd
 
 module mixedParameterFunctionAssertions
-; Mixed parameters can be converted and combined inside a function.
+; Mixed parameters can be
+; converted and combined inside
+; a
+; function.
 push 4
 push 2.5
 call multiplyMixed
@@ -38,7 +48,9 @@ call assertf 10.0
 moduleEnd
 
 module multipleReturnFunctionAssertions
-; Multiple returns should leave both returned values on the caller stack.
+; Multiple returns should leave
+; both returned values on the
+; caller stack.
 push 9
 call duplicateInt
 call assert 9
@@ -46,7 +58,8 @@ call assert 9
 moduleEnd
 
 module localFunctionAssertions
-; Functions can use locals to stage computed values.
+; Functions can use locals to
+; stage computed values.
 push 2
 push 5
 call addWithLocal
@@ -54,13 +67,17 @@ call assert 7
 moduleEnd
 
 module functionConstantAssertions
-; Constants declared near a function can be used by that function.
+; Constants declared near a
+; function can be used by that
+; function.
 call getPi
 call assertf 3.14159
 moduleEnd
 
 module impureFunctionAssertions
-; Impure functions are allowed to perform memory IO through pointer arguments.
+; Impure functions are allowed
+; to perform memory IO through
+; pointer arguments.
 int source 42
 int dest
 
@@ -76,7 +93,10 @@ call assert 77
 moduleEnd
 
 module functionControlFlowAssertions
-; Functions can use block control flow and return the resulting stack value.
+; Functions can use block
+; control flow and return the
+; resulting
+; stack value.
 push -12
 call absInt
 call assert 12

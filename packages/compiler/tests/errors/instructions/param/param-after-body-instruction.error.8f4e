@@ -6,7 +6,8 @@ moduleEnd
 entryEnd
 
 function invalid
-; param should be part of the function prologue.
+; param should be part of the
+; function prologue.
 push 1
 param int x
 functionEnd int

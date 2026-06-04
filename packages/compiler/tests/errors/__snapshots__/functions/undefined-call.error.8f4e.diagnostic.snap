@@ -14,7 +14,7 @@
       },
     ],
     "instruction": "call",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Undefined function. (22)",
 }

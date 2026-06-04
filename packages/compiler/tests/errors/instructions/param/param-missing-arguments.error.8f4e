@@ -6,6 +6,7 @@ moduleEnd
 entryEnd
 
 function invalid
-; param requires both type and name arguments.
+; param requires both type and
+; name arguments.
 param int
 functionEnd

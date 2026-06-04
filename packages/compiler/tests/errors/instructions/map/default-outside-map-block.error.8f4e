@@ -2,7 +2,8 @@
 
 entry main
 module mapDefaultOutsideBlock
-; default should only be valid inside mapBegin/mapEnd.
+; default should only be valid
+; inside mapBegin/mapEnd.
 int x
 default 10
 moduleEnd

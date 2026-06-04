@@ -6,7 +6,8 @@ int[] buffer 5 0
 moduleEnd
 
 module countUnknownMemoryTarget
-; count(...) should reject unknown memory identifiers.
+; count(...) should reject
+; unknown memory identifiers.
 int size count(countUnknownMemorySource:missing)
 moduleEnd
 entryEnd

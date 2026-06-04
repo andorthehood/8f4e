@@ -6,7 +6,9 @@ int buffer 42
 moduleEnd
 
 module startAddressMultiDotTarget
-; Start-address references should reject extra path segments.
+; Start-address references
+; should reject extra path
+; segments.
 int* ptr &startAddressMultiDotSource:buffer:extra
 moduleEnd
 entryEnd
