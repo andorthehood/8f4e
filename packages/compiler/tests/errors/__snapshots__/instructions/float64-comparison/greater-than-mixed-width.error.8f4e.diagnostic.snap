@@ -7,7 +7,7 @@
   "line": {
     "arguments": [],
     "instruction": "greaterThan",
-    "lineNumber": 9,
+    "lineNumber": 11,
   },
   "message": "Mixed float widths: arithmetic operations require all float operands to have the same width (float32 or float64). (33)",
 }

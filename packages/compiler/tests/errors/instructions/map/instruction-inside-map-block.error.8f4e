@@ -2,7 +2,10 @@
 
 entry main
 module instructionInsideMapBlock
-; map blocks should reject ordinary instructions in their row list.
+; map blocks should reject
+; ordinary instructions in their
+; row
+; list.
 int x
 push x
 mapBegin int

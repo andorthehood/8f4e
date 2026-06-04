@@ -1,6 +1,8 @@
 8f4e/v1
 
-; fallingEdge should report when an integer input moves downward.
+; fallingEdge should report when
+; an integer input moves
+; downward.
 entry stateChangeStep
 module fallingEdgeIntState
 int input

@@ -31,10 +31,16 @@ constants sameNameAsModule
 const UNUSED_VALUE 77
 constantsEnd
 
-; Constants blocks should import into modules through use without becoming executable modules themselves.
+; Constants blocks should import
+; into modules through use
+; without becoming executable
+; modules themselves.
 entry test
 module constantsBlockAssertions
-; Values from top-level constants blocks should resolve in defaults and pushes.
+; Values from top-level
+; constants blocks should
+; resolve in
+; defaults and pushes.
 use math
 use physics
 float pi PI
@@ -52,7 +58,9 @@ call assertf 9.81
 moduleEnd
 
 module constantLastWinsAssertions
-; Later use statements should override earlier imported constants with the same name.
+; Later use statements should
+; override earlier imported
+; constants with the same name.
 use first
 use second
 int result VALUE
@@ -62,7 +70,10 @@ call assert 20
 moduleEnd
 
 module moduleConstImportAssertions
-; Module-local constants should become visible to later modules through use.
+; Module-local constants should
+; become visible to later
+; modules
+; through use.
 const SECRET 99
 moduleEnd
 
@@ -75,7 +86,9 @@ call assert 99
 moduleEnd
 
 module sameModuleDerivedConstAssertions
-; A const can reference an earlier const in the same module.
+; A const can reference an
+; earlier const in the same
+; module.
 const BASE 10
 const DOUBLE BASE
 int result DOUBLE
@@ -85,7 +98,8 @@ call assert 10
 moduleEnd
 
 module importedConstDerivedConstAssertions
-; A const can reference imported values after a preceding use.
+; A const can reference imported
+; values after a preceding use.
 use moduleConstImportAssertions
 const BAR SECRET
 int result BAR
@@ -95,7 +109,9 @@ call assert 99
 moduleEnd
 
 module constantsCanUseConstantsAssertions
-; Constants blocks can use values from other constants blocks.
+; Constants blocks can use
+; values from other constants
+; blocks.
 use derived
 use env
 int size SIZE
@@ -109,7 +125,10 @@ call assert 4
 moduleEnd
 
 module sameNameAsModule
-; A constants block and module may share a name without allocating constants-block memory.
+; A constants block and module
+; may share a name without
+; allocating constants-block
+; memory.
 int result 1
 
 push result
@@ -117,7 +136,10 @@ call assert 1
 moduleEnd
 
 module validConstNameAssertions
-; Constant names can include underscores and numbers after the first letter.
+; Constant names can include
+; underscores and numbers after
+; the
+; first letter.
 const MY_CONSTANT 100
 const CONST123 123
 

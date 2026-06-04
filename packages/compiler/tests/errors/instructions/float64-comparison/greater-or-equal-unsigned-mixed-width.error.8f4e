@@ -2,7 +2,10 @@
 
 entry main
 module greaterOrEqualUnsignedMixedFloatWidth
-; greaterOrEqualUnsigned should reject mixed float32 and float64 operands.
+; greaterOrEqualUnsigned should
+; reject mixed float32 and
+; float64
+; operands.
 float left
 float64 right
 int output

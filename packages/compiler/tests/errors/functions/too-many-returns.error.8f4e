@@ -6,7 +6,8 @@ moduleEnd
 entryEnd
 
 function tooManyReturns
-; Functions should reject more than eight return values.
+; Functions should reject more
+; than eight return values.
 push 1
 push 2
 push 3

@@ -2,7 +2,8 @@
 
 entry main
 module paramOutsideFunction
-; param should only be valid in functions.
+; param should only be valid in
+; functions.
 param int x
 moduleEnd
 entryEnd

@@ -6,7 +6,8 @@ moduleEnd
 entryEnd
 
 function invalid
-; param declarations should come before local declarations.
+; param declarations should come
+; before local declarations.
 local int temp
 param int x
 functionEnd

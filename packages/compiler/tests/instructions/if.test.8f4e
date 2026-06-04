@@ -3,7 +3,8 @@
 ; describe if
 entry test
 module ifIntAssertions
-; it produces integer values from both branches
+; it produces integer values
+; from both branches
 int truthyInput 1
 push truthyInput
 if
@@ -24,7 +25,8 @@ call assert -1
 moduleEnd
 
 module ifFloatAssertions
-; it produces float values from both branches
+; it produces float values from
+; both branches
 int truthyInput 1
 push truthyInput
 if
@@ -45,7 +47,8 @@ call assertf -1.1
 moduleEnd
 
 module ifVoidAssertions
-; it performs side effects in either branch for void blocks
+; it performs side effects in
+; either branch for void blocks
 int truthyInput 1
 int truthyOutput
 push truthyInput
@@ -78,7 +81,8 @@ call assert -1
 moduleEnd
 
 module multiResultIfAssertions
-; it preserves multiple produced values in order
+; it preserves multiple produced
+; values in order
 push 1
 if
 push 10

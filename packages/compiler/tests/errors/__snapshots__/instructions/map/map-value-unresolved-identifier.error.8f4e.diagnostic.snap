@@ -19,7 +19,7 @@
       },
     ],
     "instruction": "map",
-    "lineNumber": 5,
+    "lineNumber": 6,
   },
   "message": "Undeclared identifier: MISSING_CONST. (5)",
 }

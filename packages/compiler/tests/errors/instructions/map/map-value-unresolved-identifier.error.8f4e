@@ -2,7 +2,8 @@
 
 entry main
 module mapValueUnresolvedIdentifier
-; map values should reject unresolved identifiers.
+; map values should reject
+; unresolved identifiers.
 int x
 push x
 mapBegin int

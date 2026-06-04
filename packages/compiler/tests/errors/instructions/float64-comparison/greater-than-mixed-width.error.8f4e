@@ -2,7 +2,9 @@
 
 entry main
 module greaterThanMixedFloatWidth
-; greaterThan should reject mixed float32 and float64 operands.
+; greaterThan should reject
+; mixed float32 and float64
+; operands.
 float left
 float64 right
 int output
