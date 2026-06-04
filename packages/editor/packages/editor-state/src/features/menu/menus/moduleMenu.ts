@@ -76,12 +76,6 @@ export const moduleMenu: MenuGenerator = state => {
 									payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 									close: true,
 								},
-								{
-									title: 'Clear watch probes',
-									action: 'clearDebugProbes',
-									payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
-									close: true,
-								},
 							]
 						: []),
 					...(blockType === moduleBlockType && hasGroup
