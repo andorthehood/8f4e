@@ -58,17 +58,12 @@ export {
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
 	const featureFlags = validateFeatureFlags(options.featureFlags);
 
-	if (!options.runtimeRegistry[options.defaultRuntimeId]) {
-		throw new Error(`Default runtime ID "${options.defaultRuntimeId}" not found in runtime registry`);
-	}
-
 	// Create base state
 	const baseState = {
 		...createDefaultState(),
 		callbacks: options.callbacks,
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
-		defaultRuntimeId: options.defaultRuntimeId,
 		editorConfigSchemaContributions: options.editorConfigSchemaContributions ?? {},
 	};
 

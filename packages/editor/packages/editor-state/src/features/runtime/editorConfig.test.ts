@@ -31,32 +31,35 @@ const runtimeRegistry = {
 };
 
 describe('runtime editor config', () => {
-	it('resolves selected runtime ids with default fallback', () => {
-		expect(resolveSelectedRuntimeId('AudioWorkletRuntime', runtimeRegistry, 'WebWorkerRuntime')).toBe(
-			'AudioWorkletRuntime'
-		);
-		expect(resolveSelectedRuntimeId('UnknownRuntime', runtimeRegistry, 'WebWorkerRuntime')).toBe('WebWorkerRuntime');
-		expect(resolveSelectedRuntimeId('toString', runtimeRegistry, 'WebWorkerRuntime')).toBe('WebWorkerRuntime');
-		expect(resolveSelectedRuntimeId(undefined, runtimeRegistry, 'WebWorkerRuntime')).toBe('WebWorkerRuntime');
+	it('resolves only registered runtime ids', () => {
+		expect(resolveSelectedRuntimeId('AudioWorkletRuntime', runtimeRegistry)).toBe('AudioWorkletRuntime');
+		expect(resolveSelectedRuntimeId('UnknownRuntime', runtimeRegistry)).toBeUndefined();
+		expect(resolveSelectedRuntimeId('toString', runtimeRegistry)).toBeUndefined();
+		expect(resolveSelectedRuntimeId(undefined, runtimeRegistry)).toBeUndefined();
 	});
 
 	it('resolves the selected runtime registry entry', () => {
-		expect(getSelectedRuntimeEntry('AudioWorkletRuntime', runtimeRegistry, 'WebWorkerRuntime').id).toBe(
-			'AudioWorkletRuntime'
-		);
+		expect(getSelectedRuntimeEntry('AudioWorkletRuntime', runtimeRegistry)?.id).toBe('AudioWorkletRuntime');
+		expect(getSelectedRuntimeEntry(undefined, runtimeRegistry)).toBeUndefined();
 	});
 
 	it('collects runtime editor config schema contributions with the selected runtime first', () => {
-		expect(
-			Object.keys(
-				collectRuntimeEditorConfigSchemaContributions('AudioWorkletRuntime', runtimeRegistry, 'WebWorkerRuntime')
-			)
-		).toEqual(['runtime:AudioWorkletRuntime', 'runtime:WebWorkerRuntime']);
+		expect(Object.keys(collectRuntimeEditorConfigSchemaContributions('AudioWorkletRuntime', runtimeRegistry))).toEqual([
+			'runtime:AudioWorkletRuntime',
+			'runtime:WebWorkerRuntime',
+		]);
+	});
+
+	it('collects runtime editor config schema contributions without selecting a runtime', () => {
+		expect(Object.keys(collectRuntimeEditorConfigSchemaContributions(undefined, runtimeRegistry))).toEqual([
+			'runtime:WebWorkerRuntime',
+			'runtime:AudioWorkletRuntime',
+		]);
 	});
 
 	it('validates runtime selection values', () => {
 		const store = {
-			getState: () => ({ editorConfig: {}, runtimeRegistry, defaultRuntimeId: 'WebWorkerRuntime' }),
+			getState: () => ({ editorConfig: {}, runtimeRegistry }),
 		} as StateManager<State>;
 		const validator = createRuntimeSelectionEditorConfigValidator(store);
 

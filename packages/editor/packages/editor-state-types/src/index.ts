@@ -346,11 +346,6 @@ export interface Options {
 	 * Runtime registry mapping runtime IDs to runtime implementations.
 	 */
 	runtimeRegistry: RuntimeRegistry;
-	/**
-	 * Default runtime ID to use when no runtime is specified or when an unknown runtime ID is encountered.
-	 * Must match a key in the runtimeRegistry.
-	 */
-	defaultRuntimeId: string;
 	/** Optional host-provided schema contributions for project-level editor config. */
 	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 }
@@ -386,8 +381,6 @@ export interface State {
 	};
 	/** Runtime registry for available runtime implementations */
 	runtimeRegistry: RuntimeRegistry;
-	/** Default runtime ID to use when no runtime is specified */
-	defaultRuntimeId: string;
 	/** Resolved global editor directives from `; @<name>` comments */
 	globalEditorDirectives: ResolvedGlobalEditorDirectives;
 	codeErrors: {
