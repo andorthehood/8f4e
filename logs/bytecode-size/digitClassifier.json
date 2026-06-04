@@ -400,5 +400,11 @@
 		"version": "1.16.9",
 		"benchmark": "digitClassifier.8f4e",
 		"emittedBytes": 14400
+	},
+	{
+		"commit": "402393588cf0dcaee926984dff117152cd067cf4",
+		"version": "1.17.0",
+		"benchmark": "digitClassifier.8f4e",
+		"emittedBytes": 14400
 	}
 ]
