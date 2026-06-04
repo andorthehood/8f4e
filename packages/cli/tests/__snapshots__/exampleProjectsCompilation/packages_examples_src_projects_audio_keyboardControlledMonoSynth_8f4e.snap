@@ -116,7 +116,7 @@
             ]
           },
           {
-            "lineNumber": 5,
+            "lineNumber": 9,
             "instruction": "int",
             "arguments": [
               {
@@ -129,7 +129,7 @@
             "hasExplicitMemoryDefault": false
           },
           {
-            "lineNumber": 6,
+            "lineNumber": 10,
             "instruction": "int",
             "arguments": [
               {
@@ -142,7 +142,7 @@
             "hasExplicitMemoryDefault": false
           },
           {
-            "lineNumber": 11,
+            "lineNumber": 15,
             "instruction": "moduleEnd",
             "arguments": []
           }
@@ -161,7 +161,7 @@
         },
         "memoryDeclarationLines": [
           {
-            "lineNumber": 5,
+            "lineNumber": 9,
             "instruction": "int",
             "arguments": [
               {
@@ -174,7 +174,7 @@
             "hasExplicitMemoryDefault": false
           },
           {
-            "lineNumber": 6,
+            "lineNumber": 10,
             "instruction": "int",
             "arguments": [
               {
