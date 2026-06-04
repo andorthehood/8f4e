@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-30
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-04
 ---
 
 # TODO: Migrate @midiIn to config directive
@@ -108,3 +108,4 @@ The exact schema should be chosen during implementation. Prefer a shape that rem
 ## Notes
 
 - Created after identifying `@midiIn` as config-like editor environment behavior during the generic editor config schema contribution work.
+- Completed by migrating MIDI input bindings to schema-backed `@config midi.inputs...` entries, removing live `@midiIn` support, and verifying no live examples/docs still use the old directive.
