@@ -3,7 +3,6 @@
  */
 
 import type { DataStructure, DocumentBlockType } from '@8f4e/compiler-spec';
-import type { SpriteLookups } from '@8f4e/sprite-generator';
 import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
@@ -447,7 +446,6 @@ export interface CodeBlockEntryOutline {
  * Graphic helper state for rendering code blocks and UI elements.
  */
 export type GraphicHelper = {
-	spriteLookups?: SpriteLookups;
 	outputsByWordAddress: Map<number, Output>;
 	codeBlocks: CodeBlockGraphicData[];
 	/**

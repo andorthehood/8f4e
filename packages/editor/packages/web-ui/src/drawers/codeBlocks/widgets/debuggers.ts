@@ -4,11 +4,11 @@ import type { MemoryViews } from '../../../types';
 import formatDebuggerValue from './formatDebuggerValue';
 
 function drawBracketedValue(engine: Engine, state: State, x: number, y: number, value: string): void {
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups!.fontCode);
+	engine.setSpriteLookup(state.spriteLookups!.fontCode);
 	engine.drawText(x, y, '[');
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups!.fontNumbers);
+	engine.setSpriteLookup(state.spriteLookups!.fontNumbers);
 	engine.drawText(x + state.viewport.vGrid, y, value);
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups!.fontCode);
+	engine.setSpriteLookup(state.spriteLookups!.fontCode);
 	engine.drawText(x + state.viewport.vGrid * (value.length + 1), y, ']');
 }
 
@@ -18,7 +18,7 @@ export default function drawConnectors(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 

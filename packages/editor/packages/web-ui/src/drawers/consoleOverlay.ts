@@ -5,7 +5,7 @@ const PADDING_CHARS = 1;
 const ELLIPSIS = '...';
 
 export default function drawConsoleOverlay(engine: Engine, state: State): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
@@ -40,7 +40,7 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 		const messageWithTimestamp =
 			message + ' ' + (logEntry.category ? `${logEntry.category} ` : '') + logEntry.timestamp;
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+		engine.setSpriteLookup(state.spriteLookups.fillColors);
 		engine.drawSprite(
 			(panelWidthChars - messageWithTimestamp.length) * vGrid,
 			i * hGrid,
@@ -49,7 +49,7 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 			hGrid
 		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontDebugInfo);
+		engine.setSpriteLookup(state.spriteLookups.fontDebugInfo);
 		engine.drawText((panelWidthChars - messageWithTimestamp.length) * vGrid, i * hGrid, messageWithTimestamp);
 	}
 

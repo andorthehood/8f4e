@@ -27,7 +27,7 @@ test('switches', async () => {
 		},
 	];
 
-	if (mockState.graphicHelper.spriteLookups) {
+	if (mockState.spriteLookups) {
 		const lines1 = ['selected code block', '', '', '', '', '', '', '', ''];
 		const codeToRender1 = lines1.map(line => line.split('').map(char => char.charCodeAt(0)));
 
@@ -37,7 +37,7 @@ test('switches', async () => {
 			width: 256,
 			height: lines1.length * 16,
 			codeToRender: codeToRender1,
-			codeColors: generateColorMapWithOneColor(mockState.graphicHelper.spriteLookups.fontCode, 10),
+			codeColors: generateColorMapWithOneColor(mockState.spriteLookups.fontCode, 10),
 			extras: {
 				inputs: [],
 				outputs: [],
@@ -65,7 +65,7 @@ test('switches', async () => {
 				width: 256,
 				height: lines2.length * 16,
 				codeToRender: codeToRender2,
-				codeColors: generateColorMapWithOneColor(mockState.graphicHelper.spriteLookups.fontCode, 10),
+				codeColors: generateColorMapWithOneColor(mockState.spriteLookups.fontCode, 10),
 				extras: {
 					inputs: [],
 					outputs: [],
