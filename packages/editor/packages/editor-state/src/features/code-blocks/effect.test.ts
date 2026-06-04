@@ -54,15 +54,15 @@ describe('graphic helper hidden directive', () => {
 		const state = createMockState({
 			graphicHelper: {
 				codeBlocks: [hiddenBlock, otherBlock],
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-				} as never,
 			},
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -129,15 +129,15 @@ describe('graphic helper line numbers', () => {
 		const state = createMockState({
 			graphicHelper: {
 				codeBlocks: [pointerBlock],
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-				} as never,
 			},
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -178,16 +178,14 @@ describe('graphic helper home directive', () => {
 				vGrid: 8,
 				hGrid: 16,
 			},
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -227,16 +225,14 @@ describe('graphic helper home directive', () => {
 				vGrid: 8,
 				hGrid: 16,
 			},
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -277,15 +273,15 @@ describe('graphic helper home directive', () => {
 			graphicHelper: {
 				codeBlocks: [selectedBlock],
 				selectedCodeBlock: selectedBlock,
-				spriteLookups: {
-					fillColors: {},
-					fontNumbers: {},
-					fontCode: {},
-					fontDisabledCode: {},
-					fontLineNumber: {},
-					fontCodeComment: {},
-				} as never,
 			},
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
 			viewport: {
 				x: 0,
 				y: 0,

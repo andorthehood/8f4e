@@ -6,11 +6,11 @@ const WIRE_SPRITE = 'wire';
 const WIRE_HIGHLIGHTED_SPRITE = 'wireHighlighted';
 
 export default function drawConnections(engine: Engine, state: State, memoryViews: MemoryViews): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+	engine.setSpriteLookup(state.spriteLookups.fillColors);
 
 	engine.startGroup(-state.viewport.x, -state.viewport.y);
 

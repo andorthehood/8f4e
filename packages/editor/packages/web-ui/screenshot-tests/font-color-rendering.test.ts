@@ -49,11 +49,11 @@ test('font color rendering', async () => {
 	];
 
 	colors.forEach((colorName, index) => {
-		if (!mockState.graphicHelper.spriteLookups?.[colorName]) {
+		if (!mockState.spriteLookups?.[colorName]) {
 			return;
 		}
 
-		const color = mockState.graphicHelper.spriteLookups[colorName];
+		const color = mockState.spriteLookups[colorName];
 		const codeLines = ['', colorName, ...lines.map(line => line.join('')), ''];
 		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
 

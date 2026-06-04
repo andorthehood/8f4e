@@ -5,7 +5,7 @@
  */
 
 import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-spec';
-import type { FillSpriteColorName } from '@8f4e/sprite-generator';
+import type { FillSpriteColorName, SpriteLookups } from '@8f4e/sprite-generator';
 import type { SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
@@ -360,6 +360,7 @@ export interface State {
 	compiler: Compiler;
 	graphicHelper: GraphicHelper;
 	contextMenu: ContextMenu;
+	spriteLookups?: SpriteLookups;
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
 	tooltip: TooltipState;

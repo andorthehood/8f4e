@@ -23,7 +23,7 @@ import drawWaves from './widgets/waves';
 const corner = '+';
 
 export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
-	const spriteLookups = state.graphicHelper.spriteLookups;
+	const spriteLookups = state.spriteLookups;
 
 	if (!spriteLookups) {
 		return;

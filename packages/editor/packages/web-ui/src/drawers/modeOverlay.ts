@@ -18,7 +18,7 @@ function formatPresentationCountdown(state: State): string {
 }
 
 export default function drawModeOverlay(engine: Engine, state: State): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
@@ -36,9 +36,9 @@ export default function drawModeOverlay(engine: Engine, state: State): void {
 					: VIEW_MODE_HINT;
 
 	engine.startGroup(0, 0);
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+	engine.setSpriteLookup(state.spriteLookups.fillColors);
 	engine.drawSprite(0, 0, 'debugInfoBackground', (modeHint.length + 2) * state.viewport.vGrid, state.viewport.hGrid);
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontDebugInfo);
+	engine.setSpriteLookup(state.spriteLookups.fontDebugInfo);
 	engine.drawText(state.viewport.vGrid, 0, modeHint);
 	engine.endGroup();
 }

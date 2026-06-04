@@ -2,7 +2,7 @@ import type { State, TooltipLiveValueSource } from '@8f4e/editor-state-types';
 import type { FillSpriteColorName } from '@8f4e/sprite-generator';
 import type { SpriteLookup } from 'glugglug';
 
-export type SpriteLookups = NonNullable<State['graphicHelper']['spriteLookups']>;
+export type SpriteLookups = NonNullable<State['spriteLookups']>;
 
 /**
  * Character range that should switch to the tooltip highlight color.

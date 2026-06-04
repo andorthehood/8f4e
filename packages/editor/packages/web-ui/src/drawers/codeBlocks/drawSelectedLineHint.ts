@@ -41,7 +41,7 @@ function drawCharactersWithColors(
 	x: number,
 	y: number
 ): void {
-	const spriteLookups = state.graphicHelper.spriteLookups!;
+	const spriteLookups = state.spriteLookups!;
 	let currentLookup = colors?.[0] ?? spriteLookups.fontTooltipText;
 
 	engine.setSpriteLookup(currentLookup);
@@ -71,7 +71,7 @@ function drawTextCharacters(engine: Engine, state: State, text: string, x: numbe
 }
 
 function drawLiveValue(engine: Engine, state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): void {
-	const spriteLookups = state.graphicHelper.spriteLookups!;
+	const spriteLookups = state.spriteLookups!;
 	const value = getLiveValueText(state, memoryViews, liveValue);
 
 	if (value === undefined) {
@@ -88,7 +88,7 @@ export default function drawSelectedLineHint(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	const spriteLookups = state.graphicHelper.spriteLookups;
+	const spriteLookups = state.spriteLookups;
 
 	if (!spriteLookups || !state.featureFlags.codeLineSelection || state.graphicHelper.selectedCodeBlock !== codeBlock) {
 		return;

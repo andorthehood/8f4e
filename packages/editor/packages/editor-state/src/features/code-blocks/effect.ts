@@ -96,11 +96,11 @@ export default function graphicHelper(store: StateManager<State>, events: EventD
 	};
 
 	const updateGraphics = (graphicData: CodeBlockGraphicData) => {
-		if (!state.graphicHelper.spriteLookups) {
+		if (!state.spriteLookups) {
 			return;
 		}
 
-		const spriteLookups = state.graphicHelper.spriteLookups;
+		const spriteLookups = state.spriteLookups;
 		const directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, {
 			isExpandedForEditing: shouldExpandCodeBlockForEditing(graphicData),
 			state,

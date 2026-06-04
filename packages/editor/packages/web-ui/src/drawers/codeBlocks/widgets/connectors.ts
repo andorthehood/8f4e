@@ -9,7 +9,7 @@ export default function drawConnectors(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
@@ -25,7 +25,7 @@ export default function drawConnectors(
 		output.calibratedMax = Math.max(1, output.calibratedMax, value);
 		output.calibratedMin = Math.min(-1, output.calibratedMin, value);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.feedbackScale);
+		engine.setSpriteLookup(state.spriteLookups.feedbackScale);
 		engine.drawSprite(
 			x,
 			y,
@@ -34,11 +34,11 @@ export default function drawConnectors(
 			state.viewport.hGrid
 		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontCode);
+		engine.setSpriteLookup(state.spriteLookups.fontCode);
 	}
 
 	if (codeBlock.widgets.inputs.length > 0) {
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
+		engine.setSpriteLookup(state.spriteLookups.icons);
 	}
 
 	for (const { x, y } of codeBlock.widgets.inputs) {

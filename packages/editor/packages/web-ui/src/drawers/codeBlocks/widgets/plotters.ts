@@ -81,11 +81,11 @@ export default function drawer(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+	engine.setSpriteLookup(state.spriteLookups.fillColors);
 
 	const maxPlotterWidth = codeBlock.width - state.viewport.hGrid * 2;
 	const plotHeight = state.viewport.hGrid * 8;
