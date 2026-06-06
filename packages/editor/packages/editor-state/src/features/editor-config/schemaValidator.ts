@@ -230,7 +230,7 @@ export function parseSchemaConfigValue(
 		const matchingOption = options.find(
 			option =>
 				validateSchemaConfigValue(
-					{ path: '', value, rawRow: 0, codeBlockId: '', moduleId: entry?.moduleId },
+					{ path: '', value, rawRow: 0, codeBlockId: -1, moduleId: entry?.moduleId },
 					{ ...option, format: option.format ?? schema.format }
 				) === undefined
 		);

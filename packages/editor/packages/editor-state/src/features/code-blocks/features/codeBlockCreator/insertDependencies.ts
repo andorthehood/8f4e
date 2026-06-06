@@ -54,7 +54,7 @@ export async function insertDependencies({
 				if (blockType !== dependencyBlockType) {
 					return false;
 				}
-				return block.id === dependencyModuleId;
+				return block.name === dependencyModuleId;
 			});
 
 			if (dependencyModuleId && existsAlready) {

@@ -9,7 +9,7 @@ function entry(value: string): EditorConfigEntry {
 		path: 'font',
 		value,
 		rawRow: 1,
-		codeBlockId: 'config',
+		codeBlockId: 0,
 	};
 }
 
