@@ -7,9 +7,10 @@ import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import codeBlockRenderingEffect from './effect';
 
 describe('code block rendering error mapping', () => {
-	it('maps typed compiler errors to function blocks', () => {
+	it('maps compiler errors by creationIndex', () => {
 		const functionBlock = createMockCodeBlock({
-			id: 'function_helper',
+			name: 'function_helper',
+			creationIndex: 7,
 			code: ['function helper', 'push 1', 'functionEnd'],
 			blockType: 'function',
 		});
@@ -21,8 +22,7 @@ describe('code block rendering error mapping', () => {
 				compilationErrors: [
 					{
 						lineNumber: 2,
-						codeBlockId: 'helper',
-						codeBlockType: 'function',
+						codeBlockId: 7,
 						message: 'Memory access is not allowed in pure functions. (19)',
 					},
 				],
@@ -48,7 +48,7 @@ describe('code block rendering hidden directive', () => {
 			],
 		});
 		const otherBlock = createMockCodeBlock({
-			id: 'other',
+			name: 'other',
 			code: ['module other', 'moduleEnd'],
 		});
 		const state = createMockState({
@@ -262,7 +262,7 @@ describe('code block rendering home directive', () => {
 
 	it('keeps the selected code block centered after a font grid change', () => {
 		const selectedBlock = createMockCodeBlock({
-			id: 'selected',
+			name: 'selected',
 			code: ['module selected', '; @pos 10 20', 'moduleEnd'],
 			gridX: 10,
 			gridY: 20,

@@ -7,7 +7,7 @@ import codeBlockNavigation, { goHome, jumpToCodeBlock, navigateToCodeBlockInDire
 
 interface JumpToFavoriteCodeBlockEvent {
 	creationIndex: number;
-	id: string;
+	name: string;
 }
 
 describe('codeBlockNavigation', () => {
@@ -32,26 +32,26 @@ describe('codeBlockNavigation', () => {
 			x: 200,
 			y: 200,
 			creationIndex: 0,
-			id: 'selected',
+			name: 'selected',
 		});
 		leftBlock = createMockCodeBlock({
 			x: 0,
 			y: 200,
 			creationIndex: 1,
-			id: 'left',
+			name: 'left',
 		});
 		rightBlock = createMockCodeBlock({
 			x: 400,
 			y: 200,
 			creationIndex: 2,
-			id: 'right',
+			name: 'right',
 		});
-		upBlock = createMockCodeBlock({ x: 200, y: 0, creationIndex: 3, id: 'up' });
+		upBlock = createMockCodeBlock({ x: 200, y: 0, creationIndex: 3, name: 'up' });
 		downBlock = createMockCodeBlock({
 			x: 200,
 			y: 400,
 			creationIndex: 4,
-			id: 'down',
+			name: 'down',
 		});
 
 		// Create mock state using shared utility
@@ -132,7 +132,7 @@ describe('codeBlockNavigation', () => {
 			x: 300,
 			y: 200,
 			creationIndex: 5,
-			id: 'anchored-right',
+			name: 'anchored-right',
 			viewportAnchor: 'top-right',
 		});
 		state.codeBlockRendering.codeBlocks = [selectedBlock, anchoredRight, rightBlock];
@@ -149,7 +149,7 @@ describe('codeBlockNavigation', () => {
 			x: 200,
 			y: 200,
 			creationIndex: 0,
-			id: 'anchored-selected',
+			name: 'anchored-selected',
 			viewportAnchor: 'top-left',
 		});
 		state.codeBlockRendering.selectedCodeBlock = anchoredSelected;
@@ -382,7 +382,7 @@ describe('codeBlockNavigation', () => {
 
 	describe('jumpToCodeBlock', () => {
 		it('should jump to code block by creationIndex', () => {
-			const result = jumpToCodeBlock(state, 2, 'wrong-id', events);
+			const result = jumpToCodeBlock(state, 2, 'wrong-name', events);
 			expect(result).toBe(true);
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(rightBlock);
 			expect(events.dispatch).toHaveBeenCalledWith(
@@ -394,23 +394,23 @@ describe('codeBlockNavigation', () => {
 			);
 		});
 
-		it('should jump to code block by id when creationIndex does not match', () => {
+		it('should not jump by name when creationIndex does not match', () => {
 			const result = jumpToCodeBlock(state, 999, 'left');
-			expect(result).toBe(true);
-			expect(state.codeBlockRendering.selectedCodeBlock).toBe(leftBlock);
+			expect(result).toBe(false);
+			expect(state.codeBlockRendering.selectedCodeBlock).toBe(selectedBlock);
 		});
 
-		it('should return false when neither creationIndex nor id matches', () => {
+		it('should return false when creationIndex does not match', () => {
 			const result = jumpToCodeBlock(state, 999, 'nonexistent');
 			expect(result).toBe(false);
 			// selectedCodeBlock should remain unchanged
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(selectedBlock);
 		});
 
-		it('should prefer creationIndex over id when both could match', () => {
-			// Set up a scenario where id matches one block but creationIndex matches another
+		it('should use creationIndex when name could match a different block', () => {
+			// Set up a scenario where name matches one block but creationIndex matches another
 			const result = jumpToCodeBlock(state, 3, 'left');
-			// Should select upBlock (creationIndex=3) not leftBlock (id='left')
+			// Should select upBlock (creationIndex=3) not leftBlock (name='left')
 			expect(result).toBe(true);
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(upBlock);
 		});
@@ -429,7 +429,7 @@ describe('codeBlockNavigation', () => {
 			// Initialize the effect
 			codeBlockNavigation(state, events);
 
-			onJumpToFavoriteCodeBlockHandler({ creationIndex: 2, id: 'right' });
+			onJumpToFavoriteCodeBlockHandler({ creationIndex: 2, name: 'right' });
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(rightBlock);
 		});
 
@@ -439,7 +439,7 @@ describe('codeBlockNavigation', () => {
 
 			onJumpToFavoriteCodeBlockHandler({
 				creationIndex: 999,
-				id: 'nonexistent',
+				name: 'nonexistent',
 			});
 			// selectedCodeBlock should remain unchanged
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(selectedBlock);
@@ -449,14 +449,14 @@ describe('codeBlockNavigation', () => {
 	describe('goHome', () => {
 		it('should center viewport on the first home block and select it', () => {
 			const firstHome = createMockCodeBlock({
-				id: 'home-1',
+				name: 'home-1',
 				x: 100,
 				y: 100,
 				isHome: true,
 				homeAlignment: 'center',
 			});
 			const secondHome = createMockCodeBlock({
-				id: 'home-2',
+				name: 'home-2',
 				x: 400,
 				y: 400,
 				isHome: true,
@@ -483,7 +483,7 @@ describe('codeBlockNavigation', () => {
 
 		it('should honor home alignment hints when centering the viewport', () => {
 			const homeBlock = createMockCodeBlock({
-				id: 'home-bottom',
+				name: 'home-bottom',
 				x: 100,
 				y: 200,
 				width: 100,
@@ -512,7 +512,7 @@ describe('codeBlockNavigation', () => {
 
 		it('should dispatch viewportChanged after goHome changes the viewport', () => {
 			const homeBlock = createMockCodeBlock({
-				id: 'home-dispatch',
+				name: 'home-dispatch',
 				isHome: true,
 				homeAlignment: 'center',
 				x: 100,
@@ -535,11 +535,11 @@ describe('codeBlockNavigation', () => {
 
 		it('should use a disabled home block if it is first', () => {
 			const disabledHome = createMockCodeBlock({
-				id: 'home-disabled',
+				name: 'home-disabled',
 				isHome: true,
 				disabled: true,
 			});
-			const otherHome = createMockCodeBlock({ id: 'home-other', isHome: true });
+			const otherHome = createMockCodeBlock({ name: 'home-other', isHome: true });
 
 			state = createMockState({
 				codeBlockRendering: { codeBlocks: [disabledHome, otherHome] },
@@ -568,7 +568,7 @@ describe('codeBlockNavigation', () => {
 
 		it('should respond to goHome event', () => {
 			const homeBlock = createMockCodeBlock({
-				id: 'home-event',
+				name: 'home-event',
 				isHome: true,
 				x: 160,
 				y: 80,

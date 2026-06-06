@@ -220,7 +220,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			height: 0,
 			code,
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: getCodeBlockId(code),
+			name: getCodeBlockId(code),
 			moduleId: getModuleId(code) || getConstantsId(code) || getPrototypeId(code) || undefined,
 			gridX,
 			gridY,
