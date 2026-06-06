@@ -1,6 +1,7 @@
 import type { State } from '@8f4e/editor-state-types';
 import getCodeBlockGridWidth from '../../getCodeBlockGridWidth';
 import getBlockType from '../../utils/codeParsers/getBlockType';
+import getCodeBlockId from '../../utils/getCodeBlockId';
 import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
 
 interface InsertDependenciesParams {
@@ -42,7 +43,7 @@ export async function insertDependencies({
 			const dependencyCode = extractPublicBlockFromModuleSource(await getModule(dependencySlug));
 
 			// Get the module name and type from the dependency code
-			const dependencyModuleName = dependencyCode[0]?.trim().split(/\s+/)[1] ?? '';
+			const dependencyModuleName = getCodeBlockId(dependencyCode);
 			const dependencyBlockType = getBlockType(dependencyCode);
 
 			// Skip if a code block with this name and type already exists

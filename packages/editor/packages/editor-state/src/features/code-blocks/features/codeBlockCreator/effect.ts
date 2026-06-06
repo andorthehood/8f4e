@@ -3,7 +3,9 @@ import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import { instructionParser } from '@8f4e/tokenizer';
+import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import getCodeBlockId from '../../utils/getCodeBlockId';
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
@@ -179,35 +181,29 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			}
 		}
 
-		const [, instruction = '', rawName = ''] =
-			code.find(line => line.match(instructionParser))?.match(instructionParser) ?? [];
-		const blockName = rawName.trim().split(/\s+/)[0] ?? '';
+		const sourceBlockType = getBlockType(code);
+		const blockName = getCodeBlockId(code);
 
-		if (instruction === functionBlock.start && blockName) {
+		if (sourceBlockType === functionBlock.type && blockName) {
 			code = changeCodeBlockNameInCode(
 				code,
 				functionBlock.start,
 				incrementCodeBlockNameUntilUnique(state, functionBlock.type, blockName)
 			);
-		} else if (instruction === prototypeBlock.start && blockName) {
+		} else if (sourceBlockType === prototypeBlock.type && blockName) {
 			code = changeCodeBlockNameInCode(
 				code,
 				prototypeBlock.start,
 				incrementCodeBlockNameUntilUnique(state, prototypeBlock.type, blockName)
 			);
-		} else if (instruction === moduleBlock.start && blockName) {
+		} else if (sourceBlockType === moduleBlock.type && blockName) {
 			code = changeCodeBlockNameInCode(
 				code,
 				moduleBlock.start,
 				incrementCodeBlockNameUntilUnique(state, moduleBlock.type, blockName)
 			);
 		}
-		const updatedBlockName =
-			code
-				.find(line => line.match(instructionParser))
-				?.match(instructionParser)?.[2]
-				?.trim()
-				.split(/\s+/)[0] ?? '';
+		const updatedBlockName = getCodeBlockId(code);
 
 		const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
 		state.codeBlockRendering.nextCodeBlockCreationIndex++;
@@ -221,7 +217,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		// Add canonical @pos directive to code
 		code = upsertPos(code, gridX, gridY);
 		const entry =
-			instruction === moduleBlock.start && blockName
+			sourceBlockType === moduleBlock.type && blockName
 				? getEntryNameForNewModule(state, pixelX, pixelY, newEntry)
 				: undefined;
 

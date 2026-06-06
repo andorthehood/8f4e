@@ -10,6 +10,7 @@ import {
 	getCodeBlockGridSizeFromCode,
 	placeCodeBlockAtFirstFreeGridY,
 } from '../code-blocks/utils/finders/findFirstFreeCodeBlockGridY';
+import getCodeBlockId from '../code-blocks/utils/getCodeBlockId';
 import { parseBlockDirectives } from '../code-blocks/utils/parseBlockDirectives';
 import {
 	DEFAULT_BROWSER_LOCAL_NOTE,
@@ -47,7 +48,7 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 				const blockType = getBlockType(rawBlock.code) as CodeBlockGraphicData['blockType'];
 				const isViewportAnchored = directiveState.blockState.viewportAnchor !== undefined;
 				const codeBlock = createCodeBlockGraphicData({
-					name: rawBlock.code[0]?.trim().split(/\s+/)[1] ?? '',
+					name: getCodeBlockId(rawBlock.code),
 					code: rawBlock.code,
 					disabled: directiveState.blockState.disabled,
 					hidden: directiveState.blockState.hidden,
