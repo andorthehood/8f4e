@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import getCodeBlockId from './getCodeBlockId';
 import { parseBlockDirectives } from './parseBlockDirectives';
 
 export function createCodeBlockGraphicData(
@@ -13,7 +14,7 @@ export function createCodeBlockGraphicData(
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
 	const code = overrides.code ?? [];
-	const name = overrides.name ?? code[0]?.trim().split(/\s+/)[1] ?? 'code-block';
+	const name = (overrides.name ?? getCodeBlockId(code)) || 'code-block';
 
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
