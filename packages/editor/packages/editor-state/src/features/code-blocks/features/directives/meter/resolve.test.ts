@@ -16,7 +16,6 @@ describe('meter directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			name: 'test-block',
-			moduleId: 'test-block',
 			code: ['; @meter level'],
 			gaps: new Map(),
 			width: 100,

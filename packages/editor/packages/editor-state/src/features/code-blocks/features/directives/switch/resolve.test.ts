@@ -16,7 +16,6 @@ describe('switch directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			name: 'test-block',
-			moduleId: 'test-block',
 			code: ['; @switch sw1 0 1'],
 			width: 100,
 			gaps: new Map(),

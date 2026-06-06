@@ -3,10 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { parseBlockDirectives } from '../../code-blocks/utils/parseBlockDirectives';
 import { resolveGlobalEditorDirectives } from '../registry';
 
-function createParsedBlock(code: string[], moduleId?: string) {
+function createParsedBlock(code: string[], name?: string) {
 	return {
 		parsedDirectives: parseBlockDirectives(code),
-		...(moduleId ? { moduleId } : {}),
+		...(name ? { name } : {}),
 	};
 }
 

@@ -74,7 +74,7 @@ describe('button interaction', () => {
 		const cleanup = button(mockState, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
-		const mockCodeBlock = createMockCodeBlock({ name: 'test-block', moduleId: 'test-block' });
+		const mockCodeBlock = createMockCodeBlock({ name: 'test-block' });
 		mockCodeBlock.widgets.buttons = [
 			{
 				id: 'testButton',
@@ -102,7 +102,7 @@ describe('button interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 		const mouseUpCallback = onCallbacks.get('mouseup');
 
-		const mockCodeBlock = createMockCodeBlock({ name: 'test-block', moduleId: 'test-block' });
+		const mockCodeBlock = createMockCodeBlock({ name: 'test-block' });
 		mockCodeBlock.widgets.buttons = [
 			{
 				id: 'testButton',

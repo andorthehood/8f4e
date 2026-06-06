@@ -12,13 +12,13 @@ function resolveWaveDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
-	if (!graphicData.moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
-	const startAddress = resolveMemoryIdentifier(state, graphicData.moduleId, wave.startAddressMemoryId);
-	const length = resolveElementCount(wave.length, graphicData.moduleId, state);
-	const pointer = resolveMemoryIdentifier(state, graphicData.moduleId, wave.pointerMemoryId);
+	const startAddress = resolveMemoryIdentifier(state, graphicData.name, wave.startAddressMemoryId);
+	const length = resolveElementCount(wave.length, graphicData.name, state);
+	const pointer = resolveMemoryIdentifier(state, graphicData.name, wave.pointerMemoryId);
 	const valueSpec = startAddress ? resolveTypedValueSpec(startAddress) : undefined;
 
 	if (!startAddress || !length || !valueSpec || valueSpec.elementByteSize <= 0) {

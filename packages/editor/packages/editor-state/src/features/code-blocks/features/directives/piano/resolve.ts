@@ -70,18 +70,18 @@ function resolvePianoDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
-	if (!graphicData.moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
 	const memoryIdentifierKeysList = resolveMemoryIdentifier(
 		state,
-		graphicData.moduleId,
+		graphicData.name,
 		pianoKeyboard.pressedKeysListMemoryId
 	);
 	const memoryIdentifierNumberOfKeys = resolveMemoryIdentifier(
 		state,
-		graphicData.moduleId,
+		graphicData.name,
 		pianoKeyboard.pressedNumberOfKeysMemoryId
 	);
 

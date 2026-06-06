@@ -16,7 +16,6 @@ describe('crossfade directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			name: 'test-block',
-			moduleId: 'test-block',
 			code: ['float dry 0', 'float wet 0', '; @crossfade &dry &wet'],
 			width: 200,
 			gaps: new Map(),

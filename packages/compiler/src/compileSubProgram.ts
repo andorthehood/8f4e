@@ -40,7 +40,7 @@ type ModuleCompilerSource = {
 	cacheKey: string;
 	/** Public entry that should dispatch to the compiled module. */
 	entryName: string;
-	/** Project code block id that produced this source, when compiling a project. */
+	/** Project code block creation index that produced this source, when compiling a project. */
 	projectBlockId?: number;
 };
 
