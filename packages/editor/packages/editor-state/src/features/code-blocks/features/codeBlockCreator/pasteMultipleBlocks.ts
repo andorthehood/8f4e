@@ -1,6 +1,8 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
+import getCodeBlockId from '../../utils/getCodeBlockId';
 import { renameInterModuleReferences } from '../../utils/renameInterModuleReferences';
 import type { ClipboardCodeBlock } from '../clipboard/clipboardUtils';
 import upsertPos from '../directives/pos/upsert';
@@ -105,12 +107,11 @@ export function pasteMultipleBlocks(
 	const originalNames: Array<{ type: 'module' | 'function'; name: string; index: number }> = [];
 	blocks.forEach((clipboardBlock, index) => {
 		const code = [...clipboardBlock.code];
-		const [, instruction = '', rawName = ''] =
-			code[0]?.match(/^([a-zA-Z][a-zA-Z0-9]*)\s+([a-zA-Z_][a-zA-Z0-9_-]*)/) ?? [];
-		const blockName = rawName.trim().split(/\s+/)[0] ?? '';
-		if (instruction === 'function' && blockName) {
+		const blockType = getBlockType(code);
+		const blockName = getCodeBlockId(code);
+		if (blockType === 'function' && blockName) {
 			originalNames.push({ type: 'function', name: blockName, index });
-		} else if (instruction === 'module' && blockName) {
+		} else if (blockType === 'module' && blockName) {
 			originalNames.push({ type: 'module', name: blockName, index });
 		}
 	});
@@ -150,10 +151,9 @@ export function pasteMultipleBlocks(
 		let code = [...clipboardBlock.code];
 
 		// Update module/function names to ensure uniqueness.
-		const [, instruction = '', rawName = ''] =
-			code[0]?.match(/^([a-zA-Z][a-zA-Z0-9]*)\s+([a-zA-Z_][a-zA-Z0-9_-]*)/) ?? [];
-		const originalName = rawName.trim().split(/\s+/)[0] ?? '';
-		const originalType = instruction === 'function' ? 'function' : instruction === 'module' ? 'module' : undefined;
+		const blockType = getBlockType(code);
+		const originalName = getCodeBlockId(code);
+		const originalType = blockType === 'function' ? 'function' : blockType === 'module' ? 'module' : undefined;
 
 		if (originalName && originalType) {
 			const key = `${originalType}:${originalName}`;
@@ -163,9 +163,9 @@ export function pasteMultipleBlocks(
 			const newNames = nameMapping.get(key) || [];
 			const newName = newNames[occurrenceIndex] || originalName;
 
-			if (instruction === 'function') {
+			if (blockType === 'function') {
 				code = changeCodeBlockNameInCode(code, 'function', newName);
-			} else if (instruction === 'module') {
+			} else if (blockType === 'module') {
 				code = changeCodeBlockNameInCode(code, 'module', newName);
 			}
 		}
@@ -200,7 +200,7 @@ export function pasteMultipleBlocks(
 
 		const codeBlock = createCodeBlockGraphicData({
 			code,
-			name: code[0]?.trim().split(/\s+/)[1] ?? '',
+			name: getCodeBlockId(code),
 			gridX,
 			gridY,
 			x: gridX * state.viewport.vGrid,
