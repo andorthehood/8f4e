@@ -6,7 +6,6 @@ import type {
 	State,
 	Viewport,
 } from '@8f4e/editor-state-types';
-import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
 import { deriveDirectiveState } from '~/features/code-blocks/features/directives/registry';
 import { parseBlockDirectives } from '~/features/code-blocks/utils/parseBlockDirectives';
 
@@ -73,12 +72,8 @@ export function createMockCodeBlock(
 	const height = overrides.height ?? 100;
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
-	const name = overrides.name ?? 'test-block';
 	const code = overrides.code ?? [];
-	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
-	const moduleId = overrides.moduleId ?? derivedModuleId;
-	const derivedFunctionId = getFunctionId(code) || undefined;
-	const functionId = overrides.functionId ?? derivedFunctionId;
+	const name = overrides.name ?? code[0]?.trim().split(/\s+/)[1] ?? 'test-block';
 
 	// Default grid size for testing (matches common font sizes)
 	const defaultVGrid = 8;
@@ -108,8 +103,6 @@ export function createMockCodeBlock(
 		offsetY,
 		cursor,
 		name,
-		...(moduleId !== undefined ? { moduleId } : {}),
-		...(functionId !== undefined ? { functionId } : {}),
 		code,
 		codeColors: [],
 		codeToRender: [],

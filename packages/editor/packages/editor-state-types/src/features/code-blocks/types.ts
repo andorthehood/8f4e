@@ -298,10 +298,6 @@ export interface CodeBlockGraphicData {
 	};
 	/** Human/source-facing block name derived from the block opener line. */
 	name: string;
-	/** Raw module/constants identifier used as key in compiler.compiledModules */
-	moduleId?: string;
-	/** Raw function identifier used as key in compiler.compiledFunctions */
-	functionId?: string;
 	positionOffsetterXWordAddress?: number;
 	positionOffsetterYWordAddress?: number;
 	/** Grid-space X coordinate (source of truth for horizontal position). Pixel X = gridX * vGrid */

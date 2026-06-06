@@ -17,7 +17,7 @@ export function resolveGlobalEditorDirectives(
 	codeBlocks: {
 		parsedDirectives: ParsedDirectiveRecord[];
 		creationIndex?: number;
-		moduleId?: string;
+		name?: string;
 		blockType?: CodeBlockType;
 	}[],
 	plugins: GlobalEditorDirectivePlugin[] = globalEditorDirectivePlugins
@@ -37,7 +37,7 @@ export function resolveGlobalEditorDirectives(
 		const codeBlockId = block.creationIndex ?? blockIndex;
 		const context: GlobalEditorDirectiveContext = {
 			codeBlockId,
-			moduleId: block.moduleId,
+			moduleId: block.name,
 			blockType: block.blockType,
 		};
 

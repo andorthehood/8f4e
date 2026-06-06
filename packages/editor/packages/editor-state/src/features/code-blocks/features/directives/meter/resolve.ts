@@ -15,11 +15,11 @@ function resolveMeterDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
-	if (!graphicData.moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
-	const memory = resolveMemoryIdentifier(state, graphicData.moduleId, meter.memoryId);
+	const memory = resolveMemoryIdentifier(state, graphicData.name, meter.memoryId);
 	const valueSpec = memory ? resolveDirectOrPointerTypedValueSpec(memory) : undefined;
 
 	if (!memory || !valueSpec) {

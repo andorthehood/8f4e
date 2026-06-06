@@ -11,11 +11,11 @@ function resolveSwitchDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
-	if (!graphicData.moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
-	const memory = resolveMemoryIdentifier(state, graphicData.moduleId, _switch.id)?.memory;
+	const memory = resolveMemoryIdentifier(state, graphicData.name, _switch.id)?.memory;
 
 	if (!memory) {
 		return;

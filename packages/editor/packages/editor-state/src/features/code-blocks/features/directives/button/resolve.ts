@@ -11,11 +11,11 @@ function resolveButtonDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
-	if (!graphicData.moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
-	const memory = resolveMemoryIdentifier(state, graphicData.moduleId, button.id)?.memory;
+	const memory = resolveMemoryIdentifier(state, graphicData.name, button.id)?.memory;
 
 	if (!memory) {
 		return;

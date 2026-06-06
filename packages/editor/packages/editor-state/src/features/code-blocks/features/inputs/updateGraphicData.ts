@@ -6,7 +6,7 @@ const CONNECTOR_WIDTH_GRID_CELLS = 3;
 
 export default function updateInputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.widgets.inputs = [];
-	const moduleId = graphicData.moduleId;
+	const moduleId = graphicData.name;
 	if (!moduleId) {
 		return;
 	}
