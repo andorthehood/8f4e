@@ -13,11 +13,7 @@ export { default as extractPointeeElementMaxBase } from './extractPointeeElement
 export { default as extractPointeeElementWordSizeBase } from './extractPointeeElementWordSizeBase';
 export { default as extractUseDependencies } from './extractUseDependencies';
 export { type CodeBlockType, getBlockType, isCompilableBlockType } from './getBlockType';
-export { default as getConstantsId } from './getConstantsId';
-export { default as getFunctionId } from './getFunctionId';
-export { default as getModuleId } from './getModuleId';
 export { default as getPointerDepth } from './getPointerDepth';
-export { default as getPrototypeId } from './getPrototypeId';
 export { default as hasElementCountPrefix } from './hasElementCountPrefix';
 export { default as hasElementMaxPrefix } from './hasElementMaxPrefix';
 export { default as hasElementMinPrefix } from './hasElementMinPrefix';

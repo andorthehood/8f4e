@@ -17,7 +17,7 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 	for (const codeBlock of state.codeBlockRendering.codeBlocks) {
 		const isSelected = codeBlock === state.codeBlockRendering.selectedCodeBlock;
 
-		if (!codeBlock.moduleId) {
+		if (!codeBlock.name) {
 			continue;
 		}
 

@@ -16,7 +16,6 @@ describe('slider directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			name: 'test-block',
-			moduleId: 'test-block',
 			code: ['int mySlider 50', '; @slider &mySlider'],
 			width: 200,
 			gaps: new Map(),

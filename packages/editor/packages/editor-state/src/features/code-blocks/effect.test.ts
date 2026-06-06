@@ -9,7 +9,7 @@ import codeBlockRenderingEffect from './effect';
 describe('code block rendering error mapping', () => {
 	it('maps compiler errors by creationIndex', () => {
 		const functionBlock = createMockCodeBlock({
-			name: 'function_helper',
+			name: 'helper',
 			creationIndex: 7,
 			code: ['function helper', 'push 1', 'functionEnd'],
 			blockType: 'function',

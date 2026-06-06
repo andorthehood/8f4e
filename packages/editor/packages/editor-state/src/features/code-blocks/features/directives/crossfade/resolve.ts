@@ -11,12 +11,12 @@ function resolveCrossfadeDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
-	if (!graphicData.moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
-	const leftMemory = resolveMemoryIdentifier(state, graphicData.moduleId, crossfade.leftMemoryId);
-	const rightMemory = resolveMemoryIdentifier(state, graphicData.moduleId, crossfade.rightMemoryId);
+	const leftMemory = resolveMemoryIdentifier(state, graphicData.name, crossfade.leftMemoryId);
+	const rightMemory = resolveMemoryIdentifier(state, graphicData.name, crossfade.rightMemoryId);
 
 	if (!leftMemory || !rightMemory) {
 		return;

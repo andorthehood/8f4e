@@ -1,13 +1,6 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import {
-	getBlockType,
-	getConstantsId,
-	getFunctionId,
-	getModuleId,
-	getPointerDepth,
-	isMemoryDeclarationInstruction,
-} from '@8f4e/tokenizer';
+import { getBlockType, getPointerDepth, instructionParser, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
 import gapCalculator from '../code-editing/gapCalculator';
 import highlightSyntax8f4e from '../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../code-editing/highlightSyntaxGlsl';
@@ -38,7 +31,6 @@ import gaps from './gaps';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 import positionOffsetters from './positionOffsetters';
 import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
-import getCodeBlockId from './utils/getCodeBlockId';
 import { parseBlockDirectives } from './utils/parseBlockDirectives';
 import wrapText from './utils/wrapText';
 
@@ -123,9 +115,12 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				.map(char => char.charCodeAt(0) as number | string)
 				.concat(expandLineToCells(text, tabStopsByLine[rawRow] || []));
 		});
-		graphicData.name = getCodeBlockId(graphicData.code);
-		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
-		graphicData.functionId = getFunctionId(graphicData.code) || undefined;
+		graphicData.name =
+			graphicData.code
+				.find(line => line.match(instructionParser))
+				?.match(instructionParser)?.[2]
+				?.trim()
+				.split(/\s+/)[0] ?? '';
 		graphicData.isCollapsed = displayModel.isCollapsed;
 
 		// Choose highlighter based on block type and get syntax colors for raw code
@@ -309,7 +304,9 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 
 			const blockType = getBlockType(codeBlock.code) as CodeBlockGraphicData['blockType'];
 			if (blockType === 'module' && !codeBlock.entry) {
-				throw new Error(`Project module block "${getCodeBlockId(codeBlock.code)}" is missing an entry`);
+				throw new Error(
+					`Project module block "${codeBlock.code[0]?.trim().split(/\s+/)[1] ?? ''}" is missing an entry`
+				);
 			}
 
 			return createCodeBlockGraphicData({
@@ -317,7 +314,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				height: 0,
 				code: codeBlock.code,
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				name: getCodeBlockId(codeBlock.code),
+				name: codeBlock.code[0]?.trim().split(/\s+/)[1] ?? '',
 				gridX,
 				gridY,
 				x: pixelX,

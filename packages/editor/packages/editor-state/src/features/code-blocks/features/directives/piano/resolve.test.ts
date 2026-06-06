@@ -16,7 +16,6 @@ describe('piano directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			name: 'test-block',
-			moduleId: 'test-block',
 			code: ['; @piano keys1 numKeys 60'],
 			gaps: new Map(),
 		});
@@ -75,9 +74,8 @@ describe('piano directive widget resolution', () => {
 		expect(mockGraphicData.widgets.pianoKeyboards).toHaveLength(1);
 	});
 
-	it('resolves memory through moduleId rather than code block id', () => {
-		mockGraphicData.id = 'module_test-block';
-		mockGraphicData.moduleId = 'test-block';
+	it('resolves memory through code block name', () => {
+		mockGraphicData.name = 'test-block';
 
 		runDirectiveResolution();
 
