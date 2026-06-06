@@ -6,7 +6,7 @@ import parsePos from '../directives/pos/data';
 const AUTO_ENV_CONSTANTS_BLOCK_NAME = 'env';
 const AUTO_ENV_CONSTANTS_BLOCK_ID = `constants_${AUTO_ENV_CONSTANTS_BLOCK_NAME}`;
 
-const isEnvBlock = (block: CodeBlockGraphicData): boolean => block.id === AUTO_ENV_CONSTANTS_BLOCK_ID;
+const isEnvBlock = (block: CodeBlockGraphicData): boolean => block.name === AUTO_ENV_CONSTANTS_BLOCK_ID;
 
 /**
  * Generates the content for the auto-managed environment constants block.

@@ -53,19 +53,19 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.sampleRate',
 				value: '48000',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBeUndefined();
 
-		expect(
-			validator.parse?.({ path: 'audioRuntime.sampleRate', value: '48000', rawRow: 1, codeBlockId: 'config' })
-		).toBe(48000);
+		expect(validator.parse?.({ path: 'audioRuntime.sampleRate', value: '48000', rawRow: 1, codeBlockId: 0 })).toBe(
+			48000
+		);
 		expect(
 			validator.parse?.({
 				path: 'audioRuntime.audioOutBufferLAddress',
 				value: '24',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe(24);
 		expect(
@@ -73,7 +73,7 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.audioOutBufferLAddress',
 				value: 'audioout:buffer',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe('audioout:buffer');
 		expect(
@@ -81,7 +81,7 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.audioOutBufferLAddress',
 				value: 'buffer',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 				moduleId: 'audioout',
 			})
 		).toBe('audioout:buffer');
@@ -90,7 +90,7 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.audioOutBufferLAddress',
 				value: 'buffer',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 				moduleId: 'audioout',
 			})
 		).toBeUndefined();
@@ -99,7 +99,7 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.audioOutBufferLAddress',
 				value: 'audioout',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe("@config audioRuntime.audioOutBufferLAddress: invalid value 'audioout'");
 
@@ -108,7 +108,7 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.sampleRate',
 				value: '0',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe('@config audioRuntime.sampleRate: value 0 must be at least 1');
 
@@ -117,7 +117,7 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.unknown',
 				value: '1',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe("@config: unknown config path 'audioRuntime.unknown'");
 	});
@@ -168,7 +168,7 @@ describe('editor config schema contributions', () => {
 				path: 'midi.inputs.0.port',
 				value: '0',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBeUndefined();
 		expect(
@@ -176,7 +176,7 @@ describe('editor config schema contributions', () => {
 				path: 'midi.inputs.0.callback',
 				value: 'onMidiIn',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBeUndefined();
 		expect(
@@ -184,7 +184,7 @@ describe('editor config schema contributions', () => {
 				path: 'midi.inputs.0.callback',
 				value: 'bad-name',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe("@config midi.inputs.0.callback: invalid string value 'bad-name'");
 		expect(
@@ -192,7 +192,7 @@ describe('editor config schema contributions', () => {
 				path: 'midi.inputs.0.unknown',
 				value: '1',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe("@config: unknown config path 'midi.inputs.0.unknown'");
 	});
@@ -224,7 +224,7 @@ describe('editor config schema contributions', () => {
 				path: 'keyboard.keyCodeMemory',
 				value: 'keyCode',
 				rawRow: 1,
-				codeBlockId: 'keyboard',
+				codeBlockId: 0,
 				moduleId: 'keyboard',
 			})
 		).toBeUndefined();
@@ -233,7 +233,7 @@ describe('editor config schema contributions', () => {
 				path: 'keyboard.keyCodeMemory',
 				value: 'keyCode',
 				rawRow: 1,
-				codeBlockId: 'keyboard',
+				codeBlockId: 0,
 				moduleId: 'keyboard',
 			})
 		).toBe('keyboard:keyCode');
@@ -242,7 +242,7 @@ describe('editor config schema contributions', () => {
 				path: 'keyboard.keyCodeMemory',
 				value: 'keyCode',
 				rawRow: 1,
-				codeBlockId: 'note',
+				codeBlockId: 0,
 			})
 		).toBe("@config keyboard.keyCodeMemory: memory value 'keyCode' must include a module id outside module blocks");
 	});

@@ -24,7 +24,7 @@ function getTestRuntimeEnvConstants(editorConfig: EditorConfig) {
 
 function createGraphicEnvBlock(code: string[], overrides: Partial<CodeBlockGraphicData> = {}): CodeBlockGraphicData {
 	return createMockCodeBlock({
-		id: AUTO_ENV_BLOCK_ID,
+		name: AUTO_ENV_BLOCK_ID,
 		code,
 		creationIndex: 0,
 		blockType: 'constants',
@@ -157,7 +157,7 @@ describe('autoEnvConstants', () => {
 		store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(envCodeBlock?.code ?? [])]);
 		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
-		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
+		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.name === AUTO_ENV_BLOCK_ID);
 		const magicNumberLine = envBlock?.code.find(line => line.includes('RUNTIME_MAGIC'));
 		expect(magicNumberLine).toBe('const RUNTIME_MAGIC 77');
 		const unusedRuntimeLine = envBlock?.code.find(line => line.includes('UNUSED_RUNTIME_MAGIC'));
@@ -224,7 +224,7 @@ describe('autoEnvConstants', () => {
 			},
 		]);
 
-		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
+		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.name === AUTO_ENV_BLOCK_ID);
 		const assetSizeLine = envBlock?.code.find(line => line.includes('ASSET_0_SIZE'));
 		expect(assetSizeLine).toBe('const ASSET_0_SIZE 88200');
 	});
@@ -244,7 +244,7 @@ describe('autoEnvConstants', () => {
 		store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(codeWithCustomPos, { gridX: 12, gridY: -7 })]);
 		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
-		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
+		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.name === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 12 -7');
 	});
 
@@ -262,7 +262,7 @@ describe('autoEnvConstants', () => {
 		store.set('codeBlockRendering.codeBlocks', [createGraphicEnvBlock(codeWithoutPos)]);
 		store.set('editorConfig.testRuntime', { magicNumber: 77 });
 
-		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.id === AUTO_ENV_BLOCK_ID);
+		const envBlock = state.codeBlockRendering.codeBlocks.find(block => block.name === AUTO_ENV_BLOCK_ID);
 		expect(envBlock?.code).toContain('; @pos 0 0');
 	});
 

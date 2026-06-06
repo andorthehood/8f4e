@@ -144,8 +144,8 @@ function alignTargetBlockCursorForVerticalNavigation(
 interface JumpToFavoriteCodeBlockEvent {
 	/** Primary identifier: stable runtime creationIndex */
 	creationIndex: number;
-	/** Fallback identifier: source code block ID */
-	id: string;
+	/** Human-facing block name used for labels. */
+	name: string;
 }
 
 /**
@@ -204,30 +204,24 @@ export function navigateToCodeBlockInDirection(
 /**
  * Jumps to a specific code block by its identifiers.
  *
- * Resolves the target block using creationIndex (primary) or id (fallback).
+ * Resolves the target block using creationIndex.
  * If the block is found, selects it and centers the viewport on it.
  *
  * @param state - The editor state
  * @param creationIndex - The stable runtime identifier of the target block
- * @param id - The source code ID of the target block (fallback)
+ * @param name - Human-facing name of the target block.
  * @returns {boolean} true if the block was found and jumped to, false otherwise
  */
 export function jumpToCodeBlock(
 	stateSource: StateSource,
 	creationIndex: number,
-	id: string,
+	_name: string,
 	events?: EventDispatcher
 ): boolean {
 	const state = getState(stateSource);
 	const codeBlocks = state.codeBlockRendering.codeBlocks;
 
-	// Try to resolve by creationIndex first (primary identifier)
-	let targetBlock = codeBlocks.find(block => block.creationIndex === creationIndex);
-
-	// Fallback to resolving by id if creationIndex didn't match
-	if (!targetBlock) {
-		targetBlock = codeBlocks.find(block => block.id === id);
-	}
+	const targetBlock = codeBlocks.find(block => block.creationIndex === creationIndex);
 
 	// If we found a block, select it and center viewport on it
 	if (targetBlock) {
@@ -277,9 +271,9 @@ export function goHome(stateSource: StateSource, events?: EventDispatcher): void
  * If no code block is selected, the effect does nothing.
  *
  * Also listens for jumpToFavoriteCodeBlock events to enable jumping to specific
- * code blocks by creationIndex/id. When a jumpToFavoriteCodeBlock event is received,
+ * code blocks by creationIndex. When a jumpToFavoriteCodeBlock event is received,
  * this effect will:
- * - Resolve the target block by creationIndex (primary) or id (fallback)
+ * - Resolve the target block by creationIndex
  * - Select that code block
  * - Center the viewport on the newly selected block
  *
@@ -292,7 +286,7 @@ export default function codeBlockNavigation(store: StateManager<State>, events: 
 	};
 
 	const onJumpToFavoriteCodeBlock = (event: JumpToFavoriteCodeBlockEvent) => {
-		jumpToCodeBlock(store, event.creationIndex, event.id, events);
+		jumpToCodeBlock(store, event.creationIndex, event.name, events);
 	};
 
 	const onGoHome = () => {

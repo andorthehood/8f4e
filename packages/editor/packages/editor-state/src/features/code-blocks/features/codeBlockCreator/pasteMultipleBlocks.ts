@@ -203,7 +203,7 @@ export function pasteMultipleBlocks(
 
 		const codeBlock = createCodeBlockGraphicData({
 			code,
-			id: getCodeBlockId(code),
+			name: getCodeBlockId(code),
 			gridX,
 			gridY,
 			x: gridX * state.viewport.vGrid,

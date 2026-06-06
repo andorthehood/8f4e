@@ -5,8 +5,8 @@ import deriveFavorites from '../../code-blocks/features/favorites/deriveFavorite
  * Generates a submenu for favorited code blocks.
  *
  * Scans all code blocks for the ; @favorite directive and creates menu items
- * that allow jumping to each favorite. Menu items are labeled as "blockType id"
- * to provide context and handle ambiguous/duplicate IDs.
+ * that allow jumping to each favorite. Menu items are labeled as "blockType name"
+ * to provide context.
  *
  * If no favorites are found, shows a disabled placeholder item.
  *
@@ -26,13 +26,13 @@ export const favoritesMenu: MenuGenerator = state => {
 		];
 	}
 
-	// Create menu items for each favorite, labeled as "blockType id"
+	// Create menu items for each favorite, labeled as "blockType name"
 	return favorites.map(favorite => ({
-		title: `${favorite.blockType} ${favorite.id}`,
+		title: `${favorite.blockType} ${favorite.name}`,
 		action: 'jumpToFavoriteCodeBlock',
 		payload: {
 			creationIndex: favorite.creationIndex,
-			id: favorite.id,
+			name: favorite.name,
 		},
 		close: true,
 	}));

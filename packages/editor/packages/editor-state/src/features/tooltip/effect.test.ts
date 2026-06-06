@@ -89,7 +89,7 @@ describe('tooltip effect', () => {
 
 	it('adds selected function line stack analysis when compiler data is available', () => {
 		const selectedBlock = createMockCodeBlock({
-			id: 'function_helper',
+			name: 'function_helper',
 			code: ['function helper', 'param int', 'param int', 'add', 'return', 'functionEnd'],
 			blockType: 'function',
 			cursor: {
@@ -256,7 +256,7 @@ describe('tooltip effect', () => {
 
 	it('writes module execution order for selected module instructions', () => {
 		const selectedBlock = createMockCodeBlock({
-			id: 'module-b',
+			name: 'module-b',
 			moduleId: 'module-b',
 			code: ['module module-b', 'push 1'],
 			cursor: {

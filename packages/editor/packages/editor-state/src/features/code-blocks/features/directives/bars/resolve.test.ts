@@ -15,7 +15,7 @@ describe('bars directive widget resolution', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
+			name: 'test-block',
 			moduleId: 'test-block',
 			code: ['; @bars &bins count(bins)'],
 			gaps: new Map(),

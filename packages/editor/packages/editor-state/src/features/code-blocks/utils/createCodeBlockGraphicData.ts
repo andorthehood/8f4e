@@ -13,7 +13,7 @@ export function createCodeBlockGraphicData(
 	const height = overrides.height ?? 100;
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
-	const id = overrides.id ?? 'code-block';
+	const name = overrides.name ?? 'code-block';
 	const code = overrides.code ?? [];
 	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
 	const moduleId = overrides.moduleId ?? derivedModuleId;
@@ -45,7 +45,7 @@ export function createCodeBlockGraphicData(
 		offsetX,
 		offsetY,
 		cursor,
-		id,
+		name,
 		...(moduleId !== undefined ? { moduleId } : {}),
 		...(functionId !== undefined ? { functionId } : {}),
 		code,

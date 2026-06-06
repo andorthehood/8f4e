@@ -10,7 +10,7 @@ type EntryBounds = {
 
 function getEntryName(codeBlock: CodeBlockGraphicData): string {
 	if (!codeBlock.entry) {
-		throw new Error(`Module code block "${codeBlock.id}" is missing entry`);
+		throw new Error(`Module code block "${codeBlock.name}" is missing entry`);
 	}
 	return codeBlock.entry;
 }

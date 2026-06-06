@@ -4,7 +4,7 @@ export function getActiveCodeBlocksForEnvironmentPlugins(state: State): CodeBloc
 	const blocks = [...state.codeBlockRendering.codeBlocks];
 	const selectedBlock = state.codeBlockRendering.selectedCodeBlock;
 
-	if (selectedBlock && !blocks.some(block => block.id === selectedBlock.id)) {
+	if (selectedBlock && !blocks.some(block => block.creationIndex === selectedBlock.creationIndex)) {
 		blocks.push(selectedBlock);
 	}
 

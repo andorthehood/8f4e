@@ -8,7 +8,7 @@ describe('serializeToProject', () => {
 			codeBlockRendering: {
 				codeBlocks: [
 					createMockCodeBlock({
-						id: 'block-1',
+						name: 'block-1',
 						code: ['10 example'],
 						x: 20,
 						y: 30,

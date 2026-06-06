@@ -43,7 +43,7 @@ export interface EditorConfigEntry {
 	path: string;
 	value: string;
 	rawRow: number;
-	codeBlockId: string | number;
+	codeBlockId: number;
 	moduleId?: string;
 }
 

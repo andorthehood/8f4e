@@ -15,7 +15,7 @@ describe('piano directive widget resolution', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
+			name: 'test-block',
 			moduleId: 'test-block',
 			code: ['; @piano keys1 numKeys 60'],
 			gaps: new Map(),

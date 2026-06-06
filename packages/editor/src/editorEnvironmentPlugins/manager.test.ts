@@ -154,7 +154,7 @@ describe('editor environment plugin manager', () => {
 
 	it('lets plugins own and clear their scoped errors', async () => {
 		const pluginError = {
-			codeBlockId: 'test-block',
+			codeBlockId: 0,
 			lineNumber: 1,
 			message: 'Plugin-specific directive error',
 		};

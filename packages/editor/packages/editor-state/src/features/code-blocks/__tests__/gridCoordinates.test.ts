@@ -116,7 +116,7 @@ describe('Grid Coordinates Integration', () => {
 
 		it('should maintain relative positions between code blocks after font change', () => {
 			const block1 = createMockCodeBlock({
-				id: 'block1',
+				name: 'block1',
 				gridX: 5,
 				gridY: 5,
 				x: 40,
@@ -124,7 +124,7 @@ describe('Grid Coordinates Integration', () => {
 			});
 
 			const block2 = createMockCodeBlock({
-				id: 'block2',
+				name: 'block2',
 				gridX: 15,
 				gridY: 15,
 				x: 120,
@@ -166,7 +166,7 @@ describe('Grid Coordinates Integration', () => {
 	describe('Project Import/Export', () => {
 		it('should preserve grid coordinates through serialization cycle', () => {
 			const originalBlock = createMockCodeBlock({
-				id: 'test-module',
+				name: 'test-module',
 				code: ['module test', 'moduleEnd'],
 				gridX: 12,
 				gridY: 8,
@@ -190,7 +190,7 @@ describe('Grid Coordinates Integration', () => {
 			const newVGrid = 6;
 			const newHGrid = 10;
 			const importedBlock = createMockCodeBlock({
-				id: 'test-module',
+				name: 'test-module',
 				code: serialized.code,
 				gridX: serialized.gridCoordinates.x,
 				gridY: serialized.gridCoordinates.y,
