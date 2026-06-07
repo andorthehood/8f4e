@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "tooManyParams",
     "codeBlockType": "function",
+    "projectBlockId": 8,
   },
   "line": {
     "arguments": [
@@ -20,7 +21,7 @@
       },
     ],
     "instruction": "param",
-    "lineNumber": 10,
+    "lineNumber": 11,
   },
   "message": "Function signature overflow. Maximum 8 parameters and 8 return values. (17)",
 }

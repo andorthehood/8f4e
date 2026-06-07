@@ -1,0 +1,60 @@
+{
+  "constantsBlocks": [
+    {
+      "code": [
+        "constants env",
+        "const int tableSize 16",
+        "constantsEnd",
+      ],
+      "projectBlockId": 9,
+    },
+  ],
+  "entries": {
+    "main": [
+      {
+        "code": [
+          "module counter",
+          "int count",
+          "moduleEnd",
+        ],
+        "projectBlockId": 4,
+      },
+    ],
+  },
+  "functionBlocks": [
+    {
+      "code": [
+        "function increment",
+        "param int value",
+        "push value",
+        "push 1",
+        "add",
+        "functionEnd int",
+      ],
+      "projectBlockId": 13,
+    },
+  ],
+  "groups": [],
+  "macroBlocks": [
+    {
+      "code": [
+        "defineMacro double",
+        "push 2",
+        "mul",
+        "defineMacroEnd",
+      ],
+      "projectBlockId": 25,
+    },
+  ],
+  "prototypeBlocks": [
+    {
+      "code": [
+        "prototype oscillatorState",
+        "float phase",
+        "float frequency 440",
+        "prototypeEnd",
+      ],
+      "projectBlockId": 20,
+    },
+  ],
+}

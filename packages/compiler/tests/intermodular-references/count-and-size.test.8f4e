@@ -1,6 +1,9 @@
 8f4e/v1
 
-; Intermodule count(...) and sizeof(...) references should resolve in declaration defaults.
+; Intermodule count(...) and
+; sizeof(...) references should
+; resolve in declaration
+; defaults.
 entry test
 module countSizeSource
 int[] buffer 10 0
@@ -16,7 +19,9 @@ int16[] buffer 12 0
 moduleEnd
 
 module countSizeAssertions
-; count(...) returns the word-aligned element count for arrays.
+; count(...) returns the
+; word-aligned element count for
+; arrays.
 int bufferCount count(countSizeSource:buffer)
 int dataCount count(countSizeSource:data)
 
@@ -26,7 +31,8 @@ call assert 10
 push dataCount
 call assert 7
 
-; sizeof(...) returns the element byte width.
+; sizeof(...) returns the
+; element byte width.
 int intElementSize sizeof(countSizeSource:buffer)
 int floatElementSize sizeof(countSizeSource:data)
 int pointerElementSize sizeof(pointerSizeSource:ptr)
@@ -46,7 +52,10 @@ call assert 4
 moduleEnd
 
 module outOfOrderCountSizeAssertions
-; Intermodule count and sizeof references can resolve to modules declared later.
+; Intermodule count and sizeof
+; references can resolve to
+; modules
+; declared later.
 int laterCount count(lateCountSizeSource:buffer)
 int laterSize sizeof(lateCountSizeSource:buffer)
 
@@ -62,7 +71,10 @@ int[] buffer 8 0
 moduleEnd
 
 module combinedCountSizeAssertions
-; Count, sizeof, and address references can be used together in one module.
+; Count, sizeof, and address
+; references can be used
+; together in
+; one module.
 int* ptr &combinedCountSizeSource:buffer
 int size count(combinedCountSizeSource:buffer)
 int elemSize sizeof(combinedCountSizeSource:buffer)

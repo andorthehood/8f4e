@@ -15,15 +15,14 @@ describe('bars directive widget resolution', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			code: ['; @bars &bins count(bins)'],
 			gaps: new Map(),
 			width: 100,
 		});
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,

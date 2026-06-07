@@ -2,7 +2,8 @@
 
 entry main
 module mapRowKeyTypeMismatch
-; map row keys should match the map input type.
+; map row keys should match the
+; map input type.
 int x
 push x
 mapBegin int

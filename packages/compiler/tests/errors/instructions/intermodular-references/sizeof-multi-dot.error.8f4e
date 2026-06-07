@@ -6,7 +6,9 @@ int[] buffer 5 0
 moduleEnd
 
 module sizeofMultiDotTarget
-; sizeof(...) should reject references with extra path segments.
+; sizeof(...) should reject
+; references with extra path
+; segments.
 int size sizeof(sizeofMultiDotSource:buffer.extra)
 moduleEnd
 entryEnd

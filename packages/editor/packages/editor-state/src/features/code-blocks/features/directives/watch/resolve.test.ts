@@ -18,15 +18,14 @@ describe('watch directive widget resolution', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			code: ['; @watch myVar'],
 			lineNumberColumnWidth: 2,
 			gaps: new Map(),
 		});
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,

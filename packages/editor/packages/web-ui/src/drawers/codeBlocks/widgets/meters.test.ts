@@ -63,11 +63,9 @@ describe('drawMeters', () => {
 	it('renders a segmented horizontal meter based on the current value', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -87,11 +85,9 @@ describe('drawMeters', () => {
 	it('clamps out-of-range values to a full meter', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -118,11 +114,9 @@ describe('drawMeters', () => {
 	it('returns fully to zero when the bound scalar value is zero', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -148,11 +142,9 @@ describe('drawMeters', () => {
 	it('treats bipolar ranges as amplitude meters so silence renders empty', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -183,11 +175,9 @@ describe('drawMeters', () => {
 	it('fills negative bipolar values by magnitude', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -213,11 +203,9 @@ describe('drawMeters', () => {
 	it('latches a red overload marker at the end of the meter after clipping', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: {
-				spriteLookups: {
-					fillColors: {},
-				} as never,
-			},
+			spriteLookups: {
+				fillColors: {},
+			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {

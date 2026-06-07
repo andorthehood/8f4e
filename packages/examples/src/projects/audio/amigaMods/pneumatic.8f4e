@@ -200,40 +200,40 @@ moduleEnd
 module assets
 ; @pos -3 -116
 ; @tab 22
-; @defAsset sample1	https://static.8f4e.com/assets/mods/pneumatic/sample_1.pcm
-; @defAsset sample2	https://static.8f4e.com/assets/mods/pneumatic/sample_2.pcm
-; @defAsset sample3	https://static.8f4e.com/assets/mods/pneumatic/sample_3.pcm
-; @defAsset sample4	https://static.8f4e.com/assets/mods/pneumatic/sample_4.pcm
-; @defAsset sample5	https://static.8f4e.com/assets/mods/pneumatic/sample_5.pcm
-; @defAsset sample6	https://static.8f4e.com/assets/mods/pneumatic/sample_6.pcm
-; @defAsset sample7	https://static.8f4e.com/assets/mods/pneumatic/sample_7.pcm
-; @defAsset sample8	https://static.8f4e.com/assets/mods/pneumatic/sample_8.pcm
-; @defAsset sample10	https://static.8f4e.com/assets/mods/pneumatic/sample_10.pcm
-; @defAsset sample11	https://static.8f4e.com/assets/mods/pneumatic/sample_11.pcm
-; @defAsset sample12	https://static.8f4e.com/assets/mods/pneumatic/sample_12.pcm
-; @defAsset sample13	https://static.8f4e.com/assets/mods/pneumatic/sample_13.pcm
-; @defAsset sample14	https://static.8f4e.com/assets/mods/pneumatic/sample_14.pcm
-; @defAsset sample15	https://static.8f4e.com/assets/mods/pneumatic/sample_15.pcm
-; @defAsset sample16	https://static.8f4e.com/assets/mods/pneumatic/sample_16.pcm
-; @defAsset sample17	https://static.8f4e.com/assets/mods/pneumatic/sample_17.pcm
-; @defAsset sample18	https://static.8f4e.com/assets/mods/pneumatic/sample_18.pcm
-; @defAsset sample19	https://static.8f4e.com/assets/mods/pneumatic/sample_19.pcm
-; @defAsset sample20	https://static.8f4e.com/assets/mods/pneumatic/sample_20.pcm
-; @defAsset sample21	https://static.8f4e.com/assets/mods/pneumatic/sample_21.pcm
-; @defAsset sample22	https://static.8f4e.com/assets/mods/pneumatic/sample_22.pcm
-; @defAsset sample23	https://static.8f4e.com/assets/mods/pneumatic/sample_23.pcm
-; @defAsset sample24	https://static.8f4e.com/assets/mods/pneumatic/sample_24.pcm
-; @defAsset sample25	https://static.8f4e.com/assets/mods/pneumatic/sample_25.pcm
-; @defAsset sample26	https://static.8f4e.com/assets/mods/pneumatic/sample_26.pcm
-; @defAsset sample27	https://static.8f4e.com/assets/mods/pneumatic/sample_27.pcm
-; @defAsset sample28	https://static.8f4e.com/assets/mods/pneumatic/sample_28.pcm
-; @defAsset sample29	https://static.8f4e.com/assets/mods/pneumatic/sample_29.pcm
-; @defAsset sample30	https://static.8f4e.com/assets/mods/pneumatic/sample_30.pcm
-; @defAsset sample31	https://static.8f4e.com/assets/mods/pneumatic/sample_31.pcm
-; @defAsset ch1	https://static.8f4e.com/assets/mods/pneumatic/patterns_ch1.bin
-; @defAsset ch2	https://static.8f4e.com/assets/mods/pneumatic/patterns_ch2.bin
-; @defAsset ch3	https://static.8f4e.com/assets/mods/pneumatic/patterns_ch3.bin
-; @defAsset ch4	https://static.8f4e.com/assets/mods/pneumatic/patterns_ch4.bin
+; @config bin.sample1.url https://static.8f4e.com/assets/mods/pneumatic/sample_1.pcm
+; @config bin.sample2.url https://static.8f4e.com/assets/mods/pneumatic/sample_2.pcm
+; @config bin.sample3.url https://static.8f4e.com/assets/mods/pneumatic/sample_3.pcm
+; @config bin.sample4.url https://static.8f4e.com/assets/mods/pneumatic/sample_4.pcm
+; @config bin.sample5.url https://static.8f4e.com/assets/mods/pneumatic/sample_5.pcm
+; @config bin.sample6.url https://static.8f4e.com/assets/mods/pneumatic/sample_6.pcm
+; @config bin.sample7.url https://static.8f4e.com/assets/mods/pneumatic/sample_7.pcm
+; @config bin.sample8.url https://static.8f4e.com/assets/mods/pneumatic/sample_8.pcm
+; @config bin.sample10.url https://static.8f4e.com/assets/mods/pneumatic/sample_10.pcm
+; @config bin.sample11.url https://static.8f4e.com/assets/mods/pneumatic/sample_11.pcm
+; @config bin.sample12.url https://static.8f4e.com/assets/mods/pneumatic/sample_12.pcm
+; @config bin.sample13.url https://static.8f4e.com/assets/mods/pneumatic/sample_13.pcm
+; @config bin.sample14.url https://static.8f4e.com/assets/mods/pneumatic/sample_14.pcm
+; @config bin.sample15.url https://static.8f4e.com/assets/mods/pneumatic/sample_15.pcm
+; @config bin.sample16.url https://static.8f4e.com/assets/mods/pneumatic/sample_16.pcm
+; @config bin.sample17.url https://static.8f4e.com/assets/mods/pneumatic/sample_17.pcm
+; @config bin.sample18.url https://static.8f4e.com/assets/mods/pneumatic/sample_18.pcm
+; @config bin.sample19.url https://static.8f4e.com/assets/mods/pneumatic/sample_19.pcm
+; @config bin.sample20.url https://static.8f4e.com/assets/mods/pneumatic/sample_20.pcm
+; @config bin.sample21.url https://static.8f4e.com/assets/mods/pneumatic/sample_21.pcm
+; @config bin.sample22.url https://static.8f4e.com/assets/mods/pneumatic/sample_22.pcm
+; @config bin.sample23.url https://static.8f4e.com/assets/mods/pneumatic/sample_23.pcm
+; @config bin.sample24.url https://static.8f4e.com/assets/mods/pneumatic/sample_24.pcm
+; @config bin.sample25.url https://static.8f4e.com/assets/mods/pneumatic/sample_25.pcm
+; @config bin.sample26.url https://static.8f4e.com/assets/mods/pneumatic/sample_26.pcm
+; @config bin.sample27.url https://static.8f4e.com/assets/mods/pneumatic/sample_27.pcm
+; @config bin.sample28.url https://static.8f4e.com/assets/mods/pneumatic/sample_28.pcm
+; @config bin.sample29.url https://static.8f4e.com/assets/mods/pneumatic/sample_29.pcm
+; @config bin.sample30.url https://static.8f4e.com/assets/mods/pneumatic/sample_30.pcm
+; @config bin.sample31.url https://static.8f4e.com/assets/mods/pneumatic/sample_31.pcm
+; @config bin.ch1.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch1.bin
+; @config bin.ch2.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch2.bin
+; @config bin.ch3.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch3.bin
+; @config bin.ch4.url https://static.8f4e.com/assets/mods/pneumatic/patterns_ch4.bin
 
 moduleEnd
 module rowCount1
@@ -299,7 +299,7 @@ int* row &rowCount1:out
 ; @hide
 use env
 int[] _dat ASSET_CH1_SIZE/4
-; @loadAsset ch1 &_dat
+; @config bin.ch1.memory _dat
 local int loopCounter
 
 loop 8
@@ -369,7 +369,7 @@ int* row &rowCount1:out
 ; @hide
 use env
 int[] _dat ASSET_CH2_SIZE/4
-; @loadAsset ch2 &_dat
+; @config bin.ch2.memory _dat
 
 local int loopCounter
 
@@ -440,7 +440,7 @@ int* row &rowCount1:out
 ; @hide
 use env
 int[] _dat ASSET_CH3_SIZE/4
-; @loadAsset ch3 &_dat
+; @config bin.ch3.memory _dat
 
 local int loopCounter
 
@@ -511,7 +511,7 @@ int* row &rowCount1:out
 ; @hide
 use env
 int[] _dat ASSET_CH4_SIZE/4
-; @loadAsset ch4 &_dat
+; @config bin.ch4.memory _dat
 
 local int loopCounter
 
@@ -1331,98 +1331,98 @@ module samplePack1
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
-; @loadAsset sample1 &sample1
+; @config bin.sample1.memory sample1
 ; @wave &sample1 count(sample1)
 int8[] sample2 ASSET_SAMPLE2_SIZE
-; @loadAsset sample2 &sample2
+; @config bin.sample2.memory sample2
 ; @wave &sample2 count(sample2)
 int8[] sample3 ASSET_SAMPLE3_SIZE
-; @loadAsset sample3 &sample3
+; @config bin.sample3.memory sample3
 ; @wave &sample3 count(sample3)
 int8[] sample4 ASSET_SAMPLE4_SIZE
-; @loadAsset sample4 &sample4
+; @config bin.sample4.memory sample4
 ; @wave &sample4 count(sample4)
 int8[] sample5 ASSET_SAMPLE5_SIZE
-; @loadAsset sample5 &sample5
+; @config bin.sample5.memory sample5
 ; @wave &sample5 count(sample5)
 int8[] sample6 ASSET_SAMPLE6_SIZE
-; @loadAsset sample6 &sample6
+; @config bin.sample6.memory sample6
 ; @wave &sample6 count(sample6)
 int8[] sample7 ASSET_SAMPLE7_SIZE
-; @loadAsset sample7 &sample7
+; @config bin.sample7.memory sample7
 ; @wave &sample7 count(sample7)
 int8[] sample8 ASSET_SAMPLE8_SIZE
-; @loadAsset sample8 &sample8
+; @config bin.sample8.memory sample8
 ; @wave &sample8 count(sample8)
 int8[] sample10 ASSET_SAMPLE10_SIZE
-; @loadAsset sample10 &sample10
+; @config bin.sample10.memory sample10
 ; @wave &sample10 count(sample10)
 int8[] sample11 ASSET_SAMPLE11_SIZE
-; @loadAsset sample11 &sample11
+; @config bin.sample11.memory sample11
 ; @wave &sample11 count(sample11)
 int8[] sample12 ASSET_SAMPLE12_SIZE
-; @loadAsset sample12 &sample12
+; @config bin.sample12.memory sample12
 ; @wave &sample12 count(sample12)
 int8[] sample13 ASSET_SAMPLE13_SIZE
-; @loadAsset sample13 &sample13
+; @config bin.sample13.memory sample13
 ; @wave &sample13 count(sample13)
 int8[] sample14 ASSET_SAMPLE14_SIZE
-; @loadAsset sample14 &sample14
+; @config bin.sample14.memory sample14
 ; @wave &sample14 count(sample14)
 int8[] sample15 ASSET_SAMPLE15_SIZE
-; @loadAsset sample15 &sample15
+; @config bin.sample15.memory sample15
 ; @wave &sample15 count(sample15)
 moduleEnd
 module samplePack2
 ; @pos 489 -15
 use env
 int8[] sample16 ASSET_SAMPLE16_SIZE
-; @loadAsset sample16 &sample16
+; @config bin.sample16.memory sample16
 ; @wave &sample16 count(sample16)
 int8[] sample17 ASSET_SAMPLE17_SIZE
-; @loadAsset sample17 &sample17
+; @config bin.sample17.memory sample17
 ; @wave &sample17 count(sample17)
 int8[] sample18 ASSET_SAMPLE18_SIZE
-; @loadAsset sample18 &sample18
+; @config bin.sample18.memory sample18
 ; @wave &sample18 count(sample18)
 int8[] sample19 ASSET_SAMPLE19_SIZE
-; @loadAsset sample19 &sample19
+; @config bin.sample19.memory sample19
 ; @wave &sample19 count(sample19)
 int8[] sample20 ASSET_SAMPLE20_SIZE
-; @loadAsset sample20 &sample20
+; @config bin.sample20.memory sample20
 ; @wave &sample20 count(sample20)
 int8[] sample21 ASSET_SAMPLE21_SIZE
-; @loadAsset sample21 &sample21
+; @config bin.sample21.memory sample21
 ; @wave &sample21 count(sample21)
 int8[] sample22 ASSET_SAMPLE22_SIZE
-; @loadAsset sample22 &sample22
+; @config bin.sample22.memory sample22
 ; @wave &sample22 count(sample22)
 int8[] sample23 ASSET_SAMPLE23_SIZE
-; @loadAsset sample23 &sample23
+; @config bin.sample23.memory sample23
 ; @wave &sample23 count(sample23)
 int8[] sample24 ASSET_SAMPLE24_SIZE
-; @loadAsset sample24 &sample24
+; @config bin.sample24.memory sample24
 ; @wave &sample24 count(sample24)
 int8[] sample25 ASSET_SAMPLE25_SIZE
-; @loadAsset sample25 &sample25
+; @config bin.sample25.memory sample25
 ; @wave &sample25 count(sample25)
 int8[] sample26 ASSET_SAMPLE26_SIZE
-; @loadAsset sample26 &sample26
+; @config bin.sample26.memory sample26
 ; @wave &sample26 count(sample26)
 int8[] sample27 ASSET_SAMPLE27_SIZE
-; @loadAsset sample27 &sample27
+; @config bin.sample27.memory sample27
 ; @wave &sample27 count(sample27)
 int8[] sample28 ASSET_SAMPLE28_SIZE
-; @loadAsset sample28 &sample28
+; @config bin.sample28.memory sample28
 ; @wave &sample28 count(sample28)
 int8[] sample29 ASSET_SAMPLE29_SIZE
-; @loadAsset sample29 &sample29
+; @config bin.sample29.memory sample29
 ; @wave &sample29 count(sample29)
 int8[] sample30 ASSET_SAMPLE30_SIZE
-; @loadAsset sample30 &sample30
+; @config bin.sample30.memory sample30
 ; @wave &sample30 count(sample30)
 int8[] sample31 ASSET_SAMPLE31_SIZE
-; @loadAsset sample31 &sample31
+; @config bin.sample31.memory sample31
 ; @wave &sample31 count(sample31)
 moduleEnd
 module modSamplePlayer1

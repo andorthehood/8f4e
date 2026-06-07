@@ -4,5 +4,5 @@
   "line": {
     "lineNumber": 0,
   },
-  "message": "Parse error at line 6: closer "constantsEnd" does not match opener "module"",
+  "message": "Parse error at line 7: closer "constantsEnd" does not match opener "module"",
 }

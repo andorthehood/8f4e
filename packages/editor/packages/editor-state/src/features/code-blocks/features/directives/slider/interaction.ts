@@ -55,7 +55,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 
 		// Set active slider for drag handling
 		activeSlider = { slider, codeBlock };
-		state.graphicHelper.draggedCodeBlock = undefined;
+		state.codeBlockRendering.draggedCodeBlock = undefined;
 
 		// Update value on click
 		updateSliderValue(x);

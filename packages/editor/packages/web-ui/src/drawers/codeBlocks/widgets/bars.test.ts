@@ -60,7 +60,7 @@ describe('drawBars', () => {
 	it('renders buffer values as vertical bars', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: { spriteLookups: { fillColors: {} } as never },
+			spriteLookups: { fillColors: {} } as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -81,7 +81,7 @@ describe('drawBars', () => {
 	it('compresses dense arrays by the maximum value in each column', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			graphicHelper: { spriteLookups: { fillColors: {} } as never },
+			spriteLookups: { fillColors: {} } as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {

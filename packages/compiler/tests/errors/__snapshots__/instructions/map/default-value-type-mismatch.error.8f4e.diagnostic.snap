@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "mapDefaultValueTypeMismatch",
     "codeBlockType": "module",
+    "projectBlockId": 4,
   },
   "line": {
     "arguments": [
@@ -14,7 +15,7 @@
       },
     ],
     "instruction": "mapEnd",
-    "lineNumber": 6,
+    "lineNumber": 7,
   },
   "message": "The operation only accepts integer values as operands. (2)",
 }

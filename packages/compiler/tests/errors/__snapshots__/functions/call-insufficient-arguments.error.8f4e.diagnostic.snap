@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "insufficientArguments",
     "codeBlockType": "module",
+    "projectBlockId": 4,
   },
   "line": {
     "arguments": [
@@ -14,7 +15,7 @@
       },
     ],
     "instruction": "call",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Insufficient number of elements in the stack for the operation to proceed. (0)",
 }

@@ -15,15 +15,11 @@ export interface ParsedGlobalEditorDirective {
 export interface ResolvedGlobalEditorDirectives {
 	/** Source entries for config validation/error reporting */
 	configEntries?: EditorConfigEntry[];
-	/** Target memory for keyboard HID usage codes */
-	keyCodeMemoryId?: string;
-	/** Target memory for keyboard pressed-state flag */
-	keyPressedMemoryId?: string;
 }
 
 export interface GlobalEditorDirectiveContext {
-	codeBlockId: string | number;
-	moduleId?: string;
+	codeBlockId: number;
+	codeBlockName?: string;
 	blockType?: CodeBlockType;
 }
 

@@ -8,7 +8,7 @@ export default function drawer(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
@@ -33,7 +33,7 @@ export default function drawer(
 
 		engine.startGroup(x, y);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+		engine.setSpriteLookup(state.spriteLookups.fillColors);
 		engine.drawSprite(0, 0, 'track', width, height);
 		engine.drawSprite(0, 0, 'fill', handleX + handleWidth, height);
 		engine.drawSprite(handleX, 0, 'handle', handleWidth, height);

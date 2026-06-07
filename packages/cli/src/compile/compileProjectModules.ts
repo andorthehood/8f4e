@@ -26,7 +26,10 @@ export default function compileProjectModules(
 ): CompileProjectModulesResult {
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
-	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks(blocks);
+	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks({
+		codeBlocks: blocks,
+		groups: [],
+	});
 
 	if (!hasModuleBlocks(entries) && constantsBlocks.length === 0) {
 		return {

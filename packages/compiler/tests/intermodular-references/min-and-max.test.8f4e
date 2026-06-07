@@ -1,6 +1,9 @@
 8f4e/v1
 
-; Intermodule min(...) and max(...) references should resolve element bounds.
+; Intermodule min(...) and
+; max(...) references should
+; resolve
+; element bounds.
 entry test
 module intBoundsSource
 int[] ints 10 0
@@ -16,7 +19,10 @@ float[] floats 7 0.0
 moduleEnd
 
 module integerBoundAssertions
-; Integer min/max references should reflect the source element type.
+; Integer min/max references
+; should reflect the source
+; element
+; type.
 int minInt min(intBoundsSource:ints)
 int maxInt max(intBoundsSource:ints)
 int minInt32 min(intBoundsSource:int32s)
@@ -68,7 +74,9 @@ call assert 255
 moduleEnd
 
 module floatBoundAssertions
-; Float min/max references should use the finite float32 bounds.
+; Float min/max references
+; should use the finite float32
+; bounds.
 float minFloat min(floatBoundsSource:floats)
 float maxFloat max(floatBoundsSource:floats)
 
@@ -80,7 +88,8 @@ call assertf 3.4028234663852886e38
 moduleEnd
 
 module outOfOrderBoundsAssertions
-; Bounds references can resolve to modules declared later.
+; Bounds references can resolve
+; to modules declared later.
 int minValue min(lateBoundsSource:buffer)
 int maxValue max(lateBoundsSource:buffer)
 
@@ -96,7 +105,10 @@ int[] buffer 8 0
 moduleEnd
 
 module combinedBoundsAssertions
-; Bounds, count, and address references can be used together in one module.
+; Bounds, count, and address
+; references can be used
+; together in
+; one module.
 int* ptr &combinedBoundsSource:buffer
 int size count(combinedBoundsSource:buffer)
 int minValue min(combinedBoundsSource:buffer)

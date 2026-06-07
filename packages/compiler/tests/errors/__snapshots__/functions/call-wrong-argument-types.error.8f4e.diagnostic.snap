@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "wrongArgumentTypes",
     "codeBlockType": "module",
+    "projectBlockId": 4,
   },
   "line": {
     "arguments": [
@@ -14,7 +15,7 @@
       },
     ],
     "instruction": "call",
-    "lineNumber": 4,
+    "lineNumber": 6,
   },
   "message": "Type mismatch. (19)",
 }

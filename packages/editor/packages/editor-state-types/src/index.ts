@@ -5,8 +5,8 @@
  */
 
 import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-spec';
-import type { FillSpriteColorName } from '@8f4e/sprite-generator';
-import type { SpriteLookup } from 'glugglug';
+import type { FillSpriteColorName, SpriteLookups } from '@8f4e/sprite-generator';
+import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
@@ -17,10 +17,10 @@ import type {
 	CodeBlock,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
+	CodeBlockRendering,
 	CodeBlockType,
 	Crossfade,
 	Debugger,
-	GraphicHelper,
 	InfoPanel,
 	Input,
 	MemoryIdentifier,
@@ -92,6 +92,7 @@ export type {
 	CodeBlock,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
+	CodeBlockRendering,
 	CodeBlockType,
 	CodeError,
 	CompilationResult,
@@ -106,7 +107,6 @@ export type {
 	DialogContent,
 	DialogState,
 	EventDispatcher,
-	GraphicHelper,
 	GridCoordinates,
 	InfoPanel,
 	Input,
@@ -346,11 +346,6 @@ export interface Options {
 	 * Runtime registry mapping runtime IDs to runtime implementations.
 	 */
 	runtimeRegistry: RuntimeRegistry;
-	/**
-	 * Default runtime ID to use when no runtime is specified or when an unknown runtime ID is encountered.
-	 * Must match a key in the runtimeRegistry.
-	 */
-	defaultRuntimeId: string;
 	/** Optional host-provided schema contributions for project-level editor config. */
 	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 }
@@ -358,7 +353,13 @@ export interface Options {
 // State interface - complete editor state tree (top-level public API)
 export interface State {
 	compiler: Compiler;
-	graphicHelper: GraphicHelper;
+	codeBlockRendering: CodeBlockRendering;
+	contextMenu: ContextMenu;
+	spriteLookups?: SpriteLookups;
+	/** Post-process effects configuration for custom visual effects */
+	postProcessEffects: PostProcessEffect[];
+	/** Background effects configuration for custom visual effects */
+	backgroundEffects: BackgroundEffect[];
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
 	tooltip: TooltipState;
@@ -380,8 +381,6 @@ export interface State {
 	};
 	/** Runtime registry for available runtime implementations */
 	runtimeRegistry: RuntimeRegistry;
-	/** Default runtime ID to use when no runtime is specified */
-	defaultRuntimeId: string;
 	/** Resolved global editor directives from `; @<name>` comments */
 	globalEditorDirectives: ResolvedGlobalEditorDirectives;
 	codeErrors: {
@@ -398,8 +397,8 @@ export interface State {
 
 export type * from './features/binary-assets/types';
 export type * from './features/browser-local-notes/types';
+export type * from './features/code-blocks/buildDisplayModel';
 export type * from './features/code-blocks/features/directives/types';
-export type * from './features/code-blocks/features/graphicHelper/buildDisplayModel';
 export type * from './features/code-blocks/types';
 export type * from './features/code-blocks/utils/types';
 export type * from './features/code-editing/types';

@@ -3,17 +3,20 @@ import type { EditorEnvironmentPluginRegistryEntry } from './types';
 export const editorEnvironmentPluginRegistry: EditorEnvironmentPluginRegistryEntry[] = [
 	{
 		id: 'keyboard-memory',
-		editorDirectives: ['keyPressedMemory', 'keyCodeMemory'],
+		editorDirectives: [],
+		editorConfigPaths: ['keyboard'],
 		load: () => import('./keyboardMemory/plugin'),
 	},
 	{
 		id: 'binary-assets',
-		editorDirectives: ['defAsset', 'loadAsset'],
+		editorDirectives: [],
+		editorConfigPaths: ['bin'],
 		load: () => import('./binaryAssets/plugin'),
 	},
 	{
 		id: 'midi',
-		editorDirectives: ['midiIn'],
+		editorDirectives: [],
+		editorConfigPaths: ['midi'],
 		load: () => import('./midi/plugin'),
 	},
 ];

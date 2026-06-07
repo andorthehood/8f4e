@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "useUndeclaredNamespace",
     "codeBlockType": "module",
+    "projectBlockId": 4,
   },
   "line": {
     "arguments": [
@@ -14,7 +15,7 @@
       },
     ],
     "instruction": "use",
-    "lineNumber": 2,
+    "lineNumber": 3,
   },
   "message": "Undeclared identifier: missingNamespace. (5)",
 }

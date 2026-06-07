@@ -6,13 +6,12 @@ const CONNECTOR_WIDTH_GRID_CELLS = 3;
 
 export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.widgets.outputs = [];
-	const moduleId = graphicData.moduleId;
-	if (!moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
 	parseOutputs(graphicData.code).forEach(output => {
-		const memory = state.compiler.compiledModules[moduleId]?.memoryMap[output.id];
+		const memory = state.compiler.compiledModules[graphicData.name]?.memoryMap[output.id];
 
 		if (!memory) {
 			return;
@@ -38,6 +37,6 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 		};
 
 		graphicData.widgets.outputs.push(out);
-		state.graphicHelper.outputsByWordAddress.set(memory.byteAddress, out);
+		state.codeBlockRendering.outputsByWordAddress.set(memory.byteAddress, out);
 	});
 }

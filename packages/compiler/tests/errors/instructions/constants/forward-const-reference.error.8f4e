@@ -2,7 +2,9 @@
 
 entry main
 module forwardConstReference
-; Const declarations can only reference earlier visible constants.
+; Const declarations can only
+; reference earlier visible
+; constants.
 const B A
 const A 10
 int x B

@@ -9,7 +9,7 @@ export default function drawButtons(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
@@ -17,13 +17,13 @@ export default function drawButtons(
 		const value = memoryViews.int32[wordAlignedAddress] || 0;
 
 		if (value === onValue) {
-			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
+			engine.setSpriteLookup(state.spriteLookups.icons);
 			engine.drawSprite(x, y, Icon.SWITCH_ON);
 		} else if (value === offValue) {
-			engine.setSpriteLookup(state.graphicHelper.spriteLookups.icons);
+			engine.setSpriteLookup(state.spriteLookups.icons);
 			engine.drawSprite(x, y, Icon.SWITCH_OFF);
 		} else {
-			engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontNumbers);
+			engine.setSpriteLookup(state.spriteLookups.fontNumbers);
 			engine.drawText(x, y, '[__]');
 		}
 	}

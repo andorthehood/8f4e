@@ -20,7 +20,7 @@ export default function groupCopier(store: StateManager<State>, events: EventDis
 		}
 
 		// Get all blocks in the group
-		const groupBlocks = state.graphicHelper.codeBlocks.filter(block => block.groupName === groupName);
+		const groupBlocks = state.codeBlockRendering.codeBlocks.filter(block => block.groupName === groupName);
 
 		// Sort by creation index to maintain deterministic order
 		const sortedBlocks = [...groupBlocks].sort((a, b) => a.creationIndex - b.creationIndex);

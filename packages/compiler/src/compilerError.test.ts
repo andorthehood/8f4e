@@ -85,7 +85,7 @@ describe('getError', () => {
 		const error = getError(ErrorCode.DUPLICATE_IDENTIFIER, line, undefined, { identifier: 'same' });
 
 		expect(error.message).toBe(
-			`Duplicate identifier: same. Module and function IDs must be unique. (${ErrorCode.DUPLICATE_IDENTIFIER})`
+			`Duplicate identifier: same. Module and function names must be unique. (${ErrorCode.DUPLICATE_IDENTIFIER})`
 		);
 	});
 });

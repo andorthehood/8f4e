@@ -15,7 +15,7 @@ test('dragged module', async () => {
 
 	await init(mockState, canvas, memoryViews, spriteData);
 
-	if (mockState.graphicHelper.spriteLookups) {
+	if (mockState.spriteLookups) {
 		const codeLines = [
 			'',
 			'lorem ipsum dolor sit amet',
@@ -33,12 +33,12 @@ test('dragged module', async () => {
 			width: 256,
 			height: codeLines.length * 16,
 			codeToRender,
-			codeColors: generateColorMapWithAllColors(mockState.graphicHelper.spriteLookups),
+			codeColors: generateColorMapWithAllColors(mockState.spriteLookups),
 		});
 
-		mockState.graphicHelper.draggedCodeBlock = codeBlockMock;
+		mockState.codeBlockRendering.draggedCodeBlock = codeBlockMock;
 
-		mockState.graphicHelper.codeBlocks.push(codeBlockMock);
+		mockState.codeBlockRendering.codeBlocks.push(codeBlockMock);
 	}
 
 	await expect(canvas).toMatchScreenshot();

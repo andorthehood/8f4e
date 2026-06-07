@@ -21,7 +21,7 @@ describe('switch interaction', () => {
 		getWordFromMemory = vi.fn((wordAlignedAddress: number) => memoryStore.get(wordAlignedAddress) ?? 0);
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,
@@ -71,7 +71,7 @@ describe('switch interaction', () => {
 		const cleanup = _switch(mockState, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
-		const mockCodeBlock = createMockCodeBlock({ id: 'test-block', moduleId: 'test-block' });
+		const mockCodeBlock = createMockCodeBlock({ name: 'test-block' });
 		mockCodeBlock.widgets.switches = [
 			{
 				id: 'testSwitch',
@@ -101,7 +101,7 @@ describe('switch interaction', () => {
 		const cleanup = _switch(mockState, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
-		const mockCodeBlock = createMockCodeBlock({ id: 'test-block', moduleId: 'test-block' });
+		const mockCodeBlock = createMockCodeBlock({ name: 'test-block' });
 		mockCodeBlock.widgets.switches = [
 			{
 				id: 'testSwitch',
@@ -131,7 +131,7 @@ describe('switch interaction', () => {
 		const cleanup = _switch(mockState, mockEvents);
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
-		const mockCodeBlock = createMockCodeBlock({ id: 'test-block', moduleId: 'test-block' });
+		const mockCodeBlock = createMockCodeBlock({ name: 'test-block' });
 		mockCodeBlock.widgets.switches = [
 			{
 				id: 'testSwitch',

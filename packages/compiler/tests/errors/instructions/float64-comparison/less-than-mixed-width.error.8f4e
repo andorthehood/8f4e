@@ -2,7 +2,8 @@
 
 entry main
 module lessThanMixedFloatWidth
-; lessThan should reject mixed float32 and float64 operands.
+; lessThan should reject mixed
+; float32 and float64 operands.
 float left
 float64 right
 int output

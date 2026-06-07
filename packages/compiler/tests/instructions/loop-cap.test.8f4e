@@ -1,9 +1,11 @@
 8f4e/v1
 
-; Loop cap behavior is checked from source-level fixtures.
+; Loop cap behavior is checked
+; from source-level fixtures.
 entry test
 module defaultLoopCapAssertions
-; Plain loops stop at the compiler default cap.
+; Plain loops stop at the
+; compiler default cap.
 int counter
 loop
 push &counter
@@ -18,7 +20,9 @@ call assert 1000
 moduleEnd
 
 module directiveLoopCapAssertions
-; #loopCap changes the cap for subsequent loops in the module.
+; #loopCap changes the cap for
+; subsequent loops in the
+; module.
 #loopCap 500
 int counter
 loop
@@ -34,7 +38,8 @@ call assert 500
 moduleEnd
 
 module explicitLoopCapAssertions
-; An explicit loop cap overrides the default cap.
+; An explicit loop cap overrides
+; the default cap.
 int counter
 loop 32
 push &counter
@@ -49,7 +54,9 @@ call assert 32
 moduleEnd
 
 module constantLoopCapAssertions
-; Constant and constant-expression caps resolve at compile time.
+; Constant and
+; constant-expression caps
+; resolve at compile time.
 const LOOP_COUNT 32
 int counter
 loop LOOP_COUNT
@@ -78,7 +85,8 @@ call assert 32
 moduleEnd
 
 module explicitCapOverridesDirectiveAssertions
-; Explicit loop arguments override #loopCap.
+; Explicit loop arguments
+; override #loopCap.
 #loopCap 500
 int counter
 loop 12
@@ -94,7 +102,8 @@ call assert 12
 moduleEnd
 
 module nestedLoopCapAssertions
-; Nested loops resolve their own caps independently.
+; Nested loops resolve their own
+; caps independently.
 int outerCounter
 int innerCounter
 loop 5
@@ -121,7 +130,8 @@ call assert 15
 moduleEnd
 
 module zeroLoopCapAssertions
-; A zero cap exits immediately on the first guard check.
+; A zero cap exits immediately
+; on the first guard check.
 int counter
 loop 0
 push &counter
@@ -136,7 +146,9 @@ call assert 0
 moduleEnd
 
 module functionLoopCapAssertions
-; Function-scoped #loopCap should bound loops inside functions.
+; Function-scoped #loopCap
+; should bound loops inside
+; functions.
 call countWithFunctionLoopCap
 call assert 7
 moduleEnd

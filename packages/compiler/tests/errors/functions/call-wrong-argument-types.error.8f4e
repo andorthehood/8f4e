@@ -2,7 +2,9 @@
 
 entry main
 module wrongArgumentTypes
-; Calls should reject stack operands that do not match the function signature.
+; Calls should reject stack
+; operands that do not match the
+; function signature.
 push 1.5
 push 2.5
 call addInts
