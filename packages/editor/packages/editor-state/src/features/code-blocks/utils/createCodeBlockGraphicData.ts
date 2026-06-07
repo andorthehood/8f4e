@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
-import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
+import getCodeBlockId from './getCodeBlockId';
 import { parseBlockDirectives } from './parseBlockDirectives';
 
 export function createCodeBlockGraphicData(
@@ -13,12 +13,8 @@ export function createCodeBlockGraphicData(
 	const height = overrides.height ?? 100;
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
-	const id = overrides.id ?? 'code-block';
 	const code = overrides.code ?? [];
-	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
-	const moduleId = overrides.moduleId ?? derivedModuleId;
-	const derivedFunctionId = getFunctionId(code) || undefined;
-	const functionId = overrides.functionId ?? derivedFunctionId;
+	const name = (overrides.name ?? getCodeBlockId(code)) || 'code-block';
 
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
@@ -45,9 +41,7 @@ export function createCodeBlockGraphicData(
 		offsetX,
 		offsetY,
 		cursor,
-		id,
-		...(moduleId !== undefined ? { moduleId } : {}),
-		...(functionId !== undefined ? { functionId } : {}),
+		name,
 		code,
 		codeColors: [],
 		codeToRender: [],

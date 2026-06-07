@@ -54,7 +54,7 @@ describe('drawCrossfades', () => {
 			spriteLookups: { fillColors: {} } as never,
 		});
 		const codeBlock = createMockCodeBlock({
-			moduleId: 'test-block',
+			name: 'test-block',
 			widgets: {
 				crossfades: [createCrossfadeWidget()],
 			} as never,
@@ -77,7 +77,7 @@ describe('drawCrossfades', () => {
 			spriteLookups: { fillColors: {} } as never,
 		});
 		const codeBlock = createMockCodeBlock({
-			moduleId: 'test-block',
+			name: 'test-block',
 			widgets: {
 				crossfades: [createCrossfadeWidget()],
 			} as never,

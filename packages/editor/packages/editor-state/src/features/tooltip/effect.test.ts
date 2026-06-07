@@ -11,7 +11,7 @@ describe('tooltip effect', () => {
 	it('adds selected line stack analysis when compiler data is available', () => {
 		const selectedBlock = createMockCodeBlock({
 			code: ['push 1', 'push 2', 'add'],
-			moduleId: 'test',
+			name: 'test',
 			cursor: {
 				row: 2,
 				col: 0,
@@ -89,7 +89,7 @@ describe('tooltip effect', () => {
 
 	it('adds selected function line stack analysis when compiler data is available', () => {
 		const selectedBlock = createMockCodeBlock({
-			id: 'function_helper',
+			name: 'helper',
 			code: ['function helper', 'param int', 'param int', 'add', 'return', 'functionEnd'],
 			blockType: 'function',
 			cursor: {
@@ -154,7 +154,7 @@ describe('tooltip effect', () => {
 		const fontTooltipHighlight = {};
 		const selectedBlock = createMockCodeBlock({
 			code: ['int value', 'add'],
-			moduleId: 'test',
+			name: 'test',
 			cursor: {
 				row: 0,
 				col: 0,
@@ -256,8 +256,7 @@ describe('tooltip effect', () => {
 
 	it('writes module execution order for selected module instructions', () => {
 		const selectedBlock = createMockCodeBlock({
-			id: 'module-b',
-			moduleId: 'module-b',
+			name: 'module-b',
 			code: ['module module-b', 'push 1'],
 			cursor: {
 				row: 0,

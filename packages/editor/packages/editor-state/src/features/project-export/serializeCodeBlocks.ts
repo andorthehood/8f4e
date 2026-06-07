@@ -16,7 +16,7 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 		codeBlocks: sortCodeBlocksByGridPosition(codeBlocks.filter(block => !isBrowserLocalNoteBlock(block))).map(
 			codeBlock => {
 				if (codeBlock.blockType === 'module' && !codeBlock.entry) {
-					throw new Error(`Module code block "${codeBlock.id}" is missing an entry`);
+					throw new Error(`Module code block "${codeBlock.name}" is missing an entry`);
 				}
 
 				return {

@@ -47,9 +47,9 @@ const block = createMockCodeBlock();
 // Specify position and dimensions
 const block = createMockCodeBlock({ x: 100, y: 200, width: 150, height: 150 });
 
-// With ID and code
+// With name and code
 const block = createMockCodeBlock({ 
-  id: 'my-block', 
+  name: 'my-block', 
   x: 100, 
   y: 200,
   code: ['test code']
@@ -57,7 +57,7 @@ const block = createMockCodeBlock({
 
 // Use cursorY convenience parameter
 const block = createMockCodeBlock({ 
-  id: 'my-block', 
+  name: 'my-block', 
   x: 100, 
   y: 200, 
   cursorY: 75 

@@ -15,8 +15,7 @@ describe('plot directive widget resolution', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			code: ['; @plot &buffer1 count(buffer1)'],
 			gaps: new Map(),
 			width: 100,

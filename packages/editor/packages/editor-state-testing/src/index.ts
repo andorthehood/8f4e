@@ -25,8 +25,8 @@ export function createMockCodeBlock(
 	const height = overrides.height ?? 100;
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
-	const id = overrides.id ?? 'test-block';
 	const code = overrides.code ?? [];
+	const name = overrides.name ?? code[0]?.trim().split(/\s+/)[1] ?? 'test-block';
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
@@ -50,7 +50,7 @@ export function createMockCodeBlock(
 		offsetX,
 		offsetY,
 		cursor,
-		id,
+		name,
 		code,
 		codeColors: [],
 		codeToRender: [],

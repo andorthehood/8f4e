@@ -327,9 +327,9 @@ describe('codeBlockCreator - group copy/paste', () => {
 			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
 		});
 
-		it('should update module IDs to avoid collisions', async () => {
+		it('should update module names to avoid collisions', async () => {
 			const existingBlock = createMockCodeBlock({
-				id: 'foo',
+				name: 'foo',
 				code: ['module foo', 'moduleEnd'],
 			});
 			mockState.codeBlockRendering.codeBlocks = [existingBlock];
@@ -350,15 +350,15 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			// Pasted blocks should have unique IDs
-			expect(mockState.codeBlockRendering.codeBlocks[1].id).not.toBe('foo');
-			expect(mockState.codeBlockRendering.codeBlocks[2].id).not.toBe('foo');
-			expect(mockState.codeBlockRendering.codeBlocks[1].id).not.toBe(mockState.codeBlockRendering.codeBlocks[2].id);
+			// Pasted blocks should have unique names
+			expect(mockState.codeBlockRendering.codeBlocks[1].name).not.toBe('foo');
+			expect(mockState.codeBlockRendering.codeBlocks[2].name).not.toBe('foo');
+			expect(mockState.codeBlockRendering.codeBlocks[1].name).not.toBe(mockState.codeBlockRendering.codeBlocks[2].name);
 		});
 
-		it('should update inter-module references when pasted module ids are renamed', async () => {
+		it('should update inter-module references when pasted module names are renamed', async () => {
 			const existingBlock = createMockCodeBlock({
-				id: 'module_foo',
+				name: 'foo',
 				code: ['module foo', 'moduleEnd'],
 			});
 			mockState.codeBlockRendering.codeBlocks = [existingBlock];

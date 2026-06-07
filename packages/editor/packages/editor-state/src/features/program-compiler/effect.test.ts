@@ -31,7 +31,7 @@ describe('program compiler effect', () => {
 		});
 
 		const helperBlock = createMockCodeBlock({
-			id: 'function_helper',
+			name: 'helper',
 			code: ['function helper', 'push 1', 'functionEnd'],
 			creationIndex: 0,
 			blockType: 'function',

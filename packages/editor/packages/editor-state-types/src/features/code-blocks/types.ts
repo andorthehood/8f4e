@@ -296,11 +296,8 @@ export interface CodeBlockGraphicData {
 		/** The y position of the cursor calculated considering the grid and the gaps between lines. */
 		y: number;
 	};
-	id: string;
-	/** Raw module/constants identifier used as key in compiler.compiledModules */
-	moduleId?: string;
-	/** Raw function identifier used as key in compiler.compiledFunctions */
-	functionId?: string;
+	/** Human/source-facing block name derived from the block opener line. */
+	name: string;
 	positionOffsetterXWordAddress?: number;
 	positionOffsetterYWordAddress?: number;
 	/** Grid-space X coordinate (source of truth for horizontal position). Pixel X = gridX * vGrid */

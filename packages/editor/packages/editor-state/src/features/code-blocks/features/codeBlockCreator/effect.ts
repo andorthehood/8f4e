@@ -2,14 +2,14 @@ import type { CompilerSourceBlockType, DocumentBlockType } from '@8f4e/compiler-
 import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { getConstantsId, getFunctionId, getModuleId, getPrototypeId, instructionParser } from '@8f4e/tokenizer';
+import { instructionParser } from '@8f4e/tokenizer';
+import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
 import findEntryNameAtPosition from '../entryOutlines/findEntryNameAtPosition';
-import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
 import { insertDependencies } from './insertDependencies';
 import { pasteMultipleBlocks } from './pasteMultipleBlocks';
@@ -61,15 +61,15 @@ const nameList = [
 	'trion',
 ];
 
-function getRandomCodeBlockId() {
+function getRandomCodeBlockName() {
 	return nameList[Math.floor(Math.random() * nameList.length)];
 }
 
-function changeCodeBlockIdInCode(code: string[], instruction: string, id: string) {
+function changeCodeBlockNameInCode(code: string[], instruction: string, name: string) {
 	return code.map(line => {
 		const match = line.match(instructionParser) as RegExpMatchArray | null;
 		if (match && match[1] === instruction && match[2]) {
-			// Reconstruct line with new ID, preserving spacing and everything after the ID
+			// Reconstruct line with new name, preserving spacing and everything after it.
 			const beforeInstruction = line.slice(0, match.index!);
 			const matchedInstruction = match[1];
 			const spacingAfterInstruction = line.slice(
@@ -77,38 +77,42 @@ function changeCodeBlockIdInCode(code: string[], instruction: string, id: string
 				line.indexOf(match[2], match.index!)
 			);
 			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
-			return beforeInstruction + matchedInstruction + spacingAfterInstruction + id + afterOldId;
+			return beforeInstruction + matchedInstruction + spacingAfterInstruction + name + afterOldId;
 		}
 		return line;
 	});
 }
 
-function incrementCodeBlockId(id: string) {
-	if (/.*[0-9]+$/gm.test(id)) {
-		const [, trailingNumber] = id.match(/.*([0-9]+$)/) as [never, string];
-		return id.replace(new RegExp(trailingNumber + '$'), `${parseInt(trailingNumber, 10) + 1}`);
+function incrementCodeBlockName(name: string) {
+	if (/.*[0-9]+$/gm.test(name)) {
+		const [, trailingNumber] = name.match(/.*([0-9]+$)/) as [never, string];
+		return name.replace(new RegExp(trailingNumber + '$'), `${parseInt(trailingNumber, 10) + 1}`);
 	} else {
-		return id + '2';
+		return name + '2';
 	}
 }
 
-function incrementCodeBlockIdUntilUnique(state: State, blockType: RenameableCodeBlockType, blockId: string) {
-	while (checkIfCodeBlockIdIsTaken(state, blockType, blockId)) {
-		blockId = incrementCodeBlockId(blockId);
+function incrementCodeBlockNameUntilUnique(state: State, blockType: RenameableCodeBlockType, blockName: string) {
+	while (
+		state.codeBlockRendering.codeBlocks.some(
+			codeBlock =>
+				(codeBlock.blockType === blockType || codeBlock.code[0]?.trim().startsWith(`${blockType} `)) &&
+				codeBlock.name === blockName
+		)
+	) {
+		blockName = incrementCodeBlockName(blockName);
 	}
-	return blockId;
+	return blockName;
 }
 
 function getUniqueEntryName(state: State): string {
 	const usedEntryNames = new Set(
-		state.codeBlockRendering.codeBlocks
-			.filter(block => block.blockType === moduleBlock.type || getModuleId(block.code))
-			.map(block => block.entry)
+		state.codeBlockRendering.codeBlocks.filter(block => block.blockType === moduleBlock.type).map(block => block.entry)
 	);
 	let entryName = 'entry';
 
 	while (usedEntryNames.has(entryName)) {
-		entryName = incrementCodeBlockId(entryName);
+		entryName = incrementCodeBlockName(entryName);
 	}
 
 	return entryName;
@@ -145,13 +149,13 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 
 		if (isNew && !hasExplicitCode) {
 			if (blockType === functionBlock.type) {
-				code = [functionBlock.start + ' ' + getRandomCodeBlockId(), '', '', functionBlock.end];
+				code = [functionBlock.start + ' ' + getRandomCodeBlockName(), '', '', functionBlock.end];
 			} else if (blockType === prototypeBlock.type) {
-				code = [prototypeBlock.start + ' ' + getRandomCodeBlockId(), '', '', prototypeBlock.end];
+				code = [prototypeBlock.start + ' ' + getRandomCodeBlockName(), '', '', prototypeBlock.end];
 			} else if (blockType === noteBlock.type) {
 				code = [noteBlock.start, '', '', noteBlock.end];
 			} else {
-				code = [moduleBlock.start + ' ' + getRandomCodeBlockId(), '', '', moduleBlock.end];
+				code = [moduleBlock.start + ' ' + getRandomCodeBlockName(), '', '', moduleBlock.end];
 			}
 		} else if (code.length < 2) {
 			// If no callback is provided, fail silently
@@ -177,30 +181,29 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			}
 		}
 
-		// Update ID based on block type
-		const moduleId = getModuleId(code);
-		const functionId = getFunctionId(code);
-		const prototypeId = getPrototypeId(code);
+		const sourceBlockType = getBlockType(code);
+		const blockName = getCodeBlockId(code);
 
-		if (functionId) {
-			code = changeCodeBlockIdInCode(
+		if (sourceBlockType === functionBlock.type && blockName) {
+			code = changeCodeBlockNameInCode(
 				code,
 				functionBlock.start,
-				incrementCodeBlockIdUntilUnique(state, functionBlock.type, functionId)
+				incrementCodeBlockNameUntilUnique(state, functionBlock.type, blockName)
 			);
-		} else if (prototypeId) {
-			code = changeCodeBlockIdInCode(
+		} else if (sourceBlockType === prototypeBlock.type && blockName) {
+			code = changeCodeBlockNameInCode(
 				code,
 				prototypeBlock.start,
-				incrementCodeBlockIdUntilUnique(state, prototypeBlock.type, prototypeId)
+				incrementCodeBlockNameUntilUnique(state, prototypeBlock.type, blockName)
 			);
-		} else if (moduleId) {
-			code = changeCodeBlockIdInCode(
+		} else if (sourceBlockType === moduleBlock.type && blockName) {
+			code = changeCodeBlockNameInCode(
 				code,
 				moduleBlock.start,
-				incrementCodeBlockIdUntilUnique(state, moduleBlock.type, moduleId)
+				incrementCodeBlockNameUntilUnique(state, moduleBlock.type, blockName)
 			);
 		}
+		const updatedBlockName = getCodeBlockId(code);
 
 		const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
 		state.codeBlockRendering.nextCodeBlockCreationIndex++;
@@ -213,15 +216,17 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 
 		// Add canonical @pos directive to code
 		code = upsertPos(code, gridX, gridY);
-		const entry = moduleId ? getEntryNameForNewModule(state, pixelX, pixelY, newEntry) : undefined;
+		const entry =
+			sourceBlockType === moduleBlock.type && blockName
+				? getEntryNameForNewModule(state, pixelX, pixelY, newEntry)
+				: undefined;
 
 		const codeBlock: CodeBlockGraphicData = createCodeBlockGraphicData({
 			width: 0,
 			height: 0,
 			code,
 			cursor: { col: 0, row: 0, x: 0, y: 0 },
-			id: getCodeBlockId(code),
-			moduleId: getModuleId(code) || getConstantsId(code) || getPrototypeId(code) || undefined,
+			name: updatedBlockName,
 			gridX,
 			gridY,
 			x: pixelX,

@@ -18,13 +18,13 @@ describe('editor-state testing utilities', () => {
 		expect(block.parsedDirectives).toEqual([]);
 	});
 
-	it('allows tests to provide code block ids explicitly', () => {
+	it('allows tests to provide code block names explicitly', () => {
 		const block = createMockCodeBlock({
 			code: ['module synth', 'moduleEnd'],
-			moduleId: 'synth',
+			name: 'synth',
 		});
 
-		expect(block.moduleId).toBe('synth');
+		expect(block.name).toBe('synth');
 	});
 
 	it('allows tests to provide directive records explicitly', () => {

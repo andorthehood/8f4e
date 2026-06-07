@@ -6,8 +6,8 @@ import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 export interface Favorite {
 	/** Stable runtime identifier (primary key for resolution) */
 	creationIndex: number;
-	/** Block identifier from source code (may not be unique) */
-	id: string;
+	/** Human/source-facing block name. */
+	name: string;
 	/** Type of the code block */
 	blockType: string;
 }
@@ -25,7 +25,7 @@ export interface Favorite {
  * @example
  * ```typescript
  * const favorites = deriveFavorites(state.codeBlockRendering.codeBlocks);
- * // Returns: [{ creationIndex: 5, id: 'osc', blockType: 'module' }, ...]
+ * // Returns: [{ creationIndex: 5, name: 'osc', blockType: 'module' }, ...]
  * ```
  */
 export default function deriveFavorites(codeBlocks: CodeBlockGraphicData[]): Favorite[] {
@@ -42,7 +42,7 @@ export default function deriveFavorites(codeBlocks: CodeBlockGraphicData[]): Fav
 		if (block.isFavorite) {
 			favorites.push({
 				creationIndex: block.creationIndex,
-				id: block.id,
+				name: block.name,
 				blockType: block.blockType,
 			});
 			seenCreationIndices.add(block.creationIndex);

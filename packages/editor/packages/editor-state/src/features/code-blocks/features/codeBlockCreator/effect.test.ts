@@ -203,7 +203,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Add a code block to copy
 			const testCodeBlock = createMockCodeBlock({
-				id: 'test',
+				name: 'test',
 				code: ['module test', '', 'moduleEnd'],
 				blockType: 'module',
 			});
@@ -233,7 +233,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Add a code block to copy
 			const testCodeBlock = createMockCodeBlock({
-				id: 'test',
+				name: 'test',
 				code: ['module test', '', 'moduleEnd'],
 				blockType: 'module',
 			});
@@ -257,7 +257,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Add a code block to copy
 			const testCodeBlock = createMockCodeBlock({
-				id: 'test',
+				name: 'test',
 				code: ['module test', '', 'moduleEnd'],
 				blockType: 'module',
 			});
@@ -309,9 +309,9 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify all modules were added
 			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(3);
-			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_main');
-			expect(mockState.codeBlockRendering.codeBlocks[1].id).toBe('module_dep1');
-			expect(mockState.codeBlockRendering.codeBlocks[2].id).toBe('module_dep2');
+			expect(mockState.codeBlockRendering.codeBlocks[0].name).toBe('main');
+			expect(mockState.codeBlockRendering.codeBlocks[1].name).toBe('dep1');
+			expect(mockState.codeBlockRendering.codeBlocks[2].name).toBe('dep2');
 
 			// Verify positions - dep1 should be to the right of main
 			expect(mockState.codeBlockRendering.codeBlocks[1].gridX).toBeGreaterThan(
@@ -341,7 +341,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Pre-populate with dep1
 			const existingDep1 = createMockCodeBlock({
-				id: 'module_dep1',
+				name: 'dep1',
 				code: ['module dep1', '', 'moduleEnd'],
 				blockType: 'module',
 			});
@@ -358,9 +358,9 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify only main and dep2 were added (dep1 already existed)
 			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(3);
-			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_dep1'); // Existing
-			expect(mockState.codeBlockRendering.codeBlocks[1].id).toBe('module_main'); // New
-			expect(mockState.codeBlockRendering.codeBlocks[2].id).toBe('module_dep2'); // New
+			expect(mockState.codeBlockRendering.codeBlocks[0].name).toBe('dep1'); // Existing
+			expect(mockState.codeBlockRendering.codeBlocks[1].name).toBe('main'); // New
+			expect(mockState.codeBlockRendering.codeBlocks[2].name).toBe('dep2'); // New
 		});
 
 		it('should work without dependencies field', async () => {
@@ -380,7 +380,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify only the main module was added
 			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
-			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_simple');
+			expect(mockState.codeBlockRendering.codeBlocks[0].name).toBe('simple');
 		});
 
 		it('should handle dependency loading errors gracefully', async () => {
@@ -411,8 +411,8 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify main and dep1 were added, but missing was skipped
 			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(2);
-			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_main');
-			expect(mockState.codeBlockRendering.codeBlocks[1].id).toBe('module_dep1');
+			expect(mockState.codeBlockRendering.codeBlocks[0].name).toBe('main');
+			expect(mockState.codeBlockRendering.codeBlocks[1].name).toBe('dep1');
 
 			// Verify warning was logged
 			expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to load dependency: missing', expect.any(Error));
@@ -475,7 +475,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Pre-populate with a module named 'sine' (different type from the function dependency)
 			const existingSineModule = createMockCodeBlock({
-				id: 'module_sine',
+				name: 'sine',
 				code: ['module sine', '', 'moduleEnd'],
 				blockType: 'module',
 			});
@@ -492,13 +492,13 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			// Verify main was added and sine function was also added (not skipped)
 			// because the existing 'sine' is a module, not a function
-			// Note: IDs are now type-scoped, so existing `module_sine` does not force
-			// incrementing `function_sine`.
+			// Note: names are type-scoped, so the existing module does not force
+			// incrementing the function.
 			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(3);
-			expect(mockState.codeBlockRendering.codeBlocks[0].id).toBe('module_sine'); // Existing module
+			expect(mockState.codeBlockRendering.codeBlocks[0].name).toBe('sine'); // Existing module
 			expect(mockState.codeBlockRendering.codeBlocks[0].blockType).toBe('module');
-			expect(mockState.codeBlockRendering.codeBlocks[1].id).toBe('module_main'); // New module
-			expect(mockState.codeBlockRendering.codeBlocks[2].id).toBe('function_sine'); // New function
+			expect(mockState.codeBlockRendering.codeBlocks[1].name).toBe('main'); // New module
+			expect(mockState.codeBlockRendering.codeBlocks[2].name).toBe('sine'); // New function
 			// Check the code contains function markers
 			expect(mockState.codeBlockRendering.codeBlocks[2].code.join('\n')).toContain('function sine');
 		});

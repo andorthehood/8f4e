@@ -42,22 +42,22 @@ export async function insertDependencies({
 		try {
 			const dependencyCode = extractPublicBlockFromModuleSource(await getModule(dependencySlug));
 
-			// Get the module ID and type from the dependency code
-			const dependencyModuleId = getCodeBlockId(dependencyCode);
+			// Get the module name and type from the dependency code
+			const dependencyModuleName = getCodeBlockId(dependencyCode);
 			const dependencyBlockType = getBlockType(dependencyCode);
 
-			// Skip if a code block with this moduleId and type already exists
-			// Filter by block type first, then check IDs of matching type
+			// Skip if a code block with this name and type already exists
+			// Filter by block type first, then check names of matching type
 			// Use getBlockType to parse the type from code rather than relying on stored blockType
 			const existsAlready = state.codeBlockRendering.codeBlocks.some(block => {
 				const blockType = getBlockType(block.code);
 				if (blockType !== dependencyBlockType) {
 					return false;
 				}
-				return block.id === dependencyModuleId;
+				return block.name === dependencyModuleName;
 			});
 
-			if (dependencyModuleId && existsAlready) {
+			if (dependencyModuleName && existsAlready) {
 				continue;
 			}
 

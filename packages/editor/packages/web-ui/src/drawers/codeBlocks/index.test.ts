@@ -425,7 +425,7 @@ describe('drawModules', () => {
 			textureCacheKey: 'selected-memory-block',
 			width: 100,
 			height: 80,
-			moduleId: 'test',
+			name: 'test',
 			cursor: {
 				row: 0,
 				col: 0,

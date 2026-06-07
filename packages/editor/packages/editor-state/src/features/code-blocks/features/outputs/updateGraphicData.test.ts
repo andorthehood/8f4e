@@ -11,7 +11,7 @@ describe('updateOutputsGraphicData', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
+			name: 'test-block',
 			code: ['module test-block', 'int output1'],
 			width: 100,
 			gaps: new Map(),
