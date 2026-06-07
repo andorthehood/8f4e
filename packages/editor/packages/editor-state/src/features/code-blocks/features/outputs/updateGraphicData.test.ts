@@ -5,6 +5,25 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 import updateOutputsGraphicData from './updateGraphicData';
 
+function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+	return {
+		id: 'output1',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		type: MemoryTypes.int,
+		memoryIndex: 0,
+		byteAddress: 20,
+		wordAlignedAddress: 5,
+		wordAlignedSize: 1,
+		default: 0,
+		lineNumber: 1,
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+		...overrides,
+	};
+}
+
 describe('updateOutputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
 	let mockState: State;
@@ -19,20 +38,13 @@ describe('updateOutputsGraphicData', () => {
 
 		mockState = createMockState({
 			codeBlockRendering: {
-				viewport: {
-					vGrid: 10,
-					hGrid: 20,
-				},
 				outputsByWordAddress: new Map(),
 			},
 			compiler: {
 				compiledModules: {
 					'test-block': {
 						memoryMap: {
-							output1: {
-								wordAlignedAddress: 5,
-								byteAddress: 20,
-							},
+							output1: createMemory(),
 						},
 					},
 				},
@@ -40,34 +52,48 @@ describe('updateOutputsGraphicData', () => {
 		});
 	});
 
-	it('should add output to graphicData widgets', () => {
+	it('adds output widgets from non-pointer scalar memory metadata', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.outputs.length).toBe(1);
 		expect(findWidgetById(mockGraphicData.widgets.outputs, 'output1')).toBeDefined();
 	});
 
-	it('should add output when declaration has a default value', () => {
-		mockGraphicData.code = ['module test-block', 'int output1 0'];
+	it('adds output widgets from non-pointer array memory metadata', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = createMemory({
+			type: MemoryTypes.int,
+			numberOfElements: 4,
+			wordAlignedSize: 4,
+		});
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.outputs.length).toBe(1);
 		expect(findWidgetById(mockGraphicData.widgets.outputs, 'output1')).toBeDefined();
-		expect(mockState.codeBlockRendering.outputsByWordAddress.get(20)?.id).toBe('output1');
 	});
 
-	it('should calculate correct dimensions and position', () => {
+	it('ignores pointer memory metadata', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = createMemory({
+			type: MemoryTypes['int*'],
+			pointerDepth: 1,
+		});
+
+		updateOutputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.outputs.length).toBe(0);
+		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(0);
+	});
+
+	it('calculates dimensions and position from metadata', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		const output = findWidgetById(mockGraphicData.widgets.outputs, 'output1');
-		// Exclude codeBlock and memory from snapshot as they create circular references
 		const { codeBlock: _codeBlock, memory: _memory, ...outputWithoutRefs } = output || {};
 		expect(outputWithoutRefs).toMatchSnapshot();
 		expect(output?.codeBlock).toBe(mockGraphicData);
 	});
 
-	it('should register output in outputsByWordAddress', () => {
+	it('registers output in outputsByWordAddress', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(1);
@@ -77,8 +103,8 @@ describe('updateOutputsGraphicData', () => {
 		expect(output?.id).toBe('output1');
 	});
 
-	it('should not add output when memory is not found', () => {
-		mockGraphicData.code = ['int nonExistentOutput'];
+	it('does not add outputs when compiled module metadata is missing', () => {
+		mockState.compiler.compiledModules = {};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -86,20 +112,13 @@ describe('updateOutputsGraphicData', () => {
 		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(0);
 	});
 
-	it('should not render outputs for private entities', () => {
-		mockGraphicData.code = ['module test-block', 'int _privateOutput'];
-		mockState.compiler.compiledModules['test-block'].memoryMap['_privateOutput'] = {
+	it('does not render outputs for private entities', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['_privateOutput'] = createMemory({
+			id: '_privateOutput',
 			wordAlignedAddress: 7,
 			byteAddress: 28,
-			numberOfElements: 1,
-			elementWordSize: 1,
-			type: MemoryTypes.int,
-			wordAlignedSize: 1,
-			default: 0,
-			isInteger: true,
-			id: '_privateOutput',
-			pointerDepth: 0,
-		};
+		});
+		delete mockState.compiler.compiledModules['test-block'].memoryMap['output1'];
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -107,20 +126,13 @@ describe('updateOutputsGraphicData', () => {
 		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(0);
 	});
 
-	it('should render bare anonymous scalar allocations', () => {
-		mockGraphicData.code = ['module test-block', 'int'];
-		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__1'] = {
+	it('renders anonymous scalar allocations from metadata', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__1'] = createMemory({
+			id: '__anonymous__1',
 			wordAlignedAddress: 8,
 			byteAddress: 32,
-			numberOfElements: 1,
-			elementWordSize: 1,
-			type: MemoryTypes.int,
-			wordAlignedSize: 1,
-			default: 0,
-			isInteger: true,
-			id: '__anonymous__1',
-			pointerDepth: 0,
-		};
+		});
+		delete mockState.compiler.compiledModules['test-block'].memoryMap['output1'];
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -129,7 +141,7 @@ describe('updateOutputsGraphicData', () => {
 		expect(mockState.codeBlockRendering.outputsByWordAddress.get(32)?.id).toBe('__anonymous__1');
 	});
 
-	it('should clear existing outputs before updating', () => {
+	it('clears existing outputs before updating', () => {
 		mockGraphicData.widgets.outputs.push({
 			codeBlock: mockGraphicData,
 			width: 0,
@@ -141,7 +153,7 @@ describe('updateOutputsGraphicData', () => {
 			id: 'oldOutput',
 			calibratedMax: 1,
 			calibratedMin: 0,
-			memory: { wordAlignedAddress: 0 } as DataStructure,
+			memory: createMemory({ id: 'oldOutput' }),
 		});
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
@@ -149,27 +161,21 @@ describe('updateOutputsGraphicData', () => {
 		expect(findWidgetById(mockGraphicData.widgets.outputs, 'oldOutput')).toBeUndefined();
 	});
 
-	it('should handle multiple outputs', () => {
-		mockGraphicData.code = ['module test-block', 'int output1', 'float output2'];
-		mockState.compiler.compiledModules['test-block'].memoryMap['output2'] = {
+	it('handles multiple outputs in line-number order', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['output2'] = createMemory({
+			id: 'output2',
+			type: MemoryTypes.float,
 			wordAlignedAddress: 6,
 			byteAddress: 24,
-			numberOfElements: 1,
-			elementWordSize: 1,
-			type: MemoryTypes.float,
-			wordAlignedSize: 1,
-			default: 0,
+			lineNumber: 2,
 			isInteger: false,
-			id: 'output2',
-			pointerDepth: 0,
-		};
+		});
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.outputs.length).toBe(2);
 		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(2);
 
-		// Exclude codeBlock and memory references from snapshot
 		const entries = Object.entries(mockGraphicData.widgets.outputs).map(([key, value]) => {
 			const { codeBlock: _codeBlock, memory: _memory, ...rest } = value;
 			return [key, rest];
@@ -177,20 +183,8 @@ describe('updateOutputsGraphicData', () => {
 		expect(entries).toMatchSnapshot();
 	});
 
-	it('should position outputs at correct y coordinate based on line number', () => {
-		mockGraphicData.code = ['nop', 'nop', 'int output1'];
-		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = {
-			wordAlignedAddress: 5,
-			byteAddress: 20,
-			numberOfElements: 1,
-			elementWordSize: 1,
-			type: MemoryTypes.int,
-			wordAlignedSize: 1,
-			default: 0,
-			isInteger: true,
-			id: 'output1',
-			pointerDepth: 0,
-		};
+	it('positions outputs at the metadata line number', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = createMemory({ lineNumber: 2 });
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -199,7 +193,7 @@ describe('updateOutputsGraphicData', () => {
 		expect(outputWithoutRefs).toMatchSnapshot();
 	});
 
-	it('should round wire coordinates to whole pixels', () => {
+	it('rounds wire coordinates to whole pixels', () => {
 		mockState.viewport.vGrid = 9;
 		mockState.viewport.hGrid = 17;
 		mockGraphicData.width = 90;
