@@ -43,7 +43,7 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 	for (const block of sortedEnabled) {
 		if (block.blockType === moduleBlockType) {
 			if (!block.entry) {
-				throw new Error(`Module code block "${block.id}" is missing entry`);
+				throw new Error(`Module code block "${block.name}" is missing entry`);
 			}
 			const entryName = block.entry;
 			moduleEntries[entryName] ??= [];
@@ -149,7 +149,7 @@ export default function compiler(store: StateManager<State>) {
 			store.set('codeErrors.compilationErrors', [
 				{
 					lineNumber: diagnostic.line.lineNumber,
-					codeBlockId: diagnostic.context.projectBlockId ?? diagnostic.context.codeBlockId ?? '',
+					codeBlockId: diagnostic.context.projectBlockId ?? -1,
 					codeBlockType: diagnostic.context.codeBlockType,
 					message: diagnostic?.message || String(error) || 'Compilation failed',
 				},

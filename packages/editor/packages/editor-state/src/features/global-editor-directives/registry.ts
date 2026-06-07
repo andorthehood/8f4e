@@ -16,8 +16,8 @@ export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [conf
 export function resolveGlobalEditorDirectives(
 	codeBlocks: {
 		parsedDirectives: ParsedDirectiveRecord[];
-		id?: string;
-		moduleId?: string;
+		creationIndex?: number;
+		name?: string;
 		blockType?: CodeBlockType;
 	}[],
 	plugins: GlobalEditorDirectivePlugin[] = globalEditorDirectivePlugins
@@ -34,10 +34,10 @@ export function resolveGlobalEditorDirectives(
 	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex++) {
 		const block = codeBlocks[blockIndex];
 		const directives: ParsedGlobalEditorDirective[] = parseGlobalEditorDirectives(block.parsedDirectives, plugins);
-		const codeBlockId: string | number = block.id ?? blockIndex;
+		const codeBlockId = block.creationIndex ?? blockIndex;
 		const context: GlobalEditorDirectiveContext = {
 			codeBlockId,
-			moduleId: block.moduleId,
+			codeBlockName: block.name,
 			blockType: block.blockType,
 		};
 

@@ -15,8 +15,7 @@ describe('wave directive widget resolution', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			code: ['; @wave bufferAddress 16 pointer1'],
 			gaps: new Map(),
 			width: 100,

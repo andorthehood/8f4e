@@ -749,7 +749,7 @@ When you copy a group (using "Copy group" in the context menu), all blocks in th
 - The editor automatically detects whether clipboard content is a multi-block array or plain text
 - A valid multi-block array must have at least 2 items with the required shape
 - Pasted blocks are placed relative to the paste location (anchor position)
-- Module/function IDs are automatically incremented to avoid collisions
+- Module/function names are automatically incremented to avoid collisions
 
 **Group Name Collision Handling:**
 

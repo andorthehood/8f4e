@@ -151,7 +151,7 @@ describe('creationIndex', () => {
 	describe('compiler ordering', () => {
 		it('should sort module code blocks by grid position for compilation', () => {
 			const block1 = createMockCodeBlock({
-				id: 'a',
+				name: 'a',
 				creationIndex: 0,
 				code: ['module a', 'moduleEnd'],
 				blockType: 'module',
@@ -160,7 +160,7 @@ describe('creationIndex', () => {
 				gridY: 0,
 			});
 			const block2 = createMockCodeBlock({
-				id: 'b',
+				name: 'b',
 				creationIndex: 1,
 				code: ['module b', 'moduleEnd'],
 				blockType: 'module',
@@ -169,7 +169,7 @@ describe('creationIndex', () => {
 				gridY: 10,
 			});
 			const block3 = createMockCodeBlock({
-				id: 'c',
+				name: 'c',
 				creationIndex: 2,
 				code: ['module c', 'moduleEnd'],
 				blockType: 'module',
@@ -191,7 +191,7 @@ describe('creationIndex', () => {
 
 		it('should use creationIndex as the tie-breaker when module grid positions match', () => {
 			const block1 = createMockCodeBlock({
-				id: 'a',
+				name: 'a',
 				creationIndex: 2,
 				code: ['module a', 'moduleEnd'],
 				blockType: 'module',
@@ -200,7 +200,7 @@ describe('creationIndex', () => {
 				gridY: 0,
 			});
 			const block2 = createMockCodeBlock({
-				id: 'b',
+				name: 'b',
 				creationIndex: 0,
 				code: ['module b', 'moduleEnd'],
 				blockType: 'module',
@@ -209,7 +209,7 @@ describe('creationIndex', () => {
 				gridY: 0,
 			});
 			const block3 = createMockCodeBlock({
-				id: 'c',
+				name: 'c',
 				creationIndex: 1,
 				code: ['module c', 'moduleEnd'],
 				blockType: 'module',
@@ -229,7 +229,7 @@ describe('creationIndex', () => {
 
 		it('should use grid position even when a referenced module is visually later', () => {
 			const dependentBlock = createMockCodeBlock({
-				id: 'dependent',
+				name: 'dependent',
 				creationIndex: 0,
 				code: ['module dependent', 'int* ptr &source:0', 'moduleEnd'],
 				blockType: 'module',
@@ -238,7 +238,7 @@ describe('creationIndex', () => {
 				gridY: 0,
 			});
 			const sourceBlock = createMockCodeBlock({
-				id: 'source',
+				name: 'source',
 				creationIndex: 1,
 				code: ['module source', 'int value 0', 'moduleEnd'],
 				blockType: 'module',
@@ -257,20 +257,20 @@ describe('creationIndex', () => {
 
 		it('should separate modules and functions for compilation', () => {
 			const moduleBlock = createMockCodeBlock({
-				id: 'testModule',
+				name: 'testModule',
 				creationIndex: 0,
 				code: ['module testModule', 'moduleEnd'],
 				blockType: 'module',
 				entry: 'main',
 			});
 			const functionBlock = createMockCodeBlock({
-				id: 'testFunc',
+				name: 'testFunc',
 				creationIndex: 1,
 				code: ['function testFunc', 'functionEnd'],
 				blockType: 'function',
 			});
 			const secondModuleBlock = createMockCodeBlock({
-				id: 'testModuleTwo',
+				name: 'testModuleTwo',
 				creationIndex: 2,
 				code: ['module testModuleTwo', 'moduleEnd'],
 				blockType: 'module',

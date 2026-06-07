@@ -6,8 +6,8 @@ import type {
 	State,
 	Viewport,
 } from '@8f4e/editor-state-types';
-import { getConstantsId, getFunctionId, getModuleId } from '@8f4e/tokenizer';
 import { deriveDirectiveState } from '~/features/code-blocks/features/directives/registry';
+import getCodeBlockId from '~/features/code-blocks/utils/getCodeBlockId';
 import { parseBlockDirectives } from '~/features/code-blocks/utils/parseBlockDirectives';
 
 /**
@@ -56,11 +56,11 @@ function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
  *
  * @example
  * // Use cursorY convenience parameter
- * const block = createMockCodeBlock({ id: 'my-block', x: 100, y: 200, cursorY: 75 });
+ * const block = createMockCodeBlock({ name: 'my-block', x: 100, y: 200, cursorY: 75 });
  *
  * @example
  * // Override any property
- * const block = createMockCodeBlock({ id: 'custom', code: ['test'], offsetX: 10, offsetY: 10 });
+ * const block = createMockCodeBlock({ name: 'custom', code: ['test'], offsetX: 10, offsetY: 10 });
  */
 export function createMockCodeBlock(
 	options: Partial<CodeBlockGraphicData> & { cursorY?: number } = {}
@@ -73,12 +73,8 @@ export function createMockCodeBlock(
 	const height = overrides.height ?? 100;
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
-	const id = overrides.id ?? 'test-block';
 	const code = overrides.code ?? [];
-	const derivedModuleId = getModuleId(code) || getConstantsId(code) || undefined;
-	const moduleId = overrides.moduleId ?? derivedModuleId;
-	const derivedFunctionId = getFunctionId(code) || undefined;
-	const functionId = overrides.functionId ?? derivedFunctionId;
+	const name = (overrides.name ?? getCodeBlockId(code)) || 'test-block';
 
 	// Default grid size for testing (matches common font sizes)
 	const defaultVGrid = 8;
@@ -107,9 +103,7 @@ export function createMockCodeBlock(
 		offsetX,
 		offsetY,
 		cursor,
-		id,
-		...(moduleId !== undefined ? { moduleId } : {}),
-		...(functionId !== undefined ? { functionId } : {}),
+		name,
 		code,
 		codeColors: [],
 		codeToRender: [],

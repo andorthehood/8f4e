@@ -29,14 +29,14 @@ function createMockEngine(): Engine {
 describe('drawConnections', () => {
 	it('draws wires from the center of input and output widgets', () => {
 		const inputBlock = createMockCodeBlock({
-			moduleId: 'inputModule',
+			name: 'inputModule',
 			x: 100,
 			y: 200,
 			offsetX: 7,
 			offsetY: 11,
 		});
 		const outputBlock = createMockCodeBlock({
-			moduleId: 'outputModule',
+			name: 'outputModule',
 			x: 300,
 			y: 400,
 			offsetX: 13,
