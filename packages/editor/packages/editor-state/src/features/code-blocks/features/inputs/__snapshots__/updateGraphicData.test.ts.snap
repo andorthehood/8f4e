@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`updateInputsGraphicData > should calculate correct dimensions and position 1`] = `
+exports[`updateInputsGraphicData > calculates dimensions and position from metadata 1`] = `
 {
   "height": 16,
   "id": "input1",
@@ -13,7 +13,7 @@ exports[`updateInputsGraphicData > should calculate correct dimensions and posit
 }
 `;
 
-exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
+exports[`updateInputsGraphicData > handles multiple inputs in line-number order 1`] = `
 [
   [
     "0",
@@ -44,7 +44,7 @@ exports[`updateInputsGraphicData > should handle multiple inputs 1`] = `
 ]
 `;
 
-exports[`updateInputsGraphicData > should position inputs at correct y coordinate based on line number 1`] = `
+exports[`updateInputsGraphicData > positions inputs at the metadata line number 1`] = `
 {
   "height": 16,
   "id": "input1",
