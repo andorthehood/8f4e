@@ -37,7 +37,7 @@ export function resolveGlobalEditorDirectives(
 		const codeBlockId = block.creationIndex ?? blockIndex;
 		const context: GlobalEditorDirectiveContext = {
 			codeBlockId,
-			moduleId: block.name,
+			codeBlockName: block.name,
 			blockType: block.blockType,
 		};
 
