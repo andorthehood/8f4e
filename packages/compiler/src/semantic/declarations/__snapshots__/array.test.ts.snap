@@ -10,6 +10,7 @@ exports[`array declaration compiler > creates a memory array entry 1`] = `
     "id": "values",
     "isInteger": true,
     "isUnsigned": false,
+    "lineNumber": 1,
     "memoryIndex": 0,
     "numberOfElements": 3,
     "pointerDepth": 0,
