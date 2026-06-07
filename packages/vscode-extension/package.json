@@ -1,6 +1,6 @@
 {
   "name": "8f4e-vscode-extension",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": true,
   "description": "VS Code custom editor for 8f4e files",
   "type": "module",
