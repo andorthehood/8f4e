@@ -1477,5 +1477,158 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "18afcb58700df6fc7509f213ef847e6a0a7f7d52",
+		"recordedAt": "2026-06-04T11:41:40.458Z",
+		"coverage": {
+			"documented": 126,
+			"total": 321,
+			"percentage": 39.3,
+			"byKind": {
+				"function": {
+					"documented": 104,
+					"total": 131,
+					"percentage": 79.4
+				},
+				"type": {
+					"documented": 15,
+					"total": 22,
+					"percentage": 68.2
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 132,
+					"percentage": 0
+				},
+				"variable": {
+					"documented": 7,
+					"total": 28,
+					"percentage": 25
+				},
+				"interface": {
+					"documented": 0,
+					"total": 5,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				},
+				"class": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				},
+				"constructor": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "402393588cf0dcaee926984dff117152cd067cf4",
+		"recordedAt": "2026-06-04T19:58:24.003Z",
+		"coverage": {
+			"documented": 129,
+			"total": 365,
+			"percentage": 35.3,
+			"byKind": {
+				"function": {
+					"documented": 107,
+					"total": 138,
+					"percentage": 77.5
+				},
+				"type": {
+					"documented": 15,
+					"total": 26,
+					"percentage": 57.7
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 161,
+					"percentage": 0
+				},
+				"variable": {
+					"documented": 7,
+					"total": 29,
+					"percentage": 24.1
+				},
+				"interface": {
+					"documented": 0,
+					"total": 8,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				},
+				"class": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				},
+				"constructor": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "e5de5734949456c275c0c846ff4e71c42b505ef8",
+		"recordedAt": "2026-06-07T16:07:30.563Z",
+		"coverage": {
+			"documented": 125,
+			"total": 357,
+			"percentage": 35,
+			"byKind": {
+				"function": {
+					"documented": 103,
+					"total": 134,
+					"percentage": 76.9
+				},
+				"type": {
+					"documented": 15,
+					"total": 26,
+					"percentage": 57.7
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 161,
+					"percentage": 0
+				},
+				"variable": {
+					"documented": 7,
+					"total": 25,
+					"percentage": 28
+				},
+				"interface": {
+					"documented": 0,
+					"total": 8,
+					"percentage": 0
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				},
+				"class": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				},
+				"constructor": {
+					"documented": 0,
+					"total": 1,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]

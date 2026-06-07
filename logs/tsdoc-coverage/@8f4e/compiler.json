@@ -1042,5 +1042,113 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "18afcb58700df6fc7509f213ef847e6a0a7f7d52",
+		"recordedAt": "2026-06-04T11:41:40.458Z",
+		"coverage": {
+			"documented": 328,
+			"total": 554,
+			"percentage": 59.2,
+			"byKind": {
+				"type": {
+					"documented": 13,
+					"total": 35,
+					"percentage": 37.1
+				},
+				"property-signature": {
+					"documented": 21,
+					"total": 143,
+					"percentage": 14.7
+				},
+				"variable": {
+					"documented": 88,
+					"total": 109,
+					"percentage": 80.7
+				},
+				"function": {
+					"documented": 203,
+					"total": 260,
+					"percentage": 78.1
+				},
+				"interface": {
+					"documented": 3,
+					"total": 7,
+					"percentage": 42.9
+				}
+			}
+		}
+	},
+	{
+		"commit": "402393588cf0dcaee926984dff117152cd067cf4",
+		"recordedAt": "2026-06-04T19:58:24.003Z",
+		"coverage": {
+			"documented": 329,
+			"total": 566,
+			"percentage": 58.1,
+			"byKind": {
+				"type": {
+					"documented": 13,
+					"total": 36,
+					"percentage": 36.1
+				},
+				"property-signature": {
+					"documented": 22,
+					"total": 147,
+					"percentage": 15
+				},
+				"variable": {
+					"documented": 88,
+					"total": 109,
+					"percentage": 80.7
+				},
+				"function": {
+					"documented": 203,
+					"total": 267,
+					"percentage": 76
+				},
+				"interface": {
+					"documented": 3,
+					"total": 7,
+					"percentage": 42.9
+				}
+			}
+		}
+	},
+	{
+		"commit": "e5de5734949456c275c0c846ff4e71c42b505ef8",
+		"recordedAt": "2026-06-07T16:07:30.563Z",
+		"coverage": {
+			"documented": 329,
+			"total": 566,
+			"percentage": 58.1,
+			"byKind": {
+				"type": {
+					"documented": 13,
+					"total": 36,
+					"percentage": 36.1
+				},
+				"property-signature": {
+					"documented": 22,
+					"total": 147,
+					"percentage": 15
+				},
+				"variable": {
+					"documented": 88,
+					"total": 109,
+					"percentage": 80.7
+				},
+				"function": {
+					"documented": 203,
+					"total": 267,
+					"percentage": 76
+				},
+				"interface": {
+					"documented": 3,
+					"total": 7,
+					"percentage": 42.9
+				}
+			}
+		}
 	}
 ]

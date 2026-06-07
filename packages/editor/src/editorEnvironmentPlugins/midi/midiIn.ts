@@ -1,7 +1,7 @@
-import type { CodeError, State } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import type { EditorEnvironmentPluginContext } from '../types';
-import parseMidiInDirectives from './directives';
+import { resolveMidiInputBindings } from './config';
 import type { MidiInBinding, MidiInputLookup } from './types';
 
 type MidiCallback = (...args: number[]) => unknown;
@@ -28,12 +28,10 @@ interface ActiveMidiInputListener {
 
 interface ResolvedMidiCallbacks {
 	callbackGroupsByPort: Map<string, MidiCallbackGroup>;
-	errors: CodeError[];
 }
 
 interface ResolvedMidiInputPorts {
 	bindings: MidiInputBinding[];
-	errors: CodeError[];
 }
 
 interface MidiInOptions {
@@ -46,15 +44,6 @@ interface MidiInOptions {
 export interface MidiInManager {
 	sync: () => void;
 	dispose: () => void;
-}
-
-function createBindingError(binding: MidiInBinding, message: string): CodeError {
-	return {
-		codeBlockId: binding.codeBlockId,
-		codeBlockType: binding.codeBlockType,
-		lineNumber: binding.lineNumber,
-		message,
-	};
 }
 
 function removeInputListeners(activeListeners: ActiveMidiInputListener[]): void {
@@ -73,7 +62,6 @@ function getMidiEventBytes(event: unknown): [number, number, number] {
 function resolveMidiInputPorts(bindings: MidiInBinding[], getInputPort: MidiInputLookup): ResolvedMidiInputPorts {
 	const inputsByPort = new Map<string, MIDIInput | undefined>();
 	const availableBindings: MidiInputBinding[] = [];
-	const errors: CodeError[] = [];
 
 	for (const binding of bindings) {
 		if (!inputsByPort.has(binding.port)) {
@@ -82,26 +70,23 @@ function resolveMidiInputPorts(bindings: MidiInBinding[], getInputPort: MidiInpu
 
 		const input = inputsByPort.get(binding.port);
 		if (!input) {
-			errors.push(createBindingError(binding, `MIDI input port "${binding.port}" is not available.`));
+			console.error(`MIDI input port "${binding.port}" is not available.`);
 			continue;
 		}
 
 		availableBindings.push({ binding, input });
 	}
 
-	return { bindings: availableBindings, errors };
+	return { bindings: availableBindings };
 }
 
 function resolveMidiCallbacks(bindings: MidiInputBinding[], exports: WebAssembly.Exports): ResolvedMidiCallbacks {
 	const callbackGroupsByPort = new Map<string, MidiCallbackGroup>();
-	const errors: CodeError[] = [];
 
 	for (const { binding, input } of bindings) {
 		const callback = exports[binding.exportName];
 		if (typeof callback !== 'function') {
-			errors.push(
-				createBindingError(binding, `Missing callable WebAssembly export for @midiIn callback "${binding.exportName}".`)
-			);
+			console.error(`Missing callable WebAssembly export for MIDI input callback "${binding.exportName}".`);
 			continue;
 		}
 
@@ -110,35 +95,25 @@ function resolveMidiCallbacks(bindings: MidiInputBinding[], exports: WebAssembly
 		callbackGroupsByPort.set(binding.port, group);
 	}
 
-	return { callbackGroupsByPort, errors };
+	return { callbackGroupsByPort };
 }
 
 function attachMidiInputListeners({
 	callbackGroupsByPort,
 	activeListeners,
-	baseErrors,
-	setErrors,
 }: {
 	callbackGroupsByPort: Map<string, MidiCallbackGroup>;
 	activeListeners: ActiveMidiInputListener[];
-	baseErrors: CodeError[];
-	setErrors: EditorEnvironmentPluginContext['setErrors'];
 }): void {
 	for (const { input, callbacks } of callbackGroupsByPort.values()) {
 		const handler = (event: unknown) => {
 			const [status, data1, data2] = getMidiEventBytes(event);
-			const callbackErrors: CodeError[] = [];
 			for (const { binding, callback } of callbacks) {
 				try {
 					callback(status, data1, data2);
 				} catch (error) {
-					console.error('MIDI input callback failed:', error);
-					callbackErrors.push(createBindingError(binding, `MIDI input callback "${binding.exportName}" failed.`));
+					console.error(`MIDI input callback "${binding.exportName}" failed.`, error);
 				}
-			}
-
-			if (callbackErrors.length > 0) {
-				setErrors([...baseErrors, ...callbackErrors]);
 			}
 		};
 
@@ -165,14 +140,11 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 		const generation = ++syncGeneration;
 		removeInputListeners(activeListeners);
 
-		const parsed = parseMidiInDirectives(state);
-		const errors: CodeError[] = [...parsed.errors];
-		const resolvedPorts = resolveMidiInputPorts(parsed.bindings, getInputPort);
-		errors.push(...resolvedPorts.errors);
+		const resolvedPorts = resolveMidiInputPorts(resolveMidiInputBindings(state), getInputPort);
 		const bindings = resolvedPorts.bindings;
 
 		if (bindings.length === 0) {
-			setErrors(errors);
+			setErrors([]);
 			return;
 		}
 
@@ -184,20 +156,17 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 				}
 
 				if (!exports) {
-					setErrors(errors);
+					setErrors([]);
 					return;
 				}
 
 				const resolvedCallbacks = resolveMidiCallbacks(bindings, exports);
-				errors.push(...resolvedCallbacks.errors);
 				attachMidiInputListeners({
 					callbackGroupsByPort: resolvedCallbacks.callbackGroupsByPort,
 					activeListeners,
-					baseErrors: errors,
-					setErrors,
 				});
 
-				setErrors(errors);
+				setErrors([]);
 			})
 			.catch(error => {
 				if (disposed || generation !== syncGeneration) {
@@ -205,12 +174,13 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 				}
 
 				console.error('Failed to instantiate MIDI input WebAssembly module:', error);
-				setErrors(errors);
+				setErrors([]);
 			});
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', sync);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', sync);
+	store.subscribe('codeBlockRendering.codeBlocks', sync);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', sync);
+	store.subscribe('editorConfig.midi', sync);
 	store.subscribe('compiler.isCompiling', sync);
 	sync();
 
@@ -220,8 +190,9 @@ export default function createMidiIn({ store, setErrors, getInputPort, getWasmEx
 			disposed = true;
 			syncGeneration++;
 			removeInputListeners(activeListeners);
-			store.unsubscribe('graphicHelper.codeBlocks', sync);
-			store.unsubscribe('graphicHelper.selectedCodeBlock.code', sync);
+			store.unsubscribe('codeBlockRendering.codeBlocks', sync);
+			store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', sync);
+			store.unsubscribe('editorConfig.midi', sync);
 			store.unsubscribe('compiler.isCompiling', sync);
 		},
 	};

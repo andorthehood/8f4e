@@ -1271,5 +1271,43 @@
 				"maxRangesPerFunction": 32
 			}
 		}
+	},
+	{
+		"commit": "402393588cf0dcaee926984dff117152cd067cf4",
+		"version": "1.17.0",
+		"benchmark": "minBLEP.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 239,
+				"functionEntries": 35086,
+				"rangeExecutions": 108012,
+				"maxRangesPerFunction": 63
+			},
+			"tokenizer": {
+				"coveredFunctions": 55,
+				"functionEntries": 20922,
+				"rangeExecutions": 117645,
+				"maxRangesPerFunction": 32
+			}
+		}
+	},
+	{
+		"commit": "e5de5734949456c275c0c846ff4e71c42b505ef8",
+		"version": "1.17.1",
+		"benchmark": "minBLEP.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 239,
+				"functionEntries": 35086,
+				"rangeExecutions": 108012,
+				"maxRangesPerFunction": 63
+			},
+			"tokenizer": {
+				"coveredFunctions": 55,
+				"functionEntries": 20922,
+				"rangeExecutions": 117645,
+				"maxRangesPerFunction": 32
+			}
+		}
 	}
 ]

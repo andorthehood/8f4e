@@ -1,9 +1,15 @@
 8f4e/v1
 
-; Guard helpers normalize invalid runtime values into safe stack values.
+; Guard helpers normalize
+; invalid runtime values into
+; safe stack
+; values.
 entry test
 module ensureNonZeroIntAssertions
-; ensureNonZero leaves non-zero integers unchanged and replaces zero with one.
+; ensureNonZero leaves non-zero
+; integers unchanged and
+; replaces
+; zero with one.
 push 69
 ensureNonZero
 call assert 69
@@ -18,7 +24,9 @@ call assert -420
 moduleEnd
 
 module ensureNonZeroFloatAssertions
-; ensureNonZero leaves non-zero floats unchanged and replaces zero with 1.0.
+; ensureNonZero leaves non-zero
+; floats unchanged and replaces
+; zero with 1.0.
 push 69.1
 ensureNonZero
 call assertf 69.1

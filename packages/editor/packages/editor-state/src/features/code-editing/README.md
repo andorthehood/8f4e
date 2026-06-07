@@ -24,10 +24,10 @@ Handles low-level text editing operations within code blocks: caret movement, ch
 
 ### State Touched
 
-- `state.graphicHelper.selectedCodeBlock.code` - Array of code lines
-- `state.graphicHelper.selectedCodeBlock.cursor.row` - Current cursor row (line number)
-- `state.graphicHelper.selectedCodeBlock.cursor.col` - Current cursor column position
-- `state.graphicHelper.selectedCodeBlock.lastUpdated` - Timestamp of last edit
+- `state.codeBlockRendering.selectedCodeBlock.code` - Array of code lines
+- `state.codeBlockRendering.selectedCodeBlock.cursor.row` - Current cursor row (line number)
+- `state.codeBlockRendering.selectedCodeBlock.cursor.col` - Current cursor column position
+- `state.codeBlockRendering.selectedCodeBlock.lastUpdated` - Timestamp of last edit
 - `state.editorMode` - Global editor mode (`view`, `edit`, or `presentation`)
 - `state.featureFlags.editing` - Enables text-editing operations
 - `state.featureFlags.codeLineSelection` - Enables caret movement within selected code blocks

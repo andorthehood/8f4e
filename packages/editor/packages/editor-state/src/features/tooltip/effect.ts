@@ -25,21 +25,17 @@ function getSelectedCodeBlockStackAnalysisLine(
 	state: State,
 	selectedCodeBlock: CodeBlockGraphicData
 ): CompiledStackAnalysisLine | undefined {
-	const moduleId = selectedCodeBlock.moduleId;
+	if (!selectedCodeBlock.name) {
+		return undefined;
+	}
 
-	if (!moduleId) {
-		const functionId = selectedCodeBlock.functionId;
-
-		if (!functionId) {
-			return undefined;
-		}
-
-		return state.compiler.compiledFunctions?.[functionId]?.stackAnalysis?.find(
+	if (selectedCodeBlock.blockType === 'function') {
+		return state.compiler.compiledFunctions?.[selectedCodeBlock.name]?.stackAnalysis?.find(
 			line => line.lineNumber === selectedCodeBlock.cursor.row
 		);
 	}
 
-	return state.compiler.compiledModules[moduleId]?.stackAnalysis?.find(
+	return state.compiler.compiledModules[selectedCodeBlock.name]?.stackAnalysis?.find(
 		line => line.lineNumber === selectedCodeBlock.cursor.row
 	);
 }
@@ -60,11 +56,11 @@ function getSelectedModuleExecutionOrder(
 	selectedCodeBlock: CodeBlockGraphicData,
 	line: string | undefined
 ): number | undefined {
-	if (!line || getInstructionNameFromSourceLine(line) !== 'module' || !selectedCodeBlock.moduleId) {
+	if (!line || getInstructionNameFromSourceLine(line) !== 'module' || !selectedCodeBlock.name) {
 		return undefined;
 	}
 
-	const moduleIndex = Object.keys(state.compiler.compiledModules).indexOf(selectedCodeBlock.moduleId);
+	const moduleIndex = Object.keys(state.compiler.compiledModules).indexOf(selectedCodeBlock.name);
 	return moduleIndex === -1 ? undefined : moduleIndex + 1;
 }
 
@@ -75,7 +71,7 @@ export default function tooltip(store: StateManager<State>): void {
 	const state = store.getState();
 
 	function syncSelectedLineTooltip(): void {
-		const selectedCodeBlock = state.graphicHelper.selectedCodeBlock;
+		const selectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
 
 		if (!state.featureFlags.codeLineSelection || !selectedCodeBlock) {
 			store.set('tooltip', createEmptyTooltipState());
@@ -88,22 +84,22 @@ export default function tooltip(store: StateManager<State>): void {
 			line,
 			TOOLTIP_WRAP_WIDTH,
 			getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock),
-			state.graphicHelper.spriteLookups,
-			selectedCodeBlock.moduleId,
-			getSelectedMemoryDeclaration(state, selectedCodeBlock.moduleId, memoryId),
+			state.spriteLookups,
+			selectedCodeBlock.name,
+			getSelectedMemoryDeclaration(state, selectedCodeBlock.name, memoryId),
 			getSelectedModuleExecutionOrder(state, selectedCodeBlock, line)
 		);
 		store.set('tooltip', getTooltipState(content, state, selectedCodeBlock));
 	}
 
-	store.subscribe('graphicHelper.selectedCodeBlock', syncSelectedLineTooltip);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', syncSelectedLineTooltip);
-	store.subscribe('graphicHelper.selectedCodeBlock.cursor.row', syncSelectedLineTooltip);
-	store.subscribe('graphicHelper.selectedCodeBlock.cursor.y', syncSelectedLineTooltip);
+	store.subscribe('codeBlockRendering.selectedCodeBlock', syncSelectedLineTooltip);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncSelectedLineTooltip);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.cursor.row', syncSelectedLineTooltip);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.cursor.y', syncSelectedLineTooltip);
 	store.subscribe('featureFlags.codeLineSelection', syncSelectedLineTooltip);
 	store.subscribe('compiler.compiledModules', syncSelectedLineTooltip);
 	store.subscribe('compiler.compiledFunctions', syncSelectedLineTooltip);
-	store.subscribe('graphicHelper.spriteLookups', syncSelectedLineTooltip);
+	store.subscribe('spriteLookups', syncSelectedLineTooltip);
 	store.subscribe('viewport.vGrid', syncSelectedLineTooltip);
 	store.subscribe('viewport.hGrid', syncSelectedLineTooltip);
 

@@ -22,7 +22,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'myGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -42,7 +42,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'firstGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -61,7 +61,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'myGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -80,7 +80,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'myGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -99,7 +99,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'myGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -118,7 +118,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'myGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -137,7 +137,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 		});
 		const originalCode = [...codeBlock.code];
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -157,7 +157,7 @@ describe('groupRemover', () => {
 			lastUpdated: 1000,
 			groupName: 'myGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -176,7 +176,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'myGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -188,7 +188,7 @@ describe('groupRemover', () => {
 
 		removeCallback({ codeBlock });
 
-		expect(setSpy).toHaveBeenCalledWith('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	});
 
 	it('should not remove when editing is disabled', () => {
@@ -196,7 +196,7 @@ describe('groupRemover', () => {
 			code: ['module test', '; @group myGroup', '', 'moduleEnd'],
 			blockType: 'module',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 		mockState.featureFlags.editing = false;
 
 		groupRemover(store, mockEvents);
@@ -216,7 +216,7 @@ describe('groupRemover', () => {
 			blockType: 'function',
 			groupName: 'funcGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [functionBlock];
+		mockState.codeBlockRendering.codeBlocks = [functionBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -235,7 +235,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'audio-chain_1',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 
@@ -254,7 +254,7 @@ describe('groupRemover', () => {
 			blockType: 'module',
 			groupName: 'myGroup',
 		});
-		mockState.graphicHelper.codeBlocks = [codeBlock];
+		mockState.codeBlockRendering.codeBlocks = [codeBlock];
 
 		groupRemover(store, mockEvents);
 

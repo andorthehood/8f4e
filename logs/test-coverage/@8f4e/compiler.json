@@ -726,5 +726,83 @@
 				"percentage": 95.92
 			}
 		}
+	},
+	{
+		"commit": "18afcb58700df6fc7509f213ef847e6a0a7f7d52",
+		"recordedAt": "2026-06-04T11:42:40.533Z",
+		"coverage": {
+			"statements": {
+				"covered": 2383,
+				"total": 2486,
+				"percentage": 95.85
+			},
+			"branches": {
+				"covered": 1782,
+				"total": 1983,
+				"percentage": 89.86
+			},
+			"functions": {
+				"covered": 471,
+				"total": 481,
+				"percentage": 97.92
+			},
+			"lines": {
+				"covered": 2308,
+				"total": 2406,
+				"percentage": 95.92
+			}
+		}
+	},
+	{
+		"commit": "402393588cf0dcaee926984dff117152cd067cf4",
+		"recordedAt": "2026-06-04T19:59:19.452Z",
+		"coverage": {
+			"statements": {
+				"covered": 2400,
+				"total": 2503,
+				"percentage": 95.88
+			},
+			"branches": {
+				"covered": 1797,
+				"total": 2001,
+				"percentage": 89.8
+			},
+			"functions": {
+				"covered": 478,
+				"total": 488,
+				"percentage": 97.95
+			},
+			"lines": {
+				"covered": 2322,
+				"total": 2420,
+				"percentage": 95.95
+			}
+		}
+	},
+	{
+		"commit": "e5de5734949456c275c0c846ff4e71c42b505ef8",
+		"recordedAt": "2026-06-07T16:08:15.054Z",
+		"coverage": {
+			"statements": {
+				"covered": 2400,
+				"total": 2503,
+				"percentage": 95.88
+			},
+			"branches": {
+				"covered": 1797,
+				"total": 2001,
+				"percentage": 89.8
+			},
+			"functions": {
+				"covered": 478,
+				"total": 488,
+				"percentage": 97.95
+			},
+			"lines": {
+				"covered": 2322,
+				"total": 2420,
+				"percentage": 95.95
+			}
+		}
 	}
 ]

@@ -36,7 +36,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 				groupName: 'audio',
 			});
 
-			mockState.graphicHelper.codeBlocks = [block1, block2];
+			mockState.codeBlockRendering.codeBlocks = [block1, block2];
 
 			groupCopier(store, mockEvents);
 
@@ -78,7 +78,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 				disabled: true,
 			});
 
-			mockState.graphicHelper.codeBlocks = [block1];
+			mockState.codeBlockRendering.codeBlocks = [block1];
 
 			groupCopier(store, mockEvents);
 
@@ -105,7 +105,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 				groupName: undefined,
 			});
 
-			mockState.graphicHelper.codeBlocks = [block1];
+			mockState.codeBlockRendering.codeBlocks = [block1];
 
 			groupCopier(store, mockEvents);
 
@@ -143,7 +143,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 				creationIndex: 3,
 			});
 
-			mockState.graphicHelper.codeBlocks = [block1, block2, block3];
+			mockState.codeBlockRendering.codeBlocks = [block1, block2, block3];
 
 			groupCopier(store, mockEvents);
 
@@ -186,17 +186,17 @@ describe('codeBlockCreator - group copy/paste', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Verify two blocks were created
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(2);
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(2);
 
 			// Verify first block is at paste anchor position
 			const anchorGridX = Math.round(100 / 8);
 			const anchorGridY = Math.round(100 / 8);
-			expect(mockState.graphicHelper.codeBlocks[0].gridX).toBe(anchorGridX);
-			expect(mockState.graphicHelper.codeBlocks[0].gridY).toBe(anchorGridY);
+			expect(mockState.codeBlockRendering.codeBlocks[0].gridX).toBe(anchorGridX);
+			expect(mockState.codeBlockRendering.codeBlocks[0].gridY).toBe(anchorGridY);
 
 			// Verify second block has relative offset
-			expect(mockState.graphicHelper.codeBlocks[1].gridX).toBe(anchorGridX + 5);
-			expect(mockState.graphicHelper.codeBlocks[1].gridY).toBe(anchorGridY + 3);
+			expect(mockState.codeBlockRendering.codeBlocks[1].gridX).toBe(anchorGridX + 5);
+			expect(mockState.codeBlockRendering.codeBlocks[1].gridY).toBe(anchorGridY + 3);
 		});
 
 		it('should parse disabled state from @disabled directive on pasted blocks', async () => {
@@ -216,8 +216,8 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			expect(mockState.graphicHelper.codeBlocks[0].disabled).toBe(true);
-			expect(mockState.graphicHelper.codeBlocks[1].disabled).toBe(false);
+			expect(mockState.codeBlockRendering.codeBlocks[0].disabled).toBe(true);
+			expect(mockState.codeBlockRendering.codeBlocks[1].disabled).toBe(false);
 		});
 
 		it('should rename colliding group names on paste', async () => {
@@ -226,7 +226,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 				code: ['module existing', '; @group audio', 'moduleEnd'],
 				groupName: 'audio',
 			});
-			mockState.graphicHelper.codeBlocks = [existingBlock];
+			mockState.codeBlockRendering.codeBlocks = [existingBlock];
 
 			// Paste blocks with same group name
 			const clipboardData = JSON.stringify([
@@ -246,11 +246,11 @@ describe('codeBlockCreator - group copy/paste', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Original block should still have "audio" at line 1
-			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toBe('; @group audio');
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[1]).toBe('; @group audio');
 
 			// Pasted blocks should have renamed group "audio1" at line 2 (after @pos)
-			expect(mockState.graphicHelper.codeBlocks[1].code[2]).toBe('; @group audio1');
-			expect(mockState.graphicHelper.codeBlocks[2].code[2]).toBe('; @group audio1');
+			expect(mockState.codeBlockRendering.codeBlocks[1].code[2]).toBe('; @group audio1');
+			expect(mockState.codeBlockRendering.codeBlocks[2].code[2]).toBe('; @group audio1');
 		});
 
 		it('should handle multiple different group names in paste', async () => {
@@ -262,7 +262,7 @@ describe('codeBlockCreator - group copy/paste', () => {
 				code: ['module existing2', '; @group video', 'moduleEnd'],
 				groupName: 'video',
 			});
-			mockState.graphicHelper.codeBlocks = [existingBlock1, existingBlock2];
+			mockState.codeBlockRendering.codeBlocks = [existingBlock1, existingBlock2];
 
 			const clipboardData = JSON.stringify([
 				{ code: ['module foo', '; @group audio', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
@@ -282,9 +282,9 @@ describe('codeBlockCreator - group copy/paste', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// audio -> audio1, video -> video1 (now at line 2 after @pos)
-			expect(mockState.graphicHelper.codeBlocks[2].code[2]).toBe('; @group audio1');
-			expect(mockState.graphicHelper.codeBlocks[3].code[2]).toBe('; @group video1');
-			expect(mockState.graphicHelper.codeBlocks[4].code[2]).toBe('; @group audio1'); // Same as first
+			expect(mockState.codeBlockRendering.codeBlocks[2].code[2]).toBe('; @group audio1');
+			expect(mockState.codeBlockRendering.codeBlocks[3].code[2]).toBe('; @group video1');
+			expect(mockState.codeBlockRendering.codeBlocks[4].code[2]).toBe('; @group audio1'); // Same as first
 		});
 
 		it('should fallback to single-block paste for invalid JSON', async () => {
@@ -302,11 +302,11 @@ describe('codeBlockCreator - group copy/paste', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Should create one block with plain text (now includes @pos)
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
-			expect(mockState.graphicHelper.codeBlocks[0].code[0]).toBe('module test');
-			expect(mockState.graphicHelper.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
-			expect(mockState.graphicHelper.codeBlocks[0].code[2]).toBe('');
-			expect(mockState.graphicHelper.codeBlocks[0].code[3]).toBe('moduleEnd');
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[0]).toBe('module test');
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[1]).toMatch(/^; @pos \d+ \d+$/);
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[2]).toBe('');
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[3]).toBe('moduleEnd');
 		});
 
 		it('should fallback to single-block paste for array with only 1 item', async () => {
@@ -324,15 +324,15 @@ describe('codeBlockCreator - group copy/paste', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Should fallback to single paste
-			expect(mockState.graphicHelper.codeBlocks).toHaveLength(1);
+			expect(mockState.codeBlockRendering.codeBlocks).toHaveLength(1);
 		});
 
-		it('should update module IDs to avoid collisions', async () => {
+		it('should update module names to avoid collisions', async () => {
 			const existingBlock = createMockCodeBlock({
-				id: 'foo',
+				name: 'foo',
 				code: ['module foo', 'moduleEnd'],
 			});
-			mockState.graphicHelper.codeBlocks = [existingBlock];
+			mockState.codeBlockRendering.codeBlocks = [existingBlock];
 
 			const clipboardData = JSON.stringify([
 				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
@@ -350,18 +350,18 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			// Pasted blocks should have unique IDs
-			expect(mockState.graphicHelper.codeBlocks[1].id).not.toBe('foo');
-			expect(mockState.graphicHelper.codeBlocks[2].id).not.toBe('foo');
-			expect(mockState.graphicHelper.codeBlocks[1].id).not.toBe(mockState.graphicHelper.codeBlocks[2].id);
+			// Pasted blocks should have unique names
+			expect(mockState.codeBlockRendering.codeBlocks[1].name).not.toBe('foo');
+			expect(mockState.codeBlockRendering.codeBlocks[2].name).not.toBe('foo');
+			expect(mockState.codeBlockRendering.codeBlocks[1].name).not.toBe(mockState.codeBlockRendering.codeBlocks[2].name);
 		});
 
-		it('should update inter-module references when pasted module ids are renamed', async () => {
+		it('should update inter-module references when pasted module names are renamed', async () => {
 			const existingBlock = createMockCodeBlock({
-				id: 'module_foo',
+				name: 'foo',
 				code: ['module foo', 'moduleEnd'],
 			});
-			mockState.graphicHelper.codeBlocks = [existingBlock];
+			mockState.codeBlockRendering.codeBlocks = [existingBlock];
 
 			const clipboardData = JSON.stringify([
 				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },
@@ -382,9 +382,9 @@ describe('codeBlockCreator - group copy/paste', () => {
 
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
-			expect(mockState.graphicHelper.codeBlocks[1].code[0]).toBe('module foo2');
-			expect(mockState.graphicHelper.codeBlocks[2].code[2]).toBe('int* source &foo2:memoryItem');
-			expect(mockState.graphicHelper.codeBlocks[2].code[3]).toBe('push count(foo2:buffer)');
+			expect(mockState.codeBlockRendering.codeBlocks[1].code[0]).toBe('module foo2');
+			expect(mockState.codeBlockRendering.codeBlocks[2].code[2]).toBe('int* source &foo2:memoryItem');
+			expect(mockState.codeBlockRendering.codeBlocks[2].code[3]).toBe('push count(foo2:buffer)');
 		});
 
 		it('should preserve nonstick flag in group directive', async () => {
@@ -405,8 +405,8 @@ describe('codeBlockCreator - group copy/paste', () => {
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Nonstick flag should be preserved (now at index 2 after @pos)
-			expect(mockState.graphicHelper.codeBlocks[0].code[2]).toContain('nonstick');
-			expect(mockState.graphicHelper.codeBlocks[1].code[2]).toContain('nonstick');
+			expect(mockState.codeBlockRendering.codeBlocks[0].code[2]).toContain('nonstick');
+			expect(mockState.codeBlockRendering.codeBlocks[1].code[2]).toContain('nonstick');
 		});
 	});
 });

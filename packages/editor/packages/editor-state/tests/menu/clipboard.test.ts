@@ -45,10 +45,10 @@ describe('menus - clipboard callback disabled state', () => {
 
 	describe('moduleMenu', () => {
 		it('should disable "Copy" menu item when writeClipboardText is not provided', () => {
-			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'module' });
+			const mockCodeBlock = createMockCodeBlock({ name: 'test', blockType: 'module' });
 			const mockState = createMockState({
 				callbacks: { writeClipboardText: undefined },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
+				codeBlockRendering: { selectedCodeBlock: mockCodeBlock },
 			});
 
 			const menu = moduleMenu(mockState as State);
@@ -59,10 +59,10 @@ describe('menus - clipboard callback disabled state', () => {
 		});
 
 		it('should enable "Copy" menu item when writeClipboardText is provided', () => {
-			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'module' });
+			const mockCodeBlock = createMockCodeBlock({ name: 'test', blockType: 'module' });
 			const mockState = createMockState({
 				callbacks: { writeClipboardText: async () => {} },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
+				codeBlockRendering: { selectedCodeBlock: mockCodeBlock },
 			});
 
 			const menu = moduleMenu(mockState as State);
@@ -73,10 +73,10 @@ describe('menus - clipboard callback disabled state', () => {
 		});
 
 		it('should show correct label for function block type', () => {
-			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'function' });
+			const mockCodeBlock = createMockCodeBlock({ name: 'test', blockType: 'function' });
 			const mockState = createMockState({
 				callbacks: { writeClipboardText: undefined },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
+				codeBlockRendering: { selectedCodeBlock: mockCodeBlock },
 			});
 
 			const menu = moduleMenu(mockState as State);
@@ -87,10 +87,10 @@ describe('menus - clipboard callback disabled state', () => {
 		});
 
 		it('should show correct label for note block type', () => {
-			const mockCodeBlock = createMockCodeBlock({ id: 'test', blockType: 'note' });
+			const mockCodeBlock = createMockCodeBlock({ name: 'test', blockType: 'note' });
 			const mockState = createMockState({
 				callbacks: { writeClipboardText: undefined },
-				graphicHelper: { selectedCodeBlock: mockCodeBlock },
+				codeBlockRendering: { selectedCodeBlock: mockCodeBlock },
 			});
 
 			const menu = moduleMenu(mockState as State);

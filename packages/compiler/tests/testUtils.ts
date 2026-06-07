@@ -61,12 +61,15 @@ export const testRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const FLOAT_ASSERT_TOLERANCE = 0.001;
 const assertFunctionBlock: ProjectCodeBlock = {
+	id: -1,
 	code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
 };
 const assertFloatFunctionBlock: ProjectCodeBlock = {
+	id: -2,
 	code: ['function assertf', '#import assertf', 'param float received', 'param float expected', 'functionEnd'],
 };
 const assertFloat64FunctionBlock: ProjectCodeBlock = {
+	id: -3,
 	code: ['function assertf64', '#import assertf64', 'param float64 received', 'param float64 expected', 'functionEnd'],
 };
 const injectedAssertionFunctionIds = new Set(['assert', 'assertf', 'assertf64']);
@@ -320,8 +323,10 @@ export function compileFixtureProgramSource(
 		...(options.extraCodeBlocks ?? []),
 		...(options.includeAssertions ? [assertFunctionBlock, assertFloatFunctionBlock, assertFloat64FunctionBlock] : []),
 	];
-	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } =
-		pickProjectCompilerBlocks(codeBlocks);
+	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks({
+		...project,
+		codeBlocks,
+	});
 
 	return {
 		source: normalizedSource,

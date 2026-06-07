@@ -2,24 +2,20 @@ import { describe, expect, it } from 'vitest';
 import getCodeBlockId from './getCodeBlockId';
 
 describe('getCodeBlockId', () => {
-	it('returns module ID for module blocks', () => {
-		const code = ['module testModule', '', 'moduleEnd'];
-		expect(getCodeBlockId(code)).toBe('module_testModule');
+	it('returns raw module names for module blocks', () => {
+		expect(getCodeBlockId(['module testModule', '', 'moduleEnd'])).toBe('testModule');
 	});
 
-	it('returns function ID for function blocks', () => {
-		const code = ['function testFunction', '', 'functionEnd'];
-		expect(getCodeBlockId(code)).toBe('function_testFunction');
+	it('returns raw function names for function blocks', () => {
+		expect(getCodeBlockId(['function testFunction', '', 'functionEnd'])).toBe('testFunction');
 	});
 
-	it('returns constants ID for constants blocks', () => {
-		const code = ['constants env', '', 'constantsEnd'];
-		expect(getCodeBlockId(code)).toBe('constants_env');
+	it('returns raw constants names for constants blocks', () => {
+		expect(getCodeBlockId(['constants env', '', 'constantsEnd'])).toBe('env');
 	});
 
-	it('returns prototype ID for prototype blocks', () => {
-		const code = ['prototype oscillatorState', '', 'prototypeEnd'];
-		expect(getCodeBlockId(code)).toBe('prototype_oscillatorState');
+	it('returns raw prototype names for prototype blocks', () => {
+		expect(getCodeBlockId(['prototype oscillatorState', '', 'prototypeEnd'])).toBe('oscillatorState');
 	});
 
 	it('returns empty string for note blocks', () => {
@@ -27,14 +23,11 @@ describe('getCodeBlockId', () => {
 		expect(getCodeBlockId(['note fragmentShaderPostprocess', '', 'noteEnd'])).toBe('');
 	});
 
-	it('returns empty string when no ID is found', () => {
-		const code = ['some random code', 'without markers'];
-		expect(getCodeBlockId(code)).toBe('');
+	it('returns empty string when no block name is found', () => {
+		expect(getCodeBlockId(['some random code', 'without markers'])).toBe('');
 	});
 
-	it('prioritizes module ID over other types', () => {
-		// This is an edge case - normally code wouldn't have multiple block types
-		const code = ['module testModule', 'function testFunction', 'moduleEnd'];
-		expect(getCodeBlockId(code)).toBe('module_testModule');
+	it('ignores trailing comments after names', () => {
+		expect(getCodeBlockId(['module testModule ; comment', '', 'moduleEnd'])).toBe('testModule');
 	});
 });

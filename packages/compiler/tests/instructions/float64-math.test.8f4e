@@ -1,9 +1,15 @@
 8f4e/v1
 
-; Float64 arithmetic and comparison behavior should execute without falling back to float32.
+; Float64 arithmetic and
+; comparison behavior should
+; execute
+; without falling back to
+; float32.
 entry test
 module float64ComparisonAssertions
-; Float64 comparisons should produce integer booleans for matching operand widths.
+; Float64 comparisons should
+; produce integer booleans for
+; matching operand widths.
 push 1.5f64
 push 1.5f64
 equal
@@ -36,7 +42,9 @@ call assert 1
 moduleEnd
 
 module float64SqrtAssertions
-; sqrt should operate on float64 values when given a float64 operand.
+; sqrt should operate on float64
+; values when given a float64
+; operand.
 push 2.0f64
 sqrt
 call assertf64 1.4142135623730951f64

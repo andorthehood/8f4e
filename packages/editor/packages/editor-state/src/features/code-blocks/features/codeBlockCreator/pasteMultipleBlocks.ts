@@ -1,6 +1,6 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { getFunctionId, getModuleId } from '@8f4e/tokenizer';
+import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import getCodeBlockId from '../../utils/getCodeBlockId';
 import { renameInterModuleReferences } from '../../utils/renameInterModuleReferences';
@@ -10,47 +10,40 @@ import { hasDirective } from '../directives/utils';
 import { extractGroupName } from '../group/extractGroupName';
 import { createGroupNameMapping } from '../group/getUniqueGroupName';
 import { replaceGroupName } from '../group/replaceGroupName';
-import { checkIfCodeBlockIdIsTaken } from './checkIfCodeBlockIdIsTaken';
 
 /**
  * Updates inter-module references in code when pasting multiple blocks.
- * Replaces old module/function IDs with new ones based on the ID mapping.
+ * Replaces old module/function names with new ones based on the name mapping.
  * Handles current inter-module reference forms such as &module:memory, module:memory&, module:&, count(module:memory), sizeof(module:memory), max(module:memory), and min(module:memory).
  */
-export function updateInterModuleReferences(code: string[], idMapping: Map<string, string>): string[] {
-	if (idMapping.size === 0) {
+export function updateInterModuleReferences(code: string[], nameMapping: Map<string, string>): string[] {
+	if (nameMapping.size === 0) {
 		return code;
 	}
 
 	let updatedCode = code;
-	for (const [oldId, newId] of idMapping.entries()) {
-		updatedCode = renameInterModuleReferences(updatedCode, oldId, newId);
+	for (const [oldName, newName] of nameMapping.entries()) {
+		updatedCode = renameInterModuleReferences(updatedCode, oldName, newName);
 	}
 
 	return updatedCode;
 }
 
-/**
- * Helper function to increment a code block ID
- */
-function incrementCodeBlockId(id: string): string {
-	if (/.*[0-9]+$/gm.test(id)) {
-		const [, trailingNumber] = id.match(/.*([0-9]+$)/) as [never, string];
-		return id.replace(new RegExp(trailingNumber + '$'), `${parseInt(trailingNumber, 10) + 1}`);
+function incrementCodeBlockName(name: string): string {
+	if (/.*[0-9]+$/gm.test(name)) {
+		const [, trailingNumber] = name.match(/.*([0-9]+$)/) as [never, string];
+		return name.replace(new RegExp(trailingNumber + '$'), `${parseInt(trailingNumber, 10) + 1}`);
 	} else {
-		return id + '2';
+		return name + '2';
 	}
 }
 
-/**
- * Helper function to change the code block ID in code
- */
-function changeCodeBlockIdInCode(code: string[], instruction: string, id: string): string[] {
+function changeCodeBlockNameInCode(code: string[], instruction: string, name: string): string[] {
 	const instructionParser = /^([a-zA-Z][a-zA-Z0-9]*)\s+([a-zA-Z_][a-zA-Z0-9_-]*)/;
 	return code.map(line => {
 		const match = line.match(instructionParser) as RegExpMatchArray | null;
 		if (match && match[1] === instruction && match[2]) {
-			// Reconstruct line with new ID, preserving spacing and everything after the ID
+			// Reconstruct line with new name, preserving spacing and everything after it.
 			const beforeInstruction = line.slice(0, match.index!);
 			const matchedInstruction = match[1];
 			const spacingAfterInstruction = line.slice(
@@ -58,7 +51,7 @@ function changeCodeBlockIdInCode(code: string[], instruction: string, id: string
 				line.indexOf(match[2], match.index!)
 			);
 			const afterOldId = line.slice(line.indexOf(match[2], match.index!) + match[2].length);
-			return beforeInstruction + matchedInstruction + spacingAfterInstruction + id + afterOldId;
+			return beforeInstruction + matchedInstruction + spacingAfterInstruction + name + afterOldId;
 		}
 		return line;
 	});
@@ -67,8 +60,8 @@ function changeCodeBlockIdInCode(code: string[], instruction: string, id: string
 /**
  * Handles pasting multiple blocks from clipboard with collision resolution and reference updating.
  * This function:
- * - Resolves ID collisions for pasted blocks (including duplicates within the paste)
- * - Updates inter-module references when IDs change
+ * - Resolves name collisions for pasted blocks (including duplicates within the paste)
+ * - Updates inter-module references when names change
  * - Renames group names to avoid collisions
  * - Maintains relative positioning between blocks
  */
@@ -104,85 +97,89 @@ export function pasteMultipleBlocks(
 	}
 
 	// Create group name mapping to avoid collisions
-	const groupNameMapping = createGroupNameMapping(pastedGroupNames, state.graphicHelper.codeBlocks);
+	const groupNameMapping = createGroupNameMapping(pastedGroupNames, state.codeBlockRendering.codeBlocks);
 
-	// First pass: determine ID mappings for all pasted blocks
-	// We need to handle cases where multiple pasted blocks have the same original ID
-	const idMapping = new Map<string, string[]>(); // Maps `<type>:<originalId>` to array of new IDs (one per occurrence)
-	const processedIds = new Set<string>(); // Track `<type>:<newId>` already assigned
+	// First pass: determine name mappings for all pasted blocks.
+	const nameMapping = new Map<string, string[]>(); // Maps `<type>:<originalName>` to array of new names.
+	const processedNames = new Set<string>(); // Track `<type>:<newName>` already assigned.
 
-	// Build list of all original IDs in order
-	const originalIds: Array<{ type: 'module' | 'function'; id: string; index: number }> = [];
+	// Build list of all original names in order.
+	const originalNames: Array<{ type: 'module' | 'function'; name: string; index: number }> = [];
 	blocks.forEach((clipboardBlock, index) => {
 		const code = [...clipboardBlock.code];
-		const moduleId = getModuleId(code);
-		const functionId = getFunctionId(code);
-		if (functionId) {
-			originalIds.push({ type: 'function', id: functionId, index });
-		} else if (moduleId) {
-			originalIds.push({ type: 'module', id: moduleId, index });
+		const blockType = getBlockType(code);
+		const blockName = getCodeBlockId(code);
+		if (blockType === 'function' && blockName) {
+			originalNames.push({ type: 'function', name: blockName, index });
+		} else if (blockType === 'module' && blockName) {
+			originalNames.push({ type: 'module', name: blockName, index });
 		}
 	});
 
-	// Assign new unique IDs for each occurrence
-	for (const { type, id: originalId } of originalIds) {
-		let newId = originalId;
-		while (checkIfCodeBlockIdIsTaken(state, type, newId) || processedIds.has(`${type}:${newId}`)) {
-			newId = incrementCodeBlockId(newId);
+	// Assign new unique names for each occurrence.
+	for (const { type, name: originalName } of originalNames) {
+		let newName = originalName;
+		while (
+			state.codeBlockRendering.codeBlocks.some(
+				codeBlock =>
+					(codeBlock.blockType === type || codeBlock.code[0]?.trim().startsWith(`${type} `)) &&
+					codeBlock.name === newName
+			) ||
+			processedNames.has(`${type}:${newName}`)
+		) {
+			newName = incrementCodeBlockName(newName);
 		}
 
-		const key = `${type}:${originalId}`;
-		if (!idMapping.has(key)) {
-			idMapping.set(key, []);
+		const key = `${type}:${originalName}`;
+		if (!nameMapping.has(key)) {
+			nameMapping.set(key, []);
 		}
-		idMapping.get(key)!.push(newId);
-		processedIds.add(`${type}:${newId}`);
+		nameMapping.get(key)!.push(newName);
+		processedNames.add(`${type}:${newName}`);
 	}
 
-	// Second pass: create blocks with updated IDs and inter-module references
+	// Second pass: create blocks with updated names and inter-module references.
 	const newBlocks: CodeBlockGraphicData[] = [];
-	const occurrenceCounters = new Map<string, number>(); // Track which occurrence we're on for each original ID
+	const occurrenceCounters = new Map<string, number>(); // Track which occurrence we're on for each original name.
 
 	for (const clipboardBlock of blocks) {
 		// Calculate absolute grid position
 		const gridX = anchorGridX + clipboardBlock.gridCoordinates.x;
 		const gridY = anchorGridY + clipboardBlock.gridCoordinates.y;
 
-		// Process code: update IDs, inter-module references, and rename groups
+		// Process code: update names, inter-module references, and rename groups.
 		let code = [...clipboardBlock.code];
 
-		// Update module/function IDs to ensure uniqueness
-		const moduleId = getModuleId(code);
-		const functionId = getFunctionId(code);
-		const originalId = functionId || moduleId;
-		const originalType = functionId ? 'function' : moduleId ? 'module' : undefined;
+		// Update module/function names to ensure uniqueness.
+		const blockType = getBlockType(code);
+		const originalName = getCodeBlockId(code);
+		const originalType = blockType === 'function' ? 'function' : blockType === 'module' ? 'module' : undefined;
 
-		if (originalId && originalType) {
-			// Get the next new ID for this original ID
-			const key = `${originalType}:${originalId}`;
+		if (originalName && originalType) {
+			const key = `${originalType}:${originalName}`;
 			const occurrenceIndex = occurrenceCounters.get(key) || 0;
 			occurrenceCounters.set(key, occurrenceIndex + 1);
 
-			const newIds = idMapping.get(key) || [];
-			const newId = newIds[occurrenceIndex] || originalId;
+			const newNames = nameMapping.get(key) || [];
+			const newName = newNames[occurrenceIndex] || originalName;
 
-			if (functionId) {
-				code = changeCodeBlockIdInCode(code, 'function', newId);
-			} else if (moduleId) {
-				code = changeCodeBlockIdInCode(code, 'module', newId);
+			if (blockType === 'function') {
+				code = changeCodeBlockNameInCode(code, 'function', newName);
+			} else if (blockType === 'module') {
+				code = changeCodeBlockNameInCode(code, 'module', newName);
 			}
 		}
 
 		// Update inter-module references in the code
-		// Build a simple ID mapping from first occurrence of each original ID to its new ID
-		const simpleIdMapping = new Map<string, string>();
-		for (const [mappingKey, newIdArray] of idMapping.entries()) {
-			const [, origId] = mappingKey.split(':');
-			if (newIdArray.length > 0) {
-				simpleIdMapping.set(origId, newIdArray[0]);
+		// Build a simple name mapping from first occurrence of each original name to its new name.
+		const simpleNameMapping = new Map<string, string>();
+		for (const [mappingKey, newNameArray] of nameMapping.entries()) {
+			const [, originalMappedName] = mappingKey.split(':');
+			if (newNameArray.length > 0) {
+				simpleNameMapping.set(originalMappedName, newNameArray[0]);
 			}
 		}
-		code = updateInterModuleReferences(code, simpleIdMapping);
+		code = updateInterModuleReferences(code, simpleNameMapping);
 
 		// Rename group if needed
 		const originalGroupName = extractGroupName(code);
@@ -198,12 +195,12 @@ export function pasteMultipleBlocks(
 		// Parse disabled state from @disabled directive in code
 		const disabled = hasDirective(code, 'disabled');
 
-		const creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
-		state.graphicHelper.nextCodeBlockCreationIndex++;
+		const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
+		state.codeBlockRendering.nextCodeBlockCreationIndex++;
 
 		const codeBlock = createCodeBlockGraphicData({
 			code,
-			id: getCodeBlockId(code),
+			name: getCodeBlockId(code),
 			gridX,
 			gridY,
 			x: gridX * state.viewport.vGrid,
@@ -214,16 +211,16 @@ export function pasteMultipleBlocks(
 		});
 
 		// Add block immediately so next iteration's ID uniqueness check sees it
-		state.graphicHelper.codeBlocks.push(codeBlock);
+		state.codeBlockRendering.codeBlocks.push(codeBlock);
 		newBlocks.push(codeBlock);
 	}
 
 	// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
 	const sorted = [
-		...state.graphicHelper.codeBlocks.filter(b => !b.alwaysOnTop),
-		...state.graphicHelper.codeBlocks.filter(b => b.alwaysOnTop),
+		...state.codeBlockRendering.codeBlocks.filter(b => !b.alwaysOnTop),
+		...state.codeBlockRendering.codeBlocks.filter(b => b.alwaysOnTop),
 	];
 
 	// Trigger single store update with all new blocks
-	store.set('graphicHelper.codeBlocks', sorted);
+	store.set('codeBlockRendering.codeBlocks', sorted);
 }

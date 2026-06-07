@@ -58,6 +58,14 @@ function getSchemaOptions(schema: JSONSchemaLike): JSONSchemaLike[] {
 	return [schema, ...(schema.oneOf ?? []), ...(schema.anyOf ?? [])];
 }
 
+function qualifyMemoryIdentifier(value: string, moduleId: string | undefined): string | undefined {
+	if (value.includes(':')) {
+		return value;
+	}
+
+	return moduleId ? `${moduleId}:${value}` : undefined;
+}
+
 function resolveMemoryAddressConfigValue(state: State, value: unknown): number | undefined {
 	if (typeof value === 'number') {
 		return Number.isInteger(value) && value >= 0 ? value : undefined;
@@ -81,6 +89,10 @@ function resolveFormattedConfigValues(value: unknown, schema: JSONSchemaLike, st
 		return resolveMemoryAddressConfigValue(state, value);
 	}
 
+	if (Array.isArray(value)) {
+		return value.map(item => (schema.items ? resolveFormattedConfigValues(item, schema.items, state) : item));
+	}
+
 	if (!isRecord(value)) {
 		return value;
 	}
@@ -90,6 +102,14 @@ function resolveFormattedConfigValues(value: unknown, schema: JSONSchemaLike, st
 		for (const [key, childSchema] of Object.entries(option.properties ?? {})) {
 			if (key in resolved) {
 				resolved[key] = resolveFormattedConfigValues(resolved[key], childSchema, state);
+			}
+		}
+
+		if (option.additionalProperties && typeof option.additionalProperties === 'object') {
+			for (const [key, childValue] of Object.entries(resolved)) {
+				if (!(key in (option.properties ?? {}))) {
+					resolved[key] = resolveFormattedConfigValues(childValue, option.additionalProperties, state);
+				}
 			}
 		}
 	}
@@ -116,6 +136,15 @@ export function collectSchemaConfigPaths(root: string, schema: JSONSchemaLike): 
 				for (const [key, childSchema] of Object.entries(option.properties ?? {})) {
 					visit(`${currentPath}.${key}`, childSchema);
 				}
+
+				if (option.additionalProperties && typeof option.additionalProperties === 'object') {
+					visit(`${currentPath}.*`, option.additionalProperties);
+				}
+				continue;
+			}
+
+			if (option.type === 'array' && option.items) {
+				visit(`${currentPath}.*`, option.items);
 				continue;
 			}
 
@@ -148,6 +177,18 @@ export function getSchemaForConfigPath(root: string, schema: JSONSchemaLike, pat
 			if (childSchema) {
 				nextSchemas.push(childSchema);
 			}
+
+			if (currentSchema.type === 'array' && currentSchema.items && /^\d+$/.test(segment)) {
+				nextSchemas.push(currentSchema.items);
+			}
+
+			if (
+				currentSchema.additionalProperties &&
+				typeof currentSchema.additionalProperties === 'object' &&
+				!childSchema
+			) {
+				nextSchemas.push(currentSchema.additionalProperties);
+			}
 		}
 
 		if (nextSchemas.length === 0) {
@@ -172,13 +213,30 @@ function parseBoolean(value: string): boolean | undefined {
 	return undefined;
 }
 
-export function parseSchemaConfigValue(value: string, schema: JSONSchemaLike): EditorConfigPrimitiveValue {
+export function parseSchemaConfigValue(
+	value: string,
+	schema: JSONSchemaLike,
+	entry?: EditorConfigEntry
+): EditorConfigPrimitiveValue {
+	if (!schema.type && schema.format === 'memory-address') {
+		const numericAddress = Number(value);
+		if (!Number.isInteger(numericAddress) || numericAddress < 0) {
+			return qualifyMemoryIdentifier(value, entry?.moduleId) ?? value;
+		}
+	}
+
 	const options = [...(schema.oneOf ?? []), ...(schema.anyOf ?? [])];
 	if (!schema.type && options.length > 0) {
 		const matchingOption = options.find(
-			option => validateSchemaConfigValue({ path: '', value, rawRow: 0, codeBlockId: '' }, option) === undefined
+			option =>
+				validateSchemaConfigValue(
+					{ path: '', value, rawRow: 0, codeBlockId: -1, moduleId: entry?.moduleId },
+					{ ...option, format: option.format ?? schema.format }
+				) === undefined
 		);
-		return matchingOption ? parseSchemaConfigValue(value, matchingOption) : value;
+		return matchingOption
+			? parseSchemaConfigValue(value, { ...matchingOption, format: matchingOption.format ?? schema.format }, entry)
+			: value;
 	}
 
 	if (schema.type === 'integer' || schema.type === 'number') {
@@ -189,13 +247,31 @@ export function parseSchemaConfigValue(value: string, schema: JSONSchemaLike): E
 		return parseBoolean(value) ?? value;
 	}
 
+	if ((schema.format === 'memory-address' || schema.format === 'module-memory-id') && schema.type === 'string') {
+		return qualifyMemoryIdentifier(value, entry?.moduleId) ?? value;
+	}
+
 	return value;
+}
+
+function validateModuleMemoryIdentifier(entry: EditorConfigEntry): string | undefined {
+	if (!/^[^:\s]+(?::[^:\s]+)?$/.test(entry.value)) {
+		return `@config ${entry.path}: invalid string value '${entry.value}'`;
+	}
+
+	if (!entry.value.includes(':') && !entry.moduleId) {
+		return `@config ${entry.path}: memory value '${entry.value}' must include a module id outside module blocks`;
+	}
+
+	return undefined;
 }
 
 export function validateSchemaConfigValue(entry: EditorConfigEntry, schema: JSONSchemaLike): string | undefined {
 	const options = [...(schema.oneOf ?? []), ...(schema.anyOf ?? [])];
 	if (!schema.type && options.length > 0) {
-		const optionErrors = options.map(option => validateSchemaConfigValue(entry, option));
+		const optionErrors = options.map(option =>
+			validateSchemaConfigValue(entry, { ...option, format: option.format ?? schema.format })
+		);
 		if (optionErrors.some(error => error === undefined)) {
 			return undefined;
 		}
@@ -227,6 +303,10 @@ export function validateSchemaConfigValue(entry: EditorConfigEntry, schema: JSON
 
 	if (schema.type === 'string' && typeof parsedValue !== 'string') {
 		return `@config ${entry.path}: invalid string value '${entry.value}'`;
+	}
+
+	if (schema.type === 'string' && (schema.format === 'memory-address' || schema.format === 'module-memory-id')) {
+		return validateModuleMemoryIdentifier(entry);
 	}
 
 	if (schema.type === 'string' && schema.pattern && !new RegExp(schema.pattern).test(String(parsedValue))) {
@@ -272,7 +352,7 @@ export function createSchemaEditorConfigValidator({
 		},
 		parse: entry => {
 			const entrySchema = getSchemaForConfigPath(root, schema, entry.path);
-			return entrySchema ? parseSchemaConfigValue(entry.value, entrySchema) : entry.value;
+			return entrySchema ? parseSchemaConfigValue(entry.value, entrySchema, entry) : entry.value;
 		},
 	};
 }

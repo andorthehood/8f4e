@@ -26,8 +26,8 @@ describe('contextMenu effect', () => {
 
 		await onContextMenu({ x: 100, y: 112 });
 
-		expect(state.graphicHelper.contextMenu.x).toBe(128);
-		expect(state.graphicHelper.contextMenu.y).toBe(160);
+		expect(state.contextMenu.x).toBe(128);
+		expect(state.contextMenu.y).toBe(160);
 
 		state.viewport.x = 32;
 		state.viewport.y = 64;
@@ -35,7 +35,7 @@ describe('contextMenu effect', () => {
 		const onMouseMove = (events.on as unknown as MockInstance).mock.calls.find(call => call[0] === 'mousemove')![1];
 		onMouseMove({ x: 96, y: 112 });
 
-		expect(state.graphicHelper.contextMenu.highlightedItem).toBe(1);
+		expect(state.contextMenu.highlightedItem).toBe(1);
 	});
 
 	it('closes the menu before dispatching closeable actions', async () => {
@@ -48,7 +48,7 @@ describe('contextMenu effect', () => {
 
 		(events.dispatch as unknown as MockInstance).mockImplementation(action => {
 			if (action === 'exportCanvasScreenshot') {
-				menuWasOpenWhenScreenshotDispatched = state.graphicHelper.contextMenu.open;
+				menuWasOpenWhenScreenshotDispatched = state.contextMenu.open;
 			}
 		});
 
@@ -59,7 +59,7 @@ describe('contextMenu effect', () => {
 
 		await onContextMenu({ x: 100, y: 112 });
 
-		state.graphicHelper.contextMenu.highlightedItem = state.graphicHelper.contextMenu.items.findIndex(
+		state.contextMenu.highlightedItem = state.contextMenu.items.findIndex(
 			item => item.action === 'exportCanvasScreenshot'
 		);
 

@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "nthOutOfOrderTarget",
     "codeBlockType": "module",
+    "projectBlockId": 4,
   },
   "line": {
     "arguments": [
@@ -22,7 +23,7 @@
       },
     ],
     "instruction": "int*",
-    "lineNumber": 2,
+    "lineNumber": 5,
   },
   "message": "Undeclared identifier: &nthOutOfOrderSource:1. (5)",
 }

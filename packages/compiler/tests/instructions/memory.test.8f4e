@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Memory declarations and loads can be asserted directly from the language.
+; Memory declarations and loads
+; can be asserted directly from
+; the language.
 entry test
 module loadFloatAssertions
-; loadFloat reads the float value stored at an address.
+; loadFloat reads the float
+; value stored at an address.
 float firstInput 69.1
 push &firstInput
 loadFloat
@@ -21,7 +24,10 @@ call assertf -420.1
 moduleEnd
 
 module anonymousFloatDeclarationsCompile
-; Anonymous float declarations can be read back through indexed module references.
+; Anonymous float declarations
+; can be read back through
+; indexed
+; module references.
 float
 push &this:0
 loadFloat
@@ -45,7 +51,9 @@ call assertf -2.5
 moduleEnd
 
 module intDeclarationAssertions
-; Integer declarations cover named, anonymous, string, and constant-backed defaults.
+; Integer declarations cover
+; named, anonymous, string, and
+; constant-backed defaults.
 int
 push &this:0
 load
@@ -82,7 +90,8 @@ call assert -42
 moduleEnd
 
 module intSplitByteDeclarationAssertions
-; Split-byte defaults are packed into 32-bit integer values.
+; Split-byte defaults are packed
+; into 32-bit integer values.
 int splitHex 0xA8 0xFF
 push splitHex
 call assert -1459683328
@@ -124,7 +133,10 @@ call assert -1459683328
 moduleEnd
 
 module intConstantSplitByteDeclarationAssertions
-; Constants can participate in split-byte defaults for named and anonymous memory.
+; Constants can participate in
+; split-byte defaults for named
+; and
+; anonymous memory.
 const HI 32
 const LO 64
 int foo HI LO
@@ -147,7 +159,8 @@ call assert -1472200704
 moduleEnd
 
 module intPointerDeclarationsCompile
-; Anonymous pointer declarations default to address zero.
+; Anonymous pointer declarations
+; default to address zero.
 int*
 push &this:0
 load

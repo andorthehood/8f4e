@@ -1042,5 +1042,113 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "18afcb58700df6fc7509f213ef847e6a0a7f7d52",
+		"recordedAt": "2026-06-04T11:41:40.458Z",
+		"coverage": {
+			"documented": 4,
+			"total": 184,
+			"percentage": 2.2,
+			"byKind": {
+				"interface": {
+					"documented": 2,
+					"total": 8,
+					"percentage": 25
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 78,
+					"percentage": 0
+				},
+				"function": {
+					"documented": 2,
+					"total": 79,
+					"percentage": 2.5
+				},
+				"variable": {
+					"documented": 0,
+					"total": 14,
+					"percentage": 0
+				},
+				"type": {
+					"documented": 0,
+					"total": 5,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "402393588cf0dcaee926984dff117152cd067cf4",
+		"recordedAt": "2026-06-04T19:58:24.003Z",
+		"coverage": {
+			"documented": 4,
+			"total": 184,
+			"percentage": 2.2,
+			"byKind": {
+				"interface": {
+					"documented": 2,
+					"total": 8,
+					"percentage": 25
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 78,
+					"percentage": 0
+				},
+				"function": {
+					"documented": 2,
+					"total": 79,
+					"percentage": 2.5
+				},
+				"variable": {
+					"documented": 0,
+					"total": 14,
+					"percentage": 0
+				},
+				"type": {
+					"documented": 0,
+					"total": 5,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "e5de5734949456c275c0c846ff4e71c42b505ef8",
+		"recordedAt": "2026-06-07T16:07:30.563Z",
+		"coverage": {
+			"documented": 4,
+			"total": 184,
+			"percentage": 2.2,
+			"byKind": {
+				"interface": {
+					"documented": 2,
+					"total": 8,
+					"percentage": 25
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 78,
+					"percentage": 0
+				},
+				"function": {
+					"documented": 2,
+					"total": 79,
+					"percentage": 2.5
+				},
+				"variable": {
+					"documented": 0,
+					"total": 14,
+					"percentage": 0
+				},
+				"type": {
+					"documented": 0,
+					"total": 5,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]

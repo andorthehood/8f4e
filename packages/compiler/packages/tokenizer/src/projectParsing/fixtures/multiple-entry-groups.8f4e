@@ -1,0 +1,38 @@
+8f4e/v1
+
+entry main
+group audio
+module kick
+int trigger
+moduleEnd
+groupEnd
+
+group visuals
+module scope
+int brightness
+moduleEnd
+
+group shaderHelpers
+function clamp01
+param float value
+push value
+functionEnd float
+groupEnd
+groupEnd
+entryEnd
+
+entry test
+module harness
+int failures
+moduleEnd
+
+group assertions
+function assertEqual
+param int left
+param int right
+push left
+push right
+equal
+functionEnd int
+groupEnd
+entryEnd

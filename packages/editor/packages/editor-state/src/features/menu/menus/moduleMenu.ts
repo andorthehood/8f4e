@@ -12,7 +12,7 @@ export interface OpenGroupEvent {
 }
 
 export const moduleMenu: MenuGenerator = state => {
-	const blockType = state.graphicHelper.selectedCodeBlock?.blockType;
+	const blockType = state.codeBlockRendering.selectedCodeBlock?.blockType;
 	let blockLabel = 'module';
 
 	if (blockType === functionBlockType) {
@@ -21,31 +21,31 @@ export const moduleMenu: MenuGenerator = state => {
 		blockLabel = 'note';
 	}
 
-	const isDisabled = state.graphicHelper.selectedCodeBlock?.disabled ?? false;
+	const isDisabled = state.codeBlockRendering.selectedCodeBlock?.disabled ?? false;
 
 	// Check if module has #skipExecution directive
 	const hasSkipExecutionDirective =
 		blockType === moduleBlockType &&
-		state.graphicHelper.selectedCodeBlock?.code.some((line: string) => isSkipExecutionDirective(line));
+		state.codeBlockRendering.selectedCodeBlock?.code.some((line: string) => isSkipExecutionDirective(line));
 
 	// Check if code block has ; @favorite directive
-	const hasFavoriteDirective = state.graphicHelper.selectedCodeBlock?.isFavorite ?? false;
+	const hasFavoriteDirective = state.codeBlockRendering.selectedCodeBlock?.isFavorite ?? false;
 
 	// Check if code block has a group name and compute group skip/nonstick status
-	const groupName = state.graphicHelper.selectedCodeBlock?.groupName;
+	const groupName = state.codeBlockRendering.selectedCodeBlock?.groupName;
 	const hasGroup = !!groupName;
 	let allGroupBlocksSkipped = false;
 	let allGroupBlocksNonstick = false;
 
 	if (hasGroup) {
 		// Find all blocks in the same group for nonstick check
-		const groupBlocks = getGroupBlocks(state.graphicHelper.codeBlocks, groupName);
+		const groupBlocks = getGroupBlocks(state.codeBlockRendering.codeBlocks, groupName);
 		// Check if all group blocks have nonstick flag
 		allGroupBlocksNonstick = groupBlocks.every((block: CodeBlockGraphicData) => block.groupNonstick);
 
 		if (blockType === moduleBlockType) {
 			// Find all module blocks in the same group
-			const groupModuleBlocks = getGroupModuleBlocks(state.graphicHelper.codeBlocks, groupName);
+			const groupModuleBlocks = getGroupModuleBlocks(state.codeBlockRendering.codeBlocks, groupName);
 			// Check if all group module blocks have #skipExecution directive
 			allGroupBlocksSkipped = groupModuleBlocks.every((block: CodeBlockGraphicData) =>
 				block.code.some((line: string) => isSkipExecutionDirective(line))
@@ -59,13 +59,13 @@ export const moduleMenu: MenuGenerator = state => {
 					{
 						title: `Delete ${blockLabel}`,
 						action: 'deleteCodeBlock',
-						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 						close: true,
 					},
 					{
 						title: isDisabled ? `Enable ${blockLabel}` : `Disable ${blockLabel}`,
 						action: 'toggleCodeBlockDisabled',
-						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 						close: true,
 					},
 					...(blockType === moduleBlockType
@@ -73,13 +73,7 @@ export const moduleMenu: MenuGenerator = state => {
 								{
 									title: hasSkipExecutionDirective ? 'Unskip module' : 'Skip module',
 									action: 'toggleModuleSkipExecutionDirective',
-									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
-									close: true,
-								},
-								{
-									title: 'Clear watch probes',
-									action: 'clearDebugProbes',
-									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 									close: true,
 								},
 							]
@@ -89,7 +83,7 @@ export const moduleMenu: MenuGenerator = state => {
 								{
 									title: allGroupBlocksSkipped ? 'Unskip group' : 'Skip group',
 									action: 'toggleGroupSkipExecutionDirective',
-									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 									close: true,
 								},
 							]
@@ -99,20 +93,20 @@ export const moduleMenu: MenuGenerator = state => {
 								{
 									title: 'Remove from group',
 									action: 'removeFromGroupDirective',
-									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 									close: true,
 								},
 								{
 									title: `Ungroup "${groupName}"`,
 									action: 'ungroupByName',
-									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 									close: true,
 								},
 								{
 									title: allGroupBlocksNonstick ? 'Make Group Sticky' : 'Make Group Nonstick',
 									action: 'toggleGroupNonstick',
 									payload: {
-										codeBlock: state.graphicHelper.selectedCodeBlock,
+										codeBlock: state.codeBlockRendering.selectedCodeBlock,
 										makeNonstick: !allGroupBlocksNonstick,
 									},
 									close: true,
@@ -120,7 +114,7 @@ export const moduleMenu: MenuGenerator = state => {
 								{
 									title: 'Delete group',
 									action: 'deleteGroup',
-									payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+									payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 									close: true,
 								},
 							]
@@ -128,7 +122,7 @@ export const moduleMenu: MenuGenerator = state => {
 					{
 						title: hasFavoriteDirective ? 'Unfavorite' : 'Favorite',
 						action: 'toggleFavoriteDirective',
-						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 						close: true,
 					},
 				]
@@ -136,7 +130,7 @@ export const moduleMenu: MenuGenerator = state => {
 		{
 			title: `Copy ${blockLabel}`,
 			action: 'copyCodeBlock',
-			payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+			payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 			close: true,
 			disabled: !state.callbacks.writeClipboardText,
 		},
@@ -145,7 +139,7 @@ export const moduleMenu: MenuGenerator = state => {
 					{
 						title: 'Copy group',
 						action: 'copyGroupBlocks',
-						payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 						close: true,
 						disabled: !state.callbacks.writeClipboardText,
 					},
@@ -154,7 +148,7 @@ export const moduleMenu: MenuGenerator = state => {
 		{
 			title: `Log ${blockLabel} info to console`,
 			action: 'consoleLog',
-			payload: { codeBlock: state.graphicHelper.selectedCodeBlock },
+			payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 			close: true,
 		},
 	];

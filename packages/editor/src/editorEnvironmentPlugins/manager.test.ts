@@ -6,7 +6,7 @@ import type { EditorEnvironmentPluginContext, EditorEnvironmentPluginRegistryEnt
 
 function createState(codeBlocks: CodeBlockGraphicData[] = []): State {
 	return {
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks,
 		},
 		codeErrors: {
@@ -29,6 +29,10 @@ function createCodeBlockWithEditorDirective(name: string, args: string[] = []): 
 			},
 		],
 	} as unknown as CodeBlockGraphicData;
+}
+
+function createCodeBlockWithConfigPath(path: string): CodeBlockGraphicData {
+	return createCodeBlockWithEditorDirective('config', [path, 'value']);
 }
 
 async function flushPromises(): Promise<void> {
@@ -72,7 +76,7 @@ describe('editor environment plugin manager', () => {
 
 		expect(load).not.toHaveBeenCalled();
 
-		store.set('graphicHelper.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
+		store.set('codeBlockRendering.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
 		await flushPromises();
 
 		expect(load).toHaveBeenCalledTimes(1);
@@ -87,6 +91,37 @@ describe('editor environment plugin manager', () => {
 				services,
 			})
 		);
+
+		cleanup();
+	});
+
+	it('lazy-loads a plugin when one of its editor config trigger paths appears', async () => {
+		const dispose = vi.fn();
+		const start = vi.fn(() => dispose);
+		const load = vi.fn(async () => ({ default: start }));
+		const registry: EditorEnvironmentPluginRegistryEntry[] = [
+			{
+				id: 'test-plugin',
+				editorDirectives: [],
+				editorConfigPaths: ['testPlugin'],
+				load,
+			},
+		];
+		const store = createStateManager(createState());
+
+		const cleanup = createEditorEnvironmentPluginManager(store, events, {
+			window: windowMock,
+			navigator: navigatorMock,
+			memoryViews: memoryViewsMock,
+			services,
+			registry,
+		});
+
+		store.set('codeBlockRendering.codeBlocks', [createCodeBlockWithConfigPath('testPlugin.inputs.0.port')]);
+		await flushPromises();
+
+		expect(load).toHaveBeenCalledTimes(1);
+		expect(start).toHaveBeenCalledTimes(1);
 
 		cleanup();
 	});
@@ -112,14 +147,14 @@ describe('editor environment plugin manager', () => {
 		});
 		await flushPromises();
 
-		store.set('graphicHelper.codeBlocks', []);
+		store.set('codeBlockRendering.codeBlocks', []);
 
 		expect(dispose).toHaveBeenCalledTimes(1);
 	});
 
 	it('lets plugins own and clear their scoped errors', async () => {
 		const pluginError = {
-			codeBlockId: 'test-block',
+			codeBlockId: 0,
 			lineNumber: 1,
 			message: 'Plugin-specific directive error',
 		};
@@ -147,7 +182,7 @@ describe('editor environment plugin manager', () => {
 
 		expect(store.getState().codeErrors.editorDirectiveErrors).toEqual([{ ...pluginError, ownerId: 'test-plugin' }]);
 
-		store.set('graphicHelper.codeBlocks', []);
+		store.set('codeBlockRendering.codeBlocks', []);
 
 		expect(store.getState().codeErrors.editorDirectiveErrors).toEqual([]);
 	});
@@ -178,8 +213,8 @@ describe('editor environment plugin manager', () => {
 			registry,
 		});
 
-		store.set('graphicHelper.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
-		store.set('graphicHelper.codeBlocks', []);
+		store.set('codeBlockRendering.codeBlocks', [createCodeBlockWithEditorDirective('testDirective')]);
+		store.set('codeBlockRendering.codeBlocks', []);
 
 		resolveLoad({ default: start });
 		await flushPromises();

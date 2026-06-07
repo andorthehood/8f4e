@@ -20,5 +20,6 @@ export type EditorEnvironmentPlugin = (
 export interface EditorEnvironmentPluginRegistryEntry {
 	id: string;
 	editorDirectives: string[];
+	editorConfigPaths?: string[];
 	load: () => Promise<{ default: EditorEnvironmentPlugin }>;
 }

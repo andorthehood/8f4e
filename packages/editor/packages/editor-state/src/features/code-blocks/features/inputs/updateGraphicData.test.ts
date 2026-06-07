@@ -10,13 +10,13 @@ describe('updateInputsGraphicData', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
+			name: 'test-block',
 			code: ['module test-block', 'int* input1'],
 			gaps: new Map(),
 		});
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,

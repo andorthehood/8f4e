@@ -25,8 +25,8 @@ export function createMockCodeBlock(
 	const height = overrides.height ?? 100;
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
-	const id = overrides.id ?? 'test-block';
 	const code = overrides.code ?? [];
+	const name = overrides.name ?? code[0]?.trim().split(/\s+/)[1] ?? 'test-block';
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
@@ -50,7 +50,7 @@ export function createMockCodeBlock(
 		offsetX,
 		offsetY,
 		cursor,
-		id,
+		name,
 		code,
 		codeColors: [],
 		codeToRender: [],
@@ -141,27 +141,26 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 				factory: mockRuntimeFactory,
 			},
 		},
-		defaultRuntimeId: 'WebWorkerRuntime',
-		graphicHelper: {
+		codeBlockRendering: {
 			codeBlocks: [],
 			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],
 			textureCacheEpoch: 0,
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
-			contextMenu: {
-				highlightedItem: 0,
-				itemWidth: 200,
-				items: [],
-				open: false,
-				x: 0,
-				y: 0,
-				menuStack: [],
-			},
 			showHiddenCodeBlocks: false,
-			postProcessEffects: [],
-			backgroundEffects: [],
 		},
+		contextMenu: {
+			highlightedItem: 0,
+			itemWidth: 200,
+			items: [],
+			open: false,
+			x: 0,
+			y: 0,
+			menuStack: [],
+		},
+		postProcessEffects: [],
+		backgroundEffects: [],
 		info: {
 			compiler: {
 				isCompiling: false,

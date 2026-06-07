@@ -68,10 +68,10 @@ Active todo files are listed below.
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
 | 435 | Add polymorphic function overloads | 🟡 | 1-2d | 2026-05-29 | Allow global functions to share a source name when their exact parameter signatures differ, using signature-derived ids and stack-based call resolution. |
-| 439 | Migrate @midiIn to config directive | 🟡 | 1-2d | 2026-05-30 | Move browser MIDI input routing from a standalone editor directive into a MIDI-owned schema-backed `@config` root. |
-| 440 | Migrate keyboard memory directives to config | 🟡 | 4-8h | 2026-05-30 | Replace `@keyCodeMemory` and `@keyPressedMemory` with keyboard-owned schema-backed config paths. |
-| 441 | Migrate binary asset directives to config | 🟡 | 1-2d | 2026-05-30 | Replace `@defAsset` and `@loadAsset` raw directive parsing with binary-asset-owned schema-backed config paths. |
 | 443 | Add prototype body expansion | 🟡 | 1-2d | 2026-06-01 | Let prototypes define executable body lines that consuming modules can explicitly expand after importing the prototype memory shape. |
+| 445 | Skip macro expansion when blocks have no macro calls | 🟡 | 4-8h | 2026-06-01 | Avoid unnecessary macro expansion scans when there are no macro definitions or when parser metadata shows a block has no macro calls. |
+| 446 | Store project block type during project parse | 🟡 | 2-4h | 2026-06-01 | Carry parser-known project block type metadata forward so compiler block picking does not rescan raw block source. |
+| 448 | Move prototype content validation to parser | 🟡 | 4-8h | 2026-06-01 | Move executable-line rejection for prototypes from compiler-side `parsePrototypeAST()` into parser-owned block validation. |
 
 ### 🟢 Low Priority
 
@@ -89,6 +89,9 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 441 | Migrate binary asset directives to config | 2026-06-04 | Binary asset loading now uses schema-backed `@config bin...` entries; old `@defAsset` / `@loadAsset` parsing and compatibility names were removed. |
+| 440 | Migrate keyboard memory directives to config | 2026-06-04 | Keyboard memory targets now use schema-backed `@config keyboard...` entries, and the keyboard plugin activates from config paths instead of custom directives. |
+| 439 | Migrate @midiIn to config directive | 2026-06-04 | MIDI input bindings now use schema-backed `@config midi.inputs...` entries, with no live `@midiIn` support remaining. |
 | 447 | Remove duplicated constants block validation | 2026-06-01 | `parseConstantsAST()` now only asserts block type; invalid constants-block contents are rejected by the shared instruction-spec validation path during namespace collection. |
 | 444 | Use parser-collected shape lines for prototype expansion | 2026-06-01 | Module ASTs now carry parser-collected `shapeLines`, and prototype expansion uses those parsed lines instead of rescanning/reparsing shaped module source. |
 | 438 | Add generic function imports | 2026-05-29 | `#import <field-name>` now declares host-provided functions, imported functions participate in normal `call` resolution and stack typing, WebAssembly import/function indexes are emitted correctly, and invalid import shapes have compiler coverage. |

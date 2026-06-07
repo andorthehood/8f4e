@@ -3,7 +3,8 @@
 ; describe branch
 entry test
 module branchAssertions
-; it exits the current block before later instructions run
+; it exits the current block
+; before later instructions run
 int output
 block
 branch 0

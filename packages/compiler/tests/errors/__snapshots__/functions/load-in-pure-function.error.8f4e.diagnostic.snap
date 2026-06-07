@@ -3,11 +3,12 @@
   "context": {
     "codeBlockId": "invalid",
     "codeBlockType": "function",
+    "projectBlockId": 8,
   },
   "line": {
     "arguments": [],
     "instruction": "load",
-    "lineNumber": 4,
+    "lineNumber": 5,
   },
   "message": "Memory IO in functions requires #impure. (21)",
 }

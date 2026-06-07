@@ -83,8 +83,7 @@ describe('slider interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
 		const mockCodeBlock = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -120,8 +119,7 @@ describe('slider interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
 		const mockCodeBlock = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -156,8 +154,7 @@ describe('slider interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
 		const mockCodeBlock = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -192,8 +189,7 @@ describe('slider interaction', () => {
 		const codeBlockClickCallback = onCallbacks.get('codeBlockClick');
 
 		const mockCodeBlock = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -230,8 +226,7 @@ describe('slider interaction', () => {
 		const mouseMoveCallback = onCallbacks.get('mousemove');
 
 		const mockCodeBlock = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,
@@ -273,8 +268,7 @@ describe('slider interaction', () => {
 		const mouseUpCallback = onCallbacks.get('mouseup');
 
 		const mockCodeBlock = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,

@@ -79,6 +79,7 @@ export function compileFunction(
 		memoryRegions: [],
 		mode: 'function',
 		codeBlockType: 'function',
+		projectBlockId: ast.projectBlockId,
 		currentFunctionSignature: {
 			parameters: [],
 			returns: [],

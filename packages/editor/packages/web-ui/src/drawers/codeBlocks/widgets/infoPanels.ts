@@ -47,7 +47,7 @@ function hasInfoRecord(info: InfoRecord | undefined): info is InfoRecord {
 }
 
 export default function drawInfoPanels(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
-	const spriteLookups = state.graphicHelper.spriteLookups;
+	const spriteLookups = state.spriteLookups;
 
 	if (!spriteLookups) {
 		return;

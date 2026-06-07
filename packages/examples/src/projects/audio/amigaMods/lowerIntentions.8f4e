@@ -248,7 +248,7 @@ int* row &rowCount1:out
 ; @hide
 use env
 int[] _dat ASSET_CH1_SIZE/4
-; @loadAsset ch1 &_dat
+; @config bin.ch1.memory _dat
 local int loopCounter
 
 loop 8
@@ -318,7 +318,7 @@ int* row &rowCount1:out
 ; @hide
 use env
 int[] _dat ASSET_CH2_SIZE/4
-; @loadAsset ch2 &_dat
+; @config bin.ch2.memory _dat
 
 local int loopCounter
 
@@ -389,7 +389,7 @@ int* row &rowCount1:out
 ; @hide
 use env
 int[] _dat ASSET_CH3_SIZE/4
-; @loadAsset ch3 &_dat
+; @config bin.ch3.memory _dat
 
 local int loopCounter
 
@@ -460,7 +460,7 @@ int* row &rowCount1:out
 ; @hide
 use env
 int[] _dat ASSET_CH4_SIZE/4
-; @loadAsset ch4 &_dat
+; @config bin.ch4.memory _dat
 
 local int loopCounter
 
@@ -1293,56 +1293,56 @@ module samplePack1
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
-; @loadAsset sample1 &sample1
+; @config bin.sample1.memory sample1
 ; @wave &sample1 count(sample1)
 int8[] sample2 ASSET_SAMPLE2_SIZE
-; @loadAsset sample2 &sample2
+; @config bin.sample2.memory sample2
 ; @wave &sample2 count(sample2)
 int8[] sample3 ASSET_SAMPLE3_SIZE
-; @loadAsset sample3 &sample3
+; @config bin.sample3.memory sample3
 ; @wave &sample3 count(sample3)
 int8[] sample4 ASSET_SAMPLE4_SIZE
-; @loadAsset sample4 &sample4
+; @config bin.sample4.memory sample4
 ; @wave &sample4 count(sample4)
 int8[] sample5 ASSET_SAMPLE5_SIZE
-; @loadAsset sample5 &sample5
+; @config bin.sample5.memory sample5
 ; @wave &sample5 count(sample5)
 int8[] sample6 ASSET_SAMPLE6_SIZE
-; @loadAsset sample6 &sample6
+; @config bin.sample6.memory sample6
 ; @wave &sample6 count(sample6)
 int8[] sample7 ASSET_SAMPLE7_SIZE
-; @loadAsset sample7 &sample7
+; @config bin.sample7.memory sample7
 ; @wave &sample7 count(sample7)
 int8[] sample9 ASSET_SAMPLE9_SIZE
-; @loadAsset sample9 &sample9
+; @config bin.sample9.memory sample9
 ; @wave &sample9 count(sample9)
 moduleEnd
 module samplePack2
 ; @pos 488 -7
 use env
 int8[] sample10 ASSET_SAMPLE10_SIZE
-; @loadAsset sample10 &sample10
+; @config bin.sample10.memory sample10
 ; @wave &sample10 count(sample10)
 int8[] sample11 ASSET_SAMPLE11_SIZE
-; @loadAsset sample11 &sample11
+; @config bin.sample11.memory sample11
 ; @wave &sample11 count(sample11)
 int8[] sample12 ASSET_SAMPLE12_SIZE
-; @loadAsset sample12 &sample12
+; @config bin.sample12.memory sample12
 ; @wave &sample12 count(sample12)
 int8[] sample13 ASSET_SAMPLE13_SIZE
-; @loadAsset sample13 &sample13
+; @config bin.sample13.memory sample13
 ; @wave &sample13 count(sample13)
 int8[] sample14 ASSET_SAMPLE14_SIZE
-; @loadAsset sample14 &sample14
+; @config bin.sample14.memory sample14
 ; @wave &sample14 count(sample14)
 int8[] sample15 ASSET_SAMPLE15_SIZE
-; @loadAsset sample15 &sample15
+; @config bin.sample15.memory sample15
 ; @wave &sample15 count(sample15)
 int8[] sample16 ASSET_SAMPLE16_SIZE
-; @loadAsset sample16 &sample16
+; @config bin.sample16.memory sample16
 ; @wave &sample16 count(sample16)
 int8[] sample17 ASSET_SAMPLE17_SIZE
-; @loadAsset sample17 &sample17
+; @config bin.sample17.memory sample17
 ; @wave &sample17 count(sample17)
 moduleEnd
 module samplePlayer1
@@ -2028,26 +2028,26 @@ note
 ; @pos 9 -117
 ; Assets
 ; @tab 22
-; @defAsset sample1	https://static.8f4e.com/assets/mods/lowerintentions/sample_1.pcm
-; @defAsset sample2	https://static.8f4e.com/assets/mods/lowerintentions/sample_2.pcm
-; @defAsset sample3	https://static.8f4e.com/assets/mods/lowerintentions/sample_3.pcm
-; @defAsset sample4	https://static.8f4e.com/assets/mods/lowerintentions/sample_4.pcm
-; @defAsset sample5	https://static.8f4e.com/assets/mods/lowerintentions/sample_5.pcm
-; @defAsset sample6	https://static.8f4e.com/assets/mods/lowerintentions/sample_6.pcm
-; @defAsset sample7	https://static.8f4e.com/assets/mods/lowerintentions/sample_7.pcm
-; @defAsset sample9	https://static.8f4e.com/assets/mods/lowerintentions/sample_9.pcm
-; @defAsset sample10	https://static.8f4e.com/assets/mods/lowerintentions/sample_10.pcm
-; @defAsset sample11	https://static.8f4e.com/assets/mods/lowerintentions/sample_11.pcm
-; @defAsset sample12	https://static.8f4e.com/assets/mods/lowerintentions/sample_12.pcm
-; @defAsset sample13	https://static.8f4e.com/assets/mods/lowerintentions/sample_13.pcm
-; @defAsset sample14	https://static.8f4e.com/assets/mods/lowerintentions/sample_14.pcm
-; @defAsset sample15	https://static.8f4e.com/assets/mods/lowerintentions/sample_15.pcm
-; @defAsset sample16	https://static.8f4e.com/assets/mods/lowerintentions/sample_16.pcm
-; @defAsset sample17	https://static.8f4e.com/assets/mods/lowerintentions/sample_17.pcm
-; @defAsset ch1	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch1.bin
-; @defAsset ch2	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch2.bin
-; @defAsset ch3	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch3.bin
-; @defAsset ch4	https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch4.bin
+; @config bin.sample1.url https://static.8f4e.com/assets/mods/lowerintentions/sample_1.pcm
+; @config bin.sample2.url https://static.8f4e.com/assets/mods/lowerintentions/sample_2.pcm
+; @config bin.sample3.url https://static.8f4e.com/assets/mods/lowerintentions/sample_3.pcm
+; @config bin.sample4.url https://static.8f4e.com/assets/mods/lowerintentions/sample_4.pcm
+; @config bin.sample5.url https://static.8f4e.com/assets/mods/lowerintentions/sample_5.pcm
+; @config bin.sample6.url https://static.8f4e.com/assets/mods/lowerintentions/sample_6.pcm
+; @config bin.sample7.url https://static.8f4e.com/assets/mods/lowerintentions/sample_7.pcm
+; @config bin.sample9.url https://static.8f4e.com/assets/mods/lowerintentions/sample_9.pcm
+; @config bin.sample10.url https://static.8f4e.com/assets/mods/lowerintentions/sample_10.pcm
+; @config bin.sample11.url https://static.8f4e.com/assets/mods/lowerintentions/sample_11.pcm
+; @config bin.sample12.url https://static.8f4e.com/assets/mods/lowerintentions/sample_12.pcm
+; @config bin.sample13.url https://static.8f4e.com/assets/mods/lowerintentions/sample_13.pcm
+; @config bin.sample14.url https://static.8f4e.com/assets/mods/lowerintentions/sample_14.pcm
+; @config bin.sample15.url https://static.8f4e.com/assets/mods/lowerintentions/sample_15.pcm
+; @config bin.sample16.url https://static.8f4e.com/assets/mods/lowerintentions/sample_16.pcm
+; @config bin.sample17.url https://static.8f4e.com/assets/mods/lowerintentions/sample_17.pcm
+; @config bin.ch1.url https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch1.bin
+; @config bin.ch2.url https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch2.bin
+; @config bin.ch3.url https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch3.bin
+; @config bin.ch4.url https://static.8f4e.com/assets/mods/lowerintentions/patterns_ch4.bin
 
 noteEnd
 

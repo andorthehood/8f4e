@@ -1,8 +1,9 @@
-import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
 import { describe, expect, it, vi } from 'vitest';
 import type { EditorEnvironmentPluginContext } from '../types';
 import createMidiIn from './midiIn';
+import type { MidiInBinding } from './types';
 
 interface MIDIInputMock {
 	addEventListener: ReturnType<typeof vi.fn>;
@@ -10,32 +11,26 @@ interface MIDIInputMock {
 	dispatchMidiMessage: (data: number[]) => void;
 }
 
-function midiInDirective(args: string[], rawRow = 0): ParsedDirectiveRecord {
-	return {
-		prefix: '@',
-		name: 'midiIn',
-		args,
-		rawRow,
-		sourceLine: `; @midiIn ${args.join(' ')}`,
-		isTrailing: false,
-	};
-}
-
-function codeBlock(id: string, directives: ParsedDirectiveRecord[]): CodeBlockGraphicData {
-	return {
-		id,
-		blockType: 'module',
-		parsedDirectives: directives,
-	} as unknown as CodeBlockGraphicData;
-}
-
-function createStore(blocks: CodeBlockGraphicData[]) {
+function createStore(bindings: MidiInBinding[]) {
 	return createStateManager({
-		graphicHelper: {
-			codeBlocks: blocks,
+		codeBlockRendering: {
+			codeBlocks: [],
 		},
 		compiler: {
 			isCompiling: false,
+		},
+		editorConfig: {
+			midi: {
+				inputs: Object.fromEntries(
+					bindings.map((binding, index) => [
+						String(index),
+						{
+							port: Number(binding.port),
+							callback: binding.exportName,
+						},
+					])
+				),
+			},
 		},
 	} as unknown as State);
 }
@@ -85,7 +80,8 @@ describe('createMidiIn', () => {
 		const setErrors = vi.fn();
 		const getInputPort = vi.fn(port => (port === '0' ? (input as unknown as MIDIInput) : undefined));
 		const store = createStore([
-			codeBlock('foo', [midiInDirective(['0', 'onNote']), midiInDirective(['0', 'onPitchBend'])]),
+			{ port: '0', exportName: 'onNote' },
+			{ port: '0', exportName: 'onPitchBend' },
 		]);
 
 		const manager = createMidiIn({
@@ -112,7 +108,7 @@ describe('createMidiIn', () => {
 	it('defaults missing MIDI data bytes to zero', async () => {
 		const onClock = vi.fn();
 		const input = createMIDIInputMock();
-		const store = createStore([codeBlock('foo', [midiInDirective(['0', 'onClock'])])]);
+		const store = createStore([{ port: '0', exportName: 'onClock' }]);
 
 		const manager = createMidiIn({
 			store,
@@ -131,11 +127,13 @@ describe('createMidiIn', () => {
 		manager.dispose();
 	});
 
-	it('reports missing ports and missing callback exports without attaching listeners', async () => {
+	it('logs missing ports and missing callback exports without attaching listeners', async () => {
+		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 		const setErrors = vi.fn();
 		const input = createMIDIInputMock();
 		const store = createStore([
-			codeBlock('foo', [midiInDirective(['0', 'missingExport']), midiInDirective(['1', 'onMidiIn'])]),
+			{ port: '0', exportName: 'missingExport' },
+			{ port: '1', exportName: 'onMidiIn' },
 		]);
 
 		const manager = createMidiIn({
@@ -150,24 +148,21 @@ describe('createMidiIn', () => {
 		await flushPromises();
 
 		expect(input.addEventListener).not.toHaveBeenCalled();
-		expect(setErrors).toHaveBeenLastCalledWith(
-			expect.arrayContaining([
-				expect.objectContaining({
-					message: 'Missing callable WebAssembly export for @midiIn callback "missingExport".',
-				}),
-				expect.objectContaining({
-					message: 'MIDI input port "1" is not available.',
-				}),
-			])
+		expect(consoleError).toHaveBeenCalledWith('MIDI input port "1" is not available.');
+		expect(consoleError).toHaveBeenCalledWith(
+			'Missing callable WebAssembly export for MIDI input callback "missingExport".'
 		);
+		expect(setErrors).toHaveBeenLastCalledWith([]);
 
 		manager.dispose();
+		consoleError.mockRestore();
 	});
 
-	it('reports missing ports without waiting for WebAssembly exports', async () => {
+	it('logs missing ports without waiting for WebAssembly exports', async () => {
+		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 		const setErrors = vi.fn();
 		const getWasmExports = vi.fn();
-		const store = createStore([codeBlock('foo', [midiInDirective(['1', 'onMidiIn'])])]);
+		const store = createStore([{ port: '1', exportName: 'onMidiIn' }]);
 
 		const manager = createMidiIn({
 			store,
@@ -176,14 +171,12 @@ describe('createMidiIn', () => {
 			getWasmExports,
 		});
 
-		expect(setErrors).toHaveBeenLastCalledWith([
-			expect.objectContaining({
-				message: 'MIDI input port "1" is not available.',
-			}),
-		]);
+		expect(consoleError).toHaveBeenCalledWith('MIDI input port "1" is not available.');
+		expect(setErrors).toHaveBeenLastCalledWith([]);
 		expect(getWasmExports).not.toHaveBeenCalled();
 
 		manager.dispose();
+		consoleError.mockRestore();
 	});
 
 	it('continues calling later callbacks when one callback throws', async () => {
@@ -194,7 +187,10 @@ describe('createMidiIn', () => {
 		const later = vi.fn();
 		const setErrors = vi.fn();
 		const input = createMIDIInputMock();
-		const store = createStore([codeBlock('foo', [midiInDirective(['0', 'broken']), midiInDirective(['0', 'later'])])]);
+		const store = createStore([
+			{ port: '0', exportName: 'broken' },
+			{ port: '0', exportName: 'later' },
+		]);
 
 		const manager = createMidiIn({
 			store,
@@ -211,11 +207,8 @@ describe('createMidiIn', () => {
 
 		expect(broken).toHaveBeenCalledWith(0xb0, 1, 2);
 		expect(later).toHaveBeenCalledWith(0xb0, 1, 2);
-		expect(setErrors).toHaveBeenLastCalledWith([
-			expect.objectContaining({
-				message: 'MIDI input callback "broken" failed.',
-			}),
-		]);
+		expect(consoleError).toHaveBeenCalledWith('MIDI input callback "broken" failed.', expect.any(Error));
+		expect(setErrors).toHaveBeenLastCalledWith([]);
 
 		manager.dispose();
 		consoleError.mockRestore();

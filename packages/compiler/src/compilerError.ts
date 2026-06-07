@@ -21,6 +21,7 @@ import type {
 	CodegenContext,
 	CompilationContext,
 	CompilerASTLine,
+	CompilerDiagnosticContext,
 	CompilerStageError,
 	ErrorCodeValue,
 } from '@8f4e/compiler-spec';
@@ -44,7 +45,7 @@ interface ErrorDetails {
 export function getError(
 	code: ErrorCodeValue,
 	line: CompilerASTLine,
-	context?: CodegenContext | CompilationContext,
+	context?: CodegenContext | CompilationContext | CompilerDiagnosticContext,
 	details?: ErrorDetails
 ): CompilerStageError {
 	switch (code) {
@@ -433,7 +434,7 @@ export function getError(
 				message:
 					'Duplicate identifier' +
 					(details?.identifier ? `: ${details.identifier}` : '') +
-					'. Module and function IDs must be unique. (' +
+					'. Module and function names must be unique. (' +
 					code +
 					')',
 				line,

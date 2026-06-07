@@ -16,7 +16,7 @@ export default function favoriteToggler(store: StateManager<State>, events: Even
 		}
 
 		// Set target code block for programmatic edit to avoid re-rendering all code blocks
-		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = codeBlock;
+		state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = codeBlock;
 
 		// Check if code block has ; @favorite directive
 		const hasFavorite = codeBlock.isFavorite;
@@ -49,7 +49,7 @@ export default function favoriteToggler(store: StateManager<State>, events: Even
 		codeBlock.lastUpdated = Date.now();
 
 		// Trigger store update to re-render only the specific code block
-		store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 	}
 
 	events.on('toggleFavoriteDirective', onToggleFavoriteDirective);

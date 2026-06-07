@@ -6,18 +6,18 @@ const WIRE_SPRITE = 'wire';
 const WIRE_HIGHLIGHTED_SPRITE = 'wireHighlighted';
 
 export default function drawConnections(engine: Engine, state: State, memoryViews: MemoryViews): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
-	engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+	engine.setSpriteLookup(state.spriteLookups.fillColors);
 
 	engine.startGroup(-state.viewport.x, -state.viewport.y);
 
-	for (const codeBlock of state.graphicHelper.codeBlocks) {
-		const isSelected = codeBlock === state.graphicHelper.selectedCodeBlock;
+	for (const codeBlock of state.codeBlockRendering.codeBlocks) {
+		const isSelected = codeBlock === state.codeBlockRendering.selectedCodeBlock;
 
-		if (!codeBlock.moduleId) {
+		if (!codeBlock.name) {
 			continue;
 		}
 
@@ -28,7 +28,7 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 				continue;
 			}
 
-			const output = state.graphicHelper.outputsByWordAddress.get(outputAddress);
+			const output = state.codeBlockRendering.outputsByWordAddress.get(outputAddress);
 
 			if (!output) {
 				continue;

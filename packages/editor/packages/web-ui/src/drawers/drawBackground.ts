@@ -2,8 +2,8 @@ import type { State } from '@8f4e/editor-state-types';
 import type { Engine } from 'glugglug';
 
 export default function drawBackground(engine: Engine, state: State): void {
-	if (state.graphicHelper.spriteLookups?.background) {
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.background);
+	if (state.spriteLookups?.background) {
+		engine.setSpriteLookup(state.spriteLookups.background);
 	}
 
 	for (let i = 0; i < Math.ceil(state.viewport.width / (64 * state.viewport.vGrid)); i++) {

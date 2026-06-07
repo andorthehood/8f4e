@@ -1,0 +1,60 @@
+{
+  "codeBlocks": [
+    {
+      "code": [
+        "module counter",
+        "int count",
+        "moduleEnd",
+      ],
+      "entry": "main",
+      "id": 4,
+    },
+    {
+      "code": [
+        "constants env",
+        "const int tableSize 16",
+        "constantsEnd",
+      ],
+      "id": 9,
+    },
+    {
+      "code": [
+        "function increment",
+        "param int value",
+        "push value",
+        "push 1",
+        "add",
+        "functionEnd int",
+      ],
+      "id": 13,
+    },
+    {
+      "code": [
+        "prototype oscillatorState",
+        "float phase",
+        "float frequency 440",
+        "prototypeEnd",
+      ],
+      "id": 20,
+    },
+    {
+      "code": [
+        "defineMacro double",
+        "push 2",
+        "mul",
+        "defineMacroEnd",
+      ],
+      "id": 25,
+    },
+    {
+      "code": [
+        "note",
+        "; @pos 1 2",
+        "remember to tune this later",
+        "noteEnd",
+      ],
+      "id": 30,
+    },
+  ],
+  "groups": [],
+}

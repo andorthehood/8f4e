@@ -1,9 +1,11 @@
 {
   "code": 10,
-  "context": {},
+  "context": {
+    "projectBlockId": 4,
+  },
   "line": {
     "instruction": "#loopCap",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Compiler directives must appear in the block prologue, immediately after module or function.",
 }

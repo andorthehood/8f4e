@@ -3,9 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { parseBlockDirectives } from '../../code-blocks/utils/parseBlockDirectives';
 import { resolveGlobalEditorDirectives } from '../registry';
 
-function createParsedBlock(code: string[]) {
+function createParsedBlock(code: string[], name?: string) {
 	return {
 		parsedDirectives: parseBlockDirectives(code),
+		...(name ? { name } : {}),
 	};
 }
 
@@ -36,6 +37,26 @@ describe('@config directive', () => {
 
 		expect(result.resolved.configEntries).toEqual([
 			{ path: 'webUI.background.target', value: 'frame:buffer', rawRow: 1, codeBlockId: 0 },
+		]);
+		expect(result.errors).toEqual([]);
+	});
+
+	it('records the current module for config entries', () => {
+		const result = resolveGlobalEditorDirectives([
+			createParsedBlock(
+				['module audioout', '; @config audioRuntime.audioOutBufferLAddress buffer', 'moduleEnd'],
+				'audioout'
+			),
+		]);
+
+		expect(result.resolved.configEntries).toEqual([
+			{
+				path: 'audioRuntime.audioOutBufferLAddress',
+				value: 'buffer',
+				rawRow: 1,
+				codeBlockId: 0,
+				moduleId: 'audioout',
+			},
 		]);
 		expect(result.errors).toEqual([]);
 	});

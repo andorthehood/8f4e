@@ -1,6 +1,8 @@
 8f4e/v1
 
-; Directive prologues are accepted directly after block declarations.
+; Directive prologues are
+; accepted directly after block
+; declarations.
 entry test
 module skippedDirectiveModule
 #skipExecution

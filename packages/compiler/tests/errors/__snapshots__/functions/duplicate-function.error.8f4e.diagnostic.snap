@@ -1,6 +1,9 @@
 {
   "code": 45,
-  "context": {},
+  "context": {
+    "codeBlockType": "function",
+    "projectBlockId": 11,
+  },
   "line": {
     "arguments": [
       {
@@ -13,5 +16,5 @@
     "instruction": "function",
     "lineNumber": 0,
   },
-  "message": "Duplicate identifier: same. Module and function IDs must be unique. (45)",
+  "message": "Duplicate identifier: same. Module and function names must be unique. (45)",
 }

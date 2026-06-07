@@ -23,7 +23,7 @@ import drawWaves from './widgets/waves';
 const corner = '+';
 
 export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
-	const spriteLookups = state.graphicHelper.spriteLookups;
+	const spriteLookups = state.spriteLookups;
 
 	if (!spriteLookups) {
 		return;
@@ -37,8 +37,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 	engine.startGroup(offsetX, offsetY);
 	drawEntryOutlines(engine, state);
 
-	for (const codeBlock of state.graphicHelper.codeBlocks) {
-		const renderHiddenPreview = codeBlock.hidden && !state.graphicHelper.showHiddenCodeBlocks;
+	for (const codeBlock of state.codeBlockRendering.codeBlocks) {
+		const renderHiddenPreview = codeBlock.hidden && !state.codeBlockRendering.showHiddenCodeBlocks;
 
 		// Read position offsets from memory only if the feature is enabled
 		if (state.featureFlags.positionOffsetters) {
@@ -70,7 +70,7 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 					if (!renderHiddenPreview) {
 						engine.setSpriteLookup(spriteLookups.fillColors);
 
-						if (codeBlock === state.graphicHelper.draggedCodeBlock) {
+						if (codeBlock === state.codeBlockRendering.draggedCodeBlock) {
 							engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
 						} else if (codeBlock.disabled) {
 							engine.drawSprite(0, 0, 'moduleBackgroundDisabled', codeBlock.width, codeBlock.height);
@@ -80,13 +80,15 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 
 						drawBlockHighlights(engine, state, codeBlock);
 
-						if (state.featureFlags.codeLineSelection && state.graphicHelper.selectedCodeBlock === codeBlock) {
+						if (state.featureFlags.codeLineSelection && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
 							engine.drawSprite(0, codeBlock.cursor.y, 'highlightedCodeLine', codeBlock.width, state.viewport.hGrid);
 						}
 					}
 
 					engine.setSpriteLookup(
-						state.graphicHelper.selectedCodeBlock === codeBlock ? spriteLookups.fontNumbers : spriteLookups.fontCode
+						state.codeBlockRendering.selectedCodeBlock === codeBlock
+							? spriteLookups.fontNumbers
+							: spriteLookups.fontCode
 					);
 
 					engine.drawText(0, 0, corner);
@@ -120,16 +122,16 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 						}
 					}
 
-					if (state.featureFlags.editing && state.graphicHelper.selectedCodeBlock === codeBlock) {
+					if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
 						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
 					}
 				},
 				// Enable caching only when the block is NOT selected
-				state.graphicHelper.selectedCodeBlock !== codeBlock,
+				state.codeBlockRendering.selectedCodeBlock !== codeBlock,
 				codeBlock.opacity
 			);
 
-			if (state.editorMode === 'presentation' && state.graphicHelper.selectedCodeBlock === codeBlock) {
+			if (state.editorMode === 'presentation' && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
 				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height);
 			}
 

@@ -1,9 +1,14 @@
 8f4e/v1
 
-; Push should resolve locals, parameters, module memory, and pointer dereference depth correctly.
+; Push should resolve locals,
+; parameters, module memory, and
+; pointer dereference depth
+; correctly.
 entry test
 module pushLocalAssertions
-; Function locals should round-trip through localSet and push.
+; Function locals should
+; round-trip through localSet
+; and push.
 call readIntLocal
 call assert 7
 
@@ -16,7 +21,10 @@ call assertf64 4.0f64
 moduleEnd
 
 module localShadowMemoryAssertions
-; Function parameters should shadow same-named module memory identifiers.
+; Function parameters should
+; shadow same-named module
+; memory
+; identifiers.
 int value 42
 push 7
 call shadowValue
@@ -24,7 +32,10 @@ call assert 7
 moduleEnd
 
 module pointerDereferenceDepthAssertions
-; A pointer-to-pointer can be pushed as an address or dereferenced to the pointee value.
+; A pointer-to-pointer can be
+; pushed as an address or
+; dereferenced to the pointee
+; value.
 float value 1.5
 float* ptr &value
 float** pptr &ptr

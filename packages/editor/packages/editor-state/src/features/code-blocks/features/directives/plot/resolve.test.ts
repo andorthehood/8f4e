@@ -15,15 +15,14 @@ describe('plot directive widget resolution', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			code: ['; @plot &buffer1 count(buffer1)'],
 			gaps: new Map(),
 			width: 100,
 		});
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,

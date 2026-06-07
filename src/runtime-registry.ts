@@ -4,15 +4,7 @@ import type {
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
 } from '@8f4e/editor';
-import { createWebWorkerRuntimeDef } from '@8f4e/runtime-web-worker/runtime-def';
-import WebWorkerRuntime from '@8f4e/runtime-web-worker?worker';
 import { getCodeBuffer, getMemory } from './compiler-callback';
-
-/**
- * Default runtime ID for the application.
- * This is used as the fallback when no runtime is specified or when an unknown runtime is requested.
- */
-export const DEFAULT_RUNTIME_ID = 'WebWorkerRuntime';
 
 /**
  * Creates a lazy runtime registry entry that defers loading the runtime implementation and schema
@@ -70,12 +62,21 @@ function createLazyRuntimeEntry(
 /**
  * Runtime registry for the application.
  * Maps runtime IDs to their editor-config schema contributions and factory functions.
- * The default runtime (WebWorkerRuntime) is loaded eagerly; optional runtimes are lazy-loaded
- * on first selection. Each optional runtime starts with a minimal stub schema and replaces it with
- * the full schema after loading.
+ * Runtimes are lazy-loaded on first selection. Each runtime starts with a minimal stub schema
+ * and replaces it with the full schema after loading.
  */
 export const runtimeRegistry: RuntimeRegistry = {
-	WebWorkerRuntime: createWebWorkerRuntimeDef(getCodeBuffer, getMemory, WebWorkerRuntime),
+	WebWorkerRuntime: createLazyRuntimeEntry(
+		'WebWorkerRuntime',
+		{ root: 'workerRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
+		async () => {
+			const [{ createWebWorkerRuntimeDef }, { default: WebWorkerRuntime }] = await Promise.all([
+				import('@8f4e/runtime-web-worker/runtime-def'),
+				import('@8f4e/runtime-web-worker?worker'),
+			]);
+			return createWebWorkerRuntimeDef(getCodeBuffer, getMemory, WebWorkerRuntime);
+		}
+	),
 
 	MainThreadRuntime: createLazyRuntimeEntry(
 		'MainThreadRuntime',

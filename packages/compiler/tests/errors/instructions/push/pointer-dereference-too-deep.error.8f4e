@@ -2,7 +2,9 @@
 
 entry main
 module pointerDereferenceTooDeep
-; Pointer dereference depth should not exceed the declared pointer depth.
+; Pointer dereference depth
+; should not exceed the declared
+; pointer depth.
 float value 1.5
 float* ptr &value
 push **ptr

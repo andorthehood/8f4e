@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "invalid",
     "codeBlockType": "function",
+    "projectBlockId": 8,
   },
   "line": {
     "arguments": [
@@ -20,7 +21,7 @@
       },
     ],
     "instruction": "param",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Parameter declarations must come immediately after the function declaration, before any other instructions or local variable declarations. (23)",
 }

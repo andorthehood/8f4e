@@ -6,7 +6,9 @@ int[] buffer 10 0
 moduleEnd
 
 module oldEndAddressTarget
-; End-address references should use module:memory&, not &module:memory&.
+; End-address references should
+; use module:memory&, not
+; &module:memory&.
 int* ptr &oldEndAddressSource:buffer&
 moduleEnd
 entryEnd

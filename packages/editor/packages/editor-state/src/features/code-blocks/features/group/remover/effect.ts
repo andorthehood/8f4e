@@ -16,7 +16,7 @@ export default function groupRemover(store: StateManager<State>, events: EventDi
 		}
 
 		// Set target code block for programmatic edit to avoid re-rendering all code blocks
-		state.graphicHelper.selectedCodeBlockForProgrammaticEdit = codeBlock;
+		state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = codeBlock;
 
 		// Check if code block has a valid ; @group directive (reflected in derived groupName)
 		if (codeBlock.groupName) {
@@ -27,7 +27,7 @@ export default function groupRemover(store: StateManager<State>, events: EventDi
 			codeBlock.lastUpdated = Date.now();
 
 			// Trigger store update to re-render only the specific code block
-			store.set('graphicHelper.selectedCodeBlockForProgrammaticEdit', codeBlock);
+			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
 		}
 	}
 

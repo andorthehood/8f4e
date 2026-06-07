@@ -32,7 +32,7 @@ WASM export is separate from project serialization and writes compiled binary mo
 ## State Sources
 
 Serializes from:
-- `state.graphicHelper.codeBlocks` - Code block data
+- `state.codeBlockRendering.codeBlocks` - Code block data
 
 ## Integration Points
 
@@ -59,4 +59,4 @@ The project structure is defined by the serialization functions:
 
 - Post-process effects are derived from shader blocks and not persisted
 - Compiled data is excluded from history snapshots to save memory
-- Binary assets are declared in code blocks with editor directives and loaded by the lazy editor environment plugin; exported projects do not embed binary payloads
+- Binary assets are declared in code blocks with `@config bin...` values and loaded by the lazy editor environment plugin; exported projects do not embed binary payloads

@@ -15,6 +15,18 @@ const FALLBACK_LINE = {
 
 const FALLBACK_CONTEXT = {} as const;
 
+function serializeContext(context: CompilerStageError['context']): CompilerDiagnostic['context'] {
+	if (!context) {
+		return FALLBACK_CONTEXT;
+	}
+
+	return {
+		...(context.codeBlockId !== undefined ? { codeBlockId: context.codeBlockId } : {}),
+		...(context.codeBlockType !== undefined ? { codeBlockType: context.codeBlockType } : {}),
+		...(context.projectBlockId !== undefined ? { projectBlockId: context.projectBlockId } : {}),
+	};
+}
+
 function isCompilerStageError(value: unknown): value is CompilerStageError {
 	return (
 		value !== null &&
@@ -38,7 +50,7 @@ export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 			code: error.code,
 			message: error.message,
 			line: error.line ?? FALLBACK_LINE,
-			context: FALLBACK_CONTEXT,
+			context: serializeContext(error.context),
 		};
 	}
 
@@ -53,12 +65,7 @@ export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
 						arguments: error.line.arguments as unknown[],
 					}
 				: FALLBACK_LINE,
-			context: error.context
-				? {
-						codeBlockId: error.context.codeBlockId,
-						codeBlockType: error.context.codeBlockType,
-					}
-				: FALLBACK_CONTEXT,
+			context: serializeContext(error.context),
 		};
 	}
 

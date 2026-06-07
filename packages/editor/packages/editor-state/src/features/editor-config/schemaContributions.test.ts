@@ -53,19 +53,19 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.sampleRate',
 				value: '48000',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBeUndefined();
 
-		expect(
-			validator.parse?.({ path: 'audioRuntime.sampleRate', value: '48000', rawRow: 1, codeBlockId: 'config' })
-		).toBe(48000);
+		expect(validator.parse?.({ path: 'audioRuntime.sampleRate', value: '48000', rawRow: 1, codeBlockId: 0 })).toBe(
+			48000
+		);
 		expect(
 			validator.parse?.({
 				path: 'audioRuntime.audioOutBufferLAddress',
 				value: '24',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe(24);
 		expect(
@@ -73,15 +73,33 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.audioOutBufferLAddress',
 				value: 'audioout:buffer',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
+			})
+		).toBe('audioout:buffer');
+		expect(
+			validator.parse?.({
+				path: 'audioRuntime.audioOutBufferLAddress',
+				value: 'buffer',
+				rawRow: 1,
+				codeBlockId: 0,
+				moduleId: 'audioout',
 			})
 		).toBe('audioout:buffer');
 		expect(
 			validator.validate({
 				path: 'audioRuntime.audioOutBufferLAddress',
+				value: 'buffer',
+				rawRow: 1,
+				codeBlockId: 0,
+				moduleId: 'audioout',
+			})
+		).toBeUndefined();
+		expect(
+			validator.validate({
+				path: 'audioRuntime.audioOutBufferLAddress',
 				value: 'audioout',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe("@config audioRuntime.audioOutBufferLAddress: invalid value 'audioout'");
 
@@ -90,7 +108,7 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.sampleRate',
 				value: '0',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe('@config audioRuntime.sampleRate: value 0 must be at least 1');
 
@@ -99,7 +117,7 @@ describe('editor config schema contributions', () => {
 				path: 'audioRuntime.unknown',
 				value: '1',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe("@config: unknown config path 'audioRuntime.unknown'");
 	});
@@ -112,5 +130,120 @@ describe('editor config schema contributions', () => {
 			sampleRate: 48000,
 			audioOutBufferLAddress: 32,
 		});
+	});
+
+	it('validates dynamic object properties from additionalProperties schemas', () => {
+		const dynamicStore = {
+			getState: () =>
+				({
+					editorConfigSchemaContributions: {
+						midi: {
+							root: 'midi',
+							schema: {
+								type: 'object',
+								properties: {
+									inputs: {
+										type: 'object',
+										additionalProperties: {
+											type: 'object',
+											properties: {
+												port: { type: 'integer', minimum: 0 },
+												callback: { type: 'string', pattern: '^[A-Za-z_][A-Za-z0-9_]*$' },
+											},
+											additionalProperties: false,
+										},
+									},
+								},
+								additionalProperties: false,
+							},
+						},
+					},
+				}) as State,
+		} as StateManager<State>;
+		const validator = createEditorConfigSchemaContributionsValidator(dynamicStore);
+
+		expect(validator.knownPaths).toEqual(['midi.inputs.*.port', 'midi.inputs.*.callback']);
+		expect(
+			validator.validate({
+				path: 'midi.inputs.0.port',
+				value: '0',
+				rawRow: 1,
+				codeBlockId: 0,
+			})
+		).toBeUndefined();
+		expect(
+			validator.validate({
+				path: 'midi.inputs.0.callback',
+				value: 'onMidiIn',
+				rawRow: 1,
+				codeBlockId: 0,
+			})
+		).toBeUndefined();
+		expect(
+			validator.validate({
+				path: 'midi.inputs.0.callback',
+				value: 'bad-name',
+				rawRow: 1,
+				codeBlockId: 0,
+			})
+		).toBe("@config midi.inputs.0.callback: invalid string value 'bad-name'");
+		expect(
+			validator.validate({
+				path: 'midi.inputs.0.unknown',
+				value: '1',
+				rawRow: 1,
+				codeBlockId: 0,
+			})
+		).toBe("@config: unknown config path 'midi.inputs.0.unknown'");
+	});
+
+	it('parses module-memory-id formatted config values against the directive module', () => {
+		const validator = createEditorConfigSchemaContributionsValidator({
+			getState: () =>
+				({
+					editorConfigSchemaContributions: {
+						keyboard: {
+							root: 'keyboard',
+							schema: {
+								type: 'object',
+								properties: {
+									keyCodeMemory: {
+										type: 'string',
+										format: 'module-memory-id',
+									},
+								},
+								additionalProperties: false,
+							},
+						},
+					},
+				}) as State,
+		} as StateManager<State>);
+
+		expect(
+			validator.validate({
+				path: 'keyboard.keyCodeMemory',
+				value: 'keyCode',
+				rawRow: 1,
+				codeBlockId: 0,
+				moduleId: 'keyboard',
+			})
+		).toBeUndefined();
+		expect(
+			validator.parse?.({
+				path: 'keyboard.keyCodeMemory',
+				value: 'keyCode',
+				rawRow: 1,
+				codeBlockId: 0,
+				moduleId: 'keyboard',
+			})
+		).toBe('keyboard:keyCode');
+		expect(
+			validator.validate({
+				path: 'keyboard.keyCodeMemory',
+				value: 'keyCode',
+				rawRow: 1,
+				codeBlockId: 0,
+			})
+		).toBe("@config keyboard.keyCodeMemory: memory value 'keyCode' must include a module id outside module blocks");
 	});
 });

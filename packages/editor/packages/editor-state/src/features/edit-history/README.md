@@ -25,7 +25,7 @@ Provides undo/redo functionality for code changes by maintaining snapshots of pr
 
 ### State Subscriptions
 
-- `graphicHelper.selectedCodeBlock.code` - Monitors code changes for history saves
+- `codeBlockRendering.selectedCodeBlock.code` - Monitors code changes for history saves
 
 ### State Touched
 

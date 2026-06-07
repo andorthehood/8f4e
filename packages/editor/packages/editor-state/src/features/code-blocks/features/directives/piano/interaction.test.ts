@@ -16,7 +16,7 @@ describe('pianoKeyboard interaction', () => {
 		memoryStore = new Map();
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,
@@ -128,7 +128,7 @@ describe('pianoKeyboard interaction', () => {
 
 		clickKey(codeBlock, 2);
 
-		expect(mockStore.set).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', [
+		expect(mockStore.set).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlock.code', [
 			'module test-block',
 			'int[] notes 10 50',
 			'int noteCount 1',
@@ -154,7 +154,7 @@ describe('pianoKeyboard interaction', () => {
 
 		clickKey(codeBlock, 2);
 
-		expect(mockStore.set).toHaveBeenCalledWith('graphicHelper.selectedCodeBlock.code', [
+		expect(mockStore.set).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlock.code', [
 			'module test-block',
 			'int[] notes 10',
 			'int noteCount 0',

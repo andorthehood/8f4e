@@ -1,6 +1,6 @@
 import type { CodeBlockGraphicData, State } from '../../../../index';
 import type { ViewportBlockAlignment } from '../../../viewport/blockAlignment';
-import type { CodeBlockDisplayModel } from '../graphicHelper/buildDisplayModel';
+import type { CodeBlockDisplayModel } from '../../buildDisplayModel';
 
 export interface ParsedEditorDirective {
 	name: string;

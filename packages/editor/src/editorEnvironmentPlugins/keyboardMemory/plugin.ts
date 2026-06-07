@@ -1,5 +1,6 @@
 import type { State } from '@8f4e/editor-state-types';
 import type { EditorEnvironmentPluginContext } from '../types';
+import { getKeyboardMemoryConfig } from './config';
 import eventCodeToUsbHidUsageId from './eventCodeToUsbHidUsageId';
 
 function resolveWordAlignedAddress(state: State, memoryId?: string): number | undefined {
@@ -55,11 +56,9 @@ export default function keyboardMemoryPlugin({
 		upsertPressedKeyCode(hidUsageId);
 
 		const state = store.getState();
-		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, state.globalEditorDirectives.keyCodeMemoryId);
-		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
-			state,
-			state.globalEditorDirectives.keyPressedMemoryId
-		);
+		const config = getKeyboardMemoryConfig(state);
+		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, config.keyCodeMemory);
+		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(state, config.keyPressedMemory);
 
 		writeIntegerToMemory(state, keyCodeWordAlignedAddress, hidUsageId);
 		writeIntegerToMemory(state, keyPressedWordAlignedAddress, 1);
@@ -70,11 +69,9 @@ export default function keyboardMemoryPlugin({
 		removePressedKeyCode(hidUsageId);
 
 		const state = store.getState();
-		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, state.globalEditorDirectives.keyCodeMemoryId);
-		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
-			state,
-			state.globalEditorDirectives.keyPressedMemoryId
-		);
+		const config = getKeyboardMemoryConfig(state);
+		const keyCodeWordAlignedAddress = resolveWordAlignedAddress(state, config.keyCodeMemory);
+		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(state, config.keyPressedMemory);
 
 		const latestPressedKeyCode = getLatestPressedKeyCode();
 		if (latestPressedKeyCode === undefined) {
@@ -92,7 +89,7 @@ export default function keyboardMemoryPlugin({
 		const state = store.getState();
 		const keyPressedWordAlignedAddress = resolveWordAlignedAddress(
 			state,
-			state.globalEditorDirectives.keyPressedMemoryId
+			getKeyboardMemoryConfig(state).keyPressedMemory
 		);
 		writeIntegerToMemory(state, keyPressedWordAlignedAddress, 0);
 	}

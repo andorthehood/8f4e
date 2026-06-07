@@ -18,13 +18,13 @@ describe('editor-state testing utilities', () => {
 		expect(block.parsedDirectives).toEqual([]);
 	});
 
-	it('allows tests to provide code block ids explicitly', () => {
+	it('allows tests to provide code block names explicitly', () => {
 		const block = createMockCodeBlock({
 			code: ['module synth', 'moduleEnd'],
-			moduleId: 'synth',
+			name: 'synth',
 		});
 
-		expect(block.moduleId).toBe('synth');
+		expect(block.name).toBe('synth');
 	});
 
 	it('allows tests to provide directive records explicitly', () => {
@@ -64,7 +64,7 @@ describe('editor-state testing utilities', () => {
 		expect(state.info.compiler?.compilationTimeMs).toBe(120);
 		expect(state.viewport.width).toBe(400);
 		expect(state.viewport.height).toBe(768);
-		expect(state.graphicHelper.outputsByWordAddress).not.toBe(secondState.graphicHelper.outputsByWordAddress);
+		expect(state.codeBlockRendering.outputsByWordAddress).not.toBe(secondState.codeBlockRendering.outputsByWordAddress);
 	});
 
 	it('creates no-op event dispatchers and viewports', () => {

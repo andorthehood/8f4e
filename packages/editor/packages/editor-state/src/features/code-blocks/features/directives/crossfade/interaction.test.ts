@@ -58,8 +58,7 @@ describe('crossfade interaction', () => {
 
 	function createCrossfadeCodeBlock() {
 		const mockCodeBlock = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			x: 0,
 			y: 0,
 			offsetX: 0,

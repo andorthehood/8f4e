@@ -49,15 +49,15 @@ test('font color rendering', async () => {
 	];
 
 	colors.forEach((colorName, index) => {
-		if (!mockState.graphicHelper.spriteLookups?.[colorName]) {
+		if (!mockState.spriteLookups?.[colorName]) {
 			return;
 		}
 
-		const color = mockState.graphicHelper.spriteLookups[colorName];
+		const color = mockState.spriteLookups[colorName];
 		const codeLines = ['', colorName, ...lines.map(line => line.join('')), ''];
 		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
 
-		mockState.graphicHelper.codeBlocks.push(
+		mockState.codeBlockRendering.codeBlocks.push(
 			createMockCodeBlock({
 				id: `codeBlock${index}`,
 				x: (index % 4) * 8 * 32,

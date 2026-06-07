@@ -6,6 +6,8 @@ moduleEnd
 entryEnd
 
 prototype invalidShape
-; it rejects executable instructions inside prototype blocks
+; it rejects executable
+; instructions inside prototype
+; blocks
 push 1
 prototypeEnd

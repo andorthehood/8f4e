@@ -12,11 +12,11 @@ function resolveWatchDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
-	if (!graphicData.moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
-	const memory = resolveMemoryIdentifier(state, graphicData.moduleId, _debugger.id);
+	const memory = resolveMemoryIdentifier(state, graphicData.name, _debugger.id);
 	if (!memory) {
 		return;
 	}

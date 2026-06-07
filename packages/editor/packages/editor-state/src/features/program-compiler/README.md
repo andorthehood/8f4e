@@ -35,8 +35,8 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 
 ### Subscriptions
 
-- `graphicHelper.selectedCodeBlock.code` - Schedules compilation when the selected compilable block changes
-- `graphicHelper.selectedCodeBlockForProgrammaticEdit.code` - Schedules compilation when programmatic edits change a compilable block
+- `codeBlockRendering.selectedCodeBlock.code` - Schedules compilation when the selected compilable block changes
+- `codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code` - Schedules compilation when programmatic edits change a compilable block
 
 ### Callbacks Used
 

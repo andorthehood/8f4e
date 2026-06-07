@@ -102,7 +102,6 @@ describe('editor init', () => {
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerRuntime',
 			callbacks: {
 				loadSession: async () => null,
 			},
@@ -134,7 +133,6 @@ describe('editor init', () => {
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerRuntime',
 			callbacks: {
 				loadSession: async () => null,
 				exportCanvasScreenshot,
@@ -163,7 +161,6 @@ describe('editor init', () => {
 					factory: () => () => {},
 				},
 			},
-			defaultRuntimeId: 'WebWorkerRuntime',
 			renderStatsIntervalFrames: 12,
 			frameTexture: {
 				entry: 'renderFrame',
@@ -231,6 +228,18 @@ describe('editor init', () => {
 		expect(viewOptions.getMemory?.()).toBeNull();
 		expect(initStateOptions.editorConfigSchemaContributions?.['web-ui']).toMatchObject({
 			root: 'webUI',
+			schema: {
+				type: 'object',
+			},
+		});
+		expect(initStateOptions.editorConfigSchemaContributions?.bin).toMatchObject({
+			root: 'bin',
+			schema: {
+				type: 'object',
+			},
+		});
+		expect(initStateOptions.editorConfigSchemaContributions?.keyboard).toMatchObject({
+			root: 'keyboard',
 			schema: {
 				type: 'object',
 			},

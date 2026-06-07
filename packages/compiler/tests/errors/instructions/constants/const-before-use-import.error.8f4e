@@ -6,7 +6,8 @@ const FOO 42
 moduleEnd
 
 module constBeforeUseImport
-; use only imports constants from its position onward.
+; use only imports constants
+; from its position onward.
 const BAR FOO
 use constProvider
 int x BAR

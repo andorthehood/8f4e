@@ -12,7 +12,7 @@ export default function drawer(
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
 ): void {
-	if (!state.graphicHelper.spriteLookups || !codeBlock.moduleId) {
+	if (!state.spriteLookups || !codeBlock.name) {
 		return;
 	}
 
@@ -23,7 +23,7 @@ export default function drawer(
 		const handleX = Math.round(((position + 1) / 2) * crossfade.trackWidth);
 
 		engine.startGroup(crossfade.x, crossfade.y);
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+		engine.setSpriteLookup(state.spriteLookups.fillColors);
 		engine.drawSprite(0, 0, 'track', crossfade.width, crossfade.height);
 
 		if (handleX !== crossfade.centerX) {

@@ -1,9 +1,11 @@
 {
   "code": 2,
-  "context": {},
+  "context": {
+    "projectBlockId": 4,
+  },
   "line": {
     "instruction": "map",
-    "lineNumber": 5,
+    "lineNumber": 7,
   },
   "message": "Invalid argument for map: string literals must contain exactly one character.",
 }

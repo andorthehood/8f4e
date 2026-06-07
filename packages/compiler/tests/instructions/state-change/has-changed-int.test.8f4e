@@ -1,6 +1,9 @@
 8f4e/v1
 
-; hasChanged should report integer changes across repeated entry calls.
+; hasChanged should report
+; integer changes across
+; repeated entry
+; calls.
 entry stateChangeStep
 module hasChangedIntState
 int input

@@ -3,7 +3,7 @@
 entry main
 module assets
 ; @pos -107 -70
-; @defAsset amen https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
+; @config bin.amen.url https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
 
 moduleEnd
 module projectConfig
@@ -31,7 +31,7 @@ module pcmPlayer8bit
 use env
 
 int8[] buffer ASSET_AMEN_SIZE
-; @loadAsset amen &buffer
+; @config bin.amen.memory buffer
 float defSpeed 1
 float* speed &defSpeed
 float position

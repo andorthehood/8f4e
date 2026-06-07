@@ -43,11 +43,11 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 	const onCodeBlockClick = ({ x, y, codeBlock }: { x: number; y: number; codeBlock: CodeBlockGraphicData }) => {
 		const crossfade = findCrossfadeWidgetAtViewportCoordinates(state, codeBlock, x, y);
 
-		if (!crossfade || !codeBlock.moduleId) {
+		if (!crossfade || !codeBlock.name) {
 			return;
 		}
 
-		const module = state.compiler.compiledModules[codeBlock.moduleId];
+		const module = state.compiler.compiledModules[codeBlock.name];
 		const leftMemory = module?.memoryMap[crossfade.leftId];
 		const rightMemory = module?.memoryMap[crossfade.rightId];
 
@@ -56,7 +56,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 		}
 
 		activeCrossfade = { crossfade, codeBlock, leftMemory, rightMemory };
-		state.graphicHelper.draggedCodeBlock = undefined;
+		state.codeBlockRendering.draggedCodeBlock = undefined;
 		updateCrossfadeValue(x);
 	};
 

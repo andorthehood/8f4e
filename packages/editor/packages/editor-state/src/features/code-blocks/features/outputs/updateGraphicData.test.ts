@@ -11,14 +11,14 @@ describe('updateOutputsGraphicData', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
+			name: 'test-block',
 			code: ['module test-block', 'int output1'],
 			width: 100,
 			gaps: new Map(),
 		});
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,
@@ -54,7 +54,7 @@ describe('updateOutputsGraphicData', () => {
 
 		expect(mockGraphicData.widgets.outputs.length).toBe(1);
 		expect(findWidgetById(mockGraphicData.widgets.outputs, 'output1')).toBeDefined();
-		expect(mockState.graphicHelper.outputsByWordAddress.get(20)?.id).toBe('output1');
+		expect(mockState.codeBlockRendering.outputsByWordAddress.get(20)?.id).toBe('output1');
 	});
 
 	it('should calculate correct dimensions and position', () => {
@@ -70,10 +70,10 @@ describe('updateOutputsGraphicData', () => {
 	it('should register output in outputsByWordAddress', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
-		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(1);
-		expect(mockState.graphicHelper.outputsByWordAddress.has(20)).toBe(true);
+		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(1);
+		expect(mockState.codeBlockRendering.outputsByWordAddress.has(20)).toBe(true);
 
-		const output = mockState.graphicHelper.outputsByWordAddress.get(20);
+		const output = mockState.codeBlockRendering.outputsByWordAddress.get(20);
 		expect(output?.id).toBe('output1');
 	});
 
@@ -83,7 +83,7 @@ describe('updateOutputsGraphicData', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.outputs.length).toBe(0);
-		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(0);
+		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(0);
 	});
 
 	it('should not render outputs for private entities', () => {
@@ -104,7 +104,7 @@ describe('updateOutputsGraphicData', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.outputs.length).toBe(0);
-		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(0);
+		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(0);
 	});
 
 	it('should render bare anonymous scalar allocations', () => {
@@ -126,7 +126,7 @@ describe('updateOutputsGraphicData', () => {
 
 		expect(mockGraphicData.widgets.outputs.length).toBe(1);
 		expect(findWidgetById(mockGraphicData.widgets.outputs, '__anonymous__1')).toBeDefined();
-		expect(mockState.graphicHelper.outputsByWordAddress.get(32)?.id).toBe('__anonymous__1');
+		expect(mockState.codeBlockRendering.outputsByWordAddress.get(32)?.id).toBe('__anonymous__1');
 	});
 
 	it('should clear existing outputs before updating', () => {
@@ -167,7 +167,7 @@ describe('updateOutputsGraphicData', () => {
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.outputs.length).toBe(2);
-		expect(mockState.graphicHelper.outputsByWordAddress.size).toBe(2);
+		expect(mockState.codeBlockRendering.outputsByWordAddress.size).toBe(2);
 
 		// Exclude codeBlock and memory references from snapshot
 		const entries = Object.entries(mockGraphicData.widgets.outputs).map(([key, value]) => {

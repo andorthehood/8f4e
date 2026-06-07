@@ -1,0 +1,103 @@
+{
+  "constantsBlocks": [],
+  "entries": {
+    "main": [],
+    "test": [
+      {
+        "code": [
+          "module harness",
+          "int failures",
+          "moduleEnd",
+        ],
+        "projectBlockId": 25,
+      },
+    ],
+  },
+  "functionBlocks": [],
+  "groups": [
+    {
+      "constantsBlocks": [],
+      "entry": "main",
+      "functionBlocks": [],
+      "groups": [],
+      "macroBlocks": [],
+      "modules": [
+        {
+          "code": [
+            "module kick",
+            "int trigger",
+            "moduleEnd",
+          ],
+          "projectBlockId": 5,
+        },
+      ],
+      "name": "audio",
+      "prototypeBlocks": [],
+    },
+    {
+      "constantsBlocks": [],
+      "entry": "main",
+      "functionBlocks": [],
+      "groups": [
+        {
+          "constantsBlocks": [],
+          "entry": "main",
+          "functionBlocks": [
+            {
+              "code": [
+                "function clamp01",
+                "param float value",
+                "push value",
+                "functionEnd float",
+              ],
+              "projectBlockId": 16,
+            },
+          ],
+          "groups": [],
+          "macroBlocks": [],
+          "modules": [],
+          "name": "shaderHelpers",
+          "prototypeBlocks": [],
+        },
+      ],
+      "macroBlocks": [],
+      "modules": [
+        {
+          "code": [
+            "module scope",
+            "int brightness",
+            "moduleEnd",
+          ],
+          "projectBlockId": 11,
+        },
+      ],
+      "name": "visuals",
+      "prototypeBlocks": [],
+    },
+    {
+      "constantsBlocks": [],
+      "entry": "test",
+      "functionBlocks": [
+        {
+          "code": [
+            "function assertEqual",
+            "param int left",
+            "param int right",
+            "push left",
+            "push right",
+            "equal",
+            "functionEnd int",
+          ],
+          "projectBlockId": 30,
+        },
+      ],
+      "groups": [],
+      "macroBlocks": [],
+      "modules": [],
+      "name": "assertions",
+      "prototypeBlocks": [],
+    },
+  ],
+  "macroBlocks": [],
+  "prototypeBlocks": [],
+}
