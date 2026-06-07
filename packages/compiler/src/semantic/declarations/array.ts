@@ -75,6 +75,7 @@ const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDecla
 		// Store address in 4-byte words because pointer math/view indexing is word-based.
 		wordAlignedAddress: alignedAbsoluteWordOffset,
 		id: memoryId,
+		lineNumber: line.lineNumber,
 		// Convert the word-grid offset back to a byte address for wasm load/store instructions.
 		byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
 		default: createArrayDefaultValues(line, context, numberOfElements, isInteger),
