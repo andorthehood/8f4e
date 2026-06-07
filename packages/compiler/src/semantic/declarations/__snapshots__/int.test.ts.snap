@@ -10,6 +10,7 @@ exports[`int instruction compiler > creates an int memory entry 1`] = `
     "id": "counter",
     "isInteger": true,
     "isUnsigned": false,
+    "lineNumber": 1,
     "memoryIndex": 0,
     "numberOfElements": 1,
     "pointerDepth": 0,
