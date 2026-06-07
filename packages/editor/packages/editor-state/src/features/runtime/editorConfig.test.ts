@@ -68,7 +68,7 @@ describe('runtime editor config', () => {
 				path: RUNTIME_SELECTION_CONFIG_PATH,
 				value: 'AudioWorkletRuntime',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBeUndefined();
 
@@ -77,7 +77,7 @@ describe('runtime editor config', () => {
 				path: RUNTIME_SELECTION_CONFIG_PATH,
 				value: 'AudioWorkletRuntim',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toContain("Did you mean 'AudioWorkletRuntime'?");
 
@@ -86,7 +86,7 @@ describe('runtime editor config', () => {
 				path: RUNTIME_SELECTION_CONFIG_PATH,
 				value: 'toString',
 				rawRow: 1,
-				codeBlockId: 'config',
+				codeBlockId: 0,
 			})
 		).toBe("@config runtime: unknown runtime 'toString'");
 	});

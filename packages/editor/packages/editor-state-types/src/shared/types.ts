@@ -70,7 +70,8 @@ export interface InternalKeyboardEvent {
 export interface CodeError {
 	lineNumber: number;
 	message: string;
-	codeBlockId: string | number;
+	/** Creation index of the code block that owns the error. */
+	codeBlockId: number;
 	codeBlockType?: CompilerSourceBlockType;
 	/** Optional producer id for shared error buckets that contain errors from multiple owners. */
 	ownerId?: string;

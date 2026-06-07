@@ -20,7 +20,7 @@ function getEventHandler(events: ReturnType<typeof createMockEventDispatcherWith
 describe('browser-local note placement', () => {
 	it('moves colliding browser-local notes to the first free y positions for their x span', async () => {
 		const existingTopBlock = createMockCodeBlock({
-			id: 'top',
+			name: 'top',
 			gridX: 0,
 			gridY: 0,
 			width: 32 * 8,
@@ -28,7 +28,7 @@ describe('browser-local note placement', () => {
 			code: ['module top', 'moduleEnd'],
 		});
 		const existingBottomBlock = createMockCodeBlock({
-			id: 'bottom',
+			name: 'bottom',
 			gridX: 0,
 			gridY: 8,
 			width: 32 * 8,
@@ -87,7 +87,7 @@ describe('browser-local note placement', () => {
 			codeBlockRendering: {
 				codeBlocks: [
 					createMockCodeBlock({
-						id: 'existing',
+						name: 'existing',
 						gridX: 0,
 						gridY: 0,
 						width: 32 * 8,
@@ -124,7 +124,7 @@ describe('browser-local note placement', () => {
 			codeBlockRendering: {
 				codeBlocks: [
 					createMockCodeBlock({
-						id: 'existing',
+						name: 'existing',
 						gridX: 4,
 						gridY: 5,
 						width: 32 * 8,

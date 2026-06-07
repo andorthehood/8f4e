@@ -6,13 +6,12 @@ const CONNECTOR_WIDTH_GRID_CELLS = 3;
 
 export default function updateInputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.widgets.inputs = [];
-	const moduleId = graphicData.moduleId;
-	if (!moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
 	parseInputs(graphicData.code).forEach(input => {
-		const memory = state.compiler.compiledModules[moduleId]?.memoryMap[input.id];
+		const memory = state.compiler.compiledModules[graphicData.name]?.memoryMap[input.id];
 
 		if (!memory) {
 			return;

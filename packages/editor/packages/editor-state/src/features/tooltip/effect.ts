@@ -25,21 +25,17 @@ function getSelectedCodeBlockStackAnalysisLine(
 	state: State,
 	selectedCodeBlock: CodeBlockGraphicData
 ): CompiledStackAnalysisLine | undefined {
-	const moduleId = selectedCodeBlock.moduleId;
+	if (!selectedCodeBlock.name) {
+		return undefined;
+	}
 
-	if (!moduleId) {
-		const functionId = selectedCodeBlock.functionId;
-
-		if (!functionId) {
-			return undefined;
-		}
-
-		return state.compiler.compiledFunctions?.[functionId]?.stackAnalysis?.find(
+	if (selectedCodeBlock.blockType === 'function') {
+		return state.compiler.compiledFunctions?.[selectedCodeBlock.name]?.stackAnalysis?.find(
 			line => line.lineNumber === selectedCodeBlock.cursor.row
 		);
 	}
 
-	return state.compiler.compiledModules[moduleId]?.stackAnalysis?.find(
+	return state.compiler.compiledModules[selectedCodeBlock.name]?.stackAnalysis?.find(
 		line => line.lineNumber === selectedCodeBlock.cursor.row
 	);
 }
@@ -60,11 +56,11 @@ function getSelectedModuleExecutionOrder(
 	selectedCodeBlock: CodeBlockGraphicData,
 	line: string | undefined
 ): number | undefined {
-	if (!line || getInstructionNameFromSourceLine(line) !== 'module' || !selectedCodeBlock.moduleId) {
+	if (!line || getInstructionNameFromSourceLine(line) !== 'module' || !selectedCodeBlock.name) {
 		return undefined;
 	}
 
-	const moduleIndex = Object.keys(state.compiler.compiledModules).indexOf(selectedCodeBlock.moduleId);
+	const moduleIndex = Object.keys(state.compiler.compiledModules).indexOf(selectedCodeBlock.name);
 	return moduleIndex === -1 ? undefined : moduleIndex + 1;
 }
 
@@ -89,8 +85,8 @@ export default function tooltip(store: StateManager<State>): void {
 			TOOLTIP_WRAP_WIDTH,
 			getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock),
 			state.spriteLookups,
-			selectedCodeBlock.moduleId,
-			getSelectedMemoryDeclaration(state, selectedCodeBlock.moduleId, memoryId),
+			selectedCodeBlock.name,
+			getSelectedMemoryDeclaration(state, selectedCodeBlock.name, memoryId),
 			getSelectedModuleExecutionOrder(state, selectedCodeBlock, line)
 		);
 		store.set('tooltip', getTooltipState(content, state, selectedCodeBlock));

@@ -35,8 +35,8 @@ describe('createMockCodeBlock', () => {
 			expect(normalizeBlock(block)).toMatchSnapshot();
 		});
 
-		it('should override id and offsets', () => {
-			const block = createMockCodeBlock({ id: 'custom-block', offsetX: 10, offsetY: 20 });
+		it('should override name and offsets', () => {
+			const block = createMockCodeBlock({ name: 'custom-block', offsetX: 10, offsetY: 20 });
 			expect(normalizeBlock(block)).toMatchSnapshot();
 		});
 
@@ -101,11 +101,11 @@ describe('createMockCodeBlock', () => {
 		});
 
 		it('should create independent block instances', () => {
-			const block1 = createMockCodeBlock({ id: 'block1', x: 100 });
-			const block2 = createMockCodeBlock({ id: 'block2', x: 200 });
+			const block1 = createMockCodeBlock({ name: 'block1', x: 100 });
+			const block2 = createMockCodeBlock({ name: 'block2', x: 200 });
 
-			expect(block1.id).toBe('block1');
-			expect(block2.id).toBe('block2');
+			expect(block1.name).toBe('block1');
+			expect(block2.name).toBe('block2');
 			expect(block1.x).toBe(100);
 			expect(block2.x).toBe(200);
 			// Maps should be independent

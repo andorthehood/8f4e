@@ -7,7 +7,7 @@ function entry(value: string): EditorConfigEntry {
 		path: RECOMPILE_DEBOUNCE_DELAY_CONFIG_PATH,
 		value,
 		rawRow: 1,
-		codeBlockId: 'config',
+		codeBlockId: 0,
 	};
 }
 

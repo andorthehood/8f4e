@@ -1,13 +1,6 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import {
-	getBlockType,
-	getConstantsId,
-	getFunctionId,
-	getModuleId,
-	getPointerDepth,
-	isMemoryDeclarationInstruction,
-} from '@8f4e/tokenizer';
+import { getBlockType, getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
 import gapCalculator from '../code-editing/gapCalculator';
 import highlightSyntax8f4e from '../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../code-editing/highlightSyntaxGlsl';
@@ -123,9 +116,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				.map(char => char.charCodeAt(0) as number | string)
 				.concat(expandLineToCells(text, tabStopsByLine[rawRow] || []));
 		});
-		graphicData.id = getCodeBlockId(graphicData.code);
-		graphicData.moduleId = getModuleId(graphicData.code) || getConstantsId(graphicData.code) || undefined;
-		graphicData.functionId = getFunctionId(graphicData.code) || undefined;
+		graphicData.name = getCodeBlockId(graphicData.code);
 		graphicData.isCollapsed = displayModel.isCollapsed;
 
 		// Choose highlighter based on block type and get syntax colors for raw code
@@ -317,7 +308,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				height: 0,
 				code: codeBlock.code,
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				id: getCodeBlockId(codeBlock.code),
+				name: getCodeBlockId(codeBlock.code),
 				gridX,
 				gridY,
 				x: pixelX,
@@ -367,10 +358,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		state.codeBlockRendering.codeBlocks.forEach(codeBlock => {
 			codeBlock.widgets.errorMessages = [];
 			codeErrors.forEach(codeError => {
-				const matchesCodeBlock =
-					typeof codeError.codeBlockId === 'string' && codeError.codeBlockType
-						? codeBlock.id === `${codeError.codeBlockType}_${codeError.codeBlockId}`
-						: codeBlock.creationIndex === codeError.codeBlockId || codeBlock.id === codeError.codeBlockId;
+				const matchesCodeBlock = codeBlock.creationIndex === codeError.codeBlockId;
 
 				if (matchesCodeBlock) {
 					const message = wrapText(codeError.message, codeBlock.width / state.viewport.vGrid - 1).map(
