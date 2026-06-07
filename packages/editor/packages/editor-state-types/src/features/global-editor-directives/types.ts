@@ -19,7 +19,7 @@ export interface ResolvedGlobalEditorDirectives {
 
 export interface GlobalEditorDirectiveContext {
 	codeBlockId: number;
-	moduleId?: string;
+	codeBlockName?: string;
 	blockType?: CodeBlockType;
 }
 
