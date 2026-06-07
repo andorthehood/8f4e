@@ -1,8 +1,28 @@
+import type { DataStructure } from '@8f4e/compiler-spec';
 import { MemoryTypes } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 import updateInputsGraphicData from './updateGraphicData';
+
+function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+	return {
+		id: 'input1',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		type: MemoryTypes['int*'],
+		memoryIndex: 0,
+		byteAddress: 20,
+		wordAlignedAddress: 5,
+		wordAlignedSize: 1,
+		default: 0,
+		lineNumber: 1,
+		isInteger: true,
+		pointerDepth: 1,
+		isUnsigned: false,
+		...overrides,
+	};
+}
 
 describe('updateInputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
@@ -16,20 +36,11 @@ describe('updateInputsGraphicData', () => {
 		});
 
 		mockState = createMockState({
-			codeBlockRendering: {
-				viewport: {
-					vGrid: 10,
-					hGrid: 20,
-				},
-			},
 			compiler: {
 				compiledModules: {
 					'test-block': {
 						memoryMap: {
-							input1: {
-								wordAlignedAddress: 5,
-								byteAddress: 20,
-							},
+							input1: createMemory(),
 						},
 					},
 				},
@@ -37,41 +48,54 @@ describe('updateInputsGraphicData', () => {
 		});
 	});
 
-	it('should add input to graphicData widgets', () => {
+	it('adds input widgets from pointer scalar memory metadata', () => {
 		updateInputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.inputs.length).toBe(1);
 		expect(findWidgetById(mockGraphicData.widgets.inputs, 'input1')).toBeDefined();
 	});
 
-	it('should add input when pointer declaration has a default reference', () => {
-		mockGraphicData.code = ['module test-block', 'int* input1 &source:output1'];
-
-		updateInputsGraphicData(mockGraphicData, mockState);
-
-		expect(mockGraphicData.widgets.inputs.length).toBe(1);
-		expect(findWidgetById(mockGraphicData.widgets.inputs, 'input1')).toBeDefined();
-	});
-
-	it('should calculate correct dimensions and position', () => {
-		updateInputsGraphicData(mockGraphicData, mockState);
-
-		const input = findWidgetById(mockGraphicData.widgets.inputs, 'input1');
-		// Exclude codeBlock from snapshot as it creates circular reference
-		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
-		expect(inputWithoutCodeBlock).toMatchSnapshot();
-		expect(input?.codeBlock).toBe(mockGraphicData);
-	});
-
-	it('should not add input when memory is not found', () => {
-		mockGraphicData.code = ['int* nonExistentInput'];
+	it('ignores non-pointer memory metadata', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['input1'] = createMemory({
+			type: MemoryTypes.int,
+			pointerDepth: 0,
+		});
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.inputs.length).toBe(0);
 	});
 
-	it('should clear existing inputs before updating', () => {
+	it('adds input widgets from pointer array memory metadata', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['input1'] = createMemory({
+			type: MemoryTypes['float*'],
+			pointerDepth: 1,
+		});
+
+		updateInputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.inputs.length).toBe(1);
+		expect(findWidgetById(mockGraphicData.widgets.inputs, 'input1')).toBeDefined();
+	});
+
+	it('calculates dimensions and position from metadata', () => {
+		updateInputsGraphicData(mockGraphicData, mockState);
+
+		const input = findWidgetById(mockGraphicData.widgets.inputs, 'input1');
+		const { codeBlock: _codeBlock, ...inputWithoutCodeBlock } = input || {};
+		expect(inputWithoutCodeBlock).toMatchSnapshot();
+		expect(input?.codeBlock).toBe(mockGraphicData);
+	});
+
+	it('does not add inputs when compiled module metadata is missing', () => {
+		mockState.compiler.compiledModules = {};
+
+		updateInputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.inputs.length).toBe(0);
+	});
+
+	it('clears existing inputs before updating', () => {
 		mockGraphicData.widgets.inputs.push({
 			codeBlock: mockGraphicData,
 			width: 0,
@@ -89,25 +113,19 @@ describe('updateInputsGraphicData', () => {
 		expect(findWidgetById(mockGraphicData.widgets.inputs, 'oldInput')).toBeUndefined();
 	});
 
-	it('should handle multiple inputs', () => {
-		mockGraphicData.code = ['module test-block', 'int* input1', 'float* input2'];
-		mockState.compiler.compiledModules['test-block'].memoryMap['input2'] = {
+	it('handles multiple inputs in line-number order', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['input2'] = createMemory({
+			id: 'input2',
+			type: MemoryTypes['float*'],
 			wordAlignedAddress: 6,
 			byteAddress: 24,
-			numberOfElements: 1,
-			elementWordSize: 1,
-			type: MemoryTypes.float,
-			wordAlignedSize: 1,
-			default: 0,
+			lineNumber: 2,
 			isInteger: false,
-			id: 'input2',
-			pointerDepth: 0,
-		};
+		});
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
 		expect(mockGraphicData.widgets.inputs.length).toBe(2);
-		// Exclude codeBlock references from snapshot
 		const entries = Object.entries(mockGraphicData.widgets.inputs).map(([key, value]) => {
 			const { codeBlock: _codeBlock, ...rest } = value;
 			return [key, rest];
@@ -115,20 +133,8 @@ describe('updateInputsGraphicData', () => {
 		expect(entries).toMatchSnapshot();
 	});
 
-	it('should position inputs at correct y coordinate based on line number', () => {
-		mockGraphicData.code = ['nop', 'nop', 'int* input1'];
-		mockState.compiler.compiledModules['test-block'].memoryMap['input1'] = {
-			wordAlignedAddress: 5,
-			byteAddress: 20,
-			numberOfElements: 1,
-			elementWordSize: 1,
-			type: MemoryTypes.int,
-			wordAlignedSize: 1,
-			default: 0,
-			isInteger: true,
-			id: 'input1',
-			pointerDepth: 0,
-		};
+	it('positions inputs at the metadata line number', () => {
+		mockState.compiler.compiledModules['test-block'].memoryMap['input1'] = createMemory({ lineNumber: 2 });
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
@@ -137,7 +143,7 @@ describe('updateInputsGraphicData', () => {
 		expect(inputWithoutCodeBlock).toMatchSnapshot();
 	});
 
-	it('should round wire coordinates to whole pixels', () => {
+	it('rounds wire coordinates to whole pixels', () => {
 		mockState.viewport.vGrid = 9;
 		mockState.viewport.hGrid = 17;
 

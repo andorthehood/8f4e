@@ -1,6 +1,6 @@
 import type { CodeBlockGraphicData, Output, State } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
-import parseOutputs from './codeParser';
+import { getConnectorMemoryDeclarations, isOutputMemoryDeclaration } from '../connectors/memoryDeclarations';
 
 const CONNECTOR_WIDTH_GRID_CELLS = 3;
 
@@ -10,17 +10,14 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 		return;
 	}
 
-	parseOutputs(graphicData.code).forEach(output => {
-		const memory = state.compiler.compiledModules[graphicData.name]?.memoryMap[output.id];
-
-		if (!memory) {
-			return;
-		}
+	const compiledModule = state.compiler.compiledModules[graphicData.name];
+	getConnectorMemoryDeclarations(compiledModule).forEach(memory => {
+		if (!isOutputMemoryDeclaration(memory)) return;
 
 		const width = state.viewport.vGrid * CONNECTOR_WIDTH_GRID_CELLS;
 		const height = state.viewport.hGrid;
 		const x = graphicData.width - 3 * state.viewport.vGrid;
-		const y = gapCalculator(output.lineNumber, graphicData.gaps) * state.viewport.hGrid;
+		const y = gapCalculator(memory.lineNumber, graphicData.gaps) * state.viewport.hGrid;
 
 		const out: Output = {
 			width,
@@ -29,7 +26,7 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 			y,
 			wireX: Math.round(x + width / 2),
 			wireY: Math.round(y + height / 2),
-			id: output.id,
+			id: memory.id,
 			codeBlock: graphicData,
 			calibratedMax: 0,
 			calibratedMin: 0,
