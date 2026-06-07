@@ -1,9 +1,11 @@
 {
   "code": 1,
-  "context": {},
+  "context": {
+    "projectBlockId": 4,
+  },
   "line": {
     "instruction": "const",
-    "lineNumber": 2,
+    "lineNumber": 4,
   },
   "message": "Identifiers cannot start with numbers: 123ABC",
 }

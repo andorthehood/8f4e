@@ -1,6 +1,7 @@
 8f4e/v1
 
-; risingEdge should report when a float input moves upward.
+; risingEdge should report when
+; a float input moves upward.
 entry stateChangeStep
 module risingEdgeFloatState
 float input

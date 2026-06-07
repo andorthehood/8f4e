@@ -6,6 +6,8 @@ moduleEnd
 entryEnd
 
 function bad
-; push should reject identifiers that are neither locals nor memory.
+; push should reject identifiers
+; that are neither locals nor
+; memory.
 push undeclared
 functionEnd int

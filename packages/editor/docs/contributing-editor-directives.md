@@ -80,7 +80,7 @@ The current directive pipeline is:
 
 1. `deriveDirectiveState(code, options)` scans the block once and parses all registered directives.
 2. Each directive plugin applies its own contributions to a shared draft.
-3. `graphicHelper` consumes the derived result.
+3. `codeBlockRendering` consumes the derived result.
 4. Directive-owned widget contributions optionally run `beforeGraphicDataWidthCalculation(...)` before width calculation.
 5. Directive-owned widget contributions run `afterGraphicDataWidthCalculation(...)` after width calculation.
 
@@ -169,8 +169,10 @@ Then:
 
 If you are adding project-level settings owned by an extension or runtime, prefer a schema-backed `@config` root
 registered through `editorConfigSchemaContributions` instead of adding a new `~` directive.
-Schema fields with `format: 'memory-address'` resolve numeric addresses and `module:memory` references to compiled
-word addresses when read through `resolveSchemaConfigRoot(...)` with state.
+Schema fields with `format: 'memory-address'` resolve numeric addresses and memory references to compiled word addresses
+when read through `resolveSchemaConfigRoot(...)` with state. When a config directive appears in a module block,
+memory-formatted values can use a local memory name; the config parser normalizes it to `module:memory` before consumers
+receive `state.editorConfig`.
 
 If you need to insert or update the directive in source code (e.g., from an effect or action), use the `directiveEditing/` helpers rather than writing inline regex logic.
 
@@ -211,7 +213,7 @@ Use `plugin.ts` to contribute block-level metadata such as:
 - `isHome`
 - display transforms such as `@hide`
 
-If a directive changes how code should be displayed, that should be modeled as a directive-owned contribution to the display model, not as a renderer hack in `graphicHelper`.
+If a directive changes how code should be displayed, that should be modeled as a directive-owned contribution to the display model, not as a renderer hack in `codeBlockRendering`.
 
 ## Layout Contributions
 
@@ -270,7 +272,7 @@ Good:
 - generic directive syntax parsing
 - directive-owned argument interpretation and widget logic
 - directive-owned tests
-- action features remain separate (e.g., `clearDebugProbes`, group togglers) but delegate source edits to `directiveEditing/`
+- action features remain separate (e.g., group togglers) but delegate source edits to `directiveEditing/`
 
 Bad:
 

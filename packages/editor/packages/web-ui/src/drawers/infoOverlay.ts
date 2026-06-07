@@ -34,15 +34,15 @@ export default function drawInfoOverlay(
 		maxVertices,
 	}: { timeToRender: number; fps: number; vertices: number; maxVertices: number }
 ): void {
-	if (!state.graphicHelper.spriteLookups) {
+	if (!state.spriteLookups) {
 		return;
 	}
 
 	const debugText: string[] = [];
 
 	const selectedModule =
-		state.graphicHelper.selectedCodeBlock && state.graphicHelper.selectedCodeBlock.moduleId
-			? state.compiler.compiledModules[state.graphicHelper.selectedCodeBlock.moduleId]
+		state.codeBlockRendering.selectedCodeBlock && state.codeBlockRendering.selectedCodeBlock.name
+			? state.compiler.compiledModules[state.codeBlockRendering.selectedCodeBlock.name]
 			: undefined;
 
 	if (selectedModule) {
@@ -89,10 +89,13 @@ export default function drawInfoOverlay(
 
 	// Runtime stats
 
-	const selectedRuntimeId = state.editorConfig.runtime ?? state.defaultRuntimeId;
+	const selectedRuntimeId =
+		state.editorConfig.runtime && Object.hasOwn(state.runtimeRegistry, state.editorConfig.runtime)
+			? state.editorConfig.runtime
+			: undefined;
 
 	debugText.push('');
-	debugText.push('Runtime: ' + selectedRuntimeId);
+	debugText.push('Runtime: ' + (selectedRuntimeId ?? 'None'));
 
 	const timerExpectedIntervalTimeMs = getRuntimeInfoNumber(state, 'timerExpectedIntervalTimeMs');
 	if (timerExpectedIntervalTimeMs) {
@@ -118,7 +121,7 @@ export default function drawInfoOverlay(
 	engine.startGroup(0, state.viewport.roundedHeight - state.viewport.hGrid * (debugText.length + 1));
 
 	for (let i = 0; i < debugText.length; i++) {
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fillColors);
+		engine.setSpriteLookup(state.spriteLookups.fillColors);
 		engine.drawSprite(
 			0,
 			i * state.viewport.hGrid,
@@ -127,7 +130,7 @@ export default function drawInfoOverlay(
 			state.viewport.hGrid
 		);
 
-		engine.setSpriteLookup(state.graphicHelper.spriteLookups.fontDebugInfo);
+		engine.setSpriteLookup(state.spriteLookups.fontDebugInfo);
 		engine.drawText(state.viewport.vGrid, i * state.viewport.hGrid, debugText[i]);
 	}
 

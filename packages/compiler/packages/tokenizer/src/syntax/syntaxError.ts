@@ -64,11 +64,16 @@ export interface SyntaxErrorLine {
 	arguments?: unknown[];
 }
 
+export interface SyntaxErrorContext {
+	projectBlockId?: number;
+}
+
 export class SyntaxRulesError extends Error {
 	constructor(
 		public code: SyntaxErrorCodeValue,
 		message?: string,
-		public line?: SyntaxErrorLine
+		public line?: SyntaxErrorLine,
+		public context?: SyntaxErrorContext
 	) {
 		super(message ?? SyntaxErrorMessages[code]);
 		this.name = 'SyntaxRulesError';

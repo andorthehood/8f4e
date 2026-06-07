@@ -1,9 +1,14 @@
 8f4e/v1
 
-; Store writes integer and floating values through memory addresses.
+; Store writes integer and
+; floating values through memory
+; addresses.
 entry test
 module intStoreAssertions
-; int stores should write the source value into the destination address.
+; int stores should write the
+; source value into the
+; destination
+; address.
 int dest
 int src 42
 
@@ -16,7 +21,8 @@ call assert 42
 moduleEnd
 
 module floatStoreAssertions
-; float stores should keep the float32 path working.
+; float stores should keep the
+; float32 path working.
 float dest
 float src 3.14
 
@@ -29,7 +35,9 @@ call assertf 3.14
 moduleEnd
 
 module float64StoreAssertions
-; float64 stores should write 64-bit values and keep float64 memory aligned.
+; float64 stores should write
+; 64-bit values and keep float64
+; memory aligned.
 float64 dest
 float64 src 1.5
 

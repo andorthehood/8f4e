@@ -34,11 +34,11 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 			const validBlocks = loadedBlocks.filter(block => isBrowserLocalNoteCode(block.code));
 			const browserLocalNotes = validBlocks.length > 0 ? validBlocks : [DEFAULT_BROWSER_LOCAL_NOTE];
 
-			const nextCodeBlocks = [...state.graphicHelper.codeBlocks];
+			const nextCodeBlocks = [...state.codeBlockRendering.codeBlocks];
 			const occupiedBounds: GridBounds[] = nextCodeBlocks
 				.filter(existingCodeBlock => existingCodeBlock.viewportAnchor === undefined)
 				.map(existingCodeBlock => getCodeBlockGridBounds(existingCodeBlock, state.viewport));
-			let creationIndex = state.graphicHelper.nextCodeBlockCreationIndex;
+			let creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
 
 			for (const rawBlock of browserLocalNotes) {
 				const preferredGridX = rawBlock.gridCoordinates?.x ?? 0;
@@ -48,7 +48,7 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 				const blockType = getBlockType(rawBlock.code) as CodeBlockGraphicData['blockType'];
 				const isViewportAnchored = directiveState.blockState.viewportAnchor !== undefined;
 				const codeBlock = createCodeBlockGraphicData({
-					id: getCodeBlockId(rawBlock.code),
+					name: getCodeBlockId(rawBlock.code),
 					code: rawBlock.code,
 					disabled: directiveState.blockState.disabled,
 					hidden: directiveState.blockState.hidden,
@@ -97,9 +97,9 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 				creationIndex += 1;
 			}
 
-			state.graphicHelper.nextCodeBlockCreationIndex = creationIndex;
+			state.codeBlockRendering.nextCodeBlockCreationIndex = creationIndex;
 			browserLocalNotesLoaded = true;
-			store.set('graphicHelper.codeBlocks', nextCodeBlocks);
+			store.set('codeBlockRendering.codeBlocks', nextCodeBlocks);
 			saveBrowserLocalNotes();
 		} catch (err) {
 			console.warn('Failed to load browser-local notes from storage:', err);
@@ -111,7 +111,7 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 			return;
 		}
 
-		const serializedBlocks = serializeBrowserLocalNotes(state.graphicHelper.codeBlocks);
+		const serializedBlocks = serializeBrowserLocalNotes(state.codeBlockRendering.codeBlocks);
 		const nextSnapshot = JSON.stringify(serializedBlocks);
 		if (nextSnapshot === lastSavedBrowserLocalNotes) {
 			return;
@@ -122,7 +122,7 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 	}
 
 	function saveSelectedBrowserLocalNote() {
-		if (!isBrowserLocalNoteBlock(state.graphicHelper.selectedCodeBlock)) {
+		if (!isBrowserLocalNoteBlock(state.codeBlockRendering.selectedCodeBlock)) {
 			return;
 		}
 
@@ -130,7 +130,7 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 	}
 
 	function saveProgrammaticallyEditedBrowserLocalNote() {
-		if (!isBrowserLocalNoteBlock(state.graphicHelper.selectedCodeBlockForProgrammaticEdit)) {
+		if (!isBrowserLocalNoteBlock(state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit)) {
 			return;
 		}
 
@@ -138,7 +138,7 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 	}
 
 	function saveProgrammaticallyEditedBrowserLocalNoteWithoutCompilerTrigger() {
-		if (!isBrowserLocalNoteBlock(state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger)) {
+		if (!isBrowserLocalNoteBlock(state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger)) {
 			return;
 		}
 
@@ -160,13 +160,13 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 	events.on('projectCodeBlocksPopulated', populateBrowserLocalNotes);
 	events.on('deleteCodeBlock', saveAfterLocalNoteDelete);
 	events.on('deleteGroup', saveAfterGroupDelete);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', saveSelectedBrowserLocalNote);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', saveSelectedBrowserLocalNote);
 	store.subscribe(
-		'graphicHelper.selectedCodeBlockForProgrammaticEdit.code',
+		'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code',
 		saveProgrammaticallyEditedBrowserLocalNote
 	);
 	store.subscribe(
-		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
 		saveProgrammaticallyEditedBrowserLocalNoteWithoutCompilerTrigger
 	);
 }

@@ -12,12 +12,12 @@ function resolvePlotDirectiveWidget(
 	state: Parameters<DirectiveWidgetResolver>[1],
 	directiveState: DirectiveDerivedState
 ): void {
-	if (!graphicData.moduleId) {
+	if (!graphicData.name) {
 		return;
 	}
 
-	const startAddress = resolveMemoryIdentifier(state, graphicData.moduleId, plotter.startAddressMemoryId);
-	const length = resolveElementCount(plotter.length, graphicData.moduleId, state);
+	const startAddress = resolveMemoryIdentifier(state, graphicData.name, plotter.startAddressMemoryId);
+	const length = resolveElementCount(plotter.length, graphicData.name, state);
 	const valueSpec = startAddress ? resolveTypedValueSpec(startAddress) : undefined;
 
 	if (!startAddress || !valueSpec || !length) {

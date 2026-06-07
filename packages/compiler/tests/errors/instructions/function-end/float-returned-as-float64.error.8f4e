@@ -6,6 +6,7 @@ moduleEnd
 entryEnd
 
 function functionEndFloatReturnedAsFloat64
-; functionEnd float64 should reject a float32 stack value.
+; functionEnd float64 should
+; reject a float32 stack value.
 push 3.14
 functionEnd float64

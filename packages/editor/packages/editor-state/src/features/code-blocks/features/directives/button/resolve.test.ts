@@ -15,15 +15,14 @@ describe('button directive widget resolution', () => {
 
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
-			id: 'test-block',
-			moduleId: 'test-block',
+			name: 'test-block',
 			code: ['; @button btn1 0 1'],
 			width: 100,
 			gaps: new Map(),
 		});
 
 		mockState = createMockState({
-			graphicHelper: {
+			codeBlockRendering: {
 				viewport: {
 					vGrid: 10,
 					hGrid: 20,

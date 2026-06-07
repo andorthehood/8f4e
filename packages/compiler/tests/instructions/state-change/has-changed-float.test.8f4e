@@ -1,6 +1,8 @@
 8f4e/v1
 
-; hasChanged should report float changes across repeated entry calls.
+; hasChanged should report float
+; changes across repeated entry
+; calls.
 entry stateChangeStep
 module hasChangedFloatState
 float input

@@ -1,32 +1,26 @@
-import { getConstantsId, getFunctionId, getModuleId, getPrototypeId } from '@8f4e/tokenizer';
+import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
+import { instructionParser } from '@8f4e/tokenizer';
+
+const namedBlockStarts: ReadonlySet<string> = new Set([
+	documentBlockInstructionByType.module.start,
+	documentBlockInstructionByType.function.start,
+	documentBlockInstructionByType.constants.start,
+	documentBlockInstructionByType.prototype.start,
+]);
 
 /**
- * Retrieves the ID from a code block based on its type.
- * Tries to identify the code block as a module, function, constants, or prototype block.
- * Note blocks do not carry IDs.
- *
- * @param code - Code block represented as an array of lines
- * @returns The ID of the code block, or an empty string if no ID is found
+ * Returns the source-level block name from raw code when CodeBlockGraphicData.name is not available yet.
  */
 export default function getCodeBlockId(code: string[]): string {
-	const moduleId = getModuleId(code);
-	if (moduleId) {
-		return `module_${moduleId}`;
-	}
+	for (const line of code) {
+		const match = line.match(instructionParser);
+		const instruction = match?.[1];
 
-	const functionId = getFunctionId(code);
-	if (functionId) {
-		return `function_${functionId}`;
-	}
+		if (!instruction || !namedBlockStarts.has(instruction)) {
+			continue;
+		}
 
-	const constantsId = getConstantsId(code);
-	if (constantsId) {
-		return `constants_${constantsId}`;
-	}
-
-	const prototypeId = getPrototypeId(code);
-	if (prototypeId) {
-		return `prototype_${prototypeId}`;
+		return match[2]?.trim().split(/\s+/)[0] ?? '';
 	}
 
 	return '';

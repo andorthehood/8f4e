@@ -6,7 +6,8 @@ moduleEnd
 entryEnd
 
 function invalid
-; Parameter names should be unique inside a function.
+; Parameter names should be
+; unique inside a function.
 param int x
 param int x
 functionEnd

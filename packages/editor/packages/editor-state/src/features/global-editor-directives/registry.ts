@@ -9,21 +9,15 @@ import type {
 	ResolvedGlobalEditorDirectives,
 } from '@8f4e/editor-state-types';
 import configDirective from './config/plugin';
-import keyCodeMemoryDirective from './keyboardMemory/keyCodeMemory/plugin';
-import keyPressedMemoryDirective from './keyboardMemory/keyPressedMemory/plugin';
 import { parseGlobalEditorDirectives } from './utils';
 
-export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [
-	configDirective,
-	keyCodeMemoryDirective,
-	keyPressedMemoryDirective,
-];
+export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [configDirective];
 
 export function resolveGlobalEditorDirectives(
 	codeBlocks: {
 		parsedDirectives: ParsedDirectiveRecord[];
-		id?: string;
-		moduleId?: string;
+		creationIndex?: number;
+		name?: string;
 		blockType?: CodeBlockType;
 	}[],
 	plugins: GlobalEditorDirectivePlugin[] = globalEditorDirectivePlugins
@@ -40,10 +34,10 @@ export function resolveGlobalEditorDirectives(
 	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex++) {
 		const block = codeBlocks[blockIndex];
 		const directives: ParsedGlobalEditorDirective[] = parseGlobalEditorDirectives(block.parsedDirectives, plugins);
-		const codeBlockId: string | number = block.id ?? blockIndex;
+		const codeBlockId = block.creationIndex ?? blockIndex;
 		const context: GlobalEditorDirectiveContext = {
 			codeBlockId,
-			moduleId: block.moduleId,
+			codeBlockName: block.name,
 			blockType: block.blockType,
 		};
 

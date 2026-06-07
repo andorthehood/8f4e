@@ -9,7 +9,19 @@ import type {
 import generateSprite from '@8f4e/sprite-generator';
 import initView, { type MemoryViews, type RenderStats, type WebUiOptions } from '@8f4e/web-ui';
 import type { BackgroundEffect, PostProcessEffect } from 'glugglug';
+import {
+	BIN_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
+	binaryAssetsEditorConfigSchemaContribution,
+} from './editorEnvironmentPlugins/binaryAssets/config';
+import {
+	KEYBOARD_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
+	keyboardEditorConfigSchemaContribution,
+} from './editorEnvironmentPlugins/keyboardMemory/config';
 import { createEditorEnvironmentPluginManager } from './editorEnvironmentPlugins/manager';
+import {
+	MIDI_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
+	midiEditorConfigSchemaContribution,
+} from './editorEnvironmentPlugins/midi/config';
 import { createEditorEnvironmentPluginServices } from './editorEnvironmentPlugins/services';
 import initEvents from './events';
 import keyboardEvents from './events/keyboardEvents';
@@ -75,7 +87,6 @@ interface Options {
 		exportCanvasScreenshot?: (blob: Blob, fileName: string) => Promise<void>;
 	};
 	runtimeRegistry: RuntimeRegistry;
-	defaultRuntimeId: string;
 	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 	renderStatsIntervalFrames?: number;
 	frameTexture?: WebUiOptions['frameTexture'];
@@ -121,6 +132,9 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	const compileCode = options.callbacks.compileCode;
 	const editorConfigSchemaContributions: EditorConfigSchemaContributionRegistry = {
 		[WEB_UI_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID]: webUiEditorConfigSchemaContribution,
+		[BIN_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID]: binaryAssetsEditorConfigSchemaContribution,
+		[KEYBOARD_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID]: keyboardEditorConfigSchemaContribution,
+		[MIDI_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID]: midiEditorConfigSchemaContribution,
 		...options.editorConfigSchemaContributions,
 	};
 	const pluginServices = createEditorEnvironmentPluginServices({

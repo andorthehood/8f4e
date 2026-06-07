@@ -4,13 +4,13 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 describe('Grid Coordinates Integration', () => {
-	let mockState: Pick<State, 'graphicHelper' | 'viewport'>;
+	let mockState: Pick<State, 'codeBlockRendering' | 'viewport'>;
 
 	beforeEach(() => {
 		mockState = {
-			graphicHelper: {
+			codeBlockRendering: {
 				codeBlocks: [],
-			} as State['graphicHelper'],
+			} as State['codeBlockRendering'],
 			viewport: {
 				vGrid: 8, // characterWidth
 				hGrid: 16, // characterHeight
@@ -87,7 +87,7 @@ describe('Grid Coordinates Integration', () => {
 				y: 160,
 			});
 
-			mockState.graphicHelper.codeBlocks.push(codeBlock);
+			mockState.codeBlockRendering.codeBlocks.push(codeBlock);
 
 			// Verify initial state with 8x16 font
 			expect(codeBlock.x).toBe(80);
@@ -100,7 +100,7 @@ describe('Grid Coordinates Integration', () => {
 			mockState.viewport.hGrid = newCharacterHeight;
 
 			// Recompute pixel positions from grid coordinates
-			for (const block of mockState.graphicHelper.codeBlocks) {
+			for (const block of mockState.codeBlockRendering.codeBlocks) {
 				block.x = block.gridX * newCharacterWidth;
 				block.y = block.gridY * newCharacterHeight;
 			}
@@ -116,7 +116,7 @@ describe('Grid Coordinates Integration', () => {
 
 		it('should maintain relative positions between code blocks after font change', () => {
 			const block1 = createMockCodeBlock({
-				id: 'block1',
+				name: 'block1',
 				gridX: 5,
 				gridY: 5,
 				x: 40,
@@ -124,15 +124,15 @@ describe('Grid Coordinates Integration', () => {
 			});
 
 			const block2 = createMockCodeBlock({
-				id: 'block2',
+				name: 'block2',
 				gridX: 15,
 				gridY: 15,
 				x: 120,
 				y: 240,
 			});
 
-			mockState.graphicHelper.codeBlocks.push(block1);
-			mockState.graphicHelper.codeBlocks.push(block2);
+			mockState.codeBlockRendering.codeBlocks.push(block1);
+			mockState.codeBlockRendering.codeBlocks.push(block2);
 
 			// Calculate initial grid spacing
 			const initialGridSpacingX = block2.gridX - block1.gridX;
@@ -144,7 +144,7 @@ describe('Grid Coordinates Integration', () => {
 			mockState.viewport.vGrid = 6;
 			mockState.viewport.hGrid = 10;
 
-			for (const block of mockState.graphicHelper.codeBlocks) {
+			for (const block of mockState.codeBlockRendering.codeBlocks) {
 				block.x = block.gridX * 6;
 				block.y = block.gridY * 10;
 			}
@@ -166,7 +166,7 @@ describe('Grid Coordinates Integration', () => {
 	describe('Project Import/Export', () => {
 		it('should preserve grid coordinates through serialization cycle', () => {
 			const originalBlock = createMockCodeBlock({
-				id: 'test-module',
+				name: 'test-module',
 				code: ['module test', 'moduleEnd'],
 				gridX: 12,
 				gridY: 8,
@@ -190,7 +190,7 @@ describe('Grid Coordinates Integration', () => {
 			const newVGrid = 6;
 			const newHGrid = 10;
 			const importedBlock = createMockCodeBlock({
-				id: 'test-module',
+				name: 'test-module',
 				code: serialized.code,
 				gridX: serialized.gridCoordinates.x,
 				gridY: serialized.gridCoordinates.y,

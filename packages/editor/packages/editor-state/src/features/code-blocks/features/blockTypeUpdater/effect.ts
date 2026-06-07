@@ -20,7 +20,7 @@ export default function blockTypeUpdater(store: StateManager<State>): void {
 	 * Update blockType for all code blocks
 	 */
 	function updateAllBlockTypes(): void {
-		for (const codeBlock of state.graphicHelper.codeBlocks) {
+		for (const codeBlock of state.codeBlockRendering.codeBlocks) {
 			updateBlockType(codeBlock);
 		}
 	}
@@ -29,30 +29,33 @@ export default function blockTypeUpdater(store: StateManager<State>): void {
 	 * Update blockType when the selected code block's code changes
 	 */
 	function onSelectedCodeBlockCodeChange(): void {
-		if (state.graphicHelper.selectedCodeBlock) {
-			updateBlockType(state.graphicHelper.selectedCodeBlock);
+		if (state.codeBlockRendering.selectedCodeBlock) {
+			updateBlockType(state.codeBlockRendering.selectedCodeBlock);
 		}
 	}
 
 	function onProgrammaticSelectedCodeBlockCodeChange(): void {
-		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEdit;
+		const block = state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit;
 		if (block) {
 			updateBlockType(block);
 		}
 	}
 
 	function onProgrammaticSelectedCodeBlockWithoutCompilerTriggerCodeChange(): void {
-		const block = state.graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
+		const block = state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
 		if (block) {
 			updateBlockType(block);
 		}
 	}
 
-	store.subscribe('graphicHelper.codeBlocks', updateAllBlockTypes);
-	store.subscribe('graphicHelper.selectedCodeBlock.code', onSelectedCodeBlockCodeChange);
-	store.subscribe('graphicHelper.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticSelectedCodeBlockCodeChange);
+	store.subscribe('codeBlockRendering.codeBlocks', updateAllBlockTypes);
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeBlockCodeChange);
 	store.subscribe(
-		'graphicHelper.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+		'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code',
+		onProgrammaticSelectedCodeBlockCodeChange
+	);
+	store.subscribe(
+		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
 		onProgrammaticSelectedCodeBlockWithoutCompilerTriggerCodeChange
 	);
 }

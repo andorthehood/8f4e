@@ -1,22 +1,32 @@
 8f4e/v1
 ; @memoryRegions sampleMemory displayMemory
 
-; Logical memory regions should behave correctly when executed through exported entries.
+; Logical memory regions should
+; behave correctly when executed
+; through exported entries.
 entry test
 module regionSamples
-; #region declarations allocate their memory in the configured region.
+; #region declarations allocate
+; their memory in the configured
+; region.
 #region sampleMemory
 int8[] values 4 11
 moduleEnd
 
 module rawAddressRegionSource
-; Raw addresses should still target default memory even when another region has data at the same address.
+; Raw addresses should still
+; target default memory even
+; when
+; another region has data at the
+; same address.
 #region sampleMemory
 int source 99
 moduleEnd
 
 module rawAddressDefaultReader
-; The raw address 4 reads the default memory source, not the sampleMemory source.
+; The raw address 4 reads the
+; default memory source, not the
+; sampleMemory source.
 int source 42
 int result
 
@@ -30,7 +40,10 @@ call assert 42
 moduleEnd
 
 module regionPointerReader
-; Pointer provenance should dereference through the source region and store into default memory.
+; Pointer provenance should
+; dereference through the source
+; region and store into default
+; memory.
 int result
 int8* ptr &regionSamples:values
 
@@ -43,13 +56,17 @@ call assert 11
 moduleEnd
 
 module regionCopySource
-; memoryCopy should infer its source memory from address provenance.
+; memoryCopy should infer its
+; source memory from address
+; provenance.
 #region sampleMemory
 int8[] values 4 1 2 3 4
 moduleEnd
 
 module crossRegionCopyAssertions
-; Cross-region memoryCopy should copy bytes from sampleMemory into default memory.
+; Cross-region memoryCopy should
+; copy bytes from sampleMemory
+; into default memory.
 int8[] copy 4
 
 push &copy
@@ -86,7 +103,8 @@ call assert 4
 moduleEnd
 
 module numericDefaultRegion
-; #region 0 keeps declarations in default memory.
+; #region 0 keeps declarations
+; in default memory.
 #region 0
 int value 7
 
@@ -95,7 +113,9 @@ call assert 7
 moduleEnd
 
 module numericCustomRegion
-; Numeric region indices should target the configured custom region.
+; Numeric region indices should
+; target the configured custom
+; region.
 #region 2
 int pixel 9
 
@@ -104,7 +124,11 @@ call assert 9
 moduleEnd
 
 module regionInternalResource
-; Compiler-generated internal resources should stay in default memory even when the module declares a custom region.
+; Compiler-generated internal
+; resources should stay in
+; default
+; memory even when the module
+; declares a custom region.
 #region sampleMemory
 int input
 int output

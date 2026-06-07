@@ -12,8 +12,12 @@ module projectConfig
 moduleEnd
 module keyboard
 ; @pos 138 45
-; @keyPressedMemory keyPressed
-; @keyCodeMemory keyCode
+; @config
+; - keyboard.keyPressedMemory
+; - keyPressed
+; @config 
+; - keyboard.keyCodeMemory 
+; - keyCode
 
 int keyPressed
 int keyCode

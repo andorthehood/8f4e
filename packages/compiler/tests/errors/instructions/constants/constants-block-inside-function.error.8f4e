@@ -6,7 +6,8 @@ moduleEnd
 entryEnd
 
 function constantsBlockInsideFunction
-; constants blocks should not be nested in functions.
+; constants blocks should not be
+; nested in functions.
 constants nested
 const X 1
 constantsEnd

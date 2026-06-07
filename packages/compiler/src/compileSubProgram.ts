@@ -9,6 +9,8 @@ import type {
 	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
+	MacroDefinition,
+	Module,
 	ValidatedAST,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
@@ -16,7 +18,7 @@ import type {
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
-import { compileToAST, createASTCache } from '@8f4e/tokenizer';
+import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
 import { compileModules } from './compileModules';
 import { getError } from './compilerError';
@@ -38,6 +40,14 @@ type ModuleCompilerSource = {
 	cacheKey: string;
 	/** Public entry that should dispatch to the compiled module. */
 	entryName: string;
+	/** Project code block creation index that produced this source, when compiling a project. */
+	projectBlockId?: number;
+};
+
+type CompilerSource = {
+	code: string[];
+	cacheKey: string;
+	projectBlockId?: number;
 };
 
 /** Compiled units and layout metadata for one independently compiled source program. */
@@ -143,14 +153,66 @@ function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): R
 	for (const prototype of prototypes) {
 		const existing = prototypeShapesById[prototype.id];
 		if (existing) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, prototype.prototypeLine, undefined, {
-				identifier: prototype.id,
-			});
+			throw getError(
+				ErrorCode.DUPLICATE_IDENTIFIER,
+				prototype.prototypeLine,
+				{
+					codeBlockType: prototype.type,
+					...(prototype.projectBlockId !== undefined ? { projectBlockId: prototype.projectBlockId } : {}),
+				},
+				{
+					identifier: prototype.id,
+				}
+			);
 		}
 		prototypeShapesById[prototype.id] = prototype;
 	}
 
 	return prototypeShapesById;
+}
+
+function attachProjectBlockIdToSyntaxError(error: unknown, projectBlockId: number | undefined): unknown {
+	if (!(error instanceof SyntaxRulesError) || projectBlockId === undefined) {
+		return error;
+	}
+
+	error.context = {
+		...error.context,
+		projectBlockId,
+	};
+	return error;
+}
+
+function attachProjectBlockIdToAst<TAst extends ValidatedAST>(ast: TAst, projectBlockId: number | undefined): TAst {
+	if (projectBlockId === undefined) {
+		return ast;
+	}
+
+	return {
+		...ast,
+		projectBlockId,
+	} as TAst;
+}
+
+function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSource, cache: CompilerCache): TAst {
+	try {
+		const ast = compileToAST(source.code, cache.ast, source.cacheKey) as TAst;
+		return attachProjectBlockIdToAst(ast, source.projectBlockId);
+	} catch (error) {
+		throw attachProjectBlockIdToSyntaxError(error, source.projectBlockId);
+	}
+}
+
+function expandCompilerSource(
+	module: Module,
+	macroDefinitions: Map<string, MacroDefinition>,
+	cacheKey: string
+): CompilerSource {
+	return {
+		code: expandMacros(module, macroDefinitions),
+		cacheKey,
+		projectBlockId: module.projectBlockId,
+	};
 }
 
 /**
@@ -175,15 +237,10 @@ export function compileSubProgram(
 	const macroDefinitions = parseMacroDefinitions(macros);
 
 	const expandedPrototypes = prototypes.map((prototype, index) => {
-		return {
-			code: expandMacros(prototype, macroDefinitions),
-			cacheKey: `prototype:${index}`,
-		};
+		return expandCompilerSource(prototype, macroDefinitions, `prototype:${index}`);
 	});
 
-	const astPrototypes = expandedPrototypes.map(
-		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedPrototypeAST
-	);
+	const astPrototypes = expandedPrototypes.map(source => compileSourceToAST<ValidatedPrototypeAST>(source, cache));
 	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
 
 	const expandedModuleSources = entryModules.map(({ entryName, module, index }) => {
@@ -191,33 +248,26 @@ export function compileSubProgram(
 			code: expandMacros(module, macroDefinitions),
 			cacheKey: `entry:${entryName}:module:${index}`,
 			entryName,
+			projectBlockId: module.projectBlockId,
 		};
 	}) satisfies ModuleCompilerSource[];
 
 	const expandedConstants = constants.map((constantsBlock, index) => {
-		return {
-			code: expandMacros(constantsBlock, macroDefinitions),
-			cacheKey: `constants:${index}`,
-		};
+		return expandCompilerSource(constantsBlock, macroDefinitions, `constants:${index}`);
 	});
 
 	const expandedFunctions = functions.map((func, index) => {
-		return {
-			code: expandMacros(func, macroDefinitions),
-			cacheKey: `function:${index}`,
-		};
+		return expandCompilerSource(func, macroDefinitions, `function:${index}`);
 	});
 
 	const astModuleEntries = expandedModuleSources.map(source => {
-		const ast = compileToAST(source.code, cache.ast, source.cacheKey) as ValidatedModuleAST;
+		const ast = compileSourceToAST<ValidatedModuleAST>(source, cache);
 		return {
 			entryName: source.entryName,
 			ast,
 		};
 	});
-	const astConstants = expandedConstants.map(
-		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedConstantsAST
-	);
+	const astConstants = expandedConstants.map(source => compileSourceToAST<ValidatedConstantsAST>(source, cache));
 	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
@@ -233,9 +283,7 @@ export function compileSubProgram(
 		prototypeShapesById
 	);
 
-	const astFunctions = expandedFunctions.map(
-		({ code, cacheKey }) => compileToAST(code, cache.ast, cacheKey) as ValidatedFunctionAST
-	);
+	const astFunctions = expandedFunctions.map(source => compileSourceToAST<ValidatedFunctionAST>(source, cache));
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;

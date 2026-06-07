@@ -14,7 +14,7 @@ export default async function runtime(store: StateManager<State>, events: EventD
 	const state = store.getState();
 
 	let runtimeDestroyer: null | (() => void) = null;
-	let onlineRuntime: null | string;
+	let onlineRuntime: null | string = null;
 	let isInitializing = false;
 
 	async function initOrDestroyOrUpdateRuntime() {
@@ -23,14 +23,10 @@ export default async function runtime(store: StateManager<State>, events: EventD
 			return;
 		}
 
-		const selectedRuntimeId = resolveSelectedRuntimeId(
-			state.editorConfig.runtime,
-			state.runtimeRegistry,
-			state.defaultRuntimeId
-		);
-		const selectedRuntimeEntry = state.runtimeRegistry[selectedRuntimeId];
+		const selectedRuntimeId = resolveSelectedRuntimeId(state.editorConfig.runtime, state.runtimeRegistry);
+		const nextRuntimeId = selectedRuntimeId ?? null;
 
-		if (onlineRuntime === selectedRuntimeId) {
+		if (onlineRuntime === nextRuntimeId) {
 			return;
 		}
 
@@ -44,6 +40,12 @@ export default async function runtime(store: StateManager<State>, events: EventD
 				onlineRuntime = null;
 			}
 
+			if (!selectedRuntimeId) {
+				onlineRuntime = null;
+				return;
+			}
+
+			const selectedRuntimeEntry = state.runtimeRegistry[selectedRuntimeId];
 			log(state, `Requesting runtime: ${selectedRuntimeId}`, 'Runtime');
 
 			const runtimeFactory = selectedRuntimeEntry.factory;
@@ -74,11 +76,7 @@ export default async function runtime(store: StateManager<State>, events: EventD
 
 		store.set('editorConfigSchemaContributions', {
 			...retainedContributions,
-			...collectRuntimeEditorConfigSchemaContributions(
-				state.editorConfig.runtime,
-				state.runtimeRegistry,
-				state.defaultRuntimeId
-			),
+			...collectRuntimeEditorConfigSchemaContributions(state.editorConfig.runtime, state.runtimeRegistry),
 		});
 	}
 

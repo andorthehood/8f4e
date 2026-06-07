@@ -2,7 +2,9 @@
 
 entry main
 module oneArgumentMapOutsideMapBlock
-; one-argument map should only be valid inside mapBegin/mapEnd.
+; one-argument map should only
+; be valid inside
+; mapBegin/mapEnd.
 int x
 push x
 map 10

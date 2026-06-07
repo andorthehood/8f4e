@@ -3,6 +3,7 @@
   "context": {
     "codeBlockId": "invalid",
     "codeBlockType": "function",
+    "projectBlockId": 8,
   },
   "line": {
     "arguments": [
@@ -20,7 +21,7 @@
       },
     ],
     "instruction": "param",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Duplicate parameter name. Each parameter must have a unique name. (24)",
 }

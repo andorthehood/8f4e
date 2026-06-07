@@ -2,7 +2,8 @@
 
 entry main
 module constantsEndWithoutBlock
-; constantsEnd should require a matching constants block.
+; constantsEnd should require a
+; matching constants block.
 constantsEnd
 moduleEnd
 entryEnd

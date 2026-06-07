@@ -1,9 +1,11 @@
 {
   "code": 12,
-  "context": {},
+  "context": {
+    "projectBlockId": 3,
+  },
   "line": {
     "instruction": "int",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Instruction is not allowed in this block.",
 }

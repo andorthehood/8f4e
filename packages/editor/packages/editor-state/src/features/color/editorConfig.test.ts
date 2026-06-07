@@ -9,7 +9,7 @@ function entry(path: string, value: string): EditorConfigEntry {
 		path,
 		value,
 		rawRow: 1,
-		codeBlockId: 'config',
+		codeBlockId: 0,
 	};
 }
 

@@ -1,9 +1,13 @@
 8f4e/v1
 
-; memoryCopy copies byte ranges between declared memory addresses.
+; memoryCopy copies byte ranges
+; between declared memory
+; addresses.
 entry test
 module memoryCopyAssertions
-; A safe memoryCopy should copy the requested byte range from source to target.
+; A safe memoryCopy should copy
+; the requested byte range from
+; source to target.
 int[] source 5 10 20 30 40 50
 int[] target 5
 
@@ -49,7 +53,9 @@ call assert 50
 moduleEnd
 
 module guardedMemoryCopyAssertions
-; An out-of-bounds source range should skip the copy and preserve the target values.
+; An out-of-bounds source range
+; should skip the copy and
+; preserve the target values.
 int[] source 2
 int[] target 2 1 2
 

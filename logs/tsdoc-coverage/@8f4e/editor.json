@@ -1042,5 +1042,113 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "18afcb58700df6fc7509f213ef847e6a0a7f7d52",
+		"recordedAt": "2026-06-04T11:41:40.458Z",
+		"coverage": {
+			"documented": 7,
+			"total": 235,
+			"percentage": 3,
+			"byKind": {
+				"variable": {
+					"documented": 1,
+					"total": 8,
+					"percentage": 12.5
+				},
+				"function": {
+					"documented": 6,
+					"total": 85,
+					"percentage": 7.1
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 106,
+					"percentage": 0
+				},
+				"interface": {
+					"documented": 0,
+					"total": 30,
+					"percentage": 0
+				},
+				"type": {
+					"documented": 0,
+					"total": 6,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "402393588cf0dcaee926984dff117152cd067cf4",
+		"recordedAt": "2026-06-04T19:58:24.003Z",
+		"coverage": {
+			"documented": 7,
+			"total": 239,
+			"percentage": 2.9,
+			"byKind": {
+				"variable": {
+					"documented": 1,
+					"total": 17,
+					"percentage": 5.9
+				},
+				"function": {
+					"documented": 6,
+					"total": 93,
+					"percentage": 6.5
+				},
+				"interface": {
+					"documented": 0,
+					"total": 28,
+					"percentage": 0
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 95,
+					"percentage": 0
+				},
+				"type": {
+					"documented": 0,
+					"total": 6,
+					"percentage": 0
+				}
+			}
+		}
+	},
+	{
+		"commit": "e5de5734949456c275c0c846ff4e71c42b505ef8",
+		"recordedAt": "2026-06-07T16:07:30.563Z",
+		"coverage": {
+			"documented": 7,
+			"total": 239,
+			"percentage": 2.9,
+			"byKind": {
+				"variable": {
+					"documented": 1,
+					"total": 17,
+					"percentage": 5.9
+				},
+				"function": {
+					"documented": 6,
+					"total": 93,
+					"percentage": 6.5
+				},
+				"interface": {
+					"documented": 0,
+					"total": 28,
+					"percentage": 0
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 95,
+					"percentage": 0
+				},
+				"type": {
+					"documented": 0,
+					"total": 6,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]

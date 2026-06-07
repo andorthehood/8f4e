@@ -2,7 +2,9 @@
 
 entry main
 module missingShape
-; it rejects a shape instruction that references an undeclared prototype
+; it rejects a shape instruction
+; that references an undeclared
+; prototype
 shape missing
 moduleEnd
 entryEnd

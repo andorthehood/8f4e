@@ -1,9 +1,11 @@
 {
   "code": 2,
-  "context": {},
+  "context": {
+    "projectBlockId": 8,
+  },
   "line": {
     "instruction": "functionEnd",
-    "lineNumber": 3,
+    "lineNumber": 4,
   },
   "message": "Invalid argument for functionEnd: expected function type identifier.",
 }

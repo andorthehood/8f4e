@@ -1,0 +1,85 @@
+{
+  "codeBlocks": [
+    {
+      "code": [
+        "module harness",
+        "int failures",
+        "moduleEnd",
+      ],
+      "entry": "test",
+      "id": 25,
+    },
+  ],
+  "groups": [
+    {
+      "codeBlocks": [
+        {
+          "code": [
+            "module kick",
+            "int trigger",
+            "moduleEnd",
+          ],
+          "entry": "main",
+          "id": 5,
+        },
+      ],
+      "entry": "main",
+      "groups": [],
+      "name": "audio",
+    },
+    {
+      "codeBlocks": [
+        {
+          "code": [
+            "module scope",
+            "int brightness",
+            "moduleEnd",
+          ],
+          "entry": "main",
+          "id": 11,
+        },
+      ],
+      "entry": "main",
+      "groups": [
+        {
+          "codeBlocks": [
+            {
+              "code": [
+                "function clamp01",
+                "param float value",
+                "push value",
+                "functionEnd float",
+              ],
+              "entry": "main",
+              "id": 16,
+            },
+          ],
+          "entry": "main",
+          "groups": [],
+          "name": "shaderHelpers",
+        },
+      ],
+      "name": "visuals",
+    },
+    {
+      "codeBlocks": [
+        {
+          "code": [
+            "function assertEqual",
+            "param int left",
+            "param int right",
+            "push left",
+            "push right",
+            "equal",
+            "functionEnd int",
+          ],
+          "entry": "test",
+          "id": 30,
+        },
+      ],
+      "entry": "test",
+      "groups": [],
+      "name": "assertions",
+    },
+  ],
+}

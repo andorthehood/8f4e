@@ -20,6 +20,7 @@ describe('program compiler effect', () => {
 			context: {
 				codeBlockId: 'helper',
 				codeBlockType: 'function',
+				projectBlockId: 0,
 			},
 		});
 
@@ -30,14 +31,14 @@ describe('program compiler effect', () => {
 		});
 
 		const helperBlock = createMockCodeBlock({
-			id: 'function_helper',
+			name: 'helper',
 			code: ['function helper', 'push 1', 'functionEnd'],
 			creationIndex: 0,
 			blockType: 'function',
 		});
 
-		mockState.graphicHelper.codeBlocks.push(helperBlock);
-		mockState.graphicHelper.selectedCodeBlockForProgrammaticEdit = helperBlock;
+		mockState.codeBlockRendering.codeBlocks.push(helperBlock);
+		mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = helperBlock;
 
 		store = createStateManager(mockState);
 		subscribeSpy = vi.spyOn(store, 'subscribe') as MockInstance;
@@ -51,7 +52,7 @@ describe('program compiler effect', () => {
 	async function triggerProgrammaticCompile(delayMs = 500): Promise<void> {
 		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
 		expect(programmaticChangeCall).toBeDefined();
 
@@ -65,7 +66,7 @@ describe('program compiler effect', () => {
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
 				lineNumber: 2,
-				codeBlockId: 'helper',
+				codeBlockId: 0,
 				codeBlockType: 'function',
 				message: 'Memory access is not allowed in pure functions. (19)',
 			},
@@ -76,7 +77,7 @@ describe('program compiler effect', () => {
 		mockCompileCode.mockRejectedValue({
 			message: 'Too many arguments for if.',
 			line: { lineNumber: 3, instruction: 'if' },
-			context: {},
+			context: { projectBlockId: 0 },
 		});
 
 		await triggerProgrammaticCompile();
@@ -84,7 +85,7 @@ describe('program compiler effect', () => {
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
 				lineNumber: 3,
-				codeBlockId: '',
+				codeBlockId: 0,
 				codeBlockType: undefined,
 				message: 'Too many arguments for if.',
 			},
@@ -230,7 +231,7 @@ describe('program compiler effect', () => {
 		mockState.editorConfig.recompileDebounceDelay = 120;
 		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
 		expect(programmaticChangeCall).toBeDefined();
 
@@ -245,7 +246,7 @@ describe('program compiler effect', () => {
 	it('uses the default recompile debounce delay when the config value is absent', async () => {
 		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'graphicHelper.selectedCodeBlockForProgrammaticEdit.code'
+			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
 		expect(programmaticChangeCall).toBeDefined();
 
