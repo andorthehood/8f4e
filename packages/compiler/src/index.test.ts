@@ -134,8 +134,7 @@ describe('compile prototype validation', () => {
 		expect(memoryMap.input).toMatchObject({ isInherited: true, lineNumber: 1 });
 		expect(memoryMap.resonance).toMatchObject({ isInherited: true, lineNumber: 1 });
 		expect(memoryMap.output).toMatchObject({ isInherited: true, lineNumber: 1 });
-		expect(memoryMap.cutoff).toMatchObject({ lineNumber: 2 });
-		expect(memoryMap.cutoff.isInherited).toBeUndefined();
+		expect(memoryMap.cutoff).toMatchObject({ isInherited: false, lineNumber: 2 });
 	});
 
 	it('rejects function ids that collide with generated entry function ids during semantic metadata collection', () => {
