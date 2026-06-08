@@ -51,7 +51,7 @@
           ]
         },
         "memoryDeclarationLines": [],
-        "projectBlockId": 4
+        "projectBlockId": 20
       },
       "index": 0,
       "executionEntryName": "main"
@@ -192,7 +192,7 @@
             "hasExplicitMemoryDefault": false
           }
         ],
-        "projectBlockId": 13
+        "projectBlockId": 29
       },
       "index": 1,
       "executionEntryName": "main"
@@ -213,7 +213,7 @@
         2,
         0,
         16,
-        4,
+        5,
         54,
         2,
         0,
@@ -419,7 +419,7 @@
             "hasExplicitMemoryDefault": false
           }
         ],
-        "projectBlockId": 29
+        "projectBlockId": 45
       },
       "index": 2,
       "executionEntryName": "main"
@@ -5722,7 +5722,7 @@
             "hasExplicitMemoryDefault": true
           }
         ],
-        "projectBlockId": 51
+        "projectBlockId": 67
       },
       "index": 3,
       "executionEntryName": "main"
@@ -6086,7 +6086,7 @@
             "hasExplicitMemoryDefault": true
           }
         ],
-        "projectBlockId": 184
+        "projectBlockId": 200
       },
       "index": 4,
       "executionEntryName": "main"
@@ -6094,11 +6094,9 @@
     "arEnv": {
       "id": "arEnv",
       "cycleFunction": [
-        149,
+        133,
         1,
-        1,
-        1,
-        127,
+        0,
         65,
         168,
         4,
@@ -6108,25 +6106,11 @@
         40,
         2,
         0,
-        33,
-        0,
-        32,
-        0,
         65,
-        224,
-        8,
-        40,
+        188,
+        4,
+        16,
         2,
-        0,
-        74,
-        65,
-        224,
-        8,
-        32,
-        0,
-        54,
-        2,
-        0,
         4,
         64,
         65,
@@ -6375,21 +6359,26 @@
           "pointerDepth": 0,
           "isInteger": true,
           "isUnsigned": false
-        }
-      },
-      "internalResources": {
-        "arEnv::__risingEdgeDetector_previousValue17": {
-          "id": "arEnv::__risingEdgeDetector_previousValue17",
-          "memoryIndex": 0,
-          "byteAddress": 1120,
-          "wordAlignedAddress": 280,
-          "wordAlignedSize": 1,
+        },
+        "previousTrigger": {
+          "numberOfElements": 1,
           "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 143,
+          "wordAlignedSize": 1,
+          "byteAddress": 572,
+          "id": "previousTrigger",
+          "lineNumber": 15,
           "default": 0,
-          "storageType": "int"
+          "hasExplicitDefault": false,
+          "isInherited": false,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
         }
       },
-      "wordAlignedSize": 7,
+      "wordAlignedSize": 8,
       "ast": {
         "type": "module",
         "id": "arEnv",
@@ -6541,7 +6530,20 @@
             "hasExplicitMemoryDefault": true
           },
           {
-            "lineNumber": 16,
+            "lineNumber": 15,
+            "instruction": "int",
+            "arguments": [
+              {
+                "type": "identifier",
+                "value": "previousTrigger",
+                "referenceKind": "plain",
+                "scope": "local"
+              }
+            ],
+            "hasExplicitMemoryDefault": false
+          },
+          {
+            "lineNumber": 17,
             "instruction": "push",
             "arguments": [
               {
@@ -6555,22 +6557,37 @@
             ]
           },
           {
-            "lineNumber": 17,
-            "instruction": "risingEdge",
-            "arguments": []
+            "lineNumber": 18,
+            "instruction": "call",
+            "arguments": [
+              {
+                "type": "identifier",
+                "value": "risingEdge",
+                "referenceKind": "plain",
+                "scope": "local"
+              },
+              {
+                "type": "identifier",
+                "value": "&previousTrigger",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "previousTrigger",
+                "isEndAddress": false
+              }
+            ]
           },
           {
-            "lineNumber": 18,
+            "lineNumber": 19,
             "instruction": "if",
             "arguments": [],
             "ifBlock": {
-              "matchingIfEndIndex": 14,
+              "matchingIfEndIndex": 15,
               "resultTypes": [],
               "hasElse": false
             }
           },
           {
-            "lineNumber": 19,
+            "lineNumber": 20,
             "instruction": "push",
             "arguments": [
               {
@@ -6584,7 +6601,7 @@
             ]
           },
           {
-            "lineNumber": 20,
+            "lineNumber": 21,
             "instruction": "push",
             "arguments": [
               {
@@ -6595,21 +6612,21 @@
             ]
           },
           {
-            "lineNumber": 21,
+            "lineNumber": 22,
             "instruction": "store",
             "arguments": []
           },
           {
-            "lineNumber": 22,
+            "lineNumber": 23,
             "instruction": "ifEnd",
             "arguments": [],
             "ifEndBlock": {
-              "matchingIfIndex": 10,
+              "matchingIfIndex": 11,
               "resultTypes": []
             }
           },
           {
-            "lineNumber": 24,
+            "lineNumber": 25,
             "instruction": "push",
             "arguments": [
               {
@@ -6621,7 +6638,7 @@
             ]
           },
           {
-            "lineNumber": 25,
+            "lineNumber": 26,
             "instruction": "push",
             "arguments": [
               {
@@ -6632,22 +6649,22 @@
             ]
           },
           {
-            "lineNumber": 26,
+            "lineNumber": 27,
             "instruction": "greaterThan",
             "arguments": []
           },
           {
-            "lineNumber": 27,
+            "lineNumber": 28,
             "instruction": "if",
             "arguments": [],
             "ifBlock": {
-              "matchingIfEndIndex": 30,
+              "matchingIfEndIndex": 31,
               "resultTypes": [],
               "hasElse": true
             }
           },
           {
-            "lineNumber": 28,
+            "lineNumber": 29,
             "instruction": "push",
             "arguments": [
               {
@@ -6661,7 +6678,7 @@
             ]
           },
           {
-            "lineNumber": 29,
+            "lineNumber": 30,
             "instruction": "push",
             "arguments": [
               {
@@ -6673,7 +6690,7 @@
             ]
           },
           {
-            "lineNumber": 30,
+            "lineNumber": 31,
             "instruction": "push",
             "arguments": [
               {
@@ -6687,22 +6704,22 @@
             ]
           },
           {
-            "lineNumber": 31,
+            "lineNumber": 32,
             "instruction": "add",
             "arguments": []
           },
           {
-            "lineNumber": 32,
+            "lineNumber": 33,
             "instruction": "store",
             "arguments": []
           },
           {
-            "lineNumber": 33,
+            "lineNumber": 34,
             "instruction": "else",
             "arguments": []
           },
           {
-            "lineNumber": 34,
+            "lineNumber": 35,
             "instruction": "push",
             "arguments": [
               {
@@ -6716,7 +6733,7 @@
             ]
           },
           {
-            "lineNumber": 35,
+            "lineNumber": 36,
             "instruction": "push",
             "arguments": [
               {
@@ -6728,7 +6745,7 @@
             ]
           },
           {
-            "lineNumber": 36,
+            "lineNumber": 37,
             "instruction": "push",
             "arguments": [
               {
@@ -6742,26 +6759,26 @@
             ]
           },
           {
-            "lineNumber": 37,
+            "lineNumber": 38,
             "instruction": "sub",
             "arguments": []
           },
           {
-            "lineNumber": 38,
+            "lineNumber": 39,
             "instruction": "store",
             "arguments": []
           },
           {
-            "lineNumber": 39,
+            "lineNumber": 40,
             "instruction": "ifEnd",
             "arguments": [],
             "ifEndBlock": {
-              "matchingIfIndex": 18,
+              "matchingIfIndex": 19,
               "resultTypes": []
             }
           },
           {
-            "lineNumber": 41,
+            "lineNumber": 42,
             "instruction": "push",
             "arguments": [
               {
@@ -6773,7 +6790,7 @@
             ]
           },
           {
-            "lineNumber": 42,
+            "lineNumber": 43,
             "instruction": "push",
             "arguments": [
               {
@@ -6784,22 +6801,22 @@
             ]
           },
           {
-            "lineNumber": 43,
+            "lineNumber": 44,
             "instruction": "greaterThan",
             "arguments": []
           },
           {
-            "lineNumber": 44,
+            "lineNumber": 45,
             "instruction": "if",
             "arguments": [],
             "ifBlock": {
-              "matchingIfEndIndex": 38,
+              "matchingIfEndIndex": 39,
               "resultTypes": [],
               "hasElse": false
             }
           },
           {
-            "lineNumber": 45,
+            "lineNumber": 46,
             "instruction": "push",
             "arguments": [
               {
@@ -6813,7 +6830,7 @@
             ]
           },
           {
-            "lineNumber": 46,
+            "lineNumber": 47,
             "instruction": "push",
             "arguments": [
               {
@@ -6824,21 +6841,21 @@
             ]
           },
           {
-            "lineNumber": 47,
+            "lineNumber": 48,
             "instruction": "store",
             "arguments": []
           },
           {
-            "lineNumber": 48,
+            "lineNumber": 49,
             "instruction": "ifEnd",
             "arguments": [],
             "ifEndBlock": {
-              "matchingIfIndex": 34,
+              "matchingIfIndex": 35,
               "resultTypes": []
             }
           },
           {
-            "lineNumber": 50,
+            "lineNumber": 51,
             "instruction": "push",
             "arguments": [
               {
@@ -6850,7 +6867,7 @@
             ]
           },
           {
-            "lineNumber": 51,
+            "lineNumber": 52,
             "instruction": "push",
             "arguments": [
               {
@@ -6861,22 +6878,22 @@
             ]
           },
           {
-            "lineNumber": 52,
+            "lineNumber": 53,
             "instruction": "lessThan",
             "arguments": []
           },
           {
-            "lineNumber": 53,
+            "lineNumber": 54,
             "instruction": "if",
             "arguments": [],
             "ifBlock": {
-              "matchingIfEndIndex": 46,
+              "matchingIfEndIndex": 47,
               "resultTypes": [],
               "hasElse": false
             }
           },
           {
-            "lineNumber": 54,
+            "lineNumber": 55,
             "instruction": "push",
             "arguments": [
               {
@@ -6890,7 +6907,7 @@
             ]
           },
           {
-            "lineNumber": 55,
+            "lineNumber": 56,
             "instruction": "push",
             "arguments": [
               {
@@ -6901,21 +6918,21 @@
             ]
           },
           {
-            "lineNumber": 56,
+            "lineNumber": 57,
             "instruction": "store",
             "arguments": []
           },
           {
-            "lineNumber": 57,
+            "lineNumber": 58,
             "instruction": "ifEnd",
             "arguments": [],
             "ifEndBlock": {
-              "matchingIfIndex": 42,
+              "matchingIfIndex": 43,
               "resultTypes": []
             }
           },
           {
-            "lineNumber": 59,
+            "lineNumber": 60,
             "instruction": "moduleEnd",
             "arguments": []
           }
@@ -7066,9 +7083,22 @@
               }
             ],
             "hasExplicitMemoryDefault": true
+          },
+          {
+            "lineNumber": 15,
+            "instruction": "int",
+            "arguments": [
+              {
+                "type": "identifier",
+                "value": "previousTrigger",
+                "referenceKind": "plain",
+                "scope": "local"
+              }
+            ],
+            "hasExplicitMemoryDefault": false
           }
         ],
-        "projectBlockId": 203
+        "projectBlockId": 219
       },
       "index": 5,
       "executionEntryName": "main"
@@ -7081,10 +7111,10 @@
         1,
         125,
         65,
-        196,
+        200,
         4,
         65,
-        196,
+        200,
         4,
         42,
         2,
@@ -7095,7 +7125,7 @@
         201,
         64,
         65,
-        192,
+        196,
         4,
         40,
         2,
@@ -7137,7 +7167,7 @@
         2,
         0,
         65,
-        196,
+        200,
         4,
         42,
         2,
@@ -7151,7 +7181,7 @@
         4,
         64,
         65,
-        196,
+        200,
         4,
         67,
         219,
@@ -7163,16 +7193,16 @@
         0,
         11,
         65,
-        200,
+        204,
         4,
         65,
-        196,
+        200,
         4,
         42,
         2,
         0,
         16,
-        3,
+        4,
         56,
         2,
         0,
@@ -7180,16 +7210,16 @@
       ],
       "initFunctionBody": [],
       "memoryIndex": 0,
-      "byteAddress": 572,
-      "wordAlignedAddress": 143,
+      "byteAddress": 576,
+      "wordAlignedAddress": 144,
       "memoryMap": {
         "defaultFreq": {
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 143,
+          "wordAlignedAddress": 144,
           "wordAlignedSize": 1,
-          "byteAddress": 572,
+          "byteAddress": 576,
           "id": "defaultFreq",
           "lineNumber": 4,
           "default": 440,
@@ -7204,9 +7234,9 @@
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 144,
+          "wordAlignedAddress": 145,
           "wordAlignedSize": 1,
-          "byteAddress": 576,
+          "byteAddress": 580,
           "id": "frequency",
           "lineNumber": 5,
           "default": 536,
@@ -7223,9 +7253,9 @@
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 145,
+          "wordAlignedAddress": 146,
           "wordAlignedSize": 1,
-          "byteAddress": 580,
+          "byteAddress": 584,
           "id": "phase",
           "lineNumber": 6,
           "default": 0,
@@ -7240,9 +7270,9 @@
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 146,
+          "wordAlignedAddress": 147,
           "wordAlignedSize": 1,
-          "byteAddress": 584,
+          "byteAddress": 588,
           "id": "out",
           "lineNumber": 7,
           "default": 0,
@@ -7675,7 +7705,7 @@
             "hasExplicitMemoryDefault": false
           }
         ],
-        "projectBlockId": 263
+        "projectBlockId": 280
       },
       "index": 6,
       "executionEntryName": "main"
@@ -7686,10 +7716,10 @@
         27,
         0,
         65,
-        212,
+        216,
         4,
         65,
-        204,
+        208,
         4,
         40,
         2,
@@ -7698,7 +7728,7 @@
         2,
         0,
         65,
-        208,
+        212,
         4,
         40,
         2,
@@ -7714,19 +7744,19 @@
       ],
       "initFunctionBody": [],
       "memoryIndex": 0,
-      "byteAddress": 588,
-      "wordAlignedAddress": 147,
+      "byteAddress": 592,
+      "wordAlignedAddress": 148,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 147,
+          "wordAlignedAddress": 148,
           "wordAlignedSize": 1,
-          "byteAddress": 588,
+          "byteAddress": 592,
           "id": "in",
           "lineNumber": 3,
-          "default": 584,
+          "default": 588,
           "hasExplicitDefault": true,
           "isInherited": false,
           "type": "float*",
@@ -7740,9 +7770,9 @@
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 148,
+          "wordAlignedAddress": 149,
           "wordAlignedSize": 1,
-          "byteAddress": 592,
+          "byteAddress": 596,
           "id": "volume",
           "lineNumber": 4,
           "default": 564,
@@ -7759,9 +7789,9 @@
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 149,
+          "wordAlignedAddress": 150,
           "wordAlignedSize": 1,
-          "byteAddress": 596,
+          "byteAddress": 600,
           "id": "out",
           "lineNumber": 5,
           "default": 0,
@@ -7988,7 +8018,7 @@
             "hasExplicitMemoryDefault": false
           }
         ],
-        "projectBlockId": 306
+        "projectBlockId": 323
       },
       "index": 7,
       "executionEntryName": "main"
@@ -8003,13 +8033,13 @@
         1,
         125,
         65,
-        220,
+        224,
         8,
         40,
         2,
         0,
         65,
-        216,
+        220,
         4,
         40,
         2,
@@ -8049,10 +8079,10 @@
         5,
         11,
         65,
-        220,
+        224,
         8,
         65,
-        220,
+        224,
         8,
         40,
         2,
@@ -8064,22 +8094,22 @@
         2,
         0,
         65,
-        220,
+        224,
         8,
         40,
         2,
         0,
         65,
-        216,
+        220,
         8,
         74,
         4,
         64,
         65,
-        220,
+        224,
         8,
         65,
-        220,
+        224,
         4,
         54,
         2,
@@ -8089,19 +8119,19 @@
       ],
       "initFunctionBody": [],
       "memoryIndex": 0,
-      "byteAddress": 600,
-      "wordAlignedAddress": 150,
+      "byteAddress": 604,
+      "wordAlignedAddress": 151,
       "memoryMap": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 150,
+          "wordAlignedAddress": 151,
           "wordAlignedSize": 1,
-          "byteAddress": 600,
+          "byteAddress": 604,
           "id": "in",
           "lineNumber": 4,
-          "default": 596,
+          "default": 600,
           "hasExplicitDefault": true,
           "isInherited": false,
           "type": "float*",
@@ -8116,10 +8146,10 @@
           "elementWordSize": 4,
           "memoryIndex": 0,
           "wordAlignedSize": 128,
-          "wordAlignedAddress": 151,
+          "wordAlignedAddress": 152,
           "id": "buffer",
           "lineNumber": 7,
-          "byteAddress": 604,
+          "byteAddress": 608,
           "default": {},
           "hasExplicitDefault": false,
           "isInherited": false,
@@ -8132,12 +8162,12 @@
           "numberOfElements": 1,
           "elementWordSize": 4,
           "memoryIndex": 0,
-          "wordAlignedAddress": 279,
+          "wordAlignedAddress": 280,
           "wordAlignedSize": 1,
-          "byteAddress": 1116,
+          "byteAddress": 1120,
           "id": "pointer",
           "lineNumber": 8,
-          "default": 604,
+          "default": 608,
           "hasExplicitDefault": true,
           "isInherited": false,
           "type": "int",
@@ -8491,12 +8521,12 @@
             "hasExplicitMemoryDefault": true
           }
         ],
-        "projectBlockId": 320
+        "projectBlockId": 337
       },
       "index": 8,
       "executionEntryName": "main"
     }
   },
-  "compiledWasm": "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",
+  "compiledWasm": "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",
   "requiredMemoryBytes": 1124
 }

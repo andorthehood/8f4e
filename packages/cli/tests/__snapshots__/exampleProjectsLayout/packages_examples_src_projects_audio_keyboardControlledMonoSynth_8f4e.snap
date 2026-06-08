@@ -59,30 +59,30 @@
       "index": 5,
       "byteAddress": 544,
       "wordAlignedAddress": 136,
-      "wordAlignedSize": 7,
+      "wordAlignedSize": 8,
       "skipExecutionInCycle": false
     },
     {
       "id": "phaseAccumulator",
       "index": 6,
-      "byteAddress": 572,
-      "wordAlignedAddress": 143,
+      "byteAddress": 576,
+      "wordAlignedAddress": 144,
       "wordAlignedSize": 4,
       "skipExecutionInCycle": false
     },
     {
       "id": "vca",
       "index": 7,
-      "byteAddress": 588,
-      "wordAlignedAddress": 147,
+      "byteAddress": 592,
+      "wordAlignedAddress": 148,
       "wordAlignedSize": 3,
       "skipExecutionInCycle": false
     },
     {
       "id": "audioout",
       "index": 8,
-      "byteAddress": 600,
-      "wordAlignedAddress": 150,
+      "byteAddress": 604,
+      "wordAlignedAddress": 151,
       "wordAlignedSize": 130,
       "skipExecutionInCycle": false
     }
