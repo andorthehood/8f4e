@@ -31,7 +31,7 @@ export default function paramShape(
 	}
 
 	const compiledFunction = getCompiledFunction(graphicData, state);
-	if (!compiledFunction || compiledFunction.ast.type !== 'function') {
+	if (!compiledFunction) {
 		return;
 	}
 
@@ -57,7 +57,7 @@ export function updateParamShapeDeclarations(
 	}
 
 	const compiledFunction = getCompiledFunction(graphicData, state);
-	if (!compiledFunction || compiledFunction.ast.type !== 'function') {
+	if (!compiledFunction) {
 		return;
 	}
 
