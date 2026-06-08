@@ -80,8 +80,9 @@ push &out
 push 0
 store
 
+int previousTrigger
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
  ; only pulse on edge and active step
  push stepValue
@@ -150,8 +151,9 @@ If guards are required, keep them explicit and narrow to the failure mode that w
 Bad:
 ```text
 ; repeated defensive checks every cycle
+int previousTrigger
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
  push *lengthIn
  push 0
@@ -177,8 +179,9 @@ ifEnd
 Good:
 ```text
 ; wiring guarantees valid range, so hot path stays lean
+int previousTrigger
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
  ; ...real work...
 

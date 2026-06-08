@@ -1,11 +1,27 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module shiftReg
 ; @public
 
 int* in
 int* trigger
+int previousTrigger
 
 int out0
 int out1
@@ -19,7 +35,7 @@ int last
 int* pointer &out0
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
  ; Reset pointer
 push &pointer

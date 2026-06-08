@@ -1,5 +1,20 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module seqMux
 ; @public
@@ -15,6 +30,7 @@ float* in7
 
 int _length 8 ; default
 int* trigger
+int previousTrigger
 int* length &_length
 
 float out
@@ -22,7 +38,7 @@ float out
 int counter
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
  ; Increment counter
 push &counter
