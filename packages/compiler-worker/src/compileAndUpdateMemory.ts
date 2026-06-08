@@ -114,6 +114,7 @@ export default async function compileAndUpdateMemory(
 		codeBuffer,
 		compiledModules,
 		compiledFunctions,
+		cache,
 		requiredMemoryBytes,
 		allocatedMemoryBytes,
 		astCacheStats: { ...cache.ast.stats },

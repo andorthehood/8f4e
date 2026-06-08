@@ -1,4 +1,4 @@
-import type { CompiledModule } from '@8f4e/compiler-spec';
+import type { CompiledModule, CompilerCache, MemoryDeclarationLine, ValidatedModuleAST } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
 import type { DirectiveDerivedState } from '../features/directives/registry';
@@ -20,20 +20,54 @@ function createDirectiveState(): DirectiveDerivedState {
 	};
 }
 
-function createCompiledModule(shapeExpansions: NonNullable<CompiledModule['shapeExpansions']>): CompiledModule {
+function createCompiledModule(ast: ValidatedModuleAST): CompiledModule {
 	return {
-		shapeExpansions,
+		ast,
 	} as CompiledModule;
 }
 
-function createMemoryDeclarationLines(
-	count: number
-): NonNullable<CompiledModule['shapeExpansions']>[number]['memoryDeclarationLines'] {
+function createModuleAst(): ValidatedModuleAST {
+	return {
+		type: 'module',
+		id: 'filterA',
+		lines: [
+			{ lineNumber: 0, instruction: 'module', arguments: [{ value: 'filterA' }] },
+			{ lineNumber: 1, instruction: 'shape', arguments: [{ value: 'filterState' }] },
+			{ lineNumber: 2, instruction: 'float', arguments: [{ value: 'cutoff' }, { value: 1200 }] },
+			{ lineNumber: 3, instruction: 'moduleEnd', arguments: [] },
+		],
+		memoryDeclarationLines: [],
+	} as unknown as ValidatedModuleAST;
+}
+
+function createMemoryDeclarationLines(count: number): readonly MemoryDeclarationLine[] {
 	return Array.from({ length: count }, (_, lineNumber) => ({
 		lineNumber,
 		instruction: 'float',
 		arguments: [],
-	})) as NonNullable<CompiledModule['shapeExpansions']>[number]['memoryDeclarationLines'];
+	})) as readonly MemoryDeclarationLine[];
+}
+
+function createCompilerCache(memoryDeclarationLines: readonly MemoryDeclarationLine[]): CompilerCache {
+	return {
+		ast: {
+			stats: { hits: 0, misses: 0 },
+			entries: new Map([
+				[
+					'prototype:0',
+					{
+						lineCount: memoryDeclarationLines.length + 2,
+						ast: {
+							type: 'prototype',
+							id: 'filterState',
+							lines: [],
+							memoryDeclarationLines,
+						},
+					},
+				],
+			]),
+		},
+	} as unknown as CompilerCache;
 }
 
 describe('shape', () => {
@@ -45,14 +79,9 @@ describe('shape', () => {
 		const state = createMockState({
 			compiler: {
 				compiledModules: {
-					filterA: createCompiledModule([
-						{
-							lineNumber: 1,
-							prototypeId: 'filterState',
-							memoryDeclarationLines: createMemoryDeclarationLines(4),
-						},
-					]),
+					filterA: createCompiledModule(createModuleAst()),
 				},
+				cache: createCompilerCache(createMemoryDeclarationLines(4)),
 			},
 		});
 		const directiveState = createDirectiveState();
@@ -70,8 +99,9 @@ describe('shape', () => {
 		const state = createMockState({
 			compiler: {
 				compiledModules: {
-					filterA: createCompiledModule([]),
+					filterA: createCompiledModule(createModuleAst()),
 				},
+				cache: createCompilerCache([]),
 			},
 		});
 		const directiveState = createDirectiveState();

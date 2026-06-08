@@ -107,43 +107,6 @@ describe('compile prototype validation', () => {
 		expect(result.compiledModules.main.memoryMap.value.default).toBe(7);
 	});
 
-	it('exposes shape expansion metadata for editor rendering', () => {
-		const result = compile(
-			{
-				...emptyCompileInput,
-				entries: {
-					main: [{ code: ['module filterA', 'shape filterState', 'float cutoff 1200', 'moduleEnd'] }],
-				},
-				prototypes: [
-					{
-						code: [
-							'prototype filterState',
-							'float* input',
-							'float cutoff 800',
-							'float resonance 0.5',
-							'float output',
-							'prototypeEnd',
-						],
-					},
-				],
-			},
-			{ disableSharedMemory: true }
-		);
-
-		expect(result.compiledModules.filterA.shapeExpansions).toEqual([
-			expect.objectContaining({
-				lineNumber: 1,
-				prototypeId: 'filterState',
-				memoryDeclarationLines: [
-					expect.objectContaining({ instruction: 'float*', lineNumber: 1 }),
-					expect.objectContaining({ instruction: 'float', lineNumber: 2 }),
-					expect.objectContaining({ instruction: 'float', lineNumber: 3 }),
-					expect.objectContaining({ instruction: 'float', lineNumber: 4 }),
-				],
-			}),
-		]);
-	});
-
 	it('rejects function ids that collide with generated entry function ids during semantic metadata collection', () => {
 		let thrownError: unknown;
 
