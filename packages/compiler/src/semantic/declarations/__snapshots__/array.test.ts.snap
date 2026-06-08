@@ -8,6 +8,7 @@ exports[`array declaration compiler > creates a memory array entry 1`] = `
     "elementWordSize": 4,
     "hasExplicitDefault": false,
     "id": "values",
+    "isInherited": undefined,
     "isInteger": true,
     "isUnsigned": false,
     "lineNumber": 1,
