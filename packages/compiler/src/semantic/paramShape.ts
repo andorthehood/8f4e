@@ -1,5 +1,4 @@
 import {
-	ArgumentType,
 	type CompilerDiagnosticContext,
 	ErrorCode,
 	FUNCTION_TYPE_IDENTIFIERS,
@@ -12,6 +11,7 @@ import {
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
+import { getPrototypeMemoryDeclarationId } from './prototypeShapes';
 
 const functionTypeIdentifiers = new Set<string>(FUNCTION_TYPE_IDENTIFIERS);
 
@@ -20,19 +20,6 @@ function getAstDiagnosticContext(ast: ValidatedFunctionAST): CompilerDiagnosticC
 		codeBlockType: ast.type,
 		...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
 	};
-}
-
-function getMemoryDeclarationId(
-	line: MemoryDeclarationLine,
-	paramShapeLine: ParamShapeLine,
-	context: CompilerDiagnosticContext
-) {
-	const idArgument = line.arguments[0];
-	if (idArgument.type !== ArgumentType.IDENTIFIER || idArgument.referenceKind !== 'plain') {
-		throw getError(ErrorCode.EXPECTED_IDENTIFIER, paramShapeLine, context);
-	}
-
-	return idArgument.value;
 }
 
 function getPointerDepth(type: string): number {
@@ -81,7 +68,7 @@ function getParamShapeExpansion(
 		lineNumber: line.lineNumber,
 		parameters: prototype.memoryDeclarationLines.map(declarationLine => ({
 			type: getParamType(declarationLine, line, context),
-			name: getMemoryDeclarationId(declarationLine, line, context),
+			name: getPrototypeMemoryDeclarationId(declarationLine, line, context),
 		})),
 	};
 }

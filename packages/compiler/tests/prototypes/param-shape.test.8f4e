@@ -35,13 +35,29 @@ shape mixerState
 
 ; it expands prototype memory
 ; declarations into pointer params
-call sumMixer &a &b
+pushShape mixerState
+call sumMixer
 call assertf 6.5
 
 ; it preserves source order when
 ; explicit params and paramShape
 ; are mixed
-call orderedMixer 10 &a &b 3
+push 10
+pushShape mixerState
+push 3
+call orderedMixer
 call assert 19
+moduleEnd
+
+module overrides
+shape mixerState
+int a 8
+float b 1.5
+
+; it pushes effective overridden
+; memory item addresses
+pushShape mixerState
+call sumMixer
+call assertf 9.5
 moduleEnd
 entryEnd
