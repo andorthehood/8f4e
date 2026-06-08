@@ -1,10 +1,26 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module triggerPatternSequencer
 ; @public
 
 int* trigger
+int previousTrigger
 int* bufferIn    ; &module:buffer
 int* bufferEndIn ; module:buffer&
 
@@ -17,7 +33,7 @@ push 0
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
  ; Read current pattern value:
  ; *(bufferIn + _offset)

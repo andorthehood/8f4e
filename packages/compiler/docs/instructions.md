@@ -98,7 +98,6 @@
   - [ensureNonZero](instructions/math-helpers.md#ensurenonzero)
 
 - [Signal helpers](instructions/signal-helpers.md)
-  - [risingEdge](instructions/signal-helpers.md#risingedge)
   - [hasChanged](instructions/signal-helpers.md#haschanged)
 
 - [Testing](instructions/testing.md)

@@ -1,5 +1,20 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module binaryGateSeq
 ; @public
@@ -23,6 +38,7 @@ int last   0b01100000
 
 int* stepPointer &step1
 int* trigger
+int previousTrigger
 
 int out1
 int out2
@@ -40,7 +56,7 @@ const LOW 0
 
 ; Increment step pointer
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &stepPointer
 push &stepPointer
