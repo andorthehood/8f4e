@@ -22,8 +22,8 @@ export default function semanticShape(line: ShapeLine, context: CompilationConte
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: prototypeId });
 	}
 
-	const previousIsInheritedMemoryDeclaration = context.isInheritedMemoryDeclaration;
-	context.isInheritedMemoryDeclaration = true;
+	const previousIsInherited = context.isInherited;
+	context.isInherited = true;
 	try {
 		for (const declarationLine of prototype.memoryDeclarationLines) {
 			const inheritedDeclarationLine = {
@@ -35,6 +35,6 @@ export default function semanticShape(line: ShapeLine, context: CompilationConte
 			applyMemoryDeclarationLine(normalizeCompileTimeArguments(resolvedDeclarationLine, context), context);
 		}
 	} finally {
-		context.isInheritedMemoryDeclaration = previousIsInheritedMemoryDeclaration;
+		context.isInherited = previousIsInherited;
 	}
 }
