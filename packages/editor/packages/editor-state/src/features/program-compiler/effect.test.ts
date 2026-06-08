@@ -114,7 +114,6 @@ describe('program compiler effect', () => {
 				constants: expect.any(Array),
 				functions: expect.any(Array),
 				prototypes: expect.any(Array),
-				macros: expect.any(Array),
 			}),
 			{
 				startingMemoryWordAddress: 0,
@@ -158,7 +157,6 @@ describe('program compiler effect', () => {
 				constants: expect.any(Array),
 				functions: expect.any(Array),
 				prototypes: expect.any(Array),
-				macros: expect.any(Array),
 			}),
 			{
 				startingMemoryWordAddress: 0,
@@ -194,7 +192,6 @@ describe('program compiler effect', () => {
 				constants: expect.any(Array),
 				functions: expect.any(Array),
 				prototypes: expect.any(Array),
-				macros: expect.any(Array),
 			}),
 			{
 				startingMemoryWordAddress: 0,
@@ -212,7 +209,6 @@ describe('program compiler effect', () => {
 				constants: expect.any(Array),
 				functions: expect.any(Array),
 				prototypes: expect.any(Array),
-				macros: expect.any(Array),
 			}),
 			{
 				startingMemoryWordAddress: 0,

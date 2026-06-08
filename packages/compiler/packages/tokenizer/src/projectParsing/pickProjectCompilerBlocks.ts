@@ -10,7 +10,6 @@ import type {
 } from './types';
 
 const functionBlockType = documentBlockInstructionByType.function.type;
-const macroBlockType = documentBlockInstructionByType.macro.type;
 const moduleBlockType = documentBlockInstructionByType.module.type;
 const prototypeBlockType = documentBlockInstructionByType.prototype.type;
 
@@ -18,7 +17,6 @@ type ProjectCompilerBlockTarget = {
 	constantsBlocks: Module[];
 	functionBlocks: Module[];
 	prototypeBlocks: Module[];
-	macroBlocks: Module[];
 };
 
 function assertProjectBlockId(block: ProjectCodeBlock): void {
@@ -63,10 +61,6 @@ function addCompilerBlockToTarget(
 	}
 	if (blockType === prototypeBlockType) {
 		target.prototypeBlocks.push(toCompilerModule(block));
-		return;
-	}
-	if (blockType === macroBlockType) {
-		target.macroBlocks.push(toCompilerModule(block));
 	}
 }
 
@@ -78,7 +72,6 @@ function pickProjectCompilerGroup(group: ProjectCodeGroup): ProjectCompilerGroup
 		constantsBlocks: [],
 		functionBlocks: [],
 		prototypeBlocks: [],
-		macroBlocks: [],
 		groups: group.groups.map(pickProjectCompilerGroup),
 	};
 
@@ -100,8 +93,7 @@ export function pickProjectCompilerBlocks(project: ProjectInput): ProjectCompile
 	const constantsBlocks: Module[] = [];
 	const functionBlocks: Module[] = [];
 	const prototypeBlocks: Module[] = [];
-	const macroBlocks: Module[] = [];
-	const target = { constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks };
+	const target = { constantsBlocks, functionBlocks, prototypeBlocks };
 
 	for (const block of project.codeBlocks) {
 		assertProjectBlockId(block);
@@ -128,7 +120,6 @@ export function pickProjectCompilerBlocks(project: ProjectInput): ProjectCompile
 		constantsBlocks,
 		functionBlocks,
 		prototypeBlocks,
-		macroBlocks,
 		groups: project.groups.map(pickProjectCompilerGroup),
 	};
 }

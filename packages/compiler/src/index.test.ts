@@ -7,7 +7,6 @@ const emptyCompileInput = {
 	constants: [],
 	functions: [],
 	prototypes: [],
-	macros: [],
 };
 
 describe('compile prototype validation', () => {
@@ -91,15 +90,14 @@ describe('compile prototype validation', () => {
 		});
 	});
 
-	it('expands macro-produced shapes after macro expansion reaches the tokenizer', () => {
+	it('expands shapes after prototype parsing reaches the tokenizer', () => {
 		const result = compile(
 			{
 				...emptyCompileInput,
 				entries: {
-					main: [{ code: ['module main', 'macro addStateShape', 'moduleEnd'] }],
+					main: [{ code: ['module main', 'shape state', 'moduleEnd'] }],
 				},
 				prototypes: [{ code: ['prototype state', 'int value 7', 'prototypeEnd'] }],
-				macros: [{ code: ['defineMacro addStateShape', 'shape state', 'defineMacroEnd'] }],
 			},
 			{ disableSharedMemory: true }
 		);

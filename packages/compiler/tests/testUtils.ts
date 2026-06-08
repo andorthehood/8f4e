@@ -324,7 +324,7 @@ export function compileFixtureProgramSource(
 		...(options.extraCodeBlocks ?? []),
 		...(options.includeAssertions ? [assertFunctionBlock, assertFloatFunctionBlock, assertFloat64FunctionBlock] : []),
 	];
-	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks({
+	const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
 		...project,
 		codeBlocks,
 	});
@@ -338,7 +338,6 @@ export function compileFixtureProgramSource(
 				constants: constantsBlocks,
 				functions: functionBlocks,
 				prototypes: prototypeBlocks,
-				macros: macroBlocks,
 			},
 			{
 				disableSharedMemory: true,

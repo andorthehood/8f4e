@@ -40,7 +40,7 @@ async function collectErrorFiles(directory: string): Promise<string[]> {
 async function compileErrorFixture(filePath: string) {
 	const source = await fs.readFile(filePath, 'utf8');
 	const project = parse8f4eProject(source);
-	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks(project);
+	const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks(project);
 
 	return compile(
 		{
@@ -48,7 +48,6 @@ async function compileErrorFixture(filePath: string) {
 			constants: constantsBlocks,
 			functions: functionBlocks,
 			prototypes: prototypeBlocks,
-			macros: macroBlocks,
 		},
 		{
 			disableSharedMemory: true,

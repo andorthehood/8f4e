@@ -51,7 +51,7 @@ describe('Example Projects Compilation', () => {
 	describe('Module Compilation', () => {
 		projects.forEach((project, index) => {
 			it(`should compile module blocks in project ${index}`, () => {
-				const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks({
+				const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
 					codeBlocks: project.codeBlocks,
 					groups: [],
 				});
@@ -63,7 +63,6 @@ describe('Example Projects Compilation', () => {
 						constants: constantsBlocks,
 						functions: functionBlocks,
 						prototypes: prototypeBlocks,
-						macros: macroBlocks,
 					},
 					COMPILER_OPTIONS
 				);

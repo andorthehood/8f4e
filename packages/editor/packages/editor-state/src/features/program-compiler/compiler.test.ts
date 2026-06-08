@@ -53,7 +53,6 @@ describe('flattenProjectForCompiler', () => {
 		expect(result.entries.main).toHaveLength(1);
 		expect(result.entries.main[0].code).toEqual(['module test', 'moduleEnd']);
 		expect(result.functions).toHaveLength(0);
-		expect(result.macros).toHaveLength(0);
 	});
 
 	it('should include constants blocks separately but not unknown blocks', () => {
@@ -189,11 +188,11 @@ describe('flattenProjectForCompiler', () => {
 		]);
 	});
 
-	it('should preserve creationIndex order across mixed block types', () => {
+	it('should preserve creationIndex order across mixed compiler block types', () => {
 		const mockCodeBlocks: CodeBlockGraphicData[] = [
 			{
-				code: ['macro third', 'macroEnd'],
-				blockType: 'macro',
+				code: ['prototype third', 'int value', 'prototypeEnd'],
+				blockType: 'prototype',
 				creationIndex: 2,
 			} as CodeBlockGraphicData,
 			{
@@ -213,6 +212,6 @@ describe('flattenProjectForCompiler', () => {
 
 		expect(result.entries.main[0].code).toEqual(['module first', 'moduleEnd']);
 		expect(result.functions[0].code).toEqual(['function second', 'functionEnd']);
-		expect(result.macros[0].code).toEqual(['macro third', 'macroEnd']);
+		expect(result.prototypes[0].code).toEqual(['prototype third', 'int value', 'prototypeEnd']);
 	});
 });

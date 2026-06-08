@@ -8,41 +8,28 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                          8f4e Compiler Pipeline
                          ======================
 
-  source modules          source functions          optional macros
-       |                        |                         |
-       |                        |                         |
-       +------------------------+-------------------------+
-                                |
-                                v
+  source modules       source functions       constants/prototypes
+       |                     |                       |
+       |                     |                       |
+       +---------------------+-----------------------+
+                             |
+                             v
                   +-----------------------------+
-                  |  1. Macro collection        |
-                  |  parseMacroDefinitions()    |
-                  +-----------------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  2. Macro expansion         |
-                  |  expandMacros()             |
-                  |  preserves line metadata    |
-                  +-----------------------------+
-                                |
-                                v
-                  +-----------------------------+
-                  |  3. Tokenize / parse        |
-                  |  compileToASTGroup()        |
+                  |  1. Tokenize / parse        |
+                  |  compileToAST()             |
                   |                             |
                   |  syntax errors live here    |
                   +-----------------------------+
                                 |
                                 v
                   +-----------------------------+
-                  |  4. Module identity checks  |
+                  |  2. Module identity checks  |
                   |  assertUniqueModuleIds()    |
                   +-----------------------------+
                                 |
                                 v
                   +-----------------------------+
-                  |  5. Input-order contract    |
+                  |  3. Input-order contract    |
                   |  caller-provided order      |
                   |                             |
                   |  module execution and       |
@@ -52,7 +39,7 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                                 |
                                 v
                   +-----------------------------+
-                  |  6. Namespace collection    |
+                  |  4. Namespace collection    |
                   |  collectNamespacesFromASTs()|
                   |  discovery + layout         |
                   |                             |
@@ -65,7 +52,7 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
         |                                               |
         v                                               v
 +-----------------------------+          +-----------------------------+
-|  7a. Function metadata      |          |  7b. Module layout ready    |
+|  5a. Function metadata      |          |  5b. Module layout ready    |
 |  collectFunctionMetadata... |          |  memory starts are known    |
 |                             |          |  intermodule refs resolved  |
 |  call targets/signatures    |          +-----------------------------+
@@ -73,7 +60,7 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
         |                                               |
         v                                               v
 +-----------------------------+          +-----------------------------+
-|  8a. Function codegen       |          |  8b. Module codegen         |
+|  6a. Function codegen       |          |  6b. Module codegen         |
 |  compileFunction()          |          |  compileModule()            |
 |                             |          |                             |
 |  normalize compile-time     |          |  prepass again, normalize   |
@@ -85,7 +72,7 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                                 |
                                 v
                   +-----------------------------+
-                  |  9. Initial memory data     |
+                  |  7. Initial memory data     |
                   |  createInitialMemory...     |
                   |                             |
                   |  defaults become passive    |
@@ -94,7 +81,7 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                                 |
                                 v
                   +-----------------------------+
-                  | 10. WASM assembly           |
+                  |  8. WASM assembly           |
                   |                             |
                   |  type/import/function/      |
                   |  export/code/data sections  |
@@ -116,7 +103,6 @@ Short version:
 
 ```text
 source
-  -> macros
   -> AST
   -> caller-provided module order
   -> namespace + memory layout
