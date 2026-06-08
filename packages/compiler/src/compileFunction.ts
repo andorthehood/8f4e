@@ -34,6 +34,7 @@ const importedFunctionAllowedInstructions = new Set([
 	'#impure',
 	'#loopCap',
 	'param',
+	'paramShape',
 	'functionEnd',
 ]);
 

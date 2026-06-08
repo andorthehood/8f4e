@@ -185,6 +185,16 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.PARAM_SHAPE_UNSUPPORTED_POINTER_DEPTH:
+			return {
+				code,
+				message:
+					'paramShape cannot expand this prototype declaration because the resulting pointer parameter type is unsupported. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.INVALID_FUNCTION_SIGNATURE:
 			return {
 				code,

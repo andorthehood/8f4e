@@ -29,6 +29,7 @@ import inputs from './features/inputs/updateGraphicData';
 import outputs from './features/outputs/updateGraphicData';
 import gaps from './gaps';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
+import paramShape, { updateParamShapeDeclarations } from './paramShape/updateGraphicData';
 import positionOffsetters from './positionOffsetters';
 import shape, { updateShapeDeclarations } from './shape/updateGraphicData';
 import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
@@ -166,8 +167,10 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		});
 
 		shape(graphicData, state, directiveState);
+		paramShape(graphicData, state, directiveState);
 		gaps(graphicData, directiveState);
 		updateShapeDeclarations(graphicData, state, directiveState);
+		updateParamShapeDeclarations(graphicData, state, directiveState);
 		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
 
 		graphicData.width = getCodeBlockGridWidth(graphicData.code, graphicData.minGridWidth) * state.viewport.vGrid;

@@ -1,0 +1,503 @@
+{
+  "functionAst": {
+    "orderedMixer": {
+      "id": "orderedMixer",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "orderedMixer",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [],
+          "instruction": "#impure",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "base",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixerState",
+            },
+          ],
+          "instruction": "paramShape",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int*",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "a",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float*",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "b",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "tail",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "base",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "a",
+              "type": "identifier",
+              "value": "*a",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "b",
+              "type": "identifier",
+              "value": "*b",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToInt",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "tail",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "type": "function",
+    },
+    "sumMixer": {
+      "id": "sumMixer",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "sumMixer",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [],
+          "instruction": "#impure",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixerState",
+            },
+          ],
+          "instruction": "paramShape",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int*",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "a",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float*",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "b",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "a",
+              "type": "identifier",
+              "value": "*a",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "b",
+              "type": "identifier",
+              "value": "*b",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "type": "function",
+    },
+  },
+  "functionOverview": {
+    "orderedMixer": {
+      "id": "orderedMixer",
+      "signature": {
+        "parameters": [
+          "int",
+          "int*",
+          "float*",
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "sumMixer": {
+      "id": "sumMixer",
+      "signature": {
+        "parameters": [
+          "int*",
+          "float*",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
+  },
+  "moduleAst": {
+    "main": {
+      "id": "main",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "main",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixerState",
+            },
+          ],
+          "instruction": "shape",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "sumMixer",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "a",
+              "type": "identifier",
+              "value": "&a",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "b",
+              "type": "identifier",
+              "value": "&b",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 6.5,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "orderedMixer",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "a",
+              "type": "identifier",
+              "value": "&a",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "b",
+              "type": "identifier",
+              "value": "&b",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 19,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "main": {
+      "internalResources": {},
+      "memoryMap": {
+        "a": {
+          "byteAddress": 4,
+          "default": 2,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "a",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+        "b": {
+          "byteAddress": 8,
+          "default": 4.5,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "b",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 2,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [
+      "orderedMixer",
+      "sumMixer",
+    ],
+    "compiledModules": [
+      "main",
+    ],
+    "requiredMemoryBytes": 12,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}
