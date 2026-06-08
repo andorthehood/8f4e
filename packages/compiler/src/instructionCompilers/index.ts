@@ -5,7 +5,6 @@ import block from './block';
 import blockEnd from './blockEnd';
 import branch from './branch';
 import branchIfTrue from './branchIfTrue';
-import branchIfUnchanged from './branchIfUnchanged';
 import call from './call';
 import castToFloat from './castToFloat';
 import castToFloat64 from './castToFloat64';
@@ -21,7 +20,6 @@ import equal from './equal';
 import equalToZero from './equalToZero';
 import exitIfTrue from './exitIfTrue';
 import exportFunction from './exportFunction';
-import fallingEdge from './fallingEdge';
 import _function from './function';
 import functionEnd from './functionEnd';
 import greaterOrEqual from './greaterOrEqual';
@@ -120,11 +118,9 @@ const instructions = {
 	drop,
 	clearStack,
 	risingEdge,
-	fallingEdge,
 	hasChanged,
 	abs,
 	equal,
-	branchIfUnchanged,
 	sqrt,
 	loadFloat,
 	round,
