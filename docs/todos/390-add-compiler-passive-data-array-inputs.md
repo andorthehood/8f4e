@@ -12,7 +12,7 @@ completed: null
 
 ## Problem Description
 
-The compiler now uses passive data segments to restore declared initial memory, but every segment is still derived from source-level memory declarations and compiler-owned internal resources.
+The compiler now uses passive data segments to restore declared initial memory, but every segment is still derived from source-level memory declarations.
 
 The next asset-loading step needs a compiler API that accepts externally supplied passive data payloads and loads them into specific declared arrays. This should let the editor worker keep decoded or generated binary payloads in memory and pass bytecode-ready data back into the compiler during live recompilation, without requiring the compiler package to parse 8f4e project files or decode base64 strings.
 

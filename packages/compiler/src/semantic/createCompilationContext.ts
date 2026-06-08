@@ -70,10 +70,6 @@ export function createCompilationContext<TContext extends CompilationContext = C
 			prototypeShapeIds: [],
 		},
 		locals: {},
-		internalResources: {},
-		internalAllocator: {
-			nextByteAddress: 0,
-		},
 		byteCode: [],
 		stack: [],
 		blockStack: [],

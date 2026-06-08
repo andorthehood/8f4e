@@ -1341,35 +1341,27 @@
   },
   "moduleMemory": {
     "localAfterParamAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "mixedWidthParamAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "namedParamAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "noParamFunctionAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "paramDifferentOrderAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "paramOrderAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "paramPartialUseAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "paramRepeatedUseAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

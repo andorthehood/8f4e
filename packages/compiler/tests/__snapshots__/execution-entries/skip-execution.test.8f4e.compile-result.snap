@@ -304,7 +304,6 @@
   },
   "moduleMemory": {
     "activeEntryModule": {
-      "internalResources": {},
       "memoryMap": {
         "counter": {
           "byteAddress": 4,
@@ -324,7 +323,6 @@
       },
     },
     "skippedEntryModule": {
-      "internalResources": {},
       "memoryMap": {
         "counter": {
           "byteAddress": 8,

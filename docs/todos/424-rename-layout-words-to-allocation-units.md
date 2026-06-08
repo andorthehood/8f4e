@@ -63,7 +63,7 @@ Because the project is not released yet, update callers directly and do not keep
 
 - Rename `wordAlignedAddress` to `allocationUnitAddress`.
 - Rename `wordAlignedSize` to `allocationUnitCount`.
-- Update `DataStructure`, `InternalResource`, `MemoryValueChange`, compiled module metadata, and semantic context types.
+- Update `DataStructure`, `MemoryValueChange`, compiled module metadata, and semantic context types.
 - Update compiler consumers, tests, and snapshots directly.
 
 ### Step 3: Rename layout context counters
@@ -95,7 +95,7 @@ Because the project is not released yet, update callers directly and do not keep
 ## Affected Components
 
 - `packages/compiler-spec/src/constants.ts` - allocation unit byte-size constant.
-- `packages/compiler-spec/src/memory.ts` - memory and internal-resource layout metadata.
+- `packages/compiler-spec/src/memory.ts` - memory layout metadata.
 - `packages/compiler-spec/src/semantic.ts` - compilation context layout counters.
 - `packages/compiler-spec/src/compiled.ts` - compiled module layout metadata.
 - `packages/compiler/src/semantic/` - declaration layout and namespace construction.
@@ -115,4 +115,4 @@ Because the project is not released yet, update callers directly and do not keep
 
 ## Notes
 
-- This todo came from reviewing internal resource allocation after removing local one-line helper wrappers. The cleanup exposed two separate concepts that need distinct names: type word size and compiler allocation-unit layout.
+- This todo came from reviewing memory layout naming after removing local one-line helper wrappers. The cleanup exposed two separate concepts that need distinct names: type word size and compiler allocation-unit layout.

@@ -806,31 +806,24 @@
   },
   "moduleMemory": {
     "castToFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "castToIntAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "floatAbsAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "floatDivAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "floatMulAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "roundAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "sqrtAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

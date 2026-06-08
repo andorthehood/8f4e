@@ -851,7 +851,6 @@
   },
   "moduleMemory": {
     "crossRegionCopyAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "copy": {
           "byteAddress": 20,
@@ -870,7 +869,6 @@
       },
     },
     "numericCustomRegion": {
-      "internalResources": {},
       "memoryMap": {
         "pixel": {
           "byteAddress": 4,
@@ -891,7 +889,6 @@
       },
     },
     "numericDefaultRegion": {
-      "internalResources": {},
       "memoryMap": {
         "value": {
           "byteAddress": 24,
@@ -911,7 +908,6 @@
       },
     },
     "rawAddressDefaultReader": {
-      "internalResources": {},
       "memoryMap": {
         "result": {
           "byteAddress": 8,
@@ -945,7 +941,6 @@
       },
     },
     "rawAddressRegionSource": {
-      "internalResources": {},
       "memoryMap": {
         "source": {
           "byteAddress": 8,
@@ -966,7 +961,6 @@
       },
     },
     "regionCopySource": {
-      "internalResources": {},
       "memoryMap": {
         "values": {
           "byteAddress": 12,
@@ -992,7 +986,6 @@
       },
     },
     "regionPointerReader": {
-      "internalResources": {},
       "memoryMap": {
         "ptr": {
           "byteAddress": 16,
@@ -1030,7 +1023,6 @@
       },
     },
     "regionSamples": {
-      "internalResources": {},
       "memoryMap": {
         "values": {
           "byteAddress": 4,

@@ -13,13 +13,12 @@ import { compileModule } from './compileModule';
 import { collectNamespacesFromASTs } from './semantic/buildNamespace';
 
 /**
- * Compiles validated module ASTs using a shared namespace, allocator, and function type registry.
+ * Compiles validated module ASTs using a shared namespace and function type registry.
  *
  * @param modules - modules value to use.
  * @param options - Compiler options for this compilation pass.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param compiledFunctions - Compiled function metadata available to module compilation.
- * @param internalAllocator - Allocator state for compiler-generated memory resources.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
  * @returns The compiled module artifact.
@@ -29,7 +28,6 @@ export function compileModules(
 	options: CompileOptions,
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionMetadataLookup,
-	internalAllocator?: { nextByteAddress: number },
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule[] {
@@ -37,16 +35,6 @@ export function compileModules(
 	const ns: Namespaces =
 		namespaces ??
 		collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options, prototypeShapes);
-	const allocator = internalAllocator ?? {
-		nextByteAddress: Object.values(ns).reduce((max, namespace) => {
-			if (namespace.memoryIndex !== 0) {
-				return max;
-			}
-			const byteAddress = namespace.byteAddress ?? 0;
-			const wordAlignedSize = namespace.wordAlignedSize ?? 0;
-			return Math.max(max, byteAddress + wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY);
-		}, 0),
-	};
 
 	return modules.map((ast, index) => {
 		const moduleStartingByteAddress =
@@ -57,7 +45,6 @@ export function compileModules(
 			moduleStartingByteAddress,
 			index,
 			compiledFunctions,
-			allocator,
 			options,
 			typeRegistry,
 			prototypeShapes

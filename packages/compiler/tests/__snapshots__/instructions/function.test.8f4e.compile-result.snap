@@ -493,15 +493,12 @@
   },
   "moduleMemory": {
     "functionReturnConstant": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "functionWithParameter": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "functionWithTwoParameters": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

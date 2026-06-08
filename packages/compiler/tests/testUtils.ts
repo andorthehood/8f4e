@@ -5,7 +5,6 @@ import type {
 	CompileResult,
 	CompilerASTLine,
 	DataStructure,
-	InternalResource,
 } from '@8f4e/compiler-spec';
 import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
 import type { ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
@@ -201,20 +200,6 @@ function serializeMemoryData(data: DataStructure): Record<string, unknown> {
 	};
 }
 
-function serializeInternalResource(resource: InternalResource): Record<string, unknown> {
-	return {
-		id: resource.id,
-		storageType: resource.storageType,
-		elementWordSize: resource.elementWordSize,
-		wordAlignedSize: resource.wordAlignedSize,
-		byteAddress: resource.byteAddress,
-		wordAlignedAddress: resource.wordAlignedAddress,
-		memoryIndex: resource.memoryIndex,
-		...(resource.memoryRegionName ? { memoryRegionName: resource.memoryRegionName } : {}),
-		default: resource.default,
-	};
-}
-
 function serializeAstLine(line: CompilerASTLine): Record<string, unknown> {
 	const lineSnapshot: Record<string, unknown> = { ...line };
 
@@ -256,7 +241,6 @@ function serializeCompiledModuleOverview(module: CompiledModule): Record<string,
 function serializeCompiledModuleMemory(module: CompiledModule): Record<string, unknown> {
 	return {
 		memoryMap: sortRecord(module.memoryMap, serializeMemoryData),
-		internalResources: sortRecord(module.internalResources, serializeInternalResource),
 	};
 }
 

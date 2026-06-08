@@ -260,7 +260,6 @@
   },
   "moduleMemory": {
     "countedLoopAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "counter": {
           "byteAddress": 4,
@@ -279,7 +278,6 @@
       },
     },
     "loopCapAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "counter": {
           "byteAddress": 8,

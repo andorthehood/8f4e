@@ -656,7 +656,6 @@
   },
   "moduleMemory": {
     "localShadowMemoryAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "value": {
           "byteAddress": 4,
@@ -676,7 +675,6 @@
       },
     },
     "pointerDereferenceDepthAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "pptr": {
           "byteAddress": 16,
@@ -730,7 +728,6 @@
       },
     },
     "pushLocalAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

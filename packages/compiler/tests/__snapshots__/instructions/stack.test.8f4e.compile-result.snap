@@ -453,19 +453,15 @@
   },
   "moduleMemory": {
     "blockFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "blockIntAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "clearStackAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "dropAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },
