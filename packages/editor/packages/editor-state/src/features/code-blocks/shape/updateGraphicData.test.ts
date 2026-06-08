@@ -3,8 +3,9 @@ import { MemoryTypes } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
 import type { DirectiveDerivedState } from '../features/directives/registry';
+import gaps from '../gaps';
 import { createCodeBlockGraphicData } from '../utils/createCodeBlockGraphicData';
-import shape from './updateGraphicData';
+import shape, { updateShapeDeclarations } from './updateGraphicData';
 
 function createDirectiveState(): DirectiveDerivedState {
 	return {
@@ -107,5 +108,70 @@ describe('shape', () => {
 		shape(module, state, directiveState);
 
 		expect(directiveState.layoutContributions).toEqual([]);
+	});
+
+	it('precomputes inherited declaration labels after gaps are applied', () => {
+		const module = createCodeBlockGraphicData({
+			blockType: 'module',
+			code: ['module filterA', '; @plot other', 'shape filterState', 'moduleEnd'],
+			codeToRender: [[1], [2], [3], [4]],
+			codeColors: [[undefined], [undefined], [undefined], [undefined]],
+			lineNumberColumnWidth: 1,
+		});
+		const state = createMockState({
+			viewport: {
+				vGrid: 8,
+				hGrid: 16,
+			},
+			compiler: {
+				compiledModules: {
+					filterA: {
+						...createCompiledModule({
+							input: createMemory({
+								id: 'input',
+								lineNumber: 2,
+								isInherited: true,
+								type: MemoryTypes['float*'],
+								pointerDepth: 1,
+							}),
+							output: createMemory({ id: 'output', lineNumber: 2, isInherited: true, type: MemoryTypes.int }),
+						}),
+						ast: {
+							...createModuleAst(),
+							lines: [
+								{ lineNumber: 0, instruction: 'module', arguments: [{ value: 'filterA' }] },
+								{ lineNumber: 1, instruction: 'comment', arguments: [] },
+								{ lineNumber: 2, instruction: 'shape', arguments: [{ value: 'filterState' }] },
+								{ lineNumber: 3, instruction: 'moduleEnd', arguments: [] },
+							],
+						},
+					},
+				},
+			},
+		});
+		const directiveState = {
+			...createDirectiveState(),
+			displayModel: {
+				lines: [
+					{ rawRow: 0, text: 'module filterA' },
+					{ rawRow: 1, text: '; @plot other' },
+					{ rawRow: 2, text: 'shape filterState' },
+					{ rawRow: 3, text: 'moduleEnd' },
+				],
+				displayRowToRawRow: [0, 1, 2, 3],
+				rawRowToDisplayRow: [0, 1, 2, 3],
+				isCollapsed: false,
+			},
+			layoutContributions: [{ rawRow: 1, rows: 2 }],
+		};
+
+		shape(module, state, directiveState);
+		gaps(module, directiveState);
+		updateShapeDeclarations(module, state, directiveState);
+
+		expect(module.widgets.shapeDeclarations).toEqual([
+			{ x: 24, y: 80, text: 'float* input' },
+			{ x: 24, y: 96, text: 'int output' },
+		]);
 	});
 });
