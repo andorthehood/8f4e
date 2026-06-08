@@ -918,14 +918,6 @@ export const instructionSpecs = {
 			effect: { consumes: 'all', produces: [], dropped: 'consumed' },
 		}),
 	},
-	// risingEdge (int -- int), risingEdge (float -- int)
-	risingEdge: {
-		sourceArguments: noSourceArguments,
-		placement: modulePlacement,
-		minOperands: 1,
-		docs: { shortDescription: 'Detects when a signal changes from zero to a non-zero value.' },
-		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
-	},
 	// round (float -- float)
 	round: {
 		sourceArguments: noSourceArguments,

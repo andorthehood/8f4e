@@ -1,5 +1,20 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module sequencer
 ; @public
@@ -15,12 +30,13 @@ int _last
 
 int* stepPointer &step1
 int* trigger
+int previousTrigger
 
 int out
 
 ; Increment step pointer
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &stepPointer
 push stepPointer

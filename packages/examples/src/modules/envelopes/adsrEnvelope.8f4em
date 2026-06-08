@@ -1,5 +1,20 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module adsrEnv
 ; @public
@@ -7,6 +22,7 @@ module adsrEnv
 use env
 
 int*	trigger
+int previousTrigger
 int	attackTime SAMPLE_RATE/100
 float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/10
@@ -23,7 +39,7 @@ const	RELEASE 4
 
 ; Start ATTACK
 push	*trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push	&_state
 push	ATTACK
