@@ -551,89 +551,6 @@ push *in
 store
 
 moduleEnd
-module sampleOffset1
-; @pos 195 -72
-; @group ch1
-use mod
-int* row &rowBuffer1:
-int out ;@w
-int memory ;@w
-push &out
-push 0
-store
-
-push *row
-call maskEffect
-push SAMPLE_OFFSET
-equal
-if
-push *row
-call maskParam
-equalToZero
-if
-push &out
-push memory
-store
-else
-push &memory
-push *row
-call maskParam
-push 256
-mul
-store
-
-push &out
-push *row
-call maskParam
-push 256
-mul
-store
-ifEnd
-ifEnd
-
-moduleEnd
-module sampleOffset2
-; @pos 196 -24
-; @group ch2
-use mod
-int* row &rowBuffer2:
-int out ;@w
-int memory ;@w
-
-push &out
-push 0
-store
-
-push *row
-call maskEffect
-push SAMPLE_OFFSET
-equal
-if
-push *row
-call maskParam
-equalToZero
-if
-push &out
-push memory
-store
-else
-push &memory
-push *row
-call maskParam
-push 256
-mul
-store
-
-push &out
-push *row
-call maskParam
-push 256
-mul
-store
-ifEnd
-ifEnd
-
-moduleEnd
 module sampleOffset3
 ; @pos 196 21
 ; @group ch3
@@ -677,7 +594,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset4
-; @pos 196 66
+; @pos 196 68
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -718,16 +635,100 @@ ifEnd
 ifEnd
 
 moduleEnd
-module tempo2
-; @pos 232 -24
+module sampleOffset2
+; @pos 197 -26
 ; @group ch2
 use mod
 int* row &rowBuffer2:
+int out ;@w
+int memory ;@w
+
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module sampleOffset1
+; @pos 198 -73
+; @group ch1
+use mod
+int* row &rowBuffer1:
+int out ;@w
+int memory ;@w
+push &out
+push 0
+store
+
+push *row
+call maskEffect
+push SAMPLE_OFFSET
+equal
+if
+push *row
+call maskParam
+equalToZero
+if
+push &out
+push memory
+store
+else
+push &memory
+push *row
+call maskParam
+push 256
+mul
+store
+
+push &out
+push *row
+call maskParam
+push 256
+mul
+store
+ifEnd
+ifEnd
+
+moduleEnd
+module tempo3
+; @pos 232 21
+; @group ch3
+use mod
+int* row &rowBuffer3:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -753,16 +754,53 @@ ifEnd
 ifEnd
 
 moduleEnd
-module tempo3
-; @pos 232 21
-; @group ch3
+module tempo2
+; @pos 233 -26
+; @group ch2
 use mod
-int* row &rowBuffer3:
+int* row &rowBuffer2:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
+if
+push *row
+call maskEffect
+push SET_SPEED
+equal
+if
+push *row
+call maskParam
+push 32
+greaterOrEqual
+if
+push tempo
+push *row
+call maskParam
+store
+else
+push ticks
+push *row
+call maskParam
+store
+ifEnd
+ifEnd
+ifEnd
+
+moduleEnd
+module tempo4
+; @pos 233 68
+; @group ch4
+use mod
+int* row &rowBuffer4:
+int* tempo &modTickClock:tempo
+int* ticks &modRowClock:ticks
+int* rowCounter &rowCount2:out
+int prevRowCounter
+push *rowCounter
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -789,15 +827,16 @@ ifEnd
 
 moduleEnd
 module tempo1
-; @pos 233 -72
+; @pos 236 -73
 ; @group ch1
 use mod
 int* row &rowBuffer1:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -823,62 +862,6 @@ ifEnd
 ifEnd
 
 moduleEnd
-module tempo4
-; @pos 233 66
-; @group ch4
-use mod
-int* row &rowBuffer4:
-int* tempo &modTickClock:tempo
-int* ticks &modRowClock:ticks
-int* rowCounter &rowCount2:out
-push *rowCounter
-hasChanged
-if
-push *row
-call maskEffect
-push SET_SPEED
-equal
-if
-push *row
-call maskParam
-push 32
-greaterOrEqual
-if
-push tempo
-push *row
-call maskParam
-store
-else
-push ticks
-push *row
-call maskParam
-store
-ifEnd
-ifEnd
-ifEnd
-
-moduleEnd
-module sampleNumber1
-; @pos 272 -72
-; @group ch1
-int* row &rowBuffer1:
-int out
-int param
-
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-store
-ifEnd
-
-moduleEnd
 module sampleNumber3
 ; @pos 273 21
 ; @group ch3
@@ -900,29 +883,8 @@ store
 ifEnd
 
 moduleEnd
-module sampleNumber2
-; @pos 274 -24
-; @group ch2
-int* row &rowBuffer2:
-int out
-int param
-
-; @watch out
-
-push *row
-call maskSampleNumber
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskSampleNumber
-store
-ifEnd
-
-moduleEnd
 module sampleNumber4
-; @pos 274 66
+; @pos 274 68
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -942,30 +904,44 @@ store
 ifEnd
 
 moduleEnd
-module period1
-; @pos 306 -72
+module sampleNumber1
+; @pos 275 -73
 ; @group ch1
 int* row &rowBuffer1:
-int* sampleNumber &sampleNumber1:out
 int out
+int param
 
 ; @watch out
 
 push *row
-call maskPeriod
+call maskSampleNumber
 push 0
 greaterThan
 if
 push &out
 push *row
-call maskPeriod
-castToFloat
-push *sampleNumber
-call sampleNumberToFinetune
-call modFinetune
-mul
-round
-castToInt
+call maskSampleNumber
+store
+ifEnd
+
+moduleEnd
+module sampleNumber2
+; @pos 275 -26
+; @group ch2
+int* row &rowBuffer2:
+int out
+int param
+
+; @watch out
+
+push *row
+call maskSampleNumber
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskSampleNumber
 store
 ifEnd
 
@@ -998,36 +974,8 @@ store
 ifEnd
 
 moduleEnd
-module period2
-; @pos 308 -24
-; @group ch2
-int* row &rowBuffer2:
-int* sampleNumber &sampleNumber2:out
-int out
-
-; @watch out
-
-push *row
-call maskPeriod
-push 0
-greaterThan
-if
-push &out
-push *row
-call maskPeriod
-castToFloat
-push *sampleNumber
-call sampleNumberToFinetune
-call modFinetune
-mul
-round
-castToInt
-store
-ifEnd
-
-moduleEnd
 module period4
-; @pos 308 66
+; @pos 308 68
 ; @group ch4
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
@@ -1054,8 +1002,64 @@ store
 ifEnd
 
 moduleEnd
+module period1
+; @pos 309 -73
+; @group ch1
+int* row &rowBuffer1:
+int* sampleNumber &sampleNumber1:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd
+
+moduleEnd
+module period2
+; @pos 309 -26
+; @group ch2
+int* row &rowBuffer2:
+int* sampleNumber &sampleNumber2:out
+int out
+
+; @watch out
+
+push *row
+call maskPeriod
+push 0
+greaterThan
+if
+push &out
+push *row
+call maskPeriod
+castToFloat
+push *sampleNumber
+call sampleNumberToFinetune
+call modFinetune
+mul
+round
+castToInt
+store
+ifEnd
+
+moduleEnd
 module trigger1
-; @pos 351 -72
+; @pos 354 -73
 ; @group ch1
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -1064,11 +1068,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1080,7 +1085,7 @@ ifEnd
 
 moduleEnd
 module trigger2
-; @pos 353 -24
+; @pos 354 -26
 ; @group ch2
 int* row &rowBuffer2:
 int* rowCounter &rowCount2:out
@@ -1089,11 +1094,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1114,11 +1120,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1130,18 +1137,19 @@ ifEnd
 
 moduleEnd
 module trigger4
-; @pos 354 66
+; @pos 354 68
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
 int* period &period4:out
 int out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1153,7 +1161,7 @@ ifEnd
 
 moduleEnd
 module volume1
-; @pos 390 -72
+; @pos 393 -73
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -1162,11 +1170,12 @@ int previousTick
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
-; @hide
+
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call rowShouldReloadVolume
@@ -1198,7 +1207,7 @@ ifEnd
 
 moduleEnd
 module volume2
-; @pos 392 -24
+; @pos 393 -26
 ; @group ch2
 use mod
 int* row &rowBuffer2:
@@ -1210,8 +1219,9 @@ int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call rowShouldReloadVolume
@@ -1255,8 +1265,9 @@ int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call rowShouldReloadVolume
@@ -1288,7 +1299,7 @@ ifEnd
 
 moduleEnd
 module volume4
-; @pos 393 66
+; @pos 393 68
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -1300,8 +1311,9 @@ int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call rowShouldReloadVolume
@@ -1380,7 +1392,7 @@ int8[] sample15 ASSET_SAMPLE15_SIZE
 ; @wave &sample15 count(sample15)
 moduleEnd
 module samplePack2
-; @pos 489 -15
+; @pos 492 -16
 use env
 int8[] sample16 ASSET_SAMPLE16_SIZE
 ; @config bin.sample16.memory sample16
@@ -1431,22 +1443,21 @@ int8[] sample31 ASSET_SAMPLE31_SIZE
 ; @config bin.sample31.memory sample31
 ; @wave &sample31 count(sample31)
 moduleEnd
-module modSamplePlayer1
-; @pos 545 -7
-; @group ch1
-; @home
+module modSamplePlayer2
+; @pos 546 14
+; @group ch2
 use env
-; @tab 6 20
-int*	period	&period1:out
-int*	offset	&sampleOffset1:out
-int*	trigger	&trigger1:out
-int	previousTrigger
-int*	sampleNumber	&sampleNumber1:out
-int8*	sampleAddress	; @w
-int8*	playhead	; @w
-int	sampleSize	; @w
+; @stop 12 20
+int*  period &period2:out
+int* offset &sampleOffset2:out ; @w *
+int*  trigger &trigger2:out
+int previousTrigger
+int*  sampleNumber &sampleNumber2:out
+int8* sampleAddress ;@w
+int   sampleSize ; @w
+int8* playhead ; @w
 ; @wave2 sampleAddress sampleSize playhead
-float out; @w
+float out ; @w
 ; @hide
 
 float _position
@@ -1534,21 +1545,22 @@ store
 ifEnd
 
 moduleEnd
-module modSamplePlayer2
-; @pos 545 16
-; @group ch2
+module modSamplePlayer1
+; @pos 548 -8
+; @group ch1
+; @home
 use env
-; @stop 12 20
-int*  period &period2:out
-int* offset &sampleOffset2:out ; @w *
-int*  trigger &trigger2:out
-int previousTrigger
-int*  sampleNumber &sampleNumber2:out
-int8* sampleAddress ;@w
-int   sampleSize ; @w
-int8* playhead ; @w
+; @tab 6 20
+int*	period	&period1:out
+int*	offset	&sampleOffset1:out
+int*	trigger	&trigger1:out
+int	previousTrigger
+int*	sampleNumber	&sampleNumber1:out
+int8*	sampleAddress	; @w
+int8*	playhead	; @w
+int	sampleSize	; @w
 ; @wave2 sampleAddress sampleSize playhead
-float out ; @w
+float out; @w
 ; @hide
 
 float _position
@@ -1777,7 +1789,7 @@ ifEnd
 
 moduleEnd
 module modSamplePlayer4
-; @pos 597 16
+; @pos 597 18
 ; @group ch4
 use env
 
@@ -2112,21 +2124,6 @@ ifEnd
 
 moduleEnd
 entryEnd
-
-function risingEdge
-; @pos -113 72
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
-store
-functionEnd int
 
 constants env
 ; @pos 96 -158
@@ -2975,6 +2972,36 @@ push row
 call maskParamLo
 sub
 
+functionEnd int
+
+function risingEdge
+; @pos 688 -113
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
+function hasChanged
+; @pos 722 -113
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push currentValue
+push *previousValue
+notEqual
+push previousValue
+push currentValue
+store
 functionEnd int
 
 constants math
