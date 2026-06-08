@@ -1,5 +1,20 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module pcmPlayer8bit
 ; @public
@@ -9,6 +24,7 @@ int playhead &buffer
 float out
 int startPos
 int* reset
+int previousReset
 
 ; Read sample at playhead
 ; write it to output
@@ -39,7 +55,7 @@ push buffer&
 greaterThan
 ; when reset signal
 push *reset
-risingEdge
+call risingEdge &previousReset
 or
 if
 push &playhead

@@ -79,6 +79,7 @@ module modRowCounter
 ; @pos -84 -28
 use env
 int* trigger &amigaTick:out
+int previousTrigger
 int rowCounter -1
 int* patternPointer &patternOrder:
 int out ; @w
@@ -97,7 +98,7 @@ store
 
 ; Advance the playhead
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &rowCounter
 push rowCounter
@@ -911,6 +912,7 @@ use env
 
 int*	period	&period1:out
 int*	trigger	&trigger1:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber1:out
 int8*	sampleAddress	; @w
 int8*	playhead	; @w
@@ -933,7 +935,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1004,12 +1006,13 @@ ifEnd
 
 moduleEnd
 module modSamplePlayer2
-; @pos 422 13
+; @pos 422 14
 ; @tab 6 20
 use env
 ; @stop 12 20
 int*	period	&period2:out
 int*	trigger	&trigger2:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber2:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1032,7 +1035,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1103,12 +1106,13 @@ ifEnd
 
 moduleEnd
 module modSamplePlayer3
-; @pos 473 -7
+; @pos 475 -7
 ; @tab 6 20
 use env
 
 int*	period	&period3:out
 int*	trigger	&trigger3:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber3:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1131,7 +1135,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1202,12 +1206,13 @@ ifEnd
 
 moduleEnd
 module modSamplePlayer4
-; @pos 473 13
+; @pos 475 14
 ; @tab 6 20
 use env
 
 int*	period	&period4:out
 int*	trigger	&trigger4:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber4:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1230,7 +1235,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1572,6 +1577,7 @@ ifEnd
 
 moduleEnd
 entryEnd
+
 note
 ; @pos -25 -1
 ; @stop 3 10 left @hidden
@@ -1606,192 +1612,6 @@ note
 ; at what pitch, and which effect to apply.
 noteEnd
 
-note fragmentShaderPostprocess
-; @pos 80 83
-#version 300 es
-
-precision mediump float;
-
-// Ported to GLSL ES 3.00 from 0xhckr/ghostty-shaders crt.glsl.
-
-#define SCALE 0.7
-#define CRTS_WARP 0
-#define MIN_VIN 0.5
-#define CRTS_MASK_SHADOW 1
-#define INPUT_THIN 0.6
-#define INPUT_BLUR -2.0
-#define INPUT_MASK 0.8
-
-in vec2 v_screenCoord;
-uniform vec2 u_resolution;
-uniform sampler2D u_renderTexture;
-out vec4 outColor;
-
-float fromSrgb1(float c) {
-  return c <= 0.04045 ? c * (1.0 / 12.92) : pow(c * (1.0 / 1.055) + (0.055 / 1.055), 2.4);
-}
-
-vec3 fromSrgb(vec3 c) {
-  return vec3(fromSrgb1(c.r), fromSrgb1(c.g), fromSrgb1(c.b));
-}
-
-vec3 crtsFetch(vec2 uv) {
-  return fromSrgb(texture(u_renderTexture, uv).rgb);
-}
-
-#define CrtsRcpF1(x) (1.0 / (x))
-#define CrtsSatF1(x) clamp((x), 0.0, 1.0)
-
-float crtsMax3F1(float a, float b, float c) {
-  return max(a, max(b, c));
-}
-
-vec2 crtsTone(float thin, float mask) {
-  vec2 ret;
-  float midOut = 0.18 / ((1.5 - thin) * (0.5 * mask + 0.5));
-  float pMidIn = 0.18;
-  ret.x = ((-pMidIn) + midOut) / ((1.0 - pMidIn) * midOut);
-  ret.y = ((-pMidIn) * midOut + pMidIn) / (midOut * (-pMidIn) + midOut);
-  return ret;
-}
-
-vec3 crtsMask(vec2 pos, float dark) {
-#ifdef CRTS_MASK_SHADOW
-  pos.x += pos.y * 3.0;
-  vec3 mask = vec3(dark);
-  float x = fract(pos.x * (1.0 / 6.0));
-
-  if (x < (1.0 / 3.0)) {
-    mask.r = 1.0;
-  } else if (x < (2.0 / 3.0)) {
-    mask.g = 1.0;
-  } else {
-    mask.b = 1.0;
-  }
-
-  return mask;
-#else
-  return vec3(1.0);
-#endif
-}
-
-vec3 crtsFilter(
-  vec2 ipos,
-  vec2 inputSizeDivOutputSize,
-  vec2 halfInputSize,
-  vec2 rcpInputSize,
-  vec2 rcpOutputSize,
-  vec2 twoDivOutputSize,
-  float inputHeight,
-  vec2 warp,
-  float thin,
-  float blur,
-  float mask,
-  vec2 tone
-) {
-  vec2 pos;
-#ifdef CRTS_WARP
-  pos = ipos * twoDivOutputSize - vec2(1.0);
-  pos *= vec2(
-    1.0 + pos.y * pos.y * warp.x,
-    1.0 + pos.x * pos.x * warp.y
-  );
-
-  float vin = 1.0 - ((1.0 - CrtsSatF1(pos.x * pos.x)) * (1.0 - CrtsSatF1(pos.y * pos.y)));
-  vin = CrtsSatF1((-vin) * inputHeight + inputHeight);
-  pos = pos * halfInputSize + halfInputSize;
-#else
-  pos = ipos * inputSizeDivOutputSize;
-#endif
-
-  float y0 = floor(pos.y - 0.5) + 0.5;
-  float x0 = floor(pos.x - 1.5) + 0.5;
-
-  vec2 p = vec2(x0 * rcpInputSize.x, y0 * rcpInputSize.y);
-  vec3 colA0 = crtsFetch(p);
-  p.x += rcpInputSize.x;
-  vec3 colA1 = crtsFetch(p);
-  p.x += rcpInputSize.x;
-  vec3 colA2 = crtsFetch(p);
-  p.x += rcpInputSize.x;
-  vec3 colA3 = crtsFetch(p);
-  p.y += rcpInputSize.y;
-  vec3 colB3 = crtsFetch(p);
-  p.x -= rcpInputSize.x;
-  vec3 colB2 = crtsFetch(p);
-  p.x -= rcpInputSize.x;
-  vec3 colB1 = crtsFetch(p);
-  p.x -= rcpInputSize.x;
-  vec3 colB0 = crtsFetch(p);
-
-  float off = pos.y - y0;
-  float pi2 = 6.28318530717958;
-  float hlf = 0.5;
-  float scanA = cos(min(0.5, off * thin) * pi2) * hlf + hlf;
-  float scanB = cos(min(0.5, (-off) * thin + thin) * pi2) * hlf + hlf;
-
-  float off0 = pos.x - x0;
-  float off1 = off0 - 1.0;
-  float off2 = off0 - 2.0;
-  float off3 = off0 - 3.0;
-  float pix0 = exp2(blur * off0 * off0);
-  float pix1 = exp2(blur * off1 * off1);
-  float pix2 = exp2(blur * off2 * off2);
-  float pix3 = exp2(blur * off3 * off3);
-  float pixT = CrtsRcpF1(pix0 + pix1 + pix2 + pix3);
-
-#ifdef CRTS_WARP
-  pixT *= max(MIN_VIN, vin);
-#endif
-
-  scanA *= pixT;
-  scanB *= pixT;
-
-  vec3 color =
-    (colA0 * pix0 + colA1 * pix1 + colA2 * pix2 + colA3 * pix3) * scanA +
-    (colB0 * pix0 + colB1 * pix1 + colB2 * pix2 + colB3 * pix3) * scanB;
-
-  color *= crtsMask(ipos, mask);
-
-  float peak = max(1.0 / (256.0 * 65536.0), crtsMax3F1(color.r, color.g, color.b));
-  vec3 ratio = color * CrtsRcpF1(peak);
-  peak = peak * CrtsRcpF1(peak * tone.x + tone.y);
-  return ratio * peak;
-}
-
-float toSrgb1(float c) {
-  return c < 0.0031308 ? c * 12.92 : 1.055 * pow(c, 0.41666) - 0.055;
-}
-
-vec3 toSrgb(vec3 c) {
-  return vec3(toSrgb1(c.r), toSrgb1(c.g), toSrgb1(c.b));
-}
-
-void main() {
-  vec2 resolution = max(u_resolution, vec2(1.0));
-  float aspect = resolution.x / resolution.y;
-  vec2 fragCoord = v_screenCoord * resolution;
-  vec2 inputSize = resolution * SCALE;
-
-  vec3 color = crtsFilter(
-    fragCoord,
-    vec2(1.0),
-    inputSize * 0.5,
-    1.0 / inputSize,
-    1.0 / resolution,
-    2.0 / resolution,
-    resolution.y,
-    vec2(1.0 / (50.0 * aspect), 1.0 / 50.0),
-    INPUT_THIN,
-    INPUT_BLUR,
-    INPUT_MASK,
-    crtsTone(INPUT_THIN, INPUT_MASK)
-  );
-
-  outColor = vec4(toSrgb(color), 1.0);
-}
-noteEnd
-
 constants env
 ; @pos 91 -140
 ; @favorite
@@ -1802,14 +1622,6 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
-; 'patterns_ch1.bin'
-const ASSET_CH1_SIZE 6144
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 6144
-; 'patterns_ch3.bin'
-const ASSET_CH3_SIZE 6144
-; 'patterns_ch4.bin'
-const ASSET_CH4_SIZE 6144
 ; 'sample_1.bin'
 const ASSET_SAMPLE1_SIZE 9964
 ; 'sample_2.bin'
@@ -1834,6 +1646,14 @@ const ASSET_SAMPLE10_SIZE 9550
 const ASSET_SAMPLE11_SIZE 9906
 ; 'sample_12.bin'
 const ASSET_SAMPLE12_SIZE 9000
+; 'patterns_ch1.bin'
+const ASSET_CH1_SIZE 6144
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 6144
+; 'patterns_ch3.bin'
+const ASSET_CH3_SIZE 6144
+; 'patterns_ch4.bin'
+const ASSET_CH4_SIZE 6144
 
 constantsEnd
 
@@ -2176,7 +1996,7 @@ note
 noteEnd
 
 note
-; @pos 420 34
+; @pos 421 36
 ; @stop 10 10 bottom @hidden
 ;                                          .
 ; The sample players read from these     .:;:.
@@ -2184,6 +2004,21 @@ note
 ; different speeds to change pitch.      ;;;;;
 ;                                        ;;;;;
 noteEnd
+
+function risingEdge
+; @pos 450 -110
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
 
 function sampleNumberToRepeatOffset
 ; @pos 452 -163

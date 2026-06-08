@@ -104,7 +104,6 @@ constants instructionSet
 ; ensureNonZero	Replace zero with a safe non-zero value.
 ;
 ; Signal helpers
-; risingEdge	Detect a rising edge.
 ; hasChanged	Detect whether a value changed.
 
 constantsEnd
