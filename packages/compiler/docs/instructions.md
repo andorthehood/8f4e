@@ -38,7 +38,6 @@
   - [blockEnd](instructions/control-flow.md#blockend)
   - [branch](instructions/control-flow.md#branch)
   - [branchIfTrue](instructions/control-flow.md#branchiftrue)
-  - [branchIfUnchanged](instructions/control-flow.md#branchifunchanged)
   - [else](instructions/control-flow.md#else)
   - [if](instructions/control-flow.md#if)
   - [ifEnd](instructions/control-flow.md#ifend)
@@ -105,7 +104,6 @@
 
 - [Signal helpers](instructions/signal-helpers.md)
   - [risingEdge](instructions/signal-helpers.md#risingedge)
-  - [fallingEdge](instructions/signal-helpers.md#fallingedge)
   - [hasChanged](instructions/signal-helpers.md#haschanged)
 
 - [Testing](instructions/testing.md)
