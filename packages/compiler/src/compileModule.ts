@@ -70,6 +70,7 @@ export function compileModule(
 			consts: {},
 			moduleName: undefined,
 			functions,
+			prototypeShapeIds: [...layoutContext.namespace.prototypeShapeIds],
 		},
 		locals: {},
 		internalResources: {},
@@ -85,6 +86,7 @@ export function compileModule(
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
 		functionTypeRegistry: typeRegistry,
+		prototypeShapes,
 		projectBlockId: ast.projectBlockId,
 	});
 

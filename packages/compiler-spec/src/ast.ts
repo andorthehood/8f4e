@@ -90,6 +90,7 @@ export type PrototypeLine = ASTLineBase<'prototype', [ArgumentIdentifier]>;
 export type PrototypeEndLine = ASTLineBase<'prototypeEnd', []>;
 export type ShapeLine = ASTLineBase<'shape', [ArgumentIdentifier]>;
 export type ParamShapeLine = ASTLineBase<'paramShape', [ArgumentIdentifier]>;
+export type PushShapeLine = ASTLineBase<'pushShape', [ArgumentIdentifier]>;
 export type ReferencedNamespaceIdsMetadata = {
 	referencedNamespaceIds?: readonly string[];
 };
@@ -193,6 +194,7 @@ type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| PrototypeEndLine
 	| ShapeLine
 	| ParamShapeLine
+	| PushShapeLine
 	| UseLine
 	| LocalDeclarationLine
 	| ParamLine

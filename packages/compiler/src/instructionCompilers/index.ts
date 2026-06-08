@@ -53,6 +53,7 @@ import or from './or';
 import param from './param';
 import paramShape from './paramShape';
 import push from './push';
+import pushShape from './pushShape';
 import remainder from './remainder';
 import _return from './return';
 import risingEdge from './risingEdge';
@@ -97,6 +98,7 @@ const instructions = {
 	branchIfTrue,
 	exitIfTrue,
 	push,
+	pushShape,
 	block,
 	blockEnd,
 	lessOrEqual,

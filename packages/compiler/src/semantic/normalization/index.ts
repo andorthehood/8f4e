@@ -10,6 +10,7 @@ import normalizeMap from './map';
 import normalizeMemoryCopy from './memoryCopy';
 import normalizeMemoryDeclaration from './memoryDeclaration';
 import normalizePush from './push';
+import normalizePushShape from './pushShape';
 
 const instructionNormalizers = {
 	call: normalizeCall,
@@ -23,6 +24,7 @@ const instructionNormalizers = {
 	map: normalizeMap,
 	memoryCopy: normalizeMemoryCopy,
 	push: normalizePush,
+	pushShape: normalizePushShape,
 } as const;
 
 /**

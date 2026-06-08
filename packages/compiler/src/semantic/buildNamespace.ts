@@ -169,6 +169,7 @@ function createNamespaceBuildContext(
 			consts: {},
 			moduleName: undefined,
 			functions,
+			prototypeShapeIds: [],
 		},
 		locals: {},
 		internalResources: {},

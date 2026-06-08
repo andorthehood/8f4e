@@ -195,6 +195,13 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.PUSH_SHAPE_REQUIRES_MODULE_SHAPE:
+			return {
+				code,
+				message: 'pushShape requires the current module to declare the requested shape. (' + code + ')',
+				line,
+				context,
+			};
 		case ErrorCode.INVALID_FUNCTION_SIGNATURE:
 			return {
 				code,
