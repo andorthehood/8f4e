@@ -203,6 +203,14 @@ function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSource, c
 	}
 }
 
+function pruneCompilerCache(cache: CompilerCache, activeCacheKeys: ReadonlySet<string>): void {
+	for (const cacheKey of cache.ast.entries.keys()) {
+		if (!activeCacheKeys.has(cacheKey)) {
+			cache.ast.entries.delete(cacheKey);
+		}
+	}
+}
+
 function expandCompilerSource(
 	module: Module,
 	macroDefinitions: Map<string, MacroDefinition>,
@@ -259,6 +267,12 @@ export function compileSubProgram(
 	const expandedFunctions = functions.map((func, index) => {
 		return expandCompilerSource(func, macroDefinitions, `function:${index}`);
 	});
+	const activeCacheKeys = new Set([
+		...expandedPrototypes.map(source => source.cacheKey),
+		...expandedModuleSources.map(source => source.cacheKey),
+		...expandedConstants.map(source => source.cacheKey),
+		...expandedFunctions.map(source => source.cacheKey),
+	]);
 
 	const astModuleEntries = expandedModuleSources.map(source => {
 		const ast = compileSourceToAST<ValidatedModuleAST>(source, cache);
@@ -352,6 +366,7 @@ export function compileSubProgram(
 	);
 	const initialMemoryDataSegments = createInitialMemoryDataSegments(compiledModules);
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(module => [module.id, module]));
+	pruneCompilerCache(cache, activeCacheKeys);
 
 	return {
 		entryNames,
