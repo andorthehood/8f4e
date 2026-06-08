@@ -19,7 +19,7 @@ Raw compile duration is a weak primary metric because it varies by machine, runn
 This should catch cases such as:
 
 - a lookup path accidentally becoming quadratic
-- macro expansion or semantic normalization doing repeated full-program scans
+- semantic normalization doing repeated full-program scans
 - memory or function resolution retaining more data than expected
 - a helper suddenly dominating V8 CPU profile samples
 
@@ -44,7 +44,7 @@ Start with generated fixtures that stress different compiler paths:
 - `linear-instructions` - many independent instructions for baseline throughput
 - `many-locals` - many local declarations and reads to catch local lookup regressions
 - `many-functions` - many functions and calls to catch function resolution regressions
-- `nested-macros` - macro expansion pressure
+- `nested-functions` - call/function metadata pressure
 - `memory-heavy` - many memory declarations and accesses
 - `large-real-example` - one real project fixture to keep synthetic coverage grounded
 
@@ -113,7 +113,7 @@ Suggested record shape:
 ## Success Criteria
 
 - [ ] Compiler complexity metrics are logged per release without relying on absolute wall-clock time as the primary signal.
-- [ ] Generated fixture families cover linear instructions, locals, functions, macros, memory-heavy programs, and one real project.
+- [ ] Generated fixture families cover linear instructions, locals, functions, memory-heavy programs, and one real project.
 - [ ] Logs contain enough V8/Node metadata to explain runtime differences.
 - [ ] The metrics dashboard can graph fixture-size curves and adjacent-size ratios.
 - [ ] Obvious superlinear regressions are visible from the dashboard without opening profiler artifacts manually.

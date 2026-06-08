@@ -4,7 +4,6 @@ import { getDocumentProjectBlockType, getProjectBlockType } from './blockClassif
 
 const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
-const validMacroBlock = ['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'];
 const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd'];
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
 
@@ -13,7 +12,6 @@ describe('getDocumentProjectBlockType', () => {
 		expect(getDocumentProjectBlockType(validModuleBlock)).toBe('module');
 		expect(getDocumentProjectBlockType(validFunctionBlock)).toBe('function');
 		expect(getDocumentProjectBlockType(['constants', 'constantsEnd'])).toBe('constants');
-		expect(getDocumentProjectBlockType(validMacroBlock)).toBe('macro');
 		expect(getDocumentProjectBlockType(validPrototypeBlock)).toBe('prototype');
 		expect(getDocumentProjectBlockType(validNoteBlock)).toBe('note');
 	});
@@ -30,7 +28,6 @@ describe('getProjectBlockType', () => {
 		expect(getProjectBlockType(validModuleBlock)).toBe('module');
 		expect(getProjectBlockType(validFunctionBlock)).toBe('function');
 		expect(getProjectBlockType(['constants', 'constantsEnd'])).toBe('constants');
-		expect(getProjectBlockType(validMacroBlock)).toBe('macro');
 		expect(getProjectBlockType(validPrototypeBlock)).toBe('prototype');
 	});
 

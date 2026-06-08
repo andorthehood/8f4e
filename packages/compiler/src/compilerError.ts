@@ -281,41 +281,6 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.DUPLICATE_MACRO_NAME:
-			return {
-				code,
-				message: 'Duplicate macro name. Each macro must have a unique name. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.MISSING_MACRO_END:
-			return {
-				code,
-				message: 'Missing defineMacroEnd. Each defineMacro must be closed with defineMacroEnd. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.UNDEFINED_MACRO:
-			return {
-				code,
-				message: 'Undefined macro. The macro referenced has not been defined. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.NESTED_MACRO_DEFINITION:
-			return {
-				code,
-				message: 'Nested macro definitions are not allowed. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.NESTED_MACRO_CALL:
-			return {
-				code,
-				message: 'Macro calls inside macro definitions are not allowed. (' + code + ')',
-				line,
-				context,
-			};
 		case ErrorCode.COMPILER_DIRECTIVE_INVALID_CONTEXT:
 			return {
 				code,

@@ -35,17 +35,6 @@
     },
   ],
   "groups": [],
-  "macroBlocks": [
-    {
-      "code": [
-        "defineMacro double",
-        "push 2",
-        "mul",
-        "defineMacroEnd",
-      ],
-      "projectBlockId": 25,
-    },
-  ],
   "prototypeBlocks": [
     {
       "code": [

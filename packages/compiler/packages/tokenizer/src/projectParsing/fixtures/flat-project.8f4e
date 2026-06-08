@@ -22,11 +22,6 @@ float phase
 float frequency 440
 prototypeEnd
 
-defineMacro double
-push 2
-mul
-defineMacroEnd
-
 note
 ; @pos 1 2
 remember to tune this later
