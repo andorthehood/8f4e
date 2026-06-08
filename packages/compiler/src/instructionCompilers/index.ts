@@ -25,7 +25,6 @@ import functionEnd from './functionEnd';
 import greaterOrEqual from './greaterOrEqual';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import greaterThan from './greaterThan';
-import hasChanged from './hasChanged';
 import _if from './if';
 import ifEnd from './ifEnd';
 import importFunction from './importFunction';
@@ -118,7 +117,6 @@ const instructions = {
 	castToFloat64,
 	drop,
 	clearStack,
-	hasChanged,
 	abs,
 	equal,
 	sqrt,
