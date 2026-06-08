@@ -68,10 +68,11 @@ Active todo files are listed below.
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
 | 435 | Add polymorphic function overloads | 🟡 | 1-2d | 2026-05-29 | Allow global functions to share a source name when their exact parameter signatures differ, using signature-derived ids and stack-based call resolution. |
-| 443 | Add prototype body expansion | 🟡 | 1-2d | 2026-06-01 | Let prototypes define executable body lines that consuming modules can explicitly expand after importing the prototype memory shape. |
 | 445 | Skip macro expansion when blocks have no macro calls | 🟡 | 4-8h | 2026-06-01 | Avoid unnecessary macro expansion scans when there are no macro definitions or when parser metadata shows a block has no macro calls. |
 | 446 | Store project block type during project parse | 🟡 | 2-4h | 2026-06-01 | Carry parser-known project block type metadata forward so compiler block picking does not rescan raw block source. |
 | 448 | Move prototype content validation to parser | 🟡 | 4-8h | 2026-06-01 | Move executable-line rejection for prototypes from compiler-side `parsePrototypeAST()` into parser-owned block validation. |
+| 449 | Add function paramShape instruction | 🟡 | 1-2d | 2026-06-08 | Let functions import a prototype-shaped pointer parameter list with `paramShape`, keeping prototypes memory-shape-only and behavior in normal functions. |
+| 450 | Generalize instruction placement config | 🟡 | 4-8h | 2026-06-08 | Make instruction placement metadata generic enough to express shared source-placement checks, starting with named prologue rules for directives and function parameters. |
 
 ### 🟢 Low Priority
 

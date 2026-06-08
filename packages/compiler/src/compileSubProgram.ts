@@ -295,6 +295,7 @@ export function compileSubProgram(
 		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
 		reservedFunctionIds: entryNames,
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
+		prototypeShapes: prototypeShapesById,
 	});
 	const functionMetadata = { ...entryFunctionMetadata, ...userFunctionMetadata };
 
@@ -305,14 +306,7 @@ export function compileSubProgram(
 	};
 
 	const compiledFunctions = astFunctions.map(ast =>
-		compileFunction(
-			ast,
-			namespaces,
-			functionMetadata[ast.id].wasmIndex,
-			functionTypeRegistry,
-			functionMetadata,
-			options
-		)
+		compileFunction(ast, namespaces, functionTypeRegistry, functionMetadata[ast.id], functionMetadata, options)
 	);
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);

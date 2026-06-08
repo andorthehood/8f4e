@@ -266,6 +266,7 @@ function serializeCompiledFunctionOverview(func: CompiledFunction): Record<strin
 		signature: func.signature,
 		...(func.import ? { import: func.import } : {}),
 		...(func.exportName ? { exportName: func.exportName } : {}),
+		...(func.paramShapeExpansions ? { paramShapeExpansions: func.paramShapeExpansions } : {}),
 	};
 }
 

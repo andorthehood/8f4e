@@ -8,7 +8,7 @@ import functionEnd from './functionEnd';
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('functionEnd instruction compiler', () => {
-	it('updates function signature and clears stack', () => {
+	it('registers the function type and clears stack', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				...createInstructionCompilerTestContext().blockStack,
@@ -17,7 +17,8 @@ describe('functionEnd instruction compiler', () => {
 					expectedResultTypes: [],
 				},
 			],
-			currentFunctionSignature: { parameters: ['int'], returns: [] },
+			currentFunctionMetadata: { id: 'test', signature: { parameters: ['int'], returns: ['int'] }, wasmIndex: 0 },
+			currentFunctionParameterCount: 1,
 			functionTypeRegistry: {
 				baseTypeIndex: 0,
 				signatures: [],
@@ -39,7 +40,6 @@ describe('functionEnd instruction compiler', () => {
 		expect({
 			stack: context.stack,
 			blockStack: context.blockStack,
-			currentFunctionSignature: context.currentFunctionSignature,
 			functionTypeRegistry: {
 				baseTypeIndex: context.functionTypeRegistry?.baseTypeIndex,
 				signatureCount: context.functionTypeRegistry?.signatures.length,
@@ -58,7 +58,12 @@ describe('functionEnd instruction compiler', () => {
 					expectedResultTypes: [],
 				},
 			],
-			currentFunctionSignature: { parameters: ['float64'], returns: [] },
+			currentFunctionMetadata: {
+				id: 'test',
+				signature: { parameters: ['float64'], returns: ['float64'] },
+				wasmIndex: 0,
+			},
+			currentFunctionParameterCount: 1,
 			functionTypeRegistry: {
 				baseTypeIndex: 0,
 				signatures: [],
@@ -80,7 +85,6 @@ describe('functionEnd instruction compiler', () => {
 		expect({
 			stack: context.stack,
 			blockStack: context.blockStack,
-			currentFunctionSignature: context.currentFunctionSignature,
 			functionTypeRegistry: {
 				baseTypeIndex: context.functionTypeRegistry?.baseTypeIndex,
 				signatureCount: context.functionTypeRegistry?.signatures.length,
@@ -105,7 +109,8 @@ describe('functionEnd instruction compiler', () => {
 						expectedResultTypes: [],
 					},
 				],
-				currentFunctionSignature: { parameters: ['int'], returns: [] },
+				currentFunctionMetadata: { id: 'test', signature: { parameters: ['int'], returns: ['int'] }, wasmIndex: 0 },
+				currentFunctionParameterCount: 1,
 				functionTypeRegistry,
 			});
 		const line = {

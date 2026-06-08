@@ -53,6 +53,7 @@ import notEqual from './notEqual';
 import notZero from './notZero';
 import or from './or';
 import param from './param';
+import paramShape from './paramShape';
 import push from './push';
 import remainder from './remainder';
 import _return from './return';
@@ -132,6 +133,7 @@ const instructions = {
 	functionEnd,
 	return: _return,
 	param,
+	paramShape,
 	call,
 	'#skipExecution': skipExecution,
 	'#impure': impure,
