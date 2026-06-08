@@ -102,6 +102,7 @@ module modRowClock
 ; @pos -107 -28
 use env
 int* tick &modTickClock:out
+int previousTick
 int ticks 6 ; @w
 int out
 int counter
@@ -111,7 +112,7 @@ push 0
 store
 
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push counter
 push 1
@@ -141,6 +142,7 @@ module modRowCounter
 ; @pos -71 -28
 use env
 int* trigger &modRowClock:out
+int previousTrigger
 int rowCounter -1
 int* patternPointer &patternOrder:0
 int out ; @w
@@ -151,7 +153,7 @@ int out ; @w
 
 ; Advance the playhead
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &rowCounter
 push rowCounter
@@ -1161,6 +1163,7 @@ module volume1
 use mod
 int* row &rowBuffer1:
 int* tick &modTickClock:out
+int previousTick
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
@@ -1186,7 +1189,7 @@ push *rowTrigger
 equalToZero
 if
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &out
 push out
@@ -1205,6 +1208,7 @@ module volume2
 use mod
 int* row &rowBuffer2:
 int* tick &modTickClock:out
+int previousTick
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
@@ -1230,7 +1234,7 @@ push *rowTrigger
 equalToZero
 if
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &out
 push out
@@ -1249,6 +1253,7 @@ module volume3
 use mod
 int* row &rowBuffer3:
 int* tick &modTickClock:out
+int previousTick
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
@@ -1274,7 +1279,7 @@ push *rowTrigger
 equalToZero
 if
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &out
 push out
@@ -1293,6 +1298,7 @@ module volume4
 use mod
 int* row &rowBuffer4:
 int* tick &modTickClock:out
+int previousTick
 int* rowTrigger &modRowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
@@ -1318,7 +1324,7 @@ push *rowTrigger
 equalToZero
 if
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &out
 push out
@@ -1429,6 +1435,7 @@ use env
 int*	period	&period1:out
 int*	offset	&sampleOffset1:out
 int*	trigger	&trigger1:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber1:out
 int8*	sampleAddress	; @w
 int8*	playhead	; @w
@@ -1451,7 +1458,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1523,12 +1530,13 @@ ifEnd
 
 moduleEnd
 module modSamplePlayer2
-; @pos 545 14
+; @pos 545 15
 use env
 ; @tab 6 20
 int*	period	&period2:out
 int*	offset	&sampleOffset2:out
 int*	trigger	&trigger2:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber2:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1551,7 +1559,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1629,6 +1637,7 @@ use env
 int*	period	&period3:out
 int*	offset	&sampleOffset3:out
 int*	trigger	&trigger3:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber3:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1651,7 +1660,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1723,12 +1732,13 @@ ifEnd
 
 moduleEnd
 module modSamplePlayer4
-; @pos 597 14
+; @pos 597 15
 use env
 ; @tab 6 20
 int*	period	&period4:out
 int*	offset	&sampleOffset4:out
 int*	trigger	&trigger4:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber4:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1751,7 +1761,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -2089,6 +2099,7 @@ ifEnd
 
 moduleEnd
 entryEnd
+
 constants env
 ; @pos 108 -215
 ; @favorite
@@ -2099,14 +2110,6 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 ; Binary asset sizes in bytes
-; 'patterns_ch1.bin'
-const ASSET_CH1_SIZE 7680
-; 'patterns_ch2.bin'
-const ASSET_CH2_SIZE 7680
-; 'patterns_ch3.bin'
-const ASSET_CH3_SIZE 7680
-; 'patterns_ch4.bin'
-const ASSET_CH4_SIZE 7680
 ; 'sample_1.pcm'
 const ASSET_SAMPLE1_SIZE 60370
 ; 'sample_2.pcm'
@@ -2161,6 +2164,14 @@ const ASSET_SAMPLE25_SIZE 40704
 const ASSET_SAMPLE26_SIZE 40704
 ; 'sample_27.pcm'
 const ASSET_SAMPLE27_SIZE 40704
+; 'patterns_ch1.bin'
+const ASSET_CH1_SIZE 7680
+; 'patterns_ch2.bin'
+const ASSET_CH2_SIZE 7680
+; 'patterns_ch3.bin'
+const ASSET_CH3_SIZE 7680
+; 'patterns_ch4.bin'
+const ASSET_CH4_SIZE 7680
 
 constantsEnd
 
@@ -2869,6 +2880,21 @@ ifEnd
 
 push 0
 
+functionEnd int
+
+function risingEdge
+; @pos 633 -78
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
 functionEnd int
 
 function rowShouldReloadVolume
