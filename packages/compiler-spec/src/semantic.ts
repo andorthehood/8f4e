@@ -30,7 +30,12 @@ import type {
 	UseLine,
 	ValidatedPrototypeAST,
 } from './ast';
-import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
+import type {
+	FunctionMetadata,
+	FunctionMetadataLookup,
+	FunctionParamShapeExpansion,
+	FunctionTypeRegistry,
+} from './compiled';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type {
@@ -217,6 +222,7 @@ export interface FunctionCompilationContext extends CompilationContext {
 	currentFunctionSignature: FunctionSignature;
 	currentFunctionTypeIndex?: number;
 	functionTypeRegistry: FunctionTypeRegistry;
+	currentFunctionParamShapeExpansions?: readonly FunctionParamShapeExpansion[];
 }
 
 export type StackValueType = 'int' | 'float' | 'float64';

@@ -22,7 +22,7 @@ import {
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
-import { getEffectiveFunctionSignature, getFunctionParamShapeExpansions } from '../prototypes/paramShape';
+import { getEffectiveFunctionMetadata } from '../prototypes/paramShape';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
@@ -103,15 +103,15 @@ export function collectFunctionMetadataFromAsts(
 			seenExportNames.add(exportName);
 		}
 
-		const paramShapeExpansions = getFunctionParamShapeExpansions(ast, options.prototypeShapes);
+		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
 		result[id] = {
 			id,
-			signature: getEffectiveFunctionSignature(ast, options.prototypeShapes),
+			signature: functionMetadata.signature,
 			wasmIndex: importedFunction
 				? options.importedFunctionBaseIndex + importedFunctionIndex++
 				: options.definedFunctionBaseIndex + definedFunctionIndex++,
 			...(importedFunction ? { import: importedFunction } : {}),
-			...(paramShapeExpansions.length > 0 ? { paramShapeExpansions } : {}),
+			...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		};
 	}
 

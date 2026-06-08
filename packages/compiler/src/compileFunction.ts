@@ -8,7 +8,6 @@ import type {
 	FunctionTypeRegistry,
 	Namespaces,
 	ValidatedFunctionAST,
-	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 import {
@@ -21,7 +20,6 @@ import {
 import { compileLine, toCompiledStackAnalysisLine } from './compileLine';
 import { getError } from './compilerError';
 import instructions from './instructionCompilers';
-import { getFunctionParamShapeExpansions } from './prototypes/paramShape';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 
@@ -45,7 +43,6 @@ const importedFunctionAllowedInstructions = new Set([
  *
  * @param ast - Validated AST being processed.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
- * @param wasmIndex - Assigned WASM function index.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param functions - Function metadata lookup available to compilation.
  * @param options - Compiler options for this compilation pass.
@@ -54,19 +51,22 @@ const importedFunctionAllowedInstructions = new Set([
 export function compileFunction(
 	ast: ValidatedFunctionAST,
 	namespaces: Namespaces,
-	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
-	functions?: FunctionMetadataLookup,
-	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>> = {},
+	functions: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
+	const functionMetadata = functions[ast.id];
+	if (!functionMetadata) {
+		throw new Error(`Missing function metadata for "${ast.id}".`);
+	}
+
 	const context = createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces,
 			memory: {},
 			consts: {},
 			moduleName: undefined,
-			functions: functions ?? {},
+			functions,
 		},
 		locals: {},
 		internalResources: {},
@@ -89,7 +89,7 @@ export function compileFunction(
 			returns: [],
 		},
 		functionTypeRegistry: typeRegistry,
-		prototypeShapes,
+		currentFunctionParamShapeExpansions: functionMetadata.paramShapeExpansions,
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
@@ -127,11 +127,10 @@ export function compileFunction(
 		}));
 
 	const completedContext = context as CompletedFunctionCompilationContext;
-	const paramShapeExpansions = getFunctionParamShapeExpansions(ast, prototypeShapes);
 
 	return {
 		id: ast.id,
-		signature: completedContext.currentFunctionSignature,
+		signature: functionMetadata.signature,
 		body: completedContext.currentFunctionImport
 			? []
 			: createFunction(
@@ -146,10 +145,10 @@ export function compileFunction(
 		locals: completedContext.currentFunctionImport ? [] : localDeclarations,
 		...(completedContext.currentFunctionExportName ? { exportName: completedContext.currentFunctionExportName } : {}),
 		...(completedContext.currentFunctionImport ? { import: completedContext.currentFunctionImport } : {}),
-		wasmIndex,
+		wasmIndex: functionMetadata.wasmIndex,
 		typeIndex: completedContext.currentFunctionTypeIndex,
 		ast,
-		...(paramShapeExpansions.length > 0 ? { paramShapeExpansions } : {}),
+		...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};
 }

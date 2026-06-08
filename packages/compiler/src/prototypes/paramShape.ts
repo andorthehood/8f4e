@@ -3,8 +3,8 @@ import {
 	type CompilerDiagnosticContext,
 	ErrorCode,
 	FUNCTION_TYPE_IDENTIFIERS,
+	type FunctionMetadata,
 	type FunctionParamShapeExpansion,
-	type FunctionSignature,
 	type FunctionValueType,
 	type MemoryDeclarationLine,
 	type ParamShapeLine,
@@ -86,36 +86,32 @@ export function getParamShapeExpansion(
 	};
 }
 
-export function getFunctionParamShapeExpansions(
+export function getEffectiveFunctionMetadata(
 	ast: ValidatedFunctionAST,
 	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>
-): FunctionParamShapeExpansion[] {
-	return ast.lines
-		.filter((line): line is ParamShapeLine => line.instruction === 'paramShape')
-		.map(line => getParamShapeExpansion(line, prototypeShapes, getAstDiagnosticContext(ast)));
-}
-
-export function getEffectiveFunctionSignature(
-	ast: ValidatedFunctionAST,
-	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>
-): FunctionSignature {
-	const parameters: FunctionSignature['parameters'] = [];
+): Pick<FunctionMetadata, 'signature' | 'paramShapeExpansions'> {
+	const parameters: FunctionMetadata['signature']['parameters'] = [];
+	const paramShapeExpansions: FunctionParamShapeExpansion[] = [];
+	const context = getAstDiagnosticContext(ast);
 
 	for (const line of ast.lines) {
 		if (line.instruction === 'param') {
 			parameters.push(line.arguments[0].value as FunctionValueType);
 		}
 		if (line.instruction === 'paramShape') {
-			parameters.push(
-				...getParamShapeExpansion(line, prototypeShapes, getAstDiagnosticContext(ast)).parameters.map(
-					parameter => parameter.type
-				)
-			);
+			const expansion = getParamShapeExpansion(line, prototypeShapes, context);
+			paramShapeExpansions.push(expansion);
+			parameters.push(...expansion.parameters.map(parameter => parameter.type));
 		}
 	}
 
 	return {
-		parameters,
-		returns: ast.functionEndLine.arguments.map(argument => argument.value as FunctionSignature['returns'][number]),
+		signature: {
+			parameters,
+			returns: ast.functionEndLine.arguments.map(
+				argument => argument.value as FunctionMetadata['signature']['returns'][number]
+			),
+		},
+		...(paramShapeExpansions.length > 0 ? { paramShapeExpansions } : {}),
 	};
 }
