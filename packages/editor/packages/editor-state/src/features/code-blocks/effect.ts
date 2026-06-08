@@ -165,7 +165,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 			return lineColors;
 		});
 
-		shape(graphicData, state.codeBlockRendering.codeBlocks, directiveState);
+		shape(graphicData, state, directiveState);
 		gaps(graphicData, directiveState);
 		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
 

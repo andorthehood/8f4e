@@ -1,5 +1,6 @@
 import type {
 	CompiledModule,
+	CompiledShapeExpansion,
 	CompiledStackAnalysisLine,
 	CompileOptions,
 	FunctionMetadataLookup,
@@ -30,6 +31,35 @@ import { createCompilationContext } from './semantic/createCompilationContext';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
+
+function collectShapeExpansions(
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
+): CompiledShapeExpansion[] | undefined {
+	if (ast.type !== 'module') {
+		return undefined;
+	}
+
+	const shapeExpansions = ast.lines.flatMap(line => {
+		if (line.instruction !== 'shape') {
+			return [];
+		}
+
+		const prototypeId = line.arguments[0].value;
+		const memoryDeclarationLines = prototypeShapes?.[prototypeId]?.memoryDeclarationLines ?? [];
+		return memoryDeclarationLines.length > 0
+			? [
+					{
+						lineNumber: line.lineNumber,
+						prototypeId,
+						memoryDeclarationLines,
+					},
+				]
+			: [];
+	});
+
+	return shapeExpansions.length > 0 ? shapeExpansions : undefined;
+}
 
 /**
  * Compiles one validated module or constants AST into its WebAssembly cycle function and memory metadata.
@@ -115,6 +145,7 @@ export function compileModule(
 	}
 
 	const internalResources = Object.keys(context.internalResources).length > 0 ? context.internalResources : undefined;
+	const shapeExpansions = collectShapeExpansions(ast, prototypeShapes);
 
 	return {
 		id: ast.id,
@@ -135,6 +166,7 @@ export function compileModule(
 		...(internalResources ? { internalResources } : {}),
 		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast,
+		...(shapeExpansions ? { shapeExpansions } : {}),
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
