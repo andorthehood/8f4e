@@ -17,7 +17,7 @@ describe('param instruction compiler', () => {
 					expectedResultTypes: [],
 				},
 			],
-			currentFunctionSignature: { parameters: [], returns: [] },
+			currentFunctionParameterCount: 0,
 			locals: {},
 		});
 
@@ -33,7 +33,7 @@ describe('param instruction compiler', () => {
 
 		expect({
 			locals: context.locals,
-			currentFunctionSignature: context.currentFunctionSignature,
+			currentFunctionParameterCount: context.currentFunctionParameterCount,
 		}).toMatchSnapshot();
 	});
 
@@ -46,7 +46,7 @@ describe('param instruction compiler', () => {
 					expectedResultTypes: [],
 				},
 			],
-			currentFunctionSignature: { parameters: [], returns: [] },
+			currentFunctionParameterCount: 0,
 			locals: {},
 		});
 
@@ -62,7 +62,7 @@ describe('param instruction compiler', () => {
 
 		expect({
 			locals: context.locals,
-			currentFunctionSignature: context.currentFunctionSignature,
+			currentFunctionParameterCount: context.currentFunctionParameterCount,
 		}).toMatchSnapshot();
 	});
 
@@ -75,7 +75,7 @@ describe('param instruction compiler', () => {
 					expectedResultTypes: [],
 				},
 			],
-			currentFunctionSignature: { parameters: [], returns: [] },
+			currentFunctionParameterCount: 0,
 			locals: {},
 		});
 
@@ -94,7 +94,7 @@ describe('param instruction compiler', () => {
 			pointerDepth: 1,
 			index: 0,
 		});
-		expect(context.currentFunctionSignature?.parameters).toEqual(['float*']);
+		expect(context.currentFunctionParameterCount).toBe(1);
 	});
 
 	it('registers an unsigned narrow pointer function parameter with pointee metadata', () => {
@@ -106,7 +106,7 @@ describe('param instruction compiler', () => {
 					expectedResultTypes: [],
 				},
 			],
-			currentFunctionSignature: { parameters: [], returns: [] },
+			currentFunctionParameterCount: 0,
 			locals: {},
 		});
 
@@ -125,7 +125,7 @@ describe('param instruction compiler', () => {
 			pointerDepth: 1,
 			index: 0,
 		});
-		expect(context.currentFunctionSignature?.parameters).toEqual(['int8u*']);
+		expect(context.currentFunctionParameterCount).toBe(1);
 	});
 
 	it('throws when declared after locals', () => {
@@ -137,7 +137,7 @@ describe('param instruction compiler', () => {
 					expectedResultTypes: [],
 				},
 			],
-			currentFunctionSignature: { parameters: [], returns: [] },
+			currentFunctionParameterCount: 0,
 			locals: { existing: { isInteger: true, index: 0 } },
 		});
 

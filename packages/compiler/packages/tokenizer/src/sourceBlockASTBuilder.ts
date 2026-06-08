@@ -6,7 +6,6 @@ import type {
 	ExportLine,
 	FunctionEndLine,
 	FunctionLine,
-	FunctionSignature,
 	ImportLine,
 	MemoryDeclarationLine,
 	ModuleLine,
@@ -31,7 +30,6 @@ type FunctionASTBuilder = {
 	id: string;
 	functionLine: FunctionLine;
 	functionEndLine?: FunctionEndLine;
-	parameters: FunctionSignature['parameters'];
 	exportLine?: ExportLine;
 	exportName?: string;
 	importLine?: ImportLine;
@@ -79,7 +77,6 @@ export function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockA
 				type: 'function',
 				id: line.arguments[0].value,
 				functionLine: line,
-				parameters: [],
 			};
 		case 'constants':
 			return {
@@ -114,12 +111,9 @@ function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): v
 	builder.memoryDeclarationLines.push(line);
 }
 
-/** Records function signature, import, export, and end metadata for a function builder. */
+/** Records function import, export, and end metadata for a function builder. */
 function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine): void {
 	switch (line.instruction) {
-		case 'param':
-			builder.parameters.push(line.arguments[0].value as FunctionSignature['parameters'][number]);
-			return;
 		case 'functionEnd':
 			builder.functionEndLine = line;
 			return;
@@ -193,10 +187,6 @@ export function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlo
 				lines,
 				functionLine: builder.functionLine,
 				functionEndLine: builder.functionEndLine,
-				signature: {
-					parameters: builder.parameters,
-					returns: builder.functionEndLine.arguments.map(arg => arg.value as FunctionSignature['returns'][number]),
-				},
 				...(builder.exportLine ? { exportLine: builder.exportLine, exportName: builder.exportName } : {}),
 				...(builder.importLine ? { importLine: builder.importLine, import: builder.import } : {}),
 			};

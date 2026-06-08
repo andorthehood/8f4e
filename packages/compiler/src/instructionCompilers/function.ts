@@ -14,10 +14,7 @@ const _function = ((line: FunctionLine, context: CodegenContext) => {
 	context.currentFunctionId = functionId;
 	context.codeBlockId = functionId;
 	context.codeBlockType = functionBlockType;
-	context.currentFunctionSignature = {
-		parameters: [],
-		returns: [],
-	};
+	context.currentFunctionParameterCount = 0;
 	context.currentFunctionIsImpure = false;
 	context.currentFunctionExportName = undefined;
 	context.currentFunctionImport = undefined;
