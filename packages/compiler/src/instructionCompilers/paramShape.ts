@@ -6,7 +6,7 @@ import { registerFunctionParameter } from './param';
  * Expands a prototype memory shape into function pointer parameters.
  */
 const paramShape: InstructionCompiler<ParamShapeLine, FunctionCodegenContext> = (line: ParamShapeLine, context) => {
-	const expansion = context.currentFunctionParamShapeExpansions!.find(
+	const expansion = context.currentFunctionMetadata.paramShapeExpansions!.find(
 		expansion => expansion.lineNumber === line.lineNumber
 	)!;
 

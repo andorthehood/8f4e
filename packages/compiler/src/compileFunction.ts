@@ -82,12 +82,9 @@ export function compileFunction(
 		mode: 'function',
 		codeBlockType: 'function',
 		projectBlockId: ast.projectBlockId,
-		currentFunctionSignature: {
-			parameters: [],
-			returns: [],
-		},
+		currentFunctionMetadata: functionMetadata,
+		currentFunctionParameterCount: 0,
 		functionTypeRegistry: typeRegistry,
-		currentFunctionParamShapeExpansions: functionMetadata.paramShapeExpansions,
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
@@ -115,7 +112,7 @@ export function compileFunction(
 	// Collect locals (excluding parameters)
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
 	// Regular locals declared with the 'local' instruction come after parameters
-	const parameterCount = context.currentFunctionSignature.parameters.length;
+	const parameterCount = context.currentFunctionParameterCount;
 	const localDeclarations = Object.entries(context.locals)
 		.filter(([, local]) => local.index >= parameterCount)
 		.map(([, local]) => ({

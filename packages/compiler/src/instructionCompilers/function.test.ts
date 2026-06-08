@@ -23,7 +23,7 @@ describe('function instruction compiler', () => {
 		expect({
 			blockStack: context.blockStack,
 			currentFunctionId: context.currentFunctionId,
-			currentFunctionSignature: context.currentFunctionSignature,
+			currentFunctionParameterCount: context.currentFunctionParameterCount,
 			mode: context.mode,
 			locals: context.locals,
 		}).toMatchSnapshot();

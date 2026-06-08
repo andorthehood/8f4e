@@ -31,7 +31,7 @@ export function registerFunctionParameter(
 	// 2. byteCode.length > 0: means other instructions have already run
 	//
 	// If either is true, we're past the param declaration phase and should error.
-	const paramCount = context.currentFunctionSignature.parameters.length;
+	const paramCount = context.currentFunctionParameterCount;
 	const localCount = Object.keys(context.locals).length;
 
 	if (localCount > paramCount || context.byteCode.length > 0) {
@@ -49,10 +49,9 @@ export function registerFunctionParameter(
 
 	context.locals[paramName] = functionValueTypeToLocalBinding(paramType, paramIndex);
 
-	// Add parameter type to the function signature being built
-	context.currentFunctionSignature.parameters.push(paramType);
+	context.currentFunctionParameterCount += 1;
 
-	if (context.currentFunctionSignature.parameters.length > 8) {
+	if (context.currentFunctionParameterCount > 8) {
 		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
 	}
 

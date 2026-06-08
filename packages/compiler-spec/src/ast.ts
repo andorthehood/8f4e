@@ -6,7 +6,7 @@ import type {
 	ArgumentStringLiteral,
 } from './arguments';
 import { ArgumentType } from './arguments';
-import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
+import type { FunctionImportMetadata } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecTypes';
 import type { DocumentOnlyInstructionName, MacroInstructionName, SemanticInstructionName } from './instructions';
 import { semanticInstructionNames } from './instructions';
@@ -272,14 +272,13 @@ export interface ModuleAST extends SourceBlockMetadata {
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
-/** Parsed AST for a function block and its resolved signature. */
+/** Parsed AST for a function block. */
 export interface FunctionAST extends SourceBlockMetadata {
 	type: 'function';
 	id: string;
 	lines: CompilerASTLines;
 	functionLine: FunctionLine;
 	functionEndLine: FunctionEndLine;
-	signature: FunctionSignature;
 	exportLine?: ExportLine;
 	exportName?: string;
 	importLine?: ImportLine;
