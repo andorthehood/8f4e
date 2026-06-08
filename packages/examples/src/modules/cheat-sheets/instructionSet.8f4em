@@ -102,8 +102,5 @@ constants instructionSet
 ; sqrt	Square root.
 ; round	Round to the nearest integer value.
 ; ensureNonZero	Replace zero with a safe non-zero value.
-;
-; Signal helpers
-; hasChanged	Detect whether a value changed.
 
 constantsEnd

@@ -640,11 +640,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -665,11 +666,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -688,11 +690,12 @@ int* rowCounter &rowCount2:out
 int* period &period4:out
 int out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -713,11 +716,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1981,6 +1985,21 @@ map 11	S11_REPEAT_LENGTH
 map 12	S12_REPEAT_LENGTH
 mapEnd int
 
+functionEnd int
+
+function hasChanged
+; @pos 415 -110
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push currentValue
+push *previousValue
+notEqual
+push previousValue
+push currentValue
+store
 functionEnd int
 
 note

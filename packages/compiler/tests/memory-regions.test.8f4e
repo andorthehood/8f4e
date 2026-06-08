@@ -123,27 +123,4 @@ push pixel
 call assert 9
 moduleEnd
 
-module regionInternalResource
-; Compiler-generated internal
-; resources should stay in
-; default
-; memory even when the module
-; declares a custom region.
-#region sampleMemory
-int input
-int output
-
-push &output
-push input
-hasChanged
-if
-push 1
-else
-push 0
-ifEnd int
-store
-
-push output
-call assert 0
-moduleEnd
 entryEnd
