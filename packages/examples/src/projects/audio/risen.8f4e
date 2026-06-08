@@ -123,6 +123,21 @@ push	currentValue
 store
 functionEnd int
 
+function hasChanged
+; @pos -242 26
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push currentValue
+push *previousValue
+notEqual
+push previousValue
+push currentValue
+store
+functionEnd int
+
 constants midiCodes
 ; @pos -146 -55
 ; @tab 12
@@ -412,8 +427,9 @@ int previousTick
 ; @w noteEnd
 ; @w noteOn
 
+int prevYad
 push yad
-hasChanged
+call hasChanged &prevYad
 if
 ; Load note
 push &note
