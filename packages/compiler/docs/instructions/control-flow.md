@@ -53,21 +53,6 @@ block
 blockEnd
 ```
 
-### branchIfUnchanged
-
-The branchIfUnchanged instruction consumes a value, compares it to the previous value seen for this instruction, and branches out of nested blocks if the value has not changed. The depth argument indicates how many blocks to exit.
-
-#### Examples
-
-```
-block
- push 2
- branchIfUnchanged 0
- push 2
- branchIfUnchanged 0
-blockEnd
-```
-
 ### exitIfTrue
 
 The `exitIfTrue` instruction consumes an integer condition from the stack and exits the enclosing module immediately if the value is non-zero. Any values currently on the stack are dropped on the exit path. If the condition is zero, execution continues normally.
