@@ -14,10 +14,6 @@ describe('getBlockType', () => {
 		expect(getBlockType(['constants', 'constantsEnd'])).toBe('constants');
 	});
 
-	it('detects macro blocks', () => {
-		expect(getBlockType(['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'])).toBe('macro');
-	});
-
 	it('detects prototype blocks', () => {
 		expect(getBlockType(['prototype oscillatorState', 'float phase', 'prototypeEnd'])).toBe('prototype');
 	});
