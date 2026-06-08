@@ -430,5 +430,11 @@
 		"version": "1.18.0",
 		"benchmark": "digitClassifier.8f4e",
 		"emittedBytes": 14400
+	},
+	{
+		"commit": "576329b3682921b9ad86810b104a18e01ae99cb8",
+		"version": "2.0.0",
+		"benchmark": "digitClassifier.8f4e",
+		"emittedBytes": 14400
 	}
 ]
