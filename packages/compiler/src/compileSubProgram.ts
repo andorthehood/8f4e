@@ -24,6 +24,7 @@ import { compileModules } from './compileModules';
 import { getError } from './compilerError';
 import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
 import type { InitialMemoryDataSegment } from './initialMemoryDataSegments/types';
+import { expandFunctionParamShapes } from './prototypes/paramShape';
 import {
 	assertUniqueModuleIds,
 	collectFunctionMetadataFromAsts,
@@ -284,13 +285,14 @@ export function compileSubProgram(
 	);
 
 	const astFunctions = expandedFunctions.map(source => compileSourceToAST<ValidatedFunctionAST>(source, cache));
-	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
+	const astFunctionsWithParamShapes = astFunctions.map(ast => expandFunctionParamShapes(ast, prototypeShapesById));
+	const importedUserFunctionCount = astFunctionsWithParamShapes.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 
 	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
-	const userFunctionMetadata = collectFunctionMetadataFromAsts(astFunctions, {
+	const userFunctionMetadata = collectFunctionMetadataFromAsts(astFunctionsWithParamShapes, {
 		importedFunctionBaseIndex: 0,
 		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
 		reservedFunctionIds: entryNames,
@@ -304,7 +306,7 @@ export function compileSubProgram(
 		baseTypeIndex: 3,
 	};
 
-	const compiledFunctions = astFunctions.map(ast =>
+	const compiledFunctions = astFunctionsWithParamShapes.map(ast =>
 		compileFunction(
 			ast,
 			namespaces,
