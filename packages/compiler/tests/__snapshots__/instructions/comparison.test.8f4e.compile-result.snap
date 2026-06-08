@@ -1181,27 +1181,21 @@
   },
   "moduleMemory": {
     "equalAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "equalToZeroAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "greaterOrEqualFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "greaterOrEqualIntAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "greaterThanFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "greaterThanIntAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

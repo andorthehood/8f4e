@@ -617,7 +617,6 @@
   },
   "moduleMemory": {
     "guardedMemoryCopyAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "source": {
           "byteAddress": 44,
@@ -654,7 +653,6 @@
       },
     },
     "memoryCopyAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "source": {
           "byteAddress": 4,

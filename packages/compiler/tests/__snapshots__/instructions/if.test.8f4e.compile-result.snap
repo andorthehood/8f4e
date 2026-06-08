@@ -978,7 +978,6 @@
   },
   "moduleMemory": {
     "ifFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "falsyInput": {
           "byteAddress": 16,
@@ -1013,7 +1012,6 @@
       },
     },
     "ifIntAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "falsyInput": {
           "byteAddress": 8,
@@ -1048,7 +1046,6 @@
       },
     },
     "ifVoidAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "falsyInput": {
           "byteAddress": 28,
@@ -1111,7 +1108,6 @@
       },
     },
     "multiResultIfAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

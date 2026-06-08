@@ -304,9 +304,6 @@ export function compileSubProgram(
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
-	const requiredMemoryBytesByIndexFromNamespaces = getRequiredMemoryBytesByIndex(Object.values(namespaces));
-	const totalModuleBytes = requiredMemoryBytesByIndexFromNamespaces[0] ?? 0;
-	const internalAllocator = { nextByteAddress: totalModuleBytes };
 
 	const compiledModules = compileModules(
 		astModules,
@@ -316,7 +313,6 @@ export function compileSubProgram(
 		},
 		namespaces,
 		functionMetadata,
-		internalAllocator,
 		functionTypeRegistry,
 		prototypeShapesById
 	).map((module, index) => ({
@@ -325,10 +321,7 @@ export function compileSubProgram(
 	}));
 
 	const requiredMemoryBytesByIndexFromModules = getRequiredMemoryBytesByIndex(compiledModules);
-	const requiredMemoryBytes = Math.max(
-		requiredMemoryBytesByIndexFromModules[0] ?? 0,
-		internalAllocator.nextByteAddress
-	);
+	const requiredMemoryBytes = requiredMemoryBytesByIndexFromModules[0] ?? 0;
 	const requiredMemoryBytesByIndex: Record<number, number> = {
 		...requiredMemoryBytesByIndexFromModules,
 		0: requiredMemoryBytes,

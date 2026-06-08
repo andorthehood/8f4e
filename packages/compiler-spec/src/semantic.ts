@@ -34,13 +34,7 @@ import type {
 import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
 import type { FunctionImportMetadata } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
-import type {
-	ArrayDeclarationInstruction,
-	DataStructure,
-	InternalAllocator,
-	InternalResourceMap,
-	MemoryMap,
-} from './memory';
+import type { ArrayDeclarationInstruction, DataStructure, MemoryMap } from './memory';
 
 /** Proven byte range associated with an address expression or memory boundary. */
 export interface MemoryAddressRange {
@@ -151,8 +145,6 @@ export type CompilationMode = CompilerSourceCompilationMode;
 export interface CompilationContext {
 	namespace: Namespace;
 	locals: LocalMap;
-	internalResources: InternalResourceMap;
-	internalAllocator: InternalAllocator;
 	stack: Stack;
 	blockStack: BlockStack;
 	/** Cached active block counts keyed by block type, maintained with block stack mutations. */
