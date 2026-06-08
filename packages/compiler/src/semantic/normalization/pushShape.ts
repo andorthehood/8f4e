@@ -3,25 +3,12 @@ import {
 	type CodegenPushLine,
 	type CompilationContext,
 	ErrorCode,
-	type MemoryDeclarationLine,
 	type PushShapeLine,
 	type ResolvedPushShapeLine,
 } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
+import { getPrototypeMemoryDeclarationId } from '../prototypeShapes';
 import { memoryStartAddressConst } from '../resolveCompileTimeArgument/addressConsts';
-
-function getMemoryDeclarationId(
-	line: MemoryDeclarationLine,
-	pushShapeLine: PushShapeLine,
-	context: CompilationContext
-) {
-	const idArgument = line.arguments[0];
-	if (idArgument.type !== ArgumentType.IDENTIFIER || idArgument.referenceKind !== 'plain') {
-		throw getError(ErrorCode.EXPECTED_IDENTIFIER, pushShapeLine, context);
-	}
-
-	return idArgument.value;
-}
 
 function createAddressPushLine(line: PushShapeLine, memoryId: string, context: CompilationContext): CodegenPushLine {
 	const address = memoryStartAddressConst(context.namespace.memory[memoryId], context.namespace.moduleName);
@@ -61,7 +48,7 @@ export default function normalizePushShape(line: PushShapeLine, context: Compila
 	return {
 		...line,
 		shapeAddressPushes: prototype.memoryDeclarationLines.map(declarationLine =>
-			createAddressPushLine(line, getMemoryDeclarationId(declarationLine, line, context), context)
+			createAddressPushLine(line, getPrototypeMemoryDeclarationId(declarationLine, line, context), context)
 		),
 	};
 }
