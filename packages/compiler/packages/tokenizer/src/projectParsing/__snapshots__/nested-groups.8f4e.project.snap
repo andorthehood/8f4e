@@ -56,15 +56,6 @@
               "entry": "main",
               "id": 23,
             },
-            {
-              "code": [
-                "defineMacro resetPhase",
-                "push 0",
-                "defineMacroEnd",
-              ],
-              "entry": "main",
-              "id": 28,
-            },
           ],
           "entry": "main",
           "groups": [],

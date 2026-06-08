@@ -8,7 +8,7 @@ import type {
 import { ArgumentType } from './arguments';
 import type { FunctionImportMetadata } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecTypes';
-import type { DocumentOnlyInstructionName, MacroInstructionName, SemanticInstructionName } from './instructions';
+import type { DocumentOnlyInstructionName, SemanticInstructionName } from './instructions';
 import { semanticInstructionNames } from './instructions';
 import {
 	type ArrayDeclarationInstruction,
@@ -232,9 +232,7 @@ export type NoSourceArgumentLine = ASTLineBase<GenericNoSourceArgumentInstructio
 
 type ExplicitCompilerASTLine = ExplicitCompilerASTLineWithoutGenericNoSource | NoSourceArgumentLine;
 
-export type CompilerASTLine =
-	| ExplicitCompilerASTLine
-	| ASTLineBase<MacroInstructionName | DocumentOnlyInstructionName, Array<Argument>>;
+export type CompilerASTLine = ExplicitCompilerASTLine | ASTLineBase<DocumentOnlyInstructionName, Array<Argument>>;
 
 export type CompilerASTLines = CompilerASTLine[];
 

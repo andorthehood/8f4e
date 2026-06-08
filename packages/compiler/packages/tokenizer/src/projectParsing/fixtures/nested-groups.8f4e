@@ -25,9 +25,6 @@ float phase
 float frequency 440
 prototypeEnd
 
-defineMacro resetPhase
-push 0
-defineMacroEnd
 groupEnd
 groupEnd
 entryEnd

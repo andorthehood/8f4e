@@ -18,9 +18,6 @@ export const semanticInstructionNames = Object.keys(instructionSpecs).filter(
 	}
 );
 
-export const macroInstructionNames = ['defineMacro', 'defineMacroEnd', 'macro'] as const;
-export type MacroInstructionName = (typeof macroInstructionNames)[number];
-
 export const stackBlockInstructionPairs = [
 	{ start: 'if', end: 'ifEnd' },
 	{ start: 'block', end: 'blockEnd' },
@@ -82,7 +79,6 @@ export type DocumentOnlyInstructionName = (typeof documentOnlyInstructionNames)[
 
 export const documentBlockInstructionPairs = [
 	...compilerSourceBlockInstructionPairs,
-	{ type: 'macro', start: 'defineMacro', end: 'defineMacroEnd' },
 	{ type: 'note', start: 'note', end: 'noteEnd' },
 ] as const;
 
@@ -113,14 +109,12 @@ export type Instruction =
 	| CodegenInstructionName
 	| MemoryDeclarationInstruction
 	| SemanticInstructionName
-	| MacroInstructionName
 	| DocumentOnlyInstructionName;
 
 export const knownInstructionNameSet: ReadonlySet<string> = new Set([
 	...codegenInstructionNames,
 	...memoryDeclarationInstructions,
 	...semanticInstructionNames,
-	...macroInstructionNames,
 	...documentOnlyInstructionNames,
 ]);
 

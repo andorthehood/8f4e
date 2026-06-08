@@ -22,7 +22,6 @@ export interface CodeBlock {
  * - 'module': Contains module/moduleEnd markers (compiled to WASM)
  * - 'function': Contains function/functionEnd markers (compiled to WASM as reusable helper)
  * - 'constants': Contains constants/constantsEnd markers
- * - 'macro': Contains defineMacro/defineMacroEnd markers (reusable code snippets)
  * - 'note': Contains note/noteEnd markers (editor-only notes, not compiled)
  * - 'unknown': Mixed or incomplete markers, or no recognizable markers
  */
