@@ -332,14 +332,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Branches out of enclosing blocks when the condition is non-zero.' },
 		stack: stack({ inputs: ['int'], outputs: [], effect: stackMutation(1) }),
 	},
-	// branchIfUnchanged (T -- )
-	branchIfUnchanged: {
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
-		placement: modulePlacement,
-		minOperands: 1,
-		docs: { shortDescription: 'Branches when the consumed value matches the previous value seen by this instruction.' },
-		stack: stack({ inputs: ['T'], outputs: [], effect: stackMutation(1) }),
-	},
 	// call (args... -- returns...)
 	call: {
 		sourceArguments: { minArguments: 1, argumentTypes: ['identifier'], restArgumentType: 'pushValue' },
@@ -506,14 +498,6 @@ export const instructionSpecs = {
 		operandTypes: 'int',
 		docs: { shortDescription: 'Exits the enclosing module when the condition is non-zero.' },
 		stack: stack({ inputs: ['int'], outputs: [] }),
-	},
-	// fallingEdge (int -- int), fallingEdge (float -- int)
-	fallingEdge: {
-		sourceArguments: noSourceArguments,
-		placement: modulePlacement,
-		minOperands: 1,
-		docs: { shortDescription: 'Detects when a signal changes from a non-zero value to zero.' },
-		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
 	},
 	// function <id> ( -- )
 	function: {
