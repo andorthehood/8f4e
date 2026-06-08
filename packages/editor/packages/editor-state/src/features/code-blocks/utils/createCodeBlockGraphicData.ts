@@ -74,6 +74,7 @@ export function createCodeBlockGraphicData(
 			arrayMeters: [],
 			arrayWaves: [],
 			infoPanels: [],
+			shapeDeclarations: [],
 			errorMessages: [],
 		},
 	};
