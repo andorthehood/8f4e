@@ -25,6 +25,7 @@ export async function compileCode(
 
 					resolve({
 						compiledModules: data.payload.compiledModules,
+						cache: data.payload.cache,
 						codeBuffer: data.payload.codeBuffer,
 						requiredMemoryBytes: data.payload.requiredMemoryBytes,
 						allocatedMemoryBytes: data.payload.allocatedMemoryBytes,
