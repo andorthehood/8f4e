@@ -20,7 +20,6 @@
       "entry": "main",
       "functionBlocks": [],
       "groups": [],
-      "macroBlocks": [],
       "modules": [
         {
           "code": [
@@ -54,13 +53,11 @@
             },
           ],
           "groups": [],
-          "macroBlocks": [],
           "modules": [],
           "name": "shaderHelpers",
           "prototypeBlocks": [],
         },
       ],
-      "macroBlocks": [],
       "modules": [
         {
           "code": [
@@ -92,12 +89,10 @@
         },
       ],
       "groups": [],
-      "macroBlocks": [],
       "modules": [],
       "name": "assertions",
       "prototypeBlocks": [],
     },
   ],
-  "macroBlocks": [],
   "prototypeBlocks": [],
 }

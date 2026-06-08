@@ -27,7 +27,6 @@ export interface ProjectCompilerGroup {
 	constantsBlocks: Module[];
 	functionBlocks: Module[];
 	prototypeBlocks: Module[];
-	macroBlocks: Module[];
 	groups: ProjectCompilerGroup[];
 }
 
@@ -36,7 +35,6 @@ export interface ProjectCompilerBlocks {
 	constantsBlocks: Module[];
 	functionBlocks: Module[];
 	prototypeBlocks: Module[];
-	macroBlocks: Module[];
 	groups: ProjectCompilerGroup[];
 }
 

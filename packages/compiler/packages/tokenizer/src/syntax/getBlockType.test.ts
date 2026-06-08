@@ -38,7 +38,6 @@ describe('isCompilableBlockType', () => {
 		expect(isCompilableBlockType('function')).toBe(true);
 		expect(isCompilableBlockType('constants')).toBe(true);
 		expect(isCompilableBlockType('prototype')).toBe(true);
-		expect(isCompilableBlockType('macro')).toBe(true);
 	});
 
 	it('returns false for non-compilable block types', () => {

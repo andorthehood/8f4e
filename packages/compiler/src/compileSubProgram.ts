@@ -9,7 +9,6 @@ import type {
 	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
-	MacroDefinition,
 	Module,
 	ValidatedAST,
 	ValidatedConstantsAST,
@@ -30,13 +29,12 @@ import {
 	collectNamespacesFromASTs,
 } from './semantic/buildNamespace';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
-import { expandMacros, parseMacroDefinitions } from './utils/macroExpansion';
 
-/** Expanded module source paired with cache and execution-entry metadata. */
+/** Module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
-	/** Source lines after macro expansion. */
+	/** Source lines to parse. */
 	code: string[];
-	/** Stable cache namespace for the expanded source lines. */
+	/** Stable cache namespace for the source lines. */
 	cacheKey: string;
 	/** Public entry that should dispatch to the compiled module. */
 	entryName: string;
@@ -203,13 +201,9 @@ function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSource, c
 	}
 }
 
-function expandCompilerSource(
-	module: Module,
-	macroDefinitions: Map<string, MacroDefinition>,
-	cacheKey: string
-): CompilerSource {
+function createCompilerSource(module: Module, cacheKey: string): CompilerSource {
 	return {
-		code: expandMacros(module, macroDefinitions),
+		code: module.code,
 		cacheKey,
 		projectBlockId: module.projectBlockId,
 	};
@@ -233,41 +227,40 @@ export function compileSubProgram(
 	const entryModules = Object.entries(input.entries).flatMap(([entryName, modules]) =>
 		modules.map((module, index) => ({ entryName, module, index }))
 	);
-	const { constants, functions, prototypes, macros } = input;
-	const macroDefinitions = parseMacroDefinitions(macros);
+	const { constants, functions, prototypes } = input;
 
-	const expandedPrototypes = prototypes.map((prototype, index) => {
-		return expandCompilerSource(prototype, macroDefinitions, `prototype:${index}`);
+	const prototypeSources = prototypes.map((prototype, index) => {
+		return createCompilerSource(prototype, `prototype:${index}`);
 	});
 
-	const astPrototypes = expandedPrototypes.map(source => compileSourceToAST<ValidatedPrototypeAST>(source, cache));
+	const astPrototypes = prototypeSources.map(source => compileSourceToAST<ValidatedPrototypeAST>(source, cache));
 	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
 
-	const expandedModuleSources = entryModules.map(({ entryName, module, index }) => {
+	const moduleSources = entryModules.map(({ entryName, module, index }) => {
 		return {
-			code: expandMacros(module, macroDefinitions),
+			code: module.code,
 			cacheKey: `entry:${entryName}:module:${index}`,
 			entryName,
 			projectBlockId: module.projectBlockId,
 		};
 	}) satisfies ModuleCompilerSource[];
 
-	const expandedConstants = constants.map((constantsBlock, index) => {
-		return expandCompilerSource(constantsBlock, macroDefinitions, `constants:${index}`);
+	const constantsSources = constants.map((constantsBlock, index) => {
+		return createCompilerSource(constantsBlock, `constants:${index}`);
 	});
 
-	const expandedFunctions = functions.map((func, index) => {
-		return expandCompilerSource(func, macroDefinitions, `function:${index}`);
+	const functionSources = functions.map((func, index) => {
+		return createCompilerSource(func, `function:${index}`);
 	});
 
-	const astModuleEntries = expandedModuleSources.map(source => {
+	const astModuleEntries = moduleSources.map(source => {
 		const ast = compileSourceToAST<ValidatedModuleAST>(source, cache);
 		return {
 			entryName: source.entryName,
 			ast,
 		};
 	});
-	const astConstants = expandedConstants.map(source => compileSourceToAST<ValidatedConstantsAST>(source, cache));
+	const astConstants = constantsSources.map(source => compileSourceToAST<ValidatedConstantsAST>(source, cache));
 	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
@@ -283,7 +276,7 @@ export function compileSubProgram(
 		prototypeShapesById
 	);
 
-	const astFunctions = expandedFunctions.map(source => compileSourceToAST<ValidatedFunctionAST>(source, cache));
+	const astFunctions = functionSources.map(source => compileSourceToAST<ValidatedFunctionAST>(source, cache));
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;

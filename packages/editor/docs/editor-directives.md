@@ -424,7 +424,7 @@ Notes:
 - Selecting the block expands the full source again for editing.
 - Directives with arguments are ignored.
 - If multiple valid `@hide` directives exist, the first one wins.
-- Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
+- Works with all block types (modules, functions, configs, constants, shaders, comments).
 
 ### `@hidden`
 
@@ -441,7 +441,7 @@ Notes:
 - Holding `F9` reveals all hidden blocks temporarily without changing selection.
 - When selection moves away, it becomes hidden again.
 - Directives with arguments are ignored.
-- Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
+- Works with all block types (modules, functions, configs, constants, shaders, comments).
 
 ### `@disabled`
 
@@ -477,7 +477,7 @@ moduleEnd
 
 - The `@disabled` directive is the source of truth for disabled state in saved projects.
 - You can manually add or remove the directive to enable/disable blocks.
-- Works with all block types (modules, functions, configs, constants, macros, shaders, comments).
+- Works with all block types (modules, functions, configs, constants, shaders, comments).
 
 ### `@opacity`
 

@@ -4,7 +4,6 @@ import { pickProjectCompilerBlocks } from './pickProjectCompilerBlocks';
 
 const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
-const validMacroBlock = ['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'];
 const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd'];
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
 
@@ -14,7 +13,7 @@ describe('pickProjectCompilerBlocks', () => {
 			{ id: 1, code: validModuleBlock, entry: 'main' },
 			{ id: 2, code: validFunctionBlock },
 			{ id: 3, code: validPrototypeBlock },
-			{ id: 4, code: validMacroBlock },
+			{ id: 4, code: ['unknown block'] },
 			{ id: 5, code: validNoteBlock },
 			{ id: 6, code: validModuleBlock, entry: 'main', disabled: true },
 		];
@@ -24,7 +23,6 @@ describe('pickProjectCompilerBlocks', () => {
 			constantsBlocks: [],
 			functionBlocks: [{ code: validFunctionBlock, projectBlockId: 2 }],
 			prototypeBlocks: [{ code: validPrototypeBlock, projectBlockId: 3 }],
-			macroBlocks: [{ code: validMacroBlock, projectBlockId: 4 }],
 			groups: [],
 		});
 	});
@@ -47,7 +45,7 @@ describe('pickProjectCompilerBlocks', () => {
 							{
 								name: 'nested',
 								entry: 'main',
-								codeBlocks: [{ id: 6, code: validMacroBlock, entry: 'main' }],
+								codeBlocks: [{ id: 6, code: validPrototypeBlock, entry: 'main' }],
 								groups: [],
 							},
 						],
@@ -59,7 +57,6 @@ describe('pickProjectCompilerBlocks', () => {
 			constantsBlocks: [],
 			functionBlocks: [],
 			prototypeBlocks: [],
-			macroBlocks: [],
 			groups: [
 				{
 					name: 'audio',
@@ -68,7 +65,6 @@ describe('pickProjectCompilerBlocks', () => {
 					constantsBlocks: [{ code: ['constants', 'const int tableSize 16', 'constantsEnd'], projectBlockId: 4 }],
 					functionBlocks: [{ code: validFunctionBlock, projectBlockId: 3 }],
 					prototypeBlocks: [{ code: validPrototypeBlock, projectBlockId: 5 }],
-					macroBlocks: [],
 					groups: [
 						{
 							name: 'nested',
@@ -76,8 +72,7 @@ describe('pickProjectCompilerBlocks', () => {
 							modules: [],
 							constantsBlocks: [],
 							functionBlocks: [],
-							prototypeBlocks: [],
-							macroBlocks: [{ code: validMacroBlock, projectBlockId: 6 }],
+							prototypeBlocks: [{ code: validPrototypeBlock, projectBlockId: 6 }],
 							groups: [],
 						},
 					],

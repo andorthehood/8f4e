@@ -39,21 +39,12 @@
     },
     {
       "code": [
-        "defineMacro double",
-        "push 2",
-        "mul",
-        "defineMacroEnd",
-      ],
-      "id": 25,
-    },
-    {
-      "code": [
         "note",
         "; @pos 1 2",
         "remember to tune this later",
         "noteEnd",
       ],
-      "id": 30,
+      "id": 25,
     },
   ],
   "groups": [],

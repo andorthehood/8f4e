@@ -29,7 +29,6 @@ moduleEnd
 		constants: [],
 		functions: [],
 		prototypes: [],
-		macros: [],
 	});
 
 	const getAddresses = (compiledModules: CompiledModuleLookup) => ({
@@ -100,7 +99,6 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 		constants: [],
 		functions: [],
 		prototypes: [],
-		macros: [],
 	});
 
 	beforeEach(async () => {
