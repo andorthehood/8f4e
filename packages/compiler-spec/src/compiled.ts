@@ -1,5 +1,11 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { ValidatedAST, ValidatedConstantsAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
+import type {
+	MemoryDeclarationLine,
+	ValidatedAST,
+	ValidatedConstantsAST,
+	ValidatedFunctionAST,
+	ValidatedModuleAST,
+} from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
 import type { InternalResourceMap, MemoryMap } from './memory';
@@ -10,6 +16,13 @@ export type CompiledStackAnalysisLine = {
 	instruction: string;
 	stackAnalysis: StackAnalysisResult;
 };
+
+/** Prototype memory declarations expanded by one `shape` instruction. */
+export interface CompiledShapeExpansion {
+	lineNumber: number;
+	prototypeId: string;
+	memoryDeclarationLines: readonly MemoryDeclarationLine[];
+}
 
 /** Code generation output and metadata for a compiled executable module. */
 export interface CompiledModule {
@@ -26,6 +39,7 @@ export interface CompiledModule {
 	internalResources?: InternalResourceMap;
 	wordAlignedSize: number;
 	ast: ValidatedModuleAST | ValidatedConstantsAST;
+	shapeExpansions?: CompiledShapeExpansion[];
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
 }
