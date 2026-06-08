@@ -1328,5 +1328,24 @@
 				"maxRangesPerFunction": 27
 			}
 		}
+	},
+	{
+		"commit": "0f8f0e86fe4b8b48356d891173e026e99e94b39f",
+		"version": "1.17.3",
+		"benchmark": "digitClassifier.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 220,
+				"functionEntries": 228343,
+				"rangeExecutions": 535205,
+				"maxRangesPerFunction": 44
+			},
+			"tokenizer": {
+				"coveredFunctions": 57,
+				"functionEntries": 133725,
+				"rangeExecutions": 494842,
+				"maxRangesPerFunction": 27
+			}
+		}
 	}
 ]
