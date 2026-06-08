@@ -306,15 +306,7 @@ export function compileSubProgram(
 	};
 
 	const compiledFunctions = astFunctions.map(ast =>
-		compileFunction(
-			ast,
-			namespaces,
-			functionMetadata[ast.id].wasmIndex,
-			functionTypeRegistry,
-			functionMetadata,
-			prototypeShapesById,
-			options
-		)
+		compileFunction(ast, namespaces, functionTypeRegistry, functionMetadata, options)
 	);
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
