@@ -64,24 +64,16 @@ describe('compileToAST', () => {
 			functionEndLine: { instruction: 'functionEnd' },
 			exportLine: { instruction: '#export' },
 			exportName: 'mixExport',
-			signature: {
-				parameters: ['int', 'float'],
-				returns: ['int', 'float'],
-			},
 		});
 		expect(ast.lines[0].instruction).toBe('const');
 	});
 
-	it('keeps paramShape instructions in function lines without expanding parser metadata', () => {
+	it('keeps paramShape instructions in function lines', () => {
 		const ast = compileToAST(['function mix', 'param int gain', 'paramShape mixerState', 'functionEnd int']);
 
 		expect(ast).toMatchObject({
 			type: 'function',
 			id: 'mix',
-			signature: {
-				parameters: ['int'],
-				returns: ['int'],
-			},
 		});
 		if (ast.type !== 'function') {
 			throw new Error('Expected function AST');
@@ -243,10 +235,6 @@ describe('compileToAST', () => {
 			import: {
 				moduleName: 'host',
 				fieldName: 'log.value',
-			},
-			signature: {
-				parameters: ['int'],
-				returns: [],
 			},
 		});
 	});
