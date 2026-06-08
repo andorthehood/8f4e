@@ -1,5 +1,20 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module pcmLooper
 ; @public
@@ -14,13 +29,14 @@ float defSpeed 1
 int defLength count(buffer)
 int defStartPos 0
 int* reset
+int previousReset
 int* length &defLength
 float* speed &defSpeed
 int* startPos &defStartPos
 
 ; Reset playhead
 push *reset
-risingEdge
+call risingEdge &previousReset
 if
 push &playhead
 push *startPos

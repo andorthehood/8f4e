@@ -56,7 +56,6 @@ import push from './push';
 import pushShape from './pushShape';
 import remainder from './remainder';
 import _return from './return';
-import risingEdge from './risingEdge';
 import round from './round';
 import shiftLeft from './shiftLeft';
 import shiftRight from './shiftRight';
@@ -119,7 +118,6 @@ const instructions = {
 	castToFloat64,
 	drop,
 	clearStack,
-	risingEdge,
 	hasChanged,
 	abs,
 	equal,
