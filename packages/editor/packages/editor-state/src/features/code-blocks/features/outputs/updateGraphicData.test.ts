@@ -193,6 +193,24 @@ describe('updateOutputsGraphicData', () => {
 		expect(outputWithoutRefs).toMatchSnapshot();
 	});
 
+	it('positions shape-sourced outputs below the shape instruction', () => {
+		mockGraphicData.gaps = new Map([[1, { size: 2 }]]);
+		mockState.compiler.compiledModules['test-block'].memoryMap = {
+			input1: createMemory({
+				id: 'input1',
+				type: MemoryTypes['int*'],
+				pointerDepth: 1,
+				lineNumber: 1,
+				isInherited: true,
+			}),
+			output1: createMemory({ lineNumber: 1, isInherited: true }),
+		};
+
+		updateOutputsGraphicData(mockGraphicData, mockState);
+
+		expect(findWidgetById(mockGraphicData.widgets.outputs, 'output1')?.y).toBe(48);
+	});
+
 	it('rounds wire coordinates to whole pixels', () => {
 		mockState.viewport.vGrid = 9;
 		mockState.viewport.hGrid = 17;

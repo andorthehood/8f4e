@@ -250,6 +250,12 @@ export interface Crossfade {
 	centerX: number;
 }
 
+export interface ShapeDeclaration {
+	x: number;
+	y: number;
+	text: string;
+}
+
 /**
  * A single parsed directive record found in a code block's raw lines.
  * Covers editor directives (`; @name`).
@@ -331,6 +337,7 @@ export interface CodeBlockGraphicData {
 		sliders: Slider[];
 		crossfades: Crossfade[];
 		pianoKeyboards: PianoKeyboard[];
+		shapeDeclarations: ShapeDeclaration[];
 		errorMessages: Array<{
 			message: string[];
 			x: number;

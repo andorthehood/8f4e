@@ -22,8 +22,15 @@ export default function semanticShape(line: ShapeLine, context: CompilationConte
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: prototypeId });
 	}
 
+	context.isInherited = true;
 	for (const declarationLine of prototype.memoryDeclarationLines) {
-		const resolvedDeclarationLine = context.resolveMemoryDeclarationLine?.(declarationLine) ?? declarationLine;
+		const inheritedDeclarationLine = {
+			...declarationLine,
+			lineNumber: line.lineNumber,
+		};
+		const resolvedDeclarationLine =
+			context.resolveMemoryDeclarationLine?.(inheritedDeclarationLine) ?? inheritedDeclarationLine;
 		applyMemoryDeclarationLine(normalizeCompileTimeArguments(resolvedDeclarationLine, context), context);
 	}
+	context.isInherited = false;
 }

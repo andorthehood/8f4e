@@ -144,6 +144,7 @@ export interface DataStructure {
 	wordAlignedAddress: number;
 	default: number | Record<string, number>;
 	hasExplicitDefault?: boolean;
+	isInherited?: boolean;
 	lineNumber: number;
 	isInteger: boolean;
 	isFloat64?: boolean;

@@ -5,6 +5,7 @@ import drawArrow from './drawArrow';
 import drawEntryOutlines from './drawEntryOutlines';
 import drawSelectedLineHint from './drawSelectedLineHint';
 import drawSelectedOutline from './drawSelectedOutline';
+import drawShapeDeclarations from './drawShapeDeclarations';
 import drawBars from './widgets/bars';
 import drawBlockHighlights from './widgets/blockHighlights';
 import drawButtons from './widgets/buttons';
@@ -121,6 +122,8 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 							}
 						}
 					}
+
+					drawShapeDeclarations(engine, state, codeBlock);
 
 					if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
 						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');

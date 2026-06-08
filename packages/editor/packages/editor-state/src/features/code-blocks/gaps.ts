@@ -5,20 +5,27 @@ function getDisplayRow(rawRow: number, directiveState: DirectiveDerivedState): n
 	return directiveState.displayModel.rawRowToDisplayRow[rawRow];
 }
 
+function addGap(graphicData: CodeBlockGraphicData, displayRow: number, size: number): void {
+	const existing = graphicData.gaps.get(displayRow);
+	graphicData.gaps.set(displayRow, { size: (existing?.size ?? 0) + size });
+}
+
 export default function gaps(graphicData: CodeBlockGraphicData, directiveState: DirectiveDerivedState) {
 	graphicData.gaps.clear();
 
+	// TODO: Error message layout should contribute through the same layout contribution path as other features.
+	// This is legacy coupling, not a pattern to copy: new gap sources should add layout contributions instead.
 	graphicData.widgets.errorMessages.forEach(error => {
 		const displayRow = getDisplayRow(error.lineNumber, directiveState);
 		if (displayRow !== undefined) {
-			graphicData.gaps.set(displayRow, { size: error.message.length });
+			addGap(graphicData, displayRow, error.message.length);
 		}
 	});
 
 	directiveState.layoutContributions.forEach(contribution => {
 		const displayRow = getDisplayRow(contribution.rawRow, directiveState);
 		if (displayRow !== undefined) {
-			graphicData.gaps.set(displayRow, { size: contribution.rows });
+			addGap(graphicData, displayRow, contribution.rows);
 		}
 	});
 
