@@ -366,7 +366,6 @@
   },
   "moduleMemory": {
     "boson": {
-      "internalResources": {},
       "memoryMap": {
         "test1": {
           "byteAddress": 36,
@@ -422,7 +421,6 @@
       },
     },
     "tau": {
-      "internalResources": {},
       "memoryMap": {
         "bar": {
           "byteAddress": 28,

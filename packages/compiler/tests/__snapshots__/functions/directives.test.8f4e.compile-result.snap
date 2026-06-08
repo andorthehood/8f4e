@@ -341,7 +341,6 @@
   },
   "moduleMemory": {
     "directiveAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "output": {
           "byteAddress": 8,
@@ -361,7 +360,6 @@
       },
     },
     "skippedDirectiveModule": {
-      "internalResources": {},
       "memoryMap": {
         "value": {
           "byteAddress": 4,

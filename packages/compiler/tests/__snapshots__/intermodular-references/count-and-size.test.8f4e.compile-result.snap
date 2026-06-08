@@ -860,7 +860,6 @@
   },
   "moduleMemory": {
     "combinedCountSizeAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "elemSize": {
           "byteAddress": 172,
@@ -913,7 +912,6 @@
       },
     },
     "combinedCountSizeSource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 176,
@@ -935,7 +933,6 @@
       },
     },
     "countSizeAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "bufferCount": {
           "byteAddress": 100,
@@ -1030,7 +1027,6 @@
       },
     },
     "countSizeSource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 4,
@@ -1069,7 +1065,6 @@
       },
     },
     "lateCountSizeSource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 132,
@@ -1091,7 +1086,6 @@
       },
     },
     "outOfOrderCountSizeAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "laterCount": {
           "byteAddress": 124,
@@ -1126,7 +1120,6 @@
       },
     },
     "pointerSizeSource": {
-      "internalResources": {},
       "memoryMap": {
         "ptr": {
           "byteAddress": 72,
@@ -1147,7 +1140,6 @@
       },
     },
     "shortSizeSource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 76,

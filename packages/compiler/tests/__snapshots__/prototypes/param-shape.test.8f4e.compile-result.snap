@@ -515,7 +515,6 @@
   },
   "moduleMemory": {
     "main": {
-      "internalResources": {},
       "memoryMap": {
         "a": {
           "byteAddress": 4,
@@ -550,7 +549,6 @@
       },
     },
     "overrides": {
-      "internalResources": {},
       "memoryMap": {
         "a": {
           "byteAddress": 20,

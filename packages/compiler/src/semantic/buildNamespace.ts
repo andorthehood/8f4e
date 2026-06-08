@@ -172,10 +172,6 @@ function createNamespaceBuildContext(
 			prototypeShapeIds: [],
 		},
 		locals: {},
-		internalResources: {},
-		internalAllocator: {
-			nextByteAddress: startingByteAddress,
-		},
 		byteCode: [],
 		stack: [],
 		blockStack: [],

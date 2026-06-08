@@ -68,10 +68,6 @@ export function compileFunction(
 			prototypeShapeIds: [],
 		},
 		locals: {},
-		internalResources: {},
-		internalAllocator: {
-			nextByteAddress: 0,
-		},
 		byteCode: [],
 		stack: [],
 		blockStack: [],
