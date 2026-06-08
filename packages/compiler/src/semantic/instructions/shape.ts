@@ -12,13 +12,13 @@ import normalizeCompileTimeArguments from '../normalizeCompileTimeArguments';
  * @returns Nothing.
  */
 export default function semanticShape(line: ShapeLine, context: CompilationContext) {
+	if (!context.expandPrototypeShapes) {
+		return;
+	}
+
 	const prototypeId = line.arguments[0].value;
 	if (!context.namespace.prototypeShapeIds.includes(prototypeId)) {
 		context.namespace.prototypeShapeIds.push(prototypeId);
-	}
-
-	if (!context.expandPrototypeShapes) {
-		return;
 	}
 
 	const prototype = context.prototypeShapes?.[prototypeId];

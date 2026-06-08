@@ -70,7 +70,7 @@ export function compileModule(
 			consts: {},
 			moduleName: undefined,
 			functions,
-			prototypeShapeIds: [...(namespace?.prototypeShapeIds ?? layoutContext.namespace.prototypeShapeIds)],
+			prototypeShapeIds: [...layoutContext.namespace.prototypeShapeIds],
 		},
 		locals: {},
 		internalResources: {},
