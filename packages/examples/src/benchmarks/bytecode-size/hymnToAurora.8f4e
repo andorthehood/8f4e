@@ -1,5 +1,20 @@
 8f4e/v1
 
+function hasChanged
+; @pos -113 111
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push currentValue
+push *previousValue
+notEqual
+push previousValue
+push currentValue
+store
+functionEnd int
+
 function risingEdge
 ; @pos -113 72
 ; @tab 8
@@ -2089,11 +2104,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -2114,11 +2130,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -2139,11 +2156,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -2162,11 +2180,12 @@ int* rowCounter &rowCount2:out
 int* period &period4:out
 int out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row

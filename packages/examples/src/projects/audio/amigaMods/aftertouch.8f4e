@@ -545,7 +545,7 @@ store
 
 moduleEnd
 module sampleOffset1
-; @pos 196 -69
+; @pos 196 -71
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -628,7 +628,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset3
-; @pos 196 21
+; @pos 196 23
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -670,7 +670,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset4
-; @pos 196 66
+; @pos 196 70
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -712,15 +712,16 @@ ifEnd
 
 moduleEnd
 module tempo1
-; @pos 230 -69
+; @pos 230 -71
 ; @group ch1
 use mod
 int* row &rowBuffer1:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -757,8 +758,9 @@ int* row &rowBuffer2:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -788,15 +790,16 @@ ifEnd
 
 moduleEnd
 module tempo3
-; @pos 230 21
+; @pos 230 23
 ; @group ch3
 use mod
 int* row &rowBuffer3:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -826,15 +829,16 @@ ifEnd
 
 moduleEnd
 module tempo4
-; @pos 230 66
+; @pos 230 70
 ; @group ch4
 use mod
 int* row &rowBuffer4:
 int* tempo &modTickClock:tempo
 int* ticks &modRowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -864,7 +868,7 @@ ifEnd
 
 moduleEnd
 module sampleNumber1
-; @pos 269 -69
+; @pos 269 -71
 ; @group ch1
 int* row &rowBuffer1:
 int out
@@ -906,7 +910,7 @@ ifEnd
 
 moduleEnd
 module sampleNumber3
-; @pos 269 21
+; @pos 269 23
 ; @group ch3
 int* row &rowBuffer3:
 int out
@@ -927,7 +931,7 @@ ifEnd
 
 moduleEnd
 module sampleNumber4
-; @pos 269 66
+; @pos 269 70
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -948,7 +952,7 @@ ifEnd
 
 moduleEnd
 module period1
-; @pos 303 -69
+; @pos 303 -71
 ; @group ch1
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
@@ -1004,7 +1008,7 @@ ifEnd
 
 moduleEnd
 module period3
-; @pos 303 21
+; @pos 303 23
 ; @group ch3
 int* row &rowBuffer3:
 int* sampleNumber &sampleNumber3:out
@@ -1032,7 +1036,7 @@ ifEnd
 
 moduleEnd
 module period4
-; @pos 303 66
+; @pos 303 70
 ; @group ch4
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
@@ -1060,7 +1064,7 @@ ifEnd
 
 moduleEnd
 module trigger1
-; @pos 348 -69
+; @pos 348 -71
 ; @group ch1
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -1069,11 +1073,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1094,11 +1099,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1110,7 +1116,7 @@ ifEnd
 
 moduleEnd
 module trigger3
-; @pos 348 21
+; @pos 348 23
 ; @group ch3
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
@@ -1119,11 +1125,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1135,18 +1142,19 @@ ifEnd
 
 moduleEnd
 module trigger4
-; @pos 348 66
+; @pos 348 70
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
 int* period &period4:out
 int out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1158,7 +1166,7 @@ ifEnd
 
 moduleEnd
 module volume1
-; @pos 387 -69
+; @pos 387 -71
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -1170,8 +1178,9 @@ int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call rowShouldReloadVolume
@@ -1215,8 +1224,9 @@ int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call rowShouldReloadVolume
@@ -1248,7 +1258,7 @@ ifEnd
 
 moduleEnd
 module volume3
-; @pos 387 21
+; @pos 387 23
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -1260,8 +1270,9 @@ int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call rowShouldReloadVolume
@@ -1293,7 +1304,7 @@ ifEnd
 
 moduleEnd
 module volume4
-; @pos 387 66
+; @pos 387 70
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -1305,8 +1316,9 @@ int out ; @w
 
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call rowShouldReloadVolume
@@ -2030,7 +2042,7 @@ ifEnd
 
 moduleEnd
 module colors
-; @pos 821 -94
+; @pos 814 -94
 ; @config color.text.lineNumber rgba(255,255,255,0.3)
 ; @config color.text.code rgba(255,255,255,0.8)
 ; @config color.text.instruction #ffffff
@@ -2882,18 +2894,18 @@ push 0
 
 functionEnd int
 
-function risingEdge
-; @pos 633 -78
+function hasChanged
+; @pos 609 -78
 ; @tab 8
 #impure
 param int currentValue
 param int* previousValue
 
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
+push currentValue
+push *previousValue
+notEqual
+push previousValue
+push currentValue
 store
 functionEnd int
 
@@ -2944,6 +2956,21 @@ push row
 call maskParamLo
 sub
 
+functionEnd int
+
+function risingEdge
+; @pos 643 -78
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
 functionEnd int
 
 note fragmentShaderBackground

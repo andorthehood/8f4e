@@ -501,7 +501,7 @@ store
 
 moduleEnd
 module sampleOffset1
-; @pos 195 -71
+; @pos 195 -73
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -584,7 +584,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset3
-; @pos 195 22
+; @pos 195 24
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -626,7 +626,7 @@ ifEnd
 
 moduleEnd
 module sampleOffset4
-; @pos 195 68
+; @pos 195 72
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -668,15 +668,16 @@ ifEnd
 
 moduleEnd
 module tempo1
-; @pos 231 -71
+; @pos 231 -73
 ; @group ch1
 use mod
 int* row &rowBuffer1:
 int* tempo &tickClock:tempo
 int* ticks &rowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -713,8 +714,9 @@ int* row &rowBuffer2:
 int* tempo &tickClock:tempo
 int* ticks &rowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -744,15 +746,16 @@ ifEnd
 
 moduleEnd
 module tempo3
-; @pos 231 22
+; @pos 231 24
 ; @group ch3
 use mod
 int* row &rowBuffer3:
 int* tempo &tickClock:tempo
 int* ticks &rowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -782,15 +785,16 @@ ifEnd
 
 moduleEnd
 module tempo4
-; @pos 231 68
+; @pos 231 72
 ; @group ch4
 use mod
 int* row &rowBuffer4:
 int* tempo &tickClock:tempo
 int* ticks &rowClock:ticks
 int* rowCounter &rowCount2:out
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push *row
 call maskEffect
@@ -820,7 +824,7 @@ ifEnd
 
 moduleEnd
 module sampleNumber1
-; @pos 272 -71
+; @pos 272 -73
 ; @group ch1
 int* row &rowBuffer1:
 int out
@@ -862,7 +866,7 @@ ifEnd
 
 moduleEnd
 module sampleNumber3
-; @pos 272 22
+; @pos 272 24
 ; @group ch3
 int* row &rowBuffer3:
 int out
@@ -883,7 +887,7 @@ ifEnd
 
 moduleEnd
 module sampleNumber4
-; @pos 272 68
+; @pos 272 72
 ; @group ch4
 int* row &rowBuffer4:
 int out
@@ -904,7 +908,7 @@ ifEnd
 
 moduleEnd
 module period1
-; @pos 308 -71
+; @pos 308 -73
 ; @group ch1
 int* row &rowBuffer1:
 int* sampleNumber &sampleNumber1:out
@@ -960,7 +964,7 @@ ifEnd
 
 moduleEnd
 module period3
-; @pos 308 22
+; @pos 308 24
 ; @group ch3
 int* row &rowBuffer3:
 int* sampleNumber &sampleNumber3:out
@@ -988,7 +992,7 @@ ifEnd
 
 moduleEnd
 module period4
-; @pos 308 68
+; @pos 308 72
 ; @group ch4
 int* row &rowBuffer4:
 int* sampleNumber &sampleNumber4:out
@@ -1016,7 +1020,7 @@ ifEnd
 
 moduleEnd
 module trigger1
-; @pos 355 -71
+; @pos 355 -73
 ; @group ch1
 int* row &rowBuffer1:
 int* rowCounter &rowCount2:out
@@ -1025,11 +1029,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1050,11 +1055,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1066,7 +1072,7 @@ ifEnd
 
 moduleEnd
 module trigger3
-; @pos 355 22
+; @pos 355 24
 ; @group ch3
 int* row &rowBuffer3:
 int* rowCounter &rowCount2:out
@@ -1075,11 +1081,12 @@ int out
 
 ; @watch out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1091,18 +1098,19 @@ ifEnd
 
 moduleEnd
 module trigger4
-; @pos 355 68
+; @pos 355 72
 ; @group ch4
 int* row &rowBuffer4:
 int* rowCounter &rowCount2:out
 int* period &period4:out
 int out
 
+int prevRowCounter
 push &out
 push 0
 store
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push *row
@@ -1114,7 +1122,7 @@ ifEnd
 
 moduleEnd
 module volume1
-; @pos 396 -71
+; @pos 396 -73
 ; @group ch1
 use mod
 int* row &rowBuffer1:
@@ -1126,8 +1134,9 @@ int out ; @w
 ; @meter out 0 80
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push out
@@ -1171,8 +1180,9 @@ int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push out
@@ -1205,7 +1215,7 @@ store
 
 moduleEnd
 module volume3
-; @pos 396 22
+; @pos 396 24
 ; @group ch3
 use mod
 int* row &rowBuffer3:
@@ -1216,8 +1226,9 @@ int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push out
@@ -1250,7 +1261,7 @@ store
 
 moduleEnd
 module volume4
-; @pos 396 68
+; @pos 396 72
 ; @group ch4
 use mod
 int* row &rowBuffer4:
@@ -1261,8 +1272,9 @@ int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
 ; Reload base volume on
 ; tick 0 / row advance.
+int prevRowCounter
 push *rowCounter
-hasChanged
+call hasChanged &prevRowCounter
 if
 push &out
 push out
@@ -1324,7 +1336,7 @@ int8[] sample9 ASSET_SAMPLE9_SIZE
 ; @wave &sample9 count(sample9)
 moduleEnd
 module samplePack2
-; @pos 488 -7
+; @pos 491 -7
 use env
 int8[] sample10 ASSET_SAMPLE10_SIZE
 ; @config bin.sample10.memory sample10
@@ -2024,21 +2036,6 @@ ifEnd
 moduleEnd
 entryEnd
 
-function risingEdge
-; @pos -113 72
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
-store
-functionEnd int
-
 note
 ; @pos 9 -126
 ; Project Config
@@ -2478,6 +2475,21 @@ mapEnd float
 
 functionEnd float
 
+function risingEdge
+; @pos 459 -119
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 function sampleNumberToRepeatOffset
 ; @pos 491 -181
 ; @tab 8
@@ -2504,6 +2516,21 @@ map 17	S17_REPEAT_OFFSET
 default 2
 mapEnd int
 
+functionEnd int
+
+function hasChanged
+; @pos 493 -119
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push currentValue
+push *previousValue
+notEqual
+push previousValue
+push currentValue
+store
 functionEnd int
 
 function sampleNumberToVolume
