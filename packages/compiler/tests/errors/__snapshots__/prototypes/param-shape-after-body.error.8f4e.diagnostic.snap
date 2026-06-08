@@ -1,0 +1,21 @@
+{
+  "code": 23,
+  "context": {
+    "codeBlockId": "broken",
+    "codeBlockType": "function",
+    "projectBlockId": 7,
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "values",
+      },
+    ],
+    "instruction": "paramShape",
+    "lineNumber": 2,
+  },
+  "message": "Parameter declarations must come immediately after the function declaration, before any other instructions or local variable declarations. (23)",
+}

@@ -31,7 +31,7 @@ import type {
 	ValidatedPrototypeAST,
 } from './ast';
 import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
-import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
+import type { FunctionImportMetadata } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type {
 	ArrayDeclarationInstruction,
@@ -178,7 +178,8 @@ export interface CompilationContext {
 	codeBlockType?: CompilerSourceBlockType;
 	projectBlockId?: number;
 	currentFunctionId?: string;
-	currentFunctionSignature?: FunctionSignature;
+	currentFunctionMetadata?: FunctionMetadata;
+	currentFunctionParameterCount?: number;
 	currentFunctionTypeIndex?: number;
 	currentFunctionIsImpure?: boolean;
 	currentFunctionExportName?: string;
@@ -214,7 +215,8 @@ export interface FunctionCompilationContext extends CompilationContext {
 	codeBlockType: 'function';
 	currentModuleNextWordOffset: number;
 	currentModuleWordAlignedSize: number;
-	currentFunctionSignature: FunctionSignature;
+	currentFunctionMetadata: FunctionMetadata;
+	currentFunctionParameterCount: number;
 	currentFunctionTypeIndex?: number;
 	functionTypeRegistry: FunctionTypeRegistry;
 }

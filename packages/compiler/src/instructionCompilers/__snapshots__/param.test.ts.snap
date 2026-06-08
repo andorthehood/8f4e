@@ -2,12 +2,7 @@
 
 exports[`param instruction compiler > registers a float64 function parameter 1`] = `
 {
-  "currentFunctionSignature": {
-    "parameters": [
-      "float64",
-    ],
-    "returns": [],
-  },
+  "currentFunctionParameterCount": 1,
   "locals": {
     "x": {
       "index": 0,
@@ -20,12 +15,7 @@ exports[`param instruction compiler > registers a float64 function parameter 1`]
 
 exports[`param instruction compiler > registers a function parameter 1`] = `
 {
-  "currentFunctionSignature": {
-    "parameters": [
-      "int",
-    ],
-    "returns": [],
-  },
+  "currentFunctionParameterCount": 1,
   "locals": {
     "value": {
       "index": 0,

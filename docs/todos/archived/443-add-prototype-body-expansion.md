@@ -4,11 +4,18 @@ priority: Medium
 effort: 1-2d
 created: 2026-06-01
 issue: null
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-06-08
 ---
 
 # TODO: Add Prototype Body Expansion
+
+## Cancellation Note
+
+Cancelled on 2026-06-08. Reusable prototype behavior should be expressed as normal functions instead of executable
+prototype bodies. The replacement direction is tracked in
+`docs/todos/449-add-function-param-shape.md`: prototypes stay focused on memory shapes, while functions can import a
+prototype-shaped pointer parameter list with `paramShape`.
 
 ## Problem Description
 
@@ -143,4 +150,3 @@ Avoid:
 ## Related Items
 
 - **Related**: `docs/todos/archived/442-add-prototype-memory-shapes.md`
-

@@ -34,6 +34,7 @@ import {
 	validateMemoryRegionOptions,
 } from './memoryRegions';
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
+import { getEffectiveFunctionMetadata } from './paramShape';
 import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
@@ -53,6 +54,7 @@ type FunctionMetadataCollectionOptions = {
 	definedFunctionBaseIndex: number;
 	reservedFunctionIds: readonly string[];
 	reservedExportNames: readonly string[];
+	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>;
 };
 
 /**
@@ -101,13 +103,15 @@ export function collectFunctionMetadataFromAsts(
 			seenExportNames.add(exportName);
 		}
 
+		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
 		result[id] = {
 			id,
-			signature: ast.signature,
+			signature: functionMetadata.signature,
 			wasmIndex: importedFunction
 				? options.importedFunctionBaseIndex + importedFunctionIndex++
 				: options.definedFunctionBaseIndex + definedFunctionIndex++,
 			...(importedFunction ? { import: importedFunction } : {}),
+			...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		};
 	}
 

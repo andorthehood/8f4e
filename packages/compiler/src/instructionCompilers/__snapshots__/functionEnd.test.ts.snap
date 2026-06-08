@@ -8,14 +8,6 @@ exports[`functionEnd instruction compiler > accepts float64 return type and emit
       "expectedResultTypes": [],
     },
   ],
-  "currentFunctionSignature": {
-    "parameters": [
-      "float64",
-    ],
-    "returns": [
-      "float64",
-    ],
-  },
   "functionTypeRegistry": {
     "baseTypeIndex": 0,
     "signatureCount": 1,
@@ -25,7 +17,7 @@ exports[`functionEnd instruction compiler > accepts float64 return type and emit
 }
 `;
 
-exports[`functionEnd instruction compiler > updates function signature and clears stack 1`] = `
+exports[`functionEnd instruction compiler > registers the function type and clears stack 1`] = `
 {
   "blockStack": [
     {
@@ -33,14 +25,6 @@ exports[`functionEnd instruction compiler > updates function signature and clear
       "expectedResultTypes": [],
     },
   ],
-  "currentFunctionSignature": {
-    "parameters": [
-      "int",
-    ],
-    "returns": [
-      "int",
-    ],
-  },
   "functionTypeRegistry": {
     "baseTypeIndex": 0,
     "signatureCount": 1,

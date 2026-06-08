@@ -1,0 +1,47 @@
+8f4e/v1
+
+prototype mixerState
+int a 2
+float b 4.5
+prototypeEnd
+
+function sumMixer
+#impure
+paramShape mixerState
+push *a
+castToFloat
+push *b
+add
+functionEnd float
+
+function orderedMixer
+#impure
+param int base
+paramShape mixerState
+param int tail
+push base
+push *a
+add
+push *b
+castToInt
+add
+push tail
+add
+functionEnd int
+
+entry test
+module main
+shape mixerState
+
+; it expands prototype memory
+; declarations into pointer params
+call sumMixer &a &b
+call assertf 6.5
+
+; it preserves source order when
+; explicit params and paramShape
+; are mixed
+call orderedMixer 10 &a &b 3
+call assert 19
+moduleEnd
+entryEnd

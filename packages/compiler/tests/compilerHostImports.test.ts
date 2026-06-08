@@ -89,4 +89,48 @@ functionEnd float
 
 		expect(memory.getFloat32(output, true)).toBe(3.5);
 	});
+
+	test('supports paramShape signatures on host imports', async () => {
+		const calls: number[][] = [];
+		const fixture = await instantiateFixtureProgramSource(
+			`
+8f4e/v1
+
+prototype mixerState
+int left 2
+float right 1.5
+prototypeEnd
+
+entry main
+module shapeImportCaller
+shape mixerState
+
+call recordShape &left &right
+moduleEnd
+entryEnd
+
+function recordShape
+#import recordShape
+paramShape mixerState
+functionEnd
+`,
+			{
+				hostImports: {
+					recordShape: (leftAddress: number, rightAddress: number) => calls.push([leftAddress, rightAddress]),
+				},
+			}
+		);
+
+		const memoryMap = fixture.compileResult.compiledModules.shapeImportCaller.memoryMap;
+
+		getExportedFunction(fixture.instance.exports, 'initDefaults')();
+		getExportedFunction(fixture.instance.exports, 'main')();
+
+		expect(calls).toEqual([[memoryMap.left.byteAddress, memoryMap.right.byteAddress]]);
+		expect(fixture.compileResult.compiledFunctions!.recordShape.signature.parameters).toEqual(['int*', 'float*']);
+		expect(fixture.compileResult.compiledFunctions!.recordShape.import).toEqual({
+			moduleName: 'host',
+			fieldName: 'recordShape',
+		});
+	});
 });
