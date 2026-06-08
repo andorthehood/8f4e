@@ -1,7 +1,7 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import type { ValidatedAST, ValidatedConstantsAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
 import type { ASTCache } from './cache';
-import type { FunctionImportMetadata, FunctionSignature } from './functionTypes';
+import type { FunctionImportMetadata, FunctionSignature, FunctionValueType } from './functionTypes';
 import type { InternalResourceMap, MemoryMap } from './memory';
 import type { StackAnalysisResult } from './semantic';
 
@@ -51,11 +51,20 @@ export interface FunctionTypeRegistry {
 }
 
 /** Public identity, signature, and WebAssembly index for a compiled function. */
+export interface FunctionParamShapeExpansion {
+	lineNumber: number;
+	parameters: Array<{
+		name: string;
+		type: FunctionValueType;
+	}>;
+}
+
 export interface FunctionMetadata {
 	id: string;
 	signature: FunctionSignature;
 	wasmIndex: number;
 	import?: FunctionImportMetadata;
+	paramShapeExpansions?: FunctionParamShapeExpansion[];
 }
 
 export type FunctionMetadataLookup = Record<string, FunctionMetadata>;
