@@ -5,7 +5,7 @@ import type {
 	InstructionCompiler,
 	ParamLine,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ErrorCode, MAX_FUNCTION_PARAMETERS } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 
@@ -51,7 +51,7 @@ export function registerFunctionParameter(
 
 	context.currentFunctionParameterCount += 1;
 
-	if (context.currentFunctionParameterCount > 8) {
+	if (context.currentFunctionParameterCount > MAX_FUNCTION_PARAMETERS) {
 		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
 	}
 

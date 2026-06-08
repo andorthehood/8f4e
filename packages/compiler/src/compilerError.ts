@@ -25,7 +25,12 @@ import type {
 	CompilerStageError,
 	ErrorCodeValue,
 } from '@8f4e/compiler-spec';
-import { ErrorCode, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-spec';
+import {
+	ErrorCode,
+	MAX_FUNCTION_PARAMETERS,
+	MAX_FUNCTION_RETURN_VALUES,
+	SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS,
+} from '@8f4e/compiler-spec';
 
 export { ErrorCode };
 
@@ -213,7 +218,14 @@ export function getError(
 		case ErrorCode.FUNCTION_SIGNATURE_OVERFLOW:
 			return {
 				code,
-				message: 'Function signature overflow. Maximum 8 parameters and 8 return values. (' + code + ')',
+				message:
+					'Function signature overflow. Maximum ' +
+					MAX_FUNCTION_PARAMETERS +
+					' parameters and ' +
+					MAX_FUNCTION_RETURN_VALUES +
+					' return values. (' +
+					code +
+					')',
 				line,
 				context,
 			};
