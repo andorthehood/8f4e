@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/compiler-worker",
-  "version": "1.3.18",
+  "version": "1.3.19",
   "private": true,
   "description": "8f4e compiler worker package",
   "type": "module",
