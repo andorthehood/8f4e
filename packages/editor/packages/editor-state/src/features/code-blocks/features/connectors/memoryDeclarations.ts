@@ -1,4 +1,6 @@
 import type { CompiledModule, DataStructure } from '@8f4e/compiler-spec';
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export interface ConnectorMemoryDeclaration {
 	memory: DataStructure;
@@ -35,12 +37,12 @@ export function getConnectorMemoryDeclarations(
 			},
 		}))
 		.sort((left, right) => {
-			return (
-				left.position.lineNumber - right.position.lineNumber ||
-				left.position.rowOffset - right.position.rowOffset ||
-				left.memory.lineNumber - right.memory.lineNumber
-			);
+			return left.position.lineNumber - right.position.lineNumber || left.position.rowOffset - right.position.rowOffset;
 		});
+}
+
+export function getConnectorRow(declaration: ConnectorMemoryDeclaration, gaps: CodeBlockGraphicData['gaps']): number {
+	return gapCalculator(declaration.position.lineNumber, gaps) + declaration.position.rowOffset;
 }
 
 export function isInputMemoryDeclaration(memory: DataStructure): boolean {
