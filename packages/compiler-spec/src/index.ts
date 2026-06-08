@@ -10,7 +10,6 @@ export * from './instructionSpecs';
 export * from './instructionSpecTypes';
 export * from './instructionSpecUtils';
 export * from './instructions';
-export * from './macros';
 export * from './memory';
 export * from './options';
 export * from './runtime';

@@ -118,5 +118,4 @@ export interface CompileInput {
 	functions: Module[];
 	constants: Module[];
 	prototypes: Module[];
-	macros: Module[];
 }

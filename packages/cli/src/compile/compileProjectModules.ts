@@ -26,7 +26,7 @@ export default function compileProjectModules(
 ): CompileProjectModulesResult {
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
-	const { entries, constantsBlocks, functionBlocks, prototypeBlocks, macroBlocks } = pickProjectCompilerBlocks({
+	const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
 		codeBlocks: blocks,
 		groups: [],
 	});
@@ -45,7 +45,6 @@ export default function compileProjectModules(
 			constants: constantsBlocks,
 			functions: functionBlocks,
 			prototypes: prototypeBlocks,
-			macros: macroBlocks,
 		},
 		options.compilerOptions
 	);

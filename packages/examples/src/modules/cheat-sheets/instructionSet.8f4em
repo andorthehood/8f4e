@@ -97,11 +97,6 @@ constants instructionSet
 ; constants	Begin a constants block.
 ; constantsEnd	End a constants block.
 ;
-; Macros
-; defineMacro	Begin a macro definition block.
-; defineMacroEnd	End a macro definition block.
-; macro	Expand a macro at compile time.
-;
 ; Math helpers
 ; abs	Absolute value.
 ; sqrt	Square root.

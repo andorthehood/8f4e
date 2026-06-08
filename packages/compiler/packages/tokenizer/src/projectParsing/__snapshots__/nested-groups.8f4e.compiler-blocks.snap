@@ -43,16 +43,6 @@
           "entry": "main",
           "functionBlocks": [],
           "groups": [],
-          "macroBlocks": [
-            {
-              "code": [
-                "defineMacro resetPhase",
-                "push 0",
-                "defineMacroEnd",
-              ],
-              "projectBlockId": 28,
-            },
-          ],
           "modules": [],
           "name": "oscillator",
           "prototypeBlocks": [
@@ -68,7 +58,6 @@
           ],
         },
       ],
-      "macroBlocks": [],
       "modules": [
         {
           "code": [
@@ -83,6 +72,5 @@
       "prototypeBlocks": [],
     },
   ],
-  "macroBlocks": [],
   "prototypeBlocks": [],
 }

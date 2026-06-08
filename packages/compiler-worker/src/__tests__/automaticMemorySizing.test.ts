@@ -9,7 +9,6 @@ function createInput(modules: Module[]): CompileInput {
 		constants: [],
 		functions: [],
 		prototypes: [],
-		macros: [],
 	};
 }
 

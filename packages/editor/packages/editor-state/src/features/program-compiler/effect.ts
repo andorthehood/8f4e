@@ -11,7 +11,6 @@ import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorC
 const moduleBlockType = documentBlockInstructionByType.module.type;
 const constantsBlockType = documentBlockInstructionByType.constants.type;
 const functionBlockType = documentBlockInstructionByType.function.type;
-const macroBlockType = documentBlockInstructionByType.macro.type;
 const prototypeBlockType = documentBlockInstructionByType.prototype.type;
 
 function toCompilerModule(block: CodeBlockGraphicData): Module {
@@ -22,11 +21,11 @@ function toCompilerModule(block: CodeBlockGraphicData): Module {
 }
 
 /**
- * Converts code blocks into compiler input entries plus shared functions, constants, and macros.
+ * Converts code blocks into compiler input entries plus shared functions, constants, and prototypes.
  *
  * @param codeBlocks - List of code blocks to filter and sort
  * @returns Compiler input with main-entry modules sorted by grid position,
- *          and constants/functions/macros sorted by creationIndex.
+ *          and constants/functions/prototypes sorted by creationIndex.
  *          Config/shader/unknown blocks are excluded from the WASM compilation pipeline.
  */
 export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): CompileInput {
@@ -34,7 +33,6 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 	const constants: Module[] = [];
 	const functions: Module[] = [];
 	const prototypes: Module[] = [];
-	const macros: Module[] = [];
 
 	const sortedEnabled = [...codeBlocks]
 		.filter(block => !block.disabled)
@@ -54,8 +52,6 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 			functions.push(toCompilerModule(block));
 		} else if (block.blockType === prototypeBlockType) {
 			prototypes.push(toCompilerModule(block));
-		} else if (block.blockType === macroBlockType) {
-			macros.push(toCompilerModule(block));
 		}
 	}
 
@@ -67,7 +63,7 @@ export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): C
 	);
 	entries.main ??= [];
 
-	return { entries, constants, functions, prototypes, macros };
+	return { entries, constants, functions, prototypes };
 }
 
 export default function compiler(store: StateManager<State>) {

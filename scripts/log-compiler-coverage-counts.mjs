@@ -78,7 +78,6 @@ async function main() {
 					constants: benchmarkCase.constantsBlocks,
 					functions: benchmarkCase.functionBlocks,
 					prototypes: benchmarkCase.prototypeBlocks,
-					macros: benchmarkCase.macroBlocks,
 				},
 				compilerOptions
 			);

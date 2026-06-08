@@ -20,7 +20,6 @@ const snapshotDirectory = path.join(__dirname, '__snapshots__');
 
 const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
-const validMacroBlock = ['defineMacro double', 'push 2', 'mul', 'defineMacroEnd'];
 const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd'];
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
 
@@ -124,7 +123,7 @@ describe('parse8f4eProject', () => {
 				...validFunctionBlock,
 				'group oscillator',
 				...validPrototypeBlock,
-				...validMacroBlock,
+				...validNoteBlock,
 				'groupEnd',
 				'groupEnd',
 				'entryEnd',
@@ -146,7 +145,7 @@ describe('parse8f4eProject', () => {
 						entry: 'main',
 						codeBlocks: [
 							{ id: 14, code: validPrototypeBlock, entry: 'main' },
-							{ id: 18, code: validMacroBlock, entry: 'main' },
+							{ id: 18, code: validNoteBlock, entry: 'main' },
 						],
 						groups: [],
 					},
