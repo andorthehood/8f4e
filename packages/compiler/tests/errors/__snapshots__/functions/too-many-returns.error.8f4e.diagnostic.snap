@@ -65,5 +65,5 @@
     "instruction": "functionEnd",
     "lineNumber": 12,
   },
-  "message": "Function signature overflow. Maximum 8 parameters and 8 return values. (17)",
+  "message": "Function signature overflow. Maximum 16 parameters and 8 return values. (17)",
 }

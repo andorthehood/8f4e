@@ -19,6 +19,9 @@ export const POINTER_FUNCTION_TYPE_IDENTIFIERS = [
 
 export const FUNCTION_TYPE_IDENTIFIERS = [...SCALAR_TYPE_IDENTIFIERS, ...POINTER_FUNCTION_TYPE_IDENTIFIERS] as const;
 
+export const MAX_FUNCTION_PARAMETERS = 16;
+export const MAX_FUNCTION_RETURN_VALUES = 8;
+
 export type ScalarTypeIdentifier = (typeof SCALAR_TYPE_IDENTIFIERS)[number];
 export type PointerFunctionTypeIdentifier = (typeof POINTER_FUNCTION_TYPE_IDENTIFIERS)[number];
 export type FunctionTypeIdentifier = (typeof FUNCTION_TYPE_IDENTIFIERS)[number];

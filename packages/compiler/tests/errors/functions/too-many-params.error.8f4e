@@ -7,7 +7,7 @@ entryEnd
 
 function tooManyParams
 ; Functions should reject more
-; than eight parameters.
+; than sixteen parameters.
 param int p1
 param int p2
 param int p3
@@ -17,4 +17,12 @@ param int p6
 param int p7
 param int p8
 param int p9
+param int p10
+param int p11
+param int p12
+param int p13
+param int p14
+param int p15
+param int p16
+param int p17
 functionEnd

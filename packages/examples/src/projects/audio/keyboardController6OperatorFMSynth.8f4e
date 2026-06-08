@@ -1,5 +1,21 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @hide
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module projectConfig
 ; @pos -94 1
@@ -207,71 +223,69 @@ float	11839.8215
 float	12543.8540
 
 moduleEnd
-module adsrEnv4
-; @pos 316 41
-; @tab 8
-; @group operator4
-use env
-int*	trigger &keyboard:keyPressed
-int	attackTime SAMPLE_RATE/10000
-float	attacLevel 1.0
-int	decayTime SAMPLE_RATE/10000
-float	sustainLevel 0.5
-int	releaseTime SAMPLE_RATE/1
-float	out
-int sustainEnabled 0
-; @watch _counter
-; @watch out
-; @watch _state
-
-macro adsrEnv
-
-moduleEnd
 module adsrEnv2
 ; @pos 317 13
 ; @tab 8
 ; @group operator2
 use env
+shape adsrEnvState
 
 int*	trigger &keyboard:keyPressed
 int	attackTime SAMPLE_RATE/2000
-float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/2000
 float	sustainLevel 0.5
 int	releaseTime SAMPLE_RATE/10
-float	out
-int	sustainEnabled 0
 
 ; @watch _counter
 ; @watch out
 ; @watch _state
 
-macro adsrEnv
+pushShape adsrEnvState
+call adsrEnv
+
+moduleEnd
+module adsrEnv4
+; @pos 317 44
+; @tab 8
+; @group operator4
+use env
+shape adsrEnvState
+int*	trigger &keyboard:keyPressed
+int	attackTime SAMPLE_RATE/10000
+int	decayTime SAMPLE_RATE/10000
+float	sustainLevel 0.5
+int	releaseTime SAMPLE_RATE/1
+float	out
+; @watch _counter
+; @watch out
+; @watch _state
+
+pushShape adsrEnvState
+call adsrEnv
 
 moduleEnd
 module adsrEnv6
-; @pos 317 69
+; @pos 317 74
 ; @tab 8
 ; @group operator5
 use env
+shape adsrEnvState
 
 int*	trigger &keyboard:keyPressed
 int	attackTime SAMPLE_RATE/10000
-float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/10000
 float	sustainLevel 0.5
 int	releaseTime SAMPLE_RATE/2
-float	out
-int sustainEnabled 0
 ; @watch _counter
 ; @watch out
 ; @watch _state
 
-macro adsrEnv
+pushShape adsrEnvState
+call adsrEnv
 
 moduleEnd
 module modulator4
-; @pos 364 41
+; @pos 365 44
 ; @group operator4
 use env
 use math
@@ -322,7 +336,7 @@ store
 
 moduleEnd
 module modulator6
-; @pos 365 69
+; @pos 365 74
 ; @group operator5
 use env
 use math
@@ -423,257 +437,67 @@ mul
 store
 
 moduleEnd
-module bpmClock
-; @pos 414 -92
-use env
-
-int bpm 12
-int out
-int counter
-
-; @watch counter
-
-push &out
-push 0
-store
-
-push counter
-push SAMPLE_RATE
-push 60
-mul
-push bpm
-ensureNonZero
-div
-greaterThan
-if
-push &counter
-push 0
-store
-push &out
-push 1
-store
-ifEnd
-
-push &counter
-push counter
-push 1
-add
-store
-
-moduleEnd
 module adsrEnv1
 ; @pos 418 13
 ; @tab 8
 ; @group operator1
 use env
+shape adsrEnvState
 
 int*	trigger &keyboard:keyPressed
 int	attackTime SAMPLE_RATE/100
-float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/10
 float	sustainLevel 0.5
 int	releaseTime SAMPLE_RATE/10
-float	out
-int sustainEnabled 0
 
 ; @watch _counter
 ; @watch out
 ; @watch _state
 
-macro adsrEnv
+pushShape adsrEnvState
+call adsrEnv
 
 moduleEnd
 module adsrEnv3
-; @pos 418 41
+; @pos 418 44
 ; @tab 8
 ; @group operator3
 use env
+shape adsrEnvState
 
 int*	trigger &keyboard:keyPressed
 int	attackTime SAMPLE_RATE/100
-float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/100
 float	sustainLevel 0.5
 int	releaseTime SAMPLE_RATE/1
-float	out
-int sustainEnabled 0
 
 ; @watch _counter
 ; @watch out
 ; @watch _state
 
-macro adsrEnv
+pushShape adsrEnvState
+call adsrEnv
 
 moduleEnd
 module adsrEnv5
-; @pos 418 69
+; @pos 418 74
 ; @tab 8
 ; @group operator6
 use env
+shape adsrEnvState
 
 int*	trigger &keyboard:keyPressed
-int	attackTime SAMPLE_RATE/100
-float	attacLevel 1.0
-int	decayTime SAMPLE_RATE/10
+int	attackTime SAMPLE_RATE/10000
+int	decayTime SAMPLE_RATE/10000
 float	sustainLevel 0.5
-int	releaseTime SAMPLE_RATE/10
-float	out
-int sustainEnabled 0
+int	releaseTime SAMPLE_RATE/1
 
 ; @watch _counter
 ; @watch out
 ; @watch _state
 
-macro adsrEnv
-
-moduleEnd
-module adrEnv
-; @pos 453 -92
-; @tab 8
-const	ATTACK 1
-const	DECAY 2
-const	RELEASE 3
-
-use env
-
-int*	trigger &bpmClock:out
-int	attackTime SAMPLE_RATE
-float	attacLevel 1.0
-int	decayTime SAMPLE_RATE/2
-float	decayLevel 0.5
-int	releaseTime SAMPLE_RATE*2
-int	_state RELEASE
-int	_counter
-float	out
-
-; @watch _counter
-; @watch out
-; @watch _state
-; @hide
-; Start ATTACK
-push	*trigger
-risingEdge
-if
-push	&_state
-push	ATTACK
-store
-push	&_counter
-push	attackTime
-store
-ifEnd
-
-; ATTACK math
-push	_state
-push	ATTACK
-equal
-push	_counter
-push	0
-greaterThan
-and
-if
-push	&out
-push	1.0
-push	_counter
-castToFloat
-push	attackTime
-castToFloat
-ensureNonZero
-div
-sub
-store
-ifEnd
-
-; Transition from ATTACK to
-; DECAY
-push	_counter
-equalToZero
-push	_state
-push	ATTACK
-equal
-and
-if ; End of attack
-push	&_state
-push	DECAY
-store
-push	&_counter
-push	decayTime
-store
-ifEnd
-
-; DECAY math
-push	_state
-push	DECAY
-equal
-push	_counter
-push 0
-greaterThan
-and
-if
-push	&out
-push	decayLevel
-push	_counter
-castToFloat
-push   decayTime
-castToFloat
-ensureNonZero
-div
-push	1.0
-push	decayLevel
-sub
-mul
-add
-store
-ifEnd
-
-; Transition from DECAY
-; to RELEASE
-push	_state
-push	DECAY
-equal
-push	_counter
-equalToZero
-and
-if
-push	&_state
-push	RELEASE
-store
-push	&_counter
-push	releaseTime
-store
-ifEnd
-
-; RELEASE math
-push	_state
-push	RELEASE
-equal
-push	_counter
-push	0
-greaterThan
-and
-if
-push	&out
-push	_counter
-castToFloat
-push	releaseTime
-castToFloat
-ensureNonZero
-div
-push	decayLevel
-mul
-store
-ifEnd
-
-; Decrement and wrap counter
-push	_counter
-push	0
-greaterThan
-if
-push	&_counter
-push	_counter
-push	1
-sub
-store
-ifEnd
+pushShape adsrEnvState
+call adsrEnv
 
 moduleEnd
 module carrier1
@@ -732,7 +556,7 @@ store
 
 moduleEnd
 module carrier3
-; @pos 465 41
+; @pos 465 44
 use env
 ; @group operator3
 float* frequency &midiNote2Freq:out
@@ -787,7 +611,7 @@ store
 
 moduleEnd
 module carrier5
-; @pos 465 69
+; @pos 465 74
 use env
 ; @group operator6
 float* frequency &midiNote2Freq:out
@@ -795,7 +619,7 @@ float* phaseMod &modulator6:out
 float phase 0.0
 float ratio 0.99
 float out
-float* amplitude &adsrEnv4:out
+float* amplitude &adsrEnv5:out
 float level 0.99
 
 ; @hide
@@ -867,7 +691,7 @@ store
 
 moduleEnd
 module limiter
-; @pos 597 43
+; @pos 587 45
 float* in &mixer:out
 float out
 
@@ -890,56 +714,8 @@ ifEnd float
 store
 
 moduleEnd
-module reverb
-; @pos 637 50
-
-float* in &limiter:out
-float out
-
-const FEEDBACK 0.5
-const SIZE 5000
-
-float[] buffer SIZE
-int bufferPointer &buffer
-
-; Compute reverb output
-push &out
-push bufferPointer
-loadFloat
-push FEEDBACK
-mul
-push *in
-add
-store
-
-; Store the new sample
-; in the buffer
-push bufferPointer
-push &out
-loadFloat
-store
-
-; Advance buffer pointer
-push &bufferPointer
-push bufferPointer
-push sizeof(bufferPointer)
-add
-store
-
-; Wrap buffer pointer back
-; to start when reaches end
-push bufferPointer
-push buffer&
-greaterThan
-if
-push &bufferPointer
-push &buffer
-store
-ifEnd
-
-moduleEnd
 module audioout
-; @pos 675 39
+; @pos 627 39
 use env
 
 float* in &limiter:out
@@ -980,45 +756,56 @@ ifEnd
 moduleEnd
 entryEnd
 
-defineMacro adsrEnv
-; @pos -75 74
+prototype adsrEnvState
+; @pos -79 58
+int* trigger
+int previousTrigger
+int attackTime
+int decayTime
+float sustainLevel
+int releaseTime
+float out
+int _state 4
+int _counter
+prototypeEnd
+
+function adsrEnv
+; @pos -79 72
 ; @hide
 ; @tab 8
+#impure
+paramShape adsrEnvState
 
 const	ATTACK 1
 const	DECAY 2
-const	SUSTAIN 3
 const	RELEASE 4
 
-int	_state RELEASE
-int	_counter
-
 ; Start ATTACK
-push	*trigger
-risingEdge
+push	**trigger
+call	risingEdge previousTrigger
 if
-push	&_state
+push	_state
 push	ATTACK
 store
-push	&_counter
-push	attackTime
+push	_counter
+push	*attackTime
 store
 ifEnd
 
 ; ATTACK math
-push	_state
+push	*_state
 push	ATTACK
 equal
-push	_counter
+push	*_counter
 push	0
 greaterThan
 and
 if
-push	&out
+push	out
 push	1.0
-push	_counter
+push	*_counter
 castToFloat
-push	attackTime
+push	*attackTime
 castToFloat
 ensureNonZero
 div
@@ -1028,40 +815,40 @@ ifEnd
 
 ; Transition from ATTACK to
 ; DECAY
-push	_counter
+push	*_counter
 equalToZero
-push	_state
+push	*_state
 push	ATTACK
 equal
 and
 if ; End of attack
-push	&_state
+push	_state
 push	DECAY
 store
-push	&_counter
-push	decayTime
+push	_counter
+push	*decayTime
 store
 ifEnd
 
 ; DECAY math
-push	_state
+push	*_state
 push	DECAY
 equal
-push	_counter
+push	*_counter
 push 0
 greaterThan
 and
 if
-push	&out
-push	sustainLevel
-push	_counter
+push	out
+push	*sustainLevel
+push	*_counter
 castToFloat
-push   decayTime
+push   *decayTime
 castToFloat
 ensureNonZero
 div
 push	1.0
-push	sustainLevel
+push	*sustainLevel
 sub
 mul
 add
@@ -1069,96 +856,59 @@ store
 ifEnd
 
 ; Transition from DECAY
-; to SUSTAIN if enabled,
-; otherwise to RELEASE
-push	_state
+; to RELEASE
+push	*_state
 push	DECAY
 equal
+push	*_counter
+equalToZero
+and
+if
+push	_state
+push	RELEASE
+store
 push	_counter
-equalToZero
-and
-if
-push	&_state
-push	sustainEnabled
-if
-push	SUSTAIN
-else
-push	&_counter
-push	releaseTime
-store
-push	RELEASE
-ifEnd int
-store
-ifEnd
-
-; SUSTAIN math
-push	_state
-push	SUSTAIN
-equal
-push    *trigger
-push    0
-greaterThan
-and
-if
-push &out
-push sustainLevel
-store
-ifEnd
-
-; Transition from SUSTAIN to
-; RELEASE
-push	_state
-push	SUSTAIN
-equal
-push	*trigger
-equalToZero
-and
-if
-push	&_state
-push	RELEASE
-store
-push	&_counter
-push	releaseTime
+push	*releaseTime
 store
 ifEnd
 
 ; RELEASE math
-push	_state
+push	*_state
 push	RELEASE
 equal
-push	_counter
+push	*_counter
 push	0
 greaterThan
 and
 if
-push	&out
-push	_counter
+push	out
+push	*_counter
 castToFloat
-push	releaseTime
+push	*releaseTime
 castToFloat
 ensureNonZero
 div
-push	sustainLevel
+push	*sustainLevel
 mul
 store
 ifEnd
 
 ; Decrement and wrap counter
-push	_counter
+push	*_counter
 push	0
 greaterThan
 if
-push	&_counter
 push	_counter
+push	*_counter
 push	1
 sub
 store
 ifEnd
 
-defineMacroEnd
+functionEnd
 
 function sine
-; @pos -35 74
+; @pos -35 72
 ; Polynomial approximation
 ; of the sine function with
 ; Taylor series (7th order)
