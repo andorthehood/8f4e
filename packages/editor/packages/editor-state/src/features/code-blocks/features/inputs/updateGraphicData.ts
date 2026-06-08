@@ -19,7 +19,7 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 	}
 
 	const compiledModule = state.compiler.compiledModules[graphicData.name];
-	getConnectorMemoryDeclarations(compiledModule, state).forEach(declaration => {
+	getConnectorMemoryDeclarations(compiledModule).forEach(declaration => {
 		const { memory } = declaration;
 		if (!isInputMemoryDeclaration(memory)) return;
 

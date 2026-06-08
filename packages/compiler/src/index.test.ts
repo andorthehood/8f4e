@@ -107,6 +107,37 @@ describe('compile prototype validation', () => {
 		expect(result.compiledModules.main.memoryMap.value.default).toBe(7);
 	});
 
+	it('marks shape-expanded declarations as inherited at the shape line', () => {
+		const result = compile(
+			{
+				...emptyCompileInput,
+				entries: {
+					main: [{ code: ['module filterA', 'shape filterState', 'float cutoff 1200', 'moduleEnd'] }],
+				},
+				prototypes: [
+					{
+						code: [
+							'prototype filterState',
+							'float* input',
+							'float cutoff 800',
+							'float resonance 0.5',
+							'float output',
+							'prototypeEnd',
+						],
+					},
+				],
+			},
+			{ disableSharedMemory: true }
+		);
+
+		const memoryMap = result.compiledModules.filterA.memoryMap;
+		expect(memoryMap.input).toMatchObject({ isInherited: true, lineNumber: 1 });
+		expect(memoryMap.resonance).toMatchObject({ isInherited: true, lineNumber: 1 });
+		expect(memoryMap.output).toMatchObject({ isInherited: true, lineNumber: 1 });
+		expect(memoryMap.cutoff).toMatchObject({ lineNumber: 2 });
+		expect(memoryMap.cutoff.isInherited).toBeUndefined();
+	});
+
 	it('rejects function ids that collide with generated entry function ids during semantic metadata collection', () => {
 		let thrownError: unknown;
 
