@@ -827,27 +827,21 @@
   },
   "moduleMemory": {
     "absAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "addAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "divAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "mulAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "remainderAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "subAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

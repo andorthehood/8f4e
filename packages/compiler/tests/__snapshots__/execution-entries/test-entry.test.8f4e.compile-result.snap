@@ -291,15 +291,12 @@
   },
   "moduleMemory": {
     "productionEntryDoesNotRun": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "testEntryRunsAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "testEntrySupportsPointerArguments": {
-      "internalResources": {},
       "memoryMap": {
         "values": {
           "byteAddress": 4,

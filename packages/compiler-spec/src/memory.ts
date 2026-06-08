@@ -170,26 +170,6 @@ export interface DataStructure {
 
 export type MemoryMap = Record<string, DataStructure>;
 
-/** Compiler-owned memory allocation used to support generated runtime behavior. */
-export interface InternalResource {
-	id: string;
-	memoryIndex: number;
-	memoryRegionName?: string;
-	byteAddress: number;
-	wordAlignedAddress: number;
-	wordAlignedSize: number;
-	elementWordSize: number;
-	default: number;
-	storageType: 'int' | 'float' | 'float64';
-}
-
-export type InternalResourceMap = Record<string, InternalResource>;
-
-/** Cursor for allocating compiler-owned internal memory resources. */
-export interface InternalAllocator {
-	nextByteAddress: number;
-}
-
 export type MemoryBuffer = Int32Array;
 
 export type MemoryValueChange = {

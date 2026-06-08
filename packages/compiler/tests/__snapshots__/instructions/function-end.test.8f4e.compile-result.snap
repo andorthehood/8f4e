@@ -500,23 +500,18 @@
   },
   "moduleMemory": {
     "functionEndFloat64Return": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "functionEndFloat64SignatureSnapshot": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "functionEndFloatReturn": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "functionEndIntReturn": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "functionEndStackValidationRuntimeResult": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },
