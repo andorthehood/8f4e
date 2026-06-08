@@ -52,6 +52,7 @@ module rowClock
 ; @pos -141 -28
 use env
 int* tick &tickClock:out
+int previousTick
 int ticks 6 ; @w
 int out
 int counter
@@ -61,7 +62,7 @@ push 0
 store
 
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push counter
 push 1
@@ -142,6 +143,7 @@ module rowCounter
 ; @pos -68 -28
 use env
 int* trigger &rowClock:out
+int previousTrigger
 int rowCounter -1
 int* patternPointer &patternOrder:0
 int out ; @w
@@ -152,7 +154,7 @@ int out ; @w
 
 ; Advance the playhead
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &rowCounter
 push rowCounter
@@ -1117,6 +1119,7 @@ module volume1
 use mod
 int* row &rowBuffer1:
 int* tick &tickClock:out
+int previousTick
 int* rowTrigger &rowClock:out
 int* rowCounter &rowCount2:out
 int out ; @w
@@ -1139,7 +1142,7 @@ push *rowTrigger
 equalToZero
 if
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &out
 push out
@@ -1162,6 +1165,7 @@ module volume2
 use mod
 int* row &rowBuffer2:
 int* tick &tickClock:out
+int previousTick
 int* rowTrigger &rowClock:out
 int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
@@ -1183,7 +1187,7 @@ push *rowTrigger
 equalToZero
 if
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &out
 push out
@@ -1206,6 +1210,7 @@ module volume3
 use mod
 int* row &rowBuffer3:
 int* tick &tickClock:out
+int previousTick
 int* rowTrigger &rowClock:out
 int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
@@ -1227,7 +1232,7 @@ push *rowTrigger
 equalToZero
 if
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &out
 push out
@@ -1250,6 +1255,7 @@ module volume4
 use mod
 int* row &rowBuffer4:
 int* tick &tickClock:out
+int previousTick
 int* rowTrigger &rowClock:out
 int* rowCounter &rowCount2:out
 int out ; @meter out 0 80
@@ -1271,7 +1277,7 @@ push *rowTrigger
 equalToZero
 if
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &out
 push out
@@ -1352,6 +1358,7 @@ use env
 int*	period	&period1:out
 int*	offset	&sampleOffset1:out
 int*	trigger	&trigger1:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber1:out
 int8*	sampleAddress	; @w
 int8*	playhead	; @w
@@ -1374,7 +1381,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1446,12 +1453,13 @@ ifEnd
 
 moduleEnd
 module samplePlayer2
-; @pos 545 16
+; @pos 545 17
 use env
 ; @tab 6 20
 int*	period	&period2:out
 int*	offset	&sampleOffset2:out
 int*	trigger	&trigger2:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber2:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1474,7 +1482,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1552,6 +1560,7 @@ use env
 int*	period	&period3:out
 int*	offset	&sampleOffset3:out
 int*	trigger	&trigger3:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber3:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1574,7 +1583,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1646,12 +1655,13 @@ ifEnd
 
 moduleEnd
 module samplePlayer4
-; @pos 597 16
+; @pos 597 17
 use env
 ; @tab 6 20
 int*	period	&period4:out
 int*	offset	&sampleOffset4:out
 int*	trigger	&trigger4:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber4:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1674,7 +1684,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -2013,6 +2023,22 @@ ifEnd
 
 moduleEnd
 entryEnd
+
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 note
 ; @pos 9 -126
 ; Project Config
@@ -2025,7 +2051,7 @@ note
 noteEnd
 
 note
-; @pos 9 -117
+; @pos 9 -115
 ; Assets
 ; @tab 22
 ; @config bin.sample1.url https://static.8f4e.com/assets/mods/lowerintentions/sample_1.pcm

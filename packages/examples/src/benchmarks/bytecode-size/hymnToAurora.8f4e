@@ -1,5 +1,20 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 note
 ; @pos -25 -1
 ; @stop 3 10 left @hidden
@@ -1055,6 +1070,7 @@ module modRowCounter
 ; @pos -84 -28
 use env
 int* trigger &amigaTick:out
+int previousTrigger
 int rowCounter -1
 int* patternPointer &patternOrder:
 int out ; @w
@@ -1073,7 +1089,7 @@ store
 
 ; Advance the playhead
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &rowCounter
 push rowCounter
@@ -1114,6 +1130,7 @@ use env
 
 int*	period	&period1:out
 int*	trigger	&trigger1:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber1:out
 int8*	sampleAddress	; @w
 int8*	playhead	; @w
@@ -1136,7 +1153,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1213,6 +1230,7 @@ use env
 ; @stop 12 20
 int*	period	&period2:out
 int*	trigger	&trigger2:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber2:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1235,7 +1253,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1312,6 +1330,7 @@ use env
 
 int*	period	&period3:out
 int*	trigger	&trigger3:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber3:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1334,7 +1353,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1
@@ -1411,6 +1430,7 @@ use env
 
 int*	period	&period4:out
 int*	trigger	&trigger4:out
+int	previousTrigger
 int*	sampleNumber	&sampleNumber4:out
 int8*	sampleAddress	; @w
 int	sampleSize	; @w
@@ -1433,7 +1453,7 @@ call sampleNumberToSize
 store
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &_playing
 push 1

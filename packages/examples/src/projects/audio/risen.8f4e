@@ -36,7 +36,7 @@ note
 noteEnd
 
 note fragmentShaderBackground
-; @pos -318 -5
+; @pos -318 -2
 #version 300 es
 
 precision mediump float;
@@ -107,6 +107,21 @@ note
 ; @config export.fileName risen
 ; @config font templeos8x8
 noteEnd
+
+function risingEdge
+; @pos -242 10
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
 
 constants midiCodes
 ; @pos -146 -55
@@ -390,6 +405,7 @@ int note
 int noteStart
 int noteEnd
 int noteOn
+int previousTick
 
 ; @w note
 ; @w noteStart
@@ -435,7 +451,7 @@ ifEnd
 
 ; Decrement the counters
 push *tick
-risingEdge
+call risingEdge &previousTick
 if
 push &noteStart
 push noteStart
@@ -663,7 +679,6 @@ use env
 
 int*	trigger &sequencer:noteOn
 int	attackTime SAMPLE_RATE/1000
-float	attacLevel 1.0
 int	decayTime SAMPLE_RATE/1000
 float	sustainLevel 0.8
 int	releaseTime SAMPLE_RATE/200
@@ -676,10 +691,11 @@ const	RELEASE 4
 
 int	_state RELEASE
 int	_counter
+int	previousTrigger
 
 ; Start ATTACK
 push	*trigger
-risingEdge
+call	risingEdge &previousTrigger
 if
 push	&_state
 push	ATTACK
