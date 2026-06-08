@@ -4,6 +4,7 @@ import type {
 	CompiledStackAnalysisLine,
 	CompileOptions,
 	FunctionCompilationContext,
+	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
 	Namespaces,
@@ -34,6 +35,7 @@ const importedFunctionAllowedInstructions = new Set([
 	'#impure',
 	'#loopCap',
 	'param',
+	'paramShape',
 	'functionEnd',
 ]);
 
@@ -42,8 +44,8 @@ const importedFunctionAllowedInstructions = new Set([
  *
  * @param ast - Validated AST being processed.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
- * @param wasmIndex - Assigned WASM function index.
  * @param typeRegistry - Function type registry used for WASM block signatures.
+ * @param functionMetadata - Metadata for the function being compiled.
  * @param functions - Function metadata lookup available to compilation.
  * @param options - Compiler options for this compilation pass.
  * @returns The compiled function artifact.
@@ -51,9 +53,9 @@ const importedFunctionAllowedInstructions = new Set([
 export function compileFunction(
 	ast: ValidatedFunctionAST,
 	namespaces: Namespaces,
-	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
-	functions?: FunctionMetadataLookup,
+	functionMetadata: FunctionMetadata,
+	functions: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
 	const context = createCompilationContext<FunctionCompilationContext>({
@@ -62,7 +64,7 @@ export function compileFunction(
 			memory: {},
 			consts: {},
 			moduleName: undefined,
-			functions: functions ?? {},
+			functions,
 		},
 		locals: {},
 		internalResources: {},
@@ -80,10 +82,8 @@ export function compileFunction(
 		mode: 'function',
 		codeBlockType: 'function',
 		projectBlockId: ast.projectBlockId,
-		currentFunctionSignature: {
-			parameters: [],
-			returns: [],
-		},
+		currentFunctionMetadata: functionMetadata,
+		currentFunctionParameterCount: 0,
 		functionTypeRegistry: typeRegistry,
 	});
 
@@ -112,7 +112,7 @@ export function compileFunction(
 	// Collect locals (excluding parameters)
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
 	// Regular locals declared with the 'local' instruction come after parameters
-	const parameterCount = context.currentFunctionSignature.parameters.length;
+	const parameterCount = context.currentFunctionParameterCount;
 	const localDeclarations = Object.entries(context.locals)
 		.filter(([, local]) => local.index >= parameterCount)
 		.map(([, local]) => ({
@@ -125,7 +125,7 @@ export function compileFunction(
 
 	return {
 		id: ast.id,
-		signature: completedContext.currentFunctionSignature,
+		signature: functionMetadata.signature,
 		body: completedContext.currentFunctionImport
 			? []
 			: createFunction(
@@ -140,9 +140,10 @@ export function compileFunction(
 		locals: completedContext.currentFunctionImport ? [] : localDeclarations,
 		...(completedContext.currentFunctionExportName ? { exportName: completedContext.currentFunctionExportName } : {}),
 		...(completedContext.currentFunctionImport ? { import: completedContext.currentFunctionImport } : {}),
-		wasmIndex,
+		wasmIndex: functionMetadata.wasmIndex,
 		typeIndex: completedContext.currentFunctionTypeIndex,
 		ast,
+		...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};
 }

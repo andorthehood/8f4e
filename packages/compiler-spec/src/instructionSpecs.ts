@@ -894,6 +894,13 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Declares a parameter for the current function.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
+	// paramShape <prototypeId> ( -- )
+	paramShape: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		placement: functionPlacement,
+		docs: { shortDescription: 'Expands a prototype memory shape into pointer parameters for the current function.' },
+		stack: stack({ inputs: [], outputs: [] }),
+	},
 	// push ( -- T)
 	push: {
 		sourceArguments: { minArguments: 1, maxArguments: 1 },

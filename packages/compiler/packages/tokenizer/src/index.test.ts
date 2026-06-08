@@ -64,12 +64,22 @@ describe('compileToAST', () => {
 			functionEndLine: { instruction: 'functionEnd' },
 			exportLine: { instruction: '#export' },
 			exportName: 'mixExport',
-			signature: {
-				parameters: ['int', 'float'],
-				returns: ['int', 'float'],
-			},
 		});
 		expect(ast.lines[0].instruction).toBe('const');
+	});
+
+	it('keeps paramShape instructions in function lines', () => {
+		const ast = compileToAST(['function mix', 'param int gain', 'paramShape mixerState', 'functionEnd int']);
+
+		expect(ast).toMatchObject({
+			type: 'function',
+			id: 'mix',
+		});
+		if (ast.type !== 'function') {
+			throw new Error('Expected function AST');
+		}
+		const paramShapeInstructionLines = ast.lines.filter(line => line.instruction === 'paramShape');
+		expect(paramShapeInstructionLines.map(line => line.arguments[0].value)).toEqual(['mixerState']);
 	});
 
 	it('rejects memory declarations in function blocks', () => {
@@ -95,6 +105,23 @@ describe('compileToAST', () => {
 					code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
 					line: expect.objectContaining({
 						instruction: 'shape',
+					}),
+				})
+			);
+		}
+	});
+
+	it('rejects paramShape instructions outside function blocks based on compiler spec placement', () => {
+		for (const code of [
+			['paramShape oscillatorState'],
+			['module mix', 'paramShape oscillatorState', 'moduleEnd'],
+			['prototype oscillatorState', 'paramShape oscillatorState', 'prototypeEnd'],
+		]) {
+			expect(() => compileToAST(code)).toThrow(
+				expect.objectContaining({
+					code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK,
+					line: expect.objectContaining({
+						instruction: 'paramShape',
 					}),
 				})
 			);
@@ -208,10 +235,6 @@ describe('compileToAST', () => {
 			import: {
 				moduleName: 'host',
 				fieldName: 'log.value',
-			},
-			signature: {
-				parameters: ['int'],
-				returns: [],
 			},
 		});
 	});
