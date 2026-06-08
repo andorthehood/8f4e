@@ -66,7 +66,7 @@ function getParamType(line: MemoryDeclarationLine, paramShapeLine: ParamShapeLin
 	return paramType as FunctionValueType;
 }
 
-export function getParamShapeExpansion(
+function getParamShapeExpansion(
 	line: ParamShapeLine,
 	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>,
 	context: CompilerDiagnosticContext
