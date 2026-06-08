@@ -80,7 +80,7 @@ const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDecla
 		byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
 		default: createArrayDefaultValues(line, context, numberOfElements, isInteger),
 		hasExplicitDefault: line.hasExplicitMemoryDefault,
-		...(context.isInheritedMemoryDeclaration ? { isInherited: true } : {}),
+		...(context.isInherited ? { isInherited: true } : {}),
 		isInteger,
 		pointerDepth: line.instruction.includes('**') ? 2 : line.instruction.includes('*') ? 1 : 0,
 		...(line.instruction.includes('*')
