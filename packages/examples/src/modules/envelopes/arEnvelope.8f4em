@@ -1,5 +1,20 @@
 8f4e/v1
 
+function risingEdge
+; @pos -113 72
+; @tab 8
+#impure
+param int currentValue
+param int* previousValue
+
+push	currentValue
+push	*previousValue
+greaterThan
+push	previousValue
+push	currentValue
+store
+functionEnd int
+
 entry main
 module arEnv
 ; @public
@@ -10,6 +25,7 @@ float dAttack 0.001
 float dRelease 0.001
 
 int* trigger
+int previousTrigger
 
 float* attackRate &dAttack
 float* releaseRate &dRelease
@@ -18,7 +34,7 @@ float out
 int attacking 0
 
 push *trigger
-risingEdge
+call risingEdge &previousTrigger
 if
 push &attacking
 push 1
