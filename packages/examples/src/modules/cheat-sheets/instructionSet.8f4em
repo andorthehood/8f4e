@@ -42,7 +42,6 @@ constants instructionSet
 ; blockEnd	End a block.
 ; branch	Jump to a block or loop label.
 ; branchIfTrue	Branch when the condition is true.
-; branchIfUnchanged	Branch when a value has not changed.
 ; exitIfTrue	Exit the current module when the condition is true.
 ; else	Begin the else branch of an if block.
 ; if	Begin a conditional branch.
@@ -111,7 +110,6 @@ constants instructionSet
 ;
 ; Signal helpers
 ; risingEdge	Detect a rising edge.
-; fallingEdge	Detect a falling edge.
 ; hasChanged	Detect whether a value changed.
 
 constantsEnd
