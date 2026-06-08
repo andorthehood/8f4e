@@ -8,6 +8,7 @@ import type {
 	FunctionTypeRegistry,
 	Namespaces,
 	ValidatedFunctionAST,
+	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 import {
@@ -20,6 +21,7 @@ import {
 import { compileLine, toCompiledStackAnalysisLine } from './compileLine';
 import { getError } from './compilerError';
 import instructions from './instructionCompilers';
+import { getFunctionParamShapeExpansions } from './prototypes/paramShape';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 
@@ -55,6 +57,7 @@ export function compileFunction(
 	wasmIndex: number,
 	typeRegistry: FunctionTypeRegistry,
 	functions?: FunctionMetadataLookup,
+	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>> = {},
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
 	const context = createCompilationContext<FunctionCompilationContext>({
@@ -86,6 +89,7 @@ export function compileFunction(
 			returns: [],
 		},
 		functionTypeRegistry: typeRegistry,
+		prototypeShapes,
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
@@ -123,6 +127,7 @@ export function compileFunction(
 		}));
 
 	const completedContext = context as CompletedFunctionCompilationContext;
+	const paramShapeExpansions = getFunctionParamShapeExpansions(ast, prototypeShapes);
 
 	return {
 		id: ast.id,
@@ -144,6 +149,7 @@ export function compileFunction(
 		wasmIndex,
 		typeIndex: completedContext.currentFunctionTypeIndex,
 		ast,
+		...(paramShapeExpansions.length > 0 ? { paramShapeExpansions } : {}),
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};
 }

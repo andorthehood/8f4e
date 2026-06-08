@@ -29,6 +29,15 @@ function createCompiledFunction(): CompiledFunction {
 		typeIndex: 0,
 		body: [],
 		locals: [],
+		paramShapeExpansions: [
+			{
+				lineNumber: 2,
+				parameters: [
+					{ type: 'int*', name: 'a' },
+					{ type: 'float*', name: 'b' },
+				],
+			},
+		],
 		ast: {
 			type: 'function',
 			id: 'foo',
@@ -39,8 +48,6 @@ function createCompiledFunction(): CompiledFunction {
 				{ lineNumber: 0, instruction: 'function', arguments: [{ value: 'foo' }] },
 				{ lineNumber: 1, instruction: '#impure', arguments: [] },
 				{ lineNumber: 2, instruction: 'paramShape', arguments: [{ value: 'bar' }] },
-				{ lineNumber: 2, instruction: 'param', arguments: [{ value: 'int*' }, { value: 'a' }] },
-				{ lineNumber: 2, instruction: 'param', arguments: [{ value: 'float*' }, { value: 'b' }] },
 				{ lineNumber: 3, instruction: 'push', arguments: [{ value: '*a' }] },
 				{ lineNumber: 4, instruction: 'functionEnd', arguments: [] },
 			],

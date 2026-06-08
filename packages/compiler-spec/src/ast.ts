@@ -174,8 +174,7 @@ export type SemanticInstructionLine =
 	| ConstantsEndLine
 	| PrototypeLine
 	| PrototypeEndLine
-	| ShapeLine
-	| ParamShapeLine;
+	| ShapeLine;
 
 type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| PushLine

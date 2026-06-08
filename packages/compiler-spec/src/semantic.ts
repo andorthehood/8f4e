@@ -21,7 +21,6 @@ import type {
 	MemoryDeclarationLine,
 	ModuleEndLine,
 	ModuleLine,
-	ParamShapeLine,
 	PrototypeEndLine,
 	PrototypeLine,
 	PushArgument,
@@ -316,8 +315,7 @@ export type NormalizedSemanticInstructionLine =
 	| ConstantsEndLine
 	| PrototypeLine
 	| PrototypeEndLine
-	| ShapeLine
-	| ParamShapeLine;
+	| ShapeLine;
 
 export type ResolvedLocalSetLine = LocalSetLine & {
 	local: LocalBinding;

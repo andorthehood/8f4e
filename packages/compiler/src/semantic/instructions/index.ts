@@ -41,9 +41,5 @@ export default function applySemanticInstruction(line: NormalizedSemanticInstruc
 		case 'shape':
 			semanticShape(line, context);
 			return;
-		case 'paramShape':
-			// `paramShape` is expanded into ordinary params before function compilation;
-			// the original line is retained for editor metadata.
-			return;
 	}
 }

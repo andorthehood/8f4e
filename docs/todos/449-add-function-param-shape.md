@@ -103,11 +103,14 @@ system.
 - Reject `paramShape` after executable function body instructions, following the same broad prologue rule as `param`.
 - Validate argument shape through the tokenizer's normal instruction argument validation.
 
-### Step 2: Extend Function AST Metadata
+### Step 2: Preserve Source AST And Derive Effective Params
 
-- Let function ASTs collect `paramShape` lines in source order with ordinary `param` lines.
+- Keep function ASTs source-shaped: `paramShape` remains a `paramShape` line and is not rewritten into synthetic `param`
+  lines.
 - Preserve the mixed source order of `param` and `paramShape` so call-site parameter order is predictable.
-- Ensure signature collection sees the expanded parameters before function codegen metadata is finalized.
+- Ensure signature collection sees the effective expanded parameters before function codegen metadata is finalized.
+- Store compiler metadata for each `paramShape` expansion so the editor can render the effective params without parsing
+  prototype source or inferring synthetic AST lines.
 - Preserve source line metadata so diagnostics point to the `paramShape` line for expansion errors.
 
 ### Step 3: Expand Prototype Declarations To Function Params
@@ -125,7 +128,8 @@ system.
 
 ### Step 4: Integrate With Function Compilation
 
-- Register expanded params through the same path as normal `param` instructions.
+- Add a `paramShape` instruction compiler that registers expanded params through the same context path as normal `param`
+  instructions.
 - Let existing pointer local handling make `push *a` work naturally.
 - Let existing call inline argument pushes handle `call foo &a &b`.
 - Keep the normal function parameter limit checks in force after expansion.
@@ -162,8 +166,9 @@ float* b
 ## Affected Components
 
 - `packages/compiler-spec/src/instructionSpecs.ts` - add `paramShape` instruction metadata.
-- `packages/compiler-spec/src/ast.ts` - represent `paramShape` lines and/or expanded function params.
-- `packages/compiler/packages/tokenizer/src/sourceBlockASTBuilder.ts` - collect param-shape metadata for functions.
+- `packages/compiler-spec/src/ast.ts` - represent `paramShape` source lines.
+- `packages/compiler-spec/src/compiled.ts` - expose compiler-derived `paramShape` expansion metadata for consumers.
+- `packages/compiler/packages/tokenizer/src/sourceBlockASTBuilder.ts` - preserve `paramShape` source lines in function ASTs.
 - `packages/compiler/src/compileSubProgram.ts` - make prototype metadata available during function metadata collection.
 - `packages/compiler/src/semantic/buildNamespace.ts` - expand `paramShape` during function metadata collection or shared helper code.
 - `packages/compiler/src/compileFunction.ts` - compile expanded params through the normal parameter path.

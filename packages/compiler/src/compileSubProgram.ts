@@ -24,7 +24,6 @@ import { compileModules } from './compileModules';
 import { getError } from './compilerError';
 import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
 import type { InitialMemoryDataSegment } from './initialMemoryDataSegments/types';
-import { expandFunctionParamShapes } from './prototypes/paramShape';
 import {
 	assertUniqueModuleIds,
 	collectFunctionMetadataFromAsts,
@@ -285,18 +284,18 @@ export function compileSubProgram(
 	);
 
 	const astFunctions = expandedFunctions.map(source => compileSourceToAST<ValidatedFunctionAST>(source, cache));
-	const astFunctionsWithParamShapes = astFunctions.map(ast => expandFunctionParamShapes(ast, prototypeShapesById));
-	const importedUserFunctionCount = astFunctionsWithParamShapes.filter(ast => ast.import).length;
+	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 
 	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
-	const userFunctionMetadata = collectFunctionMetadataFromAsts(astFunctionsWithParamShapes, {
+	const userFunctionMetadata = collectFunctionMetadataFromAsts(astFunctions, {
 		importedFunctionBaseIndex: 0,
 		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
 		reservedFunctionIds: entryNames,
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
+		prototypeShapes: prototypeShapesById,
 	});
 	const functionMetadata = { ...entryFunctionMetadata, ...userFunctionMetadata };
 
@@ -306,13 +305,14 @@ export function compileSubProgram(
 		baseTypeIndex: 3,
 	};
 
-	const compiledFunctions = astFunctionsWithParamShapes.map(ast =>
+	const compiledFunctions = astFunctions.map(ast =>
 		compileFunction(
 			ast,
 			namespaces,
 			functionMetadata[ast.id].wasmIndex,
 			functionTypeRegistry,
 			functionMetadata,
+			prototypeShapesById,
 			options
 		)
 	);

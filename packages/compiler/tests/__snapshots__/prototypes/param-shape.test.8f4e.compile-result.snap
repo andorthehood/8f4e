@@ -53,40 +53,6 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "int*",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "a",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "float*",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "b",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
               "value": "int",
             },
             {
@@ -209,40 +175,6 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int*",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "a",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "float*",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "b",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
               "dereferenceDepth": 1,
               "referenceKind": "memory-pointer",
               "scope": "local",
@@ -292,6 +224,21 @@
   "functionOverview": {
     "orderedMixer": {
       "id": "orderedMixer",
+      "paramShapeExpansions": [
+        {
+          "lineNumber": 3,
+          "parameters": [
+            {
+              "name": "a",
+              "type": "int*",
+            },
+            {
+              "name": "b",
+              "type": "float*",
+            },
+          ],
+        },
+      ],
       "signature": {
         "parameters": [
           "int",
@@ -306,6 +253,21 @@
     },
     "sumMixer": {
       "id": "sumMixer",
+      "paramShapeExpansions": [
+        {
+          "lineNumber": 2,
+          "parameters": [
+            {
+              "name": "a",
+              "type": "int*",
+            },
+            {
+              "name": "b",
+              "type": "float*",
+            },
+          ],
+        },
+      ],
       "signature": {
         "parameters": [
           "int*",

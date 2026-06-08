@@ -6,18 +6,12 @@ type CompiledFunction = NonNullable<NonNullable<State['compiler']['compiledFunct
 
 function getParamShapeLabelsByLineNumber(compiledFunction: CompiledFunction): Map<number, string[]> {
 	const labelsByLineNumber = new Map<number, string[]>();
-	const paramShapeLineNumbers = new Set(
-		compiledFunction.ast.lines.filter(line => line.instruction === 'paramShape').map(line => line.lineNumber)
-	);
 
-	for (const line of compiledFunction.ast.lines) {
-		if (line.instruction !== 'param' || !paramShapeLineNumbers.has(line.lineNumber)) {
-			continue;
-		}
-
-		const labels = labelsByLineNumber.get(line.lineNumber) ?? [];
-		labels.push(`${line.arguments[0].value} ${line.arguments[1].value}`);
-		labelsByLineNumber.set(line.lineNumber, labels);
+	for (const expansion of compiledFunction.paramShapeExpansions ?? []) {
+		labelsByLineNumber.set(
+			expansion.lineNumber,
+			expansion.parameters.map(parameter => `${parameter.type} ${parameter.name}`)
+		);
 	}
 
 	return labelsByLineNumber;
