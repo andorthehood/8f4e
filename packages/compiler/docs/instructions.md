@@ -97,8 +97,5 @@
   - [round](instructions/math-helpers.md#round)
   - [ensureNonZero](instructions/math-helpers.md#ensurenonzero)
 
-- [Signal helpers](instructions/signal-helpers.md)
-  - [hasChanged](instructions/signal-helpers.md#haschanged)
-
 - [Testing](instructions/testing.md)
   - [assert](instructions/testing.md#assert)

@@ -536,14 +536,6 @@ export const instructionSpecs = {
 		outputs: ['int'],
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// hasChanged (int -- int), hasChanged (float -- int)
-	hasChanged: {
-		sourceArguments: noSourceArguments,
-		placement: modulePlacement,
-		minOperands: 1,
-		docs: { shortDescription: 'Pushes 1 when the consumed value differs from its previous value.' },
-		stack: stack({ inputs: ['T'], outputs: ['int'], effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]) }),
-	},
 	// if (int -- )
 	if: {
 		sourceArguments: noSourceArguments,
