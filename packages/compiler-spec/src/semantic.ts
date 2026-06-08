@@ -141,7 +141,6 @@ export interface CollectedNamespace {
 	memoryRegionName?: string;
 	byteAddress?: number;
 	wordAlignedSize?: number;
-	prototypeShapeIds?: readonly string[];
 }
 
 export type Namespaces = Record<string, CollectedNamespace>;
