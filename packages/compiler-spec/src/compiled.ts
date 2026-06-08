@@ -2,7 +2,7 @@ import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import type { ValidatedAST, ValidatedConstantsAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature, FunctionValueType } from './functionTypes';
-import type { InternalResourceMap, MemoryMap } from './memory';
+import type { MemoryMap } from './memory';
 import type { StackAnalysisResult } from './semantic';
 
 export type CompiledStackAnalysisLine = {
@@ -23,7 +23,6 @@ export interface CompiledModule {
 	byteAddress: number;
 	wordAlignedAddress: number;
 	memoryMap: MemoryMap;
-	internalResources?: InternalResourceMap;
 	wordAlignedSize: number;
 	ast: ValidatedModuleAST | ValidatedConstantsAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];

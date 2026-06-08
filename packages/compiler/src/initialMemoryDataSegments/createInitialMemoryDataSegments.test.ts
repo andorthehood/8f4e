@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import createInitialMemoryDataSegments from './createInitialMemoryDataSegments';
-import { createCompiledModule, createInternalResource, createMemory, serializeSegments } from './testUtils';
+import { createCompiledModule, createMemory, serializeSegments } from './testUtils';
 
 describe('createInitialMemoryDataSegments', () => {
 	test('skips implicit zero defaults while retaining non-zero and explicit defaults', () => {
@@ -63,44 +63,5 @@ describe('createInitialMemoryDataSegments', () => {
 		];
 
 		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([]);
-	});
-
-	test('skips zero-filled internal resource defaults', () => {
-		const compiledModules = [
-			createCompiledModule({
-				memoryMap: {
-					zeroArray: createMemory({
-						id: 'zeroArray',
-						byteAddress: 0,
-						numberOfElements: 2,
-						wordAlignedSize: 2,
-						default: {},
-					}),
-				},
-				internalResources: {
-					resource: createInternalResource({ id: 'resource', byteAddress: 12, default: 0 }),
-				},
-			}),
-		];
-
-		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([]);
-	});
-
-	test('retains non-zero internal resource defaults', () => {
-		const compiledModules = [
-			createCompiledModule({
-				internalResources: {
-					resource: createInternalResource({ id: 'resource', byteAddress: 12, default: 6 }),
-				},
-			}),
-		];
-
-		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([
-			{
-				memoryIndex: 0,
-				byteAddress: 12,
-				bytes: [6, 0, 0, 0],
-			},
-		]);
 	});
 });

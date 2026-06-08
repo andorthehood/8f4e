@@ -331,11 +331,9 @@
   },
   "moduleMemory": {
     "float64ComparisonAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "float64SqrtAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

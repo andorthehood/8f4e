@@ -450,7 +450,6 @@
   },
   "moduleMemory": {
     "oscA": {
-      "internalResources": {},
       "memoryMap": {
         "frequency": {
           "byteAddress": 8,
@@ -499,7 +498,6 @@
       },
     },
     "oscB": {
-      "internalResources": {},
       "memoryMap": {
         "frequency": {
           "byteAddress": 24,

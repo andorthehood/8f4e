@@ -1,4 +1,4 @@
-import type { CompiledModule, DataStructure, InternalResource, ValidatedModuleAST } from '@8f4e/compiler-spec';
+import type { CompiledModule, DataStructure, ValidatedModuleAST } from '@8f4e/compiler-spec';
 import { ArgumentType, MemoryTypes } from '@8f4e/compiler-spec';
 
 /**
@@ -24,26 +24,6 @@ export function createMemory(
 		isInteger: true,
 		pointerDepth: 0,
 		isUnsigned: false,
-		...overrides,
-	};
-}
-
-/**
- * Creates an internal resource fixture for initial memory segment tests.
- *
- * @param overrides - Required identity and byte-address fields plus fixture overrides.
- * @returns A complete internal resource fixture.
- */
-export function createInternalResource(
-	overrides: Partial<InternalResource> & Pick<InternalResource, 'id' | 'byteAddress'>
-): InternalResource {
-	return {
-		memoryIndex: 0,
-		wordAlignedAddress: overrides.byteAddress / 4,
-		wordAlignedSize: 1,
-		elementWordSize: 4,
-		default: 0,
-		storageType: 'int',
 		...overrides,
 	};
 }

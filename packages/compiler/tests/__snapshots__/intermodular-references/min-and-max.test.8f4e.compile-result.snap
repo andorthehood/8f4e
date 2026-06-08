@@ -1374,7 +1374,6 @@
   },
   "moduleMemory": {
     "combinedBoundsAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "maxValue": {
           "byteAddress": 264,
@@ -1442,7 +1441,6 @@
       },
     },
     "combinedBoundsSource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 268,
@@ -1464,7 +1462,6 @@
       },
     },
     "floatBoundAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "maxFloat": {
           "byteAddress": 208,
@@ -1499,7 +1496,6 @@
       },
     },
     "floatBoundsSource": {
-      "internalResources": {},
       "memoryMap": {
         "floats": {
           "byteAddress": 128,
@@ -1521,7 +1517,6 @@
       },
     },
     "intBoundsSource": {
-      "internalResources": {},
       "memoryMap": {
         "int32s": {
           "byteAddress": 44,
@@ -1628,7 +1623,6 @@
       },
     },
     "integerBoundAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "maxInt": {
           "byteAddress": 160,
@@ -1813,7 +1807,6 @@
       },
     },
     "lateBoundsSource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 220,
@@ -1835,7 +1828,6 @@
       },
     },
     "outOfOrderBoundsAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "maxValue": {
           "byteAddress": 216,

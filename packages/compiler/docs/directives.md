@@ -28,7 +28,6 @@ moduleEnd
 - The directive applies to declarations in the module only and must appear before any declaration or executable instruction
 - Address references such as `&samples:values` carry their source region, so `load`, `store`, `storeBytes`, `memoryCopy`, pointer defaults, and `push *ptr` use the memory region carried by the address or pointer provenance
 - Raw integer addresses without address provenance use memory index `0`
-- Compiler-generated internal resources remain in memory index `0` so small hot runtime state stays in the default memory
 - `requiredMemoryBytes` reports only the implicit default memory; custom regions are reported separately as `requiredMemoryBytesByRegion`
 
 **Errors:**
