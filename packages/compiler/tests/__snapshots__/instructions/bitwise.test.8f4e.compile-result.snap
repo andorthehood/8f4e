@@ -590,23 +590,18 @@
   },
   "moduleMemory": {
     "andAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "orAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "shiftLeftAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "shiftRightAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "xorAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

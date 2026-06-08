@@ -39,7 +39,6 @@ import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
  * @param startingByteAddress - Absolute byte address where layout should begin.
  * @param index - WASM index or source index assigned to the compiled item.
  * @param functions - Function metadata lookup available to compilation.
- * @param internalAllocator - Allocator state for compiler-generated memory resources.
  * @param options - Compiler options for this compilation pass.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
@@ -51,7 +50,6 @@ export function compileModule(
 	startingByteAddress = 0,
 	index: number,
 	functions?: FunctionMetadataLookup,
-	internalAllocator = { nextByteAddress: 0 },
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
@@ -73,8 +71,6 @@ export function compileModule(
 			prototypeShapeIds: [...layoutContext.namespace.prototypeShapeIds],
 		},
 		locals: {},
-		internalResources: {},
-		internalAllocator,
 		byteCode: [],
 		stack: [],
 		blockStack: [],
@@ -116,8 +112,6 @@ export function compileModule(
 		);
 	}
 
-	const internalResources = Object.keys(context.internalResources).length > 0 ? context.internalResources : undefined;
-
 	return {
 		id: ast.id,
 		cycleFunction: createFunction(
@@ -134,7 +128,6 @@ export function compileModule(
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryMap: context.namespace.memory,
-		...(internalResources ? { internalResources } : {}),
 		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),

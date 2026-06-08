@@ -53,12 +53,10 @@ The compiler skips:
 - implicit zero scalar defaults
 - implicit arrays with no initializer values
 - explicit array initializer entries whose encoded bytes are all zero
-- zero-valued internal resources
 
 The compiler retains:
 - non-zero scalar defaults
 - explicit zero scalar defaults
-- non-zero internal resources
 - non-zero explicit array initializer entries
 
 Array declarations are encoded sparsely. For example:

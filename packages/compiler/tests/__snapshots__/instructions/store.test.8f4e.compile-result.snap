@@ -415,7 +415,6 @@
   },
   "moduleMemory": {
     "float64StoreAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "dest": {
           "byteAddress": 24,
@@ -451,7 +450,6 @@
       },
     },
     "floatStoreAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "dest": {
           "byteAddress": 12,
@@ -485,7 +483,6 @@
       },
     },
     "intStoreAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "dest": {
           "byteAddress": 4,

@@ -227,11 +227,9 @@
   },
   "moduleMemory": {
     "ensureNonZeroFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "ensureNonZeroIntAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

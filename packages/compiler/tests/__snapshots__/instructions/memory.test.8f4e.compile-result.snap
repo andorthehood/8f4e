@@ -1518,7 +1518,6 @@
   },
   "moduleMemory": {
     "anonymousFloatDeclarationsCompile": {
-      "internalResources": {},
       "memoryMap": {
         "__anonymous__10": {
           "byteAddress": 20,
@@ -1582,7 +1581,6 @@
       },
     },
     "intConstantSplitByteDeclarationAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "__anonymous__11": {
           "byteAddress": 100,
@@ -1647,7 +1645,6 @@
       },
     },
     "intDeclarationAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "__anonymous__22": {
           "byteAddress": 48,
@@ -1756,7 +1753,6 @@
       },
     },
     "intPointerDeclarationsCompile": {
-      "internalResources": {},
       "memoryMap": {
         "__anonymous__3": {
           "byteAddress": 112,
@@ -1777,7 +1773,6 @@
       },
     },
     "intSplitByteDeclarationAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "__anonymous__11": {
           "byteAddress": 68,
@@ -1917,7 +1912,6 @@
       },
     },
     "loadFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "firstInput": {
           "byteAddress": 4,

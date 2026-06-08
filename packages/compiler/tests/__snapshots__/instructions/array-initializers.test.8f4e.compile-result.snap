@@ -1350,7 +1350,6 @@
   },
   "moduleMemory": {
     "expressionInitializerAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "notes": {
           "byteAddress": 44,
@@ -1374,7 +1373,6 @@
       },
     },
     "hexadecimalInitializerAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "foo": {
           "byteAddress": 60,
@@ -1397,7 +1395,6 @@
       },
     },
     "intArrayInitializerAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "notes": {
           "byteAddress": 4,
@@ -1421,7 +1418,6 @@
       },
     },
     "narrowInitializerAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "bytes": {
           "byteAddress": 68,
@@ -1465,7 +1461,6 @@
       },
     },
     "sparseInitializerAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "huge": {
           "byteAddress": 80,

@@ -8,5 +8,5 @@ export interface InitialMemoryDataSegment {
 
 /** Initial memory data segment candidate tagged with the compiler source that produced it. */
 export interface InitialMemoryDataSegmentCandidate extends InitialMemoryDataSegment {
-	sourceKind: 'scalar' | 'array' | 'internal-resource';
+	sourceKind: 'scalar' | 'array';
 }

@@ -907,7 +907,6 @@
   },
   "moduleMemory": {
     "constantLastWinsAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "result": {
           "byteAddress": 16,
@@ -927,7 +926,6 @@
       },
     },
     "constantsBlockAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "gravity": {
           "byteAddress": 12,
@@ -977,7 +975,6 @@
       },
     },
     "constantsCanUseConstantsAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "half": {
           "byteAddress": 36,
@@ -1012,7 +1009,6 @@
       },
     },
     "importedConstDerivedConstAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "result": {
           "byteAddress": 28,
@@ -1032,7 +1028,6 @@
       },
     },
     "moduleConstConsumerAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "result": {
           "byteAddress": 20,
@@ -1052,11 +1047,9 @@
       },
     },
     "moduleConstImportAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "sameModuleDerivedConstAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "result": {
           "byteAddress": 24,
@@ -1076,7 +1069,6 @@
       },
     },
     "sameNameAsModule": {
-      "internalResources": {},
       "memoryMap": {
         "result": {
           "byteAddress": 40,
@@ -1096,7 +1088,6 @@
       },
     },
     "validConstNameAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },

@@ -2984,7 +2984,6 @@
   },
   "moduleMemory": {
     "mapCharLiteralAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 8,
@@ -3003,7 +3002,6 @@
       },
     },
     "mapDefaultAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 12,
@@ -3022,7 +3020,6 @@
       },
     },
     "mapFirstMatchAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 40,
@@ -3042,7 +3039,6 @@
       },
     },
     "mapFloatFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 20,
@@ -3061,7 +3057,6 @@
       },
     },
     "mapImplicitDefaultAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 24,
@@ -3080,7 +3075,6 @@
       },
     },
     "mapImplicitFloatKeyAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 36,
@@ -3099,7 +3093,6 @@
       },
     },
     "mapImplicitKeyAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 28,
@@ -3118,7 +3111,6 @@
       },
     },
     "mapImplicitKeyMixedRowsAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 32,
@@ -3137,7 +3129,6 @@
       },
     },
     "mapIntFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 16,
@@ -3156,7 +3147,6 @@
       },
     },
     "mapIntIntAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 4,
@@ -3175,7 +3165,6 @@
       },
     },
     "mapZeroRowsAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "input": {
           "byteAddress": 44,

@@ -1423,7 +1423,6 @@
   },
   "moduleMemory": {
     "addressReferenceAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "bufferEnd": {
           "byteAddress": 32,
@@ -1514,7 +1513,6 @@
       },
     },
     "addressSource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 4,
@@ -1568,7 +1566,6 @@
       },
     },
     "currentModuleShorthandAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "a": {
           "byteAddress": 172,
@@ -1672,7 +1669,6 @@
       },
     },
     "lateAddressSource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 52,
@@ -1697,7 +1693,6 @@
       },
     },
     "nthAddressAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "base": {
           "byteAddress": 84,
@@ -1770,7 +1765,6 @@
       },
     },
     "nthAddressSource": {
-      "internalResources": {},
       "memoryMap": {
         "a": {
           "byteAddress": 68,
@@ -1820,7 +1814,6 @@
       },
     },
     "nthArrayAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "scalar": {
           "byteAddress": 140,
@@ -1842,7 +1835,6 @@
       },
     },
     "nthArraySource": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 96,
@@ -1879,7 +1871,6 @@
       },
     },
     "outOfOrderAddressAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "end": {
           "byteAddress": 48,
@@ -1919,7 +1910,6 @@
       },
     },
     "sameModuleAddressAssertions": {
-      "internalResources": {},
       "memoryMap": {
         "buffer": {
           "byteAddress": 144,

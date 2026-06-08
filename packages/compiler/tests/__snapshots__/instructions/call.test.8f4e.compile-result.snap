@@ -1475,23 +1475,18 @@
   },
   "moduleMemory": {
     "callConstantFunction": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "callFloat64ReturningFunction": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "callFloat64RoundTrip": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "callFunctionWithParameter": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "callImpureFunctionWithExplicitLoadAndStore": {
-      "internalResources": {},
       "memoryMap": {
         "gain": {
           "byteAddress": 144,
@@ -1540,15 +1535,12 @@
       },
     },
     "callMultipleFunctions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "callNestedFunction": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "callPointerParamsWithLocalDereference": {
-      "internalResources": {},
       "memoryMap": {
         "delta": {
           "byteAddress": 132,

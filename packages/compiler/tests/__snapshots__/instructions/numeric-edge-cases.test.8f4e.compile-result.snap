@@ -481,27 +481,21 @@
   },
   "moduleMemory": {
     "castToIntConvertsNaNToZero": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "castToIntSaturatesOutOfRangeFloat32": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "minMaxFloat64Assertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "minMaxFloatAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "minMaxIntAssertions": {
-      "internalResources": {},
       "memoryMap": {},
     },
     "remainderWithNonZeroConstant": {
-      "internalResources": {},
       "memoryMap": {},
     },
   },
