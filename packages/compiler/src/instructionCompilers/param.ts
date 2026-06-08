@@ -1,4 +1,10 @@
-import type { FunctionCodegenContext, FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/compiler-spec';
+import type {
+	CompilerASTLine,
+	FunctionCodegenContext,
+	FunctionValueType,
+	InstructionCompiler,
+	ParamLine,
+} from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
@@ -7,7 +13,12 @@ import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
  * Instruction compiler for `param`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const param: InstructionCompiler<ParamLine, FunctionCodegenContext> = (line: ParamLine, context) => {
+export function registerFunctionParameter(
+	paramType: FunctionValueType,
+	paramName: string,
+	line: CompilerASTLine,
+	context: FunctionCodegenContext
+): FunctionCodegenContext {
 	// Validate param comes immediately after function (before any non-param locals or bytecode)
 	//
 	// Parameters must be declared before any other function body code:
@@ -26,9 +37,6 @@ const param: InstructionCompiler<ParamLine, FunctionCodegenContext> = (line: Par
 	if (localCount > paramCount || context.byteCode.length > 0) {
 		throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
 	}
-
-	const paramType = line.arguments[0].value as FunctionValueType;
-	const paramName = line.arguments[1].value;
 
 	// Check for duplicate parameter names
 	if (context.locals[paramName] !== undefined) {
@@ -49,6 +57,15 @@ const param: InstructionCompiler<ParamLine, FunctionCodegenContext> = (line: Par
 	}
 
 	return context;
+}
+
+const param: InstructionCompiler<ParamLine, FunctionCodegenContext> = (line: ParamLine, context) => {
+	return registerFunctionParameter(
+		line.arguments[0].value as FunctionValueType,
+		line.arguments[1].value,
+		line,
+		context
+	);
 };
 
 export default param;

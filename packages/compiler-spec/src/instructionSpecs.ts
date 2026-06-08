@@ -896,10 +896,10 @@ export const instructionSpecs = {
 	},
 	// paramShape <prototypeId> ( -- )
 	paramShape: {
-		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		placement: functionPlacement,
 		docs: { shortDescription: 'Expands a prototype memory shape into pointer parameters for the current function.' },
+		stack: stack({ inputs: [], outputs: [] }),
 	},
 	// push ( -- T)
 	push: {
