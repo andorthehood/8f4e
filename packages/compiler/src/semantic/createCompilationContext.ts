@@ -67,6 +67,7 @@ export function createCompilationContext<TContext extends CompilationContext = C
 			memory: {},
 			consts: {},
 			moduleName: undefined,
+			prototypeShapeIds: [],
 		},
 		locals: {},
 		internalResources: {},

@@ -25,6 +25,7 @@ import type {
 	PrototypeLine,
 	PushArgument,
 	PushLine,
+	PushShapeLine,
 	RegionLine,
 	ShapeLine,
 	UseLine,
@@ -128,6 +129,7 @@ export interface Namespace {
 	moduleName: string | undefined;
 	namespaces: Namespaces;
 	functions?: FunctionMetadataLookup;
+	prototypeShapeIds: string[];
 }
 
 /** Compiled namespace summary recorded for later imports and cross-module references. */
@@ -139,6 +141,7 @@ export interface CollectedNamespace {
 	memoryRegionName?: string;
 	byteAddress?: number;
 	wordAlignedSize?: number;
+	prototypeShapeIds?: readonly string[];
 }
 
 export type Namespaces = Record<string, CollectedNamespace>;
@@ -385,6 +388,11 @@ export type ResolvedCallLine = Omit<CallLine, 'arguments'> & {
 	inlineArgumentPushes?: CodegenPushLine[];
 };
 
+export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
+	arguments: [ArgumentIdentifier];
+	shapeAddressPushes: CodegenPushLine[];
+};
+
 export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstLine
 	? NormalizedConstLine
 	: TLine extends DefaultLine
@@ -397,13 +405,15 @@ export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstL
 					? ResolvedLocalSetLine
 					: TLine extends PushLine
 						? NormalizedPushLine
-						: TLine extends LoopLine
-							? NormalizedLoopLine | LoopLine
-							: TLine extends MemoryCopyLine
-								? NormalizedMemoryCopyLine | MemoryCopyLine
-								: TLine extends ArrayDeclarationLine
-									? ArrayDeclarationLine
-									: TLine;
+						: TLine extends PushShapeLine
+							? ResolvedPushShapeLine
+							: TLine extends LoopLine
+								? NormalizedLoopLine | LoopLine
+								: TLine extends MemoryCopyLine
+									? NormalizedMemoryCopyLine | MemoryCopyLine
+									: TLine extends ArrayDeclarationLine
+										? ArrayDeclarationLine
+										: TLine;
 
 export const BlockType = {
 	MODULE: 0,

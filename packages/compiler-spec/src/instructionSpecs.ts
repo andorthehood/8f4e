@@ -908,6 +908,15 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Pushes a literal, memory value, local value, address, or constant onto the stack.' },
 		stack: stack({ inputs: [], outputs: ['T'] }),
 	},
+	// pushShape <prototypeId> ( -- ptr...)
+	pushShape: {
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		placement: modulePlacement,
+		docs: {
+			shortDescription: 'Pushes addresses for the current module memory items defined by a prototype shape.',
+		},
+		stack: stack({ inputs: [], outputs: ['ptr'] }),
+	},
 	// remainder (int int -- int)
 	remainder: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Divides one integer by another and pushes the remainder.',

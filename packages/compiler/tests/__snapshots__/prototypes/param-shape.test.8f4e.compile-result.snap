@@ -311,23 +311,18 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
+              "value": "mixerState",
+            },
+          ],
+          "instruction": "pushShape",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
               "value": "sumMixer",
-            },
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "a",
-              "type": "identifier",
-              "value": "&a",
-            },
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "b",
-              "type": "identifier",
-              "value": "&b",
             },
           ],
           "instruction": "call",
@@ -351,36 +346,41 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "orderedMixer",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 10,
             },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
+              "referenceKind": "plain",
               "scope": "local",
-              "targetMemoryId": "a",
               "type": "identifier",
-              "value": "&a",
+              "value": "mixerState",
             },
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "b",
-              "type": "identifier",
-              "value": "&b",
-            },
+          ],
+          "instruction": "pushShape",
+        },
+        {
+          "arguments": [
             {
               "isInteger": true,
               "type": "literal",
               "value": 3,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "orderedMixer",
             },
           ],
           "instruction": "call",
@@ -397,6 +397,110 @@
               "isInteger": true,
               "type": "literal",
               "value": 19,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "overrides": {
+      "id": "overrides",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "overrides",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixerState",
+            },
+          ],
+          "instruction": "shape",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "a",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "b",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1.5,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "float",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mixerState",
+            },
+          ],
+          "instruction": "pushShape",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "sumMixer",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 9.5,
             },
           ],
           "instruction": "call",
@@ -445,6 +549,41 @@
         },
       },
     },
+    "overrides": {
+      "internalResources": {},
+      "memoryMap": {
+        "a": {
+          "byteAddress": 20,
+          "default": 8,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "a",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+        },
+        "b": {
+          "byteAddress": 24,
+          "default": 1.5,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "b",
+          "isInteger": false,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "float",
+          "wordAlignedAddress": 6,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
   },
   "overview": {
     "compiledFunctions": [
@@ -453,8 +592,9 @@
     ],
     "compiledModules": [
       "main",
+      "overrides",
     ],
-    "requiredMemoryBytes": 12,
+    "requiredMemoryBytes": 28,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
