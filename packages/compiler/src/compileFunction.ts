@@ -4,6 +4,7 @@ import type {
 	CompiledStackAnalysisLine,
 	CompileOptions,
 	FunctionCompilationContext,
+	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionTypeRegistry,
 	Namespaces,
@@ -44,6 +45,7 @@ const importedFunctionAllowedInstructions = new Set([
  * @param ast - Validated AST being processed.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param typeRegistry - Function type registry used for WASM block signatures.
+ * @param functionMetadata - Metadata for the function being compiled.
  * @param functions - Function metadata lookup available to compilation.
  * @param options - Compiler options for this compilation pass.
  * @returns The compiled function artifact.
@@ -52,14 +54,10 @@ export function compileFunction(
 	ast: ValidatedFunctionAST,
 	namespaces: Namespaces,
 	typeRegistry: FunctionTypeRegistry,
+	functionMetadata: FunctionMetadata,
 	functions: FunctionMetadataLookup,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
-	const functionMetadata = functions[ast.id];
-	if (!functionMetadata) {
-		throw new Error(`Missing function metadata for "${ast.id}".`);
-	}
-
 	const context = createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces,
