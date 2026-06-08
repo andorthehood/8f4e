@@ -1328,5 +1328,24 @@
 				"maxRangesPerFunction": 32
 			}
 		}
+	},
+	{
+		"commit": "0f8f0e86fe4b8b48356d891173e026e99e94b39f",
+		"version": "1.17.3",
+		"benchmark": "minBLEP.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 239,
+				"functionEntries": 35086,
+				"rangeExecutions": 108012,
+				"maxRangesPerFunction": 63
+			},
+			"tokenizer": {
+				"coveredFunctions": 55,
+				"functionEntries": 20922,
+				"rangeExecutions": 117645,
+				"maxRangesPerFunction": 32
+			}
+		}
 	}
 ]
