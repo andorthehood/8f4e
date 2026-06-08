@@ -22,8 +22,19 @@ export default function semanticShape(line: ShapeLine, context: CompilationConte
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: prototypeId });
 	}
 
-	for (const declarationLine of prototype.memoryDeclarationLines) {
-		const resolvedDeclarationLine = context.resolveMemoryDeclarationLine?.(declarationLine) ?? declarationLine;
-		applyMemoryDeclarationLine(normalizeCompileTimeArguments(resolvedDeclarationLine, context), context);
+	const previousIsInheritedMemoryDeclaration = context.isInheritedMemoryDeclaration;
+	context.isInheritedMemoryDeclaration = true;
+	try {
+		for (const declarationLine of prototype.memoryDeclarationLines) {
+			const inheritedDeclarationLine = {
+				...declarationLine,
+				lineNumber: line.lineNumber,
+			};
+			const resolvedDeclarationLine =
+				context.resolveMemoryDeclarationLine?.(inheritedDeclarationLine) ?? inheritedDeclarationLine;
+			applyMemoryDeclarationLine(normalizeCompileTimeArguments(resolvedDeclarationLine, context), context);
+		}
+	} finally {
+		context.isInheritedMemoryDeclaration = previousIsInheritedMemoryDeclaration;
 	}
 }

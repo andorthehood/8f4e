@@ -117,7 +117,6 @@ export default function compiler(store: StateManager<State>) {
 
 			store.set('compiler.compiledFunctions', result.compiledFunctions);
 			store.set('compiler.compiledModules', result.compiledModules);
-			store.set('compiler.cache', result.cache);
 			store.set('compiler.isCompiling', false);
 			setCompilerInfo({
 				isCompiling: false,

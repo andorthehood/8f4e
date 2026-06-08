@@ -1,18 +1,5 @@
-import type { MemoryDeclarationLine } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { DirectiveDerivedState } from '../features/directives/registry';
-
-function getPrototypeMemoryDeclarationLines(state: State): Map<string, readonly MemoryDeclarationLine[]> {
-	const prototypes = new Map<string, readonly MemoryDeclarationLine[]>();
-
-	state.compiler.cache?.ast.entries.forEach(({ ast }, cacheKey) => {
-		if (cacheKey.startsWith('prototype:') && ast.type === 'prototype') {
-			prototypes.set(ast.id, ast.memoryDeclarationLines);
-		}
-	});
-
-	return prototypes;
-}
 
 export default function shape(
 	graphicData: CodeBlockGraphicData,
@@ -28,13 +15,22 @@ export default function shape(
 		return;
 	}
 
-	const prototypeMemoryDeclarationLines = getPrototypeMemoryDeclarationLines(state);
+	const inheritedDeclarationCountByLineNumber = Object.values(compiledModule.memoryMap).reduce<Map<number, number>>(
+		(result, memory) => {
+			if (memory.isInherited) {
+				result.set(memory.lineNumber, (result.get(memory.lineNumber) ?? 0) + 1);
+			}
+			return result;
+		},
+		new Map()
+	);
+
 	compiledModule.ast.lines.forEach(line => {
 		if (line.instruction !== 'shape') {
 			return;
 		}
 
-		const inheritedDeclarationCount = prototypeMemoryDeclarationLines.get(line.arguments[0].value)?.length ?? 0;
+		const inheritedDeclarationCount = inheritedDeclarationCountByLineNumber.get(line.lineNumber) ?? 0;
 		if (inheritedDeclarationCount === 0) {
 			return;
 		}

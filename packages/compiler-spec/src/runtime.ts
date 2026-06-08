@@ -1,5 +1,5 @@
 import type { ASTCacheStats } from './cache';
-import type { CompiledFunctionLookup, CompiledModuleLookup, CompilerCache } from './compiled';
+import type { CompiledFunctionLookup, CompiledModuleLookup } from './compiled';
 
 export type MemoryReinitReason =
 	| { kind: 'no-instance' }
@@ -22,7 +22,6 @@ export type CompileAndUpdateMemoryResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
-	cache?: CompilerCache;
 	requiredMemoryBytes: number;
 	allocatedMemoryBytes: number;
 	astCacheStats: ASTCacheStats;

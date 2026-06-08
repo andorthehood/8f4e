@@ -1,4 +1,5 @@
-import type { CompiledModule, CompilerCache, MemoryDeclarationLine, ValidatedModuleAST } from '@8f4e/compiler-spec';
+import type { CompiledModule, DataStructure, ValidatedModuleAST } from '@8f4e/compiler-spec';
+import { MemoryTypes } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
 import type { DirectiveDerivedState } from '../features/directives/registry';
@@ -20,12 +21,6 @@ function createDirectiveState(): DirectiveDerivedState {
 	};
 }
 
-function createCompiledModule(ast: ValidatedModuleAST): CompiledModule {
-	return {
-		ast,
-	} as CompiledModule;
-}
-
 function createModuleAst(): ValidatedModuleAST {
 	return {
 		type: 'module',
@@ -40,34 +35,39 @@ function createModuleAst(): ValidatedModuleAST {
 	} as unknown as ValidatedModuleAST;
 }
 
-function createMemoryDeclarationLines(count: number): readonly MemoryDeclarationLine[] {
-	return Array.from({ length: count }, (_, lineNumber) => ({
-		lineNumber,
-		instruction: 'float',
-		arguments: [],
-	})) as readonly MemoryDeclarationLine[];
+function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+	return {
+		id: 'memory',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		type: MemoryTypes.float,
+		memoryIndex: 0,
+		byteAddress: 20,
+		wordAlignedAddress: 5,
+		wordAlignedSize: 1,
+		default: 0,
+		lineNumber: 1,
+		isInteger: false,
+		pointerDepth: 0,
+		isUnsigned: false,
+		...overrides,
+	};
 }
 
-function createCompilerCache(memoryDeclarationLines: readonly MemoryDeclarationLine[]): CompilerCache {
+function createCompiledModule(memoryMap: CompiledModule['memoryMap'] = {}): CompiledModule {
 	return {
-		ast: {
-			stats: { hits: 0, misses: 0 },
-			entries: new Map([
-				[
-					'prototype:0',
-					{
-						lineCount: memoryDeclarationLines.length + 2,
-						ast: {
-							type: 'prototype',
-							id: 'filterState',
-							lines: [],
-							memoryDeclarationLines,
-						},
-					},
-				],
-			]),
-		},
-	} as unknown as CompilerCache;
+		ast: createModuleAst(),
+		memoryMap,
+	} as CompiledModule;
+}
+
+function createInheritedMemoryMap(count: number): CompiledModule['memoryMap'] {
+	return Object.fromEntries(
+		Array.from({ length: count }, (_, index) => [
+			`memory${index}`,
+			createMemory({ id: `memory${index}`, lineNumber: 1, isInherited: true }),
+		])
+	);
 }
 
 describe('shape', () => {
@@ -79,9 +79,8 @@ describe('shape', () => {
 		const state = createMockState({
 			compiler: {
 				compiledModules: {
-					filterA: createCompiledModule(createModuleAst()),
+					filterA: createCompiledModule(createInheritedMemoryMap(4)),
 				},
-				cache: createCompilerCache(createMemoryDeclarationLines(4)),
 			},
 		});
 		const directiveState = createDirectiveState();
@@ -99,9 +98,8 @@ describe('shape', () => {
 		const state = createMockState({
 			compiler: {
 				compiledModules: {
-					filterA: createCompiledModule(createModuleAst()),
+					filterA: createCompiledModule(),
 				},
-				cache: createCompilerCache([]),
 			},
 		});
 		const directiveState = createDirectiveState();
