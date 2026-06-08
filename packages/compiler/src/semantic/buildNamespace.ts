@@ -387,7 +387,6 @@ export function collectNamespacesFromASTs(
 					kind: ast.type,
 					consts: { ...context.namespace.consts },
 					memory: context.namespace.memory,
-					prototypeShapeIds: [...context.namespace.prototypeShapeIds],
 					...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
 				};
 				madeProgress = true;
@@ -431,7 +430,6 @@ export function collectNamespacesFromASTs(
 			kind: moduleBlock.type,
 			consts: { ...context.namespace.consts },
 			memory: context.namespace.memory,
-			prototypeShapeIds: [...context.namespace.prototypeShapeIds],
 			...getMemoryRegionFields(region.memoryIndex, region.memoryRegionName),
 			byteAddress: nextStartingByteAddress,
 			wordAlignedSize: context.currentModuleWordAlignedSize,
