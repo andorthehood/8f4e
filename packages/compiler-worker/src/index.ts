@@ -8,7 +8,6 @@ async function compile(input: CompileInput, compilerOptions: CompileOptions) {
 			codeBuffer,
 			compiledModules,
 			compiledFunctions,
-			cache,
 			requiredMemoryBytes,
 			allocatedMemoryBytes,
 			astCacheStats,
@@ -22,7 +21,6 @@ async function compile(input: CompileInput, compilerOptions: CompileOptions) {
 			payload: {
 				codeBuffer,
 				compiledModules,
-				cache,
 				requiredMemoryBytes,
 				allocatedMemoryBytes,
 				astCacheStats,

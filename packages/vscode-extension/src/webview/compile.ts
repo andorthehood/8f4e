@@ -57,7 +57,6 @@ export async function compileCode(
 			allocatedMemoryBytes,
 			astCacheStats: { ...result.cache.ast.stats },
 			byteCodeSize: nextCodeBuffer.length,
-			cache: result.cache,
 			codeBuffer: nextCodeBuffer,
 			compiledFunctions: result.compiledFunctions,
 			compiledModules: result.compiledModules as CompiledModuleLookup,
