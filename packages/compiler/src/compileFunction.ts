@@ -65,6 +65,7 @@ export function compileFunction(
 			consts: {},
 			moduleName: undefined,
 			functions,
+			prototypeShapeIds: [],
 		},
 		locals: {},
 		internalResources: {},

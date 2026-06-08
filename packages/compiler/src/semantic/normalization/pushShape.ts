@@ -1,0 +1,67 @@
+import {
+	ArgumentType,
+	type CodegenPushLine,
+	type CompilationContext,
+	ErrorCode,
+	type MemoryDeclarationLine,
+	type PushShapeLine,
+	type ResolvedPushShapeLine,
+} from '@8f4e/compiler-spec';
+import { getError } from '../../compilerError';
+import { memoryStartAddressConst } from '../resolveCompileTimeArgument/addressConsts';
+
+function getMemoryDeclarationId(
+	line: MemoryDeclarationLine,
+	pushShapeLine: PushShapeLine,
+	context: CompilationContext
+) {
+	const idArgument = line.arguments[0];
+	if (idArgument.type !== ArgumentType.IDENTIFIER || idArgument.referenceKind !== 'plain') {
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, pushShapeLine, context);
+	}
+
+	return idArgument.value;
+}
+
+function createAddressPushLine(line: PushShapeLine, memoryId: string, context: CompilationContext): CodegenPushLine {
+	const address = memoryStartAddressConst(context.namespace.memory[memoryId], context.namespace.moduleName);
+
+	return {
+		lineNumber: line.lineNumber,
+		instruction: 'push',
+		arguments: [
+			{
+				type: ArgumentType.LITERAL,
+				value: address.value,
+				isInteger: address.isInteger,
+				...(address.address ? { address: address.address } : {}),
+			},
+		],
+	};
+}
+
+/**
+ * Normalizes `pushShape` into the explicit address pushes for the current module's effective shape memory.
+ *
+ * @param line - Source AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Resolved pushShape line with codegen-ready address pushes.
+ */
+export default function normalizePushShape(line: PushShapeLine, context: CompilationContext): ResolvedPushShapeLine {
+	const prototypeId = line.arguments[0].value;
+	const prototype = context.prototypeShapes?.[prototypeId];
+	if (!prototype) {
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: prototypeId });
+	}
+
+	if (!context.namespace.prototypeShapeIds.includes(prototypeId)) {
+		throw getError(ErrorCode.PUSH_SHAPE_REQUIRES_MODULE_SHAPE, line, context, { identifier: prototypeId });
+	}
+
+	return {
+		...line,
+		shapeAddressPushes: prototype.memoryDeclarationLines.map(declarationLine =>
+			createAddressPushLine(line, getMemoryDeclarationId(declarationLine, line, context), context)
+		),
+	};
+}
