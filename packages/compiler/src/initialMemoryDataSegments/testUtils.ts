@@ -19,6 +19,7 @@ export function createMemory(
 		wordAlignedAddress: overrides.byteAddress / 4,
 		default: 0,
 		hasExplicitDefault: false,
+		isInherited: false,
 		lineNumber: 0,
 		isInteger: true,
 		pointerDepth: 0,
