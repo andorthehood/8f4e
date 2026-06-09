@@ -47,15 +47,22 @@ export default function normalizeCall(line: CallLine, context: CompilationContex
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
 	}
 
-	const inlineArgumentPushes = line.arguments
-		.slice(1)
-		.map(argument => normalizePush(createInlinePushLine(line, argument), context));
-	const normalizedInlineArguments = inlineArgumentPushes.map(pushLine => pushLine.arguments[0]);
+	const inlineArgumentPushes: NormalizedPushLine[] = [];
+	const normalizedInlineArguments: PushArgument[] = [];
+	let allInlinePushesAreCodegen = true;
+
+	for (const argument of line.arguments.slice(1)) {
+		const pushLine = normalizePush(createInlinePushLine(line, argument), context);
+		inlineArgumentPushes.push(pushLine);
+		normalizedInlineArguments.push(pushLine.arguments[0]);
+		allInlinePushesAreCodegen &&= isCodegenPushLine(pushLine);
+	}
+
 	const normalizedLine = normalizedInlineArguments.length
 		? { ...line, arguments: [line.arguments[0], ...normalizedInlineArguments] as CallLine['arguments'] }
 		: line;
 
-	if (!inlineArgumentPushes.every(isCodegenPushLine)) {
+	if (!allInlinePushesAreCodegen) {
 		return normalizedLine;
 	}
 

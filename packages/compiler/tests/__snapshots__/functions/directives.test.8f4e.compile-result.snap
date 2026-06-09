@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "writeWithDirectivePrologue__int_p__int": {
-      "id": "writeWithDirectivePrologue",
       "lines": [
         {
           "arguments": [
@@ -107,6 +106,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "writeWithDirectivePrologue",
       "type": "function",
     },
   },

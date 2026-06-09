@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "readGuardedPointer__int_p": {
-      "id": "readGuardedPointer",
       "lines": [
         {
           "arguments": [
@@ -61,6 +60,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "readGuardedPointer",
       "type": "function",
     },
   },

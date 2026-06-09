@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "test__void": {
-      "id": "test",
       "lines": [
         {
           "arguments": [
@@ -122,6 +121,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "test",
       "type": "function",
     },
   },

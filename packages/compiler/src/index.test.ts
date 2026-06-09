@@ -174,7 +174,6 @@ describe('compile prototype validation', () => {
 			id: functionId,
 			name: 'double',
 			ast: {
-				id: 'double',
 				name: 'double',
 			},
 		});
@@ -199,13 +198,13 @@ describe('compile prototype validation', () => {
 			id: intOverloadId,
 			name: 'convert',
 			signature: { parameters: ['int'], returns: ['int'] },
-			ast: { id: 'convert', name: 'convert' },
+			ast: { name: 'convert' },
 		});
 		expect(result.compiledFunctions![floatOverloadId]).toMatchObject({
 			id: floatOverloadId,
 			name: 'convert',
 			signature: { parameters: ['float'], returns: ['float'] },
-			ast: { id: 'convert', name: 'convert' },
+			ast: { name: 'convert' },
 		});
 	});
 

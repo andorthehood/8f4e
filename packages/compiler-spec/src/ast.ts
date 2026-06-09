@@ -273,8 +273,6 @@ export interface ModuleAST extends SourceBlockMetadata {
 /** Parsed AST for a function block. */
 export interface FunctionAST extends SourceBlockMetadata {
 	type: 'function';
-	/** Canonical compiler identity for this function. Initially matches `name`; later phases may derive it from the signature. */
-	id: string;
 	/** Source-level callable name written after the `function` instruction. */
 	name: string;
 	lines: CompilerASTLines;

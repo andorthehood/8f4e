@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "compute__void": {
-      "id": "compute",
       "lines": [
         {
           "arguments": [
@@ -47,10 +46,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "compute",
       "type": "function",
     },
     "double__int": {
-      "id": "double",
       "lines": [
         {
           "arguments": [
@@ -117,10 +116,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "double",
       "type": "function",
     },
     "getDoublePI__void": {
-      "id": "getDoublePI",
       "lines": [
         {
           "arguments": [
@@ -171,10 +170,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getDoublePI",
       "type": "function",
     },
     "getFortyTwo__void": {
-      "id": "getFortyTwo",
       "lines": [
         {
           "arguments": [
@@ -209,10 +208,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getFortyTwo",
       "type": "function",
     },
     "getThree__void": {
-      "id": "getThree",
       "lines": [
         {
           "arguments": [
@@ -247,10 +246,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getThree",
       "type": "function",
     },
     "getTwo__void": {
-      "id": "getTwo",
       "lines": [
         {
           "arguments": [
@@ -285,10 +284,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getTwo",
       "type": "function",
     },
     "identityFloat64__float64": {
-      "id": "identityFloat64",
       "lines": [
         {
           "arguments": [
@@ -341,10 +340,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "identityFloat64",
       "type": "function",
     },
     "increment__int": {
-      "id": "increment",
       "lines": [
         {
           "arguments": [
@@ -411,10 +410,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "increment",
       "type": "function",
     },
     "readScaledBlep__float_p__int__float": {
-      "id": "readScaledBlep",
       "lines": [
         {
           "arguments": [
@@ -594,10 +593,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "readScaledBlep",
       "type": "function",
     },
     "scaleInto__float_p__float_p__float": {
-      "id": "scaleInto",
       "lines": [
         {
           "arguments": [
@@ -716,6 +715,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "scaleInto",
       "type": "function",
     },
   },
