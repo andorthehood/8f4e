@@ -40,27 +40,6 @@ function stackItemExactlyMatchesFunctionValueType(stackItem: StackItem, type: Fu
 	);
 }
 
-function stackItemIntCompatibleWithFunctionValueType(stackItem: StackItem, type: FunctionValueType): boolean {
-	if (type !== 'int') {
-		return stackItemExactlyMatchesFunctionValueType(stackItem, type);
-	}
-
-	return stackItem.valueType === 'int';
-}
-
-function hasPointerMetadataGap(operands: Stack, overloads: readonly FunctionMetadata[]): boolean {
-	return overloads.some(overload =>
-		overload.signature.parameters.some((parameter, index) => {
-			const operand = operands[index];
-			return (
-				isPointerFunctionValueType(parameter) &&
-				operand.valueType === 'int' &&
-				(operand.kind !== 'address' || !operand.pointsTo)
-			);
-		})
-	);
-}
-
 function resolveTargetFunction(line: NormalizedCallLine, context: CompilationContext): FunctionMetadata {
 	const functionName = line.arguments[0].value;
 	const overloads = context.namespace.functions?.overloadsByName[functionName] ?? [];
@@ -74,28 +53,51 @@ function resolveTargetFunction(line: NormalizedCallLine, context: CompilationCon
 	}
 
 	const operands = context.stack.slice(context.stack.length - arity);
-	const matchingOverloads = overloads.filter(overload => {
-		return overload.signature.parameters.every((parameter, index) =>
-			stackItemExactlyMatchesFunctionValueType(operands[index], parameter)
-		);
-	});
+	let exactMatch: FunctionMetadata | undefined;
+	let exactMatchCount = 0;
+	let intCompatibleMatch: FunctionMetadata | undefined;
+	let intCompatibleMatchCount = 0;
+	let hasPointerMetadataGap = false;
 
-	if (matchingOverloads.length === 1) {
-		return matchingOverloads[0];
+	for (const overload of overloads) {
+		let exactMatches = true;
+		let intCompatibleMatches = true;
+
+		for (let index = 0; index < arity; index++) {
+			const parameter = overload.signature.parameters[index];
+			const operand = operands[index];
+			const exactParameterMatch = stackItemExactlyMatchesFunctionValueType(operand, parameter);
+			const intCompatibleParameterMatch = parameter === 'int' ? operand.valueType === 'int' : exactParameterMatch;
+
+			exactMatches &&= exactParameterMatch;
+			intCompatibleMatches &&= intCompatibleParameterMatch;
+			hasPointerMetadataGap ||=
+				isPointerFunctionValueType(parameter) &&
+				operand.valueType === 'int' &&
+				(operand.kind !== 'address' || !operand.pointsTo);
+		}
+
+		if (exactMatches) {
+			exactMatch = overload;
+			exactMatchCount++;
+		}
+
+		if (intCompatibleMatches) {
+			intCompatibleMatch = overload;
+			intCompatibleMatchCount++;
+		}
 	}
 
-	if (hasPointerMetadataGap(operands, overloads)) {
+	if (exactMatchCount === 1) {
+		return exactMatch!;
+	}
+
+	if (hasPointerMetadataGap) {
 		throw getError(ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED, line, context, { identifier: functionName });
 	}
 
-	const intCompatibleOverloads = overloads.filter(overload => {
-		return overload.signature.parameters.every((parameter, index) =>
-			stackItemIntCompatibleWithFunctionValueType(operands[index], parameter)
-		);
-	});
-
-	if (intCompatibleOverloads.length === 1) {
-		return intCompatibleOverloads[0];
+	if (intCompatibleMatchCount === 1) {
+		return intCompatibleMatch!;
 	}
 
 	throw getError(ErrorCode.FUNCTION_OVERLOAD_NO_MATCH, line, context, { identifier: functionName });
