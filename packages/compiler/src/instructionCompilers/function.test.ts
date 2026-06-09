@@ -23,6 +23,7 @@ describe('function instruction compiler', () => {
 		expect({
 			blockStack: context.blockStack,
 			currentFunctionId: context.currentFunctionId,
+			currentFunctionName: context.currentFunctionName,
 			currentFunctionParameterCount: context.currentFunctionParameterCount,
 			mode: context.mode,
 			locals: context.locals,

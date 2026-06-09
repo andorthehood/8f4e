@@ -157,6 +157,28 @@ describe('compile prototype validation', () => {
 		});
 	});
 
+	it('exposes function source names separately from compiler ids', () => {
+		const result = compile(
+			{
+				...emptyCompileInput,
+				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+				functions: [
+					{ code: ['function double', 'param int value', 'push value', 'push value', 'add', 'functionEnd int'] },
+				],
+			},
+			{ disableSharedMemory: true }
+		);
+
+		expect(result.compiledFunctions!.double).toMatchObject({
+			id: 'double',
+			name: 'double',
+			ast: {
+				id: 'double',
+				name: 'double',
+			},
+		});
+	});
+
 	it('rejects duplicate function export names during semantic metadata collection', () => {
 		let thrownError: unknown;
 
