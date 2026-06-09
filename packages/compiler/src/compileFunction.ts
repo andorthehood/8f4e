@@ -121,7 +121,8 @@ export function compileFunction(
 	const completedContext = context as CompletedFunctionCompilationContext;
 
 	return {
-		id: ast.id,
+		id: functionMetadata.id,
+		name: functionMetadata.name,
 		signature: functionMetadata.signature,
 		body: completedContext.currentFunctionImport
 			? []

@@ -9,6 +9,7 @@ exports[`function instruction compiler > starts a new function block 1`] = `
     },
   ],
   "currentFunctionId": "doThing",
+  "currentFunctionName": "doThing",
   "currentFunctionParameterCount": 0,
   "locals": {},
   "mode": "function",

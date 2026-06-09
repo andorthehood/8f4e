@@ -9,9 +9,11 @@ const functionBlockType = compilerSourceBlockInstructionByType.function.type;
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
 const _function = ((line: FunctionLine, context: CodegenContext) => {
-	const functionId = line.arguments[0].value;
+	const functionName = line.arguments[0].value;
+	const functionId = context.currentFunctionMetadata?.id ?? functionName;
 
 	context.currentFunctionId = functionId;
+	context.currentFunctionName = functionName;
 	context.codeBlockId = functionId;
 	context.codeBlockType = functionBlockType;
 	context.currentFunctionParameterCount = 0;

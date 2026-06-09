@@ -28,6 +28,7 @@ type ModuleASTBuilder = {
 type FunctionASTBuilder = {
 	type: 'function';
 	id: string;
+	name: string;
 	functionLine: FunctionLine;
 	functionEndLine?: FunctionEndLine;
 	exportLine?: ExportLine;
@@ -76,6 +77,7 @@ export function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockA
 			return {
 				type: 'function',
 				id: line.arguments[0].value,
+				name: line.arguments[0].value,
 				functionLine: line,
 			};
 		case 'constants':
@@ -119,7 +121,7 @@ function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine
 			return;
 		case '#export':
 			builder.exportLine = line;
-			builder.exportName = builder.exportLine.arguments[0]?.value ?? builder.id;
+			builder.exportName = builder.exportLine.arguments[0]?.value ?? builder.name;
 			return;
 		case '#import':
 			builder.importLine = line;
@@ -184,6 +186,7 @@ export function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlo
 			return {
 				type: 'function',
 				id: builder.id,
+				name: builder.name,
 				lines,
 				functionLine: builder.functionLine,
 				functionEndLine: builder.functionEndLine,

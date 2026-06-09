@@ -12,6 +12,7 @@ describe('call instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
 			id: 'foo',
+			name: 'foo',
 			signature: { parameters: ['int', 'float'], returns: ['int'] },
 			wasmIndex: 2,
 		} as NonNullable<CompilationContext['namespace']['functions']>[string];
@@ -44,6 +45,7 @@ describe('call instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
 			id: 'foo64',
+			name: 'foo64',
 			signature: { parameters: ['float64'], returns: ['float64'] },
 			wasmIndex: 2,
 		} as NonNullable<CompilationContext['namespace']['functions']>[string];
@@ -71,6 +73,7 @@ describe('call instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
 			id: 'foo',
+			name: 'foo',
 			signature: { parameters: ['int', 'float'], returns: ['int'] },
 			wasmIndex: 2,
 		} as NonNullable<CompilationContext['namespace']['functions']>[string];
@@ -115,6 +118,7 @@ describe('call instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
 			id: 'foo64',
+			name: 'foo64',
 			signature: { parameters: ['float64'], returns: [] },
 			wasmIndex: 2,
 		} as NonNullable<CompilationContext['namespace']['functions']>[string];
@@ -141,6 +145,7 @@ describe('call instruction compiler', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
 			id: 'addr',
+			name: 'addr',
 			signature: { parameters: [], returns: ['float*'] },
 			wasmIndex: 2,
 		} as NonNullable<CompilationContext['namespace']['functions']>[string];

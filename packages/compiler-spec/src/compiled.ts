@@ -59,7 +59,10 @@ export interface FunctionParamShapeExpansion {
 }
 
 export interface FunctionMetadata {
+	/** Canonical compiler identity for this concrete function. */
 	id: string;
+	/** Source-level callable name written by the user. */
+	name: string;
 	signature: FunctionSignature;
 	wasmIndex: number;
 	import?: FunctionImportMetadata;
