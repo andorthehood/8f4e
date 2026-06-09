@@ -91,7 +91,7 @@ function pickProjectCompilerGroup(group: ProjectCodeGroup): ProjectCompilerGroup
 export function pickProjectCompilerBlocks(project: ProjectInput): ProjectCompilerBlocks {
 	const entries: Record<string, Module[]> = { main: [] };
 	const constantsBlocks: Module[] = [];
-	const functionBlocks: Module[] = [];
+	const functionBlocks: Module[] = [...(project.includedFunctionBlocks ?? [])];
 	const prototypeBlocks: Module[] = [];
 	const target = { constantsBlocks, functionBlocks, prototypeBlocks };
 

@@ -42,12 +42,15 @@ type ModuleCompilerSource = {
 	entryName: string;
 	/** Project code block creation index that produced this source, when compiling a project. */
 	projectBlockId?: number;
+	/** Source origin metadata for blocks expanded before compilation. */
+	source?: Module['source'];
 };
 
 type CompilerSource = {
 	code: string[];
 	cacheKey: string;
 	projectBlockId?: number;
+	source?: Module['source'];
 };
 
 /** Compiled units and layout metadata for one independently compiled source program. */
@@ -187,35 +190,37 @@ function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): R
 	return prototypeShapesById;
 }
 
-function attachProjectBlockIdToSyntaxError(error: unknown, projectBlockId: number | undefined): unknown {
-	if (!(error instanceof SyntaxRulesError) || projectBlockId === undefined) {
+function attachSourceMetadataToSyntaxError(source: CompilerSource, error: unknown): unknown {
+	if (!(error instanceof SyntaxRulesError) || (source.projectBlockId === undefined && source.source === undefined)) {
 		return error;
 	}
 
 	error.context = {
 		...error.context,
-		projectBlockId,
+		...(source.projectBlockId !== undefined ? { projectBlockId: source.projectBlockId } : {}),
+		...(source.source !== undefined ? { source: source.source } : {}),
 	};
 	return error;
 }
 
-function attachProjectBlockIdToAst<TAst extends ValidatedAST>(ast: TAst, projectBlockId: number | undefined): TAst {
-	if (projectBlockId === undefined) {
+function attachSourceMetadataToAst<TAst extends ValidatedAST>(ast: TAst, source: CompilerSource): TAst {
+	if (source.projectBlockId === undefined && source.source === undefined) {
 		return ast;
 	}
 
 	return {
 		...ast,
-		projectBlockId,
+		...(source.projectBlockId !== undefined ? { projectBlockId: source.projectBlockId } : {}),
+		...(source.source !== undefined ? { source: source.source } : {}),
 	} as TAst;
 }
 
 function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSource, cache: CompilerCache): TAst {
 	try {
 		const ast = compileToAST(source.code, cache.ast, source.cacheKey) as TAst;
-		return attachProjectBlockIdToAst(ast, source.projectBlockId);
+		return attachSourceMetadataToAst(ast, source);
 	} catch (error) {
-		throw attachProjectBlockIdToSyntaxError(error, source.projectBlockId);
+		throw attachSourceMetadataToSyntaxError(source, error);
 	}
 }
 
@@ -224,6 +229,7 @@ function createCompilerSource(module: Module, cacheKey: string): CompilerSource 
 		code: module.code,
 		cacheKey,
 		projectBlockId: module.projectBlockId,
+		source: module.source,
 	};
 }
 
@@ -260,6 +266,7 @@ export function compileSubProgram(
 			cacheKey: `entry:${entryName}:module:${index}`,
 			entryName,
 			projectBlockId: module.projectBlockId,
+			source: module.source,
 		};
 	}) satisfies ModuleCompilerSource[];
 

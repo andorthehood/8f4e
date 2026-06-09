@@ -1,4 +1,5 @@
 import type { CompilerASTLine } from './ast';
+import type { SourceMetadata } from './compiled';
 import type { CompilerSourceBlockType } from './instructions';
 import type { CodegenContext, CompilationContext } from './semantic';
 
@@ -7,6 +8,7 @@ export interface CompilerDiagnosticContext {
 	codeBlockId?: string;
 	codeBlockType?: CompilerSourceBlockType;
 	projectBlockId?: number;
+	source?: SourceMetadata;
 }
 
 /**

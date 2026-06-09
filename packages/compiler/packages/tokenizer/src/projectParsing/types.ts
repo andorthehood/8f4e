@@ -17,6 +17,7 @@ export interface ProjectCodeGroup {
 export interface ProjectInput {
 	codeBlocks: ProjectCodeBlock[];
 	groups: ProjectCodeGroup[];
+	includedFunctionBlocks?: Module[];
 	[key: string]: unknown;
 }
 

@@ -1,11 +1,12 @@
 import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
-import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER } from './delimiters';
+import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
 import { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 import { getProjectBlockName, isProjectGapLine } from './projectLines';
+import { resolveBuiltInFunctionInclude } from './stdlib';
 import type { ProjectCodeBlock, ProjectCodeGroup, ProjectInput } from './types';
 
 export { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
-export { BLOCK_DELIMITERS, FORMAT_HEADER } from './delimiters';
+export { BLOCK_DELIMITERS, FORMAT_HEADER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
 export { pickProjectCompilerBlocks } from './pickProjectCompilerBlocks';
 export { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 export type {
@@ -42,6 +43,7 @@ export function parse8f4eProject(text: string): ProjectInput {
 
 	const codeBlocks: ProjectCodeBlock[] = [];
 	const groups: ProjectCodeGroup[] = [];
+	const includedFunctionBlocks: NonNullable<ProjectInput['includedFunctionBlocks']> = [];
 	const seenEntryNames = new Set<string>();
 
 	function readProjectCodeBlock(startIndex: number, targetCodeBlocks: ProjectCodeBlock[], entry?: string): number {
@@ -88,6 +90,46 @@ export function parse8f4eProject(text: string): ProjectInput {
 		}
 
 		throw new Error(`Parse error: unclosed block with opener "${openerKeyword}"`);
+	}
+
+	function readIncludesBlock(startIndex: number): number {
+		const openerLine = lines[startIndex];
+		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
+		if (openerKeyword !== INCLUDES_BLOCK_DELIMITER.opener) {
+			throw new Error(`Parse error at line ${startIndex + 1}: expected includes opener`);
+		}
+
+		for (let i = startIndex + 1; i < lines.length; i += 1) {
+			const line = lines[i];
+			const trimmed = line.trim();
+			if (isProjectGapLine(trimmed)) {
+				continue;
+			}
+
+			const closer = getProjectCloserKeyword(trimmed);
+			if (closer === INCLUDES_BLOCK_DELIMITER.closer) {
+				return i + 1;
+			}
+			if (closer) {
+				throw new Error(
+					`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${INCLUDES_BLOCK_DELIMITER.opener}"`
+				);
+			}
+
+			const [instruction, includeId, ...extraArgs] = trimmed.split(/\s+/);
+			if (instruction !== 'include' || !includeId || extraArgs.length > 0) {
+				throw new Error(`Parse error at line ${i + 1}: include requires exactly one include id`);
+			}
+
+			const includedFunction = resolveBuiltInFunctionInclude(includeId);
+			if (!includedFunction) {
+				throw new Error(`Parse error at line ${i + 1}: unknown built-in function include "${includeId}"`);
+			}
+
+			includedFunctionBlocks.push(includedFunction);
+		}
+
+		throw new Error(`Parse error: unclosed block with opener "${INCLUDES_BLOCK_DELIMITER.opener}"`);
 	}
 
 	function readProjectContainerContents(startIndex: number, options: ProjectContainerContentOptions): number {
@@ -180,6 +222,10 @@ export function parse8f4eProject(text: string): ProjectInput {
 		}
 
 		if (opener !== ENTRY_BLOCK_DELIMITER.opener) {
+			if (opener === INCLUDES_BLOCK_DELIMITER.opener) {
+				i = readIncludesBlock(i);
+				continue;
+			}
 			if (opener === documentBlockInstructionByType.module.start) {
 				throw new Error(`Parse error at line ${i + 1}: module blocks must be inside an entry block`);
 			}
@@ -211,7 +257,11 @@ export function parse8f4eProject(text: string): ProjectInput {
 		});
 	}
 
-	return { codeBlocks, groups };
+	return {
+		codeBlocks,
+		groups,
+		...(includedFunctionBlocks.length > 0 ? { includedFunctionBlocks } : {}),
+	};
 }
 
 export default parse8f4eProject;
