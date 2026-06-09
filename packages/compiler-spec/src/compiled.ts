@@ -71,10 +71,10 @@ export interface FunctionMetadata {
 
 export type FunctionMetadataLookup = Record<string, FunctionMetadata>;
 
-/** Function metadata indexed by compiler id and source-level overload set name. */
+/** Function metadata indexed by compiler id, plus source-name arity metadata for calls. */
 export interface FunctionRegistry {
 	byId: FunctionMetadataLookup;
-	overloadsByName: Record<string, FunctionMetadata[]>;
+	arityByName: Record<string, number>;
 }
 
 /** Code generation output and metadata for a compiled function. */

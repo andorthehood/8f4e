@@ -1,7 +1,6 @@
 import type {
 	CompilationContext,
 	FunctionMetadata,
-	FunctionRegistry,
 	FunctionValueType,
 	NormalizedCallLine,
 	ResolvedCallLine,
@@ -22,33 +21,28 @@ function stackItemToExactFunctionValueType(stackItem: StackItem): FunctionValueT
 	return stackItem.valueType as FunctionValueType;
 }
 
-function getFunctionByParameters(
-	functions: FunctionRegistry,
-	functionName: string,
-	parameters: readonly FunctionValueType[]
-): FunctionMetadata | undefined {
-	return functions.byId[createFunctionId(functionName, parameters)];
+function stackItemsToFunctionId(functionName: string, stackItems: readonly StackItem[]): string {
+	return createFunctionId(functionName, stackItems.map(stackItemToExactFunctionValueType));
 }
 
 function resolveTargetFunction(line: NormalizedCallLine, context: CompilationContext): FunctionMetadata {
 	const functionName = line.arguments[0].value;
 	const functionRegistry = context.namespace.functions;
-	if (!functionRegistry?.overloadsByName[functionName]?.length) {
+	if (!functionRegistry) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
 	}
 
-	const overloads = functionRegistry.overloadsByName[functionName];
-	const arity = overloads[0].signature.parameters.length;
+	const arity = functionRegistry.arityByName[functionName];
+	if (arity === undefined) {
+		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
+	}
+
 	if (context.stack.length < arity) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
 	const operands = context.stack.slice(context.stack.length - arity);
-	const exactMatch = getFunctionByParameters(
-		functionRegistry,
-		functionName,
-		operands.map(stackItemToExactFunctionValueType)
-	);
+	const exactMatch = functionRegistry.byId[stackItemsToFunctionId(functionName, operands)];
 	if (exactMatch) {
 		return exactMatch;
 	}

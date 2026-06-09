@@ -22,10 +22,9 @@ function registerFunction(context: CompilationContext, ...targetFunctions: Funct
 				targetFunction,
 			])
 		),
-		overloadsByName: targetFunctions.reduce<Record<string, FunctionMetadata[]>>((overloadsByName, targetFunction) => {
-			overloadsByName[targetFunction.name] = [...(overloadsByName[targetFunction.name] ?? []), targetFunction];
-			return overloadsByName;
-		}, {}),
+		arityByName: Object.fromEntries(
+			targetFunctions.map(targetFunction => [targetFunction.name, targetFunction.signature.parameters.length])
+		),
 	};
 }
 
