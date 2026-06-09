@@ -1,0 +1,12 @@
+function clamp
+param float value
+param float minValue
+param float maxValue
+
+push value
+push minValue
+max
+push maxValue
+min
+
+functionEnd float

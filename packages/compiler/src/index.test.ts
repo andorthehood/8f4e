@@ -1,5 +1,5 @@
 import { createFunctionId, ErrorCode } from '@8f4e/compiler-spec';
-import { SyntaxErrorCode } from '@8f4e/tokenizer';
+import { parse8f4eProject, pickProjectCompilerBlocks, SyntaxErrorCode } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 import compile, { serializeDiagnostic } from '.';
 
@@ -8,6 +8,44 @@ const emptyCompileInput = {
 	functions: [],
 	prototypes: [],
 };
+
+describe('compile project includes', () => {
+	it('compiles built-in function includes expanded by project parsing', () => {
+		const project = parse8f4eProject(
+			[
+				'8f4e/v1',
+				'',
+				'includes',
+				'include std/math/clamp',
+				'includesEnd',
+				'',
+				'entry main',
+				'module main',
+				'push 2.5',
+				'push 0.0',
+				'push 1.0',
+				'call clamp',
+				'drop',
+				'moduleEnd',
+				'entryEnd',
+			].join('\n')
+		);
+		const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks(project);
+		const result = compile(
+			{
+				entries,
+				constants: constantsBlocks,
+				functions: functionBlocks,
+				prototypes: prototypeBlocks,
+			},
+			{ disableSharedMemory: true }
+		);
+
+		expect(result.compiledFunctions[createFunctionId('clamp', ['float', 'float', 'float'])]).toMatchObject({
+			name: 'clamp',
+		});
+	});
+});
 
 describe('compile prototype validation', () => {
 	it('rejects prototype block markers inside module source', () => {

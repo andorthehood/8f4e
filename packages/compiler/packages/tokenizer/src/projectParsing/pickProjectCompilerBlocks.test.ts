@@ -9,6 +9,10 @@ const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'no
 
 describe('pickProjectCompilerBlocks', () => {
 	it('splits project blocks into compiler inputs', () => {
+		const includedFunctionBlock = {
+			code: ['function clamp', 'functionEnd float'],
+			source: { kind: 'include' as const, includeId: 'std/math/clamp', symbolName: 'clamp' },
+		};
 		const blocks = [
 			{ id: 1, code: validModuleBlock, entry: 'main' },
 			{ id: 2, code: validFunctionBlock },
@@ -18,10 +22,12 @@ describe('pickProjectCompilerBlocks', () => {
 			{ id: 6, code: validModuleBlock, entry: 'main', disabled: true },
 		];
 
-		expect(pickProjectCompilerBlocks({ codeBlocks: blocks, groups: [] })).toEqual({
+		expect(
+			pickProjectCompilerBlocks({ codeBlocks: blocks, groups: [], includedFunctionBlocks: [includedFunctionBlock] })
+		).toEqual({
 			entries: { main: [{ code: validModuleBlock, projectBlockId: 1 }] },
 			constantsBlocks: [],
-			functionBlocks: [{ code: validFunctionBlock, projectBlockId: 2 }],
+			functionBlocks: [includedFunctionBlock, { code: validFunctionBlock, projectBlockId: 2 }],
 			prototypeBlocks: [{ code: validPrototypeBlock, projectBlockId: 3 }],
 			groups: [],
 		});
