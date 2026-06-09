@@ -342,6 +342,32 @@ describe('compile prototype validation', () => {
 		});
 	});
 
+	it('rejects exported overloaded functions during semantic metadata collection', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'], projectBlockId: 10 }] },
+					functions: [
+						{ code: ['function convert', '#export convertInt', 'param int value', 'functionEnd'], projectBlockId: 20 },
+						{ code: ['function convert', 'param float value', 'functionEnd'], projectBlockId: 21 },
+					],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED,
+			line: expect.objectContaining({ instruction: '#export' }),
+			context: expect.objectContaining({ projectBlockId: 20 }),
+		});
+	});
+
 	it('rejects function exports that collide with generated entry exports', () => {
 		let thrownError: unknown;
 

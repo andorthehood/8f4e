@@ -76,6 +76,10 @@ export function collectFunctionMetadataFromAsts(
 ): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
 	const overloadsByName: FunctionRegistry['overloadsByName'] = {};
+	const overloadCountsByName = asts.reduce<Record<string, number>>((counts, ast) => {
+		counts[ast.name] = (counts[ast.name] ?? 0) + 1;
+		return counts;
+	}, {});
 	const seenFunctionIds = new Set(options.reservedFunctionIds);
 	const reservedFunctionNames = new Set(options.reservedFunctionIds);
 	const seenExportNames = new Set(options.reservedExportNames);
@@ -111,6 +115,16 @@ export function collectFunctionMetadataFromAsts(
 		const importedFunction = ast.import;
 		// Imported functions cannot be valid exports; keep that conflict in per-function directive validation.
 		const exportName = importedFunction ? undefined : ast.exportName;
+		if (exportName && overloadCountsByName[name] > 1) {
+			throw getError(
+				ErrorCode.OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED,
+				ast.exportLine ?? ast.functionLine,
+				getAstDiagnosticContext(ast),
+				{
+					identifier: name,
+				}
+			);
+		}
 		if (exportName) {
 			if (seenExportNames.has(exportName)) {
 				throw getError(
