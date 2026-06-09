@@ -93,6 +93,7 @@ describe('tooltip effect', () => {
 			name: 'helper',
 			code: ['function helper', 'param int', 'param int', 'add', 'return', 'functionEnd'],
 			blockType: 'function',
+			creationIndex: 42,
 			cursor: {
 				row: 3,
 				col: 0,
@@ -104,9 +105,16 @@ describe('tooltip effect', () => {
 		const state = createMockState({
 			compiler: {
 				compiledFunctions: {
+					[createFunctionId('helper', ['float'])]: {
+						id: createFunctionId('helper', ['float']),
+						name: 'helper',
+						ast: { projectBlockId: 99 },
+						stackAnalysis: [],
+					} as never,
 					[functionId]: {
 						id: functionId,
 						name: 'helper',
+						ast: { projectBlockId: 42 },
 						stackAnalysis: [
 							{
 								lineNumber: 3,
