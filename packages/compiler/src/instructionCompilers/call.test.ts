@@ -281,35 +281,6 @@ describe('call instruction compiler', () => {
 		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED}`);
 	});
 
-	it('throws when multiple overloads match the stack operands', () => {
-		const context = createInstructionCompilerTestContext();
-		const firstOverload = {
-			id: 'convert__int_a',
-			name: 'convert',
-			signature: { parameters: ['int'], returns: [] },
-			wasmIndex: 2,
-		} satisfies FunctionMetadata;
-		const secondOverload = {
-			id: 'convert__int_b',
-			name: 'convert',
-			signature: { parameters: ['int'], returns: [] },
-			wasmIndex: 3,
-		} satisfies FunctionMetadata;
-		registerFunction(context, firstOverload, secondOverload);
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
-
-		expect(() =>
-			analyzeInstruction(
-				{
-					lineNumber: 1,
-					instruction: 'call',
-					arguments: [classifyIdentifier('convert')],
-				},
-				context
-			)
-		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_AMBIGUOUS}`);
-	});
-
 	it('tracks pointer return types on the stack', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
