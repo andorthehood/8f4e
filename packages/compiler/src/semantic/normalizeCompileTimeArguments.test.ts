@@ -607,7 +607,13 @@ describe('normalizeCompileTimeArguments', () => {
 
 	it('throws UNDEFINED_FUNCTION for call with an undeclared function target', () => {
 		const context = {
-			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {}, functions: {} },
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+				functions: { byId: {}, overloadsByName: {} },
+			},
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -642,7 +648,40 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
-					knownFn: targetFunction,
+					byId: { knownFn: targetFunction },
+					overloadsByName: { knownFn: [targetFunction] },
+				},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: CompilerASTLine = {
+			lineNumber: 1,
+			instruction: 'call',
+			arguments: [classifyIdentifier('knownFn')],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual({
+			...line,
+			targetFunction,
+		});
+	});
+
+	it('resolves calls by source function name instead of compiler id', () => {
+		const targetFunction = {
+			id: 'knownFn__int',
+			name: 'knownFn',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 2,
+		};
+		const context = {
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+				functions: {
+					byId: { knownFn__int: targetFunction },
+					overloadsByName: { knownFn: [targetFunction] },
 				},
 			},
 			locals: {},
@@ -673,7 +712,8 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
-					knownFn: targetFunction,
+					byId: { knownFn: targetFunction },
+					overloadsByName: { knownFn: [targetFunction] },
 				},
 			},
 			locals: {},

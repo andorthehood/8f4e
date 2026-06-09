@@ -31,7 +31,7 @@ import type {
 	UseLine,
 	ValidatedPrototypeAST,
 } from './ast';
-import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
+import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry } from './compiled';
 import type { FunctionImportMetadata } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type { ArrayDeclarationInstruction, DataStructure, MemoryMap } from './memory';
@@ -122,7 +122,7 @@ export interface Namespace {
 	consts: Consts;
 	moduleName: string | undefined;
 	namespaces: Namespaces;
-	functions?: FunctionMetadataLookup;
+	functions?: FunctionRegistry;
 	prototypeShapeIds: string[];
 }
 

@@ -43,11 +43,12 @@ export default function normalizeCall(line: CallLine, context: CompilationContex
 		return line;
 	}
 
-	const functionId = line.arguments[0].value;
-	const targetFunction = context.namespace.functions[functionId];
-	if (!targetFunction) {
+	const functionName = line.arguments[0].value;
+	const overloads = context.namespace.functions.overloadsByName[functionName];
+	if (!overloads || overloads.length !== 1) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
 	}
+	const [targetFunction] = overloads;
 
 	const inlineArgumentPushes = line.arguments
 		.slice(1)
