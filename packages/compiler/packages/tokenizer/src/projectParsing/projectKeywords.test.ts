@@ -26,6 +26,7 @@ describe('getProjectOpenerKeyword', () => {
 		expect(getProjectOpenerKeyword('function sine')).toBe('function');
 		expect(getProjectOpenerKeyword('entry main')).toBe('entry');
 		expect(getProjectOpenerKeyword('group audio')).toBe('group');
+		expect(getProjectOpenerKeyword('includes')).toBe('includes');
 	});
 
 	it('returns null for non-opener project lines', () => {
@@ -40,6 +41,7 @@ describe('getProjectCloserKeyword', () => {
 		expect(getProjectCloserKeyword('functionEnd float')).toBe('functionEnd');
 		expect(getProjectCloserKeyword('entryEnd')).toBe('entryEnd');
 		expect(getProjectCloserKeyword('groupEnd')).toBe('groupEnd');
+		expect(getProjectCloserKeyword('includesEnd')).toBe('includesEnd');
 	});
 
 	it('returns null for non-closer project lines', () => {
@@ -53,6 +55,7 @@ describe('getExpectedProjectCloserPrefix', () => {
 		expect(getExpectedProjectCloserPrefix('module')).toBe('moduleEnd');
 		expect(getExpectedProjectCloserPrefix('entry')).toBe('entryEnd');
 		expect(getExpectedProjectCloserPrefix('group')).toBe('groupEnd');
+		expect(getExpectedProjectCloserPrefix('includes')).toBe('includesEnd');
 	});
 
 	it('falls back to the conventional End suffix for unknown openers', () => {

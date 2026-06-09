@@ -84,6 +84,7 @@ export function compileModule(
 		functionTypeRegistry: typeRegistry,
 		prototypeShapes,
 		projectBlockId: ast.projectBlockId,
+		source: ast.source,
 	});
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];

@@ -111,10 +111,21 @@ export interface Connection {
 	toConnectorId: string;
 }
 
+/** Source origin for blocks expanded from built-in or external includes. */
+export interface IncludedSourceMetadata {
+	kind: 'include';
+	includeId: string;
+	symbolName: string;
+}
+
+/** Source origin metadata carried with source blocks. */
+export type SourceMetadata = IncludedSourceMetadata;
+
 /** Source module payload consumed by the compiler. */
 export interface Module {
 	code: string[];
 	projectBlockId?: number;
+	source?: SourceMetadata;
 }
 
 /** Executable modules partitioned by host-callable execution entry. */

@@ -6,6 +6,7 @@ import type {
 	ArgumentStringLiteral,
 } from './arguments';
 import { ArgumentType } from './arguments';
+import type { SourceMetadata } from './compiled';
 import type { FunctionImportMetadata } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecTypes';
 import type { DocumentOnlyInstructionName, SemanticInstructionName } from './instructions';
@@ -258,6 +259,7 @@ export function hasReferencedNamespaceIds(
 /** Compiler project/source metadata carried with a parsed source block. */
 export interface SourceBlockMetadata {
 	projectBlockId?: number;
+	source?: SourceMetadata;
 }
 
 /** Parsed AST for a module block and its memory declarations. */

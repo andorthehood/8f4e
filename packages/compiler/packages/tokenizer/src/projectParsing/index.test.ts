@@ -112,6 +112,48 @@ describe('parse8f4eProject', () => {
 		expect(parse8f4eProject('8f4e/v1\n').groups).toEqual([]);
 	});
 
+	it('resolves top-level built-in function includes', () => {
+		const project = parse8f4eProject(
+			[
+				'8f4e/v1',
+				'',
+				'includes',
+				'include std/math/clamp',
+				'includesEnd',
+				'',
+				'entry main',
+				...validModuleBlock,
+				'entryEnd',
+			].join('\n')
+		);
+
+		expect(project.codeBlocks).toEqual([{ id: 8, code: validModuleBlock, entry: 'main' }]);
+		expect(project.includedFunctionBlocks).toEqual([
+			{
+				code: [
+					'function clamp',
+					'param float value',
+					'param float minValue',
+					'param float maxValue',
+					'',
+					'push value',
+					'push minValue',
+					'max',
+					'push maxValue',
+					'min',
+					'',
+					'functionEnd float',
+				],
+				source: {
+					kind: 'include',
+					includeId: 'std/math/clamp',
+					symbolName: 'clamp',
+				},
+			},
+		]);
+		expect(pickProjectCompilerBlocks(project).functionBlocks).toEqual(project.includedFunctionBlocks);
+	});
+
 	it('parses nested groups under entries', () => {
 		const project = parse8f4eProject(
 			[
@@ -182,6 +224,15 @@ describe('parse8f4eProject', () => {
 		).toThrow('entry blocks cannot be nested inside groups');
 		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\ngroup audio\nmoduleEnd\ngroupEnd\nentryEnd')).toThrow(
 			'does not match opener "group"'
+		);
+		expect(() => parse8f4eProject('8f4e/v1\n\nincludes\ninclude\nincludesEnd')).toThrow(
+			'include requires exactly one include id'
+		);
+		expect(() => parse8f4eProject('8f4e/v1\n\nincludes\ninclude std/math/missing\nincludesEnd')).toThrow(
+			'unknown built-in function include'
+		);
+		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\nincludes\nincludesEnd\nentryEnd')).toThrow(
+			'can only contain module or group blocks'
 		);
 	});
 });
