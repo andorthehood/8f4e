@@ -374,10 +374,13 @@ export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 };
 
-export type ResolvedCallLine = Omit<CallLine, 'arguments'> & {
+export type NormalizedCallLine = Omit<CallLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...PushArgument[]];
-	targetFunction: FunctionMetadata;
 	inlineArgumentPushes?: CodegenPushLine[];
+};
+
+export type ResolvedCallLine = NormalizedCallLine & {
+	targetFunction: FunctionMetadata;
 };
 
 export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
@@ -390,7 +393,7 @@ export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstL
 	: TLine extends DefaultLine
 		? NormalizedDefaultLine | DefaultLine
 		: TLine extends CallLine
-			? ResolvedCallLine | CallLine
+			? ResolvedCallLine | NormalizedCallLine | CallLine
 			: TLine extends MapLine
 				? NormalizedMapLine
 				: TLine extends LocalSetLine

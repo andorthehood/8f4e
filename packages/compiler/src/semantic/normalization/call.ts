@@ -2,10 +2,10 @@ import type {
 	CallLine,
 	CodegenPushLine,
 	CompilationContext,
+	NormalizedCallLine,
 	NormalizedPushLine,
 	PushArgument,
 	PushLine,
-	ResolvedCallLine,
 } from '@8f4e/compiler-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
@@ -30,25 +30,23 @@ function isCodegenPushLine(line: NormalizedPushLine): line is CodegenPushLine {
 /**
  * Semantic normalizer for the `call` instruction.
  * Validates that the call target function name exists in the function registry
- * before codegen runs. This is the semantic ownership boundary for function
- * existence validation; codegen only handles stack shape, parameter/return
- * type compatibility, and lowering.
+ * and normalizes inline argument pushes before stack analysis resolves the
+ * concrete overload.
  *
  * @param line - Source AST line being processed.
  * @param context - Compilation context used by the operation.
  * @returns Normalized call line.
  */
-export default function normalizeCall(line: CallLine, context: CompilationContext): CallLine | ResolvedCallLine {
+export default function normalizeCall(line: CallLine, context: CompilationContext): CallLine | NormalizedCallLine {
 	if (!context.namespace.functions) {
 		return line;
 	}
 
 	const functionName = line.arguments[0].value;
 	const overloads = context.namespace.functions.overloadsByName[functionName];
-	if (!overloads || overloads.length !== 1) {
+	if (!overloads || overloads.length === 0) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
 	}
-	const [targetFunction] = overloads;
 
 	const inlineArgumentPushes = line.arguments
 		.slice(1)
@@ -59,12 +57,11 @@ export default function normalizeCall(line: CallLine, context: CompilationContex
 		: line;
 
 	if (!inlineArgumentPushes.every(isCodegenPushLine)) {
-		return { ...normalizedLine, targetFunction };
+		return normalizedLine;
 	}
 
 	return {
 		...normalizedLine,
-		targetFunction,
 		...(inlineArgumentPushes.length > 0 ? { inlineArgumentPushes } : {}),
 	};
 }
