@@ -275,6 +275,18 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED:
+			return {
+				code,
+				message:
+					'Overloaded functions cannot be exported yet' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Use a uniquely named wrapper function if this overload needs to be exported. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.FUNCTION_SIGNATURE_OVERFLOW:
 			return {
 				code,
