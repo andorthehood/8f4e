@@ -55,51 +55,40 @@ function hasPointerMetadataGap(operands: Stack, overloads: readonly FunctionMeta
 	);
 }
 
-type CallResolution = {
-	targetFunction: FunctionMetadata;
-	exactMatchRequired: boolean;
-};
+function stackItemMatchesOverloadParameter(
+	stackItem: StackItem,
+	type: FunctionValueType,
+	exactMatch: boolean
+): boolean {
+	return exactMatch
+		? stackItemExactlyMatchesFunctionValueType(stackItem, type)
+		: stackItemMatchesFunctionValueType(stackItem, type);
+}
 
-function resolveTargetFunction(line: NormalizedCallLine, context: CompilationContext): CallResolution {
+function resolveTargetFunction(line: NormalizedCallLine, context: CompilationContext): FunctionMetadata {
 	const functionName = line.arguments[0].value;
 	const overloads = context.namespace.functions?.overloadsByName[functionName] ?? [];
 	if (overloads.length === 0) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
 	}
 
-	if (overloads.length === 1) {
-		const [targetFunction] = overloads;
-		if (context.stack.length < targetFunction.signature.parameters.length) {
-			throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-		}
-		return { targetFunction, exactMatchRequired: false };
-	}
-
-	const minimumParameterCount = Math.min(...overloads.map(overload => overload.signature.parameters.length));
-	if (context.stack.length < minimumParameterCount) {
+	const arity = overloads[0].signature.parameters.length;
+	if (context.stack.length < arity) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
+	const operands = context.stack.slice(context.stack.length - arity);
+	const exactMatch = overloads.length > 1;
 	const matchingOverloads = overloads.filter(overload => {
-		const { parameters } = overload.signature;
-		if (context.stack.length < parameters.length) {
-			return false;
-		}
-
-		const operands = context.stack.slice(context.stack.length - parameters.length);
-		return parameters.every((parameter, index) => stackItemExactlyMatchesFunctionValueType(operands[index], parameter));
+		return overload.signature.parameters.every((parameter, index) =>
+			stackItemMatchesOverloadParameter(operands[index], parameter, exactMatch)
+		);
 	});
 
 	if (matchingOverloads.length === 1) {
-		return { targetFunction: matchingOverloads[0], exactMatchRequired: true };
+		return matchingOverloads[0];
 	}
 
-	if (matchingOverloads.length > 1) {
-		throw getError(ErrorCode.FUNCTION_OVERLOAD_AMBIGUOUS, line, context, { identifier: functionName });
-	}
-
-	const maximumParameterCount = Math.max(...overloads.map(overload => overload.signature.parameters.length));
-	const operands = context.stack.slice(Math.max(0, context.stack.length - maximumParameterCount));
 	if (hasPointerMetadataGap(operands, overloads)) {
 		throw getError(ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED, line, context, { identifier: functionName });
 	}
@@ -122,24 +111,9 @@ export function analyzeCall(
 		analyzePush(inlinePushLine, context);
 	}
 
-	const { targetFunction, exactMatchRequired } = resolveTargetFunction(line, context);
+	const targetFunction = resolveTargetFunction(line, context);
 	(line as ResolvedCallLine).targetFunction = targetFunction;
 	const { parameters, returns } = targetFunction.signature;
-
-	if (context.stack.length < parameters.length) {
-		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
-	}
-
-	for (let i = 0; i < parameters.length; i++) {
-		const stackIndex = context.stack.length - parameters.length + i;
-		const stackItem = context.stack[stackIndex];
-		const matches = exactMatchRequired
-			? stackItemExactlyMatchesFunctionValueType(stackItem, parameters[i])
-			: stackItemMatchesFunctionValueType(stackItem, parameters[i]);
-		if (!matches) {
-			throw getError(ErrorCode.FUNCTION_OVERLOAD_NO_MATCH, line, context, { identifier: targetFunction.name });
-		}
-	}
 
 	const consumed = consume(context, parameters.length);
 	const produced = returns.map(returnType => functionValueTypeToStackItem(returnType));

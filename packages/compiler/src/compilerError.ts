@@ -251,18 +251,6 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.FUNCTION_OVERLOAD_AMBIGUOUS:
-			return {
-				code,
-				message:
-					'Ambiguous function overload' +
-					(details?.identifier ? `: ${details.identifier}` : '') +
-					'. Calls must resolve to exactly one parameter signature. (' +
-					code +
-					')',
-				line,
-				context,
-			};
 		case ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED:
 			return {
 				code,
