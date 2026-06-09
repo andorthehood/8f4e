@@ -8,6 +8,7 @@ import type {
 	CompilerCache,
 	FunctionMetadata,
 	FunctionMetadataLookup,
+	FunctionRegistry,
 	FunctionTypeRegistry,
 	Module,
 	ValidatedAST,
@@ -97,21 +98,37 @@ export function createCompilerCache(): CompilerCache {
 const RESERVED_EXPORT_NAMES = ['initDefaults'];
 
 /** Creates synthetic metadata for generated entry dispatcher functions. */
-function createEntryFunctionMetadata(
-	entryNames: readonly string[],
-	importedFunctionCount: number
-): FunctionMetadataLookup {
-	return Object.fromEntries(
-		entryNames.map((entryName, index) => [
-			entryName,
-			{
-				id: entryName,
-				name: entryName,
-				signature: { parameters: [], returns: [] },
-				wasmIndex: importedFunctionCount + 1 + index,
-			} satisfies FunctionMetadata,
-		])
-	);
+function createEntryFunctionMetadata(entryNames: readonly string[], importedFunctionCount: number): FunctionRegistry {
+	const byId: FunctionMetadataLookup = {};
+	const overloadsByName: FunctionRegistry['overloadsByName'] = {};
+
+	entryNames.forEach((entryName, index) => {
+		const metadata: FunctionMetadata = {
+			id: entryName,
+			name: entryName,
+			signature: { parameters: [], returns: [] },
+			wasmIndex: importedFunctionCount + 1 + index,
+		};
+		byId[entryName] = metadata;
+		overloadsByName[entryName] = [metadata];
+	});
+
+	return { byId, overloadsByName };
+}
+
+/** Merges function registries while preserving source-name overload arrays. */
+function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionRegistry {
+	const byId: FunctionMetadataLookup = {};
+	const overloadsByName: FunctionRegistry['overloadsByName'] = {};
+
+	for (const registry of registries) {
+		Object.assign(byId, registry.byId);
+		for (const [name, overloads] of Object.entries(registry.overloadsByName)) {
+			overloadsByName[name] = [...(overloadsByName[name] ?? []), ...overloads];
+		}
+	}
+
+	return { byId, overloadsByName };
 }
 
 /** Calculates required byte size for each WebAssembly memory index. */
@@ -291,7 +308,7 @@ export function compileSubProgram(
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
 		prototypeShapes: prototypeShapesById,
 	});
-	const functionMetadata = { ...entryFunctionMetadata, ...userFunctionMetadata };
+	const functionRegistry = mergeFunctionRegistries(entryFunctionMetadata, userFunctionMetadata);
 
 	const functionTypeRegistry: FunctionTypeRegistry = {
 		types: [],
@@ -300,7 +317,7 @@ export function compileSubProgram(
 	};
 
 	const compiledFunctions = astFunctions.map(ast =>
-		compileFunction(ast, namespaces, functionTypeRegistry, functionMetadata[ast.id], functionMetadata, options)
+		compileFunction(ast, namespaces, functionTypeRegistry, functionRegistry.byId[ast.id], functionRegistry, options)
 	);
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
@@ -313,7 +330,7 @@ export function compileSubProgram(
 			startingMemoryWordAddress: 1,
 		},
 		namespaces,
-		functionMetadata,
+		functionRegistry,
 		functionTypeRegistry,
 		prototypeShapesById
 	).map((module, index) => ({

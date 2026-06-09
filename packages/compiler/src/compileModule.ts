@@ -2,7 +2,7 @@ import type {
 	CompiledModule,
 	CompiledStackAnalysisLine,
 	CompileOptions,
-	FunctionMetadataLookup,
+	FunctionRegistry,
 	FunctionTypeRegistry,
 	ModuleCompilationContext,
 	Namespaces,
@@ -38,7 +38,7 @@ import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param startingByteAddress - Absolute byte address where layout should begin.
  * @param index - WASM index or source index assigned to the compiled item.
- * @param functions - Function metadata lookup available to compilation.
+ * @param functions - Function registry available to compilation.
  * @param options - Compiler options for this compilation pass.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
@@ -49,7 +49,7 @@ export function compileModule(
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
-	functions?: FunctionMetadataLookup,
+	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
