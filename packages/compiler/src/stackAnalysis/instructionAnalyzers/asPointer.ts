@@ -20,7 +20,7 @@ export function analyzeAsPointer(
 	context: CompilationContext
 ): { consumed: Stack; produced: Stack } {
 	const pointerType = line.arguments[0].value as FunctionValueType;
-	if (!pointerType || !isPointerFunctionValueType(pointerType)) {
+	if (!isPointerFunctionValueType(pointerType)) {
 		throw getError(ErrorCode.AS_POINTER_REQUIRES_POINTER_TYPE, line, context, {
 			identifier: pointerType,
 		});
@@ -34,15 +34,11 @@ export function analyzeAsPointer(
 		{
 			...typedPointer,
 			address,
-			...(typedPointer.pointsTo
-				? {
-						pointsTo: {
-							...typedPointer.pointsTo,
-							memoryIndex: address.memoryIndex,
-							...(address.memoryRegionName ? { memoryRegionName: address.memoryRegionName } : {}),
-						},
-					}
-				: {}),
+			pointsTo: {
+				...typedPointer.pointsTo!,
+				memoryIndex: address.memoryIndex,
+				...(address.memoryRegionName ? { memoryRegionName: address.memoryRegionName } : {}),
+			},
 			...(operand.isNonZero !== undefined ? { isNonZero: operand.isNonZero } : {}),
 			...(operand.knownIntegerValue !== undefined ? { knownIntegerValue: operand.knownIntegerValue } : {}),
 		},

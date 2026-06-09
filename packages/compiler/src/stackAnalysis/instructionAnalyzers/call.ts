@@ -5,6 +5,7 @@ import type {
 	NormalizedCallLine,
 	ResolvedCallLine,
 	Stack,
+	StackAddress,
 	StackItem,
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
@@ -30,14 +31,12 @@ function stackItemExactlyMatchesFunctionValueType(stackItem: StackItem, type: Fu
 		return false;
 	}
 
-	const expected = functionValueTypeToStackItem(type);
-	if (expected.kind !== 'address' || !expected.pointsTo) {
-		return false;
-	}
+	const expected = functionValueTypeToStackItem(type) as StackAddress;
+	const expectedPointsTo = expected.pointsTo!;
 
 	return (
-		stackItem.pointsTo.baseType === expected.pointsTo.baseType &&
-		stackItem.pointsTo.pointerDepth === expected.pointsTo.pointerDepth
+		stackItem.pointsTo.baseType === expectedPointsTo.baseType &&
+		stackItem.pointsTo.pointerDepth === expectedPointsTo.pointerDepth
 	);
 }
 
@@ -54,7 +53,6 @@ function hasPointerMetadataGap(operands: Stack, overloads: readonly FunctionMeta
 		overload.signature.parameters.some((parameter, index) => {
 			const operand = operands[index];
 			return (
-				operand &&
 				isPointerFunctionValueType(parameter) &&
 				operand.valueType === 'int' &&
 				(operand.kind !== 'address' || !operand.pointsTo)
