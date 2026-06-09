@@ -180,6 +180,145 @@ describe('compile prototype validation', () => {
 		});
 	});
 
+	it('collects same-name functions as overloads when parameter signatures differ', () => {
+		const result = compile(
+			{
+				...emptyCompileInput,
+				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+				functions: [
+					{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
+					{ code: ['function convert', 'param float value', 'push value', 'functionEnd float'] },
+				],
+			},
+			{ disableSharedMemory: true }
+		);
+
+		const intOverloadId = createFunctionId('convert', ['int']);
+		const floatOverloadId = createFunctionId('convert', ['float']);
+		expect(result.compiledFunctions![intOverloadId]).toMatchObject({
+			id: intOverloadId,
+			name: 'convert',
+			signature: { parameters: ['int'], returns: ['int'] },
+			ast: { id: 'convert', name: 'convert' },
+		});
+		expect(result.compiledFunctions![floatOverloadId]).toMatchObject({
+			id: floatOverloadId,
+			name: 'convert',
+			signature: { parameters: ['float'], returns: ['float'] },
+			ast: { id: 'convert', name: 'convert' },
+		});
+	});
+
+	it('rejects same-name functions with duplicate parameter signatures', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [
+						{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
+						{ code: ['function convert', 'param int input', 'push input', 'functionEnd int'] },
+					],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.DUPLICATE_FUNCTION_SIGNATURE,
+			line: expect.objectContaining({ instruction: 'function' }),
+		});
+	});
+
+	it('rejects overload sets with mixed parameter arity', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [
+						{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
+						{
+							code: [
+								'function convert',
+								'param int value',
+								'param int scale',
+								'push value',
+								'push scale',
+								'add',
+								'functionEnd int',
+							],
+						},
+					],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.INVALID_FUNCTION_OVERLOAD_SET,
+			line: expect.objectContaining({ instruction: 'function' }),
+		});
+	});
+
+	it('rejects zero-parameter functions from forming overload sets', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+					functions: [
+						{ code: ['function tick', 'functionEnd'] },
+						{ code: ['function tick', 'param int value', 'push value', 'functionEnd int'] },
+					],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.INVALID_FUNCTION_OVERLOAD_SET,
+			line: expect.objectContaining({ instruction: 'function' }),
+		});
+	});
+
+	it('keeps overloaded calls unresolved until stack-based overload resolution is available', () => {
+		let thrownError: unknown;
+
+		try {
+			compile(
+				{
+					...emptyCompileInput,
+					entries: { main: [{ code: ['module main', 'push 1', 'call convert', 'moduleEnd'] }] },
+					functions: [
+						{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
+						{ code: ['function convert', 'param float value', 'push value', 'functionEnd float'] },
+					],
+				},
+				{ disableSharedMemory: true }
+			);
+		} catch (error) {
+			thrownError = error;
+		}
+
+		expect(serializeDiagnostic(thrownError)).toMatchObject({
+			code: ErrorCode.UNDEFINED_FUNCTION,
+			line: expect.objectContaining({ instruction: 'call' }),
+		});
+	});
+
 	it('rejects duplicate function export names during semantic metadata collection', () => {
 		let thrownError: unknown;
 
