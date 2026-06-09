@@ -1,4 +1,5 @@
 import type {
+	AddressMetadata,
 	CompilationContext,
 	DataStructure,
 	LocalBinding,
@@ -13,7 +14,45 @@ import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } fro
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../../utils/pushValueKind';
 import { createStackValue, produce } from './stack';
 
-function pushLiteralStackItems(line: NormalizedPushLine): Stack {
+function getAddressMemoryItem(context: CompilationContext, address: AddressMetadata) {
+	const range = address.safeRange ?? address.clampRange;
+	const memoryId = range?.memoryId;
+	if (!memoryId) {
+		return undefined;
+	}
+
+	if (range.moduleId) {
+		return context.namespace.namespaces[range.moduleId]?.memory?.[memoryId];
+	}
+
+	return context.namespace.memory[memoryId];
+}
+
+function getAddressPointeeMetadata(context: CompilationContext, address: AddressMetadata) {
+	const memoryItem = getAddressMemoryItem(context, address);
+	if (!memoryItem) {
+		return undefined;
+	}
+
+	const pointerDepth = memoryItem.pointerDepth + 1;
+	if (pointerDepth > 2) {
+		return undefined;
+	}
+
+	const baseType = (memoryItem.pointeeBaseType ?? memoryItem.type.replace(/\*+$/, '')) as NonNullable<
+		DataStructure['pointeeBaseType']
+	>;
+
+	return {
+		baseType,
+		memoryIndex: memoryItem.memoryIndex,
+		...(memoryItem.memoryRegionName ? { memoryRegionName: memoryItem.memoryRegionName } : {}),
+		pointerDepth,
+		elementCount: memoryItem.numberOfElements,
+	} satisfies PointeeMetadata;
+}
+
+function pushLiteralStackItems(line: NormalizedPushLine, context: CompilationContext): Stack {
 	const argument = line.arguments[0];
 
 	if (argument.type === ArgumentType.STRING_LITERAL) {
@@ -25,19 +64,18 @@ function pushLiteralStackItems(line: NormalizedPushLine): Stack {
 	}
 
 	const kind = resolveArgumentValueKind(argument);
+	const address = argument.address
+		? {
+				...argument.address,
+				clampRange: argument.address.clampRange ?? argument.address.safeRange,
+			}
+		: undefined;
 
 	return [
 		kindToStackItem(kind, {
 			isNonZero: argument.value !== 0,
 			...(argument.isInteger && Number.isInteger(argument.value) ? { knownIntegerValue: argument.value } : {}),
-			...(argument.address
-				? {
-						address: {
-							...argument.address,
-							clampRange: argument.address.clampRange ?? argument.address.safeRange,
-						},
-					}
-				: {}),
+			...(address ? { address, pointsTo: getAddressPointeeMetadata(context, address) } : {}),
 		}),
 	];
 }
@@ -154,7 +192,7 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
  * @returns The relevant stack items for the analysis step.
  */
 export function analyzePush(line: NormalizedPushLine, context: CompilationContext): Stack {
-	const produced = 'resolvedTarget' in line ? pushResolvedTargetStackItems(line) : pushLiteralStackItems(line);
+	const produced = 'resolvedTarget' in line ? pushResolvedTargetStackItems(line) : pushLiteralStackItems(line, context);
 	produce(context, produced);
 	return produced;
 }

@@ -22,7 +22,6 @@ float*
 
 push readHead
 push &continuationPointerSource:samples
-asPointer float*
 call assert
 moduleEnd
 

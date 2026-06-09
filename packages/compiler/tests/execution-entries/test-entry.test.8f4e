@@ -31,7 +31,6 @@ moduleEnd
 module testEntrySupportsPointerArguments
 int[] values 2 7 8
 push &values
-asPointer int*
 call readFirst
 call assert 7
 moduleEnd

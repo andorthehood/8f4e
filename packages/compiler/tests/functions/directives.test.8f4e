@@ -34,7 +34,7 @@ function writeWithDirectivePrologue
 #export writeWithDirectivePrologue
 #impure
 #loopCap 4
-param int address
+param int* address
 param int value
 push address
 push value

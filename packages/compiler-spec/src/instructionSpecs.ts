@@ -339,15 +339,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Calls a function, consuming its parameters and pushing its return values.' },
 		stack: stack({ inputs: ['args...'], outputs: ['returns...'] }),
 	},
-	// asPointer (int -- ptr)
-	asPointer: {
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'functionTypeIdentifier' },
-		placement: moduleOrFunctionPlacement,
-		minOperands: 1,
-		operandTypes: 'int',
-		docs: { shortDescription: 'Attaches pointer type metadata to an integer address.' },
-		stack: stack({ inputs: ['int'], outputs: ['ptr'] }),
-	},
 	// castToFloat (int -- float)
 	castToFloat: {
 		sourceArguments: noSourceArguments,
