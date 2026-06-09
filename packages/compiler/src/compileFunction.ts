@@ -25,7 +25,6 @@ import { createCompilationContext } from './semantic/createCompilationContext';
 import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
 
 type CompletedFunctionCompilationContext = FunctionCompilationContext & {
-	currentFunctionId: string;
 	currentFunctionTypeIndex: number;
 };
 
@@ -79,6 +78,8 @@ export function compileFunction(
 		mode: 'function',
 		codeBlockType: 'function',
 		projectBlockId: ast.projectBlockId,
+		currentFunctionId: functionMetadata.id,
+		currentFunctionName: functionMetadata.name,
 		currentFunctionMetadata: functionMetadata,
 		currentFunctionParameterCount: 0,
 		functionTypeRegistry: typeRegistry,

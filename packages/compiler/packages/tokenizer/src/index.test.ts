@@ -59,7 +59,6 @@ describe('compileToAST', () => {
 
 		expect(ast).toMatchObject({
 			type: 'function',
-			id: 'mix',
 			name: 'mix',
 			functionLine: { instruction: 'function' },
 			functionEndLine: { instruction: 'functionEnd' },
@@ -74,7 +73,6 @@ describe('compileToAST', () => {
 
 		expect(ast).toMatchObject({
 			type: 'function',
-			id: 'mix',
 			name: 'mix',
 		});
 		if (ast.type !== 'function') {
@@ -232,7 +230,7 @@ describe('compileToAST', () => {
 
 		expect(ast).toMatchObject({
 			type: 'function',
-			id: 'hostLog',
+			name: 'hostLog',
 			importLine: { instruction: '#import' },
 			import: {
 				moduleName: 'host',

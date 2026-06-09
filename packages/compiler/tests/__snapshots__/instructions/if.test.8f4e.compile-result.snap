@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "packTriple__int__int__int": {
-      "id": "packTriple",
       "lines": [
         {
           "arguments": [
@@ -146,6 +145,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "packTriple",
       "type": "function",
     },
   },

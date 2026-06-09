@@ -1,4 +1,4 @@
-import type { CodegenContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { FunctionCodegenContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-spec';
 import { BlockType, compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
 import { pushBlock } from '../utils/blockStack';
 
@@ -8,9 +8,9 @@ const functionBlockType = compilerSourceBlockInstructionByType.function.type;
  * Instruction compiler for `function`.
  * @see [Instruction docs](../../docs/instructions/program-structure-and-functions.md)
  */
-const _function = ((line: FunctionLine, context: CodegenContext) => {
+const _function: InstructionCompiler<FunctionLine, FunctionCodegenContext> = (line, context) => {
 	const functionName = line.arguments[0].value;
-	const functionId = context.currentFunctionMetadata?.id ?? functionName;
+	const functionId = context.currentFunctionMetadata.id;
 
 	context.currentFunctionId = functionId;
 	context.currentFunctionName = functionName;
@@ -31,6 +31,6 @@ const _function = ((line: FunctionLine, context: CodegenContext) => {
 	});
 
 	return context;
-}) as InstructionCompiler<FunctionLine>;
+};
 
 export default _function;

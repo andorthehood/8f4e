@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "addForFunctionTest__int__int": {
-      "id": "addForFunctionTest",
       "lines": [
         {
           "arguments": [
@@ -86,10 +85,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "addForFunctionTest",
       "type": "function",
     },
     "doubleForFunctionTest__int": {
-      "id": "doubleForFunctionTest",
       "lines": [
         {
           "arguments": [
@@ -156,10 +155,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "doubleForFunctionTest",
       "type": "function",
     },
     "getFortyTwoForFunctionTest__void": {
-      "id": "getFortyTwoForFunctionTest",
       "lines": [
         {
           "arguments": [
@@ -194,6 +193,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getFortyTwoForFunctionTest",
       "type": "function",
     },
   },

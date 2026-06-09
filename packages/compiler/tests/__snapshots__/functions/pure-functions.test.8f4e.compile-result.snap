@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "absInt__int": {
-      "id": "absInt",
       "lines": [
         {
           "arguments": [
@@ -123,10 +122,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "absInt",
       "type": "function",
     },
     "addInts__int__int": {
-      "id": "addInts",
       "lines": [
         {
           "arguments": [
@@ -211,10 +210,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "addInts",
       "type": "function",
     },
     "addWithLocal__int__int": {
-      "id": "addWithLocal",
       "lines": [
         {
           "arguments": [
@@ -338,10 +337,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "addWithLocal",
       "type": "function",
     },
     "duplicateInt__int": {
-      "id": "duplicateInt",
       "lines": [
         {
           "arguments": [
@@ -411,10 +410,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "duplicateInt",
       "type": "function",
     },
     "getPi__void": {
-      "id": "getPi",
       "lines": [
         {
           "arguments": [
@@ -466,10 +465,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getPi",
       "type": "function",
     },
     "getZero__void": {
-      "id": "getZero",
       "lines": [
         {
           "arguments": [
@@ -504,10 +503,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getZero",
       "type": "function",
     },
     "multiplyFloats__float__float": {
-      "id": "multiplyFloats",
       "lines": [
         {
           "arguments": [
@@ -592,10 +591,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "multiplyFloats",
       "type": "function",
     },
     "multiplyMixed__int__float": {
-      "id": "multiplyMixed",
       "lines": [
         {
           "arguments": [
@@ -684,10 +683,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "multiplyMixed",
       "type": "function",
     },
     "noop__void": {
-      "id": "noop",
       "lines": [
         {
           "arguments": [
@@ -705,10 +704,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "noop",
       "type": "function",
     },
     "readValue__int_p": {
-      "id": "readValue",
       "lines": [
         {
           "arguments": [
@@ -770,10 +769,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "readValue",
       "type": "function",
     },
     "square__int": {
-      "id": "square",
       "lines": [
         {
           "arguments": [
@@ -841,10 +840,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "square",
       "type": "function",
     },
     "writeValue__int_p__int": {
-      "id": "writeValue",
       "lines": [
         {
           "arguments": [
@@ -927,6 +926,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "writeValue",
       "type": "function",
     },
   },
