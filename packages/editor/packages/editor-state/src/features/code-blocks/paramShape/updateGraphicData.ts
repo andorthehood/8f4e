@@ -1,8 +1,7 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import gapCalculator from '../../code-editing/gapCalculator';
 import type { DirectiveDerivedState } from '../features/directives/registry';
-
-type CompiledFunction = NonNullable<NonNullable<State['compiler']['compiledFunctions']>[string]>;
+import { type CompiledFunction, getCompiledFunctionForCodeBlock } from '../utils/getCompiledFunctionForCodeBlock';
 
 function getParamShapeLabelsByLineNumber(compiledFunction: CompiledFunction): Map<number, string[]> {
 	const labelsByLineNumber = new Map<number, string[]>();
@@ -17,14 +16,6 @@ function getParamShapeLabelsByLineNumber(compiledFunction: CompiledFunction): Ma
 	return labelsByLineNumber;
 }
 
-function getCompiledFunction(graphicData: CodeBlockGraphicData, state: State): CompiledFunction | undefined {
-	if (!graphicData.name) {
-		return undefined;
-	}
-
-	return Object.values(state.compiler.compiledFunctions ?? {}).find(func => func.name === graphicData.name);
-}
-
 export default function paramShape(
 	graphicData: CodeBlockGraphicData,
 	state: State,
@@ -34,7 +25,7 @@ export default function paramShape(
 		return;
 	}
 
-	const compiledFunction = getCompiledFunction(graphicData, state);
+	const compiledFunction = getCompiledFunctionForCodeBlock(graphicData, state);
 	if (!compiledFunction) {
 		return;
 	}
@@ -60,7 +51,7 @@ export function updateParamShapeDeclarations(
 		return;
 	}
 
-	const compiledFunction = getCompiledFunction(graphicData, state);
+	const compiledFunction = getCompiledFunctionForCodeBlock(graphicData, state);
 	if (!compiledFunction) {
 		return;
 	}
