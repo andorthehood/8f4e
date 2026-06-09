@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "orderedMixer": {
+    "orderedMixer__int__int_p__float_p__int": {
       "id": "orderedMixer",
       "lines": [
         {
@@ -142,7 +142,7 @@
       ],
       "type": "function",
     },
-    "sumMixer": {
+    "sumMixer__int_p__float_p": {
       "id": "sumMixer",
       "lines": [
         {
@@ -222,8 +222,8 @@
     },
   },
   "functionOverview": {
-    "orderedMixer": {
-      "id": "orderedMixer",
+    "orderedMixer__int__int_p__float_p__int": {
+      "id": "orderedMixer__int__int_p__float_p__int",
       "paramShapeExpansions": [
         {
           "lineNumber": 3,
@@ -251,8 +251,8 @@
         ],
       },
     },
-    "sumMixer": {
-      "id": "sumMixer",
+    "sumMixer__int_p__float_p": {
+      "id": "sumMixer__int_p__float_p",
       "paramShapeExpansions": [
         {
           "lineNumber": 2,
@@ -585,8 +585,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "orderedMixer",
-      "sumMixer",
+      "orderedMixer__int__int_p__float_p__int",
+      "sumMixer__int_p__float_p",
     ],
     "compiledModules": [
       "main",

@@ -30,9 +30,11 @@ function getSelectedCodeBlockStackAnalysisLine(
 	}
 
 	if (selectedCodeBlock.blockType === 'function') {
-		return state.compiler.compiledFunctions?.[selectedCodeBlock.name]?.stackAnalysis?.find(
-			line => line.lineNumber === selectedCodeBlock.cursor.row
+		const compiledFunction = Object.values(state.compiler.compiledFunctions ?? {}).find(
+			func => func.name === selectedCodeBlock.name
 		);
+
+		return compiledFunction?.stackAnalysis?.find(line => line.lineNumber === selectedCodeBlock.cursor.row);
 	}
 
 	return state.compiler.compiledModules[selectedCodeBlock.name]?.stackAnalysis?.find(

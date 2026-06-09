@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "addForExportSnapshot": {
+    "addForExportSnapshot__int__int": {
       "id": "addForExportSnapshot",
       "lines": [
         {
@@ -100,7 +100,7 @@
       ],
       "type": "function",
     },
-    "multiplyExportedByOwnName": {
+    "multiplyExportedByOwnName__int__int": {
       "id": "multiplyExportedByOwnName",
       "lines": [
         {
@@ -195,9 +195,9 @@
     },
   },
   "functionOverview": {
-    "addForExportSnapshot": {
+    "addForExportSnapshot__int__int": {
       "exportName": "addFromHost",
-      "id": "addForExportSnapshot",
+      "id": "addForExportSnapshot__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -208,9 +208,9 @@
         ],
       },
     },
-    "multiplyExportedByOwnName": {
+    "multiplyExportedByOwnName__int__int": {
       "exportName": "multiplyExportedByOwnName",
-      "id": "multiplyExportedByOwnName",
+      "id": "multiplyExportedByOwnName__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -346,8 +346,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "addForExportSnapshot",
-      "multiplyExportedByOwnName",
+      "addForExportSnapshot__int__int",
+      "multiplyExportedByOwnName__int__int",
     ],
     "compiledModules": [
       "exportedFunctionAssertions",

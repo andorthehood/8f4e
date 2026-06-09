@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "addForFunctionTest": {
+    "addForFunctionTest__int__int": {
       "id": "addForFunctionTest",
       "lines": [
         {
@@ -88,7 +88,7 @@
       ],
       "type": "function",
     },
-    "doubleForFunctionTest": {
+    "doubleForFunctionTest__int": {
       "id": "doubleForFunctionTest",
       "lines": [
         {
@@ -158,7 +158,7 @@
       ],
       "type": "function",
     },
-    "getFortyTwoForFunctionTest": {
+    "getFortyTwoForFunctionTest__void": {
       "id": "getFortyTwoForFunctionTest",
       "lines": [
         {
@@ -198,8 +198,8 @@
     },
   },
   "functionOverview": {
-    "addForFunctionTest": {
-      "id": "addForFunctionTest",
+    "addForFunctionTest__int__int": {
+      "id": "addForFunctionTest__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -210,8 +210,8 @@
         ],
       },
     },
-    "doubleForFunctionTest": {
-      "id": "doubleForFunctionTest",
+    "doubleForFunctionTest__int": {
+      "id": "doubleForFunctionTest__int",
       "signature": {
         "parameters": [
           "int",
@@ -221,8 +221,8 @@
         ],
       },
     },
-    "getFortyTwoForFunctionTest": {
-      "id": "getFortyTwoForFunctionTest",
+    "getFortyTwoForFunctionTest__void": {
+      "id": "getFortyTwoForFunctionTest__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -504,9 +504,9 @@
   },
   "overview": {
     "compiledFunctions": [
-      "addForFunctionTest",
-      "doubleForFunctionTest",
-      "getFortyTwoForFunctionTest",
+      "addForFunctionTest__int__int",
+      "doubleForFunctionTest__int",
+      "getFortyTwoForFunctionTest__void",
     ],
     "compiledModules": [
       "functionReturnConstant",

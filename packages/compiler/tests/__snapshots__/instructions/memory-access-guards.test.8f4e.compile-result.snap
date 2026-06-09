@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "readGuardedPointer": {
+    "readGuardedPointer__int_p": {
       "id": "readGuardedPointer",
       "lines": [
         {
@@ -65,8 +65,8 @@
     },
   },
   "functionOverview": {
-    "readGuardedPointer": {
-      "id": "readGuardedPointer",
+    "readGuardedPointer__int_p": {
+      "id": "readGuardedPointer__int_p",
       "signature": {
         "parameters": [
           "int*",
@@ -446,7 +446,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "readGuardedPointer",
+      "readGuardedPointer__int_p",
     ],
     "compiledModules": [
       "guardedFloatLoadAssertions",
