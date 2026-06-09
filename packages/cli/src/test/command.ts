@@ -1,6 +1,6 @@
+import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 import { promises as fs } from 'fs';
 import path from 'path';
-
 import { compileProject } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
 
@@ -39,10 +39,16 @@ type WebAssemblyApiLike = {
 	) => Promise<{ instance: WebAssemblyInstanceLike }>;
 };
 
-const assertFunctionBlock: ProjectCodeBlock = {
-	id: -1,
-	code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
-};
+const assertFunctionBlocks: ProjectCodeBlock[] = [
+	{
+		id: -1,
+		code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
+	},
+	...POINTER_FUNCTION_TYPE_IDENTIFIERS.map((type, index) => ({
+		id: -2 - index,
+		code: ['function assert', '#import assert', `param ${type} received`, `param ${type} expected`, 'functionEnd'],
+	})),
+];
 
 function getWebAssemblyApi(): WebAssemblyApiLike {
 	return (globalThis as unknown as { WebAssembly: WebAssemblyApiLike }).WebAssembly;
@@ -226,7 +232,7 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const compileResult = compileProject(
 		{
 			...project,
-			codeBlocks: [...project.codeBlocks, assertFunctionBlock],
+			codeBlocks: [...project.codeBlocks, ...assertFunctionBlocks],
 		},
 		{
 			compilerOptions: {

@@ -1152,17 +1152,6 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "float*",
-            },
-          ],
-          "instruction": "asPointer",
-        },
-        {
-          "arguments": [
-            {
               "isEndAddress": false,
               "referenceKind": "memory-reference",
               "scope": "local",
@@ -1172,17 +1161,6 @@
             },
           ],
           "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "float*",
-            },
-          ],
-          "instruction": "asPointer",
         },
         {
           "arguments": [
@@ -1438,17 +1416,6 @@
             },
           ],
           "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "float*",
-            },
-          ],
-          "instruction": "asPointer",
         },
         {
           "arguments": [

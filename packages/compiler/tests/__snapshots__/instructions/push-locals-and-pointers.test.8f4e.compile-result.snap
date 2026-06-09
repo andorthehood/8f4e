@@ -503,17 +503,6 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "float*",
-            },
-          ],
-          "instruction": "asPointer",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
               "value": "assert",
             },
           ],

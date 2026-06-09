@@ -1334,17 +1334,6 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "int*",
-            },
-          ],
-          "instruction": "asPointer",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
               "value": "readValue",
             },
           ],
@@ -1378,17 +1367,6 @@
             },
           ],
           "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int*",
-            },
-          ],
-          "instruction": "asPointer",
         },
         {
           "arguments": [
