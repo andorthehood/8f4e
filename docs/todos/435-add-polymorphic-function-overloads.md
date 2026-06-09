@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-29
 issue: null
-status: Open
-completed: null
+status: Done
+completed: 2026-06-09
 ---
 
 # TODO: Add polymorphic function overloads
@@ -68,6 +68,8 @@ Overload rules:
 
 ## Implementation Plan
 
+Implemented in PR #784.
+
 ### Step 1: Split source function name from unique function id
 - Add source-level function name metadata to `FunctionAST`, `FunctionMetadata`, and `CompiledFunction`.
 - Generate function ids with a shared helper such as `createFunctionId(name, parameters)`.
@@ -114,14 +116,14 @@ Overload rules:
 
 ## Success Criteria
 
-- [ ] Two functions with the same name and same positive arity but different parameter types compile and can be called by source name.
-- [ ] Generated compiled function ids include the encoded parameter signature for every function, including non-overloaded functions.
-- [ ] Zero-parameter functions use `__void` and cannot be overloaded.
-- [ ] Overload sets with mismatched arity are rejected.
-- [ ] Duplicate overload signatures are rejected even when return types differ.
-- [ ] Calls resolve only by exact stack operand type match.
-- [ ] Pointer overloads fail clearly when the stack operand lacks enough pointer type metadata.
-- [ ] Overloaded functions cannot be exported directly.
+- [x] Two functions with the same name and same positive arity but different parameter types compile and can be called by source name.
+- [x] Generated compiled function ids include the encoded parameter signature for every function, including non-overloaded functions.
+- [x] Zero-parameter functions use `__void` and cannot be overloaded.
+- [x] Overload sets with mismatched arity are rejected.
+- [x] Duplicate overload signatures are rejected even when return types differ.
+- [x] Calls resolve only by exact stack operand type match.
+- [x] Pointer overloads fail clearly when the stack operand lacks enough pointer type metadata.
+- [x] Overloaded functions cannot be exported directly.
 
 ## Affected Components
 
