@@ -106,7 +106,11 @@ entry main
 module shapeImportCaller
 shape mixerState
 
-call recordShape &left &right
+push &left
+asPointer int*
+push &right
+asPointer float*
+call recordShape
 moduleEnd
 entryEnd
 

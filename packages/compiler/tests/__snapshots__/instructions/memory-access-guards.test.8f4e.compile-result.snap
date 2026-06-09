@@ -330,6 +330,17 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
+              "value": "int*",
+            },
+          ],
+          "instruction": "asPointer",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
               "value": "readGuardedPointer",
             },
           ],
@@ -367,6 +378,17 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
+              "value": "int*",
+            },
+          ],
+          "instruction": "asPointer",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
               "value": "readGuardedPointer",
             },
           ],
@@ -397,6 +419,17 @@
             },
           ],
           "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int*",
+            },
+          ],
+          "instruction": "asPointer",
         },
         {
           "arguments": [

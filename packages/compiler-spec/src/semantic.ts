@@ -32,7 +32,7 @@ import type {
 	ValidatedPrototypeAST,
 } from './ast';
 import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry } from './compiled';
-import type { FunctionImportMetadata } from './functionTypes';
+import type { FunctionImportMetadata, FunctionValueType } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type { ArrayDeclarationInstruction, DataStructure, MemoryMap } from './memory';
 
@@ -386,6 +386,7 @@ export type ResolvedCallLine = NormalizedCallLine & {
 export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier];
 	shapeAddressPushes: CodegenPushLine[];
+	shapePointerTypes: FunctionValueType[];
 };
 
 export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstLine

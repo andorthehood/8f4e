@@ -49,6 +49,7 @@
   - [mapEnd](instructions/control-flow.md#mapend)
 
 - [Conversion](instructions/conversion.md)
+  - [asPointer](instructions/conversion.md#aspointer)
   - [castToFloat](instructions/conversion.md#casttofloat)
   - [castToInt](instructions/conversion.md#casttoint)
   - [castToFloat64](instructions/conversion.md#casttofloat64)

@@ -9,7 +9,7 @@ import type {
 } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
-import { functionValueTypeToStackItem, stackItemMatchesFunctionValueType } from '../../utils/functionValueType';
+import { functionValueTypeToStackItem } from '../../utils/functionValueType';
 import { analyzePush } from './push';
 import { consume, produce } from './stack';
 
@@ -41,6 +41,14 @@ function stackItemExactlyMatchesFunctionValueType(stackItem: StackItem, type: Fu
 	);
 }
 
+function stackItemIntCompatibleWithFunctionValueType(stackItem: StackItem, type: FunctionValueType): boolean {
+	if (type !== 'int') {
+		return stackItemExactlyMatchesFunctionValueType(stackItem, type);
+	}
+
+	return stackItem.valueType === 'int';
+}
+
 function hasPointerMetadataGap(operands: Stack, overloads: readonly FunctionMetadata[]): boolean {
 	return overloads.some(overload =>
 		overload.signature.parameters.some((parameter, index) => {
@@ -53,16 +61,6 @@ function hasPointerMetadataGap(operands: Stack, overloads: readonly FunctionMeta
 			);
 		})
 	);
-}
-
-function stackItemMatchesOverloadParameter(
-	stackItem: StackItem,
-	type: FunctionValueType,
-	exactMatch: boolean
-): boolean {
-	return exactMatch
-		? stackItemExactlyMatchesFunctionValueType(stackItem, type)
-		: stackItemMatchesFunctionValueType(stackItem, type);
 }
 
 function resolveTargetFunction(line: NormalizedCallLine, context: CompilationContext): FunctionMetadata {
@@ -78,10 +76,9 @@ function resolveTargetFunction(line: NormalizedCallLine, context: CompilationCon
 	}
 
 	const operands = context.stack.slice(context.stack.length - arity);
-	const exactMatch = overloads.length > 1;
 	const matchingOverloads = overloads.filter(overload => {
 		return overload.signature.parameters.every((parameter, index) =>
-			stackItemMatchesOverloadParameter(operands[index], parameter, exactMatch)
+			stackItemExactlyMatchesFunctionValueType(operands[index], parameter)
 		);
 	});
 
@@ -91,6 +88,16 @@ function resolveTargetFunction(line: NormalizedCallLine, context: CompilationCon
 
 	if (hasPointerMetadataGap(operands, overloads)) {
 		throw getError(ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED, line, context, { identifier: functionName });
+	}
+
+	const intCompatibleOverloads = overloads.filter(overload => {
+		return overload.signature.parameters.every((parameter, index) =>
+			stackItemIntCompatibleWithFunctionValueType(operands[index], parameter)
+		);
+	});
+
+	if (intCompatibleOverloads.length === 1) {
+		return intCompatibleOverloads[0];
 	}
 
 	throw getError(ErrorCode.FUNCTION_OVERLOAD_NO_MATCH, line, context, { identifier: functionName });

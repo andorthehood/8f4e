@@ -44,14 +44,17 @@ module guardedLocalPointerDereferenceAssertions
 ; inside impure functions should
 ; return zero.
 push -1
+asPointer int*
 call readGuardedPointer
 call assert 0
 
 push 65533
+asPointer int*
 call readGuardedPointer
 call assert 0
 
 push 2147483647
+asPointer int*
 call readGuardedPointer
 call assert 0
 moduleEnd
