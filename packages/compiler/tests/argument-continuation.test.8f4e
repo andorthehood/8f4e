@@ -21,7 +21,8 @@ float*
 - &continuationPointerSource:samples
 
 push readHead
-call assert &continuationPointerSource:samples
+push &continuationPointerSource:samples
+call assert
 moduleEnd
 
 module splitByteDefaultAssertions

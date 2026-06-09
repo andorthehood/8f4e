@@ -43,15 +43,23 @@ module guardedLocalPointerDereferenceAssertions
 ; Unsafe pointer dereferences
 ; inside impure functions should
 ; return zero.
-push -1
+int value
+
+push &value
+push 4
+sub
 call readGuardedPointer
 call assert 0
 
+push &value
 push 65533
+add
 call readGuardedPointer
 call assert 0
 
+push &value
 push 2147483647
+add
 call readGuardedPointer
 call assert 0
 moduleEnd

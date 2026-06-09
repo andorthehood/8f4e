@@ -1,5 +1,5 @@
 {
-  "code": 19,
+  "code": 68,
   "context": {
     "codeBlockId": "wrongArgumentTypes",
     "codeBlockType": "module",
@@ -17,5 +17,5 @@
     "instruction": "call",
     "lineNumber": 6,
   },
-  "message": "Type mismatch. (19)",
+  "message": "No matching function overload: addInts. Calls must exactly match one parameter signature. (68)",
 }

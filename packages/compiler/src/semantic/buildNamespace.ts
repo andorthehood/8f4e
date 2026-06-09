@@ -5,8 +5,11 @@ import {
 	type CompilerASTLine,
 	type CompilerDiagnosticContext,
 	compilerSourceBlockInstructionByType,
+	createFunctionId,
 	ErrorCode,
+	type FunctionMetadata,
 	type FunctionMetadataLookup,
+	type FunctionRegistry,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	hasReferencedNamespaceIds,
 	isMemoryDeclarationLine,
@@ -70,25 +73,57 @@ type FunctionMetadataCollectionOptions = {
 export function collectFunctionMetadataFromAsts(
 	asts: readonly ValidatedFunctionAST[],
 	options: FunctionMetadataCollectionOptions
-): FunctionMetadataLookup {
-	const result: FunctionMetadataLookup = {};
+): FunctionRegistry {
+	const byId: FunctionMetadataLookup = {};
+	const arityByName: FunctionRegistry['arityByName'] = {};
+	const overloadCountsByName = asts.reduce<Record<string, number>>((counts, ast) => {
+		counts[ast.name] = (counts[ast.name] ?? 0) + 1;
+		return counts;
+	}, {});
 	const seenFunctionIds = new Set(options.reservedFunctionIds);
+	const reservedFunctionNames = new Set(options.reservedFunctionIds);
 	const seenExportNames = new Set(options.reservedExportNames);
 	let importedFunctionIndex = 0;
 	let definedFunctionIndex = 0;
 
 	for (const ast of asts) {
-		const id = ast.id;
-		if (seenFunctionIds.has(id)) {
+		const name = ast.name;
+		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
+		const id = createFunctionId(name, functionMetadata.signature.parameters);
+		if (reservedFunctionNames.has(name)) {
 			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
+				identifier: name,
+			});
+		}
+		if (seenFunctionIds.has(id)) {
+			throw getError(ErrorCode.DUPLICATE_FUNCTION_SIGNATURE, ast.functionLine, getAstDiagnosticContext(ast), {
 				identifier: id,
 			});
 		}
-		seenFunctionIds.add(id);
+
+		const existingArity = arityByName[name];
+		const arity = functionMetadata.signature.parameters.length;
+		if (existingArity !== undefined) {
+			if (existingArity === 0 || arity === 0 || existingArity !== arity) {
+				throw getError(ErrorCode.INVALID_FUNCTION_OVERLOAD_SET, ast.functionLine, getAstDiagnosticContext(ast), {
+					identifier: name,
+				});
+			}
+		}
 
 		const importedFunction = ast.import;
 		// Imported functions cannot be valid exports; keep that conflict in per-function directive validation.
 		const exportName = importedFunction ? undefined : ast.exportName;
+		if (exportName && overloadCountsByName[name] > 1) {
+			throw getError(
+				ErrorCode.OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED,
+				ast.exportLine ?? ast.functionLine,
+				getAstDiagnosticContext(ast),
+				{
+					identifier: name,
+				}
+			);
+		}
 		if (exportName) {
 			if (seenExportNames.has(exportName)) {
 				throw getError(
@@ -103,9 +138,9 @@ export function collectFunctionMetadataFromAsts(
 			seenExportNames.add(exportName);
 		}
 
-		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
-		result[id] = {
+		const metadata: FunctionMetadata = {
 			id,
+			name,
 			signature: functionMetadata.signature,
 			wasmIndex: importedFunction
 				? options.importedFunctionBaseIndex + importedFunctionIndex++
@@ -113,9 +148,12 @@ export function collectFunctionMetadataFromAsts(
 			...(importedFunction ? { import: importedFunction } : {}),
 			...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		};
+		seenFunctionIds.add(id);
+		byId[id] = metadata;
+		arityByName[name] = arity;
 	}
 
-	return result;
+	return { byId, arityByName };
 }
 
 /**
@@ -156,7 +194,7 @@ function createNamespaceBuildContext(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
-	functions?: FunctionMetadataLookup,
+	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
 	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine
@@ -234,7 +272,7 @@ function discoverNamespace(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
-	functions?: FunctionMetadataLookup,
+	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): NamespaceBuildContext {
@@ -258,7 +296,7 @@ function discoverNamespace(
  * @param ast - Validated AST being processed.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param startingByteAddress - Absolute byte address where layout should begin.
- * @param functions - Function metadata lookup available to compilation.
+ * @param functions - Function registry available to compilation.
  * @param options - Compiler options for this compilation pass.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
  * @returns The computed result.
@@ -267,7 +305,7 @@ export function layoutNamespace(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
-	functions?: FunctionMetadataLookup,
+	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): NamespaceBuildContext {
@@ -336,7 +374,7 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
  *
  * @param asts - Validated ASTs being processed.
  * @param startingByteAddress - Absolute byte address where layout should begin.
- * @param compiledFunctions - Compiled function metadata available to module compilation.
+ * @param compiledFunctions - Function registry available to module compilation.
  * @param layoutAsts - layout asts value to use.
  * @param options - Compiler options for this compilation pass.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
@@ -345,7 +383,7 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
 export function collectNamespacesFromASTs(
 	asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
-	compiledFunctions?: FunctionMetadataLookup,
+	compiledFunctions?: FunctionRegistry,
 	layoutAsts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[] = asts,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>

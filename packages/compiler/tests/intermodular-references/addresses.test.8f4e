@@ -151,6 +151,7 @@ push moduleEndPtr
 push &moduleEndPtr
 push sizeof(moduleEndPtr)
 add
-call assert
+equal
+call assert 1
 moduleEnd
 entryEnd

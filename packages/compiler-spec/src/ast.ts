@@ -273,7 +273,8 @@ export interface ModuleAST extends SourceBlockMetadata {
 /** Parsed AST for a function block. */
 export interface FunctionAST extends SourceBlockMetadata {
 	type: 'function';
-	id: string;
+	/** Source-level callable name written after the `function` instruction. */
+	name: string;
 	lines: CompilerASTLines;
 	functionLine: FunctionLine;
 	functionEndLine: FunctionEndLine;

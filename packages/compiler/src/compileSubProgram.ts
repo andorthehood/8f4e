@@ -8,6 +8,7 @@ import type {
 	CompilerCache,
 	FunctionMetadata,
 	FunctionMetadataLookup,
+	FunctionRegistry,
 	FunctionTypeRegistry,
 	Module,
 	ValidatedAST,
@@ -16,7 +17,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
 import { compileModules } from './compileModules';
@@ -29,6 +30,7 @@ import {
 	collectNamespacesFromASTs,
 } from './semantic/buildNamespace';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
+import { getEffectiveFunctionMetadata } from './semantic/paramShape';
 
 /** Module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
@@ -97,20 +99,36 @@ export function createCompilerCache(): CompilerCache {
 const RESERVED_EXPORT_NAMES = ['initDefaults'];
 
 /** Creates synthetic metadata for generated entry dispatcher functions. */
-function createEntryFunctionMetadata(
-	entryNames: readonly string[],
-	importedFunctionCount: number
-): FunctionMetadataLookup {
-	return Object.fromEntries(
-		entryNames.map((entryName, index) => [
-			entryName,
-			{
-				id: entryName,
-				signature: { parameters: [], returns: [] },
-				wasmIndex: importedFunctionCount + 1 + index,
-			} satisfies FunctionMetadata,
-		])
-	);
+function createEntryFunctionMetadata(entryNames: readonly string[], importedFunctionCount: number): FunctionRegistry {
+	const byId: FunctionMetadataLookup = {};
+	const arityByName: FunctionRegistry['arityByName'] = {};
+
+	entryNames.forEach((entryName, index) => {
+		const parameters: FunctionMetadata['signature']['parameters'] = [];
+		const metadata: FunctionMetadata = {
+			id: createFunctionId(entryName, parameters),
+			name: entryName,
+			signature: { parameters, returns: [] },
+			wasmIndex: importedFunctionCount + 1 + index,
+		};
+		byId[metadata.id] = metadata;
+		arityByName[entryName] = parameters.length;
+	});
+
+	return { byId, arityByName };
+}
+
+/** Merges function registries while preserving source-name arity metadata. */
+function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionRegistry {
+	const byId: FunctionMetadataLookup = {};
+	const arityByName: FunctionRegistry['arityByName'] = {};
+
+	for (const registry of registries) {
+		Object.assign(byId, registry.byId);
+		Object.assign(arityByName, registry.arityByName);
+	}
+
+	return { byId, arityByName };
 }
 
 /** Calculates required byte size for each WebAssembly memory index. */
@@ -290,7 +308,7 @@ export function compileSubProgram(
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
 		prototypeShapes: prototypeShapesById,
 	});
-	const functionMetadata = { ...entryFunctionMetadata, ...userFunctionMetadata };
+	const functionRegistry = mergeFunctionRegistries(entryFunctionMetadata, userFunctionMetadata);
 
 	const functionTypeRegistry: FunctionTypeRegistry = {
 		types: [],
@@ -298,9 +316,18 @@ export function compileSubProgram(
 		baseTypeIndex: 3,
 	};
 
-	const compiledFunctions = astFunctions.map(ast =>
-		compileFunction(ast, namespaces, functionTypeRegistry, functionMetadata[ast.id], functionMetadata, options)
-	);
+	const compiledFunctions = astFunctions.map(ast => {
+		const signatureMetadata = getEffectiveFunctionMetadata(ast, prototypeShapesById);
+		const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
+		const functionMetadata = functionRegistry.byId[functionId];
+		if (!functionMetadata) {
+			throw getError(ErrorCode.UNDEFINED_FUNCTION, ast.functionLine, {
+				codeBlockType: ast.type,
+				...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
+			});
+		}
+		return compileFunction(ast, namespaces, functionTypeRegistry, functionMetadata, functionRegistry, options);
+	});
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
@@ -312,7 +339,7 @@ export function compileSubProgram(
 			startingMemoryWordAddress: 1,
 		},
 		namespaces,
-		functionMetadata,
+		functionRegistry,
 		functionTypeRegistry,
 		prototypeShapesById
 	).map((module, index) => ({

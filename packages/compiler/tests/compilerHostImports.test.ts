@@ -1,3 +1,4 @@
+import { createFunctionId } from '@8f4e/compiler-spec';
 import { describe, expect, test } from 'vitest';
 
 import { getExportedFunction, instantiateFixtureProgramSource } from './testUtils';
@@ -48,11 +49,11 @@ functionEnd int
 
 		expect(calls).toEqual([41]);
 		expect(new DataView(memory.buffer).getInt32(output, true)).toBe(42);
-		expect(fixture.compileResult.compiledFunctions!.record.import).toEqual({
+		expect(fixture.compileResult.compiledFunctions![createFunctionId('record', ['int'])].import).toEqual({
 			moduleName: 'host',
 			fieldName: 'record',
 		});
-		expect(fixture.compileResult.compiledFunctions!.addOne.import).toEqual({
+		expect(fixture.compileResult.compiledFunctions![createFunctionId('addOne', ['int'])].import).toEqual({
 			moduleName: 'host',
 			fieldName: 'add.one',
 		});
@@ -105,7 +106,9 @@ entry main
 module shapeImportCaller
 shape mixerState
 
-call recordShape &left &right
+push &left
+push &right
+call recordShape
 moduleEnd
 entryEnd
 
@@ -127,8 +130,9 @@ functionEnd
 		getExportedFunction(fixture.instance.exports, 'main')();
 
 		expect(calls).toEqual([[memoryMap.left.byteAddress, memoryMap.right.byteAddress]]);
-		expect(fixture.compileResult.compiledFunctions!.recordShape.signature.parameters).toEqual(['int*', 'float*']);
-		expect(fixture.compileResult.compiledFunctions!.recordShape.import).toEqual({
+		const functionId = createFunctionId('recordShape', ['int*', 'float*']);
+		expect(fixture.compileResult.compiledFunctions![functionId].signature.parameters).toEqual(['int*', 'float*']);
+		expect(fixture.compileResult.compiledFunctions![functionId].import).toEqual({
 			moduleName: 'host',
 			fieldName: 'recordShape',
 		});

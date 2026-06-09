@@ -1,7 +1,6 @@
 {
   "functionAst": {
-    "test": {
-      "id": "test",
+    "test__void": {
       "lines": [
         {
           "arguments": [
@@ -122,13 +121,14 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "test",
       "type": "function",
     },
   },
   "functionOverview": {
-    "test": {
+    "test__void": {
       "exportName": "test",
-      "id": "test",
+      "id": "test__void",
       "signature": {
         "parameters": [],
         "returns": [],
@@ -344,7 +344,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "test",
+      "test__void",
     ],
     "compiledModules": [
       "activeEntryModule",

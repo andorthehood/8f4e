@@ -1,3 +1,4 @@
+import { createFunctionId } from '@8f4e/compiler-spec';
 import { describe, expect, test } from 'vitest';
 
 import { compileFixtureProgramSource } from './testUtils';
@@ -27,10 +28,11 @@ functionEnd int
 		const analyzedResult = compileFixtureProgramSource(source, {
 			includeStackAnalysis: true,
 		}).compileResult;
+		const functionId = createFunctionId('double', ['int']);
 
 		expect(defaultResult.compiledModules.optionSurface.ast.id).toBe('optionSurface');
 		expect(defaultResult.compiledModules.optionSurface.stackAnalysis).toBeUndefined();
-		expect(defaultResult.compiledFunctions!.double.stackAnalysis).toBeUndefined();
+		expect(defaultResult.compiledFunctions![functionId].stackAnalysis).toBeUndefined();
 
 		expect(analyzedResult.compiledModules.optionSurface.ast.id).toBe('optionSurface');
 		expect(analyzedResult.compiledModules.optionSurface.stackAnalysis?.map(line => line.instruction)).toEqual([
@@ -38,7 +40,7 @@ functionEnd int
 			'push',
 			'store',
 		]);
-		expect(analyzedResult.compiledFunctions!.double.stackAnalysis?.map(line => line.instruction)).toEqual([
+		expect(analyzedResult.compiledFunctions![functionId].stackAnalysis?.map(line => line.instruction)).toEqual([
 			'function',
 			'param',
 			'push',

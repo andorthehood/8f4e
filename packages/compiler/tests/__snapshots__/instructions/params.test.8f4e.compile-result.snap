@@ -1,95 +1,6 @@
 {
   "functionAst": {
-    "addParams": {
-      "id": "addParams",
-      "lines": [
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "addParams",
-            },
-          ],
-          "instruction": "function",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "x",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "y",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "x",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "y",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "add",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-          ],
-          "instruction": "functionEnd",
-        },
-      ],
-      "type": "function",
-    },
-    "addParamsWithLocal": {
-      "id": "addParamsWithLocal",
+    "addParamsWithLocal__int__int": {
       "lines": [
         {
           "arguments": [
@@ -213,10 +124,98 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "addParamsWithLocal",
       "type": "function",
     },
-    "calculateArea": {
-      "id": "calculateArea",
+    "addParams__int__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "addParams",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "x",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "y",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "x",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "y",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "addParams",
+      "type": "function",
+    },
+    "calculateArea__int__int": {
       "lines": [
         {
           "arguments": [
@@ -301,10 +300,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "calculateArea",
       "type": "function",
     },
-    "mixedAll": {
-      "id": "mixedAll",
+    "mixedAll__int__float__float64": {
       "lines": [
         {
           "arguments": [
@@ -429,10 +428,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "mixedAll",
       "type": "function",
     },
-    "noParams": {
-      "id": "noParams",
+    "noParams__void": {
       "lines": [
         {
           "arguments": [
@@ -467,10 +466,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "noParams",
       "type": "function",
     },
-    "squareParam": {
-      "id": "squareParam",
+    "squareParam__int": {
       "lines": [
         {
           "arguments": [
@@ -538,10 +537,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "squareParam",
       "type": "function",
     },
-    "subtractReverse": {
-      "id": "subtractReverse",
+    "subtractReverse__int__int": {
       "lines": [
         {
           "arguments": [
@@ -626,10 +625,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "subtractReverse",
       "type": "function",
     },
-    "useFirst": {
-      "id": "useFirst",
+    "useFirst__int__int": {
       "lines": [
         {
           "arguments": [
@@ -713,12 +712,13 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "useFirst",
       "type": "function",
     },
   },
   "functionOverview": {
-    "addParams": {
-      "id": "addParams",
+    "addParamsWithLocal__int__int": {
+      "id": "addParamsWithLocal__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -729,8 +729,8 @@
         ],
       },
     },
-    "addParamsWithLocal": {
-      "id": "addParamsWithLocal",
+    "addParams__int__int": {
+      "id": "addParams__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -741,8 +741,8 @@
         ],
       },
     },
-    "calculateArea": {
-      "id": "calculateArea",
+    "calculateArea__int__int": {
+      "id": "calculateArea__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -753,8 +753,8 @@
         ],
       },
     },
-    "mixedAll": {
-      "id": "mixedAll",
+    "mixedAll__int__float__float64": {
+      "id": "mixedAll__int__float__float64",
       "signature": {
         "parameters": [
           "int",
@@ -766,8 +766,8 @@
         ],
       },
     },
-    "noParams": {
-      "id": "noParams",
+    "noParams__void": {
+      "id": "noParams__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -775,8 +775,8 @@
         ],
       },
     },
-    "squareParam": {
-      "id": "squareParam",
+    "squareParam__int": {
+      "id": "squareParam__int",
       "signature": {
         "parameters": [
           "int",
@@ -786,8 +786,8 @@
         ],
       },
     },
-    "subtractReverse": {
-      "id": "subtractReverse",
+    "subtractReverse__int__int": {
+      "id": "subtractReverse__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -798,8 +798,8 @@
         ],
       },
     },
-    "useFirst": {
-      "id": "useFirst",
+    "useFirst__int__int": {
+      "id": "useFirst__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -1367,14 +1367,14 @@
   },
   "overview": {
     "compiledFunctions": [
-      "addParams",
-      "addParamsWithLocal",
-      "calculateArea",
-      "mixedAll",
-      "noParams",
-      "squareParam",
-      "subtractReverse",
-      "useFirst",
+      "addParams__int__int",
+      "addParamsWithLocal__int__int",
+      "calculateArea__int__int",
+      "mixedAll__int__float__float64",
+      "noParams__void",
+      "squareParam__int",
+      "subtractReverse__int__int",
+      "useFirst__int__int",
     ],
     "compiledModules": [
       "localAfterParamAssertions",

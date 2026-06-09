@@ -1,7 +1,6 @@
 {
   "functionAst": {
-    "writeWithDirectivePrologue": {
-      "id": "writeWithDirectivePrologue",
+    "writeWithDirectivePrologue__int_p__int": {
       "lines": [
         {
           "arguments": [
@@ -48,7 +47,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "int",
+              "value": "int*",
             },
             {
               "referenceKind": "plain",
@@ -107,16 +106,17 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "writeWithDirectivePrologue",
       "type": "function",
     },
   },
   "functionOverview": {
-    "writeWithDirectivePrologue": {
+    "writeWithDirectivePrologue__int_p__int": {
       "exportName": "writeWithDirectivePrologue",
-      "id": "writeWithDirectivePrologue",
+      "id": "writeWithDirectivePrologue__int_p__int",
       "signature": {
         "parameters": [
-          "int",
+          "int*",
           "int",
         ],
         "returns": [],
@@ -381,7 +381,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "writeWithDirectivePrologue",
+      "writeWithDirectivePrologue__int_p__int",
     ],
     "compiledModules": [
       "directiveAssertions",

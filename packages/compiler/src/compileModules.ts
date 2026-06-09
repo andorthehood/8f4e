@@ -1,7 +1,7 @@
 import type {
 	CompiledModule,
 	CompileOptions,
-	FunctionMetadataLookup,
+	FunctionRegistry,
 	FunctionTypeRegistry,
 	Namespaces,
 	ValidatedConstantsAST,
@@ -18,7 +18,7 @@ import { collectNamespacesFromASTs } from './semantic/buildNamespace';
  * @param modules - modules value to use.
  * @param options - Compiler options for this compilation pass.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
- * @param compiledFunctions - Compiled function metadata available to module compilation.
+ * @param compiledFunctions - Function registry available to module compilation.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
  * @returns The compiled module artifact.
@@ -27,7 +27,7 @@ export function compileModules(
 	modules: Array<ValidatedModuleAST | ValidatedConstantsAST>,
 	options: CompileOptions,
 	namespaces?: Namespaces,
-	compiledFunctions?: FunctionMetadataLookup,
+	compiledFunctions?: FunctionRegistry,
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule[] {

@@ -1,4 +1,4 @@
-import type { CompiledFunction, ValidatedFunctionAST } from '@8f4e/compiler-spec';
+import { type CompiledFunction, createFunctionId, type ValidatedFunctionAST } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
 import type { DirectiveDerivedState } from '../features/directives/registry';
@@ -21,9 +21,11 @@ function createDirectiveState(): DirectiveDerivedState {
 	};
 }
 
-function createCompiledFunction(): CompiledFunction {
+function createCompiledFunction(projectBlockId: number): CompiledFunction {
+	const functionId = createFunctionId('foo', ['int*', 'float*']);
 	return {
-		id: 'foo',
+		id: functionId,
+		name: 'foo',
 		signature: { parameters: ['int*', 'float*'], returns: [] },
 		wasmIndex: 0,
 		typeIndex: 0,
@@ -41,6 +43,7 @@ function createCompiledFunction(): CompiledFunction {
 		ast: {
 			type: 'function',
 			id: 'foo',
+			projectBlockId,
 			functionLine: { lineNumber: 0, instruction: 'function', arguments: [{ value: 'foo' }] },
 			functionEndLine: { lineNumber: 4, instruction: 'functionEnd', arguments: [] },
 			signature: { parameters: ['int*', 'float*'], returns: [] },
@@ -63,6 +66,7 @@ describe('paramShape', () => {
 			codeToRender: [[1], [2], [3], [4], [5]],
 			codeColors: [[undefined], [undefined], [undefined], [undefined], [undefined]],
 			lineNumberColumnWidth: 1,
+			creationIndex: 42,
 		});
 		const state = createMockState({
 			viewport: {
@@ -71,7 +75,18 @@ describe('paramShape', () => {
 			},
 			compiler: {
 				compiledFunctions: {
-					foo: createCompiledFunction(),
+					[createFunctionId('foo', ['float*'])]: {
+						id: createFunctionId('foo', ['float*']),
+						name: 'foo',
+						ast: { projectBlockId: 99 },
+						paramShapeExpansions: [
+							{
+								lineNumber: 2,
+								parameters: [{ type: 'float*', name: 'wrong' }],
+							},
+						],
+					} as CompiledFunction,
+					[createFunctionId('foo', ['int*', 'float*'])]: createCompiledFunction(42),
 				},
 			},
 		});

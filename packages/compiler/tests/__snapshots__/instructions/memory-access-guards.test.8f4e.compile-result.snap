@@ -1,7 +1,6 @@
 {
   "functionAst": {
-    "readGuardedPointer": {
-      "id": "readGuardedPointer",
+    "readGuardedPointer__int_p": {
       "lines": [
         {
           "arguments": [
@@ -61,12 +60,13 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "readGuardedPointer",
       "type": "function",
     },
   },
   "functionOverview": {
-    "readGuardedPointer": {
-      "id": "readGuardedPointer",
+    "readGuardedPointer__int_p": {
+      "id": "readGuardedPointer__int_p",
       "signature": {
         "parameters": [
           "int*",
@@ -317,12 +317,41 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": -1,
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "hasExplicitMemoryDefault": false,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "value",
+              "type": "identifier",
+              "value": "&value",
             },
           ],
           "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
         },
         {
           "arguments": [
@@ -350,6 +379,19 @@
             },
           ],
           "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "value",
+              "type": "identifier",
+              "value": "&value",
+            },
+          ],
+          "instruction": "push",
         },
         {
           "arguments": [
@@ -362,6 +404,10 @@
           "instruction": "push",
         },
         {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
           "arguments": [
             {
               "referenceKind": "plain",
@@ -391,12 +437,29 @@
         {
           "arguments": [
             {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "value",
+              "type": "identifier",
+              "value": "&value",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
               "isInteger": true,
               "type": "literal",
               "value": 2147483647,
             },
           ],
           "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
         },
         {
           "arguments": [
@@ -441,19 +504,34 @@
       "memoryMap": {},
     },
     "guardedLocalPointerDereferenceAssertions": {
-      "memoryMap": {},
+      "memoryMap": {
+        "value": {
+          "byteAddress": 4,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "value",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
     },
   },
   "overview": {
     "compiledFunctions": [
-      "readGuardedPointer",
+      "readGuardedPointer__int_p",
     ],
     "compiledModules": [
       "guardedFloatLoadAssertions",
       "guardedIntLoadAssertions",
       "guardedLocalPointerDereferenceAssertions",
     ],
-    "requiredMemoryBytes": 4,
+    "requiredMemoryBytes": 8,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",

@@ -1,4 +1,5 @@
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, FunctionTypeRegistry } from '@8f4e/compiler-spec';
+import { createFunctionId } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
@@ -8,7 +9,24 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('function instruction compiler', () => {
 	it('starts a new function block', () => {
-		const context = createInstructionCompilerTestContext({ blockStack: [] });
+		const functionId = createFunctionId('doThing', []);
+		const context = createInstructionCompilerTestContext({
+			blockStack: [],
+			currentFunctionId: functionId,
+			currentFunctionName: 'doThing',
+			currentFunctionMetadata: {
+				id: functionId,
+				name: 'doThing',
+				signature: { parameters: [], returns: [] },
+				wasmIndex: 0,
+			},
+			currentFunctionParameterCount: 0,
+			functionTypeRegistry: {
+				baseTypeIndex: 0,
+				signatures: [],
+				types: [],
+			} as FunctionTypeRegistry,
+		});
 
 		analyzeAndCompileInstruction(
 			_function,
@@ -23,6 +41,7 @@ describe('function instruction compiler', () => {
 		expect({
 			blockStack: context.blockStack,
 			currentFunctionId: context.currentFunctionId,
+			currentFunctionName: context.currentFunctionName,
 			currentFunctionParameterCount: context.currentFunctionParameterCount,
 			mode: context.mode,
 			locals: context.locals,

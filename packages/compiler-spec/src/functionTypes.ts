@@ -41,3 +41,34 @@ export interface FunctionImportMetadata {
 	moduleName: string;
 	fieldName: string;
 }
+
+/**
+ * Encodes a language-level function value type for use in generated function ids.
+ *
+ * @param type - Function value type to encode.
+ * @returns Identifier-safe type fragment.
+ */
+export function encodeFunctionValueType(type: FunctionValueType): string {
+	return type.replace(/\*+/g, pointerSuffix => '_p'.repeat(pointerSuffix.length));
+}
+
+/**
+ * Creates the parameter-signature portion of a generated function id.
+ *
+ * @param parameters - Function parameter types in source order.
+ * @returns Encoded parameter signature, or `void` for zero-parameter functions.
+ */
+export function createFunctionParameterSignatureKey(parameters: readonly FunctionValueType[]): string {
+	return parameters.length === 0 ? 'void' : parameters.map(encodeFunctionValueType).join('__');
+}
+
+/**
+ * Creates the canonical compiler id for a concrete function signature.
+ *
+ * @param name - Source-level function name.
+ * @param parameters - Function parameter types in source order.
+ * @returns Signature-derived compiler function id.
+ */
+export function createFunctionId(name: string, parameters: readonly FunctionValueType[]): string {
+	return `${name}__${createFunctionParameterSignatureKey(parameters)}`;
+}
