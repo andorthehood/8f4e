@@ -1,5 +1,18 @@
 # Conversion
 
+### asPointer
+
+The asPointer instruction attaches pointer type metadata to an integer address on the stack.
+It does not emit runtime bytecode; it tells the compiler which pointee type a raw address should be treated as for typed pointer parameters and dereferences.
+
+#### Examples
+
+```
+push &samples
+asPointer float*
+call readSample
+```
+
 ### castToFloat
 
 The castToFloat instruction takes an integer from the stack, converts it to a floating-point number, and then places the resulting value back onto the stack.

@@ -7,6 +7,7 @@ import {
 	type ResolvedPushShapeLine,
 } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
+import { getParamType } from '../paramShape';
 import { getPrototypeMemoryDeclarationId } from '../prototypeShapes';
 import { memoryStartAddressConst } from '../resolveCompileTimeArgument/addressConsts';
 
@@ -49,6 +50,9 @@ export default function normalizePushShape(line: PushShapeLine, context: Compila
 		...line,
 		shapeAddressPushes: prototype.memoryDeclarationLines.map(declarationLine =>
 			createAddressPushLine(line, getPrototypeMemoryDeclarationId(declarationLine, line, context), context)
+		),
+		shapePointerTypes: prototype.memoryDeclarationLines.map(declarationLine =>
+			getParamType(declarationLine, line, context)
 		),
 	};
 }

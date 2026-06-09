@@ -1,6 +1,7 @@
 import abs from './abs';
 import add from './add';
 import and from './and';
+import asPointer from './asPointer';
 import block from './block';
 import blockEnd from './blockEnd';
 import branch from './branch';
@@ -68,6 +69,7 @@ import xor from './xor';
 
 const instructions = {
 	and,
+	asPointer,
 	or,
 	load: load,
 	load8u: load,

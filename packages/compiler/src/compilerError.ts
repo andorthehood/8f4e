@@ -263,6 +263,18 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.AS_POINTER_REQUIRES_POINTER_TYPE:
+			return {
+				code,
+				message:
+					'asPointer requires a pointer function type' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Use a pointer type such as int*, float*, or float**. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.FUNCTION_SIGNATURE_OVERFLOW:
 			return {
 				code,

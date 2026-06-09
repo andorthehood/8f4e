@@ -82,10 +82,12 @@ int source 42
 int dest
 
 push &source
+asPointer int*
 call readValue
 call assert 42
 
 push &dest
+asPointer int*
 push 77
 call writeValue
 push dest
