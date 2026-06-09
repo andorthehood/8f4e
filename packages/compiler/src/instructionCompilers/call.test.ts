@@ -1,4 +1,4 @@
-import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine, FunctionMetadata } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -6,6 +6,17 @@ import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } fr
 import call from './call';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
+
+function registerFunction(context: CompilationContext, targetFunction: FunctionMetadata): void {
+	context.namespace.functions = {
+		byId: {
+			[targetFunction.id]: targetFunction,
+		},
+		overloadsByName: {
+			[targetFunction.name]: [targetFunction],
+		},
+	};
+}
 
 describe('call instruction compiler', () => {
 	it('emits call bytecode and pushes returns', () => {
@@ -15,10 +26,8 @@ describe('call instruction compiler', () => {
 			name: 'foo',
 			signature: { parameters: ['int', 'float'], returns: ['int'] },
 			wasmIndex: 2,
-		} as NonNullable<CompilationContext['namespace']['functions']>[string];
-		context.namespace.functions = {
-			foo: targetFunction,
-		} as CompilationContext['namespace']['functions'];
+		} satisfies FunctionMetadata;
+		registerFunction(context, targetFunction);
 		context.stack.push(
 			{ kind: 'value', valueType: 'int', isNonZero: false },
 			{ kind: 'value', valueType: 'float', isNonZero: false }
@@ -48,10 +57,8 @@ describe('call instruction compiler', () => {
 			name: 'foo64',
 			signature: { parameters: ['float64'], returns: ['float64'] },
 			wasmIndex: 2,
-		} as NonNullable<CompilationContext['namespace']['functions']>[string];
-		context.namespace.functions = {
-			foo64: targetFunction,
-		} as CompilationContext['namespace']['functions'];
+		} satisfies FunctionMetadata;
+		registerFunction(context, targetFunction);
 		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: false });
 
 		analyzeAndCompileInstruction(
@@ -76,10 +83,8 @@ describe('call instruction compiler', () => {
 			name: 'foo',
 			signature: { parameters: ['int', 'float'], returns: ['int'] },
 			wasmIndex: 2,
-		} as NonNullable<CompilationContext['namespace']['functions']>[string];
-		context.namespace.functions = {
-			foo: targetFunction,
-		} as CompilationContext['namespace']['functions'];
+		} satisfies FunctionMetadata;
+		registerFunction(context, targetFunction);
 
 		analyzeAndCompileInstruction(
 			call,
@@ -121,10 +126,8 @@ describe('call instruction compiler', () => {
 			name: 'foo64',
 			signature: { parameters: ['float64'], returns: [] },
 			wasmIndex: 2,
-		} as NonNullable<CompilationContext['namespace']['functions']>[string];
-		context.namespace.functions = {
-			foo64: targetFunction,
-		} as CompilationContext['namespace']['functions'];
+		} satisfies FunctionMetadata;
+		registerFunction(context, targetFunction);
 		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
 		expect(() => {
@@ -148,10 +151,8 @@ describe('call instruction compiler', () => {
 			name: 'addr',
 			signature: { parameters: [], returns: ['float*'] },
 			wasmIndex: 2,
-		} as NonNullable<CompilationContext['namespace']['functions']>[string];
-		context.namespace.functions = {
-			addr: targetFunction,
-		} as CompilationContext['namespace']['functions'];
+		} satisfies FunctionMetadata;
+		registerFunction(context, targetFunction);
 
 		analyzeAndCompileInstruction(
 			call,
