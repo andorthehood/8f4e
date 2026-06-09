@@ -1,3 +1,4 @@
+import { createFunctionId } from '@8f4e/compiler-spec';
 import createStateManager from '@8f4e/state-manager';
 import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
@@ -99,10 +100,13 @@ describe('tooltip effect', () => {
 				y: 0,
 			},
 		});
+		const functionId = createFunctionId('helper', ['int', 'int']);
 		const state = createMockState({
 			compiler: {
 				compiledFunctions: {
-					helper: {
+					[functionId]: {
+						id: functionId,
+						name: 'helper',
 						stackAnalysis: [
 							{
 								lineNumber: 3,

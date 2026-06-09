@@ -1,4 +1,4 @@
-import type { CompiledFunction, ValidatedFunctionAST } from '@8f4e/compiler-spec';
+import { type CompiledFunction, createFunctionId, type ValidatedFunctionAST } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
 import type { DirectiveDerivedState } from '../features/directives/registry';
@@ -22,8 +22,10 @@ function createDirectiveState(): DirectiveDerivedState {
 }
 
 function createCompiledFunction(): CompiledFunction {
+	const functionId = createFunctionId('foo', ['int*', 'float*']);
 	return {
-		id: 'foo',
+		id: functionId,
+		name: 'foo',
 		signature: { parameters: ['int*', 'float*'], returns: [] },
 		wasmIndex: 0,
 		typeIndex: 0,
@@ -71,7 +73,7 @@ describe('paramShape', () => {
 			},
 			compiler: {
 				compiledFunctions: {
-					foo: createCompiledFunction(),
+					[createFunctionId('foo', ['int*', 'float*'])]: createCompiledFunction(),
 				},
 			},
 		});
