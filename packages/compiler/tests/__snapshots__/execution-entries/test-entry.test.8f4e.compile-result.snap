@@ -1,7 +1,6 @@
 {
   "functionAst": {
-    "readFirst": {
-      "id": "readFirst",
+    "readFirst__int_p": {
       "lines": [
         {
           "arguments": [
@@ -61,12 +60,13 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "readFirst",
       "type": "function",
     },
   },
   "functionOverview": {
-    "readFirst": {
-      "id": "readFirst",
+    "readFirst__int_p": {
+      "id": "readFirst__int_p",
       "signature": {
         "parameters": [
           "int*",
@@ -321,7 +321,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "readFirst",
+      "readFirst__int_p",
     ],
     "compiledModules": [
       "productionEntryDoesNotRun",

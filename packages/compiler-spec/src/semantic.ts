@@ -31,8 +31,8 @@ import type {
 	UseLine,
 	ValidatedPrototypeAST,
 } from './ast';
-import type { FunctionMetadata, FunctionMetadataLookup, FunctionTypeRegistry } from './compiled';
-import type { FunctionImportMetadata } from './functionTypes';
+import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry } from './compiled';
+import type { FunctionImportMetadata, FunctionValueType } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type { ArrayDeclarationInstruction, DataStructure, MemoryMap } from './memory';
 
@@ -122,7 +122,7 @@ export interface Namespace {
 	consts: Consts;
 	moduleName: string | undefined;
 	namespaces: Namespaces;
-	functions?: FunctionMetadataLookup;
+	functions?: FunctionRegistry;
 	prototypeShapeIds: string[];
 }
 
@@ -172,6 +172,7 @@ export interface CompilationContext {
 	codeBlockType?: CompilerSourceBlockType;
 	projectBlockId?: number;
 	currentFunctionId?: string;
+	currentFunctionName?: string;
 	currentFunctionMetadata?: FunctionMetadata;
 	currentFunctionParameterCount?: number;
 	currentFunctionTypeIndex?: number;
@@ -209,6 +210,8 @@ export interface FunctionCompilationContext extends CompilationContext {
 	codeBlockType: 'function';
 	currentModuleNextWordOffset: number;
 	currentModuleWordAlignedSize: number;
+	currentFunctionId: string;
+	currentFunctionName: string;
 	currentFunctionMetadata: FunctionMetadata;
 	currentFunctionParameterCount: number;
 	currentFunctionTypeIndex?: number;
@@ -373,15 +376,23 @@ export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 };
 
-export type ResolvedCallLine = Omit<CallLine, 'arguments'> & {
+export type NormalizedCallLine = Omit<CallLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...PushArgument[]];
-	targetFunction: FunctionMetadata;
 	inlineArgumentPushes?: CodegenPushLine[];
+};
+
+export type ResolvedCallLine = NormalizedCallLine & {
+	targetFunction: FunctionMetadata;
+};
+
+export type PushShapeExpansion = {
+	pushLine: CodegenPushLine;
+	pointerType: FunctionValueType;
 };
 
 export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier];
-	shapeAddressPushes: CodegenPushLine[];
+	shapeExpansions: PushShapeExpansion[];
 };
 
 export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstLine
@@ -389,7 +400,7 @@ export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstL
 	: TLine extends DefaultLine
 		? NormalizedDefaultLine | DefaultLine
 		: TLine extends CallLine
-			? ResolvedCallLine | CallLine
+			? ResolvedCallLine | NormalizedCallLine | CallLine
 			: TLine extends MapLine
 				? NormalizedMapLine
 				: TLine extends LocalSetLine

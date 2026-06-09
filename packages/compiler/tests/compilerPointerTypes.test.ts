@@ -1,3 +1,4 @@
+import { createFunctionId } from '@8f4e/compiler-spec';
 import { describe, expect, test } from 'vitest';
 
 import { getExportedFunction, instantiateFixtureProgramSource } from './testUtils';
@@ -32,7 +33,8 @@ functionEnd int
 		getExportedFunction(fixture.instance.exports, 'main')();
 
 		expect(memory.getInt32(output, true)).toBe(255);
-		expect(fixture.compileResult.compiledFunctions!.readUnsignedByte.signature.parameters).toEqual(['int8u*']);
+		const functionId = createFunctionId('readUnsignedByte', ['int8u*']);
+		expect(fixture.compileResult.compiledFunctions![functionId].signature.parameters).toEqual(['int8u*']);
 	});
 
 	test('supports unsigned narrow pointer memory declarations', async () => {

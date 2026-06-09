@@ -59,7 +59,10 @@ export interface FunctionParamShapeExpansion {
 }
 
 export interface FunctionMetadata {
+	/** Canonical compiler identity for this concrete function. */
 	id: string;
+	/** Source-level callable name written by the user. */
+	name: string;
 	signature: FunctionSignature;
 	wasmIndex: number;
 	import?: FunctionImportMetadata;
@@ -67,6 +70,12 @@ export interface FunctionMetadata {
 }
 
 export type FunctionMetadataLookup = Record<string, FunctionMetadata>;
+
+/** Function metadata indexed by compiler id, plus source-name arity metadata for calls. */
+export interface FunctionRegistry {
+	byId: FunctionMetadataLookup;
+	arityByName: Record<string, number>;
+}
 
 /** Code generation output and metadata for a compiled function. */
 export interface CompiledFunction extends FunctionMetadata {

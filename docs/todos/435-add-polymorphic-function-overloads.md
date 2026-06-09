@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-29
 issue: null
-status: Open
-completed: null
+status: Done
+completed: 2026-06-09
 ---
 
 # TODO: Add polymorphic function overloads
@@ -55,7 +55,7 @@ Overload rules:
 - overload sets with the same `name` must all have the same positive arity.
 - zero-parameter function names can only have one implementation.
 - duplicate `name + parameter signature` is an error, even when return types differ.
-- exporting overloaded functions requires explicit unique export names.
+- overloaded functions cannot be exported yet; use a uniquely named wrapper function for exported entry points.
 - pointer overloads require pointer type metadata; unknown integer addresses must not guess a pointer overload.
 
 ## Anti-Patterns
@@ -67,6 +67,8 @@ Overload rules:
 - Do not special-case non-overloaded functions so they keep old ids; every function should follow the same id convention.
 
 ## Implementation Plan
+
+Implemented in PR #784.
 
 ### Step 1: Split source function name from unique function id
 - Add source-level function name metadata to `FunctionAST`, `FunctionMetadata`, and `CompiledFunction`.
@@ -92,17 +94,17 @@ Overload rules:
 - Keep function type registration and Wasm lowering working on concrete selected function metadata.
 - Ensure compiled function arrays, type sections, function sections, exports, and code sections use signature-derived ids consistently.
 
-### Step 5: Update export validation
-- Require explicit `#export <name>` for every function in an overload set.
-- Reject missing implicit export names for overloaded functions before Wasm export emission.
-- Continue rejecting duplicate export names and built-in export-name collisions.
+### Step 5: Reject overloaded function exports
+- Reject `#export` on any function that belongs to an overload set.
+- Continue rejecting duplicate export names and built-in export-name collisions for non-overloaded functions.
+- Document that exported entry points should use uniquely named wrapper functions when they need to call overloaded helpers.
 
 ### Step 6: Add tests and documentation
 - Add unit coverage for function id generation and type encoding.
 - Add parser/compiler tests for duplicate names with distinct signatures.
 - Add semantic tests for duplicate signatures, mismatched arity in overload sets, and zero-parameter overload rejection.
 - Add call resolution tests for scalar and pointer overloads.
-- Add export validation tests for overloaded functions.
+- Add export validation tests that overloaded functions cannot be exported.
 - Document the overload rules in compiler function docs.
 
 ## Validation Checkpoints
@@ -114,14 +116,14 @@ Overload rules:
 
 ## Success Criteria
 
-- [ ] Two functions with the same name and same positive arity but different parameter types compile and can be called by source name.
-- [ ] Generated compiled function ids include the encoded parameter signature for every function, including non-overloaded functions.
-- [ ] Zero-parameter functions use `__void` and cannot be overloaded.
-- [ ] Overload sets with mismatched arity are rejected.
-- [ ] Duplicate overload signatures are rejected even when return types differ.
-- [ ] Calls resolve only by exact stack operand type match.
-- [ ] Pointer overloads fail clearly when the stack operand lacks enough pointer type metadata.
-- [ ] Overloaded exported functions require explicit unique export names.
+- [x] Two functions with the same name and same positive arity but different parameter types compile and can be called by source name.
+- [x] Generated compiled function ids include the encoded parameter signature for every function, including non-overloaded functions.
+- [x] Zero-parameter functions use `__void` and cannot be overloaded.
+- [x] Overload sets with mismatched arity are rejected.
+- [x] Duplicate overload signatures are rejected even when return types differ.
+- [x] Calls resolve only by exact stack operand type match.
+- [x] Pointer overloads fail clearly when the stack operand lacks enough pointer type metadata.
+- [x] Overloaded functions cannot be exported directly.
 
 ## Affected Components
 
@@ -158,6 +160,6 @@ Overload rules:
   - exact-match overload resolution only
   - generated ids are visible in compile output
   - user code calls by source name
-  - explicit export names are required for overloaded functions
+  - overloaded functions cannot be exported directly
   - overload sets must share the same arity and have at least one parameter
   - functions are global

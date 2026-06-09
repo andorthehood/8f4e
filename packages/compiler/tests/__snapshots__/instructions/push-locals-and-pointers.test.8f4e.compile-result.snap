@@ -1,7 +1,6 @@
 {
   "functionAst": {
-    "doubleFloat64": {
-      "id": "doubleFloat64",
+    "doubleFloat64__float64": {
       "lines": [
         {
           "arguments": [
@@ -69,10 +68,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "doubleFloat64",
       "type": "function",
     },
-    "readFloatLocal": {
-      "id": "readFloatLocal",
+    "readFloatLocal__void": {
       "lines": [
         {
           "arguments": [
@@ -146,10 +145,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "readFloatLocal",
       "type": "function",
     },
-    "readIntLocal": {
-      "id": "readIntLocal",
+    "readIntLocal__void": {
       "lines": [
         {
           "arguments": [
@@ -223,10 +222,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "readIntLocal",
       "type": "function",
     },
-    "shadowValue": {
-      "id": "shadowValue",
+    "shadowValue__int": {
       "lines": [
         {
           "arguments": [
@@ -279,12 +278,13 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "shadowValue",
       "type": "function",
     },
   },
   "functionOverview": {
-    "doubleFloat64": {
-      "id": "doubleFloat64",
+    "doubleFloat64__float64": {
+      "id": "doubleFloat64__float64",
       "signature": {
         "parameters": [
           "float64",
@@ -294,8 +294,8 @@
         ],
       },
     },
-    "readFloatLocal": {
-      "id": "readFloatLocal",
+    "readFloatLocal__void": {
+      "id": "readFloatLocal__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -303,8 +303,8 @@
         ],
       },
     },
-    "readIntLocal": {
-      "id": "readIntLocal",
+    "readIntLocal__void": {
+      "id": "readIntLocal__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -312,8 +312,8 @@
         ],
       },
     },
-    "shadowValue": {
-      "id": "shadowValue",
+    "shadowValue__int": {
+      "id": "shadowValue__int",
       "signature": {
         "parameters": [
           "int",
@@ -487,18 +487,23 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isEndAddress": false,
               "referenceKind": "memory-reference",
               "scope": "local",
               "targetMemoryId": "value",
               "type": "identifier",
               "value": "&value",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
             },
           ],
           "instruction": "call",
@@ -733,10 +738,10 @@
   },
   "overview": {
     "compiledFunctions": [
-      "doubleFloat64",
-      "readFloatLocal",
-      "readIntLocal",
-      "shadowValue",
+      "doubleFloat64__float64",
+      "readFloatLocal__void",
+      "readIntLocal__void",
+      "shadowValue__int",
     ],
     "compiledModules": [
       "localShadowMemoryAssertions",

@@ -1,4 +1,5 @@
-import type { CompilationContext, ResolvedPushShapeLine, Stack } from '@8f4e/compiler-spec';
+import type { CompilationContext, ResolvedPushShapeLine, Stack, StackAddress } from '@8f4e/compiler-spec';
+import { functionValueTypeToStackItem } from '../../utils/functionValueType';
 import { analyzePush } from './push';
 
 /**
@@ -9,5 +10,22 @@ import { analyzePush } from './push';
  * @returns The produced stack items.
  */
 export function analyzePushShape(line: ResolvedPushShapeLine, context: CompilationContext): Stack {
-	return line.shapeAddressPushes.flatMap(pushLine => analyzePush(pushLine, context));
+	const producedStack: Stack = [];
+
+	for (const { pushLine, pointerType } of line.shapeExpansions) {
+		const produced = analyzePush(pushLine, context) as StackAddress[];
+		const pointer = functionValueTypeToStackItem(pointerType) as StackAddress;
+
+		for (const item of produced) {
+			item.pointsTo = {
+				...pointer.pointsTo!,
+				memoryIndex: item.address.memoryIndex,
+				...(item.address.memoryRegionName ? { memoryRegionName: item.address.memoryRegionName } : {}),
+			};
+		}
+
+		producedStack.push(...produced);
+	}
+
+	return producedStack;
 }
