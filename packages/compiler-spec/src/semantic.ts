@@ -210,6 +210,8 @@ export interface FunctionCompilationContext extends CompilationContext {
 	codeBlockType: 'function';
 	currentModuleNextWordOffset: number;
 	currentModuleWordAlignedSize: number;
+	currentFunctionId: string;
+	currentFunctionName: string;
 	currentFunctionMetadata: FunctionMetadata;
 	currentFunctionParameterCount: number;
 	currentFunctionTypeIndex?: number;

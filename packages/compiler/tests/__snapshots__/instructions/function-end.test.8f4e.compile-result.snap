@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "addTwoForFunctionEnd__void": {
-      "id": "addTwoForFunctionEnd",
       "lines": [
         {
           "arguments": [
@@ -50,10 +49,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "addTwoForFunctionEnd",
       "type": "function",
     },
     "getDoubleForSignatureSnapshot__void": {
-      "id": "getDoubleForSignatureSnapshot",
       "lines": [
         {
           "arguments": [
@@ -89,10 +88,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getDoubleForSignatureSnapshot",
       "type": "function",
     },
     "getFunctionEndDouble__void": {
-      "id": "getFunctionEndDouble",
       "lines": [
         {
           "arguments": [
@@ -128,10 +127,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getFunctionEndDouble",
       "type": "function",
     },
     "getFunctionEndFortyTwo__void": {
-      "id": "getFunctionEndFortyTwo",
       "lines": [
         {
           "arguments": [
@@ -166,10 +165,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getFunctionEndFortyTwo",
       "type": "function",
     },
     "getFunctionEndPi__void": {
-      "id": "getFunctionEndPi",
       "lines": [
         {
           "arguments": [
@@ -204,6 +203,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getFunctionEndPi",
       "type": "function",
     },
   },

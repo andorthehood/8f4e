@@ -10,7 +10,9 @@ import { analyzePush } from './push';
  * @returns The produced stack items.
  */
 export function analyzePushShape(line: ResolvedPushShapeLine, context: CompilationContext): Stack {
-	return line.shapeExpansions.flatMap(({ pushLine, pointerType }) => {
+	const producedStack: Stack = [];
+
+	for (const { pushLine, pointerType } of line.shapeExpansions) {
 		const produced = analyzePush(pushLine, context) as StackAddress[];
 		const pointer = functionValueTypeToStackItem(pointerType) as StackAddress;
 
@@ -22,6 +24,8 @@ export function analyzePushShape(line: ResolvedPushShapeLine, context: Compilati
 			};
 		}
 
-		return produced;
-	});
+		producedStack.push(...produced);
+	}
+
+	return producedStack;
 }

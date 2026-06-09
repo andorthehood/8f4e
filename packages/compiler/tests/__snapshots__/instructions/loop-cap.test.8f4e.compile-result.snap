@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "countWithFunctionLoopCap__void": {
-      "id": "countWithFunctionLoopCap",
       "lines": [
         {
           "arguments": [
@@ -109,6 +108,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "countWithFunctionLoopCap",
       "type": "function",
     },
   },

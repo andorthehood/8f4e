@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "addForExportSnapshot__int__int": {
-      "id": "addForExportSnapshot",
       "lines": [
         {
           "arguments": [
@@ -98,10 +97,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "addForExportSnapshot",
       "type": "function",
     },
     "multiplyExportedByOwnName__int__int": {
-      "id": "multiplyExportedByOwnName",
       "lines": [
         {
           "arguments": [
@@ -191,6 +190,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "multiplyExportedByOwnName",
       "type": "function",
     },
   },

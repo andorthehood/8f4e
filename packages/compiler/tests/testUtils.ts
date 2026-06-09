@@ -224,10 +224,21 @@ function serializeAst(ast: AST | undefined): Record<string, unknown> | undefined
 		return undefined;
 	}
 
-	return {
+	const sharedAst = {
 		type: ast.type,
-		id: ast.id,
 		lines: ast.lines.map(serializeAstLine),
+	};
+
+	if (ast.type === 'function') {
+		return {
+			...sharedAst,
+			name: ast.name,
+		};
+	}
+
+	return {
+		...sharedAst,
+		id: ast.id,
 	};
 }
 

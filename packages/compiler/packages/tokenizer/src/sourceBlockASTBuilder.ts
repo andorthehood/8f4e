@@ -27,7 +27,6 @@ type ModuleASTBuilder = {
 /** Accumulates function-specific metadata while the tokenizer builds a validated AST. */
 type FunctionASTBuilder = {
 	type: 'function';
-	id: string;
 	name: string;
 	functionLine: FunctionLine;
 	functionEndLine?: FunctionEndLine;
@@ -76,7 +75,6 @@ export function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockA
 		case 'function':
 			return {
 				type: 'function',
-				id: line.arguments[0].value,
 				name: line.arguments[0].value,
 				functionLine: line,
 			};
@@ -185,7 +183,6 @@ export function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlo
 
 			return {
 				type: 'function',
-				id: builder.id,
 				name: builder.name,
 				lines,
 				functionLine: builder.functionLine,

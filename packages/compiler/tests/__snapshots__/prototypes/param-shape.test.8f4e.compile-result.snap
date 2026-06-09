@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "orderedMixer__int__int_p__float_p__int": {
-      "id": "orderedMixer",
       "lines": [
         {
           "arguments": [
@@ -140,10 +139,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "orderedMixer",
       "type": "function",
     },
     "sumMixer__int_p__float_p": {
-      "id": "sumMixer",
       "lines": [
         {
           "arguments": [
@@ -218,6 +217,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "sumMixer",
       "type": "function",
     },
   },

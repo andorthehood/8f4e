@@ -1,7 +1,6 @@
 {
   "functionAst": {
     "addParamsWithLocal__int__int": {
-      "id": "addParamsWithLocal",
       "lines": [
         {
           "arguments": [
@@ -125,10 +124,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "addParamsWithLocal",
       "type": "function",
     },
     "addParams__int__int": {
-      "id": "addParams",
       "lines": [
         {
           "arguments": [
@@ -213,10 +212,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "addParams",
       "type": "function",
     },
     "calculateArea__int__int": {
-      "id": "calculateArea",
       "lines": [
         {
           "arguments": [
@@ -301,10 +300,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "calculateArea",
       "type": "function",
     },
     "mixedAll__int__float__float64": {
-      "id": "mixedAll",
       "lines": [
         {
           "arguments": [
@@ -429,10 +428,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "mixedAll",
       "type": "function",
     },
     "noParams__void": {
-      "id": "noParams",
       "lines": [
         {
           "arguments": [
@@ -467,10 +466,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "noParams",
       "type": "function",
     },
     "squareParam__int": {
-      "id": "squareParam",
       "lines": [
         {
           "arguments": [
@@ -538,10 +537,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "squareParam",
       "type": "function",
     },
     "subtractReverse__int__int": {
-      "id": "subtractReverse",
       "lines": [
         {
           "arguments": [
@@ -626,10 +625,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "subtractReverse",
       "type": "function",
     },
     "useFirst__int__int": {
-      "id": "useFirst",
       "lines": [
         {
           "arguments": [
@@ -713,6 +712,7 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "useFirst",
       "type": "function",
     },
   },
