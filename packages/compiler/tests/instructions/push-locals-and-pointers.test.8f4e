@@ -42,7 +42,6 @@ float** pptr &ptr
 
 push *pptr
 push &value
-asPointer float*
 call assert
 
 push **pptr

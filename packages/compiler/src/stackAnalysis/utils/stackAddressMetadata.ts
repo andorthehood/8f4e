@@ -35,6 +35,12 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 	const clampRange =
 		(operand1.kind === 'address' ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined) ??
 		(operand2.kind === 'address' ? (operand2.address.clampRange ?? operand2.address.safeRange) : undefined);
+	const pointsTo =
+		operand1.kind === 'address' && operand1.pointsTo
+			? operand1.pointsTo
+			: operand2.kind === 'address'
+				? operand2.pointsTo
+				: undefined;
 
 	return {
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
@@ -50,6 +56,7 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 						...(safeRange ? { safeRange } : {}),
 						...(clampRange ? { clampRange } : {}),
 					},
+					...(pointsTo ? { pointsTo } : {}),
 				}
 			: {}),
 	} as Partial<StackAddress>;
@@ -73,6 +80,7 @@ export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem)
 			: undefined;
 	const clampRange =
 		operand1.kind === 'address' ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined;
+	const pointsTo = operand1.kind === 'address' ? operand1.pointsTo : undefined;
 
 	return {
 		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
@@ -88,6 +96,7 @@ export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem)
 						...(safeRange ? { safeRange } : {}),
 						...(clampRange ? { clampRange } : {}),
 					},
+					...(pointsTo ? { pointsTo } : {}),
 				}
 			: {}),
 	} as Partial<StackAddress>;

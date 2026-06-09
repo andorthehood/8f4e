@@ -160,6 +160,83 @@ describe('call instruction compiler', () => {
 		expect(context.stack).toEqual([]);
 	});
 
+	it('resolves pointer overloads from known memory address literals', () => {
+		const context = createInstructionCompilerTestContext({
+			namespace: {
+				...createInstructionCompilerTestContext().namespace,
+				memory: {
+					previousTrigger: {
+						id: 'previousTrigger',
+						numberOfElements: 1,
+						elementWordSize: 4,
+						memoryIndex: 0,
+						wordAlignedAddress: 0,
+						wordAlignedSize: 1,
+						byteAddress: 0,
+						default: 0,
+						isInteger: true,
+						pointerDepth: 0,
+						isUnsigned: false,
+						type: 'int',
+					} as never,
+				},
+			},
+		});
+		const targetFunction = {
+			id: 'risingEdge__int__int_p',
+			name: 'risingEdge',
+			signature: { parameters: ['int', 'int*'], returns: [] },
+			wasmIndex: 2,
+		} satisfies FunctionMetadata;
+		registerFunction(context, targetFunction);
+
+		analyzeInstruction(
+			{
+				lineNumber: 1,
+				instruction: 'push',
+				arguments: [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }],
+			},
+			context
+		);
+		analyzeInstruction(
+			{
+				lineNumber: 2,
+				instruction: 'push',
+				arguments: [
+					{
+						type: ArgumentType.LITERAL,
+						value: 0,
+						isInteger: true,
+						address: {
+							memoryIndex: 0,
+							safeRange: {
+								source: 'memory-start',
+								memoryIndex: 0,
+								byteAddress: 0,
+								safeByteLength: 4,
+								memoryId: 'previousTrigger',
+							},
+						},
+					},
+				],
+			},
+			context
+		);
+
+		const analyzedLine = analyzeAndCompileCall(
+			{
+				lineNumber: 3,
+				instruction: 'call',
+				arguments: [classifyIdentifier('risingEdge')],
+			},
+			context
+		);
+
+		expect(analyzedLine.targetFunction).toBe(targetFunction);
+		expect(context.byteCode).toEqual([0x10, targetFunction.wasmIndex]);
+		expect(context.stack).toEqual([]);
+	});
+
 	it('emits inline argument pushes before the call', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {

@@ -317,9 +317,24 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": -1,
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "hasExplicitMemoryDefault": false,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "value",
+              "type": "identifier",
+              "value": "&value",
             },
           ],
           "instruction": "push",
@@ -327,13 +342,16 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int*",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
-          "instruction": "asPointer",
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
         },
         {
           "arguments": [
@@ -361,6 +379,19 @@
             },
           ],
           "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "value",
+              "type": "identifier",
+              "value": "&value",
+            },
+          ],
+          "instruction": "push",
         },
         {
           "arguments": [
@@ -373,15 +404,8 @@
           "instruction": "push",
         },
         {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int*",
-            },
-          ],
-          "instruction": "asPointer",
+          "arguments": [],
+          "instruction": "add",
         },
         {
           "arguments": [
@@ -413,6 +437,19 @@
         {
           "arguments": [
             {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "value",
+              "type": "identifier",
+              "value": "&value",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
               "isInteger": true,
               "type": "literal",
               "value": 2147483647,
@@ -421,15 +458,8 @@
           "instruction": "push",
         },
         {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int*",
-            },
-          ],
-          "instruction": "asPointer",
+          "arguments": [],
+          "instruction": "add",
         },
         {
           "arguments": [
@@ -474,7 +504,22 @@
       "memoryMap": {},
     },
     "guardedLocalPointerDereferenceAssertions": {
-      "memoryMap": {},
+      "memoryMap": {
+        "value": {
+          "byteAddress": 4,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "value",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
     },
   },
   "overview": {
@@ -486,7 +531,7 @@
       "guardedIntLoadAssertions",
       "guardedLocalPointerDereferenceAssertions",
     ],
-    "requiredMemoryBytes": 4,
+    "requiredMemoryBytes": 8,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
