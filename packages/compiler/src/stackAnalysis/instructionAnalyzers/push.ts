@@ -149,7 +149,7 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 				kindToStackItem(kind, {
 					isNonZero: false,
 					...(pointsTo ? { pointsTo } : {}),
-					address: getMemoryRegionFields(memoryItem.memoryIndex ?? 0, memoryItem.memoryRegionName),
+					...(pointsTo ? { address: getMemoryRegionFields(pointsTo.memoryIndex, pointsTo.memoryRegionName) } : {}),
 				}),
 			];
 		}

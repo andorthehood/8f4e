@@ -22,7 +22,7 @@ add
 functionEnd float64
 
 note
-; @pos -310 -6
+; @pos -310 -8
 
 ; This project runs a feedforward neural network
 ; in inference mode to classify hand-drawn digits.
@@ -36,6 +36,8 @@ note
 ; so the fixed-weight multiplies, sums, biases,
 ; sigmoid activations, and connections remain
 ; visible in the editor.
+
+; @config runtime WebWorkerRuntime
 noteEnd
 
 note

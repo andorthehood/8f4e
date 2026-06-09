@@ -427,7 +427,7 @@ describe('push instruction compiler', () => {
 				byteCode: [] as typeof context.byteCode,
 			};
 			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myInt', context.namespace.memory.myInt), contextInt);
-			expect(contextInt.stack[0]).toMatchObject({ kind: 'address', valueType: 'int' });
+			expect(contextInt.stack[0]).toMatchObject({ kind: 'value', valueType: 'int' });
 			expect(contextInt.byteCode).not.toContain(42);
 			expect(contextInt.byteCode).not.toContain(43);
 
@@ -452,6 +452,42 @@ describe('push instruction compiler', () => {
 			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), contextF64);
 			expect(contextF64.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 			expect(contextF64.byteCode).toContain(43); // F64_LOAD
+		});
+
+		it('tracks pointer metadata when pushing a pointer-typed memory identifier', () => {
+			const context = createInstructionCompilerTestContext({
+				namespace: {
+					...createInstructionCompilerTestContext().namespace,
+					memory: {
+						ptr: {
+							byteAddress: 0,
+							elementWordSize: 4,
+							isInteger: true,
+							pointeeBaseType: 'int',
+							pointerDepth: 1,
+							pointeeMemoryIndex: 2,
+							pointeeMemoryRegionName: 'slow',
+						} as unknown as MemoryMap[string],
+					},
+				},
+			});
+
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('ptr', context.namespace.memory.ptr), context);
+
+			expect(context.stack[0]).toMatchObject({
+				kind: 'address',
+				valueType: 'int',
+				address: {
+					memoryIndex: 2,
+					memoryRegionName: 'slow',
+				},
+				pointsTo: {
+					baseType: 'int',
+					memoryIndex: 2,
+					memoryRegionName: 'slow',
+					pointerDepth: 1,
+				},
+			});
 		});
 	});
 });
