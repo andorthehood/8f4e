@@ -17,7 +17,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
 import { compileModules } from './compileModules';
@@ -30,6 +30,7 @@ import {
 	collectNamespacesFromASTs,
 } from './semantic/buildNamespace';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
+import { getEffectiveFunctionMetadata } from './semantic/paramShape';
 
 /** Module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
@@ -317,7 +318,9 @@ export function compileSubProgram(
 	};
 
 	const compiledFunctions = astFunctions.map(ast => {
-		const functionMetadata = functionRegistry.overloadsByName[ast.name]?.[0];
+		const signatureMetadata = getEffectiveFunctionMetadata(ast, prototypeShapesById);
+		const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
+		const functionMetadata = functionRegistry.byId[functionId];
 		if (!functionMetadata) {
 			throw getError(ErrorCode.UNDEFINED_FUNCTION, ast.functionLine, {
 				codeBlockType: ast.type,

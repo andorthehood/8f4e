@@ -57,6 +57,8 @@ export const ErrorCode = {
 	MISSING_PROTOTYPE_ID: 63,
 	PARAM_SHAPE_UNSUPPORTED_POINTER_DEPTH: 64,
 	PUSH_SHAPE_REQUIRES_MODULE_SHAPE: 65,
+	DUPLICATE_FUNCTION_SIGNATURE: 66,
+	INVALID_FUNCTION_OVERLOAD_SET: 67,
 } as const;
 
 export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];
