@@ -1,21 +1,33 @@
-import type { CompilationContext, CompilerASTLine, FunctionMetadata } from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
+import type {
+	AnalyzedLine,
+	CompilationContext,
+	CompilerASTLine,
+	FunctionMetadata,
+	ResolvedCallLine,
+} from '@8f4e/compiler-spec';
+import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
+import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 import call from './call';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
-function registerFunction(context: CompilationContext, targetFunction: FunctionMetadata): void {
+function registerFunction(context: CompilationContext, ...targetFunctions: FunctionMetadata[]): void {
 	context.namespace.functions = {
-		byId: {
-			[targetFunction.id]: targetFunction,
-		},
-		overloadsByName: {
-			[targetFunction.name]: [targetFunction],
-		},
+		byId: Object.fromEntries(targetFunctions.map(targetFunction => [targetFunction.id, targetFunction])),
+		overloadsByName: targetFunctions.reduce<Record<string, FunctionMetadata[]>>((overloadsByName, targetFunction) => {
+			overloadsByName[targetFunction.name] = [...(overloadsByName[targetFunction.name] ?? []), targetFunction];
+			return overloadsByName;
+		}, {}),
 	};
+}
+
+function analyzeAndCompileCall(line: CompilerASTLine, context: CompilationContext): AnalyzedLine<ResolvedCallLine> {
+	const analyzedLine = analyzeInstruction(line, context) as AnalyzedLine<ResolvedCallLine>;
+	call(analyzedLine, context);
+	return analyzedLine;
 }
 
 describe('call instruction compiler', () => {
@@ -74,6 +86,73 @@ describe('call instruction compiler', () => {
 
 		expect(context.stack).toHaveLength(1);
 		expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
+	});
+
+	it('resolves scalar overloads from stack operand types', () => {
+		const context = createInstructionCompilerTestContext();
+		const intOverload = {
+			id: 'convert__int',
+			name: 'convert',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 2,
+		} satisfies FunctionMetadata;
+		const floatOverload = {
+			id: 'convert__float',
+			name: 'convert',
+			signature: { parameters: ['float'], returns: [] },
+			wasmIndex: 3,
+		} satisfies FunctionMetadata;
+		registerFunction(context, intOverload, floatOverload);
+		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
+
+		const analyzedLine = analyzeAndCompileCall(
+			{
+				lineNumber: 1,
+				instruction: 'call',
+				arguments: [classifyIdentifier('convert')],
+			},
+			context
+		);
+
+		expect(analyzedLine.targetFunction).toBe(floatOverload);
+		expect(context.byteCode).toEqual([0x10, floatOverload.wasmIndex]);
+		expect(context.stack).toEqual([]);
+	});
+
+	it('resolves pointer overloads from pointee metadata', () => {
+		const context = createInstructionCompilerTestContext();
+		const intOverload = {
+			id: 'wrap__int',
+			name: 'wrap',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 2,
+		} satisfies FunctionMetadata;
+		const pointerOverload = {
+			id: 'wrap__float_p',
+			name: 'wrap',
+			signature: { parameters: ['float*'], returns: [] },
+			wasmIndex: 3,
+		} satisfies FunctionMetadata;
+		registerFunction(context, intOverload, pointerOverload);
+		context.stack.push({
+			kind: 'address',
+			valueType: 'int',
+			address: { memoryIndex: 0 },
+			pointsTo: { baseType: 'float', memoryIndex: 0, pointerDepth: 1 },
+		});
+
+		const analyzedLine = analyzeAndCompileCall(
+			{
+				lineNumber: 1,
+				instruction: 'call',
+				arguments: [classifyIdentifier('wrap')],
+			},
+			context
+		);
+
+		expect(analyzedLine.targetFunction).toBe(pointerOverload);
+		expect(context.byteCode).toEqual([0x10, pointerOverload.wasmIndex]);
+		expect(context.stack).toEqual([]);
 	});
 
 	it('emits inline argument pushes before the call', () => {
@@ -142,6 +221,93 @@ describe('call instruction compiler', () => {
 				context
 			);
 		}).toThrowError();
+	});
+
+	it('throws when no overload matches the stack operands', () => {
+		const context = createInstructionCompilerTestContext();
+		const intOverload = {
+			id: 'convert__int',
+			name: 'convert',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 2,
+		} satisfies FunctionMetadata;
+		const floatOverload = {
+			id: 'convert__float',
+			name: 'convert',
+			signature: { parameters: ['float'], returns: [] },
+			wasmIndex: 3,
+		} satisfies FunctionMetadata;
+		registerFunction(context, intOverload, floatOverload);
+		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: false });
+
+		expect(() =>
+			analyzeInstruction(
+				{
+					lineNumber: 1,
+					instruction: 'call',
+					arguments: [classifyIdentifier('convert')],
+				},
+				context
+			)
+		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
+	});
+
+	it('throws when pointer overload resolution lacks pointee metadata', () => {
+		const context = createInstructionCompilerTestContext();
+		const floatPointerOverload = {
+			id: 'wrap__float_p',
+			name: 'wrap',
+			signature: { parameters: ['float*'], returns: [] },
+			wasmIndex: 2,
+		} satisfies FunctionMetadata;
+		const intPointerOverload = {
+			id: 'wrap__int_p',
+			name: 'wrap',
+			signature: { parameters: ['int*'], returns: [] },
+			wasmIndex: 3,
+		} satisfies FunctionMetadata;
+		registerFunction(context, floatPointerOverload, intPointerOverload);
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
+
+		expect(() =>
+			analyzeInstruction(
+				{
+					lineNumber: 1,
+					instruction: 'call',
+					arguments: [classifyIdentifier('wrap')],
+				},
+				context
+			)
+		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED}`);
+	});
+
+	it('throws when multiple overloads match the stack operands', () => {
+		const context = createInstructionCompilerTestContext();
+		const firstOverload = {
+			id: 'convert__int_a',
+			name: 'convert',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 2,
+		} satisfies FunctionMetadata;
+		const secondOverload = {
+			id: 'convert__int_b',
+			name: 'convert',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 3,
+		} satisfies FunctionMetadata;
+		registerFunction(context, firstOverload, secondOverload);
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
+
+		expect(() =>
+			analyzeInstruction(
+				{
+					lineNumber: 1,
+					instruction: 'call',
+					arguments: [classifyIdentifier('convert')],
+				},
+				context
+			)
+		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_AMBIGUOUS}`);
 	});
 
 	it('tracks pointer return types on the stack', () => {

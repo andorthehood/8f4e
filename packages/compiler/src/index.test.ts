@@ -294,29 +294,26 @@ describe('compile prototype validation', () => {
 		});
 	});
 
-	it('keeps overloaded calls unresolved until stack-based overload resolution is available', () => {
-		let thrownError: unknown;
-
-		try {
-			compile(
-				{
-					...emptyCompileInput,
-					entries: { main: [{ code: ['module main', 'push 1', 'call convert', 'moduleEnd'] }] },
-					functions: [
-						{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
-						{ code: ['function convert', 'param float value', 'push value', 'functionEnd float'] },
-					],
+	it('resolves overloaded calls by exact stack operand types', () => {
+		const result = compile(
+			{
+				...emptyCompileInput,
+				entries: {
+					main: [{ code: ['module main', 'push 1', 'call consume', 'push 1.5', 'call consume', 'moduleEnd'] }],
 				},
-				{ disableSharedMemory: true }
-			);
-		} catch (error) {
-			thrownError = error;
-		}
+				functions: [
+					{ code: ['function consume', 'param int value', 'functionEnd'] },
+					{ code: ['function consume', 'param float value', 'functionEnd'] },
+				],
+			},
+			{ disableSharedMemory: true }
+		);
 
-		expect(serializeDiagnostic(thrownError)).toMatchObject({
-			code: ErrorCode.UNDEFINED_FUNCTION,
-			line: expect.objectContaining({ instruction: 'call' }),
-		});
+		const intOverloadId = createFunctionId('consume', ['int']);
+		const floatOverloadId = createFunctionId('consume', ['float']);
+		expect(result.compiledFunctions![intOverloadId].wasmIndex).not.toBe(
+			result.compiledFunctions![floatOverloadId].wasmIndex
+		);
 	});
 
 	it('rejects duplicate function export names during semantic metadata collection', () => {
