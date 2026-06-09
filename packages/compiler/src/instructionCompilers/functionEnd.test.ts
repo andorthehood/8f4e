@@ -17,7 +17,12 @@ describe('functionEnd instruction compiler', () => {
 					expectedResultTypes: [],
 				},
 			],
-			currentFunctionMetadata: { id: 'test', signature: { parameters: ['int'], returns: ['int'] }, wasmIndex: 0 },
+			currentFunctionMetadata: {
+				id: 'test',
+				name: 'test',
+				signature: { parameters: ['int'], returns: ['int'] },
+				wasmIndex: 0,
+			},
 			currentFunctionParameterCount: 1,
 			functionTypeRegistry: {
 				baseTypeIndex: 0,
@@ -60,6 +65,7 @@ describe('functionEnd instruction compiler', () => {
 			],
 			currentFunctionMetadata: {
 				id: 'test',
+				name: 'test',
 				signature: { parameters: ['float64'], returns: ['float64'] },
 				wasmIndex: 0,
 			},
@@ -109,7 +115,12 @@ describe('functionEnd instruction compiler', () => {
 						expectedResultTypes: [],
 					},
 				],
-				currentFunctionMetadata: { id: 'test', signature: { parameters: ['int'], returns: ['int'] }, wasmIndex: 0 },
+				currentFunctionMetadata: {
+					id: 'test',
+					name: 'test',
+					signature: { parameters: ['int'], returns: ['int'] },
+					wasmIndex: 0,
+				},
 				currentFunctionParameterCount: 1,
 				functionTypeRegistry,
 			});

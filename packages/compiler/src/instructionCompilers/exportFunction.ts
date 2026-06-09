@@ -7,7 +7,7 @@ import { getError } from '../compilerError';
  * Marks the current function as a WebAssembly export.
  */
 const exportFunction: InstructionCompiler<ExportLine> = (line, context) => {
-	const exportName = line.arguments[0]?.value ?? context.currentFunctionId!;
+	const exportName = line.arguments[0]?.value ?? context.currentFunctionName ?? context.currentFunctionId!;
 
 	if (context.currentFunctionImport !== undefined) {
 		throw getError(ErrorCode.IMPORT_EXPORT_CONFLICT, line, context);

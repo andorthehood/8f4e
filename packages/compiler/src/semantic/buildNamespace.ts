@@ -79,6 +79,7 @@ export function collectFunctionMetadataFromAsts(
 
 	for (const ast of asts) {
 		const id = ast.id;
+		const name = ast.name;
 		if (seenFunctionIds.has(id)) {
 			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
 				identifier: id,
@@ -106,6 +107,7 @@ export function collectFunctionMetadataFromAsts(
 		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
 		result[id] = {
 			id,
+			name,
 			signature: functionMetadata.signature,
 			wasmIndex: importedFunction
 				? options.importedFunctionBaseIndex + importedFunctionIndex++

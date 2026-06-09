@@ -634,7 +634,7 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('does not throw for call when the target function is registered', () => {
-		const targetFunction = { id: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
+		const targetFunction = { id: 'knownFn', name: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
 		const context = {
 			namespace: {
 				memory: {},
@@ -660,7 +660,12 @@ describe('normalizeCompileTimeArguments', () => {
 	});
 
 	it('normalizes inline call arguments as push lines', () => {
-		const targetFunction = { id: 'knownFn', signature: { parameters: ['int'], returns: [] }, wasmIndex: 2 };
+		const targetFunction = {
+			id: 'knownFn',
+			name: 'knownFn',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 2,
+		};
 		const context = {
 			namespace: {
 				memory: {},

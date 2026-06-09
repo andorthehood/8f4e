@@ -106,6 +106,7 @@ function createEntryFunctionMetadata(
 			entryName,
 			{
 				id: entryName,
+				name: entryName,
 				signature: { parameters: [], returns: [] },
 				wasmIndex: importedFunctionCount + 1 + index,
 			} satisfies FunctionMetadata,

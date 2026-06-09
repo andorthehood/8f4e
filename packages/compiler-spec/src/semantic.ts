@@ -172,6 +172,7 @@ export interface CompilationContext {
 	codeBlockType?: CompilerSourceBlockType;
 	projectBlockId?: number;
 	currentFunctionId?: string;
+	currentFunctionName?: string;
 	currentFunctionMetadata?: FunctionMetadata;
 	currentFunctionParameterCount?: number;
 	currentFunctionTypeIndex?: number;

@@ -60,6 +60,7 @@ describe('compileToAST', () => {
 		expect(ast).toMatchObject({
 			type: 'function',
 			id: 'mix',
+			name: 'mix',
 			functionLine: { instruction: 'function' },
 			functionEndLine: { instruction: 'functionEnd' },
 			exportLine: { instruction: '#export' },
@@ -74,6 +75,7 @@ describe('compileToAST', () => {
 		expect(ast).toMatchObject({
 			type: 'function',
 			id: 'mix',
+			name: 'mix',
 		});
 		if (ast.type !== 'function') {
 			throw new Error('Expected function AST');
