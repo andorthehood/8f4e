@@ -251,18 +251,6 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED:
-			return {
-				code,
-				message:
-					'Function overload requires pointer metadata' +
-					(details?.identifier ? `: ${details.identifier}` : '') +
-					'. Integer operands without pointee metadata cannot select pointer overloads. (' +
-					code +
-					')',
-				line,
-				context,
-			};
 		case ErrorCode.AS_POINTER_REQUIRES_POINTER_TYPE:
 			return {
 				code,

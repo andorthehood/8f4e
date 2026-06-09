@@ -5,7 +5,7 @@ import type {
 	FunctionMetadata,
 	ResolvedCallLine,
 } from '@8f4e/compiler-spec';
-import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
+import { ArgumentType, createFunctionId, ErrorCode } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
 import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
@@ -16,7 +16,12 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 function registerFunction(context: CompilationContext, ...targetFunctions: FunctionMetadata[]): void {
 	context.namespace.functions = {
-		byId: Object.fromEntries(targetFunctions.map(targetFunction => [targetFunction.id, targetFunction])),
+		byId: Object.fromEntries(
+			targetFunctions.map(targetFunction => [
+				createFunctionId(targetFunction.name, targetFunction.signature.parameters),
+				targetFunction,
+			])
+		),
 		overloadsByName: targetFunctions.reduce<Record<string, FunctionMetadata[]>>((overloadsByName, targetFunction) => {
 			overloadsByName[targetFunction.name] = [...(overloadsByName[targetFunction.name] ?? []), targetFunction];
 			return overloadsByName;
@@ -252,7 +257,7 @@ describe('call instruction compiler', () => {
 		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
 	});
 
-	it('throws when pointer overload resolution lacks pointee metadata', () => {
+	it('throws no-match when raw integer operands do not match pointer overloads', () => {
 		const context = createInstructionCompilerTestContext();
 		const floatPointerOverload = {
 			id: 'wrap__float_p',
@@ -278,7 +283,7 @@ describe('call instruction compiler', () => {
 				},
 				context
 			)
-		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED}`);
+		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
 	});
 
 	it('tracks pointer return types on the stack', () => {

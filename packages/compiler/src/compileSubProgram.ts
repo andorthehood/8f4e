@@ -104,13 +104,14 @@ function createEntryFunctionMetadata(entryNames: readonly string[], importedFunc
 	const overloadsByName: FunctionRegistry['overloadsByName'] = {};
 
 	entryNames.forEach((entryName, index) => {
+		const parameters: FunctionMetadata['signature']['parameters'] = [];
 		const metadata: FunctionMetadata = {
-			id: entryName,
+			id: createFunctionId(entryName, parameters),
 			name: entryName,
-			signature: { parameters: [], returns: [] },
+			signature: { parameters, returns: [] },
 			wasmIndex: importedFunctionCount + 1 + index,
 		};
-		byId[entryName] = metadata;
+		byId[metadata.id] = metadata;
 		overloadsByName[entryName] = [metadata];
 	});
 
