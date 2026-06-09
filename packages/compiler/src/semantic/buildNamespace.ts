@@ -75,7 +75,7 @@ export function collectFunctionMetadataFromAsts(
 	options: FunctionMetadataCollectionOptions
 ): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
-	const overloadsByName: FunctionRegistry['overloadsByName'] = {};
+	const arityByName: FunctionRegistry['arityByName'] = {};
 	const overloadCountsByName = asts.reduce<Record<string, number>>((counts, ast) => {
 		counts[ast.name] = (counts[ast.name] ?? 0) + 1;
 		return counts;
@@ -101,11 +101,10 @@ export function collectFunctionMetadataFromAsts(
 			});
 		}
 
-		const existingOverloads = overloadsByName[name] ?? [];
-		if (existingOverloads.length > 0) {
-			const expectedArity = existingOverloads[0].signature.parameters.length;
-			const arity = functionMetadata.signature.parameters.length;
-			if (expectedArity === 0 || arity === 0 || expectedArity !== arity) {
+		const existingArity = arityByName[name];
+		const arity = functionMetadata.signature.parameters.length;
+		if (existingArity !== undefined) {
+			if (existingArity === 0 || arity === 0 || existingArity !== arity) {
 				throw getError(ErrorCode.INVALID_FUNCTION_OVERLOAD_SET, ast.functionLine, getAstDiagnosticContext(ast), {
 					identifier: name,
 				});
@@ -151,10 +150,10 @@ export function collectFunctionMetadataFromAsts(
 		};
 		seenFunctionIds.add(id);
 		byId[id] = metadata;
-		overloadsByName[name] = [...existingOverloads, metadata];
+		arityByName[name] = arity;
 	}
 
-	return { byId, overloadsByName };
+	return { byId, arityByName };
 }
 
 /**

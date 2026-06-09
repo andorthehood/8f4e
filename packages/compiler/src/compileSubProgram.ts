@@ -101,7 +101,7 @@ const RESERVED_EXPORT_NAMES = ['initDefaults'];
 /** Creates synthetic metadata for generated entry dispatcher functions. */
 function createEntryFunctionMetadata(entryNames: readonly string[], importedFunctionCount: number): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
-	const overloadsByName: FunctionRegistry['overloadsByName'] = {};
+	const arityByName: FunctionRegistry['arityByName'] = {};
 
 	entryNames.forEach((entryName, index) => {
 		const parameters: FunctionMetadata['signature']['parameters'] = [];
@@ -112,25 +112,23 @@ function createEntryFunctionMetadata(entryNames: readonly string[], importedFunc
 			wasmIndex: importedFunctionCount + 1 + index,
 		};
 		byId[metadata.id] = metadata;
-		overloadsByName[entryName] = [metadata];
+		arityByName[entryName] = parameters.length;
 	});
 
-	return { byId, overloadsByName };
+	return { byId, arityByName };
 }
 
-/** Merges function registries while preserving source-name overload arrays. */
+/** Merges function registries while preserving source-name arity metadata. */
 function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
-	const overloadsByName: FunctionRegistry['overloadsByName'] = {};
+	const arityByName: FunctionRegistry['arityByName'] = {};
 
 	for (const registry of registries) {
 		Object.assign(byId, registry.byId);
-		for (const [name, overloads] of Object.entries(registry.overloadsByName)) {
-			overloadsByName[name] = [...(overloadsByName[name] ?? []), ...overloads];
-		}
+		Object.assign(arityByName, registry.arityByName);
 	}
 
-	return { byId, overloadsByName };
+	return { byId, arityByName };
 }
 
 /** Calculates required byte size for each WebAssembly memory index. */
