@@ -151,6 +151,7 @@ push moduleEndPtr
 push &moduleEndPtr
 push sizeof(moduleEndPtr)
 add
+asPointer int*
 call assert
 moduleEnd
 entryEnd
