@@ -639,7 +639,7 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 	});
 
-	it('does not throw for call when the target function is registered', () => {
+	it('does not throw for call when the target function name is registered', () => {
 		const targetFunction = { id: 'knownFn', name: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
 		const context = {
 			namespace: {
@@ -660,13 +660,10 @@ describe('normalizeCompileTimeArguments', () => {
 			arguments: [classifyIdentifier('knownFn')],
 		};
 
-		expect(normalizeCompileTimeArguments(line, context)).toEqual({
-			...line,
-			targetFunction,
-		});
+		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 	});
 
-	it('resolves calls by source function name instead of compiler id', () => {
+	it('normalizes calls by source function name instead of compiler id', () => {
 		const targetFunction = {
 			id: 'knownFn__int',
 			name: 'knownFn',
@@ -692,10 +689,7 @@ describe('normalizeCompileTimeArguments', () => {
 			arguments: [classifyIdentifier('knownFn')],
 		};
 
-		expect(normalizeCompileTimeArguments(line, context)).toEqual({
-			...line,
-			targetFunction,
-		});
+		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 	});
 
 	it('normalizes inline call arguments as push lines', () => {
@@ -727,7 +721,6 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(normalizeCompileTimeArguments(line, context)).toEqual({
 			...line,
 			arguments: [classifyIdentifier('knownFn'), { type: ArgumentType.LITERAL, value: 8, isInteger: true }],
-			targetFunction,
 			inlineArgumentPushes: [
 				{
 					lineNumber: 1,

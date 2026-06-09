@@ -239,6 +239,42 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.FUNCTION_OVERLOAD_NO_MATCH:
+			return {
+				code,
+				message:
+					'No matching function overload' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Calls must exactly match one parameter signature. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.FUNCTION_OVERLOAD_AMBIGUOUS:
+			return {
+				code,
+				message:
+					'Ambiguous function overload' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Calls must resolve to exactly one parameter signature. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED:
+			return {
+				code,
+				message:
+					'Function overload requires pointer metadata' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Integer operands without pointee metadata cannot select pointer overloads. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.FUNCTION_SIGNATURE_OVERFLOW:
 			return {
 				code,
