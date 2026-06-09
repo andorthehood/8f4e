@@ -48,11 +48,9 @@ export default function normalizePushShape(line: PushShapeLine, context: Compila
 
 	return {
 		...line,
-		shapeAddressPushes: prototype.memoryDeclarationLines.map(declarationLine =>
-			createAddressPushLine(line, getPrototypeMemoryDeclarationId(declarationLine, line, context), context)
-		),
-		shapePointerTypes: prototype.memoryDeclarationLines.map(declarationLine =>
-			getParamType(declarationLine, line, context)
-		),
+		shapeExpansions: prototype.memoryDeclarationLines.map(declarationLine => ({
+			pushLine: createAddressPushLine(line, getPrototypeMemoryDeclarationId(declarationLine, line, context), context),
+			pointerType: getParamType(declarationLine, line, context),
+		})),
 	};
 }

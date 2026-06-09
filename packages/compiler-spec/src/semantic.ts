@@ -383,10 +383,14 @@ export type ResolvedCallLine = NormalizedCallLine & {
 	targetFunction: FunctionMetadata;
 };
 
+export type PushShapeExpansion = {
+	pushLine: CodegenPushLine;
+	pointerType: FunctionValueType;
+};
+
 export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier];
-	shapeAddressPushes: CodegenPushLine[];
-	shapePointerTypes: FunctionValueType[];
+	shapeExpansions: PushShapeExpansion[];
 };
 
 export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstLine

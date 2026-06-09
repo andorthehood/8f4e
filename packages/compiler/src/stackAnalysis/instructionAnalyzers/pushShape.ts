@@ -10,9 +10,9 @@ import { analyzePush } from './push';
  * @returns The produced stack items.
  */
 export function analyzePushShape(line: ResolvedPushShapeLine, context: CompilationContext): Stack {
-	return line.shapeAddressPushes.flatMap((pushLine, index) => {
+	return line.shapeExpansions.flatMap(({ pushLine, pointerType }) => {
 		const produced = analyzePush(pushLine, context) as StackAddress[];
-		const pointer = functionValueTypeToStackItem(line.shapePointerTypes[index]) as StackAddress;
+		const pointer = functionValueTypeToStackItem(pointerType) as StackAddress;
 
 		for (const item of produced) {
 			item.pointsTo = {
