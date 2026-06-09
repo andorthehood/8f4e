@@ -215,6 +215,54 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.DUPLICATE_FUNCTION_SIGNATURE:
+			return {
+				code,
+				message:
+					'Duplicate function overload signature' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Function overloads must have unique parameter signatures. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.INVALID_FUNCTION_OVERLOAD_SET:
+			return {
+				code,
+				message:
+					'Invalid function overload set' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Function overloads must have the same positive parameter count; zero-parameter functions cannot be overloaded. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.FUNCTION_OVERLOAD_NO_MATCH:
+			return {
+				code,
+				message:
+					'No matching function overload' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Calls must exactly match one parameter signature. (' +
+					code +
+					')',
+				line,
+				context,
+			};
+		case ErrorCode.OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED:
+			return {
+				code,
+				message:
+					'Overloaded functions cannot be exported yet' +
+					(details?.identifier ? `: ${details.identifier}` : '') +
+					'. Use a uniquely named wrapper function if this overload needs to be exported. (' +
+					code +
+					')',
+				line,
+				context,
+			};
 		case ErrorCode.FUNCTION_SIGNATURE_OVERFLOW:
 			return {
 				code,

@@ -1,6 +1,7 @@
 import type { CompiledStackAnalysisLine } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import { getCompiledFunctionForCodeBlock } from '../code-blocks/utils/getCompiledFunctionForCodeBlock';
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getSelectedLineTooltipContent } from './content';
 import { createEmptyTooltipState, getTooltipState } from './layout';
@@ -30,9 +31,8 @@ function getSelectedCodeBlockStackAnalysisLine(
 	}
 
 	if (selectedCodeBlock.blockType === 'function') {
-		return state.compiler.compiledFunctions?.[selectedCodeBlock.name]?.stackAnalysis?.find(
-			line => line.lineNumber === selectedCodeBlock.cursor.row
-		);
+		const compiledFunction = getCompiledFunctionForCodeBlock(selectedCodeBlock, state);
+		return compiledFunction?.stackAnalysis?.find(line => line.lineNumber === selectedCodeBlock.cursor.row);
 	}
 
 	return state.compiler.compiledModules[selectedCodeBlock.name]?.stackAnalysis?.find(

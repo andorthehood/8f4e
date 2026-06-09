@@ -610,12 +610,21 @@
           "instruction": "add",
         },
         {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
           "arguments": [
             {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
             },
           ],
           "instruction": "call",

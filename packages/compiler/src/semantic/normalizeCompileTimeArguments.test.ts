@@ -607,7 +607,13 @@ describe('normalizeCompileTimeArguments', () => {
 
 	it('throws UNDEFINED_FUNCTION for call with an undeclared function target', () => {
 		const context = {
-			namespace: { memory: {}, consts: {}, moduleName: 'test', namespaces: {}, functions: {} },
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+				functions: { byId: {}, arityByName: {} },
+			},
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -633,8 +639,8 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 	});
 
-	it('does not throw for call when the target function is registered', () => {
-		const targetFunction = { id: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
+	it('does not throw for call when the target function name is registered', () => {
+		const targetFunction = { id: 'knownFn', name: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
 		const context = {
 			namespace: {
 				memory: {},
@@ -642,7 +648,8 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
-					knownFn: targetFunction,
+					byId: { knownFn: targetFunction },
+					arityByName: { knownFn: 0 },
 				},
 			},
 			locals: {},
@@ -653,14 +660,45 @@ describe('normalizeCompileTimeArguments', () => {
 			arguments: [classifyIdentifier('knownFn')],
 		};
 
-		expect(normalizeCompileTimeArguments(line, context)).toEqual({
-			...line,
-			targetFunction,
-		});
+		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
+	});
+
+	it('normalizes calls by source function name instead of compiler id', () => {
+		const targetFunction = {
+			id: 'knownFn__int',
+			name: 'knownFn',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 2,
+		};
+		const context = {
+			namespace: {
+				memory: {},
+				consts: {},
+				moduleName: 'test',
+				namespaces: {},
+				functions: {
+					byId: { knownFn__int: targetFunction },
+					arityByName: { knownFn: 1 },
+				},
+			},
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: CompilerASTLine = {
+			lineNumber: 1,
+			instruction: 'call',
+			arguments: [classifyIdentifier('knownFn')],
+		};
+
+		expect(normalizeCompileTimeArguments(line, context)).toEqual(line);
 	});
 
 	it('normalizes inline call arguments as push lines', () => {
-		const targetFunction = { id: 'knownFn', signature: { parameters: ['int'], returns: [] }, wasmIndex: 2 };
+		const targetFunction = {
+			id: 'knownFn',
+			name: 'knownFn',
+			signature: { parameters: ['int'], returns: [] },
+			wasmIndex: 2,
+		};
 		const context = {
 			namespace: {
 				memory: {},
@@ -668,7 +706,8 @@ describe('normalizeCompileTimeArguments', () => {
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
-					knownFn: targetFunction,
+					byId: { knownFn: targetFunction },
+					arityByName: { knownFn: 1 },
 				},
 			},
 			locals: {},
@@ -682,7 +721,6 @@ describe('normalizeCompileTimeArguments', () => {
 		expect(normalizeCompileTimeArguments(line, context)).toEqual({
 			...line,
 			arguments: [classifyIdentifier('knownFn'), { type: ArgumentType.LITERAL, value: 8, isInteger: true }],
-			targetFunction,
 			inlineArgumentPushes: [
 				{
 					lineNumber: 1,

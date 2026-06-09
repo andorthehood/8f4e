@@ -1,7 +1,6 @@
 {
   "functionAst": {
-    "compute": {
-      "id": "compute",
+    "compute__void": {
       "lines": [
         {
           "arguments": [
@@ -47,10 +46,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "compute",
       "type": "function",
     },
-    "double": {
-      "id": "double",
+    "double__int": {
       "lines": [
         {
           "arguments": [
@@ -117,10 +116,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "double",
       "type": "function",
     },
-    "getDoublePI": {
-      "id": "getDoublePI",
+    "getDoublePI__void": {
       "lines": [
         {
           "arguments": [
@@ -171,10 +170,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getDoublePI",
       "type": "function",
     },
-    "getFortyTwo": {
-      "id": "getFortyTwo",
+    "getFortyTwo__void": {
       "lines": [
         {
           "arguments": [
@@ -209,10 +208,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getFortyTwo",
       "type": "function",
     },
-    "getThree": {
-      "id": "getThree",
+    "getThree__void": {
       "lines": [
         {
           "arguments": [
@@ -247,10 +246,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getThree",
       "type": "function",
     },
-    "getTwo": {
-      "id": "getTwo",
+    "getTwo__void": {
       "lines": [
         {
           "arguments": [
@@ -285,10 +284,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "getTwo",
       "type": "function",
     },
-    "identityFloat64": {
-      "id": "identityFloat64",
+    "identityFloat64__float64": {
       "lines": [
         {
           "arguments": [
@@ -341,10 +340,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "identityFloat64",
       "type": "function",
     },
-    "increment": {
-      "id": "increment",
+    "increment__int": {
       "lines": [
         {
           "arguments": [
@@ -411,10 +410,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "increment",
       "type": "function",
     },
-    "readScaledBlep": {
-      "id": "readScaledBlep",
+    "readScaledBlep__float_p__int__float": {
       "lines": [
         {
           "arguments": [
@@ -594,10 +593,10 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "readScaledBlep",
       "type": "function",
     },
-    "scaleInto": {
-      "id": "scaleInto",
+    "scaleInto__float_p__float_p__float": {
       "lines": [
         {
           "arguments": [
@@ -716,12 +715,13 @@
           "instruction": "functionEnd",
         },
       ],
+      "name": "scaleInto",
       "type": "function",
     },
   },
   "functionOverview": {
-    "compute": {
-      "id": "compute",
+    "compute__void": {
+      "id": "compute__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -729,8 +729,8 @@
         ],
       },
     },
-    "double": {
-      "id": "double",
+    "double__int": {
+      "id": "double__int",
       "signature": {
         "parameters": [
           "int",
@@ -740,8 +740,8 @@
         ],
       },
     },
-    "getDoublePI": {
-      "id": "getDoublePI",
+    "getDoublePI__void": {
+      "id": "getDoublePI__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -749,8 +749,8 @@
         ],
       },
     },
-    "getFortyTwo": {
-      "id": "getFortyTwo",
+    "getFortyTwo__void": {
+      "id": "getFortyTwo__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -758,8 +758,8 @@
         ],
       },
     },
-    "getThree": {
-      "id": "getThree",
+    "getThree__void": {
+      "id": "getThree__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -767,8 +767,8 @@
         ],
       },
     },
-    "getTwo": {
-      "id": "getTwo",
+    "getTwo__void": {
+      "id": "getTwo__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -776,8 +776,8 @@
         ],
       },
     },
-    "identityFloat64": {
-      "id": "identityFloat64",
+    "identityFloat64__float64": {
+      "id": "identityFloat64__float64",
       "signature": {
         "parameters": [
           "float64",
@@ -787,8 +787,8 @@
         ],
       },
     },
-    "increment": {
-      "id": "increment",
+    "increment__int": {
+      "id": "increment__int",
       "signature": {
         "parameters": [
           "int",
@@ -798,8 +798,8 @@
         ],
       },
     },
-    "readScaledBlep": {
-      "id": "readScaledBlep",
+    "readScaledBlep__float_p__int__float": {
+      "id": "readScaledBlep__float_p__int__float",
       "signature": {
         "parameters": [
           "float*",
@@ -811,8 +811,8 @@
         ],
       },
     },
-    "scaleInto": {
-      "id": "scaleInto",
+    "scaleInto__float_p__float_p__float": {
+      "id": "scaleInto__float_p__float_p__float",
       "signature": {
         "parameters": [
           "float*",
@@ -1576,16 +1576,16 @@
   },
   "overview": {
     "compiledFunctions": [
-      "compute",
-      "double",
-      "getDoublePI",
-      "getFortyTwo",
-      "getThree",
-      "getTwo",
-      "identityFloat64",
-      "increment",
-      "readScaledBlep",
-      "scaleInto",
+      "compute__void",
+      "double__int",
+      "getDoublePI__void",
+      "getFortyTwo__void",
+      "getThree__void",
+      "getTwo__void",
+      "identityFloat64__float64",
+      "increment__int",
+      "readScaledBlep__float_p__int__float",
+      "scaleInto__float_p__float_p__float",
     ],
     "compiledModules": [
       "callConstantFunction",

@@ -41,7 +41,8 @@ float* ptr &value
 float** pptr &ptr
 
 push *pptr
-call assert &value
+push &value
+call assert
 
 push **pptr
 call assertf 1.5

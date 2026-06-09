@@ -6,6 +6,7 @@ import type {
 	CompilerASTLine,
 	DataStructure,
 } from '@8f4e/compiler-spec';
+import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
 import type { ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
 import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
@@ -59,10 +60,16 @@ export interface FixtureProgramRunResult extends InstantiatedFixtureProgram {
 export const testRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const FLOAT_ASSERT_TOLERANCE = 0.001;
-const assertFunctionBlock: ProjectCodeBlock = {
-	id: -1,
-	code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
-};
+const assertFunctionBlocks: ProjectCodeBlock[] = [
+	{
+		id: -1,
+		code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
+	},
+	...POINTER_FUNCTION_TYPE_IDENTIFIERS.map((type, index) => ({
+		id: -4 - index,
+		code: ['function assert', '#import assert', `param ${type} received`, `param ${type} expected`, 'functionEnd'],
+	})),
+];
 const assertFloatFunctionBlock: ProjectCodeBlock = {
 	id: -2,
 	code: ['function assertf', '#import assertf', 'param float received', 'param float expected', 'functionEnd'],
@@ -71,7 +78,7 @@ const assertFloat64FunctionBlock: ProjectCodeBlock = {
 	id: -3,
 	code: ['function assertf64', '#import assertf64', 'param float64 received', 'param float64 expected', 'functionEnd'],
 };
-const injectedAssertionFunctionIds = new Set(['assert', 'assertf', 'assertf64']);
+const injectedAssertionFunctionNames = new Set(['assert', 'assertf', 'assertf64']);
 const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
 
 export function getTestMemoryRegions(source: string): string[] {
@@ -217,10 +224,21 @@ function serializeAst(ast: AST | undefined): Record<string, unknown> | undefined
 		return undefined;
 	}
 
-	return {
+	const sharedAst = {
 		type: ast.type,
-		id: ast.id,
 		lines: ast.lines.map(serializeAstLine),
+	};
+
+	if (ast.type === 'function') {
+		return {
+			...sharedAst,
+			name: ast.name,
+		};
+	}
+
+	return {
+		...sharedAst,
+		id: ast.id,
 	};
 }
 
@@ -256,7 +274,7 @@ function serializeCompiledFunctionOverview(func: CompiledFunction): Record<strin
 
 function getFixtureCompiledFunctions(result: CompileResult): Array<[string, CompiledFunction]> {
 	return Object.entries(result.compiledFunctions ?? {})
-		.filter(([id]) => !injectedAssertionFunctionIds.has(id))
+		.filter(([, func]) => !injectedAssertionFunctionNames.has(func.name))
 		.sort(([left], [right]) => left.localeCompare(right));
 }
 
@@ -306,7 +324,9 @@ export function compileFixtureProgramSource(
 	const codeBlocks = [
 		...project.codeBlocks,
 		...(options.extraCodeBlocks ?? []),
-		...(options.includeAssertions ? [assertFunctionBlock, assertFloatFunctionBlock, assertFloat64FunctionBlock] : []),
+		...(options.includeAssertions
+			? [...assertFunctionBlocks, assertFloatFunctionBlock, assertFloat64FunctionBlock]
+			: []),
 	];
 	const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
 		...project,
