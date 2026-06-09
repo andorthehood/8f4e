@@ -61,6 +61,7 @@ export const ErrorCode = {
 	INVALID_FUNCTION_OVERLOAD_SET: 67,
 	FUNCTION_OVERLOAD_NO_MATCH: 68,
 	FUNCTION_OVERLOAD_POINTER_METADATA_REQUIRED: 70,
+	AS_POINTER_REQUIRES_POINTER_TYPE: 71,
 } as const;
 
 export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];

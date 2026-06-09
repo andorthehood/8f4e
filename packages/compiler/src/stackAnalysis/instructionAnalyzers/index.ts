@@ -8,6 +8,7 @@ import type {
 	ResolvedPushShapeLine,
 } from '@8f4e/compiler-spec';
 import { getInstructionSpec } from '@8f4e/compiler-spec';
+import { analyzeAsPointer } from './asPointer';
 import { analyzeCall } from './call';
 import { analyzeExitIfTrue } from './controlFlow';
 import { analyzeFunctionEnd } from './functionEnd';
@@ -52,6 +53,8 @@ export function analyzeByInstruction(line: CompilerASTLine, context: Compilation
 				produced: analyzePushShape(line as ResolvedPushShapeLine, context),
 			};
 		}
+		case 'asPointer':
+			return analyzeAsPointer(line, context);
 		case 'add':
 			return analyzeAdd(line, context);
 		case 'sub':

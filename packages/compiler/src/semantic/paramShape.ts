@@ -1,4 +1,5 @@
 import {
+	type CompilerASTLine,
 	type CompilerDiagnosticContext,
 	ErrorCode,
 	FUNCTION_TYPE_IDENTIFIERS,
@@ -32,7 +33,11 @@ function getPointerDepth(type: string): number {
 	return 0;
 }
 
-function getParamType(line: MemoryDeclarationLine, paramShapeLine: ParamShapeLine, context: CompilerDiagnosticContext) {
+export function getParamType(
+	line: MemoryDeclarationLine,
+	sourceLine: CompilerASTLine,
+	context: CompilerDiagnosticContext
+) {
 	const declarationType = line.instruction.endsWith('[]') ? line.instruction.slice(0, -2) : line.instruction;
 	const normalizedType = declarationType === 'int32' ? 'int' : declarationType;
 	const pointerDepth = getPointerDepth(normalizedType);
@@ -41,13 +46,13 @@ function getParamType(line: MemoryDeclarationLine, paramShapeLine: ParamShapeLin
 	// Function value types currently stop at double pointers; paramShape would need one extra layer
 	// for every shaped declaration, so deeper prototype pointer declarations are rejected for now.
 	if (expandedPointerDepth > 2) {
-		throw getError(ErrorCode.PARAM_SHAPE_UNSUPPORTED_POINTER_DEPTH, paramShapeLine, context);
+		throw getError(ErrorCode.PARAM_SHAPE_UNSUPPORTED_POINTER_DEPTH, sourceLine, context);
 	}
 
 	const baseType = normalizedType.replace(/\*+$/, '');
 	const paramType = `${baseType}${'*'.repeat(expandedPointerDepth)}`;
 	if (!functionTypeIdentifiers.has(paramType)) {
-		throw getError(ErrorCode.PARAM_SHAPE_UNSUPPORTED_POINTER_DEPTH, paramShapeLine, context);
+		throw getError(ErrorCode.PARAM_SHAPE_UNSUPPORTED_POINTER_DEPTH, sourceLine, context);
 	}
 
 	return paramType as FunctionValueType;

@@ -76,6 +76,7 @@ push 1.0
 store
 
 push &lut
+asPointer float*
 push 0
 push delta
 call readScaledBlep
@@ -92,7 +93,9 @@ float output
 float gain 0.5
 
 push &output
+asPointer float*
 push &input
+asPointer float*
 push gain
 call scaleInto
 

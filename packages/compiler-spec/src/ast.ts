@@ -82,6 +82,7 @@ export type LocalSetLine = ASTLineBase<'localSet', [ArgumentIdentifier]>;
 export type FunctionLine = ASTLineBase<'function', [ArgumentIdentifier]>;
 export type FunctionEndLine = ASTLineBase<'functionEnd', ArgumentIdentifier[]>;
 export type CallLine = ASTLineBase<'call', [ArgumentIdentifier, ...PushArgument[]]>;
+export type AsPointerLine = ASTLineBase<'asPointer', [ArgumentIdentifier]>;
 export type ModuleLine = ASTLineBase<'module', [ArgumentIdentifier]>;
 export type ModuleEndLine = ASTLineBase<'moduleEnd', []>;
 export type ConstantsLine = ASTLineBase<'constants', [ArgumentIdentifier]>;
@@ -186,6 +187,7 @@ type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| FunctionLine
 	| FunctionEndLine
 	| CallLine
+	| AsPointerLine
 	| ModuleLine
 	| ModuleEndLine
 	| ConstantsLine

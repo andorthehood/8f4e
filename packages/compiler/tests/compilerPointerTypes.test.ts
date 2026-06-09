@@ -15,6 +15,7 @@ int output
 
 push &output
 push &bytes
+asPointer int8u*
 call readUnsignedByte
 store
 moduleEnd
