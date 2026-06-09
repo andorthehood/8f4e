@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "absInt": {
+    "absInt__int": {
       "id": "absInt",
       "lines": [
         {
@@ -125,7 +125,7 @@
       ],
       "type": "function",
     },
-    "addInts": {
+    "addInts__int__int": {
       "id": "addInts",
       "lines": [
         {
@@ -213,7 +213,7 @@
       ],
       "type": "function",
     },
-    "addWithLocal": {
+    "addWithLocal__int__int": {
       "id": "addWithLocal",
       "lines": [
         {
@@ -340,7 +340,7 @@
       ],
       "type": "function",
     },
-    "duplicateInt": {
+    "duplicateInt__int": {
       "id": "duplicateInt",
       "lines": [
         {
@@ -413,7 +413,7 @@
       ],
       "type": "function",
     },
-    "getPi": {
+    "getPi__void": {
       "id": "getPi",
       "lines": [
         {
@@ -468,7 +468,7 @@
       ],
       "type": "function",
     },
-    "getZero": {
+    "getZero__void": {
       "id": "getZero",
       "lines": [
         {
@@ -506,7 +506,7 @@
       ],
       "type": "function",
     },
-    "multiplyFloats": {
+    "multiplyFloats__float__float": {
       "id": "multiplyFloats",
       "lines": [
         {
@@ -594,7 +594,7 @@
       ],
       "type": "function",
     },
-    "multiplyMixed": {
+    "multiplyMixed__int__float": {
       "id": "multiplyMixed",
       "lines": [
         {
@@ -686,7 +686,7 @@
       ],
       "type": "function",
     },
-    "noop": {
+    "noop__void": {
       "id": "noop",
       "lines": [
         {
@@ -707,7 +707,7 @@
       ],
       "type": "function",
     },
-    "readValue": {
+    "readValue__int_p": {
       "id": "readValue",
       "lines": [
         {
@@ -772,7 +772,7 @@
       ],
       "type": "function",
     },
-    "square": {
+    "square__int": {
       "id": "square",
       "lines": [
         {
@@ -843,7 +843,7 @@
       ],
       "type": "function",
     },
-    "writeValue": {
+    "writeValue__int_p__int": {
       "id": "writeValue",
       "lines": [
         {
@@ -931,8 +931,8 @@
     },
   },
   "functionOverview": {
-    "absInt": {
-      "id": "absInt",
+    "absInt__int": {
+      "id": "absInt__int",
       "signature": {
         "parameters": [
           "int",
@@ -942,20 +942,8 @@
         ],
       },
     },
-    "addInts": {
-      "id": "addInts",
-      "signature": {
-        "parameters": [
-          "int",
-          "int",
-        ],
-        "returns": [
-          "int",
-        ],
-      },
-    },
-    "addWithLocal": {
-      "id": "addWithLocal",
+    "addInts__int__int": {
+      "id": "addInts__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -966,8 +954,20 @@
         ],
       },
     },
-    "duplicateInt": {
-      "id": "duplicateInt",
+    "addWithLocal__int__int": {
+      "id": "addWithLocal__int__int",
+      "signature": {
+        "parameters": [
+          "int",
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "duplicateInt__int": {
+      "id": "duplicateInt__int",
       "signature": {
         "parameters": [
           "int",
@@ -978,8 +978,8 @@
         ],
       },
     },
-    "getPi": {
-      "id": "getPi",
+    "getPi__void": {
+      "id": "getPi__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -987,8 +987,8 @@
         ],
       },
     },
-    "getZero": {
-      "id": "getZero",
+    "getZero__void": {
+      "id": "getZero__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -996,8 +996,8 @@
         ],
       },
     },
-    "multiplyFloats": {
-      "id": "multiplyFloats",
+    "multiplyFloats__float__float": {
+      "id": "multiplyFloats__float__float",
       "signature": {
         "parameters": [
           "float",
@@ -1008,8 +1008,8 @@
         ],
       },
     },
-    "multiplyMixed": {
-      "id": "multiplyMixed",
+    "multiplyMixed__int__float": {
+      "id": "multiplyMixed__int__float",
       "signature": {
         "parameters": [
           "int",
@@ -1020,15 +1020,15 @@
         ],
       },
     },
-    "noop": {
-      "id": "noop",
+    "noop__void": {
+      "id": "noop__void",
       "signature": {
         "parameters": [],
         "returns": [],
       },
     },
-    "readValue": {
-      "id": "readValue",
+    "readValue__int_p": {
+      "id": "readValue__int_p",
       "signature": {
         "parameters": [
           "int*",
@@ -1038,8 +1038,8 @@
         ],
       },
     },
-    "square": {
-      "id": "square",
+    "square__int": {
+      "id": "square__int",
       "signature": {
         "parameters": [
           "int",
@@ -1049,8 +1049,8 @@
         ],
       },
     },
-    "writeValue": {
-      "id": "writeValue",
+    "writeValue__int_p__int": {
+      "id": "writeValue__int_p__int",
       "signature": {
         "parameters": [
           "int*",
@@ -1859,18 +1859,18 @@
   },
   "overview": {
     "compiledFunctions": [
-      "absInt",
-      "addInts",
-      "addWithLocal",
-      "duplicateInt",
-      "getPi",
-      "getZero",
-      "multiplyFloats",
-      "multiplyMixed",
-      "noop",
-      "readValue",
-      "square",
-      "writeValue",
+      "absInt__int",
+      "addInts__int__int",
+      "addWithLocal__int__int",
+      "duplicateInt__int",
+      "getPi__void",
+      "getZero__void",
+      "multiplyFloats__float__float",
+      "multiplyMixed__int__float",
+      "noop__void",
+      "readValue__int_p",
+      "square__int",
+      "writeValue__int_p__int",
     ],
     "compiledModules": [
       "floatParameterFunctionAssertions",

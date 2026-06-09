@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "addTwoForFunctionEnd": {
+    "addTwoForFunctionEnd__void": {
       "id": "addTwoForFunctionEnd",
       "lines": [
         {
@@ -52,7 +52,7 @@
       ],
       "type": "function",
     },
-    "getDoubleForSignatureSnapshot": {
+    "getDoubleForSignatureSnapshot__void": {
       "id": "getDoubleForSignatureSnapshot",
       "lines": [
         {
@@ -91,7 +91,7 @@
       ],
       "type": "function",
     },
-    "getFunctionEndDouble": {
+    "getFunctionEndDouble__void": {
       "id": "getFunctionEndDouble",
       "lines": [
         {
@@ -130,7 +130,7 @@
       ],
       "type": "function",
     },
-    "getFunctionEndFortyTwo": {
+    "getFunctionEndFortyTwo__void": {
       "id": "getFunctionEndFortyTwo",
       "lines": [
         {
@@ -168,7 +168,7 @@
       ],
       "type": "function",
     },
-    "getFunctionEndPi": {
+    "getFunctionEndPi__void": {
       "id": "getFunctionEndPi",
       "lines": [
         {
@@ -208,8 +208,8 @@
     },
   },
   "functionOverview": {
-    "addTwoForFunctionEnd": {
-      "id": "addTwoForFunctionEnd",
+    "addTwoForFunctionEnd__void": {
+      "id": "addTwoForFunctionEnd__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -217,8 +217,8 @@
         ],
       },
     },
-    "getDoubleForSignatureSnapshot": {
-      "id": "getDoubleForSignatureSnapshot",
+    "getDoubleForSignatureSnapshot__void": {
+      "id": "getDoubleForSignatureSnapshot__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -226,8 +226,8 @@
         ],
       },
     },
-    "getFunctionEndDouble": {
-      "id": "getFunctionEndDouble",
+    "getFunctionEndDouble__void": {
+      "id": "getFunctionEndDouble__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -235,8 +235,8 @@
         ],
       },
     },
-    "getFunctionEndFortyTwo": {
-      "id": "getFunctionEndFortyTwo",
+    "getFunctionEndFortyTwo__void": {
+      "id": "getFunctionEndFortyTwo__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -244,8 +244,8 @@
         ],
       },
     },
-    "getFunctionEndPi": {
-      "id": "getFunctionEndPi",
+    "getFunctionEndPi__void": {
+      "id": "getFunctionEndPi__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -517,11 +517,11 @@
   },
   "overview": {
     "compiledFunctions": [
-      "addTwoForFunctionEnd",
-      "getDoubleForSignatureSnapshot",
-      "getFunctionEndDouble",
-      "getFunctionEndFortyTwo",
-      "getFunctionEndPi",
+      "addTwoForFunctionEnd__void",
+      "getDoubleForSignatureSnapshot__void",
+      "getFunctionEndDouble__void",
+      "getFunctionEndFortyTwo__void",
+      "getFunctionEndPi__void",
     ],
     "compiledModules": [
       "functionEndFloat64Return",

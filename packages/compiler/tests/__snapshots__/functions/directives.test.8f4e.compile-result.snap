@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "writeWithDirectivePrologue": {
+    "writeWithDirectivePrologue__int__int": {
       "id": "writeWithDirectivePrologue",
       "lines": [
         {
@@ -111,9 +111,9 @@
     },
   },
   "functionOverview": {
-    "writeWithDirectivePrologue": {
+    "writeWithDirectivePrologue__int__int": {
       "exportName": "writeWithDirectivePrologue",
-      "id": "writeWithDirectivePrologue",
+      "id": "writeWithDirectivePrologue__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -381,7 +381,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "writeWithDirectivePrologue",
+      "writeWithDirectivePrologue__int__int",
     ],
     "compiledModules": [
       "directiveAssertions",

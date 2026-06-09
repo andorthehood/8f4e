@@ -18,7 +18,11 @@ function getParamShapeLabelsByLineNumber(compiledFunction: CompiledFunction): Ma
 }
 
 function getCompiledFunction(graphicData: CodeBlockGraphicData, state: State): CompiledFunction | undefined {
-	return graphicData.name ? state.compiler.compiledFunctions?.[graphicData.name] : undefined;
+	if (!graphicData.name) {
+		return undefined;
+	}
+
+	return Object.values(state.compiler.compiledFunctions ?? {}).find(func => func.name === graphicData.name);
 }
 
 export default function paramShape(

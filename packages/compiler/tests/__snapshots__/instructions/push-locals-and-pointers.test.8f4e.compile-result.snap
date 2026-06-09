@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "doubleFloat64": {
+    "doubleFloat64__float64": {
       "id": "doubleFloat64",
       "lines": [
         {
@@ -71,7 +71,7 @@
       ],
       "type": "function",
     },
-    "readFloatLocal": {
+    "readFloatLocal__void": {
       "id": "readFloatLocal",
       "lines": [
         {
@@ -148,7 +148,7 @@
       ],
       "type": "function",
     },
-    "readIntLocal": {
+    "readIntLocal__void": {
       "id": "readIntLocal",
       "lines": [
         {
@@ -225,7 +225,7 @@
       ],
       "type": "function",
     },
-    "shadowValue": {
+    "shadowValue__int": {
       "id": "shadowValue",
       "lines": [
         {
@@ -283,8 +283,8 @@
     },
   },
   "functionOverview": {
-    "doubleFloat64": {
-      "id": "doubleFloat64",
+    "doubleFloat64__float64": {
+      "id": "doubleFloat64__float64",
       "signature": {
         "parameters": [
           "float64",
@@ -294,8 +294,8 @@
         ],
       },
     },
-    "readFloatLocal": {
-      "id": "readFloatLocal",
+    "readFloatLocal__void": {
+      "id": "readFloatLocal__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -303,8 +303,8 @@
         ],
       },
     },
-    "readIntLocal": {
-      "id": "readIntLocal",
+    "readIntLocal__void": {
+      "id": "readIntLocal__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -312,8 +312,8 @@
         ],
       },
     },
-    "shadowValue": {
-      "id": "shadowValue",
+    "shadowValue__int": {
+      "id": "shadowValue__int",
       "signature": {
         "parameters": [
           "int",
@@ -733,10 +733,10 @@
   },
   "overview": {
     "compiledFunctions": [
-      "doubleFloat64",
-      "readFloatLocal",
-      "readIntLocal",
-      "shadowValue",
+      "doubleFloat64__float64",
+      "readFloatLocal__void",
+      "readIntLocal__void",
+      "shadowValue__int",
     ],
     "compiledModules": [
       "localShadowMemoryAssertions",

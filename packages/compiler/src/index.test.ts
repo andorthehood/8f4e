@@ -1,4 +1,4 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { createFunctionId, ErrorCode } from '@8f4e/compiler-spec';
 import { SyntaxErrorCode } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 import compile, { serializeDiagnostic } from '.';
@@ -169,8 +169,9 @@ describe('compile prototype validation', () => {
 			{ disableSharedMemory: true }
 		);
 
-		expect(result.compiledFunctions!.double).toMatchObject({
-			id: 'double',
+		const functionId = createFunctionId('double', ['int']);
+		expect(result.compiledFunctions![functionId]).toMatchObject({
+			id: functionId,
 			name: 'double',
 			ast: {
 				id: 'double',
