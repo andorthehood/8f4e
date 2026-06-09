@@ -71,7 +71,7 @@ const assertFloat64FunctionBlock: ProjectCodeBlock = {
 	id: -3,
 	code: ['function assertf64', '#import assertf64', 'param float64 received', 'param float64 expected', 'functionEnd'],
 };
-const injectedAssertionFunctionIds = new Set(['assert', 'assertf', 'assertf64']);
+const injectedAssertionFunctionNames = new Set(['assert', 'assertf', 'assertf64']);
 const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
 
 export function getTestMemoryRegions(source: string): string[] {
@@ -256,7 +256,7 @@ function serializeCompiledFunctionOverview(func: CompiledFunction): Record<strin
 
 function getFixtureCompiledFunctions(result: CompileResult): Array<[string, CompiledFunction]> {
 	return Object.entries(result.compiledFunctions ?? {})
-		.filter(([id]) => !injectedAssertionFunctionIds.has(id))
+		.filter(([, func]) => !injectedAssertionFunctionNames.has(func.name))
 		.sort(([left], [right]) => left.localeCompare(right));
 }
 

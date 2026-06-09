@@ -316,9 +316,16 @@ export function compileSubProgram(
 		baseTypeIndex: 3,
 	};
 
-	const compiledFunctions = astFunctions.map(ast =>
-		compileFunction(ast, namespaces, functionTypeRegistry, functionRegistry.byId[ast.id], functionRegistry, options)
-	);
+	const compiledFunctions = astFunctions.map(ast => {
+		const functionMetadata = functionRegistry.overloadsByName[ast.name]?.[0];
+		if (!functionMetadata) {
+			throw getError(ErrorCode.UNDEFINED_FUNCTION, ast.functionLine, {
+				codeBlockType: ast.type,
+				...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
+			});
+		}
+		return compileFunction(ast, namespaces, functionTypeRegistry, functionMetadata, functionRegistry, options);
+	});
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));

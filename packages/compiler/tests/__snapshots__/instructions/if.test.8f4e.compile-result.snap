@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "packTriple": {
+    "packTriple__int__int__int": {
       "id": "packTriple",
       "lines": [
         {
@@ -150,8 +150,8 @@
     },
   },
   "functionOverview": {
-    "packTriple": {
-      "id": "packTriple",
+    "packTriple__int__int__int": {
+      "id": "packTriple__int__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -1113,7 +1113,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "packTriple",
+      "packTriple__int__int__int",
     ],
     "compiledModules": [
       "ifFloatAssertions",

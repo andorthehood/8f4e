@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "countWithFunctionLoopCap": {
+    "countWithFunctionLoopCap__void": {
       "id": "countWithFunctionLoopCap",
       "lines": [
         {
@@ -113,8 +113,8 @@
     },
   },
   "functionOverview": {
-    "countWithFunctionLoopCap": {
-      "id": "countWithFunctionLoopCap",
+    "countWithFunctionLoopCap__void": {
+      "id": "countWithFunctionLoopCap__void",
       "signature": {
         "parameters": [],
         "returns": [
@@ -1390,7 +1390,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "countWithFunctionLoopCap",
+      "countWithFunctionLoopCap__void",
     ],
     "compiledModules": [
       "constantLoopCapAssertions",

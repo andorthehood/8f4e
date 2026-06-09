@@ -14,7 +14,7 @@ const _function = ((line: FunctionLine, context: CodegenContext) => {
 
 	context.currentFunctionId = functionId;
 	context.currentFunctionName = functionName;
-	context.codeBlockId = functionId;
+	context.codeBlockId = functionName;
 	context.codeBlockType = functionBlockType;
 	context.currentFunctionParameterCount = 0;
 	context.currentFunctionIsImpure = false;

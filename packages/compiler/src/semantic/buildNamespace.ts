@@ -5,6 +5,7 @@ import {
 	type CompilerASTLine,
 	type CompilerDiagnosticContext,
 	compilerSourceBlockInstructionByType,
+	createFunctionId,
 	ErrorCode,
 	type FunctionMetadata,
 	type FunctionMetadataLookup,
@@ -82,20 +83,21 @@ export function collectFunctionMetadataFromAsts(
 	let definedFunctionIndex = 0;
 
 	for (const ast of asts) {
-		const id = ast.id;
 		const name = ast.name;
-		if (seenFunctionIds.has(id)) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
-				identifier: id,
-			});
-		}
-		seenFunctionIds.add(id);
+		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
+		const id = createFunctionId(name, functionMetadata.signature.parameters);
 		if (seenFunctionNames.has(name)) {
 			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
 				identifier: name,
 			});
 		}
 		seenFunctionNames.add(name);
+		if (seenFunctionIds.has(id)) {
+			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
+				identifier: id,
+			});
+		}
+		seenFunctionIds.add(id);
 
 		const importedFunction = ast.import;
 		// Imported functions cannot be valid exports; keep that conflict in per-function directive validation.
@@ -114,7 +116,6 @@ export function collectFunctionMetadataFromAsts(
 			seenExportNames.add(exportName);
 		}
 
-		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
 		const metadata: FunctionMetadata = {
 			id,
 			name,
