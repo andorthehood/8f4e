@@ -612,7 +612,7 @@ describe('normalizeCompileTimeArguments', () => {
 				consts: {},
 				moduleName: 'test',
 				namespaces: {},
-				functions: { byId: {}, overloadsByName: {} },
+				functions: { byId: {}, arityByName: {} },
 			},
 			locals: {},
 		} as unknown as CompilationContext;
@@ -649,7 +649,7 @@ describe('normalizeCompileTimeArguments', () => {
 				namespaces: {},
 				functions: {
 					byId: { knownFn: targetFunction },
-					overloadsByName: { knownFn: [targetFunction] },
+					arityByName: { knownFn: 0 },
 				},
 			},
 			locals: {},
@@ -678,7 +678,7 @@ describe('normalizeCompileTimeArguments', () => {
 				namespaces: {},
 				functions: {
 					byId: { knownFn__int: targetFunction },
-					overloadsByName: { knownFn: [targetFunction] },
+					arityByName: { knownFn: 1 },
 				},
 			},
 			locals: {},
@@ -707,7 +707,7 @@ describe('normalizeCompileTimeArguments', () => {
 				namespaces: {},
 				functions: {
 					byId: { knownFn: targetFunction },
-					overloadsByName: { knownFn: [targetFunction] },
+					arityByName: { knownFn: 1 },
 				},
 			},
 			locals: {},
