@@ -30,6 +30,40 @@ Functions are reusable code blocks that:
 - Do not have direct access to module memory identifiers by name
 - Cannot declare their own memory
 
+### Overloads
+
+Functions may share the same source name when each version has a distinct parameter signature:
+
+```
+function convert
+param int value
+push value
+functionEnd int
+
+function convert
+param float value
+push value
+functionEnd float
+```
+
+Calls still use the source name:
+
+```
+push 12
+call convert
+
+push 1.5
+call convert
+```
+
+Overload resolution is an exact match against the stack operand types. Return types do not distinguish overloads, and scalar types are not implicitly converted.
+
+Overload sets must use the same positive arity. A zero-parameter function name can only have one implementation. Duplicate parameter signatures are rejected, even when the return types differ.
+
+Pointer overloads require pointer type metadata. Known addresses such as `push &samples` carry their pointee type, but raw integer addresses are treated as integers.
+
+Overloaded functions cannot be exported directly. Use a uniquely named wrapper function when a host-visible export needs to call an overloaded helper.
+
 ### `#impure`
 
 Use `#impure` inside a function to allow explicit memory reads and writes through addresses already on the stack or passed via params/locals.
@@ -77,6 +111,7 @@ Argument mapping:
 - `float64` maps to Wasm `f64` and a JavaScript `number`
 
 Export names must be unique and must not reuse built-in exports such as `initDefaults` or an execution entry name.
+Overloaded functions cannot use `#export`; export a uniquely named wrapper instead.
 Functions that read from or write to memory still need `#impure`.
 
 ### `#import`
