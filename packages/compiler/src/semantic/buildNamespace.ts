@@ -77,7 +77,7 @@ export function collectFunctionMetadataFromAsts(
 	const byId: FunctionMetadataLookup = {};
 	const overloadsByName: FunctionRegistry['overloadsByName'] = {};
 	const seenFunctionIds = new Set(options.reservedFunctionIds);
-	const seenFunctionNames = new Set(options.reservedFunctionIds);
+	const reservedFunctionNames = new Set(options.reservedFunctionIds);
 	const seenExportNames = new Set(options.reservedExportNames);
 	let importedFunctionIndex = 0;
 	let definedFunctionIndex = 0;
@@ -86,18 +86,27 @@ export function collectFunctionMetadataFromAsts(
 		const name = ast.name;
 		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
 		const id = createFunctionId(name, functionMetadata.signature.parameters);
-		if (seenFunctionNames.has(name)) {
+		if (reservedFunctionNames.has(name)) {
 			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
 				identifier: name,
 			});
 		}
-		seenFunctionNames.add(name);
 		if (seenFunctionIds.has(id)) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
+			throw getError(ErrorCode.DUPLICATE_FUNCTION_SIGNATURE, ast.functionLine, getAstDiagnosticContext(ast), {
 				identifier: id,
 			});
 		}
-		seenFunctionIds.add(id);
+
+		const existingOverloads = overloadsByName[name] ?? [];
+		if (existingOverloads.length > 0) {
+			const expectedArity = existingOverloads[0].signature.parameters.length;
+			const arity = functionMetadata.signature.parameters.length;
+			if (expectedArity === 0 || arity === 0 || expectedArity !== arity) {
+				throw getError(ErrorCode.INVALID_FUNCTION_OVERLOAD_SET, ast.functionLine, getAstDiagnosticContext(ast), {
+					identifier: name,
+				});
+			}
+		}
 
 		const importedFunction = ast.import;
 		// Imported functions cannot be valid exports; keep that conflict in per-function directive validation.
@@ -126,8 +135,9 @@ export function collectFunctionMetadataFromAsts(
 			...(importedFunction ? { import: importedFunction } : {}),
 			...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		};
+		seenFunctionIds.add(id);
 		byId[id] = metadata;
-		overloadsByName[name] = [metadata];
+		overloadsByName[name] = [...existingOverloads, metadata];
 	}
 
 	return { byId, overloadsByName };
