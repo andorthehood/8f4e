@@ -1,6 +1,10 @@
+import stdEventsHasChangedSource from './std/events/hasChanged.8f4e?raw';
+import stdEventsRisingEdgeSource from './std/events/risingEdge.8f4e?raw';
 import stdMathClampSource from './std/math/clamp.8f4e?raw';
 
 const builtInFunctionSources: Record<string, string> = {
+	'std/events/hasChanged': stdEventsHasChangedSource,
+	'std/events/risingEdge': stdEventsRisingEdgeSource,
 	'std/math/clamp': stdMathClampSource,
 };
 

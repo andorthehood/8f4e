@@ -1,0 +1,28 @@
+function risingEdge
+#impure
+param int currentValue
+param int* previousValue
+
+push currentValue
+push *previousValue
+greaterThan
+push previousValue
+push currentValue
+store
+
+functionEnd int
+
+function risingEdge
+#impure
+param float currentValue
+param float* previousValue
+
+push currentValue
+push previousValue
+loadFloat
+greaterThan
+push previousValue
+push currentValue
+store
+
+functionEnd int
