@@ -388,4 +388,17 @@ describe('compile prototype validation', () => {
 			line: expect.objectContaining({ instruction: '#export' }),
 		});
 	});
+
+	it('marks exported functions as used roots during metadata collection', () => {
+		const result = compile(
+			{
+				...emptyCompileInput,
+				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+				functions: [{ code: ['function externallyCallable', '#export externallyCallable', 'functionEnd'] }],
+			},
+			{ disableSharedMemory: true }
+		);
+
+		expect(result.compiledFunctions![createFunctionId('externallyCallable', [])].used).toBe(true);
+	});
 });
