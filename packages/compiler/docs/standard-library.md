@@ -12,6 +12,7 @@ Add an `includes` block near the top of the project, after the `8f4e/v1` header 
 
 includes
 include std/math/clamp
+include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
 include std/events/hasChanged
@@ -60,6 +61,33 @@ push 0.5
 push 1.0
 call clamp
 ; stack: 0.5
+moduleEnd
+entryEnd
+```
+
+## `std/bitwise/extractBit`
+
+Provides `extractBit`, which extracts one bit from a 32-bit integer.
+
+Available overloads:
+
+- `extractBit(int word, int bitIndex) -> int`
+
+`bitIndex` is `0..31`, where `0` is the least-significant bit. The result is `0` or `1`.
+
+Example:
+
+```8f4e
+includes
+include std/bitwise/extractBit
+includesEnd
+
+entry test
+module extractBitExample
+push 0b10100100
+push 2
+call extractBit
+; stack: 1
 moduleEnd
 entryEnd
 ```
