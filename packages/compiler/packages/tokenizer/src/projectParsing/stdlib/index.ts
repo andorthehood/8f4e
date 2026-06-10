@@ -1,22 +1,16 @@
-const builtInFunctionSources: Record<string, string[]> = {
-	'std/math/clamp': [
-		'function clamp',
-		'param float value',
-		'param float minValue',
-		'param float maxValue',
-		'',
-		'push value',
-		'push minValue',
-		'max',
-		'push maxValue',
-		'min',
-		'',
-		'functionEnd float',
-	],
+import stdMathClampSource from './std/math/clamp.8f4e?raw';
+
+const builtInFunctionSources: Record<string, string> = {
+	'std/math/clamp': stdMathClampSource,
 };
 
 function getFunctionName(line: string): string {
 	return line.trim().split(/\s+/)[1] ?? '';
+}
+
+function normalizeSourceLines(source: string): string[] {
+	const lines = source.replace(/\r\n?/g, '\n').split('\n');
+	return lines[lines.length - 1] === '' ? lines.slice(0, -1) : lines;
 }
 
 /**
@@ -31,12 +25,14 @@ export function resolveBuiltInFunctionInclude(includeId: string) {
 		return undefined;
 	}
 
+	const code = normalizeSourceLines(source);
+
 	return {
-		code: source,
+		code,
 		source: {
 			kind: 'include' as const,
 			includeId,
-			symbolName: getFunctionName(source[0] ?? ''),
+			symbolName: getFunctionName(code[0] ?? ''),
 		},
 	};
 }
