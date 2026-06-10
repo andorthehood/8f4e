@@ -67,6 +67,7 @@ export function analyzeCall(
 
 	const targetFunction = resolveTargetFunction(line, context);
 	(line as ResolvedCallLine).targetFunction = targetFunction;
+	targetFunction.used = true;
 	const { parameters, returns } = targetFunction.signature;
 
 	const consumed = consume(context, parameters.length);
