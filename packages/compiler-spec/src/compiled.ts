@@ -75,6 +75,8 @@ export type FunctionMetadataLookup = Record<string, FunctionMetadata>;
 export interface FunctionRegistry {
 	byId: FunctionMetadataLookup;
 	arityByName: Record<string, number>;
+	/** Concrete function overload ids resolved by analyzed call instructions. */
+	usedFunctionIds: Set<string>;
 }
 
 /** Code generation output and metadata for a compiled function. */

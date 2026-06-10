@@ -153,7 +153,7 @@ export function collectFunctionMetadataFromAsts(
 		arityByName[name] = arity;
 	}
 
-	return { byId, arityByName };
+	return { byId, arityByName, usedFunctionIds: new Set<string>() };
 }
 
 /**
