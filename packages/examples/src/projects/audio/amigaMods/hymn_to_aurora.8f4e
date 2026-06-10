@@ -1,5 +1,10 @@
 8f4e/v1
 
+includes
+include std/events/risingEdge
+include std/events/hasChanged
+includesEnd
+
 entry main
 module amigaTick
 ; @pos -157 -28
@@ -1987,21 +1992,6 @@ mapEnd int
 
 functionEnd int
 
-function hasChanged
-; @pos 415 -110
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push currentValue
-push *previousValue
-notEqual
-push previousValue
-push currentValue
-store
-functionEnd int
-
 note
 ; @pos 416 44
 ; @stop 9 10 right @hidden
@@ -2023,21 +2013,6 @@ note
 ; different speeds to change pitch.      ;;;;;
 ;                                        ;;;;;
 noteEnd
-
-function risingEdge
-; @pos 450 -110
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
-store
-functionEnd int
 
 function sampleNumberToRepeatOffset
 ; @pos 452 -163

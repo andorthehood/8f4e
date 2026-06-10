@@ -1,5 +1,10 @@
 8f4e/v1
 
+includes
+include std/events/risingEdge
+include std/events/hasChanged
+includesEnd
+
 entry main
 module modTickClock
 ; @pos -175 -28
@@ -2894,21 +2899,6 @@ push 0
 
 functionEnd int
 
-function hasChanged
-; @pos 609 -78
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push currentValue
-push *previousValue
-notEqual
-push previousValue
-push currentValue
-store
-functionEnd int
-
 function rowShouldReloadVolume
 ; @pos 643 -133
 use mod
@@ -2956,21 +2946,6 @@ push row
 call maskParamLo
 sub
 
-functionEnd int
-
-function risingEdge
-; @pos 643 -78
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
-store
 functionEnd int
 
 note fragmentShaderBackground
