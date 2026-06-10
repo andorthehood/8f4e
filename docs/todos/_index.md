@@ -73,6 +73,7 @@ Active todo files are listed below.
 | 449 | Add function paramShape instruction | 🟡 | 1-2d | 2026-06-08 | Let functions import a prototype-shaped pointer parameter list with `paramShape`, keeping prototypes memory-shape-only and behavior in normal functions. |
 | 450 | Generalize instruction placement config | 🟡 | 4-8h | 2026-06-08 | Make instruction placement metadata generic enough to express shared source-placement checks, starting with named prologue rules for directives and function parameters. |
 | 451 | Add pushShape instruction | 🟡 | 4-8h | 2026-06-08 | Add `pushShape <prototypeId>` so shaped modules can push effective memory addresses in prototype order and feed functions that use `paramShape`. |
+| 452 | Add Reachability-Based Function Pruning | 🟡 | 1-2d | 2026-06-10 | Replace conservative function pruning with a reachability pass so functions only called by uncalled functions are also omitted. |
 
 ### 🟢 Low Priority
 
