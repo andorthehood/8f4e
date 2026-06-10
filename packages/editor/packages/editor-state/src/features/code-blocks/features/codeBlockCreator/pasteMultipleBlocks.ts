@@ -2,7 +2,7 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import getCodeBlockId from '../../utils/getCodeBlockId';
+import getCodeBlockNameFromSource from '../../utils/getCodeBlockNameFromSource';
 import { renameInterModuleReferences } from '../../utils/renameInterModuleReferences';
 import type { ClipboardCodeBlock } from '../clipboard/clipboardUtils';
 import upsertPos from '../directives/pos/upsert';
@@ -108,7 +108,7 @@ export function pasteMultipleBlocks(
 	blocks.forEach((clipboardBlock, index) => {
 		const code = [...clipboardBlock.code];
 		const blockType = getBlockType(code);
-		const blockName = getCodeBlockId(code);
+		const blockName = getCodeBlockNameFromSource(code);
 		if (blockType === 'function' && blockName) {
 			originalNames.push({ type: 'function', name: blockName, index });
 		} else if (blockType === 'module' && blockName) {
@@ -152,7 +152,7 @@ export function pasteMultipleBlocks(
 
 		// Update module/function names to ensure uniqueness.
 		const blockType = getBlockType(code);
-		const originalName = getCodeBlockId(code);
+		const originalName = getCodeBlockNameFromSource(code);
 		const originalType = blockType === 'function' ? 'function' : blockType === 'module' ? 'module' : undefined;
 
 		if (originalName && originalType) {
@@ -200,7 +200,7 @@ export function pasteMultipleBlocks(
 
 		const codeBlock = createCodeBlockGraphicData({
 			code,
-			name: getCodeBlockId(code),
+			name: getCodeBlockNameFromSource(code),
 			gridX,
 			gridY,
 			x: gridX * state.viewport.vGrid,
