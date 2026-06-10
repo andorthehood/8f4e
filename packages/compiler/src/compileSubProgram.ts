@@ -118,20 +118,24 @@ function createEntryFunctionMetadata(entryNames: readonly string[], importedFunc
 		arityByName[entryName] = parameters.length;
 	});
 
-	return { byId, arityByName };
+	return { byId, arityByName, usedFunctionIds: new Set<string>() };
 }
 
 /** Merges function registries while preserving source-name arity metadata. */
 function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
 	const arityByName: FunctionRegistry['arityByName'] = {};
+	const usedFunctionIds = new Set<string>();
 
 	for (const registry of registries) {
 		Object.assign(byId, registry.byId);
 		Object.assign(arityByName, registry.arityByName);
+		for (const functionId of registry.usedFunctionIds) {
+			usedFunctionIds.add(functionId);
+		}
 	}
 
-	return { byId, arityByName };
+	return { byId, arityByName, usedFunctionIds };
 }
 
 /** Calculates required byte size for each WebAssembly memory index. */

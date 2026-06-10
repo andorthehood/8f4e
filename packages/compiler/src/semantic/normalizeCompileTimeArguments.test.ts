@@ -612,7 +612,7 @@ describe('normalizeCompileTimeArguments', () => {
 				consts: {},
 				moduleName: 'test',
 				namespaces: {},
-				functions: { byId: {}, arityByName: {} },
+				functions: { byId: {}, arityByName: {}, usedFunctionIds: new Set<string>() },
 			},
 			locals: {},
 		} as unknown as CompilationContext;
@@ -650,6 +650,7 @@ describe('normalizeCompileTimeArguments', () => {
 				functions: {
 					byId: { knownFn: targetFunction },
 					arityByName: { knownFn: 0 },
+					usedFunctionIds: new Set<string>(),
 				},
 			},
 			locals: {},
@@ -679,6 +680,7 @@ describe('normalizeCompileTimeArguments', () => {
 				functions: {
 					byId: { knownFn__int: targetFunction },
 					arityByName: { knownFn: 1 },
+					usedFunctionIds: new Set<string>(),
 				},
 			},
 			locals: {},
@@ -708,6 +710,7 @@ describe('normalizeCompileTimeArguments', () => {
 				functions: {
 					byId: { knownFn: targetFunction },
 					arityByName: { knownFn: 1 },
+					usedFunctionIds: new Set<string>(),
 				},
 			},
 			locals: {},
