@@ -21,6 +21,11 @@ describe('compile project includes', () => {
 				'',
 				'entry main',
 				'module main',
+				'push 7',
+				'push 0',
+				'push 5',
+				'call clamp',
+				'drop',
 				'push 2.5',
 				'push 0.0',
 				'push 1.0',
@@ -41,6 +46,9 @@ describe('compile project includes', () => {
 			{ disableSharedMemory: true }
 		);
 
+		expect(result.compiledFunctions[createFunctionId('clamp', ['int', 'int', 'int'])]).toMatchObject({
+			name: 'clamp',
+		});
 		expect(result.compiledFunctions[createFunctionId('clamp', ['float', 'float', 'float'])]).toMatchObject({
 			name: 'clamp',
 		});

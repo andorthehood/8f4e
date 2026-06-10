@@ -132,6 +132,27 @@ describe('parse8f4eProject', () => {
 			{
 				code: [
 					'function clamp',
+					'param int value',
+					'param int minValue',
+					'param int maxValue',
+					'',
+					'push value',
+					'push minValue',
+					'max',
+					'push maxValue',
+					'min',
+					'',
+					'functionEnd int',
+				],
+				source: {
+					kind: 'include',
+					includeId: 'std/math/clamp',
+					symbolName: 'clamp',
+				},
+			},
+			{
+				code: [
+					'function clamp',
 					'param float value',
 					'param float minValue',
 					'param float maxValue',

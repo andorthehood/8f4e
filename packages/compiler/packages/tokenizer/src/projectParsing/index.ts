@@ -2,7 +2,7 @@ import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
 import { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 import { getProjectBlockName, isProjectGapLine } from './projectLines';
-import { resolveBuiltInFunctionInclude } from './stdlib';
+import { resolveBuiltInFunctionIncludes } from './stdlib';
 import type { ProjectCodeBlock, ProjectCodeGroup, ProjectInput } from './types';
 
 export { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
@@ -121,12 +121,12 @@ export function parse8f4eProject(text: string): ProjectInput {
 				throw new Error(`Parse error at line ${i + 1}: include requires exactly one include id`);
 			}
 
-			const includedFunction = resolveBuiltInFunctionInclude(includeId);
-			if (!includedFunction) {
+			const includedFunctions = resolveBuiltInFunctionIncludes(includeId);
+			if (!includedFunctions) {
 				throw new Error(`Parse error at line ${i + 1}: unknown built-in function include "${includeId}"`);
 			}
 
-			includedFunctionBlocks.push(includedFunction);
+			includedFunctionBlocks.push(...includedFunctions);
 		}
 
 		throw new Error(`Parse error: unclosed block with opener "${INCLUDES_BLOCK_DELIMITER.opener}"`);
