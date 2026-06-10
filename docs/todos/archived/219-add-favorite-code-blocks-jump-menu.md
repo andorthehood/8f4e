@@ -131,7 +131,7 @@ Mitigations:
 
 - **Related**: `docs/todos/215-migrate-editor-directives-to-semicolon-comments-and-reserve-for-compiler-directives.md`
 - **Related**: `docs/todos/218-add-context-menu-skip-unskip-module-directive.md`
-- **Related**: `docs/todos/203-use-codeblock-id.md`
+- **Related**: `docs/todos/203-use-codeblock-name.md`
 
 ## Notes
 

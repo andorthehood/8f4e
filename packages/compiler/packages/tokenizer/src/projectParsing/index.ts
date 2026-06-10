@@ -139,15 +139,23 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 			throw new Error(`Parse error at line ${startIndex + 1}: expected includes opener`);
 		}
 
+		const currentBlockLines = [openerLine];
+
 		for (let i = startIndex + 1; i < lines.length; i += 1) {
 			const line = lines[i];
 			const trimmed = line.trim();
+			currentBlockLines.push(line);
+
 			if (isProjectGapLine(trimmed)) {
 				continue;
 			}
 
 			const closer = getProjectCloserKeyword(trimmed);
 			if (closer === INCLUDES_BLOCK_DELIMITER.closer) {
+				codeBlocks.push({
+					id: startIndex + 1,
+					code: currentBlockLines,
+				});
 				return i + 1;
 			}
 			if (closer) {
