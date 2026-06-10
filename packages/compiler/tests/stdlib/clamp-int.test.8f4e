@@ -1,0 +1,29 @@
+8f4e/v1
+
+includes
+include std/math/clamp
+includesEnd
+
+entry test
+module clampIntAssertions
+; it clamps integer values to
+; the provided inclusive range.
+push 7
+push 0
+push 5
+call clamp
+call assert 5
+
+push -2
+push 0
+push 5
+call clamp
+call assert 0
+
+push 3
+push 0
+push 5
+call clamp
+call assert 3
+moduleEnd
+entryEnd
