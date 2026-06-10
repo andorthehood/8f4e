@@ -145,6 +145,7 @@ export function collectFunctionMetadataFromAsts(
 			wasmIndex: importedFunction
 				? options.importedFunctionBaseIndex + importedFunctionIndex++
 				: options.definedFunctionBaseIndex + definedFunctionIndex++,
+			...(exportName ? { used: true } : {}),
 			...(importedFunction ? { import: importedFunction } : {}),
 			...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		};
