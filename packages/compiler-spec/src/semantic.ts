@@ -31,7 +31,7 @@ import type {
 	UseLine,
 	ValidatedPrototypeAST,
 } from './ast';
-import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry } from './compiled';
+import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMetadata } from './compiled';
 import type { FunctionImportMetadata, FunctionValueType } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type { ArrayDeclarationInstruction, DataStructure, MemoryMap } from './memory';
@@ -171,6 +171,7 @@ export interface CompilationContext {
 	codeBlockId?: string;
 	codeBlockType?: CompilerSourceBlockType;
 	projectBlockId?: number;
+	source?: SourceMetadata;
 	currentFunctionId?: string;
 	currentFunctionName?: string;
 	currentFunctionMetadata?: FunctionMetadata;

@@ -1,0 +1,24 @@
+{
+  "includes": [
+    {
+      "id": "std/bitwise/extractBit",
+      "path": "std/bitwise/extractBit.8f4e"
+    },
+    {
+      "id": "std/bitwise/extractByte",
+      "path": "std/bitwise/extractByte.8f4e"
+    },
+    {
+      "id": "std/events/hasChanged",
+      "path": "std/events/hasChanged.8f4e"
+    },
+    {
+      "id": "std/events/risingEdge",
+      "path": "std/events/risingEdge.8f4e"
+    },
+    {
+      "id": "std/math/clamp",
+      "path": "std/math/clamp.8f4e"
+    }
+  ]
+}

@@ -1,12 +1,13 @@
 import compile from '@8f4e/compiler';
 import type { CompiledModuleLookup, CompileOptions } from '@8f4e/compiler-spec';
 import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
-import type { ProjectCodeBlock } from '../shared/types';
+import type { ProjectCodeBlock, ProjectInput } from '../shared/types';
 
 interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
 	includeModules?: boolean;
 	includeWasm?: boolean;
+	includedFunctionBlocks?: ProjectInput['includedFunctionBlocks'];
 }
 
 interface CompileProjectModulesResult {
@@ -29,6 +30,7 @@ export default function compileProjectModules(
 	const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
 		codeBlocks: blocks,
 		groups: [],
+		includedFunctionBlocks: options.includedFunctionBlocks,
 	});
 
 	if (!hasModuleBlocks(entries) && constantsBlocks.length === 0) {

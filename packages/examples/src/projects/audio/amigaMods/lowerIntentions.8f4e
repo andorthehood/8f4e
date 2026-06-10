@@ -1,5 +1,10 @@
 8f4e/v1
 
+includes
+include std/events/risingEdge
+include std/events/hasChanged
+includesEnd
+
 entry main
 module tickClock
 ; @pos -175 -28
@@ -2475,21 +2480,6 @@ mapEnd float
 
 functionEnd float
 
-function risingEdge
-; @pos 459 -119
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
-store
-functionEnd int
-
 function sampleNumberToRepeatOffset
 ; @pos 491 -181
 ; @tab 8
@@ -2516,21 +2506,6 @@ map 17	S17_REPEAT_OFFSET
 default 2
 mapEnd int
 
-functionEnd int
-
-function hasChanged
-; @pos 493 -119
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push currentValue
-push *previousValue
-notEqual
-push previousValue
-push currentValue
-store
 functionEnd int
 
 function sampleNumberToVolume

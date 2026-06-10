@@ -1,34 +1,9 @@
 8f4e/v1
 
-function hasChanged
-; @pos -113 111
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push currentValue
-push *previousValue
-notEqual
-push previousValue
-push currentValue
-store
-functionEnd int
-
-function risingEdge
-; @pos -113 72
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
-store
-functionEnd int
+includes
+include std/events/risingEdge
+include std/events/hasChanged
+includesEnd
 
 note
 ; @pos -25 -1
