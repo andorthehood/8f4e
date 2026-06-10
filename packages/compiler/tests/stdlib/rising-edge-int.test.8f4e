@@ -1,0 +1,39 @@
+8f4e/v1
+
+includes
+include std/events/risingEdge
+includesEnd
+
+entry test
+module risingEdgeIntAssertions
+; it returns true when an
+; integer value rises above its
+; previous value and stores the
+; current value.
+int previousInt
+
+push 0
+call risingEdge &previousInt
+call assert 0
+push previousInt
+call assert 0
+
+push 1
+call risingEdge &previousInt
+call assert 1
+push previousInt
+call assert 1
+
+push 1
+call risingEdge &previousInt
+call assert 0
+
+push 0
+call risingEdge &previousInt
+call assert 0
+
+push 1
+call risingEdge &previousInt
+call assert 1
+moduleEnd
+entryEnd

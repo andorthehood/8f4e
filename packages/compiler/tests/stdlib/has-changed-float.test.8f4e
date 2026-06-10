@@ -1,0 +1,37 @@
+8f4e/v1
+
+includes
+include std/events/hasChanged
+includesEnd
+
+entry test
+module hasChangedFloatAssertions
+; it returns true when a float
+; value differs from its
+; previous value and stores the
+; current value.
+float previousFloat
+
+push 0.0
+call hasChanged &previousFloat
+call assert 0
+push previousFloat
+call assertf 0.0
+
+push 1.5
+call hasChanged &previousFloat
+call assert 1
+push previousFloat
+call assertf 1.5
+
+push 1.5
+call hasChanged &previousFloat
+call assert 0
+
+push -0.75
+call hasChanged &previousFloat
+call assert 1
+push previousFloat
+call assertf -0.75
+moduleEnd
+entryEnd

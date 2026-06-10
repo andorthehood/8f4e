@@ -1,5 +1,5 @@
 import { createFunctionId, ErrorCode } from '@8f4e/compiler-spec';
-import { parse8f4eProject, pickProjectCompilerBlocks, SyntaxErrorCode } from '@8f4e/tokenizer';
+import { SyntaxErrorCode } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 import compile, { serializeDiagnostic } from '.';
 
@@ -8,82 +8,6 @@ const emptyCompileInput = {
 	functions: [],
 	prototypes: [],
 };
-
-describe('compile project includes', () => {
-	it('compiles built-in function includes expanded by project parsing', () => {
-		const project = parse8f4eProject(
-			[
-				'8f4e/v1',
-				'',
-				'includes',
-				'include std/math/clamp',
-				'include std/events/risingEdge',
-				'include std/events/hasChanged',
-				'includesEnd',
-				'',
-				'entry main',
-				'module main',
-				'int previousEdge',
-				'int previousChanged',
-				'float previousFloatEdge',
-				'float previousFloatChanged',
-				'push 7',
-				'push 0',
-				'push 5',
-				'call clamp',
-				'drop',
-				'push 2.5',
-				'push 0.0',
-				'push 1.0',
-				'call clamp',
-				'drop',
-				'push 1',
-				'call risingEdge &previousEdge',
-				'drop',
-				'push 2',
-				'call hasChanged &previousChanged',
-				'drop',
-				'push 1.5',
-				'call risingEdge &previousFloatEdge',
-				'drop',
-				'push 2.5',
-				'call hasChanged &previousFloatChanged',
-				'drop',
-				'moduleEnd',
-				'entryEnd',
-			].join('\n')
-		);
-		const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks(project);
-		const result = compile(
-			{
-				entries,
-				constants: constantsBlocks,
-				functions: functionBlocks,
-				prototypes: prototypeBlocks,
-			},
-			{ disableSharedMemory: true }
-		);
-
-		expect(result.compiledFunctions[createFunctionId('clamp', ['int', 'int', 'int'])]).toMatchObject({
-			name: 'clamp',
-		});
-		expect(result.compiledFunctions[createFunctionId('clamp', ['float', 'float', 'float'])]).toMatchObject({
-			name: 'clamp',
-		});
-		expect(result.compiledFunctions[createFunctionId('risingEdge', ['int', 'int*'])]).toMatchObject({
-			name: 'risingEdge',
-		});
-		expect(result.compiledFunctions[createFunctionId('risingEdge', ['float', 'float*'])]).toMatchObject({
-			name: 'risingEdge',
-		});
-		expect(result.compiledFunctions[createFunctionId('hasChanged', ['int', 'int*'])]).toMatchObject({
-			name: 'hasChanged',
-		});
-		expect(result.compiledFunctions[createFunctionId('hasChanged', ['float', 'float*'])]).toMatchObject({
-			name: 'hasChanged',
-		});
-	});
-});
 
 describe('compile prototype validation', () => {
 	it('rejects prototype block markers inside module source', () => {
