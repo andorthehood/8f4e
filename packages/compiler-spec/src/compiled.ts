@@ -65,6 +65,8 @@ export interface FunctionMetadata {
 	name: string;
 	signature: FunctionSignature;
 	wasmIndex: number;
+	/** Whether a resolved call instruction has marked this concrete overload as used. */
+	used?: boolean;
 	import?: FunctionImportMetadata;
 	paramShapeExpansions?: FunctionParamShapeExpansion[];
 }

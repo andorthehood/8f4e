@@ -143,6 +143,7 @@ export function compileFunction(
 		wasmIndex: functionMetadata.wasmIndex,
 		typeIndex: completedContext.currentFunctionTypeIndex,
 		ast,
+		...(functionMetadata.used ? { used: true } : {}),
 		...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
 	};
