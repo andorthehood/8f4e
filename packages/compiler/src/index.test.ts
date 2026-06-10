@@ -17,10 +17,16 @@ describe('compile project includes', () => {
 				'',
 				'includes',
 				'include std/math/clamp',
+				'include std/events/risingEdge',
+				'include std/events/hasChanged',
 				'includesEnd',
 				'',
 				'entry main',
 				'module main',
+				'int previousEdge',
+				'int previousChanged',
+				'float previousFloatEdge',
+				'float previousFloatChanged',
 				'push 7',
 				'push 0',
 				'push 5',
@@ -30,6 +36,18 @@ describe('compile project includes', () => {
 				'push 0.0',
 				'push 1.0',
 				'call clamp',
+				'drop',
+				'push 1',
+				'call risingEdge &previousEdge',
+				'drop',
+				'push 2',
+				'call hasChanged &previousChanged',
+				'drop',
+				'push 1.5',
+				'call risingEdge &previousFloatEdge',
+				'drop',
+				'push 2.5',
+				'call hasChanged &previousFloatChanged',
 				'drop',
 				'moduleEnd',
 				'entryEnd',
@@ -51,6 +69,18 @@ describe('compile project includes', () => {
 		});
 		expect(result.compiledFunctions[createFunctionId('clamp', ['float', 'float', 'float'])]).toMatchObject({
 			name: 'clamp',
+		});
+		expect(result.compiledFunctions[createFunctionId('risingEdge', ['int', 'int*'])]).toMatchObject({
+			name: 'risingEdge',
+		});
+		expect(result.compiledFunctions[createFunctionId('risingEdge', ['float', 'float*'])]).toMatchObject({
+			name: 'risingEdge',
+		});
+		expect(result.compiledFunctions[createFunctionId('hasChanged', ['int', 'int*'])]).toMatchObject({
+			name: 'hasChanged',
+		});
+		expect(result.compiledFunctions[createFunctionId('hasChanged', ['float', 'float*'])]).toMatchObject({
+			name: 'hasChanged',
 		});
 	});
 });

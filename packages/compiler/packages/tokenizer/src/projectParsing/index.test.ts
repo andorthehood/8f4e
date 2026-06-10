@@ -119,6 +119,7 @@ describe('parse8f4eProject', () => {
 				'',
 				'includes',
 				'include std/math/clamp',
+				'include std/events/risingEdge',
 				'includesEnd',
 				'',
 				'entry main',
@@ -127,7 +128,7 @@ describe('parse8f4eProject', () => {
 			].join('\n')
 		);
 
-		expect(project.codeBlocks).toEqual([{ id: 8, code: validModuleBlock, entry: 'main' }]);
+		expect(project.codeBlocks).toEqual([{ id: 9, code: validModuleBlock, entry: 'main' }]);
 		expect(project.includedFunctionBlocks).toEqual([
 			{
 				code: [
@@ -169,6 +170,51 @@ describe('parse8f4eProject', () => {
 					kind: 'include',
 					includeId: 'std/math/clamp',
 					symbolName: 'clamp',
+				},
+			},
+			{
+				code: [
+					'function risingEdge',
+					'#impure',
+					'param int currentValue',
+					'param int* previousValue',
+					'',
+					'push currentValue',
+					'push *previousValue',
+					'greaterThan',
+					'push previousValue',
+					'push currentValue',
+					'store',
+					'',
+					'functionEnd int',
+				],
+				source: {
+					kind: 'include',
+					includeId: 'std/events/risingEdge',
+					symbolName: 'risingEdge',
+				},
+			},
+			{
+				code: [
+					'function risingEdge',
+					'#impure',
+					'param float currentValue',
+					'param float* previousValue',
+					'',
+					'push currentValue',
+					'push previousValue',
+					'loadFloat',
+					'greaterThan',
+					'push previousValue',
+					'push currentValue',
+					'store',
+					'',
+					'functionEnd int',
+				],
+				source: {
+					kind: 'include',
+					includeId: 'std/events/risingEdge',
+					symbolName: 'risingEdge',
 				},
 			},
 		]);
