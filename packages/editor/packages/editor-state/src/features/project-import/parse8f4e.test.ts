@@ -38,7 +38,13 @@ describe('parse8f4eToProject', () => {
 				'entry main',
 				...validBlock,
 				'entryEnd',
-			].join('\n')
+			].join('\n'),
+			{
+				resolveInclude: includeId =>
+					includeId === 'std/events/risingEdge'
+						? ['function risingEdge', 'functionEnd int', '', 'function risingEdge', 'functionEnd int'].join('\n')
+						: undefined,
+			}
 		);
 
 		expect(project.codeBlocks).toHaveLength(1);
