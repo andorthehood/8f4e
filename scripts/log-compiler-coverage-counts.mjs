@@ -2,9 +2,11 @@
 /* global console, process */
 
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import { Session } from 'node:inspector/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const workspaceRoot = process.cwd();
 const benchmarkDir = path.resolve(workspaceRoot, 'packages/examples/src/benchmarks/bytecode-size');
@@ -44,7 +46,9 @@ async function main() {
 		const parsedCases = [];
 		for (const benchmarkCase of benchmarkCases) {
 			const rawProject = await fs.readFile(benchmarkCase.filePath, 'utf8');
-			const project = parse8f4eProject(rawProject);
+			const project = parse8f4eProject(rawProject, {
+				resolveInclude: resolveStdlibInclude,
+			});
 			const compilerBlocks = pickProjectCompilerBlocks(project);
 			parsedCases.push({
 				...benchmarkCase,
@@ -105,6 +109,15 @@ async function main() {
 		await session.post('Profiler.stopPreciseCoverage').catch(() => {});
 		await session.post('Profiler.disable').catch(() => {});
 		session.disconnect();
+	}
+}
+
+function resolveStdlibInclude(includeId) {
+	try {
+		const url = import.meta.resolve(`@8f4e/stdlib/${includeId}.8f4e`);
+		return readFileSync(fileURLToPath(url), 'utf8');
+	} catch {
+		return undefined;
 	}
 }
 
