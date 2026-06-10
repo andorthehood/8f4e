@@ -1,6 +1,6 @@
 import type { CompileInput, CompilerDiagnostic, Module } from '@8f4e/compiler-spec';
 import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
-import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, InfoRecord, Project, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
@@ -28,10 +28,13 @@ function toCompilerModule(block: CodeBlockGraphicData): Module {
  *          and constants/functions/prototypes sorted by creationIndex.
  *          Config/shader/unknown blocks are excluded from the WASM compilation pipeline.
  */
-export function flattenProjectForCompiler(codeBlocks: CodeBlockGraphicData[]): CompileInput {
+export function flattenProjectForCompiler(
+	codeBlocks: CodeBlockGraphicData[],
+	includedFunctionBlocks: Project['includedFunctionBlocks'] = []
+): CompileInput {
 	const moduleEntries: Record<string, CodeBlockGraphicData[]> = {};
 	const constants: Module[] = [];
-	const functions: Module[] = [];
+	const functions: Module[] = [...includedFunctionBlocks];
 	const prototypes: Module[] = [];
 
 	const sortedEnabled = [...codeBlocks]
@@ -85,7 +88,10 @@ export default function compiler(store: StateManager<State>) {
 	async function onForceCompile() {
 		scheduleRecompile.cancel();
 
-		const compilerInput = flattenProjectForCompiler(state.codeBlockRendering.codeBlocks);
+		const compilerInput = flattenProjectForCompiler(
+			state.codeBlockRendering.codeBlocks,
+			state.initialProjectState?.includedFunctionBlocks
+		);
 		const compilationStart = performance.now();
 
 		store.set('compiler.isCompiling', true);

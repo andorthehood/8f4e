@@ -24,6 +24,7 @@ function serializeContext(context: CompilerStageError['context']): CompilerDiagn
 		...(context.codeBlockId !== undefined ? { codeBlockId: context.codeBlockId } : {}),
 		...(context.codeBlockType !== undefined ? { codeBlockType: context.codeBlockType } : {}),
 		...(context.projectBlockId !== undefined ? { projectBlockId: context.projectBlockId } : {}),
+		...(context.source !== undefined ? { source: context.source } : {}),
 	};
 }
 

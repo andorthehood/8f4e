@@ -63,6 +63,27 @@ function getModuleEntryName(block: CodeBlock, blockIndex: number): string {
 	return block.entry;
 }
 
+function getIncludeIds(project: Project): string[] {
+	const seen = new Set<string>();
+	const includeIds: string[] = [];
+
+	for (const block of project.includedFunctionBlocks ?? []) {
+		if (block.source?.kind !== 'include') {
+			continue;
+		}
+
+		const includeId = block.source.includeId;
+		if (seen.has(includeId)) {
+			continue;
+		}
+
+		seen.add(includeId);
+		includeIds.push(includeId);
+	}
+
+	return includeIds;
+}
+
 /**
  * Serializes a Project to .8f4e text format.
  * Throws if any code block fails export-gate validation.
@@ -75,8 +96,13 @@ export function serializeProjectTo8f4e(project: Project): string {
 	}
 
 	const blockStrings: string[] = [];
+	const includeIds = getIncludeIds(project);
 	const emittedEntries = new Set<string>();
 	const modulesByEntry = new Map<string, Project['codeBlocks']>();
+
+	if (includeIds.length > 0) {
+		blockStrings.push(['includes', ...includeIds.map(includeId => `include ${includeId}`), 'includesEnd'].join('\n'));
+	}
 
 	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex += 1) {
 		const block = codeBlocks[blockIndex];

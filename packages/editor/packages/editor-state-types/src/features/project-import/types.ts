@@ -2,6 +2,7 @@
  * Types for project import/export feature - project serialization and metadata.
  */
 
+import type { Module } from '@8f4e/compiler-spec';
 import type { CodeBlock } from '../code-blocks/types';
 
 /**
@@ -9,4 +10,5 @@ import type { CodeBlock } from '../code-blocks/types';
  */
 export interface Project {
 	codeBlocks: CodeBlock[];
+	includedFunctionBlocks?: Module[];
 }

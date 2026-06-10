@@ -6,6 +6,7 @@ import {
 	ENTRY_BLOCK_DELIMITER,
 	FORMAT_HEADER,
 	GROUP_BLOCK_DELIMITER,
+	INCLUDES_BLOCK_DELIMITER,
 	PROJECT_BLOCK_DELIMITERS,
 } from './delimiters';
 
@@ -16,9 +17,10 @@ describe('FORMAT_HEADER', () => {
 });
 
 describe('project block delimiters', () => {
-	it('defines the entry and group project-only containers', () => {
+	it('defines the project-only containers', () => {
 		expect(ENTRY_BLOCK_DELIMITER).toEqual({ type: 'entry', opener: 'entry', closer: 'entryEnd' });
 		expect(GROUP_BLOCK_DELIMITER).toEqual({ type: 'group', opener: 'group', closer: 'groupEnd' });
+		expect(INCLUDES_BLOCK_DELIMITER).toEqual({ type: 'includes', opener: 'includes', closer: 'includesEnd' });
 	});
 
 	it('derives document block delimiters from the compiler spec', () => {
@@ -32,6 +34,7 @@ describe('project block delimiters', () => {
 			...documentBlockInstructionPairs.map(({ start, end }) => ({ opener: start, closer: end })),
 			{ opener: 'entry', closer: 'entryEnd' },
 			{ opener: 'group', closer: 'groupEnd' },
+			{ opener: 'includes', closer: 'includesEnd' },
 		]);
 	});
 });

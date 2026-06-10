@@ -22,6 +22,41 @@ describe('serializeProjectTo8f4e', () => {
 		expect(result).toContain('moduleEnd\nentryEnd');
 	});
 
+	it('serializes unique top-level includes from included function metadata', () => {
+		const project = {
+			codeBlocks: [{ code: validBlock, entry: 'main' }],
+			includedFunctionBlocks: [
+				{
+					code: ['function risingEdge', 'functionEnd int'],
+					source: { kind: 'include' as const, includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
+				},
+				{
+					code: ['function risingEdge', 'functionEnd float'],
+					source: { kind: 'include' as const, includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
+				},
+				{
+					code: ['function hasChanged', 'functionEnd int'],
+					source: { kind: 'include' as const, includeId: 'std/events/hasChanged', symbolName: 'hasChanged' },
+				},
+			],
+		};
+
+		expect(serializeProjectTo8f4e(project)).toBe(
+			[
+				'8f4e/v1',
+				'',
+				'includes',
+				'include std/events/risingEdge',
+				'include std/events/hasChanged',
+				'includesEnd',
+				'',
+				'entry main',
+				...validBlock,
+				'entryEnd',
+			].join('\n')
+		);
+	});
+
 	it('serializes execution entries by first module position', () => {
 		const project = {
 			codeBlocks: [
