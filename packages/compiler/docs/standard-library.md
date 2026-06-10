@@ -16,6 +16,7 @@ include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
 include std/events/hasChanged
+include std/memory/wrapPointer
 includesEnd
 
 entry main
@@ -31,6 +32,49 @@ same function name.
 Includes are resolved during project loading. The CLI loads the shipped standard library files from the installed
 package, while browser-based tools load those same files lazily. The compiler receives the included source as ordinary
 function blocks, so overload resolution, stack typing, and `call` behavior are the same as user-defined functions.
+
+## `std/memory/wrapPointer`
+
+Provides `wrapPointer`, which bidirectionally wraps a byte address into a circular buffer range.
+
+Available overloads:
+
+- `wrapPointer(int pointer, int* buffer, int length) -> int*`
+- `wrapPointer(int pointer, float* buffer, int length) -> float*`
+
+`length` is the circular buffer length in bytes. The first argument is an untrusted computed byte address. The buffer argument supplies the typed circular range, and the return value is a valid pointer into that buffer.
+
+Examples:
+
+```8f4e
+includes
+include std/memory/wrapPointer
+includesEnd
+
+entry test
+module wrapPointerExamples
+float[] buffer 4
+int pointer &buffer
+const BYTE_LENGTH count(buffer)*sizeof(buffer)
+
+push pointer
+push BYTE_LENGTH
+add
+push &buffer
+push BYTE_LENGTH
+call wrapPointer
+; stack: &buffer
+
+push pointer
+push sizeof(buffer)
+sub
+push &buffer
+push BYTE_LENGTH
+call wrapPointer
+; stack: buffer&
+moduleEnd
+entryEnd
+```
 
 ## `std/math/clamp`
 

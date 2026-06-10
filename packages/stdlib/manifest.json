@@ -19,6 +19,10 @@
     {
       "id": "std/math/clamp",
       "path": "std/math/clamp.8f4e"
+    },
+    {
+      "id": "std/memory/wrapPointer",
+      "path": "std/memory/wrapPointer.8f4e"
     }
   ]
 }

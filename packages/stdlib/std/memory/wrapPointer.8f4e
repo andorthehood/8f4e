@@ -1,0 +1,47 @@
+function wrapPointer
+; Bidirectionally wraps an int
+; byte address into a circular
+; int buffer.
+param int pointer
+param int* buffer
+param int length
+
+push buffer
+push pointer
+push buffer
+sub
+push length
+ensureNonZero
+remainder
+push length
+add
+push length
+ensureNonZero
+remainder
+add
+
+functionEnd int*
+
+function wrapPointer
+; Bidirectionally wraps a float
+; byte address into a circular
+; float buffer.
+param int pointer
+param float* buffer
+param int length
+
+push buffer
+push pointer
+push buffer
+sub
+push length
+ensureNonZero
+remainder
+push length
+add
+push length
+ensureNonZero
+remainder
+add
+
+functionEnd float*
