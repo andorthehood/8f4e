@@ -25,7 +25,6 @@ function registerFunction(context: CompilationContext, ...targetFunctions: Funct
 		arityByName: Object.fromEntries(
 			targetFunctions.map(targetFunction => [targetFunction.name, targetFunction.signature.parameters.length])
 		),
-		usedFunctionIds: new Set<string>(),
 	};
 }
 
@@ -120,7 +119,8 @@ describe('call instruction compiler', () => {
 		);
 
 		expect(analyzedLine.targetFunction).toBe(floatOverload);
-		expect(context.namespace.functions?.usedFunctionIds).toEqual(new Set([floatOverload.id]));
+		expect(floatOverload.used).toBe(true);
+		expect(intOverload.used).toBeUndefined();
 		expect(context.byteCode).toEqual([0x10, floatOverload.wasmIndex]);
 		expect(context.stack).toEqual([]);
 	});
