@@ -7,7 +7,7 @@ import type {
 	Viewport,
 } from '@8f4e/editor-state-types';
 import { deriveDirectiveState } from '~/features/code-blocks/features/directives/registry';
-import getCodeBlockId from '~/features/code-blocks/utils/getCodeBlockId';
+import getCodeBlockNameFromSource from '~/features/code-blocks/utils/getCodeBlockNameFromSource';
 import { parseBlockDirectives } from '~/features/code-blocks/utils/parseBlockDirectives';
 
 /**
@@ -74,7 +74,7 @@ export function createMockCodeBlock(
 	const offsetX = overrides.offsetX ?? 0;
 	const offsetY = overrides.offsetY ?? 0;
 	const code = overrides.code ?? [];
-	const name = (overrides.name ?? getCodeBlockId(code)) || 'test-block';
+	const name = (overrides.name ?? getCodeBlockNameFromSource(code)) || 'test-block';
 
 	// Default grid size for testing (matches common font sizes)
 	const defaultVGrid = 8;
