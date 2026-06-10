@@ -1,0 +1,43 @@
+8f4e/v1
+
+includes
+include std/memory/wrapPointer
+includesEnd
+
+entry test
+module wrapPointerIntAssertions
+; it wraps int pointer
+; addresses before and after a
+; circular buffer.
+int[] buffer 4 7
+int pointer &buffer
+const BYTE_LENGTH count(buffer)*sizeof(buffer)
+
+push pointer
+push sizeof(buffer)*2
+add
+push &buffer
+push BYTE_LENGTH
+call wrapPointer
+push &buffer+8
+call assert
+
+push pointer
+push BYTE_LENGTH
+add
+push &buffer
+push BYTE_LENGTH
+call wrapPointer
+push &buffer
+call assert
+
+push pointer
+push sizeof(buffer)
+sub
+push &buffer
+push BYTE_LENGTH
+call wrapPointer
+push buffer&
+call assert
+moduleEnd
+entryEnd
