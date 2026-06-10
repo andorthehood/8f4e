@@ -1,5 +1,10 @@
 8f4e/v1
 
+includes
+include std/events/risingEdge
+include std/events/hasChanged
+includesEnd
+
 note
 ; @pos -318 -39
 ; @tab 51
@@ -107,36 +112,6 @@ note
 ; @config export.fileName risen
 ; @config font templeos8x8
 noteEnd
-
-function risingEdge
-; @pos -242 10
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
-store
-functionEnd int
-
-function hasChanged
-; @pos -242 26
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push currentValue
-push *previousValue
-notEqual
-push previousValue
-push currentValue
-store
-functionEnd int
 
 function hasChanged
 ; @pos -242 26

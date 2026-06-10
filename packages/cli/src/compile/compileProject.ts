@@ -15,6 +15,7 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		compilerOptions,
 		includeModules,
 		includeWasm,
+		includedFunctionBlocks: project.includedFunctionBlocks,
 	});
 
 	const outputProject: Record<string, unknown> = { ...project };
