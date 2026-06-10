@@ -33,7 +33,7 @@ import paramShape, { updateParamShapeDeclarations } from './paramShape/updateGra
 import positionOffsetters from './positionOffsetters';
 import shape, { updateShapeDeclarations } from './shape/updateGraphicData';
 import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
-import getCodeBlockId from './utils/getCodeBlockId';
+import getCodeBlockNameFromSource from './utils/getCodeBlockNameFromSource';
 import { parseBlockDirectives } from './utils/parseBlockDirectives';
 import wrapText from './utils/wrapText';
 
@@ -118,7 +118,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				.map(char => char.charCodeAt(0) as number | string)
 				.concat(expandLineToCells(text, tabStopsByLine[rawRow] || []));
 		});
-		graphicData.name = getCodeBlockId(graphicData.code);
+		graphicData.name = getCodeBlockNameFromSource(graphicData.code);
 		graphicData.isCollapsed = displayModel.isCollapsed;
 
 		// Choose highlighter based on block type and get syntax colors for raw code
@@ -306,7 +306,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 
 			const blockType = getDocumentProjectBlockType(codeBlock.code) as CodeBlockGraphicData['blockType'];
 			if (blockType === 'module' && !codeBlock.entry) {
-				throw new Error(`Project module block "${getCodeBlockId(codeBlock.code)}" is missing an entry`);
+				throw new Error(`Project module block "${getCodeBlockNameFromSource(codeBlock.code)}" is missing an entry`);
 			}
 
 			return createCodeBlockGraphicData({
@@ -314,7 +314,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				height: 0,
 				code: codeBlock.code,
 				cursor: { col: 0, row: 0, x: 0, y: 0 },
-				name: getCodeBlockId(codeBlock.code),
+				name: getCodeBlockNameFromSource(codeBlock.code),
 				gridX,
 				gridY,
 				x: pixelX,

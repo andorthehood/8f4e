@@ -5,7 +5,7 @@ import type { StateManager } from '@8f4e/state-manager';
 import { instructionParser } from '@8f4e/tokenizer';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
-import getCodeBlockId from '../../utils/getCodeBlockId';
+import getCodeBlockNameFromSource from '../../utils/getCodeBlockNameFromSource';
 import { parseClipboardData } from '../clipboard/clipboardUtils';
 import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
@@ -182,7 +182,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		}
 
 		const sourceBlockType = getBlockType(code);
-		const blockName = getCodeBlockId(code);
+		const blockName = getCodeBlockNameFromSource(code);
 
 		if (sourceBlockType === functionBlock.type && blockName) {
 			code = changeCodeBlockNameInCode(
@@ -203,7 +203,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				incrementCodeBlockNameUntilUnique(state, moduleBlock.type, blockName)
 			);
 		}
-		const updatedBlockName = getCodeBlockId(code);
+		const updatedBlockName = getCodeBlockNameFromSource(code);
 
 		const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
 		state.codeBlockRendering.nextCodeBlockCreationIndex++;
