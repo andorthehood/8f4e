@@ -173,23 +173,16 @@ describe('parse8f4eProject', () => {
 	});
 
 	it('resolves top-level built-in function includes', () => {
+		const includesBlock = ['includes', 'include std/math/clamp', 'include std/events/risingEdge', 'includesEnd'];
 		const project = parse8f4eProject(
-			[
-				'8f4e/v1',
-				'',
-				'includes',
-				'include std/math/clamp',
-				'include std/events/risingEdge',
-				'includesEnd',
-				'',
-				'entry main',
-				...validModuleBlock,
-				'entryEnd',
-			].join('\n'),
+			['8f4e/v1', '', ...includesBlock, '', 'entry main', ...validModuleBlock, 'entryEnd'].join('\n'),
 			{ resolveInclude: includeId => includeSources[includeId] }
 		);
 
-		expect(project.codeBlocks).toEqual([{ id: 9, code: validModuleBlock, entry: 'main' }]);
+		expect(project.codeBlocks).toEqual([
+			{ id: 3, code: includesBlock },
+			{ id: 9, code: validModuleBlock, entry: 'main' },
+		]);
 		expect(project.includedFunctionBlocks).toEqual([
 			{
 				code: [
@@ -288,6 +281,7 @@ describe('parse8f4eProject', () => {
 			{ resolveInclude: async includeId => includeSources[includeId] }
 		);
 
+		expect(project.codeBlocks).toEqual([{ id: 3, code: ['includes', 'include std/math/clamp', 'includesEnd'] }]);
 		expect(project.includedFunctionBlocks?.map(block => block.source?.includeId)).toEqual([
 			'std/math/clamp',
 			'std/math/clamp',
