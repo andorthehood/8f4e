@@ -27,18 +27,9 @@ describe('parse8f4eToProject', () => {
 	});
 
 	it('parses top-level includes as project metadata', () => {
+		const includesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];
 		const project = parse8f4eToProject(
-			[
-				'8f4e/v1',
-				'',
-				'includes',
-				'include std/events/risingEdge',
-				'includesEnd',
-				'',
-				'entry main',
-				...validBlock,
-				'entryEnd',
-			].join('\n'),
+			['8f4e/v1', '', ...includesBlock, '', 'entry main', ...validBlock, 'entryEnd'].join('\n'),
 			{
 				resolveInclude: includeId =>
 					includeId === 'std/events/risingEdge'
@@ -47,7 +38,10 @@ describe('parse8f4eToProject', () => {
 			}
 		);
 
-		expect(project.codeBlocks).toHaveLength(1);
+		expect(project.codeBlocks).toEqual([
+			{ id: 3, code: includesBlock },
+			{ id: 8, code: validBlock, entry: 'main' },
+		]);
 		expect(project.includedFunctionBlocks?.map(block => block.source?.includeId)).toEqual([
 			'std/events/risingEdge',
 			'std/events/risingEdge',

@@ -21,6 +21,7 @@ describe('getBlockType', () => {
 
 	it('returns unknown for blocks without proper markers', () => {
 		expect(getBlockType(['int x 5', 'add'])).toBe('unknown');
+		expect(getBlockType(['includes', 'include std/events/risingEdge', 'includesEnd'])).toBe('unknown');
 	});
 
 	it('returns unknown for mixed markers', () => {
@@ -43,6 +44,7 @@ describe('isCompilableBlockType', () => {
 	it('returns false for non-compilable block types', () => {
 		expect(isCompilableBlockType('unknown')).toBe(false);
 		expect(isCompilableBlockType('note')).toBe(false);
+		expect(isCompilableBlockType('includes')).toBe(false);
 		expect(isCompilableBlockType(undefined)).toBe(false);
 	});
 });
