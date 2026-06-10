@@ -1,6 +1,10 @@
 {
   "includes": [
     {
+      "id": "std/bitwise/extractByte",
+      "path": "std/bitwise/extractByte.8f4e"
+    },
+    {
       "id": "std/events/hasChanged",
       "path": "std/events/hasChanged.8f4e"
     },
