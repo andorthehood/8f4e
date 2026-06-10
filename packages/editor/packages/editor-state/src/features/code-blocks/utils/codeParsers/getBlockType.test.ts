@@ -22,6 +22,10 @@ describe('getBlockType', () => {
 		expect(getBlockType(['note', '; @pos 10 12', 'some text', 'noteEnd'])).toBe('note');
 	});
 
+	it('detects includes blocks', () => {
+		expect(getBlockType(['includes', 'include std/events/risingEdge', 'includesEnd'])).toBe('includes');
+	});
+
 	it('returns unknown for mixed markers', () => {
 		expect(getBlockType(['module foo', 'functionEnd', 'moduleEnd'])).toBe('unknown');
 	});
