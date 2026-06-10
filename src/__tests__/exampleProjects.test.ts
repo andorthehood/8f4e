@@ -54,6 +54,7 @@ describe('Example Projects Compilation', () => {
 				const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
 					codeBlocks: project.codeBlocks,
 					groups: [],
+					includedFunctionBlocks: project.includedFunctionBlocks,
 				});
 				const moduleCount = Object.values(entries).reduce((sum, group) => sum + group.length, 0);
 
