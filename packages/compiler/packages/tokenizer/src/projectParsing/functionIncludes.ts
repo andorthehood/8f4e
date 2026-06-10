@@ -1,13 +1,3 @@
-import stdEventsHasChangedSource from './std/events/hasChanged.8f4e?raw';
-import stdEventsRisingEdgeSource from './std/events/risingEdge.8f4e?raw';
-import stdMathClampSource from './std/math/clamp.8f4e?raw';
-
-const builtInFunctionSources: Record<string, string> = {
-	'std/events/hasChanged': stdEventsHasChangedSource,
-	'std/events/risingEdge': stdEventsRisingEdgeSource,
-	'std/math/clamp': stdMathClampSource,
-};
-
 function getFunctionName(line: string): string {
 	return line.trim().split(/\s+/)[1] ?? '';
 }
@@ -47,17 +37,9 @@ function splitFunctionBlocks(lines: string[]): string[][] {
 }
 
 /**
- * Resolves a function include from the built-in 8f4e standard library sources.
- *
- * @param includeId - Logical built-in include id, such as `std/math/clamp`.
- * @returns Included function sources, or undefined when the include id is unknown.
+ * Converts resolved include source text into function source blocks.
  */
-export function resolveBuiltInFunctionIncludes(includeId: string) {
-	const source = builtInFunctionSources[includeId];
-	if (!source) {
-		return undefined;
-	}
-
+export function resolveFunctionIncludeSource(includeId: string, source: string) {
 	return splitFunctionBlocks(normalizeSourceLines(source)).map(code => ({
 		code,
 		source: {

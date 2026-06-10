@@ -122,7 +122,7 @@ export async function runCaptureCommand(args: string[]): Promise<void> {
 	}
 
 	const inputRaw = await fs.readFile(resolvedInput, 'utf8');
-	const project = parse8f4eToProject(inputRaw) as ProjectInput;
+	const project = (await parse8f4eToProject(inputRaw)) as ProjectInput;
 
 	const compileResult = compileProject(project, {
 		compilerOptions: {

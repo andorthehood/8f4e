@@ -287,6 +287,7 @@ export interface Callbacks {
 
 	// Compilation callback
 	compileCode?: (input: CompileInput, compilerOptions: CompileOptions) => Promise<CompilationResult>;
+	resolveInclude?: (includeId: string) => Promise<string | undefined>;
 
 	// Session storage callbacks
 	loadSession: () => Promise<Project | null>;

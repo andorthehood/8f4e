@@ -11,6 +11,7 @@ import parse8f4eProject, {
 	getProjectBlockType,
 	getProjectCloserKeyword,
 	getProjectOpenerKeyword,
+	parse8f4eProjectAsync,
 	pickProjectCompilerBlocks,
 } from './index';
 
@@ -22,6 +23,65 @@ const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
 const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd'];
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
+const includeSources: Record<string, string> = {
+	'std/events/risingEdge': [
+		'function risingEdge',
+		'#impure',
+		'param int currentValue',
+		'param int* previousValue',
+		'',
+		'push currentValue',
+		'push *previousValue',
+		'greaterThan',
+		'push previousValue',
+		'push currentValue',
+		'store',
+		'',
+		'functionEnd int',
+		'',
+		'function risingEdge',
+		'#impure',
+		'param float currentValue',
+		'param float* previousValue',
+		'',
+		'push currentValue',
+		'push previousValue',
+		'loadFloat',
+		'greaterThan',
+		'push previousValue',
+		'push currentValue',
+		'store',
+		'',
+		'functionEnd int',
+	].join('\n'),
+	'std/math/clamp': [
+		'function clamp',
+		'param int value',
+		'param int minValue',
+		'param int maxValue',
+		'',
+		'push value',
+		'push minValue',
+		'max',
+		'push maxValue',
+		'min',
+		'',
+		'functionEnd int',
+		'',
+		'function clamp',
+		'param float value',
+		'param float minValue',
+		'param float maxValue',
+		'',
+		'push value',
+		'push minValue',
+		'max',
+		'push maxValue',
+		'min',
+		'',
+		'functionEnd float',
+	].join('\n'),
+};
 
 function readProjectFixtureNames(): string[] {
 	return readdirSync(fixtureDirectory, { withFileTypes: true })
@@ -125,7 +185,8 @@ describe('parse8f4eProject', () => {
 				'entry main',
 				...validModuleBlock,
 				'entryEnd',
-			].join('\n')
+			].join('\n'),
+			{ resolveInclude: includeId => includeSources[includeId] }
 		);
 
 		expect(project.codeBlocks).toEqual([{ id: 9, code: validModuleBlock, entry: 'main' }]);
@@ -221,6 +282,18 @@ describe('parse8f4eProject', () => {
 		expect(pickProjectCompilerBlocks(project).functionBlocks).toEqual(project.includedFunctionBlocks);
 	});
 
+	it('resolves includes with an async resolver', async () => {
+		const project = await parse8f4eProjectAsync(
+			['8f4e/v1', '', 'includes', 'include std/math/clamp', 'includesEnd'].join('\n'),
+			{ resolveInclude: async includeId => includeSources[includeId] }
+		);
+
+		expect(project.includedFunctionBlocks?.map(block => block.source?.includeId)).toEqual([
+			'std/math/clamp',
+			'std/math/clamp',
+		]);
+	});
+
 	it('parses nested groups under entries', () => {
 		const project = parse8f4eProject(
 			[
@@ -296,7 +369,7 @@ describe('parse8f4eProject', () => {
 			'include requires exactly one include id'
 		);
 		expect(() => parse8f4eProject('8f4e/v1\n\nincludes\ninclude std/math/missing\nincludesEnd')).toThrow(
-			'unknown built-in function include'
+			'unresolved include'
 		);
 		expect(() => parse8f4eProject('8f4e/v1\n\nentry main\nincludes\nincludesEnd\nentryEnd')).toThrow(
 			'can only contain module or group blocks'

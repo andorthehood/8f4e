@@ -14,6 +14,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import compile, { serializeDiagnostic } from '../src';
+import { resolveStdlibInclude } from './stdlibResolver';
 
 interface AssertionFailure {
 	assertIndex: number;
@@ -319,7 +320,9 @@ export function compileFixtureProgramSource(
 	options: FixtureProgramCompileOptions = {}
 ): CompiledFixtureProgram {
 	const normalizedSource = source.trimStart();
-	const project = parse8f4eProject(normalizedSource);
+	const project = parse8f4eProject(normalizedSource, {
+		resolveInclude: resolveStdlibInclude,
+	});
 	const memoryRegions = getTestMemoryRegions(normalizedSource);
 	const codeBlocks = [
 		...project.codeBlocks,
@@ -377,7 +380,9 @@ export async function instantiateFixtureProgramSource(
 export async function runFixtureProgramFile(filePath: string): Promise<FixtureProgramRunResult> {
 	const relativePath = path.relative(testRoot, filePath);
 	const source = await fs.readFile(filePath, 'utf8');
-	const project = parse8f4eProject(source);
+	const project = parse8f4eProject(source, {
+		resolveInclude: resolveStdlibInclude,
+	});
 
 	if (!hasTestExportDeclaration(project)) {
 		throw new Error(`${relativePath}: expected an entry test block or exported function test`);
