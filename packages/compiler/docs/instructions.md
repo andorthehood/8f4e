@@ -3,6 +3,7 @@
 - [Comments](comments.md)
 - [Source syntax](source-syntax.md)
 - [Identifier prefixes](prefixes.md)
+- [Standard library](standard-library.md)
 - [Best practices](best-practices.md)
 - [Compiler design](compiler-design.md)
 

@@ -1,3 +1,5 @@
+import type { SourceMetadata } from '@8f4e/compiler-spec';
+
 /**
  * Syntax errors — raised when source structure is invalid before semantic analysis.
  *
@@ -66,6 +68,7 @@ export interface SyntaxErrorLine {
 
 export interface SyntaxErrorContext {
 	projectBlockId?: number;
+	source?: SourceMetadata;
 }
 
 export class SyntaxRulesError extends Error {

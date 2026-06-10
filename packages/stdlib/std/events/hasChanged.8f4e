@@ -1,0 +1,28 @@
+function hasChanged
+#impure
+param int currentValue
+param int* previousValue
+
+push currentValue
+push *previousValue
+notEqual
+push previousValue
+push currentValue
+store
+
+functionEnd int
+
+function hasChanged
+#impure
+param float currentValue
+param float* previousValue
+
+push currentValue
+push previousValue
+loadFloat
+notEqual
+push previousValue
+push currentValue
+store
+
+functionEnd int

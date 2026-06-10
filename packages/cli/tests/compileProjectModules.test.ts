@@ -94,4 +94,28 @@ describe('compileProjectModules', () => {
 		expect(result.compiledModules?.target.executionEntryName).toBe('test');
 		expect(result.compiledModules?.dependency.executionEntryName).toBe('main');
 	});
+
+	it('compiles included function blocks with parsed project modules', () => {
+		const result = compileProjectModules(
+			[
+				{
+					id: 1,
+					code: ['module target', 'call includedOne', 'drop', 'moduleEnd'],
+					entry: 'main',
+				},
+			],
+			{
+				compilerOptions: { startingMemoryWordAddress: 0 },
+				includeWasm: false,
+				includedFunctionBlocks: [
+					{
+						code: ['function includedOne', 'push 1', 'functionEnd int'],
+						source: { kind: 'include', includeId: 'std/test/includedOne', symbolName: 'includedOne' },
+					},
+				],
+			}
+		);
+
+		expect(result.compiledModules?.target).toBeDefined();
+	});
 });

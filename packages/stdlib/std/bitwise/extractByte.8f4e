@@ -1,0 +1,13 @@
+function extractByte
+param int word
+param int byteIndex
+
+push word
+push byteIndex
+push 3
+shiftLeft
+shiftRightUnsigned
+push 0xFF
+and
+
+functionEnd int

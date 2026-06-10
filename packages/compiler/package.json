@@ -29,6 +29,7 @@
     "@8f4e/compiler-wasm-utils": "*"
   },
   "devDependencies": {
+    "@8f4e/stdlib": "*",
     "@types/node": "24.12.4"
   }
 }

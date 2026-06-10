@@ -33,6 +33,28 @@ describe('flattenProjectForCompiler', () => {
 		expect(result.functions[0].projectBlockId).toBe(2);
 	});
 
+	it('should include project include functions in compilation', () => {
+		const mockCodeBlocks: CodeBlockGraphicData[] = [
+			{
+				code: ['module test', 'moduleEnd'],
+				blockType: 'module',
+				entry: 'main',
+				creationIndex: 0,
+			} as CodeBlockGraphicData,
+		];
+
+		const includedFunctionBlocks = [
+			{
+				code: ['function risingEdge', 'functionEnd int'],
+				source: { kind: 'include' as const, includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
+			},
+		];
+
+		const result = flattenProjectForCompiler(mockCodeBlocks, includedFunctionBlocks);
+
+		expect(result.functions).toEqual(includedFunctionBlocks);
+	});
+
 	it('should exclude note blocks from compilation', () => {
 		const mockCodeBlocks: CodeBlockGraphicData[] = [
 			{

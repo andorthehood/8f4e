@@ -1,0 +1,11 @@
+function extractBit
+param int word
+param int bitIndex
+
+push word
+push bitIndex
+shiftRightUnsigned
+push 1
+and
+
+functionEnd int

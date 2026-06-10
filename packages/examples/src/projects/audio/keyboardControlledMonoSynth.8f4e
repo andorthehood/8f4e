@@ -1,5 +1,9 @@
 8f4e/v1
 
+includes
+include std/events/risingEdge
+includesEnd
+
 entry main
 module projectConfig
 ; @pos -94 1
@@ -380,21 +384,6 @@ loop AUDIO_BUFFER_SIZE
 call main
 loopEnd
 functionEnd
-
-function risingEdge
-; @pos 2 93
-; @tab 8
-#impure
-param int currentValue
-param int* previousValue
-
-push	currentValue
-push	*previousValue
-greaterThan
-push	previousValue
-push	currentValue
-store
-functionEnd int
 
 function sine
 ; @pos 36 93

@@ -2,8 +2,12 @@ import type { ASTCache, ASTCacheEntry, ValidatedAST } from '@8f4e/compiler-spec'
 
 export { createASTCache } from './cache';
 export type {
+	Parse8f4eProjectAsyncOptions,
+	Parse8f4eProjectOptions,
 	ProjectBlockType,
 	ProjectCodeBlock,
+	ProjectIncludeResolver,
+	ProjectIncludeResolverAsync,
 	ProjectInput,
 } from './projectParsing';
 export {
@@ -15,6 +19,7 @@ export {
 	getProjectCloserKeyword,
 	getProjectOpenerKeyword,
 	parse8f4eProject,
+	parse8f4eProjectAsync,
 	pickProjectCompilerBlocks,
 } from './projectParsing';
 
