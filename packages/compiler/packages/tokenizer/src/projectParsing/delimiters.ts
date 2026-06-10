@@ -1,9 +1,13 @@
-import { documentBlockInstructionPairs } from '@8f4e/compiler-spec';
+import { documentBlockInstructionByType, documentBlockInstructionPairs } from '@8f4e/compiler-spec';
 
 export const FORMAT_HEADER = '8f4e/v1';
 export const ENTRY_BLOCK_DELIMITER = { type: 'entry', opener: 'entry', closer: 'entryEnd' } as const;
 export const GROUP_BLOCK_DELIMITER = { type: 'group', opener: 'group', closer: 'groupEnd' } as const;
-export const INCLUDES_BLOCK_DELIMITER = { type: 'includes', opener: 'includes', closer: 'includesEnd' } as const;
+export const INCLUDES_BLOCK_DELIMITER = {
+	type: documentBlockInstructionByType.includes.type,
+	opener: documentBlockInstructionByType.includes.start,
+	closer: documentBlockInstructionByType.includes.end,
+} as const;
 export const BLOCK_DELIMITERS = documentBlockInstructionPairs.map(({ type, start, end }) => ({
 	type,
 	opener: start,
@@ -14,5 +18,4 @@ export const PROJECT_BLOCK_DELIMITERS = [
 	...documentBlockInstructionPairs.map(({ start, end }) => ({ opener: start, closer: end })),
 	{ opener: ENTRY_BLOCK_DELIMITER.opener, closer: ENTRY_BLOCK_DELIMITER.closer },
 	{ opener: GROUP_BLOCK_DELIMITER.opener, closer: GROUP_BLOCK_DELIMITER.closer },
-	{ opener: INCLUDES_BLOCK_DELIMITER.opener, closer: INCLUDES_BLOCK_DELIMITER.closer },
 ] as const;

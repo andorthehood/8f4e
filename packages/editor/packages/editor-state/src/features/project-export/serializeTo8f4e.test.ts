@@ -57,6 +57,23 @@ describe('serializeProjectTo8f4e', () => {
 		);
 	});
 
+	it('serializes a visible includes block instead of regenerating one from metadata', () => {
+		const visibleIncludesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];
+		const project = {
+			codeBlocks: [{ code: visibleIncludesBlock }, { code: validBlock, entry: 'main' }],
+			includedFunctionBlocks: [
+				{
+					code: ['function hasChanged', 'functionEnd int'],
+					source: { kind: 'include' as const, includeId: 'std/events/hasChanged', symbolName: 'hasChanged' },
+				},
+			],
+		};
+
+		expect(serializeProjectTo8f4e(project)).toBe(
+			['8f4e/v1', '', ...visibleIncludesBlock, '', 'entry main', ...validBlock, 'entryEnd'].join('\n')
+		);
+	});
+
 	it('serializes execution entries by first module position', () => {
 		const project = {
 			codeBlocks: [

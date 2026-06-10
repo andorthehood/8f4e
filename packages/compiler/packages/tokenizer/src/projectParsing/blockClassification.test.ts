@@ -6,6 +6,7 @@ const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
 const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float frequency 440', 'prototypeEnd'];
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
+const validIncludesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];
 
 describe('getDocumentProjectBlockType', () => {
 	it('detects document block types from matching opener and closer markers', () => {
@@ -14,6 +15,7 @@ describe('getDocumentProjectBlockType', () => {
 		expect(getDocumentProjectBlockType(['constants', 'constantsEnd'])).toBe('constants');
 		expect(getDocumentProjectBlockType(validPrototypeBlock)).toBe('prototype');
 		expect(getDocumentProjectBlockType(validNoteBlock)).toBe('note');
+		expect(getDocumentProjectBlockType(validIncludesBlock)).toBe('includes');
 	});
 
 	it('returns unknown when a block has mixed or incomplete document markers', () => {
@@ -33,5 +35,6 @@ describe('getProjectBlockType', () => {
 
 	it('returns unknown for project blocks that are not compiler inputs', () => {
 		expect(getProjectBlockType(validNoteBlock)).toBe('unknown');
+		expect(getProjectBlockType(validIncludesBlock)).toBe('unknown');
 	});
 });

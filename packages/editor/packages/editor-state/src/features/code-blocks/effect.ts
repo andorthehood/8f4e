@@ -1,6 +1,6 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { getBlockType, getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
+import { getDocumentProjectBlockType, getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
 import gapCalculator from '../code-editing/gapCalculator';
 import highlightSyntax8f4e from '../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../code-editing/highlightSyntaxGlsl';
@@ -304,7 +304,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 			const pixelX = isAnchored ? 0 : gridX * state.viewport.vGrid;
 			const pixelY = isAnchored ? 0 : gridY * state.viewport.hGrid;
 
-			const blockType = getBlockType(codeBlock.code) as CodeBlockGraphicData['blockType'];
+			const blockType = getDocumentProjectBlockType(codeBlock.code) as CodeBlockGraphicData['blockType'];
 			if (blockType === 'module' && !codeBlock.entry) {
 				throw new Error(`Project module block "${getCodeBlockId(codeBlock.code)}" is missing an entry`);
 			}

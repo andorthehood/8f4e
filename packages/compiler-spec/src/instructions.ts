@@ -74,12 +74,13 @@ export const compilerSourceBlockInstructionByType = Object.fromEntries(
 	>;
 };
 
-export const documentOnlyInstructionNames = ['note', 'noteEnd'] as const;
+export const documentOnlyInstructionNames = ['note', 'noteEnd', 'includes', 'include', 'includesEnd'] as const;
 export type DocumentOnlyInstructionName = (typeof documentOnlyInstructionNames)[number];
 
 export const documentBlockInstructionPairs = [
 	...compilerSourceBlockInstructionPairs,
 	{ type: 'note', start: 'note', end: 'noteEnd' },
+	{ type: 'includes', start: 'includes', end: 'includesEnd' },
 ] as const;
 
 export type DocumentBlockType = (typeof documentBlockInstructionPairs)[number]['type'];
@@ -90,10 +91,10 @@ export const documentBlockInstructionByType = Object.fromEntries(
 	documentBlockInstructionPairs.map(pair => [pair.type, pair])
 ) as { readonly [Type in DocumentBlockType]: Extract<(typeof documentBlockInstructionPairs)[number], { type: Type }> };
 
-export type CompilableBlockType = Exclude<DocumentBlockType, 'note'>;
+export type CompilableBlockType = Exclude<DocumentBlockType, 'note' | 'includes'>;
 export const compilableBlockTypes = documentBlockInstructionPairs
 	.map(({ type }) => type)
-	.filter((type): type is CompilableBlockType => type !== 'note');
+	.filter((type): type is CompilableBlockType => type !== 'note' && type !== 'includes');
 
 export type CodegenInstructionName = Extract<CodegenInstructionSpecName, SourceInstructionSpecName>;
 

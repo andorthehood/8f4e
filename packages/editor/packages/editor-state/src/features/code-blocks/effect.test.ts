@@ -157,6 +157,39 @@ describe('code block rendering line numbers', () => {
 });
 
 describe('code block rendering home directive', () => {
+	it('renders project-level includes blocks from imported project state', () => {
+		const includesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];
+		const state = createMockState({
+			initialProjectState: {
+				...EMPTY_DEFAULT_PROJECT,
+				codeBlocks: [
+					{ code: includesBlock },
+					{
+						code: ['module main', 'moduleEnd'],
+						entry: 'main',
+					},
+				],
+			},
+			spriteLookups: {
+				fillColors: {},
+				fontNumbers: {},
+				fontCode: {},
+				fontDisabledCode: {},
+				fontLineNumber: {},
+				fontCodeComment: {},
+			} as never,
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		codeBlockRenderingEffect(store, events);
+		store.set('initialProjectState', state.initialProjectState);
+
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(2);
+		expect(state.codeBlockRendering.codeBlocks[0].code).toEqual(includesBlock);
+		expect(state.codeBlockRendering.codeBlocks[0].blockType).toBe('includes');
+	});
+
 	it('centers the initial viewport using the home alignment hint', () => {
 		const state = createMockState({
 			initialProjectState: {

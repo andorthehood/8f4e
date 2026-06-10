@@ -84,6 +84,16 @@ function getIncludeIds(project: Project): string[] {
 	return includeIds;
 }
 
+function hasVisibleIncludesBlock(project: Project): boolean {
+	for (const block of project.codeBlocks) {
+		if (getDocumentProjectBlockType(block.code) === 'includes') {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 /**
  * Serializes a Project to .8f4e text format.
  * Throws if any code block fails export-gate validation.
@@ -96,7 +106,7 @@ export function serializeProjectTo8f4e(project: Project): string {
 	}
 
 	const blockStrings: string[] = [];
-	const includeIds = getIncludeIds(project);
+	const includeIds = hasVisibleIncludesBlock(project) ? [] : getIncludeIds(project);
 	const emittedEntries = new Set<string>();
 	const modulesByEntry = new Map<string, Project['codeBlocks']>();
 
