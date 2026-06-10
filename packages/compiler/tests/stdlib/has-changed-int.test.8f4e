@@ -1,0 +1,37 @@
+8f4e/v1
+
+includes
+include std/events/hasChanged
+includesEnd
+
+entry test
+module hasChangedIntAssertions
+; it returns true when an
+; integer value differs from its
+; previous value and stores the
+; current value.
+int previousInt
+
+push 0
+call hasChanged &previousInt
+call assert 0
+push previousInt
+call assert 0
+
+push 4
+call hasChanged &previousInt
+call assert 1
+push previousInt
+call assert 4
+
+push 4
+call hasChanged &previousInt
+call assert 0
+
+push -2
+call hasChanged &previousInt
+call assert 1
+push previousInt
+call assert -2
+moduleEnd
+entryEnd

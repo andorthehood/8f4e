@@ -1,0 +1,39 @@
+8f4e/v1
+
+includes
+include std/events/risingEdge
+includesEnd
+
+entry test
+module risingEdgeFloatAssertions
+; it returns true when a float
+; value rises above its previous
+; value and stores the current
+; value.
+float previousFloat
+
+push 0.0
+call risingEdge &previousFloat
+call assert 0
+push previousFloat
+call assertf 0.0
+
+push 0.25
+call risingEdge &previousFloat
+call assert 1
+push previousFloat
+call assertf 0.25
+
+push 0.25
+call risingEdge &previousFloat
+call assert 0
+
+push -0.5
+call risingEdge &previousFloat
+call assert 0
+
+push 0.0
+call risingEdge &previousFloat
+call assert 1
+moduleEnd
+entryEnd
