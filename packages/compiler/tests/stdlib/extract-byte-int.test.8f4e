@@ -1,0 +1,37 @@
+8f4e/v1
+
+includes
+include std/bitwise/extractByte
+includesEnd
+
+entry test
+module extractByteIntAssertions
+; it extracts bytes from an
+; integer word starting at the
+; least-significant byte.
+push 0x12345678
+push 0
+call extractByte
+call assert 0x78
+
+push 0x12345678
+push 1
+call extractByte
+call assert 0x56
+
+push 0x12345678
+push 2
+call extractByte
+call assert 0x34
+
+push 0x12345678
+push 3
+call extractByte
+call assert 0x12
+
+push -1
+push 2
+call extractByte
+call assert 0xFF
+moduleEnd
+entryEnd
