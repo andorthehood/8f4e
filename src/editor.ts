@@ -3,6 +3,7 @@ import { compileCode } from './compiler-callback';
 import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
 import { getListOfProjects, getProject } from './examples/projectRegistry';
 import { runtimeRegistry } from './runtime-registry';
+import { resolveStdlibInclude } from './stdlib-resolver';
 import {
 	exportBinaryCode,
 	exportCanvasScreenshot,
@@ -53,6 +54,7 @@ async function init(options: InitOptions = {}) {
 			getModuleDependencies,
 			getListOfProjects,
 			getProject,
+			resolveInclude: resolveStdlibInclude,
 			compileCode: (input, compilerOptions) => compileCode(input, compilerOptions, editor),
 			loadSession,
 			saveSession,

@@ -1,6 +1,6 @@
 # Standard library
 
-The compiler provides a small built-in standard library of reusable 8f4e functions.
+The 8f4e toolchain ships a small standard library of reusable 8f4e functions.
 Standard library functions are included by source id, then called like ordinary functions.
 
 ## Include syntax
@@ -23,9 +23,12 @@ moduleEnd
 entryEnd
 ```
 
-Each `include` line accepts one built-in include id. An include id may provide multiple overloads of the same function name.
+Each `include` line accepts one standard library include id. An include id may provide multiple overloads of the
+same function name.
 
-Includes are resolved during project parsing. The compiler receives the included functions as ordinary function blocks, so overload resolution, stack typing, and `call` behavior are the same as user-defined functions.
+Includes are resolved during project loading. The CLI loads the shipped standard library files from the installed
+package, while browser-based tools load those same files lazily. The compiler receives the included source as ordinary
+function blocks, so overload resolution, stack typing, and `call` behavior are the same as user-defined functions.
 
 ## `std/math/clamp`
 

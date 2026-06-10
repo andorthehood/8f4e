@@ -224,7 +224,7 @@ export function getTestUsage(): string {
 
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
-	const project = parse8f4eToProject(inputRaw) as ProjectInput;
+	const project = (await parse8f4eToProject(inputRaw)) as ProjectInput;
 	if (!hasTestEntry(project)) {
 		return { assertions: 0, skipped: true };
 	}
