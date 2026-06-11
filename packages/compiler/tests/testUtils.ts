@@ -8,8 +8,12 @@ import type {
 } from '@8f4e/compiler-spec';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
-import type { ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
-import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
+import {
+	type ProjectBlock,
+	type ProjectDocument,
+	parseProjectSource,
+	prepareCompilerInputAsync,
+} from '@8f4e/project-preparser';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -34,7 +38,7 @@ export interface FixtureCompileSnapshots {
 export interface CompiledFixtureProgram {
 	compileResult: CompileResult;
 	source: string;
-	project: ProjectInput;
+	project: ProjectDocument;
 }
 
 export interface InstantiatedFixtureProgram extends CompiledFixtureProgram {
@@ -43,7 +47,7 @@ export interface InstantiatedFixtureProgram extends CompiledFixtureProgram {
 }
 
 export interface FixtureProgramCompileOptions {
-	extraCodeBlocks?: ProjectCodeBlock[];
+	extraCodeBlocks?: ProjectBlock[];
 	includeAssertions?: boolean;
 	includeStackAnalysis?: boolean;
 	cache?: CompileResult['cache'];
@@ -61,7 +65,7 @@ export interface FixtureProgramRunResult extends InstantiatedFixtureProgram {
 export const testRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const FLOAT_ASSERT_TOLERANCE = 0.001;
-const assertFunctionBlocks: ProjectCodeBlock[] = [
+const assertFunctionBlocks: ProjectBlock[] = [
 	{
 		id: -1,
 		code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
@@ -71,11 +75,11 @@ const assertFunctionBlocks: ProjectCodeBlock[] = [
 		code: ['function assert', '#import assert', `param ${type} received`, `param ${type} expected`, 'functionEnd'],
 	})),
 ];
-const assertFloatFunctionBlock: ProjectCodeBlock = {
+const assertFloatFunctionBlock: ProjectBlock = {
 	id: -2,
 	code: ['function assertf', '#import assertf', 'param float received', 'param float expected', 'functionEnd'],
 };
-const assertFloat64FunctionBlock: ProjectCodeBlock = {
+const assertFloat64FunctionBlock: ProjectBlock = {
 	id: -3,
 	code: ['function assertf64', '#import assertf64', 'param float64 received', 'param float64 expected', 'functionEnd'],
 };
@@ -90,7 +94,7 @@ export function getTestMemoryRegions(source: string): string[] {
 		.flatMap(regions => regions.split(/[\s,]+/).filter(Boolean));
 }
 
-export function hasTestExportDeclaration(project: ProjectInput): boolean {
+export function hasTestExportDeclaration(project: ProjectDocument): boolean {
 	return project.codeBlocks.some(block => {
 		if (block.disabled) {
 			return false;
@@ -315,14 +319,12 @@ export function getCompileSnapshotPath(filePath: string): string {
 	return path.join(testRoot, '__snapshots__', `${relativePath}.compile-result.snap`);
 }
 
-export function compileFixtureProgramSource(
+export async function compileFixtureProgramSource(
 	source: string,
 	options: FixtureProgramCompileOptions = {}
-): CompiledFixtureProgram {
+): Promise<CompiledFixtureProgram> {
 	const normalizedSource = source.trimStart();
-	const project = parse8f4eProject(normalizedSource, {
-		resolveInclude: resolveStdlibInclude,
-	});
+	const project = parseProjectSource(normalizedSource);
 	const memoryRegions = getTestMemoryRegions(normalizedSource);
 	const codeBlocks = [
 		...project.codeBlocks,
@@ -331,21 +333,21 @@ export function compileFixtureProgramSource(
 			? [...assertFunctionBlocks, assertFloatFunctionBlock, assertFloat64FunctionBlock]
 			: []),
 	];
-	const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
-		...project,
-		codeBlocks,
-	});
+	const compilerInput = await prepareCompilerInputAsync(
+		{
+			...project,
+			codeBlocks,
+		},
+		{
+			resolveInclude: resolveStdlibInclude,
+		}
+	);
 
 	return {
 		source: normalizedSource,
 		project,
 		compileResult: compile(
-			{
-				entries,
-				constants: constantsBlocks,
-				functions: functionBlocks,
-				prototypes: prototypeBlocks,
-			},
+			compilerInput,
 			{
 				disableSharedMemory: true,
 				includeStackAnalysis: options.includeStackAnalysis,
@@ -360,7 +362,7 @@ export async function instantiateFixtureProgramSource(
 	source: string,
 	options: FixtureProgramInstantiateOptions = {}
 ): Promise<InstantiatedFixtureProgram> {
-	const compiledFixture = compileFixtureProgramSource(source, options);
+	const compiledFixture = await compileFixtureProgramSource(source, options);
 	const host = {
 		...createMemoryImports(
 			compiledFixture.compileResult.requiredMemoryBytes,
@@ -380,9 +382,7 @@ export async function instantiateFixtureProgramSource(
 export async function runFixtureProgramFile(filePath: string): Promise<FixtureProgramRunResult> {
 	const relativePath = path.relative(testRoot, filePath);
 	const source = await fs.readFile(filePath, 'utf8');
-	const project = parse8f4eProject(source, {
-		resolveInclude: resolveStdlibInclude,
-	});
+	const project = parseProjectSource(source);
 
 	if (!hasTestExportDeclaration(project)) {
 		throw new Error(`${relativePath}: expected an entry test block or exported function test`);

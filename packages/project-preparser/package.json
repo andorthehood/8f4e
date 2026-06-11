@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/editor-state",
-  "version": "1.11.5",
+  "name": "@8f4e/project-preparser",
+  "version": "0.1.0",
   "private": true,
-  "description": "8f4e editor state management package",
+  "description": "8f4e project source preparser and compiler input preparation package",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,17 +24,9 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/compiler-spec": "*",
-    "@8f4e/editor-state-types": "*",
-    "@8f4e/project-preparser": "*",
-    "@8f4e/sprite-generator": "*",
-    "@8f4e/state-manager": "*",
-    "@8f4e/tokenizer": "*",
-    "glugglug": "*"
+    "@8f4e/compiler-spec": "*"
   },
   "devDependencies": {
-    "@8f4e/editor-state-testing": "*",
-    "@types/node": "24.12.4",
-    "vitest": "4.1.7"
+    "@types/node": "24.12.4"
   }
 }

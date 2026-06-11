@@ -81,7 +81,7 @@ describe('resolveProjectIncludesAsync', () => {
 		]);
 	});
 
-	it('throws structured include errors with project line numbers', async () => {
+	it('throws structured include errors with block-relative line numbers', async () => {
 		await expect(
 			resolveProjectIncludesAsync(
 				[{ id: 10, code: ['includes', 'include std/missing', 'includesEnd'] }],
@@ -89,8 +89,8 @@ describe('resolveProjectIncludesAsync', () => {
 			)
 		).rejects.toMatchObject({
 			name: 'ProjectIncludeError',
-			lineNumber: 11,
-			message: 'Parse error at line 11: unresolved include "std/missing"',
+			lineNumber: 2,
+			message: 'Parse error at line 2: unresolved include "std/missing"',
 		} satisfies Partial<ProjectIncludeError>);
 	});
 });

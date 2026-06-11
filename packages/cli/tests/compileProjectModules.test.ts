@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest';
 import compileProjectModules from '../src/compile/compileProjectModules';
 
 describe('compileProjectModules', () => {
-	it('compiles module blocks in project file order', () => {
-		expect(() =>
+	it('compiles module blocks in project file order', async () => {
+		await expect(
 			compileProjectModules(
 				[
 					{
@@ -23,11 +23,11 @@ describe('compileProjectModules', () => {
 					includeWasm: false,
 				}
 			)
-		).toThrow('Undeclared identifier: &source:0.');
+		).rejects.toThrow('Undeclared identifier: &source:0.');
 	});
 
-	it('preserves file order when module blocks are already ordered', () => {
-		const result = compileProjectModules(
+	it('preserves file order when module blocks are already ordered', async () => {
+		const result = await compileProjectModules(
 			[
 				{
 					id: 1,
@@ -53,8 +53,8 @@ describe('compileProjectModules', () => {
 		);
 	});
 
-	it('preserves explicit execution entries on compiled modules', () => {
-		const result = compileProjectModules(
+	it('preserves explicit execution entries on compiled modules', async () => {
+		const result = await compileProjectModules(
 			[
 				{
 					id: 1,
@@ -71,8 +71,8 @@ describe('compileProjectModules', () => {
 		expect(result.compiledModules?.addWorks.executionEntryName).toBe('test');
 	});
 
-	it('compiles test dependencies as ordinary blocks', () => {
-		const result = compileProjectModules(
+	it('compiles test dependencies as ordinary blocks', async () => {
+		const result = await compileProjectModules(
 			[
 				{
 					id: 1,
@@ -95,11 +95,15 @@ describe('compileProjectModules', () => {
 		expect(result.compiledModules?.dependency.executionEntryName).toBe('main');
 	});
 
-	it('compiles included function blocks with parsed project modules', () => {
-		const result = compileProjectModules(
+	it('compiles included functions resolved from includes blocks with parsed project modules', async () => {
+		const result = await compileProjectModules(
 			[
 				{
 					id: 1,
+					code: ['includes', 'include std/test/includedOne', 'includesEnd'],
+				},
+				{
+					id: 2,
 					code: ['module target', 'call includedOne', 'drop', 'moduleEnd'],
 					entry: 'main',
 				},
@@ -107,12 +111,10 @@ describe('compileProjectModules', () => {
 			{
 				compilerOptions: { startingMemoryWordAddress: 0 },
 				includeWasm: false,
-				includedFunctionBlocks: [
-					{
-						code: ['function includedOne', 'push 1', 'functionEnd int'],
-						source: { kind: 'include', includeId: 'std/test/includedOne', symbolName: 'includedOne' },
-					},
-				],
+				resolveInclude: includeId =>
+					includeId === 'std/test/includedOne'
+						? ['function includedOne', 'push 1', 'functionEnd int'].join('\n')
+						: undefined,
 			}
 		);
 
