@@ -37,8 +37,16 @@
       "path": "std/math/trig/cosine.8f4e"
     },
     {
+      "id": "std/math/trig/saw",
+      "path": "std/math/trig/saw.8f4e"
+    },
+    {
       "id": "std/math/trig/sine",
       "path": "std/math/trig/sine.8f4e"
+    },
+    {
+      "id": "std/math/trig/triangle",
+      "path": "std/math/trig/triangle.8f4e"
     },
     {
       "id": "std/memory/advancePointer",

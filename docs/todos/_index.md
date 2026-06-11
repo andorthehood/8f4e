@@ -74,6 +74,7 @@ Active todo files are listed below.
 | 450 | Generalize instruction placement config | 🟡 | 4-8h | 2026-06-08 | Make instruction placement metadata generic enough to express shared source-placement checks, starting with named prologue rules for directives and function parameters. |
 | 451 | Add pushShape instruction | 🟡 | 4-8h | 2026-06-08 | Add `pushShape <prototypeId>` so shaped modules can push effective memory addresses in prototype order and feed functions that use `paramShape`. |
 | 452 | Add Reachability-Based Function Pruning | 🟡 | 1-2d | 2026-06-10 | Replace conservative function pruning with a reachability pass so functions only called by uncalled functions are also omitted. |
+| 453 | Add indirect calls and function reference type | 🟡 | 2-4d | 2026-06-11 | Add typed function references backed by WebAssembly table indices so 8f4e can store, load, and call runtime-selected functions through `call_indirect`. |
 
 ### 🟢 Low Priority
 
