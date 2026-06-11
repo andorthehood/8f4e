@@ -1,0 +1,27 @@
+8f4e/v1
+
+includes
+include std/math/trig/cosine
+includesEnd
+
+entry test
+module cosineAssertions
+; it approximates cosine at
+; cardinal phase points.
+push 0.0
+call cosine
+call assertf 1.0
+
+push 1.570796326794896
+call cosine
+call assertf 0.0
+
+push 3.141592653589793
+call cosine
+call assertf -1.0
+
+push -1.570796326794896
+call cosine
+call assertf 0.0
+moduleEnd
+entryEnd
