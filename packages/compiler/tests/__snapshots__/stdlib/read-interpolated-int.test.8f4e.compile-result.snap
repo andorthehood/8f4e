@@ -1,0 +1,1398 @@
+{
+  "functionAst": {
+    "readInterpolated__int__float_p__int__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readInterpolated",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [],
+          "instruction": "#impure",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float*",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "itemCount",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "fraction",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "itemCount",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [],
+          "instruction": "loadFloat",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "fraction",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "readInterpolated",
+      "type": "function",
+    },
+    "readInterpolated__int__int_p__int__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readInterpolated",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [],
+          "instruction": "#impure",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int*",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "itemCount",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "fraction",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "itemCount",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [],
+          "instruction": "load",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "fraction",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "readInterpolated",
+      "type": "function",
+    },
+  },
+  "functionOverview": {
+    "readInterpolated__int__float_p__int__float": {
+      "id": "readInterpolated__int__float_p__int__float",
+      "signature": {
+        "parameters": [
+          "int",
+          "float*",
+          "int",
+          "float",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
+    "readInterpolated__int__int_p__int__float": {
+      "id": "readInterpolated__int__int_p__int__float",
+      "signature": {
+        "parameters": [
+          "int",
+          "int*",
+          "int",
+          "float",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
+  },
+  "moduleAst": {
+    "readInterpolatedIntAssertions": {
+      "id": "readInterpolatedIntAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readInterpolatedIntAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 40,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int[]",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "count(buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 0.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readInterpolated",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 15,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "count(buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 0.25,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readInterpolated",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 25,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "intermoduleIds": [],
+              "left": {
+                "referenceKind": "element-word-size",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "sizeof(buffer)",
+              },
+              "operator": "*",
+              "right": {
+                "isInteger": true,
+                "type": "literal",
+                "value": 2,
+              },
+              "type": "compile_time_expression",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "count(buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 0.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readInterpolated",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assertf",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 25,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "readInterpolatedIntAssertions": {
+      "memoryMap": {
+        "buffer": {
+          "byteAddress": 4,
+          "default": {
+            "0": 10,
+            "1": 20,
+            "2": 40,
+          },
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "buffer",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 3,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 3,
+        },
+        "pointer": {
+          "byteAddress": 16,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "pointer",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [
+      "readInterpolated__int__float_p__int__float",
+      "readInterpolated__int__int_p__int__float",
+    ],
+    "compiledModules": [
+      "readInterpolatedIntAssertions",
+    ],
+    "requiredMemoryBytes": 20,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}
