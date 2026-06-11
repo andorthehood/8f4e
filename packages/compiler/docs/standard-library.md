@@ -19,6 +19,7 @@ include std/events/risingEdge
 include std/events/hasChanged
 include std/memory/advancePointer
 include std/memory/loadAt
+include std/memory/readInterpolated
 include std/memory/storeAt
 include std/memory/wrapPointer
 includesEnd
@@ -137,6 +138,39 @@ push &buffer
 push 2
 call loadAt
 ; stack: 33
+moduleEnd
+entryEnd
+```
+
+## `std/memory/readInterpolated`
+
+Provides `readInterpolated`, which reads two adjacent circular-buffer samples and linearly interpolates between them.
+
+Available overloads:
+
+- `readInterpolated(int pointer, int* buffer, int itemCount, float fraction) -> float`
+- `readInterpolated(int pointer, float* buffer, int itemCount, float fraction) -> float`
+
+`pointer` is an untrusted computed byte address. `itemCount` is the circular buffer length in elements. `fraction` is the interpolation amount between the wrapped sample at `pointer` and the next wrapped sample.
+
+Examples:
+
+```8f4e
+includes
+include std/memory/readInterpolated
+includesEnd
+
+entry test
+module readInterpolatedExamples
+float[] buffer 3 10.0 20.0 40.0
+int pointer &buffer
+
+push pointer
+push &buffer
+push count(buffer)
+push 0.5
+call readInterpolated
+; stack: 15.0
 moduleEnd
 entryEnd
 ```
