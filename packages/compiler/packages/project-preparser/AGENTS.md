@@ -1,6 +1,6 @@
 # Project Preparser Package Guidelines
 
-This file extends the root guidance for `packages/project-preparser`.
+This file extends the root and compiler package guidance for `packages/compiler/packages/project-preparser`.
 
 ## Package Scope
 

@@ -1,6 +1,6 @@
 {
 	"name": "@8f4e/project-preparser",
-	"sourceRoot": "packages/project-preparser/src",
+	"sourceRoot": "packages/compiler/packages/project-preparser/src",
 	"projectType": "library",
 	"targets": {
 		"build": {
@@ -14,7 +14,7 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "biome check --write packages/project-preparser/src packages/project-preparser/tests",
+				"command": "biome check --write packages/compiler/packages/project-preparser/src packages/compiler/packages/project-preparser/tests",
 				"cwd": "{workspaceRoot}"
 			}
 		},

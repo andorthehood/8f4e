@@ -3,9 +3,9 @@ import { defineWorkspace } from 'vitest/config';
 export default defineWorkspace([
 	'vitest.config.ts',
 	'packages/compiler/vitest.config.ts',
+	'packages/compiler/packages/project-preparser/vitest.config.ts',
 	'packages/compiler/packages/tokenizer/vitest.config.ts',
 	'packages/compiler-worker/vitest.config.ts',
-	'packages/project-preparser/vitest.config.ts',
 	'packages/editor/vitest.config.ts',
 	'packages/editor/packages/editor-state/vitest.config.ts',
 	'packages/editor/packages/sprite-generator/vitest.config.ts',
