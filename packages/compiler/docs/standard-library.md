@@ -12,6 +12,7 @@ Add an `includes` block near the top of the project, after the `8f4e/v1` header 
 
 includes
 include std/math/clamp
+include std/math/fract
 include std/math/pow2
 include std/bitwise/extractBit
 include std/bitwise/extractByte
@@ -22,6 +23,8 @@ include std/memory/loadAt
 include std/memory/readInterpolated
 include std/memory/storeAt
 include std/memory/wrapPointer
+include std/stack/dup
+include std/stack/swap
 includesEnd
 
 entry main
@@ -37,6 +40,59 @@ same function name.
 Includes are resolved during project loading. The CLI loads the shipped standard library files from the installed
 package, while browser-based tools load those same files lazily. The compiler receives the included source as ordinary
 function blocks, so overload resolution, stack typing, and `call` behavior are the same as user-defined functions.
+
+## `std/stack/dup`
+
+Provides `dup`, which duplicates the top stack value.
+
+Available overloads:
+
+- `dup(int value) -> int int`
+- `dup(float value) -> float float`
+
+Examples:
+
+```8f4e
+includes
+include std/stack/dup
+includesEnd
+
+entry test
+module dupExamples
+push 42
+call dup
+; stack: 42, 42
+moduleEnd
+entryEnd
+```
+
+## `std/stack/swap`
+
+Provides `swap`, which exchanges the top two stack values.
+
+Available overloads:
+
+- `swap(int first, int second) -> int int`
+- `swap(int first, float second) -> float int`
+- `swap(float first, int second) -> int float`
+- `swap(float first, float second) -> float float`
+
+Examples:
+
+```8f4e
+includes
+include std/stack/swap
+includesEnd
+
+entry test
+module swapExamples
+push 1
+push 2.5
+call swap
+; stack: 2.5, 1
+moduleEnd
+entryEnd
+```
 
 ## `std/memory/wrapPointer`
 
@@ -232,6 +288,32 @@ push 0.5
 push 1.0
 call clamp
 ; stack: 0.5
+moduleEnd
+entryEnd
+```
+
+## `std/math/fract`
+
+Provides `fract`, which returns the fractional part of a float by subtracting its integer-truncated value.
+
+Available overloads:
+
+- `fract(float value) -> float`
+
+This helper is intended for positive values, such as fractional sample offsets. For negative inputs, the result follows integer truncation rather than positive modulo wrapping.
+
+Examples:
+
+```8f4e
+includes
+include std/math/fract
+includesEnd
+
+entry test
+module fractExamples
+push 3.25
+call fract
+; stack: 0.25
 moduleEnd
 entryEnd
 ```

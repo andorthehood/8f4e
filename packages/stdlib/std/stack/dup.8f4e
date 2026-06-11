@@ -1,0 +1,15 @@
+function dup
+param int value
+
+push value
+push value
+
+functionEnd int int
+
+function dup
+param float value
+
+push value
+push value
+
+functionEnd float float
