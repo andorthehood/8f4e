@@ -1,0 +1,71 @@
+function advancePointer
+#impure
+; Advances an int pointer by
+; one element and wraps it
+; within the circular buffer.
+param int** pointer
+param int* buffer
+param int itemCount
+
+local int byteLength
+
+push itemCount
+push sizeof(*buffer)
+mul
+localSet byteLength
+
+push pointer
+push buffer
+push *pointer
+push sizeof(*buffer)
+add
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+store
+
+functionEnd
+
+function advancePointer
+#impure
+; Advances a float pointer by
+; one element and wraps it
+; within the circular buffer.
+param float** pointer
+param float* buffer
+param int itemCount
+
+local int byteLength
+
+push itemCount
+push sizeof(*buffer)
+mul
+localSet byteLength
+
+push pointer
+push buffer
+push *pointer
+push sizeof(*buffer)
+add
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+store
+
+functionEnd
