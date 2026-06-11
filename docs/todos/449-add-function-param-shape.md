@@ -165,9 +165,9 @@ float* b
 
 ## Affected Components
 
-- `packages/compiler-spec/src/instructionSpecs.ts` - add `paramShape` instruction metadata.
-- `packages/compiler-spec/src/ast.ts` - represent `paramShape` source lines.
-- `packages/compiler-spec/src/compiled.ts` - expose compiler-derived `paramShape` expansion metadata for consumers.
+- `packages/compiler/packages/compiler-spec/src/instructionSpecs.ts` - add `paramShape` instruction metadata.
+- `packages/compiler/packages/compiler-spec/src/ast.ts` - represent `paramShape` source lines.
+- `packages/compiler/packages/compiler-spec/src/compiled.ts` - expose compiler-derived `paramShape` expansion metadata for consumers.
 - `packages/compiler/packages/tokenizer/src/sourceBlockASTBuilder.ts` - preserve `paramShape` source lines in function ASTs.
 - `packages/compiler/src/compileSubProgram.ts` - make prototype metadata available during function metadata collection.
 - `packages/compiler/src/semantic/buildNamespace.ts` - expand `paramShape` during function metadata collection or shared helper code.

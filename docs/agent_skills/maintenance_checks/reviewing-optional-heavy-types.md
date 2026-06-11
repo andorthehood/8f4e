@@ -40,26 +40,26 @@ Prioritize a type for review when several of these are true:
 Start with a coarse optional-field sweep:
 
 ```sh
-rg -n "interface |type .*=" packages/compiler-spec/src packages/compiler/src -g '*.ts'
-rg -n "\\?:" packages/compiler-spec/src packages/compiler/src -g '*.ts'
+rg -n "interface |type .*=" packages/compiler/packages/compiler-spec/src packages/compiler/src -g '*.ts'
+rg -n "\\?:" packages/compiler/packages/compiler-spec/src packages/compiler/src -g '*.ts'
 ```
 
 Search for fallback behavior that may exist only because types are too loose:
 
 ```sh
-rg -n "\\?\\.|\\?\\?|!|as unknown|as any|Partial<|Pick<|Record<string" packages/compiler-spec/src packages/compiler/src -g '*.ts'
+rg -n "\\?\\.|\\?\\?|!|as unknown|as any|Partial<|Pick<|Record<string" packages/compiler/packages/compiler-spec/src packages/compiler/src -g '*.ts'
 ```
 
 Search for flag-plus-optional-field patterns:
 
 ```sh
-rg -n "is[A-Z]|has[A-Z]|kind|type|defaultSet|mode|phase|state" packages/compiler-spec/src packages/compiler/src -g '*.ts'
+rg -n "is[A-Z]|has[A-Z]|kind|type|defaultSet|mode|phase|state" packages/compiler/packages/compiler-spec/src packages/compiler/src -g '*.ts'
 ```
 
 Search for fields that tend to travel as a group:
 
 ```sh
-rg -n "pointee|address|memoryIndex|memoryRegionName|byteAddress|wordAlignedSize|isInteger|isFloat64" packages/compiler-spec/src packages/compiler/src -g '*.ts'
+rg -n "pointee|address|memoryIndex|memoryRegionName|byteAddress|wordAlignedSize|isInteger|isFloat64" packages/compiler/packages/compiler-spec/src packages/compiler/src -g '*.ts'
 ```
 
 For a quick ranked list, use a small script from the repo root:
@@ -69,7 +69,7 @@ node - <<'NODE'
 const fs = require('fs');
 const path = require('path');
 
-const roots = ['packages/compiler-spec/src', 'packages/compiler/src'];
+const roots = ['packages/compiler/packages/compiler-spec/src', 'packages/compiler/src'];
 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
@@ -183,7 +183,7 @@ Leave the type broad when:
 After a split, search for old optional fields and broad fallback patterns:
 
 ```sh
-rg -n "oldFieldName|oldFlagName|\\?\\.|\\?\\?|!|as unknown|as any" packages/compiler-spec/src packages/compiler/src -g '*.ts'
+rg -n "oldFieldName|oldFlagName|\\?\\.|\\?\\?|!|as unknown|as any" packages/compiler/packages/compiler-spec/src packages/compiler/src -g '*.ts'
 ```
 
 For compiler-spec changes, run the narrowest meaningful checks first, then broaden based on affected packages:
