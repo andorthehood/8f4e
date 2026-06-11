@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "advancePhase__float_p__float__float": {
+    "advancePhase__float_p__float__int": {
       "lines": [
         {
           "arguments": [
@@ -58,7 +58,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "float",
+              "value": "int",
             },
             {
               "referenceKind": "plain",
@@ -179,6 +179,10 @@
         },
         {
           "arguments": [],
+          "instruction": "castToFloat",
+        },
+        {
+          "arguments": [],
           "instruction": "ensureNonZero",
         },
         {
@@ -285,13 +289,13 @@
     },
   },
   "functionOverview": {
-    "advancePhase__float_p__float__float": {
-      "id": "advancePhase__float_p__float__float",
+    "advancePhase__float_p__float__int": {
+      "id": "advancePhase__float_p__float__int",
       "signature": {
         "parameters": [
           "float*",
           "float",
-          "float",
+          "int",
         ],
         "returns": [
           "float",
@@ -357,7 +361,7 @@
         {
           "arguments": [
             {
-              "isInteger": false,
+              "isInteger": true,
               "type": "literal",
               "value": 4,
             },
@@ -444,7 +448,7 @@
         {
           "arguments": [
             {
-              "isInteger": false,
+              "isInteger": true,
               "type": "literal",
               "value": 4,
             },
@@ -536,7 +540,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "advancePhase__float_p__float__float",
+      "advancePhase__float_p__float__int",
     ],
     "compiledModules": [
       "advancePhaseAssertions",

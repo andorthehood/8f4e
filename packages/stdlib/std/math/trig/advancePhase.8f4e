@@ -4,7 +4,7 @@ function advancePhase
 ; and wraps from PI to -PI.
 param float* phase
 param float frequency
-param float sampleRate
+param int sampleRate
 
 const PI 3.141592653589793
 const NEG_PI -3.141592653589793
@@ -17,6 +17,7 @@ sub
 push frequency
 mul
 push sampleRate
+castToFloat
 ensureNonZero
 div
 add
