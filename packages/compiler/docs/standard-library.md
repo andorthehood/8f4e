@@ -17,6 +17,7 @@ include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
 include std/events/hasChanged
+include std/memory/advancePointer
 include std/memory/loadAt
 include std/memory/storeAt
 include std/memory/wrapPointer
@@ -77,6 +78,38 @@ push &buffer
 push ITEM_COUNT
 call wrapPointer
 ; stack: buffer&
+moduleEnd
+entryEnd
+```
+
+## `std/memory/advancePointer`
+
+Provides `advancePointer`, which advances a mutable pointer by one element and wraps it within a circular buffer.
+
+Available overloads:
+
+- `advancePointer(int** pointer, int* buffer, int itemCount) -> void`
+- `advancePointer(float** pointer, float* buffer, int itemCount) -> void`
+
+`itemCount` is the circular buffer length in elements. The pointer argument is the address of the pointer variable to mutate.
+
+Examples:
+
+```8f4e
+includes
+include std/memory/advancePointer
+includesEnd
+
+entry test
+module advancePointerExamples
+float[] buffer 4
+float* pointer &buffer
+
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+; pointer is &buffer + sizeof(buffer)
 moduleEnd
 entryEnd
 ```
