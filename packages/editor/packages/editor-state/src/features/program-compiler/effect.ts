@@ -1,8 +1,8 @@
 import type { CompileInput, CompilerDiagnostic, Module } from '@8f4e/compiler-spec';
-import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
+import { documentBlockInstructionByType, ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, InfoRecord, Project, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { isCompilableBlockType } from '@8f4e/tokenizer';
+import { isCompilableBlockType, ProjectIncludeError, resolveProjectIncludesAsync } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 import { log } from '../logger/logger';
@@ -12,6 +12,7 @@ const moduleBlockType = documentBlockInstructionByType.module.type;
 const constantsBlockType = documentBlockInstructionByType.constants.type;
 const functionBlockType = documentBlockInstructionByType.function.type;
 const prototypeBlockType = documentBlockInstructionByType.prototype.type;
+const includesBlockType = documentBlockInstructionByType.includes.type;
 
 function toCompilerModule(block: CodeBlockGraphicData): Module {
 	return {
@@ -69,6 +70,52 @@ export function flattenProjectForCompiler(
 	return { entries, constants, functions, prototypes };
 }
 
+function createIncludesDiagnostic(
+	block: CodeBlockGraphicData,
+	lineNumber: number,
+	message: string
+): CompilerDiagnostic {
+	return {
+		code: ErrorCode.UNKNOWN_ERROR,
+		message,
+		line: { lineNumber },
+		context: {
+			projectBlockId: block.creationIndex,
+		},
+	};
+}
+
+async function resolveIncludedFunctionBlocksFromCurrentIncludes(
+	codeBlocks: CodeBlockGraphicData[],
+	resolveInclude: State['callbacks']['resolveInclude']
+): Promise<Module[] | undefined> {
+	if (!resolveInclude) {
+		return undefined;
+	}
+
+	const includesBlocks = codeBlocks.filter(block => !block.disabled && block.blockType === includesBlockType);
+	if (includesBlocks.length === 0) {
+		return undefined;
+	}
+
+	const includedFunctionBlocks: Module[] = [];
+
+	for (const block of includesBlocks) {
+		try {
+			includedFunctionBlocks.push(
+				...(await resolveProjectIncludesAsync([{ id: 1, code: block.code }], resolveInclude))
+			);
+		} catch (error) {
+			if (error instanceof ProjectIncludeError) {
+				throw createIncludesDiagnostic(block, error.lineNumber, error.message);
+			}
+			throw error;
+		}
+	}
+
+	return includedFunctionBlocks;
+}
+
 export default function compiler(store: StateManager<State>) {
 	const state = store.getState();
 	registerRecompileDebounceDelayEditorConfigValidator(store);
@@ -87,11 +134,6 @@ export default function compiler(store: StateManager<State>) {
 
 	async function onForceCompile() {
 		scheduleRecompile.cancel();
-
-		const compilerInput = flattenProjectForCompiler(
-			state.codeBlockRendering.codeBlocks,
-			state.initialProjectState?.includedFunctionBlocks
-		);
 		const compilationStart = performance.now();
 
 		store.set('compiler.isCompiling', true);
@@ -108,6 +150,11 @@ export default function compiler(store: StateManager<State>) {
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
+			const includedFunctionBlocks = await resolveIncludedFunctionBlocksFromCurrentIncludes(
+				state.codeBlockRendering.codeBlocks,
+				state.callbacks.resolveInclude
+			);
+			const compilerInput = flattenProjectForCompiler(state.codeBlockRendering.codeBlocks, includedFunctionBlocks);
 
 			const result = await state.callbacks.compileCode(compilerInput, compilerOptions);
 			const compilationTimeMs = performance.now() - compilationStart;
@@ -174,13 +221,15 @@ export default function compiler(store: StateManager<State>) {
 			return;
 		}
 
-		if (!isCompilableBlockType(state.codeBlockRendering.selectedCodeBlock?.blockType)) {
+		const blockType = state.codeBlockRendering.selectedCodeBlock?.blockType;
+		if (!isCompilableBlockType(blockType) && blockType !== includesBlockType) {
 			return;
 		}
 		scheduleRecompile();
 	});
 	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', () => {
-		if (!isCompilableBlockType(state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit?.blockType)) {
+		const blockType = state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit?.blockType;
+		if (!isCompilableBlockType(blockType) && blockType !== includesBlockType) {
 			return;
 		}
 		scheduleRecompile();

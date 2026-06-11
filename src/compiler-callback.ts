@@ -44,6 +44,16 @@ export async function compileCode(
 
 		compilerWorker.addEventListener('message', handleMessage, { once: true });
 
+		console.log(
+			'[Compiler] Functions sent to compiler:',
+			input.functions.map((func, index) => ({
+				index,
+				projectBlockId: func.projectBlockId,
+				firstLine: func.code[0],
+			})),
+			input.functions
+		);
+
 		compilerWorker.postMessage({
 			type: 'compile',
 			payload: {
