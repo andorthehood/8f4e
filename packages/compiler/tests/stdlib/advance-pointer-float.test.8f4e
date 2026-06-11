@@ -1,0 +1,42 @@
+8f4e/v1
+
+includes
+include std/memory/advancePointer
+includesEnd
+
+entry test
+module advancePointerFloatAssertions
+; it advances and wraps a
+; mutable float pointer within a
+; circular buffer.
+float[] buffer 3 1.0
+float* pointer &buffer
+
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+push pointer
+push &buffer+sizeof(buffer)
+call assert
+
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+push pointer
+push buffer&
+call assert
+
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+push pointer
+push &buffer
+call assert
+moduleEnd
+entryEnd

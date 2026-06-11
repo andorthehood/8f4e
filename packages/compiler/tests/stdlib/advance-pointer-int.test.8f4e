@@ -1,0 +1,42 @@
+8f4e/v1
+
+includes
+include std/memory/advancePointer
+includesEnd
+
+entry test
+module advancePointerIntAssertions
+; it advances and wraps a
+; mutable int pointer within a
+; circular buffer.
+int[] buffer 3 1
+int* pointer &buffer
+
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+push pointer
+push &buffer+sizeof(buffer)
+call assert
+
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+push pointer
+push buffer&
+call assert
+
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+push pointer
+push &buffer
+call assert
+moduleEnd
+entryEnd
