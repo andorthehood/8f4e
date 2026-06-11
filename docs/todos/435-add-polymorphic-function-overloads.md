@@ -127,9 +127,9 @@ Implemented in PR #784.
 
 ## Affected Components
 
-- `packages/compiler-spec/src/ast.ts` - function AST identity/name metadata.
-- `packages/compiler-spec/src/compiled.ts` - function metadata and compiled function contracts.
-- `packages/compiler-spec/src/functionTypes.ts` - signature utilities and type identity helpers.
+- `packages/compiler/packages/compiler-spec/src/ast.ts` - function AST identity/name metadata.
+- `packages/compiler/packages/compiler-spec/src/compiled.ts` - function metadata and compiled function contracts.
+- `packages/compiler/packages/compiler-spec/src/functionTypes.ts` - signature utilities and type identity helpers.
 - `packages/compiler/src/semantic/buildNamespace.ts` - overload collection and duplicate validation.
 - `packages/compiler/src/semantic/normalization/call.ts` - source-name call target lookup.
 - `packages/compiler/src/stackAnalysis/analyzeInstruction.ts` - stack-based overload resolution.

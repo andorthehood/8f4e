@@ -12,7 +12,7 @@ completed: null
 
 ## Problem Description
 
-Instruction placement rules live in `packages/compiler-spec/src/instructionSpecs.ts`, and the tokenizer already enforces
+Instruction placement rules live in `packages/compiler/packages/compiler-spec/src/instructionSpecs.ts`, and the tokenizer already enforces
 many of them generically: source-block ownership, nested block requirements, disallowed nested blocks, and block
 parent/closure rules.
 
@@ -87,7 +87,7 @@ Avoid encoding behavior in instruction names. The tokenizer should consume decla
 
 ### Step 1: Model Generic Placement Rules
 
-- Extend `InstructionPlacement` in `packages/compiler-spec/src/instructionSpecs.ts` with reusable placement rule shapes.
+- Extend `InstructionPlacement` in `packages/compiler/packages/compiler-spec/src/instructionSpecs.ts` with reusable placement rule shapes.
 - Add named prologue placement as the first new rule, but keep the model open to other source-order checks.
 - Decide whether prologue state should be named by string literals such as `block-directives` and `function-params`.
 - Keep the API reusable for future placement constraints instead of tying it to directive or parameter names.
@@ -131,7 +131,7 @@ Avoid encoding behavior in instruction names. The tokenizer should consume decla
 
 ## Affected Components
 
-- `packages/compiler-spec/src/instructionSpecs.ts` - add generic placement metadata for source-order rules.
+- `packages/compiler/packages/compiler-spec/src/instructionSpecs.ts` - add generic placement metadata for source-order rules.
 - `packages/compiler/packages/tokenizer/src/mainTokenizerLoop.ts` - enforce generic prologue placement.
 - `packages/compiler/packages/tokenizer/src/index.test.ts` - add parser placement coverage.
 - `packages/compiler/src/instructionCompilers/param.ts` - remove stale placement check.

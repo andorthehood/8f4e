@@ -55,7 +55,7 @@ Because the project is not released yet, update callers directly and do not keep
 
 ### Step 1: Rename the allocation-unit constant
 
-- Rename `GLOBAL_ALIGNMENT_BOUNDARY` to `ALLOCATION_UNIT_BYTE_SIZE` in `packages/compiler-spec/src/constants.ts`.
+- Rename `GLOBAL_ALIGNMENT_BOUNDARY` to `ALLOCATION_UNIT_BYTE_SIZE` in `packages/compiler/packages/compiler-spec/src/constants.ts`.
 - Update all imports and calculations that divide or multiply by the 4-byte allocation unit.
 - Keep the numeric value unchanged.
 
@@ -79,7 +79,7 @@ Because the project is not released yet, update callers directly and do not keep
 
 ## Validation Checkpoints
 
-- `rg -n "GLOBAL_ALIGNMENT_BOUNDARY|wordAlignedAddress|wordAlignedSize|currentModuleNextWordOffset|currentModuleWordAlignedSize" packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'`
+- `rg -n "GLOBAL_ALIGNMENT_BOUNDARY|wordAlignedAddress|wordAlignedSize|currentModuleNextWordOffset|currentModuleWordAlignedSize" packages/compiler/packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'`
 - `npx nx run @8f4e/compiler-spec:typecheck`
 - `npx nx run compiler:typecheck`
 - `npx nx run compiler:test`
@@ -94,10 +94,10 @@ Because the project is not released yet, update callers directly and do not keep
 
 ## Affected Components
 
-- `packages/compiler-spec/src/constants.ts` - allocation unit byte-size constant.
-- `packages/compiler-spec/src/memory.ts` - memory layout metadata.
-- `packages/compiler-spec/src/semantic.ts` - compilation context layout counters.
-- `packages/compiler-spec/src/compiled.ts` - compiled module layout metadata.
+- `packages/compiler/packages/compiler-spec/src/constants.ts` - allocation unit byte-size constant.
+- `packages/compiler/packages/compiler-spec/src/memory.ts` - memory layout metadata.
+- `packages/compiler/packages/compiler-spec/src/semantic.ts` - compilation context layout counters.
+- `packages/compiler/packages/compiler-spec/src/compiled.ts` - compiled module layout metadata.
 - `packages/compiler/src/semantic/` - declaration layout and namespace construction.
 - `packages/compiler/src/initialMemoryDataSegments/` - segment sizing from allocation-unit counts.
 - `packages/compiler/src/**/__tests__` and `packages/compiler/tests/**` - tests that construct or assert layout metadata.
