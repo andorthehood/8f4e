@@ -1,0 +1,42 @@
+8f4e/v1
+
+includes
+include std/memory/decrementPointer
+includesEnd
+
+entry test
+module decrementPointerIntAssertions
+; it decrements and wraps a
+; mutable int pointer within a
+; circular buffer.
+int[] buffer 3 1
+int* pointer &buffer
+
+push &pointer
+push &buffer
+push count(buffer)
+call decrementPointer
+
+push pointer
+push buffer&
+call assert
+
+push &pointer
+push &buffer
+push count(buffer)
+call decrementPointer
+
+push pointer
+push &buffer+sizeof(buffer)
+call assert
+
+push &pointer
+push &buffer
+push count(buffer)
+call decrementPointer
+
+push pointer
+push &buffer
+call assert
+moduleEnd
+entryEnd
