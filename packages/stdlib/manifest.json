@@ -39,6 +39,14 @@
     {
       "id": "std/memory/wrapPointer",
       "path": "std/memory/wrapPointer.8f4e"
+    },
+    {
+      "id": "std/stack/dup",
+      "path": "std/stack/dup.8f4e"
+    },
+    {
+      "id": "std/stack/swap",
+      "path": "std/stack/swap.8f4e"
     }
   ]
 }
