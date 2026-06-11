@@ -22,16 +22,10 @@ describe('serializeProjectTo8f4e', () => {
 		expect(result).toContain('moduleEnd\nentryEnd');
 	});
 
-	it('serializes the visible includes block from code blocks and ignores include metadata', () => {
+	it('serializes the visible includes block from code blocks', () => {
 		const visibleIncludesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];
 		const project = {
 			codeBlocks: [{ code: visibleIncludesBlock }, { code: validBlock, entry: 'main' }],
-			includedFunctionBlocks: [
-				{
-					code: ['function hasChanged', 'functionEnd int'],
-					source: { kind: 'include' as const, includeId: 'std/events/hasChanged', symbolName: 'hasChanged' },
-				},
-			],
 		};
 
 		expect(serializeProjectTo8f4e(project)).toBe(

@@ -1,10 +1,11 @@
-import { parse8f4eProject, pickProjectCompilerBlocks } from '@8f4e/tokenizer';
+import { prepareCompilerInputFromProjectSourceAsync } from '@8f4e/project-preparser';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { describe, expect, test } from 'vitest';
 
 import compile, { serializeDiagnostic } from '../src';
+import { resolveStdlibInclude } from './stdlibResolver';
 
 const errorRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), 'errors');
 const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
@@ -39,21 +40,14 @@ async function collectErrorFiles(directory: string): Promise<string[]> {
 
 async function compileErrorFixture(filePath: string) {
 	const source = await fs.readFile(filePath, 'utf8');
-	const project = parse8f4eProject(source);
-	const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks(project);
+	const compilerInput = await prepareCompilerInputFromProjectSourceAsync(source, {
+		resolveInclude: resolveStdlibInclude,
+	});
 
-	return compile(
-		{
-			entries,
-			constants: constantsBlocks,
-			functions: functionBlocks,
-			prototypes: prototypeBlocks,
-		},
-		{
-			disableSharedMemory: true,
-			memoryRegions: getTestMemoryRegions(source),
-		}
-	);
+	return compile(compilerInput, {
+		disableSharedMemory: true,
+		memoryRegions: getTestMemoryRegions(source),
+	});
 }
 
 function getErrorSnapshotPath(filePath: string): string {

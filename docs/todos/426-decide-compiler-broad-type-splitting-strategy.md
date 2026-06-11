@@ -73,8 +73,8 @@ Prefer a staged plan over one large refactor. The likely order is:
 
 ## Validation Checkpoints
 
-- `rg -n "interface (DataStructure|LocalBinding|CompilationContext|MapBlockState|CollectedNamespace)|type Const|NormalizedArgumentLiteral|interface StackItem" packages/compiler-spec/src -g '*.ts'`
-- `rg -n "\\?\\.|!|pointeeBaseType|isPointingToPointer|defaultSet|defaultIs|memory\\?\\[|byteAddress\\?|wordAlignedSize\\?" packages/compiler/src packages/compiler-spec/src -g '*.ts'`
+- `rg -n "interface (DataStructure|LocalBinding|CompilationContext|MapBlockState|CollectedNamespace)|type Const|NormalizedArgumentLiteral|interface StackItem" packages/compiler/packages/compiler-spec/src -g '*.ts'`
+- `rg -n "\\?\\.|!|pointeeBaseType|isPointingToPointer|defaultSet|defaultIs|memory\\?\\[|byteAddress\\?|wordAlignedSize\\?" packages/compiler/src packages/compiler/packages/compiler-spec/src -g '*.ts'`
 - Confirm the resulting plan does not require editing unrelated editor/runtime packages unless the shared compiler-spec contract truly crosses that boundary.
 
 ## Success Criteria
@@ -86,8 +86,8 @@ Prefer a staged plan over one large refactor. The likely order is:
 
 ## Affected Components
 
-- `packages/compiler-spec/src/semantic.ts` - shared semantic contracts for stack, locals, context, maps, namespaces, and constants.
-- `packages/compiler-spec/src/memory.ts` - `DataStructure` and memory value/default metadata.
+- `packages/compiler/packages/compiler-spec/src/semantic.ts` - shared semantic contracts for stack, locals, context, maps, namespaces, and constants.
+- `packages/compiler/packages/compiler-spec/src/memory.ts` - `DataStructure` and memory value/default metadata.
 - `packages/compiler/src/stackAnalysis/` - stack item production, consumption, and map validation.
 - `packages/compiler/src/semantic/` - namespace collection, compile-time argument normalization, and memory declaration metadata.
 - `packages/compiler/src/instructionCompilers/` - codegen consumers that currently rely on broad metadata shapes.

@@ -48,8 +48,8 @@ entryEnd
 		expect(memory[marker.wordAlignedAddress]).toBe(123);
 	});
 
-	test('keeps sparse array initializers compact in the emitted wasm', () => {
-		const { compileResult } = compileFixtureProgramSource(`
+	test('keeps sparse array initializers compact in the emitted wasm', async () => {
+		const { compileResult } = await compileFixtureProgramSource(`
 8f4e/v1
 
 entry main
@@ -63,7 +63,7 @@ entryEnd
 	});
 
 	test('emits memory.fill before loading passive data defaults', async () => {
-		const { compileResult } = compileFixtureProgramSource(`
+		const { compileResult } = await compileFixtureProgramSource(`
 8f4e/v1
 
 entry main

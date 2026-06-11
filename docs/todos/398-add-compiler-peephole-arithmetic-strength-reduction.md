@@ -40,7 +40,7 @@ Add a small codegen-level peephole optimization path for integer arithmetic.
 ## Implementation Plan
 
 ### Step 1: Add bytecode provenance for stack constants
-- Extend `StackItem` in `packages/compiler-spec/src/semantic.ts` with narrow provenance metadata for compiler-emitted constants, such as `constantByteCodeLength` or a bytecode span.
+- Extend `StackItem` in `packages/compiler/packages/compiler-spec/src/semantic.ts` with narrow provenance metadata for compiler-emitted constants, such as `constantByteCodeLength` or a bytecode span.
 - Set that metadata in `packages/compiler/src/instructionCompilers/push/handlers/pushLiteral.ts` for integer literals.
 - Ensure locals, memory loads, calls, and non-folded arithmetic do not inherit removable-constant provenance accidentally.
 
@@ -87,7 +87,7 @@ Add a small codegen-level peephole optimization path for integer arithmetic.
 
 ## Affected Components
 
-- `packages/compiler-spec/src/semantic.ts` - Stack item bytecode provenance metadata.
+- `packages/compiler/packages/compiler-spec/src/semantic.ts` - Stack item bytecode provenance metadata.
 - `packages/compiler/src/instructionCompilers/push/handlers/pushLiteral.ts` - Mark removable integer constants.
 - `packages/compiler/src/utils/knownIntegerValue.ts` - Reuse existing known-value helpers and guards.
 - `packages/compiler/src/utils/compilation.ts` or a new utility file - Safe bytecode-tail rewrite helpers.

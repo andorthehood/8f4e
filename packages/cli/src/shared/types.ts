@@ -1,13 +1,19 @@
 import type { CompiledFunctionLookup, CompiledModuleLookup, CompileOptions } from '@8f4e/compiler-spec';
-import type { ProjectBlockType, ProjectCodeBlock, ProjectInput } from '@8f4e/tokenizer';
+import type {
+	ProjectBlock,
+	ProjectBlockType,
+	ProjectDocument,
+	ProjectIncludeResolverAsync,
+} from '@8f4e/project-preparser';
 
-export type { ProjectCodeBlock, ProjectInput };
+export type { ProjectBlock, ProjectDocument };
 
 export interface CompileProjectOptions {
 	compilerOptions?: Partial<CompileOptions>;
 	includeModules?: boolean;
 	includeWasm?: boolean;
 	includeFunctions?: boolean;
+	resolveInclude?: ProjectIncludeResolverAsync;
 }
 
 export interface CompileProjectResult {

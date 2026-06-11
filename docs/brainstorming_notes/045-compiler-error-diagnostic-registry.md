@@ -24,7 +24,7 @@ That keeps `compiler-spec` as the source of truth for diagnostics while avoiding
 
 ## Current shape
 
-Semantic compiler codes live in `packages/compiler-spec/src/errors.ts`.
+Semantic compiler codes live in `packages/compiler/packages/compiler-spec/src/errors.ts`.
 
 Semantic error objects are currently constructed in `packages/compiler/src/compilerError.ts` by a large `getError(...)` switch. Most cases only differ by a static message, with a few dynamic cases using details such as an identifier or the current stack.
 
@@ -114,4 +114,3 @@ That keeps the spec registry stable and avoids making it understand the full `Co
 3. Add a test that every `ErrorCode` has a definition.
 4. Convert dynamic message cases to structured details.
 5. Expose the registry to editor-facing code when diagnostic UI or syntax-highlighter help needs it.
-

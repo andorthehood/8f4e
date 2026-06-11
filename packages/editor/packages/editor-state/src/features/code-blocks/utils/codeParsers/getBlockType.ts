@@ -1,5 +1,5 @@
 import type { CodeBlockType } from '@8f4e/editor-state-types';
-import { getDocumentProjectBlockType } from '@8f4e/tokenizer';
+import { getDocumentProjectBlockType } from '@8f4e/project-preparser';
 
 /**
  * Detects whether a block of code represents a module, config, function, note, or unknown block by scanning for marker pairs.

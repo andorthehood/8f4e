@@ -1,8 +1,7 @@
 import type { BrowserLocalNoteStorageBlock, Project } from '@8f4e/editor';
-import { parse8f4eToProjectAsync } from '@8f4e/editor-state';
+import { parse8f4eToProject } from '@8f4e/editor-state';
 import { getCodeBuffer } from './compiler-callback';
 import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
-import { resolveStdlibInclude } from './stdlib-resolver';
 
 // Storage key constants
 const STORAGE_KEYS = {
@@ -21,9 +20,7 @@ export async function loadSession(): Promise<Project | null> {
 			window.history.replaceState({}, '', cleanUrl);
 
 			console.log('Loading project from query param:', projectUrlFromQuery);
-			return parse8f4eToProjectAsync(await getProject(projectUrlFromQuery), {
-				resolveInclude: resolveStdlibInclude,
-			});
+			return parse8f4eToProject(await getProject(projectUrlFromQuery));
 		}
 
 		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
@@ -35,9 +32,7 @@ export async function loadSession(): Promise<Project | null> {
 		const defaultProjectUrl = await getDefaultProjectUrl();
 		if (defaultProjectUrl) {
 			console.log(`Loading default project: ${defaultProjectUrl}`);
-			return parse8f4eToProjectAsync(await getProject(defaultProjectUrl), {
-				resolveInclude: resolveStdlibInclude,
-			});
+			return parse8f4eToProject(await getProject(defaultProjectUrl));
 		}
 
 		return null;
@@ -91,9 +86,7 @@ export async function importProject(): Promise<Project> {
 			reader.onload = async event => {
 				try {
 					const content = event.target?.result as string;
-					const project = await parse8f4eToProjectAsync(content, {
-						resolveInclude: resolveStdlibInclude,
-					});
+					const project = parse8f4eToProject(content);
 					resolve(project);
 				} catch (error) {
 					reject(new Error('Failed to parse project file: ' + error));

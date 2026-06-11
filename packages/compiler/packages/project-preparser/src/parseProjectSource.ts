@@ -1,28 +1,8 @@
 import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
-import type { ProjectIncludeResolver, ProjectIncludeResolverAsync } from './functionIncludes';
-import { collectProjectIncludeIdsFromText, resolveProjectIncludes } from './functionIncludes';
 import { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 import { getProjectBlockName, isProjectGapLine } from './projectLines';
-import type { ProjectCodeBlock, ProjectCodeGroup, ProjectInput } from './types';
-
-export { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
-export { BLOCK_DELIMITERS, FORMAT_HEADER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
-export type { ProjectIncludeResolver, ProjectIncludeResolverAsync } from './functionIncludes';
-export {
-	collectProjectIncludeIdsFromText,
-	ProjectIncludeError,
-	resolveFunctionIncludeSource,
-	resolveProjectIncludes,
-	resolveProjectIncludesAsync,
-} from './functionIncludes';
-export { pickProjectCompilerBlocks } from './pickProjectCompilerBlocks';
-export { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
-export type {
-	ProjectBlockType,
-	ProjectCodeBlock,
-	ProjectInput,
-} from './types';
+import type { ProjectBlock, ProjectDocument, ProjectGroup } from './types';
 
 type ProjectContainerDelimiter = {
 	opener: string;
@@ -32,38 +12,29 @@ type ProjectContainerDelimiter = {
 type ProjectContainerContentOptions = {
 	entry: string;
 	container: ProjectContainerDelimiter;
-	codeBlocks: ProjectCodeBlock[];
-	groups: ProjectCodeGroup[];
+	codeBlocks: ProjectBlock[];
+	groups: ProjectGroup[];
 	validateDocumentOpener: (opener: string, line: string, lineNumber: number) => void;
 };
 
-export interface Parse8f4eProjectOptions {
-	resolveInclude?: ProjectIncludeResolver;
-}
-
-export interface Parse8f4eProjectAsyncOptions {
-	resolveInclude?: ProjectIncludeResolverAsync;
-}
-
 /**
- * Parses 8f4e project.
+ * Parses 8f4e project source into a project document.
  *
  * @param text - Project source text to parse.
- * @returns Parsed 8f4e project.
+ * @returns Parsed 8f4e project document.
  */
-export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions = {}): ProjectInput {
+export function parseProjectSource(text: string): ProjectDocument {
 	const lines = text.split('\n');
 
 	if (lines[0]?.trim() !== FORMAT_HEADER) {
 		throw new Error(`Invalid .8f4e file: expected header "${FORMAT_HEADER}", got "${lines[0]?.trim() ?? ''}"`);
 	}
 
-	const codeBlocks: ProjectCodeBlock[] = [];
-	const groups: ProjectCodeGroup[] = [];
-	const includedFunctionBlocks: NonNullable<ProjectInput['includedFunctionBlocks']> = [];
+	const codeBlocks: ProjectBlock[] = [];
+	const groups: ProjectGroup[] = [];
 	const seenEntryNames = new Set<string>();
 
-	function readProjectCodeBlock(startIndex: number, targetCodeBlocks: ProjectCodeBlock[], entry?: string): number {
+	function readProjectBlock(startIndex: number, targetCodeBlocks: ProjectBlock[], entry?: string): number {
 		const openerLine = lines[startIndex];
 		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
 		if (
@@ -134,7 +105,6 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 					code: currentBlockLines,
 				};
 				codeBlocks.push(block);
-				includedFunctionBlocks.push(...resolveProjectIncludes([block], options.resolveInclude ?? (() => undefined)));
 				return i + 1;
 			}
 			if (closer) {
@@ -143,7 +113,7 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 				);
 			}
 
-			// Include line syntax and source resolution are applied once the complete block is collected.
+			// Include line syntax and source resolution are applied during compiler input preparation.
 		}
 
 		throw new Error(`Parse error: unclosed block with opener "${INCLUDES_BLOCK_DELIMITER.opener}"`);
@@ -185,7 +155,7 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 			}
 
 			options.validateDocumentOpener(opener, trimmed, i + 1);
-			i = readProjectCodeBlock(i, options.codeBlocks, options.entry);
+			i = readProjectBlock(i, options.codeBlocks, options.entry);
 		}
 
 		throw new Error(`Parse error: unclosed block with opener "${options.container.opener}"`);
@@ -199,14 +169,14 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 		}
 	}
 
-	function readProjectGroup(startIndex: number, entry: string): { nextIndex: number; group: ProjectCodeGroup } {
+	function readProjectGroup(startIndex: number, entry: string): { nextIndex: number; group: ProjectGroup } {
 		const openerLine = lines[startIndex];
 		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
 		if (openerKeyword !== GROUP_BLOCK_DELIMITER.opener) {
 			throw new Error(`Parse error at line ${startIndex + 1}: expected group opener`);
 		}
 
-		const group: ProjectCodeGroup = {
+		const group: ProjectGroup = {
 			name: getProjectBlockName(openerLine, startIndex + 1, 'group'),
 			entry,
 			codeBlocks: [],
@@ -249,7 +219,7 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 			if (opener === GROUP_BLOCK_DELIMITER.opener) {
 				throw new Error(`Parse error at line ${i + 1}: group blocks must be inside an entry block`);
 			}
-			i = readProjectCodeBlock(i, codeBlocks);
+			i = readProjectBlock(i, codeBlocks);
 			continue;
 		}
 
@@ -277,32 +247,7 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 	return {
 		codeBlocks,
 		groups,
-		...(includedFunctionBlocks.length > 0 ? { includedFunctionBlocks } : {}),
 	};
 }
 
-/**
- * Parses 8f4e project with async include source resolution.
- *
- * @param text - Project source text to parse.
- * @returns Parsed 8f4e project.
- */
-export async function parse8f4eProjectAsync(
-	text: string,
-	options: Parse8f4eProjectAsyncOptions = {}
-): Promise<ProjectInput> {
-	if (!options.resolveInclude) {
-		return parse8f4eProject(text);
-	}
-
-	const includeSources = new Map<string, string | undefined>();
-	for (const includeId of new Set(collectProjectIncludeIdsFromText(text))) {
-		includeSources.set(includeId, await options.resolveInclude(includeId));
-	}
-
-	return parse8f4eProject(text, {
-		resolveInclude: includeId => includeSources.get(includeId),
-	});
-}
-
-export default parse8f4eProject;
+export default parseProjectSource;

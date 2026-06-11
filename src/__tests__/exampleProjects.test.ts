@@ -3,8 +3,8 @@
  */
 
 import compile from '@8f4e/compiler';
-import { parse8f4eToProjectAsync } from '@8f4e/editor-state';
-import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
+import { parse8f4eToProject } from '@8f4e/editor-state';
+import { prepareCompilerInputAsync } from '@8f4e/project-preparser';
 import { readdirSync, readFileSync } from 'fs';
 import { basename, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -39,9 +39,7 @@ async function loadProject(name: string) {
 		throw new Error(`Project fixture not found: ${name}`);
 	}
 
-	return parse8f4eToProjectAsync(readFileSync(projectPath, 'utf-8'), {
-		resolveInclude: resolveStdlibInclude,
-	});
+	return parse8f4eToProject(readFileSync(projectPath, 'utf-8'));
 }
 
 const projectNames = Array.from(projectPaths.keys()).sort();
@@ -55,22 +53,12 @@ describe('Example Projects Compilation', () => {
 		projectNames.forEach((projectName, index) => {
 			it(`should compile module blocks in project ${index}`, async () => {
 				const project = await loadProject(projectName);
-				const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
-					codeBlocks: project.codeBlocks,
-					groups: [],
-					includedFunctionBlocks: project.includedFunctionBlocks,
+				const compilerInput = await prepareCompilerInputAsync(project, {
+					resolveInclude: resolveStdlibInclude,
 				});
-				const moduleCount = Object.values(entries).reduce((sum, group) => sum + group.length, 0);
+				const moduleCount = Object.values(compilerInput.entries).reduce((sum, group) => sum + group.length, 0);
 
-				const result = compile(
-					{
-						entries,
-						constants: constantsBlocks,
-						functions: functionBlocks,
-						prototypes: prototypeBlocks,
-					},
-					COMPILER_OPTIONS
-				);
+				const result = compile(compilerInput, COMPILER_OPTIONS);
 
 				expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
 				expect(result.codeBuffer.length).toBeGreaterThan(0);

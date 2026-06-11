@@ -4,4 +4,4 @@ export {
 	getExpectedProjectCloserPrefix as getExpectedCloserPrefix,
 	getProjectCloserKeyword as getCloserKeyword,
 	getProjectOpenerKeyword as getOpenerKeyword,
-} from '@8f4e/tokenizer';
+} from '@8f4e/project-preparser';

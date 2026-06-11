@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import { getDocumentProjectBlockType } from '@8f4e/project-preparser';
 import type { StateManager } from '@8f4e/state-manager';
-import { getDocumentProjectBlockType, getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
+import { getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
 import gapCalculator from '../code-editing/gapCalculator';
 import highlightSyntax8f4e from '../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../code-editing/highlightSyntaxGlsl';

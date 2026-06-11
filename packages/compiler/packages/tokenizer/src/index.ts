@@ -1,32 +1,6 @@
 import type { ASTCache, ASTCacheEntry, ValidatedAST } from '@8f4e/compiler-spec';
 
 export { createASTCache } from './cache';
-export type {
-	Parse8f4eProjectAsyncOptions,
-	Parse8f4eProjectOptions,
-	ProjectBlockType,
-	ProjectCodeBlock,
-	ProjectIncludeResolver,
-	ProjectIncludeResolverAsync,
-	ProjectInput,
-} from './projectParsing';
-export {
-	BLOCK_DELIMITERS,
-	collectProjectIncludeIdsFromText,
-	FORMAT_HEADER,
-	getDocumentProjectBlockType,
-	getExpectedProjectCloserPrefix,
-	getProjectBlockType,
-	getProjectCloserKeyword,
-	getProjectOpenerKeyword,
-	ProjectIncludeError,
-	parse8f4eProject,
-	parse8f4eProjectAsync,
-	pickProjectCompilerBlocks,
-	resolveFunctionIncludeSource,
-	resolveProjectIncludes,
-	resolveProjectIncludesAsync,
-} from './projectParsing';
 
 import { hashSource } from './cache';
 import { mainTokenizerLoop } from './mainTokenizerLoop';

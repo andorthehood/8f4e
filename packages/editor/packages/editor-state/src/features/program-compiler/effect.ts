@@ -1,119 +1,45 @@
-import type { CompileInput, CompilerDiagnostic, Module } from '@8f4e/compiler-spec';
+import type { CompilerDiagnostic } from '@8f4e/compiler-spec';
 import { documentBlockInstructionByType, ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
-import type { CodeBlockGraphicData, InfoRecord, Project, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
+import type { ProjectBlock } from '@8f4e/project-preparser';
+import { ProjectIncludeError, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
 import type { StateManager } from '@8f4e/state-manager';
-import { isCompilableBlockType, ProjectIncludeError, resolveProjectIncludesAsync } from '@8f4e/tokenizer';
+import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 import { log } from '../logger/logger';
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
-const moduleBlockType = documentBlockInstructionByType.module.type;
-const constantsBlockType = documentBlockInstructionByType.constants.type;
-const functionBlockType = documentBlockInstructionByType.function.type;
-const prototypeBlockType = documentBlockInstructionByType.prototype.type;
 const includesBlockType = documentBlockInstructionByType.includes.type;
 
-function toCompilerModule(block: CodeBlockGraphicData): Module {
+function toProjectBlock(block: CodeBlockGraphicData): ProjectBlock {
 	return {
+		id: block.creationIndex,
 		code: block.code,
-		projectBlockId: block.creationIndex,
+		disabled: block.disabled,
+		entry: block.entry,
 	};
 }
 
 /**
- * Converts code blocks into compiler input entries plus shared functions, constants, and prototypes.
+ * Converts editor code blocks into plain project blocks in editor execution order.
  *
- * @param codeBlocks - List of code blocks to filter and sort
- * @returns Compiler input with main-entry modules sorted by grid position,
- *          and constants/functions/prototypes sorted by creationIndex.
- *          Config/shader/unknown blocks are excluded from the WASM compilation pipeline.
+ * Compiler-facing classification belongs to @8f4e/project-preparser; the editor
+ * only supplies source blocks in the order it wants the preparer to preserve.
  */
-export function flattenProjectForCompiler(
-	codeBlocks: CodeBlockGraphicData[],
-	includedFunctionBlocks: Project['includedFunctionBlocks'] = []
-): CompileInput {
-	const moduleEntries: Record<string, CodeBlockGraphicData[]> = {};
-	const constants: Module[] = [];
-	const functions: Module[] = [...includedFunctionBlocks];
-	const prototypes: Module[] = [];
-
-	const sortedEnabled = [...codeBlocks]
-		.filter(block => !block.disabled)
-		.sort((a, b) => a.creationIndex - b.creationIndex);
-
-	for (const block of sortedEnabled) {
-		if (block.blockType === moduleBlockType) {
-			if (!block.entry) {
-				throw new Error(`Module code block "${block.name}" is missing entry`);
-			}
-			const entryName = block.entry;
-			moduleEntries[entryName] ??= [];
-			moduleEntries[entryName].push(block);
-		} else if (block.blockType === constantsBlockType) {
-			constants.push(toCompilerModule(block));
-		} else if (block.blockType === functionBlockType) {
-			functions.push(toCompilerModule(block));
-		} else if (block.blockType === prototypeBlockType) {
-			prototypes.push(toCompilerModule(block));
-		}
-	}
-
-	const entries = Object.fromEntries(
-		Object.entries(moduleEntries).map(([entryName, modules]) => [
-			entryName,
-			sortCodeBlocksByGridPosition(modules).map(toCompilerModule),
-		])
-	);
-	entries.main ??= [];
-
-	return { entries, constants, functions, prototypes };
+export function toOrderedProjectBlocksForCompiler(codeBlocks: CodeBlockGraphicData[]): ProjectBlock[] {
+	return sortCodeBlocksByGridPosition(codeBlocks).map(toProjectBlock);
 }
 
-function createIncludesDiagnostic(
-	block: CodeBlockGraphicData,
-	lineNumber: number,
-	message: string
-): CompilerDiagnostic {
+function createIncludesDiagnostic(error: ProjectIncludeError): CompilerDiagnostic {
 	return {
 		code: ErrorCode.UNKNOWN_ERROR,
-		message,
-		line: { lineNumber },
+		message: error.message,
+		line: { lineNumber: error.lineNumber },
 		context: {
-			projectBlockId: block.creationIndex,
+			projectBlockId: error.projectBlockId,
 		},
 	};
-}
-
-async function resolveIncludedFunctionBlocksFromCurrentIncludes(
-	codeBlocks: CodeBlockGraphicData[],
-	resolveInclude: State['callbacks']['resolveInclude']
-): Promise<Module[] | undefined> {
-	if (!resolveInclude) {
-		return undefined;
-	}
-
-	const includesBlocks = codeBlocks.filter(block => !block.disabled && block.blockType === includesBlockType);
-	if (includesBlocks.length === 0) {
-		return undefined;
-	}
-
-	const includedFunctionBlocks: Module[] = [];
-
-	for (const block of includesBlocks) {
-		try {
-			includedFunctionBlocks.push(
-				...(await resolveProjectIncludesAsync([{ id: 1, code: block.code }], resolveInclude))
-			);
-		} catch (error) {
-			if (error instanceof ProjectIncludeError) {
-				throw createIncludesDiagnostic(block, error.lineNumber, error.message);
-			}
-			throw error;
-		}
-	}
-
-	return includedFunctionBlocks;
 }
 
 export default function compiler(store: StateManager<State>) {
@@ -150,11 +76,10 @@ export default function compiler(store: StateManager<State>) {
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
-			const includedFunctionBlocks = await resolveIncludedFunctionBlocksFromCurrentIncludes(
-				state.codeBlockRendering.codeBlocks,
-				state.callbacks.resolveInclude
+			const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(
+				toOrderedProjectBlocksForCompiler(state.codeBlockRendering.codeBlocks),
+				{ resolveInclude: state.callbacks.resolveInclude }
 			);
-			const compilerInput = flattenProjectForCompiler(state.codeBlockRendering.codeBlocks, includedFunctionBlocks);
 
 			const result = await state.callbacks.compileCode(compilerInput, compilerOptions);
 			const compilationTimeMs = performance.now() - compilationStart;
@@ -193,7 +118,8 @@ export default function compiler(store: StateManager<State>) {
 
 			store.set('compiler.isCompiling', false);
 			setCompilerInfo({ isCompiling: false });
-			const diagnostic = error as CompilerDiagnostic;
+			const diagnostic =
+				error instanceof ProjectIncludeError ? createIncludesDiagnostic(error) : (error as CompilerDiagnostic);
 
 			store.set('codeErrors.compilationErrors', [
 				{
