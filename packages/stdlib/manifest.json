@@ -29,6 +29,10 @@
       "path": "std/math/pow2.8f4e"
     },
     {
+      "id": "std/math/trig/advancePhase",
+      "path": "std/math/trig/advancePhase.8f4e"
+    },
+    {
       "id": "std/math/trig/cosine",
       "path": "std/math/trig/cosine.8f4e"
     },

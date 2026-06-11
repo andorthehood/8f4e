@@ -1,0 +1,33 @@
+8f4e/v1
+
+includes
+include std/math/trig/advancePhase
+includesEnd
+
+entry test
+module advancePhaseAssertions
+; it advances phase by one
+; sample in the [-PI, PI] range.
+float phase 0.0
+
+push &phase
+push 1.0
+push 4.0
+call advancePhase
+call assertf 1.570796326794896
+
+push phase
+call assertf 1.570796326794896
+
+; it wraps to the lower bound
+; after crossing the upper bound.
+push &phase
+push 2.0
+push 4.0
+call advancePhase
+call assertf -3.141592653589793
+
+push phase
+call assertf -3.141592653589793
+moduleEnd
+entryEnd
