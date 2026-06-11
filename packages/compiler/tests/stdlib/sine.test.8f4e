@@ -1,7 +1,7 @@
 8f4e/v1
 
 includes
-include std/math/sine
+include std/math/trig/sine
 includesEnd
 
 entry test

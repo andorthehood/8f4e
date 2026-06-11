@@ -12,10 +12,10 @@ Add an `includes` block near the top of the project, after the `8f4e/v1` header 
 
 includes
 include std/math/clamp
-include std/math/cosine
 include std/math/fract
 include std/math/pow2
-include std/math/sine
+include std/math/trig/cosine
+include std/math/trig/sine
 include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
@@ -344,7 +344,7 @@ moduleEnd
 entryEnd
 ```
 
-## `std/math/sine`
+## `std/math/trig/sine`
 
 Provides `sine`, a float approximation for phases in `[-PI, PI]`.
 
@@ -358,7 +358,7 @@ Examples:
 
 ```8f4e
 includes
-include std/math/sine
+include std/math/trig/sine
 includesEnd
 
 entry test
@@ -370,7 +370,7 @@ moduleEnd
 entryEnd
 ```
 
-## `std/math/cosine`
+## `std/math/trig/cosine`
 
 Provides `cosine`, a float approximation for phases in `[-PI, PI]`.
 
@@ -384,7 +384,7 @@ Examples:
 
 ```8f4e
 includes
-include std/math/cosine
+include std/math/trig/cosine
 includesEnd
 
 entry test
