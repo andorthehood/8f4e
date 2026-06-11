@@ -1,7 +1,7 @@
 import type { Module } from '@8f4e/compiler-spec';
 import { INCLUDES_BLOCK_DELIMITER } from './delimiters';
 import { isProjectGapLine } from './projectLines';
-import type { ProjectCodeBlock } from './types';
+import type { ProjectBlock } from './types';
 
 export type ProjectIncludeResolver = (includeId: string) => string | undefined;
 export type ProjectIncludeResolverAsync = (includeId: string) => string | Promise<string | undefined> | undefined;
@@ -9,7 +9,8 @@ export type ProjectIncludeResolverAsync = (includeId: string) => string | Promis
 export class ProjectIncludeError extends Error {
 	constructor(
 		message: string,
-		readonly lineNumber: number
+		readonly lineNumber: number,
+		readonly projectBlockId?: number
 	) {
 		super(`Parse error at line ${lineNumber}: ${message}`);
 		this.name = 'ProjectIncludeError';
@@ -68,11 +69,11 @@ export function resolveFunctionIncludeSource(includeId: string, source: string):
 	}));
 }
 
-export function collectProjectIncludeIdsFromBlock(block: Pick<ProjectCodeBlock, 'code' | 'id'>) {
+export function collectProjectIncludeIdsFromBlock(block: Pick<ProjectBlock, 'code' | 'id'>) {
 	const includeIds: Array<{ includeId: string; lineNumber: number }> = [];
 
 	for (const [index, line] of block.code.entries()) {
-		const lineNumber = block.id + index;
+		const lineNumber = index + 1;
 		const trimmed = line.trim();
 		if (
 			trimmed === INCLUDES_BLOCK_DELIMITER.opener ||
@@ -84,7 +85,7 @@ export function collectProjectIncludeIdsFromBlock(block: Pick<ProjectCodeBlock, 
 
 		const [instruction, includeId, ...extraArgs] = trimmed.split(/\s+/);
 		if (instruction !== 'include' || !includeId || extraArgs.length > 0) {
-			throw new ProjectIncludeError('include requires exactly one include id', lineNumber);
+			throw new ProjectIncludeError('include requires exactly one include id', lineNumber, block.id);
 		}
 		includeIds.push({ includeId, lineNumber });
 	}
@@ -122,7 +123,7 @@ export function collectProjectIncludeIdsFromText(text: string): string[] {
 }
 
 export function resolveProjectIncludes(
-	includeBlocks: readonly Pick<ProjectCodeBlock, 'code' | 'id' | 'disabled'>[],
+	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
 	resolveInclude: ProjectIncludeResolver
 ): Module[] {
 	const includedFunctionBlocks: Module[] = [];
@@ -134,7 +135,7 @@ export function resolveProjectIncludes(
 		for (const { includeId, lineNumber } of collectProjectIncludeIdsFromBlock(block)) {
 			const source = resolveInclude(includeId);
 			if (source === undefined) {
-				throw new ProjectIncludeError(`unresolved include "${includeId}"`, lineNumber);
+				throw new ProjectIncludeError(`unresolved include "${includeId}"`, lineNumber, block.id);
 			}
 
 			includedFunctionBlocks.push(...resolveFunctionIncludeSource(includeId, source));
@@ -145,7 +146,7 @@ export function resolveProjectIncludes(
 }
 
 export async function resolveProjectIncludesAsync(
-	includeBlocks: readonly Pick<ProjectCodeBlock, 'code' | 'id' | 'disabled'>[],
+	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
 	resolveInclude: ProjectIncludeResolverAsync
 ): Promise<Module[]> {
 	const includeSources = new Map<string, string | undefined>();

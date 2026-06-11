@@ -4,7 +4,7 @@ import initEditor, {
 	type Project,
 	type RuntimeRegistry,
 } from '@8f4e/editor';
-import { parse8f4eToProjectAsync, serializeProjectTo8f4e } from '@8f4e/editor-state';
+import { parse8f4eToProject, serializeProjectTo8f4e } from '@8f4e/editor-state';
 import { createMainThreadRuntimeDef } from '@8f4e/runtime-main-thread/runtime-def';
 import { compileCode, getCodeBuffer, getMemory } from './compile';
 import { createMainLoopRuntimeDef } from './mainLoopRuntime';
@@ -120,9 +120,7 @@ async function loadSession(): Promise<Project | null> {
 		return null;
 	}
 
-	return parse8f4eToProjectAsync(loadedProjectSource, {
-		resolveInclude: resolveStdlibInclude,
-	});
+	return parse8f4eToProject(loadedProjectSource);
 }
 
 async function saveSession(project: Project): Promise<void> {
@@ -141,9 +139,7 @@ async function importProject(): Promise<Project> {
 		throw new Error('No 8f4e project was selected.');
 	}
 
-	return parse8f4eToProjectAsync(source, {
-		resolveInclude: resolveStdlibInclude,
-	});
+	return parse8f4eToProject(source);
 }
 
 async function exportProject(data: string, fileName: string): Promise<void> {

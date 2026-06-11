@@ -4,7 +4,7 @@ import path from 'path';
 import { compileProject } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
 
-import type { ProjectCodeBlock, ProjectInput } from '../shared/types';
+import type { ProjectBlock, ProjectDocument } from '../shared/types';
 
 const WASM_MEMORY_PAGE_SIZE = 65536;
 
@@ -39,7 +39,7 @@ type WebAssemblyApiLike = {
 	) => Promise<{ instance: WebAssemblyInstanceLike }>;
 };
 
-const assertFunctionBlocks: ProjectCodeBlock[] = [
+const assertFunctionBlocks: ProjectBlock[] = [
 	{
 		id: -1,
 		code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
@@ -204,7 +204,7 @@ function formatFailure(failure: AssertionFailure): string {
 	return `assert #${failure.assertIndex} expected ${failure.expected}, received ${failure.received}`;
 }
 
-function hasTestEntry(project: ProjectInput): boolean {
+function hasTestEntry(project: ProjectDocument): boolean {
 	return project.codeBlocks.some(block => !block.disabled && block.entry === 'test');
 }
 
@@ -224,12 +224,12 @@ export function getTestUsage(): string {
 
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
-	const project = (await parse8f4eToProject(inputRaw)) as ProjectInput;
+	const project = parse8f4eToProject(inputRaw);
 	if (!hasTestEntry(project)) {
 		return { assertions: 0, skipped: true };
 	}
 
-	const compileResult = compileProject(
+	const compileResult = await compileProject(
 		{
 			...project,
 			codeBlocks: [...project.codeBlocks, ...assertFunctionBlocks],
