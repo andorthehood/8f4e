@@ -16,7 +16,9 @@ include std/math/fract
 include std/math/pow2
 include std/math/trig/advancePhase
 include std/math/trig/cosine
+include std/math/trig/saw
 include std/math/trig/sine
+include std/math/trig/triangle
 include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
@@ -351,9 +353,9 @@ Provides `advancePhase`, which advances a mutable float phase by one sample and 
 
 Available overloads:
 
-- `advancePhase(float* phase, float frequency, float sampleRate) -> float`
+- `advancePhase(float* phase, float frequency, int sampleRate) -> float`
 
-The phase increment is `TAU * frequency / sampleRate`, where `TAU` is derived from the built-in `[-PI, PI]` phase range. The updated phase is stored through the `phase` pointer and returned on the stack.
+The phase increment is `TAU * frequency / sampleRate`, where `TAU` is derived from the built-in `[-PI, PI]` phase range. The `sampleRate` argument is cast to float inside the helper. The updated phase is stored through the `phase` pointer and returned on the stack.
 
 Examples:
 
@@ -368,7 +370,7 @@ float phase -3.141592653589793
 
 push &phase
 push 440.0
-push 48000.0
+push 48000
 call advancePhase
 ; stack: next phase
 moduleEnd
@@ -423,6 +425,54 @@ module cosineExamples
 push 0.0
 call cosine
 ; stack: about 1.0
+moduleEnd
+entryEnd
+```
+
+## `std/math/trig/triangle`
+
+Provides `triangle`, which maps a phase in `[-PI, PI]` to a triangle waveform in `[-1, 1]`.
+
+Available overloads:
+
+- `triangle(float x) -> float`
+
+Examples:
+
+```8f4e
+includes
+include std/math/trig/triangle
+includesEnd
+
+entry test
+module triangleExamples
+push 0.0
+call triangle
+; stack: 1.0
+moduleEnd
+entryEnd
+```
+
+## `std/math/trig/saw`
+
+Provides `saw`, which maps a phase in `[-PI, PI]` to a sawtooth ramp in `[-1, 1]`.
+
+Available overloads:
+
+- `saw(float x) -> float`
+
+Examples:
+
+```8f4e
+includes
+include std/math/trig/saw
+includesEnd
+
+entry test
+module sawExamples
+push 0.0
+call saw
+; stack: 0.0
 moduleEnd
 entryEnd
 ```

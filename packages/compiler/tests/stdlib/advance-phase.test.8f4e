@@ -12,7 +12,7 @@ float phase 0.0
 
 push &phase
 push 1.0
-push 4.0
+push 4
 call advancePhase
 call assertf 1.570796326794896
 
@@ -23,7 +23,7 @@ call assertf 1.570796326794896
 ; after crossing the upper bound.
 push &phase
 push 2.0
-push 4.0
+push 4
 call advancePhase
 call assertf -3.141592653589793
 
