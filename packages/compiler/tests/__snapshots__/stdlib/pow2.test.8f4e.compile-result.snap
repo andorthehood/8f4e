@@ -1,0 +1,278 @@
+{
+  "functionAst": {
+    "pow2__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pow2",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "exponent",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "exponent",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "shiftLeft",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "pow2",
+      "type": "function",
+    },
+  },
+  "functionOverview": {
+    "pow2__int": {
+      "id": "pow2__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+  },
+  "moduleAst": {
+    "pow2Assertions": {
+      "id": "pow2Assertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pow2Assertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pow2",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pow2",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pow2",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pow2",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1024,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "pow2Assertions": {
+      "memoryMap": {},
+    },
+  },
+  "overview": {
+    "compiledFunctions": [
+      "pow2__int",
+    ],
+    "compiledModules": [
+      "pow2Assertions",
+    ],
+    "requiredMemoryBytes": 4,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

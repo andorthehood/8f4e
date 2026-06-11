@@ -21,6 +21,18 @@
       "path": "std/math/clamp.8f4e"
     },
     {
+      "id": "std/math/pow2",
+      "path": "std/math/pow2.8f4e"
+    },
+    {
+      "id": "std/memory/loadAt",
+      "path": "std/memory/loadAt.8f4e"
+    },
+    {
+      "id": "std/memory/storeAt",
+      "path": "std/memory/storeAt.8f4e"
+    },
+    {
       "id": "std/memory/wrapPointer",
       "path": "std/memory/wrapPointer.8f4e"
     }

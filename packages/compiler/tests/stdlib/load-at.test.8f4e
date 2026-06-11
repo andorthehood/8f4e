@@ -1,0 +1,28 @@
+8f4e/v1
+
+includes
+include std/memory/loadAt
+includesEnd
+
+entry test
+module loadAtAssertions
+; it reads an integer element
+; from buffer[index].
+int[] buffer 4 11 22 33 44
+
+push &buffer
+push 0
+call loadAt
+call assert 11
+
+push &buffer
+push 2
+call loadAt
+call assert 33
+
+push &buffer
+push 3
+call loadAt
+call assert 44
+moduleEnd
+entryEnd

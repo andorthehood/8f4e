@@ -1,0 +1,40 @@
+8f4e/v1
+
+includes
+include std/memory/storeAt
+includesEnd
+
+entry test
+module storeAtAssertions
+; it stores an integer value
+; into buffer[index].
+int[] buffer 4 11 22 33 44
+
+push &buffer
+push 2
+push 99
+call storeAt
+
+push &buffer
+load
+call assert 11
+
+push &buffer
+push sizeof(buffer)
+add
+load
+call assert 22
+
+push &buffer
+push sizeof(buffer)*2
+add
+load
+call assert 99
+
+push &buffer
+push sizeof(buffer)*3
+add
+load
+call assert 44
+moduleEnd
+entryEnd
