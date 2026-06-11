@@ -351,9 +351,9 @@ Provides `advancePhase`, which advances a mutable float phase by one sample and 
 
 Available overloads:
 
-- `advancePhase(float* phase, float frequency, float sampleRate) -> float`
+- `advancePhase(float* phase, float frequency, int sampleRate) -> float`
 
-The phase increment is `TAU * frequency / sampleRate`, where `TAU` is derived from the built-in `[-PI, PI]` phase range. The updated phase is stored through the `phase` pointer and returned on the stack.
+The phase increment is `TAU * frequency / sampleRate`, where `TAU` is derived from the built-in `[-PI, PI]` phase range. The `sampleRate` argument is cast to float inside the helper. The updated phase is stored through the `phase` pointer and returned on the stack.
 
 Examples:
 
@@ -368,7 +368,7 @@ float phase -3.141592653589793
 
 push &phase
 push 440.0
-push 48000.0
+push 48000
 call advancePhase
 ; stack: next phase
 moduleEnd
