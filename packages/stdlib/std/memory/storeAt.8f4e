@@ -1,12 +1,5 @@
-8f4e/v1
-
-entry main
-entryEnd
-
-function storeAtInt
-; @public
+function storeAt
 #impure
-; Stores value into buffer[index].
 param int* buffer
 param int index
 param int value
