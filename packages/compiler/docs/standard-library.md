@@ -176,6 +176,38 @@ moduleEnd
 entryEnd
 ```
 
+## `std/memory/decrementPointer`
+
+Provides `decrementPointer`, which decrements a mutable pointer by one element and wraps it within a circular buffer.
+
+Available overloads:
+
+- `decrementPointer(int** pointer, int* buffer, int itemCount) -> void`
+- `decrementPointer(float** pointer, float* buffer, int itemCount) -> void`
+
+`itemCount` is the circular buffer length in elements. The pointer argument is the address of the pointer variable to mutate.
+
+Examples:
+
+```8f4e
+includes
+include std/memory/decrementPointer
+includesEnd
+
+entry test
+module decrementPointerExamples
+float[] buffer 4
+float* pointer &buffer
+
+push &pointer
+push &buffer
+push count(buffer)
+call decrementPointer
+; pointer is buffer&
+moduleEnd
+entryEnd
+```
+
 ## `std/memory/loadAt`
 
 Provides `loadAt`, which reads a value from a buffer by element index.
