@@ -1,0 +1,35 @@
+function swap
+param int first
+param int second
+
+push second
+push first
+
+functionEnd int int
+
+function swap
+param int first
+param float second
+
+push second
+push first
+
+functionEnd float int
+
+function swap
+param float first
+param int second
+
+push second
+push first
+
+functionEnd int float
+
+function swap
+param float first
+param float second
+
+push second
+push first
+
+functionEnd float float
