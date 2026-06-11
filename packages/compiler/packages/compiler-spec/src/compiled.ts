@@ -123,20 +123,41 @@ export interface IncludedSourceMetadata {
 /** Source origin metadata carried with source blocks. */
 export type SourceMetadata = IncludedSourceMetadata;
 
-/** Source module payload consumed by the compiler. */
+/**
+ * Basic source block payload consumed by the compiler.
+ *
+ * The compiler receives only irreducible source blocks: modules, functions,
+ * constants, and prototypes. Project-level conveniences such as includes are
+ * expanded by a preparser before this boundary and appear here as function
+ * blocks with optional source metadata.
+ */
 export interface Module {
+	/** Raw source lines for one module, function, constants, or prototype block. */
 	code: string[];
+	/** Optional project block id used to map diagnostics back to editor/project source. */
 	projectBlockId?: number;
+	/** Optional origin metadata for blocks expanded before compilation. */
 	source?: SourceMetadata;
 }
 
-/** Executable modules partitioned by host-callable execution entry. */
+/** Executable module blocks partitioned by host-callable execution entry. */
 export type ModuleEntries = Record<string, Module[]>;
 
-/** Top-level source payload consumed by the compiler. */
+/**
+ * Complete source payload consumed by the compiler.
+ *
+ * These four collections are the compiler's basic building blocks:
+ * executable modules grouped by entry, shared functions, constants, and
+ * prototypes. Includes are not a basic compiler block type; callers should
+ * resolve them into function blocks before creating this input.
+ */
 export interface CompileInput {
+	/** Executable module blocks grouped by host-callable entry name. */
 	entries: ModuleEntries;
+	/** Shared function blocks, including functions expanded from includes. */
 	functions: Module[];
+	/** Top-level constants blocks. */
 	constants: Module[];
+	/** Prototype blocks used by shape/state layouts. */
 	prototypes: Module[];
 }

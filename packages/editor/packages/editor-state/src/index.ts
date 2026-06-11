@@ -127,6 +127,6 @@ export { default as findClosestCodeBlockInDirection } from './features/code-bloc
 export { serializeProjectTo8f4e } from './features/project-export/serializeTo8f4e';
 // Export EMPTY_DEFAULT_PROJECT as a value
 export { EMPTY_DEFAULT_PROJECT } from './features/project-import/emptyDefaultProject';
-export { parse8f4eToProject, parse8f4eToProjectAsync } from './features/project-import/parse8f4e';
+export { parse8f4eToProject } from './features/project-import/parse8f4e';
 export type { CodeBlockBounds } from './features/viewport/centerViewportOnCodeBlock';
 export { default as centerViewportOnCodeBlock } from './features/viewport/centerViewportOnCodeBlock';

@@ -1,13 +1,14 @@
 import compile from '@8f4e/compiler';
 import type { CompiledModuleLookup, CompileOptions } from '@8f4e/compiler-spec';
-import { pickProjectCompilerBlocks } from '@8f4e/tokenizer';
-import type { ProjectCodeBlock, ProjectInput } from '../shared/types';
+import { type ProjectIncludeResolverAsync, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
+import { resolveStdlibInclude } from '../shared/stdlibResolver';
+import type { ProjectBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
 	includeModules?: boolean;
 	includeWasm?: boolean;
-	includedFunctionBlocks?: ProjectInput['includedFunctionBlocks'];
+	resolveInclude?: ProjectIncludeResolverAsync;
 }
 
 interface CompileProjectModulesResult {
@@ -21,19 +22,17 @@ function hasModuleBlocks(entries: Record<string, unknown[]>): boolean {
 	return Object.values(entries).some(entry => entry.length > 0);
 }
 
-export default function compileProjectModules(
-	blocks: ProjectCodeBlock[],
+export default async function compileProjectModules(
+	blocks: ProjectBlock[],
 	options: CompileProjectModulesOptions
-): CompileProjectModulesResult {
+): Promise<CompileProjectModulesResult> {
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
-	const { entries, constantsBlocks, functionBlocks, prototypeBlocks } = pickProjectCompilerBlocks({
-		codeBlocks: blocks,
-		groups: [],
-		includedFunctionBlocks: options.includedFunctionBlocks,
+	const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(blocks, {
+		resolveInclude: options.resolveInclude ?? resolveStdlibInclude,
 	});
 
-	if (!hasModuleBlocks(entries) && constantsBlocks.length === 0) {
+	if (!hasModuleBlocks(compilerInput.entries) && compilerInput.constants.length === 0) {
 		return {
 			compiledModules: includeModules ? {} : undefined,
 			compiledWasm: includeWasm ? '' : undefined,
@@ -41,15 +40,7 @@ export default function compileProjectModules(
 		};
 	}
 
-	const result = compile(
-		{
-			entries,
-			constants: constantsBlocks,
-			functions: functionBlocks,
-			prototypes: prototypeBlocks,
-		},
-		options.compilerOptions
-	);
+	const result = compile(compilerInput, options.compilerOptions);
 
 	return {
 		compiledModules: includeModules ? result.compiledModules : undefined,

@@ -30,6 +30,7 @@
   "dependencies": {
     "@8f4e/compiler": "*",
     "@8f4e/compiler-spec": "*",
+    "@8f4e/project-preparser": "*",
     "@8f4e/stdlib": "*"
   },
   "devDependencies": {

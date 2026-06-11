@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/compiler-spec",
-  "sourceRoot": "packages/compiler-spec/src",
+  "sourceRoot": "packages/compiler/packages/compiler-spec/src",
   "projectType": "library",
   "targets": {
     "build": {

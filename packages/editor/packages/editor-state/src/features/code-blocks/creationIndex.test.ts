@@ -1,7 +1,8 @@
 import type { Project, State } from '@8f4e/editor-state-types';
+import { prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
 import createStateManager from '@8f4e/state-manager';
 import { beforeEach, describe, expect, it, type MockInstance } from 'vitest';
-import { flattenProjectForCompiler } from '~/features/program-compiler/effect';
+import { toOrderedProjectBlocksForCompiler } from '~/features/program-compiler/effect';
 import projectImport from '~/features/project-import/effect';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
@@ -19,6 +20,10 @@ describe('creationIndex', () => {
 		store = createStateManager(mockState);
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
+
+	async function prepareCodeBlocksForCompiler(codeBlocks: State['codeBlockRendering']['codeBlocks']) {
+		return prepareCompilerInputFromProjectBlocksAsync(toOrderedProjectBlocksForCompiler(codeBlocks));
+	}
 
 	describe('codeBlockCreator', () => {
 		it('should assign creationIndex to new code blocks', () => {
@@ -149,7 +154,7 @@ describe('creationIndex', () => {
 	});
 
 	describe('compiler ordering', () => {
-		it('should sort module code blocks by grid position for compilation', () => {
+		it('should sort module code blocks by grid position for compilation', async () => {
 			const block1 = createMockCodeBlock({
 				name: 'a',
 				creationIndex: 0,
@@ -182,14 +187,14 @@ describe('creationIndex', () => {
 
 			const {
 				entries: { main: modules },
-			} = flattenProjectForCompiler(codeBlocksArray);
+			} = await prepareCodeBlocksForCompiler(codeBlocksArray);
 
 			expect(modules[0].code).toEqual(['module c', 'moduleEnd']); // left, top
 			expect(modules[1].code).toEqual(['module b', 'moduleEnd']); // left, lower
 			expect(modules[2].code).toEqual(['module a', 'moduleEnd']); // right
 		});
 
-		it('should use creationIndex as the tie-breaker when module grid positions match', () => {
+		it('should use creationIndex as the tie-breaker when module grid positions match', async () => {
 			const block1 = createMockCodeBlock({
 				name: 'a',
 				creationIndex: 2,
@@ -220,14 +225,14 @@ describe('creationIndex', () => {
 
 			const {
 				entries: { main: modules },
-			} = flattenProjectForCompiler([block1, block2, block3]);
+			} = await prepareCodeBlocksForCompiler([block1, block2, block3]);
 
 			expect(modules[0].code).toEqual(['module b', 'moduleEnd']);
 			expect(modules[1].code).toEqual(['module c', 'moduleEnd']);
 			expect(modules[2].code).toEqual(['module a', 'moduleEnd']);
 		});
 
-		it('should use grid position even when a referenced module is visually later', () => {
+		it('should use grid position even when a referenced module is visually later', async () => {
 			const dependentBlock = createMockCodeBlock({
 				name: 'dependent',
 				creationIndex: 0,
@@ -249,13 +254,13 @@ describe('creationIndex', () => {
 
 			const {
 				entries: { main: modules },
-			} = flattenProjectForCompiler([dependentBlock, sourceBlock]);
+			} = await prepareCodeBlocksForCompiler([dependentBlock, sourceBlock]);
 
 			expect(modules[0].code).toEqual(['module dependent', 'int* ptr &source:0', 'moduleEnd']);
 			expect(modules[1].code).toEqual(['module source', 'int value 0', 'moduleEnd']);
 		});
 
-		it('should separate modules and functions for compilation', () => {
+		it('should separate modules and functions for compilation', async () => {
 			const moduleBlock = createMockCodeBlock({
 				name: 'testModule',
 				creationIndex: 0,
@@ -282,7 +287,7 @@ describe('creationIndex', () => {
 			const {
 				entries: { main: modules },
 				functions,
-			} = flattenProjectForCompiler(codeBlocksArray);
+			} = await prepareCodeBlocksForCompiler(codeBlocksArray);
 
 			expect(modules.length).toBe(2);
 			expect(modules[0].code).toEqual(['module testModule', 'moduleEnd']);

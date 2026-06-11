@@ -26,26 +26,17 @@ describe('parse8f4eToProject', () => {
 		expect(project.codeBlocks[0]).toEqual({ id: 3, code: validNoteBlock });
 	});
 
-	it('parses top-level includes as project metadata', () => {
+	it('parses top-level includes as a project code block', () => {
 		const includesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];
 		const project = parse8f4eToProject(
-			['8f4e/v1', '', ...includesBlock, '', 'entry main', ...validBlock, 'entryEnd'].join('\n'),
-			{
-				resolveInclude: includeId =>
-					includeId === 'std/events/risingEdge'
-						? ['function risingEdge', 'functionEnd int', '', 'function risingEdge', 'functionEnd int'].join('\n')
-						: undefined,
-			}
+			['8f4e/v1', '', ...includesBlock, '', 'entry main', ...validBlock, 'entryEnd'].join('\n')
 		);
 
 		expect(project.codeBlocks).toEqual([
 			{ id: 3, code: includesBlock },
 			{ id: 8, code: validBlock, entry: 'main' },
 		]);
-		expect(project.includedFunctionBlocks?.map(block => block.source?.includeId)).toEqual([
-			'std/events/risingEdge',
-			'std/events/risingEdge',
-		]);
+		expect(project).not.toHaveProperty('includedFunctionBlocks');
 	});
 
 	it('parses empty file (header only)', () => {
