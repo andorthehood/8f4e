@@ -1,0 +1,40 @@
+8f4e/v1
+
+includes
+include std/memory/readInterpolated
+includesEnd
+
+entry test
+module readInterpolatedIntAssertions
+; it linearly interpolates int
+; samples as float values in a
+; circular buffer.
+int[] buffer 3 10 20 40
+int pointer &buffer
+
+push pointer
+push &buffer
+push count(buffer)
+push 0.5
+call readInterpolated
+call assertf 15.0
+
+push pointer
+push sizeof(buffer)
+add
+push &buffer
+push count(buffer)
+push 0.25
+call readInterpolated
+call assertf 25.0
+
+push pointer
+push sizeof(buffer)*2
+add
+push &buffer
+push count(buffer)
+push 0.5
+call readInterpolated
+call assertf 25.0
+moduleEnd
+entryEnd

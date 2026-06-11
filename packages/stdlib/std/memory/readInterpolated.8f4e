@@ -1,0 +1,127 @@
+function readInterpolated
+#impure
+; Reads an interpolated float
+; value from a circular int
+; buffer.
+param int pointer
+param int* buffer
+param int itemCount
+param float fraction
+
+local int byteLength
+local float first
+local float second
+
+push itemCount
+push sizeof(*buffer)
+mul
+localSet byteLength
+
+push buffer
+push pointer
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+load
+castToFloat
+localSet first
+
+push buffer
+push pointer
+push sizeof(*buffer)
+add
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+load
+castToFloat
+localSet second
+
+push first
+push second
+push first
+sub
+push fraction
+mul
+add
+
+functionEnd float
+
+function readInterpolated
+#impure
+; Reads an interpolated float
+; value from a circular float
+; buffer.
+param int pointer
+param float* buffer
+param int itemCount
+param float fraction
+
+local int byteLength
+local float first
+local float second
+
+push itemCount
+push sizeof(*buffer)
+mul
+localSet byteLength
+
+push buffer
+push pointer
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+loadFloat
+localSet first
+
+push buffer
+push pointer
+push sizeof(*buffer)
+add
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+loadFloat
+localSet second
+
+push first
+push second
+push first
+sub
+push fraction
+mul
+add
+
+functionEnd float
