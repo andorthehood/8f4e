@@ -14,6 +14,8 @@ includes
 include std/math/clamp
 include std/math/fract
 include std/math/pow2
+include std/math/trig/cosine
+include std/math/trig/sine
 include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
@@ -338,6 +340,58 @@ module pow2Examples
 push 5
 call pow2
 ; stack: 32
+moduleEnd
+entryEnd
+```
+
+## `std/math/trig/sine`
+
+Provides `sine`, a float approximation for phases in `[-PI, PI]`.
+
+Available overloads:
+
+- `sine(float x) -> float`
+
+`sine` uses a 7th-order Taylor polynomial with folding to `[-PI/2, PI/2]`.
+
+Examples:
+
+```8f4e
+includes
+include std/math/trig/sine
+includesEnd
+
+entry test
+module sineExamples
+push 0.0
+call sine
+; stack: 0.0
+moduleEnd
+entryEnd
+```
+
+## `std/math/trig/cosine`
+
+Provides `cosine`, a float approximation for phases in `[-PI, PI]`.
+
+Available overloads:
+
+- `cosine(float x) -> float`
+
+`cosine` uses a self-contained 6th-order Taylor polynomial with folding to `[-PI/2, PI/2]`. Standard library files are independent include units, so this helper does not call `sine`.
+
+Examples:
+
+```8f4e
+includes
+include std/math/trig/cosine
+includesEnd
+
+entry test
+module cosineExamples
+push 0.0
+call cosine
+; stack: about 1.0
 moduleEnd
 entryEnd
 ```

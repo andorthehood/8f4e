@@ -1,0 +1,27 @@
+8f4e/v1
+
+includes
+include std/math/trig/sine
+includesEnd
+
+entry test
+module sineAssertions
+; it approximates sine at
+; cardinal phase points.
+push 0.0
+call sine
+call assertf 0.0
+
+push 1.570796326794896
+call sine
+call assertf 1.0
+
+push 3.141592653589793
+call sine
+call assertf 0.0
+
+push -1.570796326794896
+call sine
+call assertf -1.0
+moduleEnd
+entryEnd

@@ -29,6 +29,14 @@
       "path": "std/math/pow2.8f4e"
     },
     {
+      "id": "std/math/trig/cosine",
+      "path": "std/math/trig/cosine.8f4e"
+    },
+    {
+      "id": "std/math/trig/sine",
+      "path": "std/math/trig/sine.8f4e"
+    },
+    {
       "id": "std/memory/advancePointer",
       "path": "std/memory/advancePointer.8f4e"
     },
