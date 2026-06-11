@@ -31,6 +31,6 @@
   "devDependencies": {
     "@8f4e/project-preparser": "*",
     "@8f4e/stdlib": "*",
-    "@types/node": "24.12.4"
+    "@types/node": "24.13.2"
   }
 }
