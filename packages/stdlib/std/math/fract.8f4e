@@ -1,0 +1,13 @@
+function fract
+; Returns the fractional part of
+; a float by subtracting its
+; integer-truncated value.
+param float value
+
+push value
+push value
+castToInt
+castToFloat
+sub
+
+functionEnd float
