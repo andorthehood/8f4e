@@ -14,6 +14,7 @@ includes
 include std/math/clamp
 include std/math/fract
 include std/math/pow2
+include std/math/trig/advancePhase
 include std/math/trig/cosine
 include std/math/trig/sine
 include std/bitwise/extractBit
@@ -340,6 +341,36 @@ module pow2Examples
 push 5
 call pow2
 ; stack: 32
+moduleEnd
+entryEnd
+```
+
+## `std/math/trig/advancePhase`
+
+Provides `advancePhase`, which advances a mutable float phase by one sample and wraps it from `PI` back to `-PI`.
+
+Available overloads:
+
+- `advancePhase(float* phase, float frequency, float sampleRate) -> float`
+
+The phase increment is `TAU * frequency / sampleRate`, where `TAU` is derived from the built-in `[-PI, PI]` phase range. The updated phase is stored through the `phase` pointer and returned on the stack.
+
+Examples:
+
+```8f4e
+includes
+include std/math/trig/advancePhase
+includesEnd
+
+entry test
+module advancePhaseExamples
+float phase -3.141592653589793
+
+push &phase
+push 440.0
+push 48000.0
+call advancePhase
+; stack: next phase
 moduleEnd
 entryEnd
 ```
