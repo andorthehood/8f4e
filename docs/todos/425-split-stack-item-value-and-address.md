@@ -12,7 +12,7 @@ completed: null
 
 ## Problem Description
 
-`StackItem` in `packages/compiler-spec/src/semantic.ts` currently represents every stack value with one broad interface:
+`StackItem` in `packages/compiler/packages/compiler-spec/src/semantic.ts` currently represents every stack value with one broad interface:
 
 - numeric value type facts (`isInteger`, `isFloat64`)
 - optional address metadata (`address`)
@@ -77,7 +77,7 @@ The key rule: use `kind: 'address'` when the compiler knows the stack value is a
 
 ### Step 1: Introduce the discriminated stack types
 
-- Update `packages/compiler-spec/src/semantic.ts`.
+- Update `packages/compiler/packages/compiler-spec/src/semantic.ts`.
 - Add `StackValue`, `StackAddress`, and `PointeeMetadata`.
 - Change `StackItem` to the union.
 - Add small constructors/narrowing helpers if they reduce repeated object literals.
@@ -109,7 +109,7 @@ The key rule: use `kind: 'address'` when the compiler knows the stack value is a
 
 ## Validation Checkpoints
 
-- `rg -n "isInteger|isFloat64|pointeeBaseType|isPointingToPointer|address\\?\\.|pointeeMemoryIndex|pointeeMemoryRegionName" packages/compiler-spec/src/semantic.ts packages/compiler/src -g '*.ts'`
+- `rg -n "isInteger|isFloat64|pointeeBaseType|isPointingToPointer|address\\?\\.|pointeeMemoryIndex|pointeeMemoryRegionName" packages/compiler/packages/compiler-spec/src/semantic.ts packages/compiler/src -g '*.ts'`
 - `npx nx run @8f4e/compiler-spec:typecheck`
 - `npx nx run compiler:typecheck`
 - `npx nx run compiler:test`
@@ -127,7 +127,7 @@ The key rule: use `kind: 'address'` when the compiler knows the stack value is a
 
 ## Affected Components
 
-- `packages/compiler-spec/src/semantic.ts` - stack item public contracts.
+- `packages/compiler/packages/compiler-spec/src/semantic.ts` - stack item public contracts.
 - `packages/compiler/src/stackAnalysis/analyzeInstruction.ts` - stack item production and narrowing.
 - `packages/compiler/src/instructionCompilers/` - codegen consumers of analyzed stack operands.
 - `packages/compiler/src/utils/memoryData.ts` - pointer and dereference metadata helpers.

@@ -143,8 +143,8 @@ functionEnd
 
 ## Affected Components
 
-- `packages/compiler-spec/src/instructionSpecs.ts` - add `pushShape` instruction metadata.
-- `packages/compiler-spec/src/ast.ts` - represent `pushShape` source lines if a specific type is needed.
+- `packages/compiler/packages/compiler-spec/src/instructionSpecs.ts` - add `pushShape` instruction metadata.
+- `packages/compiler/packages/compiler-spec/src/ast.ts` - represent `pushShape` source lines if a specific type is needed.
 - `packages/compiler/src/semantic/` - collect module shape membership and resolve effective shape fields.
 - `packages/compiler/src/instructionCompilers/` - emit address pushes for `pushShape`.
 - `packages/compiler/tests/` - add executable and diagnostic fixtures.
