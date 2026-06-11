@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import parse8f4eToProject from '../shared/parse8f4e';
-import type { ProjectDocument } from '../shared/types';
 import { compileProject } from './compileProject';
 
 interface CompileCommandArgs {
@@ -53,7 +52,7 @@ export async function runCompileCommand(args: string[]): Promise<void> {
 	}
 
 	const inputRaw = await fs.readFile(resolvedInput, 'utf8');
-	const project = (await parse8f4eToProject(inputRaw)) as ProjectDocument;
+	const project = parse8f4eToProject(inputRaw);
 
 	const { compiledWasm } = await compileProject(project);
 

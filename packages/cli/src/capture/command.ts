@@ -4,8 +4,6 @@ import { compileProject } from '../compile/compileProject';
 import { createRuntimeRunner } from '../run/runtimeRunner';
 import parse8f4eToProject from '../shared/parse8f4e';
 
-import type { ProjectDocument } from '../shared/types';
-
 interface CaptureCommandArgs {
 	inputPath?: string;
 	bufferId?: string;
@@ -122,7 +120,7 @@ export async function runCaptureCommand(args: string[]): Promise<void> {
 	}
 
 	const inputRaw = await fs.readFile(resolvedInput, 'utf8');
-	const project = (await parse8f4eToProject(inputRaw)) as ProjectDocument;
+	const project = parse8f4eToProject(inputRaw);
 
 	const compileResult = await compileProject(project, {
 		compilerOptions: {

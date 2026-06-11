@@ -17,7 +17,6 @@ export interface ProjectGroup {
 export interface ProjectDocument {
 	codeBlocks: ProjectBlock[];
 	groups: ProjectGroup[];
-	[key: string]: unknown;
 }
 
 export type ProjectBlockType = CompilableBlockType | 'unknown';
