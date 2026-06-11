@@ -1,0 +1,31 @@
+8f4e/v1
+
+includes
+include std/math/trig/saw
+includesEnd
+
+entry test
+module sawAssertions
+; it maps [-PI, PI] to a
+; sawtooth ramp in [-1, 1].
+push -3.141592653589793
+call saw
+call assertf -1.0
+
+push -1.570796326794896
+call saw
+call assertf -0.5
+
+push 0.0
+call saw
+call assertf 0.0
+
+push 1.570796326794896
+call saw
+call assertf 0.5
+
+push 3.141592653589793
+call saw
+call assertf 1.0
+moduleEnd
+entryEnd
