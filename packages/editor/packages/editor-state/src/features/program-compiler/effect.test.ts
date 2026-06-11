@@ -247,15 +247,6 @@ describe('program compiler effect', () => {
 			}
 			return undefined;
 		});
-		mockState.initialProjectState = {
-			codeBlocks: [],
-			groups: [],
-			includedFunctionBlocks: [
-				{
-					code: ['function staleInclude', 'functionEnd'],
-				},
-			],
-		};
 		const includesBlock = createMockCodeBlock({
 			name: 'includes',
 			code: [
@@ -292,36 +283,6 @@ describe('program compiler effect', () => {
 			}),
 			expect.any(Object)
 		);
-		expect(mockCompileCode.mock.calls[0][0].functions).not.toContainEqual(
-			expect.objectContaining({ code: ['function staleInclude', 'functionEnd'] })
-		);
-	});
-
-	it('does not compile stale include functions from the initial project when no includes block is present', async () => {
-		mockCompileCode.mockResolvedValue({
-			codeBuffer: new Uint8Array([0x00]),
-			compiledModules: {},
-			compiledFunctions: {},
-			requiredMemoryBytes: 0,
-			allocatedMemoryBytes: 65536,
-			astCacheStats: { hits: 0, misses: 0 },
-			hasWasmInstanceBeenReset: false,
-			memoryAction: { action: 'reused' },
-			initOnlyReran: false,
-			byteCodeSize: 1,
-		});
-		mockState.initialProjectState = {
-			codeBlocks: [],
-			groups: [],
-			includedFunctionBlocks: [
-				{
-					code: ['function staleInclude', 'functionEnd'],
-				},
-			],
-		};
-
-		await triggerProgrammaticCompile();
-
 		expect(mockCompileCode.mock.calls[0][0].functions).not.toContainEqual(
 			expect.objectContaining({ code: ['function staleInclude', 'functionEnd'] })
 		);

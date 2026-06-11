@@ -20,7 +20,7 @@ describe('compileProject (audioBuffer example)', () => {
 	it('compiles build artifacts without config packaging', async () => {
 		const project = await loadAudioBufferProject();
 		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
-		const { outputProject } = cliModule.compileProject(project);
+		const { outputProject } = await cliModule.compileProject(project);
 
 		expect(outputProject).toMatchSnapshot();
 	});
