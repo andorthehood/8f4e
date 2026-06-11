@@ -21,10 +21,6 @@
       "path": "std/math/clamp.8f4e"
     },
     {
-      "id": "std/math/cosine",
-      "path": "std/math/cosine.8f4e"
-    },
-    {
       "id": "std/math/fract",
       "path": "std/math/fract.8f4e"
     },
@@ -33,8 +29,12 @@
       "path": "std/math/pow2.8f4e"
     },
     {
-      "id": "std/math/sine",
-      "path": "std/math/sine.8f4e"
+      "id": "std/math/trig/cosine",
+      "path": "std/math/trig/cosine.8f4e"
+    },
+    {
+      "id": "std/math/trig/sine",
+      "path": "std/math/trig/sine.8f4e"
     },
     {
       "id": "std/memory/advancePointer",
