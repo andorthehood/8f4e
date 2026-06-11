@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import parse8f4eToProject from '../shared/parse8f4e';
-import type { ProjectInput } from '../shared/types';
+import type { ProjectDocument } from '../shared/types';
 import { compileProject } from './compileProject';
 
 interface CompileCommandArgs {
@@ -53,9 +53,9 @@ export async function runCompileCommand(args: string[]): Promise<void> {
 	}
 
 	const inputRaw = await fs.readFile(resolvedInput, 'utf8');
-	const project = (await parse8f4eToProject(inputRaw)) as ProjectInput;
+	const project = (await parse8f4eToProject(inputRaw)) as ProjectDocument;
 
-	const { compiledWasm } = compileProject(project);
+	const { compiledWasm } = await compileProject(project);
 
 	if (compiledWasm === undefined) {
 		throw new Error('Unable to write WASM output: compiledWasm is missing from compiler output.');

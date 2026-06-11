@@ -1,8 +1,11 @@
 import type { CompileOptions } from '@8f4e/compiler-spec';
-import type { CompileProjectOptions, CompileProjectResult, ProjectInput } from '../shared/types';
+import type { CompileProjectOptions, CompileProjectResult, ProjectDocument } from '../shared/types';
 import compileProjectModules from './compileProjectModules';
 
-export function compileProject(project: ProjectInput, options: CompileProjectOptions = {}): CompileProjectResult {
+export async function compileProject(
+	project: ProjectDocument,
+	options: CompileProjectOptions = {}
+): Promise<CompileProjectResult> {
 	const includeModules = options.includeModules ?? true;
 	const includeWasm = options.includeWasm ?? true;
 
@@ -11,11 +14,11 @@ export function compileProject(project: ProjectInput, options: CompileProjectOpt
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 	};
 
-	const moduleResult = compileProjectModules(project.codeBlocks, {
+	const moduleResult = await compileProjectModules(project.codeBlocks, {
 		compilerOptions,
 		includeModules,
 		includeWasm,
-		includedFunctionBlocks: project.includedFunctionBlocks,
+		resolveInclude: options.resolveInclude,
 	});
 
 	const outputProject: Record<string, unknown> = { ...project };

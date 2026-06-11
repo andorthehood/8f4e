@@ -1,12 +1,11 @@
-import type { ProjectCodeBlock } from '@8f4e/tokenizer';
-import { parse8f4eProject } from '@8f4e/tokenizer';
+import { type ProjectBlock, parseProjectSource } from '@8f4e/project-preparser';
 import { FORMAT_HEADER } from '~/features/project-format';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 import removeDirective from '../../utils/removeDirective';
 
 const PUBLIC_BLOCK_DIRECTIVE = 'public';
 
-function hasPublicDirective(block: ProjectCodeBlock): boolean {
+function hasPublicDirective(block: ProjectBlock): boolean {
 	return parseBlockDirectives(block.code).some(
 		directive => directive.prefix === '@' && directive.name === PUBLIC_BLOCK_DIRECTIVE
 	);
@@ -18,7 +17,7 @@ export default function extractPublicBlockFromModuleSource(source: string): stri
 		return lines;
 	}
 
-	const project = parse8f4eProject(source);
+	const project = parseProjectSource(source);
 	const [publicBlock] = project.codeBlocks.filter(block => block.entry !== 'test' && hasPublicDirective(block));
 
 	return publicBlock ? removeDirective(publicBlock.code, PUBLIC_BLOCK_DIRECTIVE) : [];

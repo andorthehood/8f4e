@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 import { compileFixtureProgramSource } from './testUtils';
 
 describe('compiler options and cache', () => {
-	test('always exposes AST and exposes stack analysis only when requested', () => {
+	test('always exposes AST and exposes stack analysis only when requested', async () => {
 		const source = `
 8f4e/v1
 
@@ -24,10 +24,12 @@ push value
 add
 functionEnd int
 `;
-		const defaultResult = compileFixtureProgramSource(source).compileResult;
-		const analyzedResult = compileFixtureProgramSource(source, {
-			includeStackAnalysis: true,
-		}).compileResult;
+		const defaultResult = (await compileFixtureProgramSource(source)).compileResult;
+		const analyzedResult = (
+			await compileFixtureProgramSource(source, {
+				includeStackAnalysis: true,
+			})
+		).compileResult;
 		const functionId = createFunctionId('double', ['int']);
 
 		expect(defaultResult.compiledModules.optionSurface.ast.id).toBe('optionSurface');
@@ -50,7 +52,7 @@ functionEnd int
 		]);
 	});
 
-	test('reuses cached AST entries when recompiling unchanged source', () => {
+	test('reuses cached AST entries when recompiling unchanged source', async () => {
 		const source = `
 8f4e/v1
 
@@ -64,10 +66,10 @@ function cachedFunction
 push 1
 functionEnd int
 `;
-		const first = compileFixtureProgramSource(source);
+		const first = await compileFixtureProgramSource(source);
 		const cachedModuleAst = first.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast;
 		const cachedFunctionAst = first.compileResult.cache.ast.entries.get('function:0')?.ast;
-		const second = compileFixtureProgramSource(source, {
+		const second = await compileFixtureProgramSource(source, {
 			cache: first.compileResult.cache,
 		});
 
