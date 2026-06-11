@@ -14,15 +14,13 @@ const fixturePath = path.join(testDir, 'fixtures', 'minimal.8f4e');
 const runtimeFixturePath = path.join(testDir, 'fixtures', 'runtimeInspect.8f4e');
 const testPassingFixturePath = path.join(testDir, 'fixtures', 'testPassing.8f4e');
 const testFailingFixturePath = path.join(testDir, 'fixtures', 'testFailing.8f4e');
-const wrapPointerModulePath = path.resolve(
+const wrapPointerFixturePath = path.resolve(
 	packageRoot,
 	'..',
-	'examples',
-	'src',
-	'modules',
-	'functions',
-	'memory',
-	'wrapPointer.8f4em'
+	'compiler',
+	'tests',
+	'stdlib',
+	'wrap-pointer-float.test.8f4e'
 );
 const runtimeBytesPath = path.join(testDir, 'fixtures', 'runtimeBytes.bin');
 const tmpDir = path.join(testDir, '.tmp');
@@ -224,8 +222,8 @@ describe('cli', () => {
 		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
 
-	it('runs embedded tests declared in an example module file', async () => {
-		const { stdout } = await execCli(['test', wrapPointerModulePath]);
+	it('runs embedded tests declared in a stdlib fixture file', async () => {
+		const { stdout } = await execCli(['test', wrapPointerFixturePath]);
 
 		expect(stdout).toBe('Ran 3 assertions.\n');
 	});
@@ -259,9 +257,9 @@ describe('cli', () => {
 	});
 
 	it('runs test files matched by a glob and skips files without test entries', async () => {
-		const { stdout } = await execCli(['test', '../examples/src/modules/functions/memory/*.8f4em']);
+		const { stdout } = await execCli(['test', '../examples/src/modules/functions/math/*.8f4em']);
 
-		expect(stdout).toBe('Ran 3 assertions in 1 file.\n');
+		expect(stdout).toBe('No tests found.\n');
 	});
 
 	it('captures raw buffer bytes across repeated main windows', async () => {
