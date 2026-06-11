@@ -12,15 +12,20 @@ export type {
 } from './projectParsing';
 export {
 	BLOCK_DELIMITERS,
+	collectProjectIncludeIdsFromText,
 	FORMAT_HEADER,
 	getDocumentProjectBlockType,
 	getExpectedProjectCloserPrefix,
 	getProjectBlockType,
 	getProjectCloserKeyword,
 	getProjectOpenerKeyword,
+	ProjectIncludeError,
 	parse8f4eProject,
 	parse8f4eProjectAsync,
 	pickProjectCompilerBlocks,
+	resolveFunctionIncludeSource,
+	resolveProjectIncludes,
+	resolveProjectIncludesAsync,
 } from './projectParsing';
 
 import { hashSource } from './cache';
