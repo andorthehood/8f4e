@@ -12,6 +12,7 @@ Add an `includes` block near the top of the project, after the `8f4e/v1` header 
 
 includes
 include std/math/clamp
+include std/math/fract
 include std/math/pow2
 include std/bitwise/extractBit
 include std/bitwise/extractByte
@@ -253,6 +254,32 @@ push 0.5
 push 1.0
 call clamp
 ; stack: 0.5
+moduleEnd
+entryEnd
+```
+
+## `std/math/fract`
+
+Provides `fract`, which returns the fractional part of a float by subtracting its integer-truncated value.
+
+Available overloads:
+
+- `fract(float value) -> float`
+
+This helper is intended for positive values, such as fractional sample offsets. For negative inputs, the result follows integer truncation rather than positive modulo wrapping.
+
+Examples:
+
+```8f4e
+includes
+include std/math/fract
+includesEnd
+
+entry test
+module fractExamples
+push 3.25
+call fract
+; stack: 0.25
 moduleEnd
 entryEnd
 ```

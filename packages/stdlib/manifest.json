@@ -21,6 +21,10 @@
       "path": "std/math/clamp.8f4e"
     },
     {
+      "id": "std/math/fract",
+      "path": "std/math/fract.8f4e"
+    },
+    {
       "id": "std/math/pow2",
       "path": "std/math/pow2.8f4e"
     },
