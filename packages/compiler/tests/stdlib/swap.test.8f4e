@@ -1,0 +1,37 @@
+8f4e/v1
+
+includes
+include std/stack/swap
+includesEnd
+
+entry test
+module swapAssertions
+; it swaps two int values.
+push 1
+push 2
+call swap
+call assert 1
+call assert 2
+
+; it swaps an int and a float.
+push 3
+push 4.5
+call swap
+call assert 3
+call assertf 4.5
+
+; it swaps a float and an int.
+push 5.5
+push 6
+call swap
+call assertf 5.5
+call assert 6
+
+; it swaps two float values.
+push 7.25
+push 8.75
+call swap
+call assertf 7.25
+call assertf 8.75
+moduleEnd
+entryEnd

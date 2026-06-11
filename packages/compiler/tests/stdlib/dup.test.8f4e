@@ -1,0 +1,21 @@
+8f4e/v1
+
+includes
+include std/stack/dup
+includesEnd
+
+entry test
+module dupAssertions
+; it duplicates int values.
+push 42
+call dup
+call assert 42
+call assert 42
+
+; it duplicates float values.
+push 3.5
+call dup
+call assertf 3.5
+call assertf 3.5
+moduleEnd
+entryEnd
