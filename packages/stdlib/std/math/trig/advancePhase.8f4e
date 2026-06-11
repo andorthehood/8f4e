@@ -1,0 +1,35 @@
+function advancePhase
+#impure
+; Advances a phase by one sample
+; and wraps from PI to -PI.
+param float* phase
+param float frequency
+param float sampleRate
+
+const PI 3.141592653589793
+const NEG_PI -3.141592653589793
+
+push phase
+push *phase
+push PI
+push NEG_PI
+sub
+push frequency
+mul
+push sampleRate
+ensureNonZero
+div
+add
+store
+
+push *phase
+push PI
+greaterThan
+if
+push phase
+push NEG_PI
+store
+ifEnd
+
+push *phase
+functionEnd float
