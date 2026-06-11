@@ -4,18 +4,25 @@ function wrapPointer
 ; int buffer.
 param int pointer
 param int* buffer
-param int length
+param int itemCount
+
+local int byteLength
+
+push itemCount
+push sizeof(*buffer)
+mul
+localSet byteLength
 
 push buffer
 push pointer
 push buffer
 sub
-push length
+push byteLength
 ensureNonZero
 remainder
-push length
+push byteLength
 add
-push length
+push byteLength
 ensureNonZero
 remainder
 add
@@ -28,18 +35,25 @@ function wrapPointer
 ; float buffer.
 param int pointer
 param float* buffer
-param int length
+param int itemCount
+
+local int byteLength
+
+push itemCount
+push sizeof(*buffer)
+mul
+localSet byteLength
 
 push buffer
 push pointer
 push buffer
 sub
-push length
+push byteLength
 ensureNonZero
 remainder
-push length
+push byteLength
 add
-push length
+push byteLength
 ensureNonZero
 remainder
 add

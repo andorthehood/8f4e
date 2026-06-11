@@ -1,0 +1,27 @@
+8f4e/v1
+
+includes
+include std/math/pow2
+includesEnd
+
+entry test
+module pow2Assertions
+; it raises 2 to an integer
+; exponent.
+push 0
+call pow2
+call assert 1
+
+push 1
+call pow2
+call assert 2
+
+push 5
+call pow2
+call assert 32
+
+push 10
+call pow2
+call assert 1024
+moduleEnd
+entryEnd
