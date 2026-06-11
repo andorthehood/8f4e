@@ -28,4 +28,38 @@ describe('serializeToProject', () => {
 
 		expect(project).toMatchSnapshot();
 	});
+
+	it('derives serialized project data from current code blocks instead of initial project metadata', () => {
+		const state = createMockState({
+			initialProjectState: {
+				codeBlocks: [],
+				groups: [],
+				includedFunctionBlocks: [
+					{
+						code: ['function staleInclude', 'functionEnd'],
+						source: { kind: 'include', includeId: 'std/stale', symbolName: 'staleInclude' },
+					},
+				],
+			},
+			codeBlockRendering: {
+				codeBlocks: [
+					createMockCodeBlock({
+						name: 'includes',
+						code: ['includes', 'include std/current', 'includesEnd'],
+						x: 0,
+						y: 0,
+					}),
+				],
+			},
+		});
+
+		expect(serializeToProject(state)).toEqual({
+			codeBlocks: [
+				expect.objectContaining({
+					code: ['includes', 'include std/current', 'includesEnd'],
+				}),
+			],
+		});
+		expect(serializeToProject(state)).not.toHaveProperty('includedFunctionBlocks');
+	});
 });

@@ -1,12 +1,21 @@
 import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
-import { resolveFunctionIncludeSource } from './functionIncludes';
+import type { ProjectIncludeResolver, ProjectIncludeResolverAsync } from './functionIncludes';
+import { collectProjectIncludeIdsFromText, resolveProjectIncludes } from './functionIncludes';
 import { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 import { getProjectBlockName, isProjectGapLine } from './projectLines';
 import type { ProjectCodeBlock, ProjectCodeGroup, ProjectInput } from './types';
 
 export { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
 export { BLOCK_DELIMITERS, FORMAT_HEADER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
+export type { ProjectIncludeResolver, ProjectIncludeResolverAsync } from './functionIncludes';
+export {
+	collectProjectIncludeIdsFromText,
+	ProjectIncludeError,
+	resolveFunctionIncludeSource,
+	resolveProjectIncludes,
+	resolveProjectIncludesAsync,
+} from './functionIncludes';
 export { pickProjectCompilerBlocks } from './pickProjectCompilerBlocks';
 export { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 export type {
@@ -28,44 +37,12 @@ type ProjectContainerContentOptions = {
 	validateDocumentOpener: (opener: string, line: string, lineNumber: number) => void;
 };
 
-export type ProjectIncludeResolver = (includeId: string) => string | undefined;
-export type ProjectIncludeResolverAsync = (includeId: string) => string | Promise<string | undefined> | undefined;
-
 export interface Parse8f4eProjectOptions {
 	resolveInclude?: ProjectIncludeResolver;
 }
 
 export interface Parse8f4eProjectAsyncOptions {
 	resolveInclude?: ProjectIncludeResolverAsync;
-}
-
-function collectProjectIncludeIds(text: string): string[] {
-	const includeIds: string[] = [];
-	const lines = text.split('\n');
-
-	for (let i = 1; i < lines.length; i += 1) {
-		const trimmed = lines[i].trim();
-		if (trimmed !== INCLUDES_BLOCK_DELIMITER.opener) {
-			continue;
-		}
-
-		for (i += 1; i < lines.length; i += 1) {
-			const includeLine = lines[i].trim();
-			if (includeLine === INCLUDES_BLOCK_DELIMITER.closer) {
-				break;
-			}
-			if (isProjectGapLine(includeLine)) {
-				continue;
-			}
-
-			const [instruction, includeId] = includeLine.split(/\s+/);
-			if (instruction === 'include' && includeId) {
-				includeIds.push(includeId);
-			}
-		}
-	}
-
-	return includeIds;
 }
 
 /**
@@ -152,10 +129,12 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 
 			const closer = getProjectCloserKeyword(trimmed);
 			if (closer === INCLUDES_BLOCK_DELIMITER.closer) {
-				codeBlocks.push({
+				const block = {
 					id: startIndex + 1,
 					code: currentBlockLines,
-				});
+				};
+				codeBlocks.push(block);
+				includedFunctionBlocks.push(...resolveProjectIncludes([block], options.resolveInclude ?? (() => undefined)));
 				return i + 1;
 			}
 			if (closer) {
@@ -164,17 +143,7 @@ export function parse8f4eProject(text: string, options: Parse8f4eProjectOptions 
 				);
 			}
 
-			const [instruction, includeId, ...extraArgs] = trimmed.split(/\s+/);
-			if (instruction !== 'include' || !includeId || extraArgs.length > 0) {
-				throw new Error(`Parse error at line ${i + 1}: include requires exactly one include id`);
-			}
-
-			const source = options.resolveInclude?.(includeId);
-			if (source === undefined) {
-				throw new Error(`Parse error at line ${i + 1}: unresolved include "${includeId}"`);
-			}
-
-			includedFunctionBlocks.push(...resolveFunctionIncludeSource(includeId, source));
+			// Include line syntax and source resolution are applied once the complete block is collected.
 		}
 
 		throw new Error(`Parse error: unclosed block with opener "${INCLUDES_BLOCK_DELIMITER.opener}"`);
@@ -327,7 +296,7 @@ export async function parse8f4eProjectAsync(
 	}
 
 	const includeSources = new Map<string, string | undefined>();
-	for (const includeId of new Set(collectProjectIncludeIds(text))) {
+	for (const includeId of new Set(collectProjectIncludeIdsFromText(text))) {
 		includeSources.set(includeId, await options.resolveInclude(includeId));
 	}
 
