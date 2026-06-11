@@ -33,6 +33,10 @@
       "path": "std/memory/loadAt.8f4e"
     },
     {
+      "id": "std/memory/readInterpolated",
+      "path": "std/memory/readInterpolated.8f4e"
+    },
+    {
       "id": "std/memory/storeAt",
       "path": "std/memory/storeAt.8f4e"
     },
