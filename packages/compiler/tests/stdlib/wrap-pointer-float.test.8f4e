@@ -11,22 +11,24 @@ module wrapPointerFloatAssertions
 ; circular buffer.
 float[] buffer 4 1.25
 int pointer &buffer
-const BYTE_LENGTH count(buffer)*sizeof(buffer)
+const ITEM_COUNT count(buffer)
 
 push pointer
 push sizeof(buffer)*2
 add
 push &buffer
-push BYTE_LENGTH
+push ITEM_COUNT
 call wrapPointer
 push &buffer+8
 call assert
 
 push pointer
-push BYTE_LENGTH
+push ITEM_COUNT
+push sizeof(buffer)
+mul
 add
 push &buffer
-push BYTE_LENGTH
+push ITEM_COUNT
 call wrapPointer
 push &buffer
 call assert
@@ -35,7 +37,7 @@ push pointer
 push sizeof(buffer)
 sub
 push &buffer
-push BYTE_LENGTH
+push ITEM_COUNT
 call wrapPointer
 push buffer&
 call assert

@@ -12,10 +12,13 @@ Add an `includes` block near the top of the project, after the `8f4e/v1` header 
 
 includes
 include std/math/clamp
+include std/math/pow2
 include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
 include std/events/hasChanged
+include std/memory/loadAt
+include std/memory/storeAt
 include std/memory/wrapPointer
 includesEnd
 
@@ -39,10 +42,10 @@ Provides `wrapPointer`, which bidirectionally wraps a byte address into a circul
 
 Available overloads:
 
-- `wrapPointer(int pointer, int* buffer, int length) -> int*`
-- `wrapPointer(int pointer, float* buffer, int length) -> float*`
+- `wrapPointer(int pointer, int* buffer, int itemCount) -> int*`
+- `wrapPointer(int pointer, float* buffer, int itemCount) -> float*`
 
-`length` is the circular buffer length in bytes. The first argument is an untrusted computed byte address. The buffer argument supplies the typed circular range, and the return value is a valid pointer into that buffer.
+`itemCount` is the circular buffer length in elements. The first argument is an untrusted computed byte address. The buffer argument supplies the typed circular range, and the return value is a valid pointer into that buffer.
 
 Examples:
 
@@ -55,13 +58,15 @@ entry test
 module wrapPointerExamples
 float[] buffer 4
 int pointer &buffer
-const BYTE_LENGTH count(buffer)*sizeof(buffer)
+const ITEM_COUNT count(buffer)
 
 push pointer
-push BYTE_LENGTH
+push ITEM_COUNT
+push sizeof(buffer)
+mul
 add
 push &buffer
-push BYTE_LENGTH
+push ITEM_COUNT
 call wrapPointer
 ; stack: &buffer
 
@@ -69,9 +74,64 @@ push pointer
 push sizeof(buffer)
 sub
 push &buffer
-push BYTE_LENGTH
+push ITEM_COUNT
 call wrapPointer
 ; stack: buffer&
+moduleEnd
+entryEnd
+```
+
+## `std/memory/loadAt`
+
+Provides `loadAt`, which reads a value from a buffer by element index.
+
+Available overloads:
+
+- `loadAt(int* buffer, int index) -> int`
+
+Examples:
+
+```8f4e
+includes
+include std/memory/loadAt
+includesEnd
+
+entry test
+module loadAtExamples
+int[] buffer 4 11 22 33 44
+
+push &buffer
+push 2
+call loadAt
+; stack: 33
+moduleEnd
+entryEnd
+```
+
+## `std/memory/storeAt`
+
+Provides `storeAt`, which stores a value into a buffer by element index.
+
+Available overloads:
+
+- `storeAt(int* buffer, int index, int value) -> void`
+
+Examples:
+
+```8f4e
+includes
+include std/memory/storeAt
+includesEnd
+
+entry test
+module storeAtExamples
+int[] buffer 4
+
+push &buffer
+push 2
+push 99
+call storeAt
+; buffer[2] is 99
 moduleEnd
 entryEnd
 ```
@@ -105,6 +165,30 @@ push 0.5
 push 1.0
 call clamp
 ; stack: 0.5
+moduleEnd
+entryEnd
+```
+
+## `std/math/pow2`
+
+Provides `pow2`, which raises 2 to an integer exponent.
+
+Available overloads:
+
+- `pow2(int exponent) -> int`
+
+Examples:
+
+```8f4e
+includes
+include std/math/pow2
+includesEnd
+
+entry test
+module pow2Examples
+push 5
+call pow2
+; stack: 32
 moduleEnd
 entryEnd
 ```

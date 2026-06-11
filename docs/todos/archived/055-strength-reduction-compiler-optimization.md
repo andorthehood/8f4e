@@ -116,7 +116,7 @@ Implement a strength reduction optimization system that detects and replaces exp
 
 ## Related Items
 
-- **Related**: Power-of-2 operations exist as an examples stdlib function (`functions/math/pow2.8f4em`)
+- **Related**: Power-of-2 operations exist as a standard library function (`std/math/pow2`)
 - **Related**: Bit shift operations already implemented (`shiftLeft.ts`, `shiftRight.ts`)
 - **Related**: Existing optimization infrastructure (`gaphOptimizer.ts`)
 
