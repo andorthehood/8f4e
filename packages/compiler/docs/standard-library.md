@@ -16,7 +16,9 @@ include std/math/fract
 include std/math/pow2
 include std/math/trig/advancePhase
 include std/math/trig/cosine
+include std/math/trig/saw
 include std/math/trig/sine
+include std/math/trig/triangle
 include std/bitwise/extractBit
 include std/bitwise/extractByte
 include std/events/risingEdge
@@ -423,6 +425,54 @@ module cosineExamples
 push 0.0
 call cosine
 ; stack: about 1.0
+moduleEnd
+entryEnd
+```
+
+## `std/math/trig/triangle`
+
+Provides `triangle`, which maps a phase in `[-PI, PI]` to a triangle waveform in `[-1, 1]`.
+
+Available overloads:
+
+- `triangle(float x) -> float`
+
+Examples:
+
+```8f4e
+includes
+include std/math/trig/triangle
+includesEnd
+
+entry test
+module triangleExamples
+push 0.0
+call triangle
+; stack: 1.0
+moduleEnd
+entryEnd
+```
+
+## `std/math/trig/saw`
+
+Provides `saw`, which maps a phase in `[-PI, PI]` to a sawtooth ramp in `[-1, 1]`.
+
+Available overloads:
+
+- `saw(float x) -> float`
+
+Examples:
+
+```8f4e
+includes
+include std/math/trig/saw
+includesEnd
+
+entry test
+module sawExamples
+push 0.0
+call saw
+; stack: 0.0
 moduleEnd
 entryEnd
 ```
