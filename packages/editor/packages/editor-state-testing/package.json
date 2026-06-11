@@ -27,7 +27,7 @@
     "@8f4e/editor-state-types": "*"
   },
   "devDependencies": {
-    "@types/node": "24.12.4",
+    "@types/node": "24.13.2",
     "vitest": "4.1.7"
   }
 }
