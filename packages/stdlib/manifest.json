@@ -25,6 +25,10 @@
       "path": "std/math/pow2.8f4e"
     },
     {
+      "id": "std/memory/advancePointer",
+      "path": "std/memory/advancePointer.8f4e"
+    },
+    {
       "id": "std/memory/loadAt",
       "path": "std/memory/loadAt.8f4e"
     },
