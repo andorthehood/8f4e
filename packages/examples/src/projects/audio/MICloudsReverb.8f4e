@@ -12,6 +12,9 @@ note projectConfig
 ; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 ; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName MICloudsReverb
+; @config color.fill.waveform #f0a
+; @config color.fill.fill #f0a
+; @config color.text.instruction #0fa
 noteEnd
 
 function buffer
