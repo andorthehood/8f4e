@@ -1,0 +1,67 @@
+function triggerToGate
+#impure
+; Converts an int trigger to a
+; held gate by resetting the
+; remaining-samples counter.
+param int trigger
+param int duration
+param int* remainingSamples
+
+push trigger
+push 0
+greaterThan
+if
+push remainingSamples
+push duration
+store
+ifEnd
+
+push *remainingSamples
+push 0
+greaterThan
+if
+push remainingSamples
+push *remainingSamples
+push 1
+sub
+store
+push 1
+else
+push 0
+ifEnd int
+
+functionEnd int
+
+function triggerToGate
+#impure
+; Converts a float trigger to a
+; held gate by resetting the
+; remaining-samples counter.
+param float trigger
+param int duration
+param int* remainingSamples
+
+push trigger
+push 0.0
+greaterThan
+if
+push remainingSamples
+push duration
+store
+ifEnd
+
+push *remainingSamples
+push 0
+greaterThan
+if
+push remainingSamples
+push *remainingSamples
+push 1
+sub
+store
+push 1
+else
+push 0
+ifEnd int
+
+functionEnd int
