@@ -31,10 +31,10 @@
   },
   "devDependencies": {
     "@8f4e/editor-state-testing": "*",
-    "@vitest/browser": "4.1.7",
-    "@vitest/browser-playwright": "4.1.7",
+    "@vitest/browser": "4.1.8",
+    "@vitest/browser-playwright": "4.1.8",
     "playwright": "1.60.0",
-    "vitest": "4.1.7"
+    "vitest": "4.1.8"
   },
   "scripts": {
     "test:browser": "vitest --config=vitest.browser.config.ts"
