@@ -24,6 +24,7 @@ import groupSkipExecutionToggler from './features/code-blocks/features/group/ski
 import groupUngroupper from './features/code-blocks/features/group/ungroupper/effect';
 import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
+import sliderDefaultSaver from './features/code-blocks/features/sliderDefaultSaver/effect';
 import codeEditing from './features/code-editing/effect';
 import color from './features/color/effect';
 import dialog from './features/dialog/effect';
@@ -86,6 +87,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	_switch(state, events);
 	button(state, events);
 	slider(store, events);
+	sliderDefaultSaver(store, events);
 	crossfade(store, events);
 	pianoKeyboard(store, events);
 	viewport(store, events);
