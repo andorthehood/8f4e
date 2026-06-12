@@ -1,28 +1,77 @@
 8f4e/v1
 
-entry main
-module projectConfig
-; @pos -168 -22
+note assets
+; @pos -129 -37
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo4_48khz_16s.raw
+noteEnd
+
+note projectConfig
+; @pos -129 -32
 ; @config runtime AudioWorkletRuntime
-; @config audioRuntime.sampleRate 32000
+; @config audioRuntime.sampleRate 48000
 ; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 ; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName MICloudsReverb
+noteEnd
 
-moduleEnd
-module assets2
-; @pos -59 -38
-; @config bin.amen.url https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
-
-moduleEnd
-module pcmPlayer
-; @pos -5 -24
-; @home
+function buffer
+; @pos -111 -8
+#export buffer
 use env
 
-int8[] buffer ASSET_AMEN_SIZE
-; @config bin.amen.memory buffer
-int8* playhead &buffer
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
+constants env
+; @pos -67 -23
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'lubadh_aimo4_48khz_16s.raw'
+const ASSET_PIANO_SIZE 1316572
+
+constantsEnd
+
+constants cloudsReverb
+; @pos -67 -7
+use env
+
+const CLOUDS_SAMPLE_RATE 32000
+const CLOUDS_RATIO SAMPLE_RATE/CLOUDS_SAMPLE_RATE
+
+constantsEnd
+
+includes
+; @pos -54 2
+include std/events/risingEdge
+include std/memory/wrapPointer
+include std/math/fract
+include std/memory/readInterpolated
+include std/math/trig/cosine
+include std/math/trig/sine
+include std/math/trig/triangle
+include std/math/trig/saw
+include std/memory/advancePointer
+include std/math/trig/advancePhase
+
+includesEnd
+
+entry main
+module pcmPlayer
+; @pos -5 -27
+; @home left
+use env
+
+int16[] buffer ASSET_PIANO_SIZE/2
+; @config bin.piano.memory buffer
+int16* playhead &buffer
 float out
 
 ; @wave2 &buffer count(buffer) playhead
@@ -57,8 +106,8 @@ ifEnd
 
 moduleEnd
 module controlValues
-; @pos 45 -54
-; @home right                       @w
+; @pos 44 -27
+
 float decay 0.1
 ; @slider decay
 float amount 0.5
@@ -70,7 +119,7 @@ float damping 0.7
 
 moduleEnd
 module lfo1
-; @pos 94 -27
+; @pos 90 -27
 ; @group smearStage1
 use env
 
@@ -97,7 +146,7 @@ store
 
 moduleEnd
 module modulatedDelayTap
-; @pos 131 -27
+; @pos 127 -27
 ; @group smearStage1
 ; Reads a modulated, 
 ; interpolated tap 
@@ -112,8 +161,10 @@ float* mod &lfo1:out
 float out
 
 const SIZE sizeof(*buffer)
-const MOD_BASE_OFFSET 10.0*CLOUDS_RATIO
-const MOD_DEPTH 60.0*CLOUDS_RATIO
+const MOD_BASE_OFFSET 
+- 10.0*CLOUDS_RATIO
+const MOD_DEPTH 
+- 60.0*CLOUDS_RATIO
 
 push &out
 ; pointer + 
@@ -146,7 +197,7 @@ store
 
 moduleEnd
 module delayOffsetWriter
-; @pos 167 -27
+; @pos 173 -27
 ; @group smearStage1
 ; Writes an input sample into a
 ; shared delay buffer at a fixed
@@ -161,11 +212,14 @@ float** pointer
 float* in &modulatedDelayTap:out
 
 const SIZE sizeof(*buffer)
-const WRITE_OFFSET_SAMPLES 100*CLOUDS_RATIO
-const WRITE_OFFSET WRITE_OFFSET_SAMPLES*SIZE
+const WRITE_OFFSET_SAMPLES 
+- 100.0*CLOUDS_RATIO
 
 push *pointer
-push WRITE_OFFSET
+push WRITE_OFFSET_SAMPLES
+castToInt
+push SIZE
+mul
 add
 push buffer
 push count(*buffer)
@@ -175,7 +229,7 @@ store
 
 moduleEnd
 module allpassDiffuser
-; @pos 209 -27
+; @pos 214 -27
 ; @group smearStage1
 use cloudsReverb
 
@@ -222,7 +276,7 @@ call advancePointer
 
 moduleEnd
 module allpassDiffuser2
-; @pos 256 -27
+; @pos 261 -27
 ; @group smearStage2
 use cloudsReverb
 
@@ -269,7 +323,7 @@ call advancePointer
 
 moduleEnd
 module allpassDiffuser3
-; @pos 299 -27
+; @pos 308 -27
 ; @group smearStage3
 use cloudsReverb
 
@@ -316,7 +370,7 @@ call advancePointer
 
 moduleEnd
 module allpassDiffuser4
-; @pos 342 -27
+; @pos 355 -27
 ; @group smearStage4
 use cloudsReverb
 
@@ -362,27 +416,8 @@ push count(buffer)
 call advancePointer
 
 moduleEnd
-module tank2DelayRead
-; @pos 390 -1
-; @group tank2
-; Reads Clouds del1.
-use cloudsReverb
-
-const DELAY_SIZE 3411*CLOUDS_RATIO
-
-float[] buffer DELAY_SIZE 
-float out
-float* pointer &buffer
-
-; @wave &buffer count(buffer) pointer
-
-push &out
-push *pointer
-store
-
-moduleEnd
 module tank1DelayRead
-; @pos 393 -37
+; @pos 413 -60
 ; @group tank1
 ; Reads Clouds del2.
 use cloudsReverb
@@ -401,7 +436,7 @@ store
 
 moduleEnd
 module tank1DelayLfo
-; @pos 398 22
+; @pos 459 -60
 ; @group tank1
 ; Clouds LFO_2 for the
 ; modulated del2 tap.
@@ -433,7 +468,7 @@ store
 
 moduleEnd
 module tank1ModulatedTap
-; @pos 438 -37
+; @pos 496 -60
 ; @group tank1
 ; Reads a modulated, 
 ; interpolated tap 
@@ -480,8 +515,27 @@ call readInterpolated
 store
 
 moduleEnd
+module tank2DelayRead
+; @pos 500 -6
+; @group tank2
+; Reads Clouds del1.
+use cloudsReverb
+
+const DELAY_SIZE 3411*CLOUDS_RATIO
+
+float[] buffer DELAY_SIZE 
+float out
+float* pointer &buffer
+
+; @wave &buffer count(buffer) pointer
+
+push &out
+push *pointer
+store
+
+moduleEnd
 module tank1Mixer
-; @pos 481 -37
+; @pos 546 -60
 ; @group tank1
 float* in1 &allpassDiffuser4:out
 float* in2 &tank1ModulatedTap:out
@@ -499,7 +553,7 @@ store
 
 moduleEnd
 module tank2Mixer
-; @pos 484 -3
+; @pos 547 -6
 ; @group tank2
 float* in1 &allpassDiffuser4:out
 float* in2 &tank2DelayRead:out
@@ -517,7 +571,7 @@ store
 
 moduleEnd
 module tank1Damping
-; @pos 525 -38
+; @pos 588 -60
 ; @group tank1
 float* in &tank1Mixer:out
 float* damping
@@ -536,7 +590,7 @@ store
 
 moduleEnd
 module tank2Damping
-; @pos 525 -3
+; @pos 588 -6
 ; @group tank2
 float* in &tank2Mixer:out
 float* damping
@@ -555,7 +609,7 @@ store
 
 moduleEnd
 module tank1AllpassA
-; @pos 560 -57
+; @pos 622 -60
 ; @group tank1
 use cloudsReverb
 
@@ -605,7 +659,7 @@ call advancePointer
 
 moduleEnd
 module tank2AllpassA
-; @pos 560 -3
+; @pos 622 -6
 ; @group tank2
 use cloudsReverb
 
@@ -651,7 +705,7 @@ call advancePointer
 
 moduleEnd
 module tank1AllpassB
-; @pos 606 -57
+; @pos 668 -60
 ; @group tank1
 use cloudsReverb
 
@@ -697,7 +751,7 @@ call advancePointer
 
 moduleEnd
 module tank2AllpassB
-; @pos 608 -3
+; @pos 668 -6
 ; @group tank2
 use cloudsReverb
 
@@ -747,7 +801,7 @@ call advancePointer
 
 moduleEnd
 module tank1DelayWrite
-; @pos 654 -41
+; @pos 714 -60
 ; @group tank1
 ; Writes Clouds del1.
 
@@ -766,7 +820,7 @@ call advancePointer
 
 moduleEnd
 module tank2DelayWrite
-; @pos 656 -3
+; @pos 715 -6
 ; @group tank2
 ; Writes Clouds del2.
 
@@ -785,7 +839,7 @@ call advancePointer
 
 moduleEnd
 module tank1OutputMix
-; @pos 701 -35
+; @pos 762 -60
 ; @group tank1
 
 float* dry &pcmPlayer:out
@@ -800,8 +854,6 @@ push *amount
 sub
 mul
 push *wet
-push 2.0
-mul
 push *amount
 mul
 add
@@ -809,7 +861,7 @@ store
 
 moduleEnd
 module tank2OutputMix
-; @pos 701 -8
+; @pos 763 -6
 ; @group tank2
 
 float* dry &pcmPlayer:out
@@ -824,8 +876,6 @@ push *amount
 sub
 mul
 push *wet
-push 2.0
-mul
 push *amount
 mul
 add
@@ -833,7 +883,7 @@ store
 
 moduleEnd
 module audiooutL
-; @pos 748 -28
+; @pos 819 -35
 use env
 
 float* in &tank1OutputMix:out
@@ -871,7 +921,7 @@ ifEnd
 
 moduleEnd
 module audiooutR
-; @pos 792 -28
+; @pos 860 -35
 use env
 
 float* in &tank2OutputMix:out
@@ -909,52 +959,3 @@ ifEnd
 
 moduleEnd
 entryEnd
-
-function buffer
-; @pos -159 -8
-#export buffer
-use env
-
-loop AUDIO_BUFFER_SIZE
-call main
-loopEnd
-functionEnd
-
-constants cloudsReverb
-; @pos 35 -20
-use env
-
-const CLOUDS_SAMPLE_RATE 32000
-const CLOUDS_RATIO SAMPLE_RATE/CLOUDS_SAMPLE_RATE
-
-constantsEnd
-
-constants env
-; @pos -56 -23
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 32000
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'amen-170bpm-8s.pcm'
-const ASSET_AMEN_SIZE 62258
-
-constantsEnd
-
-includes
-; @pos 63 27
-include std/events/risingEdge
-include std/memory/wrapPointer
-include std/math/fract
-include std/memory/readInterpolated
-include std/math/trig/cosine
-include std/math/trig/sine
-include std/math/trig/triangle
-include std/math/trig/saw
-include std/memory/advancePointer
-include std/math/trig/advancePhase
-
-includesEnd
