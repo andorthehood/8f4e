@@ -75,6 +75,10 @@ Active todo files are listed below.
 | 451 | Add pushShape instruction | 🟡 | 4-8h | 2026-06-08 | Add `pushShape <prototypeId>` so shaped modules can push effective memory addresses in prototype order and feed functions that use `paramShape`. |
 | 452 | Add Reachability-Based Function Pruning | 🟡 | 1-2d | 2026-06-10 | Replace conservative function pruning with a reachability pass so functions only called by uncalled functions are also omitted. |
 | 453 | Add indirect calls and function reference type | 🟡 | 2-4d | 2026-06-11 | Add typed function references backed by WebAssembly table indices so 8f4e can store, load, and call runtime-selected functions through `call_indirect`. |
+| 454 | Add compile-time int cast helper | 🟡 | 4-8h | 2026-06-11 | Add a compile-time-only `int(...)` helper for folding numeric constants into integer arguments such as array lengths and loop counts. |
+| 455 | Unify assert and assertf with polymorphic overloads | 🟡 | 2-4h | 2026-06-12 | Migrate float assertions to polymorphic `assert` overloads so CLI tests and compiler fixtures use the same assertion helper surface. |
+| 456 | Improve function overload mismatch diagnostics | 🟡 | 2-4h | 2026-06-12 | Report inferred call signatures and available overload signatures when polymorphic function resolution fails. |
+| 457 | Make load infer narrow width from pointer metadata | 🟡 | 4-8h | 2026-06-12 | Let plain `load` choose narrow signed or unsigned integer loads when address metadata proves the pointee width, while keeping raw integer addresses 32-bit. |
 
 ### 🟢 Low Priority
 
