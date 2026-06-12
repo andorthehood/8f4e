@@ -1,0 +1,17 @@
+function smoothstep
+; Smoothly maps amount in
+; 0..1 to an eased 0..1
+; curve.
+param float amount
+
+push amount
+push amount
+mul
+push 3.0
+push 2.0
+push amount
+mul
+sub
+mul
+
+functionEnd float

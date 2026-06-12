@@ -1,0 +1,32 @@
+8f4e/v1
+
+includes
+include std/math/lerp
+includesEnd
+
+entry test
+module lerpAssertions
+; it linearly interpolates
+; between two float values.
+push 10.0
+push 20.0
+push 0.0
+call lerp
+castToInt
+call assert 10
+
+push 10.0
+push 20.0
+push 0.5
+call lerp
+castToInt
+call assert 15
+
+push 10.0
+push 20.0
+push 1.0
+call lerp
+castToInt
+call assert 20
+moduleEnd
+entryEnd

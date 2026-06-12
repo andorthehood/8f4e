@@ -1,0 +1,32 @@
+8f4e/v1
+
+includes
+include std/math/smoothstep
+includesEnd
+
+entry test
+module smoothstepAssertions
+; it maps 0..1 to a smooth
+; eased 0..1 curve.
+push 0.0
+call smoothstep
+push 100.0
+mul
+castToInt
+call assert 0
+
+push 0.5
+call smoothstep
+push 100.0
+mul
+castToInt
+call assert 50
+
+push 1.0
+call smoothstep
+push 100.0
+mul
+castToInt
+call assert 100
+moduleEnd
+entryEnd

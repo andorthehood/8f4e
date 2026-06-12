@@ -1,0 +1,107 @@
+8f4e/v1
+
+includes
+include std/math/normalize
+includesEnd
+
+entry test
+module normalizeAssertions
+; it maps signed int8 values
+; to clamped -1..1 floats.
+int8[] signed8 3 -128 0 127
+
+push &signed8
+call normalize
+push 100.0
+mul
+castToInt
+call assert -100
+
+push &signed8
+push sizeof(signed8)
+add
+call normalize
+push 100.0
+mul
+castToInt
+call assert 0
+
+push &signed8
+push sizeof(signed8)*2
+add
+call normalize
+push 100.0
+mul
+castToInt
+call assert 100
+
+; it maps unsigned int8 values
+; to clamped 0..1 floats.
+int8u[] unsigned8 3 0 128 255
+
+push &unsigned8
+call normalize
+push 100.0
+mul
+castToInt
+call assert 0
+
+push &unsigned8
+push sizeof(unsigned8)
+add
+call normalize
+push 100.0
+mul
+castToInt
+call assert 50
+
+push &unsigned8
+push sizeof(unsigned8)*2
+add
+call normalize
+push 100.0
+mul
+castToInt
+call assert 100
+
+; it maps signed int16 values
+; using the int16 type range.
+int16[] signed16 2 -32768 32767
+
+push &signed16
+call normalize
+push 100.0
+mul
+castToInt
+call assert -100
+
+push &signed16
+push sizeof(signed16)
+add
+call normalize
+push 100.0
+mul
+castToInt
+call assert 100
+
+; it maps unsigned int16 values
+; using the int16u type range.
+int16u[] unsigned16 2 0 65535
+
+push &unsigned16
+call normalize
+push 100.0
+mul
+castToInt
+call assert 0
+
+push &unsigned16
+push sizeof(unsigned16)
+add
+call normalize
+push 100.0
+mul
+castToInt
+call assert 100
+moduleEnd
+entryEnd

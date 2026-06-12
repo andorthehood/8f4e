@@ -13,7 +13,10 @@ Add an `includes` block near the top of the project, after the `8f4e/v1` header 
 includes
 include std/math/clamp
 include std/math/fract
+include std/math/lerp
+include std/math/normalize
 include std/math/pow2
+include std/math/smoothstep
 include std/math/trig/advancePhase
 include std/math/trig/cosine
 include std/math/trig/saw
@@ -385,6 +388,66 @@ moduleEnd
 entryEnd
 ```
 
+## `std/math/lerp`
+
+Provides `lerp`, which linearly interpolates between two float values.
+
+Available overloads:
+
+- `lerp(float start, float end, float amount) -> float`
+
+Examples:
+
+```8f4e
+includes
+include std/math/lerp
+includesEnd
+
+entry test
+module lerpExamples
+push 10.0
+push 20.0
+push 0.5
+call lerp
+; stack: 15.0
+moduleEnd
+entryEnd
+```
+
+## `std/math/normalize`
+
+Provides `normalize`, which loads an integer value through a typed pointer and maps it to a float audio/control range
+based on the pointer type.
+
+Available overloads:
+
+- `normalize(int8* pointer) -> float`
+- `normalize(int8u* pointer) -> float`
+- `normalize(int16* pointer) -> float`
+- `normalize(int16u* pointer) -> float`
+- `normalize(int* pointer) -> float`
+
+Signed pointer types map to `-1..1`; unsigned pointer types map to `0..1`. The integer type's maximum value is inferred
+from pointer metadata.
+
+Examples:
+
+```8f4e
+includes
+include std/math/normalize
+includesEnd
+
+entry test
+module normalizeExamples
+int8 sample -64
+
+push &sample
+call normalize
+; stack: roughly -0.5
+moduleEnd
+entryEnd
+```
+
 ## `std/math/pow2`
 
 Provides `pow2`, which raises 2 to an integer exponent.
@@ -405,6 +468,33 @@ module pow2Examples
 push 5
 call pow2
 ; stack: 32
+moduleEnd
+entryEnd
+```
+
+## `std/math/smoothstep`
+
+Provides `smoothstep`, which maps a float amount to a cubic eased curve. It is commonly used for fades and modulation
+shaping.
+
+Available overloads:
+
+- `smoothstep(float amount) -> float`
+
+The usual input range is `0..1`, where `0` returns `0`, `0.5` returns `0.5`, and `1` returns `1`.
+
+Examples:
+
+```8f4e
+includes
+include std/math/smoothstep
+includesEnd
+
+entry test
+module smoothstepExamples
+push 0.5
+call smoothstep
+; stack: 0.5
 moduleEnd
 entryEnd
 ```
