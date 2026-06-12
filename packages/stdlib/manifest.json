@@ -9,12 +9,20 @@
       "path": "std/bitwise/extractByte.8f4e"
     },
     {
+      "id": "std/events/gateToTrigger",
+      "path": "std/events/gateToTrigger.8f4e"
+    },
+    {
       "id": "std/events/hasChanged",
       "path": "std/events/hasChanged.8f4e"
     },
     {
       "id": "std/events/risingEdge",
       "path": "std/events/risingEdge.8f4e"
+    },
+    {
+      "id": "std/events/triggerToGate",
+      "path": "std/events/triggerToGate.8f4e"
     },
     {
       "id": "std/math/clamp",

@@ -1,0 +1,34 @@
+function gateToTrigger
+#impure
+; Returns a one-sample trigger
+; when an int gate rises above
+; its previous value.
+param int gate
+param int* previousGate
+
+push gate
+push *previousGate
+greaterThan
+push previousGate
+push gate
+store
+
+functionEnd int
+
+function gateToTrigger
+#impure
+; Returns a one-sample trigger
+; when a float gate rises above
+; its previous value.
+param float gate
+param float* previousGate
+
+push gate
+push previousGate
+loadFloat
+greaterThan
+push previousGate
+push gate
+store
+
+functionEnd int
