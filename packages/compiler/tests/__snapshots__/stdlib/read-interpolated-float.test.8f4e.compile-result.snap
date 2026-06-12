@@ -482,6 +482,496 @@
       "name": "readInterpolated",
       "type": "function",
     },
+    "readInterpolated__int__int16_p__int__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "readInterpolated",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [],
+          "instruction": "#impure",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int16*",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "itemCount",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "fraction",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "itemCount",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [],
+          "instruction": "load16s",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "pointer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "buffer",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [],
+          "instruction": "load16s",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "second",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "first",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "fraction",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "readInterpolated",
+      "type": "function",
+    },
     "readInterpolated__int__int_p__int__float": {
       "lines": [
         {
@@ -988,6 +1478,20 @@
         ],
       },
     },
+    "readInterpolated__int__int16_p__int__float": {
+      "id": "readInterpolated__int__int16_p__int__float",
+      "signature": {
+        "parameters": [
+          "int",
+          "int16*",
+          "int",
+          "float",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
     "readInterpolated__int__int_p__int__float": {
       "id": "readInterpolated__int__int_p__int__float",
       "signature": {
@@ -1383,6 +1887,7 @@
     "compiledFunctions": [
       "readInterpolated__int__float_p__int__float",
       "readInterpolated__int__int_p__int__float",
+      "readInterpolated__int__int16_p__int__float",
     ],
     "compiledModules": [
       "readInterpolatedFloatAssertions",

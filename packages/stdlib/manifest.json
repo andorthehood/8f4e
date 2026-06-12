@@ -53,6 +53,10 @@
       "path": "std/memory/advancePointer.8f4e"
     },
     {
+      "id": "std/memory/copy",
+      "path": "std/memory/copy.8f4e"
+    },
+    {
       "id": "std/memory/decrementPointer",
       "path": "std/memory/decrementPointer.8f4e"
     },
