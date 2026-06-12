@@ -30,6 +30,7 @@ export const moduleMenu: MenuGenerator = state => {
 
 	// Check if code block has ; @favorite directive
 	const hasFavoriteDirective = state.codeBlockRendering.selectedCodeBlock?.isFavorite ?? false;
+	const hasSliders = (state.codeBlockRendering.selectedCodeBlock?.widgets.sliders.length ?? 0) > 0;
 
 	// Check if code block has a group name and compute group skip/nonstick status
 	const groupName = state.codeBlockRendering.selectedCodeBlock?.groupName;
@@ -124,6 +125,13 @@ export const moduleMenu: MenuGenerator = state => {
 						action: 'toggleFavoriteDirective',
 						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 						close: true,
+					},
+					{
+						title: 'Save slider values to code',
+						action: 'saveSliderValuesToCode',
+						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
+						close: true,
+						disabled: !hasSliders || !state.callbacks.getWordFromMemory,
 					},
 				]
 			: []),
