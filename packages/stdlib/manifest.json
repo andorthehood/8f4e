@@ -25,8 +25,20 @@
       "path": "std/math/fract.8f4e"
     },
     {
+      "id": "std/math/lerp",
+      "path": "std/math/lerp.8f4e"
+    },
+    {
+      "id": "std/math/normalize",
+      "path": "std/math/normalize.8f4e"
+    },
+    {
       "id": "std/math/pow2",
       "path": "std/math/pow2.8f4e"
+    },
+    {
+      "id": "std/math/smoothstep",
+      "path": "std/math/smoothstep.8f4e"
     },
     {
       "id": "std/math/trig/advancePhase",

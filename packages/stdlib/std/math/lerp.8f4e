@@ -1,0 +1,18 @@
+function lerp
+; Linearly interpolates between
+; start and end by amount.
+param float start
+param float end
+param float amount
+
+push start
+push 1.0
+push amount
+sub
+mul
+push end
+push amount
+mul
+add
+
+functionEnd float
