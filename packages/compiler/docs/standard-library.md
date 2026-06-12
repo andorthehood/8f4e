@@ -208,6 +208,35 @@ moduleEnd
 entryEnd
 ```
 
+## `std/memory/copy`
+
+Provides `copy`, which copies the value pointed to by one memory pointer into another memory pointer of the same type.
+
+Available overloads:
+
+- `copy(int* source, int* dest) -> void`
+- `copy(float* source, float* dest) -> void`
+
+Examples:
+
+```8f4e
+includes
+include std/memory/copy
+includesEnd
+
+entry test
+module copyExamples
+float source 12.5
+float dest 0.0
+
+push &source
+push &dest
+call copy
+; dest is 12.5
+moduleEnd
+entryEnd
+```
+
 ## `std/memory/loadAt`
 
 Provides `loadAt`, which reads a value from a buffer by element index.
@@ -242,6 +271,7 @@ Provides `readInterpolated`, which reads two adjacent circular-buffer samples an
 Available overloads:
 
 - `readInterpolated(int pointer, int* buffer, int itemCount, float fraction) -> float`
+- `readInterpolated(int pointer, int16* buffer, int itemCount, float fraction) -> float`
 - `readInterpolated(int pointer, float* buffer, int itemCount, float fraction) -> float`
 
 `pointer` is an untrusted computed byte address. `itemCount` is the circular buffer length in elements. `fraction` is the interpolation amount between the wrapped sample at `pointer` and the next wrapped sample.
