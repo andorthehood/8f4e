@@ -14,7 +14,7 @@ note projectConfig
 ; @config audioRuntime.sampleRate 48000
 ; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 ; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
-; @config export.fileName MICloudsReverb
+; @config export.fileName MICloudsReverbTweakable
 ; @config color.fill.waveform #f0a
 ; @config color.fill.fill #f0a
 ; @config color.text.instruction #0fa
@@ -114,14 +114,50 @@ moduleEnd
 module controlValues
 ; @pos 46 -27
 
-float decay 0.1
-; @slider decay
+float tank1Decay 0.1
+; @slider tank1Decay
+float tank2Decay 0.1
+; @slider tank2Decay
 float amount 0.5
 ; @slider amount
-float diffusion 0.625
-; @slider diffusion
-float damping 0.7
-; @slider damping
+float smear1Diffusion 0.625
+; @slider smear1Diffusion
+float smear2Diffusion 0.625
+; @slider smear2Diffusion
+float smear3Diffusion 0.625
+; @slider smear3Diffusion
+float smear4Diffusion 0.625
+; @slider smear4Diffusion
+float tank1AllpassADiffusion 0.625
+; @slider tank1AllpassADiffusion
+float tank1AllpassBDiffusion 0.625
+; @slider tank1AllpassBDiffusion
+float tank2AllpassADiffusion 0.625
+; @slider tank2AllpassADiffusion
+float tank2AllpassBDiffusion 0.625
+; @slider tank2AllpassBDiffusion
+float tank1Damping 0.7
+; @slider tank1Damping
+float tank2Damping 0.7
+; @slider tank2Damping
+float smearLfoFrequency 0.5
+; @slider smearLfoFrequency 0.01 5.0 0.01
+float tank1LfoFrequency 0.3
+; @slider tank1LfoFrequency 0.01 5.0 0.01
+int smearTapBase 10
+; @slider smearTapBase 0 200 1
+int smearTapDepth 60
+; @slider smearTapDepth 0 200 1
+int smearWriteOffset 100
+; @slider smearWriteOffset 0 300 1
+int tank1TapBase 4680
+; @slider tank1TapBase 0 6000 1
+int tank1TapDepth 100
+; @slider tank1TapDepth 0 1000 1
+int tank1DelayReadOffset 0
+; @slider tank1DelayReadOffset 0 4781 1
+int tank2DelayReadOffset 0
+; @slider tank2DelayReadOffset 0 3410 1
 
 moduleEnd
 module lfo1
@@ -129,13 +165,13 @@ module lfo1
 ; @group smearStage1
 use env
 
-float frequency 0.5
+float* frequency &controlValues:smearLfoFrequency
 float phase
 float out
 
 push &out
 push &phase
-push frequency
+push *frequency
 push SAMPLE_RATE
 call advancePhase
 ; You can swap this call
@@ -163,21 +199,27 @@ float* buffer
 float** pointer 
 - &allpassDiffuser:pointer
 float* mod &lfo1:out
+int* baseOffset
+- &controlValues:smearTapBase
+int* depth
+- &controlValues:smearTapDepth
 float out
 
 const SIZE sizeof(*buffer)
-const MOD_BASE_OFFSET 
-- 10.0*CLOUDS_RATIO
-const MOD_DEPTH 
-- 60.0*CLOUDS_RATIO
 
 push &out
 ; pointer + 
 ; int((10 + mod * 60) * ratio) * SIZE
 push *pointer
-push MOD_BASE_OFFSET
+push *baseOffset
+castToFloat
+push CLOUDS_RATIO
+mul
 push *mod
-push MOD_DEPTH
+push *depth
+castToFloat
+push CLOUDS_RATIO
+mul
 mul
 add
 castToInt
@@ -190,9 +232,15 @@ push buffer
 push count(*buffer)
 
 ; fraction((10 + mod * 60) * ratio)
-push MOD_BASE_OFFSET
+push *baseOffset
+castToFloat
+push CLOUDS_RATIO
+mul
 push *mod
-push MOD_DEPTH
+push *depth
+castToFloat
+push CLOUDS_RATIO
+mul
 mul
 add
 call fract
@@ -215,13 +263,16 @@ float* buffer
 float** pointer 
 - &allpassDiffuser:pointer
 float* in &modulatedDelayTap:out
+int* writeOffset
+- &controlValues:smearWriteOffset
 
 const SIZE sizeof(*buffer)
-const WRITE_OFFSET_SAMPLES 
-- 100.0*CLOUDS_RATIO
 
 push *pointer
-push WRITE_OFFSET_SAMPLES
+push *writeOffset
+castToFloat
+push CLOUDS_RATIO
+mul
 castToInt
 push SIZE
 mul
@@ -245,7 +296,7 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer 
 float* diffusion 
-- &controlValues:diffusion
+- &controlValues:smear1Diffusion
 
 ; @wave2 &buffer count(buffer) pointer
 
@@ -292,7 +343,7 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer 
 float* diffusion 
-- &controlValues:diffusion
+- &controlValues:smear2Diffusion
 
 ; @wave2 &buffer count(buffer) pointer
 
@@ -339,7 +390,7 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer 
 float* diffusion
-- &controlValues:diffusion
+- &controlValues:smear3Diffusion
 
 ; @wave2 &buffer count(buffer) pointer
 
@@ -386,7 +437,7 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer 
 float* diffusion
-- &controlValues:diffusion
+- &controlValues:smear4Diffusion
 
 ; @wave2 &buffer count(buffer) pointer
 
@@ -432,11 +483,32 @@ const DELAY_SIZE 4782*CLOUDS_RATIO
 float[] buffer DELAY_SIZE
 float out
 float* pointer &buffer
+int* readOffset
+- &controlValues:tank1DelayReadOffset
+
+const SIZE sizeof(*buffer)
+
+local int readAddress
 
 ; @wave &buffer count(buffer) pointer
 
+push pointer
+push *readOffset
+castToFloat
+push CLOUDS_RATIO
+mul
+castToInt
+push SIZE
+mul
+add
+localSet readAddress
+
 push &out
-push *pointer
+push readAddress
+push &buffer
+push count(buffer)
+call wrapPointer
+loadFloat
 store
 
 moduleEnd
@@ -447,13 +519,13 @@ module tank1DelayLfo
 ; modulated del2 tap.
 use env
 
-float frequency 0.3
+float* frequency &controlValues:tank1LfoFrequency
 float phase
 float out
 
 push &out
 push &phase
-push frequency
+push *frequency
 push SAMPLE_RATE
 call advancePhase
 ; You can swap this call
@@ -480,19 +552,27 @@ float* buffer &tank1DelayRead:buffer
 float** pointer 
 - &tank1DelayRead:pointer
 float* mod &tank1DelayLfo:out
+int* baseOffset
+- &controlValues:tank1TapBase
+int* depth
+- &controlValues:tank1TapDepth
 float out
 
 const SIZE sizeof(*buffer)
-const MOD_BASE_OFFSET 4680.0*CLOUDS_RATIO
-const MOD_DEPTH 100.0*CLOUDS_RATIO
 
 push &out
 ; pointer + 
 ; int((4680 + mod * 100) * ratio) * SIZE
 push *pointer
-push MOD_BASE_OFFSET
+push *baseOffset
+castToFloat
+push CLOUDS_RATIO
+mul
 push *mod
-push MOD_DEPTH
+push *depth
+castToFloat
+push CLOUDS_RATIO
+mul
 mul
 add
 castToInt
@@ -505,9 +585,15 @@ push buffer
 push count(*buffer)
 
 ; fraction((4680 + mod * 100) * ratio)
-push MOD_BASE_OFFSET
+push *baseOffset
+castToFloat
+push CLOUDS_RATIO
+mul
 push *mod
-push MOD_DEPTH
+push *depth
+castToFloat
+push CLOUDS_RATIO
+mul
 mul
 add
 call fract
@@ -527,11 +613,32 @@ const DELAY_SIZE 3411*CLOUDS_RATIO
 float[] buffer DELAY_SIZE 
 float out
 float* pointer &buffer
+int* readOffset
+- &controlValues:tank2DelayReadOffset
+
+const SIZE sizeof(*buffer)
+
+local int readAddress
 
 ; @wave &buffer count(buffer) pointer
 
+push pointer
+push *readOffset
+castToFloat
+push CLOUDS_RATIO
+mul
+castToInt
+push SIZE
+mul
+add
+localSet readAddress
+
 push &out
-push *pointer
+push readAddress
+push &buffer
+push count(buffer)
+call wrapPointer
+loadFloat
 store
 
 moduleEnd
@@ -541,7 +648,7 @@ module tank1Mixer
 float* in1 &allpassDiffuser4:out
 float* in2 &tank1ModulatedTap:out
 float* decay
-- &controlValues:decay
+- &controlValues:tank1Decay
 float out
 
 push &out
@@ -559,7 +666,7 @@ module tank2Mixer
 float* in1 &allpassDiffuser4:out
 float* in2 &tank2DelayRead:out
 float* decay 
-- &controlValues:decay
+- &controlValues:tank2Decay
 float out
 
 push &out
@@ -576,7 +683,7 @@ module tank1Damping
 ; @group tank1
 float* in &tank1Mixer:out
 float* damping
-- &controlValues:damping
+- &controlValues:tank1Damping
 float out
 
 push &out
@@ -595,7 +702,7 @@ module tank2Damping
 ; @group tank2
 float* in &tank2Mixer:out
 float* damping
-- &controlValues:damping
+- &controlValues:tank2Damping
 float out
 
 push &out
@@ -621,7 +728,7 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer 
 float* diffusion
-- &controlValues:diffusion
+- &controlValues:tank1AllpassADiffusion
 
 ; @wave &buffer count(buffer) pointer
 local float writeValue 
@@ -671,7 +778,7 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer 
 float* diffusion
-- &controlValues:diffusion
+- &controlValues:tank2AllpassADiffusion
 
 ; @wave &buffer count(buffer) pointer
 local float writeValue 
@@ -717,7 +824,7 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer 
 float* diffusion 
-- &controlValues:diffusion
+- &controlValues:tank1AllpassBDiffusion
 
 ; @wave &buffer count(buffer) pointer
 local float writeValue 
@@ -763,7 +870,7 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer
 float* diffusion
-- &controlValues:diffusion 
+- &controlValues:tank2AllpassBDiffusion 
 
 ; @wave2 &buffer count(buffer) pointer
 local float writeValue 
