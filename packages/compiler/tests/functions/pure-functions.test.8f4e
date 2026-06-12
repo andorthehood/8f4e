@@ -33,7 +33,7 @@ module floatParameterFunctionAssertions
 push 3.0
 push 2.0
 call multiplyFloats
-call assertf 6.0
+call assert 6.0
 moduleEnd
 
 module mixedParameterFunctionAssertions
@@ -44,7 +44,7 @@ module mixedParameterFunctionAssertions
 push 4
 push 2.5
 call multiplyMixed
-call assertf 10.0
+call assert 10.0
 moduleEnd
 
 module multipleReturnFunctionAssertions
@@ -71,7 +71,7 @@ module functionConstantAssertions
 ; function can be used by that
 ; function.
 call getPi
-call assertf 3.14159
+call assert 3.14159
 moduleEnd
 
 module impureFunctionAssertions
