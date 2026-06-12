@@ -1,0 +1,21 @@
+8f4e/v1
+
+includes
+include std/memory/copy
+includesEnd
+
+entry test
+module copyIntAssertions
+; it copies an integer value
+; from source to dest.
+int source 42
+int dest 0
+
+push &source
+push &dest
+call copy
+
+push dest
+call assert 42
+moduleEnd
+entryEnd

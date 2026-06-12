@@ -1,0 +1,24 @@
+8f4e/v1
+
+includes
+include std/memory/copy
+includesEnd
+
+entry test
+module copyFloatAssertions
+; it copies a float value
+; from source to dest.
+float source 12.5
+float dest 0.0
+
+push &source
+push &dest
+call copy
+
+push dest
+push 10.0
+mul
+castToInt
+call assert 125
+moduleEnd
+entryEnd
