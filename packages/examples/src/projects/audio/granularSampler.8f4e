@@ -1,0 +1,1161 @@
+8f4e/v1
+
+note assets
+; @pos -291 -41
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo4_48khz_16s.raw
+noteEnd
+
+note projectConfig
+; @pos -274 -36
+; @config runtime AudioWorkletRuntime
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
+; @config export.fileName granularSampler
+; @config color.fill.waveform #f0a
+; @config color.fill.fill #f0a
+; @config color.text.instruction #0fa
+noteEnd
+
+constants env
+; @pos -261 -24
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'lubadh_aimo4_48khz_16s.raw'
+const ASSET_PIANO_SIZE 1316572
+
+constantsEnd
+
+includes
+; @pos -252 11
+include std/events/risingEdge
+include std/memory/wrapPointer
+include std/math/fract
+include std/memory/readInterpolated
+include std/math/trig/cosine
+include std/math/trig/sine
+include std/math/trig/triangle
+include std/math/trig/saw
+include std/memory/advancePointer
+include std/math/trig/advancePhase
+
+includesEnd
+
+function buffer
+; @pos -251 -8
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
+constants cloudsReverb
+; @pos -251 2
+use env
+
+const CLOUDS_SAMPLE_RATE 32000
+const CLOUDS_RATIO SAMPLE_RATE/CLOUDS_SAMPLE_RATE
+
+constantsEnd
+
+constants math
+; @pos -251 28
+
+const PI      3.141592653589793
+const NEG_PI -3.141592653589793
+const TAU     6.283185307179586
+const HALF_PI 1.570796326794896
+const INV_PI  0.318309886183790
+const INV_TAU 0.159154943091895
+const PHI     1.618033988749895
+const DEG2RAD 0.017453292519943
+const RAD2DEG 57.29577951308232
+const SQRT2   1.414213562373095
+const SQRT1_2 0.707106781186547
+; Useful in FFT twiddle factors.
+const HANN_A0 0.5
+; For common window functions before FFT.
+const HAMMING_A0 0.54
+const HAMMING_A1 0.46
+const BLACKMAN_A0 0.42
+const BLACKMAN_A1 0.5
+const BLACKMAN_A2 0.08
+const LN2     0.693147180559945
+const LN10    2.302585092994046
+const LOG2E   1.442695040888963
+const LOG10E  0.434294481903251
+const E       2.718281828459045
+
+constantsEnd
+
+entry main
+module bpmClock
+; @pos -186 -27
+use env
+
+int bpm 120
+int out
+int counter 
+
+; @watch counter
+
+push &out
+push 0
+store
+
+push counter
+push SAMPLE_RATE
+push 60
+mul
+push bpm
+ensureNonZero
+div
+greaterThan
+if
+push &counter
+push 0
+store
+push &out
+push 1
+store
+ifEnd
+
+push &counter
+push counter
+push 1
+add
+store
+
+moduleEnd
+module lcg
+; @pos -179 15
+; Linear congruential 
+; generator
+
+const MULTIPLIER 1664525
+const INCREMENT 1013904223 
+const MODULUS 65536 ; 2^16
+int seed 69420
+
+float out ; @w
+
+push &seed
+push MULTIPLIER
+push seed
+mul
+push INCREMENT
+add
+push MODULUS
+remainder
+store
+
+push &out
+push seed
+castToFloat
+push MODULUS
+castToFloat
+div 
+store
+
+moduleEnd
+module posLFO
+; @pos -150 -27
+use env
+
+float* frequency &controlValues:speed
+float phase
+float out
+int* reset &bpmClock:out
+int previousReset
+
+use math
+
+push 0 ; *reset
+call risingEdge &previousReset
+if
+push &phase
+push NEG_PI
+store
+ifEnd
+
+push &out
+push &phase
+push *frequency
+push SAMPLE_RATE
+call advancePhase
+; You can swap this call
+; with any periodic function
+call triangle
+store
+
+moduleEnd
+module sampleAndHold
+; @pos -143 12
+
+float* in &lcg:out
+int* trigger &bpmClock:out
+int previousTrigger
+float out ; @w
+
+push *trigger
+call risingEdge &previousTrigger
+if
+push &out
+push *in
+store
+ifEnd
+
+moduleEnd
+module position
+; @pos -96 -27
+
+float* position &controlValues:position
+float* modulation &posLFO:out
+float* random &sampleAndHold:out
+float* width &controlValues:width
+float* spread &controlValues:spread
+
+float out ; @w
+
+push &out
+push *position
+push *modulation
+push *width
+mul
+add
+push *random
+push *spread
+mul
+add
+abs
+store
+
+push out
+push 1.0
+greaterThan
+if 
+push &out
+push 0.0
+store
+ifEnd
+
+moduleEnd
+module pcmPlayer
+; @pos -39 -27
+; @home
+use env
+
+int16[] buffer ASSET_PIANO_SIZE/2
+; @config bin.piano.memory buffer
+float* speed &controlValues:speed
+float* position &position:out
+int16* playhead &buffer ; @w
+float out
+
+;                                                                         
+; @wave2 &buffer count(buffer) playhead
+
+local float samplePosition
+local int sampleAddress
+
+; Calculate read address
+push *position
+push count(buffer)
+castToFloat
+mul
+localSet samplePosition
+
+push samplePosition
+castToInt
+push sizeof(buffer)
+mul
+push &buffer
+add
+localSet sampleAddress
+
+push &playhead
+push sampleAddress
+store
+
+; Interpolate sample at
+; fractional playhead position
+; write it to output
+push &out
+push sampleAddress
+push &buffer
+push count(buffer)
+push samplePosition
+call fract
+call readInterpolated
+push max(buffer)
+castToFloat
+div
+push 8.0
+div
+store
+
+moduleEnd
+module controlValues
+; @pos 46 -27
+
+float decay 0.1
+; @slider decay
+float amount 0.5
+; @slider amount
+float diffusion 0.625
+; @slider diffusion
+float damping 0.7
+; @slider damping
+float speed 0.0
+; @slider speed 0 100
+float position 0.0
+; @slider position
+float width 0.0
+; @slider width 0 0.01
+float spread 0.0
+; @slider spread
+moduleEnd
+module lfo1
+; @pos 90 -27
+; @group smearStage1
+use env
+
+float frequency 0.5
+float phase
+float out
+
+push &out
+push &phase
+push frequency
+push SAMPLE_RATE
+call advancePhase
+; You can swap this call
+; with any periodic function
+call cosine
+
+push 1.0
+add
+push 2.0
+div
+
+store
+
+moduleEnd
+module modulatedDelayTap
+; @pos 127 -27
+; @group smearStage1
+; Reads a modulated, 
+; interpolated tap 
+; from a delay buffer
+use cloudsReverb
+
+float* buffer 
+- &allpassDiffuser:buffer
+float** pointer 
+- &allpassDiffuser:pointer
+float* mod &lfo1:out
+float out
+
+const SIZE sizeof(*buffer)
+const MOD_BASE_OFFSET 
+- 10.0*CLOUDS_RATIO
+const MOD_DEPTH 
+- 60.0*CLOUDS_RATIO
+
+push &out
+; pointer + 
+; int((10 + mod * 60) * ratio) * SIZE
+push *pointer
+push MOD_BASE_OFFSET
+push *mod
+push MOD_DEPTH
+mul
+add
+castToInt
+push SIZE
+mul
+add
+
+; Circular buffer range
+push buffer
+push count(*buffer)
+
+; fraction((10 + mod * 60) * ratio)
+push MOD_BASE_OFFSET
+push *mod
+push MOD_DEPTH
+mul
+add
+call fract
+
+call readInterpolated
+store
+
+moduleEnd
+module delayOffsetWriter
+; @pos 173 -27
+; @group smearStage1
+; Writes an input sample into a
+; shared delay buffer at a fixed
+; offset from the current
+; circular pointer.
+use cloudsReverb
+
+float* buffer 
+- &allpassDiffuser:buffer
+float** pointer 
+- &allpassDiffuser:pointer
+float* in &modulatedDelayTap:out
+
+const SIZE sizeof(*buffer)
+const WRITE_OFFSET_SAMPLES 
+- 100.0*CLOUDS_RATIO
+
+push *pointer
+push WRITE_OFFSET_SAMPLES
+castToInt
+push SIZE
+mul
+add
+push buffer
+push count(*buffer)
+call wrapPointer
+push *in
+store
+
+moduleEnd
+module allpassDiffuser
+; @pos 214 -27
+; @group smearStage1
+use cloudsReverb
+
+const DELAY_SIZE 113*CLOUDS_RATIO
+
+float* in &pcmPlayer:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion 
+- &controlValues:diffusion
+
+; @wave2 &buffer count(buffer) pointer
+
+local float writeValue 
+
+push *in
+push *pointer
+push *diffusion
+mul
+add
+localSet writeValue
+
+push &out
+push *pointer
+push writeValue
+push *diffusion
+mul
+sub
+store
+
+; Store the allpass
+; write value
+push pointer
+push writeValue
+store 
+
+; Advance and wrap
+; circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
+module allpassDiffuser2
+; @pos 261 -27
+; @group smearStage2
+use cloudsReverb
+
+const DELAY_SIZE 162*CLOUDS_RATIO
+
+float* in &allpassDiffuser:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion 
+- &controlValues:diffusion
+
+; @wave2 &buffer count(buffer) pointer
+
+local float writeValue 
+
+; input + delayed * gain
+push *in
+push *pointer
+push *diffusion
+mul
+add
+localSet writeValue
+
+; delayed - writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+mul
+sub
+store
+
+; Store allpass write value
+push pointer
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
+module allpassDiffuser3
+; @pos 308 -27
+; @group smearStage3
+use cloudsReverb
+
+const DELAY_SIZE 241*CLOUDS_RATIO
+
+float* in &allpassDiffuser2:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion
+- &controlValues:diffusion
+
+; @wave2 &buffer count(buffer) pointer
+
+local float writeValue 
+
+; input + delayed * gain
+push *in
+push *pointer
+push *diffusion
+mul
+add
+localSet writeValue
+
+; delayed - writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+mul
+sub
+store
+
+; Store allpass write value
+push pointer
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
+module allpassDiffuser4
+; @pos 355 -27
+; @group smearStage4
+use cloudsReverb
+
+const DELAY_SIZE 399*CLOUDS_RATIO
+
+float* in &allpassDiffuser3:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion
+- &controlValues:diffusion
+
+; @wave2 &buffer count(buffer) pointer
+
+local float writeValue 
+
+; input + delayed * gain
+push *in
+push *pointer
+push *diffusion
+mul
+add
+localSet writeValue
+
+; delayed - writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+mul
+sub
+store
+
+; Store allpass write value
+push pointer
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
+module tank1DelayRead
+; @pos 413 -60
+; @group tank1
+; Reads Clouds del2.
+use cloudsReverb
+
+const DELAY_SIZE 4782*CLOUDS_RATIO
+
+float[] buffer DELAY_SIZE
+float out
+float* pointer &buffer
+
+; @wave &buffer count(buffer) pointer
+
+push &out
+push *pointer
+store
+
+moduleEnd
+module tank1DelayLfo
+; @pos 459 -60
+; @group tank1
+; Clouds LFO_2 for the
+; modulated del2 tap.
+use env
+
+float frequency 0.3
+float phase
+float out
+
+push &out
+push &phase
+push frequency
+push SAMPLE_RATE
+call advancePhase
+; You can swap this call
+; with any periodic function
+call cosine
+
+push 1.0
+add
+push 2.0
+div
+
+store
+
+moduleEnd
+module tank1ModulatedTap
+; @pos 496 -60
+; @group tank1
+; Reads a modulated, 
+; interpolated tap 
+; from a delay buffer
+use cloudsReverb
+
+float* buffer &tank1DelayRead:buffer
+float** pointer 
+- &tank1DelayRead:pointer
+float* mod &tank1DelayLfo:out
+float out
+
+const SIZE sizeof(*buffer)
+const MOD_BASE_OFFSET 4680.0*CLOUDS_RATIO
+const MOD_DEPTH 100.0*CLOUDS_RATIO
+
+push &out
+; pointer + 
+; int((4680 + mod * 100) * ratio) * SIZE
+push *pointer
+push MOD_BASE_OFFSET
+push *mod
+push MOD_DEPTH
+mul
+add
+castToInt
+push SIZE
+mul
+add
+
+; Circular buffer range
+push buffer
+push count(*buffer)
+
+; fraction((4680 + mod * 100) * ratio)
+push MOD_BASE_OFFSET
+push *mod
+push MOD_DEPTH
+mul
+add
+call fract
+
+call readInterpolated
+store
+
+moduleEnd
+module tank2DelayRead
+; @pos 500 -6
+; @group tank2
+; Reads Clouds del1.
+use cloudsReverb
+
+const DELAY_SIZE 3411*CLOUDS_RATIO
+
+float[] buffer DELAY_SIZE 
+float out
+float* pointer &buffer
+
+; @wave &buffer count(buffer) pointer
+
+push &out
+push *pointer
+store
+
+moduleEnd
+module tank1Mixer
+; @pos 546 -60
+; @group tank1
+float* in1 &allpassDiffuser4:out
+float* in2 &tank1ModulatedTap:out
+float* decay
+- &controlValues:decay
+float out
+
+push &out
+push *in1
+push *in2
+push *decay
+mul
+add
+store
+
+moduleEnd
+module tank2Mixer
+; @pos 547 -6
+; @group tank2
+float* in1 &allpassDiffuser4:out
+float* in2 &tank2DelayRead:out
+float* decay 
+- &controlValues:decay
+float out
+
+push &out
+push *in1
+push *in2
+push *decay
+mul
+add
+store
+
+moduleEnd
+module tank1Damping
+; @pos 588 -60
+; @group tank1
+float* in &tank1Mixer:out
+float* damping
+- &controlValues:damping
+float out
+
+push &out
+push out
+push *in
+push out
+sub
+push *damping
+mul
+add
+store
+
+moduleEnd
+module tank2Damping
+; @pos 588 -6
+; @group tank2
+float* in &tank2Mixer:out
+float* damping
+- &controlValues:damping
+float out
+
+push &out
+push out
+push *in
+push out
+sub
+push *damping
+mul
+add
+store
+
+moduleEnd
+module tank1AllpassA
+; @pos 622 -60
+; @group tank1
+use cloudsReverb
+
+const DELAY_SIZE 1653*CLOUDS_RATIO
+
+float* in &tank1Damping:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion
+- &controlValues:diffusion
+
+; @wave &buffer count(buffer) pointer
+local float writeValue 
+
+; input - delayed * gain
+push *in
+push *pointer
+push *diffusion
+push -1.0
+mul
+mul
+add
+localSet writeValue
+
+; delayed + writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+push -1.0
+mul
+mul
+sub
+store
+
+; Store allpass write value
+push pointer
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
+module tank2AllpassA
+; @pos 622 -6
+; @group tank2
+use cloudsReverb
+
+const DELAY_SIZE 1913*CLOUDS_RATIO
+
+float* in &tank2Damping:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion
+- &controlValues:diffusion
+
+; @wave &buffer count(buffer) pointer
+local float writeValue 
+
+; input + delayed * gain
+push *in
+push *pointer
+push *diffusion
+mul
+add
+localSet writeValue
+
+; delayed - writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+mul
+sub
+store
+
+; Store allpass write value
+push pointer
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
+module tank1AllpassB
+; @pos 668 -60
+; @group tank1
+use cloudsReverb
+
+const DELAY_SIZE 2038*CLOUDS_RATIO
+
+float* in &tank1AllpassA:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer 
+float* diffusion 
+- &controlValues:diffusion
+
+; @wave &buffer count(buffer) pointer
+local float writeValue 
+
+; input + delayed * gain
+push *in
+push *pointer
+push *diffusion
+mul
+add
+localSet writeValue
+
+; delayed - writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+mul
+sub
+store
+
+; Store allpass write value
+push pointer
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
+module tank2AllpassB
+; @pos 668 -6
+; @group tank2
+use cloudsReverb
+
+const DELAY_SIZE 1663*CLOUDS_RATIO
+
+float* in &tank2AllpassA:out
+float out
+float[] buffer DELAY_SIZE
+float* pointer &buffer
+float* diffusion
+- &controlValues:diffusion 
+
+; @wave2 &buffer count(buffer) pointer
+local float writeValue 
+
+; input - delayed * gain
+push *in
+push *pointer
+push *diffusion
+push -1.0
+mul
+mul
+add
+localSet writeValue
+
+; delayed + writeValue * gain
+push &out
+push *pointer
+push writeValue
+push *diffusion
+push -1.0
+mul
+mul
+sub
+store
+
+; Store allpass write value
+push pointer
+push writeValue
+store 
+
+; Advance circular buffer pointer
+push &pointer
+push &buffer
+push count(buffer)
+call advancePointer
+
+moduleEnd
+module tank1DelayWrite
+; @pos 714 -60
+; @group tank1
+; Writes Clouds del1.
+
+float* buffer &tank2DelayRead:buffer
+float** pointer &tank2DelayRead:pointer
+float* in &tank1AllpassB:out
+
+push *pointer
+push *in
+store
+
+push pointer
+push buffer
+push count(*buffer)
+call advancePointer
+
+moduleEnd
+module tank2DelayWrite
+; @pos 715 -6
+; @group tank2
+; Writes Clouds del2.
+
+float* buffer &tank1DelayRead:buffer
+float** pointer &tank1DelayRead:pointer
+float* in &tank2AllpassB:out
+
+push *pointer
+push *in
+store
+
+push pointer
+push buffer
+push count(*buffer)
+call advancePointer
+
+moduleEnd
+module tank1OutputMix
+; @pos 762 -60
+; @group tank1
+
+float* dry &pcmPlayer:out
+float* wet &tank1AllpassB:out
+float* amount &controlValues:amount
+float out
+
+push &out
+push *dry
+push 1.0
+push *amount
+sub
+mul
+push *wet
+push *amount
+mul
+add
+store
+
+moduleEnd
+module tank2OutputMix
+; @pos 763 -6
+; @group tank2
+
+float* dry &pcmPlayer:out
+float* wet &tank2AllpassB:out
+float* amount &controlValues:amount
+float out
+
+push &out
+push *dry
+push 1.0
+push *amount
+sub
+mul
+push *wet
+push *amount
+mul
+add
+store
+
+moduleEnd
+module audiooutL
+; @pos 819 -35
+use env
+
+float* in &tank1OutputMix:out
+
+float[] buffer AUDIO_BUFFER_SIZE
+float* pointer &buffer
+
+; @wave2 &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the word size
+push &pointer
+push pointer
+push sizeof(buffer) 
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer& 
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+module audiooutR
+; @pos 860 -35
+use env
+
+float* in &tank2OutputMix:out
+
+float[] buffer AUDIO_BUFFER_SIZE
+float* pointer &buffer
+
+; @wave2 &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer 
+; pointer by the word size
+push &pointer
+push pointer
+push sizeof(buffer) 
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer& 
+greaterThan 
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+entryEnd

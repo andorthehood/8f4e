@@ -1,0 +1,26 @@
+8f4e/v1
+
+includes
+include std/memory/copy
+includesEnd
+
+entry test
+module copySource
+float source 12.5
+moduleEnd
+
+module copyIntermoduleAssertions
+; it copies a value from an
+; intermodule source pointer
+; using inline call arguments.
+float dest 0.0
+
+call copy &copySource:source &dest
+
+push dest
+push 10.0
+mul
+castToInt
+call assert 125
+moduleEnd
+entryEnd

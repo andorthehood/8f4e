@@ -1,0 +1,25 @@
+function copy
+#impure
+; Copies the value pointed to
+; by source into dest.
+param int* source
+param int* dest
+
+push dest
+push *source
+store
+
+functionEnd
+
+function copy
+#impure
+; Copies the value pointed to
+; by source into dest.
+param float* source
+param float* dest
+
+push dest
+push *source
+store
+
+functionEnd

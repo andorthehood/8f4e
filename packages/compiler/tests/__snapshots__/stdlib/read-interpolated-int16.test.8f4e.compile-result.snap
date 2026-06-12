@@ -1508,8 +1508,8 @@
     },
   },
   "moduleAst": {
-    "readInterpolatedIntAssertions": {
-      "id": "readInterpolatedIntAssertions",
+    "readInterpolatedInt16Assertions": {
+      "id": "readInterpolatedInt16Assertions",
       "lines": [
         {
           "arguments": [
@@ -1517,7 +1517,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "readInterpolatedIntAssertions",
+              "value": "readInterpolatedInt16Assertions",
             },
           ],
           "instruction": "module",
@@ -1552,7 +1552,7 @@
             },
           ],
           "hasExplicitMemoryDefault": true,
-          "instruction": "int[]",
+          "instruction": "int16[]",
         },
         {
           "arguments": [
@@ -1632,15 +1632,19 @@
           "instruction": "call",
         },
         {
+          "arguments": [],
+          "instruction": "castToInt",
+        },
+        {
           "arguments": [
             {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "assertf",
+              "value": "assert",
             },
             {
-              "isInteger": false,
+              "isInteger": true,
               "type": "literal",
               "value": 15,
             },
@@ -1721,15 +1725,19 @@
           "instruction": "call",
         },
         {
+          "arguments": [],
+          "instruction": "castToInt",
+        },
+        {
           "arguments": [
             {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "assertf",
+              "value": "assert",
             },
             {
-              "isInteger": false,
+              "isInteger": true,
               "type": "literal",
               "value": 25,
             },
@@ -1820,15 +1828,19 @@
           "instruction": "call",
         },
         {
+          "arguments": [],
+          "instruction": "castToInt",
+        },
+        {
           "arguments": [
             {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "assertf",
+              "value": "assert",
             },
             {
-              "isInteger": false,
+              "isInteger": true,
               "type": "literal",
               "value": 25,
             },
@@ -1844,7 +1856,7 @@
     },
   },
   "moduleMemory": {
-    "readInterpolatedIntAssertions": {
+    "readInterpolatedInt16Assertions": {
       "memoryMap": {
         "buffer": {
           "byteAddress": 4,
@@ -1853,7 +1865,7 @@
             "1": 20,
             "2": 40,
           },
-          "elementWordSize": 4,
+          "elementWordSize": 2,
           "hasExplicitDefault": true,
           "id": "buffer",
           "isInteger": true,
@@ -1861,12 +1873,12 @@
           "memoryIndex": 0,
           "numberOfElements": 3,
           "pointerDepth": 0,
-          "type": "int",
+          "type": "int16",
           "wordAlignedAddress": 1,
-          "wordAlignedSize": 3,
+          "wordAlignedSize": 2,
         },
         "pointer": {
-          "byteAddress": 16,
+          "byteAddress": 12,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1877,7 +1889,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 4,
+          "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
         },
       },
@@ -1890,9 +1902,9 @@
       "readInterpolated__int__int16_p__int__float",
     ],
     "compiledModules": [
-      "readInterpolatedIntAssertions",
+      "readInterpolatedInt16Assertions",
     ],
-    "requiredMemoryBytes": 20,
+    "requiredMemoryBytes": 16,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",
