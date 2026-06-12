@@ -1,5 +1,12 @@
 8f4e/v1
 
+includes
+include std/math/clamp
+include std/math/lerp
+include std/math/normalize
+include std/math/smoothstep
+includesEnd
+
 entry main
 module assets
 ; @pos -107 -70
@@ -259,36 +266,14 @@ call main
 loopEnd
 functionEnd
 
-function clamp
-; @pos 29 -130
-param int value
-param int minimum
-param int maximum
-
-push value
-push minimum
-lessThan
-if
-push minimum
-else
-push value
-push maximum
-greaterThan
-if
-push maximum
-else
-push value
-ifEnd int
-ifEnd int
-
-functionEnd int
-
 function read8Normalized
 ; @pos 29 -106
 #impure
 param int8* buffer
 param int index
 param int length
+
+local int8* pointer
 
 push buffer
 push index
@@ -298,10 +283,10 @@ remainder
 push sizeof(*buffer)
 mul
 add
-load8s
-castToFloat
-push 127.0
-div
+localSet pointer
+
+push pointer
+call normalize
 
 functionEnd float
 
@@ -335,22 +320,6 @@ div
 
 functionEnd float
 
-function smoothstep
-; @pos 99 -122
-param float amount
-
-push amount
-push amount
-mul
-push 3.0
-push 2.0
-push amount
-mul
-sub
-mul
-
-functionEnd float
-
 function crossfadeAmount
 ; @pos 99 -106
 param int cyclePosition
@@ -370,23 +339,5 @@ castToFloat
 ensureNonZero
 div
 call smoothstep
-
-functionEnd float
-
-function lerp
-; @pos 133 -106
-param float current
-param float next
-param float fade
-
-push current
-push 1.0
-push fade
-sub
-mul
-push next
-push fade
-mul
-add
 
 functionEnd float
