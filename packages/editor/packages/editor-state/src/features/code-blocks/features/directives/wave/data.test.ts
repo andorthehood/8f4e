@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { parseEditorDirectives } from '../utils';
 import { createWaveDirectiveData } from './data';
-import waveDirective, { wave2Directive } from './plugin';
+import waveDirective, { wave2Directive, wave4Directive } from './plugin';
 
 function parseWaveDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [waveDirective])
@@ -10,8 +10,16 @@ function parseWaveDirectiveData(code: string[]) {
 }
 
 function parseWaveDirectiveDataWithPlugins(code: string[]) {
-	return parseEditorDirectives(code, [waveDirective, wave2Directive])
-		.map(directive => createWaveDirectiveData(directive.args, directive.rawRow, directive.name === 'wave2' ? 4 : 2))
+	const heightRowsByDirective = new Map([
+		['wave', 2],
+		['wave2', 4],
+		['wave4', 8],
+	]);
+
+	return parseEditorDirectives(code, [waveDirective, wave2Directive, wave4Directive])
+		.map(directive =>
+			createWaveDirectiveData(directive.args, directive.rawRow, heightRowsByDirective.get(directive.name))
+		)
 		.filter(result => result !== undefined);
 }
 
@@ -125,6 +133,20 @@ describe('wave directive data', () => {
 				pointerMemoryId: 'playhead',
 				lineNumber: 0,
 				heightRows: 4,
+			},
+		]);
+	});
+
+	it('should parse wave4 with quadrupled height', () => {
+		const result = parseWaveDirectiveDataWithPlugins(['; @wave4 bufferAddress 16 playhead']);
+
+		expect(result).toEqual([
+			{
+				startAddressMemoryId: 'bufferAddress',
+				length: 16,
+				pointerMemoryId: 'playhead',
+				lineNumber: 0,
+				heightRows: 8,
 			},
 		]);
 	});

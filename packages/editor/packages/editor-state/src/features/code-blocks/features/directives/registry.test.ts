@@ -122,6 +122,13 @@ describe('directive registry', () => {
 		expect(result.layoutContributions).toEqual([{ rawRow: 1, rows: 4 }]);
 	});
 
+	it('allocates quadruple layout height for @wave4', () => {
+		const code = ['module foo', '; @wave4 &buffer 16 pointer', 'moduleEnd'];
+		const result = deriveDirectiveState(code, parseBlockDirectives(code));
+
+		expect(result.layoutContributions).toEqual([{ rawRow: 1, rows: 8 }]);
+	});
+
 	it('allocates one info layout row per state.info key', () => {
 		const code = ['module foo', '; @info foo', 'moduleEnd'];
 		const result = deriveDirectiveState(code, parseBlockDirectives(code), {
