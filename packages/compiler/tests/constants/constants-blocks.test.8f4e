@@ -48,13 +48,13 @@ float tau TAU
 float gravity GRAVITY
 
 push pi
-call assertf 3.14159
+call assert 3.14159
 
 push tau
-call assertf 6.28318
+call assert 6.28318
 
 push gravity
-call assertf 9.81
+call assert 9.81
 moduleEnd
 
 module constantLastWinsAssertions

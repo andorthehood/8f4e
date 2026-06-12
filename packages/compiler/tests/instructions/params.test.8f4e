@@ -69,7 +69,7 @@ push 3
 push 2.0
 push 1.5f64
 call mixedAll
-call assertf64 9.0f64
+call assert 9.0f64
 moduleEnd
 
 module noParamFunctionAssertions

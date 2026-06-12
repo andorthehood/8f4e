@@ -31,7 +31,7 @@ push src
 store
 
 push dest
-call assertf 3.14
+call assert 3.14
 moduleEnd
 
 module float64StoreAssertions
@@ -46,7 +46,7 @@ push src
 store
 
 push dest
-call assertf64 1.5f64
+call assert 1.5f64
 
 push &dest
 push 8
