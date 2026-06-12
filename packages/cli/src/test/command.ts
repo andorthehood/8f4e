@@ -39,13 +39,23 @@ type WebAssemblyApiLike = {
 	) => Promise<{ instance: WebAssemblyInstanceLike }>;
 };
 
+const FLOAT_ASSERT_TOLERANCE = 0.001;
+
 const assertFunctionBlocks: ProjectBlock[] = [
 	{
 		id: -1,
 		code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
 	},
+	{
+		id: -2,
+		code: ['function assert', '#import assert', 'param float received', 'param float expected', 'functionEnd'],
+	},
+	{
+		id: -3,
+		code: ['function assert', '#import assert', 'param float64 received', 'param float64 expected', 'functionEnd'],
+	},
 	...POINTER_FUNCTION_TYPE_IDENTIFIERS.map((type, index) => ({
-		id: -2 - index,
+		id: -4 - index,
 		code: ['function assert', '#import assert', `param ${type} received`, `param ${type} expected`, 'functionEnd'],
 	})),
 ];
@@ -257,7 +267,7 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 			assert(received: number, expected: number) {
 				const assertIndex = assertionCount;
 				assertionCount += 1;
-				if (received === expected) {
+				if (Math.abs(received - expected) <= FLOAT_ASSERT_TOLERANCE) {
 					return;
 				}
 				failures.push({ assertIndex, expected, received });

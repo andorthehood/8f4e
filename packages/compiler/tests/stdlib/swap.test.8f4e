@@ -18,20 +18,20 @@ push 3
 push 4.5
 call swap
 call assert 3
-call assertf 4.5
+call assert 4.5
 
 ; it swaps a float and an int.
 push 5.5
 push 6
 call swap
-call assertf 5.5
+call assert 5.5
 call assert 6
 
 ; it swaps two float values.
 push 7.25
 push 8.75
 call swap
-call assertf 7.25
-call assertf 8.75
+call assert 7.25
+call assert 8.75
 moduleEnd
 entryEnd

@@ -12,18 +12,18 @@ push 7.5
 push 0.5
 push 5.5
 call clamp
-call assertf 5.5
+call assert 5.5
 
 push -2.0
 push 0.5
 push 5.5
 call clamp
-call assertf 0.5
+call assert 0.5
 
 push 3.25
 push 0.5
 push 5.5
 call clamp
-call assertf 3.25
+call assert 3.25
 moduleEnd
 entryEnd

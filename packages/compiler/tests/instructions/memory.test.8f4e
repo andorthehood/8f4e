@@ -10,17 +10,17 @@ module loadFloatAssertions
 float firstInput 69.1
 push &firstInput
 loadFloat
-call assertf 69.1
+call assert 69.1
 
 float secondInput 0.1
 push &secondInput
 loadFloat
-call assertf 0.1
+call assert 0.1
 
 float thirdInput -420.1
 push &thirdInput
 loadFloat
-call assertf -420.1
+call assert -420.1
 moduleEnd
 
 module anonymousFloatDeclarationsCompile
@@ -31,23 +31,23 @@ module anonymousFloatDeclarationsCompile
 float
 push &this:0
 loadFloat
-call assertf 0.0
+call assert 0.0
 
 float 3.14
 push &this:1
 loadFloat
-call assertf 3.14
+call assert 3.14
 
 const PI 3.14159
 float PI
 push &this:2
 loadFloat
-call assertf 3.14159
+call assert 3.14159
 
 float -2.5
 push &this:3
 loadFloat
-call assertf -2.5
+call assert -2.5
 moduleEnd
 
 module intDeclarationAssertions

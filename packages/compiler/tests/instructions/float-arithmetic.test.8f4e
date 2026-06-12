@@ -2,7 +2,7 @@
 
 ; Float instruction behavior is
 ; checked through the shared
-; imported assertf helper.
+; imported assert helper.
 entry test
 module floatMulAssertions
 ; Float multiplication is
@@ -12,18 +12,18 @@ module floatMulAssertions
 push 4.001
 push 0.5
 mul
-call assertf 2.0
+call assert 2.0
 moduleEnd
 
 module floatDivAssertions
-; Float division uses assertf
+; Float division uses assert
 ; for tolerance-based
 ; comparison.
 push 420.001
 push 69.001
 ensureNonZero
 div
-call assertf 6.0869
+call assert 6.0869
 moduleEnd
 
 module floatAbsAssertions
@@ -31,19 +31,19 @@ module floatAbsAssertions
 ; magnitudes.
 push 1.1
 abs
-call assertf 1.1
+call assert 1.1
 
 push -1.1
 abs
-call assertf 1.1
+call assert 1.1
 
 push -69.1
 abs
-call assertf 69.1
+call assert 69.1
 
 push 420.1
 abs
-call assertf 420.1
+call assert 420.1
 moduleEnd
 
 module castToFloatAssertions
@@ -53,19 +53,19 @@ module castToFloatAssertions
 ; to float.
 push 1
 castToFloat
-call assertf 1.0
+call assert 1.0
 
 push -69
 castToFloat
-call assertf -69.0
+call assert -69.0
 
 push 0
 castToFloat
-call assertf 0.0
+call assert 0.0
 
 push 420
 castToFloat
-call assertf 420.0
+call assert 420.0
 moduleEnd
 
 module castToIntAssertions
@@ -93,23 +93,23 @@ module roundAssertions
 ; current half-down behavior.
 push 4.1
 round
-call assertf 4.0
+call assert 4.0
 
 push 4.5
 round
-call assertf 4.0
+call assert 4.0
 
 push 4.51
 round
-call assertf 5.0
+call assert 5.0
 
 push 4.6
 round
-call assertf 5.0
+call assert 5.0
 
 push 4.9
 round
-call assertf 5.0
+call assert 5.0
 moduleEnd
 
 module sqrtAssertions
@@ -117,10 +117,10 @@ module sqrtAssertions
 ; square roots.
 push 4.001
 sqrt
-call assertf 2.0
+call assert 2.0
 
 push 16.001
 sqrt
-call assertf 4.0
+call assert 4.0
 moduleEnd
 entryEnd

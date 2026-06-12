@@ -34,7 +34,7 @@ push 1.1
 else
 push -1.1
 ifEnd float
-call assertf 1.1
+call assert 1.1
 
 int falsyInput 0
 push falsyInput
@@ -43,7 +43,7 @@ push 1.1
 else
 push -1.1
 ifEnd float
-call assertf -1.1
+call assert -1.1
 moduleEnd
 
 module ifVoidAssertions

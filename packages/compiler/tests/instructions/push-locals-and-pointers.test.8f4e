@@ -13,11 +13,11 @@ call readIntLocal
 call assert 7
 
 call readFloatLocal
-call assertf 1.5
+call assert 1.5
 
 push 2.0f64
 call doubleFloat64
-call assertf64 4.0f64
+call assert 4.0f64
 moduleEnd
 
 module localShadowMemoryAssertions
@@ -45,7 +45,7 @@ push &value
 call assert
 
 push **pptr
-call assertf 1.5
+call assert 1.5
 moduleEnd
 entryEnd
 
