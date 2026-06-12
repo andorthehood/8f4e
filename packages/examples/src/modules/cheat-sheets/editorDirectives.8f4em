@@ -34,6 +34,8 @@ constants editorDirectives
 ; @ plot <arrayMemoryId> [minValue] [maxValue] [arrayLengthMemoryId]	Plot an array memory.
 ; @ public	Mark the block exported by a module file.
 ; @ wave <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>	Draw a waveform over a typed absolute pointer range.
+; @ wave2 <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>	Draw a waveform at double height.
+; @ wave4 <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>	Draw a waveform at quadruple height.
 ; @ slider <memoryId> [min] [max] [step]	Add a slider widget.
 ; @ switch <memoryId> [offValue] [onValue]	Add a toggle switch widget.
 ; @ tab <position1> <position2> ...	Define visual tab stops for literal tab characters.

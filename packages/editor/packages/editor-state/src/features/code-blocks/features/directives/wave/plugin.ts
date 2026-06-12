@@ -24,5 +24,6 @@ function createWaveDirectivePlugin(name: string, heightRows: number) {
 
 export const waveDirective = createWaveDirectivePlugin('wave', 2);
 export const wave2Directive = createWaveDirectivePlugin('wave2', 4);
+export const wave4Directive = createWaveDirectivePlugin('wave4', 8);
 
 export default waveDirective;

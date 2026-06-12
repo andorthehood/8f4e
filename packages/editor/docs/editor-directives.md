@@ -177,6 +177,14 @@ Same as `@wave`, but rendered at double height.
 ; @wave2 <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
 ```
 
+### `@wave4`
+
+Same as `@wave`, but rendered at quadruple height.
+
+```txt
+; @wave4 <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
+```
+
 ### `@slider`
 
 Render a slider bound to a memory address.

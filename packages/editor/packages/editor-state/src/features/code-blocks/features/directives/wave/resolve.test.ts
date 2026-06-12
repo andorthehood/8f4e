@@ -150,6 +150,15 @@ describe('wave directive widget resolution', () => {
 		expect(mockGraphicData.widgets.arrayWaves[0].height).toBe(64);
 	});
 
+	it('renders wave4 at quadruple height', () => {
+		setMockCodeBlockCode(mockGraphicData, ['; @wave4 bufferAddress 16 pointer1']);
+
+		runDirectiveResolution();
+
+		expect(mockGraphicData.widgets.arrayWaves).toHaveLength(1);
+		expect(mockGraphicData.widgets.arrayWaves[0].height).toBe(128);
+	});
+
 	it('handles multiple wave directives', () => {
 		setMockCodeBlockCode(mockGraphicData, ['; @wave bufferAddress 16 pointer1', '; @wave &buffer2 len2 pointer2']);
 		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
