@@ -3,6 +3,10 @@
 note assets
 ; @pos -291 -41
 ; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo5_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew1_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_peaceful_48khz_16s.raw
 noteEnd
 
 note projectConfig
