@@ -106,7 +106,7 @@ ifEnd
 
 moduleEnd
 module controlValues
-; @pos 44 -27
+; @pos 46 -27
 
 float decay 0.1
 ; @slider decay
@@ -126,7 +126,6 @@ use env
 float frequency 0.5
 float phase
 float out
-int previousReset
 
 push &out
 push &phase
@@ -440,15 +439,11 @@ module tank1DelayLfo
 ; @group tank1
 ; Clouds LFO_2 for the
 ; modulated del2 tap.
-
 use env
 
 float frequency 0.3
 float phase
 float out
-int previousReset
-
-; @w out
 
 push &out
 push &phase
