@@ -1537,5 +1537,24 @@
 				"maxRangesPerFunction": 34
 			}
 		}
+	},
+	{
+		"commit": "21b1031f58e079eb716ed0644d72b62002be4e12",
+		"version": "2.3.0",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compiler": {
+				"coveredFunctions": 288,
+				"functionEntries": 51664,
+				"rangeExecutions": 134672,
+				"maxRangesPerFunction": 64
+			},
+			"tokenizer": {
+				"coveredFunctions": 55,
+				"functionEntries": 29173,
+				"rangeExecutions": 158258,
+				"maxRangesPerFunction": 34
+			}
+		}
 	}
 ]
