@@ -25,6 +25,10 @@ function stackItemsToFunctionId(functionName: string, stackItems: readonly Stack
 	return createFunctionId(functionName, stackItems.map(stackItemToExactFunctionValueType));
 }
 
+function formatFunctionCallSignature(functionName: string, parameters: readonly FunctionValueType[]): string {
+	return `${functionName}(${parameters.join(', ')})`;
+}
+
 function resolveTargetFunction(line: NormalizedCallLine, context: CompilationContext): FunctionMetadata {
 	const functionName = line.arguments[0].value;
 	const functionRegistry = context.namespace.functions;
@@ -47,7 +51,17 @@ function resolveTargetFunction(line: NormalizedCallLine, context: CompilationCon
 		return exactMatch;
 	}
 
-	throw getError(ErrorCode.FUNCTION_OVERLOAD_NO_MATCH, line, context, { identifier: functionName });
+	const inferredParameterTypes = operands.map(stackItemToExactFunctionValueType);
+	const availableOverloadSignatures = Object.values(functionRegistry.byId)
+		.filter(functionMetadata => functionMetadata.name === functionName)
+		.map(functionMetadata => formatFunctionCallSignature(functionName, functionMetadata.signature.parameters))
+		.sort((left, right) => left.localeCompare(right));
+
+	throw getError(ErrorCode.FUNCTION_OVERLOAD_NO_MATCH, line, context, {
+		identifier: functionName,
+		inferredCallSignature: formatFunctionCallSignature(functionName, inferredParameterTypes),
+		availableOverloadSignatures,
+	});
 }
 
 /**
