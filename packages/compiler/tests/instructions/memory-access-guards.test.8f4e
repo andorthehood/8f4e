@@ -28,15 +28,15 @@ module guardedFloatLoadAssertions
 ; trapping.
 push -1
 loadFloat
-call assertf 0.0
+call assert 0.0
 
 push 65533
 loadFloat
-call assertf 0.0
+call assert 0.0
 
 push 2147483647
 loadFloat
-call assertf 0.0
+call assert 0.0
 moduleEnd
 
 module guardedLocalPointerDereferenceAssertions

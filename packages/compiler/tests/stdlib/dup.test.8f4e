@@ -15,7 +15,7 @@ call assert 42
 ; it duplicates float values.
 push 3.5
 call dup
-call assertf 3.5
-call assertf 3.5
+call assert 3.5
+call assert 3.5
 moduleEnd
 entryEnd

@@ -130,7 +130,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-call assertf 0.5
+call assert 0.5
 
 push &input
 push 1
@@ -140,7 +140,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-call assertf 1.5
+call assert 1.5
 
 push &input
 push 2
@@ -150,7 +150,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-call assertf 0.0
+call assert 0.0
 moduleEnd
 
 module mapFloatFloatAssertions
@@ -166,7 +166,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-call assertf 10.0
+call assert 10.0
 
 push &input
 push 1.5
@@ -176,7 +176,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-call assertf 20.0
+call assert 20.0
 
 push &input
 push 0.0
@@ -186,7 +186,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-call assertf 0.0
+call assert 0.0
 moduleEnd
 
 module mapImplicitDefaultAssertions
@@ -298,7 +298,7 @@ mapBegin float
 map 0.5
 map 1.5
 mapEnd float
-call assertf 1.5
+call assert 1.5
 moduleEnd
 
 module mapFirstMatchAssertions

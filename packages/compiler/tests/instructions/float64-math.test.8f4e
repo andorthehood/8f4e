@@ -47,6 +47,6 @@ module float64SqrtAssertions
 ; operand.
 push 2.0f64
 sqrt
-call assertf64 1.4142135623730951f64
+call assert 1.4142135623730951f64
 moduleEnd
 entryEnd

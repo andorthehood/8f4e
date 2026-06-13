@@ -527,7 +527,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "assertf",
+              "value": "assert",
             },
             {
               "isInteger": false,
@@ -602,7 +602,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "assertf",
+              "value": "assert",
             },
             {
               "isInteger": false,
@@ -640,7 +640,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "assertf64",
+              "value": "assert",
             },
             {
               "isFloat64": true,

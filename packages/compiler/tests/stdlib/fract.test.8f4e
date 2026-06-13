@@ -10,18 +10,18 @@ module fractAssertions
 ; of positive float values.
 push 0.0
 call fract
-call assertf 0.0
+call assert 0.0
 
 push 3.25
 call fract
-call assertf 0.25
+call assert 0.25
 
 push 10.75
 call fract
-call assertf 0.75
+call assert 0.75
 
 push 60.999
 call fract
-call assertf 0.999
+call assert 0.999
 moduleEnd
 entryEnd

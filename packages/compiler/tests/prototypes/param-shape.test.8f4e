@@ -37,7 +37,7 @@ shape mixerState
 ; declarations into pointer params
 pushShape mixerState
 call sumMixer
-call assertf 6.5
+call assert 6.5
 
 ; it preserves source order when
 ; explicit params and paramShape
@@ -58,6 +58,6 @@ float b 1.5
 ; memory item addresses
 pushShape mixerState
 call sumMixer
-call assertf 9.5
+call assert 9.5
 moduleEnd
 entryEnd

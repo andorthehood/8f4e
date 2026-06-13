@@ -14,10 +14,10 @@ push &phase
 push 1.0
 push 4
 call advancePhase
-call assertf 1.570796326794896
+call assert 1.570796326794896
 
 push phase
-call assertf 1.570796326794896
+call assert 1.570796326794896
 
 ; it wraps to the lower bound
 ; after crossing the upper bound.
@@ -25,9 +25,9 @@ push &phase
 push 2.0
 push 4
 call advancePhase
-call assertf -3.141592653589793
+call assert -3.141592653589793
 
 push phase
-call assertf -3.141592653589793
+call assert -3.141592653589793
 moduleEnd
 entryEnd

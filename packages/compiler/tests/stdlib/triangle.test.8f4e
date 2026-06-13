@@ -10,22 +10,22 @@ module triangleAssertions
 ; triangle in [-1, 1].
 push -3.141592653589793
 call triangle
-call assertf -1.0
+call assert -1.0
 
 push -1.570796326794896
 call triangle
-call assertf 0.0
+call assert 0.0
 
 push 0.0
 call triangle
-call assertf 1.0
+call assert 1.0
 
 push 1.570796326794896
 call triangle
-call assertf 0.0
+call assert 0.0
 
 push 3.141592653589793
 call triangle
-call assertf -1.0
+call assert -1.0
 moduleEnd
 entryEnd

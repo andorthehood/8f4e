@@ -44,13 +44,13 @@ push 0.0
 call gateToTrigger &previousFloat
 call assert 0
 push previousFloat
-call assertf 0.0
+call assert 0.0
 
 push 0.25
 call gateToTrigger &previousFloat
 call assert 1
 push previousFloat
-call assertf 0.25
+call assert 0.25
 
 push 0.25
 call gateToTrigger &previousFloat

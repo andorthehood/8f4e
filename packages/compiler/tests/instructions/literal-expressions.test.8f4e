@@ -17,7 +17,7 @@ push TEST1
 call assert 420
 
 push TEST2
-call assertf 420.69
+call assert 420.69
 
 int output3 TEST3
 push output3
@@ -29,7 +29,7 @@ module fractionLiteralAssertions
 ; push, memory declarations, and
 ; constants.
 push 1/16
-call assertf 0.0625
+call assert 0.0625
 
 int intFraction 1/16
 push intFraction
@@ -37,7 +37,7 @@ call assert 0
 
 float floatFraction 1/16
 push floatFraction
-call assertf 0.0625
+call assert 0.0625
 
 int intWholeFraction 8/2
 push intWholeFraction
@@ -45,11 +45,11 @@ call assert 4
 
 float negativeFraction -1/2
 push negativeFraction
-call assertf -0.5
+call assert -0.5
 
 const MY_FRACTION 1/8
 push MY_FRACTION
-call assertf 0.125
+call assert 0.125
 moduleEnd
 
 module literalMulDivExpressionAssertions
@@ -69,7 +69,7 @@ push 16*2
 call assert 32
 
 push 1/2
-call assertf 0.5
+call assert 0.5
 
 push 0x10*2
 call assert 32
@@ -78,7 +78,7 @@ push 0x10/2
 call assert 8
 
 push 3.5*4
-call assertf 14.0
+call assert 14.0
 
 int multipliedDefault 4*3
 push multipliedDefault
@@ -108,7 +108,7 @@ call assert 4
 
 const SIGNED -1/SIZE
 push SIGNED
-call assertf -0.125
+call assert -0.125
 
 push SIZE/2
 call assert 4
