@@ -1,0 +1,31 @@
+8f4e/v1
+
+includes
+include std/random/xorshift
+includesEnd
+
+entry test
+module xorshiftAssertions
+; it advances and stores a
+; signed 32-bit XORShift seed.
+int seed 69420
+
+push &seed
+call xorshift
+call assert 494363678
+push seed
+call assert 494363678
+
+push &seed
+call xorshift
+call assert -814792604
+push seed
+call assert -814792604
+
+push &seed
+call xorshift
+call assert -887510667
+push seed
+call assert -887510667
+moduleEnd
+entryEnd
