@@ -332,7 +332,7 @@ describe('call instruction compiler', () => {
 				},
 				context
 			);
-			throw new Error('Expected overload mismatch');
+			throw new Error('Expected FUNCTION_OVERLOAD_NO_MATCH for convert(float64), but call succeeded');
 		} catch (error) {
 			const message = String((error as { message?: string })?.message ?? error);
 			expect(message).toContain(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
@@ -367,7 +367,7 @@ describe('call instruction compiler', () => {
 				},
 				context
 			);
-			throw new Error('Expected overload mismatch');
+			throw new Error('Expected FUNCTION_OVERLOAD_NO_MATCH for wrap(int), but call succeeded');
 		} catch (error) {
 			const message = String((error as { message?: string })?.message ?? error);
 			expect(message).toContain(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
