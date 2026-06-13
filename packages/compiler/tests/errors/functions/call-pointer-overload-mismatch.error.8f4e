@@ -1,0 +1,28 @@
+8f4e/v1
+
+entry main
+module pointerOverloadMismatch
+int16[] samples 4
+push 0
+push &samples
+push 1
+push 0.5
+call readInterpolated
+moduleEnd
+entryEnd
+
+function readInterpolated
+param int table
+param int* samples
+param int index
+param float fraction
+push table
+functionEnd int
+
+function readInterpolated
+param int table
+param float* samples
+param int index
+param float fraction
+push table
+functionEnd int

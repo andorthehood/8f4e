@@ -17,5 +17,8 @@
     "instruction": "call",
     "lineNumber": 6,
   },
-  "message": "No matching function overload: addInts. Calls must exactly match one parameter signature. (68)",
+  "message": "No matching function overload: addInts. Calls must exactly match one parameter signature. (68)
+Inferred call: addInts(float, float)
+Available overloads:
+- addInts(int, int)",
 }
