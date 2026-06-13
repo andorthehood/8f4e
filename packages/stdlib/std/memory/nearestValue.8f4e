@@ -1,0 +1,151 @@
+function nearestValue
+#impure
+; Returns the int buffer value
+; nearest to value. Ties keep the
+; first matching buffer value.
+param int value
+param int* buffer
+param int itemCount
+
+local int index
+local int current
+local int nearest
+local int difference
+local int smallestDifference
+
+push itemCount
+push 0
+lessOrEqual
+if
+push 0
+else
+push buffer
+load
+localSet nearest
+
+push nearest
+push value
+sub
+abs
+localSet smallestDifference
+
+push 1
+localSet index
+
+loop
+push index
+push itemCount
+greaterOrEqual
+branchIfTrue 1
+
+push buffer
+push index
+push sizeof(*buffer)
+mul
+add
+load
+localSet current
+
+push current
+push value
+sub
+abs
+localSet difference
+
+push difference
+push smallestDifference
+lessThan
+if
+push current
+localSet nearest
+
+push difference
+localSet smallestDifference
+ifEnd
+
+push index
+push 1
+add
+localSet index
+loopEnd
+
+push nearest
+ifEnd int
+
+functionEnd int
+
+function nearestValue
+#impure
+; Returns the float buffer value
+; nearest to value. Ties keep the
+; first matching buffer value.
+param float value
+param float* buffer
+param int itemCount
+
+local int index
+local float current
+local float nearest
+local float difference
+local float smallestDifference
+
+push itemCount
+push 0
+lessOrEqual
+if
+push 0.0
+else
+push buffer
+loadFloat
+localSet nearest
+
+push nearest
+push value
+sub
+abs
+localSet smallestDifference
+
+push 1
+localSet index
+
+loop
+push index
+push itemCount
+greaterOrEqual
+branchIfTrue 1
+
+push buffer
+push index
+push sizeof(*buffer)
+mul
+add
+loadFloat
+localSet current
+
+push current
+push value
+sub
+abs
+localSet difference
+
+push difference
+push smallestDifference
+lessThan
+if
+push current
+localSet nearest
+
+push difference
+localSet smallestDifference
+ifEnd
+
+push index
+push 1
+add
+localSet index
+loopEnd
+
+push nearest
+ifEnd float
+
+functionEnd float

@@ -1,0 +1,69 @@
+8f4e/v1
+
+includes
+include std/memory/nearestValue
+includesEnd
+
+entry test
+module nearestValueIntAssertions
+; it selects the nearest int
+; value from a buffer.
+int[] values 5 -10 -2 4 11 20
+int[] ties 2 0 10
+
+push 5
+push &values
+push count(values)
+call nearestValue
+call assert 4
+
+push -7
+push &values
+push count(values)
+call nearestValue
+call assert -10
+
+push 5
+push &ties
+push count(ties)
+call nearestValue
+call assert 0
+
+push 99
+push &values
+push 0
+call nearestValue
+call assert 0
+moduleEnd
+
+module nearestValueFloatAssertions
+; it selects the nearest float
+; value from a buffer.
+float[] values 4 -1.0 0.25 0.75 2.0
+float[] ties 2 0.25 0.75
+
+push 0.6
+push &values
+push count(values)
+call nearestValue
+call assert 0.75
+
+push -0.8
+push &values
+push count(values)
+call nearestValue
+call assert -1.0
+
+push 0.5
+push &ties
+push count(ties)
+call nearestValue
+call assert 0.25
+
+push 99.0
+push &values
+push 0
+call nearestValue
+call assert 0.0
+moduleEnd
+entryEnd
