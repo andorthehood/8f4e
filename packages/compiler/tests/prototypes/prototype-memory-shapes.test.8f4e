@@ -15,12 +15,12 @@ int localA 11
 ; it expands prototype fields
 ; before local declarations
 push phase
-call assertf 0.0
+call assert 0.0
 
 ; it preserves default values
 ; from prototype fields
 push frequency
-call assertf 440.0
+call assert 440.0
 
 ; it preserves declarations
 ; written in the consuming
@@ -58,12 +58,12 @@ call assert 22
 ; after earlier local
 ; declarations
 push phase
-call assertf 0.0
+call assert 0.0
 
 ; it reuses prototype defaults
 ; in each consuming module
 push frequency
-call assertf 440.0
+call assert 440.0
 
 ; it lays out shape fields after
 ; preceding local declarations

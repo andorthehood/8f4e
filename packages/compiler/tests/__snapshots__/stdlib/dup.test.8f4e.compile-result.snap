@@ -268,7 +268,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "assertf",
+              "value": "assert",
             },
             {
               "isInteger": false,
@@ -284,7 +284,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "assertf",
+              "value": "assert",
             },
             {
               "isInteger": false,

@@ -16,13 +16,13 @@ push 0.0
 call hasChanged &previousFloat
 call assert 0
 push previousFloat
-call assertf 0.0
+call assert 0.0
 
 push 1.5
 call hasChanged &previousFloat
 call assert 1
 push previousFloat
-call assertf 1.5
+call assert 1.5
 
 push 1.5
 call hasChanged &previousFloat
@@ -32,6 +32,6 @@ push -0.75
 call hasChanged &previousFloat
 call assert 1
 push previousFloat
-call assertf -0.75
+call assert -0.75
 moduleEnd
 entryEnd

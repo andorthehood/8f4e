@@ -70,20 +70,20 @@ const assertFunctionBlocks: ProjectBlock[] = [
 		id: -1,
 		code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
 	},
+	{
+		id: -2,
+		code: ['function assert', '#import assert', 'param float received', 'param float expected', 'functionEnd'],
+	},
+	{
+		id: -3,
+		code: ['function assert', '#import assert', 'param float64 received', 'param float64 expected', 'functionEnd'],
+	},
 	...POINTER_FUNCTION_TYPE_IDENTIFIERS.map((type, index) => ({
 		id: -4 - index,
 		code: ['function assert', '#import assert', `param ${type} received`, `param ${type} expected`, 'functionEnd'],
 	})),
 ];
-const assertFloatFunctionBlock: ProjectBlock = {
-	id: -2,
-	code: ['function assertf', '#import assertf', 'param float received', 'param float expected', 'functionEnd'],
-};
-const assertFloat64FunctionBlock: ProjectBlock = {
-	id: -3,
-	code: ['function assertf64', '#import assertf64', 'param float64 received', 'param float64 expected', 'functionEnd'],
-};
-const injectedAssertionFunctionNames = new Set(['assert', 'assertf', 'assertf64']);
+const injectedAssertionFunctionNames = new Set(['assert']);
 const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
 
 export function getTestMemoryRegions(source: string): string[] {
@@ -329,9 +329,7 @@ export async function compileFixtureProgramSource(
 	const codeBlocks = [
 		...project.codeBlocks,
 		...(options.extraCodeBlocks ?? []),
-		...(options.includeAssertions
-			? [...assertFunctionBlocks, assertFloatFunctionBlock, assertFloat64FunctionBlock]
-			: []),
+		...(options.includeAssertions ? assertFunctionBlocks : []),
 	];
 	const compilerInput = await prepareCompilerInputAsync(
 		{
@@ -399,24 +397,8 @@ export async function runFixtureProgramFile(filePath: string): Promise<FixturePr
 					const assertIndex = assertionCount;
 					assertionCount += 1;
 
-					if (received !== expected) {
+					if (Math.abs(received - expected) > FLOAT_ASSERT_TOLERANCE) {
 						failures.push({ assertIndex, assertName: 'assert', expected, received });
-					}
-				},
-				assertf(received: number, expected: number) {
-					const assertIndex = assertionCount;
-					assertionCount += 1;
-
-					if (Math.abs(received - expected) > FLOAT_ASSERT_TOLERANCE) {
-						failures.push({ assertIndex, assertName: 'assertf', expected, received });
-					}
-				},
-				assertf64(received: number, expected: number) {
-					const assertIndex = assertionCount;
-					assertionCount += 1;
-
-					if (Math.abs(received - expected) > FLOAT_ASSERT_TOLERANCE) {
-						failures.push({ assertIndex, assertName: 'assertf64', expected, received });
 					}
 				},
 			},
