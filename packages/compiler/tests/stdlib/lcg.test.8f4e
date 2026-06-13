@@ -1,0 +1,31 @@
+8f4e/v1
+
+includes
+include std/random/lcg
+includesEnd
+
+entry test
+module lcgAssertions
+; it advances and stores a
+; 16-bit LCG seed.
+int seed 69420
+
+push &seed
+call lcg
+call assert 16539
+push seed
+call assert 16539
+
+push &seed
+call lcg
+call assert 64830
+push seed
+call assert 64830
+
+push &seed
+call lcg
+call assert 33669
+push seed
+call assert 33669
+moduleEnd
+entryEnd

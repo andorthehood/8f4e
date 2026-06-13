@@ -97,6 +97,14 @@
       "path": "std/memory/wrapPointer.8f4e"
     },
     {
+      "id": "std/random/lcg",
+      "path": "std/random/lcg.8f4e"
+    },
+    {
+      "id": "std/random/xorshift",
+      "path": "std/random/xorshift.8f4e"
+    },
+    {
       "id": "std/stack/dup",
       "path": "std/stack/dup.8f4e"
     },
