@@ -1,0 +1,33 @@
+function lcg
+#impure
+; Advances a 16-bit linear
+; congruential generator seed
+; and returns the next integer.
+param int* seed
+
+const MODULUS 65536
+const MULTIPLIER_MOD 26125
+const INCREMENT_MOD 62303
+
+push seed
+push *seed
+push MODULUS
+ensureNonZero
+remainder
+push MODULUS
+add
+push MODULUS
+ensureNonZero
+remainder
+push MULTIPLIER_MOD
+mul
+push INCREMENT_MOD
+add
+push MODULUS
+ensureNonZero
+remainder
+store
+
+push *seed
+
+functionEnd int
