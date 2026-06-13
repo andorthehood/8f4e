@@ -36,6 +36,8 @@ export { ErrorCode };
 
 interface ErrorDetails {
 	identifier?: string;
+	inferredCallSignature?: string;
+	availableOverloadSignatures?: string[];
 }
 
 /**
@@ -239,7 +241,14 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.FUNCTION_OVERLOAD_NO_MATCH:
+		case ErrorCode.FUNCTION_OVERLOAD_NO_MATCH: {
+			const inferredCallSignature = details?.inferredCallSignature
+				? `\nInferred call: ${details.inferredCallSignature}`
+				: '';
+			const availableOverloadSignatures =
+				details?.availableOverloadSignatures && details.availableOverloadSignatures.length > 0
+					? `\nAvailable overloads:\n${details.availableOverloadSignatures.map(signature => `- ${signature}`).join('\n')}`
+					: '';
 			return {
 				code,
 				message:
@@ -247,10 +256,13 @@ export function getError(
 					(details?.identifier ? `: ${details.identifier}` : '') +
 					'. Calls must exactly match one parameter signature. (' +
 					code +
-					')',
+					')' +
+					inferredCallSignature +
+					availableOverloadSignatures,
 				line,
 				context,
 			};
+		}
 		case ErrorCode.OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED:
 			return {
 				code,

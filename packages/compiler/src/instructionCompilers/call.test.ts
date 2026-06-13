@@ -323,7 +323,7 @@ describe('call instruction compiler', () => {
 		registerFunction(context, intOverload, floatOverload);
 		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: false });
 
-		expect(() =>
+		try {
 			analyzeInstruction(
 				{
 					lineNumber: 1,
@@ -331,8 +331,14 @@ describe('call instruction compiler', () => {
 					arguments: [classifyIdentifier('convert')],
 				},
 				context
-			)
-		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
+			);
+			throw new Error('Expected FUNCTION_OVERLOAD_NO_MATCH for convert(float64), but call succeeded');
+		} catch (error) {
+			const message = String((error as { message?: string })?.message ?? error);
+			expect(message).toContain(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
+			expect(message).toContain('Inferred call: convert(float64)');
+			expect(message).toContain('Available overloads:\n- convert(float)\n- convert(int)');
+		}
 	});
 
 	it('throws no-match when raw integer operands do not match pointer overloads', () => {
@@ -352,7 +358,7 @@ describe('call instruction compiler', () => {
 		registerFunction(context, floatPointerOverload, intPointerOverload);
 		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
-		expect(() =>
+		try {
 			analyzeInstruction(
 				{
 					lineNumber: 1,
@@ -360,8 +366,14 @@ describe('call instruction compiler', () => {
 					arguments: [classifyIdentifier('wrap')],
 				},
 				context
-			)
-		).toThrow(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
+			);
+			throw new Error('Expected FUNCTION_OVERLOAD_NO_MATCH for wrap(int), but call succeeded');
+		} catch (error) {
+			const message = String((error as { message?: string })?.message ?? error);
+			expect(message).toContain(`${ErrorCode.FUNCTION_OVERLOAD_NO_MATCH}`);
+			expect(message).toContain('Inferred call: wrap(int)');
+			expect(message).toContain('Available overloads:\n- wrap(float*)\n- wrap(int*)');
+		}
 	});
 
 	it('tracks pointer return types on the stack', () => {
