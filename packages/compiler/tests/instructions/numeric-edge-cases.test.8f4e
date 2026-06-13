@@ -45,12 +45,12 @@ module minMaxFloatAssertions
 push 0.5
 push 0.7
 min
-call assertf 0.5
+call assert 0.5
 
 push 0.5
 push 0.7
 max
-call assertf 0.7
+call assert 0.7
 moduleEnd
 
 module minMaxFloat64Assertions
@@ -60,12 +60,12 @@ module minMaxFloat64Assertions
 push 1.25f64
 push 1.125f64
 min
-call assertf64 1.125f64
+call assert 1.125f64
 
 push 1.25f64
 push 1.125f64
 max
-call assertf64 1.25f64
+call assert 1.25f64
 moduleEnd
 
 module remainderWithNonZeroConstant

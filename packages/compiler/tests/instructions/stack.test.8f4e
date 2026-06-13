@@ -58,16 +58,16 @@ module blockFloatAssertions
 block
  push 69.1
 blockEnd float
-call assertf 69.1
+call assert 69.1
 
 block
  push 1.1
 blockEnd float
-call assertf 1.1
+call assert 1.1
 
 block
  push -420.1
 blockEnd float
-call assertf -420.1
+call assert -420.1
 moduleEnd
 entryEnd

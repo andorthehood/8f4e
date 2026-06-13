@@ -29,14 +29,14 @@ module ensureNonZeroFloatAssertions
 ; zero with 1.0.
 push 69.1
 ensureNonZero
-call assertf 69.1
+call assert 69.1
 
 push 0.0
 ensureNonZero
-call assertf 1.0
+call assert 1.0
 
 push -420.1
 ensureNonZero
-call assertf -420.1
+call assert -420.1
 moduleEnd
 entryEnd

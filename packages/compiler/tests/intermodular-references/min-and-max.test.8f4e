@@ -81,10 +81,10 @@ float minFloat min(floatBoundsSource:floats)
 float maxFloat max(floatBoundsSource:floats)
 
 push minFloat
-call assertf -3.4028234663852886e38
+call assert -3.4028234663852886e38
 
 push maxFloat
-call assertf 3.4028234663852886e38
+call assert 3.4028234663852886e38
 moduleEnd
 
 module outOfOrderBoundsAssertions

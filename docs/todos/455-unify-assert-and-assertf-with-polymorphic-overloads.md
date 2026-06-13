@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-06-12
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-12
 ---
 
 # TODO: Unify `assert` and `assertf` With Polymorphic Overloads
@@ -52,9 +52,9 @@ depend on it.
 
 ## Success Criteria
 
-- [ ] Float assertion fixtures can run through the CLI without importing `assertf`.
-- [ ] Internal `.8f4e` tests use polymorphic `assert` consistently.
-- [ ] Any remaining `assertf` use is documented as a compatibility alias or removed.
+- [x] Float assertion fixtures can run through the CLI without importing `assertf`.
+- [x] Internal `.8f4e` tests use polymorphic `assert` consistently.
+- [x] Any remaining `assertf` use is documented as a compatibility alias or removed.
 
 ## Affected Components
 

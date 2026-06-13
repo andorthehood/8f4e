@@ -51,7 +51,7 @@ module callFloat64RoundTrip
 ; precision through calls.
 push 3.141592653589793f64
 call identityFloat64
-call assertf64 3.141592653589793f64
+call assert 3.141592653589793f64
 moduleEnd
 
 module callFloat64ReturningFunction
@@ -60,7 +60,7 @@ module callFloat64ReturningFunction
 ; in
 ; the callee.
 call getDoublePI
-call assertf64 6.28318530717958f64
+call assert 6.28318530717958f64
 moduleEnd
 
 module callPointerParamsWithLocalDereference
@@ -79,7 +79,7 @@ push &lut
 push 0
 push delta
 call readScaledBlep
-call assertf 0.5
+call assert 0.5
 moduleEnd
 
 module callImpureFunctionWithExplicitLoadAndStore
@@ -97,7 +97,7 @@ push gain
 call scaleInto
 
 push output
-call assertf 1.75
+call assert 1.75
 moduleEnd
 entryEnd
 
