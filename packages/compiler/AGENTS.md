@@ -8,6 +8,7 @@
 - Shared compiler contracts live in the nested standalone subpackage `@8f4e/compiler-spec` (`packages/compiler/packages/compiler-spec`).
 - Syntax parsing now lives in the nested subpackage `@8f4e/tokenizer` (`packages/compiler/packages/tokenizer`).
 - Project preparsing lives in the nested standalone subpackage `@8f4e/project-preparser` (`packages/compiler/packages/project-preparser`).
+- Standard library sources live in the nested source package `@8f4e/stdlib` (`packages/compiler/packages/stdlib`).
 - `@8f4e/compiler` should consume parsed AST input and semantic/codegen utilities, not source-to-AST parsing helpers.
 
 ## Build, Test, Dev

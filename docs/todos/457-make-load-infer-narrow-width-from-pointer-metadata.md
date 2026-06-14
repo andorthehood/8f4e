@@ -76,7 +76,7 @@ compiler cannot know the address type.
 - `packages/compiler/src/instructionCompilers/load.ts` - load variant selection.
 - `packages/compiler/src/stackAnalysis` - consumed address metadata must remain available to codegen.
 - `packages/compiler/tests` - instruction and fixture coverage.
-- `packages/stdlib/std/memory/readInterpolated.8f4e` - may simplify the `int16*` overload after the compiler behavior lands.
+- `packages/compiler/packages/stdlib/std/memory/readInterpolated.8f4e` - may simplify the `int16*` overload after the compiler behavior lands.
 
 ## Risks & Considerations
 
@@ -92,4 +92,3 @@ compiler cannot know the address type.
 - **Related**: `docs/todos/425-split-stack-item-value-and-address.md`
 - **Related**: `docs/todos/431-separate-pointer-type-and-provenance-facts.md`
 - **Related**: `docs/todos/456-improve-function-overload-mismatch-diagnostics.md`
-
