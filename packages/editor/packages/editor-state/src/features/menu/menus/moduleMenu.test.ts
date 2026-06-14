@@ -71,4 +71,45 @@ describe('module menu', () => {
 
 		expect(item).toEqual(expect.objectContaining({ disabled: true }));
 	});
+
+	it('adds an action for removing intermodular memory connections', async () => {
+		const codeBlock = createMockCodeBlock({
+			blockType: 'module',
+			code: ['module synth', 'float foo &module:bar', 'moduleEnd'],
+		});
+		const state = createMockState({
+			codeBlockRendering: {
+				selectedCodeBlock: codeBlock,
+			},
+		});
+
+		const items = await moduleMenu(state);
+		const item = items.find(candidate => candidate.action === 'removeConnections');
+
+		expect(item).toEqual(
+			expect.objectContaining({
+				title: 'Remove connections',
+				payload: { codeBlock },
+				close: true,
+				disabled: false,
+			})
+		);
+	});
+
+	it('disables the remove connections action when only local memory references exist', async () => {
+		const codeBlock = createMockCodeBlock({
+			blockType: 'module',
+			code: ['module synth', 'float bar &bar', 'moduleEnd'],
+		});
+		const state = createMockState({
+			codeBlockRendering: {
+				selectedCodeBlock: codeBlock,
+			},
+		});
+
+		const items = await moduleMenu(state);
+		const item = items.find(candidate => candidate.action === 'removeConnections');
+
+		expect(item).toEqual(expect.objectContaining({ disabled: true }));
+	});
 });
