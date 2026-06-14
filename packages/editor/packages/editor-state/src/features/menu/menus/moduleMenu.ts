@@ -2,6 +2,7 @@ import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, MenuGenerator } from '@8f4e/editor-state-types';
 import { isSkipExecutionDirective } from '@8f4e/tokenizer';
 import { getGroupBlocks, getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
+import { hasIntermodularMemoryConnections } from '../../code-blocks/features/memoryConnectionRemover/removeConnections';
 
 const functionBlockType = documentBlockInstructionByType.function.type;
 const moduleBlockType = documentBlockInstructionByType.module.type;
@@ -31,6 +32,9 @@ export const moduleMenu: MenuGenerator = state => {
 	// Check if code block has ; @favorite directive
 	const hasFavoriteDirective = state.codeBlockRendering.selectedCodeBlock?.isFavorite ?? false;
 	const hasSliders = (state.codeBlockRendering.selectedCodeBlock?.widgets.sliders.length ?? 0) > 0;
+	const hasMemoryConnections = state.codeBlockRendering.selectedCodeBlock
+		? hasIntermodularMemoryConnections(state.codeBlockRendering.selectedCodeBlock.code)
+		: false;
 
 	// Check if code block has a group name and compute group skip/nonstick status
 	const groupName = state.codeBlockRendering.selectedCodeBlock?.groupName;
@@ -132,6 +136,13 @@ export const moduleMenu: MenuGenerator = state => {
 						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 						close: true,
 						disabled: !hasSliders || !state.callbacks.getWordFromMemory,
+					},
+					{
+						title: 'Remove connections',
+						action: 'removeConnections',
+						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
+						close: true,
+						disabled: !hasMemoryConnections,
 					},
 				]
 			: []),

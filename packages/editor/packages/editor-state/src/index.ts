@@ -22,6 +22,7 @@ import groupNonstickToggler from './features/code-blocks/features/group/nonstick
 import groupRemover from './features/code-blocks/features/group/remover/effect';
 import groupSkipExecutionToggler from './features/code-blocks/features/group/skipExecutionToggler/effect';
 import groupUngroupper from './features/code-blocks/features/group/ungroupper/effect';
+import memoryConnectionRemover from './features/code-blocks/features/memoryConnectionRemover/effect';
 import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
 import sliderDefaultSaver from './features/code-blocks/features/sliderDefaultSaver/effect';
@@ -88,6 +89,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	button(state, events);
 	slider(store, events);
 	sliderDefaultSaver(store, events);
+	memoryConnectionRemover(store, events);
 	crossfade(store, events);
 	pianoKeyboard(store, events);
 	viewport(store, events);
