@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-06-08
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-14
 ---
 
 # TODO: Add Function paramShape Instruction
@@ -155,13 +155,13 @@ float* b
 
 ## Success Criteria
 
-- [ ] `prototype` remains memory-shape-only.
-- [ ] `paramShape <prototypeId>` is valid only in functions.
-- [ ] `paramShape` expands prototype memory declarations into pointer params.
-- [ ] Function code can dereference expanded params with existing pointer syntax, such as `push *a`.
-- [ ] Module call sites pass addresses explicitly with normal `call` inline args.
-- [ ] Editor gaps can display compiler-derived expanded params under `paramShape`.
-- [ ] Tests use `.test.8f4e` fixtures for executable behavior and compiler diagnostics.
+- [x] `prototype` remains memory-shape-only.
+- [x] `paramShape <prototypeId>` is valid only in functions.
+- [x] `paramShape` expands prototype memory declarations into pointer params.
+- [x] Function code can dereference expanded params with existing pointer syntax, such as `push *a`.
+- [x] Module call sites pass addresses explicitly with normal `call` inline args.
+- [x] Editor gaps can display compiler-derived expanded params under `paramShape`.
+- [x] Tests use `.test.8f4e` fixtures for executable behavior and compiler diagnostics.
 
 ## Affected Components
 

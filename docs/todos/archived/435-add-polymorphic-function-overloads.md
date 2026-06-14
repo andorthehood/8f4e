@@ -4,7 +4,7 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-29
 issue: null
-status: Done
+status: Completed
 completed: 2026-06-09
 ---
 
