@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-06-12
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-13
 ---
 
 # TODO: Improve Function Overload Mismatch Diagnostics
@@ -66,9 +66,9 @@ Available overloads:
 
 ## Success Criteria
 
-- [ ] Failed overload resolution reports the inferred call signature.
-- [ ] Failed overload resolution lists available overload signatures for the called name.
-- [ ] Missing function names still report as undefined functions.
+- [x] Failed overload resolution reports the inferred call signature.
+- [x] Failed overload resolution lists available overload signatures for the called name.
+- [x] Missing function names still report as undefined functions.
 
 ## Affected Components
 
@@ -84,5 +84,4 @@ Available overloads:
 
 ## Related Items
 
-- **Related**: `docs/todos/435-add-polymorphic-function-overloads.md`
-
+- **Related**: `docs/todos/archived/435-add-polymorphic-function-overloads.md`

@@ -15,7 +15,6 @@ Active todo files are listed below.
 | 271 | Add float64 support for loadFloat instruction | 🔴 | 1-3h | 2026-02-20 | `loadFloat` is missing explicit float64 support in the compiler instruction path. |
 | 272 | Add float32/float64 width checks to localSet instruction | 🔴 | 1-3h | 2026-02-20 | `localSet` is missing explicit float64 support in the compiler instruction path. |
 | 278 | Add storeWords with explicit count and word size | 🔴 | 1-2d | 2026-02-23 | `storeBytes <count>` covers contiguous byte writes, but there is no equivalent explicit instruction for contiguous multi-byte word writes. |
-| 280 | Add reverse stack instruction with explicit item count | 🔴 | 4-8h | 2026-02-23 | 8f4e has `drop` and `clearStack`, but no primitive to reverse a contiguous segment of the stack. This forces instruction authors and users to emulate reversal manually, which is... |
 | 305 | Reuse WASM instance across incremental compiles | 🔴 | 3-6h | 2026-03-14 | The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed. |
 
 ### 🟡 Medium Priority
@@ -24,14 +23,11 @@ Active todo files are listed below.
 | ---- | ----- | -------- | ------ | ------- | ------- |
 | 048 | Add 2D Engine Visual Regression Tests | 🟡 | 6-8 hours | 2025-08-28 | The 2D engine package currently lacks visual regression testing, which means: |
 | 052 | Simplify Cache Rendering Order | 🟡 | 2–3 days | 2025-09-03 | The 2D engine supports caching of complex draw blocks via `cacheGroup`. The current implementation in `CachedRenderer` preserves draw order across different textures (sprite she... |
-| 054 | Benchmark Unrolled vs Normal Loop in Audio Buffer Filler | 🟡 | 8-12 hours | 2025-09-07 | The audio buffer filler loop is currently implemented using an unrolled approach in `packages/compiler/src/index.ts` (line 275): |
 | 058 | Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support | 🟡 | 4-6 days | 2025-09-11 | The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the proj... |
-| 062 | Editor Command Queue Refactor | 🟡 | 3-4 days | 2025-10-09 | The editor state currently stores host callbacks directly (`state.callbacks`). This makes the state non-serializable, complicates testing, and tightly couples effects to host-pr... |
 | 064 | Research WebAssembly Runtimes for ARM Microcontroller Support | 🟡 | 3-5 days | 2025-09-10 | The 8f4e project currently supports browser-based WebAssembly runtimes (WebWorker and AudioWorklet) but lacks native runtimes for embedded ARM microcontrollers. To implement the... |
 | 155 | Add Framebuffer Memory Accounting in glugglug | 🟡 | 2-4h | 2025-12-30 | glugglug allocates render-to-texture and cache framebuffers, but there is no structured accounting for their estimated memory impact. This makes it difficult to reason about GPU... |
 | 170 | Toggle post-process effects via function key | 🟡 | 1-2h | 2026-01-13 | Post-process effects can take over the entire editor surface. If a fragment shader goes wrong, it can make the editor unreadable. We need a fast toggle to disable effects withou... |
 | 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Fragment shader compile failures in glugglug currently throw or log without a structured path back to the editor. |
-| 211 | Add WASM memory to GLSL float uniform bindings via project config | 🟡 | 2-4d | 2026-02-08 | Post-process and background shader effects currently support engine-owned shared uniform buffers, but there is no declarative way to bind shader uniforms to values in WebAssembl... |
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
 | 261 | Update instruction test helpers for float64 and refactor call test | 🟡 | 2-4h | 2026-02-20 | `packages/compiler/tests/instructions/testUtils.ts` currently reads/writes all non-integer memory as float32 in shared helpers like `moduleTesterWithFunctions`. |
 | 274 | Consolidate defaultFeatureFlags into a single source of truth | 🟡 | 2-4h | 2026-02-21 | There are currently two `defaultFeatureFlags` definitions: |
@@ -46,9 +42,7 @@ Active todo files are listed below.
 | 377 | Batch-parse modules and validate shared ids | 🟡 | 4-8h | 2026-04-08 | The compiler currently parses each module independently by mapping `compileToAST(...)` over the module list in `packages/compiler/src/index.ts`. |
 | 378 | Make parser stateful for block pairing and owning block context | 🟡 | 4-8h | 2026-04-08 | The tokenizer/parser already owns some cross-line structural syntax concerns such as `if` pairing and block-closure validation, but that statefulness is still too narrow in two... |
 | 380 | Remove hardcoded AudioWorklet buffer size from runtime contract | 🟡 | 1-2 days | 2026-04-21 | The AudioWorklet runtime currently injects `const AUDIO_BUFFER_SIZE 128` as an auto-managed environment constant in `packages/runtime-audio-worklet/src/runtimeDirectives.ts`. |
-| 381 | Add #follow module layout directive | 🟡 | 1-2 days | 2026-04-21 | The compiler currently assigns module memory layout from a dependency-aware but otherwise loose ordering model: |
 | 383 | Extend CLI run with tracing and derived debug signals | 🟡 | 1-2d | 2026-04-23 | The new `cli run` command is already useful for inspecting final state after a fixed |
-| 384 | Add compiler algorithmic regression metrics | 🟡 | 1-2 days | 2026-04-28 | The compiler has snapshot coverage for many structural outputs, but there is no release-level signal for algorithmic regressions. |
 | 385 | Guard i32.div_s signed overflow | 🟡 | 2-4h | 2026-04-30 | The `div` instruction emits WebAssembly `i32.div_s` for integer operands. The compiler already rejects division when the divisor is not known to be non-zero, which prevents the... |
 | 386 | Guard i32.rem_s divisor zero | 🟡 | 2-4h | 2026-04-30 | The `remainder` instruction emits WebAssembly `i32.rem_s` for integer operands. WebAssembly has no non-trapping variant for integer remainder. The raw opcode traps when the divi... |
 | 390 | Add compiler passive data inputs for array initialization | 🟡 | 1-2d | 2026-05-04 | The compiler now uses passive data segments to restore declared initial memory, but every segment is still derived from source-level memory declarations and compiler-owned inter... |
@@ -67,17 +61,11 @@ Active todo files are listed below.
 | 431 | Separate pointer type and provenance facts | 🟡 | 2-4h | 2026-05-27 | Model declared pointer type facts separately from value provenance facts so helpers like `count(*ptr)` only use explicit count provenance. |
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
-| 435 | Add polymorphic function overloads | 🟡 | 1-2d | 2026-05-29 | Allow global functions to share a source name when their exact parameter signatures differ, using signature-derived ids and stack-based call resolution. |
-| 446 | Store project block type during project parse | 🟡 | 2-4h | 2026-06-01 | Carry parser-known project block type metadata forward so compiler block picking does not rescan raw block source. |
 | 448 | Move prototype content validation to parser | 🟡 | 4-8h | 2026-06-01 | Move executable-line rejection for prototypes from compiler-side `parsePrototypeAST()` into parser-owned block validation. |
-| 449 | Add function paramShape instruction | 🟡 | 1-2d | 2026-06-08 | Let functions import a prototype-shaped pointer parameter list with `paramShape`, keeping prototypes memory-shape-only and behavior in normal functions. |
 | 450 | Generalize instruction placement config | 🟡 | 4-8h | 2026-06-08 | Make instruction placement metadata generic enough to express shared source-placement checks, starting with named prologue rules for directives and function parameters. |
-| 451 | Add pushShape instruction | 🟡 | 4-8h | 2026-06-08 | Add `pushShape <prototypeId>` so shaped modules can push effective memory addresses in prototype order and feed functions that use `paramShape`. |
 | 452 | Add Reachability-Based Function Pruning | 🟡 | 1-2d | 2026-06-10 | Replace conservative function pruning with a reachability pass so functions only called by uncalled functions are also omitted. |
 | 453 | Add indirect calls and function reference type | 🟡 | 2-4d | 2026-06-11 | Add typed function references backed by WebAssembly table indices so 8f4e can store, load, and call runtime-selected functions through `call_indirect`. |
 | 454 | Add compile-time int cast helper | 🟡 | 4-8h | 2026-06-11 | Add a compile-time-only `int(...)` helper for folding numeric constants into integer arguments such as array lengths and loop counts. |
-| 455 | Unify assert and assertf with polymorphic overloads | 🟡 | 2-4h | 2026-06-12 | Migrate float assertions to polymorphic `assert` overloads so CLI tests and compiler fixtures use the same assertion helper surface. |
-| 456 | Improve function overload mismatch diagnostics | 🟡 | 2-4h | 2026-06-12 | Report inferred call signatures and available overload signatures when polymorphic function resolution fails. |
 | 457 | Make load infer narrow width from pointer metadata | 🟡 | 4-8h | 2026-06-12 | Let plain `load` choose narrow signed or unsigned integer loads when address metadata proves the pointee width, while keeping raw integer addresses 32-bit. |
 
 ### 🟢 Low Priority
@@ -86,7 +74,6 @@ Active todo files are listed below.
 | ---- | ----- | -------- | ------ | ------- | ------- |
 | 016 | Runtime Loading UI Improvements | 🟢 | 2-3 days | 2025-08-26 | After implementing lazy loading for runtimes (TODO: 015), users will experience a delay when switching between runtime types. Currently, there's no visual feedback during this l... |
 | 057 | Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution | 🟢 | 8-12 hours | 2025-09-09 | The 8f4e project currently uses WebAssembly for executing compiled code with basic debugging capabilities (debug instruction parser exists). To enhance the development experienc... |
-| 203 | Use CodeBlock name instead of recomputing from code | 🟢 | 2-4 days | 2026-01-22 | The system frequently derives source-level block names by calling `getCodeBlockNameFromSource(code)` during updates and rendering. This is redundant because `CodeBlockGraphicData.name` is intended to... |
 | 295 | Unify code render rows and width derivation | 🟢 | 2-4h | 2026-03-09 | The editor currently derives rendered code rows and code-block width through separate code paths: |
 | 364 | Centralize alwaysOnTop code block partition logic | 🟢 | 1-2 hours | 2026-04-03 | The `@alwaysOnTop` behavior is implemented through repeated ad hoc array partitioning of `graphicHelper.codeBlocks`. The same "normal blocks first, always-on-top blocks last" ru... |
 | 388 | Add PixelCode font to sprite-generator | 🟢 | 4-8h | 2026-05-02 | The editor sprite-generator has several bundled bitmap fonts, but it does not include PixelCode/Pixel Code. PixelCode is an upstream pixel font aimed at programming, which makes... |
@@ -96,6 +83,19 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 384 | Add compiler algorithmic regression metrics | 2026-06-14 | Archived with the exact completion date unknown; compiler complexity metrics now provide release-level regression signals. |
+| 381 | Add #follow module layout directive | 2026-06-14 | Cancelled; no strict `#follow` module layout adjacency directive is planned. |
+| 280 | Add reverse stack instruction with explicit item count | 2026-06-14 | Cancelled; no explicit `reverse <count>` stack instruction is planned. |
+| 211 | Add WASM memory to GLSL float uniform bindings via project config | 2026-06-14 | Project config now supports shader uniform bindings from WASM memory for postprocess and background effects. |
+| 203 | Use CodeBlock name instead of recomputing from code | 2026-06-14 | Code block names are now treated as stable stored data instead of being recomputed from code during normal update paths. |
+| 062 | Editor Command Queue Refactor | 2026-06-14 | Cancelled; no command-queue refactor is planned for this editor host-callback cleanup. |
+| 054 | Benchmark Unrolled vs Normal Loop in Audio Buffer Filler | 2026-06-14 | Cancelled; no benchmark work is planned for this old audio-buffer loop strategy investigation. |
+| 446 | Store project block type during project parse | 2026-06-11 | Superseded by the project-preparser pipeline refactor, which prepares the exact `CompileInput` shape directly from project blocks. |
+| 449 | Add function paramShape instruction | 2026-06-14 | Archived with the exact completion date unknown; `paramShape <prototypeId>` now expands prototype memory declarations into function pointer params while prototypes remain memory-shape-only. |
+| 451 | Add pushShape instruction | 2026-06-14 | Archived with the exact completion date unknown; `pushShape <prototypeId>` now pushes effective module memory addresses in prototype order for `paramShape` call sites. |
+| 456 | Improve function overload mismatch diagnostics | 2026-06-13 | Failed overload resolution now reports inferred call signatures while listing available overload signatures, without changing true missing-function diagnostics. |
+| 455 | Unify assert and assertf with polymorphic overloads | 2026-06-12 | Float assertion fixtures now use polymorphic `assert` consistently, and any remaining `assertf` behavior is treated as compatibility. |
+| 435 | Add polymorphic function overloads | 2026-06-09 | Implemented in PR #784: functions can share a source name across exact parameter signatures, use signature-derived ids, and resolve calls through stack-based overload matching. |
 | 441 | Migrate binary asset directives to config | 2026-06-04 | Binary asset loading now uses schema-backed `@config bin...` entries; old `@defAsset` / `@loadAsset` parsing and compatibility names were removed. |
 | 440 | Migrate keyboard memory directives to config | 2026-06-04 | Keyboard memory targets now use schema-backed `@config keyboard...` entries, and the keyboard plugin activates from config paths instead of custom directives. |
 | 439 | Migrate @midiIn to config directive | 2026-06-04 | MIDI input bindings now use schema-backed `@config midi.inputs...` entries, with no live `@midiIn` support remaining. |

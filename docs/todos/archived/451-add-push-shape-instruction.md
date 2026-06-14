@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-06-08
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-14
 ---
 
 # TODO: Add pushShape Instruction
@@ -134,12 +134,12 @@ functionEnd
 
 ## Success Criteria
 
-- [ ] `pushShape <prototypeId>` is valid in modules.
-- [ ] `pushShape` pushes effective module memory addresses in prototype declaration order.
-- [ ] Overridden shaped fields are included.
-- [ ] `pushShape` pairs with `paramShape` without manually listing every address at call sites.
-- [ ] The compiler does not parse source text to derive the pushed address list.
-- [ ] Tests cover normal calls, overrides, ordering, and diagnostics.
+- [x] `pushShape <prototypeId>` is valid in modules.
+- [x] `pushShape` pushes effective module memory addresses in prototype declaration order.
+- [x] Overridden shaped fields are included.
+- [x] `pushShape` pairs with `paramShape` without manually listing every address at call sites.
+- [x] The compiler does not parse source text to derive the pushed address list.
+- [x] Tests cover normal calls, overrides, ordering, and diagnostics.
 
 ## Affected Components
 

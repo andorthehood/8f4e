@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2 days
 created: 2026-04-28
 issue: https://github.com/andorthehood/8f4e/issues/647
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-14
 ---
 
 # TODO: Add compiler algorithmic regression metrics
@@ -112,11 +112,11 @@ Suggested record shape:
 
 ## Success Criteria
 
-- [ ] Compiler complexity metrics are logged per release without relying on absolute wall-clock time as the primary signal.
-- [ ] Generated fixture families cover linear instructions, locals, functions, memory-heavy programs, and one real project.
-- [ ] Logs contain enough V8/Node metadata to explain runtime differences.
-- [ ] The metrics dashboard can graph fixture-size curves and adjacent-size ratios.
-- [ ] Obvious superlinear regressions are visible from the dashboard without opening profiler artifacts manually.
+- [x] Compiler complexity metrics are logged per release without relying on absolute wall-clock time as the primary signal.
+- [x] Generated fixture families cover linear instructions, locals, functions, memory-heavy programs, and one real project.
+- [x] Logs contain enough V8/Node metadata to explain runtime differences.
+- [x] The metrics dashboard can graph fixture-size curves and adjacent-size ratios.
+- [x] Obvious superlinear regressions are visible from the dashboard without opening profiler artifacts manually.
 
 ## Affected Components
 
@@ -136,7 +136,7 @@ Suggested record shape:
 
 ## Related Items
 
-- **Related**: `054` Benchmark Unrolled vs Normal Loop in Audio Buffer Filler
+- **Related**: `docs/todos/archived/054-benchmark-unrolled-vs-normal-loop-audio-buffer-filler.md`
 - **Related**: `305` Reuse WASM instance across incremental compiles
 - **Related**: `383` Extend CLI `run` with tracing and derived debug signals
 
