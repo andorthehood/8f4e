@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4d
 created: 2026-02-08
 issue: https://github.com/andorthehood/8f4e/issues/550
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-14
 ---
 
 # TODO: Add WASM memory to GLSL float uniform bindings via project config
@@ -68,11 +68,11 @@ Suggested `memoryId` formats:
 
 ## Success Criteria
 
-- [ ] `config project` supports `shaderUniformBindings` for `postprocess` and `background`.
-- [ ] `memoryId` parsing supports scalar/index/span formats and resolves stable word addresses and sizes.
-- [ ] Float uniform bindings update shader uniforms from WASM memory during rendering.
-- [ ] Invalid bindings surface clear config/shader errors without breaking the render loop.
-- [ ] Tests cover schema validation, parser/resolver behavior, and render integration.
+- [x] `config project` supports `shaderUniformBindings` for `postprocess` and `background`.
+- [x] `memoryId` parsing supports scalar/index/span formats and resolves stable word addresses and sizes.
+- [x] Float uniform bindings update shader uniforms from WASM memory during rendering.
+- [x] Invalid bindings surface clear config/shader errors without breaking the render loop.
+- [x] Tests cover schema validation, parser/resolver behavior, and render integration.
 
 ## Affected Components
 
@@ -94,12 +94,12 @@ Suggested `memoryId` formats:
 
 ## Related Items
 
-- **Related**: `docs/todos/156-add-glsl-shader-code-blocks-for-post-process-effects.md`
-- **Related**: `docs/todos/158-add-background-effects.md`
-- **Related**: `docs/todos/166-default-vertex-shader-for-post-process-effects.md`
+- **Related**: `docs/todos/archived/156-add-glsl-shader-code-blocks.md`
+- **Related**: `docs/todos/archived/158-add-background-effects.md`
+- **Related**: `docs/todos/archived/166-default-post-process-vertex-shader.md`
 - **Related**: `docs/todos/179-glugglug-shader-error-callback.md`
-- **Related**: `docs/todos/185-simplify-post-process-pipeline-to-a-single-effect.md`
-- **Related**: `docs/todos/194-add-unsigned-int8-int16-buffer-support.md`
+- **Related**: `docs/todos/archived/185-simplify-post-process-single-effect.md`
+- **Related**: `docs/todos/archived/194-unsigned-int8-int16-buffers.md`
 
 ## Notes
 

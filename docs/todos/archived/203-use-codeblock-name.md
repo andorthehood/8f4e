@@ -4,8 +4,8 @@ priority: Low
 effort: 2-4 days
 created: 2026-01-22
 issue: https://github.com/andorthehood/8f4e/issues/403
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-14
 ---
 
 # TODO: Use CodeBlock name instead of recomputing from code
@@ -35,10 +35,10 @@ Treat `CodeBlockGraphicData.name` as the source of truth and stop recalculating 
 
 ## Success Criteria
 
-- [ ] No runtime code path recomputes code block names on each update
-- [ ] Names are assigned once during creation/import and remain stable
-- [ ] Names update when code changes make the derived name invalid
-- [ ] Tests cover name stability across edits
+- [x] No runtime code path recomputes code block names on each update
+- [x] Names are assigned once during creation/import and remain stable
+- [x] Names update when code changes make the derived name invalid
+- [x] Tests cover name stability across edits
 
 ## Affected Components
 
@@ -55,7 +55,7 @@ Treat `CodeBlockGraphicData.name` as the source of truth and stop recalculating 
 
 ## Related Items
 
-- **Related**: `docs/todos/197-editor-config-blocks.md`
+- **Related**: `docs/todos/archived/197-editor-config-blocks.md`
 
 ## Notes
 
