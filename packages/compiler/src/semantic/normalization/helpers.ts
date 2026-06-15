@@ -5,11 +5,10 @@ import {
 	type CompilationContext,
 	type CompilerASTLine,
 	ErrorCode,
-	type NormalizedArgumentLiteral,
 	type ReferenceKind,
 } from '@8f4e/compiler-spec';
+import { inlineMemoryReferenceArgument } from '@8f4e/memory-reference-inliner';
 import { getError } from '../../compilerError';
-import { tryResolveValueArgument } from '../resolveValueArgument';
 
 /**
  * Returns whether namespace discovery has populated any module or constants namespaces.
@@ -118,28 +117,8 @@ export function validateIntermoduleAddressReference(
 export function normalizeArgument(
 	argument: Argument,
 	context: CompilationContext
-): Argument | NormalizedArgumentLiteral {
-	// tryResolveValueArgument returns undefined for non-IDENTIFIER and non-COMPILE_TIME_EXPRESSION
-	// types, so we short-circuit here to avoid unnecessary work.
-	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return argument;
-	}
-
-	const resolved = tryResolveValueArgument(context, argument);
-
-	if (!resolved) {
-		return argument;
-	}
-
-	const literal: NormalizedArgumentLiteral = {
-		type: ArgumentType.LITERAL as typeof ArgumentType.LITERAL,
-		value: resolved.value,
-		isInteger: resolved.isInteger,
-		...(resolved.isFloat64 ? { isFloat64: true } : {}),
-		...(resolved.address ? { address: resolved.address } : {}),
-	};
-
-	return literal;
+): ReturnType<typeof inlineMemoryReferenceArgument> {
+	return inlineMemoryReferenceArgument(argument, context);
 }
 
 /**
