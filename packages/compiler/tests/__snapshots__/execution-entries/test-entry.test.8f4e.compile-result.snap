@@ -244,12 +244,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "values",
-              "type": "identifier",
-              "value": "&values",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "values",
+                  "memoryIndex": 0,
+                  "moduleId": "testEntrySupportsPointerArguments",
+                  "safeByteLength": 8,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",

@@ -26,6 +26,7 @@ import {
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import {
+	type MemoryLayoutPlan,
 	type MemoryLayoutSourceModule,
 	type PlannedMemoryDeclaration,
 	type PlannedMemoryModule,
@@ -492,6 +493,43 @@ function createMemoryLayoutSourceModules(
 }
 
 /**
+ * Creates the whole-project memory layout plan used by namespace collection and
+ * memory reference inlining.
+ *
+ * @param asts - Validated module ASTs being processed.
+ * @param startingByteAddress - Absolute byte address where layout should begin.
+ * @param compiledFunctions - Function registry available to module compilation.
+ * @param layoutAsts - Module ASTs that provide memory layout input.
+ * @param options - Compiler options for this compilation pass.
+ * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
+ * @returns Planned module and memory declaration layout.
+ */
+export function createMemoryLayoutPlanFromASTs(
+	asts: readonly ValidatedModuleAST[],
+	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
+	compiledFunctions?: FunctionRegistry,
+	layoutAsts: readonly ValidatedModuleAST[] = asts,
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
+): MemoryLayoutPlan {
+	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
+	const namespaces: Namespaces = {};
+
+	return planMemoryLayout({
+		modules: createMemoryLayoutSourceModules(
+			layoutAsts,
+			namespaces,
+			startingByteAddress,
+			compiledFunctions,
+			options,
+			prototypeShapes
+		),
+		startingByteAddress,
+		memoryRegions: options.memoryRegions ?? [],
+	});
+}
+
+/**
  * Discovers and lays out namespaces for modules and constants, deferring intermodule dependencies as needed.
  *
  * @param asts - Validated ASTs being processed.
@@ -508,22 +546,18 @@ export function collectNamespacesFromASTs(
 	compiledFunctions?: FunctionRegistry,
 	layoutAsts: readonly ValidatedModuleAST[] = asts,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
-	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
+	memoryPlan: MemoryLayoutPlan = createMemoryLayoutPlanFromASTs(
+		asts,
+		startingByteAddress,
+		compiledFunctions,
+		layoutAsts,
+		options,
+		prototypeShapes
+	)
 ): Namespaces {
 	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
 	const namespaces: Namespaces = {};
-	const memoryPlan = planMemoryLayout({
-		modules: createMemoryLayoutSourceModules(
-			layoutAsts,
-			namespaces,
-			startingByteAddress,
-			compiledFunctions,
-			options,
-			prototypeShapes
-		),
-		startingByteAddress,
-		memoryRegions: options.memoryRegions ?? [],
-	});
 
 	let pendingAsts = [...asts];
 	let madeProgress = true;

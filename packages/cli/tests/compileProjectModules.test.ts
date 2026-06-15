@@ -3,27 +3,31 @@ import { describe, expect, it } from 'vitest';
 import compileProjectModules from '../src/compile/compileProjectModules';
 
 describe('compileProjectModules', () => {
-	it('compiles module blocks in project file order', async () => {
-		await expect(
-			compileProjectModules(
-				[
-					{
-						id: 1,
-						code: ['module target', '; @pos -71 -28', 'int* ptr &source:0', 'moduleEnd'],
-						entry: 'main',
-					},
-					{
-						id: 2,
-						code: ['module source', '; @pos -141 -28', 'int value 0', 'moduleEnd'],
-						entry: 'main',
-					},
-				],
+	it('resolves nth references across project file order', async () => {
+		const result = await compileProjectModules(
+			[
 				{
-					compilerOptions: { startingMemoryWordAddress: 0 },
-					includeWasm: false,
-				}
-			)
-		).rejects.toThrow('Undeclared identifier: &source:0.');
+					id: 1,
+					code: ['module target', '; @pos -71 -28', 'int* ptr &source:0', 'moduleEnd'],
+					entry: 'main',
+				},
+				{
+					id: 2,
+					code: ['module source', '; @pos -141 -28', 'int value 0', 'moduleEnd'],
+					entry: 'main',
+				},
+			],
+			{
+				compilerOptions: { startingMemoryWordAddress: 0 },
+				includeWasm: false,
+			}
+		);
+
+		expect(result.compiledModules?.target.index).toBe(0);
+		expect(result.compiledModules?.source.index).toBe(1);
+		expect(result.compiledModules?.target.memoryMap.ptr.default).toBe(
+			result.compiledModules?.source.memoryMap.value.byteAddress
+		);
 	});
 
 	it('preserves file order when module blocks are already ordered', async () => {

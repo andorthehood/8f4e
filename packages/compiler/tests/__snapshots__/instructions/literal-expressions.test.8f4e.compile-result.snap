@@ -41,19 +41,9 @@
               "value": "dividedBuffer",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 8,
-              },
-              "operator": "/",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "hasExplicitMemoryDefault": false,
@@ -62,11 +52,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "element-count",
-              "scope": "local",
-              "targetMemoryId": "dividedBuffer",
-              "type": "identifier",
-              "value": "count(dividedBuffer)",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -96,19 +84,9 @@
               "value": "multipliedBuffer",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 8,
-              },
-              "operator": "*",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "hasExplicitMemoryDefault": false,
@@ -117,11 +95,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "element-count",
-              "scope": "local",
-              "targetMemoryId": "multipliedBuffer",
-              "type": "identifier",
-              "value": "count(multipliedBuffer)",
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "push",
@@ -229,19 +205,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 8,
-              },
-              "operator": "/",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -271,19 +237,9 @@
               "value": "defaultFromExpression",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 8,
-              },
-              "operator": "/",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -498,19 +454,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "operator": "^",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 4,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "push",
@@ -556,19 +502,9 @@
               "value": "defaultFromExponent",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 3,
-              },
-              "operator": "^",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 9,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -626,19 +562,9 @@
               "value": "exponentialBuffer",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "operator": "^",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 3,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "hasExplicitMemoryDefault": false,
@@ -647,11 +573,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "element-count",
-              "scope": "local",
-              "targetMemoryId": "exponentialBuffer",
-              "type": "identifier",
-              "value": "count(exponentialBuffer)",
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -692,21 +616,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "samples",
-                "type": "identifier",
-                "value": "sizeof(samples)",
-              },
-              "operator": "^",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "push",
@@ -1291,11 +1203,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "element-count",
-              "scope": "local",
-              "targetMemoryId": "literalSizedBuffer",
-              "type": "identifier",
-              "value": "count(literalSizedBuffer)",
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -1357,21 +1267,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "samples",
-                "type": "identifier",
-                "value": "sizeof(samples)",
-              },
-              "operator": "*",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -1411,21 +1309,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 8,
-              },
-              "operator": "*",
-              "right": {
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "samples",
-                "type": "identifier",
-                "value": "sizeof(samples)",
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "push",
@@ -1449,21 +1335,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "samples",
-                "type": "identifier",
-                "value": "sizeof(samples)",
-              },
-              "operator": "*",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 4,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -1487,21 +1361,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 123,
-              },
-              "operator": "*",
-              "right": {
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "samples",
-                "type": "identifier",
-                "value": "sizeof(samples)",
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 246,
             },
           ],
           "instruction": "push",
@@ -1525,19 +1387,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "operator": "*",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 8,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "push",
@@ -1584,12 +1436,20 @@
               "value": "ptr",
             },
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "floatSamples",
-              "type": "identifier",
-              "value": "&floatSamples",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 152,
+                  "memoryId": "floatSamples",
+                  "memoryIndex": 0,
+                  "moduleId": "sizeAndCountExpressionAssertions",
+                  "safeByteLength": 32,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 152,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -1598,12 +1458,9 @@
         {
           "arguments": [
             {
-              "isPointee": true,
-              "referenceKind": "pointee-element-count",
-              "scope": "local",
-              "targetMemoryId": "ptr",
-              "type": "identifier",
-              "value": "count(*ptr)",
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -1650,12 +1507,20 @@
               "value": "smallPtr",
             },
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "smallSamples",
-              "type": "identifier",
-              "value": "&smallSamples",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 188,
+                  "memoryId": "smallSamples",
+                  "memoryIndex": 0,
+                  "moduleId": "sizeAndCountExpressionAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 188,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -1664,12 +1529,9 @@
         {
           "arguments": [
             {
-              "isPointee": true,
-              "referenceKind": "pointee-element-min",
-              "scope": "local",
-              "targetMemoryId": "smallPtr",
-              "type": "identifier",
-              "value": "min(*smallPtr)",
+              "isInteger": true,
+              "type": "literal",
+              "value": -128,
             },
           ],
           "instruction": "push",

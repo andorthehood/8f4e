@@ -1,9 +1,192 @@
-import type { CompilationContext } from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
+import { ArgumentType, type ValidatedModuleAST } from '@8f4e/compiler-spec';
+import type { MemoryLayoutPlan, PlannedMemoryDeclaration } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
-import { resolveMemoryExpressionOperand, tryResolveValueArgument } from './index';
+import type { MemoryReferenceResolutionContext } from './index';
+import { inlineMemoryReferences, resolveMemoryExpressionOperand, tryResolveValueArgument } from './index';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
+
+describe('inlineMemoryReferences', () => {
+	it('inlines memory references across a project AST using the memory plan', () => {
+		const moduleLine = {
+			lineNumber: 1,
+			instruction: 'module',
+			arguments: [classifyIdentifier('main')],
+		};
+		const pushLine = {
+			lineNumber: 2,
+			instruction: 'push',
+			arguments: [parseArgument('&buffer+4')],
+		};
+		const ast = {
+			type: 'module',
+			id: 'main',
+			lines: [moduleLine, pushLine],
+			moduleLine,
+			memoryDeclarationLines: [],
+		} as unknown as ValidatedModuleAST;
+		const buffer = {
+			id: 'buffer',
+			lineNumber: 3,
+			type: 'int[]',
+			numberOfElements: 4,
+			elementWordSize: 4,
+			wordAlignedAddress: 4,
+			wordAlignedSize: 4,
+			byteAddress: 16,
+			memoryIndex: 0,
+			isInteger: true,
+			pointerDepth: 0,
+			isUnsigned: false,
+		} satisfies PlannedMemoryDeclaration;
+		const memoryPlan = {
+			modules: {
+				main: {
+					id: 'main',
+					lineNumber: 1,
+					byteAddress: 16,
+					wordAlignedSize: 4,
+					memoryIndex: 0,
+					memory: { buffer },
+					declarations: [buffer],
+				},
+			},
+			moduleList: [
+				{
+					id: 'main',
+					lineNumber: 1,
+					byteAddress: 16,
+					wordAlignedSize: 4,
+					memoryIndex: 0,
+					memory: { buffer },
+					declarations: [buffer],
+				},
+			],
+			nextByteAddressByMemoryIndex: { 0: 32 },
+		} satisfies MemoryLayoutPlan;
+
+		const result = inlineMemoryReferences({
+			ast: [ast],
+			memoryPlan,
+		});
+
+		expect(result.ast[0]).not.toBe(ast);
+		expect(result.ast[0].lines[1].arguments[0]).toEqual({
+			type: ArgumentType.LITERAL,
+			value: 20,
+			isInteger: true,
+			address: {
+				memoryIndex: 0,
+				safeRange: {
+					source: 'memory-start',
+					memoryIndex: 0,
+					byteAddress: 20,
+					safeByteLength: 12,
+					moduleId: 'main',
+					memoryId: 'buffer',
+				},
+			},
+		});
+		expect(ast.lines[1]).toBe(pushLine);
+	});
+
+	it('uses pointer declaration address defaults for later pointee count queries', () => {
+		const moduleLine = {
+			lineNumber: 1,
+			instruction: 'module',
+			arguments: [classifyIdentifier('main')],
+		};
+		const samplesLine = {
+			lineNumber: 2,
+			instruction: 'float[]',
+			arguments: [classifyIdentifier('samples'), { type: ArgumentType.LITERAL, value: 4, isInteger: true }],
+			hasExplicitMemoryDefault: false,
+		};
+		const pointerLine = {
+			lineNumber: 3,
+			instruction: 'float*',
+			arguments: [classifyIdentifier('ptr'), classifyIdentifier('&samples')],
+			hasExplicitMemoryDefault: true,
+		};
+		const pushLine = {
+			lineNumber: 4,
+			instruction: 'push',
+			arguments: [classifyIdentifier('count(*ptr)')],
+		};
+		const ast = {
+			type: 'module',
+			id: 'main',
+			lines: [moduleLine, samplesLine, pointerLine, pushLine],
+			moduleLine,
+			memoryDeclarationLines: [samplesLine, pointerLine],
+		} as unknown as ValidatedModuleAST;
+		const samples = {
+			id: 'samples',
+			lineNumber: 2,
+			type: 'float',
+			numberOfElements: 4,
+			elementWordSize: 4,
+			wordAlignedAddress: 4,
+			wordAlignedSize: 4,
+			byteAddress: 16,
+			memoryIndex: 0,
+			isInteger: false,
+			pointerDepth: 0,
+			isUnsigned: false,
+		} satisfies PlannedMemoryDeclaration;
+		const ptr = {
+			id: 'ptr',
+			lineNumber: 3,
+			type: 'float*',
+			numberOfElements: 1,
+			elementWordSize: 4,
+			wordAlignedAddress: 8,
+			wordAlignedSize: 1,
+			byteAddress: 32,
+			memoryIndex: 0,
+			isInteger: true,
+			pointeeBaseType: 'float',
+			pointerDepth: 1,
+			isUnsigned: false,
+		} satisfies PlannedMemoryDeclaration;
+		const memoryPlan = {
+			modules: {
+				main: {
+					id: 'main',
+					lineNumber: 1,
+					byteAddress: 16,
+					wordAlignedSize: 5,
+					memoryIndex: 0,
+					memory: { samples, ptr },
+					declarations: [samples, ptr],
+				},
+			},
+			moduleList: [
+				{
+					id: 'main',
+					lineNumber: 1,
+					byteAddress: 16,
+					wordAlignedSize: 5,
+					memoryIndex: 0,
+					memory: { samples, ptr },
+					declarations: [samples, ptr],
+				},
+			],
+			nextByteAddressByMemoryIndex: { 0: 36 },
+		} satisfies MemoryLayoutPlan;
+
+		const result = inlineMemoryReferences({
+			ast: [ast],
+			memoryPlan,
+		});
+
+		expect(result.ast[0].lines[3].arguments[0]).toEqual({
+			type: ArgumentType.LITERAL,
+			value: 4,
+			isInteger: true,
+		});
+	});
+});
 
 describe('tryResolveValueArgument', () => {
 	const mockContext = {
@@ -36,7 +219,7 @@ describe('tryResolveValueArgument', () => {
 		startingByteAddress: 24,
 		currentModuleWordAlignedSize: 5,
 		locals: {},
-	} as unknown as CompilationContext;
+	} as unknown as MemoryReferenceResolutionContext;
 
 	it('resolves memory expression operands without resolving constant identifiers', () => {
 		expect(resolveMemoryExpressionOperand(parseCompileTimeOperand('sizeof(samples)'), mockContext)).toEqual({
@@ -131,7 +314,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(intermodularNamespace, parseArgument('2*sizeof(source:buffer)'))).toEqual({
 			value: 4,
@@ -151,7 +334,7 @@ describe('tryResolveValueArgument', () => {
 					index: 0,
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(localPointerContext, parseArgument('max(*floatPtrPtr)'))).toEqual({
 			value: 2147483647,
@@ -176,7 +359,7 @@ describe('tryResolveValueArgument', () => {
 					index: 0,
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(localPointerContext, parseArgument('count(*localFloatPtr)'))).toEqual({
 			value: 7,
@@ -208,7 +391,7 @@ describe('tryResolveValueArgument', () => {
 					index: 0,
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(localPointerContext, parseArgument('count(*localFloatPtr)'))).toBeUndefined();
 		expect(tryResolveValueArgument(localPointerContext, parseArgument('sizeof(*localFloatPtr)'))).toEqual({
@@ -243,7 +426,7 @@ describe('tryResolveValueArgument', () => {
 					index: 2,
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(localPointerContext, parseArgument('sizeof(*int8Ptr)'))).toEqual({
 			value: 1,
@@ -318,7 +501,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
 			value: 8,
@@ -359,7 +542,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		// End address = byteAddress + (wordAlignedSize - 1) * 4 = 8 + 3 * 4 = 20
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
@@ -392,7 +575,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
 			value: 12,
@@ -424,7 +607,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		// End address = 12 + (3 - 1) * 4 = 12 + 8 = 20
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
@@ -462,7 +645,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(unlaidOutNamespace, classifyIdentifier('&source:buffer'))).toBeUndefined();
 		expect(tryResolveValueArgument(unlaidOutNamespace, classifyIdentifier('&source:'))).toBeUndefined();
@@ -482,7 +665,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:99'))).toBeUndefined();
 		expect(tryResolveValueArgument(mockContext, classifyIdentifier('&source:99'))).toBeUndefined();
@@ -521,7 +704,7 @@ describe('tryResolveValueArgument', () => {
 		const contextWithoutModuleSize = {
 			...mockContext,
 			currentModuleWordAlignedSize: undefined,
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(contextWithoutModuleSize, classifyIdentifier('this&'))).toBeUndefined();
 	});
@@ -543,7 +726,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(addressContext, parseArgument('&arr+4'))).toEqual({
 			value: 20,
@@ -578,7 +761,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(addressContext, parseArgument('4+&arr'))).toEqual({
 			value: 20,
@@ -612,7 +795,7 @@ describe('tryResolveValueArgument', () => {
 					},
 				},
 			},
-		} as unknown as CompilationContext;
+		} as unknown as MemoryReferenceResolutionContext;
 
 		expect(tryResolveValueArgument(addressContext, parseArgument('&arr+1024'))).toEqual({
 			value: 1040,
