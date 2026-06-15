@@ -593,8 +593,8 @@
                 "scope": "local"
               },
               {
-                "value": 10.056234,
                 "type": "literal",
+                "value": 10.056234,
                 "isInteger": false
               }
             ]
@@ -610,8 +610,8 @@
                 "scope": "local"
               },
               {
-                "value": -42.53689,
                 "type": "literal",
+                "value": -42.53689,
                 "isInteger": false
               }
             ]
@@ -627,8 +627,8 @@
                 "scope": "local"
               },
               {
-                "value": -3.92453,
                 "type": "literal",
+                "value": -3.92453,
                 "isInteger": false
               }
             ]
@@ -666,10 +666,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "W1",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 10.056234,
+                "isInteger": false
               }
             ]
           },
@@ -697,10 +696,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "W2",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": -42.53689,
+                "isInteger": false
               }
             ]
           },
@@ -719,10 +717,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "BIAS",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": -3.92453,
+                "isInteger": false
               }
             ]
           },
@@ -1023,8 +1020,8 @@
                 "scope": "local"
               },
               {
-                "value": -70.313797,
                 "type": "literal",
+                "value": -70.313797,
                 "isInteger": false
               }
             ]
@@ -1040,8 +1037,8 @@
                 "scope": "local"
               },
               {
-                "value": 24.76387,
                 "type": "literal",
+                "value": 24.76387,
                 "isInteger": false
               }
             ]
@@ -1057,8 +1054,8 @@
                 "scope": "local"
               },
               {
-                "value": -8.765101,
                 "type": "literal",
+                "value": -8.765101,
                 "isInteger": false
               }
             ]
@@ -1096,10 +1093,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "W1",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": -70.313797,
+                "isInteger": false
               }
             ]
           },
@@ -1127,10 +1123,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "W2",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 24.76387,
+                "isInteger": false
               }
             ]
           },
@@ -1149,10 +1144,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "BIAS",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": -8.765101,
+                "isInteger": false
               }
             ]
           },
@@ -1908,8 +1902,8 @@
                 "scope": "local"
               },
               {
-                "value": 6.94625,
                 "type": "literal",
+                "value": 6.94625,
                 "isInteger": false
               }
             ]
@@ -1925,8 +1919,8 @@
                 "scope": "local"
               },
               {
-                "value": 6.64608,
                 "type": "literal",
+                "value": 6.64608,
                 "isInteger": false
               }
             ]
@@ -1942,8 +1936,8 @@
                 "scope": "local"
               },
               {
-                "value": 6.05782,
                 "type": "literal",
+                "value": 6.05782,
                 "isInteger": false
               }
             ]
@@ -1981,10 +1975,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "W1",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 6.94625,
+                "isInteger": false
               }
             ]
           },
@@ -2012,10 +2005,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "W2",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 6.64608,
+                "isInteger": false
               }
             ]
           },
@@ -2034,10 +2026,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "BIAS",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 6.05782,
+                "isInteger": false
               }
             ]
           },

@@ -257,9 +257,6 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "referencedNamespaceIds": [
-              "env"
             ]
           },
           {
@@ -337,9 +334,6 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "referencedNamespaceIds": [
-              "math"
             ]
           },
           {
@@ -373,10 +367,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "TAU",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 6.283185307179586,
+                "isInteger": false
               }
             ]
           },
@@ -404,10 +397,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "SAMPLE_RATE",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 48000,
+                "isInteger": true
               }
             ]
           },
@@ -453,10 +445,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "PI",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 3.141592653589793,
+                "isInteger": false
               }
             ]
           },
@@ -494,10 +485,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "NEG_PI",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": -3.141592653589793,
+                "isInteger": false
               }
             ]
           },
@@ -826,9 +816,6 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "referencedNamespaceIds": [
-              "env"
             ]
           },
           {
@@ -867,10 +854,9 @@
                 "scope": "local"
               },
               {
-                "type": "identifier",
-                "value": "AUDIO_BUFFER_SIZE",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 128,
+                "isInteger": true
               }
             ],
             "hasExplicitMemoryDefault": false
@@ -1114,10 +1100,9 @@
                 "scope": "local"
               },
               {
-                "type": "identifier",
-                "value": "AUDIO_BUFFER_SIZE",
-                "referenceKind": "constant",
-                "scope": "local"
+                "type": "literal",
+                "value": 128,
+                "isInteger": true
               }
             ],
             "hasExplicitMemoryDefault": false

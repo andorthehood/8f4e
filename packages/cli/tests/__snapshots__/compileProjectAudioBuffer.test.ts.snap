@@ -281,9 +281,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             ],
             "instruction": "use",
             "lineNumber": 3,
-            "referencedNamespaceIds": [
-              "env",
-            ],
           },
           {
             "arguments": [
@@ -319,10 +316,9 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "buffer",
               },
               {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "AUDIO_BUFFER_SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 128,
               },
             ],
             "hasExplicitMemoryDefault": false,
@@ -554,10 +550,9 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "buffer",
               },
               {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "AUDIO_BUFFER_SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 128,
               },
             ],
             "hasExplicitMemoryDefault": false,
@@ -837,9 +832,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             ],
             "instruction": "use",
             "lineNumber": 2,
-            "referencedNamespaceIds": [
-              "env",
-            ],
           },
           {
             "arguments": [
@@ -917,9 +909,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             ],
             "instruction": "use",
             "lineNumber": 9,
-            "referencedNamespaceIds": [
-              "math",
-            ],
           },
           {
             "arguments": [
@@ -950,10 +939,9 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "TAU",
+                "isInteger": false,
+                "type": "literal",
+                "value": 6.283185307179586,
               },
             ],
             "instruction": "push",
@@ -981,10 +969,9 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SAMPLE_RATE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 48000,
               },
             ],
             "instruction": "push",
@@ -1030,10 +1017,9 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "PI",
+                "isInteger": false,
+                "type": "literal",
+                "value": 3.141592653589793,
               },
             ],
             "instruction": "push",
@@ -1071,10 +1057,9 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "NEG_PI",
+                "isInteger": false,
+                "type": "literal",
+                "value": -3.141592653589793,
               },
             ],
             "instruction": "push",
