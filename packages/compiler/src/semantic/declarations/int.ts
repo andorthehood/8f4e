@@ -6,9 +6,7 @@ import createDeclarationCompiler from './createDeclarationCompiler';
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
 const int: MemoryDeclarationCompiler = createDeclarationCompiler({
-	baseType: 'int',
 	truncate: true,
-	nonPointerElementWordSize: 4,
 });
 
 export default int;

@@ -1,5 +1,4 @@
 import {
-	ArgumentType,
 	type CompilationContext,
 	type CompileOptions,
 	type CompilerASTLine,
@@ -23,18 +22,12 @@ import {
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
+import { planMemoryLayout } from '@8f4e/memory-planner';
 import { getError } from '../compilerError';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
 import applySemanticInstruction from './instructions';
-import {
-	DEFAULT_MEMORY_INDEX,
-	getDefaultMemoryRegion,
-	getMemoryRegionFields,
-	resolveMemoryRegionByIndex,
-	resolveMemoryRegionName,
-	validateMemoryRegionOptions,
-} from './memoryRegions';
+import { getDefaultMemoryRegion, getMemoryRegionFields, validateMemoryRegionOptions } from './memoryRegions';
 import normalizeValueArguments from './normalizeValueArguments';
 import { getEffectiveFunctionMetadata } from './paramShape';
 import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
@@ -307,19 +300,6 @@ export function layoutNamespace(
 	return context;
 }
 
-function getModuleRegionFromAst(ast: ValidatedModuleAST, options: Pick<CompileOptions, 'memoryRegions'>) {
-	if (!ast.regionLine) {
-		return getDefaultMemoryRegion();
-	}
-
-	const [argument] = ast.regionLine.arguments;
-	if (argument.type === ArgumentType.LITERAL) {
-		return resolveMemoryRegionByIndex(argument.value, options.memoryRegions ?? [], ast.regionLine);
-	}
-
-	return resolveMemoryRegionName(argument.value, options.memoryRegions ?? [], ast.regionLine);
-}
-
 function shouldDeferNamespaceCollection(
 	error: unknown,
 	line: CompilerASTLine | undefined,
@@ -390,12 +370,6 @@ export function collectNamespacesFromASTs(
 				if (!context.namespace.moduleName) {
 					continue;
 				}
-				const existingNamespace = namespaces[context.namespace.moduleName];
-				if (ast.type === moduleBlock.type && existingNamespace?.kind === moduleBlock.type) {
-					throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.lines[0], context, {
-						identifier: context.namespace.moduleName,
-					});
-				}
 				namespaces[context.namespace.moduleName] = {
 					kind: ast.type,
 					memory: context.namespace.memory,
@@ -420,35 +394,42 @@ export function collectNamespacesFromASTs(
 		layoutNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options, prototypeShapes);
 	}
 
-	const nextStartingByteAddressByMemoryIndex: Record<number, number> = {
-		[DEFAULT_MEMORY_INDEX]: startingByteAddress,
-	};
-	for (const ast of layoutAsts) {
-		const region = getModuleRegionFromAst(ast, options);
-		const nextStartingByteAddress = nextStartingByteAddressByMemoryIndex[region.memoryIndex] ?? startingByteAddress;
-		const context = layoutNamespace(
-			ast,
-			namespaces,
-			nextStartingByteAddress,
-			compiledFunctions,
-			options,
-			prototypeShapes
-		);
-		if (!context.namespace.moduleName) {
-			continue;
-		}
+	planMemoryLayout({
+		asts: layoutAsts,
+		startingByteAddress,
+		memoryRegions: options.memoryRegions ?? [],
+		planModule: (ast, nextStartingByteAddress, region) => {
+			const context = layoutNamespace(
+				ast,
+				namespaces,
+				nextStartingByteAddress,
+				compiledFunctions,
+				options,
+				prototypeShapes
+			);
+			if (!context.namespace.moduleName) {
+				return {
+					wordAlignedSize: 0,
+					memory: {},
+				};
+			}
 
-		namespaces[context.namespace.moduleName] = {
-			kind: moduleBlock.type,
-			memory: context.namespace.memory,
-			...getMemoryRegionFields(region.memoryIndex, region.memoryRegionName),
-			byteAddress: nextStartingByteAddress,
-			wordAlignedSize: context.currentModuleWordAlignedSize,
-		};
+			namespaces[context.namespace.moduleName] = {
+				kind: moduleBlock.type,
+				memory: context.namespace.memory,
+				...getMemoryRegionFields(region.memoryIndex, region.memoryRegionName),
+				byteAddress: nextStartingByteAddress,
+				wordAlignedSize: context.currentModuleWordAlignedSize,
+			};
 
-		nextStartingByteAddressByMemoryIndex[region.memoryIndex] =
-			nextStartingByteAddress + context.currentModuleWordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
-	}
+			return {
+				id: context.namespace.moduleName,
+				lineNumber: ast.moduleLine.lineNumber,
+				wordAlignedSize: context.currentModuleWordAlignedSize,
+				memory: context.namespace.memory,
+			};
+		},
+	});
 
 	return namespaces;
 }
