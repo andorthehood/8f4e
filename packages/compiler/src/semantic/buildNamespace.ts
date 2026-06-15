@@ -413,36 +413,14 @@ function createLayoutOnlyMemoryMap(memory: Record<string, PlannedMemoryDeclarati
 	return layoutMemory;
 }
 
-function refreshLayoutSourceContextMemory(
-	context: NamespaceBuildContext,
-	sourceModule: MemoryLayoutSourceModule,
-	startingByteAddress: number,
-	memoryRegions: readonly string[]
-): void {
-	const [plannedModule] = planMemoryLayout({
-		modules: [sourceModule],
-		startingByteAddress,
-		memoryRegions,
-	}).moduleList;
-
-	context.namespace.memory = createLayoutOnlyMemoryMap(plannedModule.memory);
-	context.currentModuleWordAlignedSize = plannedModule.wordAlignedSize;
-	context.currentModuleNextWordOffset = plannedModule.wordAlignedSize;
-	context.memoryLayoutDeclarations = plannedModule.declarations;
-	context.currentMemoryLayoutDeclarationIndex = plannedModule.declarations.length;
-}
-
 function appendLayoutMemoryDeclarationLine(
 	sourceModule: MemoryLayoutSourceModule,
 	context: NamespaceBuildContext,
-	line: MemoryDeclarationLine,
-	startingByteAddress: number,
-	memoryRegions: readonly string[]
+	line: MemoryDeclarationLine
 ): void {
 	const normalizedLine = normalizeLayoutMemoryDeclarationLine(line, context);
 
 	sourceModule.memoryDeclarationLines = [...sourceModule.memoryDeclarationLines, normalizedLine];
-	refreshLayoutSourceContextMemory(context, sourceModule, startingByteAddress, memoryRegions);
 }
 
 function collectModuleMemoryDeclarationLines(
@@ -467,11 +445,10 @@ function collectModuleMemoryDeclarationLines(
 		options,
 		prototypeShapes
 	);
-	const memoryRegions = options.memoryRegions ?? [];
 
 	for (const line of ast.lines) {
 		if (isMemoryDeclarationLine(line)) {
-			appendLayoutMemoryDeclarationLine(sourceModule, context, line, startingByteAddress, memoryRegions);
+			appendLayoutMemoryDeclarationLine(sourceModule, context, line);
 			continue;
 		}
 
@@ -491,16 +468,10 @@ function collectModuleMemoryDeclarationLines(
 		}
 
 		for (const declarationLine of prototype.memoryDeclarationLines) {
-			appendLayoutMemoryDeclarationLine(
-				sourceModule,
-				context,
-				{
-					...declarationLine,
-					lineNumber: line.lineNumber,
-				},
-				startingByteAddress,
-				memoryRegions
-			);
+			appendLayoutMemoryDeclarationLine(sourceModule, context, {
+				...declarationLine,
+				lineNumber: line.lineNumber,
+			});
 		}
 	}
 
