@@ -1,5 +1,5 @@
 {
-  "code": 5,
+  "code": 69,
   "context": {
     "codeBlockId": "constBeforeUseImport",
     "codeBlockType": "module",
@@ -23,5 +23,5 @@
     "instruction": "const",
     "lineNumber": 3,
   },
-  "message": "Undeclared identifier: FOO. (5)",
+  "message": "Unable to resolve constant BAR (UNRESOLVED_CONSTANT_VALUE). (69)",
 }

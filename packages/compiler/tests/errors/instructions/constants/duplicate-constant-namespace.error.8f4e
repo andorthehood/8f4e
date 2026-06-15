@@ -1,0 +1,11 @@
+8f4e/v1
+
+constants duplicateNamespace
+const VALUE 77
+constantsEnd
+
+entry main
+module duplicateNamespace
+int result 1
+moduleEnd
+entryEnd

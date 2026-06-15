@@ -11,13 +11,16 @@ The intended pipeline is:
 1. Source code
 2. Parsed AST
    - contains literals, identifiers, references, and compile-time expression forms
-3. Semantic namespace pass
-   - collects constants, memory declarations, `use` imports, and intermodule metadata availability
-4. AST normalization / compile-time folding pass
+3. Constant namespace pass
+   - resolves constants from literals, already-resolved constants, and constant-only expressions
+   - does not consult memory declarations, memory metadata, or memory addresses
+4. Semantic memory namespace pass
+   - collects memory declarations, `use` imports, and intermodule metadata availability
+5. AST normalization / compile-time folding pass
    - rewrites compile-time-resolvable arguments to plain literals
-5. Compilation / codegen
+6. Compilation / codegen
    - instruction compilers mostly see literals or true runtime identifiers
-6. Late intermodule fixups only for forms that genuinely cannot be resolved earlier
+7. Late intermodule fixups only for forms that genuinely cannot be resolved earlier
 
 In short:
 
@@ -31,6 +34,8 @@ In short:
 Compile-time expressions should have one owner.
 
 If a value can be resolved during semantic normalization, downstream instruction compilers and helper paths should not re-resolve it again.
+
+Constant expressions have a narrower owner than general compile-time expressions. `const` values should resolve in a constant-only pass; memory metadata queries and address references belong to later memory-aware normalization.
 
 ## Memory Initialization
 

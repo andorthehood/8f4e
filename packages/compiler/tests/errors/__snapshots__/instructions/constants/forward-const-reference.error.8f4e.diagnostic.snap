@@ -1,5 +1,5 @@
 {
-  "code": 5,
+  "code": 69,
   "context": {
     "codeBlockId": "forwardConstReference",
     "codeBlockType": "module",
@@ -23,5 +23,5 @@
     "instruction": "const",
     "lineNumber": 4,
   },
-  "message": "Undeclared identifier: A. (5)",
+  "message": "Unable to resolve constant B (UNRESOLVED_CONSTANT_VALUE). (69)",
 }

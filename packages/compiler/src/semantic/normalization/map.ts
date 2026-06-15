@@ -15,7 +15,7 @@ function createImplicitKeyArgument(context: CompilationContext): NormalizedArgum
 }
 
 /**
- * Normalizes compile-time arguments for the `map` instruction.
+ * Normalizes value arguments for the `map` instruction.
  * Two-argument rows normalize both key and value. One-argument rows use the
  * current zero-based map row count as the implicit key and normalize the lone
  * argument as the value.

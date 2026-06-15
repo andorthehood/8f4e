@@ -46,18 +46,16 @@
               "value": 4,
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "ROOT",
+              "isInteger": true,
+              "type": "literal",
+              "value": 48,
             },
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "ROOT",
+                "isInteger": true,
+                "type": "literal",
+                "value": 48,
               },
               "operator": "+",
               "right": {
@@ -70,10 +68,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "ROOT",
+                "isInteger": true,
+                "type": "literal",
+                "value": 48,
               },
               "operator": "+",
               "right": {

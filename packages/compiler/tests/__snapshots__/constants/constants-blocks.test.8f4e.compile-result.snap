@@ -26,9 +26,6 @@
             },
           ],
           "instruction": "use",
-          "referencedNamespaceIds": [
-            "first",
-          ],
         },
         {
           "arguments": [
@@ -40,9 +37,6 @@
             },
           ],
           "instruction": "use",
-          "referencedNamespaceIds": [
-            "second",
-          ],
         },
         {
           "arguments": [
@@ -53,10 +47,9 @@
               "value": "result",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "VALUE",
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -120,9 +113,6 @@
             },
           ],
           "instruction": "use",
-          "referencedNamespaceIds": [
-            "math",
-          ],
         },
         {
           "arguments": [
@@ -134,9 +124,6 @@
             },
           ],
           "instruction": "use",
-          "referencedNamespaceIds": [
-            "physics",
-          ],
         },
         {
           "arguments": [
@@ -147,10 +134,9 @@
               "value": "pi",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "PI",
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.14159,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -165,10 +151,9 @@
               "value": "tau",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "TAU",
+              "isInteger": false,
+              "type": "literal",
+              "value": 6.28318,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -183,10 +168,9 @@
               "value": "gravity",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "GRAVITY",
+              "isInteger": false,
+              "type": "literal",
+              "value": 9.81,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -304,9 +288,6 @@
             },
           ],
           "instruction": "use",
-          "referencedNamespaceIds": [
-            "derived",
-          ],
         },
         {
           "arguments": [
@@ -318,9 +299,6 @@
             },
           ],
           "instruction": "use",
-          "referencedNamespaceIds": [
-            "env",
-          ],
         },
         {
           "arguments": [
@@ -331,10 +309,9 @@
               "value": "size",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "SIZE",
+              "isInteger": true,
+              "type": "literal",
+              "value": 48,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -349,10 +326,9 @@
               "value": "half",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "HALF",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -443,9 +419,6 @@
             },
           ],
           "instruction": "use",
-          "referencedNamespaceIds": [
-            "moduleConstImportAssertions",
-          ],
         },
         {
           "arguments": [
@@ -456,10 +429,9 @@
               "value": "BAR",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "SECRET",
+              "isInteger": true,
+              "type": "literal",
+              "value": 99,
             },
           ],
           "instruction": "const",
@@ -473,10 +445,9 @@
               "value": "result",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "BAR",
+              "isInteger": true,
+              "type": "literal",
+              "value": 99,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -540,9 +511,6 @@
             },
           ],
           "instruction": "use",
-          "referencedNamespaceIds": [
-            "moduleConstImportAssertions",
-          ],
         },
         {
           "arguments": [
@@ -553,10 +521,9 @@
               "value": "result",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "SECRET",
+              "isInteger": true,
+              "type": "literal",
+              "value": 99,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -672,10 +639,9 @@
               "value": "DOUBLE",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "BASE",
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
             },
           ],
           "instruction": "const",
@@ -689,10 +655,9 @@
               "value": "result",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "DOUBLE",
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -721,71 +686,6 @@
               "isInteger": true,
               "type": "literal",
               "value": 10,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [],
-          "instruction": "moduleEnd",
-        },
-      ],
-      "type": "module",
-    },
-    "sameNameAsModule": {
-      "id": "sameNameAsModule",
-      "lines": [
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "sameNameAsModule",
-            },
-          ],
-          "instruction": "module",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "result",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
-          ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "int",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "result",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
             },
           ],
           "instruction": "call",
@@ -846,10 +746,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MY_CONSTANT",
+              "isInteger": true,
+              "type": "literal",
+              "value": 100,
             },
           ],
           "instruction": "push",
@@ -873,10 +772,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "CONST123",
+              "isInteger": true,
+              "type": "literal",
+              "value": 123,
             },
           ],
           "instruction": "push",
@@ -1068,25 +966,6 @@
         },
       },
     },
-    "sameNameAsModule": {
-      "memoryMap": {
-        "result": {
-          "byteAddress": 40,
-          "default": 1,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "result",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 10,
-          "wordAlignedSize": 1,
-        },
-      },
-    },
     "validConstNameAssertions": {
       "memoryMap": {},
     },
@@ -1101,10 +980,9 @@
       "moduleConstConsumerAssertions",
       "moduleConstImportAssertions",
       "sameModuleDerivedConstAssertions",
-      "sameNameAsModule",
       "validConstNameAssertions",
     ],
-    "requiredMemoryBytes": 44,
+    "requiredMemoryBytes": 40,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",

@@ -547,24 +547,6 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "ITEM_COUNT",
-            },
-            {
-              "referenceKind": "element-count",
-              "scope": "local",
-              "targetMemoryId": "buffer",
-              "type": "identifier",
-              "value": "count(buffer)",
-            },
-          ],
-          "instruction": "const",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
@@ -615,10 +597,11 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
+              "referenceKind": "element-count",
               "scope": "local",
+              "targetMemoryId": "buffer",
               "type": "identifier",
-              "value": "ITEM_COUNT",
+              "value": "count(buffer)",
             },
           ],
           "instruction": "push",
@@ -682,10 +665,11 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
+              "referenceKind": "element-count",
               "scope": "local",
+              "targetMemoryId": "buffer",
               "type": "identifier",
-              "value": "ITEM_COUNT",
+              "value": "count(buffer)",
             },
           ],
           "instruction": "push",
@@ -726,10 +710,11 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
+              "referenceKind": "element-count",
               "scope": "local",
+              "targetMemoryId": "buffer",
               "type": "identifier",
-              "value": "ITEM_COUNT",
+              "value": "count(buffer)",
             },
           ],
           "instruction": "push",
@@ -812,10 +797,11 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
+              "referenceKind": "element-count",
               "scope": "local",
+              "targetMemoryId": "buffer",
               "type": "identifier",
-              "value": "ITEM_COUNT",
+              "value": "count(buffer)",
             },
           ],
           "instruction": "push",

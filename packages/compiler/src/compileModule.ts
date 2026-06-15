@@ -6,7 +6,6 @@ import type {
 	FunctionTypeRegistry,
 	ModuleCompilationContext,
 	Namespaces,
-	ValidatedConstantsAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
@@ -28,11 +27,11 @@ import { getError } from './compilerError';
 import { applySemanticLine, layoutNamespace } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
-import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
+import normalizeValueArguments from './semantic/normalizeValueArguments';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
 /**
- * Compiles one validated module or constants AST into its WebAssembly cycle function and memory metadata.
+ * Compiles one validated module AST into its WebAssembly cycle function and memory metadata.
  *
  * @param ast - Validated AST being processed.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
@@ -45,7 +44,7 @@ import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
  * @returns The compiled module artifact.
  */
 export function compileModule(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	ast: ValidatedModuleAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	index: number,
@@ -55,8 +54,7 @@ export function compileModule(
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule {
 	// Namespace layout establishes memory byte addresses and sizes for this module.
-	// Semantic instructions (const, use, module/moduleEnd) are applied during
-	// the compilation loop below, so consts are not copied from the layout context.
+	// Semantic block instructions are applied during the compilation loop below.
 	const layoutContext = layoutNamespace(ast, namespaces, startingByteAddress, functions, options, prototypeShapes);
 	const namespace = namespaces[ast.id];
 	const memoryIndex = namespace?.memoryIndex ?? layoutContext.currentMemoryIndex;
@@ -65,7 +63,6 @@ export function compileModule(
 		namespace: {
 			namespaces,
 			memory: layoutContext.namespace.memory,
-			consts: {},
 			moduleName: undefined,
 			functions,
 			prototypeShapeIds: [...layoutContext.namespace.prototypeShapeIds],
@@ -89,7 +86,7 @@ export function compileModule(
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
 	for (const originalLine of ast.lines) {
-		const line = normalizeCompileTimeArguments(originalLine, context);
+		const line = normalizeValueArguments(originalLine, context);
 		if (isSemanticInstructionLine(line)) {
 			applySemanticLine(line, context);
 		} else if (!isMemoryDeclarationLine(line)) {
