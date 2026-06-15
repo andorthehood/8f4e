@@ -8,8 +8,13 @@ import type {
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
 import { compileModule } from './compileModule';
-import { assertUniqueModuleIds, collectNamespacesFromASTs } from './semantic/buildNamespace';
+import {
+	assertUniqueModuleIds,
+	collectNamespacesFromASTs,
+	createMemoryLayoutPlanFromASTs,
+} from './semantic/buildNamespace';
 
 /**
  * Compiles validated module ASTs using a shared namespace and function type registry.
@@ -31,19 +36,40 @@ export function compileModules(
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule[] {
 	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
+	let compiledModules = modules;
+	let ns = namespaces;
+
 	if (!namespaces) {
 		assertUniqueModuleIds(modules);
+		const memoryPlan = createMemoryLayoutPlanFromASTs(
+			modules,
+			startingByteAddress,
+			compiledFunctions,
+			modules,
+			options,
+			prototypeShapes
+		);
+		compiledModules = inlineMemoryReferences({
+			ast: modules,
+			memoryPlan,
+		}).ast;
+		ns = collectNamespacesFromASTs(
+			compiledModules,
+			startingByteAddress,
+			compiledFunctions,
+			compiledModules,
+			options,
+			prototypeShapes,
+			memoryPlan
+		);
 	}
-	const ns: Namespaces =
-		namespaces ??
-		collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options, prototypeShapes);
 
-	return modules.map((ast, index) => {
+	return compiledModules.map((ast, index) => {
 		const moduleStartingByteAddress =
-			ns[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
+			ns?.[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
 		const module = compileModule(
 			ast,
-			ns,
+			ns ?? {},
 			moduleStartingByteAddress,
 			index,
 			compiledFunctions,
