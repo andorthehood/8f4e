@@ -17,10 +17,10 @@ import { getEndByteAddress } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
 import {
 	getWordAlignedByteLength,
-	memoryEndAddressConst,
-	memoryStartAddressConst,
-	moduleAddressConst,
-} from './addressConsts';
+	memoryEndAddressValue,
+	memoryStartAddressValue,
+	moduleAddressValue,
+} from './addressValues';
 
 function hasKnownPointeeElementCount(
 	pointerMetadata: { pointeeBaseType?: unknown; pointeeElementCount?: number } | undefined
@@ -29,28 +29,21 @@ function hasKnownPointeeElementCount(
 }
 
 /**
- * Tries to resolve a single pre-classified compile-time operand to a `Const` value.
+ * Tries to resolve a single pre-classified memory/layout expression operand to a value.
  * Dispatches on the operand's AST classification (`type` and `referenceKind`) directly,
  * without re-parsing raw token values.
  *
- * @param operand - Parsed compile-time operand to resolve.
+ * @param operand - Parsed operand to resolve.
  * @param context - Current semantic compilation context.
- * @returns Resolved constant, or `undefined` when the operand is not available yet.
+ * @returns Resolved memory/layout value, or `undefined` when the operand is not a memory expression.
  */
-export function resolveCompileTimeOperand(operand: CompileTimeOperand, context: CompilationContext): Const | undefined {
+export function resolveMemoryExpressionOperand(
+	operand: CompileTimeOperand,
+	context: CompilationContext
+): Const | undefined {
 	const { namespace } = context;
 	if (operand.type === ArgumentType.LITERAL) {
-		return {
-			value: operand.value,
-			isInteger: operand.isInteger,
-			...(operand.isFloat64 ? { isFloat64: true } : {}),
-		};
-	}
-
-	// Dispatch on referenceKind as the primary axis.
-	// Constant and plain identifiers are the only kinds that can appear in the const map.
-	if (operand.referenceKind === 'constant' || operand.referenceKind === 'plain') {
-		return namespace.consts[operand.value];
+		return undefined;
 	}
 
 	const { memory } = namespace;
@@ -240,7 +233,7 @@ export function resolveCompileTimeOperand(operand: CompileTimeOperand, context: 
 			const value = operand.isEndAddress
 				? getEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
 				: targetNamespace.byteAddress;
-			return moduleAddressConst(
+			return moduleAddressValue(
 				operand.isEndAddress ? 'module-end' : 'module-start',
 				value,
 				targetNamespace.wordAlignedSize,
@@ -277,7 +270,7 @@ export function resolveCompileTimeOperand(operand: CompileTimeOperand, context: 
 			const memoryRegionFields = getMemoryRegionFields(item.memoryIndex, item.memoryRegionName);
 			const resolvedModuleId = targetModuleId === 'this' ? context.namespace.moduleName : targetModuleId;
 			return {
-				...memoryStartAddressConst(item, resolvedModuleId),
+				...memoryStartAddressValue(item, resolvedModuleId),
 				address: {
 					...memoryRegionFields,
 					safeRange: {
@@ -306,8 +299,8 @@ export function resolveCompileTimeOperand(operand: CompileTimeOperand, context: 
 		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId];
 		if (targetMemory) {
 			return operand.isEndAddress
-				? memoryEndAddressConst(targetMemory, targetModuleId)
-				: memoryStartAddressConst(targetMemory, targetModuleId);
+				? memoryEndAddressValue(targetMemory, targetModuleId)
+				: memoryStartAddressValue(targetMemory, targetModuleId);
 		}
 		return undefined;
 	}
@@ -318,7 +311,7 @@ export function resolveCompileTimeOperand(operand: CompileTimeOperand, context: 
 		const base = operand.targetMemoryId;
 		if (base === 'this') {
 			if (!operand.isEndAddress) {
-				return moduleAddressConst(
+				return moduleAddressValue(
 					'module-start',
 					context.startingByteAddress,
 					context.currentModuleWordAlignedSize,
@@ -330,7 +323,7 @@ export function resolveCompileTimeOperand(operand: CompileTimeOperand, context: 
 			if (typeof context.currentModuleWordAlignedSize === 'number') {
 				const byteAddress = getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
 				return {
-					...moduleAddressConst(
+					...moduleAddressValue(
 						'module-end',
 						byteAddress,
 						context.currentModuleWordAlignedSize,
@@ -343,7 +336,7 @@ export function resolveCompileTimeOperand(operand: CompileTimeOperand, context: 
 			return undefined;
 		}
 		if (Object.hasOwn(memory, base)) {
-			return operand.isEndAddress ? memoryEndAddressConst(memory[base]) : memoryStartAddressConst(memory[base]);
+			return operand.isEndAddress ? memoryEndAddressValue(memory[base]) : memoryStartAddressValue(memory[base]);
 		}
 		return undefined;
 	}

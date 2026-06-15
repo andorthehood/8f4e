@@ -11,24 +11,23 @@ module wrapPointerIntAssertions
 ; circular buffer.
 int[] buffer 4 7
 int pointer &buffer
-const ITEM_COUNT count(buffer)
 
 push pointer
 push sizeof(buffer)*2
 add
 push &buffer
-push ITEM_COUNT
+push count(buffer)
 call wrapPointer
 push &buffer+8
 call assert
 
 push pointer
-push ITEM_COUNT
+push count(buffer)
 push sizeof(buffer)
 mul
 add
 push &buffer
-push ITEM_COUNT
+push count(buffer)
 call wrapPointer
 push &buffer
 call assert
@@ -37,7 +36,7 @@ push pointer
 push sizeof(buffer)
 sub
 push &buffer
-push ITEM_COUNT
+push count(buffer)
 call wrapPointer
 push buffer&
 call assert

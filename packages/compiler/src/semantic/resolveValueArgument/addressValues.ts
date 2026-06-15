@@ -24,13 +24,13 @@ export function getEndAddressSafeByteLength(wordAlignedSize: number): number {
 }
 
 /**
- * Creates a constant representing the start byte address of a memory item.
+ * Creates a resolved value representing the start byte address of a memory item.
  *
  * @param memoryItem - Memory item whose start address should be represented.
  * @param moduleId - Optional owning module id for intermodule safe-range metadata.
- * @returns Integer constant with address safe-range metadata.
+ * @returns Integer value with address safe-range metadata.
  */
-export function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
+export function memoryStartAddressValue(memoryItem: DataStructure, moduleId?: string): Const {
 	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
 		value: memoryItem.byteAddress,
@@ -50,13 +50,13 @@ export function memoryStartAddressConst(memoryItem: DataStructure, moduleId?: st
 }
 
 /**
- * Creates a constant representing the end byte address of a memory item.
+ * Creates a resolved value representing the end byte address of a memory item.
  *
  * @param memoryItem - Memory item whose end address should be represented.
  * @param moduleId - Optional owning module id for intermodule safe-range metadata.
- * @returns Integer constant with address safe-range metadata.
+ * @returns Integer value with address safe-range metadata.
  */
-export function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: string): Const {
+export function memoryEndAddressValue(memoryItem: DataStructure, moduleId?: string): Const {
 	const byteAddress = getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
 	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
@@ -77,7 +77,7 @@ export function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: stri
 }
 
 /**
- * Creates a constant representing a module start or end byte address.
+ * Creates a resolved value representing a module start or end byte address.
  *
  * @param source - Address source kind to record in safe-range metadata.
  * @param byteAddress - Resolved module byte address.
@@ -85,9 +85,9 @@ export function memoryEndAddressConst(memoryItem: DataStructure, moduleId?: stri
  * @param moduleId - Optional module id for safe-range metadata.
  * @param memoryIndex - Memory region index for the address.
  * @param memoryRegionName - Optional named memory region.
- * @returns Integer constant with module address safe-range metadata.
+ * @returns Integer value with module address safe-range metadata.
  */
-export function moduleAddressConst(
+export function moduleAddressValue(
 	source: 'module-start' | 'module-end',
 	byteAddress: number,
 	wordAlignedSize: number,

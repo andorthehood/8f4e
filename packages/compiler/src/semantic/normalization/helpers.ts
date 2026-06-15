@@ -9,7 +9,7 @@ import {
 	type ReferenceKind,
 } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
-import { tryResolveCompileTimeArgument } from '../resolveCompileTimeArgument';
+import { tryResolveValueArgument } from '../resolveValueArgument';
 
 /**
  * Returns whether namespace discovery has populated any module or constants namespaces.
@@ -47,7 +47,7 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
  * Validates that intermodule address references, including metadata-query forms,
  * target existing modules and memory once namespace collection is complete.
  * It does not evaluate the query value itself during namespace discovery; numeric resolution
- * of sizeof/count/max/min forms is handled by tryResolveCompileTimeArgument.
+ * of sizeof/count/max/min forms is handled by tryResolveValueArgument.
  *
  * @param identifier - identifier value to use.
  * @param line - AST line being processed.
@@ -109,6 +109,7 @@ export function validateIntermoduleAddressReference(
 
 /**
  * Attempts to fold one argument to a normalized literal, leaving unresolved arguments unchanged.
+ * This handles memory/layout expressions after constants have already been inlined.
  *
  * @param argument - Argument whose resolved value or metadata should be used.
  * @param context - Compilation context used by the operation.
@@ -118,13 +119,13 @@ export function normalizeArgument(
 	argument: Argument,
 	context: CompilationContext
 ): Argument | NormalizedArgumentLiteral {
-	// tryResolveCompileTimeArgument returns undefined for non-IDENTIFIER and non-COMPILE_TIME_EXPRESSION
+	// tryResolveValueArgument returns undefined for non-IDENTIFIER and non-COMPILE_TIME_EXPRESSION
 	// types, so we short-circuit here to avoid unnecessary work.
 	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
 		return argument;
 	}
 
-	const resolved = tryResolveCompileTimeArgument(context, argument);
+	const resolved = tryResolveValueArgument(context, argument);
 
 	if (!resolved) {
 		return argument;
@@ -142,7 +143,7 @@ export function normalizeArgument(
 }
 
 /**
- * Validates an unresolved compile-time expression argument, deferring namespace references during discovery.
+ * Validates an unresolved value expression argument, deferring namespace references during discovery.
  * Throws UNDECLARED_IDENTIFIER if the expression cannot be deferred and cannot be resolved.
  * Returns true if the argument was deferred, false if it should continue processing.
  *
@@ -151,7 +152,7 @@ export function normalizeArgument(
  * @param context - Compilation context used by the operation.
  * @returns Whether the check succeeds.
  */
-export function validateOrDeferCompileTimeExpression(
+export function validateOrDeferValueExpression(
 	argument: Extract<Argument, { type: typeof ArgumentType.COMPILE_TIME_EXPRESSION }>,
 	line: CompilerASTLine,
 	context: CompilationContext
@@ -197,7 +198,7 @@ export function validateOrDeferUnresolvedIdentifier(
  * Validates and normalizes arguments at the given indexes for a line.
  * Returns the (possibly updated) line and whether any argument changed.
  * This helper only performs folding via normalizeArgument; it does not itself
- * throw or defer unresolved compile-time expressions or identifiers. Callers
+ * throw or defer unresolved value expressions or identifiers. Callers
  * are responsible for invoking validateOrDefer* helpers when that behavior
  * is required.
  *
@@ -229,7 +230,7 @@ export function normalizeArgumentsAtIndexes<TLine extends CompilerASTLine>(
 
 /**
  * Normalizes arguments at the given indexes, then validates any remaining unresolved
- * compile-time expressions or identifiers as either deferrable namespace references or errors.
+ * value expressions or identifiers as either deferrable namespace references or errors.
  *
  * @param line - AST line being processed.
  * @param context - Compilation context used by the operation.
@@ -246,7 +247,7 @@ export function normalizeAndValidateResolvableArgs<TLine extends CompilerASTLine
 	for (const index of indexes) {
 		const argument = normalized.arguments[index];
 		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-			const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
+			const deferred = validateOrDeferValueExpression(argument, line, context);
 			if (deferred) {
 				continue;
 			}
