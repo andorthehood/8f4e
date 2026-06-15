@@ -1,8 +1,7 @@
 import type { CompilationContext } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-import { tryResolveValueArgument } from './resolveValueArgument';
-import { resolveMemoryExpressionOperand } from './resolveValueArgument/resolveMemoryExpressionOperand';
+import { resolveMemoryExpressionOperand, tryResolveValueArgument } from './index';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 

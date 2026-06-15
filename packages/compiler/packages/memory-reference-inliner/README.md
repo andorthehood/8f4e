@@ -19,12 +19,10 @@ This pass should not be used to make memory declarations plan-able. Declaration 
 
 ## Inputs
 
-The pass should receive:
+The pass receives:
 
 - AST lines or an AST block whose constants have already been inlined.
-- The collected namespace table containing finalized module memory layouts.
-- The current module identity and current module layout facts when inlining local references.
-- Local bindings only when inlining expressions that explicitly depend on local pointer metadata.
+- A compiler-spec `CompilationContext` containing the collected namespace table, current module layout facts, and local bindings when pointer-local metadata is needed.
 
 ## Output
 
@@ -34,7 +32,7 @@ When an inlined value is an address, the literal should keep the address metadat
 
 The pass should not mutate the caller's AST or namespace tables.
 
-Within memory declaration lines, this pass may inline scalar default values and array initializer values. It must not inline array element-count arguments for planning; those counts are layout input and must already be literal before the memory planner runs.
+Within memory declaration lines, this pass may inline scalar default values and array initializer values. It must not be used to inline array element-count arguments before planning; those counts are layout input and must already be literal before the memory planner runs.
 
 ## References Owned By This Pass
 
@@ -80,7 +78,7 @@ This package must not:
 
 ## Error Ownership
 
-The pass may report unresolved memory references when the requested memory or module does not exist in the provided finalized layout.
+The pass leaves unresolved references unchanged. Callers that require full resolution must validate the returned line and report compiler-compatible semantic errors.
 
 It should not revalidate facts guaranteed by earlier stages, such as token shape, argument count, or whether a declaration id is unique. Those checks belong to the parser, semantic compiler, or memory planner input builder as appropriate.
 
@@ -91,11 +89,8 @@ The package entry point should be an `index.ts` function that returns an explici
 ```ts
 const result = inlineMemoryReferences({
 	lines,
-	namespaces,
-	currentModuleId,
-	currentModuleLayout,
-	locals,
+	context,
 });
 ```
 
-The result should contain the inlined lines. Unresolved memory references should be reported as compiler-compatible semantic errors.
+The package also exports `inlineMemoryReferenceArgument`, `inlineMemoryReferencesInLine`, `tryResolveValueArgument`, and address-value helpers used by compiler semantic normalization.

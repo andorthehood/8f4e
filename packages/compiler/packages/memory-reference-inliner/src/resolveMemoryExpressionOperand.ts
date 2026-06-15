@@ -1,6 +1,13 @@
 import type { CompilationContext, CompileTimeOperand, Const } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import {
+	getWordAlignedByteLength,
+	memoryEndAddressValue,
+	memoryStartAddressValue,
+	moduleAddressValue,
+} from './addressValues';
+import { getEndByteAddress } from './layoutAddresses';
+import {
 	getElementCount,
 	getElementMaxValue,
 	getElementMinValue,
@@ -12,15 +19,8 @@ import {
 	getPointeeElementMinValueFromMetadata,
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
-} from '../../utils/memoryData';
-import { getEndByteAddress } from '../layoutAddresses';
-import { getMemoryRegionFields } from '../memoryRegions';
-import {
-	getWordAlignedByteLength,
-	memoryEndAddressValue,
-	memoryStartAddressValue,
-	moduleAddressValue,
-} from './addressValues';
+} from './memoryData';
+import { getMemoryRegionFields } from './memoryRegions';
 
 function hasKnownPointeeElementCount(
 	pointerMetadata: { pointeeBaseType?: unknown; pointeeElementCount?: number } | undefined
