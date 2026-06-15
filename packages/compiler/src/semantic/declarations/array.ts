@@ -1,24 +1,9 @@
-import {
-	ArgumentType,
-	type ArrayDeclarationLine,
-	type CompilationContext,
-	ErrorCode,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	type MemoryType,
-} from '@8f4e/compiler-spec';
+import { ArgumentType, type ArrayDeclarationLine, type CompilationContext, ErrorCode } from '@8f4e/compiler-spec';
 
 import { getError } from '../../compilerError';
-import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
-import { getMemoryRegionFields } from '../memoryRegions';
 
 import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
-
-function getElementWordSize(instruction: string): number {
-	if (instruction.startsWith('float64') && !instruction.includes('*')) return 8;
-	if (instruction.includes('8')) return 1;
-	if (instruction.includes('16')) return 2;
-	return 4;
-}
+import consumePlannedDeclarationLayout from './plannedDeclarationLayout';
 
 function createArrayDefaultValues(
 	line: ArrayDeclarationLine,
@@ -47,55 +32,32 @@ function createArrayDefaultValues(
 const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDeclarationLine, context) => {
 	const memoryId = line.arguments[0].value;
 	const elementCountArg = line.arguments[1];
-	const wordAlignedAddress = context.currentModuleNextWordOffset;
 
-	const elementWordSize = getElementWordSize(line.instruction);
-	const isUnsigned = line.instruction.endsWith('u[]');
 	const numberOfElements = elementCountArg.value;
 	const isInteger = line.instruction.startsWith('int') || line.instruction.includes('*');
-	const memoryIndex = context.currentMemoryIndex;
-	const memoryRegionName = context.currentMemoryRegionName;
-	const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
-
-	// Apply 8-byte alignment for float64[] arrays: round up absolute word offset to even
-	// so byteAddress is always divisible by 8, making Float64Array / DataView access safe.
-	const absoluteWordOffset = getAbsoluteWordOffset(context.startingByteAddress, wordAlignedAddress);
-	const alignedAbsoluteWordOffset = alignAbsoluteWordOffset(absoluteWordOffset, elementWordSize);
-	const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
-	const wordAlignedSize =
-		alignmentPadding + Math.ceil((numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY);
+	const plannedLayout = consumePlannedDeclarationLayout(context);
+	const declaration = plannedLayout.declaration;
 
 	context.namespace.memory[memoryId] = {
-		numberOfElements,
-		elementWordSize,
-		...memoryRegionFields,
-		// Round up to the 4-byte allocation grid so all data structures stay word-addressable.
-		// alignmentPadding reserves any gap needed before float64[] to guarantee 8-byte byte-address alignment.
-		wordAlignedSize,
-		// Store address in 4-byte words because pointer math/view indexing is word-based.
-		wordAlignedAddress: alignedAbsoluteWordOffset,
-		id: memoryId,
-		lineNumber: line.lineNumber,
-		// Convert the word-grid offset back to a byte address for wasm load/store instructions.
-		byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
+		numberOfElements: declaration.numberOfElements,
+		elementWordSize: declaration.elementWordSize,
+		memoryIndex: declaration.memoryIndex,
+		...(declaration.memoryRegionName ? { memoryRegionName: declaration.memoryRegionName } : {}),
+		wordAlignedSize: declaration.wordAlignedSize,
+		wordAlignedAddress: declaration.wordAlignedAddress,
+		id: declaration.id,
+		lineNumber: declaration.lineNumber,
+		byteAddress: declaration.byteAddress,
 		default: createArrayDefaultValues(line, context, numberOfElements, isInteger),
 		hasExplicitDefault: line.hasExplicitMemoryDefault,
 		isInherited: context.isInherited === true,
-		isInteger,
-		pointerDepth: line.instruction.includes('**') ? 2 : line.instruction.includes('*') ? 1 : 0,
-		...(line.instruction.includes('*')
-			? {
-					pointeeBaseType: line.instruction.startsWith('float64')
-						? 'float64'
-						: line.instruction.startsWith('int')
-							? 'int'
-							: 'float',
-				}
-			: {}),
-		type: line.instruction.slice(0, -2) as unknown as MemoryType,
-		isUnsigned,
+		isInteger: declaration.isInteger,
+		pointerDepth: declaration.pointerDepth,
+		...(declaration.pointeeBaseType ? { pointeeBaseType: declaration.pointeeBaseType } : {}),
+		type: declaration.type,
+		isUnsigned: declaration.isUnsigned,
 	};
-	context.currentModuleNextWordOffset = wordAlignedAddress + wordAlignedSize;
+	context.currentModuleNextWordOffset = plannedLayout.nextLocalWordOffset;
 
 	return context;
 };

@@ -6,9 +6,7 @@ import createDeclarationCompiler from './createDeclarationCompiler';
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
 const float: MemoryDeclarationCompiler = createDeclarationCompiler({
-	baseType: 'float',
 	truncate: false,
-	nonPointerElementWordSize: 4,
 });
 
 export default float;

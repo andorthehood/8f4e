@@ -11,9 +11,7 @@ import createDeclarationCompiler from './createDeclarationCompiler';
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
 const int16: MemoryDeclarationCompiler = createDeclarationCompiler({
-	baseType: 'int16',
 	truncate: true,
-	nonPointerElementWordSize: 4,
 });
 
 export default int16;

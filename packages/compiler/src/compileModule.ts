@@ -24,7 +24,7 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import { compileCodegenLine, toCompiledStackAnalysisLine } from './compileLine';
 import { getError } from './compilerError';
-import { applySemanticLine, layoutNamespace } from './semantic/buildNamespace';
+import { applySemanticLine } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import normalizeValueArguments from './semantic/normalizeValueArguments';
@@ -53,27 +53,25 @@ export function compileModule(
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule {
-	// Namespace layout establishes memory byte addresses and sizes for this module.
-	// Semantic block instructions are applied during the compilation loop below.
-	const layoutContext = layoutNamespace(ast, namespaces, startingByteAddress, functions, options, prototypeShapes);
 	const namespace = namespaces[ast.id];
-	const memoryIndex = namespace?.memoryIndex ?? layoutContext.currentMemoryIndex;
-	const memoryRegionName = namespace?.memoryRegionName ?? layoutContext.currentMemoryRegionName;
+	const memoryIndex = namespace?.memoryIndex ?? 0;
+	const memoryRegionName = namespace?.memoryRegionName;
+	const moduleWordAlignedSize = namespace?.wordAlignedSize ?? 0;
 	const context = createCompilationContext<ModuleCompilationContext>({
 		namespace: {
 			namespaces,
-			memory: layoutContext.namespace.memory,
+			memory: namespace?.memory ?? {},
 			moduleName: undefined,
 			functions,
-			prototypeShapeIds: [...layoutContext.namespace.prototypeShapeIds],
+			prototypeShapeIds: collectPrototypeShapeIds(ast),
 		},
 		locals: {},
 		byteCode: [],
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-		currentModuleNextWordOffset: layoutContext.currentModuleNextWordOffset,
-		currentModuleWordAlignedSize: layoutContext.currentModuleWordAlignedSize,
+		currentModuleNextWordOffset: moduleWordAlignedSize,
+		currentModuleWordAlignedSize: moduleWordAlignedSize,
 		currentMemoryIndex: memoryIndex,
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
 		memoryRegions: options.memoryRegions ?? [],
@@ -132,4 +130,18 @@ export function compileModule(
 		index,
 		skipExecutionInCycle: context.skipExecutionInCycle,
 	};
+}
+
+function collectPrototypeShapeIds(ast: ValidatedModuleAST): string[] {
+	const prototypeShapeIds: string[] = [];
+	for (const line of ast.lines) {
+		if (line.instruction !== 'shape') {
+			continue;
+		}
+		const prototypeId = line.arguments[0].value;
+		if (!prototypeShapeIds.includes(prototypeId)) {
+			prototypeShapeIds.push(prototypeId);
+		}
+	}
+	return prototypeShapeIds;
 }
