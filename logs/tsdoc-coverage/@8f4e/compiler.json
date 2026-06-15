@@ -1654,5 +1654,41 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "4b4a60ffa75aab47ec2de979a954293e948d3c54",
+		"recordedAt": "2026-06-15T21:14:34.636Z",
+		"coverage": {
+			"documented": 321,
+			"total": 573,
+			"percentage": 56,
+			"byKind": {
+				"type": {
+					"documented": 13,
+					"total": 33,
+					"percentage": 39.4
+				},
+				"property-signature": {
+					"documented": 21,
+					"total": 147,
+					"percentage": 14.3
+				},
+				"variable": {
+					"documented": 85,
+					"total": 104,
+					"percentage": 81.7
+				},
+				"function": {
+					"documented": 199,
+					"total": 281,
+					"percentage": 70.8
+				},
+				"interface": {
+					"documented": 3,
+					"total": 8,
+					"percentage": 37.5
+				}
+			}
+		}
 	}
 ]
