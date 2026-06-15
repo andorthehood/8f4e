@@ -178,7 +178,6 @@ float** pointer
 float* mod &lfo1:out
 float out
 
-const SIZE sizeof(*buffer)
 const MOD_BASE_OFFSET 
 - 10.0*CLOUDS_RATIO
 const MOD_DEPTH 
@@ -186,7 +185,7 @@ const MOD_DEPTH
 
 push &out
 ; pointer + 
-; int((10 + mod * 60) * ratio) * SIZE
+; int((10 + mod * 60) * ratio) * sizeof(*buffer)
 push *pointer
 push MOD_BASE_OFFSET
 push *mod
@@ -194,7 +193,7 @@ push MOD_DEPTH
 mul
 add
 castToInt
-push SIZE
+push sizeof(*buffer)
 mul
 add
 
@@ -229,14 +228,13 @@ float** pointer
 - &allpassDiffuser:pointer
 float* in &modulatedDelayTap:out
 
-const SIZE sizeof(*buffer)
 const WRITE_OFFSET_SAMPLES 
 - 100.0*CLOUDS_RATIO
 
 push *pointer
 push WRITE_OFFSET_SAMPLES
 castToInt
-push SIZE
+push sizeof(*buffer)
 mul
 add
 push buffer
@@ -495,13 +493,12 @@ float** pointer
 float* mod &tank1DelayLfo:out
 float out
 
-const SIZE sizeof(*buffer)
 const MOD_BASE_OFFSET 4680.0*CLOUDS_RATIO
 const MOD_DEPTH 100.0*CLOUDS_RATIO
 
 push &out
 ; pointer + 
-; int((4680 + mod * 100) * ratio) * SIZE
+; int((4680 + mod * 100) * ratio) * sizeof(*buffer)
 push *pointer
 push MOD_BASE_OFFSET
 push *mod
@@ -509,7 +506,7 @@ push MOD_DEPTH
 mul
 add
 castToInt
-push SIZE
+push sizeof(*buffer)
 mul
 add
 

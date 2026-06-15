@@ -748,12 +748,6 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "SIZEOF_POWER",
-            },
-            {
               "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
@@ -769,17 +763,6 @@
                 "value": 2,
               },
               "type": "compile_time_expression",
-            },
-          ],
-          "instruction": "const",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "SIZEOF_POWER",
             },
           ],
           "instruction": "push",
@@ -1433,67 +1416,6 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "BYTE_SIZE",
-            },
-            {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 123,
-              },
-              "operator": "*",
-              "right": {
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "samples",
-                "type": "identifier",
-                "value": "sizeof(samples)",
-              },
-              "type": "compile_time_expression",
-            },
-          ],
-          "instruction": "const",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "BYTE_SIZE",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 246,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "SAMPLE_BYTES",
-            },
-            {
               "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
@@ -1509,17 +1431,6 @@
                 "value": 2,
               },
               "type": "compile_time_expression",
-            },
-          ],
-          "instruction": "const",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "SAMPLE_BYTES",
             },
           ],
           "instruction": "push",
@@ -1559,12 +1470,6 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "TOTAL",
-            },
-            {
               "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
@@ -1581,17 +1486,6 @@
                 "value": "sizeof(samples)",
               },
               "type": "compile_time_expression",
-            },
-          ],
-          "instruction": "const",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "TOTAL",
             },
           ],
           "instruction": "push",
@@ -1646,45 +1540,6 @@
               "isInteger": true,
               "type": "literal",
               "value": 8,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [
-            {
-              "intermoduleIds": [],
-              "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
-              },
-              "operator": "*",
-              "right": {
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "samples",
-                "type": "identifier",
-                "value": "sizeof(samples)",
-              },
-              "type": "compile_time_expression",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 16,
             },
           ],
           "instruction": "call",
