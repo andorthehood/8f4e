@@ -66,7 +66,7 @@ type FunctionMetadataCollectionOptions = {
 
 /** Context overrides used by namespace layout sub-passes. */
 type NamespaceBuildOverrides = {
-	/** Existing memory map to revisit instead of allocating a fresh one. */
+	/** Existing memory map to update instead of allocating a fresh one. */
 	memory?: NamespaceBuildContext['namespace']['memory'];
 	/** Current local word offset when resolving defaults over an existing layout. */
 	currentModuleNextWordOffset?: number;
@@ -266,129 +266,13 @@ function applyNamespaceDeclarationLines(
 }
 
 /**
- * Resolves one scalar declaration's default value after namespace addresses are available.
- *
- * @param originalLine - Scalar declaration line from the AST or a prototype shape.
- * @param context - Compilation context with all collected namespaces available.
- * @returns Nothing.
- */
-function resolveScalarDeclarationAddressDefault(
-	originalLine: ScalarMemoryDeclarationLine,
-	context: NamespaceBuildContext
-): void {
-	const line = normalizeCompileTimeArguments(originalLine, context);
-	const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(
-		line as ScalarMemoryDeclarationLine,
-		context
-	);
-	const memoryItem = context.namespace.memory[id];
-	if (!memoryItem || memoryItem.numberOfElements !== 1) {
-		return;
-	}
-
-	memoryItem.default = memoryItem.isInteger ? Math.trunc(defaultValue) : defaultValue;
-	if (memoryItem.pointerDepth > 0) {
-		applyPointerPointeeFields(memoryItem, defaultAddress, context);
-	}
-}
-
-/**
- * Expands a shape line and resolves address defaults for its scalar declarations.
- *
- * @param line - Normalized shape instruction line.
- * @param context - Namespace context used for prototype lookup and inherited metadata.
- * @returns Nothing.
- */
-function resolveShapeScalarAddressDefaults(line: ShapeLine, context: NamespaceBuildContext): void {
-	if (!context.expandPrototypeShapes) {
-		return;
-	}
-
-	const prototypeId = line.arguments[0].value;
-	if (!context.namespace.prototypeShapeIds.includes(prototypeId)) {
-		context.namespace.prototypeShapeIds.push(prototypeId);
-	}
-
-	const prototype = context.prototypeShapes?.[prototypeId];
-	if (!prototype) {
-		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: prototypeId });
-	}
-
-	const previousInherited = context.isInherited;
-	context.isInherited = true;
-	try {
-		for (const declarationLine of prototype.memoryDeclarationLines) {
-			const inheritedDeclarationLine = {
-				...declarationLine,
-				lineNumber: line.lineNumber,
-			};
-			if (isScalarMemoryDeclarationLine(inheritedDeclarationLine)) {
-				resolveScalarDeclarationAddressDefault(inheritedDeclarationLine, context);
-			}
-		}
-	} finally {
-		context.isInherited = previousInherited;
-	}
-}
-
-/**
- * Applies semantic instructions needed while resolving scalar address defaults.
- *
- * Shape instructions are expanded here so inherited scalar defaults are resolved
- * without allocating memory for arrays or other declarations.
- *
- * @param originalLine - Semantic instruction line from the AST.
- * @param context - Namespace context used for semantic state.
- * @returns Nothing.
- */
-function applySemanticLineForAddressDefaultResolution(
-	originalLine: SemanticInstructionLine,
-	context: NamespaceBuildContext
-): void {
-	const line = normalizeCompileTimeArguments(originalLine, context);
-	if (line.instruction === 'shape') {
-		resolveShapeScalarAddressDefaults(line, context);
-		return;
-	}
-
-	applySemanticInstruction(line, context);
-}
-
-/**
- * Resolves scalar declaration address defaults without allocating memory.
- *
- * @param ast - Validated AST whose scalar defaults should be resolved.
- * @param context - Namespace context seeded with an existing memory map.
- * @returns Nothing.
- */
-function resolveNamespaceScalarAddressDefaults(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
-	context: NamespaceBuildContext
-): void {
-	const sourceBlockSpec = compilerSourceBlockInstructionByType[ast.type];
-	const shouldValidateUnhandledLines = sourceBlockSpec.compilationMode === null;
-
-	ast.lines.forEach(originalLine => {
-		if (isSemanticInstructionLine(originalLine)) {
-			applySemanticLineForAddressDefaultResolution(originalLine, context);
-		} else if (isScalarMemoryDeclarationLine(originalLine)) {
-			resolveScalarDeclarationAddressDefault(originalLine, context);
-		} else if (!isMemoryDeclarationLine(originalLine) && shouldValidateUnhandledLines) {
-			normalizeCompileTimeArguments(originalLine, context);
-		}
-	});
-
-	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
-}
-
-/**
  * Runs a narrow semantic pass over an existing memory map to resolve address defaults.
  *
  * This pass intentionally does not allocate memory. It updates scalar `default`
  * values and pointer pointee metadata now that intermodule addresses can be
  * resolved against the full namespace map.
  *
- * @param ast - Validated AST whose declarations should be revisited.
+ * @param ast - Validated AST whose scalar defaults should be resolved.
  * @param namespaces - Collected namespaces used for intermodule address resolution.
  * @param namespace - Existing namespace layout to update.
  * @param functions - Function registry available to semantic normalization.
@@ -417,7 +301,77 @@ function resolveNamespaceAddressDefaults(
 			currentModuleWordAlignedSize: namespace.wordAlignedSize ?? 0,
 		}
 	);
-	resolveNamespaceScalarAddressDefaults(ast, context);
+
+	const updateScalarDefaultFromDeclaration = (originalLine: ScalarMemoryDeclarationLine): void => {
+		const line = normalizeCompileTimeArguments(originalLine, context) as ScalarMemoryDeclarationLine;
+		const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
+		const memoryItem = context.namespace.memory[id];
+		if (!memoryItem || memoryItem.numberOfElements !== 1) {
+			return;
+		}
+
+		memoryItem.default = memoryItem.isInteger ? Math.trunc(defaultValue) : defaultValue;
+		if (memoryItem.pointerDepth > 0) {
+			applyPointerPointeeFields(memoryItem, defaultAddress, context);
+		}
+	};
+
+	const updateDefaultsFromShape = (line: ShapeLine): void => {
+		if (!context.expandPrototypeShapes) {
+			return;
+		}
+
+		const prototypeId = line.arguments[0].value;
+		if (!context.namespace.prototypeShapeIds.includes(prototypeId)) {
+			context.namespace.prototypeShapeIds.push(prototypeId);
+		}
+
+		const prototype = context.prototypeShapes?.[prototypeId];
+		if (!prototype) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: prototypeId });
+		}
+
+		const previousInherited = context.isInherited;
+		context.isInherited = true;
+		try {
+			for (const declarationLine of prototype.memoryDeclarationLines) {
+				if (!isScalarMemoryDeclarationLine(declarationLine)) {
+					continue;
+				}
+				updateScalarDefaultFromDeclaration({
+					...declarationLine,
+					lineNumber: line.lineNumber,
+				});
+			}
+		} finally {
+			context.isInherited = previousInherited;
+		}
+	};
+
+	const sourceBlockSpec = compilerSourceBlockInstructionByType[ast.type];
+	const shouldValidateUnhandledLines = sourceBlockSpec.compilationMode === null;
+	for (const originalLine of ast.lines) {
+		if (isScalarMemoryDeclarationLine(originalLine)) {
+			updateScalarDefaultFromDeclaration(originalLine);
+			continue;
+		}
+
+		if (isSemanticInstructionLine(originalLine)) {
+			const line = normalizeCompileTimeArguments(originalLine, context);
+			if (line.instruction === 'shape') {
+				updateDefaultsFromShape(line);
+			} else {
+				applySemanticInstruction(line, context);
+			}
+			continue;
+		}
+
+		if (!isMemoryDeclarationLine(originalLine) && shouldValidateUnhandledLines) {
+			normalizeCompileTimeArguments(originalLine, context);
+		}
+	}
+
+	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
 
 	return context;
 }
