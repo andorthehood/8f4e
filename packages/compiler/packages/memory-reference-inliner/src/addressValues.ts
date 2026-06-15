@@ -1,7 +1,7 @@
 import type { Const, DataStructure } from '@8f4e/compiler-spec';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
-import { getEndByteAddress } from '../layoutAddresses';
-import { getMemoryRegionFields } from '../memoryRegions';
+import { getEndByteAddress } from './layoutAddresses';
+import { getMemoryRegionFields } from './memoryRegions';
 
 /**
  * Converts word-aligned size to the byte length that is safe from the memory start address.
