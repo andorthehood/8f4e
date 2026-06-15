@@ -1,4 +1,5 @@
 import {
+	ArgumentType,
 	type CompilationContext,
 	type CompileOptions,
 	type CompilerASTLine,
@@ -33,9 +34,13 @@ import {
 import { getError } from '../compilerError';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
-import stripMemoryDeclarationDefaults from './declarations/stripMemoryDeclarationDefaults';
 import applySemanticInstruction from './instructions';
 import { getDefaultMemoryRegion, getMemoryRegionFields, validateMemoryRegionOptions } from './memoryRegions';
+import {
+	normalizeArgumentsAtIndexes,
+	validateOrDeferUnresolvedIdentifier,
+	validateOrDeferValueExpression,
+} from './normalization/helpers';
 import normalizeValueArguments from './normalizeValueArguments';
 import { getEffectiveFunctionMetadata } from './paramShape';
 import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
@@ -194,8 +199,7 @@ function createNamespaceBuildContext(
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
-	plannedModule?: PlannedMemoryModule,
-	stripDeclarationDefaults = false
+	plannedModule?: PlannedMemoryModule
 ): NamespaceBuildContext {
 	const defaultRegion = getDefaultMemoryRegion();
 	const currentMemoryRegion = plannedModule ?? defaultRegion;
@@ -224,7 +228,6 @@ function createNamespaceBuildContext(
 		projectBlockId: ast.projectBlockId,
 		prototypeShapes,
 		expandPrototypeShapes: true,
-		stripMemoryDeclarationDefaults: stripDeclarationDefaults,
 	});
 }
 
@@ -233,14 +236,44 @@ function applyNamespaceDeclarationLines(ast: ValidatedModuleAST, context: Namesp
 		if (isSemanticInstructionLine(originalLine)) {
 			applySemanticLine(originalLine, context);
 		} else if (isMemoryDeclarationLine(originalLine)) {
-			const declarationLine = context.stripMemoryDeclarationDefaults
-				? stripMemoryDeclarationDefaults(originalLine)
-				: originalLine;
-			applyMemoryDeclarationLine(normalizeValueArguments(declarationLine, context), context);
+			applyMemoryDeclarationLine(normalizeValueArguments(originalLine, context), context);
 		}
 	});
 
 	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
+}
+
+function applyNamespaceDiscoveryLines(
+	ast: ValidatedModuleAST,
+	context: NamespaceBuildContext,
+	plannedModule?: PlannedMemoryModule
+): void {
+	ast.lines.forEach(line => {
+		if (!isSemanticInstructionLine(line)) {
+			return;
+		}
+
+		if (!isShapeLine(line)) {
+			applySemanticLine(line, context);
+			return;
+		}
+
+		const prototypeId = line.arguments[0].value;
+		if (!context.namespace.prototypeShapeIds.includes(prototypeId)) {
+			context.namespace.prototypeShapeIds.push(prototypeId);
+		}
+		if (!context.prototypeShapes?.[prototypeId]) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: prototypeId });
+		}
+	});
+
+	if (!plannedModule) {
+		return;
+	}
+
+	context.namespace.memory = createLayoutOnlyMemoryMap(plannedModule.memory);
+	context.currentModuleNextWordOffset = plannedModule.wordAlignedSize;
+	context.currentModuleWordAlignedSize = plannedModule.wordAlignedSize;
 }
 
 function resolveScalarMemoryDefaults(ast: ValidatedModuleAST, context: NamespaceBuildContext): void {
@@ -276,10 +309,9 @@ function discoverNamespace(
 		functions,
 		options,
 		prototypeShapes,
-		plannedModule,
-		true
+		plannedModule
 	);
-	applyNamespaceDeclarationLines(ast, context);
+	applyNamespaceDiscoveryLines(ast, context, plannedModule);
 
 	return context;
 }
@@ -339,15 +371,32 @@ function isShapeLine(line: SemanticInstructionLine): line is ShapeLine {
 	return line.instruction === 'shape';
 }
 
-function stripLayoutIrrelevantMemoryArguments(line: MemoryDeclarationLine): MemoryDeclarationLine {
-	if (isArrayMemoryDeclarationLine(line)) {
-		return {
-			...line,
-			arguments: [line.arguments[0], line.arguments[1]],
-		};
+function normalizeLayoutMemoryDeclarationLine(
+	line: MemoryDeclarationLine,
+	context: NamespaceBuildContext
+): MemoryDeclarationLine {
+	if (!isArrayMemoryDeclarationLine(line)) {
+		return line;
 	}
 
-	return stripMemoryDeclarationDefaults(line);
+	const { line: normalizedLine } = normalizeArgumentsAtIndexes(line, context, [1]);
+	const elementCount = normalizedLine.arguments[1];
+	if (elementCount.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
+		const deferred = validateOrDeferValueExpression(elementCount, line, context);
+		if (deferred) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
+				identifier: `${elementCount.left.value}${elementCount.operator}${elementCount.right.value}`,
+			});
+		}
+	}
+	if (elementCount.type === ArgumentType.IDENTIFIER) {
+		const deferred = validateOrDeferUnresolvedIdentifier(elementCount, line, context);
+		if (deferred) {
+			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: elementCount.value });
+		}
+	}
+
+	return normalizedLine;
 }
 
 function createLayoutOnlyMemoryMap(memory: Record<string, PlannedMemoryDeclaration>): MemoryMap {
@@ -390,8 +439,7 @@ function appendLayoutMemoryDeclarationLine(
 	startingByteAddress: number,
 	memoryRegions: readonly string[]
 ): void {
-	const layoutLine = stripLayoutIrrelevantMemoryArguments(line);
-	const normalizedLine = normalizeValueArguments(layoutLine, context);
+	const normalizedLine = normalizeLayoutMemoryDeclarationLine(line, context);
 
 	sourceModule.memoryDeclarationLines = [...sourceModule.memoryDeclarationLines, normalizedLine];
 	refreshLayoutSourceContextMemory(context, sourceModule, startingByteAddress, memoryRegions);
