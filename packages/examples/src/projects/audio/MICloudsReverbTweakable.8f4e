@@ -218,11 +218,9 @@ int* depth
 - &controlValues:smearTapDepth
 float out
 
-const SIZE sizeof(*buffer)
-
 push &out
 ; pointer + 
-; int((10 + mod * 60) * ratio) * SIZE
+; int((10 + mod * 60) * ratio) * sizeof(*buffer)
 push *pointer
 push *baseOffset
 castToFloat
@@ -236,7 +234,7 @@ mul
 mul
 add
 castToInt
-push SIZE
+push sizeof(*buffer)
 mul
 add
 
@@ -279,15 +277,13 @@ float* in &modulatedDelayTap:out
 int* writeOffset
 - &controlValues:smearWriteOffset
 
-const SIZE sizeof(*buffer)
-
 push *pointer
 push *writeOffset
 castToFloat
 push CLOUDS_RATIO
 mul
 castToInt
-push SIZE
+push sizeof(*buffer)
 mul
 add
 push buffer
@@ -499,8 +495,6 @@ float* pointer &buffer
 int* readOffset
 - &controlValues:tank1DelayReadOffset
 
-const SIZE sizeof(*buffer)
-
 local int readAddress
 
 ; @wave &buffer count(buffer) pointer
@@ -511,7 +505,7 @@ castToFloat
 push CLOUDS_RATIO
 mul
 castToInt
-push SIZE
+push sizeof(*buffer)
 mul
 add
 localSet readAddress
@@ -571,11 +565,9 @@ int* depth
 - &controlValues:tank1TapDepth
 float out
 
-const SIZE sizeof(*buffer)
-
 push &out
 ; pointer + 
-; int((4680 + mod * 100) * ratio) * SIZE
+; int((4680 + mod * 100) * ratio) * sizeof(*buffer)
 push *pointer
 push *baseOffset
 castToFloat
@@ -589,7 +581,7 @@ mul
 mul
 add
 castToInt
-push SIZE
+push sizeof(*buffer)
 mul
 add
 
@@ -629,8 +621,6 @@ float* pointer &buffer
 int* readOffset
 - &controlValues:tank2DelayReadOffset
 
-const SIZE sizeof(*buffer)
-
 local int readAddress
 
 ; @wave &buffer count(buffer) pointer
@@ -641,7 +631,7 @@ castToFloat
 push CLOUDS_RATIO
 mul
 castToInt
-push SIZE
+push sizeof(*buffer)
 mul
 add
 localSet readAddress
