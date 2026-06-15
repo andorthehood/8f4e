@@ -14,11 +14,11 @@ import {
 	hasReferencedNamespaceIds,
 	isMemoryDeclarationLine,
 	isNamedScalarMemoryDeclarationLine,
-	isScalarMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	type MemoryDeclarationLine,
 	type NamespaceBuildContext,
 	type Namespaces,
+	type ScalarMemoryDeclarationLine,
 	type SemanticInstructionLine,
 	type ValidatedConstantsAST,
 	type ValidatedFunctionAST,
@@ -269,15 +269,11 @@ function applyNamespaceDeclarationLines(
 /**
  * Resolves one scalar declaration's default value after namespace addresses are available.
  *
- * @param line - Memory declaration line being revisited.
+ * @param line - Scalar memory declaration line being revisited.
  * @param context - Compilation context with all collected namespaces available.
  * @returns Nothing.
  */
-function resolveScalarMemoryAddressDefault(line: MemoryDeclarationLine, context: CompilationContext): void {
-	if (!isScalarMemoryDeclarationLine(line)) {
-		return;
-	}
-
+function resolveScalarMemoryAddressDefault(line: ScalarMemoryDeclarationLine, context: CompilationContext): void {
 	const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
 	const memoryItem = context.namespace.memory[id];
 	if (!memoryItem || memoryItem.numberOfElements !== 1) {
