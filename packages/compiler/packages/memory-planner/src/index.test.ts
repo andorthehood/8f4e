@@ -43,7 +43,7 @@ function moduleAst(
 describe('planMemoryLayout', () => {
 	it('plans module start addresses and declaration addresses from ASTs', () => {
 		const plan = planMemoryLayout({
-			asts: [
+			modules: [
 				moduleAst('first', 1, [
 					{
 						lineNumber: 2,
@@ -87,7 +87,7 @@ describe('planMemoryLayout', () => {
 			isBlockPrologue: true,
 		};
 		const plan = planMemoryLayout({
-			asts: [
+			modules: [
 				moduleAst('defaultModule', 1, [
 					{
 						lineNumber: 2,
@@ -131,22 +131,18 @@ describe('planMemoryLayout', () => {
 		});
 	});
 
-	it('uses a declaration resolver hook for layout-normalized lines', () => {
+	it('plans compiler-normalized declaration lines', () => {
 		const plan = planMemoryLayout({
-			asts: [
+			modules: [
 				moduleAst('main', 1, [
 					{
 						lineNumber: 2,
 						instruction: 'int[]',
 						hasExplicitMemoryDefault: false,
-						arguments: [identifier('values'), identifier('SIZE')],
+						arguments: [identifier('values'), literal(4)],
 					},
 				]),
 			],
-			resolveMemoryDeclarationLine: line => ({
-				...line,
-				arguments: [line.arguments[0], literal(4)],
-			}),
 		});
 
 		expect(plan.modules.main.memory.values.numberOfElements).toBe(4);
