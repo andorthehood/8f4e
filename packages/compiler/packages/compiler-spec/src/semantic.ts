@@ -27,7 +27,6 @@ import type {
 	PushLine,
 	PushShapeLine,
 	RegionLine,
-	ScalarMemoryDeclarationLine,
 	ShapeLine,
 	UseLine,
 	ValidatedPrototypeAST,
@@ -186,12 +185,6 @@ export interface CompilationContext {
 	expandPrototypeShapes?: boolean;
 	isInherited?: boolean;
 	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine;
-	/**
-	 * Optional override for semantic scalar-memory declaration handling.
-	 * Namespace layout uses this to reuse normal declaration traversal while swapping
-	 * allocation for address-default resolution.
-	 */
-	memoryDeclarationHandler?: (line: ScalarMemoryDeclarationLine, context: CompilationContext) => void;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;

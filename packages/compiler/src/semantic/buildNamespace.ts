@@ -14,12 +14,14 @@ import {
 	hasReferencedNamespaceIds,
 	isMemoryDeclarationLine,
 	isNamedScalarMemoryDeclarationLine,
+	isScalarMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	type MemoryDeclarationLine,
 	type NamespaceBuildContext,
 	type Namespaces,
 	type ScalarMemoryDeclarationLine,
 	type SemanticInstructionLine,
+	type ShapeLine,
 	type ValidatedConstantsAST,
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
@@ -72,9 +74,10 @@ type NamespaceBuildOverrides = {
 	currentModuleWordAlignedSize?: number;
 	/** Optional source-line rewrite before semantic memory declaration handling. */
 	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine;
-	/** Optional declaration handler used to replace allocation with a narrower pass. */
-	memoryDeclarationHandler?: NamespaceBuildContext['memoryDeclarationHandler'];
 };
+
+/** Callback used by the address-default pass for normalized scalar declarations. */
+type ScalarMemoryDeclarationVisitor = (line: ScalarMemoryDeclarationLine, context: NamespaceBuildContext) => void;
 
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
@@ -241,7 +244,6 @@ function createNamespaceBuildContext(
 		prototypeShapes,
 		expandPrototypeShapes: true,
 		resolveMemoryDeclarationLine: overrides.resolveMemoryDeclarationLine,
-		memoryDeclarationHandler: overrides.memoryDeclarationHandler,
 	});
 }
 
@@ -267,13 +269,128 @@ function applyNamespaceDeclarationLines(
 }
 
 /**
+ * Normalizes and visits one scalar memory declaration without allocating memory.
+ *
+ * @param originalLine - Scalar declaration line from the AST or a prototype shape.
+ * @param context - Namespace context used for semantic argument resolution.
+ * @param visitor - Callback applied to the normalized scalar declaration.
+ * @returns Nothing.
+ */
+function visitScalarMemoryDeclarationLine(
+	originalLine: ScalarMemoryDeclarationLine,
+	context: NamespaceBuildContext,
+	visitor: ScalarMemoryDeclarationVisitor
+): void {
+	const line = normalizeCompileTimeArguments(originalLine, context);
+	visitor(line as ScalarMemoryDeclarationLine, context);
+}
+
+/**
+ * Expands a shape line and visits only its scalar memory declarations.
+ *
+ * @param line - Normalized shape instruction line.
+ * @param context - Namespace context used for prototype lookup and inherited metadata.
+ * @param visitor - Callback applied to each normalized scalar declaration.
+ * @returns Nothing.
+ */
+function visitShapeScalarMemoryDeclarationLines(
+	line: ShapeLine,
+	context: NamespaceBuildContext,
+	visitor: ScalarMemoryDeclarationVisitor
+): void {
+	if (!context.expandPrototypeShapes) {
+		return;
+	}
+
+	const prototypeId = line.arguments[0].value;
+	if (!context.namespace.prototypeShapeIds.includes(prototypeId)) {
+		context.namespace.prototypeShapeIds.push(prototypeId);
+	}
+
+	const prototype = context.prototypeShapes?.[prototypeId];
+	if (!prototype) {
+		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: prototypeId });
+	}
+
+	const previousInherited = context.isInherited;
+	context.isInherited = true;
+	try {
+		for (const declarationLine of prototype.memoryDeclarationLines) {
+			const inheritedDeclarationLine = {
+				...declarationLine,
+				lineNumber: line.lineNumber,
+			};
+			if (isScalarMemoryDeclarationLine(inheritedDeclarationLine)) {
+				visitScalarMemoryDeclarationLine(inheritedDeclarationLine, context, visitor);
+			}
+		}
+	} finally {
+		context.isInherited = previousInherited;
+	}
+}
+
+/**
+ * Applies semantic instructions needed while visiting scalar declarations.
+ *
+ * Shape instructions are expanded through the scalar visitor so inherited scalar
+ * defaults are resolved without allocating memory for arrays or other declarations.
+ *
+ * @param originalLine - Semantic instruction line from the AST.
+ * @param context - Namespace context used for semantic state.
+ * @param visitor - Callback applied to scalar declarations expanded from shapes.
+ * @returns Nothing.
+ */
+function applySemanticLineForScalarMemoryTraversal(
+	originalLine: SemanticInstructionLine,
+	context: NamespaceBuildContext,
+	visitor: ScalarMemoryDeclarationVisitor
+): void {
+	const line = normalizeCompileTimeArguments(originalLine, context);
+	if (line.instruction === 'shape') {
+		visitShapeScalarMemoryDeclarationLines(line, context, visitor);
+		return;
+	}
+
+	applySemanticInstruction(line, context);
+}
+
+/**
+ * Visits scalar declarations without allocating memory or validating non-scalar declarations.
+ *
+ * @param ast - Validated AST whose scalar declarations should be revisited.
+ * @param context - Namespace context seeded with an existing memory map.
+ * @param visitor - Callback applied to each normalized scalar declaration.
+ * @returns Nothing.
+ */
+function visitNamespaceScalarMemoryDeclarationLines(
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	context: NamespaceBuildContext,
+	visitor: ScalarMemoryDeclarationVisitor
+): void {
+	const sourceBlockSpec = compilerSourceBlockInstructionByType[ast.type];
+	const shouldValidateUnhandledLines = sourceBlockSpec.compilationMode === null;
+
+	ast.lines.forEach(originalLine => {
+		if (isSemanticInstructionLine(originalLine)) {
+			applySemanticLineForScalarMemoryTraversal(originalLine, context, visitor);
+		} else if (isScalarMemoryDeclarationLine(originalLine)) {
+			visitScalarMemoryDeclarationLine(originalLine, context, visitor);
+		} else if (!isMemoryDeclarationLine(originalLine) && shouldValidateUnhandledLines) {
+			normalizeCompileTimeArguments(originalLine, context);
+		}
+	});
+
+	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
+}
+
+/**
  * Resolves one scalar declaration's default value after namespace addresses are available.
  *
  * @param line - Scalar memory declaration line being revisited.
  * @param context - Compilation context with all collected namespaces available.
  * @returns Nothing.
  */
-function resolveScalarMemoryAddressDefault(line: ScalarMemoryDeclarationLine, context: CompilationContext): void {
+function resolveScalarMemoryAddressDefault(line: ScalarMemoryDeclarationLine, context: NamespaceBuildContext): void {
 	const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
 	const memoryItem = context.namespace.memory[id];
 	if (!memoryItem || memoryItem.numberOfElements !== 1) {
@@ -320,10 +437,9 @@ function resolveNamespaceAddressDefaults(
 			memory: namespace.memory ?? {},
 			currentModuleNextWordOffset: namespace.wordAlignedSize ?? 0,
 			currentModuleWordAlignedSize: namespace.wordAlignedSize ?? 0,
-			memoryDeclarationHandler: resolveScalarMemoryAddressDefault,
 		}
 	);
-	applyNamespaceDeclarationLines(ast, context);
+	visitNamespaceScalarMemoryDeclarationLines(ast, context, resolveScalarMemoryAddressDefault);
 
 	return context;
 }

@@ -1,8 +1,5 @@
 import type { CompilationContext, MemoryDeclarationInstruction, MemoryDeclarationLine } from '@8f4e/compiler-spec';
-import {
-	isScalarMemoryDeclarationLine,
-	memoryDeclarationInstructions as specMemoryDeclarationInstructions,
-} from '@8f4e/compiler-spec';
+import { memoryDeclarationInstructions as specMemoryDeclarationInstructions } from '@8f4e/compiler-spec';
 import { validateInstruction } from '../../stackAnalysis/validateInstruction';
 import array from './array';
 import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
@@ -58,24 +55,13 @@ export function isMemoryDeclarationInstruction(instruction: string): instruction
 }
 
 /**
- * Applies one semantic memory declaration line to the namespace context.
- *
- * Custom scalar handlers run before normal validation because they are used by
- * later namespace passes that revisit already allocated declarations. Non-scalar
- * declarations are ignored while a custom scalar handler is active.
+ * Validates and applies one semantic memory declaration line to the namespace context.
  *
  * @param line - AST line being processed.
  * @param context - Compilation context used by the operation.
  * @returns Nothing.
  */
 export function applyMemoryDeclarationLine(line: MemoryDeclarationLine, context: CompilationContext) {
-	if (context.memoryDeclarationHandler) {
-		if (isScalarMemoryDeclarationLine(line)) {
-			return context.memoryDeclarationHandler(line, context);
-		}
-		return;
-	}
-
 	validateInstruction(line, context);
 	const compileDeclaration = declarationCompilers[
 		line.instruction as MemoryDeclarationInstruction
