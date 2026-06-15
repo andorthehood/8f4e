@@ -14,14 +14,14 @@ function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): Memo
 }
 
 /**
- * Evaluates a binary compile-time expression from already resolved constant operands.
+ * Evaluates a binary expression from already resolved operands.
  *
  * @param lhsConst - Resolved left-hand operand.
  * @param rhsConst - Resolved right-hand operand.
- * @param operator - Binary operator from the parsed compile-time expression.
- * @returns Folded constant value with safe-range metadata when address arithmetic remains valid.
+ * @param operator - Binary operator from the parsed expression.
+ * @returns Folded value with safe-range metadata when address arithmetic remains valid.
  */
-export function evaluateConstantExpression(
+export function evaluateResolvedValueExpression(
 	lhsConst: Const,
 	rhsConst: Const,
 	operator: '+' | '-' | '*' | '/' | '^'

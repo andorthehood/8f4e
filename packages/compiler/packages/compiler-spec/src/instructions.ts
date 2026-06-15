@@ -47,7 +47,7 @@ export const blockEndToStartInstruction = Object.fromEntries(
 export const compilerSourceBlockInstructionPairs = [
 	{ type: 'module', start: 'module', end: 'moduleEnd', compilesToModule: true, compilationMode: 'module' },
 	{ type: 'function', start: 'function', end: 'functionEnd', compilesToModule: false, compilationMode: 'function' },
-	{ type: 'constants', start: 'constants', end: 'constantsEnd', compilesToModule: true, compilationMode: null },
+	{ type: 'constants', start: 'constants', end: 'constantsEnd', compilesToModule: false, compilationMode: null },
 	{ type: 'prototype', start: 'prototype', end: 'prototypeEnd', compilesToModule: false, compilationMode: null },
 ] as const;
 

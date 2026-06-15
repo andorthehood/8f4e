@@ -14,7 +14,7 @@ const map: InstructionCompiler<NormalizedMapLine> = (line: NormalizedMapLine, co
 	const valueArg = line.arguments[1];
 
 	// Resolve key argument
-	// The semantic pass (normalizeCompileTimeArguments) guarantees keyArg is LITERAL or STRING_LITERAL.
+	// The semantic pass (normalizeValueArguments) guarantees keyArg is LITERAL or STRING_LITERAL.
 	let keyValue: number;
 	let keyIsInteger: boolean;
 	let keyIsFloat64 = false;
