@@ -78,12 +78,27 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 				: {};
 
 		const finalDefault = truncate ? Math.trunc(defaultValue) : defaultValue;
+		const declaration = plannedLayout.declaration;
 
 		context.namespace.memory[id] = {
-			...plannedLayout.declaration,
+			numberOfElements: declaration.numberOfElements,
+			elementWordSize: declaration.elementWordSize,
+			memoryIndex: declaration.memoryIndex,
+			...(declaration.memoryRegionName ? { memoryRegionName: declaration.memoryRegionName } : {}),
+			wordAlignedAddress: declaration.wordAlignedAddress,
+			wordAlignedSize: declaration.wordAlignedSize,
+			byteAddress: declaration.byteAddress,
+			id: declaration.id,
+			lineNumber: declaration.lineNumber,
 			default: finalDefault,
 			hasExplicitDefault: line.hasExplicitMemoryDefault,
 			isInherited: context.isInherited === true,
+			type: declaration.type,
+			pointerDepth: declaration.pointerDepth,
+			isInteger: declaration.isInteger,
+			...(declaration.isFloat64 ? { isFloat64: declaration.isFloat64 } : {}),
+			...(declaration.pointeeBaseType ? { pointeeBaseType: declaration.pointeeBaseType } : {}),
+			isUnsigned: declaration.isUnsigned,
 			...pointerPointeeRegion,
 		};
 		context.currentModuleNextWordOffset = plannedLayout.nextLocalWordOffset;
