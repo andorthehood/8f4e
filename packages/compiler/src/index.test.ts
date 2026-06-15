@@ -9,6 +9,18 @@ const emptyCompileInput = {
 	prototypes: [],
 };
 
+async function instantiateCompileResult(codeBuffer: Uint8Array) {
+	const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
+	const result = (await WebAssembly.instantiate(codeBuffer, {
+		host: { memory },
+	})) as unknown as { instance: WebAssembly.Instance };
+
+	return {
+		memory,
+		exports: result.instance.exports as Record<string, CallableFunction>,
+	};
+}
+
 describe('compile prototype validation', () => {
 	it('rejects prototype block markers inside module source', () => {
 		let thrownError: unknown;
@@ -133,6 +145,27 @@ describe('compile prototype validation', () => {
 		expect(memoryMap.resonance).toMatchObject({ isInherited: true, lineNumber: 1 });
 		expect(memoryMap.output).toMatchObject({ isInherited: true, lineNumber: 1 });
 		expect(memoryMap.cutoff).toMatchObject({ isInherited: false, lineNumber: 2 });
+	});
+
+	it('finalizes shape-expanded intermodule pointer defaults after stable layout', () => {
+		const result = compile(
+			{
+				...emptyCompileInput,
+				entries: {
+					main: [
+						{ code: ['module beta', 'shape linkToAlpha', 'moduleEnd'] },
+						{ code: ['module alpha', 'int[] buffer 4 10 20 30 40', 'moduleEnd'] },
+					],
+				},
+				prototypes: [{ code: ['prototype linkToAlpha', 'int* ptr &alpha:buffer', 'prototypeEnd'] }],
+			},
+			{ disableSharedMemory: true }
+		);
+
+		const alphaBuffer = result.compiledModules.alpha.memoryMap.buffer;
+		const betaPointer = result.compiledModules.beta.memoryMap.ptr;
+		expect(betaPointer.default).toBe(alphaBuffer.byteAddress);
+		expect(betaPointer.pointeeElementCount).toBe(4);
 	});
 
 	it('rejects function ids that collide with generated entry function ids during semantic metadata collection', () => {
@@ -400,5 +433,55 @@ describe('compile prototype validation', () => {
 		);
 
 		expect(result.compiledFunctions![createFunctionId('externallyCallable', [])].used).toBe(true);
+	});
+});
+
+describe('compile module layout', () => {
+	it('keeps memory layout stable when module execution order changes', async () => {
+		const alphaModule = {
+			code: ['module alpha', 'int output 0', 'push &output', 'push 1', 'store', 'moduleEnd'],
+		};
+		const betaModule = {
+			code: ['module beta', 'int scratch 0', 'push &alpha:output', 'push 2', 'store', 'moduleEnd'],
+		};
+
+		const alphaThenBeta = compile(
+			{
+				...emptyCompileInput,
+				entries: { main: [alphaModule, betaModule] },
+			},
+			{ disableSharedMemory: true }
+		);
+		const betaThenAlpha = compile(
+			{
+				...emptyCompileInput,
+				entries: { main: [betaModule, alphaModule] },
+			},
+			{ disableSharedMemory: true }
+		);
+
+		expect(betaThenAlpha.compiledModules.alpha.memoryMap.output.byteAddress).toBe(
+			alphaThenBeta.compiledModules.alpha.memoryMap.output.byteAddress
+		);
+		expect(betaThenAlpha.compiledModules.beta.memoryMap.scratch.byteAddress).toBe(
+			alphaThenBeta.compiledModules.beta.memoryMap.scratch.byteAddress
+		);
+		expect(alphaThenBeta.compiledModules.alpha.index).toBe(0);
+		expect(alphaThenBeta.compiledModules.beta.index).toBe(1);
+		expect(betaThenAlpha.compiledModules.beta.index).toBe(0);
+		expect(betaThenAlpha.compiledModules.alpha.index).toBe(1);
+
+		const alphaFirstRuntime = await instantiateCompileResult(alphaThenBeta.codeBuffer);
+		alphaFirstRuntime.exports.initDefaults();
+		alphaFirstRuntime.exports.main();
+		const alphaFirstMemory = new Int32Array(alphaFirstRuntime.memory.buffer);
+		const outputWordAddress = alphaThenBeta.compiledModules.alpha.memoryMap.output.wordAlignedAddress;
+		expect(alphaFirstMemory[outputWordAddress]).toBe(2);
+
+		const betaFirstRuntime = await instantiateCompileResult(betaThenAlpha.codeBuffer);
+		betaFirstRuntime.exports.initDefaults();
+		betaFirstRuntime.exports.main();
+		const betaFirstMemory = new Int32Array(betaFirstRuntime.memory.buffer);
+		expect(betaFirstMemory[outputWordAddress]).toBe(1);
 	});
 });

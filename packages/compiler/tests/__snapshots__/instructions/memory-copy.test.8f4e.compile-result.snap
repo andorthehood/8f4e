@@ -619,7 +619,7 @@
     "guardedMemoryCopyAssertions": {
       "memoryMap": {
         "source": {
-          "byteAddress": 44,
+          "byteAddress": 4,
           "default": {},
           "elementWordSize": 4,
           "id": "source",
@@ -629,11 +629,11 @@
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 11,
+          "wordAlignedAddress": 1,
           "wordAlignedSize": 2,
         },
         "target": {
-          "byteAddress": 52,
+          "byteAddress": 12,
           "default": {
             "0": 1,
             "1": 2,
@@ -647,7 +647,7 @@
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 13,
+          "wordAlignedAddress": 3,
           "wordAlignedSize": 2,
         },
       },
@@ -655,7 +655,7 @@
     "memoryCopyAssertions": {
       "memoryMap": {
         "source": {
-          "byteAddress": 4,
+          "byteAddress": 20,
           "default": {
             "0": 10,
             "1": 20,
@@ -672,11 +672,11 @@
           "numberOfElements": 5,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 5,
           "wordAlignedSize": 5,
         },
         "target": {
-          "byteAddress": 24,
+          "byteAddress": 40,
           "default": {},
           "elementWordSize": 4,
           "id": "target",
@@ -686,7 +686,7 @@
           "numberOfElements": 5,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 6,
+          "wordAlignedAddress": 10,
           "wordAlignedSize": 5,
         },
       },

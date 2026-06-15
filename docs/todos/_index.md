@@ -67,7 +67,6 @@ Active todo files are listed below.
 | 453 | Add indirect calls and function reference type | 🟡 | 2-4d | 2026-06-11 | Add typed function references backed by WebAssembly table indices so 8f4e can store, load, and call runtime-selected functions through `call_indirect`. |
 | 454 | Add compile-time int cast helper | 🟡 | 4-8h | 2026-06-11 | Add a compile-time-only `int(...)` helper for folding numeric constants into integer arguments such as array lengths and loop counts. |
 | 457 | Make load infer narrow width from pointer metadata | 🟡 | 4-8h | 2026-06-12 | Let plain `load` choose narrow signed or unsigned integer loads when address metadata proves the pointee width, while keeping raw integer addresses 32-bit. |
-| 458 | Decouple module execution order from memory layout | 🟡 | 4-8h | 2026-06-14 | Keep module execution order user-controlled while deriving memory layout from a stable module ordering policy such as module id. |
 
 ### 🟢 Low Priority
 
@@ -84,6 +83,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 458 | Decouple module execution order from memory layout | 2026-06-14 | Module execution order now stays user-controlled while namespace layout uses stable module-id ordering, with worker memory-structure checks covering true address/layout changes. |
 | 384 | Add compiler algorithmic regression metrics | 2026-06-14 | Archived with the exact completion date unknown; compiler complexity metrics now provide release-level regression signals. |
 | 381 | Add #follow module layout directive | 2026-06-14 | Cancelled; no strict `#follow` module layout adjacency directive is planned. |
 | 280 | Add reverse stack instruction with explicit item count | 2026-06-14 | Cancelled; no explicit `reverse <count>` stack instruction is planned. |

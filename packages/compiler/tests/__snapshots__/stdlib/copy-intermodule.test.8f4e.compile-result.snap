@@ -354,7 +354,7 @@
     "copyIntermoduleAssertions": {
       "memoryMap": {
         "dest": {
-          "byteAddress": 8,
+          "byteAddress": 4,
           "default": 0,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -365,7 +365,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 2,
+          "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
         },
       },
@@ -373,7 +373,7 @@
     "copySource": {
       "memoryMap": {
         "source": {
-          "byteAddress": 4,
+          "byteAddress": 8,
           "default": 12.5,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -384,7 +384,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
       },

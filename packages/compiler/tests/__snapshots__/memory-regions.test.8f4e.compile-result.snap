@@ -2,6 +2,44 @@
   "functionAst": {},
   "functionOverview": {},
   "moduleAst": {
+    "aaaRawAddressDefaultSource": {
+      "id": "aaaRawAddressDefaultSource",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "aaaRawAddressDefaultSource",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "source",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 42,
+            },
+          ],
+          "hasExplicitMemoryDefault": true,
+          "instruction": "int",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
     "crossRegionCopyAssertions": {
       "id": "crossRegionCopyAssertions",
       "lines": [
@@ -471,23 +509,6 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "source",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 42,
-            },
-          ],
-          "hasExplicitMemoryDefault": true,
-          "instruction": "int",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
               "value": "result",
             },
           ],
@@ -850,10 +871,29 @@
     },
   },
   "moduleMemory": {
+    "aaaRawAddressDefaultSource": {
+      "memoryMap": {
+        "source": {
+          "byteAddress": 4,
+          "default": 42,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "source",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
     "crossRegionCopyAssertions": {
       "memoryMap": {
         "copy": {
-          "byteAddress": 20,
+          "byteAddress": 8,
           "default": {},
           "elementWordSize": 1,
           "id": "copy",
@@ -863,7 +903,7 @@
           "numberOfElements": 4,
           "pointerDepth": 0,
           "type": "int8",
-          "wordAlignedAddress": 5,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
       },
@@ -891,7 +931,7 @@
     "numericDefaultRegion": {
       "memoryMap": {
         "value": {
-          "byteAddress": 24,
+          "byteAddress": 12,
           "default": 7,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -902,7 +942,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 6,
+          "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
         },
       },
@@ -910,7 +950,7 @@
     "rawAddressDefaultReader": {
       "memoryMap": {
         "result": {
-          "byteAddress": 8,
+          "byteAddress": 16,
           "default": 0,
           "elementWordSize": 4,
           "id": "result",
@@ -920,22 +960,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 2,
-          "wordAlignedSize": 1,
-        },
-        "source": {
-          "byteAddress": 4,
-          "default": 42,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "source",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 4,
           "wordAlignedSize": 1,
         },
       },
@@ -943,7 +968,7 @@
     "rawAddressRegionSource": {
       "memoryMap": {
         "source": {
-          "byteAddress": 8,
+          "byteAddress": 4,
           "default": 99,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -955,7 +980,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 2,
+          "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
         },
       },
@@ -963,7 +988,7 @@
     "regionCopySource": {
       "memoryMap": {
         "values": {
-          "byteAddress": 12,
+          "byteAddress": 8,
           "default": {
             "0": 1,
             "1": 2,
@@ -980,7 +1005,7 @@
           "numberOfElements": 4,
           "pointerDepth": 0,
           "type": "int8",
-          "wordAlignedAddress": 3,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
       },
@@ -988,8 +1013,8 @@
     "regionPointerReader": {
       "memoryMap": {
         "ptr": {
-          "byteAddress": 16,
-          "default": 4,
+          "byteAddress": 24,
+          "default": 12,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "ptr",
@@ -1003,11 +1028,11 @@
           "pointeeMemoryRegionName": "sampleMemory",
           "pointerDepth": 1,
           "type": "int8*",
-          "wordAlignedAddress": 4,
+          "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
         },
         "result": {
-          "byteAddress": 12,
+          "byteAddress": 20,
           "default": 0,
           "elementWordSize": 4,
           "id": "result",
@@ -1017,7 +1042,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 3,
+          "wordAlignedAddress": 5,
           "wordAlignedSize": 1,
         },
       },
@@ -1025,7 +1050,7 @@
     "regionSamples": {
       "memoryMap": {
         "values": {
-          "byteAddress": 4,
+          "byteAddress": 12,
           "default": {
             "0": 11,
           },
@@ -1039,7 +1064,7 @@
           "numberOfElements": 4,
           "pointerDepth": 0,
           "type": "int8",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
         },
       },
@@ -1048,6 +1073,7 @@
   "overview": {
     "compiledFunctions": [],
     "compiledModules": [
+      "aaaRawAddressDefaultSource",
       "crossRegionCopyAssertions",
       "numericCustomRegion",
       "numericDefaultRegion",

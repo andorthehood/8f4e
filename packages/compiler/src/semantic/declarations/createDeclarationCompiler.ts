@@ -1,15 +1,10 @@
-import type {
-	AddressMetadata,
-	CompilationContext,
-	DataStructure,
-	MemoryDeclarationLine,
-	MemoryType,
-} from '@8f4e/compiler-spec';
+import type { CompilationContext, MemoryDeclarationLine, MemoryType } from '@8f4e/compiler-spec';
 import { getPointerDepth } from '@8f4e/tokenizer';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from '../layoutAddresses';
 import { getMemoryRegionFields } from '../memoryRegions';
 import getMemoryFlags from '../utils/memoryFlags';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
+import { getPointerPointeeFields } from '../utils/pointerPointeeFields';
 
 /** Function signature shared by semantic memory declaration compilers. */
 export type MemoryDeclarationCompiler<TLine extends MemoryDeclarationLine = MemoryDeclarationLine> = (
@@ -30,42 +25,6 @@ interface DeclarationCompilerOptions {
 	 * Pointer variants always use elementWordSize 4 regardless of this setting.
 	 */
 	nonPointerElementWordSize: 4 | 8;
-}
-
-function getPointeeMemoryItem(
-	safeRange: NonNullable<AddressMetadata['safeRange']>,
-	context: CompilationContext
-): DataStructure | undefined {
-	const memoryId = safeRange.memoryId;
-	if (!memoryId) {
-		return undefined;
-	}
-
-	if (safeRange.moduleId) {
-		const namespace = context.namespace.namespaces[safeRange.moduleId];
-		return namespace?.kind === 'module' ? namespace.memory?.[memoryId] : undefined;
-	}
-
-	return context.namespace.memory[memoryId];
-}
-
-function getPointeeElementCount(
-	defaultAddress: AddressMetadata | undefined,
-	context: CompilationContext
-): number | undefined {
-	const safeRange = defaultAddress?.safeRange;
-	if (!safeRange || safeRange.source !== 'memory-start') {
-		return undefined;
-	}
-
-	const memoryItem = getPointeeMemoryItem(safeRange, context);
-	if (!memoryItem) {
-		return undefined;
-	}
-
-	const byteOffset = Math.max(0, safeRange.byteAddress - memoryItem.byteAddress);
-	const byteLength = memoryItem.numberOfElements * memoryItem.elementWordSize;
-	return Math.max(0, Math.floor((byteLength - byteOffset) / memoryItem.elementWordSize));
 }
 
 /**
@@ -90,15 +49,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 		const memoryIndex = context.currentMemoryIndex;
 		const memoryRegionName = context.currentMemoryRegionName;
 		const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
-		const pointeeElementCount = getPointeeElementCount(defaultAddress, context);
-		const pointerPointeeRegion =
-			pointerDepth > 0
-				? {
-						pointeeMemoryIndex: defaultAddress?.memoryIndex ?? 0,
-						...(defaultAddress?.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
-						...(pointeeElementCount !== undefined && pointeeElementCount !== 1 ? { pointeeElementCount } : {}),
-					}
-				: {};
+		const pointerPointeeRegion = pointerDepth > 0 ? getPointerPointeeFields(defaultAddress, context) : {};
 
 		const finalDefault = truncate ? Math.trunc(defaultValue) : defaultValue;
 

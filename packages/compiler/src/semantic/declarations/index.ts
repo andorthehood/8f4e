@@ -66,5 +66,5 @@ export function applyMemoryDeclarationLine(line: MemoryDeclarationLine, context:
 	const compileDeclaration = declarationCompilers[
 		line.instruction as MemoryDeclarationInstruction
 	] as MemoryDeclarationCompiler;
-	return compileDeclaration(line, context);
+	return (context.memoryDeclarationHandler ?? compileDeclaration)(line, context);
 }
