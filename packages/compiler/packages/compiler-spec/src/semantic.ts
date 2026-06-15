@@ -184,7 +184,6 @@ export interface CompilationContext {
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>;
 	expandPrototypeShapes?: boolean;
 	isInherited?: boolean;
-	stripMemoryDeclarationDefaults?: boolean;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;

@@ -2,7 +2,6 @@ import { type CompilationContext, ErrorCode, type ShapeLine } from '@8f4e/compil
 
 import { getError } from '../../compilerError';
 import { applyMemoryDeclarationLine } from '../declarations';
-import stripMemoryDeclarationDefaults from '../declarations/stripMemoryDeclarationDefaults';
 import normalizeValueArguments from '../normalizeValueArguments';
 
 /**
@@ -33,10 +32,7 @@ export default function semanticShape(line: ShapeLine, context: CompilationConte
 			...declarationLine,
 			lineNumber: line.lineNumber,
 		};
-		const resolvedDeclarationLine = context.stripMemoryDeclarationDefaults
-			? stripMemoryDeclarationDefaults(inheritedDeclarationLine)
-			: inheritedDeclarationLine;
-		applyMemoryDeclarationLine(normalizeValueArguments(resolvedDeclarationLine, context), context);
+		applyMemoryDeclarationLine(normalizeValueArguments(inheritedDeclarationLine, context), context);
 	}
 	context.isInherited = false;
 }
