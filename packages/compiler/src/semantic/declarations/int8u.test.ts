@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import int8u from './int8u';
+import { applyPlannedMemoryDeclaration } from './testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -10,7 +11,8 @@ describe('int8u instruction compiler', () => {
 	it('creates an int8u* memory entry with unsigned pointee metadata', () => {
 		const context = createInstructionCompilerTestContext();
 
-		int8u(
+		applyPlannedMemoryDeclaration(
+			int8u,
 			{
 				lineNumber: 1,
 				instruction: 'int8u*',
@@ -31,7 +33,8 @@ describe('int8u instruction compiler', () => {
 	it('creates an int8u** memory entry with pointer-width allocation', () => {
 		const context = createInstructionCompilerTestContext();
 
-		int8u(
+		applyPlannedMemoryDeclaration(
+			int8u,
 			{
 				lineNumber: 1,
 				instruction: 'int8u**',

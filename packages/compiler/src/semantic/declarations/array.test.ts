@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import array from './array';
+import { applyPlannedMemoryDeclaration, prepareMemoryDeclarationPlan } from './testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -11,7 +12,8 @@ describe('array declaration compiler', () => {
 	it('creates a memory array entry', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int[]',
@@ -27,7 +29,8 @@ describe('array declaration compiler', () => {
 	it('stores inline initializer values as array defaults', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int[]',
@@ -54,7 +57,8 @@ describe('array declaration compiler', () => {
 	it('truncates inline initializer values for integer arrays', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int[]',
@@ -78,7 +82,8 @@ describe('array declaration compiler', () => {
 
 		let thrownError: unknown;
 		try {
-			array(
+			applyPlannedMemoryDeclaration(
+				array,
 				{
 					lineNumber: 1,
 					instruction: 'int[]',
@@ -103,7 +108,8 @@ describe('array declaration compiler', () => {
 	it('creates an int8[] array with correct wordAlignedSize', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int8[]',
@@ -124,7 +130,8 @@ describe('array declaration compiler', () => {
 	it('creates an int8[] array requiring alignment padding', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int8[]',
@@ -145,7 +152,8 @@ describe('array declaration compiler', () => {
 	it('creates an int16[] array with correct wordAlignedSize', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int16[]',
@@ -166,7 +174,8 @@ describe('array declaration compiler', () => {
 	it('creates an int16[] array requiring alignment padding', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int16[]',
@@ -187,7 +196,8 @@ describe('array declaration compiler', () => {
 	it('creates an int32[] array with correct wordAlignedSize', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int32[]',
@@ -208,7 +218,8 @@ describe('array declaration compiler', () => {
 	it('creates an int8u[] array with unsigned flag', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int8u[]',
@@ -228,7 +239,8 @@ describe('array declaration compiler', () => {
 	it('creates an int16u[] array with unsigned flag', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int16u[]',
@@ -248,7 +260,8 @@ describe('array declaration compiler', () => {
 	it('creates an int8[] array with isUnsigned false', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'int8[]',
@@ -265,7 +278,8 @@ describe('array declaration compiler', () => {
 	it('creates a float64[] array with elementWordSize 8', () => {
 		const context = createInstructionCompilerTestContext();
 
-		array(
+		applyPlannedMemoryDeclaration(
+			array,
 			{
 				lineNumber: 1,
 				instruction: 'float64[]',
@@ -285,27 +299,24 @@ describe('array declaration compiler', () => {
 
 	it('aligns float64[] to 8 bytes after an odd number of int32 elements', () => {
 		const context = createInstructionCompilerTestContext();
+		const intsLine = {
+			lineNumber: 1,
+			instruction: 'int[]',
+			hasExplicitMemoryDefault: false,
+			arguments: [classifyIdentifier('ints'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
+		} satisfies ArrayDeclarationLine;
+		const doublesLine = {
+			lineNumber: 2,
+			instruction: 'float64[]',
+			hasExplicitMemoryDefault: false,
+			arguments: [classifyIdentifier('doubles'), { type: ArgumentType.LITERAL, value: 2, isInteger: true }],
+		} satisfies ArrayDeclarationLine;
+		prepareMemoryDeclarationPlan(context, [intsLine, doublesLine]);
 
 		// Three int32 variables to force an odd word offset
-		array(
-			{
-				lineNumber: 1,
-				instruction: 'int[]',
-				hasExplicitMemoryDefault: false,
-				arguments: [classifyIdentifier('ints'), { type: ArgumentType.LITERAL, value: 3, isInteger: true }],
-			} satisfies ArrayDeclarationLine,
-			context
-		);
+		applyPlannedMemoryDeclaration(array, intsLine, context);
 
-		array(
-			{
-				lineNumber: 2,
-				instruction: 'float64[]',
-				hasExplicitMemoryDefault: false,
-				arguments: [classifyIdentifier('doubles'), { type: ArgumentType.LITERAL, value: 2, isInteger: true }],
-			} satisfies ArrayDeclarationLine,
-			context
-		);
+		applyPlannedMemoryDeclaration(array, doublesLine, context);
 
 		const memory = context.namespace.memory['doubles'];
 		expect(memory.byteAddress % 8).toBe(0);

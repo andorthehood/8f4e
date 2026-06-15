@@ -168,6 +168,17 @@ export interface DataStructure {
 	isUnsigned: boolean;
 }
 
+/** Memory declaration metadata produced by layout planning before semantic defaults are applied. */
+export type MemoryLayoutDeclaration = Omit<
+	DataStructure,
+	| 'default'
+	| 'hasExplicitDefault'
+	| 'isInherited'
+	| 'pointeeMemoryIndex'
+	| 'pointeeMemoryRegionName'
+	| 'pointeeElementCount'
+>;
+
 export type MemoryMap = Record<string, DataStructure>;
 
 export type MemoryBuffer = Int32Array;

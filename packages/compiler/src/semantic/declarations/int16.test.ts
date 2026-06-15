@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import int16 from './int16';
+import { applyPlannedMemoryDeclaration } from './testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -10,7 +11,8 @@ describe('int16 instruction compiler', () => {
 	it('creates an int16* memory entry with pointer-width allocation', () => {
 		const context = createInstructionCompilerTestContext();
 
-		int16(
+		applyPlannedMemoryDeclaration(
+			int16,
 			{
 				lineNumber: 1,
 				instruction: 'int16*',
@@ -31,7 +33,8 @@ describe('int16 instruction compiler', () => {
 	it('creates an int16** memory entry with pointer-width allocation', () => {
 		const context = createInstructionCompilerTestContext();
 
-		int16(
+		applyPlannedMemoryDeclaration(
+			int16,
 			{
 				lineNumber: 1,
 				instruction: 'int16**',
@@ -52,7 +55,8 @@ describe('int16 instruction compiler', () => {
 	it('stores 4 bytes (pointer slot) regardless of int16 pointee width', () => {
 		const context = createInstructionCompilerTestContext();
 
-		int16(
+		applyPlannedMemoryDeclaration(
+			int16,
 			{
 				lineNumber: 1,
 				instruction: 'int16*',

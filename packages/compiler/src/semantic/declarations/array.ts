@@ -3,7 +3,7 @@ import { ArgumentType, type ArrayDeclarationLine, type CompilationContext, Error
 import { getError } from '../../compilerError';
 
 import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
-import planDeclarationLayout from './planDeclarationLayout';
+import consumePlannedDeclarationLayout from './plannedDeclarationLayout';
 
 function createArrayDefaultValues(
 	line: ArrayDeclarationLine,
@@ -35,7 +35,7 @@ const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDecla
 
 	const numberOfElements = elementCountArg.value;
 	const isInteger = line.instruction.startsWith('int') || line.instruction.includes('*');
-	const plannedLayout = planDeclarationLayout(line, context);
+	const plannedLayout = consumePlannedDeclarationLayout(context);
 
 	context.namespace.memory[memoryId] = {
 		...plannedLayout.declaration,

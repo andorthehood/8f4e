@@ -17,12 +17,10 @@ export interface MemoryLayoutSourceModule {
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
-export interface MemoryLayoutPlanInput<TModule extends MemoryLayoutSourceModule = MemoryLayoutSourceModule> {
-	asts: readonly TModule[];
+export interface MemoryLayoutPlanInput {
+	modules: readonly MemoryLayoutSourceModule[];
 	startingByteAddress?: number;
 	memoryRegions?: readonly string[];
-	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine, ast: TModule) => MemoryDeclarationLine;
-	planModule?: (ast: TModule, moduleByteAddress: number, region: MemoryRegionIdentity) => PlannedModuleMemory;
 }
 
 export interface PlannedMemoryModule extends MemoryRegionIdentity {
@@ -32,14 +30,6 @@ export interface PlannedMemoryModule extends MemoryRegionIdentity {
 	wordAlignedSize: number;
 	memory: Record<string, PlannedMemoryDeclaration>;
 	declarations: readonly PlannedMemoryDeclaration[];
-}
-
-export interface PlannedModuleMemory {
-	id?: string;
-	lineNumber?: number;
-	wordAlignedSize: number;
-	memory: Record<string, PlannedMemoryDeclaration>;
-	declarations?: readonly PlannedMemoryDeclaration[];
 }
 
 export interface MemoryLayoutPlan {
@@ -125,18 +115,16 @@ function planDeclarationLine(
 	});
 }
 
-function planModuleMemory<TModule extends MemoryLayoutSourceModule>(
-	ast: TModule,
+function planModuleMemory(
+	sourceModule: MemoryLayoutSourceModule,
 	moduleByteAddress: number,
-	region: MemoryRegionIdentity,
-	resolveMemoryDeclarationLine: NonNullable<MemoryLayoutPlanInput<TModule>['resolveMemoryDeclarationLine']> | undefined
+	region: MemoryRegionIdentity
 ): Omit<PlannedMemoryModule, 'byteAddress' | 'id' | 'lineNumber'> {
 	let localWordOffset = 0;
 	const memory: Record<string, PlannedMemoryDeclaration> = {};
 	const declarations: PlannedMemoryDeclaration[] = [];
 
-	for (const originalLine of ast.memoryDeclarationLines) {
-		const line = resolveMemoryDeclarationLine?.(originalLine, ast) ?? originalLine;
+	for (const line of sourceModule.memoryDeclarationLines) {
 		const plannedDeclaration = planDeclarationLine(line, moduleByteAddress, localWordOffset, region);
 		const declaration = plannedDeclaration.declaration;
 
@@ -162,29 +150,25 @@ function planModuleMemory<TModule extends MemoryLayoutSourceModule>(
  * @param input - Source modules and optional layout settings.
  * @returns Address and size metadata for modules and memory declarations.
  */
-export function planMemoryLayout<TModule extends MemoryLayoutSourceModule>(
-	input: MemoryLayoutPlanInput<TModule>
-): MemoryLayoutPlan {
+export function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 	const startingByteAddress = input.startingByteAddress ?? GLOBAL_ALIGNMENT_BOUNDARY;
 	const memoryRegions = input.memoryRegions ?? [];
 	const cursor = createModuleAddressCursor(startingByteAddress);
 	const modules: Record<string, PlannedMemoryModule> = {};
 	const moduleList: PlannedMemoryModule[] = [];
 
-	for (const ast of input.asts) {
-		const region = getModuleRegion(ast, memoryRegions);
+	for (const sourceModule of input.modules) {
+		const region = getModuleRegion(sourceModule, memoryRegions);
 		const moduleByteAddress = getNextModuleByteAddress(cursor, region.memoryIndex, startingByteAddress);
-		const moduleMemory: PlannedModuleMemory =
-			input.planModule?.(ast, moduleByteAddress, region) ??
-			planModuleMemory(ast, moduleByteAddress, region, input.resolveMemoryDeclarationLine);
+		const moduleMemory = planModuleMemory(sourceModule, moduleByteAddress, region);
 		const plannedModule: PlannedMemoryModule = {
 			...region,
-			id: moduleMemory.id ?? ast.id,
-			lineNumber: moduleMemory.lineNumber ?? ast.moduleLine.lineNumber,
+			id: sourceModule.id,
+			lineNumber: sourceModule.moduleLine.lineNumber,
 			byteAddress: moduleByteAddress,
 			wordAlignedSize: moduleMemory.wordAlignedSize,
 			memory: moduleMemory.memory,
-			declarations: moduleMemory.declarations ?? Object.values(moduleMemory.memory),
+			declarations: moduleMemory.declarations,
 		};
 
 		modules[plannedModule.id] = plannedModule;

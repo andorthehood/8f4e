@@ -1,6 +1,6 @@
 import type { AddressMetadata, CompilationContext, DataStructure, MemoryDeclarationLine } from '@8f4e/compiler-spec';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
-import planDeclarationLayout from './planDeclarationLayout';
+import consumePlannedDeclarationLayout from './plannedDeclarationLayout';
 
 /** Function signature shared by semantic memory declaration compilers. */
 export type MemoryDeclarationCompiler<TLine extends MemoryDeclarationLine = MemoryDeclarationLine> = (
@@ -65,7 +65,7 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 
 	return (line, context) => {
 		const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
-		const plannedLayout = planDeclarationLayout(line, context);
+		const plannedLayout = consumePlannedDeclarationLayout(context);
 		const pointerDepth = plannedLayout.declaration.pointerDepth;
 		const pointeeElementCount = getPointeeElementCount(defaultAddress, context);
 		const pointerPointeeRegion =
