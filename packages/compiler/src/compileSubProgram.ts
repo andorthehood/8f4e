@@ -11,7 +11,6 @@ import type {
 	FunctionMetadataLookup,
 	FunctionRegistry,
 	FunctionTypeRegistry,
-	MemoryDeclarationLine,
 	Module,
 	ValidatedAST,
 	ValidatedConstantsAST,
@@ -19,7 +18,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
+import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { ConstantInliningError, inlineConstantsInASTs } from '@8f4e/constant-inliner';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
@@ -251,68 +250,10 @@ function attachSourceMetadataToAst<TAst extends ValidatedAST>(ast: TAst, source:
 	} as TAst;
 }
 
-function cloneLineForCompilation(line: CompilerASTLine): CompilerASTLine {
-	return {
-		...line,
-		arguments: [...line.arguments],
-	} as CompilerASTLine;
-}
-
-function prepareASTForCompilation<TAst extends ValidatedAST>(ast: TAst): TAst {
-	const lineMap = new Map<CompilerASTLine, CompilerASTLine>();
-	const lines = ast.lines.map(line => {
-		const cloned = cloneLineForCompilation(line);
-		lineMap.set(line, cloned);
-		return cloned;
-	});
-	const rebindLine = <TLine extends CompilerASTLine | undefined>(line: TLine): TLine => {
-		return (line ? (lineMap.get(line) ?? line) : line) as TLine;
-	};
-	const rebindMemoryDeclarationLines = (memoryDeclarationLines: readonly MemoryDeclarationLine[]) => {
-		return memoryDeclarationLines.map(line => rebindLine(line)).filter(isMemoryDeclarationLine);
-	};
-
-	if (ast.type === 'module') {
-		return {
-			...ast,
-			lines,
-			moduleLine: rebindLine(ast.moduleLine),
-			...(ast.regionLine ? { regionLine: rebindLine(ast.regionLine) } : {}),
-			memoryDeclarationLines: rebindMemoryDeclarationLines(ast.memoryDeclarationLines),
-		} as TAst;
-	}
-
-	if (ast.type === 'constants') {
-		return {
-			...ast,
-			lines,
-			constantsLine: rebindLine(ast.constantsLine),
-		} as TAst;
-	}
-
-	if (ast.type === 'function') {
-		return {
-			...ast,
-			lines,
-			functionLine: rebindLine(ast.functionLine),
-			functionEndLine: rebindLine(ast.functionEndLine),
-			...(ast.exportLine ? { exportLine: rebindLine(ast.exportLine) } : {}),
-			...(ast.importLine ? { importLine: rebindLine(ast.importLine) } : {}),
-		} as TAst;
-	}
-
-	return {
-		...ast,
-		lines,
-		prototypeLine: rebindLine(ast.prototypeLine),
-		memoryDeclarationLines: rebindMemoryDeclarationLines(ast.memoryDeclarationLines),
-	} as TAst;
-}
-
 function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSource, cache: CompilerCache): TAst {
 	try {
 		const ast = compileToAST(source.code, cache.ast, source.cacheKey) as TAst;
-		return prepareASTForCompilation(attachSourceMetadataToAst(ast, source));
+		return attachSourceMetadataToAst(ast, source);
 	} catch (error) {
 		throw attachSourceMetadataToSyntaxError(source, error);
 	}

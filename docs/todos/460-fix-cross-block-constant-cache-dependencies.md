@@ -21,15 +21,15 @@ That is correct for tokenizer output, but constants introduce a cross-block sema
 - a separate constants block can define `const SIZE 2`;
 - if the user changes only the constants block to `const SIZE 4`, the module block source hash still matches.
 
-Current compilation avoids stale user-visible output by preparing a per-compile AST copy before constant inlining mutates
-arguments. The cached tokenizer AST remains source-shaped, while the inliner stays simple.
+The constant inliner currently stays simple and mutates the AST it receives. That means the source-block AST cache needs
+a more deliberate model before it can safely coexist with cross-block constant changes in editor/dev-loop scenarios.
 
-This TODO tracks a more deliberate cache model for any future work that wants to cache transformed or inlined ASTs.
+This TODO tracks that cache model as future work instead of pushing cache-specific cloning or reference-rebinding
+complexity into constant inlining.
 
 ## Proposed Solution
 
-Keep constant inlining simple for now: it may mutate the AST it receives, and the compiler should continue passing it a
-per-compile prepared AST.
+Keep constant inlining simple for now: it may mutate the AST it receives.
 
 Later, choose an explicit cache strategy for transformed ASTs:
 
@@ -43,6 +43,7 @@ into the constant inliner.
 ## Anti-Patterns
 
 - Do not make the constant inliner perform AST-wide reference rebinding just to protect the tokenizer cache.
+- Do not add a per-compile AST clone as an unowned bridge without an explicit cache strategy.
 - Do not cache inlined ASTs using only the module/function/prototype source hash.
 - Do not treat an unchanged module source hash as proof that its inlined constant values are unchanged.
 - Do not couple this to memory layout planning; `push sizeof(buffer)` and other memory metadata expressions are a
