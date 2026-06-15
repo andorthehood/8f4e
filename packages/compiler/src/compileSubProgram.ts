@@ -165,6 +165,11 @@ function getRequiredMemoryBytesByRegion(
 	return result;
 }
 
+/** Returns the deterministic module order used only for memory layout. */
+function getStableMemoryLayoutAsts(modules: readonly ValidatedModuleAST[]): readonly ValidatedModuleAST[] {
+	return [...modules].sort((left, right) => left.id.localeCompare(right.id));
+}
+
 /** Indexes prototype ASTs by id and rejects duplicate prototype declarations. */
 function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
 	const prototypeShapesById: Record<string, ValidatedPrototypeAST> = {};
@@ -292,11 +297,12 @@ export function compileSubProgram(
 	assertUniqueModuleIds(astModules);
 
 	const namespaceAsts = [...astModules, ...astConstants];
+	const memoryLayoutAsts = getStableMemoryLayoutAsts(astModules);
 	const namespaces = collectNamespacesFromASTs(
 		namespaceAsts,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
-		astModules,
+		memoryLayoutAsts,
 		options,
 		prototypeShapesById
 	);

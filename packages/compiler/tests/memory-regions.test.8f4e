@@ -23,11 +23,18 @@ module rawAddressRegionSource
 int source 99
 moduleEnd
 
+module aaaRawAddressDefaultSource
+; This module intentionally sorts
+; first by stable memory layout
+; order, so its source occupies
+; raw default-memory byte address 4.
+int source 42
+moduleEnd
+
 module rawAddressDefaultReader
 ; The raw address 4 reads the
 ; default memory source, not the
 ; sampleMemory source.
-int source 42
 int result
 
 push &result

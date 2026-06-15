@@ -909,7 +909,7 @@
     "constantLastWinsAssertions": {
       "memoryMap": {
         "result": {
-          "byteAddress": 16,
+          "byteAddress": 4,
           "default": 20,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -920,7 +920,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 4,
+          "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
         },
       },
@@ -928,7 +928,7 @@
     "constantsBlockAssertions": {
       "memoryMap": {
         "gravity": {
-          "byteAddress": 12,
+          "byteAddress": 16,
           "default": 9.81,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -939,11 +939,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 3,
+          "wordAlignedAddress": 4,
           "wordAlignedSize": 1,
         },
         "pi": {
-          "byteAddress": 4,
+          "byteAddress": 8,
           "default": 3.14159,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -954,11 +954,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
         "tau": {
-          "byteAddress": 8,
+          "byteAddress": 12,
           "default": 6.28318,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -969,7 +969,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 2,
+          "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
         },
       },
@@ -977,7 +977,7 @@
     "constantsCanUseConstantsAssertions": {
       "memoryMap": {
         "half": {
-          "byteAddress": 36,
+          "byteAddress": 24,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -988,11 +988,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 9,
+          "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
         },
         "size": {
-          "byteAddress": 32,
+          "byteAddress": 20,
           "default": 48,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1003,7 +1003,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 8,
+          "wordAlignedAddress": 5,
           "wordAlignedSize": 1,
         },
       },
@@ -1030,7 +1030,7 @@
     "moduleConstConsumerAssertions": {
       "memoryMap": {
         "result": {
-          "byteAddress": 20,
+          "byteAddress": 32,
           "default": 99,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1041,7 +1041,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 5,
+          "wordAlignedAddress": 8,
           "wordAlignedSize": 1,
         },
       },
@@ -1052,7 +1052,7 @@
     "sameModuleDerivedConstAssertions": {
       "memoryMap": {
         "result": {
-          "byteAddress": 24,
+          "byteAddress": 36,
           "default": 10,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1063,7 +1063,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 6,
+          "wordAlignedAddress": 9,
           "wordAlignedSize": 1,
         },
       },

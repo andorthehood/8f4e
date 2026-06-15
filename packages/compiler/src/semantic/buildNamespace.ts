@@ -14,6 +14,7 @@ import {
 	hasReferencedNamespaceIds,
 	isMemoryDeclarationLine,
 	isNamedScalarMemoryDeclarationLine,
+	isScalarMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	type MemoryDeclarationLine,
 	type NamespaceBuildContext,
@@ -39,6 +40,7 @@ import {
 import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
 import { getEffectiveFunctionMetadata } from './paramShape';
 import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
+import { applyPointerPointeeFields } from './utils/pointerPointeeFields';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
@@ -58,6 +60,20 @@ type FunctionMetadataCollectionOptions = {
 	reservedFunctionIds: readonly string[];
 	reservedExportNames: readonly string[];
 	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>;
+};
+
+/** Context overrides used by namespace layout sub-passes. */
+type NamespaceBuildOverrides = {
+	/** Existing memory map to revisit instead of allocating a fresh one. */
+	memory?: NamespaceBuildContext['namespace']['memory'];
+	/** Current local word offset when resuming traversal over an existing layout. */
+	currentModuleNextWordOffset?: number;
+	/** Current module size when resolving `this&` address defaults. */
+	currentModuleWordAlignedSize?: number;
+	/** Optional source-line rewrite before semantic memory declaration handling. */
+	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine;
+	/** Optional declaration handler used to replace allocation with a narrower pass. */
+	memoryDeclarationHandler?: NamespaceBuildContext['memoryDeclarationHandler'];
 };
 
 /**
@@ -198,13 +214,13 @@ function createNamespaceBuildContext(
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
-	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine
+	overrides: NamespaceBuildOverrides = {}
 ): NamespaceBuildContext {
 	const defaultRegion = getDefaultMemoryRegion();
 	return createCompilationContext<NamespaceBuildContext>({
 		namespace: {
 			namespaces,
-			memory: {},
+			memory: overrides.memory ?? {},
 			consts: {},
 			moduleName: undefined,
 			functions,
@@ -215,8 +231,8 @@ function createNamespaceBuildContext(
 		stack: [],
 		blockStack: [],
 		startingByteAddress,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
+		currentModuleNextWordOffset: overrides.currentModuleNextWordOffset ?? 0,
+		currentModuleWordAlignedSize: overrides.currentModuleWordAlignedSize ?? 0,
 		currentMemoryIndex: defaultRegion.memoryIndex,
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
@@ -224,7 +240,8 @@ function createNamespaceBuildContext(
 		projectBlockId: ast.projectBlockId,
 		prototypeShapes,
 		expandPrototypeShapes: true,
-		resolveMemoryDeclarationLine,
+		resolveMemoryDeclarationLine: overrides.resolveMemoryDeclarationLine,
+		memoryDeclarationHandler: overrides.memoryDeclarationHandler,
 	});
 }
 
@@ -249,27 +266,89 @@ function applyNamespaceDeclarationLines(
 	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
 }
 
-function resolveScalarMemoryDefaults(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
-	context: NamespaceBuildContext
-): void {
-	ast.lines.forEach(originalLine => {
-		if (!isMemoryDeclarationLine(originalLine) || originalLine.instruction.endsWith('[]')) {
-			return;
-		}
+/**
+ * Resolves one scalar declaration's default value after namespace addresses are available.
+ *
+ * @param line - Memory declaration line being revisited.
+ * @param context - Compilation context with all collected namespaces available.
+ * @returns Nothing.
+ */
+function resolveScalarMemoryAddressDefault(line: MemoryDeclarationLine, context: CompilationContext): void {
+	if (!isScalarMemoryDeclarationLine(line)) {
+		return;
+	}
 
-		const line = normalizeCompileTimeArguments(originalLine, context);
-		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
-		const memoryItem = context.namespace.memory[id];
-		if (!memoryItem || memoryItem.numberOfElements !== 1) {
-			return;
-		}
+	const { id, defaultValue, defaultAddress } = parseMemoryInstructionArguments(line, context);
+	const memoryItem = context.namespace.memory[id];
+	if (!memoryItem || memoryItem.numberOfElements !== 1) {
+		return;
+	}
 
-		memoryItem.default = memoryItem.isInteger ? Math.trunc(defaultValue) : defaultValue;
-	});
+	memoryItem.default = memoryItem.isInteger ? Math.trunc(defaultValue) : defaultValue;
+	if (memoryItem.pointerDepth > 0) {
+		applyPointerPointeeFields(memoryItem, defaultAddress, context);
+	}
 }
 
-function discoverNamespace(
+/**
+ * Replays semantic declaration traversal over an existing memory map to resolve address defaults.
+ *
+ * This pass intentionally does not allocate memory. It updates scalar `default`
+ * values and pointer pointee metadata now that intermodule addresses can be
+ * resolved against the full namespace map.
+ *
+ * @param ast - Validated AST whose declarations should be revisited.
+ * @param namespaces - Collected namespaces used for intermodule address resolution.
+ * @param namespace - Existing namespace layout to update.
+ * @param functions - Function registry available to semantic normalization.
+ * @param options - Compiler options for this compilation pass.
+ * @param prototypeShapes - Prototype shape ASTs available during semantic traversal.
+ * @returns Namespace context after address defaults have been resolved.
+ */
+function resolveNamespaceAddressDefaults(
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	namespaces: Namespaces,
+	namespace: NonNullable<Namespaces[string]>,
+	functions?: FunctionRegistry,
+	options: Pick<CompileOptions, 'memoryRegions'> = {},
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
+): NamespaceBuildContext {
+	const context = createNamespaceBuildContext(
+		ast,
+		namespaces,
+		namespace.byteAddress ?? 0,
+		functions,
+		options,
+		prototypeShapes,
+		{
+			memory: namespace.memory ?? {},
+			currentModuleNextWordOffset: namespace.wordAlignedSize ?? 0,
+			currentModuleWordAlignedSize: namespace.wordAlignedSize ?? 0,
+			memoryDeclarationHandler: resolveScalarMemoryAddressDefault,
+		}
+	);
+	applyNamespaceDeclarationLines(ast, context);
+
+	return context;
+}
+
+/**
+ * Assigns memory addresses for a namespace without resolving scalar address defaults.
+ *
+ * Scalar defaults may reference modules that have not yet received stable byte
+ * addresses, so this pass strips those defaults before declaration handling.
+ * Array defaults are still resolved during allocation because they affect data
+ * size and must be known immediately.
+ *
+ * @param ast - Validated AST whose namespace layout should be allocated.
+ * @param namespaces - Namespaces collected so far.
+ * @param startingByteAddress - Absolute byte address where this namespace should begin.
+ * @param functions - Function registry available to semantic normalization.
+ * @param options - Compiler options for this compilation pass.
+ * @param prototypeShapes - Prototype shape ASTs available during semantic traversal.
+ * @returns Namespace context containing assigned memory addresses and sizes.
+ */
+function allocateNamespaceMemoryLayout(
 	ast: ValidatedModuleAST | ValidatedConstantsAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
@@ -284,7 +363,9 @@ function discoverNamespace(
 		functions,
 		options,
 		prototypeShapes,
-		toNamespaceDiscoveryMemoryDeclarationLine
+		{
+			resolveMemoryDeclarationLine: stripScalarDefaultForAddressAllocation,
+		}
 	);
 	applyNamespaceDeclarationLines(ast, context);
 
@@ -319,9 +400,22 @@ export function layoutNamespace(
 		prototypeShapes
 	);
 	applyNamespaceDeclarationLines(ast, context);
-	resolveScalarMemoryDefaults(ast, context);
 
-	return context;
+	return resolveNamespaceAddressDefaults(
+		ast,
+		namespaces,
+		{
+			kind: ast.type,
+			consts: context.namespace.consts,
+			memory: context.namespace.memory,
+			...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
+			byteAddress: startingByteAddress,
+			wordAlignedSize: context.currentModuleWordAlignedSize,
+		},
+		functions,
+		options,
+		prototypeShapes
+	);
 }
 
 function getModuleRegionFromAst(
@@ -358,7 +452,13 @@ function shouldDeferNamespaceCollection(
 	return hasReferencedNamespaceIds(line) && line.referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
 }
 
-function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine): MemoryDeclarationLine {
+/**
+ * Removes scalar declaration defaults while preserving the declared identifier.
+ *
+ * @param line - Memory declaration line being prepared for address allocation.
+ * @returns The declaration line to use during address allocation.
+ */
+function stripScalarDefaultForAddressAllocation(line: MemoryDeclarationLine): MemoryDeclarationLine {
 	if (!isNamedScalarMemoryDeclarationLine(line)) {
 		return line;
 	}
@@ -371,12 +471,12 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
 }
 
 /**
- * Discovers and lays out namespaces for modules and constants, deferring intermodule dependencies as needed.
+ * Assigns namespace memory addresses, then resolves scalar address defaults once all module addresses are known.
  *
  * @param asts - Validated ASTs being processed.
  * @param startingByteAddress - Absolute byte address where layout should begin.
  * @param compiledFunctions - Function registry available to module compilation.
- * @param layoutAsts - layout asts value to use.
+ * @param layoutAsts - Module AST order used for memory layout.
  * @param options - Compiler options for this compilation pass.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
  * @returns The computed result.
@@ -401,7 +501,7 @@ export function collectNamespacesFromASTs(
 
 		for (const ast of pendingAsts) {
 			try {
-				const context = discoverNamespace(
+				const context = allocateNamespaceMemoryLayout(
 					ast,
 					namespaces,
 					startingByteAddress,
@@ -447,9 +547,13 @@ export function collectNamespacesFromASTs(
 		[DEFAULT_MEMORY_INDEX]: startingByteAddress,
 	};
 	for (const ast of layoutAsts) {
+		if (ast.type !== moduleBlock.type) {
+			continue;
+		}
+
 		const region = getModuleRegionFromAst(ast, options);
 		const nextStartingByteAddress = nextStartingByteAddressByMemoryIndex[region.memoryIndex] ?? startingByteAddress;
-		const context = layoutNamespace(
+		const context = allocateNamespaceMemoryLayout(
 			ast,
 			namespaces,
 			nextStartingByteAddress,
@@ -472,6 +576,36 @@ export function collectNamespacesFromASTs(
 
 		nextStartingByteAddressByMemoryIndex[region.memoryIndex] =
 			nextStartingByteAddress + context.currentModuleWordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
+	}
+
+	for (const ast of layoutAsts) {
+		if (ast.type !== moduleBlock.type) {
+			continue;
+		}
+
+		const namespace = namespaces[ast.id];
+		if (!namespace || typeof namespace.byteAddress !== 'number') {
+			continue;
+		}
+
+		const context = resolveNamespaceAddressDefaults(
+			ast,
+			namespaces,
+			namespace,
+			compiledFunctions,
+			options,
+			prototypeShapes
+		);
+		if (!context.namespace.moduleName) {
+			continue;
+		}
+
+		namespaces[context.namespace.moduleName] = {
+			...namespace,
+			consts: { ...context.namespace.consts },
+			memory: context.namespace.memory,
+			wordAlignedSize: context.currentModuleWordAlignedSize,
+		};
 	}
 
 	return namespaces;
