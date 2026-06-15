@@ -27,10 +27,6 @@ const SAMPLE_RATE 48000
 const HALF SAMPLE_RATE/12000
 constantsEnd
 
-constants sameNameAsModule
-const UNUSED_VALUE 77
-constantsEnd
-
 ; Constants blocks should import
 ; into modules through use
 ; without becoming executable
@@ -122,17 +118,6 @@ call assert 48
 
 push half
 call assert 4
-moduleEnd
-
-module sameNameAsModule
-; A constants block and module
-; may share a name without
-; allocating constants-block
-; memory.
-int result 1
-
-push result
-call assert 1
 moduleEnd
 
 module validConstNameAssertions

@@ -2,7 +2,7 @@ import type { CompilationContext, DefaultLine, NormalizedDefaultLine } from '@8f
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**
- * Normalizes compile-time arguments for the `default` instruction.
+ * Normalizes value arguments for the `default` instruction.
  * The value argument (index 0) is normalized.
  * Throws UNDECLARED_IDENTIFIER if it remains as an unresolved identifier after normalization.
  *

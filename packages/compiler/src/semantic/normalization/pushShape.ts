@@ -9,10 +9,10 @@ import {
 import { getError } from '../../compilerError';
 import { getParamType } from '../paramShape';
 import { getPrototypeMemoryDeclarationId } from '../prototypeShapes';
-import { memoryStartAddressConst } from '../resolveCompileTimeArgument/addressConsts';
+import { memoryStartAddressValue } from '../resolveValueArgument/addressValues';
 
 function createAddressPushLine(line: PushShapeLine, memoryId: string, context: CompilationContext): CodegenPushLine {
-	const address = memoryStartAddressConst(context.namespace.memory[memoryId], context.namespace.moduleName);
+	const address = memoryStartAddressValue(context.namespace.memory[memoryId], context.namespace.moduleName);
 
 	return {
 		lineNumber: line.lineNumber,

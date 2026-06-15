@@ -43,10 +43,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
               },
               "operator": "/",
               "right": {
@@ -99,10 +98,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
               },
               "operator": "*",
               "right": {
@@ -153,20 +151,9 @@
               "value": "HALF",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
-              },
-              "operator": "/",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "const",
@@ -174,10 +161,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "HALF",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -207,20 +193,9 @@
               "value": "SIGNED",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": -1,
-              },
-              "operator": "/",
-              "right": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
-              },
-              "type": "compile_time_expression",
+              "isInteger": false,
+              "type": "literal",
+              "value": -0.125,
             },
           ],
           "instruction": "const",
@@ -228,10 +203,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "SIGNED",
+              "isInteger": false,
+              "type": "literal",
+              "value": -0.125,
             },
           ],
           "instruction": "push",
@@ -257,10 +231,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
               },
               "operator": "/",
               "right": {
@@ -300,10 +273,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
               },
               "operator": "/",
               "right": {
@@ -384,10 +356,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "WIDTH",
+              "isInteger": true,
+              "type": "literal",
+              "value": 65536,
             },
           ],
           "instruction": "push",
@@ -433,20 +404,9 @@
               "value": "TOTAL",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
-              },
-              "operator": "^",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 3,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
             },
           ],
           "instruction": "const",
@@ -454,10 +414,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "TOTAL",
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
             },
           ],
           "instruction": "push",
@@ -503,20 +462,9 @@
               "value": "RESULT",
             },
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "operator": "^",
-              "right": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "EXP",
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 256,
             },
           ],
           "instruction": "const",
@@ -524,10 +472,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "RESULT",
+              "isInteger": true,
+              "type": "literal",
+              "value": 256,
             },
           ],
           "instruction": "push",
@@ -559,10 +506,9 @@
               },
               "operator": "^",
               "right": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 4,
               },
               "type": "compile_time_expression",
             },
@@ -612,10 +558,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "MEMORY_EXP",
+                "isInteger": true,
+                "type": "literal",
+                "value": 3,
               },
               "operator": "^",
               "right": {
@@ -683,10 +628,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "BUFFER_BASE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 2,
               },
               "operator": "^",
               "right": {
@@ -1025,10 +969,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MY_FRACTION",
+              "isInteger": false,
+              "type": "literal",
+              "value": 0.125,
             },
           ],
           "instruction": "push",
@@ -1089,10 +1032,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MUL_RESULT",
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
             },
           ],
           "instruction": "push",
@@ -1132,10 +1074,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "DIV_RESULT",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -1472,10 +1413,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
               },
               "operator": "*",
               "right": {
@@ -1593,10 +1533,9 @@
               },
               "operator": "*",
               "right": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "SIZE",
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
               },
               "type": "compile_time_expression",
             },
@@ -1954,10 +1893,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "TEST1",
+              "isInteger": true,
+              "type": "literal",
+              "value": 420,
             },
           ],
           "instruction": "push",
@@ -1981,10 +1919,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "TEST2",
+              "isInteger": false,
+              "type": "literal",
+              "value": 420.69,
             },
           ],
           "instruction": "push",
@@ -2014,10 +1951,9 @@
               "value": "output3",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "TEST3",
+              "isInteger": true,
+              "type": "literal",
+              "value": 69,
             },
           ],
           "hasExplicitMemoryDefault": true,
