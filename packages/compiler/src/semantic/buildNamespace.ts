@@ -11,21 +11,29 @@ import {
 	type FunctionRegistry,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	hasReferencedNamespaceIds,
+	isArrayMemoryDeclarationLine,
 	isMemoryDeclarationLine,
-	isNamedScalarMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	type MemoryDeclarationLine,
+	type MemoryMap,
 	type NamespaceBuildContext,
 	type Namespaces,
 	type SemanticInstructionLine,
+	type ShapeLine,
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { planMemoryLayout } from '@8f4e/memory-planner';
+import {
+	type MemoryLayoutSourceModule,
+	type PlannedMemoryDeclaration,
+	type PlannedMemoryModule,
+	planMemoryLayout,
+} from '@8f4e/memory-planner';
 import { getError } from '../compilerError';
 import { createCompilationContext } from './createCompilationContext';
 import { applyMemoryDeclarationLine } from './declarations';
+import stripMemoryDeclarationDefaults from './declarations/stripMemoryDeclarationDefaults';
 import applySemanticInstruction from './instructions';
 import { getDefaultMemoryRegion, getMemoryRegionFields, validateMemoryRegionOptions } from './memoryRegions';
 import normalizeValueArguments from './normalizeValueArguments';
@@ -186,9 +194,11 @@ function createNamespaceBuildContext(
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
-	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine
+	plannedModule?: PlannedMemoryModule,
+	stripDeclarationDefaults = false
 ): NamespaceBuildContext {
 	const defaultRegion = getDefaultMemoryRegion();
+	const currentMemoryRegion = plannedModule ?? defaultRegion;
 	return createCompilationContext<NamespaceBuildContext>({
 		namespace: {
 			namespaces,
@@ -203,15 +213,18 @@ function createNamespaceBuildContext(
 		blockStack: [],
 		startingByteAddress,
 		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: defaultRegion.memoryIndex,
+		currentModuleWordAlignedSize: plannedModule?.wordAlignedSize ?? 0,
+		currentMemoryIndex: currentMemoryRegion.memoryIndex,
+		...(currentMemoryRegion.memoryRegionName ? { currentMemoryRegionName: currentMemoryRegion.memoryRegionName } : {}),
+		memoryLayoutDeclarations: plannedModule?.declarations,
+		currentMemoryLayoutDeclarationIndex: 0,
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
 		codeBlockType: ast.type,
 		projectBlockId: ast.projectBlockId,
 		prototypeShapes,
 		expandPrototypeShapes: true,
-		resolveMemoryDeclarationLine,
+		stripMemoryDeclarationDefaults: stripDeclarationDefaults,
 	});
 }
 
@@ -220,7 +233,9 @@ function applyNamespaceDeclarationLines(ast: ValidatedModuleAST, context: Namesp
 		if (isSemanticInstructionLine(originalLine)) {
 			applySemanticLine(originalLine, context);
 		} else if (isMemoryDeclarationLine(originalLine)) {
-			const declarationLine = context.resolveMemoryDeclarationLine?.(originalLine) ?? originalLine;
+			const declarationLine = context.stripMemoryDeclarationDefaults
+				? stripMemoryDeclarationDefaults(originalLine)
+				: originalLine;
 			applyMemoryDeclarationLine(normalizeValueArguments(declarationLine, context), context);
 		}
 	});
@@ -251,7 +266,8 @@ function discoverNamespace(
 	startingByteAddress = 0,
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
-	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
+	plannedModule?: PlannedMemoryModule
 ): NamespaceBuildContext {
 	const context = createNamespaceBuildContext(
 		ast,
@@ -260,7 +276,8 @@ function discoverNamespace(
 		functions,
 		options,
 		prototypeShapes,
-		toNamespaceDiscoveryMemoryDeclarationLine
+		plannedModule,
+		true
 	);
 	applyNamespaceDeclarationLines(ast, context);
 
@@ -284,7 +301,8 @@ export function layoutNamespace(
 	startingByteAddress = 0,
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
-	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
+	plannedModule?: PlannedMemoryModule
 ): NamespaceBuildContext {
 	const context = createNamespaceBuildContext(
 		ast,
@@ -292,7 +310,8 @@ export function layoutNamespace(
 		startingByteAddress,
 		functions,
 		options,
-		prototypeShapes
+		prototypeShapes,
+		plannedModule
 	);
 	applyNamespaceDeclarationLines(ast, context);
 	resolveScalarMemoryDefaults(ast, context);
@@ -316,16 +335,141 @@ function shouldDeferNamespaceCollection(
 	return hasReferencedNamespaceIds(line) && line.referencedNamespaceIds.some(namespaceId => !namespaces[namespaceId]);
 }
 
-function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine): MemoryDeclarationLine {
-	if (!isNamedScalarMemoryDeclarationLine(line)) {
-		return line;
+function isShapeLine(line: SemanticInstructionLine): line is ShapeLine {
+	return line.instruction === 'shape';
+}
+
+function stripLayoutIrrelevantMemoryArguments(line: MemoryDeclarationLine): MemoryDeclarationLine {
+	if (isArrayMemoryDeclarationLine(line)) {
+		return {
+			...line,
+			arguments: [line.arguments[0], line.arguments[1]],
+		};
 	}
 
-	const [identifier] = line.arguments;
-	return {
-		...line,
-		arguments: [identifier],
+	return stripMemoryDeclarationDefaults(line);
+}
+
+function createLayoutOnlyMemoryMap(memory: Record<string, PlannedMemoryDeclaration>): MemoryMap {
+	const layoutMemory: MemoryMap = {};
+
+	for (const [id, declaration] of Object.entries(memory)) {
+		layoutMemory[id] = {
+			...declaration,
+			default: 0,
+			isInherited: false,
+		};
+	}
+
+	return layoutMemory;
+}
+
+function refreshLayoutSourceContextMemory(
+	context: NamespaceBuildContext,
+	sourceModule: MemoryLayoutSourceModule,
+	startingByteAddress: number,
+	memoryRegions: readonly string[]
+): void {
+	const [plannedModule] = planMemoryLayout({
+		modules: [sourceModule],
+		startingByteAddress,
+		memoryRegions,
+	}).moduleList;
+
+	context.namespace.memory = createLayoutOnlyMemoryMap(plannedModule.memory);
+	context.currentModuleWordAlignedSize = plannedModule.wordAlignedSize;
+	context.currentModuleNextWordOffset = plannedModule.wordAlignedSize;
+	context.memoryLayoutDeclarations = plannedModule.declarations;
+	context.currentMemoryLayoutDeclarationIndex = plannedModule.declarations.length;
+}
+
+function appendLayoutMemoryDeclarationLine(
+	sourceModule: MemoryLayoutSourceModule,
+	context: NamespaceBuildContext,
+	line: MemoryDeclarationLine,
+	startingByteAddress: number,
+	memoryRegions: readonly string[]
+): void {
+	const layoutLine = stripLayoutIrrelevantMemoryArguments(line);
+	const normalizedLine = normalizeValueArguments(layoutLine, context);
+
+	sourceModule.memoryDeclarationLines = [...sourceModule.memoryDeclarationLines, normalizedLine];
+	refreshLayoutSourceContextMemory(context, sourceModule, startingByteAddress, memoryRegions);
+}
+
+function collectModuleMemoryDeclarationLines(
+	ast: ValidatedModuleAST,
+	namespaces: Namespaces,
+	startingByteAddress: number,
+	functions: FunctionRegistry | undefined,
+	options: Pick<CompileOptions, 'memoryRegions'>,
+	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>> | undefined
+): MemoryLayoutSourceModule {
+	const sourceModule: MemoryLayoutSourceModule = {
+		id: ast.id,
+		moduleLine: ast.moduleLine,
+		...(ast.regionLine ? { regionLine: ast.regionLine } : {}),
+		memoryDeclarationLines: [],
 	};
+	const context = createNamespaceBuildContext(
+		ast,
+		namespaces,
+		startingByteAddress,
+		functions,
+		options,
+		prototypeShapes
+	);
+	const memoryRegions = options.memoryRegions ?? [];
+
+	for (const line of ast.lines) {
+		if (isMemoryDeclarationLine(line)) {
+			appendLayoutMemoryDeclarationLine(sourceModule, context, line, startingByteAddress, memoryRegions);
+			continue;
+		}
+
+		if (!isSemanticInstructionLine(line)) {
+			continue;
+		}
+
+		if (!isShapeLine(line)) {
+			applySemanticLine(line, context);
+			continue;
+		}
+
+		const prototypeId = line.arguments[0].value;
+		const prototype = prototypeShapes?.[prototypeId];
+		if (!prototype) {
+			continue;
+		}
+
+		for (const declarationLine of prototype.memoryDeclarationLines) {
+			appendLayoutMemoryDeclarationLine(
+				sourceModule,
+				context,
+				{
+					...declarationLine,
+					lineNumber: line.lineNumber,
+				},
+				startingByteAddress,
+				memoryRegions
+			);
+		}
+	}
+
+	return sourceModule;
+}
+
+function createMemoryLayoutSourceModules(
+	asts: readonly ValidatedModuleAST[],
+	namespaces: Namespaces,
+	startingByteAddress: number,
+	functions: FunctionRegistry | undefined,
+	options: Pick<CompileOptions, 'memoryRegions'>,
+	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>> | undefined
+): MemoryLayoutSourceModule[] {
+	return asts.map(ast =>
+		collectModuleMemoryDeclarationLines(ast, namespaces, startingByteAddress, functions, options, prototypeShapes)
+	);
 }
 
 /**
@@ -349,6 +493,18 @@ export function collectNamespacesFromASTs(
 ): Namespaces {
 	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
 	const namespaces: Namespaces = {};
+	const memoryPlan = planMemoryLayout({
+		modules: createMemoryLayoutSourceModules(
+			layoutAsts,
+			namespaces,
+			startingByteAddress,
+			compiledFunctions,
+			options,
+			prototypeShapes
+		),
+		startingByteAddress,
+		memoryRegions: options.memoryRegions ?? [],
+	});
 
 	let pendingAsts = [...asts];
 	let madeProgress = true;
@@ -365,7 +521,8 @@ export function collectNamespacesFromASTs(
 					startingByteAddress,
 					compiledFunctions,
 					options,
-					prototypeShapes
+					prototypeShapes,
+					memoryPlan.modules[ast.id]
 				);
 				if (!context.namespace.moduleName) {
 					continue;
@@ -374,6 +531,13 @@ export function collectNamespacesFromASTs(
 					kind: ast.type,
 					memory: context.namespace.memory,
 					...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
+					...(memoryPlan.modules[ast.id]
+						? {
+								byteAddress: memoryPlan.modules[ast.id].byteAddress,
+								wordAlignedSize: memoryPlan.modules[ast.id].wordAlignedSize,
+								isMemoryLayoutFinalized: false,
+							}
+						: {}),
 				};
 				madeProgress = true;
 			} catch (error) {
@@ -391,45 +555,44 @@ export function collectNamespacesFromASTs(
 	}
 
 	if (pendingAsts.length > 0) {
-		layoutNamespace(pendingAsts[0], namespaces, startingByteAddress, compiledFunctions, options, prototypeShapes);
+		layoutNamespace(
+			pendingAsts[0],
+			namespaces,
+			startingByteAddress,
+			compiledFunctions,
+			options,
+			prototypeShapes,
+			memoryPlan.modules[pendingAsts[0].id]
+		);
 	}
 
-	planMemoryLayout({
-		asts: layoutAsts,
-		startingByteAddress,
-		memoryRegions: options.memoryRegions ?? [],
-		planModule: (ast, nextStartingByteAddress, region) => {
-			const context = layoutNamespace(
-				ast,
-				namespaces,
-				nextStartingByteAddress,
-				compiledFunctions,
-				options,
-				prototypeShapes
-			);
-			if (!context.namespace.moduleName) {
-				return {
-					wordAlignedSize: 0,
-					memory: {},
-				};
-			}
+	for (const plannedModule of memoryPlan.moduleList) {
+		const ast = layoutAsts.find(candidate => candidate.id === plannedModule.id);
+		if (!ast) {
+			continue;
+		}
+		const context = layoutNamespace(
+			ast,
+			namespaces,
+			plannedModule.byteAddress,
+			compiledFunctions,
+			options,
+			prototypeShapes,
+			plannedModule
+		);
+		if (!context.namespace.moduleName) {
+			continue;
+		}
 
-			namespaces[context.namespace.moduleName] = {
-				kind: moduleBlock.type,
-				memory: context.namespace.memory,
-				...getMemoryRegionFields(region.memoryIndex, region.memoryRegionName),
-				byteAddress: nextStartingByteAddress,
-				wordAlignedSize: context.currentModuleWordAlignedSize,
-			};
-
-			return {
-				id: context.namespace.moduleName,
-				lineNumber: ast.moduleLine.lineNumber,
-				wordAlignedSize: context.currentModuleWordAlignedSize,
-				memory: context.namespace.memory,
-			};
-		},
-	});
+		namespaces[context.namespace.moduleName] = {
+			kind: moduleBlock.type,
+			memory: context.namespace.memory,
+			...getMemoryRegionFields(plannedModule.memoryIndex, plannedModule.memoryRegionName),
+			byteAddress: plannedModule.byteAddress,
+			wordAlignedSize: plannedModule.wordAlignedSize,
+			isMemoryLayoutFinalized: true,
+		};
+	}
 
 	return namespaces;
 }

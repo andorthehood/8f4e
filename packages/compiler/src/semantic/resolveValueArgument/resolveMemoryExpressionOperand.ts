@@ -254,12 +254,15 @@ export function resolveMemoryExpressionOperand(
 				? {
 						kind: 'module' as const,
 						byteAddress: context.startingByteAddress,
+						wordAlignedSize: context.currentModuleWordAlignedSize,
 						memory,
+						isMemoryLayoutFinalized: true,
 					}
 				: namespace.namespaces[targetModuleId];
 		if (
 			targetNamespace?.kind !== 'module' ||
 			typeof targetNamespace.byteAddress !== 'number' ||
+			(targetModuleId !== 'this' && targetNamespace.isMemoryLayoutFinalized !== true) ||
 			!targetNamespace.memory
 		) {
 			return undefined;
