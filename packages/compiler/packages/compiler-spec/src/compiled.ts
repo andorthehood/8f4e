@@ -1,5 +1,5 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { ValidatedAST, ValidatedConstantsAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
+import type { ValidatedAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature, FunctionValueType } from './functionTypes';
 import type { MemoryMap } from './memory';
@@ -24,7 +24,7 @@ export interface CompiledModule {
 	wordAlignedAddress: number;
 	memoryMap: MemoryMap;
 	wordAlignedSize: number;
-	ast: ValidatedModuleAST | ValidatedConstantsAST;
+	ast: ValidatedModuleAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
 }

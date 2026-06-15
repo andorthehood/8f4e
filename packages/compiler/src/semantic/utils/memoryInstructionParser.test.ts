@@ -8,13 +8,6 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 describe('parseMemoryInstructionArguments', () => {
 	const mockContext = {
 		namespace: {
-			consts: {
-				myConst: { value: 42, isInteger: true },
-				HI: { value: 32, isInteger: true },
-				LO: { value: 64, isInteger: true },
-				BIG: { value: 300, isInteger: true },
-				FRAC: { value: 0.5, isInteger: false },
-			},
 			memory: {
 				myVar: {
 					byteAddress: 100,
@@ -286,60 +279,12 @@ describe('parseMemoryInstructionArguments', () => {
 		).toThrow();
 	});
 
-	it('resolves named constant split-byte sequence (HI LO) into combined default', () => {
+	it('rejects named split-byte constant identifiers that were not inlined earlier', () => {
 		const args: Argument[] = [classifyIdentifier('myVar'), classifyIdentifier('HI'), classifyIdentifier('LO')];
-		const result = parseMemoryInstructionArguments(
-			{
-				lineNumber: 100,
-				instruction: 'int',
-				arguments: args,
-			},
-			mockContext
-		);
-		expect(result.id).toBe('myVar');
-		// HI=32=0x20, LO=64=0x40 → [0x20, 0x40, 0x00, 0x00] = 0x20400000
-		expect(result.defaultValue).toBe(0x20400000);
-	});
-
-	it('resolves anonymous constant split-byte sequence (HI LO) into combined default', () => {
-		const args: Argument[] = [classifyIdentifier('HI'), classifyIdentifier('LO')];
-		const result = parseMemoryInstructionArguments(
-			{
-				lineNumber: 110,
-				instruction: 'int',
-				arguments: args,
-			},
-			mockContext
-		);
-		expect(result.id).toBe('__anonymous__110');
-		expect(result.defaultValue).toBe(0x20400000);
-	});
-
-	it('resolves mixed byte literal and constant in named split-byte', () => {
-		const args: Argument[] = [
-			classifyIdentifier('myVar'),
-			{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
-			classifyIdentifier('LO'),
-		];
-		const result = parseMemoryInstructionArguments(
-			{
-				lineNumber: 120,
-				instruction: 'int',
-				arguments: args,
-			},
-			mockContext
-		);
-		expect(result.id).toBe('myVar');
-		// 0xA8=168, LO=64=0x40 → [168, 64, 0, 0] = 0xA8400000
-		expect(result.defaultValue).toBe(0xa8400000);
-	});
-
-	it('throws when constant in split-byte sequence is out of byte range (> 255)', () => {
-		const args: Argument[] = [classifyIdentifier('myVar'), classifyIdentifier('HI'), classifyIdentifier('BIG')];
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumber: 130,
+					lineNumber: 100,
 					instruction: 'int',
 					arguments: args,
 				},
@@ -348,12 +293,30 @@ describe('parseMemoryInstructionArguments', () => {
 		).toThrow();
 	});
 
-	it('throws when constant in split-byte sequence is a non-integer (float)', () => {
-		const args: Argument[] = [classifyIdentifier('myVar'), classifyIdentifier('HI'), classifyIdentifier('FRAC')];
+	it('rejects anonymous split-byte constant identifiers that were not inlined earlier', () => {
+		const args: Argument[] = [classifyIdentifier('HI'), classifyIdentifier('LO')];
 		expect(() =>
 			parseMemoryInstructionArguments(
 				{
-					lineNumber: 140,
+					lineNumber: 110,
+					instruction: 'int',
+					arguments: args,
+				},
+				mockContext
+			)
+		).toThrow();
+	});
+
+	it('rejects mixed byte literals and non-inlined constant identifiers in split-byte defaults', () => {
+		const args: Argument[] = [
+			classifyIdentifier('myVar'),
+			{ type: ArgumentType.LITERAL, value: 0xa8, isInteger: true, isHex: true },
+			classifyIdentifier('LO'),
+		];
+		expect(() =>
+			parseMemoryInstructionArguments(
+				{
+					lineNumber: 120,
 					instruction: 'int',
 					arguments: args,
 				},

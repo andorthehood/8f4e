@@ -54,12 +54,8 @@ function getMemoryItemOrThrow(
 
 /**
  * Resolves a split-byte token sequence into a single combined integer default value.
- * Literal tokens are used directly; identifier tokens are resolved as compile-time constants
- * and validated to be integers in the range 0–255.
- *
- * If an identifier token does not resolve to a declared constant, throws
- * CONSTANT_NAME_AS_MEMORY_IDENTIFIER — constant-style names in split-byte position must be
- * declared constants (they cannot be memory names).
+ * Constant inlining runs before memory declaration parsing, so only literal byte tokens
+ * are accepted here.
  */
 function resolveSplitByteTokens(
 	tokens: SplitByteToken[],
@@ -76,16 +72,7 @@ function resolveSplitByteTokens(
 			// Already validated as byte literal (0–255) at the syntax level
 			bytes.push(token.value);
 		} else {
-			// Split-byte identifiers must be declared constants. General compile-time folding happens
-			// earlier during AST normalization, so only plain constant identifiers remain here.
-			const constant = context.namespace.consts[token.value];
-			if (!constant) {
-				throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
-			}
-			if (!constant.isInteger || constant.value < 0 || constant.value > 255) {
-				throw getError(ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE, lineForError, context);
-			}
-			bytes.push(constant.value);
+			throw getError(ErrorCode.CONSTANT_NAME_AS_MEMORY_IDENTIFIER, lineForError, context);
 		}
 	}
 	return combineSplitHexBytes(bytes, maxBytes);
@@ -202,7 +189,7 @@ export default function parseMemoryInstructionArguments(
 
 	// Delegate argument shape classification to the tokenizer. The tokenizer owns raw token-shape
 	// classification (anonymous vs named, constant-style detection, split-byte sequence detection);
-	// this function owns semantic resolution against constants, memory layout, and namespaces.
+	// this function owns semantic resolution against memory layout and namespaces.
 	let shape: ReturnType<typeof parseMemoryInstructionArgumentsShape>;
 	try {
 		shape = parseMemoryInstructionArgumentsShape(args);

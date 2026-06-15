@@ -124,15 +124,14 @@ entry test
 module wrapPointerExamples
 float[] buffer 4
 int pointer &buffer
-const ITEM_COUNT count(buffer)
 
 push pointer
-push ITEM_COUNT
+push count(buffer)
 push sizeof(buffer)
 mul
 add
 push &buffer
-push ITEM_COUNT
+push count(buffer)
 call wrapPointer
 ; stack: &buffer
 
@@ -140,7 +139,7 @@ push pointer
 push sizeof(buffer)
 sub
 push &buffer
-push ITEM_COUNT
+push count(buffer)
 call wrapPointer
 ; stack: buffer&
 moduleEnd

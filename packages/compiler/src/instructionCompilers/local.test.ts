@@ -28,7 +28,6 @@ describe('local instruction compiler', () => {
 		const context = createInstructionCompilerTestContext({
 			namespace: {
 				namespaces: {},
-				consts: {},
 				moduleName: 'test',
 				memory: {
 					count: {

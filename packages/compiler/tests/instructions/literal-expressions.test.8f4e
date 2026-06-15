@@ -120,27 +120,17 @@ moduleEnd
 
 module sizeAndCountExpressionAssertions
 ; sizeof and count expressions
-; work in constants, push, and
-; buffer sizing.
+; work in push and buffer sizing.
 int16[] samples 4
-const BYTE_SIZE 123*sizeof(samples)
-push BYTE_SIZE
-call assert 246
-
-const SAMPLE_BYTES sizeof(samples)*2
-push SAMPLE_BYTES
+push sizeof(samples)*2
 call assert 4
 
 const SIZE 8
-const TOTAL SIZE*sizeof(samples)
-push TOTAL
+push SIZE*sizeof(samples)
 call assert 16
 
 push sizeof(samples)*4
 call assert 8
-
-push SIZE*sizeof(samples)
-call assert 16
 
 push 123*sizeof(samples)
 call assert 246
@@ -201,8 +191,7 @@ push count(exponentialBuffer)
 call assert 8
 
 int32[] samples 4
-const SIZEOF_POWER sizeof(samples)^2
-push SIZEOF_POWER
+push sizeof(samples)^2
 call assert 16
 moduleEnd
 entryEnd

@@ -445,10 +445,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "PI",
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.14159,
             },
           ],
           "instruction": "push",

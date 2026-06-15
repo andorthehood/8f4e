@@ -110,10 +110,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MODULUS",
+              "isInteger": true,
+              "type": "literal",
+              "value": 65536,
             },
           ],
           "instruction": "push",
@@ -129,10 +128,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MODULUS",
+              "isInteger": true,
+              "type": "literal",
+              "value": 65536,
             },
           ],
           "instruction": "push",
@@ -144,10 +142,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MODULUS",
+              "isInteger": true,
+              "type": "literal",
+              "value": 65536,
             },
           ],
           "instruction": "push",
@@ -163,10 +160,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MULTIPLIER_MOD",
+              "isInteger": true,
+              "type": "literal",
+              "value": 26125,
             },
           ],
           "instruction": "push",
@@ -178,10 +174,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "INCREMENT_MOD",
+              "isInteger": true,
+              "type": "literal",
+              "value": 62303,
             },
           ],
           "instruction": "push",
@@ -193,10 +188,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MODULUS",
+              "isInteger": true,
+              "type": "literal",
+              "value": 65536,
             },
           ],
           "instruction": "push",

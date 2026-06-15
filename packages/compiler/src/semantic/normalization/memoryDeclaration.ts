@@ -11,8 +11,8 @@ import { getError } from '../../compilerError';
 import {
 	normalizeArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
-	validateOrDeferCompileTimeExpression,
 	validateOrDeferUnresolvedIdentifier,
+	validateOrDeferValueExpression,
 } from './helpers';
 
 function requireResolvedArrayValue(
@@ -21,7 +21,7 @@ function requireResolvedArrayValue(
 	context: CompilationContext
 ) {
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
+		const deferred = validateOrDeferValueExpression(argument, line, context);
 		if (deferred) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
 				identifier: `${argument.left.value}${argument.operator}${argument.right.value}`,
@@ -38,7 +38,7 @@ function requireResolvedArrayValue(
 }
 
 /**
- * Normalizes compile-time arguments for memory declaration instructions
+ * Normalizes value arguments for memory declaration instructions
  * (int, float, float64, array types, pointer types, etc.).
  * Scalar declarations normalize the name/default slots; array declarations normalize
  * the element-count slot and all inline initializer values.
@@ -62,7 +62,7 @@ export default function normalizeMemoryDeclaration(
 	for (const index of scalarValidationIndexes) {
 		const argument = normalized.arguments[index];
 		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-			const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
+			const deferred = validateOrDeferValueExpression(argument, line, context);
 			if (deferred) {
 				continue;
 			}

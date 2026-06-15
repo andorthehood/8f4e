@@ -1,18 +1,14 @@
 import type { CompilationContext } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-import { tryResolveCompileTimeArgument } from './resolveCompileTimeArgument';
+import { tryResolveValueArgument } from './resolveValueArgument';
+import { resolveMemoryExpressionOperand } from './resolveValueArgument/resolveMemoryExpressionOperand';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
-describe('tryResolveCompileTimeArgument', () => {
+describe('tryResolveValueArgument', () => {
 	const mockContext = {
 		namespace: {
-			consts: {
-				BAR: { value: 5, isInteger: true },
-				SIZE: { value: 16, isInteger: true },
-				PI64: { value: 3.14159, isInteger: false },
-			},
 			memory: {
 				samples: {
 					id: 'samples',
@@ -43,125 +39,79 @@ describe('tryResolveCompileTimeArgument', () => {
 		locals: {},
 	} as unknown as CompilationContext;
 
-	it('resolves direct constants', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE'))).toEqual({
-			value: 16,
+	it('resolves memory expression operands without resolving constant identifiers', () => {
+		expect(resolveMemoryExpressionOperand(parseCompileTimeOperand('sizeof(samples)'), mockContext)).toEqual({
+			value: 2,
 			isInteger: true,
 		});
-	});
-
-	it('resolves multiplication expression: constant * literal', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE*2'))).toEqual({
-			value: 32,
-			isInteger: true,
-		});
-	});
-
-	it('resolves division expression: constant / literal', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE/2'))).toEqual({
-			value: 8,
-			isInteger: true,
-		});
-	});
-
-	it('resolves division expression: signed literal / constant', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('-1/SIZE'))).toEqual({
-			value: -0.0625,
-			isInteger: false,
-		});
-	});
-
-	it('resolves literal * constant', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('2*SIZE'))).toEqual({
-			value: 32,
-			isInteger: true,
-		});
+		expect(resolveMemoryExpressionOperand(parseCompileTimeOperand('SIZE'), mockContext)).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('SIZE'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('SIZE*2'))).toBeUndefined();
 	});
 
 	it('resolves sizeof(name) * literal', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)*2'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('sizeof(samples)*2'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
 	});
 
 	it('resolves literal * sizeof(name)', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('123*sizeof(samples)'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('123*sizeof(samples)'))).toEqual({
 			value: 246,
 			isInteger: true,
 		});
 	});
 
-	it('resolves constant * sizeof(name)', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE*sizeof(samples)'))).toEqual({
-			value: 32,
-			isInteger: true,
-		});
-	});
-
-	it('resolves sizeof(name) * constant', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)*SIZE'))).toEqual({
-			value: 32,
-			isInteger: true,
-		});
-	});
-
 	it('resolves count(name) * literal', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(samples)*2'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('count(samples)*2'))).toEqual({
 			value: 16,
 			isInteger: true,
 		});
 	});
 
 	it('resolves local memory metadata queries', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(*floatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('count(*floatPtr)'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(*floatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('sizeof(*floatPtr)'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(*floatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('max(*floatPtr)'))).toEqual({
 			value: 3.4028234663852886e38,
 			isInteger: false,
 		});
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(*floatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('min(*floatPtr)'))).toEqual({
 			value: -3.4028234663852886e38,
 			isInteger: false,
 		});
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(samples)'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('max(samples)'))).toEqual({
 			value: 32767,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(samples)'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('min(samples)'))).toEqual({
 			value: -32768,
 			isInteger: true,
 		});
 	});
 
 	it('returns undefined for unresolved local memory metadata queries', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(missing)'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(missing)'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(missing)'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(missing)'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(*missing)'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('max(*missing)'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('min(*missing)'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('count(*missing)'))).toBeUndefined();
-	});
-
-	it('keeps float64 width for expression results', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64*2'))).toEqual({
-			value: 6.28318,
-			isInteger: false,
-		});
+		expect(tryResolveValueArgument(mockContext, parseArgument('sizeof(missing)'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('count(missing)'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('max(missing)'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('min(missing)'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('sizeof(*missing)'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('max(*missing)'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('min(*missing)'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('count(*missing)'))).toBeUndefined();
 	});
 
 	it('returns undefined for unresolved or chained expressions', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('MISSING'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('SIZE/2/2'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('SIZE*2/2'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('MISSING'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, classifyIdentifier('SIZE/2/2'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, classifyIdentifier('SIZE*2/2'))).toBeUndefined();
 	});
 
 	it('resolves intermodule sizeof expressions', () => {
@@ -172,7 +122,6 @@ describe('tryResolveCompileTimeArgument', () => {
 				namespaces: {
 					source: {
 						kind: 'module',
-						consts: {},
 						memory: {
 							buffer: {
 								numberOfElements: 4,
@@ -185,7 +134,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(intermodularNamespace, parseArgument('2*sizeof(source:buffer)'))).toEqual({
+		expect(tryResolveValueArgument(intermodularNamespace, parseArgument('2*sizeof(source:buffer)'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
@@ -205,11 +154,11 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('max(*floatPtrPtr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('max(*floatPtrPtr)'))).toEqual({
 			value: 2147483647,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('min(*floatPtrPtr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('min(*floatPtrPtr)'))).toEqual({
 			value: -2147483648,
 			isInteger: true,
 		});
@@ -230,19 +179,19 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('count(*localFloatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('count(*localFloatPtr)'))).toEqual({
 			value: 7,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*localFloatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('sizeof(*localFloatPtr)'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('max(*localFloatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('max(*localFloatPtr)'))).toEqual({
 			value: 3.4028234663852886e38,
 			isInteger: false,
 		});
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('min(*localFloatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('min(*localFloatPtr)'))).toEqual({
 			value: -3.4028234663852886e38,
 			isInteger: false,
 		});
@@ -262,8 +211,8 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('count(*localFloatPtr)'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*localFloatPtr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('count(*localFloatPtr)'))).toBeUndefined();
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('sizeof(*localFloatPtr)'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
@@ -297,123 +246,53 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*int8Ptr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('sizeof(*int8Ptr)'))).toEqual({
 			value: 1,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*int16Ptr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('sizeof(*int16Ptr)'))).toEqual({
 			value: 2,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(localPointerContext, parseArgument('sizeof(*float64Ptr)'))).toEqual({
+		expect(tryResolveValueArgument(localPointerContext, parseArgument('sizeof(*float64Ptr)'))).toEqual({
 			value: 8,
 			isInteger: true,
 		});
 	});
 
-	it('resolves explicit compile-time expression nodes', () => {
+	it('resolves explicit value expression nodes', () => {
 		expect(
-			tryResolveCompileTimeArgument(mockContext, {
+			tryResolveValueArgument(mockContext, {
 				type: ArgumentType.COMPILE_TIME_EXPRESSION,
 				left: parseCompileTimeOperand('2'),
 				operator: '*',
-				right: parseCompileTimeOperand('SIZE'),
+				right: parseCompileTimeOperand('sizeof(samples)'),
 				intermoduleIds: [],
 			})
 		).toEqual({
-			value: 32,
-			isInteger: true,
-		});
-	});
-
-	it('resolves exponentiation expression: constant ^ literal', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE^2'))).toEqual({
-			value: 256,
-			isInteger: true,
-		});
-	});
-
-	it('resolves exponentiation expression: literal ^ constant', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('2^SIZE'))).toEqual({
-			value: 65536,
-			isInteger: true,
-		});
-	});
-
-	it('keeps float64 width for exponentiation results', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64^2'))).toEqual({
-			value: 3.14159 ** 2,
-			isInteger: false,
-		});
-	});
-
-	it('resolves exponentiation with sizeof: sizeof(name)^literal', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)^2'))).toEqual({
 			value: 4,
 			isInteger: true,
 		});
 	});
 
-	it('resolves addition expression: constant + literal', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE+1'))).toEqual({
-			value: 17,
-			isInteger: true,
-		});
-	});
-
-	it('resolves addition expression: constant + constant', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE+BAR'))).toEqual({
-			value: 21,
-			isInteger: true,
-		});
-	});
-
-	it('resolves subtraction expression: constant - literal', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE-1'))).toEqual({
-			value: 15,
-			isInteger: true,
-		});
-	});
-
-	it('resolves addition expression: literal + constant', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('1+SIZE'))).toEqual({
-			value: 17,
-			isInteger: true,
-		});
-	});
-
-	it('resolves subtraction expression: literal - constant', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('100-SIZE'))).toEqual({
-			value: 84,
+	it('resolves exponentiation with sizeof: sizeof(name)^literal', () => {
+		expect(tryResolveValueArgument(mockContext, parseArgument('sizeof(samples)^2'))).toEqual({
+			value: 4,
 			isInteger: true,
 		});
 	});
 
 	it('resolves addition with sizeof: sizeof(name)+1', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)+1'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('sizeof(samples)+1'))).toEqual({
 			value: 3,
 			isInteger: true,
 		});
 	});
 
 	it('resolves subtraction with sizeof: sizeof(name)-1', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('sizeof(samples)-1'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, parseArgument('sizeof(samples)-1'))).toEqual({
 			value: 1,
 			isInteger: true,
-		});
-	});
-
-	it('keeps float64 width for addition results', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64+1'))).toEqual({
-			value: 3.14159 + 1,
-			isInteger: false,
-		});
-	});
-
-	it('keeps float64 width for subtraction results', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('PI64-1'))).toEqual({
-			value: 3.14159 - 1,
-			isInteger: false,
 		});
 	});
 
@@ -425,7 +304,6 @@ describe('tryResolveCompileTimeArgument', () => {
 				namespaces: {
 					source: {
 						kind: 'module',
-						consts: {},
 						byteAddress: 8,
 						wordAlignedSize: 4,
 						memory: {
@@ -443,7 +321,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
+		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
 			value: 8,
 			isInteger: true,
 			address: {
@@ -467,7 +345,6 @@ describe('tryResolveCompileTimeArgument', () => {
 				namespaces: {
 					source: {
 						kind: 'module',
-						consts: {},
 						byteAddress: 8,
 						wordAlignedSize: 4,
 						memory: {
@@ -486,7 +363,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		} as unknown as CompilationContext;
 
 		// End address = byteAddress + (wordAlignedSize - 1) * 4 = 8 + 3 * 4 = 20
-		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
+		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
 			value: 20,
 			isInteger: true,
 			address: {
@@ -510,7 +387,6 @@ describe('tryResolveCompileTimeArgument', () => {
 				namespaces: {
 					source: {
 						kind: 'module',
-						consts: {},
 						byteAddress: 12,
 						wordAlignedSize: 3,
 						memory: {},
@@ -519,7 +395,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
+		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
 			value: 12,
 			isInteger: true,
 			address: {
@@ -543,7 +419,6 @@ describe('tryResolveCompileTimeArgument', () => {
 				namespaces: {
 					source: {
 						kind: 'module',
-						consts: {},
 						byteAddress: 12,
 						wordAlignedSize: 3,
 						memory: {},
@@ -553,7 +428,7 @@ describe('tryResolveCompileTimeArgument', () => {
 		} as unknown as CompilationContext;
 
 		// End address = 12 + (3 - 1) * 4 = 12 + 8 = 20
-		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
+		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
 			value: 20,
 			isInteger: true,
 			address: {
@@ -577,7 +452,6 @@ describe('tryResolveCompileTimeArgument', () => {
 				namespaces: {
 					source: {
 						kind: 'module',
-						consts: {},
 						// No byteAddress — module not yet laid out
 						memory: {
 							buffer: {
@@ -591,8 +465,8 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:buffer'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(unlaidOutNamespace, classifyIdentifier('&source:'))).toBeUndefined();
+		expect(tryResolveValueArgument(unlaidOutNamespace, classifyIdentifier('&source:buffer'))).toBeUndefined();
+		expect(tryResolveValueArgument(unlaidOutNamespace, classifyIdentifier('&source:'))).toBeUndefined();
 	});
 
 	it('returns undefined for unresolved intermodule nth references', () => {
@@ -603,7 +477,6 @@ describe('tryResolveCompileTimeArgument', () => {
 				namespaces: {
 					source: {
 						kind: 'module',
-						consts: {},
 						byteAddress: 8,
 						wordAlignedSize: 4,
 						memory: {},
@@ -612,12 +485,12 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(laidOutNamespace, classifyIdentifier('&source:99'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('&source:99'))).toBeUndefined();
+		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:99'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, classifyIdentifier('&source:99'))).toBeUndefined();
 	});
 
 	it('resolves current-module shorthands from compilation context', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('&this'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, classifyIdentifier('&this'))).toEqual({
 			value: 24,
 			isInteger: true,
 			address: {
@@ -630,7 +503,7 @@ describe('tryResolveCompileTimeArgument', () => {
 				},
 			},
 		});
-		expect(tryResolveCompileTimeArgument(mockContext, classifyIdentifier('this&'))).toEqual({
+		expect(tryResolveValueArgument(mockContext, classifyIdentifier('this&'))).toEqual({
 			value: 40,
 			isInteger: true,
 			address: {
@@ -651,7 +524,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			currentModuleWordAlignedSize: undefined,
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(contextWithoutModuleSize, classifyIdentifier('this&'))).toBeUndefined();
+		expect(tryResolveValueArgument(contextWithoutModuleSize, classifyIdentifier('this&'))).toBeUndefined();
 	});
 
 	it('keeps address metadata when adding an in-range integer offset to an address expression', () => {
@@ -673,7 +546,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('&arr+4'))).toEqual({
+		expect(tryResolveValueArgument(addressContext, parseArgument('&arr+4'))).toEqual({
 			value: 20,
 			isInteger: true,
 			address: {
@@ -708,7 +581,7 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('4+&arr'))).toEqual({
+		expect(tryResolveValueArgument(addressContext, parseArgument('4+&arr'))).toEqual({
 			value: 20,
 			isInteger: true,
 			address: {
@@ -742,18 +615,18 @@ describe('tryResolveCompileTimeArgument', () => {
 			},
 		} as unknown as CompilationContext;
 
-		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('&arr+1024'))).toEqual({
+		expect(tryResolveValueArgument(addressContext, parseArgument('&arr+1024'))).toEqual({
 			value: 1040,
 			isInteger: true,
 		});
-		expect(tryResolveCompileTimeArgument(addressContext, parseArgument('&arr-4'))).toEqual({
+		expect(tryResolveValueArgument(addressContext, parseArgument('&arr-4'))).toEqual({
 			value: 12,
 			isInteger: true,
 		});
 	});
 
 	it('returns undefined for division by zero and non-identifier arguments', () => {
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('SIZE/0'))).toBeUndefined();
-		expect(tryResolveCompileTimeArgument(mockContext, parseArgument('123'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('sizeof(samples)/0'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, parseArgument('123'))).toBeUndefined();
 	});
 });

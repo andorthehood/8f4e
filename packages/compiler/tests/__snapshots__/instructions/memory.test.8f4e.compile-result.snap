@@ -117,10 +117,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "PI",
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.14159,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -265,16 +264,14 @@
               "value": "foo",
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "HI",
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "LO",
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -310,16 +307,14 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "HI",
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "LO",
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -373,10 +368,9 @@
               "value": 168,
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "LO",
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -418,10 +412,9 @@
               "value": 168,
             },
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "LO",
+              "isInteger": true,
+              "type": "literal",
+              "value": 64,
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -712,10 +705,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "MY_VALUE",
+              "isInteger": true,
+              "type": "literal",
+              "value": 100,
             },
           ],
           "hasExplicitMemoryDefault": true,

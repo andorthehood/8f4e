@@ -17,7 +17,7 @@ import {
 	isIntermoduleReferenceKind,
 	normalizeArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
-	validateOrDeferCompileTimeExpression,
+	validateOrDeferValueExpression,
 } from './helpers';
 
 function isResolvedPointerLocal(
@@ -57,7 +57,7 @@ function throwIfPointeeCountIsUnknown(line: PushLine, context: CompilationContex
 }
 
 /**
- * Normalizes compile-time arguments for the `push` instruction.
+ * Normalizes value arguments for the `push` instruction.
  * The value argument (index 0) is normalized.
  * For identifier arguments, validates that the identifier is a known memory item, pointer,
  * memory reference, local, or valid intermodule reference.
@@ -75,7 +75,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 
 	const argument = normalized.arguments[0];
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferCompileTimeExpression(argument, line, context);
+		const deferred = validateOrDeferValueExpression(argument, line, context);
 		if (deferred) {
 			return normalized as NormalizedPushLine;
 		}

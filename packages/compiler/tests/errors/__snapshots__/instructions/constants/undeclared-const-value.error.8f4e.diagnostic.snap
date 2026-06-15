@@ -1,5 +1,5 @@
 {
-  "code": 5,
+  "code": 69,
   "context": {
     "codeBlockId": "undeclaredConstValue",
     "codeBlockType": "module",
@@ -23,5 +23,5 @@
     "instruction": "const",
     "lineNumber": 3,
   },
-  "message": "Undeclared identifier: UNDEFINED_CONST. (5)",
+  "message": "Unable to resolve constant RESULT (UNRESOLVED_CONSTANT_VALUE). (69)",
 }

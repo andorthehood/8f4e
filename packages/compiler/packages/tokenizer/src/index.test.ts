@@ -249,10 +249,10 @@ describe('compileToAST', () => {
 		});
 	});
 
-	it('records namespace references from use lines while parsing lines', () => {
+	it('does not record namespace references from use lines while parsing lines', () => {
 		const ast = compileToAST(['module target', 'use shared', 'moduleEnd']);
 
-		expect(ast.lines[1].referencedNamespaceIds).toEqual(['shared']);
+		expect(ast.lines[1]).not.toHaveProperty('referencedNamespaceIds');
 	});
 });
 

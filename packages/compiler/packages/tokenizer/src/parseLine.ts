@@ -131,21 +131,16 @@ export function parseLine(line: string, lineNumber: number): CompilerASTLine {
 		const [first = '', ...args] = tokens;
 		instruction = first;
 		const isMemoryDeclaration = isMemoryDeclarationInstruction(instruction);
-		const shouldRecordNamespaceReferences = isMemoryDeclaration || instruction === 'const' || instruction === 'use';
 		const parsedArguments: Argument[] = [];
 		const referencedNamespaceIds = new Set<string>();
 		for (const arg of args) {
 			const parsedArgument = parseArgument(arg);
 			parsedArguments.push(parsedArgument);
-			if (shouldRecordNamespaceReferences) {
+			if (isMemoryDeclaration) {
 				addReferencedNamespaceIdsFromArgument(referencedNamespaceIds, parsedArgument);
 			}
 		}
 		validateInstructionArguments(instruction, parsedArguments);
-		const [useArgument] = parsedArguments;
-		if (shouldRecordNamespaceReferences && instruction === 'use' && useArgument?.type === ArgumentType.IDENTIFIER) {
-			referencedNamespaceIds.add(useArgument.value);
-		}
 		const parsedLine = {
 			lineNumber,
 			instruction,

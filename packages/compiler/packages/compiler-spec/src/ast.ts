@@ -323,8 +323,8 @@ const semanticInstructionSet = new Set<string>(semanticInstructionNames);
 
 /**
  * Checks whether a parsed line is a semantic instruction handled before code generation.
- * These lines affect compiler state, namespaces, or constants rather than directly
- * producing WebAssembly instructions.
+ * These lines affect compiler state or namespaces rather than directly producing
+ * WebAssembly instructions.
  *
  * @param line - Parsed compiler AST line to inspect.
  * @returns True when the line is a semantic instruction.

@@ -38,6 +38,7 @@ interface ErrorDetails {
 	identifier?: string;
 	inferredCallSignature?: string;
 	availableOverloadSignatures?: string[];
+	reason?: string;
 }
 
 /**
@@ -109,6 +110,13 @@ export function getError(
 			return {
 				code,
 				message: 'Undeclared identifier' + (details?.identifier ? `: ${details.identifier}` : '') + '. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.CONSTANT_RESOLUTION_FAILED:
+			return {
+				code,
+				message: (details?.reason ?? 'Unable to resolve constant') + '. (' + code + ')',
 				line,
 				context,
 			};
@@ -397,7 +405,7 @@ export function getError(
 			return {
 				code,
 				message:
-					'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255), literal-only * or / expressions that fold to an integer in that range, or constant-style identifiers. Memory references and non-byte-resolving forms are not allowed in split-byte sequences. (' +
+					'Split-byte default values must consist entirely of byte-resolving tokens: integer literals (0–255), or literal-only * or / expressions that fold to an integer in that range. Memory references and non-byte-resolving forms are not allowed in split-byte sequences. (' +
 					code +
 					')',
 				line,
@@ -422,13 +430,6 @@ export function getError(
 					'. (' +
 					code +
 					')',
-				line,
-				context,
-			};
-		case ErrorCode.SPLIT_BYTE_CONSTANT_OUT_OF_RANGE:
-			return {
-				code,
-				message: 'Constants used in split-byte mode must resolve to an integer in the range 0–255. (' + code + ')',
 				line,
 				context,
 			};

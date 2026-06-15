@@ -1,5 +1,5 @@
 {
-  "code": 5,
+  "code": 69,
   "context": {
     "codeBlockId": "useUndeclaredNamespace",
     "codeBlockType": "module",
@@ -17,5 +17,5 @@
     "instruction": "use",
     "lineNumber": 3,
   },
-  "message": "Undeclared identifier: missingNamespace. (5)",
+  "message": "Unable to resolve constant namespace dependencies (UNRESOLVED_NAMESPACE). (69)",
 }
