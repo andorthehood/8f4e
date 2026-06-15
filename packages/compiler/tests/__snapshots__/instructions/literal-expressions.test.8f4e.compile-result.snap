@@ -1691,137 +1691,6 @@
           "instruction": "call",
         },
         {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "sizeofBuffer",
-            },
-            {
-              "intermoduleIds": [],
-              "left": {
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "samples",
-                "type": "identifier",
-                "value": "sizeof(samples)",
-              },
-              "operator": "*",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
-            },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "int[]",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "element-count",
-              "scope": "local",
-              "targetMemoryId": "sizeofBuffer",
-              "type": "identifier",
-              "value": "count(sizeofBuffer)",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "source",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 8,
-            },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "int[]",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "dest",
-            },
-            {
-              "intermoduleIds": [],
-              "left": {
-                "referenceKind": "element-count",
-                "scope": "local",
-                "targetMemoryId": "source",
-                "type": "identifier",
-                "value": "count(source)",
-              },
-              "operator": "*",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
-            },
-          ],
-          "hasExplicitMemoryDefault": false,
-          "instruction": "int[]",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "element-count",
-              "scope": "local",
-              "targetMemoryId": "dest",
-              "type": "identifier",
-              "value": "count(dest)",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 16,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
           "arguments": [],
           "instruction": "moduleEnd",
         },
@@ -2045,7 +1914,7 @@
     "exponentExpressionAssertions": {
       "memoryMap": {
         "defaultFromExponent": {
-          "byteAddress": 308,
+          "byteAddress": 196,
           "default": 9,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -2056,11 +1925,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 77,
+          "wordAlignedAddress": 49,
           "wordAlignedSize": 1,
         },
         "exponentialBuffer": {
-          "byteAddress": 312,
+          "byteAddress": 200,
           "default": {},
           "elementWordSize": 4,
           "id": "exponentialBuffer",
@@ -2070,11 +1939,11 @@
           "numberOfElements": 8,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 78,
+          "wordAlignedAddress": 50,
           "wordAlignedSize": 8,
         },
         "samples": {
-          "byteAddress": 344,
+          "byteAddress": 232,
           "default": {},
           "elementWordSize": 4,
           "id": "samples",
@@ -2084,7 +1953,7 @@
           "numberOfElements": 4,
           "pointerDepth": 0,
           "type": "int32",
-          "wordAlignedAddress": 86,
+          "wordAlignedAddress": 58,
           "wordAlignedSize": 4,
         },
       },
@@ -2188,20 +2057,6 @@
     },
     "sizeAndCountExpressionAssertions": {
       "memoryMap": {
-        "dest": {
-          "byteAddress": 244,
-          "default": {},
-          "elementWordSize": 4,
-          "id": "dest",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 16,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 61,
-          "wordAlignedSize": 16,
-        },
         "floatSamples": {
           "byteAddress": 152,
           "default": {},
@@ -2248,20 +2103,6 @@
           "wordAlignedAddress": 36,
           "wordAlignedSize": 2,
         },
-        "sizeofBuffer": {
-          "byteAddress": 196,
-          "default": {},
-          "elementWordSize": 4,
-          "id": "sizeofBuffer",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 4,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 49,
-          "wordAlignedSize": 4,
-        },
         "smallPtr": {
           "byteAddress": 192,
           "default": 188,
@@ -2293,20 +2134,6 @@
           "type": "int8",
           "wordAlignedAddress": 47,
           "wordAlignedSize": 1,
-        },
-        "source": {
-          "byteAddress": 212,
-          "default": {},
-          "elementWordSize": 4,
-          "id": "source",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 8,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 53,
-          "wordAlignedSize": 8,
         },
       },
     },
@@ -2340,7 +2167,7 @@
       "sizeAndCountExpressionAssertions",
       "validConstantNameAssertions",
     ],
-    "requiredMemoryBytes": 360,
+    "requiredMemoryBytes": 248,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",

@@ -18,7 +18,6 @@ import type {
 	LoopLine,
 	MapLine,
 	MemoryCopyLine,
-	MemoryDeclarationLine,
 	ModuleEndLine,
 	ModuleLine,
 	PrototypeEndLine,
@@ -34,7 +33,7 @@ import type {
 import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMetadata } from './compiled';
 import type { FunctionImportMetadata, FunctionValueType } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
-import type { ArrayDeclarationInstruction, DataStructure, MemoryMap } from './memory';
+import type { ArrayDeclarationInstruction, DataStructure, MemoryLayoutDeclaration, MemoryMap } from './memory';
 
 /** Proven byte range associated with an address expression or memory boundary. */
 export interface MemoryAddressRange {
@@ -133,6 +132,7 @@ export interface CollectedNamespace {
 	memoryRegionName?: string;
 	byteAddress?: number;
 	wordAlignedSize?: number;
+	isMemoryLayoutFinalized?: boolean;
 }
 
 export type Namespaces = Record<string, CollectedNamespace>;
@@ -163,6 +163,8 @@ export interface CompilationContext {
 	currentModuleWordAlignedSize: number;
 	currentMemoryIndex: number;
 	currentMemoryRegionName?: string;
+	memoryLayoutDeclarations?: readonly MemoryLayoutDeclaration[];
+	currentMemoryLayoutDeclarationIndex?: number;
 	memoryRegions: string[];
 	byteCode: Array<WASMInstructionCode | WasmTypeValue | number>;
 	mode: CompilationMode;
@@ -182,7 +184,6 @@ export interface CompilationContext {
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>;
 	expandPrototypeShapes?: boolean;
 	isInherited?: boolean;
-	resolveMemoryDeclarationLine?: (line: MemoryDeclarationLine) => MemoryDeclarationLine;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;

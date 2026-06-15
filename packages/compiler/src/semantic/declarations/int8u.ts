@@ -10,9 +10,7 @@ import createDeclarationCompiler from './createDeclarationCompiler';
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
 const int8u: MemoryDeclarationCompiler = createDeclarationCompiler({
-	baseType: 'int8u',
 	truncate: true,
-	nonPointerElementWordSize: 4,
 });
 
 export default int8u;
