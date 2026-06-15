@@ -22,7 +22,7 @@ import { compileLine, toCompiledStackAnalysisLine } from './compileLine';
 import { getError } from './compilerError';
 import instructions from './instructionCompilers';
 import { createCompilationContext } from './semantic/createCompilationContext';
-import normalizeCompileTimeArguments from './semantic/normalizeCompileTimeArguments';
+import normalizeValueArguments from './semantic/normalizeValueArguments';
 
 type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionTypeIndex: number;
@@ -61,7 +61,6 @@ export function compileFunction(
 		namespace: {
 			namespaces,
 			memory: {},
-			consts: {},
 			moduleName: undefined,
 			functions,
 			prototypeShapeIds: [],
@@ -88,7 +87,7 @@ export function compileFunction(
 
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
 	for (const originalLine of ast.lines) {
-		const line = normalizeCompileTimeArguments(originalLine, context);
+		const line = normalizeValueArguments(originalLine, context);
 		if (ast.importLine && !importedFunctionAllowedInstructions.has(line.instruction)) {
 			throw getError(
 				line.instruction === '#export' ? ErrorCode.IMPORT_EXPORT_CONFLICT : ErrorCode.IMPORTED_FUNCTION_BODY,

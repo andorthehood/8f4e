@@ -5,11 +5,13 @@ import type {
 	CompiledModuleLookup,
 	CompileInput,
 	CompileOptions,
+	CompilerASTLine,
 	CompilerCache,
 	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionRegistry,
 	FunctionTypeRegistry,
+	MemoryDeclarationLine,
 	Module,
 	ValidatedAST,
 	ValidatedConstantsAST,
@@ -17,7 +19,8 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
+import { ConstantInliningError, inlineConstantsInASTs } from '@8f4e/constant-inliner';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
 import { compileModules } from './compileModules';
@@ -190,6 +193,39 @@ function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): R
 	return prototypeShapesById;
 }
 
+function getAstDiagnosticId(ast: ValidatedAST): string | undefined {
+	if (ast.type === 'function') {
+		return ast.name;
+	}
+
+	return ast.id;
+}
+
+function getAstDiagnosticContext(ast: ValidatedAST) {
+	return {
+		codeBlockId: getAstDiagnosticId(ast),
+		codeBlockType: ast.type,
+		...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
+		...(ast.source !== undefined ? { source: ast.source } : {}),
+	};
+}
+
+function wrapConstantInliningError(error: unknown, asts: readonly ValidatedAST[]): unknown {
+	if (!(error instanceof ConstantInliningError)) {
+		return error;
+	}
+
+	const line = error.line;
+	if (!line) {
+		return error;
+	}
+
+	const ast = asts.find(candidate => candidate.lines.includes(line));
+	return getError(ErrorCode.CONSTANT_RESOLUTION_FAILED, line, ast ? getAstDiagnosticContext(ast) : undefined, {
+		reason: `${error.detail} (${error.code})`,
+	});
+}
+
 function attachSourceMetadataToSyntaxError(source: CompilerSource, error: unknown): unknown {
 	if (!(error instanceof SyntaxRulesError) || (source.projectBlockId === undefined && source.source === undefined)) {
 		return error;
@@ -215,10 +251,68 @@ function attachSourceMetadataToAst<TAst extends ValidatedAST>(ast: TAst, source:
 	} as TAst;
 }
 
+function cloneLineForCompilation(line: CompilerASTLine): CompilerASTLine {
+	return {
+		...line,
+		arguments: [...line.arguments],
+	} as CompilerASTLine;
+}
+
+function prepareASTForCompilation<TAst extends ValidatedAST>(ast: TAst): TAst {
+	const lineMap = new Map<CompilerASTLine, CompilerASTLine>();
+	const lines = ast.lines.map(line => {
+		const cloned = cloneLineForCompilation(line);
+		lineMap.set(line, cloned);
+		return cloned;
+	});
+	const rebindLine = <TLine extends CompilerASTLine | undefined>(line: TLine): TLine => {
+		return (line ? (lineMap.get(line) ?? line) : line) as TLine;
+	};
+	const rebindMemoryDeclarationLines = (memoryDeclarationLines: readonly MemoryDeclarationLine[]) => {
+		return memoryDeclarationLines.map(line => rebindLine(line)).filter(isMemoryDeclarationLine);
+	};
+
+	if (ast.type === 'module') {
+		return {
+			...ast,
+			lines,
+			moduleLine: rebindLine(ast.moduleLine),
+			...(ast.regionLine ? { regionLine: rebindLine(ast.regionLine) } : {}),
+			memoryDeclarationLines: rebindMemoryDeclarationLines(ast.memoryDeclarationLines),
+		} as TAst;
+	}
+
+	if (ast.type === 'constants') {
+		return {
+			...ast,
+			lines,
+			constantsLine: rebindLine(ast.constantsLine),
+		} as TAst;
+	}
+
+	if (ast.type === 'function') {
+		return {
+			...ast,
+			lines,
+			functionLine: rebindLine(ast.functionLine),
+			functionEndLine: rebindLine(ast.functionEndLine),
+			...(ast.exportLine ? { exportLine: rebindLine(ast.exportLine) } : {}),
+			...(ast.importLine ? { importLine: rebindLine(ast.importLine) } : {}),
+		} as TAst;
+	}
+
+	return {
+		...ast,
+		lines,
+		prototypeLine: rebindLine(ast.prototypeLine),
+		memoryDeclarationLines: rebindMemoryDeclarationLines(ast.memoryDeclarationLines),
+	} as TAst;
+}
+
 function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSource, cache: CompilerCache): TAst {
 	try {
 		const ast = compileToAST(source.code, cache.ast, source.cacheKey) as TAst;
-		return attachSourceMetadataToAst(ast, source);
+		return prepareASTForCompilation(attachSourceMetadataToAst(ast, source));
 	} catch (error) {
 		throw attachSourceMetadataToSyntaxError(source, error);
 	}
@@ -258,7 +352,6 @@ export function compileSubProgram(
 	});
 
 	const astPrototypes = prototypeSources.map(source => compileSourceToAST<ValidatedPrototypeAST>(source, cache));
-	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
 
 	const moduleSources = entryModules.map(({ entryName, module, index }) => {
 		return {
@@ -286,14 +379,22 @@ export function compileSubProgram(
 		};
 	});
 	const astConstants = constantsSources.map(source => compileSourceToAST<ValidatedConstantsAST>(source, cache));
+	const astFunctions = functionSources.map(source => compileSourceToAST<ValidatedFunctionAST>(source, cache));
 	const entryNames = inputEntryNames;
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
 	assertUniqueModuleIds(astModules);
+	const inlineableAsts = [...astPrototypes, ...astModules, ...astConstants, ...astFunctions];
+	try {
+		inlineConstantsInASTs(inlineableAsts);
+	} catch (error) {
+		throw wrapConstantInliningError(error, inlineableAsts);
+	}
 
-	const namespaceAsts = [...astModules, ...astConstants];
+	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
+
 	const namespaces = collectNamespacesFromASTs(
-		namespaceAsts,
+		astModules,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
 		astModules,
@@ -301,7 +402,6 @@ export function compileSubProgram(
 		prototypeShapesById
 	);
 
-	const astFunctions = functionSources.map(source => compileSourceToAST<ValidatedFunctionAST>(source, cache));
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;

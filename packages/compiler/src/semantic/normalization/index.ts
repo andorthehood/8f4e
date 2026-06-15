@@ -2,7 +2,6 @@ import type { CompilationContext, CompilerASTLine, NormalizedLine } from '@8f4e/
 import { isMemoryDeclarationLine } from '@8f4e/compiler-spec';
 import normalizeCall from './call';
 import normalizeClampAddress from './clampAddress';
-import normalizeConst from './const';
 import normalizeDefault from './default';
 import normalizeLocalVariableAccess from './localVariable';
 import normalizeLoop from './loop';
@@ -17,7 +16,6 @@ const instructionNormalizers = {
 	clampAddress: normalizeClampAddress,
 	clampGlobalAddress: normalizeClampAddress,
 	clampModuleAddress: normalizeClampAddress,
-	const: normalizeConst,
 	default: normalizeDefault,
 	localSet: normalizeLocalVariableAccess,
 	loop: normalizeLoop,

@@ -4,7 +4,6 @@ import type {
 	FunctionRegistry,
 	FunctionTypeRegistry,
 	Namespaces,
-	ValidatedConstantsAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
@@ -24,7 +23,7 @@ import { collectNamespacesFromASTs } from './semantic/buildNamespace';
  * @returns The compiled module artifact.
  */
 export function compileModules(
-	modules: Array<ValidatedModuleAST | ValidatedConstantsAST>,
+	modules: ValidatedModuleAST[],
 	options: CompileOptions,
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionRegistry,

@@ -169,10 +169,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "LOOP_COUNT",
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
             },
           ],
           "instruction": "loop",
@@ -283,10 +282,9 @@
             {
               "intermoduleIds": [],
               "left": {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "FRAMES",
+                "isInteger": true,
+                "type": "literal",
+                "value": 16,
               },
               "operator": "*",
               "right": {

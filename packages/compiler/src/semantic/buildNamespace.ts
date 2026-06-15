@@ -19,7 +19,6 @@ import {
 	type NamespaceBuildContext,
 	type Namespaces,
 	type SemanticInstructionLine,
-	type ValidatedConstantsAST,
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
@@ -36,14 +35,14 @@ import {
 	resolveMemoryRegionName,
 	validateMemoryRegionOptions,
 } from './memoryRegions';
-import normalizeCompileTimeArguments from './normalizeCompileTimeArguments';
+import normalizeValueArguments from './normalizeValueArguments';
 import { getEffectiveFunctionMetadata } from './paramShape';
 import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
 function getAstDiagnosticContext(
-	ast: ValidatedFunctionAST | ValidatedModuleAST | ValidatedConstantsAST | ValidatedPrototypeAST
+	ast: ValidatedFunctionAST | ValidatedModuleAST | ValidatedPrototypeAST
 ): CompilerDiagnosticContext {
 	return {
 		codeBlockType: ast.type,
@@ -163,14 +162,10 @@ export function collectFunctionMetadataFromAsts(
  * @param asts - Validated ASTs being processed.
  * @returns Nothing.
  */
-export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[]): void {
+export function assertUniqueModuleIds(asts: readonly ValidatedModuleAST[]): void {
 	const seenModuleIds = new Set<string>();
 
 	for (const ast of asts) {
-		if (ast.type !== moduleBlock.type) {
-			continue;
-		}
-
 		const id = ast.id;
 		if (seenModuleIds.has(id)) {
 			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.moduleLine, getAstDiagnosticContext(ast), { identifier: id });
@@ -187,12 +182,12 @@ export function assertUniqueModuleIds(asts: readonly (ValidatedModuleAST | Valid
  * @returns Nothing.
  */
 export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
-	const normalizedLine = normalizeCompileTimeArguments(line, context);
+	const normalizedLine = normalizeValueArguments(line, context);
 	applySemanticInstruction(normalizedLine, context);
 }
 
 function createNamespaceBuildContext(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	ast: ValidatedModuleAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionRegistry,
@@ -205,7 +200,6 @@ function createNamespaceBuildContext(
 		namespace: {
 			namespaces,
 			memory: {},
-			consts: {},
 			moduleName: undefined,
 			functions,
 			prototypeShapeIds: [],
@@ -228,37 +222,26 @@ function createNamespaceBuildContext(
 	});
 }
 
-function applyNamespaceDeclarationLines(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
-	context: NamespaceBuildContext
-): void {
-	const sourceBlockSpec = compilerSourceBlockInstructionByType[ast.type];
-	const shouldValidateUnhandledLines = sourceBlockSpec.compilationMode === null;
-
+function applyNamespaceDeclarationLines(ast: ValidatedModuleAST, context: NamespaceBuildContext): void {
 	ast.lines.forEach(originalLine => {
 		if (isSemanticInstructionLine(originalLine)) {
 			applySemanticLine(originalLine, context);
 		} else if (isMemoryDeclarationLine(originalLine)) {
 			const declarationLine = context.resolveMemoryDeclarationLine?.(originalLine) ?? originalLine;
-			applyMemoryDeclarationLine(normalizeCompileTimeArguments(declarationLine, context), context);
-		} else if (shouldValidateUnhandledLines) {
-			normalizeCompileTimeArguments(originalLine, context);
+			applyMemoryDeclarationLine(normalizeValueArguments(declarationLine, context), context);
 		}
 	});
 
 	context.currentModuleWordAlignedSize = context.currentModuleNextWordOffset;
 }
 
-function resolveScalarMemoryDefaults(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
-	context: NamespaceBuildContext
-): void {
+function resolveScalarMemoryDefaults(ast: ValidatedModuleAST, context: NamespaceBuildContext): void {
 	ast.lines.forEach(originalLine => {
 		if (!isMemoryDeclarationLine(originalLine) || originalLine.instruction.endsWith('[]')) {
 			return;
 		}
 
-		const line = normalizeCompileTimeArguments(originalLine, context);
+		const line = normalizeValueArguments(originalLine, context);
 		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
 		const memoryItem = context.namespace.memory[id];
 		if (!memoryItem || memoryItem.numberOfElements !== 1) {
@@ -270,7 +253,7 @@ function resolveScalarMemoryDefaults(
 }
 
 function discoverNamespace(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	ast: ValidatedModuleAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionRegistry,
@@ -303,7 +286,7 @@ function discoverNamespace(
  * @returns The computed result.
  */
 export function layoutNamespace(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	ast: ValidatedModuleAST,
 	namespaces: Namespaces,
 	startingByteAddress = 0,
 	functions?: FunctionRegistry,
@@ -324,22 +307,17 @@ export function layoutNamespace(
 	return context;
 }
 
-function getModuleRegionFromAst(
-	ast: ValidatedModuleAST | ValidatedConstantsAST,
-	options: Pick<CompileOptions, 'memoryRegions'>
-): { memoryIndex: number; memoryRegionName?: string } {
-	const regionLine = ast.type === moduleBlock.type ? ast.regionLine : undefined;
-
-	if (!regionLine) {
+function getModuleRegionFromAst(ast: ValidatedModuleAST, options: Pick<CompileOptions, 'memoryRegions'>) {
+	if (!ast.regionLine) {
 		return getDefaultMemoryRegion();
 	}
 
-	const [argument] = regionLine.arguments;
+	const [argument] = ast.regionLine.arguments;
 	if (argument.type === ArgumentType.LITERAL) {
-		return resolveMemoryRegionByIndex(argument.value, options.memoryRegions ?? [], regionLine);
+		return resolveMemoryRegionByIndex(argument.value, options.memoryRegions ?? [], ast.regionLine);
 	}
 
-	return resolveMemoryRegionName(argument.value, options.memoryRegions ?? [], regionLine);
+	return resolveMemoryRegionName(argument.value, options.memoryRegions ?? [], ast.regionLine);
 }
 
 function shouldDeferNamespaceCollection(
@@ -382,10 +360,10 @@ function toNamespaceDiscoveryMemoryDeclarationLine(line: MemoryDeclarationLine):
  * @returns The computed result.
  */
 export function collectNamespacesFromASTs(
-	asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[],
+	asts: readonly ValidatedModuleAST[],
 	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
 	compiledFunctions?: FunctionRegistry,
-	layoutAsts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[] = asts,
+	layoutAsts: readonly ValidatedModuleAST[] = asts,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): Namespaces {
@@ -397,7 +375,7 @@ export function collectNamespacesFromASTs(
 
 	while (pendingAsts.length > 0 && madeProgress) {
 		madeProgress = false;
-		const deferredAsts: Array<ValidatedModuleAST | ValidatedConstantsAST> = [];
+		const deferredAsts: ValidatedModuleAST[] = [];
 
 		for (const ast of pendingAsts) {
 			try {
@@ -420,7 +398,6 @@ export function collectNamespacesFromASTs(
 				}
 				namespaces[context.namespace.moduleName] = {
 					kind: ast.type,
-					consts: { ...context.namespace.consts },
 					memory: context.namespace.memory,
 					...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
 				};
@@ -463,7 +440,6 @@ export function collectNamespacesFromASTs(
 
 		namespaces[context.namespace.moduleName] = {
 			kind: moduleBlock.type,
-			consts: { ...context.namespace.consts },
 			memory: context.namespace.memory,
 			...getMemoryRegionFields(region.memoryIndex, region.memoryRegionName),
 			byteAddress: nextStartingByteAddress,

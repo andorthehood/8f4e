@@ -128,10 +128,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "PI",
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.141592653589793,
             },
           ],
           "instruction": "push",
@@ -139,10 +138,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "NEG_PI",
+              "isInteger": false,
+              "type": "literal",
+              "value": -3.141592653589793,
             },
           ],
           "instruction": "push",
@@ -213,10 +211,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "PI",
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.141592653589793,
             },
           ],
           "instruction": "push",
@@ -243,10 +240,9 @@
         {
           "arguments": [
             {
-              "referenceKind": "constant",
-              "scope": "local",
-              "type": "identifier",
-              "value": "NEG_PI",
+              "isInteger": false,
+              "type": "literal",
+              "value": -3.141592653589793,
             },
           ],
           "instruction": "push",

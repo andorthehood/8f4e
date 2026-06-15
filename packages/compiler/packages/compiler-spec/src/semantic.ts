@@ -119,7 +119,6 @@ export type LocalMap = Record<string, LocalBinding>;
 /** Mutable namespace state available while compiling modules, constants, and functions. */
 export interface Namespace {
 	memory: MemoryMap;
-	consts: Consts;
 	moduleName: string | undefined;
 	namespaces: Namespaces;
 	functions?: FunctionRegistry;
@@ -129,7 +128,6 @@ export interface Namespace {
 /** Compiled namespace summary recorded for later imports and cross-module references. */
 export interface CollectedNamespace {
 	kind: CompiledModuleBlockType;
-	consts: Consts;
 	memory?: MemoryMap;
 	memoryIndex: number;
 	memoryRegionName?: string;
@@ -283,10 +281,6 @@ export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & {
 	arguments: [NormalizedArgumentLiteral];
 };
 
-export type NormalizedConstLine = Omit<ConstLine, 'arguments'> & {
-	arguments: [ArgumentIdentifier, NormalizedArgumentLiteral];
-};
-
 export type NormalizedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
 	arguments: [NormalizedArgumentLiteral];
 };
@@ -306,7 +300,7 @@ export type ArrayDeclarationLine = Omit<ArrayMemoryDeclarationLine, 'instruction
 };
 
 export type NormalizedSemanticInstructionLine =
-	| NormalizedConstLine
+	| ConstLine
 	| UseLine
 	| ModuleLine
 	| RegionLine
@@ -396,27 +390,25 @@ export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
 	shapeExpansions: PushShapeExpansion[];
 };
 
-export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends ConstLine
-	? NormalizedConstLine
-	: TLine extends DefaultLine
-		? NormalizedDefaultLine | DefaultLine
-		: TLine extends CallLine
-			? ResolvedCallLine | NormalizedCallLine | CallLine
-			: TLine extends MapLine
-				? NormalizedMapLine
-				: TLine extends LocalSetLine
-					? ResolvedLocalSetLine
-					: TLine extends PushLine
-						? NormalizedPushLine
-						: TLine extends PushShapeLine
-							? ResolvedPushShapeLine
-							: TLine extends LoopLine
-								? NormalizedLoopLine | LoopLine
-								: TLine extends MemoryCopyLine
-									? NormalizedMemoryCopyLine | MemoryCopyLine
-									: TLine extends ArrayDeclarationLine
-										? ArrayDeclarationLine
-										: TLine;
+export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends DefaultLine
+	? NormalizedDefaultLine | DefaultLine
+	: TLine extends CallLine
+		? ResolvedCallLine | NormalizedCallLine | CallLine
+		: TLine extends MapLine
+			? NormalizedMapLine
+			: TLine extends LocalSetLine
+				? ResolvedLocalSetLine
+				: TLine extends PushLine
+					? NormalizedPushLine
+					: TLine extends PushShapeLine
+						? ResolvedPushShapeLine
+						: TLine extends LoopLine
+							? NormalizedLoopLine | LoopLine
+							: TLine extends MemoryCopyLine
+								? NormalizedMemoryCopyLine | MemoryCopyLine
+								: TLine extends ArrayDeclarationLine
+									? ArrayDeclarationLine
+									: TLine;
 
 export const BlockType = {
 	MODULE: 0,
