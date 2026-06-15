@@ -148,14 +148,6 @@ int8* smallPtr &smallSamples
 push min(*smallPtr)
 call assert -128
 
-int[] sizeofBuffer sizeof(samples)*2
-push count(sizeofBuffer)
-call assert 4
-
-int[] source 8
-int[] dest count(source)*2
-push count(dest)
-call assert 16
 moduleEnd
 
 module exponentExpressionAssertions

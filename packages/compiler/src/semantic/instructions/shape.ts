@@ -32,9 +32,7 @@ export default function semanticShape(line: ShapeLine, context: CompilationConte
 			...declarationLine,
 			lineNumber: line.lineNumber,
 		};
-		const resolvedDeclarationLine =
-			context.resolveMemoryDeclarationLine?.(inheritedDeclarationLine) ?? inheritedDeclarationLine;
-		applyMemoryDeclarationLine(normalizeValueArguments(resolvedDeclarationLine, context), context);
+		applyMemoryDeclarationLine(normalizeValueArguments(inheritedDeclarationLine, context), context);
 	}
 	context.isInherited = false;
 }

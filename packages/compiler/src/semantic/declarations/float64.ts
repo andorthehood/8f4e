@@ -15,9 +15,7 @@ import createDeclarationCompiler from './createDeclarationCompiler';
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
 const float64: MemoryDeclarationCompiler = createDeclarationCompiler({
-	baseType: 'float64',
 	truncate: false,
-	nonPointerElementWordSize: 8,
 });
 
 export default float64;

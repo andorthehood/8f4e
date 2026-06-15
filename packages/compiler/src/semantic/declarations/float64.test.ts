@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import float64 from './float64';
 import int from './int';
+import { applyPlannedMemoryDeclaration, prepareMemoryDeclarationPlan } from './testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -10,7 +11,8 @@ describe('float64 instruction compiler', () => {
 	it('creates a float64 memory entry', () => {
 		const context = createInstructionCompilerTestContext();
 
-		float64(
+		applyPlannedMemoryDeclaration(
+			float64,
 			{
 				lineNumber: 1,
 				instruction: 'float64',
@@ -26,7 +28,8 @@ describe('float64 instruction compiler', () => {
 	it('float64 scalar has elementWordSize 8', () => {
 		const context = createInstructionCompilerTestContext();
 
-		float64(
+		applyPlannedMemoryDeclaration(
+			float64,
 			{
 				lineNumber: 1,
 				instruction: 'float64',
@@ -42,7 +45,8 @@ describe('float64 instruction compiler', () => {
 	it('float64 at offset 0 has byteAddress divisible by 8', () => {
 		const context = createInstructionCompilerTestContext();
 
-		float64(
+		applyPlannedMemoryDeclaration(
+			float64,
 			{
 				lineNumber: 1,
 				instruction: 'float64',
@@ -57,57 +61,48 @@ describe('float64 instruction compiler', () => {
 
 	it('aligns second float64 to 8 bytes after odd number of int32 vars', () => {
 		const context = createInstructionCompilerTestContext();
+		const firstFloat64 = {
+			lineNumber: 1,
+			instruction: 'float64',
+			hasExplicitMemoryDefault: false,
+			arguments: [classifyIdentifier('a')],
+		} satisfies MemoryDeclarationLine;
+		const firstInt = {
+			lineNumber: 2,
+			instruction: 'int',
+			hasExplicitMemoryDefault: false,
+			arguments: [classifyIdentifier('x')],
+		} satisfies MemoryDeclarationLine;
+		const secondInt = {
+			lineNumber: 3,
+			instruction: 'int',
+			hasExplicitMemoryDefault: false,
+			arguments: [classifyIdentifier('y')],
+		} satisfies MemoryDeclarationLine;
+		const thirdInt = {
+			lineNumber: 4,
+			instruction: 'int',
+			hasExplicitMemoryDefault: false,
+			arguments: [classifyIdentifier('z')],
+		} satisfies MemoryDeclarationLine;
+		const secondFloat64 = {
+			lineNumber: 5,
+			instruction: 'float64',
+			hasExplicitMemoryDefault: false,
+			arguments: [classifyIdentifier('b')],
+		} satisfies MemoryDeclarationLine;
+		prepareMemoryDeclarationPlan(context, [firstFloat64, firstInt, secondInt, thirdInt, secondFloat64]);
 
 		// First float64 (starts at word 0, even)
-		float64(
-			{
-				lineNumber: 1,
-				instruction: 'float64',
-				hasExplicitMemoryDefault: false,
-				arguments: [classifyIdentifier('a')],
-			} satisfies MemoryDeclarationLine,
-			context
-		);
+		applyPlannedMemoryDeclaration(float64, firstFloat64, context);
 
 		// Three int32 variables (odd count) push the offset to an odd word boundary
-		int(
-			{
-				lineNumber: 2,
-				instruction: 'int',
-				hasExplicitMemoryDefault: false,
-				arguments: [classifyIdentifier('x')],
-			} satisfies MemoryDeclarationLine,
-			context
-		);
-		int(
-			{
-				lineNumber: 3,
-				instruction: 'int',
-				hasExplicitMemoryDefault: false,
-				arguments: [classifyIdentifier('y')],
-			} satisfies MemoryDeclarationLine,
-			context
-		);
-		int(
-			{
-				lineNumber: 4,
-				instruction: 'int',
-				hasExplicitMemoryDefault: false,
-				arguments: [classifyIdentifier('z')],
-			} satisfies MemoryDeclarationLine,
-			context
-		);
+		applyPlannedMemoryDeclaration(int, firstInt, context);
+		applyPlannedMemoryDeclaration(int, secondInt, context);
+		applyPlannedMemoryDeclaration(int, thirdInt, context);
 
 		// Second float64 must still be 8-byte aligned despite odd preceding offset
-		float64(
-			{
-				lineNumber: 5,
-				instruction: 'float64',
-				hasExplicitMemoryDefault: false,
-				arguments: [classifyIdentifier('b')],
-			} satisfies MemoryDeclarationLine,
-			context
-		);
+		applyPlannedMemoryDeclaration(float64, secondFloat64, context);
 
 		const entry = context.namespace.memory['b'];
 		expect(entry.byteAddress % 8).toBe(0);
@@ -117,7 +112,8 @@ describe('float64 instruction compiler', () => {
 	it('creates a float64* memory entry with pointer-width allocation', () => {
 		const context = createInstructionCompilerTestContext();
 
-		float64(
+		applyPlannedMemoryDeclaration(
+			float64,
 			{
 				lineNumber: 1,
 				instruction: 'float64*',
@@ -137,7 +133,8 @@ describe('float64 instruction compiler', () => {
 	it('creates a float64** memory entry with pointer-width allocation', () => {
 		const context = createInstructionCompilerTestContext();
 
-		float64(
+		applyPlannedMemoryDeclaration(
+			float64,
 			{
 				lineNumber: 1,
 				instruction: 'float64**',
