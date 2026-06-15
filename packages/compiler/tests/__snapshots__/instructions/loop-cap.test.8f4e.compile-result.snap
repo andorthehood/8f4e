@@ -179,12 +179,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 16,
+                  "memoryId": "counter",
+                  "memoryIndex": 0,
+                  "moduleId": "constantLoopCapAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "push",
@@ -280,19 +288,9 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
-              "left": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 16,
-              },
-              "operator": "*",
-              "right": {
-                "isInteger": true,
-                "type": "literal",
-                "value": 2,
-              },
-              "type": "compile_time_expression",
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
             },
           ],
           "instruction": "loop",
@@ -300,12 +298,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "expressionCounter",
-              "type": "identifier",
-              "value": "&expressionCounter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 20,
+                  "memoryId": "expressionCounter",
+                  "memoryIndex": 0,
+                  "moduleId": "constantLoopCapAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
             },
           ],
           "instruction": "push",
@@ -410,12 +416,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "counter",
+                  "memoryIndex": 0,
+                  "moduleId": "defaultLoopCapAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -531,12 +545,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 8,
+                  "memoryId": "counter",
+                  "memoryIndex": 0,
+                  "moduleId": "directiveLoopCapAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -658,12 +680,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 24,
+                  "memoryId": "counter",
+                  "memoryIndex": 0,
+                  "moduleId": "explicitCapOverridesDirectiveAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 24,
             },
           ],
           "instruction": "push",
@@ -774,12 +804,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 12,
+                  "memoryId": "counter",
+                  "memoryIndex": 0,
+                  "moduleId": "explicitLoopCapAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
             },
           ],
           "instruction": "push",
@@ -950,12 +988,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "outerCounter",
-              "type": "identifier",
-              "value": "&outerCounter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 28,
+                  "memoryId": "outerCounter",
+                  "memoryIndex": 0,
+                  "moduleId": "nestedLoopCapAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 28,
             },
           ],
           "instruction": "push",
@@ -1002,12 +1048,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "innerCounter",
-              "type": "identifier",
-              "value": "&innerCounter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 32,
+                  "memoryId": "innerCounter",
+                  "memoryIndex": 0,
+                  "moduleId": "nestedLoopCapAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
             },
           ],
           "instruction": "push",
@@ -1149,12 +1203,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "counter",
-              "type": "identifier",
-              "value": "&counter",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 36,
+                  "memoryId": "counter",
+                  "memoryIndex": 0,
+                  "moduleId": "zeroLoopCapAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 36,
             },
           ],
           "instruction": "push",

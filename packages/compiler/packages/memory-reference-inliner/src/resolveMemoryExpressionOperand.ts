@@ -1,4 +1,4 @@
-import type { CompilationContext, CompileTimeOperand, Const } from '@8f4e/compiler-spec';
+import type { CompileTimeOperand, Const, LocalMap, MemoryMap } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import {
 	getWordAlignedByteLength,
@@ -22,6 +22,29 @@ import {
 } from './memoryData';
 import { getMemoryRegionFields } from './memoryRegions';
 
+export interface MemoryReferenceModuleNamespace {
+	kind: 'module';
+	memory: MemoryMap;
+	byteAddress: number;
+	wordAlignedSize: number;
+	isMemoryLayoutFinalized: true;
+	memoryIndex: number;
+	memoryRegionName?: string;
+}
+
+export interface MemoryReferenceResolutionContext {
+	namespace: {
+		memory: MemoryMap;
+		namespaces: Readonly<Record<string, MemoryReferenceModuleNamespace>>;
+		moduleName?: string;
+	};
+	locals: LocalMap;
+	startingByteAddress: number;
+	currentModuleWordAlignedSize: number;
+	currentMemoryIndex: number;
+	currentMemoryRegionName?: string;
+}
+
 function hasKnownPointeeElementCount(
 	pointerMetadata: { pointeeBaseType?: unknown; pointeeElementCount?: number } | undefined
 ): pointerMetadata is { pointeeBaseType: unknown; pointeeElementCount: number } {
@@ -39,7 +62,7 @@ function hasKnownPointeeElementCount(
  */
 export function resolveMemoryExpressionOperand(
 	operand: CompileTimeOperand,
-	context: CompilationContext
+	context: MemoryReferenceResolutionContext
 ): Const | undefined {
 	const { namespace } = context;
 	if (operand.type === ArgumentType.LITERAL) {
@@ -339,7 +362,9 @@ export function resolveMemoryExpressionOperand(
 			return undefined;
 		}
 		if (Object.hasOwn(memory, base)) {
-			return operand.isEndAddress ? memoryEndAddressValue(memory[base]) : memoryStartAddressValue(memory[base]);
+			return operand.isEndAddress
+				? memoryEndAddressValue(memory[base], context.namespace.moduleName)
+				: memoryStartAddressValue(memory[base], context.namespace.moduleName);
 		}
 		return undefined;
 	}

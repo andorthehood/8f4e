@@ -5,7 +5,6 @@ import type {
 	CompiledModuleLookup,
 	CompileInput,
 	CompileOptions,
-	CompilerASTLine,
 	CompilerCache,
 	FunctionMetadata,
 	FunctionMetadataLookup,
@@ -20,6 +19,7 @@ import type {
 } from '@8f4e/compiler-spec';
 import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { ConstantInliningError, inlineConstantsInASTs } from '@8f4e/constant-inliner';
+import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
 import { compileModules } from './compileModules';
@@ -30,6 +30,7 @@ import {
 	assertUniqueModuleIds,
 	collectFunctionMetadataFromAsts,
 	collectNamespacesFromASTs,
+	createMemoryLayoutPlanFromASTs,
 } from './semantic/buildNamespace';
 import { getCustomMemoryRegionName, validateMemoryRegionOptions } from './semantic/memoryRegions';
 import { getEffectiveFunctionMetadata } from './semantic/paramShape';
@@ -333,14 +334,36 @@ export function compileSubProgram(
 	}
 
 	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
-
-	const namespaces = collectNamespacesFromASTs(
+	const memoryPlan = createMemoryLayoutPlanFromASTs(
 		astModules,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
 		astModules,
 		options,
 		prototypeShapesById
+	);
+	const { ast: memoryInlinedAsts } = inlineMemoryReferences({
+		ast: inlineableAsts,
+		memoryPlan,
+	});
+	const inlinedAstPrototypes = memoryInlinedAsts.slice(0, astPrototypes.length) as ValidatedPrototypeAST[];
+	const inlinedAstModules = memoryInlinedAsts.slice(
+		astPrototypes.length,
+		astPrototypes.length + astModules.length
+	) as ValidatedModuleAST[];
+	const inlinedAstFunctions = memoryInlinedAsts.slice(
+		astPrototypes.length + astModules.length + astConstants.length
+	) as ValidatedFunctionAST[];
+	const inlinedPrototypeShapesById = collectPrototypeShapes(inlinedAstPrototypes);
+
+	const namespaces = collectNamespacesFromASTs(
+		inlinedAstModules,
+		GLOBAL_ALIGNMENT_BOUNDARY,
+		undefined,
+		inlinedAstModules,
+		options,
+		inlinedPrototypeShapesById,
+		memoryPlan
 	);
 
 	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
@@ -349,12 +372,12 @@ export function compileSubProgram(
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 
 	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
-	const userFunctionMetadata = collectFunctionMetadataFromAsts(astFunctions, {
+	const userFunctionMetadata = collectFunctionMetadataFromAsts(inlinedAstFunctions, {
 		importedFunctionBaseIndex: 0,
 		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
 		reservedFunctionIds: entryNames,
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
-		prototypeShapes: prototypeShapesById,
+		prototypeShapes: inlinedPrototypeShapesById,
 	});
 	const functionRegistry = mergeFunctionRegistries(entryFunctionMetadata, userFunctionMetadata);
 
@@ -364,8 +387,8 @@ export function compileSubProgram(
 		baseTypeIndex: 3,
 	};
 
-	const compiledFunctions = astFunctions.map(ast => {
-		const signatureMetadata = getEffectiveFunctionMetadata(ast, prototypeShapesById);
+	const compiledFunctions = inlinedAstFunctions.map(ast => {
+		const signatureMetadata = getEffectiveFunctionMetadata(ast, inlinedPrototypeShapesById);
 		const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
 		const functionMetadata = functionRegistry.byId[functionId];
 		if (!functionMetadata) {
@@ -381,7 +404,7 @@ export function compileSubProgram(
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 
 	const compiledModules = compileModules(
-		astModules,
+		inlinedAstModules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
@@ -389,7 +412,7 @@ export function compileSubProgram(
 		namespaces,
 		functionRegistry,
 		functionTypeRegistry,
-		prototypeShapesById
+		inlinedPrototypeShapesById
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],

@@ -23,9 +23,10 @@
     "url": "https://github.com/andorthehood/8f4e/issues"
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
-  "dependencies": {
-    "@8f4e/compiler-spec": "*"
-  },
+	"dependencies": {
+		"@8f4e/compiler-spec": "*",
+		"@8f4e/memory-planner": "*"
+	},
   "devDependencies": {
     "@8f4e/tokenizer": "*",
     "@types/node": "24.13.2"

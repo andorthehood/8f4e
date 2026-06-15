@@ -12,7 +12,7 @@ The intended order is:
 2. Inline constants.
 3. Build effective module memory declarations, including `shape` expansion.
 4. Plan memory layout with `@8f4e/memory-planner`.
-5. Inline memory references with `@8f4e/memory-reference-inliner`.
+5. Inline memory references once with `@8f4e/memory-reference-inliner`.
 6. Run semantic analysis and code generation on the inlined lines.
 
 This pass should not be used to make memory declarations plan-able. Declaration sizes handed to the memory planner must already be literal layout input. Layout-dependent declaration sizes, such as `int[] dest count(source)`, are not part of this pass.
@@ -21,18 +21,30 @@ This pass should not be used to make memory declarations plan-able. Declaration 
 
 The pass receives:
 
-- AST lines or an AST block whose constants have already been inlined.
-- A compiler-spec `CompilationContext` containing the collected namespace table, current module layout facts, and local bindings when pointer-local metadata is needed.
+- The whole project AST collection whose constants have already been inlined.
+- The completed `@8f4e/memory-planner` layout plan for that same project AST.
 
 ## Output
 
-The pass should return copied AST lines with memory-layout value references replaced by literal arguments.
+The pass returns a copied project AST collection with memory-layout value references replaced by literal arguments.
 
 When an inlined value is an address, the literal should keep the address metadata needed by later compiler stages, such as memory index, memory region name, safe range, and clamp range.
 
 The pass should not mutate the caller's AST or namespace tables.
 
-Within memory declaration lines, this pass may inline scalar default values and array initializer values. It must not be used to inline array element-count arguments before planning; those counts are layout input and must already be literal before the memory planner runs.
+Within memory declaration lines, this pass may inline scalar default values and array initializer values. It must not be used to make array element-count arguments plan-able; those counts are layout input and must already be literal before the memory planner runs.
+
+There should be one project-level call during compilation:
+
+```ts
+const memoryPlan = planMemoryLayout(layoutSource);
+const result = inlineMemoryReferences({
+	ast,
+	memoryPlan,
+});
+```
+
+The inliner may traverse modules internally to resolve module-local forms such as `&this` or `count(buffer)`, but callers should not invoke the pass once per module. Module scoping is part of the pass.
 
 ## References Owned By This Pass
 
@@ -55,14 +67,14 @@ The memory reference inliner owns value resolution for memory-layout expressions
 - Arithmetic around resolved memory-layout values, such as `sizeof(buffer)*2`, `&buffer+4`, or `4+&buffer`.
 - Intermodule metadata expressions, such as `count(module:name)` or `sizeof(module:name)`.
 
-Pointer metadata expressions also belong here when the required pointer facts are available from memory layout or provided local bindings:
+Pointer metadata expressions belong here when the required pointer facts are available from memory layout:
 
 - `count(*pointer)`
 - `sizeof(*pointer)`
 - `min(*pointer)`
 - `max(*pointer)`
 
-If pointer metadata depends on locals that are only known while compiling an instruction stream, the pass may accept those locals as input. It should not discover or create locals itself.
+Pointer metadata that depends on locals created while compiling an instruction stream is not part of the project-level memory-plan pass. That state is not known from the AST plus memory plan alone and should not force this package to accept compiler execution context.
 
 ## Out Of Scope
 
@@ -84,13 +96,13 @@ It should not revalidate facts guaranteed by earlier stages, such as token shape
 
 ## API Shape
 
-The package entry point should be an `index.ts` function that returns an explicit result object rather than using callbacks:
+The package entry point is an `index.ts` function that returns an explicit result object rather than using callbacks:
 
 ```ts
 const result = inlineMemoryReferences({
-	lines,
-	context,
+	ast,
+	memoryPlan,
 });
 ```
 
-The package also exports `inlineMemoryReferenceArgument`, `inlineMemoryReferencesInLine`, `tryResolveValueArgument`, and address-value helpers used by compiler semantic normalization.
+Lower-level argument and line helpers are available for package tests and focused tooling, but the compiler pipeline should use the project-level entry point.

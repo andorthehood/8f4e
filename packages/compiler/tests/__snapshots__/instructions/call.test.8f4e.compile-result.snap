@@ -524,12 +524,9 @@
         {
           "arguments": [
             {
-              "isPointee": true,
-              "referenceKind": "pointee-element-word-size",
-              "scope": "local",
-              "targetMemoryId": "lut",
-              "type": "identifier",
-              "value": "sizeof(*lut)",
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -1139,12 +1136,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "output",
-              "type": "identifier",
-              "value": "&output",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 140,
+                  "memoryId": "output",
+                  "memoryIndex": 0,
+                  "moduleId": "callImpureFunctionWithExplicitLoadAndStore",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 140,
             },
           ],
           "instruction": "push",
@@ -1152,12 +1157,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "input",
-              "type": "identifier",
-              "value": "&input",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 136,
+                  "memoryId": "input",
+                  "memoryIndex": 0,
+                  "moduleId": "callImpureFunctionWithExplicitLoadAndStore",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 136,
             },
           ],
           "instruction": "push",
@@ -1380,12 +1393,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "lut",
-              "type": "identifier",
-              "value": "&lut",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "lut",
+                  "memoryIndex": 0,
+                  "moduleId": "callPointerParamsWithLocalDereference",
+                  "safeByteLength": 128,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -1407,12 +1428,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "lut",
-              "type": "identifier",
-              "value": "&lut",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "lut",
+                  "memoryIndex": 0,
+                  "moduleId": "callPointerParamsWithLocalDereference",
+                  "safeByteLength": 128,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",

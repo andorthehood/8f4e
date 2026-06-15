@@ -26,13 +26,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "intermodular-reference",
-              "scope": "intermodule",
-              "targetMemoryId": "value",
-              "targetModuleId": "userInitEntryCounter",
-              "type": "identifier",
-              "value": "&userInitEntryCounter:value",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 12,
+                  "memoryId": "value",
+                  "memoryIndex": 0,
+                  "moduleId": "userInitEntryCounter",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
             },
           ],
           "instruction": "push",
@@ -71,13 +78,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "intermodular-reference",
-              "scope": "intermodule",
-              "targetMemoryId": "value",
-              "targetModuleId": "mainEntryCounter",
-              "type": "identifier",
-              "value": "&mainEntryCounter:value",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "value",
+                  "memoryIndex": 0,
+                  "moduleId": "mainEntryCounter",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -116,13 +130,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "intermodular-reference",
-              "scope": "intermodule",
-              "targetMemoryId": "value",
-              "targetModuleId": "auxEntryCounter",
-              "type": "identifier",
-              "value": "&auxEntryCounter:value",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 8,
+                  "memoryId": "value",
+                  "memoryIndex": 0,
+                  "moduleId": "auxEntryCounter",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -161,13 +182,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "intermodular-reference",
-              "scope": "intermodule",
-              "targetMemoryId": "value",
-              "targetModuleId": "userInitEntryCounter",
-              "type": "identifier",
-              "value": "&userInitEntryCounter:value",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 12,
+                  "memoryId": "value",
+                  "memoryIndex": 0,
+                  "moduleId": "userInitEntryCounter",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
             },
           ],
           "instruction": "push",
@@ -246,12 +274,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "value",
-              "type": "identifier",
-              "value": "&value",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 8,
+                  "memoryId": "value",
+                  "memoryIndex": 0,
+                  "moduleId": "auxEntryCounter",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -326,12 +362,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "value",
-              "type": "identifier",
-              "value": "&value",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "value",
+                  "memoryIndex": 0,
+                  "moduleId": "mainEntryCounter",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -406,12 +450,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "value",
-              "type": "identifier",
-              "value": "&value",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 12,
+                  "memoryId": "value",
+                  "memoryIndex": 0,
+                  "moduleId": "userInitEntryCounter",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
             },
           ],
           "instruction": "push",
