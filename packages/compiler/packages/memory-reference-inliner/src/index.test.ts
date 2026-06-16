@@ -1,10 +1,84 @@
 import { ArgumentType, type ValidatedModuleAST } from '@8f4e/compiler-spec';
-import type { MemoryLayoutPlan, PlannedMemoryDeclaration } from '@8f4e/memory-planner';
+import type { MemoryLayoutPlan, PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
 import type { MemoryReferenceResolutionContext } from './index';
 import { inlineMemoryReferences, resolveMemoryExpressionOperand, tryResolveValueArgument } from './index';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
+
+function createMemoryDeclaration(
+	id: string,
+	overrides: Partial<PlannedMemoryDeclaration> = {}
+): PlannedMemoryDeclaration {
+	return {
+		id,
+		lineNumber: 0,
+		type: 'int',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		wordAlignedAddress: 0,
+		wordAlignedSize: 1,
+		byteAddress: 0,
+		memoryIndex: 0,
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+		...overrides,
+	} as PlannedMemoryDeclaration;
+}
+
+function createPlannedModule(
+	id: string,
+	memory: Record<string, PlannedMemoryDeclaration>,
+	overrides: Partial<PlannedMemoryModule> = {}
+): PlannedMemoryModule {
+	return {
+		id,
+		lineNumber: 0,
+		byteAddress: 24,
+		wordAlignedSize: 5,
+		memoryIndex: 0,
+		memory,
+		declarations: Object.values(memory),
+		...overrides,
+	} as PlannedMemoryModule;
+}
+
+function createMemoryPlan(moduleList: readonly PlannedMemoryModule[]): MemoryLayoutPlan {
+	return {
+		modules: Object.fromEntries(moduleList.map(module => [module.id, module])),
+		moduleList,
+		nextByteAddressByMemoryIndex: { 0: 0 },
+	};
+}
+
+function createTestContext(
+	currentModule: PlannedMemoryModule,
+	overrides: Partial<MemoryReferenceResolutionContext> = {}
+): MemoryReferenceResolutionContext {
+	return {
+		memoryPlan: createMemoryPlan([currentModule]),
+		currentModule,
+		pointerMetadata: {},
+		startingByteAddress: currentModule.byteAddress,
+		currentModuleWordAlignedSize: currentModule.wordAlignedSize,
+		currentMemoryIndex: currentModule.memoryIndex,
+		...(currentModule.memoryRegionName ? { currentMemoryRegionName: currentModule.memoryRegionName } : {}),
+		locals: {},
+		...overrides,
+	} as MemoryReferenceResolutionContext;
+}
+
+function withRemoteModules(
+	context: MemoryReferenceResolutionContext,
+	remoteModules: readonly PlannedMemoryModule[]
+): MemoryReferenceResolutionContext {
+	const currentModule = context.currentModule;
+	return {
+		...context,
+		memoryPlan: createMemoryPlan([...(currentModule ? [currentModule] : []), ...remoteModules]),
+	};
+}
 
 describe('inlineMemoryReferences', () => {
 	it('inlines memory references across a project AST using the memory plan', () => {
@@ -199,35 +273,40 @@ describe('inlineMemoryReferences', () => {
 });
 
 describe('tryResolveValueArgument', () => {
-	const mockContext = {
-		memory: {
-			samples: {
-				id: 'samples',
-				byteAddress: 32,
-				numberOfElements: 8,
-				elementWordSize: 2,
-				wordAlignedSize: 4,
-				isInteger: true,
-			},
-			floatBuf: {
-				numberOfElements: 4,
-				elementWordSize: 4,
-				isInteger: false,
-			},
-			floatPtr: {
-				numberOfElements: 1,
-				elementWordSize: 1,
-				isInteger: true,
-				pointeeBaseType: 'float',
-				pointerDepth: 1,
-				pointeeElementCount: 4,
+	const samples = createMemoryDeclaration('samples', {
+		byteAddress: 32,
+		numberOfElements: 8,
+		elementWordSize: 2,
+		wordAlignedSize: 4,
+	});
+	const floatBuf = createMemoryDeclaration('floatBuf', {
+		numberOfElements: 4,
+		elementWordSize: 4,
+		isInteger: false,
+		type: 'float',
+	});
+	const floatPtr = createMemoryDeclaration('floatPtr', {
+		numberOfElements: 1,
+		elementWordSize: 4,
+		isInteger: true,
+		pointeeBaseType: 'float',
+		pointerDepth: 1,
+		type: 'float*',
+	});
+	const mainModule = createPlannedModule('main', {
+		samples,
+		floatBuf,
+		floatPtr,
+	});
+	const mockContext = createTestContext(mainModule, {
+		pointerMetadata: {
+			main: {
+				floatPtr: {
+					pointeeElementCount: 4,
+				},
 			},
 		},
-		namespaces: {},
-		startingByteAddress: 24,
-		currentModuleWordAlignedSize: 5,
-		locals: {},
-	} as unknown as MemoryReferenceResolutionContext;
+	});
 
 	it('resolves memory expression operands without resolving constant identifiers', () => {
 		expect(resolveMemoryExpressionOperand(parseCompileTimeOperand('sizeof(samples)'), mockContext)).toEqual({
@@ -305,21 +384,11 @@ describe('tryResolveValueArgument', () => {
 	});
 
 	it('resolves intermodule sizeof expressions', () => {
-		const intermodularNamespace = {
-			...mockContext,
-			namespaces: {
-				source: {
-					kind: 'module',
-					memory: {
-						buffer: {
-							numberOfElements: 4,
-							elementWordSize: 2,
-							isInteger: true,
-						},
-					},
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const buffer = createMemoryDeclaration('buffer', {
+			numberOfElements: 4,
+			elementWordSize: 2,
+		});
+		const intermodularNamespace = withRemoteModules(mockContext, [createPlannedModule('source', { buffer })]);
 
 		expect(tryResolveValueArgument(intermodularNamespace, parseArgument('2*sizeof(source:buffer)'))).toEqual({
 			value: 4,
@@ -484,26 +553,15 @@ describe('tryResolveValueArgument', () => {
 	});
 
 	it('resolves intermodule start-address reference (&module:memory) once module is laid out', () => {
-		const laidOutNamespace = {
-			...mockContext,
-			namespaces: {
-				source: {
-					kind: 'module',
-					byteAddress: 8,
-					wordAlignedSize: 4,
-					memory: {
-						buffer: {
-							byteAddress: 8,
-							wordAlignedSize: 4,
-							numberOfElements: 4,
-							elementWordSize: 4,
-							memoryIndex: 0,
-							isInteger: true,
-						},
-					},
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const buffer = createMemoryDeclaration('buffer', {
+			byteAddress: 8,
+			wordAlignedSize: 4,
+			numberOfElements: 4,
+			elementWordSize: 4,
+		});
+		const laidOutNamespace = withRemoteModules(mockContext, [
+			createPlannedModule('source', { buffer }, { byteAddress: 8, wordAlignedSize: 4 }),
+		]);
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:buffer'))).toEqual({
 			value: 8,
@@ -516,32 +574,22 @@ describe('tryResolveValueArgument', () => {
 					byteAddress: 8,
 					safeByteLength: 16,
 					moduleId: 'source',
+					memoryId: 'buffer',
 				},
 			},
 		});
 	});
 
 	it('resolves intermodule end-address reference (module:memory&) once module is laid out', () => {
-		const laidOutNamespace = {
-			...mockContext,
-			namespaces: {
-				source: {
-					kind: 'module',
-					byteAddress: 8,
-					wordAlignedSize: 4,
-					memory: {
-						buffer: {
-							byteAddress: 8,
-							wordAlignedSize: 4,
-							numberOfElements: 4,
-							elementWordSize: 4,
-							memoryIndex: 0,
-							isInteger: true,
-						},
-					},
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const buffer = createMemoryDeclaration('buffer', {
+			byteAddress: 8,
+			wordAlignedSize: 4,
+			numberOfElements: 4,
+			elementWordSize: 4,
+		});
+		const laidOutNamespace = withRemoteModules(mockContext, [
+			createPlannedModule('source', { buffer }, { byteAddress: 8, wordAlignedSize: 4 }),
+		]);
 
 		// End address = byteAddress + (wordAlignedSize - 1) * 4 = 8 + 3 * 4 = 20
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('source:buffer&'))).toEqual({
@@ -555,23 +603,16 @@ describe('tryResolveValueArgument', () => {
 					byteAddress: 20,
 					safeByteLength: 4,
 					moduleId: 'source',
+					memoryId: 'buffer',
 				},
 			},
 		});
 	});
 
 	it('resolves intermodule module-base start-address (&module:) once module is laid out', () => {
-		const laidOutNamespace = {
-			...mockContext,
-			namespaces: {
-				source: {
-					kind: 'module',
-					byteAddress: 12,
-					wordAlignedSize: 3,
-					memory: {},
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const laidOutNamespace = withRemoteModules(mockContext, [
+			createPlannedModule('source', {}, { byteAddress: 12, wordAlignedSize: 3 }),
+		]);
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:'))).toEqual({
 			value: 12,
@@ -590,17 +631,9 @@ describe('tryResolveValueArgument', () => {
 	});
 
 	it('resolves intermodule module-base end-address (module:&) once module is laid out', () => {
-		const laidOutNamespace = {
-			...mockContext,
-			namespaces: {
-				source: {
-					kind: 'module',
-					byteAddress: 12,
-					wordAlignedSize: 3,
-					memory: {},
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const laidOutNamespace = withRemoteModules(mockContext, [
+			createPlannedModule('source', {}, { byteAddress: 12, wordAlignedSize: 3 }),
+		]);
 
 		// End address = 12 + (3 - 1) * 4 = 12 + 8 = 20
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('source:&'))).toEqual({
@@ -619,40 +652,15 @@ describe('tryResolveValueArgument', () => {
 		});
 	});
 
-	it('defers intermodule address resolution until module byteAddress is known', () => {
-		const unlaidOutNamespace = {
-			...mockContext,
-			namespaces: {
-				source: {
-					kind: 'module',
-					// No byteAddress — module not yet laid out
-					memory: {
-						buffer: {
-							numberOfElements: 4,
-							elementWordSize: 4,
-							isInteger: true,
-						},
-					},
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
-
-		expect(tryResolveValueArgument(unlaidOutNamespace, classifyIdentifier('&source:buffer'))).toBeUndefined();
-		expect(tryResolveValueArgument(unlaidOutNamespace, classifyIdentifier('&source:'))).toBeUndefined();
+	it('returns undefined for missing intermodule address references', () => {
+		expect(tryResolveValueArgument(mockContext, classifyIdentifier('&source:buffer'))).toBeUndefined();
+		expect(tryResolveValueArgument(mockContext, classifyIdentifier('&source:'))).toBeUndefined();
 	});
 
 	it('returns undefined for unresolved intermodule nth references', () => {
-		const laidOutNamespace = {
-			...mockContext,
-			namespaces: {
-				source: {
-					kind: 'module',
-					byteAddress: 8,
-					wordAlignedSize: 4,
-					memory: {},
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const laidOutNamespace = withRemoteModules(mockContext, [
+			createPlannedModule('source', {}, { byteAddress: 8, wordAlignedSize: 4 }),
+		]);
 
 		expect(tryResolveValueArgument(laidOutNamespace, classifyIdentifier('&source:99'))).toBeUndefined();
 		expect(tryResolveValueArgument(mockContext, classifyIdentifier('&source:99'))).toBeUndefined();
@@ -697,20 +705,13 @@ describe('tryResolveValueArgument', () => {
 	});
 
 	it('keeps address metadata when adding an in-range integer offset to an address expression', () => {
-		const addressContext = {
-			...mockContext,
-			memory: {
-				arr: {
-					id: 'arr',
-					byteAddress: 16,
-					wordAlignedSize: 4,
-					numberOfElements: 4,
-					elementWordSize: 4,
-					memoryIndex: 0,
-					isInteger: true,
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const arr = createMemoryDeclaration('arr', {
+			byteAddress: 16,
+			wordAlignedSize: 4,
+			numberOfElements: 4,
+			elementWordSize: 4,
+		});
+		const addressContext = createTestContext(createPlannedModule('main', { arr }));
 
 		expect(tryResolveValueArgument(addressContext, parseArgument('&arr+4'))).toEqual({
 			value: 20,
@@ -729,20 +730,13 @@ describe('tryResolveValueArgument', () => {
 	});
 
 	it('keeps address metadata when adding an address expression to an integer offset', () => {
-		const addressContext = {
-			...mockContext,
-			memory: {
-				arr: {
-					id: 'arr',
-					byteAddress: 16,
-					wordAlignedSize: 4,
-					numberOfElements: 4,
-					elementWordSize: 4,
-					memoryIndex: 0,
-					isInteger: true,
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const arr = createMemoryDeclaration('arr', {
+			byteAddress: 16,
+			wordAlignedSize: 4,
+			numberOfElements: 4,
+			elementWordSize: 4,
+		});
+		const addressContext = createTestContext(createPlannedModule('main', { arr }));
 
 		expect(tryResolveValueArgument(addressContext, parseArgument('4+&arr'))).toEqual({
 			value: 20,
@@ -761,19 +755,13 @@ describe('tryResolveValueArgument', () => {
 	});
 
 	it('drops address metadata when address expression arithmetic leaves the known safe range', () => {
-		const addressContext = {
-			...mockContext,
-			memory: {
-				arr: {
-					id: 'arr',
-					byteAddress: 16,
-					wordAlignedSize: 4,
-					numberOfElements: 4,
-					elementWordSize: 4,
-					isInteger: true,
-				},
-			},
-		} as unknown as MemoryReferenceResolutionContext;
+		const arr = createMemoryDeclaration('arr', {
+			byteAddress: 16,
+			wordAlignedSize: 4,
+			numberOfElements: 4,
+			elementWordSize: 4,
+		});
+		const addressContext = createTestContext(createPlannedModule('main', { arr }));
 
 		expect(tryResolveValueArgument(addressContext, parseArgument('&arr+1024'))).toEqual({
 			value: 1040,

@@ -5,7 +5,7 @@ export interface ResolvedMemoryRegion {
 }
 
 /**
- * Builds the optional memory region fields stored on namespaces and memory metadata.
+ * Builds the optional memory region fields stored on module and memory metadata.
  *
  * @param memoryIndex - Memory index to resolve.
  * @param memoryRegionName - Configured memory region name to resolve.
