@@ -42,7 +42,7 @@ type BytecodeSizeEntry = {
 	emittedBytes: number;
 };
 
-type CoverageComponent = 'compiler' | 'tokenizer';
+type CoverageComponent = string;
 type CoverageMetric = 'rangeExecutions' | 'functionEntries' | 'coveredFunctions';
 
 type CoverageDashboardTab = 'ranges' | 'functionEntries' | 'coveredFunctions';
@@ -52,6 +52,7 @@ type CoverageMetricConfig = {
 	emptyLabel: string;
 	axisLabel: string;
 	cardLabel: string;
+	pipelineSummaryLabel: string;
 	compilerSummaryLabel: string;
 	tokenizerSummaryLabel: string;
 };
@@ -62,7 +63,8 @@ const coverageMetricConfigs: Record<CoverageDashboardTab, CoverageMetricConfig> 
 		emptyLabel: 'range execution data',
 		axisLabel: 'Range executions',
 		cardLabel: 'Ranges',
-		compilerSummaryLabel: 'Compiler Ranges',
+		pipelineSummaryLabel: 'Pipeline Ranges',
+		compilerSummaryLabel: 'Compiler Core Ranges',
 		tokenizerSummaryLabel: 'Tokenizer Ranges',
 	},
 	functionEntries: {
@@ -70,7 +72,8 @@ const coverageMetricConfigs: Record<CoverageDashboardTab, CoverageMetricConfig> 
 		emptyLabel: 'function entry data',
 		axisLabel: 'Function entries',
 		cardLabel: 'Entries',
-		compilerSummaryLabel: 'Compiler Entries',
+		pipelineSummaryLabel: 'Pipeline Entries',
+		compilerSummaryLabel: 'Compiler Core Entries',
 		tokenizerSummaryLabel: 'Tokenizer Entries',
 	},
 	coveredFunctions: {
@@ -78,9 +81,40 @@ const coverageMetricConfigs: Record<CoverageDashboardTab, CoverageMetricConfig> 
 		emptyLabel: 'covered function data',
 		axisLabel: 'Covered functions',
 		cardLabel: 'Functions',
-		compilerSummaryLabel: 'Compiler Functions',
+		pipelineSummaryLabel: 'Pipeline Functions',
+		compilerSummaryLabel: 'Compiler Core Functions',
 		tokenizerSummaryLabel: 'Tokenizer Functions',
 	},
+};
+
+const coverageComponentOrder = [
+	'compilerPipeline',
+	'compiler',
+	'tokenizer',
+	'constantInliner',
+	'memoryPlanner',
+	'memoryReferenceInliner',
+	'memoryDefaultResolver',
+	'semanticUtils',
+	'stackAnalyzer',
+	'wasmCodegen',
+	'compilerWasmUtils',
+	'languageSpec',
+];
+
+const coverageComponentLabels: Record<CoverageComponent, string> = {
+	compilerPipeline: 'Compiler Pipeline',
+	compiler: 'Compiler Core',
+	tokenizer: 'Tokenizer',
+	constantInliner: 'Constant Inliner',
+	memoryPlanner: 'Memory Planner',
+	memoryReferenceInliner: 'Memory Reference Inliner',
+	memoryDefaultResolver: 'Memory Default Resolver',
+	semanticUtils: 'Semantic Utils',
+	stackAnalyzer: 'Stack Analyzer',
+	wasmCodegen: 'Wasm Codegen',
+	compilerWasmUtils: 'Compiler Wasm Utils',
+	languageSpec: 'Language Spec',
 };
 
 type CompilerCoverageBucket = {
@@ -91,10 +125,11 @@ type CompilerCoverageBucket = {
 };
 
 type CompilerCoverageEntry = {
+	schemaVersion?: number;
 	commit: string;
 	version: string | null;
 	benchmark: string;
-	coverage: Record<CoverageComponent, CompilerCoverageBucket>;
+	coverage: Partial<Record<CoverageComponent, CompilerCoverageBucket>>;
 };
 
 type TsdocCoverageManifest = {
@@ -649,24 +684,26 @@ function toCoveragePoints(log: BytecodeTrackedLog, entries: CompilerCoverageEntr
 		const version = entry.version ?? 'unknown';
 		const releaseTag = `@8f4e/compiler@${version}`;
 
-		return (['compiler', 'tokenizer'] as const).map(component => {
-			const componentLabel = component === 'compiler' ? 'Compiler' : 'Tokenizer';
-
+		return getSortedCoverageComponents(Object.keys(entry.coverage)).flatMap(component => {
+			const bucket = entry.coverage[component];
+			if (!bucket) {
+				return [];
+			}
 			return {
 				benchmark: log.benchmark,
 				label: log.label,
 				component,
-				componentLabel,
-				seriesLabel: `${log.label} ${componentLabel}`,
+				componentLabel: getCoverageComponentLabel(component),
+				seriesLabel: `${log.label} ${getCoverageComponentLabel(component)}`,
 				version,
 				releaseTag,
 				commit: entry.commit,
 				releaseKey: entry.commit || version,
 				releaseIndex: 0,
 				releaseLabel: '',
-				coveredFunctions: entry.coverage[component].coveredFunctions,
-				functionEntries: entry.coverage[component].functionEntries,
-				rangeExecutions: entry.coverage[component].rangeExecutions,
+				coveredFunctions: bucket.coveredFunctions,
+				functionEntries: bucket.functionEntries,
+				rangeExecutions: bucket.rangeExecutions,
 			};
 		});
 	});
@@ -957,6 +994,7 @@ function renderCoverage(config: CoverageMetricConfig) {
 	const summaryPoints = toCoverageSummaryPoints(state.coveragePoints, config.metric);
 	const latestReleasePoints = getLatestCoverageReleasePoints(summaryPoints);
 	const latestPoint = latestReleasePoints[0] ?? null;
+	const latestPipelinePoint = latestReleasePoints.find(point => point.component === 'compilerPipeline') ?? null;
 	const latestCompilerPoint = latestReleasePoints.find(point => point.component === 'compiler') ?? null;
 	const latestTokenizerPoint = latestReleasePoints.find(point => point.component === 'tokenizer') ?? null;
 	const snapshotCount = new Set(state.coveragePoints.map(point => point.releaseKey)).size;
@@ -968,6 +1006,11 @@ function renderCoverage(config: CoverageMetricConfig) {
 	coverageBenchmarkCaption.textContent = `${config.axisLabel} by benchmark`;
 
 	rangesSummaryGrid.innerHTML = [
+		renderSummaryItem(
+			config.pipelineSummaryLabel,
+			latestPipelinePoint ? formatCount(latestPipelinePoint.value) : 'n/a',
+			`${state.coverageLogs.length} benchmarks`
+		),
 		renderSummaryItem(
 			config.compilerSummaryLabel,
 			latestCompilerPoint ? formatCount(latestCompilerPoint.value) : 'n/a',
@@ -1278,9 +1321,10 @@ function renderCoverageGrid(points: CoveragePoint[], config: CoverageMetricConfi
 	for (const log of state.coverageLogs) {
 		const benchmarkPoints = points.filter(point => point.benchmark === log.benchmark);
 		const latestPoints = getLatestCoverageReleasePoints(benchmarkPoints);
+		const latestPipelinePoint = latestPoints.find(point => point.component === 'compilerPipeline') ?? null;
 		const latestCompilerPoint = latestPoints.find(point => point.component === 'compiler') ?? null;
 		const latestTokenizerPoint = latestPoints.find(point => point.component === 'tokenizer') ?? null;
-		const latestPoint = latestCompilerPoint ?? latestTokenizerPoint;
+		const latestPoint = latestPipelinePoint ?? latestCompilerPoint ?? latestTokenizerPoint;
 		const card = document.createElement('article');
 		card.className = 'package-card';
 		card.innerHTML = `
@@ -1289,7 +1333,7 @@ function renderCoverageGrid(points: CoveragePoint[], config: CoverageMetricConfi
 					<h3>${escapeHtml(log.label)}</h3>
 					<p>${latestPoint ? escapeHtml(formatCoveragePointMeta(latestPoint)) : ''}</p>
 				</div>
-				<strong>${latestCompilerPoint ? escapeHtml(formatCount(getCoverageMetricValue(latestCompilerPoint, config.metric))) : 'n/a'}</strong>
+				<strong>${latestPoint ? escapeHtml(formatCount(getCoverageMetricValue(latestPoint, config.metric))) : 'n/a'}</strong>
 			</div>
 			<div class="package-card-chart"></div>
 			${renderCoverageTable(benchmarkPoints, config)}
@@ -1653,6 +1697,7 @@ function renderCoverageTable(points: CoveragePoint[], config: CoverageMetricConf
 	}
 
 	const releases = [...new Map(points.map(point => [point.releaseKey, point])).values()].slice(-8).reverse();
+	const components = getSortedCoverageComponents([...new Set(points.map(point => point.component))]);
 
 	return `
 		<div class="file-table-wrap">
@@ -1660,22 +1705,23 @@ function renderCoverageTable(points: CoveragePoint[], config: CoverageMetricConf
 				<thead>
 					<tr>
 						<th>Release</th>
-						<th>Compiler</th>
-						<th>Tokenizer</th>
+						${components.map(component => `<th>${escapeHtml(getCoverageComponentLabel(component))}</th>`).join('')}
 					</tr>
 				</thead>
 				<tbody>
 					${releases
 						.map(release => {
 							const releasePoints = points.filter(point => point.releaseKey === release.releaseKey);
-							const compilerPoint = releasePoints.find(point => point.component === 'compiler');
-							const tokenizerPoint = releasePoints.find(point => point.component === 'tokenizer');
 
 							return `
 								<tr>
 									<td>${escapeHtml(release.releaseTag)}</td>
-									<td>${compilerPoint ? formatCount(getCoverageMetricValue(compilerPoint, config.metric)) : 'n/a'}</td>
-									<td>${tokenizerPoint ? formatCount(getCoverageMetricValue(tokenizerPoint, config.metric)) : 'n/a'}</td>
+									${components
+										.map(component => {
+											const point = releasePoints.find(releasePoint => releasePoint.component === component);
+											return `<td>${point ? formatCount(getCoverageMetricValue(point, config.metric)) : 'n/a'}</td>`;
+										})
+										.join('')}
 								</tr>
 							`;
 						})
@@ -1931,6 +1977,28 @@ function getLatestDate(points: Point[]) {
 
 function getCoverageMetricValue(point: CoveragePoint, metric: CoverageMetric) {
 	return point[metric];
+}
+
+function getSortedCoverageComponents(components: readonly CoverageComponent[]) {
+	return [...components].sort((left, right) => {
+		const leftIndex = coverageComponentOrder.indexOf(left);
+		const rightIndex = coverageComponentOrder.indexOf(right);
+
+		if (leftIndex !== -1 || rightIndex !== -1) {
+			return getCoverageComponentSortIndex(left) - getCoverageComponentSortIndex(right);
+		}
+
+		return left.localeCompare(right);
+	});
+}
+
+function getCoverageComponentSortIndex(component: CoverageComponent) {
+	const index = coverageComponentOrder.indexOf(component);
+	return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+}
+
+function getCoverageComponentLabel(component: CoverageComponent) {
+	return coverageComponentLabels[component] ?? component;
 }
 
 function getChartWidth(container: HTMLElement) {
