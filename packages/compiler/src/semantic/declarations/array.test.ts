@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import array from './array';
-import { applyPlannedMemoryDeclaration, prepareMemoryDeclarationPlan } from './testUtils';
+import { applyPlannedMemoryDeclaration, getTestMemoryMap, prepareMemoryDeclarationPlan } from './testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -23,7 +23,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		expect(context.namespace.memory).toMatchSnapshot();
+		expect(getTestMemoryMap(context)).toMatchSnapshot();
 	});
 
 	it('stores inline initializer values as array defaults', () => {
@@ -46,12 +46,12 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		expect(context.namespace.memory['notes'].default).toEqual({
+		expect(getTestMemoryMap(context)['notes'].default).toEqual({
 			0: 48,
 			1: 50,
 			2: 53,
 		});
-		expect(context.namespace.memory['notes'].hasExplicitDefault).toBe(true);
+		expect(getTestMemoryMap(context)['notes'].hasExplicitDefault).toBe(true);
 	});
 
 	it('truncates inline initializer values for integer arrays', () => {
@@ -72,7 +72,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		expect(context.namespace.memory['values'].default).toEqual({
+		expect(getTestMemoryMap(context)['values'].default).toEqual({
 			0: 1,
 		});
 	});
@@ -119,7 +119,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['bytes'];
+		const memory = getTestMemoryMap(context)['bytes'];
 		expect(memory.elementWordSize).toBe(1);
 		expect(memory.numberOfElements).toBe(3);
 		// 3 bytes * 1 byte per element = 3 bytes total
@@ -141,7 +141,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['bytes'];
+		const memory = getTestMemoryMap(context)['bytes'];
 		expect(memory.elementWordSize).toBe(1);
 		expect(memory.numberOfElements).toBe(5);
 		// 5 bytes * 1 byte per element = 5 bytes total
@@ -163,7 +163,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['shorts'];
+		const memory = getTestMemoryMap(context)['shorts'];
 		expect(memory.elementWordSize).toBe(2);
 		expect(memory.numberOfElements).toBe(3);
 		// 3 elements * 2 bytes per element = 6 bytes total
@@ -185,7 +185,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['shorts'];
+		const memory = getTestMemoryMap(context)['shorts'];
 		expect(memory.elementWordSize).toBe(2);
 		expect(memory.numberOfElements).toBe(5);
 		// 5 elements * 2 bytes per element = 10 bytes total
@@ -207,7 +207,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['ints'];
+		const memory = getTestMemoryMap(context)['ints'];
 		expect(memory.elementWordSize).toBe(4);
 		expect(memory.numberOfElements).toBe(3);
 		// 3 elements * 4 bytes per element = 12 bytes total
@@ -229,7 +229,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['unsignedBytes'];
+		const memory = getTestMemoryMap(context)['unsignedBytes'];
 		expect(memory.elementWordSize).toBe(1);
 		expect(memory.numberOfElements).toBe(5);
 		expect(memory.isUnsigned).toBe(true);
@@ -250,7 +250,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['unsignedShorts'];
+		const memory = getTestMemoryMap(context)['unsignedShorts'];
 		expect(memory.elementWordSize).toBe(2);
 		expect(memory.numberOfElements).toBe(3);
 		expect(memory.isUnsigned).toBe(true);
@@ -271,7 +271,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['signedBytes'];
+		const memory = getTestMemoryMap(context)['signedBytes'];
 		expect(memory.isUnsigned).toBe(false);
 	});
 
@@ -289,7 +289,7 @@ describe('array declaration compiler', () => {
 			context
 		);
 
-		const memory = context.namespace.memory['doubles'];
+		const memory = getTestMemoryMap(context)['doubles'];
 		expect(memory.elementWordSize).toBe(8);
 		expect(memory.numberOfElements).toBe(3);
 		// 3 elements * 8 bytes each = 24 bytes = 6 words
@@ -318,7 +318,7 @@ describe('array declaration compiler', () => {
 
 		applyPlannedMemoryDeclaration(array, doublesLine, context);
 
-		const memory = context.namespace.memory['doubles'];
+		const memory = getTestMemoryMap(context)['doubles'];
 		expect(memory.byteAddress % 8).toBe(0);
 		expect(memory.wordAlignedAddress % 2).toBe(0);
 	});

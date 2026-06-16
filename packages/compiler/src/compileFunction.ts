@@ -60,7 +60,6 @@ export function compileFunction(
 	const context = createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces,
-			memory: {},
 			moduleName: undefined,
 			functions,
 			prototypeShapeIds: [],

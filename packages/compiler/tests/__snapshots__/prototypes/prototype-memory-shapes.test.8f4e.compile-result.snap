@@ -128,12 +128,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "phase",
-              "type": "identifier",
-              "value": "&phase",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "phase",
+                  "memoryIndex": 0,
+                  "moduleId": "oscA",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -141,12 +149,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "frequency",
-              "type": "identifier",
-              "value": "&frequency",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 8,
+                  "memoryId": "frequency",
+                  "memoryIndex": 0,
+                  "moduleId": "oscA",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -174,12 +190,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "frequency",
-              "type": "identifier",
-              "value": "&frequency",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 8,
+                  "memoryId": "frequency",
+                  "memoryIndex": 0,
+                  "moduleId": "oscA",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -187,12 +211,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "localA",
-              "type": "identifier",
-              "value": "&localA",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 12,
+                  "memoryId": "localA",
+                  "memoryIndex": 0,
+                  "moduleId": "oscA",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
             },
           ],
           "instruction": "push",
@@ -350,12 +382,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "localB",
-              "type": "identifier",
-              "value": "&localB",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 16,
+                  "memoryId": "localB",
+                  "memoryIndex": 0,
+                  "moduleId": "oscB",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "push",
@@ -363,12 +403,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "phase",
-              "type": "identifier",
-              "value": "&phase",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 20,
+                  "memoryId": "phase",
+                  "memoryIndex": 0,
+                  "moduleId": "oscB",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
             },
           ],
           "instruction": "push",
@@ -396,12 +444,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "phase",
-              "type": "identifier",
-              "value": "&phase",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 20,
+                  "memoryId": "phase",
+                  "memoryIndex": 0,
+                  "moduleId": "oscB",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
             },
           ],
           "instruction": "push",
@@ -409,13 +465,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "intermodular-reference",
-              "scope": "intermodule",
-              "targetMemoryId": "phase",
-              "targetModuleId": "oscA",
-              "type": "identifier",
-              "value": "&oscA:phase",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "phase",
+                  "memoryIndex": 0,
+                  "moduleId": "oscA",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",

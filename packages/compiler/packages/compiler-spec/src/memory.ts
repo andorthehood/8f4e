@@ -58,6 +58,11 @@ type PointerSlotType = 'pointer';
 type BaseTypeMetadataKey = PointeeBaseType | PointerSlotType;
 export type MemoryValueKind = 'int32' | 'float32' | 'float64';
 
+export interface MemoryRegionIdentity {
+	memoryIndex: number;
+	memoryRegionName?: string;
+}
+
 /** Numeric storage metadata for a scalar or pointer slot type. */
 interface BaseTypeMetadata {
 	wordSize: number;
@@ -178,6 +183,40 @@ export type MemoryLayoutDeclaration = Omit<
 	| 'pointeeMemoryRegionName'
 	| 'pointeeElementCount'
 >;
+
+export type PlannedMemoryDeclaration = MemoryLayoutDeclaration;
+
+export interface PlannedMemoryModule extends MemoryRegionIdentity {
+	id: string;
+	lineNumber: number;
+	byteAddress: number;
+	wordAlignedSize: number;
+	memory: Record<string, PlannedMemoryDeclaration>;
+	declarations: readonly PlannedMemoryDeclaration[];
+}
+
+export interface MemoryLayoutPlan {
+	modules: Record<string, PlannedMemoryModule>;
+	moduleList: readonly PlannedMemoryModule[];
+	nextByteAddressByMemoryIndex: Record<number, number>;
+}
+
+export type MemoryDefaultValue = DataStructure['default'];
+
+export interface MemoryDefault {
+	value: MemoryDefaultValue;
+	hasExplicitDefault?: boolean;
+	isInherited: boolean;
+}
+
+export type MemoryDefaults = Record<string, MemoryDefault>;
+
+export type MemoryPointerMetadata = Pick<
+	DataStructure,
+	'pointeeMemoryIndex' | 'pointeeMemoryRegionName' | 'pointeeElementCount'
+>;
+
+export type MemoryPointerMetadataMap = Record<string, MemoryPointerMetadata>;
 
 export type MemoryMap = Record<string, DataStructure>;
 

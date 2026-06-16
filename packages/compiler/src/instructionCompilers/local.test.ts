@@ -2,7 +2,10 @@ import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
+import createInstructionCompilerTestContext, {
+	analyzeAndCompileInstruction,
+	seedTestMemoryMap,
+} from '../utils/testUtils';
 import local from './local';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
@@ -25,25 +28,22 @@ describe('local instruction compiler', () => {
 	});
 
 	it('throws when local name collides with a memory identifier', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				namespaces: {},
-				moduleName: 'test',
-				memory: {
-					count: {
-						id: 'count',
-						byteAddress: 0,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						numberOfElements: 1,
-						elementWordSize: 4,
-						type: 0,
-						default: 0,
-						isInteger: true,
-						pointerDepth: 0,
-						isUnsigned: false,
-					},
-				},
+		const context = seedTestMemoryMap(createInstructionCompilerTestContext(), {
+			count: {
+				id: 'count',
+				byteAddress: 0,
+				wordAlignedAddress: 0,
+				wordAlignedSize: 1,
+				numberOfElements: 1,
+				elementWordSize: 4,
+				type: 'int',
+				default: 0,
+				isInherited: false,
+				isInteger: true,
+				pointerDepth: 0,
+				isUnsigned: false,
+				lineNumber: 1,
+				memoryIndex: 0,
 			},
 		});
 

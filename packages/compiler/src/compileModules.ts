@@ -3,13 +3,12 @@ import type {
 	CompileOptions,
 	FunctionRegistry,
 	FunctionTypeRegistry,
+	MemoryLayoutPlan,
 	Namespaces,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { compileModule } from './compileModule';
-import { assertUniqueModuleIds, collectNamespacesFromASTs } from './semantic/buildNamespace';
 
 /**
  * Compiles validated module ASTs using a shared namespace and function type registry.
@@ -25,26 +24,17 @@ import { assertUniqueModuleIds, collectNamespacesFromASTs } from './semantic/bui
 export function compileModules(
 	modules: ValidatedModuleAST[],
 	options: CompileOptions,
-	namespaces?: Namespaces,
+	namespaces: Namespaces,
+	memoryPlan: MemoryLayoutPlan,
 	compiledFunctions?: FunctionRegistry,
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule[] {
-	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
-	if (!namespaces) {
-		assertUniqueModuleIds(modules);
-	}
-	const ns: Namespaces =
-		namespaces ??
-		collectNamespacesFromASTs(modules, startingByteAddress, compiledFunctions, modules, options, prototypeShapes);
-
 	return modules.map((ast, index) => {
-		const moduleStartingByteAddress =
-			ns[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
 		const module = compileModule(
 			ast,
-			ns,
-			moduleStartingByteAddress,
+			namespaces,
+			memoryPlan,
 			index,
 			compiledFunctions,
 			options,

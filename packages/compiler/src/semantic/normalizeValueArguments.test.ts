@@ -1,26 +1,63 @@
-import { ArgumentType, type CompilationContext, type CompilerASTLine, ErrorCode } from '@8f4e/compiler-spec';
+import {
+	ArgumentType,
+	type CompilationContext,
+	type CompilerASTLine,
+	ErrorCode,
+	type MemoryLayoutPlan,
+} from '@8f4e/compiler-spec';
 import { classifyIdentifier, parseArgument } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 
 import normalizeValueArguments from './normalizeValueArguments';
+
+function createSourceMemoryPlan(): MemoryLayoutPlan {
+	const buffer = {
+		id: 'buffer',
+		lineNumber: 1,
+		numberOfElements: 4,
+		elementWordSize: 4,
+		wordAlignedAddress: 0,
+		wordAlignedSize: 4,
+		byteAddress: 0,
+		type: 'int',
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+		memoryIndex: 0,
+	} as const;
+	const source = {
+		id: 'source',
+		lineNumber: 1,
+		byteAddress: 0,
+		wordAlignedSize: 4,
+		memory: { buffer },
+		declarations: [buffer],
+		memoryIndex: 0,
+	};
+	return {
+		modules: { source },
+		moduleList: [source],
+		nextByteAddressByMemoryIndex: { 0: 16 },
+	};
+}
+
+function createEmptyMemoryPlan(): MemoryLayoutPlan {
+	return {
+		modules: {},
+		moduleList: [],
+		nextByteAddressByMemoryIndex: {},
+	};
+}
 
 describe('normalizeValueArguments', () => {
 	it('folds push value expressions into literals', () => {
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'push',
-			arguments: [parseArgument('2*sizeof(buffer)')],
+			arguments: [parseArgument('2*4')],
 		};
 		const context = {
 			namespace: {
-				memory: {
-					buffer: {
-						id: 'buffer',
-						numberOfElements: 4,
-						elementWordSize: 4,
-						isInteger: true,
-					},
-				},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -41,7 +78,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -55,18 +91,10 @@ describe('normalizeValueArguments', () => {
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'map',
-			arguments: [parseArgument('sizeof(buffer)/2'), parseArgument('2*sizeof(buffer)')],
+			arguments: [parseArgument('4/2'), parseArgument('2*4')],
 		};
 		const context = {
 			namespace: {
-				memory: {
-					buffer: {
-						id: 'buffer',
-						numberOfElements: 4,
-						elementWordSize: 4,
-						isInteger: true,
-					},
-				},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -90,7 +118,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -108,7 +135,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -126,7 +152,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -144,7 +169,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -163,7 +187,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -178,7 +201,8 @@ describe('normalizeValueArguments', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for push with an identifier not in memory or locals', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
+			memoryPlan: createEmptyMemoryPlan(),
 			locals: {},
 			startingByteAddress: 16,
 			currentModuleWordAlignedSize: 3,
@@ -192,79 +216,9 @@ describe('normalizeValueArguments', () => {
 		expect(() => normalizeValueArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
-	it('folds push &this into the current module start address', () => {
-		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
-			locals: {},
-			startingByteAddress: 16,
-			currentModuleWordAlignedSize: 3,
-		} as unknown as CompilationContext;
-		const line: CompilerASTLine = {
-			lineNumber: 1,
-			instruction: 'push',
-			arguments: [classifyIdentifier('&this')],
-		};
-
-		expect(normalizeValueArguments(line, context)).toEqual({
-			...line,
-			arguments: [
-				{
-					type: ArgumentType.LITERAL,
-					value: 16,
-					isInteger: true,
-					address: {
-						memoryIndex: 0,
-						safeRange: {
-							source: 'module-start',
-							memoryIndex: 0,
-							byteAddress: 16,
-							safeByteLength: 12,
-							moduleId: 'test',
-						},
-					},
-				},
-			],
-		});
-	});
-
-	it('folds push this& into the current module end address', () => {
-		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
-			locals: {},
-			startingByteAddress: 16,
-			currentModuleWordAlignedSize: 3,
-		} as unknown as CompilationContext;
-		const line: CompilerASTLine = {
-			lineNumber: 1,
-			instruction: 'push',
-			arguments: [classifyIdentifier('this&')],
-		};
-
-		expect(normalizeValueArguments(line, context)).toEqual({
-			...line,
-			arguments: [
-				{
-					type: ArgumentType.LITERAL,
-					value: 24,
-					isInteger: true,
-					address: {
-						memoryIndex: 0,
-						safeRange: {
-							source: 'module-end',
-							memoryIndex: 0,
-							byteAddress: 24,
-							safeByteLength: 4,
-							moduleId: 'test',
-						},
-					},
-				},
-			],
-		});
-	});
-
 	it('throws UNDECLARED_IDENTIFIER for localSet with an undeclared local', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -279,10 +233,10 @@ describe('normalizeValueArguments', () => {
 	it('throws UNDECLARED_IDENTIFIER for push with undeclared intermodule reference', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
-				namespaces: { otherModule: { kind: 'module', memory: {} } },
+				namespaces: { otherModule: { kind: 'module' } },
 			},
+			memoryPlan: createEmptyMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -297,10 +251,10 @@ describe('normalizeValueArguments', () => {
 	it('throws UNDECLARED_IDENTIFIER for memory declaration with undeclared intermodule memory reference', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
-				namespaces: { source: { kind: 'module', memory: {} } },
+				namespaces: { source: { kind: 'module' } },
 			},
+			memoryPlan: createSourceMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -313,23 +267,18 @@ describe('normalizeValueArguments', () => {
 		expect(() => normalizeValueArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
-	it('strips unresolvable intermodule address default from memory declaration during layout pass', () => {
-		// When the target module exists in namespaces but has not yet been laid out (no byteAddress),
-		// the default argument must be stripped rather than kept as-is for the parser to fabricate 0.
+	it('does not strip unresolved intermodule address defaults from memory declarations', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {
 					source: {
 						kind: 'module',
 						// No byteAddress — module not yet laid out
-						memory: {
-							buffer: { numberOfElements: 4, elementWordSize: 4, isInteger: true },
-						},
 					},
 				},
 			},
+			memoryPlan: createSourceMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -340,25 +289,22 @@ describe('normalizeValueArguments', () => {
 		};
 
 		const result = normalizeValueArguments(line, context);
-		// The unresolvable default must be stripped; only the name argument remains
-		expect(result.arguments).toHaveLength(1);
+		expect(result.arguments).toHaveLength(2);
 		expect(result.arguments[0]).toEqual(classifyIdentifier('ptr'));
+		expect(result.arguments[1]).toEqual(classifyIdentifier('&source:buffer'));
 	});
 
 	it('does not strip array declaration element count arguments', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {
 					source: {
 						kind: 'module',
-						memory: {
-							buffer: { numberOfElements: 4, elementWordSize: 4, isInteger: true },
-						},
 					},
 				},
 			},
+			memoryPlan: createSourceMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -373,7 +319,7 @@ describe('normalizeValueArguments', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for memory declaration with unresolved value-expression default', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -389,21 +335,14 @@ describe('normalizeValueArguments', () => {
 	it('does not throw for valid intermodule reference when namespaces are populated', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {
 					source: {
 						kind: 'module',
-						memory: {
-							buffer: {
-								numberOfElements: 4,
-								elementWordSize: 4,
-								isInteger: true,
-							},
-						},
 					},
 				},
 			},
+			memoryPlan: createSourceMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -417,7 +356,7 @@ describe('normalizeValueArguments', () => {
 
 	it('does not validate intermodule references before namespaces are collected', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -429,113 +368,9 @@ describe('normalizeValueArguments', () => {
 		expect(normalizeValueArguments(line, context)).toEqual(line);
 	});
 
-	it('inlines local &name start address to a literal during push normalization', () => {
-		const context = {
-			namespace: {
-				memory: {
-					buffer: {
-						id: 'buffer',
-						numberOfElements: 4,
-						elementWordSize: 4,
-						memoryIndex: 0,
-						wordAlignedAddress: 3,
-						wordAlignedSize: 4,
-						byteAddress: 12,
-						default: 0,
-						isInteger: true,
-						pointerDepth: 0,
-						isUnsigned: false,
-						type: 'int',
-					},
-				},
-				moduleName: 'test',
-				namespaces: {},
-			},
-			locals: {},
-		} as unknown as CompilationContext;
-		const line: CompilerASTLine = {
-			lineNumber: 1,
-			instruction: 'push',
-			arguments: [classifyIdentifier('&buffer')],
-		};
-
-		expect(normalizeValueArguments(line, context)).toEqual({
-			...line,
-			arguments: [
-				{
-					type: ArgumentType.LITERAL,
-					value: 12,
-					isInteger: true,
-					address: {
-						memoryIndex: 0,
-						safeRange: {
-							source: 'memory-start',
-							memoryIndex: 0,
-							byteAddress: 12,
-							safeByteLength: 16,
-							memoryId: 'buffer',
-						},
-					},
-				},
-			],
-		});
-	});
-
-	it('inlines local name& end address to a literal during push normalization', () => {
-		const context = {
-			namespace: {
-				memory: {
-					buffer: {
-						id: 'buffer',
-						numberOfElements: 4,
-						elementWordSize: 4,
-						memoryIndex: 0,
-						wordAlignedAddress: 3,
-						wordAlignedSize: 4,
-						byteAddress: 12,
-						default: 0,
-						isInteger: true,
-						pointerDepth: 0,
-						isUnsigned: false,
-						type: 'int',
-					},
-				},
-				moduleName: 'test',
-				namespaces: {},
-			},
-			locals: {},
-		} as unknown as CompilationContext;
-		const line: CompilerASTLine = {
-			lineNumber: 1,
-			instruction: 'push',
-			arguments: [classifyIdentifier('buffer&')],
-		};
-
-		expect(normalizeValueArguments(line, context)).toEqual({
-			...line,
-			arguments: [
-				{
-					type: ArgumentType.LITERAL,
-					value: 24,
-					isInteger: true,
-					address: {
-						memoryIndex: 0,
-						safeRange: {
-							source: 'memory-end',
-							memoryIndex: 0,
-							byteAddress: 24,
-							safeByteLength: 4,
-							memoryId: 'buffer',
-						},
-					},
-				},
-			],
-		});
-	});
-
 	it('throws UNDECLARED_IDENTIFIER for push with &name when memory does not exist', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -547,28 +382,10 @@ describe('normalizeValueArguments', () => {
 		expect(() => normalizeValueArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
-	it('inlines sizeof(*localPointer) during push normalization', () => {
-		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
-			locals: {
-				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', pointerDepth: 1, index: 0 },
-			},
-		} as unknown as CompilationContext;
-		const line: CompilerASTLine = {
-			lineNumber: 1,
-			instruction: 'push',
-			arguments: [classifyIdentifier('sizeof(*lut)')],
-		};
-
-		expect(normalizeValueArguments(line, context)).toEqual({
-			...line,
-			arguments: [{ type: ArgumentType.LITERAL, value: 4, isInteger: true }],
-		});
-	});
-
 	it('throws for count(*localPointer) when the pointer has no element count metadata', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
+			memoryPlan: createEmptyMemoryPlan(),
 			locals: {
 				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', pointerDepth: 1, index: 0 },
 			},
@@ -585,7 +402,6 @@ describe('normalizeValueArguments', () => {
 	it('throws UNDEFINED_FUNCTION for call with an undeclared function target', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 				functions: { byId: {}, arityByName: {} },
@@ -603,7 +419,7 @@ describe('normalizeValueArguments', () => {
 
 	it('does not throw for call when functions registry is undefined', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -619,7 +435,6 @@ describe('normalizeValueArguments', () => {
 		const targetFunction = { id: 'knownFn', name: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
@@ -647,7 +462,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
@@ -675,14 +489,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {
-					buffer: {
-						id: 'buffer',
-						numberOfElements: 4,
-						elementWordSize: 4,
-						isInteger: true,
-					},
-				},
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
@@ -695,7 +501,7 @@ describe('normalizeValueArguments', () => {
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'call',
-			arguments: [classifyIdentifier('knownFn'), parseArgument('2*sizeof(buffer)')],
+			arguments: [classifyIdentifier('knownFn'), parseArgument('2*4')],
 		};
 
 		expect(normalizeValueArguments(line, context)).toEqual({

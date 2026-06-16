@@ -24,12 +24,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 0,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:0",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 16,
+                  "memoryId": "__anonymous__5",
+                  "memoryIndex": 0,
+                  "moduleId": "anonymousFloatDeclarationsCompile",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 16,
             },
           ],
           "instruction": "push",
@@ -68,12 +76,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 1,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:1",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 20,
+                  "memoryId": "__anonymous__10",
+                  "memoryIndex": 0,
+                  "moduleId": "anonymousFloatDeclarationsCompile",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
             },
           ],
           "instruction": "push",
@@ -128,12 +144,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 2,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:2",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 24,
+                  "memoryId": "__anonymous__16",
+                  "memoryIndex": 0,
+                  "moduleId": "anonymousFloatDeclarationsCompile",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 24,
             },
           ],
           "instruction": "push",
@@ -172,12 +196,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 3,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:3",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 28,
+                  "memoryId": "__anonymous__21",
+                  "memoryIndex": 0,
+                  "moduleId": "anonymousFloatDeclarationsCompile",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 28,
             },
           ],
           "instruction": "push",
@@ -323,12 +355,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 1,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:1",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 100,
+                  "memoryId": "__anonymous__11",
+                  "memoryIndex": 0,
+                  "moduleId": "intConstantSplitByteDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 100,
             },
           ],
           "instruction": "push",
@@ -423,12 +463,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 3,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:3",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 108,
+                  "memoryId": "__anonymous__20",
+                  "memoryIndex": 0,
+                  "moduleId": "intConstantSplitByteDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 108,
             },
           ],
           "instruction": "push",
@@ -482,12 +530,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 0,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:0",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 32,
+                  "memoryId": "__anonymous__4",
+                  "memoryIndex": 0,
+                  "moduleId": "intDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 32,
             },
           ],
           "instruction": "push",
@@ -526,12 +582,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 1,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:1",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 36,
+                  "memoryId": "__anonymous__9",
+                  "memoryIndex": 0,
+                  "moduleId": "intDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 36,
             },
           ],
           "instruction": "push",
@@ -656,12 +720,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 4,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:4",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 48,
+                  "memoryId": "__anonymous__22",
+                  "memoryIndex": 0,
+                  "moduleId": "intDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 48,
             },
           ],
           "instruction": "push",
@@ -716,12 +788,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 5,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:5",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 52,
+                  "memoryId": "__anonymous__28",
+                  "memoryIndex": 0,
+                  "moduleId": "intDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 52,
             },
           ],
           "instruction": "push",
@@ -760,12 +840,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 6,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:6",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 56,
+                  "memoryId": "__anonymous__33",
+                  "memoryIndex": 0,
+                  "moduleId": "intDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 56,
             },
           ],
           "instruction": "push",
@@ -819,12 +907,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 0,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:0",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 112,
+                  "memoryId": "__anonymous__3",
+                  "memoryIndex": 0,
+                  "moduleId": "intPointerDeclarationsCompile",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 112,
             },
           ],
           "instruction": "push",
@@ -1005,12 +1101,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 2,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:2",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 68,
+                  "memoryId": "__anonymous__11",
+                  "memoryIndex": 0,
+                  "moduleId": "intSplitByteDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 68,
             },
           ],
           "instruction": "push",
@@ -1205,12 +1309,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 6,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:6",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 84,
+                  "memoryId": "__anonymous__28",
+                  "memoryIndex": 0,
+                  "moduleId": "intSplitByteDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 84,
             },
           ],
           "instruction": "push",
@@ -1249,12 +1361,20 @@
         {
           "arguments": [
             {
-              "referenceKind": "intermodular-module-nth-reference",
-              "scope": "intermodule",
-              "targetMemoryIndex": 7,
-              "targetModuleId": "this",
-              "type": "identifier",
-              "value": "&this:7",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 88,
+                  "memoryId": "__anonymous__33",
+                  "memoryIndex": 0,
+                  "moduleId": "intSplitByteDeclarationAssertions",
+                  "safeByteLength": 4,
+                  "source": "module-nth-memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 88,
             },
           ],
           "instruction": "push",
@@ -1370,12 +1490,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "firstInput",
-              "type": "identifier",
-              "value": "&firstInput",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 4,
+                  "memoryId": "firstInput",
+                  "memoryIndex": 0,
+                  "moduleId": "loadFloatAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
             },
           ],
           "instruction": "push",
@@ -1420,12 +1548,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "secondInput",
-              "type": "identifier",
-              "value": "&secondInput",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 8,
+                  "memoryId": "secondInput",
+                  "memoryIndex": 0,
+                  "moduleId": "loadFloatAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 8,
             },
           ],
           "instruction": "push",
@@ -1470,12 +1606,20 @@
         {
           "arguments": [
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "thirdInput",
-              "type": "identifier",
-              "value": "&thirdInput",
+              "address": {
+                "memoryIndex": 0,
+                "safeRange": {
+                  "byteAddress": 12,
+                  "memoryId": "thirdInput",
+                  "memoryIndex": 0,
+                  "moduleId": "loadFloatAssertions",
+                  "safeByteLength": 4,
+                  "source": "memory-start",
+                },
+              },
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
             },
           ],
           "instruction": "push",
