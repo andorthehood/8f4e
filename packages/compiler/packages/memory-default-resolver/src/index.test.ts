@@ -1,10 +1,14 @@
-import type { ArrayMemoryDeclarationLine, MemoryDeclarationLine, ModuleLine, ShapeLine } from '@8f4e/language-spec';
+import type {
+	ArrayMemoryDeclarationLine,
+	CompilerASTLine,
+	MemoryDeclarationLine,
+	ModuleLine,
+	ShapeLine,
+	ValidatedModuleAST,
+	ValidatedPrototypeAST,
+} from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/language-spec';
-import {
-	type MemoryLayoutSourceModule,
-	type MemoryLayoutSourcePrototype,
-	planMemoryLayout,
-} from '@8f4e/memory-planner';
+import { planProjectMemoryLayout } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from './index';
 
@@ -54,22 +58,36 @@ function arrayLine(
 	};
 }
 
-function moduleSource(id: string, lines: MemoryLayoutSourceModule['lines']): MemoryLayoutSourceModule {
-	return {
-		id,
-		moduleLine: moduleLine(id),
-		lines,
-	};
+function isMemoryDeclaration(line: CompilerASTLine): line is MemoryDeclarationLine {
+	return 'hasExplicitMemoryDefault' in line;
 }
 
-function prototypeSource(
-	id: string,
-	memoryDeclarationLines: readonly MemoryDeclarationLine[]
-): MemoryLayoutSourcePrototype {
+function moduleAst(id: string, lines: readonly CompilerASTLine[]): ValidatedModuleAST {
+	const line = moduleLine(id);
+
 	return {
+		type: 'module',
 		id,
+		moduleLine: line,
+		lines: [line, ...lines],
+		memoryDeclarationLines: lines.filter(isMemoryDeclaration),
+	} as ValidatedModuleAST;
+}
+
+function prototypeAst(id: string, memoryDeclarationLines: readonly MemoryDeclarationLine[]): ValidatedPrototypeAST {
+	const prototypeLine = {
+		lineNumber: 1,
+		instruction: 'prototype',
+		arguments: [classifyIdentifier(id)],
+	} as const;
+
+	return {
+		type: 'prototype',
+		id,
+		lines: [prototypeLine, ...memoryDeclarationLines],
+		prototypeLine,
 		memoryDeclarationLines,
-	};
+	} as ValidatedPrototypeAST;
 }
 
 describe('resolveMemoryDefaults', () => {
@@ -81,8 +99,8 @@ describe('resolveMemoryDefaults', () => {
 			literal(1.5, false),
 			literal(2.5, false),
 		]);
-		const module = moduleSource('main', [counter, values]);
-		const memoryPlan = planMemoryLayout({
+		const module = moduleAst('main', [counter, values]);
+		const memoryPlan = planProjectMemoryLayout({
 			prototypes: [],
 			modules: [module],
 		});
@@ -100,8 +118,8 @@ describe('resolveMemoryDefaults', () => {
 	it('derives pointer metadata from address defaults', () => {
 		const buffer = arrayLine(2, 'int[]', [classifyIdentifier('buffer'), literal(4)]);
 		const pointer = scalarLine(3, 'int*', [classifyIdentifier('ptr'), classifyIdentifier('&buffer')]);
-		const module = moduleSource('main', [buffer, pointer]);
-		const memoryPlan = planMemoryLayout({
+		const module = moduleAst('main', [buffer, pointer]);
+		const memoryPlan = planProjectMemoryLayout({
 			prototypes: [],
 			modules: [module],
 			startingByteAddress: 4,
@@ -131,9 +149,9 @@ describe('resolveMemoryDefaults', () => {
 			arguments: [classifyIdentifier('state')],
 		} satisfies ShapeLine;
 		const localFoo = scalarLine(12, 'int', [classifyIdentifier('foo'), literal(2)]);
-		const prototype = prototypeSource('state', [prototypeFoo, prototypeBar]);
-		const module = moduleSource('main', [shape, localFoo]);
-		const memoryPlan = planMemoryLayout({
+		const prototype = prototypeAst('state', [prototypeFoo, prototypeBar]);
+		const module = moduleAst('main', [shape, localFoo]);
+		const memoryPlan = planProjectMemoryLayout({
 			prototypes: [prototype],
 			modules: [module],
 		});
@@ -156,8 +174,8 @@ describe('resolveMemoryDefaults', () => {
 			literal(2),
 			literal(3),
 		]);
-		const module = moduleSource('main', [values]);
-		const memoryPlan = planMemoryLayout({
+		const module = moduleAst('main', [values]);
+		const memoryPlan = planProjectMemoryLayout({
 			prototypes: [],
 			modules: [module],
 		});

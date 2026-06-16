@@ -42,7 +42,7 @@ Within memory declaration lines, this pass may inline scalar default values and 
 There should be one project-level call during compilation:
 
 ```ts
-const memoryPlan = planMemoryLayout({
+const memoryPlan = planProjectMemoryLayout({
 	prototypes,
 	modules,
 });
