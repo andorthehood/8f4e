@@ -2,10 +2,10 @@ import {
 	ArgumentType,
 	type CompilationContext,
 	ErrorCode,
+	getError,
 	type MemoryCopyLine,
 	type NormalizedMemoryCopyLine,
 } from '@8f4e/compiler-spec';
-import { getError } from '../../compilerError';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**

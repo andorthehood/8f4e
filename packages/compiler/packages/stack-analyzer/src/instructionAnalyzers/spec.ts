@@ -7,8 +7,7 @@ import type {
 	StackMutationSpec,
 	StackProducedItemSpec,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../../compilerError';
+import { ErrorCode, getError } from '@8f4e/compiler-spec';
 import { consume, createStackValue, produce } from './stack';
 import type { InstructionAnalysisResult } from './types';
 

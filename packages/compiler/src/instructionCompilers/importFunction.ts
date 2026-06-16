@@ -1,6 +1,5 @@
 import type { ImportLine, InstructionCompiler } from '@8f4e/compiler-spec';
-import { DEFAULT_HOST_IMPORT_MODULE_NAME, ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME, ErrorCode, getError } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `#import`.

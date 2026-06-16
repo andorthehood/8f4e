@@ -3,10 +3,10 @@ import {
 	type CompilationContext,
 	type CompilerASTLine,
 	ErrorCode,
+	getError,
 	isArrayMemoryDeclarationLine,
 	type MemoryDeclarationLine,
 } from '@8f4e/compiler-spec';
-import { getError } from '../../compilerError';
 import {
 	normalizeArgumentsAtIndexes,
 	validateIntermoduleAddressReference,

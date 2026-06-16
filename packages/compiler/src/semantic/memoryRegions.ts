@@ -1,6 +1,5 @@
 import type { CompilationContext, CompileOptions, CompilerASTLine, RegionLine } from '@8f4e/compiler-spec';
-import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { ArgumentType, ErrorCode, getError } from '@8f4e/compiler-spec';
 
 /** WebAssembly memory index used when no custom region is active. */
 export const DEFAULT_MEMORY_INDEX = 0;

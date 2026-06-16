@@ -10,7 +10,7 @@ import type {
 	Namespaces,
 	ValidatedFunctionAST,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ErrorCode, getError } from '@8f4e/compiler-spec';
 import {
 	createFunction,
 	createLocalDeclaration,
@@ -19,7 +19,6 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import { compileLine, toCompiledStackAnalysisLine } from './compileLine';
-import { getError } from './compilerError';
 import instructions from './instructionCompilers';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import normalizeValueArguments from './semantic/normalizeValueArguments';

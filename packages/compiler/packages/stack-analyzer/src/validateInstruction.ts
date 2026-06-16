@@ -1,6 +1,5 @@
 import type { CompilationContext, CompilerASTLine, InstructionSpec } from '@8f4e/compiler-spec';
-import { ErrorCode, getInstructionSpec } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { ErrorCode, getError, getInstructionSpec } from '@8f4e/compiler-spec';
 import { peekStackOperands } from './peekStackOperands';
 import { validateOperandTypes } from './validateOperandTypes';
 

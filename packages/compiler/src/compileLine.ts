@@ -6,10 +6,10 @@ import type {
 	InstructionCompiler,
 } from '@8f4e/compiler-spec';
 import { isSemanticInstructionLine } from '@8f4e/compiler-spec';
+import { analyzeInstruction } from '@8f4e/stack-analyzer';
 import type { Instruction } from './instructionCompilers';
 import instructions from './instructionCompilers';
 import { applySemanticLine } from './semantic/buildNamespace';
-import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
 /**
  * Emits bytecode for one already-analyzed instruction line.

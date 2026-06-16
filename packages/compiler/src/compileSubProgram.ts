@@ -28,6 +28,7 @@ import {
 	createFunctionId,
 	ErrorCode,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	getError,
 	isArrayMemoryDeclarationLine,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
@@ -39,7 +40,6 @@ import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
 import { compileModules } from './compileModules';
-import { getError } from './compilerError';
 import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
 import type { InitialMemoryDataSegment } from './initialMemoryDataSegments/types';
 import {

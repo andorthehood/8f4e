@@ -2,6 +2,7 @@ export * from './arguments';
 export * from './ast';
 export * from './cache';
 export * from './compiled';
+export * from './compilerError';
 export * from './constants';
 export * from './diagnostics';
 export * from './errors';
