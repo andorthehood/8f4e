@@ -127,30 +127,4 @@ describe('param instruction compiler', () => {
 		});
 		expect(context.currentFunctionParameterCount).toBe(1);
 	});
-
-	it('throws when declared after locals', () => {
-		const context = createInstructionCompilerTestContext({
-			blockStack: [
-				...createInstructionCompilerTestContext().blockStack,
-				{
-					blockType: BlockType.FUNCTION,
-					expectedResultTypes: [],
-				},
-			],
-			currentFunctionParameterCount: 0,
-			locals: { existing: { isInteger: true, index: 0 } },
-		});
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				param,
-				{
-					lineNumber: 1,
-					instruction: 'param',
-					arguments: [classifyIdentifier('int'), classifyIdentifier('late')],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
-	});
 });

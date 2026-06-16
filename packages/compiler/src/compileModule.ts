@@ -1,6 +1,6 @@
 import type {
+	AnalyzedLine,
 	CompiledModule,
-	CompiledStackAnalysisLine,
 	CompileOptions,
 	FunctionRegistry,
 	FunctionTypeRegistry,
@@ -10,12 +10,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import {
-	ErrorCode,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	isMemoryDeclarationLine,
-	isSemanticInstructionLine,
-} from '@8f4e/compiler-spec';
+import { GLOBAL_ALIGNMENT_BOUNDARY, isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/compiler-spec';
 import {
 	createFunction,
 	createLocalDeclaration,
@@ -23,13 +18,12 @@ import {
 	WASM_TYPE_F64,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { compileCodegenLine, toCompiledStackAnalysisLine } from './compileLine';
-import { getError } from './compilerError';
+import type { StackAnalyzedModule } from '@8f4e/stack-analyzer';
+import { attachStackAnalysis, compileCodegenLine } from './compileLine';
 import { applySemanticLine } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import normalizeValueArguments from './semantic/normalizeValueArguments';
-import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
 /**
  * Compiles one validated module AST into its WebAssembly cycle function and memory metadata.
@@ -42,6 +36,7 @@ import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
  * @param options - Compiler options for this compilation pass.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
+ * @param stackReport - Stack-analysis report for this module.
  * @returns The compiled module artifact.
  */
 export function compileModule(
@@ -49,7 +44,8 @@ export function compileModule(
 	namespaces: Namespaces,
 	memoryPlan: MemoryLayoutPlan,
 	index: number,
-	functions?: FunctionRegistry,
+	functions: FunctionRegistry | undefined,
+	stackReport: StackAnalyzedModule,
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
@@ -87,30 +83,16 @@ export function compileModule(
 		source: ast.source,
 	});
 
-	const stackAnalysis: CompiledStackAnalysisLine[] = [];
+	const analyzedLines = stackReport.analyzedLines;
+	let analyzedLineIndex = 0;
 	for (const originalLine of ast.lines) {
 		const line = normalizeValueArguments(originalLine, context);
 		if (isSemanticInstructionLine(line)) {
 			applySemanticLine(line, context);
 		} else if (!isMemoryDeclarationLine(line)) {
-			const analyzedLine = analyzeInstruction(line, context);
+			const analyzedLine = attachStackAnalysis(line, analyzedLines[analyzedLineIndex++] as AnalyzedLine);
 			compileCodegenLine(analyzedLine, context);
-			if (options.includeStackAnalysis) {
-				stackAnalysis.push(toCompiledStackAnalysisLine(analyzedLine));
-			}
 		}
-	}
-
-	if (context.stack.length > 0) {
-		throw getError(
-			ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS,
-			ast.lines[0] ?? {
-				lineNumber: 0,
-				instruction: 'block',
-				arguments: [],
-			},
-			context
-		);
 	}
 
 	return {
@@ -134,9 +116,9 @@ export function compileModule(
 		pointerMetadata: context.pointerMetadata,
 		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast,
-		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
+		...(options.includeStackAnalysis ? { stackAnalysis: stackReport.stackAnalysis } : {}),
 		index,
-		skipExecutionInCycle: context.skipExecutionInCycle,
+		skipExecutionInCycle: stackReport.skipExecutionInCycle,
 	};
 }
 

@@ -1,8 +1,7 @@
 import type { CompilerASTLine } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ErrorCode, getError } from '@8f4e/compiler-spec';
 import { SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
-import { getError } from './compilerError';
 import { serializeDiagnostic } from './diagnostic';
 
 const stubLine = {

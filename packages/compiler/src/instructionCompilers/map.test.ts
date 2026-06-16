@@ -142,40 +142,4 @@ describe('map instruction compiler', () => {
 			valueIsFloat64: false,
 		});
 	});
-
-	it('throws when key type mismatches int inputType', () => {
-		const context = createInstructionCompilerTestContext({
-			blockStack: [
-				{
-					blockType: BlockType.MODULE,
-					expectedResultTypes: [],
-				},
-				{
-					blockType: BlockType.MAP,
-					expectedResultTypes: [],
-					mapState: {
-						inputIsInteger: true,
-						inputIsFloat64: false,
-						rows: [],
-						defaultSet: false,
-					},
-				},
-			],
-		});
-
-		expect(() => {
-			analyzeAndCompileInstruction(
-				map,
-				{
-					lineNumber: 1,
-					instruction: 'map',
-					arguments: [
-						{ type: ArgumentType.LITERAL, value: 1.5, isInteger: false },
-						{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
-					],
-				} as CompilerASTLine,
-				context
-			);
-		}).toThrowError();
-	});
 });

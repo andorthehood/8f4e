@@ -2,6 +2,7 @@ import {
 	ArgumentType,
 	type CompilationContext,
 	ErrorCode,
+	getError,
 	type LocalBinding,
 	type MemoryPointerIdentifier,
 	type NormalizedPushLine,
@@ -11,7 +12,6 @@ import {
 	type ResolvedMemoryPointerPushLine,
 	type ResolvedMemoryPushLine,
 } from '@8f4e/compiler-spec';
-import { getError } from '../../compilerError';
 import { getResolvedMemoryDeclaration } from '../memoryState';
 import {
 	hasCollectedNamespaces,

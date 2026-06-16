@@ -106,6 +106,64 @@ export const codegenInstructionNames = Object.keys(instructionSpecs).filter(
 	}
 );
 
+/**
+ * Instructions that belong to the declarative section of a function and do not
+ * start its executable body. Parameter declarations may still follow these lines.
+ */
+export const functionPreBodyInstructionNames = [
+	'function',
+	'const',
+	'use',
+	'#import',
+	'#impure',
+	'#loopCap',
+	'#export',
+	'param',
+	'paramShape',
+	'functionEnd',
+] as const;
+
+export type FunctionPreBodyInstructionName = (typeof functionPreBodyInstructionNames)[number];
+
+const functionPreBodyInstructionNameSet: ReadonlySet<string> = new Set(functionPreBodyInstructionNames);
+
+export function isFunctionPreBodyInstructionName(instruction: string): instruction is FunctionPreBodyInstructionName {
+	return functionPreBodyInstructionNameSet.has(instruction);
+}
+
+/**
+ * Checks whether an instruction starts the executable body of a function.
+ */
+export function isFunctionBodyInstructionName(instruction: string): boolean {
+	return !isFunctionPreBodyInstructionName(instruction);
+}
+
+/**
+ * Instructions that may appear in a host-import function declaration.
+ * Imported functions declare their signature and metadata but have no body.
+ */
+export const importedFunctionDeclarationInstructionNames = [
+	'function',
+	'#import',
+	'#impure',
+	'#loopCap',
+	'param',
+	'paramShape',
+	'functionEnd',
+] as const;
+
+export type ImportedFunctionDeclarationInstructionName = (typeof importedFunctionDeclarationInstructionNames)[number];
+
+const importedFunctionDeclarationInstructionNameSet: ReadonlySet<string> = new Set(
+	importedFunctionDeclarationInstructionNames
+);
+
+export function isImportedFunctionDeclarationInstructionName(
+	instruction: string
+): instruction is ImportedFunctionDeclarationInstructionName {
+	return importedFunctionDeclarationInstructionNameSet.has(instruction);
+}
+
 export type Instruction =
 	| CodegenInstructionName
 	| MemoryDeclarationInstruction
