@@ -51,7 +51,6 @@ exports[`loop instruction compiler > compiles the loop segment with default cap 
       "isInteger": true,
     },
   },
-  "memory": {},
 }
 `;
 
@@ -105,7 +104,6 @@ exports[`loop instruction compiler > compiles the loop segment with explicit cap
       "isInteger": true,
     },
   },
-  "memory": {},
 }
 `;
 
@@ -159,7 +157,6 @@ exports[`loop instruction compiler > explicit argument overrides context.loopCap
       "isInteger": true,
     },
   },
-  "memory": {},
 }
 `;
 
@@ -214,6 +211,5 @@ exports[`loop instruction compiler > uses context.loopCap when no argument is pr
       "isInteger": true,
     },
   },
-  "memory": {},
 }
 `;

@@ -1,4 +1,4 @@
-import type { AddressMetadata, CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
+import type { AddressMetadata, CompilationContext, CompilerASTLine, DataStructure } from '@8f4e/compiler-spec';
 import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
 import {
 	type MemoryArgumentShape,
@@ -9,6 +9,7 @@ import {
 } from '@8f4e/tokenizer';
 import { getError } from '../../compilerError';
 import { getEndByteAddress } from '../layoutAddresses';
+import { getMemoryItem } from '../memoryState';
 
 /**
  * Maximum number of bytes allowed in a split-byte default value.
@@ -42,8 +43,8 @@ function getMemoryItemOrThrow(
 	memoryId: string,
 	lineForError: CompilerASTLine,
 	context: CompilationContext
-): CompilationContext['namespace']['memory'][string] {
-	const memoryItem = context.namespace.memory[memoryId];
+): DataStructure {
+	const memoryItem = getMemoryItem(context, memoryId);
 	if (!memoryItem) {
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, lineForError, context, {
 			identifier: memoryId,
@@ -130,9 +131,7 @@ function resolveMemoryDefaultValue(
 				if (!arg.isEndAddress) {
 					return context.startingByteAddress;
 				}
-				return typeof context.currentModuleWordAlignedSize === 'number'
-					? getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize)
-					: 0;
+				return getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
 			}
 			const memoryItem = getMemoryItemOrThrow(arg.base, lineForError, context);
 			return arg.isEndAddress

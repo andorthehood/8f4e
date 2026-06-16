@@ -1,33 +1,14 @@
 import type {
 	ArrayDeclarationInstruction,
+	MemoryRegionIdentity,
 	MemoryType,
+	PlannedMemoryDeclaration,
 	PointeeBaseType,
 	ScalarMemoryDeclarationInstruction,
 } from '@8f4e/compiler-spec';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from './layoutAddresses';
 import getMemoryFlags from './memoryFlags';
-
-export interface MemoryRegionIdentity {
-	memoryIndex: number;
-	memoryRegionName?: string;
-}
-
-export interface PlannedMemoryDeclaration extends MemoryRegionIdentity {
-	numberOfElements: number;
-	elementWordSize: number;
-	wordAlignedAddress: number;
-	wordAlignedSize: number;
-	byteAddress: number;
-	id: string;
-	lineNumber: number;
-	type: MemoryType;
-	isInteger: boolean;
-	isFloat64?: boolean;
-	pointeeBaseType?: PointeeBaseType;
-	pointerDepth: number;
-	isUnsigned: boolean;
-}
 
 interface BaseDeclarationLayoutInput {
 	id: string;

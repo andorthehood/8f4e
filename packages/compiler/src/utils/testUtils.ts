@@ -1,4 +1,12 @@
-import type { AnalyzedLine, CompilationContext, CompilerASTLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import type {
+	AnalyzedLine,
+	CompilationContext,
+	CompilerASTLine,
+	InstructionCompiler,
+	MemoryMap,
+	MemoryPointerMetadataMap,
+	PlannedMemoryDeclaration,
+} from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 import { WASM_IF, WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 import { expect } from 'vitest';
@@ -29,6 +37,75 @@ export default function createInstructionCompilerTestContext(
 		codeBlockId: overrides.codeBlockId ?? 'test',
 		codeBlockType: overrides.codeBlockType ?? 'module',
 	});
+}
+
+/** Seeds compiler memory-plan context fields from a resolved memory map fixture. */
+export function seedTestMemoryMap(context: CompilationContext, memoryMap: MemoryMap): CompilationContext {
+	const memory = Object.fromEntries(
+		Object.entries(memoryMap).map(([id, memoryItem]) => {
+			const {
+				default: _default,
+				hasExplicitDefault: _hasExplicitDefault,
+				isInherited: _isInherited,
+				pointeeMemoryIndex: _pointeeMemoryIndex,
+				pointeeMemoryRegionName: _pointeeMemoryRegionName,
+				pointeeElementCount: _pointeeElementCount,
+				...declaration
+			} = memoryItem;
+			return [id, declaration as PlannedMemoryDeclaration];
+		})
+	);
+	const pointerMetadata = Object.fromEntries(
+		Object.entries(memoryMap)
+			.filter(([, memoryItem]) => memoryItem.pointeeBaseType)
+			.map(([id, memoryItem]) => [
+				id,
+				{
+					...(memoryItem.pointeeMemoryIndex !== undefined ? { pointeeMemoryIndex: memoryItem.pointeeMemoryIndex } : {}),
+					...(memoryItem.pointeeMemoryRegionName
+						? { pointeeMemoryRegionName: memoryItem.pointeeMemoryRegionName }
+						: {}),
+					...(memoryItem.pointeeElementCount !== undefined
+						? { pointeeElementCount: memoryItem.pointeeElementCount }
+						: {}),
+				},
+			])
+	) as MemoryPointerMetadataMap;
+	const declarations = Object.values(memory);
+	const wordAlignedSize = declarations.reduce(
+		(max, declaration) => Math.max(max, declaration.wordAlignedAddress + declaration.wordAlignedSize),
+		0
+	);
+	const module = {
+		id: context.namespace.moduleName ?? 'test',
+		lineNumber: 0,
+		byteAddress: 0,
+		wordAlignedSize,
+		memory,
+		declarations,
+		memoryIndex: context.currentMemoryIndex,
+		...(context.currentMemoryRegionName ? { memoryRegionName: context.currentMemoryRegionName } : {}),
+	};
+
+	context.memoryPlan = {
+		modules: { [module.id]: module },
+		moduleList: [module],
+		nextByteAddressByMemoryIndex: {},
+	};
+	context.currentPlannedModule = module;
+	context.memoryDefaults = Object.fromEntries(
+		Object.entries(memoryMap).map(([id, memoryItem]) => [
+			id,
+			{
+				value: memoryItem.default ?? 0,
+				hasExplicitDefault: memoryItem.hasExplicitDefault === true,
+				isInherited: memoryItem.isInherited ?? false,
+			},
+		])
+	);
+	context.pointerMetadata = pointerMetadata;
+
+	return context;
 }
 
 /**

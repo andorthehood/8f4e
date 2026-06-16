@@ -2,6 +2,7 @@ import { ArgumentType, type ArrayDeclarationLine, type CompilationContext, Error
 
 import { getError } from '../../compilerError';
 
+import { setMemoryDefault } from '../memoryState';
 import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
 import consumePlannedDeclarationLayout from './plannedDeclarationLayout';
 
@@ -36,27 +37,13 @@ const array: MemoryDeclarationCompiler<ArrayDeclarationLine> = (line: ArrayDecla
 	const numberOfElements = elementCountArg.value;
 	const isInteger = line.instruction.startsWith('int') || line.instruction.includes('*');
 	const plannedLayout = consumePlannedDeclarationLayout(context);
-	const declaration = plannedLayout.declaration;
 
-	context.namespace.memory[memoryId] = {
-		numberOfElements: declaration.numberOfElements,
-		elementWordSize: declaration.elementWordSize,
-		memoryIndex: declaration.memoryIndex,
-		...(declaration.memoryRegionName ? { memoryRegionName: declaration.memoryRegionName } : {}),
-		wordAlignedSize: declaration.wordAlignedSize,
-		wordAlignedAddress: declaration.wordAlignedAddress,
-		id: declaration.id,
-		lineNumber: declaration.lineNumber,
-		byteAddress: declaration.byteAddress,
-		default: createArrayDefaultValues(line, context, numberOfElements, isInteger),
-		hasExplicitDefault: line.hasExplicitMemoryDefault,
-		isInherited: context.isInherited === true,
-		isInteger: declaration.isInteger,
-		pointerDepth: declaration.pointerDepth,
-		...(declaration.pointeeBaseType ? { pointeeBaseType: declaration.pointeeBaseType } : {}),
-		type: declaration.type,
-		isUnsigned: declaration.isUnsigned,
-	};
+	setMemoryDefault(
+		context,
+		memoryId,
+		createArrayDefaultValues(line, context, numberOfElements, isInteger),
+		line.hasExplicitMemoryDefault
+	);
 	context.currentModuleNextWordOffset = plannedLayout.nextLocalWordOffset;
 
 	return context;

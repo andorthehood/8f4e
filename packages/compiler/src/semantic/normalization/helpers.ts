@@ -4,12 +4,12 @@ import {
 	ArgumentType,
 	type CompilationContext,
 	type CompilerASTLine,
+	type Const,
 	ErrorCode,
 	type NormalizedArgumentLiteral,
 	type ReferenceKind,
 } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
-import { tryResolveValueArgument } from '../resolveValueArgument';
 
 /**
  * Returns whether namespace discovery has populated any module or constants namespaces.
@@ -21,9 +21,8 @@ export function hasCollectedNamespaces(context: CompilationContext): boolean {
 	return Object.keys(context.namespace.namespaces).length > 0;
 }
 
-function getTargetModuleNamespace(context: CompilationContext, targetModuleId: string) {
-	const targetNamespace = context.namespace.namespaces[targetModuleId];
-	return targetNamespace?.kind === 'module' ? targetNamespace : undefined;
+function getTargetPlannedModule(context: CompilationContext, targetModuleId: string) {
+	return context.memoryPlan.modules[targetModuleId];
 }
 
 /**
@@ -47,7 +46,7 @@ export function isIntermoduleReferenceKind(referenceKind: ReferenceKind): boolea
  * Validates that intermodule address references, including metadata-query forms,
  * target existing modules and memory once namespace collection is complete.
  * It does not evaluate the query value itself during namespace discovery; numeric resolution
- * of sizeof/count/max/min forms is handled by tryResolveValueArgument.
+ * of sizeof/count/max/min forms is handled by the project-level memory reference inliner.
  *
  * @param identifier - identifier value to use.
  * @param line - AST line being processed.
@@ -66,7 +65,7 @@ export function validateIntermoduleAddressReference(
 
 	if (identifier.referenceKind === 'intermodular-module-reference') {
 		const targetModuleId = identifier.targetModuleId;
-		if (!getTargetModuleNamespace(context, targetModuleId)) {
+		if (!getTargetPlannedModule(context, targetModuleId)) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
 		return;
@@ -76,12 +75,12 @@ export function validateIntermoduleAddressReference(
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
 
-		const targetNamespace = getTargetModuleNamespace(context, targetModuleId);
-		if (!targetNamespace) {
+		const targetModule = getTargetPlannedModule(context, targetModuleId);
+		if (!targetModule) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
 
-		const targetMemory = targetNamespace.memory?.[targetMemoryId];
+		const targetMemory = targetModule?.memory[targetMemoryId];
 		if (!targetMemory) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
 		}
@@ -97,49 +96,87 @@ export function validateIntermoduleAddressReference(
 	) {
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
-		const targetNamespace = getTargetModuleNamespace(context, targetModuleId);
-		if (!targetNamespace) {
+		const targetModule = getTargetPlannedModule(context, targetModuleId);
+		if (!targetModule) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
-		if (!targetNamespace.memory?.[targetMemoryId]) {
+		if (!targetModule?.memory[targetMemoryId]) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetMemoryId });
 		}
 	}
 }
 
-/**
- * Attempts to fold one argument to a normalized literal, leaving unresolved arguments unchanged.
- * This handles memory/layout expressions after constants have already been inlined.
- *
- * @param argument - Argument whose resolved value or metadata should be used.
- * @param context - Compilation context used by the operation.
- * @returns The computed result.
- */
-export function normalizeArgument(
-	argument: Argument,
-	context: CompilationContext
-): Argument | NormalizedArgumentLiteral {
-	// tryResolveValueArgument returns undefined for non-IDENTIFIER and non-COMPILE_TIME_EXPRESSION
-	// types, so we short-circuit here to avoid unnecessary work.
-	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return argument;
-	}
+function literalToConst(argument: Extract<Argument, { type: typeof ArgumentType.LITERAL }>): Const {
+	return {
+		value: argument.value,
+		isInteger: argument.isInteger,
+		...(argument.isFloat64 ? { isFloat64: true } : {}),
+	};
+}
 
-	const resolved = tryResolveValueArgument(context, argument);
-
-	if (!resolved) {
-		return argument;
-	}
-
-	const literal: NormalizedArgumentLiteral = {
-		type: ArgumentType.LITERAL as typeof ArgumentType.LITERAL,
+function constToLiteral(resolved: Const): NormalizedArgumentLiteral {
+	return {
+		type: ArgumentType.LITERAL,
 		value: resolved.value,
 		isInteger: resolved.isInteger,
 		...(resolved.isFloat64 ? { isFloat64: true } : {}),
 		...(resolved.address ? { address: resolved.address } : {}),
 	};
+}
 
-	return literal;
+function evaluateLiteralExpression(
+	left: Const,
+	right: Const,
+	operator: Extract<Argument, { type: typeof ArgumentType.COMPILE_TIME_EXPRESSION }>['operator']
+): Const | undefined {
+	if (operator === '/' && right.value === 0) {
+		return undefined;
+	}
+
+	const value =
+		operator === '+'
+			? left.value + right.value
+			: operator === '-'
+				? left.value - right.value
+				: operator === '*'
+					? left.value * right.value
+					: operator === '/'
+						? left.value / right.value
+						: left.value ** right.value;
+	const isFloat64 = !!left.isFloat64 || !!right.isFloat64;
+	const isInteger = !isFloat64 && left.isInteger && right.isInteger && Number.isInteger(value);
+
+	return {
+		value,
+		isInteger,
+		...(isFloat64 ? { isFloat64: true } : {}),
+		...(left.address ? { address: left.address } : {}),
+	};
+}
+
+/**
+ * Attempts to fold pure literal arithmetic after constants and memory references
+ * have already been inlined by earlier project-level passes.
+ *
+ * @param argument - Argument whose literal value should be used.
+ * @returns The computed result.
+ */
+export function normalizeArgument(argument: Argument): Argument | NormalizedArgumentLiteral {
+	if (argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
+		return argument;
+	}
+
+	if (argument.left.type !== ArgumentType.LITERAL || argument.right.type !== ArgumentType.LITERAL) {
+		return argument;
+	}
+
+	const resolved = evaluateLiteralExpression(
+		literalToConst(argument.left),
+		literalToConst(argument.right),
+		argument.operator
+	);
+
+	return resolved ? constToLiteral(resolved) : argument;
 }
 
 /**
@@ -218,7 +255,7 @@ export function normalizeArgumentsAtIndexes<TLine extends CompilerASTLine>(
 			return argument;
 		}
 
-		const normalized = normalizeArgument(argument, context);
+		const normalized = normalizeArgument(argument);
 		if (normalized !== argument) {
 			changed = true;
 		}
