@@ -33,11 +33,9 @@ export interface MemoryReferenceModuleNamespace {
 }
 
 export interface MemoryReferenceResolutionContext {
-	namespace: {
-		memory: MemoryMap;
-		namespaces: Readonly<Record<string, MemoryReferenceModuleNamespace>>;
-		moduleName?: string;
-	};
+	memory: MemoryMap;
+	namespaces: Readonly<Record<string, MemoryReferenceModuleNamespace>>;
+	moduleName?: string;
 	locals: LocalMap;
 	startingByteAddress: number;
 	currentModuleWordAlignedSize: number;
@@ -64,18 +62,15 @@ export function resolveMemoryExpressionOperand(
 	operand: CompileTimeOperand,
 	context: MemoryReferenceResolutionContext
 ): Const | undefined {
-	const { namespace } = context;
 	if (operand.type === ArgumentType.LITERAL) {
 		return undefined;
 	}
 
-	const { memory } = namespace;
+	const { memory, namespaces } = context;
 
 	if (operand.referenceKind === 'intermodular-element-word-size') {
 		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
+			namespaces[operand.targetModuleId]?.kind === 'module' ? namespaces[operand.targetModuleId]?.memory : undefined;
 		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
 			return {
 				value: getElementWordSize(targetMemory, operand.targetMemoryId),
@@ -87,9 +82,7 @@ export function resolveMemoryExpressionOperand(
 
 	if (operand.referenceKind === 'intermodular-element-count') {
 		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
+			namespaces[operand.targetModuleId]?.kind === 'module' ? namespaces[operand.targetModuleId]?.memory : undefined;
 		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
 			return {
 				value: getElementCount(targetMemory, operand.targetMemoryId),
@@ -101,9 +94,7 @@ export function resolveMemoryExpressionOperand(
 
 	if (operand.referenceKind === 'intermodular-element-max') {
 		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
+			namespaces[operand.targetModuleId]?.kind === 'module' ? namespaces[operand.targetModuleId]?.memory : undefined;
 		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
 			const memoryItem = targetMemory[operand.targetMemoryId];
 			return {
@@ -116,9 +107,7 @@ export function resolveMemoryExpressionOperand(
 
 	if (operand.referenceKind === 'intermodular-element-min') {
 		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
+			namespaces[operand.targetModuleId]?.kind === 'module' ? namespaces[operand.targetModuleId]?.memory : undefined;
 		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
 			const memoryItem = targetMemory[operand.targetMemoryId];
 			return {
@@ -247,7 +236,7 @@ export function resolveMemoryExpressionOperand(
 	// module:& — end-word base byte address of a module
 	if (operand.referenceKind === 'intermodular-module-reference') {
 		const targetModuleId = operand.targetModuleId;
-		const targetNamespace = namespace.namespaces[targetModuleId];
+		const targetNamespace = namespaces[targetModuleId];
 		if (
 			targetNamespace?.kind === 'module' &&
 			typeof targetNamespace.byteAddress === 'number' &&
@@ -281,7 +270,7 @@ export function resolveMemoryExpressionOperand(
 						memory,
 						isMemoryLayoutFinalized: true,
 					}
-				: namespace.namespaces[targetModuleId];
+				: namespaces[targetModuleId];
 		if (
 			targetNamespace?.kind !== 'module' ||
 			typeof targetNamespace.byteAddress !== 'number' ||
@@ -294,7 +283,7 @@ export function resolveMemoryExpressionOperand(
 		const item = items[operand.targetMemoryIndex];
 		if (item) {
 			const memoryRegionFields = getMemoryRegionFields(item.memoryIndex, item.memoryRegionName);
-			const resolvedModuleId = targetModuleId === 'this' ? context.namespace.moduleName : targetModuleId;
+			const resolvedModuleId = targetModuleId === 'this' ? context.moduleName : targetModuleId;
 			return {
 				...memoryStartAddressValue(item, resolvedModuleId),
 				address: {
@@ -317,7 +306,7 @@ export function resolveMemoryExpressionOperand(
 	// module:memory& — end-word base byte address of a remote memory item
 	if (operand.referenceKind === 'intermodular-reference') {
 		const targetModuleId = operand.targetModuleId;
-		const targetNamespace = namespace.namespaces[targetModuleId];
+		const targetNamespace = namespaces[targetModuleId];
 		// Only resolve once the target module has been laid out (byteAddress is set on the namespace entry)
 		if (targetNamespace?.kind !== 'module' || typeof targetNamespace.byteAddress !== 'number') {
 			return undefined;
@@ -341,7 +330,7 @@ export function resolveMemoryExpressionOperand(
 					'module-start',
 					context.startingByteAddress,
 					context.currentModuleWordAlignedSize,
-					context.namespace.moduleName,
+					context.moduleName,
 					context.currentMemoryIndex,
 					context.currentMemoryRegionName
 				);
@@ -353,7 +342,7 @@ export function resolveMemoryExpressionOperand(
 						'module-end',
 						byteAddress,
 						context.currentModuleWordAlignedSize,
-						context.namespace.moduleName,
+						context.moduleName,
 						context.currentMemoryIndex,
 						context.currentMemoryRegionName
 					),
@@ -363,8 +352,8 @@ export function resolveMemoryExpressionOperand(
 		}
 		if (Object.hasOwn(memory, base)) {
 			return operand.isEndAddress
-				? memoryEndAddressValue(memory[base], context.namespace.moduleName)
-				: memoryStartAddressValue(memory[base], context.namespace.moduleName);
+				? memoryEndAddressValue(memory[base], context.moduleName)
+				: memoryStartAddressValue(memory[base], context.moduleName);
 		}
 		return undefined;
 	}

@@ -1,4 +1,5 @@
 import type { AddressMetadata, CompilationContext, DataStructure, MemoryDeclarationLine } from '@8f4e/compiler-spec';
+import { getMemoryItem, setMemoryDefault, setPointerMetadata } from '../memoryState';
 import parseMemoryInstructionArguments from '../utils/memoryInstructionParser';
 import consumePlannedDeclarationLayout from './plannedDeclarationLayout';
 
@@ -22,12 +23,7 @@ function getPointeeMemoryItem(
 		return undefined;
 	}
 
-	if (safeRange.moduleId) {
-		const namespace = context.namespace.namespaces[safeRange.moduleId];
-		return namespace?.kind === 'module' ? namespace.memory?.[memoryId] : undefined;
-	}
-
-	return context.namespace.memory[memoryId];
+	return getMemoryItem(context, memoryId, safeRange.moduleId);
 }
 
 function getPointeeElementCount(
@@ -68,39 +64,15 @@ export default function createDeclarationCompiler(options: DeclarationCompilerOp
 		const plannedLayout = consumePlannedDeclarationLayout(context);
 		const pointerDepth = plannedLayout.declaration.pointerDepth;
 		const pointeeElementCount = getPointeeElementCount(defaultAddress, context);
-		const pointerPointeeRegion =
-			pointerDepth > 0
-				? {
-						pointeeMemoryIndex: defaultAddress?.memoryIndex ?? 0,
-						...(defaultAddress?.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
-						...(pointeeElementCount !== undefined && pointeeElementCount !== 1 ? { pointeeElementCount } : {}),
-					}
-				: {};
-
 		const finalDefault = truncate ? Math.trunc(defaultValue) : defaultValue;
-		const declaration = plannedLayout.declaration;
-
-		context.namespace.memory[id] = {
-			numberOfElements: declaration.numberOfElements,
-			elementWordSize: declaration.elementWordSize,
-			memoryIndex: declaration.memoryIndex,
-			...(declaration.memoryRegionName ? { memoryRegionName: declaration.memoryRegionName } : {}),
-			wordAlignedAddress: declaration.wordAlignedAddress,
-			wordAlignedSize: declaration.wordAlignedSize,
-			byteAddress: declaration.byteAddress,
-			id: declaration.id,
-			lineNumber: declaration.lineNumber,
-			default: finalDefault,
-			hasExplicitDefault: line.hasExplicitMemoryDefault,
-			isInherited: context.isInherited === true,
-			type: declaration.type,
-			pointerDepth: declaration.pointerDepth,
-			isInteger: declaration.isInteger,
-			...(declaration.isFloat64 ? { isFloat64: declaration.isFloat64 } : {}),
-			...(declaration.pointeeBaseType ? { pointeeBaseType: declaration.pointeeBaseType } : {}),
-			isUnsigned: declaration.isUnsigned,
-			...pointerPointeeRegion,
-		};
+		setMemoryDefault(context, id, finalDefault, line.hasExplicitMemoryDefault);
+		if (pointerDepth > 0) {
+			setPointerMetadata(context, id, {
+				pointeeMemoryIndex: defaultAddress?.memoryIndex ?? 0,
+				...(defaultAddress?.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
+				...(pointeeElementCount !== undefined && pointeeElementCount !== 1 ? { pointeeElementCount } : {}),
+			});
+		}
 		context.currentModuleNextWordOffset = plannedLayout.nextLocalWordOffset;
 
 		return context;

@@ -4,6 +4,7 @@ import type {
 	CompileOptions,
 	FunctionRegistry,
 	FunctionTypeRegistry,
+	MemoryLayoutPlan,
 	ModuleCompilationContext,
 	Namespaces,
 	ValidatedModuleAST,
@@ -27,6 +28,7 @@ import { getError } from './compilerError';
 import { applySemanticLine } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
+import { createMemoryMapFromPlan } from './semantic/memoryState';
 import normalizeValueArguments from './semantic/normalizeValueArguments';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
@@ -51,16 +53,17 @@ export function compileModule(
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
 	typeRegistry?: FunctionTypeRegistry,
-	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
+	memoryPlan?: MemoryLayoutPlan
 ): CompiledModule {
 	const namespace = namespaces[ast.id];
+	const plannedModule = memoryPlan?.modules[ast.id];
 	const memoryIndex = namespace?.memoryIndex ?? 0;
 	const memoryRegionName = namespace?.memoryRegionName;
-	const moduleWordAlignedSize = namespace?.wordAlignedSize ?? 0;
+	const moduleWordAlignedSize = plannedModule?.wordAlignedSize ?? namespace?.wordAlignedSize ?? 0;
 	const context = createCompilationContext<ModuleCompilationContext>({
 		namespace: {
 			namespaces,
-			memory: namespace?.memory ?? {},
 			moduleName: undefined,
 			functions,
 			prototypeShapeIds: collectPrototypeShapeIds(ast),
@@ -74,6 +77,11 @@ export function compileModule(
 		currentModuleWordAlignedSize: moduleWordAlignedSize,
 		currentMemoryIndex: memoryIndex,
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
+		...(memoryPlan ? { memoryPlan } : {}),
+		currentPlannedModule: plannedModule,
+		currentPlannedMemoryDeclarationIndex: 0,
+		memoryDefaults: namespace?.memoryDefaults ?? {},
+		pointerMetadata: namespace?.pointerMetadata ?? {},
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
 		functionTypeRegistry: typeRegistry,
@@ -123,7 +131,7 @@ export function compileModule(
 		...getMemoryRegionFields(memoryIndex, memoryRegionName),
 		byteAddress: startingByteAddress,
 		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
-		memoryMap: context.namespace.memory,
+		memoryMap: createMemoryMapFromPlan(plannedModule, context),
 		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),

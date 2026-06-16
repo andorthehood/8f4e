@@ -9,7 +9,10 @@ import { ArgumentType, createFunctionId, ErrorCode } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
 import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
+import createInstructionCompilerTestContext, {
+	analyzeAndCompileInstruction,
+	seedTestMemoryMap,
+} from '../utils/testUtils';
 import call from './call';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
@@ -162,25 +165,22 @@ describe('call instruction compiler', () => {
 	});
 
 	it('resolves pointer overloads from known memory address literals', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					previousTrigger: {
-						id: 'previousTrigger',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						memoryIndex: 0,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 0,
-						default: 0,
-						isInteger: true,
-						pointerDepth: 0,
-						isUnsigned: false,
-						type: 'int',
-					} as never,
-				},
+		const context = seedTestMemoryMap(createInstructionCompilerTestContext(), {
+			previousTrigger: {
+				id: 'previousTrigger',
+				numberOfElements: 1,
+				elementWordSize: 4,
+				memoryIndex: 0,
+				wordAlignedAddress: 0,
+				wordAlignedSize: 1,
+				byteAddress: 0,
+				default: 0,
+				isInherited: false,
+				isInteger: true,
+				pointerDepth: 0,
+				isUnsigned: false,
+				type: 'int',
+				lineNumber: 1,
 			},
 		});
 		const targetFunction = {

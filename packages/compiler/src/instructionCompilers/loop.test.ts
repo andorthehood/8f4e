@@ -21,7 +21,6 @@ describe('loop instruction compiler', () => {
 
 		expect({
 			blockStack: context.blockStack,
-			memory: context.namespace.memory,
 			locals: context.locals,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
@@ -42,7 +41,6 @@ describe('loop instruction compiler', () => {
 
 		expect({
 			blockStack: context.blockStack,
-			memory: context.namespace.memory,
 			locals: context.locals,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
@@ -64,7 +62,6 @@ describe('loop instruction compiler', () => {
 
 		expect({
 			blockStack: context.blockStack,
-			memory: context.namespace.memory,
 			locals: context.locals,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
@@ -86,7 +83,6 @@ describe('loop instruction compiler', () => {
 
 		expect({
 			blockStack: context.blockStack,
-			memory: context.namespace.memory,
 			locals: context.locals,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();

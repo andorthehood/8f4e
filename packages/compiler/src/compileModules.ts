@@ -3,6 +3,7 @@ import type {
 	CompileOptions,
 	FunctionRegistry,
 	FunctionTypeRegistry,
+	MemoryLayoutPlan,
 	Namespaces,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
@@ -33,15 +34,17 @@ export function compileModules(
 	namespaces?: Namespaces,
 	compiledFunctions?: FunctionRegistry,
 	typeRegistry?: FunctionTypeRegistry,
-	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
+	memoryPlan?: MemoryLayoutPlan
 ): CompiledModule[] {
 	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
 	let compiledModules = modules;
 	let ns = namespaces;
+	let plan = memoryPlan;
 
 	if (!namespaces) {
 		assertUniqueModuleIds(modules);
-		const memoryPlan = createMemoryLayoutPlanFromASTs(
+		plan = createMemoryLayoutPlanFromASTs(
 			modules,
 			startingByteAddress,
 			compiledFunctions,
@@ -56,7 +59,7 @@ export function compileModules(
 				constants: [],
 				functions: [],
 			},
-			memoryPlan,
+			memoryPlan: plan,
 		}).ast.modules;
 		ns = collectNamespacesFromASTs(
 			compiledModules,
@@ -65,7 +68,7 @@ export function compileModules(
 			compiledModules,
 			options,
 			prototypeShapes,
-			memoryPlan
+			plan
 		);
 	}
 
@@ -80,7 +83,8 @@ export function compileModules(
 			compiledFunctions,
 			options,
 			typeRegistry,
-			prototypeShapes
+			prototypeShapes,
+			plan
 		);
 		return module;
 	});

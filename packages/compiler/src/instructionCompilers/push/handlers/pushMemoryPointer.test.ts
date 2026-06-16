@@ -20,227 +20,138 @@ function createResolvedMemoryPointerPushLine(
 	} as ResolvedMemoryPointerPushLine;
 }
 
+function createPointerMemoryItem(overrides: Partial<DataStructure> & Pick<DataStructure, 'id' | 'byteAddress'>) {
+	return {
+		numberOfElements: 1,
+		elementWordSize: 4,
+		wordAlignedAddress: 0,
+		wordAlignedSize: 1,
+		default: 0,
+		isInteger: true,
+		isUnsigned: false,
+		...overrides,
+	} as DataStructure;
+}
+
 describe('pushMemoryPointer', () => {
 	it('dereferences double pointers once and returns the inner pointer value', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					ptr: {
-						id: 'ptr',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 12,
-						default: 0,
-						isInteger: false,
-						pointeeBaseType: 'float64',
-						pointerDepth: 2,
-						isUnsigned: false,
-						type: 'float64**',
-					} as never,
-				},
-			},
+		const context = createInstructionCompilerTestContext();
+		const ptr = createPointerMemoryItem({
+			id: 'ptr',
+			byteAddress: 12,
+			isInteger: false,
+			pointeeBaseType: 'float64',
+			pointerDepth: 2,
+			type: 'float64**',
 		});
 
-		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(12), ...i32load(), ...i32load()]);
 	});
 
 	it('dereferences double pointers twice and loads target kind', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					ptr: {
-						id: 'ptr',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 12,
-						default: 0,
-						isInteger: false,
-						pointeeBaseType: 'float64',
-						pointerDepth: 2,
-						isUnsigned: false,
-						type: 'float64**',
-					} as never,
-				},
-			},
+		const context = createInstructionCompilerTestContext();
+		const ptr = createPointerMemoryItem({
+			id: 'ptr',
+			byteAddress: 12,
+			isInteger: false,
+			pointeeBaseType: 'float64',
+			pointerDepth: 2,
+			type: 'float64**',
 		});
 
-		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr, 2), context);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', ptr, 2), context);
 
 		expect(context.byteCode).toEqual([...i32const(12), ...i32load(), ...i32load(), ...f64load()]);
 	});
 
 	it('dereferences int8* with i32load8s for the final load', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					ptr: {
-						id: 'ptr',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 8,
-						default: 0,
-						isInteger: true,
-						pointeeBaseType: 'int8',
-						pointerDepth: 1,
-						isUnsigned: false,
-						type: 'int8*',
-					} as never,
-				},
-			},
+		const context = createInstructionCompilerTestContext();
+		const ptr = createPointerMemoryItem({
+			id: 'ptr',
+			byteAddress: 8,
+			pointeeBaseType: 'int8',
+			pointerDepth: 1,
+			type: 'int8*',
 		});
 
-		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load8s()]);
 	});
 
 	it('dereferences int8u* with i32load8u for the final load', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					ptr: {
-						id: 'ptr',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 8,
-						default: 0,
-						isInteger: true,
-						pointeeBaseType: 'int8u',
-						pointerDepth: 1,
-						isUnsigned: false,
-						type: 'int8*',
-					} as never,
-				},
-			},
+		const context = createInstructionCompilerTestContext();
+		const ptr = createPointerMemoryItem({
+			id: 'ptr',
+			byteAddress: 8,
+			pointeeBaseType: 'int8u',
+			pointerDepth: 1,
+			type: 'int8*',
 		});
 
-		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load8u()]);
 	});
 
 	it('dereferences int8** once without the final load', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					pptr: {
-						id: 'pptr',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 4,
-						default: 0,
-						isInteger: true,
-						pointeeBaseType: 'int8',
-						pointerDepth: 2,
-						isUnsigned: false,
-						type: 'int8**',
-					} as never,
-				},
-			},
+		const context = createInstructionCompilerTestContext();
+		const pptr = createPointerMemoryItem({
+			id: 'pptr',
+			byteAddress: 4,
+			pointeeBaseType: 'int8',
+			pointerDepth: 2,
+			type: 'int8**',
 		});
 
-		pushMemoryPointer(createResolvedMemoryPointerPushLine('pptr', context.namespace.memory.pptr), context);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('pptr', pptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load()]);
 	});
 
 	it('dereferences int16* with i32load16s for the final load', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					ptr: {
-						id: 'ptr',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 8,
-						default: 0,
-						isInteger: true,
-						pointeeBaseType: 'int16',
-						pointerDepth: 1,
-						isUnsigned: false,
-						type: 'int16*',
-					} as never,
-				},
-			},
+		const context = createInstructionCompilerTestContext();
+		const ptr = createPointerMemoryItem({
+			id: 'ptr',
+			byteAddress: 8,
+			pointeeBaseType: 'int16',
+			pointerDepth: 1,
+			type: 'int16*',
 		});
 
-		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load16s()]);
 	});
 
 	it('dereferences int16u* with i32load16u for the final load', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					ptr: {
-						id: 'ptr',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 8,
-						default: 0,
-						isInteger: true,
-						pointeeBaseType: 'int16u',
-						pointerDepth: 1,
-						isUnsigned: false,
-						type: 'int16*',
-					} as never,
-				},
-			},
+		const context = createInstructionCompilerTestContext();
+		const ptr = createPointerMemoryItem({
+			id: 'ptr',
+			byteAddress: 8,
+			pointeeBaseType: 'int16u',
+			pointerDepth: 1,
+			type: 'int16*',
 		});
 
-		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', context.namespace.memory.ptr), context);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('ptr', ptr), context);
 
 		expect(context.byteCode).toEqual([...i32const(8), ...i32load(), ...i32load16u()]);
 	});
 
 	it('dereferences int16** twice with i32load16s for the final load', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					pptr: {
-						id: 'pptr',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 0,
-						wordAlignedSize: 1,
-						byteAddress: 4,
-						default: 0,
-						isInteger: true,
-						pointeeBaseType: 'int16',
-						pointerDepth: 2,
-						isUnsigned: false,
-						type: 'int16**',
-					} as never,
-				},
-			},
+		const context = createInstructionCompilerTestContext();
+		const pptr = createPointerMemoryItem({
+			id: 'pptr',
+			byteAddress: 4,
+			pointeeBaseType: 'int16',
+			pointerDepth: 2,
+			type: 'int16**',
 		});
 
-		pushMemoryPointer(createResolvedMemoryPointerPushLine('pptr', context.namespace.memory.pptr, 2), context);
+		pushMemoryPointer(createResolvedMemoryPointerPushLine('pptr', pptr, 2), context);
 
 		expect(context.byteCode).toEqual([...i32const(4), ...i32load(), ...i32load(), ...i32load16s()]);
 	});
