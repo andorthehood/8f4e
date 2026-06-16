@@ -196,13 +196,17 @@ export interface PlannedMemoryModule extends MemoryRegionIdentity {
 	lineNumber: number;
 	byteAddress: number;
 	wordAlignedSize: number;
+	/** Declaration lookup by id, materialized by the planner from the ordered declarations below. */
 	memory: Record<string, PlannedMemoryDeclaration>;
+	/** Declarations in planned/source order; entries are the same objects exposed through `memory`. */
 	declarations: readonly PlannedMemoryDeclaration[];
 	declarationSources: readonly PlannedMemoryDeclarationSource[];
 }
 
 export interface MemoryLayoutPlan {
+	/** Module lookup by id, materialized by the planner from the ordered module list below. */
 	modules: Record<string, PlannedMemoryModule>;
+	/** Modules in planned/source order; entries are the same objects exposed through `modules`. */
 	moduleList: readonly PlannedMemoryModule[];
 	nextByteAddressByMemoryIndex: Record<number, number>;
 }
