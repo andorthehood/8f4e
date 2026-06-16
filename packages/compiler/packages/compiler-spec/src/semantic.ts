@@ -135,11 +135,10 @@ export interface CollectedNamespace {
 	kind: CompiledModuleBlockType;
 	memoryIndex: number;
 	memoryRegionName?: string;
-	byteAddress?: number;
-	wordAlignedSize?: number;
-	isMemoryLayoutFinalized?: boolean;
-	memoryDefaults?: MemoryDefaults;
-	pointerMetadata?: MemoryPointerMetadataMap;
+	byteAddress: number;
+	wordAlignedSize: number;
+	memoryDefaults: MemoryDefaults;
+	pointerMetadata: MemoryPointerMetadataMap;
 }
 
 export type Namespaces = Record<string, CollectedNamespace>;
