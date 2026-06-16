@@ -1,5 +1,5 @@
-import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, MenuGenerator } from '@8f4e/editor-state-types';
+import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import { isSkipExecutionDirective } from '@8f4e/tokenizer';
 import { getGroupBlocks, getGroupModuleBlocks } from '../../code-blocks/features/group/getGroupBlocks';
 import { hasIntermodularMemoryConnections } from '../../code-blocks/features/memoryConnectionRemover/removeConnections';

@@ -1,4 +1,4 @@
-import type { ASTCache, ASTCacheEntry, ValidatedAST } from '@8f4e/compiler-spec';
+import type { ASTCache, ASTCacheEntry, ValidatedAST } from '@8f4e/language-spec';
 
 export { createASTCache } from './cache';
 

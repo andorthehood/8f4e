@@ -1,4 +1,4 @@
-import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 
 /**
  * Writes one memory declaration default value into a data segment byte view.

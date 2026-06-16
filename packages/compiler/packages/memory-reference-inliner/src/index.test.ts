@@ -1,4 +1,4 @@
-import { ArgumentType, type ValidatedModuleAST } from '@8f4e/compiler-spec';
+import { ArgumentType, type ValidatedModuleAST } from '@8f4e/language-spec';
 import type { MemoryLayoutPlan, PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
 import type { MemoryReferenceResolutionContext } from './index';

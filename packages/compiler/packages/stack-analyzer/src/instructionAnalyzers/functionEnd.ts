@@ -1,10 +1,10 @@
-import type { CompilationContext, CompilerASTLine, FunctionValueType, Stack } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine, FunctionValueType, Stack } from '@8f4e/language-spec';
 import {
 	ErrorCode,
 	getError,
 	MAX_FUNCTION_RETURN_VALUES,
 	stackItemMatchesFunctionValueType,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { consume } from './stack';
 
 /**

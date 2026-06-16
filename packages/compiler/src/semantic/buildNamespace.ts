@@ -17,7 +17,7 @@ import {
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 	validateMemoryRegionOptions,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import type { ResolveMemoryDefaultsResult } from '@8f4e/memory-default-resolver';
 import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
 import applySemanticInstruction from './instructions';

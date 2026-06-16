@@ -1,5 +1,5 @@
-import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { MemoryIdentifier, State } from '@8f4e/editor-state-types';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 
 export default function resolveMemoryIdentifier(
 	state: State,

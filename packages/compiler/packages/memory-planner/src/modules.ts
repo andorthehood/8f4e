@@ -1,4 +1,4 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
 
 export type ModuleAddressCursor = Record<number, number>;
 

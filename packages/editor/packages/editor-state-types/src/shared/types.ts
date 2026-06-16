@@ -3,7 +3,7 @@
  * These types do not belong to any single feature and are used by multiple subsystems.
  */
 
-import type { CompilerSourceBlockType } from '@8f4e/compiler-spec';
+import type { CompilerSourceBlockType } from '@8f4e/language-spec';
 
 /**
  * Generic size dimensions used across features.

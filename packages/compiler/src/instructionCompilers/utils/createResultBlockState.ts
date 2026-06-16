@@ -1,7 +1,6 @@
-import type { BlockResultTypes, BlockStack, BlockType, FunctionTypeRegistry } from '@8f4e/compiler-spec';
-
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import { signedLEB128, WASM_TYPE_F32, WASM_TYPE_I32, WASM_TYPE_VOID } from '@8f4e/compiler-wasm-utils';
+import type { BlockResultTypes, BlockStack, BlockType, FunctionTypeRegistry } from '@8f4e/language-spec';
 import { getOrRegisterFunctionType } from './functionTypeRegistry';
 
 type ResultBlockType = typeof BlockType.BLOCK | typeof BlockType.CONDITION;

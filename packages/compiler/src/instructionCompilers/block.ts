@@ -1,6 +1,6 @@
-import type { InstructionCompiler, PairedBlockLine } from '@8f4e/compiler-spec';
-import { BlockType } from '@8f4e/compiler-spec';
 import { WASM_BLOCK } from '@8f4e/compiler-wasm-utils';
+import type { InstructionCompiler, PairedBlockLine } from '@8f4e/language-spec';
+import { BlockType } from '@8f4e/language-spec';
 import { pushBlock } from '../utils/blockStack';
 import createResultBlockState from './utils/createResultBlockState';
 import { saveByteCode } from './utils/saveByteCode';

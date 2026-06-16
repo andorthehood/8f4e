@@ -1,5 +1,5 @@
-import type { BlockStack } from '@8f4e/compiler-spec';
-import { BlockType } from '@8f4e/compiler-spec';
+import type { BlockStack } from '@8f4e/language-spec';
+import { BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { popBlock, pushBlock } from './blockStack';
 import createInstructionCompilerTestContext from './testUtils';

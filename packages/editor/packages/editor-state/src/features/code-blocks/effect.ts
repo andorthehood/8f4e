@@ -1,5 +1,5 @@
-import { isMemoryDeclarationInstructionName } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import { isMemoryDeclarationInstructionName } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType } from '@8f4e/project-preparser';
 import type { StateManager } from '@8f4e/state-manager';
 import { getPointerDepth } from '@8f4e/tokenizer';

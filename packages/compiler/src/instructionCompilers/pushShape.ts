@@ -1,4 +1,4 @@
-import type { AnalyzedLine, CodegenPushLine, InstructionCompiler, ResolvedPushShapeLine } from '@8f4e/compiler-spec';
+import type { AnalyzedLine, CodegenPushLine, InstructionCompiler, ResolvedPushShapeLine } from '@8f4e/language-spec';
 import push from './push';
 
 /**

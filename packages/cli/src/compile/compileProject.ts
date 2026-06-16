@@ -1,4 +1,4 @@
-import type { CompileOptions } from '@8f4e/compiler-spec';
+import type { CompileOptions } from '@8f4e/language-spec';
 import type { CompileProjectOptions, CompileProjectResult, ProjectDocument } from '../shared/types';
 import compileProjectModules from './compileProjectModules';
 

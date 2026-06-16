@@ -1,4 +1,3 @@
-import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type {
 	CodeBlockGraphicData,
 	Crossfade,
@@ -6,6 +5,7 @@ import type {
 	InternalMouseEvent,
 	State,
 } from '@8f4e/editor-state-types';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import findCrossfadeWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 

@@ -1,5 +1,5 @@
-import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
-import { ArgumentType, BlockType, ErrorCode } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine } from '@8f4e/language-spec';
+import { ArgumentType, BlockType, ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import { analyzeInstruction } from './analyzeInstruction';

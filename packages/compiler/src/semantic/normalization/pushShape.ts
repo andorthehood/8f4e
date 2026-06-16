@@ -8,7 +8,7 @@ import {
 	getPrototypeMemoryDeclarationId,
 	type PushShapeLine,
 	type ResolvedPushShapeLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { memoryStartAddressValue } from '@8f4e/memory-reference-inliner';
 import { getResolvedMemoryDeclaration } from '../memoryState';
 

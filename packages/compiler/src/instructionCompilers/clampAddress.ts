@@ -1,4 +1,4 @@
-import type { CompilerASTLine, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/language-spec';
 import {
 	clampAddressByteCode,
 	getClampAccessByteWidth,

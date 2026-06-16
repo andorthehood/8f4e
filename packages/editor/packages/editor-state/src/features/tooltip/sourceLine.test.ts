@@ -23,7 +23,7 @@ describe('tooltip source line helpers', () => {
 		expect(getStackSignatureFromSourceLine('int value')).toBe('int ( -- )');
 	});
 
-	it('resolves compiler spec documentation from a source line', () => {
+	it('resolves language spec documentation from a source line', () => {
 		expect(getInstructionSpecFromSourceLine('add')?.docs?.shortDescription).toBe(
 			'Adds two numbers of the same type and pushes the result.'
 		);

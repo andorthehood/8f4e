@@ -14,8 +14,8 @@ import type {
 	PlannedMemoryModule,
 	PointeeBaseType,
 	ScalarMemoryDeclarationLine,
-} from '@8f4e/compiler-spec';
-import { ArgumentType, BASE_TYPE_METADATA, ErrorCode, isArrayMemoryDeclarationLine } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ArgumentType, BASE_TYPE_METADATA, ErrorCode, isArrayMemoryDeclarationLine } from '@8f4e/language-spec';
 import {
 	inlineMemoryReferencesInLine,
 	type MemoryReferencePointerMetadataByModuleId,

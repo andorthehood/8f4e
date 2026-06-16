@@ -1,4 +1,4 @@
-import type { CompiledStackAnalysisLine, Stack, StackItem } from '@8f4e/compiler-spec';
+import type { CompiledStackAnalysisLine, Stack, StackItem } from '@8f4e/language-spec';
 import { maxInlineStackItemCount } from './constants';
 import type { TooltipHighlightRange, TooltipHighlightTarget } from './types';
 

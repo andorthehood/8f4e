@@ -1,3 +1,4 @@
+import { WASM_IF, WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 import type {
 	AnalyzedLine,
 	CompilationContext,
@@ -7,9 +8,8 @@ import type {
 	MemoryPointerMetadata,
 	MemoryPointerMetadataMap,
 	PlannedMemoryDeclaration,
-} from '@8f4e/compiler-spec';
-import { BlockType } from '@8f4e/compiler-spec';
-import { WASM_IF, WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
+} from '@8f4e/language-spec';
+import { BlockType } from '@8f4e/language-spec';
 import { analyzeInstruction } from '@8f4e/stack-analyzer/testing';
 import { expect } from 'vitest';
 import { createCompilationContext } from '../semantic/createCompilationContext';

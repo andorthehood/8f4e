@@ -1,7 +1,7 @@
 import type { InstructionSpec, instructionSpecs, MemoryOperationEffectSpec } from './instructionSpecs';
 import type { MemoryDeclarationInstruction } from './memory';
 
-/** Names of every instruction entry registered in the compiler spec table. */
+/** Names of every instruction entry registered in the language spec table. */
 export type InstructionSpecName = keyof typeof instructionSpecs;
 
 /** Instruction spec names that should be dispatched to code generation. */

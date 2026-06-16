@@ -1,3 +1,10 @@
+import {
+	createFunction,
+	createLocalDeclaration,
+	WASM_TYPE_F32,
+	WASM_TYPE_F64,
+	WASM_TYPE_I32,
+} from '@8f4e/compiler-wasm-utils';
 import type {
 	AnalyzedLine,
 	CompiledModule,
@@ -9,20 +16,13 @@ import type {
 	Namespaces,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	getMemoryRegionFields,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
-} from '@8f4e/compiler-spec';
-import {
-	createFunction,
-	createLocalDeclaration,
-	WASM_TYPE_F32,
-	WASM_TYPE_F64,
-	WASM_TYPE_I32,
-} from '@8f4e/compiler-wasm-utils';
+} from '@8f4e/language-spec';
 import type { StackAnalyzedModule } from '@8f4e/stack-analyzer';
 import { attachStackAnalysis, compileCodegenLine } from './compileLine';
 import { applySemanticLine } from './semantic/buildNamespace';

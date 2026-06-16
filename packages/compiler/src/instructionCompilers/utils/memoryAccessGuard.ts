@@ -1,4 +1,3 @@
-import type { CodegenContext, CompilationContext, StackItem } from '@8f4e/compiler-spec';
 import {
 	f32const,
 	f64const,
@@ -19,6 +18,7 @@ import {
 	type WASM_TYPE_I32,
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
+import type { CodegenContext, CompilationContext, StackItem } from '@8f4e/language-spec';
 
 type NumericWasmValueType = typeof WASM_TYPE_I32 | typeof WASM_TYPE_F32 | typeof WASM_TYPE_F64;
 

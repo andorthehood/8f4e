@@ -1,6 +1,6 @@
-import type { CompilerSourceBlockType, DocumentBlockType } from '@8f4e/compiler-spec';
-import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { CompilerSourceBlockType, DocumentBlockType } from '@8f4e/language-spec';
+import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { instructionParser } from '@8f4e/tokenizer';
 import getBlockType from '../../utils/codeParsers/getBlockType';

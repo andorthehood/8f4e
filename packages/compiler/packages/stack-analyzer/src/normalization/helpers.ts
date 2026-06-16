@@ -8,7 +8,7 @@ import {
 	ErrorCode,
 	getError,
 	type NormalizedArgumentLiteral,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 
 function getTargetPlannedModule(context: CompilationContext, targetModuleId: string) {
 	return context.memoryPlan.modules[targetModuleId];

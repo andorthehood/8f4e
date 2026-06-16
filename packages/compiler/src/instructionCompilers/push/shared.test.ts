@@ -1,4 +1,4 @@
-import { getDereferencedValueKindFromMetadata } from '@8f4e/compiler-spec';
+import { getDereferencedValueKindFromMetadata } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { kindToStackItem, resolveArgumentValueKind } from './shared';
 

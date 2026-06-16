@@ -1,5 +1,5 @@
-import type { InstructionCompiler, MapBeginLine } from '@8f4e/compiler-spec';
-import { BlockType } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, MapBeginLine } from '@8f4e/language-spec';
+import { BlockType } from '@8f4e/language-spec';
 import { pushBlock } from '../utils/blockStack';
 
 /**

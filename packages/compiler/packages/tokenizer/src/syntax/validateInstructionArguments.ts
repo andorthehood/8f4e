@@ -1,4 +1,4 @@
-import type { Argument, SourceArgumentShapeRule, SourceArgumentsSpec } from '@8f4e/compiler-spec';
+import type { Argument, SourceArgumentShapeRule, SourceArgumentsSpec } from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	FUNCTION_TYPE_IDENTIFIERS,
@@ -8,7 +8,7 @@ import {
 	isKnownInstructionName,
 	isMemoryDeclarationInstructionName,
 	SCALAR_TYPE_IDENTIFIERS,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import isConstantName from './isConstantName';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 

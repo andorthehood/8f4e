@@ -4,7 +4,7 @@
  * and re-exporting them for backward compatibility and public API stability.
  */
 
-import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/compiler-spec';
+import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/language-spec';
 import type { FillSpriteColorName, SpriteLookups } from '@8f4e/sprite-generator';
 import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
@@ -73,7 +73,7 @@ import type {
 // Re-export viewport types
 // Re-export code-blocks types
 // Re-export menu types
-// Re-export program-compiler spec
+// Re-export program-language spec
 // Re-export browser-local note storage types
 // Re-export dialog types
 // Re-export global-editor-directives types

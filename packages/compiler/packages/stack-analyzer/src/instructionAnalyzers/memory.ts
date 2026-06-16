@@ -1,5 +1,5 @@
-import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
-import { ErrorCode, getError } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine } from '@8f4e/language-spec';
+import { ErrorCode, getError } from '@8f4e/language-spec';
 import { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../utils/addressClamp';
 import { consume, produce } from './stack';
 import type { InstructionAnalysisResult } from './types';

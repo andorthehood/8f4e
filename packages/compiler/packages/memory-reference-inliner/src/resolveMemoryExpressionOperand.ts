@@ -6,7 +6,7 @@ import type {
 	MemoryPointerMetadataMap,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	getElementCount,
@@ -22,7 +22,7 @@ import {
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
 	type PointerMetadata,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	getWordAlignedByteLength,
 	memoryEndAddressValue,

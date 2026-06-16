@@ -1,5 +1,5 @@
-import type { CompilationContext, CompilerASTLine, NormalizedLine } from '@8f4e/compiler-spec';
-import { isMemoryDeclarationLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine, NormalizedLine } from '@8f4e/language-spec';
+import { isMemoryDeclarationLine } from '@8f4e/language-spec';
 import normalizeCall from './call';
 import normalizeClampAddress from './clampAddress';
 import normalizeDefault from './default';

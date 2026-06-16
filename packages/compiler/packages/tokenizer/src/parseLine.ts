@@ -1,10 +1,10 @@
-import type { Argument, CompilerASTLine, MemoryDeclarationLine } from '@8f4e/compiler-spec';
+import type { Argument, CompilerASTLine, MemoryDeclarationLine } from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	isArrayMemoryDeclarationInstructionName,
 	isMemoryDeclarationInstructionName,
 	isMemoryDeclarationLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { parseArgument } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';

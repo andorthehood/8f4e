@@ -11,7 +11,7 @@ import {
 	type ResolvedLocalPushLine,
 	type ResolvedMemoryPointerPushLine,
 	type ResolvedMemoryPushLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { getResolvedMemoryDeclaration } from '../utils/memoryState';
 import {
 	normalizeArgumentsAtIndexes,

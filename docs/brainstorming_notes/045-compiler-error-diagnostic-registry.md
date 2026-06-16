@@ -2,11 +2,11 @@
 
 Date: 2026-05-12
 
-This note captures a possible cleanup after moving compiler contracts into `@8f4e/compiler-spec`: replacing the large semantic error `switch` with a shared diagnostic registry.
+This note captures a possible cleanup after moving compiler contracts into `@8f4e/language-spec`: replacing the large semantic error `switch` with a shared diagnostic registry.
 
 ## Short version
 
-`@8f4e/compiler-spec` should probably own the stable error-code registry:
+`@8f4e/language-spec` should probably own the stable error-code registry:
 
 - `ErrorCode`
 - structured error details
@@ -20,11 +20,11 @@ The compiler package should keep the helper that attaches compiler runtime data:
 - optional `CompilationContext`
 - any local details gathered at the throw site
 
-That keeps `compiler-spec` as the source of truth for diagnostics while avoiding a dependency from the spec package back into compiler internals.
+That keeps `language-spec` as the source of truth for diagnostics while avoiding a dependency from the spec package back into compiler internals.
 
 ## Current shape
 
-Semantic compiler codes live in `packages/compiler/packages/compiler-spec/src/errors.ts`.
+Semantic compiler codes live in `packages/compiler/packages/language-spec/src/errors.ts`.
 
 Semantic error objects are currently constructed in `packages/compiler/src/compilerError.ts` by a large `getError(...)` switch. Most cases only differ by a static message, with a few dynamic cases using details such as an identifier or the current stack.
 
@@ -109,7 +109,7 @@ That keeps the spec registry stable and avoids making it understand the full `Co
 
 ## Possible migration path
 
-1. Add `CompilerErrorDetails`, `CompilerErrorDefinition`, `compilerErrorDefinitions`, and `formatCompilerErrorMessage(...)` to `@8f4e/compiler-spec`.
+1. Add `CompilerErrorDetails`, `CompilerErrorDefinition`, `compilerErrorDefinitions`, and `formatCompilerErrorMessage(...)` to `@8f4e/language-spec`.
 2. Keep `getError(...)` in `@8f4e/compiler`, but rewrite it to call the formatter and attach `line` and `context`.
 3. Add a test that every `ErrorCode` has a definition.
 4. Convert dynamic message cases to structured details.

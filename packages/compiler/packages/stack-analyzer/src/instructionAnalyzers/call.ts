@@ -6,8 +6,8 @@ import type {
 	ResolvedCallLine,
 	Stack,
 	StackItem,
-} from '@8f4e/compiler-spec';
-import { createFunctionId, ErrorCode, functionValueTypeToStackItem, getError } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { createFunctionId, ErrorCode, functionValueTypeToStackItem, getError } from '@8f4e/language-spec';
 import { analyzePush } from './push';
 import { consume, produce } from './stack';
 

@@ -1,4 +1,4 @@
-import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine } from '@8f4e/language-spec';
 import { cloneStack, consume } from './stack';
 import type { InstructionAnalysisResult } from './types';
 

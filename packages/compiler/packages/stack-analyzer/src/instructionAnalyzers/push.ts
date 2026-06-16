@@ -8,13 +8,13 @@ import type {
 	ResolvedMemoryDeclaration,
 	ResolvedPushLine,
 	Stack,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	getDereferencedValueKindFromMetadata,
 	getMemoryRegionFields,
 	getPointerDepthFromMetadata,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { getResolvedMemoryDeclaration } from '../utils/memoryState';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
 import { createStackValue, produce } from './stack';

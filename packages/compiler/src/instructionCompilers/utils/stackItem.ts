@@ -1,5 +1,5 @@
-import type { CodegenContext, CompilationContext, CompilerASTLine, StackAddress, StackItem } from '@8f4e/compiler-spec';
-import { ErrorCode, getError } from '@8f4e/compiler-spec';
+import type { CodegenContext, CompilationContext, CompilerASTLine, StackAddress, StackItem } from '@8f4e/language-spec';
+import { ErrorCode, getError } from '@8f4e/language-spec';
 
 /**
  * Converts an integer-compatible stack item into an address or throws on non-addressable values.

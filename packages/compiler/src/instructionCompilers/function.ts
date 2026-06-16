@@ -1,5 +1,5 @@
-import type { FunctionCodegenContext, FunctionLine, InstructionCompiler } from '@8f4e/compiler-spec';
-import { BlockType, compilerSourceBlockInstructionByType } from '@8f4e/compiler-spec';
+import type { FunctionCodegenContext, FunctionLine, InstructionCompiler } from '@8f4e/language-spec';
+import { BlockType, compilerSourceBlockInstructionByType } from '@8f4e/language-spec';
 import { pushBlock } from '../utils/blockStack';
 
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;

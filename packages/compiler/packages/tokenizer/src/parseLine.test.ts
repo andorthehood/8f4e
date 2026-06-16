@@ -1,5 +1,5 @@
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
-import { ArgumentType, isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from '@8f4e/language-spec';
+import { ArgumentType, isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { parseLine } from './parseLine';
 import { classifyIdentifier } from './syntax/parseArgument';

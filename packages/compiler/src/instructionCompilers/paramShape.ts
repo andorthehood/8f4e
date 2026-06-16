@@ -1,4 +1,4 @@
-import type { FunctionCodegenContext, InstructionCompiler, ParamShapeLine } from '@8f4e/compiler-spec';
+import type { FunctionCodegenContext, InstructionCompiler, ParamShapeLine } from '@8f4e/language-spec';
 import { registerFunctionParameter } from './param';
 
 /**

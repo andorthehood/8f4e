@@ -1,4 +1,4 @@
-import { documentBlockInstructionPairs } from '@8f4e/compiler-spec';
+import { documentBlockInstructionPairs } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -23,7 +23,7 @@ describe('project block delimiters', () => {
 		expect(INCLUDES_BLOCK_DELIMITER).toEqual({ type: 'includes', opener: 'includes', closer: 'includesEnd' });
 	});
 
-	it('derives document block delimiters from the compiler spec', () => {
+	it('derives document block delimiters from the language spec', () => {
 		expect(BLOCK_DELIMITERS).toEqual(
 			documentBlockInstructionPairs.map(({ type, start, end }) => ({ type, opener: start, closer: end }))
 		);

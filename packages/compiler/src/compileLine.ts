@@ -4,7 +4,7 @@ import type {
 	CompilerASTLine,
 	InstructionCompiler,
 	ResolvedCallLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import type { Instruction } from './instructionCompilers';
 import instructions from './instructionCompilers';
 

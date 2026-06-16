@@ -1,5 +1,5 @@
-import type { Const, MemoryAddressRange } from '@8f4e/compiler-spec';
-import { getMemoryRegionFields } from '@8f4e/compiler-spec';
+import type { Const, MemoryAddressRange } from '@8f4e/language-spec';
+import { getMemoryRegionFields } from '@8f4e/language-spec';
 
 function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {
 	if (!Number.isInteger(byteOffset) || byteOffset < 0 || byteOffset > safeRange.safeByteLength) {

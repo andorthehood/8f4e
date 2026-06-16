@@ -4,8 +4,8 @@ import type {
 	CompilerASTLine,
 	MemoryAddressRange,
 	StackItem,
-} from '@8f4e/compiler-spec';
-import { ArgumentType, getMemoryRegionFields, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ArgumentType, getMemoryRegionFields, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/language-spec';
 
 const DEFAULT_ACCESS_BYTE_WIDTH = WORD_MEMORY_ACCESS_WIDTH;
 

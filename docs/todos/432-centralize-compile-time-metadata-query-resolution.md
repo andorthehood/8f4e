@@ -84,7 +84,7 @@ Then `count`, `sizeof`, `max`, and `min` become small query evaluators rather th
 
 - `packages/compiler/src/semantic/resolveCompileTimeArgument.ts`
 - `packages/compiler/src/utils/memoryData.ts`
-- `packages/compiler/packages/compiler-spec/src/arguments.ts`
+- `packages/compiler/packages/language-spec/src/arguments.ts`
 - `packages/compiler/src/semantic/resolveCompileTimeArgument.test.ts`
 
 ## Risks & Considerations
