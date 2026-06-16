@@ -40,6 +40,7 @@ function createPlannedModule(
 		memoryIndex: 0,
 		memory,
 		declarations: Object.values(memory),
+		declarationSources: [],
 		...overrides,
 	} as PlannedMemoryModule;
 }
@@ -123,6 +124,7 @@ describe('inlineMemoryReferences', () => {
 					memoryIndex: 0,
 					memory: { buffer },
 					declarations: [buffer],
+					declarationSources: [],
 				},
 			},
 			moduleList: [
@@ -134,6 +136,7 @@ describe('inlineMemoryReferences', () => {
 					memoryIndex: 0,
 					memory: { buffer },
 					declarations: [buffer],
+					declarationSources: [],
 				},
 			],
 			nextByteAddressByMemoryIndex: { 0: 32 },
@@ -238,6 +241,7 @@ describe('inlineMemoryReferences', () => {
 					memoryIndex: 0,
 					memory: { samples, ptr },
 					declarations: [samples, ptr],
+					declarationSources: [],
 				},
 			},
 			moduleList: [
@@ -249,6 +253,7 @@ describe('inlineMemoryReferences', () => {
 					memoryIndex: 0,
 					memory: { samples, ptr },
 					declarations: [samples, ptr],
+					declarationSources: [],
 				},
 			],
 			nextByteAddressByMemoryIndex: { 0: 36 },

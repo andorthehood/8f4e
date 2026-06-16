@@ -32,6 +32,7 @@ function createSourceMemoryPlan(): MemoryLayoutPlan {
 		wordAlignedSize: 4,
 		memory: { buffer },
 		declarations: [buffer],
+		declarationSources: [],
 		memoryIndex: 0,
 	};
 	return {

@@ -1,3 +1,5 @@
+import type { MemoryDeclarationLine } from './ast';
+
 export const scalarMemoryDeclarationInstructions = [
 	'int',
 	'int*',
@@ -186,6 +188,11 @@ export type MemoryLayoutDeclaration = Omit<
 
 export type PlannedMemoryDeclaration = MemoryLayoutDeclaration;
 
+export interface PlannedMemoryDeclarationSource {
+	line: MemoryDeclarationLine;
+	isInherited: boolean;
+}
+
 export interface PlannedMemoryModule extends MemoryRegionIdentity {
 	id: string;
 	lineNumber: number;
@@ -193,6 +200,7 @@ export interface PlannedMemoryModule extends MemoryRegionIdentity {
 	wordAlignedSize: number;
 	memory: Record<string, PlannedMemoryDeclaration>;
 	declarations: readonly PlannedMemoryDeclaration[];
+	declarationSources: readonly PlannedMemoryDeclarationSource[];
 }
 
 export interface MemoryLayoutPlan {

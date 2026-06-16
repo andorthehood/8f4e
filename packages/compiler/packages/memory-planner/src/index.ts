@@ -1,13 +1,23 @@
 import type {
+	CompilerASTLine,
 	MemoryDeclarationLine,
 	MemoryLayoutPlan,
 	MemoryRegionIdentity,
 	ModuleLine,
 	PlannedMemoryDeclaration,
+	PlannedMemoryDeclarationSource,
 	PlannedMemoryModule,
 	RegionLine,
+	ShapeLine,
 } from '@8f4e/compiler-spec';
-import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY, isScalarMemoryDeclarationLine } from '@8f4e/compiler-spec';
+import {
+	ArgumentType,
+	ErrorCode,
+	type ErrorCodeValue,
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	isMemoryDeclarationLine,
+	isScalarMemoryDeclarationLine,
+} from '@8f4e/compiler-spec';
 import { planArrayDeclarationLayout, planScalarDeclarationLayout } from './declarations';
 import { advanceModuleByteAddress, createModuleAddressCursor, getNextModuleByteAddress } from './modules';
 
@@ -15,20 +25,62 @@ export type {
 	MemoryLayoutPlan,
 	MemoryRegionIdentity,
 	PlannedMemoryDeclaration,
+	PlannedMemoryDeclarationSource,
 	PlannedMemoryModule,
 } from '@8f4e/compiler-spec';
+
+interface MemoryPlannerErrorDetails {
+	identifier?: string;
+	reason?: string;
+}
+
+export class MemoryPlannerError extends Error {
+	readonly compilerErrorCode: ErrorCodeValue;
+	readonly line: CompilerASTLine;
+	readonly details?: MemoryPlannerErrorDetails;
+
+	constructor(
+		compilerErrorCode: ErrorCodeValue,
+		line: CompilerASTLine,
+		message: string,
+		details?: MemoryPlannerErrorDetails
+	) {
+		super(message);
+		this.name = 'MemoryPlannerError';
+		this.compilerErrorCode = compilerErrorCode;
+		this.line = line;
+		this.details = details;
+	}
+}
+
+export interface MemoryLayoutSourcePrototype {
+	id: string;
+	memoryDeclarationLines: readonly MemoryDeclarationLine[];
+}
+
+export type MemoryLayoutSourceLine = MemoryDeclarationLine | ShapeLine;
 
 export interface MemoryLayoutSourceModule {
 	id: string;
 	moduleLine: Pick<ModuleLine, 'lineNumber'>;
 	regionLine?: Pick<RegionLine, 'arguments'>;
-	memoryDeclarationLines: readonly MemoryDeclarationLine[];
+	lines: readonly MemoryLayoutSourceLine[];
 }
 
 export interface MemoryLayoutPlanInput {
+	prototypes: readonly MemoryLayoutSourcePrototype[];
 	modules: readonly MemoryLayoutSourceModule[];
 	startingByteAddress?: number;
 	memoryRegions?: readonly string[];
+}
+
+function plannerError(
+	compilerErrorCode: ErrorCodeValue,
+	line: CompilerASTLine,
+	message: string,
+	details?: MemoryPlannerErrorDetails
+): MemoryPlannerError {
+	return new MemoryPlannerError(compilerErrorCode, line, message, details);
 }
 
 function getCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string | undefined {
@@ -79,6 +131,46 @@ function getScalarDeclarationId(line: MemoryDeclarationLine): string {
 	return firstArgument.value;
 }
 
+function getPrototypeMap(
+	prototypes: readonly MemoryLayoutSourcePrototype[]
+): Readonly<Record<string, MemoryLayoutSourcePrototype>> {
+	return Object.fromEntries(prototypes.map(prototype => [prototype.id, prototype]));
+}
+
+function getEffectiveMemoryDeclarationSources(
+	sourceModule: MemoryLayoutSourceModule,
+	prototypesById: Readonly<Record<string, MemoryLayoutSourcePrototype>>
+): PlannedMemoryDeclarationSource[] {
+	const declarationSources: PlannedMemoryDeclarationSource[] = [];
+
+	for (const line of sourceModule.lines) {
+		if (isMemoryDeclarationLine(line)) {
+			declarationSources.push({ line, isInherited: false });
+			continue;
+		}
+
+		const prototypeId = line.arguments[0].value;
+		const prototype = prototypesById[prototypeId];
+		if (!prototype) {
+			throw plannerError(ErrorCode.UNDECLARED_IDENTIFIER, line, 'Unknown prototype shape in memory layout.', {
+				identifier: prototypeId,
+			});
+		}
+
+		for (const declarationLine of prototype.memoryDeclarationLines) {
+			declarationSources.push({
+				line: {
+					...declarationLine,
+					lineNumber: line.lineNumber,
+				},
+				isInherited: true,
+			});
+		}
+	}
+
+	return declarationSources;
+}
+
 function planDeclarationLine(
 	line: MemoryDeclarationLine,
 	startingByteAddress: number,
@@ -111,14 +203,16 @@ function planDeclarationLine(
 function planModuleMemory(
 	sourceModule: MemoryLayoutSourceModule,
 	moduleByteAddress: number,
-	region: MemoryRegionIdentity
+	region: MemoryRegionIdentity,
+	prototypesById: Readonly<Record<string, MemoryLayoutSourcePrototype>>
 ): Omit<PlannedMemoryModule, 'byteAddress' | 'id' | 'lineNumber'> {
 	let localWordOffset = 0;
 	const memory: Record<string, PlannedMemoryDeclaration> = {};
 	const declarations: PlannedMemoryDeclaration[] = [];
+	const declarationSources = getEffectiveMemoryDeclarationSources(sourceModule, prototypesById);
 
-	for (const line of sourceModule.memoryDeclarationLines) {
-		const plannedDeclaration = planDeclarationLine(line, moduleByteAddress, localWordOffset, region);
+	for (const declarationSource of declarationSources) {
+		const plannedDeclaration = planDeclarationLine(declarationSource.line, moduleByteAddress, localWordOffset, region);
 		const declaration = plannedDeclaration.declaration;
 
 		memory[declaration.id] = declaration;
@@ -131,6 +225,7 @@ function planModuleMemory(
 		wordAlignedSize: localWordOffset,
 		memory,
 		declarations,
+		declarationSources,
 	};
 }
 
@@ -146,6 +241,7 @@ function planModuleMemory(
 export function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 	const startingByteAddress = input.startingByteAddress ?? GLOBAL_ALIGNMENT_BOUNDARY;
 	const memoryRegions = input.memoryRegions ?? [];
+	const prototypesById = getPrototypeMap(input.prototypes);
 	const cursor = createModuleAddressCursor(startingByteAddress);
 	const modules: Record<string, PlannedMemoryModule> = {};
 	const moduleList: PlannedMemoryModule[] = [];
@@ -153,7 +249,7 @@ export function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan
 	for (const sourceModule of input.modules) {
 		const region = getModuleRegion(sourceModule, memoryRegions);
 		const moduleByteAddress = getNextModuleByteAddress(cursor, region.memoryIndex, startingByteAddress);
-		const moduleMemory = planModuleMemory(sourceModule, moduleByteAddress, region);
+		const moduleMemory = planModuleMemory(sourceModule, moduleByteAddress, region, prototypesById);
 		const plannedModule: PlannedMemoryModule = {
 			...region,
 			id: sourceModule.id,
@@ -162,6 +258,7 @@ export function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan
 			wordAlignedSize: moduleMemory.wordAlignedSize,
 			memory: moduleMemory.memory,
 			declarations: moduleMemory.declarations,
+			declarationSources: moduleMemory.declarationSources,
 		};
 
 		modules[plannedModule.id] = plannedModule;

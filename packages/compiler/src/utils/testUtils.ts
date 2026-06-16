@@ -83,6 +83,7 @@ export function seedTestMemoryMap(context: CompilationContext, memoryMap: Memory
 		wordAlignedSize,
 		memory,
 		declarations,
+		declarationSources: [],
 		memoryIndex: context.currentMemoryIndex,
 		...(context.currentMemoryRegionName ? { memoryRegionName: context.currentMemoryRegionName } : {}),
 	};

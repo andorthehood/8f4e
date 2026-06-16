@@ -1,7 +1,6 @@
 import type {
 	CompilationContext,
 	DataStructure,
-	MemoryDefaultValue,
 	MemoryLayoutPlan,
 	MemoryMap,
 	MemoryPointerMetadata,
@@ -37,29 +36,6 @@ export function getPlannedMemoryDeclaration(
 	const currentModule = getCurrentPlannedModule(context);
 	const module = !moduleId || moduleId === currentModule?.id ? currentModule : context.memoryPlan.modules[moduleId];
 	return module?.memory[memoryId];
-}
-
-/** Records the resolved default state for one declaration in the active module. */
-export function setMemoryDefault(
-	context: CompilationContext,
-	memoryId: string,
-	value: MemoryDefaultValue,
-	hasExplicitDefault?: boolean
-): void {
-	context.memoryDefaults[memoryId] = {
-		value,
-		hasExplicitDefault: hasExplicitDefault === true,
-		isInherited: context.isInherited === true,
-	};
-}
-
-/** Records pointer target metadata for one declaration in the active module. */
-export function setPointerMetadata(
-	context: CompilationContext,
-	memoryId: string,
-	metadata: MemoryPointerMetadata
-): void {
-	context.pointerMetadata[memoryId] = metadata;
 }
 
 function getPointerMetadataWithDefinedFields(metadata: MemoryPointerMetadata | undefined): MemoryPointerMetadata {

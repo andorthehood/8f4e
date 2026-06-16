@@ -19,6 +19,8 @@ import type {
 } from '@8f4e/compiler-spec';
 import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsInASTs } from '@8f4e/constant-inliner';
+import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
+import { MemoryPlannerError } from '@8f4e/memory-planner';
 import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
@@ -241,6 +243,24 @@ function wrapConstantInliningError(error: unknown, projectAst: InlineConstantsPr
 	});
 }
 
+function wrapMemoryDefaultResolverError(error: unknown, projectAst: InlineConstantsProjectAST): unknown {
+	if (!(error instanceof MemoryDefaultResolverError)) {
+		return error;
+	}
+
+	const ast = findAstContainingLine(projectAst, error.line);
+	return getError(error.compilerErrorCode, error.line, ast ? getAstDiagnosticContext(ast) : undefined, error.details);
+}
+
+function wrapMemoryPlannerError(error: unknown, projectAst: InlineConstantsProjectAST): unknown {
+	if (!(error instanceof MemoryPlannerError)) {
+		return error;
+	}
+
+	const ast = findAstContainingLine(projectAst, error.line);
+	return getError(error.compilerErrorCode, error.line, ast ? getAstDiagnosticContext(ast) : undefined, error.details);
+}
+
 function attachSourceMetadataToSyntaxError(source: CompilerSource, error: unknown): unknown {
 	if (!(error instanceof SyntaxRulesError) || (source.projectBlockId === undefined && source.source === undefined)) {
 		return error;
@@ -359,32 +379,47 @@ export function compileSubProgram(
 		throw wrapConstantInliningError(error, projectAst);
 	}
 
-	const prototypeShapesById = collectPrototypeShapes(constantInlinedAst.prototypes);
-	const memoryPlan = createMemoryLayoutPlanFromASTs(
-		constantInlinedAst.modules,
-		GLOBAL_ALIGNMENT_BOUNDARY,
-		undefined,
-		constantInlinedAst.modules,
-		options,
-		prototypeShapesById
-	);
+	const constantInlinedPrototypeShapesById = collectPrototypeShapes(constantInlinedAst.prototypes);
+	let memoryPlan: ReturnType<typeof createMemoryLayoutPlanFromASTs>;
+	try {
+		memoryPlan = createMemoryLayoutPlanFromASTs(
+			constantInlinedAst.modules,
+			Object.values(constantInlinedPrototypeShapesById),
+			GLOBAL_ALIGNMENT_BOUNDARY,
+			undefined,
+			options
+		);
+	} catch (error) {
+		throw wrapMemoryPlannerError(error, constantInlinedAst);
+	}
 	const {
-		ast: { prototypes: inlinedAstPrototypes, modules: inlinedAstModules, functions: inlinedAstFunctions },
+		ast: {
+			prototypes: inlinedAstPrototypes,
+			modules: inlinedAstModules,
+			constants: inlinedAstConstants,
+			functions: inlinedAstFunctions,
+		},
 	} = inlineMemoryReferences({
 		ast: constantInlinedAst,
 		memoryPlan,
 	});
+	const inlinedProjectAst = {
+		prototypes: inlinedAstPrototypes,
+		modules: inlinedAstModules,
+		constants: inlinedAstConstants,
+		functions: inlinedAstFunctions,
+	};
 	const inlinedPrototypeShapesById = collectPrototypeShapes(inlinedAstPrototypes);
+	let memoryDefaultResolution: ReturnType<typeof resolveMemoryDefaults>;
+	try {
+		memoryDefaultResolution = resolveMemoryDefaults({
+			memoryPlan,
+		});
+	} catch (error) {
+		throw wrapMemoryDefaultResolverError(error, inlinedProjectAst);
+	}
 
-	const namespaces = collectNamespacesFromASTs(
-		inlinedAstModules,
-		memoryPlan,
-		GLOBAL_ALIGNMENT_BOUNDARY,
-		undefined,
-		inlinedAstModules,
-		options,
-		inlinedPrototypeShapesById
-	);
+	const namespaces = collectNamespacesFromASTs(inlinedAstModules, memoryPlan, memoryDefaultResolution, options);
 
 	const importedUserFunctionCount = inlinedAstFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
