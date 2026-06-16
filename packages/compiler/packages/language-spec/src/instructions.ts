@@ -1,5 +1,10 @@
-import type { InstructionSpec } from './instructionSpecs';
-import { instructionSpecs } from './instructionSpecs';
+import type {
+	InstructionPlacement,
+	InstructionSpec,
+	SourceBlockCompilationMode,
+	SourceBlockPlacement,
+} from './instructionSpecs';
+import { getInstructionSpec, instructionSpecs } from './instructionSpecs';
 import type {
 	CodegenInstructionSpecName,
 	InstructionSpecName,
@@ -9,32 +14,79 @@ import type {
 import type { MemoryDeclarationInstruction } from './memory';
 import { memoryDeclarationInstructions } from './memory';
 
-export type SemanticInstructionName = Extract<NonCodegenInstructionSpecName, SourceInstructionSpecName>;
-export const semanticInstructionNames = Object.keys(instructionSpecs).filter(
-	(instruction): instruction is SemanticInstructionName => {
-		const spec = instructionSpecs[instruction as InstructionSpecName] as InstructionSpec;
+type InstructionSpecEntry = readonly [InstructionSpecName, InstructionSpec];
 
-		return spec.sourceInstruction !== false && spec.codegen === false;
+type InstructionBlockSpec = NonNullable<InstructionPlacement['block']>;
+type InstructionBlockFor<Instruction extends InstructionSpecName> = (typeof instructionSpecs)[Instruction] extends {
+	placement: { block: infer Block };
+}
+	? Block
+	: never;
+type InstructionsByBlockRole<Role extends InstructionBlockSpec['role']> = {
+	[Instruction in InstructionSpecName]: InstructionBlockFor<Instruction> extends { role: Role } ? Instruction : never;
+}[InstructionSpecName];
+type SourceBlockStartInstruction = {
+	[Instruction in InstructionSpecName]: InstructionBlockFor<Instruction> extends {
+		role: 'start';
+		sourceBlock: object;
 	}
-);
+		? Instruction
+		: never;
+}[InstructionSpecName];
+type SourceBlockKindFor<Instruction extends InstructionSpecName> =
+	InstructionBlockFor<Instruction> extends {
+		kind: infer Kind;
+	}
+		? Extract<Kind, SourceBlockPlacement>
+		: never;
+type SourceBlockMetadataFor<Instruction extends InstructionSpecName> =
+	InstructionBlockFor<Instruction> extends {
+		sourceBlock: infer Metadata;
+	}
+		? Metadata
+		: never;
+type FunctionDeclarationInstructionsByFlag<Flag extends 'preBody' | 'importedFunction'> = {
+	[Instruction in InstructionSpecName]: (typeof instructionSpecs)[Instruction] extends {
+		functionDeclaration: { [Key in Flag]: true };
+	}
+		? Instruction
+		: never;
+}[InstructionSpecName];
 
-export const stackBlockInstructionPairs = [
-	{ start: 'if', end: 'ifEnd' },
-	{ start: 'block', end: 'blockEnd' },
-	{ start: 'loop', end: 'loopEnd' },
-] as const;
+const instructionSpecEntries = Object.entries(instructionSpecs) as InstructionSpecEntry[];
 
-export const compilerBlockInstructionPairs = [
-	...stackBlockInstructionPairs,
-	{ start: 'function', end: 'functionEnd' },
-	{ start: 'module', end: 'moduleEnd' },
-	{ start: 'constants', end: 'constantsEnd' },
-	{ start: 'prototype', end: 'prototypeEnd' },
-	{ start: 'mapBegin', end: 'mapEnd' },
-] as const;
+function getInstructionBlock(spec: InstructionSpec): InstructionBlockSpec | undefined {
+	return spec.placement?.block;
+}
 
-export type BlockStartInstruction = (typeof compilerBlockInstructionPairs)[number]['start'];
-export type BlockEndInstruction = (typeof compilerBlockInstructionPairs)[number]['end'];
+function getBlockEndInstruction(block: InstructionBlockSpec): BlockEndInstruction {
+	return instructionSpecEntries.find(([, spec]) => {
+		const candidateBlock = getInstructionBlock(spec);
+		return candidateBlock?.kind === block.kind && candidateBlock.role === 'end';
+	})?.[0] as BlockEndInstruction;
+}
+
+export type SemanticInstructionName = Extract<NonCodegenInstructionSpecName, SourceInstructionSpecName>;
+export const semanticInstructionNames = instructionSpecEntries
+	.filter(([, spec]) => spec.sourceInstruction !== false && spec.codegen === false)
+	.map(([instruction]) => instruction) as SemanticInstructionName[];
+
+export type BlockStartInstruction = InstructionsByBlockRole<'start'>;
+export type BlockEndInstruction = InstructionsByBlockRole<'end'>;
+
+export const compilerBlockInstructionPairs = instructionSpecEntries.flatMap(([start, spec]) => {
+	const block = getInstructionBlock(spec);
+	if (block?.role !== 'start') {
+		return [];
+	}
+
+	return [{ start: start as BlockStartInstruction, end: getBlockEndInstruction(block) }];
+});
+
+export const stackBlockInstructionPairs = compilerBlockInstructionPairs.filter(({ start }) => {
+	const block = getInstructionBlock(getInstructionSpec(start) as InstructionSpec);
+	return block?.role === 'start' && block.stackBlock === true;
+});
 
 export const blockStartInstructions = compilerBlockInstructionPairs.map(
 	({ start }) => start
@@ -44,18 +96,46 @@ export const blockEndToStartInstruction = Object.fromEntries(
 	compilerBlockInstructionPairs.map(({ start, end }) => [end, start])
 ) as Record<BlockEndInstruction, BlockStartInstruction>;
 
-export const compilerSourceBlockInstructionPairs = [
-	{ type: 'module', start: 'module', end: 'moduleEnd', compilesToModule: true, compilationMode: 'module' },
-	{ type: 'function', start: 'function', end: 'functionEnd', compilesToModule: false, compilationMode: 'function' },
-	{ type: 'constants', start: 'constants', end: 'constantsEnd', compilesToModule: false, compilationMode: null },
-	{ type: 'prototype', start: 'prototype', end: 'prototypeEnd', compilesToModule: false, compilationMode: null },
-] as const;
-
-type CompilerSourceBlockInstructionPair = (typeof compilerSourceBlockInstructionPairs)[number];
-type CompiledModuleSourceBlockPair = Extract<CompilerSourceBlockInstructionPair, { compilesToModule: true }>;
+type CompilerSourceBlockInstructionPair = {
+	[Instruction in SourceBlockStartInstruction]: {
+		readonly type: SourceBlockKindFor<Instruction>;
+		readonly start: Instruction;
+		readonly end: BlockEndInstruction;
+		readonly compilesToModule: SourceBlockMetadataFor<Instruction> extends {
+			compilesToModule: infer Compiles extends boolean;
+		}
+			? Compiles
+			: never;
+		readonly compilationMode: SourceBlockMetadataFor<Instruction> extends {
+			compilationMode: infer Mode extends SourceBlockCompilationMode;
+		}
+			? Mode
+			: never;
+	};
+}[SourceBlockStartInstruction];
 
 export type CompilerSourceBlockType = CompilerSourceBlockInstructionPair['type'];
 export type CompilerSourceCompilationMode = Exclude<CompilerSourceBlockInstructionPair['compilationMode'], null>;
+
+export const compilerSourceBlockInstructionPairs = compilerBlockInstructionPairs.flatMap(({ start, end }) => {
+	const block = getInstructionBlock(getInstructionSpec(start) as InstructionSpec);
+	if (block?.role !== 'start' || !block.sourceBlock) {
+		return [];
+	}
+
+	return [
+		{
+			type: block.kind as SourceBlockPlacement,
+			start: start as SourceBlockStartInstruction,
+			end,
+			compilesToModule: block.sourceBlock.compilesToModule,
+			compilationMode: block.sourceBlock.compilationMode,
+		},
+	];
+}) as CompilerSourceBlockInstructionPair[];
+
+type CompiledModuleSourceBlockPair = Extract<CompilerSourceBlockInstructionPair, { compilesToModule: true }>;
+
 export const compilerSourceBlockTypes = compilerSourceBlockInstructionPairs.map(
 	({ type }) => type
 ) as CompilerSourceBlockType[];
@@ -74,13 +154,21 @@ export const compilerSourceBlockInstructionByType = Object.fromEntries(
 	>;
 };
 
-export const documentOnlyInstructionNames = ['note', 'noteEnd', 'includes', 'include', 'includesEnd'] as const;
+const documentOnlyBlockInstructionPairs = [
+	{ type: 'note', start: 'note', end: 'noteEnd' },
+	{ type: 'includes', start: 'includes', end: 'includesEnd' },
+] as const;
+const documentOnlyLineInstructionNames = ['include'] as const;
+
+export const documentOnlyInstructionNames = [
+	...documentOnlyBlockInstructionPairs.flatMap(({ start, end }) => [start, end]),
+	...documentOnlyLineInstructionNames,
+] as const;
 export type DocumentOnlyInstructionName = (typeof documentOnlyInstructionNames)[number];
 
 export const documentBlockInstructionPairs = [
 	...compilerSourceBlockInstructionPairs,
-	{ type: 'note', start: 'note', end: 'noteEnd' },
-	{ type: 'includes', start: 'includes', end: 'includesEnd' },
+	...documentOnlyBlockInstructionPairs,
 ] as const;
 
 export type DocumentBlockType = (typeof documentBlockInstructionPairs)[number]['type'];
@@ -98,32 +186,15 @@ export const compilableBlockTypes = documentBlockInstructionPairs
 
 export type CodegenInstructionName = Extract<CodegenInstructionSpecName, SourceInstructionSpecName>;
 
-export const codegenInstructionNames = Object.keys(instructionSpecs).filter(
-	(instruction): instruction is CodegenInstructionName => {
-		const spec = instructionSpecs[instruction as InstructionSpecName] as InstructionSpec;
+export const codegenInstructionNames = instructionSpecEntries
+	.filter(([, spec]) => spec.sourceInstruction !== false && spec.codegen !== false)
+	.map(([instruction]) => instruction) as CodegenInstructionName[];
 
-		return spec.sourceInstruction !== false && spec.codegen !== false;
-	}
-);
+export type FunctionPreBodyInstructionName = FunctionDeclarationInstructionsByFlag<'preBody'>;
 
-/**
- * Instructions that belong to the declarative section of a function and do not
- * start its executable body. Parameter declarations may still follow these lines.
- */
-export const functionPreBodyInstructionNames = [
-	'function',
-	'const',
-	'use',
-	'#import',
-	'#impure',
-	'#loopCap',
-	'#export',
-	'param',
-	'paramShape',
-	'functionEnd',
-] as const;
-
-export type FunctionPreBodyInstructionName = (typeof functionPreBodyInstructionNames)[number];
+export const functionPreBodyInstructionNames = instructionSpecEntries
+	.filter(([, spec]) => spec.functionDeclaration?.preBody === true)
+	.map(([instruction]) => instruction) as FunctionPreBodyInstructionName[];
 
 const functionPreBodyInstructionNameSet: ReadonlySet<string> = new Set(functionPreBodyInstructionNames);
 
@@ -138,21 +209,11 @@ export function isFunctionBodyInstructionName(instruction: string): boolean {
 	return !isFunctionPreBodyInstructionName(instruction);
 }
 
-/**
- * Instructions that may appear in a host-import function declaration.
- * Imported functions declare their signature and metadata but have no body.
- */
-export const importedFunctionDeclarationInstructionNames = [
-	'function',
-	'#import',
-	'#impure',
-	'#loopCap',
-	'param',
-	'paramShape',
-	'functionEnd',
-] as const;
+export type ImportedFunctionDeclarationInstructionName = FunctionDeclarationInstructionsByFlag<'importedFunction'>;
 
-export type ImportedFunctionDeclarationInstructionName = (typeof importedFunctionDeclarationInstructionNames)[number];
+export const importedFunctionDeclarationInstructionNames = instructionSpecEntries
+	.filter(([, spec]) => spec.functionDeclaration?.importedFunction === true)
+	.map(([instruction]) => instruction) as ImportedFunctionDeclarationInstructionName[];
 
 const importedFunctionDeclarationInstructionNameSet: ReadonlySet<string> = new Set(
 	importedFunctionDeclarationInstructionNames

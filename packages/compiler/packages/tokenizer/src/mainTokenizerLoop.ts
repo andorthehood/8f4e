@@ -148,7 +148,8 @@ function isSourceBlockPlacement(block: string): block is SourceBlockPlacement {
 
 /** Reads block metadata for a block-start instruction from the language spec. */
 function getBlockStartPlacement(instruction: BlockStartInstruction): InstructionPlacement['block'] | undefined {
-	return getInstructionSpec(instruction)?.placement?.block;
+	const placement = getInstructionSpec(instruction)?.placement as InstructionPlacement | undefined;
+	return placement?.block;
 }
 
 /** Resolves the placement kind of the current immediate parent block. */
