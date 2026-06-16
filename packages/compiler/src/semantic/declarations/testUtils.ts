@@ -40,5 +40,5 @@ export function applyPlannedMemoryDeclaration<TLine extends MemoryDeclarationLin
 
 /** Materializes the current planned module's resolved memory map for declaration tests. */
 export function getTestMemoryMap(context: CompilationContext) {
-	return createMemoryMapFromPlan(context.currentPlannedModule, context);
+	return createMemoryMapFromPlan(context.currentPlannedModule!, context);
 }

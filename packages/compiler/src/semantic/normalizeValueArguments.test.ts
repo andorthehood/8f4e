@@ -41,6 +41,14 @@ function createSourceMemoryPlan(): MemoryLayoutPlan {
 	};
 }
 
+function createEmptyMemoryPlan(): MemoryLayoutPlan {
+	return {
+		modules: {},
+		moduleList: [],
+		nextByteAddressByMemoryIndex: {},
+	};
+}
+
 describe('normalizeValueArguments', () => {
 	it('folds push value expressions into literals', () => {
 		const line: CompilerASTLine = {
@@ -194,6 +202,7 @@ describe('normalizeValueArguments', () => {
 	it('throws UNDECLARED_IDENTIFIER for push with an identifier not in memory or locals', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
+			memoryPlan: createEmptyMemoryPlan(),
 			locals: {},
 			startingByteAddress: 16,
 			currentModuleWordAlignedSize: 3,
@@ -227,6 +236,7 @@ describe('normalizeValueArguments', () => {
 				moduleName: 'test',
 				namespaces: { otherModule: { kind: 'module' } },
 			},
+			memoryPlan: createEmptyMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -257,9 +267,7 @@ describe('normalizeValueArguments', () => {
 		expect(() => normalizeValueArguments(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
 
-	it('strips unresolvable intermodule address default from memory declaration during layout pass', () => {
-		// When the target module exists in namespaces but has not yet been laid out (no byteAddress),
-		// the default argument must be stripped rather than kept as-is for the parser to fabricate 0.
+	it('does not strip unresolved intermodule address defaults from memory declarations', () => {
 		const context = {
 			namespace: {
 				moduleName: 'test',
@@ -281,9 +289,9 @@ describe('normalizeValueArguments', () => {
 		};
 
 		const result = normalizeValueArguments(line, context);
-		// The unresolvable default must be stripped; only the name argument remains
-		expect(result.arguments).toHaveLength(1);
+		expect(result.arguments).toHaveLength(2);
 		expect(result.arguments[0]).toEqual(classifyIdentifier('ptr'));
+		expect(result.arguments[1]).toEqual(classifyIdentifier('&source:buffer'));
 	});
 
 	it('does not strip array declaration element count arguments', () => {
@@ -377,6 +385,7 @@ describe('normalizeValueArguments', () => {
 	it('throws for count(*localPointer) when the pointer has no element count metadata', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
+			memoryPlan: createEmptyMemoryPlan(),
 			locals: {
 				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', pointerDepth: 1, index: 0 },
 			},

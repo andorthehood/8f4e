@@ -24,7 +24,7 @@ export function createEmptyMemoryPlan(): MemoryLayoutPlan {
 export function getCurrentPlannedModule(context: MemoryPlanContext): PlannedMemoryModule | undefined {
 	return (
 		context.currentPlannedModule ??
-		(context.namespace.moduleName ? context.memoryPlan?.modules[context.namespace.moduleName] : undefined)
+		(context.namespace.moduleName ? context.memoryPlan.modules[context.namespace.moduleName] : undefined)
 	);
 }
 
@@ -35,7 +35,7 @@ export function getPlannedMemoryDeclaration(
 	moduleId = context.namespace.moduleName
 ): PlannedMemoryDeclaration | undefined {
 	const currentModule = getCurrentPlannedModule(context);
-	const module = !moduleId || moduleId === currentModule?.id ? currentModule : context.memoryPlan?.modules[moduleId];
+	const module = !moduleId || moduleId === currentModule?.id ? currentModule : context.memoryPlan.modules[moduleId];
 	return module?.memory[memoryId];
 }
 
@@ -107,13 +107,9 @@ export function getMemoryItem(
 
 /** Materializes a module's resolved memory map for compiler output and memory initialization. */
 export function createMemoryMapFromPlan(
-	module: PlannedMemoryModule | undefined,
+	module: PlannedMemoryModule,
 	context: Pick<CompilationContext, 'memoryDefaults' | 'pointerMetadata'>
 ): MemoryMap {
-	if (!module) {
-		return {};
-	}
-
 	return Object.fromEntries(
 		Object.entries(module.memory).map(([id, declaration]) => [id, createMemoryItem(declaration, context)])
 	) as MemoryMap;

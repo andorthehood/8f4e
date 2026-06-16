@@ -21,13 +21,8 @@ export function hasCollectedNamespaces(context: CompilationContext): boolean {
 	return Object.keys(context.namespace.namespaces).length > 0;
 }
 
-function getTargetModuleNamespace(context: CompilationContext, targetModuleId: string) {
-	const targetNamespace = context.namespace.namespaces[targetModuleId];
-	return targetNamespace?.kind === 'module' ? targetNamespace : undefined;
-}
-
 function getTargetPlannedModule(context: CompilationContext, targetModuleId: string) {
-	return context.memoryPlan?.modules[targetModuleId];
+	return context.memoryPlan.modules[targetModuleId];
 }
 
 /**
@@ -70,7 +65,7 @@ export function validateIntermoduleAddressReference(
 
 	if (identifier.referenceKind === 'intermodular-module-reference') {
 		const targetModuleId = identifier.targetModuleId;
-		if (!getTargetPlannedModule(context, targetModuleId) && !getTargetModuleNamespace(context, targetModuleId)) {
+		if (!getTargetPlannedModule(context, targetModuleId)) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
 		return;
@@ -81,7 +76,7 @@ export function validateIntermoduleAddressReference(
 		const targetMemoryId = identifier.targetMemoryId;
 
 		const targetModule = getTargetPlannedModule(context, targetModuleId);
-		if (!targetModule && !getTargetModuleNamespace(context, targetModuleId)) {
+		if (!targetModule) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
 
@@ -102,7 +97,7 @@ export function validateIntermoduleAddressReference(
 		const targetModuleId = identifier.targetModuleId;
 		const targetMemoryId = identifier.targetMemoryId;
 		const targetModule = getTargetPlannedModule(context, targetModuleId);
-		if (!targetModule && !getTargetModuleNamespace(context, targetModuleId)) {
+		if (!targetModule) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });
 		}
 		if (!targetModule?.memory[targetMemoryId]) {
