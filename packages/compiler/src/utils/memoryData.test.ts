@@ -1,14 +1,14 @@
-import type { MemoryMap } from '@8f4e/compiler-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration, PointeeBaseType } from '@8f4e/compiler-spec';
+import { GLOBAL_ALIGNMENT_BOUNDARY, MemoryTypes } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import {
-	getDataStructureByteAddress,
 	getDereferencedValueKindFromMetadata,
 	getDereferencedValueWordSizeFromMetadata,
 	getElementCount,
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
+	getMemoryByteAddress,
 	getMemoryStringLastByteAddress,
 	getPointeeElementCount,
 	getPointeeElementIsIntegerFromMetadata,
@@ -16,604 +16,140 @@ import {
 	getPointeeElementMinValue,
 	getPointeeElementWordSize,
 	getPointeeValueKindFromMetadata,
+	type PointerMetadata,
 } from './memoryData';
 
-describe('memoryData utilities', () => {
-	const mockMemory: MemoryMap = {
-		myVar: {
-			byteAddress: 100,
-			wordAlignedSize: 5,
-			numberOfElements: 10,
-			elementWordSize: 4,
-		} as unknown as MemoryMap[string],
-		myVar2: {
-			byteAddress: 0,
-			wordAlignedSize: 1,
-			numberOfElements: 1,
-			elementWordSize: 4,
-		} as unknown as MemoryMap[string],
+function memory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemoryDeclaration {
+	const byteAddress = overrides.byteAddress ?? 100;
+	return {
+		id: 'memory',
+		type: MemoryTypes.int,
+		numberOfElements: 10,
+		elementWordSize: 4,
+		memoryIndex: 0,
+		byteAddress,
+		wordAlignedAddress: byteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
+		wordAlignedSize: 5,
+		lineNumber: 1,
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+		...overrides,
 	};
+}
 
-	describe('getDataStructureByteAddress', () => {
-		it('returns byte address for existing identifier', () => {
-			expect(getDataStructureByteAddress(mockMemory, 'myVar')).toBe(100);
+function pointer(pointeeBaseType: PointeeBaseType, overrides: Partial<PointerMetadata> = {}): PointerMetadata {
+	return {
+		memoryIndex: 0,
+		pointeeBaseType,
+		pointerDepth: 1,
+		...overrides,
+	} as PointerMetadata;
+}
+
+describe('memoryData utilities', () => {
+	describe('planned declaration helpers', () => {
+		it('returns byte address directly from a planned declaration', () => {
+			expect(getMemoryByteAddress(memory({ byteAddress: 100 }))).toBe(100);
+			expect(getMemoryByteAddress(memory({ byteAddress: 0 }))).toBe(0);
 		});
 
-		it('returns 0 for non-existing identifier', () => {
-			expect(getDataStructureByteAddress(mockMemory, 'nonExisting')).toBe(0);
+		it('calculates the last byte address from aligned storage', () => {
+			expect(getMemoryStringLastByteAddress(memory({ byteAddress: 100, wordAlignedSize: 5 }))).toBe(
+				100 + (5 - 1) * GLOBAL_ALIGNMENT_BOUNDARY
+			);
 		});
 
-		it('returns 0 when byte address is 0', () => {
-			expect(getDataStructureByteAddress(mockMemory, 'myVar2')).toBe(0);
-		});
-	});
-
-	describe('getMemoryStringLastByteAddress', () => {
-		it('calculates last byte address correctly', () => {
-			const expected = 100 + (5 - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
-			expect(getMemoryStringLastByteAddress(mockMemory, 'myVar')).toBe(expected);
-		});
-
-		it('returns 0 for non-existing identifier', () => {
-			expect(getMemoryStringLastByteAddress(mockMemory, 'nonExisting')).toBe(0);
-		});
-	});
-
-	describe('getElementCount', () => {
-		it('returns element count for existing identifier', () => {
-			expect(getElementCount(mockMemory, 'myVar')).toBe(10);
-		});
-
-		it('returns 0 for non-existing identifier', () => {
-			expect(getElementCount(mockMemory, 'nonExisting')).toBe(0);
+		it('returns declared element count and word size', () => {
+			const declaration = memory({ numberOfElements: 16, elementWordSize: 2 });
+			expect(getElementCount(declaration)).toBe(16);
+			expect(getElementWordSize(declaration)).toBe(2);
 		});
 	});
 
-	describe('getPointeeElementCount', () => {
-		it('returns known pointee count for pointer metadata with count provenance', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					pointeeBaseType: 'float',
-					pointerDepth: 1,
-					pointeeElementCount: 16,
-				} as unknown as MemoryMap[string],
-			};
-
-			expect(getPointeeElementCount(memory, 'ptr')).toBe(16);
+	describe('pointer metadata helpers', () => {
+		it('returns known pointee count or scalar default count', () => {
+			expect(getPointeeElementCount(pointer('float', { pointeeElementCount: 16 }))).toBe(16);
+			expect(getPointeeElementCount(pointer('float'))).toBe(1);
+			expect(getPointeeElementCount(undefined)).toBe(0);
 		});
 
-		it('returns 1 for pointer metadata without count provenance', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					pointeeBaseType: 'float',
-					pointerDepth: 1,
-				} as unknown as MemoryMap[string],
-			};
-
-			expect(getPointeeElementCount(memory, 'ptr')).toBe(1);
+		it.each([
+			['int', 1, 4],
+			['float', 1, 4],
+			['float64', 1, 8],
+			['int8', 1, 1],
+			['int16', 1, 2],
+			['int', 2, 4],
+			['float64', 2, 4],
+		] as Array<
+			[PointeeBaseType, number, number]
+		>)('returns expected word size for %s pointer depth %i', (pointeeBaseType, pointerDepth, expectedWordSize) => {
+			expect(getPointeeElementWordSize(pointer(pointeeBaseType, { pointerDepth }))).toBe(expectedWordSize);
 		});
 
-		it('returns 0 for non-pointer identifiers', () => {
-			const memory: MemoryMap = {
-				value: {} as unknown as MemoryMap[string],
-			};
-
-			expect(getPointeeElementCount(memory, 'value')).toBe(0);
-		});
-	});
-
-	describe('getElementWordSize', () => {
-		it('returns element word size for existing identifier', () => {
-			expect(getElementWordSize(mockMemory, 'myVar')).toBe(4);
+		it('returns zero for missing pointer metadata', () => {
+			expect(getPointeeElementWordSize(undefined)).toBe(0);
+			expect(getPointeeElementMaxValue(undefined)).toBe(0);
+			expect(getPointeeElementMinValue(undefined)).toBe(0);
 		});
 
-		it('returns 0 for non-existing identifier', () => {
-			expect(getElementWordSize(mockMemory, 'nonExisting')).toBe(0);
-		});
-	});
+		it('classifies pointee and dereferenced value kinds', () => {
+			const float64DoublePointer = pointer('float64', { pointerDepth: 2 });
+			const float64Pointer = pointer('float64');
+			const int16Pointer = pointer('int16');
+			const int8uPointer = pointer('int8u');
 
-	describe('getPointeeElementWordSize', () => {
-		it('returns 4 for int* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'int',
-					pointerDepth: 1,
-					type: 'int*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementWordSize(memory, 'ptr')).toBe(4);
-		});
+			expect(getPointeeElementIsIntegerFromMetadata(float64DoublePointer)).toBe(true);
+			expect(getPointeeValueKindFromMetadata(float64DoublePointer)).toBe('int32');
+			expect(getDereferencedValueKindFromMetadata(float64DoublePointer)).toBe('float64');
+			expect(getDereferencedValueWordSizeFromMetadata(float64DoublePointer)).toBe(8);
 
-		it('returns 4 for float* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'float',
-					pointerDepth: 1,
-					type: 'float*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementWordSize(memory, 'ptr')).toBe(4);
-		});
+			expect(getPointeeElementIsIntegerFromMetadata(float64Pointer)).toBe(false);
+			expect(getPointeeValueKindFromMetadata(float64Pointer)).toBe('float64');
 
-		it('returns 8 for float64* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointerDepth: 1,
-					pointeeBaseType: 'float64',
-					type: 'float64*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementWordSize(memory, 'ptr')).toBe(8);
-		});
+			expect(getPointeeElementIsIntegerFromMetadata(int16Pointer)).toBe(true);
+			expect(getPointeeValueKindFromMetadata(int16Pointer)).toBe('int32');
+			expect(getDereferencedValueWordSizeFromMetadata(int16Pointer)).toBe(2);
 
-		it('returns 1 for int8* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointerDepth: 1,
-					pointeeBaseType: 'int8',
-					type: 'int8*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementWordSize(memory, 'ptr')).toBe(1);
-		});
-
-		it('returns 2 for int16* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointerDepth: 1,
-					pointeeBaseType: 'int16',
-					type: 'int16*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementWordSize(memory, 'ptr')).toBe(2);
-		});
-
-		it('returns 4 for int** double pointer (pointee is a pointer)', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'int',
-					pointerDepth: 2,
-					type: 'int**',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementWordSize(memory, 'ptr')).toBe(4);
-		});
-
-		it('returns 4 for float64** double pointer (pointee is a pointer)', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'float64',
-					pointerDepth: 2,
-					type: 'float64**',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementWordSize(memory, 'ptr')).toBe(4);
-		});
-
-		it('returns 0 for non-pointer identifier', () => {
-			const memory: MemoryMap = {
-				val: { elementWordSize: 4 } as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementWordSize(memory, 'val')).toBe(0);
-		});
-
-		it('returns 0 for non-existing identifier', () => {
-			expect(getPointeeElementWordSize(mockMemory, 'nonExisting')).toBe(0);
+			expect(getPointeeElementIsIntegerFromMetadata(int8uPointer)).toBe(true);
+			expect(getDereferencedValueWordSizeFromMetadata(int8uPointer)).toBe(1);
 		});
 	});
 
-	describe('pointee metadata helpers', () => {
-		it('classifies float64** pointees as integer pointer-slot values', () => {
-			const pointerMetadata = {
-				pointeeBaseType: 'float64',
-				pointerDepth: 2,
-			} as const;
-
-			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(true);
-			expect(getPointeeValueKindFromMetadata(pointerMetadata)).toBe('int32');
-		});
-
-		it('classifies float64* pointees as float64 values', () => {
-			const pointerMetadata = {
-				pointeeBaseType: 'float64',
-				pointerDepth: 1,
-			} as const;
-
-			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(false);
-			expect(getPointeeValueKindFromMetadata(pointerMetadata)).toBe('float64');
-		});
-
-		it('classifies float64** dereference results as float64 values', () => {
-			const pointerMetadata = {
-				pointeeBaseType: 'float64',
-				pointerDepth: 2,
-			} as const;
-
-			expect(getDereferencedValueKindFromMetadata(pointerMetadata)).toBe('float64');
-			expect(getDereferencedValueWordSizeFromMetadata(pointerMetadata)).toBe(8);
-		});
-
-		it('classifies int16* pointees as int32 stack values', () => {
-			const pointerMetadata = {
-				pointeeBaseType: 'int16',
-				pointerDepth: 1,
-			} as const;
-
-			expect(getPointeeElementIsIntegerFromMetadata(pointerMetadata)).toBe(true);
-			expect(getPointeeValueKindFromMetadata(pointerMetadata)).toBe('int32');
-			expect(getDereferencedValueKindFromMetadata(pointerMetadata)).toBe('int32');
-			expect(getDereferencedValueWordSizeFromMetadata(pointerMetadata)).toBe(2);
-		});
-
-		it('classifies unsigned narrow pointees from metadata', () => {
-			const int8uPointerMetadata = {
-				pointeeBaseType: 'int8u',
-				pointerDepth: 1,
-			} as const;
-			const int16uPointerMetadata = {
-				pointeeBaseType: 'int16u',
-				pointerDepth: 1,
-			} as const;
-
-			expect(getPointeeElementIsIntegerFromMetadata(int8uPointerMetadata)).toBe(true);
-			expect(getPointeeValueKindFromMetadata(int8uPointerMetadata)).toBe('int32');
-			expect(getDereferencedValueWordSizeFromMetadata(int8uPointerMetadata)).toBe(1);
-			expect(getPointeeValueKindFromMetadata(int16uPointerMetadata)).toBe('int32');
-			expect(getDereferencedValueWordSizeFromMetadata(int16uPointerMetadata)).toBe(2);
+	describe('declared element value ranges', () => {
+		it.each([
+			[4, true, false, 2147483647, -2147483648],
+			[2, true, false, 32767, -32768],
+			[1, true, false, 127, -128],
+			[4, false, false, 3.4028234663852886e38, -3.4028234663852886e38],
+			[8, false, false, 1.7976931348623157e308, -1.7976931348623157e308],
+			[1, true, true, 255, 0],
+			[2, true, true, 65535, 0],
+			[4, true, true, 4294967295, 0],
+		])('returns range for wordSize=%i integer=%s unsigned=%s', (elementWordSize, isInteger, isUnsigned, expectedMax, expectedMin) => {
+			const declaration = memory({ elementWordSize, isInteger, isUnsigned });
+			expect(getElementMaxValue(declaration)).toBe(expectedMax);
+			expect(getElementMinValue(declaration)).toBe(expectedMin);
 		});
 	});
 
-	describe('getElementMaxValue', () => {
-		it('returns max value for int32', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 4,
-					isInteger: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(2147483647);
-		});
-
-		it('returns max value for int16', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 2,
-					isInteger: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(32767);
-		});
-
-		it('returns max value for int8', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 1,
-					isInteger: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(127);
-		});
-
-		it('returns max finite float32 value', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 4,
-					isInteger: false,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(3.4028234663852886e38);
-		});
-
-		it('returns max finite float64 value', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 8,
-					isInteger: false,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(1.7976931348623157e308);
-		});
-
-		it('returns max finite float64 value for float64[] buffer (no isFloat64 flag)', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 8,
-					isInteger: false,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(1.7976931348623157e308);
-		});
-
-		it('returns 0 for non-existing identifier', () => {
-			expect(getElementMaxValue(mockMemory, 'nonExisting')).toBe(0);
-		});
-	});
-
-	describe('getElementMinValue', () => {
-		it('returns min value for int32', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 4,
-					isInteger: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(-2147483648);
-		});
-
-		it('returns min value for int16', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 2,
-					isInteger: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(-32768);
-		});
-
-		it('returns min value for int8', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 1,
-					isInteger: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(-128);
-		});
-
-		it('returns lowest finite float32 value', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 4,
-					isInteger: false,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(-3.4028234663852886e38);
-		});
-
-		it('returns lowest finite float64 value', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 8,
-					isInteger: false,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(-1.7976931348623157e308);
-		});
-
-		it('returns lowest finite float64 value for float64[] buffer (no isFloat64 flag)', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 8,
-					isInteger: false,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(-1.7976931348623157e308);
-		});
-
-		it('returns 0 for non-existing identifier', () => {
-			expect(getElementMinValue(mockMemory, 'nonExisting')).toBe(0);
-		});
-	});
-
-	describe('getElementMaxValue with unsigned buffers', () => {
-		it('returns max value for unsigned int8', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 1,
-					isInteger: true,
-					isUnsigned: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(255);
-		});
-
-		it('returns max value for unsigned int16', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 2,
-					isInteger: true,
-					isUnsigned: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(65535);
-		});
-
-		it('returns max value for unsigned int32', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 4,
-					isInteger: true,
-					isUnsigned: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMaxValue(memory, 'val')).toBe(4294967295);
-		});
-	});
-
-	describe('getElementMinValue with unsigned buffers', () => {
-		it('returns min value 0 for unsigned int8', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 1,
-					isInteger: true,
-					isUnsigned: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(0);
-		});
-
-		it('returns min value 0 for unsigned int16', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 2,
-					isInteger: true,
-					isUnsigned: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(0);
-		});
-
-		it('returns min value 0 for unsigned int32', () => {
-			const memory: MemoryMap = {
-				val: {
-					elementWordSize: 4,
-					isInteger: true,
-					isUnsigned: true,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getElementMinValue(memory, 'val')).toBe(0);
-		});
-	});
-
-	describe('getPointeeElementMaxValue', () => {
-		it('returns max int32 value for int* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'int',
-					pointerDepth: 1,
-					type: 'int*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(2147483647);
-		});
-
-		it('returns max int8 value for int8* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'int8',
-					pointerDepth: 1,
-					type: 'int8*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(127);
-		});
-
-		it('returns max int16 value for int16* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'int16',
-					pointerDepth: 1,
-					type: 'int16*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(32767);
-		});
-
-		it('returns max unsigned narrow values for unsigned integer pointers', () => {
-			const memory: MemoryMap = {
-				int8uPtr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'int8u',
-					pointerDepth: 1,
-				} as unknown as MemoryMap[string],
-				int16uPtr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'int16u',
-					pointerDepth: 1,
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementMaxValue(memory, 'int8uPtr')).toBe(255);
-			expect(getPointeeElementMaxValue(memory, 'int16uPtr')).toBe(65535);
-		});
-
-		it('returns max float32 value for float* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'float',
-					pointerDepth: 1,
-					type: 'float*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(3.4028234663852886e38);
-		});
-
-		it('returns max float64 value for float64* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointerDepth: 1,
-					pointeeBaseType: 'float64',
-					type: 'float64*',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(1.7976931348623157e308);
-		});
-
-		it('returns max int32 value for float64** pointer (pointee is a pointer slot stored as i32)', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					elementWordSize: 4,
-					pointeeBaseType: 'float64',
-					pointerDepth: 2,
-					type: 'float64**',
-				} as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementMaxValue(memory, 'ptr')).toBe(2147483647);
-		});
-
-		it('returns 0 for non-pointer identifier', () => {
-			const memory: MemoryMap = {
-				val: { elementWordSize: 4 } as unknown as MemoryMap[string],
-			};
-			expect(getPointeeElementMaxValue(memory, 'val')).toBe(0);
-		});
-
-		it('returns 0 for non-existing identifier', () => {
-			expect(getPointeeElementMaxValue(mockMemory, 'nonExisting')).toBe(0);
-		});
-	});
-
-	describe('getPointeeElementMinValue', () => {
-		it('returns min int8 value for int8* pointer', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					pointeeBaseType: 'int8',
-					pointerDepth: 1,
-				} as unknown as MemoryMap[string],
-			};
-
-			expect(getPointeeElementMinValue(memory, 'ptr')).toBe(-128);
-		});
-
-		it('returns min value 0 for unsigned integer pointers', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					pointeeBaseType: 'int16u',
-					pointerDepth: 1,
-				} as unknown as MemoryMap[string],
-			};
-
-			expect(getPointeeElementMinValue(memory, 'ptr')).toBe(0);
-		});
-
-		it('returns pointer-slot min value for double pointers', () => {
-			const memory: MemoryMap = {
-				ptr: {
-					pointeeBaseType: 'float64',
-					pointerDepth: 2,
-				} as unknown as MemoryMap[string],
-			};
-
-			expect(getPointeeElementMinValue(memory, 'ptr')).toBe(-2147483648);
-		});
-
-		it('returns 0 for non-pointer identifiers', () => {
-			const memory: MemoryMap = {
-				value: {} as unknown as MemoryMap[string],
-			};
-
-			expect(getPointeeElementMinValue(memory, 'value')).toBe(0);
+	describe('pointee value ranges', () => {
+		it.each([
+			['int', 1, 2147483647, -2147483648],
+			['int8', 1, 127, -128],
+			['int16', 1, 32767, -32768],
+			['int8u', 1, 255, 0],
+			['int16u', 1, 65535, 0],
+			['float', 1, 3.4028234663852886e38, -3.4028234663852886e38],
+			['float64', 1, 1.7976931348623157e308, -1.7976931348623157e308],
+			['float64', 2, 2147483647, -2147483648],
+		] as Array<
+			[PointeeBaseType, number, number, number]
+		>)('returns range for %s pointer depth %i', (pointeeBaseType, pointerDepth, expectedMax, expectedMin) => {
+			const metadata = pointer(pointeeBaseType, { pointerDepth });
+			expect(getPointeeElementMaxValue(metadata)).toBe(expectedMax);
+			expect(getPointeeElementMinValue(metadata)).toBe(expectedMin);
 		});
 	});
 });

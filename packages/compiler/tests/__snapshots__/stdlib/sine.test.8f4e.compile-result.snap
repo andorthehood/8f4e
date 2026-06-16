@@ -644,7 +644,7 @@
   },
   "moduleMemory": {
     "sineAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

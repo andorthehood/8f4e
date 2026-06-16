@@ -465,7 +465,7 @@
   },
   "moduleMemory": {
     "clampIntAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

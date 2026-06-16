@@ -29,7 +29,7 @@ describe('crossfade directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							dry: {
 								id: 'dry',
 								wordAlignedAddress: 0,
@@ -84,7 +84,7 @@ describe('crossfade directive widget resolution', () => {
 	});
 
 	it('does not add a crossfade when the bound memory is not float32 scalar', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap.wet.isInteger = true;
+		mockState.compiler.compiledModules['test-block'].memory.wet.isInteger = true;
 
 		runDirectiveResolution();
 

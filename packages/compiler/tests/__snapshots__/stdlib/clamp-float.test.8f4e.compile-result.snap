@@ -465,7 +465,7 @@
   },
   "moduleMemory": {
     "clampFloatAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

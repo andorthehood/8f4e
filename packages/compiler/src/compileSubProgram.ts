@@ -112,6 +112,12 @@ export type CompiledSubProgram = {
 	requiredMemoryBytesByRegion: Record<string, number>;
 	/** Initial data segments that materialize memory defaults. */
 	initialMemoryDataSegments: InitialMemoryDataSegment[];
+	/** Project memory layout produced by the memory planner. */
+	memoryPlan: MemoryLayoutPlan;
+	/** Resolved memory defaults keyed by module id. */
+	memoryDefaultsByModuleId: ReturnType<typeof resolveMemoryDefaults>['memoryDefaultsByModuleId'];
+	/** Resolved pointer metadata keyed by module id. */
+	pointerMetadataByModuleId: ReturnType<typeof resolveMemoryDefaults>['pointerMetadataByModuleId'];
 	/** Cache instance carrying validated AST entries for this compilation. */
 	cache: CompilerCache;
 };
@@ -631,7 +637,10 @@ export function compileSubProgram(
 		requiredMemoryBytesByIndex,
 		options.memoryRegions ?? []
 	);
-	const initialMemoryDataSegments = createInitialMemoryDataSegments(compiledModules);
+	const initialMemoryDataSegments = createInitialMemoryDataSegments(
+		memoryPlan,
+		memoryDefaultResolution.memoryDefaultsByModuleId
+	);
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(module => [module.id, module]));
 
 	return {
@@ -649,6 +658,9 @@ export function compileSubProgram(
 		requiredMemoryBytes,
 		requiredMemoryBytesByRegion,
 		initialMemoryDataSegments,
+		memoryPlan,
+		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
+		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
 		cache,
 	};
 }

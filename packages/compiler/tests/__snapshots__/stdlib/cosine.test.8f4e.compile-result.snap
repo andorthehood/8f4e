@@ -724,7 +724,7 @@
   },
   "moduleMemory": {
     "cosineAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

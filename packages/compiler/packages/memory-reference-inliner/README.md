@@ -25,7 +25,7 @@ The pass receives:
 - The whole project AST, grouped by block kind, whose constants have already been inlined.
 - The completed `@8f4e/memory-planner` layout plan for that same project AST.
 
-The memory layout plan remains the source of truth while references are resolved. This package should read planned modules and declarations directly from that plan rather than converting it into compiler namespace or `MemoryMap` state.
+The memory layout plan remains the source of truth while references are resolved. This package should read planned modules and declarations directly from that plan rather than converting them into compiler namespace state.
 
 The inliner may keep temporary pointer facts while traversing a module so later references like `count(*ptr)` can be resolved during the same pass. Persistent pointer metadata for compiler contexts belongs to `@8f4e/memory-default-resolver`.
 

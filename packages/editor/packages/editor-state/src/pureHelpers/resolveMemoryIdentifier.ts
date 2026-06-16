@@ -1,4 +1,4 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { MemoryIdentifier, State } from '@8f4e/editor-state-types';
 
 export default function resolveMemoryIdentifier(
@@ -10,7 +10,7 @@ export default function resolveMemoryIdentifier(
 		return;
 	}
 
-	let memory: DataStructure | undefined;
+	let memory: PlannedMemoryDeclaration | undefined;
 	let showAddress = false;
 	let showEndAddress = false;
 	let operator: '&' | '*' | undefined;
@@ -52,7 +52,7 @@ export default function resolveMemoryIdentifier(
 		memoryIdentifier = memoryIdentifier.replace(/\[\d+\]/, '');
 	}
 
-	memory = state.compiler.compiledModules[moduleId]?.memoryMap[memoryIdentifier];
+	memory = state.compiler.compiledModules[moduleId]?.memory[memoryIdentifier];
 
 	if (!memory) {
 		return;

@@ -266,7 +266,7 @@
   },
   "moduleMemory": {
     "fractAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

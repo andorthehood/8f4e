@@ -1,5 +1,5 @@
 import type { AST } from './ast';
-import type { MemoryBuffer, MemoryMap } from './memory';
+import type { MemoryBuffer, PlannedMemoryDeclaration } from './memory';
 
 /** Test harness wrapper around a compiled program and its inspectable memory. */
 export interface TestModule {
@@ -13,6 +13,6 @@ export interface TestModule {
 	reset: () => void;
 	wat: string;
 	program: Uint8Array;
-	memoryMap: MemoryMap;
+	memoryDeclarations: Record<string, PlannedMemoryDeclaration>;
 	ast: AST;
 }

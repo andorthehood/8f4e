@@ -31,7 +31,7 @@ describe('slider interaction', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							testSlider: {
 								wordAlignedAddress: 5,
 								isInteger: true,

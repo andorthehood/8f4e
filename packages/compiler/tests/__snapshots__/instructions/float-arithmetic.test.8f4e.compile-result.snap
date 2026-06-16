@@ -806,25 +806,25 @@
   },
   "moduleMemory": {
     "castToFloatAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "castToIntAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "floatAbsAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "floatDivAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "floatMulAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "roundAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "sqrtAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

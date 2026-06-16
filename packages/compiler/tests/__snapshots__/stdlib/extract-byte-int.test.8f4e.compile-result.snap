@@ -401,7 +401,7 @@
   },
   "moduleMemory": {
     "extractByteIntAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

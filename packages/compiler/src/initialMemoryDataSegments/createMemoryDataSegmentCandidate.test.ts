@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import createMemoryDataSegmentCandidate from './createMemoryDataSegmentCandidate';
-import { createMemory } from './testUtils';
+import { createMemory, createMemoryDefault } from './testUtils';
 
 describe('createMemoryDataSegmentCandidate', () => {
 	test('creates scalar candidates with encoded default bytes', () => {
@@ -9,8 +9,8 @@ describe('createMemoryDataSegmentCandidate', () => {
 			createMemory({
 				id: 'scalar',
 				byteAddress: 12,
-				default: 2.9,
-			})
+			}),
+			createMemoryDefault(2.9)
 		);
 		const [candidate] = candidates;
 
@@ -25,14 +25,16 @@ describe('createMemoryDataSegmentCandidate', () => {
 				id: 'array',
 				byteAddress: 16,
 				numberOfElements: 4,
-				hasExplicitDefault: true,
-				default: {
+			}),
+			createMemoryDefault(
+				{
 					0: 1,
 					1: 2,
 					2: 0,
 					3: 4,
 				},
-			})
+				{ hasExplicitDefault: true }
+			)
 		);
 
 		expect(
@@ -61,11 +63,13 @@ describe('createMemoryDataSegmentCandidate', () => {
 				id: 'array',
 				byteAddress: 16,
 				numberOfElements: 1_000_000,
-				hasExplicitDefault: true,
-				default: {
+			}),
+			createMemoryDefault(
+				{
 					0: 1,
 				},
-			})
+				{ hasExplicitDefault: true }
+			)
 		);
 
 		expect(candidates).toHaveLength(1);
@@ -79,8 +83,8 @@ describe('createMemoryDataSegmentCandidate', () => {
 				id: 'array',
 				byteAddress: 16,
 				numberOfElements: 3,
-				default: {},
-			})
+			}),
+			createMemoryDefault({})
 		);
 
 		expect(candidates).toEqual([]);
@@ -91,8 +95,8 @@ describe('createMemoryDataSegmentCandidate', () => {
 			createMemory({
 				id: 'scalar',
 				byteAddress: 12,
-				default: 0,
-			})
+			}),
+			createMemoryDefault(0)
 		);
 
 		expect(candidates).toEqual([]);
@@ -103,9 +107,8 @@ describe('createMemoryDataSegmentCandidate', () => {
 			createMemory({
 				id: 'scalar',
 				byteAddress: 12,
-				hasExplicitDefault: true,
-				default: 0,
-			})
+			}),
+			createMemoryDefault(0, { hasExplicitDefault: true })
 		);
 		const [candidate] = candidates;
 
@@ -120,11 +123,13 @@ describe('createMemoryDataSegmentCandidate', () => {
 				id: 'array',
 				byteAddress: 16,
 				numberOfElements: 3,
-				hasExplicitDefault: true,
-				default: {
+			}),
+			createMemoryDefault(
+				{
 					0: 0,
 				},
-			})
+				{ hasExplicitDefault: true }
+			)
 		);
 
 		expect(candidates).toEqual([]);

@@ -35,7 +35,7 @@ const store = {
 			compiler: {
 				compiledModules: {
 					audioout: {
-						memoryMap: {
+						memory: {
 							buffer: { wordAlignedAddress: 32 },
 						},
 					},

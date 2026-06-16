@@ -1,5 +1,11 @@
-import type { CompiledModule, DataStructure, ValidatedModuleAST } from '@8f4e/compiler-spec';
-import { ArgumentType, MemoryTypes } from '@8f4e/compiler-spec';
+import type {
+	MemoryDefault,
+	MemoryDefaults,
+	MemoryLayoutPlan,
+	PlannedMemoryDeclaration,
+	PlannedMemoryModule,
+} from '@8f4e/compiler-spec';
+import { MemoryTypes } from '@8f4e/compiler-spec';
 
 /**
  * Creates a memory data structure fixture for initial memory segment tests.
@@ -8,8 +14,8 @@ import { ArgumentType, MemoryTypes } from '@8f4e/compiler-spec';
  * @returns A complete data structure fixture.
  */
 export function createMemory(
-	overrides: Partial<DataStructure> & Pick<DataStructure, 'id' | 'byteAddress'>
-): DataStructure {
+	overrides: Partial<PlannedMemoryDeclaration> & Pick<PlannedMemoryDeclaration, 'id' | 'byteAddress'>
+): PlannedMemoryDeclaration {
 	return {
 		numberOfElements: 1,
 		elementWordSize: 4,
@@ -17,9 +23,6 @@ export function createMemory(
 		memoryIndex: 0,
 		wordAlignedSize: 1,
 		wordAlignedAddress: overrides.byteAddress / 4,
-		default: 0,
-		hasExplicitDefault: false,
-		isInherited: false,
 		lineNumber: 0,
 		isInteger: true,
 		pointerDepth: 0,
@@ -28,45 +31,54 @@ export function createMemory(
 	};
 }
 
-/**
- * Creates a compiled module fixture with a minimal validated module AST.
- *
- * @param overrides - Module fields to override on the generated fixture.
- * @returns A complete compiled module fixture.
- */
-export function createCompiledModule(overrides: Partial<CompiledModule>): CompiledModule {
+export function createMemoryDefault(
+	value: MemoryDefault['value'],
+	overrides: Partial<MemoryDefault> = {}
+): MemoryDefault {
+	return {
+		value,
+		hasExplicitDefault: false,
+		isInherited: false,
+		...overrides,
+	};
+}
+
+export function createMemoryPlan(
+	memory: Record<string, PlannedMemoryDeclaration>,
+	overrides: Partial<PlannedMemoryModule> = {}
+): MemoryLayoutPlan {
+	const declarations = Object.values(memory);
 	const byteAddress = overrides.byteAddress ?? 0;
-	const ast = {
-		type: 'module',
-		id: 'test',
-		lines: [],
-		moduleLine: {
-			lineNumber: 0,
-			instruction: 'module',
-			arguments: [
-				{
-					type: ArgumentType.IDENTIFIER,
-					value: 'test',
-					referenceKind: 'plain',
-					scope: 'local',
-				},
-			],
-		},
-		memoryDeclarationLines: [],
-	} as unknown as ValidatedModuleAST;
+	const wordAlignedSize =
+		overrides.wordAlignedSize ??
+		declarations.reduce(
+			(max, declaration) => Math.max(max, declaration.wordAlignedAddress + declaration.wordAlignedSize),
+			0
+		);
+	const module: PlannedMemoryModule = {
+		id: overrides.id ?? 'test',
+		lineNumber: overrides.lineNumber ?? 0,
+		byteAddress,
+		wordAlignedSize,
+		memoryIndex: overrides.memoryIndex ?? 0,
+		...(overrides.memoryRegionName ? { memoryRegionName: overrides.memoryRegionName } : {}),
+		memory,
+		declarations,
+		declarationSources: overrides.declarationSources ?? [],
+	};
 
 	return {
-		index: 0,
-		initFunctionBody: [],
-		cycleFunction: [],
-		id: 'test',
-		memoryIndex: 0,
-		byteAddress,
-		wordAlignedAddress: byteAddress / 4,
-		memoryMap: {},
-		wordAlignedSize: 0,
-		ast,
-		...overrides,
+		modules: {
+			[module.id]: module,
+		},
+		moduleList: [module],
+		nextByteAddressByMemoryIndex: {},
+	};
+}
+
+export function createMemoryDefaults(defaults: Record<string, MemoryDefault>): Record<string, MemoryDefaults> {
+	return {
+		test: defaults,
 	};
 }
 

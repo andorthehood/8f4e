@@ -27,7 +27,7 @@ push *bytes
 functionEnd int
 `);
 		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);
-		const output = fixture.compileResult.compiledModules.unsignedPointerParam.memoryMap.output.byteAddress;
+		const output = fixture.compileResult.compiledModules.unsignedPointerParam.memory.output.byteAddress;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();
@@ -55,12 +55,12 @@ entryEnd
 `);
 		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);
 		const module = fixture.compileResult.compiledModules.unsignedPointerDeclaration;
-		const output = module.memoryMap.output.byteAddress;
+		const output = module.memory.output.byteAddress;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();
 
 		expect(memory.getInt32(output, true)).toBe(255);
-		expect(module.memoryMap.cursor.pointeeBaseType).toBe('int8u');
+		expect(module.memory.cursor.pointeeBaseType).toBe('int8u');
 	});
 });

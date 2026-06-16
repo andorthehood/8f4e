@@ -25,8 +25,8 @@ describe('compileProjectModules', () => {
 
 		expect(result.compiledModules?.target.index).toBe(0);
 		expect(result.compiledModules?.source.index).toBe(1);
-		expect(result.compiledModules?.target.memoryMap.ptr.default).toBe(
-			result.compiledModules?.source.memoryMap.value.byteAddress
+		expect(result.compiledModules?.target.memoryDefaults.ptr.value).toBe(
+			result.compiledModules?.source.memory.value.byteAddress
 		);
 	});
 
@@ -52,8 +52,8 @@ describe('compileProjectModules', () => {
 
 		expect(result.compiledModules?.source.index).toBe(0);
 		expect(result.compiledModules?.target.index).toBe(1);
-		expect(result.compiledModules?.target.memoryMap.ptr.default).toBe(
-			result.compiledModules?.source.memoryMap.value.byteAddress
+		expect(result.compiledModules?.target.memoryDefaults.ptr.value).toBe(
+			result.compiledModules?.source.memory.value.byteAddress
 		);
 	});
 

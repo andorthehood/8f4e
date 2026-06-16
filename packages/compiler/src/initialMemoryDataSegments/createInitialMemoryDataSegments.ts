@@ -1,4 +1,4 @@
-import type { CompiledModule } from '@8f4e/compiler-spec';
+import type { MemoryDefaults, MemoryLayoutPlan } from '@8f4e/compiler-spec';
 import createMemoryDataSegmentCandidate from './createMemoryDataSegmentCandidate';
 import mergeAdjacentInitialMemoryDataSegments from './mergeAdjacentInitialMemoryDataSegments';
 import type { InitialMemoryDataSegment } from './types';
@@ -6,13 +6,20 @@ import type { InitialMemoryDataSegment } from './types';
 /**
  * Creates passive data segments for non-zero and explicitly initialized compiled module memory.
  *
- * @param compiledModules - Compiled modules to inspect for initial memory data.
+ * @param memoryPlan - Completed memory layout plan for the project.
+ * @param memoryDefaultsByModuleId - Resolved defaults keyed by module id.
  * @returns The materialized initial memory data segment data.
  */
-export default function createInitialMemoryDataSegments(compiledModules: CompiledModule[]): InitialMemoryDataSegment[] {
-	const segmentCandidates = compiledModules.flatMap(module => [
-		...Object.values(module.memoryMap).flatMap(memory => createMemoryDataSegmentCandidate(memory)),
-	]);
+export default function createInitialMemoryDataSegments(
+	memoryPlan: MemoryLayoutPlan,
+	memoryDefaultsByModuleId: Record<string, MemoryDefaults>
+): InitialMemoryDataSegment[] {
+	const segmentCandidates = memoryPlan.moduleList.flatMap(module => {
+		const memoryDefaults = memoryDefaultsByModuleId[module.id]!;
+		return module.declarations.flatMap(declaration =>
+			createMemoryDataSegmentCandidate(declaration, memoryDefaults[declaration.id]!)
+		);
+	});
 
 	return mergeAdjacentInitialMemoryDataSegments(segmentCandidates);
 }

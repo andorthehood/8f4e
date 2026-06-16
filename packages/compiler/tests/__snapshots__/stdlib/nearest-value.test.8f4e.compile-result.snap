@@ -1904,7 +1904,7 @@
   },
   "moduleMemory": {
     "nearestValueFloatAssertions": {
-      "memoryMap": {
+      "memory": {
         "ties": {
           "byteAddress": 48,
           "default": {
@@ -1946,7 +1946,7 @@
       },
     },
     "nearestValueIntAssertions": {
-      "memoryMap": {
+      "memory": {
         "ties": {
           "byteAddress": 24,
           "default": {

@@ -453,16 +453,16 @@
   },
   "moduleMemory": {
     "blockFloatAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "blockIntAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "clearStackAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "dropAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

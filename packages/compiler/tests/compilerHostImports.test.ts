@@ -42,7 +42,7 @@ functionEnd int
 			}
 		);
 		const memory = fixture.host.memory as WebAssembly.Memory;
-		const output = fixture.compileResult.compiledModules.hostImportCaller.memoryMap.output.byteAddress;
+		const output = fixture.compileResult.compiledModules.hostImportCaller.memory.output.byteAddress;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();
@@ -83,7 +83,7 @@ add
 functionEnd float
 `);
 		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);
-		const output = fixture.compileResult.compiledModules.inlineCallArguments.memoryMap.output.byteAddress;
+		const output = fixture.compileResult.compiledModules.inlineCallArguments.memory.output.byteAddress;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();
@@ -124,12 +124,12 @@ functionEnd
 			}
 		);
 
-		const memoryMap = fixture.compileResult.compiledModules.shapeImportCaller.memoryMap;
+		const memory = fixture.compileResult.compiledModules.shapeImportCaller.memory;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();
 
-		expect(calls).toEqual([[memoryMap.left.byteAddress, memoryMap.right.byteAddress]]);
+		expect(calls).toEqual([[memory.left.byteAddress, memory.right.byteAddress]]);
 		const functionId = createFunctionId('recordShape', ['int*', 'float*']);
 		expect(fixture.compileResult.compiledFunctions![functionId].signature.parameters).toEqual(['int*', 'float*']);
 		expect(fixture.compileResult.compiledFunctions![functionId].import).toEqual({

@@ -1,4 +1,4 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { MemoryDefault, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import materializeByteChunks from './materializeByteChunks';
 
 import type { InitialMemoryDataSegmentCandidate } from './types';
@@ -7,23 +7,27 @@ import writeDefaultValue from './writeDefaultValue';
 /**
  * Creates initial data segment candidates for explicit or non-zero memory defaults.
  *
- * @param memory - Memory declaration or data structure being materialized.
+ * @param memory - Planned memory declaration being materialized.
+ * @param memoryDefault - Resolved default value for the declaration.
  * @returns The materialized initial memory data segment data.
  */
-export default function createMemoryDataSegmentCandidate(memory: DataStructure): InitialMemoryDataSegmentCandidate[] {
+export default function createMemoryDataSegmentCandidate(
+	memory: PlannedMemoryDeclaration,
+	memoryDefault: MemoryDefault
+): InitialMemoryDataSegmentCandidate[] {
 	const isArray = memory.numberOfElements > 1;
-	if (isArray && memory.hasExplicitDefault !== true) {
+	if (isArray && memoryDefault.hasExplicitDefault !== true) {
 		return [];
 	}
-	if (!isArray && memory.hasExplicitDefault !== true && memory.default === 0) {
+	if (!isArray && memoryDefault.hasExplicitDefault !== true && memoryDefault.value === 0) {
 		return [];
 	}
 
 	if (isArray) {
-		return createArrayDataSegmentCandidates(memory);
+		return createArrayDataSegmentCandidates(memory, memoryDefault.value as Record<string, number>);
 	}
 
-	const bytes = createDefaultValueBytes(memory, memory.default as number);
+	const bytes = createDefaultValueBytes(memory, memoryDefault.value as number);
 	return [
 		{
 			memoryIndex: memory.memoryIndex,
@@ -35,7 +39,10 @@ export default function createMemoryDataSegmentCandidate(memory: DataStructure):
 	];
 }
 
-function createArrayDataSegmentCandidates(memory: DataStructure): InitialMemoryDataSegmentCandidate[] {
+function createArrayDataSegmentCandidates(
+	memory: PlannedMemoryDeclaration,
+	defaults: Record<string, number>
+): InitialMemoryDataSegmentCandidate[] {
 	const segments: InitialMemoryDataSegmentCandidate[] = [];
 	let runByteAddress = 0;
 	let runByteLength = 0;
@@ -59,7 +66,7 @@ function createArrayDataSegmentCandidates(memory: DataStructure): InitialMemoryD
 		nextRunByteAddress = undefined;
 	};
 
-	for (const { elementIndex, value } of Object.entries(memory.default as Record<string, number>)
+	for (const { elementIndex, value } of Object.entries(defaults)
 		.map(([elementIndex, value]) => ({
 			elementIndex: parseInt(elementIndex, 10),
 			value,
@@ -87,7 +94,7 @@ function createArrayDataSegmentCandidates(memory: DataStructure): InitialMemoryD
 	return segments;
 }
 
-function createDefaultValueBytes(memory: DataStructure, value: number): Uint8Array {
+function createDefaultValueBytes(memory: PlannedMemoryDeclaration, value: number): Uint8Array {
 	const bytes = new Uint8Array(memory.elementWordSize);
 	const view = new DataView(bytes.buffer);
 	writeDefaultValue(view, memory, 0, value);

@@ -685,7 +685,7 @@
   },
   "moduleMemory": {
     "localShadowMemoryAssertions": {
-      "memoryMap": {
+      "memory": {
         "value": {
           "byteAddress": 4,
           "default": 42,
@@ -704,7 +704,7 @@
       },
     },
     "pointerDereferenceDepthAssertions": {
-      "memoryMap": {
+      "memory": {
         "pptr": {
           "byteAddress": 16,
           "default": 12,
@@ -757,7 +757,7 @@
       },
     },
     "pushLocalAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

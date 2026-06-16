@@ -338,7 +338,7 @@
   },
   "moduleMemory": {
     "copyIntAssertions": {
-      "memoryMap": {
+      "memory": {
         "dest": {
           "byteAddress": 8,
           "default": 0,

@@ -29,7 +29,7 @@ describe('slider directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							mySlider: {
 								id: 'mySlider',
 								wordAlignedAddress: 0,

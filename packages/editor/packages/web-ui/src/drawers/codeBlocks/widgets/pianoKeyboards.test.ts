@@ -1,4 +1,4 @@
-import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { PianoKeyboard } from '@8f4e/editor-state-types';
 import type { Engine } from 'glugglug';
@@ -28,7 +28,7 @@ function createMockEngine(): Engine {
 	} as unknown as Engine;
 }
 
-function createMockMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+function createMockMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemoryDeclaration {
 	return {
 		id: 'memory',
 		numberOfElements: 1,

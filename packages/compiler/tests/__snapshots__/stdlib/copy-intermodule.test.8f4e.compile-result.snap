@@ -367,7 +367,7 @@
   },
   "moduleMemory": {
     "copyIntermoduleAssertions": {
-      "memoryMap": {
+      "memory": {
         "dest": {
           "byteAddress": 8,
           "default": 0,
@@ -386,7 +386,7 @@
       },
     },
     "copySource": {
-      "memoryMap": {
+      "memory": {
         "source": {
           "byteAddress": 4,
           "default": 12.5,

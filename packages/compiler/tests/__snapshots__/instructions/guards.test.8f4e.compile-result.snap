@@ -227,10 +227,10 @@
   },
   "moduleMemory": {
     "ensureNonZeroFloatAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "ensureNonZeroIntAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {
