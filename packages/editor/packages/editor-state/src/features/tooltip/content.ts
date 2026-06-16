@@ -1,4 +1,4 @@
-import type { CompiledStackAnalysisLine, DataStructure } from '@8f4e/compiler-spec';
+import type { CompiledStackAnalysisLine, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { getSelectedLineTooltipColors } from './colors';
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getLiveTooltipContent } from './liveValues';
@@ -84,7 +84,7 @@ export function getSelectedLineTooltipContent(
 	stackAnalysisLine?: CompiledStackAnalysisLine,
 	spriteLookups?: SpriteLookups,
 	moduleId?: string,
-	memory?: DataStructure,
+	memory?: PlannedMemoryDeclaration,
 	moduleExecutionOrder?: number
 ): SelectedLineTooltipContent {
 	const textContent = getSelectedLineTooltipTextContent(line, maxLength, stackAnalysisLine, moduleExecutionOrder);

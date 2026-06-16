@@ -5,8 +5,8 @@ import type { DirectiveDerivedState } from '../features/directives/registry';
 function getInheritedDeclarationRowOffsets(compiledModule: NonNullable<State['compiler']['compiledModules'][string]>) {
 	const rowOffsetByLineNumber = new Map<number, number>();
 
-	return Object.values(compiledModule.memoryMap)
-		.filter(memory => memory.isInherited)
+	return Object.values(compiledModule.memory)
+		.filter(memory => compiledModule.memoryDefaults[memory.id]!.isInherited === true)
 		.map(memory => {
 			const rowOffset = (rowOffsetByLineNumber.get(memory.lineNumber) ?? 0) + 1;
 			rowOffsetByLineNumber.set(memory.lineNumber, rowOffset);
@@ -33,9 +33,9 @@ export default function shape(
 		return;
 	}
 
-	const inheritedDeclarationCountByLineNumber = Object.values(compiledModule.memoryMap).reduce<Map<number, number>>(
+	const inheritedDeclarationCountByLineNumber = Object.values(compiledModule.memory).reduce<Map<number, number>>(
 		(result, memory) => {
-			if (memory.isInherited) {
+			if (compiledModule.memoryDefaults[memory.id]!.isInherited === true) {
 				result.set(memory.lineNumber, (result.get(memory.lineNumber) ?? 0) + 1);
 			}
 			return result;

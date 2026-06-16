@@ -364,7 +364,7 @@
   },
   "moduleMemory": {
     "directiveAssertions": {
-      "memoryMap": {
+      "memory": {
         "output": {
           "byteAddress": 8,
           "default": 0,
@@ -383,7 +383,7 @@
       },
     },
     "skippedDirectiveModule": {
-      "memoryMap": {
+      "memory": {
         "value": {
           "byteAddress": 4,
           "default": 123,

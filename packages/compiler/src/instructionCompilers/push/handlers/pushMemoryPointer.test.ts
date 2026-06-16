@@ -1,4 +1,4 @@
-import type { DataStructure, ResolvedMemoryPointerPushLine } from '@8f4e/compiler-spec';
+import type { ResolvedMemoryDeclaration, ResolvedMemoryPointerPushLine } from '@8f4e/compiler-spec';
 import { f64load, i32const, i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '@8f4e/compiler-wasm-utils';
 import { describe, expect, it } from 'vitest';
 
@@ -9,7 +9,7 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 function createResolvedMemoryPointerPushLine(
 	memoryId: string,
-	memoryItem: DataStructure,
+	memoryItem: ResolvedMemoryDeclaration,
 	dereferenceDepth = 1
 ): ResolvedMemoryPointerPushLine {
 	return {
@@ -20,17 +20,24 @@ function createResolvedMemoryPointerPushLine(
 	} as ResolvedMemoryPointerPushLine;
 }
 
-function createPointerMemoryItem(overrides: Partial<DataStructure> & Pick<DataStructure, 'id' | 'byteAddress'>) {
+function createPointerMemoryItem(
+	overrides: Partial<ResolvedMemoryDeclaration> & Pick<ResolvedMemoryDeclaration, 'id' | 'byteAddress'>
+) {
 	return {
+		id: overrides.id,
 		numberOfElements: 1,
 		elementWordSize: 4,
+		memoryIndex: 0,
 		wordAlignedAddress: 0,
 		wordAlignedSize: 1,
-		default: 0,
+		byteAddress: overrides.byteAddress,
 		isInteger: true,
 		isUnsigned: false,
+		pointerDepth: 1,
+		type: 'int*',
+		lineNumber: 1,
 		...overrides,
-	} as DataStructure;
+	} as ResolvedMemoryDeclaration;
 }
 
 describe('pushMemoryPointer', () => {

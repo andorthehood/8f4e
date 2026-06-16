@@ -48,7 +48,7 @@ function getSelectedMemoryDeclaration(state: State, moduleId: string | undefined
 		return undefined;
 	}
 
-	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
+	return state.compiler.compiledModules[moduleId]?.memory[memoryId];
 }
 
 function getSelectedModuleExecutionOrder(

@@ -1181,22 +1181,22 @@
   },
   "moduleMemory": {
     "equalAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "equalToZeroAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "greaterOrEqualFloatAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "greaterOrEqualIntAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "greaterThanFloatAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "greaterThanIntAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

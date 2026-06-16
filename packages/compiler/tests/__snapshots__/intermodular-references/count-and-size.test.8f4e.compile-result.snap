@@ -825,7 +825,7 @@
   },
   "moduleMemory": {
     "combinedCountSizeAssertions": {
-      "memoryMap": {
+      "memory": {
         "elemSize": {
           "byteAddress": 172,
           "default": 4,
@@ -877,7 +877,7 @@
       },
     },
     "combinedCountSizeSource": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 176,
           "default": {
@@ -898,7 +898,7 @@
       },
     },
     "countSizeAssertions": {
-      "memoryMap": {
+      "memory": {
         "bufferCount": {
           "byteAddress": 100,
           "default": 10,
@@ -992,7 +992,7 @@
       },
     },
     "countSizeSource": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 4,
           "default": {
@@ -1030,7 +1030,7 @@
       },
     },
     "lateCountSizeSource": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 132,
           "default": {
@@ -1051,7 +1051,7 @@
       },
     },
     "outOfOrderCountSizeAssertions": {
-      "memoryMap": {
+      "memory": {
         "laterCount": {
           "byteAddress": 124,
           "default": 8,
@@ -1085,7 +1085,7 @@
       },
     },
     "pointerSizeSource": {
-      "memoryMap": {
+      "memory": {
         "ptr": {
           "byteAddress": 72,
           "default": 0,
@@ -1105,7 +1105,7 @@
       },
     },
     "shortSizeSource": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 76,
           "default": {

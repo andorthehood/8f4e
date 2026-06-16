@@ -35,11 +35,12 @@ import type { FunctionImportMetadata, FunctionValueType } from './functionTypes'
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type {
 	ArrayDeclarationInstruction,
-	DataStructure,
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 	PlannedMemoryModule,
+	PointeeBaseType,
+	ResolvedMemoryDeclaration,
 } from './memory';
 
 /** Proven byte range associated with an address expression or memory boundary. */
@@ -110,7 +111,7 @@ export interface ScalarLocalBinding {
 export interface PointerLocalBinding {
 	isInteger: true;
 	isFloat64?: false;
-	pointeeBaseType: NonNullable<DataStructure['pointeeBaseType']>;
+	pointeeBaseType: PointeeBaseType;
 	pointerDepth: number;
 	pointeeMemoryIndex?: number;
 	pointeeMemoryRegionName?: string;
@@ -135,11 +136,10 @@ export interface CollectedNamespace {
 	kind: CompiledModuleBlockType;
 	memoryIndex: number;
 	memoryRegionName?: string;
-	byteAddress?: number;
-	wordAlignedSize?: number;
-	isMemoryLayoutFinalized?: boolean;
-	memoryDefaults?: MemoryDefaults;
-	pointerMetadata?: MemoryPointerMetadataMap;
+	byteAddress: number;
+	wordAlignedSize: number;
+	memoryDefaults: MemoryDefaults;
+	pointerMetadata: MemoryPointerMetadataMap;
 }
 
 export type Namespaces = Record<string, CollectedNamespace>;
@@ -172,7 +172,6 @@ export interface CompilationContext {
 	currentMemoryRegionName?: string;
 	memoryPlan: MemoryLayoutPlan;
 	currentPlannedModule?: PlannedMemoryModule;
-	currentPlannedMemoryDeclarationIndex: number;
 	memoryDefaults: MemoryDefaults;
 	pointerMetadata: MemoryPointerMetadataMap;
 	memoryRegions: string[];
@@ -192,8 +191,6 @@ export interface CompilationContext {
 	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>;
-	expandPrototypeShapes?: boolean;
-	isInherited?: boolean;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;
@@ -232,7 +229,7 @@ export type StackValueType = 'int' | 'float' | 'float64';
 
 /** Metadata describing values reachable from an address stack item. */
 export interface PointeeMetadata {
-	baseType: DataStructure['pointeeBaseType'];
+	baseType: PointeeBaseType;
 	memoryIndex: number;
 	memoryRegionName?: string;
 	pointerDepth: number;
@@ -338,7 +335,7 @@ export type ResolvedMemoryPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier];
 	resolvedTarget: {
 		kind: 'memory';
-		memoryItem: DataStructure;
+		memoryItem: ResolvedMemoryDeclaration;
 	};
 };
 
@@ -346,7 +343,7 @@ export type ResolvedMemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 	resolvedTarget: {
 		kind: 'memory-pointer';
-		memoryItem: DataStructure;
+		memoryItem: ResolvedMemoryDeclaration;
 	};
 };
 

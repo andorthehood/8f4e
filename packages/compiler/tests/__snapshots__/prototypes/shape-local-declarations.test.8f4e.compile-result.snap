@@ -387,7 +387,7 @@
   },
   "moduleMemory": {
     "boson": {
-      "memoryMap": {
+      "memory": {
         "test1": {
           "byteAddress": 36,
           "default": 28,
@@ -442,7 +442,7 @@
       },
     },
     "tau": {
-      "memoryMap": {
+      "memory": {
         "bar": {
           "byteAddress": 28,
           "default": 16,
@@ -464,6 +464,7 @@
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "foo",
+          "isInherited": true,
           "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,

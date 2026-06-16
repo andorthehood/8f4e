@@ -299,13 +299,13 @@
   },
   "moduleMemory": {
     "productionEntryDoesNotRun": {
-      "memoryMap": {},
+      "memory": {},
     },
     "testEntryRunsAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "testEntrySupportsPointerArguments": {
-      "memoryMap": {
+      "memory": {
         "values": {
           "byteAddress": 4,
           "default": {

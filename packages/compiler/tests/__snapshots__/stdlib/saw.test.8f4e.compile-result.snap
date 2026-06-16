@@ -310,7 +310,7 @@
   },
   "moduleMemory": {
     "sawAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

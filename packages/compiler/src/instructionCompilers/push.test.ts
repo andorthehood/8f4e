@@ -1,4 +1,4 @@
-import type { CompilerASTLine, MemoryMap } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, ResolvedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -7,7 +7,7 @@ import push from './push';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
-function resolvedMemoryPushLine(id: string, memoryItem: MemoryMap[string]): CompilerASTLine {
+function resolvedMemoryPushLine(id: string, memoryItem: ResolvedMemoryDeclaration): CompilerASTLine {
 	return {
 		lineNumber: 1,
 		instruction: 'push',
@@ -16,7 +16,7 @@ function resolvedMemoryPushLine(id: string, memoryItem: MemoryMap[string]): Comp
 	} as CompilerASTLine;
 }
 
-function resolvedMemoryPointerPushLine(id: string, memoryItem: MemoryMap[string]): CompilerASTLine {
+function resolvedMemoryPointerPushLine(id: string, memoryItem: ResolvedMemoryDeclaration): CompilerASTLine {
 	return {
 		lineNumber: 1,
 		instruction: 'push',
@@ -25,21 +25,24 @@ function resolvedMemoryPointerPushLine(id: string, memoryItem: MemoryMap[string]
 	} as CompilerASTLine;
 }
 
-function createMemoryItem(overrides: Partial<MemoryMap[string]> & Pick<MemoryMap[string], 'id' | 'byteAddress'>) {
+function createMemoryItem(
+	overrides: Partial<ResolvedMemoryDeclaration> & Pick<ResolvedMemoryDeclaration, 'id' | 'byteAddress'>
+) {
 	return {
 		id: overrides.id,
 		numberOfElements: 1,
 		elementWordSize: 4,
+		memoryIndex: 0,
 		wordAlignedAddress: 0,
 		wordAlignedSize: 1,
 		byteAddress: overrides.byteAddress,
-		default: 0,
 		isInteger: true,
 		pointerDepth: 0,
 		isUnsigned: false,
 		type: 'int',
+		lineNumber: 1,
 		...overrides,
-	} as MemoryMap[string];
+	} as ResolvedMemoryDeclaration;
 }
 
 describe('push instruction compiler', () => {

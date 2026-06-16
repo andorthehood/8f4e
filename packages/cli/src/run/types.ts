@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup, DataStructure } from '@8f4e/compiler-spec';
+import type { CompiledModuleLookup, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 
 export interface RuntimeRunner {
 	initialize(): void;
@@ -13,7 +13,7 @@ export interface ResolvedMemoryReference {
 	key: string;
 	moduleId: string;
 	memoryId: string;
-	data: DataStructure;
+	data: PlannedMemoryDeclaration;
 }
 
 export interface MemoryLookup {

@@ -2,7 +2,7 @@
  * Types for code-blocks feature - manages code block entities, rendering, and interactions.
  */
 
-import type { DataStructure, DocumentBlockType } from '@8f4e/compiler-spec';
+import type { DocumentBlockType, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { SpriteLookup } from 'glugglug';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
@@ -51,7 +51,7 @@ export interface Output {
 	id: string;
 	calibratedMax: number;
 	calibratedMin: number;
-	memory: DataStructure;
+	memory: PlannedMemoryDeclaration;
 }
 
 export interface Debugger {
@@ -62,7 +62,7 @@ export interface Debugger {
 	x: number;
 	y: number;
 	id: string;
-	memory?: DataStructure;
+	memory?: PlannedMemoryDeclaration;
 	bufferPointer: number;
 	displayFormat: 'decimal' | 'binary' | 'hex';
 	text?: string;
@@ -79,7 +79,7 @@ export interface InfoPanel {
 }
 
 export interface MemoryIdentifier {
-	memory: DataStructure;
+	memory: PlannedMemoryDeclaration;
 	showAddress: boolean;
 	showEndAddress: boolean;
 	bufferPointer: number;
@@ -169,8 +169,8 @@ export interface PianoKeyboard {
 	blackKeyGapHeight: number;
 	lineNumber: number;
 	keys: PianoKeyboardKey[];
-	pressedKeysListMemory: DataStructure;
-	pressedNumberOfKeysMemory: DataStructure;
+	pressedKeysListMemory: PlannedMemoryDeclaration;
+	pressedNumberOfKeysMemory: PlannedMemoryDeclaration;
 	startingNumber: number;
 }
 

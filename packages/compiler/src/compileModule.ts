@@ -28,7 +28,6 @@ import { getError } from './compilerError';
 import { applySemanticLine } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
-import { createMemoryMapFromPlan } from './semantic/memoryState';
 import normalizeValueArguments from './semantic/normalizeValueArguments';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
@@ -78,9 +77,8 @@ export function compileModule(
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
 		memoryPlan,
 		currentPlannedModule: plannedModule,
-		currentPlannedMemoryDeclarationIndex: 0,
-		memoryDefaults: namespace.memoryDefaults ?? {},
-		pointerMetadata: namespace.pointerMetadata ?? {},
+		memoryDefaults: namespace.memoryDefaults,
+		pointerMetadata: namespace.pointerMetadata,
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
 		functionTypeRegistry: typeRegistry,
@@ -130,7 +128,10 @@ export function compileModule(
 		...getMemoryRegionFields(memoryIndex, memoryRegionName),
 		byteAddress: plannedModule.byteAddress,
 		wordAlignedAddress: plannedModule.byteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
-		memoryMap: createMemoryMapFromPlan(plannedModule, context),
+		memory: plannedModule.memory,
+		declarations: plannedModule.declarations,
+		memoryDefaults: context.memoryDefaults,
+		pointerMetadata: context.pointerMetadata,
 		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),

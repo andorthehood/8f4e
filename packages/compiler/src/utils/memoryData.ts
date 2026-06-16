@@ -1,19 +1,17 @@
-import type { DataStructure, MemoryMap, MemoryValueKind, PointerLocalBinding, StackAddress } from '@8f4e/compiler-spec';
+import type {
+	MemoryPointerMetadata,
+	MemoryValueKind,
+	PlannedMemoryDeclaration,
+	PointerLocalBinding,
+	StackAddress,
+} from '@8f4e/compiler-spec';
 import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
 import { getEndByteAddress } from '../semantic/layoutAddresses';
 
 /** Common pointer metadata shape shared by memory declarations, locals, and stack address items. */
 export type PointerMetadata =
-	| Pick<
-			DataStructure,
-			| 'memoryIndex'
-			| 'memoryRegionName'
-			| 'pointeeBaseType'
-			| 'pointerDepth'
-			| 'pointeeMemoryIndex'
-			| 'pointeeMemoryRegionName'
-			| 'pointeeElementCount'
-	  >
+	| (Pick<PlannedMemoryDeclaration, 'memoryIndex' | 'memoryRegionName' | 'pointeeBaseType' | 'pointerDepth'> &
+			Partial<MemoryPointerMetadata>)
 	| Pick<
 			PointerLocalBinding,
 			'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName' | 'pointeeElementCount'
@@ -26,7 +24,9 @@ export type PointerMetadata =
 			pointeeElementCount?: NonNullable<StackAddress['pointsTo']>['elementCount'];
 	  };
 
-function getDeclaredBaseTypeMetadata(memoryItem: DataStructure) {
+function getDeclaredBaseTypeMetadata(
+	memoryItem: Pick<PlannedMemoryDeclaration, 'elementWordSize' | 'isInteger' | 'isUnsigned'>
+) {
 	if (memoryItem.isInteger) {
 		if (memoryItem.elementWordSize === BASE_TYPE_METADATA.int8.wordSize) {
 			return memoryItem.isUnsigned ? BASE_TYPE_METADATA.int8u : BASE_TYPE_METADATA.int8;
@@ -58,39 +58,33 @@ export function getPointerDepthFromMetadata(pointerMetadata: PointerMetadata | u
 }
 
 /**
- * Returns a declared memory item's byte address, or zero when the id is absent.
+ * Returns a declared memory item's byte address.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getDataStructureByteAddress(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = memoryMap[id];
-	return memoryItem ? memoryItem.byteAddress : 0;
+export function getMemoryByteAddress(memoryItem: PlannedMemoryDeclaration): number {
+	return memoryItem.byteAddress;
 }
 
 /**
- * Returns the inclusive last byte address of a memory item's aligned storage, or zero when absent.
+ * Returns the inclusive last byte address of a memory item's aligned storage.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getMemoryStringLastByteAddress(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = memoryMap[id];
-	return memoryItem ? getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize) : 0;
+export function getMemoryStringLastByteAddress(memoryItem: PlannedMemoryDeclaration): number {
+	return getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
 }
 
 /**
- * Returns the declared element count for a memory item, or zero when absent.
+ * Returns the declared element count for a memory item.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getElementCount(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = memoryMap[id];
-	return memoryItem ? memoryItem.numberOfElements : 0;
+export function getElementCount(memoryItem: PlannedMemoryDeclaration): number {
+	return memoryItem.numberOfElements;
 }
 
 /**
@@ -107,24 +101,21 @@ export function getPointeeElementCountFromMetadata(pointerMetadata: PointerMetad
 /**
  * Returns the pointer target element count for a memory item, or zero when it is not pointer-like.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Pointer declaration metadata to inspect.
  * @returns The resolved numeric value.
  */
-export function getPointeeElementCount(memoryMap: MemoryMap, id: string): number {
-	return getPointeeElementCountFromMetadata(memoryMap[id]);
+export function getPointeeElementCount(memoryItem: PointerMetadata | undefined): number {
+	return getPointeeElementCountFromMetadata(memoryItem);
 }
 
 /**
- * Returns the declared element word size for a memory item, or zero when absent.
+ * Returns the declared element word size for a memory item.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getElementWordSize(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = memoryMap[id];
-	return memoryItem ? memoryItem.elementWordSize : 0;
+export function getElementWordSize(memoryItem: PlannedMemoryDeclaration): number {
+	return memoryItem.elementWordSize;
 }
 
 /**
@@ -142,12 +133,11 @@ export function getPointeeElementWordSizeFromMetadata(pointerMetadata: PointerMe
 /**
  * Returns the pointee element word size for a memory item, or zero when it is not pointer-like.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Pointer declaration metadata to inspect.
  * @returns The resolved numeric value.
  */
-export function getPointeeElementWordSize(memoryMap: MemoryMap, id: string): number {
-	return getPointeeElementWordSizeFromMetadata(memoryMap[id]);
+export function getPointeeElementWordSize(memoryItem: PointerMetadata | undefined): number {
+	return getPointeeElementWordSizeFromMetadata(memoryItem);
 }
 
 /**
@@ -209,14 +199,10 @@ export function getDereferencedValueKindFromMetadata(
 /**
  * Returns the maximum numeric value allowed by a declared memory item's base type.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getElementMaxValue(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = memoryMap[id];
-	if (!memoryItem) return 0;
-
+export function getElementMaxValue(memoryItem: PlannedMemoryDeclaration): number {
 	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
 	return memoryItem.isUnsigned ? (metadata.unsignedMax ?? metadata.max) : metadata.max;
 }
@@ -237,25 +223,20 @@ export function getPointeeElementMaxValueFromMetadata(pointerMetadata: PointerMe
 /**
  * Returns the maximum numeric value allowed by a memory item's pointer target.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Pointer declaration metadata to inspect.
  * @returns The resolved numeric value.
  */
-export function getPointeeElementMaxValue(memoryMap: MemoryMap, id: string): number {
-	return getPointeeElementMaxValueFromMetadata(memoryMap[id]);
+export function getPointeeElementMaxValue(memoryItem: PointerMetadata | undefined): number {
+	return getPointeeElementMaxValueFromMetadata(memoryItem);
 }
 
 /**
  * Returns the minimum numeric value allowed by a declared memory item's base type.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getElementMinValue(memoryMap: MemoryMap, id: string): number {
-	const memoryItem = memoryMap[id];
-	if (!memoryItem) return 0;
-
+export function getElementMinValue(memoryItem: PlannedMemoryDeclaration): number {
 	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
 	return memoryItem.isUnsigned ? (metadata.unsignedMin ?? metadata.min) : metadata.min;
 }
@@ -276,10 +257,9 @@ export function getPointeeElementMinValueFromMetadata(pointerMetadata: PointerMe
 /**
  * Returns the minimum numeric value allowed by a memory item's pointer target.
  *
- * @param memoryMap - Memory lookup that may contain the requested id.
- * @param id - Identifier of the memory item to inspect.
+ * @param memoryItem - Pointer declaration metadata to inspect.
  * @returns The resolved numeric value.
  */
-export function getPointeeElementMinValue(memoryMap: MemoryMap, id: string): number {
-	return getPointeeElementMinValueFromMetadata(memoryMap[id]);
+export function getPointeeElementMinValue(memoryItem: PointerMetadata | undefined): number {
+	return getPointeeElementMinValueFromMetadata(memoryItem);
 }

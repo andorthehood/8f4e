@@ -14,7 +14,10 @@
       "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "memoryMap": {},
+      "memory": {},
+      "declarations": [],
+      "memoryDefaults": {},
+      "pointerMetadata": {},
       "wordAlignedSize": 0,
       "ast": {
         "type": "module",
@@ -158,7 +161,7 @@
       "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "memoryMap": {
+      "memory": {
         "defaultFreq": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -171,10 +174,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 440,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "frequency": {
           "numberOfElements": 1,
@@ -189,11 +189,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 4,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "phase": {
           "numberOfElements": 1,
@@ -207,10 +203,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -224,10 +217,93 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+          "byteAddress": 4,
+          "id": "defaultFreq",
+          "lineNumber": 4,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 2,
+          "wordAlignedSize": 1,
+          "byteAddress": 8,
+          "id": "frequency",
+          "lineNumber": 5,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 3,
+          "wordAlignedSize": 1,
+          "byteAddress": 12,
+          "id": "phase",
+          "lineNumber": 6,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+          "byteAddress": 16,
+          "id": "out",
+          "lineNumber": 7,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "defaultFreq": {
+          "value": 440,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "frequency": {
+          "value": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "phase": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
+        },
+        "out": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "frequency": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 4,
@@ -774,7 +850,7 @@
       "memoryIndex": 0,
       "byteAddress": 20,
       "wordAlignedAddress": 5,
-      "memoryMap": {
+      "memory": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -788,11 +864,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 16,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "buffer": {
           "numberOfElements": 128,
@@ -806,10 +878,7 @@
           "isInteger": false,
           "pointerDepth": 0,
           "type": "float",
-          "isUnsigned": false,
-          "default": {},
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "pointer": {
           "numberOfElements": 1,
@@ -823,10 +892,74 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 24,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+          "byteAddress": 20,
+          "id": "in",
+          "lineNumber": 5,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 128,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedSize": 128,
+          "wordAlignedAddress": 6,
+          "id": "buffer",
+          "lineNumber": 8,
+          "byteAddress": 24,
+          "isInteger": false,
+          "pointerDepth": 0,
+          "type": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 134,
+          "wordAlignedSize": 1,
+          "byteAddress": 536,
+          "id": "pointer",
+          "lineNumber": 9,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in": {
+          "value": 16,
           "hasExplicitDefault": true,
           "isInherited": false
+        },
+        "buffer": {
+          "value": {},
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "pointer": {
+          "value": 24,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 130,
@@ -1245,7 +1378,10 @@
       "memoryIndex": 0,
       "byteAddress": 540,
       "wordAlignedAddress": 135,
-      "memoryMap": {},
+      "memory": {},
+      "declarations": [],
+      "memoryDefaults": {},
+      "pointerMetadata": {},
       "wordAlignedSize": 0,
       "ast": {
         "type": "module",

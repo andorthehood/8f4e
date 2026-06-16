@@ -1,4 +1,4 @@
-import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, MemoryIdentifier, State } from '@8f4e/editor-state-types';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
@@ -31,7 +31,7 @@ describe('bars directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							bins: {
 								wordAlignedAddress: 0,
 								byteAddress: 0,
@@ -89,7 +89,7 @@ describe('bars directive widget resolution', () => {
 			staticBaseValueIndex: 0,
 			staticColumnLayout: [],
 			startAddress: {
-				memory: { wordAlignedAddress: 0 } as DataStructure,
+				memory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
 				showAddress: true,
 				showEndAddress: false,
 				bufferPointer: 0,

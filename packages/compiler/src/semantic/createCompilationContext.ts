@@ -87,12 +87,10 @@ export function createCompilationContext<TContext extends CompilationContext = C
 		currentModuleWordAlignedSize: 0,
 		currentMemoryIndex: 0,
 		memoryPlan: createEmptyMemoryPlan(),
-		currentPlannedMemoryDeclarationIndex: 0,
 		memoryDefaults: {},
 		pointerMetadata: {},
 		memoryRegions: [],
 		mode: 'module',
-		expandPrototypeShapes: false,
 	};
 
 	const context = {

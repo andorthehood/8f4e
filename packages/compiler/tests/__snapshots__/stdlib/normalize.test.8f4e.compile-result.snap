@@ -1540,7 +1540,7 @@
   },
   "moduleMemory": {
     "normalizeAssertions": {
-      "memoryMap": {
+      "memory": {
         "signed16": {
           "byteAddress": 12,
           "default": {

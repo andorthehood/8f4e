@@ -1,7 +1,12 @@
-import type { MemoryDeclarationLine, RegionLine, ValidatedModuleAST } from '@8f4e/compiler-spec';
+import type { MemoryDeclarationLine, RegionLine, ShapeLine } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-import { planMemoryLayout } from './index';
+import {
+	type MemoryLayoutSourceModule,
+	type MemoryLayoutSourcePrototype,
+	MemoryPlannerError,
+	planMemoryLayout,
+} from './index';
 
 function identifier(value: string) {
 	return {
@@ -23,26 +28,43 @@ function literal(value: number) {
 function moduleAst(
 	id: string,
 	lineNumber: number,
-	memoryDeclarationLines: readonly MemoryDeclarationLine[],
+	lines: MemoryLayoutSourceModule['lines'],
 	regionLine?: RegionLine
-): ValidatedModuleAST {
+): MemoryLayoutSourceModule {
 	return {
-		type: 'module',
 		id,
-		lines: [],
 		moduleLine: {
 			lineNumber,
 			instruction: 'module',
 			arguments: [identifier(id)],
 		},
 		...(regionLine ? { regionLine } : {}),
+		lines,
+	};
+}
+
+function prototypeSource(
+	id: string,
+	memoryDeclarationLines: readonly MemoryDeclarationLine[]
+): MemoryLayoutSourcePrototype {
+	return {
+		id,
 		memoryDeclarationLines,
-	} as ValidatedModuleAST;
+	};
+}
+
+function shapeLine(id: string, lineNumber: number): ShapeLine {
+	return {
+		lineNumber,
+		instruction: 'shape',
+		arguments: [identifier(id)],
+	};
 }
 
 describe('planMemoryLayout', () => {
 	it('plans module start addresses and declaration addresses from ASTs', () => {
 		const plan = planMemoryLayout({
+			prototypes: [],
 			modules: [
 				moduleAst('first', 1, [
 					{
@@ -87,6 +109,7 @@ describe('planMemoryLayout', () => {
 			isBlockPrologue: true,
 		};
 		const plan = planMemoryLayout({
+			prototypes: [],
 			modules: [
 				moduleAst('defaultModule', 1, [
 					{
@@ -133,6 +156,7 @@ describe('planMemoryLayout', () => {
 
 	it('plans compiler-normalized declaration lines', () => {
 		const plan = planMemoryLayout({
+			prototypes: [],
 			modules: [
 				moduleAst('main', 1, [
 					{
@@ -147,5 +171,49 @@ describe('planMemoryLayout', () => {
 
 		expect(plan.modules.main.memory.values.numberOfElements).toBe(4);
 		expect(plan.modules.main.wordAlignedSize).toBe(4);
+	});
+
+	it('expands shape declarations into effective declaration sources', () => {
+		const foo = {
+			lineNumber: 2,
+			instruction: 'int',
+			hasExplicitMemoryDefault: false,
+			arguments: [identifier('foo')],
+		} satisfies MemoryDeclarationLine;
+		const bar = {
+			lineNumber: 3,
+			instruction: 'float[]',
+			hasExplicitMemoryDefault: false,
+			arguments: [identifier('bar'), literal(2)],
+		} satisfies MemoryDeclarationLine;
+		const local = {
+			lineNumber: 12,
+			instruction: 'int',
+			hasExplicitMemoryDefault: false,
+			arguments: [identifier('local')],
+		} satisfies MemoryDeclarationLine;
+
+		const plan = planMemoryLayout({
+			prototypes: [prototypeSource('state', [foo, bar])],
+			modules: [moduleAst('main', 1, [shapeLine('state', 11), local])],
+			startingByteAddress: 4,
+		});
+
+		expect(plan.modules.main.declarations.map(declaration => declaration.id)).toEqual(['foo', 'bar', 'local']);
+		expect(plan.modules.main.declarationSources).toEqual([
+			{ line: { ...foo, lineNumber: 11 }, isInherited: true },
+			{ line: { ...bar, lineNumber: 11 }, isInherited: true },
+			{ line: local, isInherited: false },
+		]);
+		expect(plan.modules.main.memory.local.byteAddress).toBe(16);
+	});
+
+	it('rejects unknown shape declarations while planning layout', () => {
+		expect(() =>
+			planMemoryLayout({
+				prototypes: [],
+				modules: [moduleAst('main', 1, [shapeLine('missing', 11)])],
+			})
+		).toThrow(MemoryPlannerError);
 	});
 });

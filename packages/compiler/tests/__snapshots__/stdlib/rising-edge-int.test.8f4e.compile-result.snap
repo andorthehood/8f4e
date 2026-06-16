@@ -627,7 +627,7 @@
   },
   "moduleMemory": {
     "risingEdgeIntAssertions": {
-      "memoryMap": {
+      "memory": {
         "previousInt": {
           "byteAddress": 4,
           "default": 0,

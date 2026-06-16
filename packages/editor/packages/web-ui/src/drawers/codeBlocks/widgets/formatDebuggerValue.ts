@@ -1,4 +1,4 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { MemoryViews } from '../../../types';
 
 export interface DebuggerValueFormat {
@@ -61,7 +61,7 @@ export function formatDebuggerValueAtAddress(
 
 export default function formatDebuggerValue(
 	memoryViews: MemoryViews,
-	memory: DataStructure,
+	memory: PlannedMemoryDeclaration,
 	bufferPointer: number,
 	displayFormat: 'decimal' | 'binary' | 'hex'
 ): string {

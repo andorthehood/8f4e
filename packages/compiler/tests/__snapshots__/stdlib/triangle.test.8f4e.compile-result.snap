@@ -342,7 +342,7 @@
   },
   "moduleMemory": {
     "triangleAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

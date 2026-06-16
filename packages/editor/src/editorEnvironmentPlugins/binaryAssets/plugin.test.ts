@@ -39,7 +39,7 @@ function createState({
 		compiler: {
 			compiledModules: {
 				samples: {
-					memoryMap: {
+					memory: {
 						buffer: {
 							byteAddress,
 							wordAlignedSize: 4,
@@ -175,7 +175,7 @@ describe('binary assets plugin', () => {
 
 		store.set('compiler.compiledModules', {
 			samples: {
-				memoryMap: {
+				memory: {
 					buffer: {
 						byteAddress: 16,
 						wordAlignedSize: 4,

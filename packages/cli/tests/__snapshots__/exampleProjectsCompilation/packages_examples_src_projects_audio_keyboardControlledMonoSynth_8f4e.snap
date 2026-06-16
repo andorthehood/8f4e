@@ -14,7 +14,10 @@
       "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "memoryMap": {},
+      "memory": {},
+      "declarations": [],
+      "memoryDefaults": {},
+      "pointerMetadata": {},
       "wordAlignedSize": 0,
       "ast": {
         "type": "module",
@@ -67,7 +70,7 @@
       "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "memoryMap": {
+      "memory": {
         "keyPressed": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -80,10 +83,7 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "keyCode": {
           "numberOfElements": 1,
@@ -97,12 +97,52 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+          "byteAddress": 4,
+          "id": "keyPressed",
+          "lineNumber": 9,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 2,
+          "wordAlignedSize": 1,
+          "byteAddress": 8,
+          "id": "keyCode",
+          "lineNumber": 10,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "keyPressed": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "keyCode": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
         }
       },
+      "pointerMetadata": {},
       "wordAlignedSize": 2,
       "ast": {
         "type": "module",
@@ -223,7 +263,7 @@
       "memoryIndex": 0,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
-      "memoryMap": {
+      "memory": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -237,11 +277,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 8,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -255,10 +291,55 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 3,
+          "wordAlignedSize": 1,
+          "byteAddress": 12,
+          "id": "in",
+          "lineNumber": 13,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+          "byteAddress": 16,
+          "id": "out",
+          "lineNumber": 14,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in": {
+          "value": 8,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 2,
@@ -457,7 +538,7 @@
       "memoryIndex": 0,
       "byteAddress": 20,
       "wordAlignedAddress": 5,
-      "memoryMap": {
+      "memory": {
         "__anonymous__3": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -470,10 +551,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 8.1758,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__4": {
           "numberOfElements": 1,
@@ -487,10 +565,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 8.662,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__5": {
           "numberOfElements": 1,
@@ -504,10 +579,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 9.177,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__6": {
           "numberOfElements": 1,
@@ -521,10 +593,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 9.7227,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__7": {
           "numberOfElements": 1,
@@ -538,10 +607,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 10.3009,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__8": {
           "numberOfElements": 1,
@@ -555,10 +621,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 10.9134,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__9": {
           "numberOfElements": 1,
@@ -572,10 +635,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 11.5623,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__10": {
           "numberOfElements": 1,
@@ -589,10 +649,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 12.2499,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__11": {
           "numberOfElements": 1,
@@ -606,10 +663,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 12.9783,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__12": {
           "numberOfElements": 1,
@@ -623,10 +677,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 13.75,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__13": {
           "numberOfElements": 1,
@@ -640,10 +691,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 14.5676,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__14": {
           "numberOfElements": 1,
@@ -657,10 +705,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 15.4339,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__15": {
           "numberOfElements": 1,
@@ -674,10 +719,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 16.3516,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__16": {
           "numberOfElements": 1,
@@ -691,10 +733,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 17.3239,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__17": {
           "numberOfElements": 1,
@@ -708,10 +747,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 18.354,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__18": {
           "numberOfElements": 1,
@@ -725,10 +761,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 19.4454,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__19": {
           "numberOfElements": 1,
@@ -742,10 +775,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 20.6017,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__20": {
           "numberOfElements": 1,
@@ -759,10 +789,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 21.8268,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__21": {
           "numberOfElements": 1,
@@ -776,10 +803,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 23.1247,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__22": {
           "numberOfElements": 1,
@@ -793,10 +817,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 24.4997,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__23": {
           "numberOfElements": 1,
@@ -810,10 +831,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 25.9565,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__24": {
           "numberOfElements": 1,
@@ -827,10 +845,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 27.5,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__25": {
           "numberOfElements": 1,
@@ -844,10 +859,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 29.1352,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__26": {
           "numberOfElements": 1,
@@ -861,10 +873,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 30.8677,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__27": {
           "numberOfElements": 1,
@@ -878,10 +887,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 32.7032,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__28": {
           "numberOfElements": 1,
@@ -895,10 +901,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 34.6478,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__29": {
           "numberOfElements": 1,
@@ -912,10 +915,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 36.7081,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__30": {
           "numberOfElements": 1,
@@ -929,10 +929,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 38.8909,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__31": {
           "numberOfElements": 1,
@@ -946,10 +943,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 41.2034,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__32": {
           "numberOfElements": 1,
@@ -963,10 +957,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 43.6535,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__33": {
           "numberOfElements": 1,
@@ -980,10 +971,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 46.2493,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__34": {
           "numberOfElements": 1,
@@ -997,10 +985,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 48.9994,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__35": {
           "numberOfElements": 1,
@@ -1014,10 +999,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 51.9131,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__36": {
           "numberOfElements": 1,
@@ -1031,10 +1013,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 55,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__37": {
           "numberOfElements": 1,
@@ -1048,10 +1027,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 58.2705,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__38": {
           "numberOfElements": 1,
@@ -1065,10 +1041,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 61.7354,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__39": {
           "numberOfElements": 1,
@@ -1082,10 +1055,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 65.4064,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__40": {
           "numberOfElements": 1,
@@ -1099,10 +1069,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 69.2957,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__41": {
           "numberOfElements": 1,
@@ -1116,10 +1083,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 73.4162,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__42": {
           "numberOfElements": 1,
@@ -1133,10 +1097,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 77.7817,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__43": {
           "numberOfElements": 1,
@@ -1150,10 +1111,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 82.4069,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__44": {
           "numberOfElements": 1,
@@ -1167,10 +1125,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 87.3071,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__45": {
           "numberOfElements": 1,
@@ -1184,10 +1139,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 92.4986,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__46": {
           "numberOfElements": 1,
@@ -1201,10 +1153,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 97.9989,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__47": {
           "numberOfElements": 1,
@@ -1218,10 +1167,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 103.8262,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__48": {
           "numberOfElements": 1,
@@ -1235,10 +1181,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 110,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__49": {
           "numberOfElements": 1,
@@ -1252,10 +1195,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 116.5409,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__50": {
           "numberOfElements": 1,
@@ -1269,10 +1209,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 123.4708,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__51": {
           "numberOfElements": 1,
@@ -1286,10 +1223,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 130.8128,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__52": {
           "numberOfElements": 1,
@@ -1303,10 +1237,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 138.5913,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__53": {
           "numberOfElements": 1,
@@ -1320,10 +1251,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 146.8324,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__54": {
           "numberOfElements": 1,
@@ -1337,10 +1265,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 155.5635,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__55": {
           "numberOfElements": 1,
@@ -1354,10 +1279,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 164.8138,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__56": {
           "numberOfElements": 1,
@@ -1371,10 +1293,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 174.6141,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__57": {
           "numberOfElements": 1,
@@ -1388,10 +1307,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 184.9972,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__58": {
           "numberOfElements": 1,
@@ -1405,10 +1321,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 195.9977,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__59": {
           "numberOfElements": 1,
@@ -1422,10 +1335,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 207.6523,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__60": {
           "numberOfElements": 1,
@@ -1439,10 +1349,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 220,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__61": {
           "numberOfElements": 1,
@@ -1456,10 +1363,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 233.0819,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__62": {
           "numberOfElements": 1,
@@ -1473,10 +1377,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 246.9417,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__63": {
           "numberOfElements": 1,
@@ -1490,10 +1391,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 261.6256,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__64": {
           "numberOfElements": 1,
@@ -1507,10 +1405,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 277.1826,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__65": {
           "numberOfElements": 1,
@@ -1524,10 +1419,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 293.6648,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__66": {
           "numberOfElements": 1,
@@ -1541,10 +1433,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 311.127,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__67": {
           "numberOfElements": 1,
@@ -1558,10 +1447,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 329.6276,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__68": {
           "numberOfElements": 1,
@@ -1575,10 +1461,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 349.2282,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__69": {
           "numberOfElements": 1,
@@ -1592,10 +1475,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 369.9944,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__70": {
           "numberOfElements": 1,
@@ -1609,10 +1489,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 391.9954,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__71": {
           "numberOfElements": 1,
@@ -1626,10 +1503,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 415.3047,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__72": {
           "numberOfElements": 1,
@@ -1643,10 +1517,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 440,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__73": {
           "numberOfElements": 1,
@@ -1660,10 +1531,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 466.1638,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__74": {
           "numberOfElements": 1,
@@ -1677,10 +1545,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 493.8833,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__75": {
           "numberOfElements": 1,
@@ -1694,10 +1559,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 523.2511,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__76": {
           "numberOfElements": 1,
@@ -1711,10 +1573,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 554.3653,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__77": {
           "numberOfElements": 1,
@@ -1728,10 +1587,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 587.3295,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__78": {
           "numberOfElements": 1,
@@ -1745,10 +1601,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 622.254,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__79": {
           "numberOfElements": 1,
@@ -1762,10 +1615,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 659.2551,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__80": {
           "numberOfElements": 1,
@@ -1779,10 +1629,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 698.4565,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__81": {
           "numberOfElements": 1,
@@ -1796,10 +1643,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 739.9888,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__82": {
           "numberOfElements": 1,
@@ -1813,10 +1657,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 783.9909,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__83": {
           "numberOfElements": 1,
@@ -1830,10 +1671,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 830.6094,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__84": {
           "numberOfElements": 1,
@@ -1847,10 +1685,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 880,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__85": {
           "numberOfElements": 1,
@@ -1864,10 +1699,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 932.3275,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__86": {
           "numberOfElements": 1,
@@ -1881,10 +1713,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 987.7666,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__87": {
           "numberOfElements": 1,
@@ -1898,10 +1727,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1046.5023,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__88": {
           "numberOfElements": 1,
@@ -1915,10 +1741,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1108.7305,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__89": {
           "numberOfElements": 1,
@@ -1932,10 +1755,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1174.6591,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__90": {
           "numberOfElements": 1,
@@ -1949,10 +1769,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1244.5079,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__91": {
           "numberOfElements": 1,
@@ -1966,10 +1783,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1318.5102,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__92": {
           "numberOfElements": 1,
@@ -1983,10 +1797,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1396.9129,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__93": {
           "numberOfElements": 1,
@@ -2000,10 +1811,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1479.9777,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__94": {
           "numberOfElements": 1,
@@ -2017,10 +1825,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1567.9817,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__95": {
           "numberOfElements": 1,
@@ -2034,10 +1839,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1661.2188,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__96": {
           "numberOfElements": 1,
@@ -2051,10 +1853,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1760,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__97": {
           "numberOfElements": 1,
@@ -2068,10 +1867,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1864.655,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__98": {
           "numberOfElements": 1,
@@ -2085,10 +1881,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 1975.5332,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__99": {
           "numberOfElements": 1,
@@ -2102,10 +1895,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 2093.0045,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__100": {
           "numberOfElements": 1,
@@ -2119,10 +1909,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 2217.461,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__101": {
           "numberOfElements": 1,
@@ -2136,10 +1923,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 2349.3181,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__102": {
           "numberOfElements": 1,
@@ -2153,10 +1937,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 2489.0159,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__103": {
           "numberOfElements": 1,
@@ -2170,10 +1951,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 2637.0205,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__104": {
           "numberOfElements": 1,
@@ -2187,10 +1965,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 2793.8259,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__105": {
           "numberOfElements": 1,
@@ -2204,10 +1979,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 2959.9554,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__106": {
           "numberOfElements": 1,
@@ -2221,10 +1993,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 3135.9635,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__107": {
           "numberOfElements": 1,
@@ -2238,10 +2007,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 3322.4376,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__108": {
           "numberOfElements": 1,
@@ -2255,10 +2021,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 3520,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__109": {
           "numberOfElements": 1,
@@ -2272,10 +2035,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 3729.3101,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__110": {
           "numberOfElements": 1,
@@ -2289,10 +2049,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 3951.0664,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__111": {
           "numberOfElements": 1,
@@ -2306,10 +2063,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 4186.009,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__112": {
           "numberOfElements": 1,
@@ -2323,10 +2077,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 4434.9221,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__113": {
           "numberOfElements": 1,
@@ -2340,10 +2091,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 4698.6363,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__114": {
           "numberOfElements": 1,
@@ -2357,10 +2105,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 4978.0317,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__115": {
           "numberOfElements": 1,
@@ -2374,10 +2119,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 5274.0409,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__116": {
           "numberOfElements": 1,
@@ -2391,10 +2133,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 5587.6517,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__117": {
           "numberOfElements": 1,
@@ -2408,10 +2147,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 5919.9108,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__118": {
           "numberOfElements": 1,
@@ -2425,10 +2161,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 6271.927,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__119": {
           "numberOfElements": 1,
@@ -2442,10 +2175,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 6644.8752,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__120": {
           "numberOfElements": 1,
@@ -2459,10 +2189,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 7040,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__121": {
           "numberOfElements": 1,
@@ -2476,10 +2203,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 7458.6202,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__122": {
           "numberOfElements": 1,
@@ -2493,10 +2217,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 7902.1328,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__123": {
           "numberOfElements": 1,
@@ -2510,10 +2231,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 8372.0181,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__124": {
           "numberOfElements": 1,
@@ -2527,10 +2245,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 8869.8442,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__125": {
           "numberOfElements": 1,
@@ -2544,10 +2259,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 9397.2726,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__126": {
           "numberOfElements": 1,
@@ -2561,10 +2273,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 9956.0635,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__127": {
           "numberOfElements": 1,
@@ -2578,10 +2287,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 10548.0818,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__128": {
           "numberOfElements": 1,
@@ -2595,10 +2301,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 11175.3034,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__129": {
           "numberOfElements": 1,
@@ -2612,10 +2315,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 11839.8215,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "__anonymous__130": {
           "numberOfElements": 1,
@@ -2629,12 +2329,2446 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 12543.854,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+          "byteAddress": 20,
+          "id": "__anonymous__3",
+          "lineNumber": 3,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 6,
+          "wordAlignedSize": 1,
+          "byteAddress": 24,
+          "id": "__anonymous__4",
+          "lineNumber": 4,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 7,
+          "wordAlignedSize": 1,
+          "byteAddress": 28,
+          "id": "__anonymous__5",
+          "lineNumber": 5,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 8,
+          "wordAlignedSize": 1,
+          "byteAddress": 32,
+          "id": "__anonymous__6",
+          "lineNumber": 6,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 9,
+          "wordAlignedSize": 1,
+          "byteAddress": 36,
+          "id": "__anonymous__7",
+          "lineNumber": 7,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 10,
+          "wordAlignedSize": 1,
+          "byteAddress": 40,
+          "id": "__anonymous__8",
+          "lineNumber": 8,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 11,
+          "wordAlignedSize": 1,
+          "byteAddress": 44,
+          "id": "__anonymous__9",
+          "lineNumber": 9,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 12,
+          "wordAlignedSize": 1,
+          "byteAddress": 48,
+          "id": "__anonymous__10",
+          "lineNumber": 10,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 13,
+          "wordAlignedSize": 1,
+          "byteAddress": 52,
+          "id": "__anonymous__11",
+          "lineNumber": 11,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 14,
+          "wordAlignedSize": 1,
+          "byteAddress": 56,
+          "id": "__anonymous__12",
+          "lineNumber": 12,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 15,
+          "wordAlignedSize": 1,
+          "byteAddress": 60,
+          "id": "__anonymous__13",
+          "lineNumber": 13,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 16,
+          "wordAlignedSize": 1,
+          "byteAddress": 64,
+          "id": "__anonymous__14",
+          "lineNumber": 14,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 17,
+          "wordAlignedSize": 1,
+          "byteAddress": 68,
+          "id": "__anonymous__15",
+          "lineNumber": 15,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 18,
+          "wordAlignedSize": 1,
+          "byteAddress": 72,
+          "id": "__anonymous__16",
+          "lineNumber": 16,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 19,
+          "wordAlignedSize": 1,
+          "byteAddress": 76,
+          "id": "__anonymous__17",
+          "lineNumber": 17,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 20,
+          "wordAlignedSize": 1,
+          "byteAddress": 80,
+          "id": "__anonymous__18",
+          "lineNumber": 18,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 21,
+          "wordAlignedSize": 1,
+          "byteAddress": 84,
+          "id": "__anonymous__19",
+          "lineNumber": 19,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 22,
+          "wordAlignedSize": 1,
+          "byteAddress": 88,
+          "id": "__anonymous__20",
+          "lineNumber": 20,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 23,
+          "wordAlignedSize": 1,
+          "byteAddress": 92,
+          "id": "__anonymous__21",
+          "lineNumber": 21,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 24,
+          "wordAlignedSize": 1,
+          "byteAddress": 96,
+          "id": "__anonymous__22",
+          "lineNumber": 22,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 25,
+          "wordAlignedSize": 1,
+          "byteAddress": 100,
+          "id": "__anonymous__23",
+          "lineNumber": 23,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 26,
+          "wordAlignedSize": 1,
+          "byteAddress": 104,
+          "id": "__anonymous__24",
+          "lineNumber": 24,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 27,
+          "wordAlignedSize": 1,
+          "byteAddress": 108,
+          "id": "__anonymous__25",
+          "lineNumber": 25,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 28,
+          "wordAlignedSize": 1,
+          "byteAddress": 112,
+          "id": "__anonymous__26",
+          "lineNumber": 26,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 29,
+          "wordAlignedSize": 1,
+          "byteAddress": 116,
+          "id": "__anonymous__27",
+          "lineNumber": 27,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 30,
+          "wordAlignedSize": 1,
+          "byteAddress": 120,
+          "id": "__anonymous__28",
+          "lineNumber": 28,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 31,
+          "wordAlignedSize": 1,
+          "byteAddress": 124,
+          "id": "__anonymous__29",
+          "lineNumber": 29,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 32,
+          "wordAlignedSize": 1,
+          "byteAddress": 128,
+          "id": "__anonymous__30",
+          "lineNumber": 30,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 33,
+          "wordAlignedSize": 1,
+          "byteAddress": 132,
+          "id": "__anonymous__31",
+          "lineNumber": 31,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 34,
+          "wordAlignedSize": 1,
+          "byteAddress": 136,
+          "id": "__anonymous__32",
+          "lineNumber": 32,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 35,
+          "wordAlignedSize": 1,
+          "byteAddress": 140,
+          "id": "__anonymous__33",
+          "lineNumber": 33,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 36,
+          "wordAlignedSize": 1,
+          "byteAddress": 144,
+          "id": "__anonymous__34",
+          "lineNumber": 34,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 37,
+          "wordAlignedSize": 1,
+          "byteAddress": 148,
+          "id": "__anonymous__35",
+          "lineNumber": 35,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 38,
+          "wordAlignedSize": 1,
+          "byteAddress": 152,
+          "id": "__anonymous__36",
+          "lineNumber": 36,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 39,
+          "wordAlignedSize": 1,
+          "byteAddress": 156,
+          "id": "__anonymous__37",
+          "lineNumber": 37,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 40,
+          "wordAlignedSize": 1,
+          "byteAddress": 160,
+          "id": "__anonymous__38",
+          "lineNumber": 38,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 41,
+          "wordAlignedSize": 1,
+          "byteAddress": 164,
+          "id": "__anonymous__39",
+          "lineNumber": 39,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 42,
+          "wordAlignedSize": 1,
+          "byteAddress": 168,
+          "id": "__anonymous__40",
+          "lineNumber": 40,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 43,
+          "wordAlignedSize": 1,
+          "byteAddress": 172,
+          "id": "__anonymous__41",
+          "lineNumber": 41,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 44,
+          "wordAlignedSize": 1,
+          "byteAddress": 176,
+          "id": "__anonymous__42",
+          "lineNumber": 42,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 45,
+          "wordAlignedSize": 1,
+          "byteAddress": 180,
+          "id": "__anonymous__43",
+          "lineNumber": 43,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 46,
+          "wordAlignedSize": 1,
+          "byteAddress": 184,
+          "id": "__anonymous__44",
+          "lineNumber": 44,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 47,
+          "wordAlignedSize": 1,
+          "byteAddress": 188,
+          "id": "__anonymous__45",
+          "lineNumber": 45,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 48,
+          "wordAlignedSize": 1,
+          "byteAddress": 192,
+          "id": "__anonymous__46",
+          "lineNumber": 46,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 49,
+          "wordAlignedSize": 1,
+          "byteAddress": 196,
+          "id": "__anonymous__47",
+          "lineNumber": 47,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 50,
+          "wordAlignedSize": 1,
+          "byteAddress": 200,
+          "id": "__anonymous__48",
+          "lineNumber": 48,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 51,
+          "wordAlignedSize": 1,
+          "byteAddress": 204,
+          "id": "__anonymous__49",
+          "lineNumber": 49,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 52,
+          "wordAlignedSize": 1,
+          "byteAddress": 208,
+          "id": "__anonymous__50",
+          "lineNumber": 50,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 53,
+          "wordAlignedSize": 1,
+          "byteAddress": 212,
+          "id": "__anonymous__51",
+          "lineNumber": 51,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 54,
+          "wordAlignedSize": 1,
+          "byteAddress": 216,
+          "id": "__anonymous__52",
+          "lineNumber": 52,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 55,
+          "wordAlignedSize": 1,
+          "byteAddress": 220,
+          "id": "__anonymous__53",
+          "lineNumber": 53,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 56,
+          "wordAlignedSize": 1,
+          "byteAddress": 224,
+          "id": "__anonymous__54",
+          "lineNumber": 54,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 57,
+          "wordAlignedSize": 1,
+          "byteAddress": 228,
+          "id": "__anonymous__55",
+          "lineNumber": 55,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 58,
+          "wordAlignedSize": 1,
+          "byteAddress": 232,
+          "id": "__anonymous__56",
+          "lineNumber": 56,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 59,
+          "wordAlignedSize": 1,
+          "byteAddress": 236,
+          "id": "__anonymous__57",
+          "lineNumber": 57,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 60,
+          "wordAlignedSize": 1,
+          "byteAddress": 240,
+          "id": "__anonymous__58",
+          "lineNumber": 58,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 61,
+          "wordAlignedSize": 1,
+          "byteAddress": 244,
+          "id": "__anonymous__59",
+          "lineNumber": 59,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 62,
+          "wordAlignedSize": 1,
+          "byteAddress": 248,
+          "id": "__anonymous__60",
+          "lineNumber": 60,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 63,
+          "wordAlignedSize": 1,
+          "byteAddress": 252,
+          "id": "__anonymous__61",
+          "lineNumber": 61,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 64,
+          "wordAlignedSize": 1,
+          "byteAddress": 256,
+          "id": "__anonymous__62",
+          "lineNumber": 62,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 65,
+          "wordAlignedSize": 1,
+          "byteAddress": 260,
+          "id": "__anonymous__63",
+          "lineNumber": 63,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 66,
+          "wordAlignedSize": 1,
+          "byteAddress": 264,
+          "id": "__anonymous__64",
+          "lineNumber": 64,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 67,
+          "wordAlignedSize": 1,
+          "byteAddress": 268,
+          "id": "__anonymous__65",
+          "lineNumber": 65,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 68,
+          "wordAlignedSize": 1,
+          "byteAddress": 272,
+          "id": "__anonymous__66",
+          "lineNumber": 66,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 69,
+          "wordAlignedSize": 1,
+          "byteAddress": 276,
+          "id": "__anonymous__67",
+          "lineNumber": 67,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 70,
+          "wordAlignedSize": 1,
+          "byteAddress": 280,
+          "id": "__anonymous__68",
+          "lineNumber": 68,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 71,
+          "wordAlignedSize": 1,
+          "byteAddress": 284,
+          "id": "__anonymous__69",
+          "lineNumber": 69,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 72,
+          "wordAlignedSize": 1,
+          "byteAddress": 288,
+          "id": "__anonymous__70",
+          "lineNumber": 70,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 73,
+          "wordAlignedSize": 1,
+          "byteAddress": 292,
+          "id": "__anonymous__71",
+          "lineNumber": 71,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 74,
+          "wordAlignedSize": 1,
+          "byteAddress": 296,
+          "id": "__anonymous__72",
+          "lineNumber": 72,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 75,
+          "wordAlignedSize": 1,
+          "byteAddress": 300,
+          "id": "__anonymous__73",
+          "lineNumber": 73,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 76,
+          "wordAlignedSize": 1,
+          "byteAddress": 304,
+          "id": "__anonymous__74",
+          "lineNumber": 74,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 77,
+          "wordAlignedSize": 1,
+          "byteAddress": 308,
+          "id": "__anonymous__75",
+          "lineNumber": 75,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 78,
+          "wordAlignedSize": 1,
+          "byteAddress": 312,
+          "id": "__anonymous__76",
+          "lineNumber": 76,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 79,
+          "wordAlignedSize": 1,
+          "byteAddress": 316,
+          "id": "__anonymous__77",
+          "lineNumber": 77,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 80,
+          "wordAlignedSize": 1,
+          "byteAddress": 320,
+          "id": "__anonymous__78",
+          "lineNumber": 78,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 81,
+          "wordAlignedSize": 1,
+          "byteAddress": 324,
+          "id": "__anonymous__79",
+          "lineNumber": 79,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 82,
+          "wordAlignedSize": 1,
+          "byteAddress": 328,
+          "id": "__anonymous__80",
+          "lineNumber": 80,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 83,
+          "wordAlignedSize": 1,
+          "byteAddress": 332,
+          "id": "__anonymous__81",
+          "lineNumber": 81,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 84,
+          "wordAlignedSize": 1,
+          "byteAddress": 336,
+          "id": "__anonymous__82",
+          "lineNumber": 82,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 85,
+          "wordAlignedSize": 1,
+          "byteAddress": 340,
+          "id": "__anonymous__83",
+          "lineNumber": 83,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 86,
+          "wordAlignedSize": 1,
+          "byteAddress": 344,
+          "id": "__anonymous__84",
+          "lineNumber": 84,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 87,
+          "wordAlignedSize": 1,
+          "byteAddress": 348,
+          "id": "__anonymous__85",
+          "lineNumber": 85,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 88,
+          "wordAlignedSize": 1,
+          "byteAddress": 352,
+          "id": "__anonymous__86",
+          "lineNumber": 86,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 89,
+          "wordAlignedSize": 1,
+          "byteAddress": 356,
+          "id": "__anonymous__87",
+          "lineNumber": 87,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 90,
+          "wordAlignedSize": 1,
+          "byteAddress": 360,
+          "id": "__anonymous__88",
+          "lineNumber": 88,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 91,
+          "wordAlignedSize": 1,
+          "byteAddress": 364,
+          "id": "__anonymous__89",
+          "lineNumber": 89,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 92,
+          "wordAlignedSize": 1,
+          "byteAddress": 368,
+          "id": "__anonymous__90",
+          "lineNumber": 90,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 93,
+          "wordAlignedSize": 1,
+          "byteAddress": 372,
+          "id": "__anonymous__91",
+          "lineNumber": 91,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 94,
+          "wordAlignedSize": 1,
+          "byteAddress": 376,
+          "id": "__anonymous__92",
+          "lineNumber": 92,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 95,
+          "wordAlignedSize": 1,
+          "byteAddress": 380,
+          "id": "__anonymous__93",
+          "lineNumber": 93,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 96,
+          "wordAlignedSize": 1,
+          "byteAddress": 384,
+          "id": "__anonymous__94",
+          "lineNumber": 94,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 97,
+          "wordAlignedSize": 1,
+          "byteAddress": 388,
+          "id": "__anonymous__95",
+          "lineNumber": 95,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 98,
+          "wordAlignedSize": 1,
+          "byteAddress": 392,
+          "id": "__anonymous__96",
+          "lineNumber": 96,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 99,
+          "wordAlignedSize": 1,
+          "byteAddress": 396,
+          "id": "__anonymous__97",
+          "lineNumber": 97,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 100,
+          "wordAlignedSize": 1,
+          "byteAddress": 400,
+          "id": "__anonymous__98",
+          "lineNumber": 98,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 101,
+          "wordAlignedSize": 1,
+          "byteAddress": 404,
+          "id": "__anonymous__99",
+          "lineNumber": 99,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 102,
+          "wordAlignedSize": 1,
+          "byteAddress": 408,
+          "id": "__anonymous__100",
+          "lineNumber": 100,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 103,
+          "wordAlignedSize": 1,
+          "byteAddress": 412,
+          "id": "__anonymous__101",
+          "lineNumber": 101,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 104,
+          "wordAlignedSize": 1,
+          "byteAddress": 416,
+          "id": "__anonymous__102",
+          "lineNumber": 102,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 105,
+          "wordAlignedSize": 1,
+          "byteAddress": 420,
+          "id": "__anonymous__103",
+          "lineNumber": 103,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 106,
+          "wordAlignedSize": 1,
+          "byteAddress": 424,
+          "id": "__anonymous__104",
+          "lineNumber": 104,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 107,
+          "wordAlignedSize": 1,
+          "byteAddress": 428,
+          "id": "__anonymous__105",
+          "lineNumber": 105,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 108,
+          "wordAlignedSize": 1,
+          "byteAddress": 432,
+          "id": "__anonymous__106",
+          "lineNumber": 106,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 109,
+          "wordAlignedSize": 1,
+          "byteAddress": 436,
+          "id": "__anonymous__107",
+          "lineNumber": 107,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 110,
+          "wordAlignedSize": 1,
+          "byteAddress": 440,
+          "id": "__anonymous__108",
+          "lineNumber": 108,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 111,
+          "wordAlignedSize": 1,
+          "byteAddress": 444,
+          "id": "__anonymous__109",
+          "lineNumber": 109,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 112,
+          "wordAlignedSize": 1,
+          "byteAddress": 448,
+          "id": "__anonymous__110",
+          "lineNumber": 110,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 113,
+          "wordAlignedSize": 1,
+          "byteAddress": 452,
+          "id": "__anonymous__111",
+          "lineNumber": 111,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 114,
+          "wordAlignedSize": 1,
+          "byteAddress": 456,
+          "id": "__anonymous__112",
+          "lineNumber": 112,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 115,
+          "wordAlignedSize": 1,
+          "byteAddress": 460,
+          "id": "__anonymous__113",
+          "lineNumber": 113,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 116,
+          "wordAlignedSize": 1,
+          "byteAddress": 464,
+          "id": "__anonymous__114",
+          "lineNumber": 114,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 117,
+          "wordAlignedSize": 1,
+          "byteAddress": 468,
+          "id": "__anonymous__115",
+          "lineNumber": 115,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 118,
+          "wordAlignedSize": 1,
+          "byteAddress": 472,
+          "id": "__anonymous__116",
+          "lineNumber": 116,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 119,
+          "wordAlignedSize": 1,
+          "byteAddress": 476,
+          "id": "__anonymous__117",
+          "lineNumber": 117,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 120,
+          "wordAlignedSize": 1,
+          "byteAddress": 480,
+          "id": "__anonymous__118",
+          "lineNumber": 118,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 121,
+          "wordAlignedSize": 1,
+          "byteAddress": 484,
+          "id": "__anonymous__119",
+          "lineNumber": 119,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 122,
+          "wordAlignedSize": 1,
+          "byteAddress": 488,
+          "id": "__anonymous__120",
+          "lineNumber": 120,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 123,
+          "wordAlignedSize": 1,
+          "byteAddress": 492,
+          "id": "__anonymous__121",
+          "lineNumber": 121,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 124,
+          "wordAlignedSize": 1,
+          "byteAddress": 496,
+          "id": "__anonymous__122",
+          "lineNumber": 122,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 125,
+          "wordAlignedSize": 1,
+          "byteAddress": 500,
+          "id": "__anonymous__123",
+          "lineNumber": 123,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 126,
+          "wordAlignedSize": 1,
+          "byteAddress": 504,
+          "id": "__anonymous__124",
+          "lineNumber": 124,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 127,
+          "wordAlignedSize": 1,
+          "byteAddress": 508,
+          "id": "__anonymous__125",
+          "lineNumber": 125,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 128,
+          "wordAlignedSize": 1,
+          "byteAddress": 512,
+          "id": "__anonymous__126",
+          "lineNumber": 126,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 129,
+          "wordAlignedSize": 1,
+          "byteAddress": 516,
+          "id": "__anonymous__127",
+          "lineNumber": 127,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 130,
+          "wordAlignedSize": 1,
+          "byteAddress": 520,
+          "id": "__anonymous__128",
+          "lineNumber": 128,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 131,
+          "wordAlignedSize": 1,
+          "byteAddress": 524,
+          "id": "__anonymous__129",
+          "lineNumber": 129,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 132,
+          "wordAlignedSize": 1,
+          "byteAddress": 528,
+          "id": "__anonymous__130",
+          "lineNumber": 130,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "__anonymous__3": {
+          "value": 8.1758,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__4": {
+          "value": 8.662,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__5": {
+          "value": 9.177,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__6": {
+          "value": 9.7227,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__7": {
+          "value": 10.3009,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__8": {
+          "value": 10.9134,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__9": {
+          "value": 11.5623,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__10": {
+          "value": 12.2499,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__11": {
+          "value": 12.9783,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__12": {
+          "value": 13.75,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__13": {
+          "value": 14.5676,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__14": {
+          "value": 15.4339,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__15": {
+          "value": 16.3516,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__16": {
+          "value": 17.3239,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__17": {
+          "value": 18.354,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__18": {
+          "value": 19.4454,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__19": {
+          "value": 20.6017,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__20": {
+          "value": 21.8268,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__21": {
+          "value": 23.1247,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__22": {
+          "value": 24.4997,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__23": {
+          "value": 25.9565,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__24": {
+          "value": 27.5,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__25": {
+          "value": 29.1352,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__26": {
+          "value": 30.8677,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__27": {
+          "value": 32.7032,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__28": {
+          "value": 34.6478,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__29": {
+          "value": 36.7081,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__30": {
+          "value": 38.8909,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__31": {
+          "value": 41.2034,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__32": {
+          "value": 43.6535,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__33": {
+          "value": 46.2493,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__34": {
+          "value": 48.9994,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__35": {
+          "value": 51.9131,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__36": {
+          "value": 55,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__37": {
+          "value": 58.2705,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__38": {
+          "value": 61.7354,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__39": {
+          "value": 65.4064,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__40": {
+          "value": 69.2957,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__41": {
+          "value": 73.4162,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__42": {
+          "value": 77.7817,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__43": {
+          "value": 82.4069,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__44": {
+          "value": 87.3071,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__45": {
+          "value": 92.4986,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__46": {
+          "value": 97.9989,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__47": {
+          "value": 103.8262,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__48": {
+          "value": 110,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__49": {
+          "value": 116.5409,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__50": {
+          "value": 123.4708,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__51": {
+          "value": 130.8128,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__52": {
+          "value": 138.5913,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__53": {
+          "value": 146.8324,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__54": {
+          "value": 155.5635,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__55": {
+          "value": 164.8138,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__56": {
+          "value": 174.6141,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__57": {
+          "value": 184.9972,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__58": {
+          "value": 195.9977,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__59": {
+          "value": 207.6523,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__60": {
+          "value": 220,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__61": {
+          "value": 233.0819,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__62": {
+          "value": 246.9417,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__63": {
+          "value": 261.6256,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__64": {
+          "value": 277.1826,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__65": {
+          "value": 293.6648,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__66": {
+          "value": 311.127,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__67": {
+          "value": 329.6276,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__68": {
+          "value": 349.2282,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__69": {
+          "value": 369.9944,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__70": {
+          "value": 391.9954,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__71": {
+          "value": 415.3047,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__72": {
+          "value": 440,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__73": {
+          "value": 466.1638,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__74": {
+          "value": 493.8833,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__75": {
+          "value": 523.2511,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__76": {
+          "value": 554.3653,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__77": {
+          "value": 587.3295,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__78": {
+          "value": 622.254,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__79": {
+          "value": 659.2551,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__80": {
+          "value": 698.4565,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__81": {
+          "value": 739.9888,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__82": {
+          "value": 783.9909,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__83": {
+          "value": 830.6094,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__84": {
+          "value": 880,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__85": {
+          "value": 932.3275,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__86": {
+          "value": 987.7666,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__87": {
+          "value": 1046.5023,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__88": {
+          "value": 1108.7305,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__89": {
+          "value": 1174.6591,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__90": {
+          "value": 1244.5079,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__91": {
+          "value": 1318.5102,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__92": {
+          "value": 1396.9129,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__93": {
+          "value": 1479.9777,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__94": {
+          "value": 1567.9817,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__95": {
+          "value": 1661.2188,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__96": {
+          "value": 1760,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__97": {
+          "value": 1864.655,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__98": {
+          "value": 1975.5332,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__99": {
+          "value": 2093.0045,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__100": {
+          "value": 2217.461,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__101": {
+          "value": 2349.3181,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__102": {
+          "value": 2489.0159,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__103": {
+          "value": 2637.0205,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__104": {
+          "value": 2793.8259,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__105": {
+          "value": 2959.9554,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__106": {
+          "value": 3135.9635,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__107": {
+          "value": 3322.4376,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__108": {
+          "value": 3520,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__109": {
+          "value": 3729.3101,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__110": {
+          "value": 3951.0664,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__111": {
+          "value": 4186.009,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__112": {
+          "value": 4434.9221,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__113": {
+          "value": 4698.6363,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__114": {
+          "value": 4978.0317,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__115": {
+          "value": 5274.0409,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__116": {
+          "value": 5587.6517,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__117": {
+          "value": 5919.9108,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__118": {
+          "value": 6271.927,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__119": {
+          "value": 6644.8752,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__120": {
+          "value": 7040,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__121": {
+          "value": 7458.6202,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__122": {
+          "value": 7902.1328,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__123": {
+          "value": 8372.0181,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__124": {
+          "value": 8869.8442,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__125": {
+          "value": 9397.2726,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__126": {
+          "value": 9956.0635,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__127": {
+          "value": 10548.0818,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__128": {
+          "value": 11175.3034,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__129": {
+          "value": 11839.8215,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "__anonymous__130": {
+          "value": 12543.854,
           "hasExplicitDefault": true,
           "isInherited": false
         }
       },
+      "pointerMetadata": {},
       "wordAlignedSize": 128,
       "ast": {
         "type": "module",
@@ -5819,7 +7953,7 @@
       "memoryIndex": 0,
       "byteAddress": 532,
       "wordAlignedAddress": 133,
-      "memoryMap": {
+      "memory": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -5833,11 +7967,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 16,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -5851,10 +7981,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "notes": {
           "numberOfElements": 1,
@@ -5869,10 +7996,77 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 20,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 133,
+          "wordAlignedSize": 1,
+          "byteAddress": 532,
+          "id": "in",
+          "lineNumber": 3,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 134,
+          "wordAlignedSize": 1,
+          "byteAddress": 536,
+          "id": "out",
+          "lineNumber": 4,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 135,
+          "wordAlignedSize": 1,
+          "byteAddress": 540,
+          "id": "notes",
+          "lineNumber": 5,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in": {
+          "value": 16,
           "hasExplicitDefault": true,
-          "isInherited": false,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "notes": {
+          "value": 20,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in": {
+          "pointeeMemoryIndex": 0
+        },
+        "notes": {
           "pointeeMemoryIndex": 0
         }
       },
@@ -6292,7 +8486,7 @@
       "memoryIndex": 0,
       "byteAddress": 544,
       "wordAlignedAddress": 136,
-      "memoryMap": {
+      "memory": {
         "dAttack": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -6305,10 +8499,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0.0001,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "dRelease": {
           "numberOfElements": 1,
@@ -6322,10 +8513,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0.0001,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "trigger": {
           "numberOfElements": 1,
@@ -6340,11 +8528,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 4,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "attackRate": {
           "numberOfElements": 1,
@@ -6359,11 +8543,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 544,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "releaseRate": {
           "numberOfElements": 1,
@@ -6378,11 +8558,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 548,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -6396,10 +8572,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "attacking": {
           "numberOfElements": 1,
@@ -6413,10 +8586,7 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "previousTrigger": {
           "numberOfElements": 1,
@@ -6430,10 +8600,177 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 136,
+          "wordAlignedSize": 1,
+          "byteAddress": 544,
+          "id": "dAttack",
+          "lineNumber": 5,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 137,
+          "wordAlignedSize": 1,
+          "byteAddress": 548,
+          "id": "dRelease",
+          "lineNumber": 6,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 138,
+          "wordAlignedSize": 1,
+          "byteAddress": 552,
+          "id": "trigger",
+          "lineNumber": 8,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 139,
+          "wordAlignedSize": 1,
+          "byteAddress": 556,
+          "id": "attackRate",
+          "lineNumber": 10,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 140,
+          "wordAlignedSize": 1,
+          "byteAddress": 560,
+          "id": "releaseRate",
+          "lineNumber": 11,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 141,
+          "wordAlignedSize": 1,
+          "byteAddress": 564,
+          "id": "out",
+          "lineNumber": 12,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 142,
+          "wordAlignedSize": 1,
+          "byteAddress": 568,
+          "id": "attacking",
+          "lineNumber": 14,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 143,
+          "wordAlignedSize": 1,
+          "byteAddress": 572,
+          "id": "previousTrigger",
+          "lineNumber": 15,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "dAttack": {
+          "value": 0.0001,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "dRelease": {
+          "value": 0.0001,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "trigger": {
+          "value": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "attackRate": {
+          "value": 544,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "releaseRate": {
+          "value": 548,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
+        },
+        "attacking": {
+          "value": 0,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "previousTrigger": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "trigger": {
+          "pointeeMemoryIndex": 0
+        },
+        "attackRate": {
+          "pointeeMemoryIndex": 0
+        },
+        "releaseRate": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 8,
@@ -7364,7 +9701,7 @@
       "memoryIndex": 0,
       "byteAddress": 576,
       "wordAlignedAddress": 144,
-      "memoryMap": {
+      "memory": {
         "defaultFreq": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -7377,10 +9714,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 440,
-          "hasExplicitDefault": true,
-          "isInherited": false
+          "isUnsigned": false
         },
         "frequency": {
           "numberOfElements": 1,
@@ -7395,11 +9729,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 536,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "phase": {
           "numberOfElements": 1,
@@ -7413,10 +9743,7 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -7430,10 +9757,93 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 144,
+          "wordAlignedSize": 1,
+          "byteAddress": 576,
+          "id": "defaultFreq",
+          "lineNumber": 4,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 145,
+          "wordAlignedSize": 1,
+          "byteAddress": 580,
+          "id": "frequency",
+          "lineNumber": 5,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 146,
+          "wordAlignedSize": 1,
+          "byteAddress": 584,
+          "id": "phase",
+          "lineNumber": 6,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 147,
+          "wordAlignedSize": 1,
+          "byteAddress": 588,
+          "id": "out",
+          "lineNumber": 7,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "defaultFreq": {
+          "value": 440,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "frequency": {
+          "value": 536,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "phase": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
+        },
+        "out": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "frequency": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 4,
@@ -7926,7 +10336,7 @@
       "memoryIndex": 0,
       "byteAddress": 592,
       "wordAlignedAddress": 148,
-      "memoryMap": {
+      "memory": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -7940,11 +10350,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 588,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "volume": {
           "numberOfElements": 1,
@@ -7959,11 +10365,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 564,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -7977,10 +10379,78 @@
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 148,
+          "wordAlignedSize": 1,
+          "byteAddress": 592,
+          "id": "in",
+          "lineNumber": 3,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 149,
+          "wordAlignedSize": 1,
+          "byteAddress": 596,
+          "id": "volume",
+          "lineNumber": 4,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 150,
+          "wordAlignedSize": 1,
+          "byteAddress": 600,
+          "id": "out",
+          "lineNumber": 5,
+          "type": "float",
+          "pointerDepth": 0,
+          "isInteger": false,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in": {
+          "value": 588,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "volume": {
+          "value": 564,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in": {
+          "pointeeMemoryIndex": 0
+        },
+        "volume": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 3,
@@ -8337,7 +10807,7 @@
       "memoryIndex": 0,
       "byteAddress": 604,
       "wordAlignedAddress": 151,
-      "memoryMap": {
+      "memory": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -8351,11 +10821,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
-          "isUnsigned": false,
-          "default": 600,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "buffer": {
           "numberOfElements": 128,
@@ -8369,10 +10835,7 @@
           "isInteger": false,
           "pointerDepth": 0,
           "type": "float",
-          "isUnsigned": false,
-          "default": {},
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "pointer": {
           "numberOfElements": 1,
@@ -8386,10 +10849,74 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 608,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 151,
+          "wordAlignedSize": 1,
+          "byteAddress": 604,
+          "id": "in",
+          "lineNumber": 4,
+          "type": "float*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 128,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedSize": 128,
+          "wordAlignedAddress": 152,
+          "id": "buffer",
+          "lineNumber": 7,
+          "byteAddress": 608,
+          "isInteger": false,
+          "pointerDepth": 0,
+          "type": "float",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 280,
+          "wordAlignedSize": 1,
+          "byteAddress": 1120,
+          "id": "pointer",
+          "lineNumber": 8,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in": {
+          "value": 600,
           "hasExplicitDefault": true,
           "isInherited": false
+        },
+        "buffer": {
+          "value": {},
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "pointer": {
+          "value": 608,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 130,

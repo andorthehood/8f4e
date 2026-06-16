@@ -12,7 +12,7 @@ function resolveBinaryAssetTarget(
 		return null;
 	}
 
-	const memory = state.compiler.compiledModules[moduleId]?.memoryMap[memoryName];
+	const memory = state.compiler.compiledModules[moduleId]?.memory[memoryName];
 	if (!memory) {
 		return null;
 	}

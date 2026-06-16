@@ -152,7 +152,7 @@ describe('web-ui init', () => {
 		const state = createMockState();
 		state.compiler.compiledModules = {
 			screen: {
-				memoryMap: {
+				memory: {
 					rgba: {
 						byteAddress: 4,
 					},

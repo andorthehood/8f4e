@@ -118,7 +118,7 @@
   },
   "moduleMemory": {
     "branchAssertions": {
-      "memoryMap": {
+      "memory": {
         "output": {
           "byteAddress": 4,
           "default": 0,

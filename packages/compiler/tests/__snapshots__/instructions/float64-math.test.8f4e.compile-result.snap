@@ -331,10 +331,10 @@
   },
   "moduleMemory": {
     "float64ComparisonAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "float64SqrtAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

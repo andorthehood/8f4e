@@ -63,7 +63,7 @@ export function getPointerDepthFromMetadata(pointerMetadata: PointerMetadata | u
  * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getDataStructureByteAddress(memoryItem: PlannedMemoryDeclaration): number {
+export function getMemoryByteAddress(memoryItem: PlannedMemoryDeclaration): number {
 	return memoryItem.byteAddress;
 }
 

@@ -1,17 +1,21 @@
-import type { CompiledModule, DataStructure } from '@8f4e/compiler-spec';
+import type { CompiledModule, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export interface ConnectorMemoryDeclaration {
-	memory: DataStructure;
+	memory: PlannedMemoryDeclaration;
 	position: {
 		lineNumber: number;
 		rowOffset: number;
 	};
 }
 
-function getInheritedRowOffset(memory: DataStructure, inheritedRowOffsetByLineNumber: Map<number, number>): number {
-	if (!memory.isInherited) {
+function getInheritedRowOffset(
+	memory: PlannedMemoryDeclaration,
+	compiledModule: CompiledModule,
+	inheritedRowOffsetByLineNumber: Map<number, number>
+): number {
+	if (compiledModule.memoryDefaults[memory.id]!.isInherited !== true) {
 		return 0;
 	}
 
@@ -28,12 +32,12 @@ export function getConnectorMemoryDeclarations(
 	}
 
 	const inheritedRowOffsetByLineNumber = new Map<number, number>();
-	return Object.values(compiledModule.memoryMap)
+	return Object.values(compiledModule.memory)
 		.map(memory => ({
 			memory,
 			position: {
 				lineNumber: memory.lineNumber,
-				rowOffset: getInheritedRowOffset(memory, inheritedRowOffsetByLineNumber),
+				rowOffset: getInheritedRowOffset(memory, compiledModule, inheritedRowOffsetByLineNumber),
 			},
 		}))
 		.sort((left, right) => {
@@ -45,7 +49,7 @@ export function getConnectorRow(declaration: ConnectorMemoryDeclaration, gaps: C
 	return gapCalculator(declaration.position.lineNumber, gaps) + declaration.position.rowOffset;
 }
 
-export function isInputMemoryDeclaration(memory: DataStructure): boolean {
+export function isInputMemoryDeclaration(memory: PlannedMemoryDeclaration): boolean {
 	return memory.pointerDepth > 0;
 }
 
@@ -53,6 +57,6 @@ function isPrivateOutputId(id: string): boolean {
 	return id.startsWith('_') && !id.startsWith('__anonymous__');
 }
 
-export function isOutputMemoryDeclaration(memory: DataStructure): boolean {
+export function isOutputMemoryDeclaration(memory: PlannedMemoryDeclaration): boolean {
 	return memory.pointerDepth === 0 && !isPrivateOutputId(memory.id);
 }

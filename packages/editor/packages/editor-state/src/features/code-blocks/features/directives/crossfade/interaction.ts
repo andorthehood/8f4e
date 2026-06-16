@@ -1,4 +1,4 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type {
 	CodeBlockGraphicData,
 	Crossfade,
@@ -12,8 +12,8 @@ import findCrossfadeWidgetAtViewportCoordinates from './findWidgetAtViewportCoor
 interface ActiveCrossfade {
 	crossfade: Crossfade;
 	codeBlock: CodeBlockGraphicData;
-	leftMemory: Pick<DataStructure, 'wordAlignedAddress'>;
-	rightMemory: Pick<DataStructure, 'wordAlignedAddress'>;
+	leftMemory: Pick<PlannedMemoryDeclaration, 'wordAlignedAddress'>;
+	rightMemory: Pick<PlannedMemoryDeclaration, 'wordAlignedAddress'>;
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -48,8 +48,8 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 		}
 
 		const module = state.compiler.compiledModules[codeBlock.name];
-		const leftMemory = module?.memoryMap[crossfade.leftId];
-		const rightMemory = module?.memoryMap[crossfade.rightId];
+		const leftMemory = module?.memory[crossfade.leftId];
+		const rightMemory = module?.memory[crossfade.rightId];
 
 		if (!leftMemory || !rightMemory) {
 			return;

@@ -1,4 +1,4 @@
-import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, MemoryIdentifier, State } from '@8f4e/editor-state-types';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
@@ -35,7 +35,7 @@ describe('meter directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							level: {
 								wordAlignedAddress: 0,
 								byteAddress: 0,
@@ -100,7 +100,7 @@ describe('meter directive widget resolution', () => {
 			overloadMarkerWidth: 0,
 			staticValueIndex: 0,
 			memory: {
-				memory: { wordAlignedAddress: 0 } as DataStructure,
+				memory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
 				showAddress: false,
 				showEndAddress: false,
 				bufferPointer: 0,
@@ -125,7 +125,7 @@ describe('meter directive widget resolution', () => {
 
 	it('infers the memory id from a trailing memory declaration comment', () => {
 		setMockCodeBlockCode(mockGraphicData, ['float out ; @meter']);
-		mockState.compiler.compiledModules['test-block'].memoryMap['out'] = {
+		mockState.compiler.compiledModules['test-block'].memory['out'] = {
 			wordAlignedAddress: 4,
 			byteAddress: 16,
 			numberOfElements: 1,

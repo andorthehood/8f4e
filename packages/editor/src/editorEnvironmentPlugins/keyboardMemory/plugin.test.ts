@@ -65,7 +65,7 @@ describe('keyboardMemoryPlugin', () => {
 			compiler: {
 				compiledModules: {
 					keys: {
-						memoryMap: {
+						memory: {
 							code: { wordAlignedAddress: 4 },
 							pressed: { wordAlignedAddress: 5 },
 						},
@@ -117,7 +117,7 @@ describe('keyboardMemoryPlugin', () => {
 			compiler: {
 				compiledModules: {
 					keys: {
-						memoryMap: {
+						memory: {
 							pressed: { wordAlignedAddress: 8 },
 						},
 					},

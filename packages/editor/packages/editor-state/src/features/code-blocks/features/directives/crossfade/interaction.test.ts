@@ -28,7 +28,7 @@ describe('crossfade interaction', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							dry: {
 								wordAlignedAddress: 5,
 							},
