@@ -1,5 +1,5 @@
 import type { InstructionCompiler, LoopBlockStackFrame, LoopLine, NormalizedLoopLine } from '@8f4e/compiler-spec';
-import { ArgumentType, BlockType, ErrorCode } from '@8f4e/compiler-spec';
+import { ArgumentType, BlockType, ErrorCode, getError } from '@8f4e/compiler-spec';
 import {
 	br,
 	i32const,
@@ -13,7 +13,6 @@ import {
 	WASM_LOOP,
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
-import { getError } from '../compilerError';
 import { pushBlock } from '../utils/blockStack';
 import { saveByteCode } from './utils/saveByteCode';
 

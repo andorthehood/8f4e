@@ -17,20 +17,12 @@
  *  before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
  */
 
-import type {
-	CodegenContext,
-	CompilationContext,
-	CompilerASTLine,
-	CompilerDiagnosticContext,
-	CompilerStageError,
-	ErrorCodeValue,
-} from '@8f4e/compiler-spec';
-import {
-	ErrorCode,
-	MAX_FUNCTION_PARAMETERS,
-	MAX_FUNCTION_RETURN_VALUES,
-	SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS,
-} from '@8f4e/compiler-spec';
+import type { CompilerASTLine } from './ast';
+import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from './constants';
+import type { CompilerDiagnosticContext, CompilerStageError } from './diagnostics';
+import { ErrorCode, type ErrorCodeValue } from './errors';
+import { MAX_FUNCTION_PARAMETERS, MAX_FUNCTION_RETURN_VALUES } from './functionTypes';
+import type { CodegenContext, CompilationContext } from './semantic';
 
 export { ErrorCode };
 

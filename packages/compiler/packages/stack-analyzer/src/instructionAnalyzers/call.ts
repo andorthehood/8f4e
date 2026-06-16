@@ -7,9 +7,8 @@ import type {
 	Stack,
 	StackItem,
 } from '@8f4e/compiler-spec';
-import { createFunctionId, ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../../compilerError';
-import { functionValueTypeToStackItem } from '../../utils/functionValueType';
+import { createFunctionId, ErrorCode, getError } from '@8f4e/compiler-spec';
+import { functionValueTypeToStackItem } from '../utils/functionValueType';
 import { analyzePush } from './push';
 import { consume, produce } from './stack';
 

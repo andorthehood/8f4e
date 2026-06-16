@@ -1,6 +1,10 @@
-import { type CompilationContext, ErrorCode, type LocalSetLine, type ResolvedLocalSetLine } from '@8f4e/compiler-spec';
-
-import { getError } from '../../compilerError';
+import {
+	type CompilationContext,
+	ErrorCode,
+	getError,
+	type LocalSetLine,
+	type ResolvedLocalSetLine,
+} from '@8f4e/compiler-spec';
 
 /**
  * Validates that localSet targets an already-declared local.

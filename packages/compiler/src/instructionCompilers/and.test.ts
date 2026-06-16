@@ -1,7 +1,6 @@
 import type { CompilerASTLine } from '@8f4e/compiler-spec';
+import { analyzeInstruction } from '@8f4e/stack-analyzer';
 import { describe, expect, it } from 'vitest';
-
-import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 import and from './and';
 
@@ -42,7 +41,7 @@ describe('and instruction compiler', () => {
 		} as CompilerASTLine;
 
 		expect(() => {
-			validateInstruction(line, context);
+			analyzeInstruction(line, context);
 		}).toThrowError();
 	});
 

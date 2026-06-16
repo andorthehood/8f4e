@@ -1,8 +1,8 @@
-import { type CompilerASTLine, ErrorCode } from '@8f4e/compiler-spec';
-import { classifyIdentifier } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
-
+import { ArgumentType } from './arguments';
+import type { CompilerASTLine } from './ast';
 import { getError } from './compilerError';
+import { ErrorCode } from './errors';
 
 describe('getError', () => {
 	const line = {
@@ -55,7 +55,7 @@ describe('getError', () => {
 		const localLine = {
 			lineNumber: 1,
 			instruction: 'push',
-			arguments: [classifyIdentifier('missingLocal')],
+			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'missingLocal' }],
 		} as CompilerASTLine;
 
 		const error = getError(ErrorCode.UNDECLARED_IDENTIFIER, localLine, undefined, { identifier: 'missingLocal' });
@@ -79,7 +79,7 @@ describe('getError', () => {
 		const line = {
 			lineNumber: 1,
 			instruction: 'module',
-			arguments: [classifyIdentifier('same')],
+			arguments: [{ type: ArgumentType.IDENTIFIER, value: 'same' }],
 		} as CompilerASTLine;
 
 		const error = getError(ErrorCode.DUPLICATE_IDENTIFIER, line, undefined, { identifier: 'same' });

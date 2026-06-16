@@ -4,7 +4,6 @@ import { join, relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const instructionCompilerRoot = join(import.meta.dirname, 'instructionCompilers');
-const stackAnalysisRoot = join(import.meta.dirname, 'stackAnalysis');
 
 function listTypeScriptFiles(directory: string): string[] {
 	return readdirSync(directory).flatMap(entry => {
@@ -30,24 +29,11 @@ describe('compiler architecture boundaries', () => {
 				fileViolations.push(`${relativePath}: context.stack`);
 			}
 
-			if (/from ['"](?:\.\.\/)+stackAnalysis\//.test(source)) {
+			if (/from ['"]@8f4e\/stack-analyzer['"]/.test(source)) {
 				fileViolations.push(`${relativePath}: stackAnalysis import`);
 			}
 
 			return fileViolations;
-		});
-
-		expect(violations).toEqual([]);
-	});
-
-	it('keeps stack analysis independent from instruction codegen modules', () => {
-		const violations = listTypeScriptFiles(stackAnalysisRoot).flatMap(file => {
-			const source = readFileSync(file, 'utf8');
-			const relativePath = relative(import.meta.dirname, file);
-
-			return /from ['"]\.\.\/instructionCompilers\//.test(source)
-				? [`${relativePath}: instructionCompilers import`]
-				: [];
 		});
 
 		expect(violations).toEqual([]);
