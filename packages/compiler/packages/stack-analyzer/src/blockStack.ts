@@ -54,7 +54,7 @@ export function popBlock(context: BlockContext) {
 	return block;
 }
 
-/** Synchronizes legacy inside-block booleans with the cached block depth for a block type. */
+/** Synchronizes inside-block booleans with the cached block depth for a block type. */
 function updateBlockContextFlag(context: BlockContext, blockType: BlockTypeValue, isInside: boolean) {
 	switch (blockType) {
 		case BlockType.MODULE:
