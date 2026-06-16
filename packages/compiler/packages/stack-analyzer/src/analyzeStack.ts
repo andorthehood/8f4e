@@ -63,6 +63,8 @@ const importedFunctionAllowedInstructions = new Set([
 
 const functionParameterPhaseInstructions = new Set([
 	'function',
+	'const',
+	'use',
 	'#import',
 	'#impure',
 	'#loopCap',

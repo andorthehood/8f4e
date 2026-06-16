@@ -183,6 +183,38 @@ describe('compile prototype validation', () => {
 		});
 	});
 
+	it('allows function namespace imports before parameter declarations', () => {
+		const result = compile(
+			{
+				...emptyCompileInput,
+				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
+				constants: [{ code: ['constants math', 'const OFFSET 2', 'constantsEnd'] }],
+				functions: [
+					{
+						code: [
+							'function addOffset',
+							'use math',
+							'const EXTRA_OFFSET 3',
+							'param int value',
+							'push value',
+							'push OFFSET',
+							'add',
+							'push EXTRA_OFFSET',
+							'add',
+							'functionEnd int',
+						],
+					},
+				],
+			},
+			{ disableSharedMemory: true }
+		);
+
+		const functionId = createFunctionId('addOffset', ['int']);
+		expect(result.compiledFunctions![functionId]).toMatchObject({
+			signature: { parameters: ['int'], returns: ['int'] },
+		});
+	});
+
 	it('collects same-name functions as overloads when parameter signatures differ', () => {
 		const result = compile(
 			{
