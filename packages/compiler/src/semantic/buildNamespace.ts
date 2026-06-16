@@ -1,6 +1,4 @@
 import {
-	type CompilationContext,
-	type CompileOptions,
 	type CompilerDiagnosticContext,
 	compilerSourceBlockInstructionByType,
 	createFunctionId,
@@ -12,16 +10,12 @@ import {
 	getError,
 	getMemoryRegionFields,
 	type Namespaces,
-	type SemanticInstructionLine,
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
-	validateMemoryRegionOptions,
 } from '@8f4e/language-spec';
 import type { ResolveMemoryDefaultsResult } from '@8f4e/memory-default-resolver';
 import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
-import applySemanticInstruction from './instructions';
-import normalizeValueArguments from './normalizeValueArguments';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
@@ -159,33 +153,18 @@ export function assertUniqueModuleIds(asts: readonly ValidatedModuleAST[]): void
 }
 
 /**
- * Normalizes and applies one semantic instruction, trusting tokenizer placement validation.
- *
- * @param line - AST line being processed.
- * @param context - Compilation context used by the operation.
- * @returns Nothing.
- */
-export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
-	const normalizedLine = normalizeValueArguments(line, context);
-	applySemanticInstruction(normalizedLine, context);
-}
-
-/**
  * Discovers planned namespaces for modules.
  *
  * @param asts - Validated ASTs being processed.
  * @param memoryPlan - Completed memory layout plan for the project.
  * @param defaultResolution - Resolved defaults and pointer metadata keyed by module id.
- * @param options - Compiler options for this compilation pass.
  * @returns The computed result.
  */
 export function collectNamespacesFromASTs(
 	asts: readonly ValidatedModuleAST[],
 	memoryPlan: MemoryLayoutPlan,
-	defaultResolution: ResolveMemoryDefaultsResult,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	defaultResolution: ResolveMemoryDefaultsResult
 ): Namespaces {
-	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
 	const namespaces: Namespaces = {};
 
 	for (const plannedModule of memoryPlan.moduleList) {

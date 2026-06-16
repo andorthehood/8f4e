@@ -2,21 +2,23 @@
 
 `@8f4e/memory-planner` decides module addresses and memory declaration addresses for a project.
 
-The planner receives planner-ready memory layout source:
-
-- `prototypes`: prototype ids with normalized memory declaration lines.
-- `modules`: module ids, optional memory region lines, and ordered layout source lines.
-
-Module layout source lines are either memory declarations or `shape` lines. The planner expands `shape` lines into effective declaration sources, then plans those declarations in order.
+The project-level entry point receives validated module and prototype ASTs whose constants have already been inlined:
 
 ```ts
-const memoryPlan = planMemoryLayout({
+const memoryPlan = planProjectMemoryLayout({
 	prototypes,
 	modules,
 	startingByteAddress,
 	memoryRegions,
 });
 ```
+
+The planner builds planner-ready memory layout source from those ASTs:
+
+- `prototypes`: prototype ids with normalized memory declaration lines.
+- `modules`: module ids, optional memory region lines, and ordered layout source lines.
+
+Module layout source lines are either memory declarations or `shape` lines. The planner expands `shape` lines into effective declaration sources, then plans those declarations in order.
 
 The returned plan contains:
 
@@ -31,6 +33,7 @@ This package owns:
 
 - Module byte addresses.
 - Memory declaration byte addresses.
+- Building planner-ready memory layout source from validated ASTs.
 - Declaration order after `shape` expansion.
 - Declaration size and type layout facts.
 - Unknown `shape` prototype references, because layout cannot be planned without them.
