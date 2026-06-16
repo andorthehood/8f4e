@@ -1,5 +1,5 @@
+import { getDereferencedValueKindFromMetadata } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
-import { getDereferencedValueKindFromMetadata } from '../../utils/memoryData';
 import { kindToStackItem, resolveArgumentValueKind } from './shared';
 
 describe('push shared helpers', () => {

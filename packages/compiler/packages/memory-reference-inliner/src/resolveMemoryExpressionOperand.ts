@@ -7,19 +7,13 @@ import type {
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
 } from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
 import {
-	getWordAlignedByteLength,
-	memoryEndAddressValue,
-	memoryStartAddressValue,
-	moduleAddressValue,
-} from './addressValues';
-import { getEndByteAddress } from './layoutAddresses';
-import {
+	ArgumentType,
 	getElementCount,
 	getElementMaxValue,
 	getElementMinValue,
 	getElementWordSize,
+	getMemoryRegionFields,
 	getPointeeElementIsIntegerFromMetadata,
 	getPointeeElementMaxValue,
 	getPointeeElementMaxValueFromMetadata,
@@ -28,8 +22,14 @@ import {
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
 	type PointerMetadata,
-} from './memoryData';
-import { getMemoryRegionFields } from './memoryRegions';
+} from '@8f4e/compiler-spec';
+import {
+	getWordAlignedByteLength,
+	memoryEndAddressValue,
+	memoryStartAddressValue,
+	moduleAddressValue,
+} from './addressValues';
+import { getEndByteAddress } from './layoutAddresses';
 
 export type MemoryReferenceModuleNamespace = PlannedMemoryModule;
 
