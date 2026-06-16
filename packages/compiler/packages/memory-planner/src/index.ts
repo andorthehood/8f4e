@@ -1,14 +1,22 @@
-import type { MemoryDeclarationLine, ModuleLine, RegionLine } from '@8f4e/compiler-spec';
+import type {
+	MemoryDeclarationLine,
+	MemoryLayoutPlan,
+	MemoryRegionIdentity,
+	ModuleLine,
+	PlannedMemoryDeclaration,
+	PlannedMemoryModule,
+	RegionLine,
+} from '@8f4e/compiler-spec';
 import { ArgumentType, GLOBAL_ALIGNMENT_BOUNDARY, isScalarMemoryDeclarationLine } from '@8f4e/compiler-spec';
-import {
-	type MemoryRegionIdentity,
-	type PlannedMemoryDeclaration,
-	planArrayDeclarationLayout,
-	planScalarDeclarationLayout,
-} from './declarations';
+import { planArrayDeclarationLayout, planScalarDeclarationLayout } from './declarations';
 import { advanceModuleByteAddress, createModuleAddressCursor, getNextModuleByteAddress } from './modules';
 
-export type { MemoryRegionIdentity, PlannedMemoryDeclaration } from './declarations';
+export type {
+	MemoryLayoutPlan,
+	MemoryRegionIdentity,
+	PlannedMemoryDeclaration,
+	PlannedMemoryModule,
+} from '@8f4e/compiler-spec';
 
 export interface MemoryLayoutSourceModule {
 	id: string;
@@ -21,21 +29,6 @@ export interface MemoryLayoutPlanInput {
 	modules: readonly MemoryLayoutSourceModule[];
 	startingByteAddress?: number;
 	memoryRegions?: readonly string[];
-}
-
-export interface PlannedMemoryModule extends MemoryRegionIdentity {
-	id: string;
-	lineNumber: number;
-	byteAddress: number;
-	wordAlignedSize: number;
-	memory: Record<string, PlannedMemoryDeclaration>;
-	declarations: readonly PlannedMemoryDeclaration[];
-}
-
-export interface MemoryLayoutPlan {
-	modules: Record<string, PlannedMemoryModule>;
-	moduleList: readonly PlannedMemoryModule[];
-	nextByteAddressByMemoryIndex: Record<number, number>;
 }
 
 function getCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string | undefined {

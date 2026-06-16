@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import float64 from './float64';
 import int from './int';
-import { applyPlannedMemoryDeclaration, prepareMemoryDeclarationPlan } from './testUtils';
+import { applyPlannedMemoryDeclaration, getTestMemoryMap, prepareMemoryDeclarationPlan } from './testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -22,7 +22,7 @@ describe('float64 instruction compiler', () => {
 			context
 		);
 
-		expect(context.namespace.memory).toMatchSnapshot();
+		expect(getTestMemoryMap(context)).toMatchSnapshot();
 	});
 
 	it('float64 scalar has elementWordSize 8', () => {
@@ -39,7 +39,7 @@ describe('float64 instruction compiler', () => {
 			context
 		);
 
-		expect(context.namespace.memory['value'].elementWordSize).toBe(8);
+		expect(getTestMemoryMap(context)['value'].elementWordSize).toBe(8);
 	});
 
 	it('float64 at offset 0 has byteAddress divisible by 8', () => {
@@ -56,7 +56,7 @@ describe('float64 instruction compiler', () => {
 			context
 		);
 
-		expect(context.namespace.memory['value'].byteAddress % 8).toBe(0);
+		expect(getTestMemoryMap(context)['value'].byteAddress % 8).toBe(0);
 	});
 
 	it('aligns second float64 to 8 bytes after odd number of int32 vars', () => {
@@ -104,7 +104,7 @@ describe('float64 instruction compiler', () => {
 		// Second float64 must still be 8-byte aligned despite odd preceding offset
 		applyPlannedMemoryDeclaration(float64, secondFloat64, context);
 
-		const entry = context.namespace.memory['b'];
+		const entry = getTestMemoryMap(context)['b'];
 		expect(entry.byteAddress % 8).toBe(0);
 		expect(entry.wordAlignedAddress % 2).toBe(0);
 	});
@@ -123,7 +123,7 @@ describe('float64 instruction compiler', () => {
 			context
 		);
 
-		const entry = context.namespace.memory['ptr'];
+		const entry = getTestMemoryMap(context)['ptr'];
 		expect(entry.elementWordSize).toBe(4);
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.pointeeBaseType).toBe('float64');
@@ -144,7 +144,7 @@ describe('float64 instruction compiler', () => {
 			context
 		);
 
-		const entry = context.namespace.memory['pptr'];
+		const entry = getTestMemoryMap(context)['pptr'];
 		expect(entry.elementWordSize).toBe(4);
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.pointeeBaseType).toBe('float64');

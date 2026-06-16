@@ -1,5 +1,6 @@
 import type { CompilationContext, MemoryDeclarationLine } from '@8f4e/compiler-spec';
 import { planMemoryLayout } from '@8f4e/memory-planner';
+import { createMemoryMapFromPlan } from '../memoryState';
 import type { MemoryDeclarationCompiler } from './createDeclarationCompiler';
 
 /** Seeds a declaration compiler test context with a memory plan for the declarations under test. */
@@ -19,8 +20,9 @@ export function prepareMemoryDeclarationPlan(
 		memoryRegions: context.memoryRegions,
 	});
 	const [modulePlan] = plan.moduleList;
-	context.memoryLayoutDeclarations = modulePlan.declarations;
-	context.currentMemoryLayoutDeclarationIndex = 0;
+	context.memoryPlan = plan;
+	context.currentPlannedModule = modulePlan;
+	context.currentPlannedMemoryDeclarationIndex = 0;
 	context.currentModuleWordAlignedSize = modulePlan.wordAlignedSize;
 }
 
@@ -30,8 +32,13 @@ export function applyPlannedMemoryDeclaration<TLine extends MemoryDeclarationLin
 	line: TLine,
 	context: CompilationContext
 ): CompilationContext {
-	if (!context.memoryLayoutDeclarations) {
+	if (!context.currentPlannedModule) {
 		prepareMemoryDeclarationPlan(context, [line]);
 	}
 	return compileDeclaration(line, context);
+}
+
+/** Materializes the current planned module's resolved memory map for declaration tests. */
+export function getTestMemoryMap(context: CompilationContext) {
+	return createMemoryMapFromPlan(context.currentPlannedModule, context);
 }

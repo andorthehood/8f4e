@@ -16,7 +16,6 @@ import {
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	type MemoryDeclarationLine,
-	type MemoryMap,
 	type NamespaceBuildContext,
 	type Namespaces,
 	type SemanticInstructionLine,
@@ -28,7 +27,6 @@ import {
 import {
 	type MemoryLayoutPlan,
 	type MemoryLayoutSourceModule,
-	type PlannedMemoryDeclaration,
 	type PlannedMemoryModule,
 	planMemoryLayout,
 } from '@8f4e/memory-planner';
@@ -44,7 +42,6 @@ import {
 } from './normalization/helpers';
 import normalizeValueArguments from './normalizeValueArguments';
 import { getEffectiveFunctionMetadata } from './paramShape';
-import parseMemoryInstructionArguments from './utils/memoryInstructionParser';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
@@ -200,14 +197,14 @@ function createNamespaceBuildContext(
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
-	plannedModule?: PlannedMemoryModule
+	plannedModule?: PlannedMemoryModule,
+	memoryPlan?: MemoryLayoutPlan
 ): NamespaceBuildContext {
 	const defaultRegion = getDefaultMemoryRegion();
 	const currentMemoryRegion = plannedModule ?? defaultRegion;
 	return createCompilationContext<NamespaceBuildContext>({
 		namespace: {
 			namespaces,
-			memory: {},
 			moduleName: undefined,
 			functions,
 			prototypeShapeIds: [],
@@ -221,8 +218,11 @@ function createNamespaceBuildContext(
 		currentModuleWordAlignedSize: plannedModule?.wordAlignedSize ?? 0,
 		currentMemoryIndex: currentMemoryRegion.memoryIndex,
 		...(currentMemoryRegion.memoryRegionName ? { currentMemoryRegionName: currentMemoryRegion.memoryRegionName } : {}),
-		memoryLayoutDeclarations: plannedModule?.declarations,
-		currentMemoryLayoutDeclarationIndex: 0,
+		...(memoryPlan ? { memoryPlan } : {}),
+		currentPlannedModule: plannedModule,
+		currentPlannedMemoryDeclarationIndex: 0,
+		memoryDefaults: {},
+		pointerMetadata: {},
 		memoryRegions: options.memoryRegions ?? [],
 		mode: moduleBlock.type,
 		codeBlockType: ast.type,
@@ -272,26 +272,8 @@ function applyNamespaceDiscoveryLines(
 		return;
 	}
 
-	context.namespace.memory = createLayoutOnlyMemoryMap(plannedModule.memory);
 	context.currentModuleNextWordOffset = plannedModule.wordAlignedSize;
 	context.currentModuleWordAlignedSize = plannedModule.wordAlignedSize;
-}
-
-function resolveScalarMemoryDefaults(ast: ValidatedModuleAST, context: NamespaceBuildContext): void {
-	ast.lines.forEach(originalLine => {
-		if (!isMemoryDeclarationLine(originalLine) || originalLine.instruction.endsWith('[]')) {
-			return;
-		}
-
-		const line = normalizeValueArguments(originalLine, context);
-		const { id, defaultValue } = parseMemoryInstructionArguments(line, context);
-		const memoryItem = context.namespace.memory[id];
-		if (!memoryItem || memoryItem.numberOfElements !== 1) {
-			return;
-		}
-
-		memoryItem.default = memoryItem.isInteger ? Math.trunc(defaultValue) : defaultValue;
-	});
 }
 
 function discoverNamespace(
@@ -301,7 +283,8 @@ function discoverNamespace(
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
-	plannedModule?: PlannedMemoryModule
+	plannedModule?: PlannedMemoryModule,
+	memoryPlan?: MemoryLayoutPlan
 ): NamespaceBuildContext {
 	const context = createNamespaceBuildContext(
 		ast,
@@ -310,7 +293,8 @@ function discoverNamespace(
 		functions,
 		options,
 		prototypeShapes,
-		plannedModule
+		plannedModule,
+		memoryPlan
 	);
 	applyNamespaceDiscoveryLines(ast, context, plannedModule);
 
@@ -335,7 +319,8 @@ export function layoutNamespace(
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'memoryRegions'> = {},
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
-	plannedModule?: PlannedMemoryModule
+	plannedModule?: PlannedMemoryModule,
+	memoryPlan?: MemoryLayoutPlan
 ): NamespaceBuildContext {
 	const context = createNamespaceBuildContext(
 		ast,
@@ -344,10 +329,10 @@ export function layoutNamespace(
 		functions,
 		options,
 		prototypeShapes,
-		plannedModule
+		plannedModule,
+		memoryPlan
 	);
 	applyNamespaceDeclarationLines(ast, context);
-	resolveScalarMemoryDefaults(ast, context);
 
 	return context;
 }
@@ -398,20 +383,6 @@ function normalizeLayoutMemoryDeclarationLine(
 	}
 
 	return normalizedLine;
-}
-
-function createLayoutOnlyMemoryMap(memory: Record<string, PlannedMemoryDeclaration>): MemoryMap {
-	const layoutMemory: MemoryMap = {};
-
-	for (const [id, declaration] of Object.entries(memory)) {
-		layoutMemory[id] = {
-			...declaration,
-			default: 0,
-			isInherited: false,
-		};
-	}
-
-	return layoutMemory;
 }
 
 function appendLayoutMemoryDeclarationLine(
@@ -575,15 +546,17 @@ export function collectNamespacesFromASTs(
 					compiledFunctions,
 					options,
 					prototypeShapes,
-					memoryPlan.modules[ast.id]
+					memoryPlan.modules[ast.id],
+					memoryPlan
 				);
 				if (!context.namespace.moduleName) {
 					continue;
 				}
 				namespaces[context.namespace.moduleName] = {
 					kind: ast.type,
-					memory: context.namespace.memory,
 					...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
+					memoryDefaults: context.memoryDefaults,
+					pointerMetadata: context.pointerMetadata,
 					...(memoryPlan.modules[ast.id]
 						? {
 								byteAddress: memoryPlan.modules[ast.id].byteAddress,
@@ -615,7 +588,8 @@ export function collectNamespacesFromASTs(
 			compiledFunctions,
 			options,
 			prototypeShapes,
-			memoryPlan.modules[pendingAsts[0].id]
+			memoryPlan.modules[pendingAsts[0].id],
+			memoryPlan
 		);
 	}
 
@@ -631,7 +605,8 @@ export function collectNamespacesFromASTs(
 			compiledFunctions,
 			options,
 			prototypeShapes,
-			plannedModule
+			plannedModule,
+			memoryPlan
 		);
 		if (!context.namespace.moduleName) {
 			continue;
@@ -639,11 +614,12 @@ export function collectNamespacesFromASTs(
 
 		namespaces[context.namespace.moduleName] = {
 			kind: moduleBlock.type,
-			memory: context.namespace.memory,
 			...getMemoryRegionFields(plannedModule.memoryIndex, plannedModule.memoryRegionName),
 			byteAddress: plannedModule.byteAddress,
 			wordAlignedSize: plannedModule.wordAlignedSize,
 			isMemoryLayoutFinalized: true,
+			memoryDefaults: context.memoryDefaults,
+			pointerMetadata: context.pointerMetadata,
 		};
 	}
 

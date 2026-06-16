@@ -9,27 +9,20 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('pushMemoryIdentifier', () => {
 	it('loads memory value at byteAddress', () => {
-		const context = createInstructionCompilerTestContext({
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				memory: {
-					value: {
-						id: 'value',
-						numberOfElements: 1,
-						elementWordSize: 4,
-						wordAlignedAddress: 2,
-						wordAlignedSize: 1,
-						byteAddress: 8,
-						default: 0,
-						isInteger: true,
-						pointerDepth: 0,
-						isUnsigned: false,
-						type: 'int',
-					} as never,
-				},
-			},
-		});
-		const memoryItem = context.namespace.memory.value;
+		const context = createInstructionCompilerTestContext();
+		const memoryItem = {
+			id: 'value',
+			numberOfElements: 1,
+			elementWordSize: 4,
+			wordAlignedAddress: 2,
+			wordAlignedSize: 1,
+			byteAddress: 8,
+			default: 0,
+			isInteger: true,
+			pointerDepth: 0,
+			isUnsigned: false,
+			type: 'int',
+		} as never;
 
 		pushMemoryIdentifier(
 			{

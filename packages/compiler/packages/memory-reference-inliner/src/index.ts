@@ -109,11 +109,9 @@ function createResolutionContext(
 ): MemoryReferenceResolutionContext {
 	const module = moduleId ? memoryPlan.modules[moduleId] : undefined;
 	return {
-		namespace: {
-			memory: module ? (namespaces[module.id]?.memory ?? toMemoryMap(module.memory)) : {},
-			namespaces,
-			...(moduleId ? { moduleName: moduleId } : {}),
-		},
+		memory: module ? (namespaces[module.id]?.memory ?? toMemoryMap(module.memory)) : {},
+		namespaces,
+		...(moduleId ? { moduleName: moduleId } : {}),
 		locals: {},
 		startingByteAddress: module?.byteAddress ?? 0,
 		currentModuleWordAlignedSize: module?.wordAlignedSize ?? 0,
@@ -163,10 +161,10 @@ function getPointeeMemoryItem(
 	}
 
 	if (safeRange.moduleId) {
-		return context.namespace.namespaces[safeRange.moduleId]?.memory[memoryId];
+		return context.namespaces[safeRange.moduleId]?.memory[memoryId];
 	}
 
-	return context.namespace.memory[memoryId];
+	return context.memory[memoryId];
 }
 
 function getPointeeElementCount(
@@ -198,14 +196,14 @@ function updatePointerMemoryMetadata(line: CompilerASTLine, context: MemoryRefer
 		return;
 	}
 
-	const declaration = context.namespace.memory[idArgument.value];
+	const declaration = context.memory[idArgument.value];
 	if (!declaration?.pointeeBaseType) {
 		return;
 	}
 
 	const defaultAddress = (defaultArgument as NormalizedArgumentLiteral).address;
 	const pointeeElementCount = getPointeeElementCount(defaultAddress, context);
-	context.namespace.memory[idArgument.value] = {
+	context.memory[idArgument.value] = {
 		...declaration,
 		pointeeMemoryIndex: defaultAddress?.memoryIndex ?? 0,
 		...(defaultAddress?.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),

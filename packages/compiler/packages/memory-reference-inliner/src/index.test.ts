@@ -200,32 +200,30 @@ describe('inlineMemoryReferences', () => {
 
 describe('tryResolveValueArgument', () => {
 	const mockContext = {
-		namespace: {
-			memory: {
-				samples: {
-					id: 'samples',
-					byteAddress: 32,
-					numberOfElements: 8,
-					elementWordSize: 2,
-					wordAlignedSize: 4,
-					isInteger: true,
-				},
-				floatBuf: {
-					numberOfElements: 4,
-					elementWordSize: 4,
-					isInteger: false,
-				},
-				floatPtr: {
-					numberOfElements: 1,
-					elementWordSize: 1,
-					isInteger: true,
-					pointeeBaseType: 'float',
-					pointerDepth: 1,
-					pointeeElementCount: 4,
-				},
+		memory: {
+			samples: {
+				id: 'samples',
+				byteAddress: 32,
+				numberOfElements: 8,
+				elementWordSize: 2,
+				wordAlignedSize: 4,
+				isInteger: true,
 			},
-			namespaces: {},
+			floatBuf: {
+				numberOfElements: 4,
+				elementWordSize: 4,
+				isInteger: false,
+			},
+			floatPtr: {
+				numberOfElements: 1,
+				elementWordSize: 1,
+				isInteger: true,
+				pointeeBaseType: 'float',
+				pointerDepth: 1,
+				pointeeElementCount: 4,
+			},
 		},
+		namespaces: {},
 		startingByteAddress: 24,
 		currentModuleWordAlignedSize: 5,
 		locals: {},
@@ -309,17 +307,14 @@ describe('tryResolveValueArgument', () => {
 	it('resolves intermodule sizeof expressions', () => {
 		const intermodularNamespace = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				namespaces: {
-					source: {
-						kind: 'module',
-						memory: {
-							buffer: {
-								numberOfElements: 4,
-								elementWordSize: 2,
-								isInteger: true,
-							},
+			namespaces: {
+				source: {
+					kind: 'module',
+					memory: {
+						buffer: {
+							numberOfElements: 4,
+							elementWordSize: 2,
+							isInteger: true,
 						},
 					},
 				},
@@ -491,22 +486,19 @@ describe('tryResolveValueArgument', () => {
 	it('resolves intermodule start-address reference (&module:memory) once module is laid out', () => {
 		const laidOutNamespace = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				namespaces: {
-					source: {
-						kind: 'module',
-						byteAddress: 8,
-						wordAlignedSize: 4,
-						memory: {
-							buffer: {
-								byteAddress: 8,
-								wordAlignedSize: 4,
-								numberOfElements: 4,
-								elementWordSize: 4,
-								memoryIndex: 0,
-								isInteger: true,
-							},
+			namespaces: {
+				source: {
+					kind: 'module',
+					byteAddress: 8,
+					wordAlignedSize: 4,
+					memory: {
+						buffer: {
+							byteAddress: 8,
+							wordAlignedSize: 4,
+							numberOfElements: 4,
+							elementWordSize: 4,
+							memoryIndex: 0,
+							isInteger: true,
 						},
 					},
 				},
@@ -532,22 +524,19 @@ describe('tryResolveValueArgument', () => {
 	it('resolves intermodule end-address reference (module:memory&) once module is laid out', () => {
 		const laidOutNamespace = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				namespaces: {
-					source: {
-						kind: 'module',
-						byteAddress: 8,
-						wordAlignedSize: 4,
-						memory: {
-							buffer: {
-								byteAddress: 8,
-								wordAlignedSize: 4,
-								numberOfElements: 4,
-								elementWordSize: 4,
-								memoryIndex: 0,
-								isInteger: true,
-							},
+			namespaces: {
+				source: {
+					kind: 'module',
+					byteAddress: 8,
+					wordAlignedSize: 4,
+					memory: {
+						buffer: {
+							byteAddress: 8,
+							wordAlignedSize: 4,
+							numberOfElements: 4,
+							elementWordSize: 4,
+							memoryIndex: 0,
+							isInteger: true,
 						},
 					},
 				},
@@ -574,15 +563,12 @@ describe('tryResolveValueArgument', () => {
 	it('resolves intermodule module-base start-address (&module:) once module is laid out', () => {
 		const laidOutNamespace = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				namespaces: {
-					source: {
-						kind: 'module',
-						byteAddress: 12,
-						wordAlignedSize: 3,
-						memory: {},
-					},
+			namespaces: {
+				source: {
+					kind: 'module',
+					byteAddress: 12,
+					wordAlignedSize: 3,
+					memory: {},
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;
@@ -606,15 +592,12 @@ describe('tryResolveValueArgument', () => {
 	it('resolves intermodule module-base end-address (module:&) once module is laid out', () => {
 		const laidOutNamespace = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				namespaces: {
-					source: {
-						kind: 'module',
-						byteAddress: 12,
-						wordAlignedSize: 3,
-						memory: {},
-					},
+			namespaces: {
+				source: {
+					kind: 'module',
+					byteAddress: 12,
+					wordAlignedSize: 3,
+					memory: {},
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;
@@ -639,18 +622,15 @@ describe('tryResolveValueArgument', () => {
 	it('defers intermodule address resolution until module byteAddress is known', () => {
 		const unlaidOutNamespace = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				namespaces: {
-					source: {
-						kind: 'module',
-						// No byteAddress — module not yet laid out
-						memory: {
-							buffer: {
-								numberOfElements: 4,
-								elementWordSize: 4,
-								isInteger: true,
-							},
+			namespaces: {
+				source: {
+					kind: 'module',
+					// No byteAddress — module not yet laid out
+					memory: {
+						buffer: {
+							numberOfElements: 4,
+							elementWordSize: 4,
+							isInteger: true,
 						},
 					},
 				},
@@ -664,15 +644,12 @@ describe('tryResolveValueArgument', () => {
 	it('returns undefined for unresolved intermodule nth references', () => {
 		const laidOutNamespace = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				namespaces: {
-					source: {
-						kind: 'module',
-						byteAddress: 8,
-						wordAlignedSize: 4,
-						memory: {},
-					},
+			namespaces: {
+				source: {
+					kind: 'module',
+					byteAddress: 8,
+					wordAlignedSize: 4,
+					memory: {},
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;
@@ -722,18 +699,15 @@ describe('tryResolveValueArgument', () => {
 	it('keeps address metadata when adding an in-range integer offset to an address expression', () => {
 		const addressContext = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				memory: {
-					arr: {
-						id: 'arr',
-						byteAddress: 16,
-						wordAlignedSize: 4,
-						numberOfElements: 4,
-						elementWordSize: 4,
-						memoryIndex: 0,
-						isInteger: true,
-					},
+			memory: {
+				arr: {
+					id: 'arr',
+					byteAddress: 16,
+					wordAlignedSize: 4,
+					numberOfElements: 4,
+					elementWordSize: 4,
+					memoryIndex: 0,
+					isInteger: true,
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;
@@ -757,18 +731,15 @@ describe('tryResolveValueArgument', () => {
 	it('keeps address metadata when adding an address expression to an integer offset', () => {
 		const addressContext = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				memory: {
-					arr: {
-						id: 'arr',
-						byteAddress: 16,
-						wordAlignedSize: 4,
-						numberOfElements: 4,
-						elementWordSize: 4,
-						memoryIndex: 0,
-						isInteger: true,
-					},
+			memory: {
+				arr: {
+					id: 'arr',
+					byteAddress: 16,
+					wordAlignedSize: 4,
+					numberOfElements: 4,
+					elementWordSize: 4,
+					memoryIndex: 0,
+					isInteger: true,
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;
@@ -792,17 +763,14 @@ describe('tryResolveValueArgument', () => {
 	it('drops address metadata when address expression arithmetic leaves the known safe range', () => {
 		const addressContext = {
 			...mockContext,
-			namespace: {
-				...mockContext.namespace,
-				memory: {
-					arr: {
-						id: 'arr',
-						byteAddress: 16,
-						wordAlignedSize: 4,
-						numberOfElements: 4,
-						elementWordSize: 4,
-						isInteger: true,
-					},
+			memory: {
+				arr: {
+					id: 'arr',
+					byteAddress: 16,
+					wordAlignedSize: 4,
+					numberOfElements: 4,
+					elementWordSize: 4,
+					isInteger: true,
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;

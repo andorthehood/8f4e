@@ -1,6 +1,7 @@
 import type { FunctionValueType, InstructionCompiler, LocalDeclarationLine } from '@8f4e/compiler-spec';
 import { ErrorCode } from '@8f4e/compiler-spec';
 import { getError } from '../compilerError';
+import { getPlannedMemoryDeclaration } from '../semantic/memoryState';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 
 /**
@@ -11,7 +12,7 @@ const local: InstructionCompiler<LocalDeclarationLine> = (line: LocalDeclaration
 	const typeArg = line.arguments[0];
 	const nameArg = line.arguments[1];
 
-	if (Object.hasOwn(context.namespace.memory, nameArg.value)) {
+	if (getPlannedMemoryDeclaration(context, nameArg.value)) {
 		throw getError(ErrorCode.LOCAL_NAME_COLLISION_WITH_MEMORY, line, context, { identifier: nameArg.value });
 	}
 
