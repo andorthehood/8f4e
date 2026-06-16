@@ -12,6 +12,7 @@ import type {
 	PlannedMemoryDeclarationSource,
 	PlannedMemoryModule,
 	RegionLine,
+	ScalarMemoryDeclarationLine,
 	ShapeLine,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
@@ -64,21 +65,21 @@ export class MemoryPlannerError extends Error {
 	}
 }
 
-export interface MemoryLayoutSourcePrototype {
+interface MemoryLayoutSourcePrototype {
 	id: string;
 	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
-export type MemoryLayoutSourceLine = MemoryDeclarationLine | ShapeLine;
+type MemoryLayoutSourceLine = MemoryDeclarationLine | ShapeLine;
 
-export interface MemoryLayoutSourceModule {
+interface MemoryLayoutSourceModule {
 	id: string;
 	moduleLine: Pick<ModuleLine, 'lineNumber'>;
 	regionLine?: Pick<RegionLine, 'arguments'>;
 	lines: readonly MemoryLayoutSourceLine[];
 }
 
-export interface MemoryLayoutPlanInput {
+interface MemoryLayoutPlanInput {
 	prototypes: readonly MemoryLayoutSourcePrototype[];
 	modules: readonly MemoryLayoutSourceModule[];
 	startingByteAddress?: number;
@@ -115,17 +116,13 @@ function getModuleRegion(ast: MemoryLayoutSourceModule, memoryRegions: readonly 
 	return getMemoryRegionByName(argument.value, memoryRegions);
 }
 
-function getScalarDeclarationId(line: MemoryDeclarationLine): string {
-	const [firstArgument] = line.arguments;
-	if (!firstArgument) {
-		return '__anonymous__' + line.lineNumber;
+function getScalarDeclarationId(line: ScalarMemoryDeclarationLine): string {
+	const firstArgument = line.arguments[0];
+	if (firstArgument?.type === ArgumentType.IDENTIFIER && firstArgument.referenceKind === 'plain') {
+		return firstArgument.value;
 	}
 
-	if (firstArgument.type !== ArgumentType.IDENTIFIER || firstArgument.referenceKind !== 'plain') {
-		return '__anonymous__' + line.lineNumber;
-	}
-
-	return firstArgument.value;
+	return '__anonymous__' + line.lineNumber;
 }
 
 function getPrototypeMap(
@@ -369,16 +366,8 @@ function planModuleMemory(
 	};
 }
 
-/**
- * Plans module and declaration memory addresses without resolving default values.
- * The planner expects callers to provide syntactically valid, semantically
- * normalized layout input: unique ids, valid memory regions, and literal array
- * element counts.
- *
- * @param input - Source modules and optional layout settings.
- * @returns Address and size metadata for modules and memory declarations.
- */
-export function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
+/** Plans module and declaration memory addresses from internal planner-ready source. */
+function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 	const startingByteAddress = input.startingByteAddress ?? GLOBAL_ALIGNMENT_BOUNDARY;
 	const memoryRegions = input.memoryRegions ?? [];
 	const prototypesById = getPrototypeMap(input.prototypes);

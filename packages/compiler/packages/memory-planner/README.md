@@ -20,17 +20,6 @@ The planner builds planner-ready memory layout source from those ASTs:
 
 Module layout source lines are either memory declarations or `shape` lines. The planner expands `shape` lines into effective declaration sources, then plans those declarations in order.
 
-Lower-level callers that already have planner-ready source can call `planMemoryLayout` directly:
-
-```ts
-const memoryPlan = planMemoryLayout({
-	prototypes,
-	modules,
-	startingByteAddress,
-	memoryRegions,
-});
-```
-
 The returned plan contains:
 
 - `moduleList`: planned modules in layout order.
