@@ -1,8 +1,45 @@
-import { ArgumentType, type CompilationContext, type CompilerASTLine, ErrorCode } from '@8f4e/compiler-spec';
+import {
+	ArgumentType,
+	type CompilationContext,
+	type CompilerASTLine,
+	ErrorCode,
+	type MemoryLayoutPlan,
+} from '@8f4e/compiler-spec';
 import { classifyIdentifier, parseArgument } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 
 import normalizeValueArguments from './normalizeValueArguments';
+
+function createSourceMemoryPlan(): MemoryLayoutPlan {
+	const buffer = {
+		id: 'buffer',
+		lineNumber: 1,
+		numberOfElements: 4,
+		elementWordSize: 4,
+		wordAlignedAddress: 0,
+		wordAlignedSize: 4,
+		byteAddress: 0,
+		type: 'int',
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+		memoryIndex: 0,
+	} as const;
+	const source = {
+		id: 'source',
+		lineNumber: 1,
+		byteAddress: 0,
+		wordAlignedSize: 4,
+		memory: { buffer },
+		declarations: [buffer],
+		memoryIndex: 0,
+	};
+	return {
+		modules: { source },
+		moduleList: [source],
+		nextByteAddressByMemoryIndex: { 0: 16 },
+	};
+}
 
 describe('normalizeValueArguments', () => {
 	it('folds push value expressions into literals', () => {
@@ -13,7 +50,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -34,7 +70,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -52,7 +87,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -76,7 +110,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -94,7 +127,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -112,7 +144,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -130,7 +161,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -149,7 +179,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 			},
@@ -164,7 +193,7 @@ describe('normalizeValueArguments', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for push with an identifier not in memory or locals', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 			startingByteAddress: 16,
 			currentModuleWordAlignedSize: 3,
@@ -180,7 +209,7 @@ describe('normalizeValueArguments', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for localSet with an undeclared local', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -195,9 +224,8 @@ describe('normalizeValueArguments', () => {
 	it('throws UNDECLARED_IDENTIFIER for push with undeclared intermodule reference', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
-				namespaces: { otherModule: { kind: 'module', memory: {} } },
+				namespaces: { otherModule: { kind: 'module' } },
 			},
 			locals: {},
 		} as unknown as CompilationContext;
@@ -213,10 +241,10 @@ describe('normalizeValueArguments', () => {
 	it('throws UNDECLARED_IDENTIFIER for memory declaration with undeclared intermodule memory reference', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
-				namespaces: { source: { kind: 'module', memory: {} } },
+				namespaces: { source: { kind: 'module' } },
 			},
+			memoryPlan: createSourceMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -234,18 +262,15 @@ describe('normalizeValueArguments', () => {
 		// the default argument must be stripped rather than kept as-is for the parser to fabricate 0.
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {
 					source: {
 						kind: 'module',
 						// No byteAddress — module not yet laid out
-						memory: {
-							buffer: { numberOfElements: 4, elementWordSize: 4, isInteger: true },
-						},
 					},
 				},
 			},
+			memoryPlan: createSourceMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -264,17 +289,14 @@ describe('normalizeValueArguments', () => {
 	it('does not strip array declaration element count arguments', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {
 					source: {
 						kind: 'module',
-						memory: {
-							buffer: { numberOfElements: 4, elementWordSize: 4, isInteger: true },
-						},
 					},
 				},
 			},
+			memoryPlan: createSourceMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -289,7 +311,7 @@ describe('normalizeValueArguments', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for memory declaration with unresolved value-expression default', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -305,21 +327,14 @@ describe('normalizeValueArguments', () => {
 	it('does not throw for valid intermodule reference when namespaces are populated', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {
 					source: {
 						kind: 'module',
-						memory: {
-							buffer: {
-								numberOfElements: 4,
-								elementWordSize: 4,
-								isInteger: true,
-							},
-						},
 					},
 				},
 			},
+			memoryPlan: createSourceMemoryPlan(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -333,7 +348,7 @@ describe('normalizeValueArguments', () => {
 
 	it('does not validate intermodule references before namespaces are collected', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -347,7 +362,7 @@ describe('normalizeValueArguments', () => {
 
 	it('throws UNDECLARED_IDENTIFIER for push with &name when memory does not exist', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -361,7 +376,7 @@ describe('normalizeValueArguments', () => {
 
 	it('throws for count(*localPointer) when the pointer has no element count metadata', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {
 				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', pointerDepth: 1, index: 0 },
 			},
@@ -378,7 +393,6 @@ describe('normalizeValueArguments', () => {
 	it('throws UNDEFINED_FUNCTION for call with an undeclared function target', () => {
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 				functions: { byId: {}, arityByName: {} },
@@ -396,7 +410,7 @@ describe('normalizeValueArguments', () => {
 
 	it('does not throw for call when functions registry is undefined', () => {
 		const context = {
-			namespace: { memory: {}, moduleName: 'test', namespaces: {} },
+			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -412,7 +426,6 @@ describe('normalizeValueArguments', () => {
 		const targetFunction = { id: 'knownFn', name: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
@@ -440,7 +453,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 				functions: {
@@ -468,7 +480,6 @@ describe('normalizeValueArguments', () => {
 		};
 		const context = {
 			namespace: {
-				memory: {},
 				moduleName: 'test',
 				namespaces: {},
 				functions: {

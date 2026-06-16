@@ -432,7 +432,8 @@ export function compileSubProgram(
 		namespaces,
 		functionRegistry,
 		functionTypeRegistry,
-		inlinedPrototypeShapesById
+		inlinedPrototypeShapesById,
+		memoryPlan
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],

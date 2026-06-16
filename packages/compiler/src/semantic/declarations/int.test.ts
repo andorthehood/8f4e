@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import int from './int';
-import { applyPlannedMemoryDeclaration } from './testUtils';
+import { applyPlannedMemoryDeclaration, getTestMemoryMap } from './testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -22,6 +22,6 @@ describe('int instruction compiler', () => {
 			context
 		);
 
-		expect(context.namespace.memory).toMatchSnapshot();
+		expect(getTestMemoryMap(context)).toMatchSnapshot();
 	});
 });
