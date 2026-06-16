@@ -33,6 +33,8 @@ import {
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	ErrorCode,
 	getError,
+	isFunctionBodyInstructionName,
+	isImportedFunctionDeclarationInstructionName,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	MAX_FUNCTION_PARAMETERS,
@@ -50,29 +52,6 @@ import { getEffectiveFunctionMetadata } from './utils/paramShape';
 
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
-
-const importedFunctionAllowedInstructions = new Set([
-	'function',
-	'#import',
-	'#impure',
-	'#loopCap',
-	'param',
-	'paramShape',
-	'functionEnd',
-]);
-
-const functionParameterPhaseInstructions = new Set([
-	'function',
-	'const',
-	'use',
-	'#import',
-	'#impure',
-	'#loopCap',
-	'#export',
-	'param',
-	'paramShape',
-	'functionEnd',
-]);
 
 export interface AnalyzeStackProjectInput {
 	ast: {
@@ -584,7 +563,7 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 
 	for (const originalLine of ast.lines) {
 		const line = normalizeValueArguments(originalLine, context);
-		if (ast.importLine && !importedFunctionAllowedInstructions.has(line.instruction)) {
+		if (ast.importLine && !isImportedFunctionDeclarationInstructionName(line.instruction)) {
 			throw getError(
 				line.instruction === '#export' ? ErrorCode.IMPORT_EXPORT_CONFLICT : ErrorCode.IMPORTED_FUNCTION_BODY,
 				line,
@@ -601,7 +580,7 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 		if (analyzedLine) {
 			analyzedLines.push(analyzedLine);
 		}
-		if (!functionParameterPhaseInstructions.has(line.instruction)) {
+		if (isFunctionBodyInstructionName(line.instruction)) {
 			functionBodyStarted = true;
 		}
 	}
