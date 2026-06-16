@@ -36,12 +36,12 @@ describe('AudioWorklet runtime config', () => {
 			compiler: {
 				compiledModules: {
 					audiooutL: {
-						memoryMap: {
+						memory: {
 							buffer: { wordAlignedAddress: 8 },
 						},
 					},
 					audiooutR: {
-						memoryMap: {
+						memory: {
 							buffer: { wordAlignedAddress: 24 },
 						},
 					},

@@ -466,7 +466,7 @@
   },
   "moduleMemory": {
     "storeAtAssertions": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 4,
           "default": {

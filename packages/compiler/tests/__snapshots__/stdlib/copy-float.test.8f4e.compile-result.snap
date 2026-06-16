@@ -356,7 +356,7 @@
   },
   "moduleMemory": {
     "copyFloatAssertions": {
-      "memoryMap": {
+      "memory": {
         "dest": {
           "byteAddress": 8,
           "default": 0,

@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, {
 	analyzeAndCompileInstruction,
-	seedTestMemoryMap,
+	seedTestMemoryDeclarations,
 } from '../utils/testUtils';
 import local from './local';
 
@@ -28,7 +28,7 @@ describe('local instruction compiler', () => {
 	});
 
 	it('throws when local name collides with a memory identifier', () => {
-		const context = seedTestMemoryMap(createInstructionCompilerTestContext(), {
+		const context = seedTestMemoryDeclarations(createInstructionCompilerTestContext(), {
 			count: {
 				id: 'count',
 				byteAddress: 0,

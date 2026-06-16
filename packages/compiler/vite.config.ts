@@ -11,6 +11,7 @@ export default defineConfig({
 			external: [
 				'@8f4e/tokenizer',
 				'@8f4e/compiler-spec',
+				'@8f4e/memory-default-resolver',
 				'@8f4e/memory-reference-inliner',
 				'@8f4e/memory-planner',
 				'@8f4e/compiler-wasm-utils',

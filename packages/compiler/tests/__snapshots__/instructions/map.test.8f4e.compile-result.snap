@@ -3168,7 +3168,7 @@
   },
   "moduleMemory": {
     "mapCharLiteralAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 8,
           "default": 0,
@@ -3186,7 +3186,7 @@
       },
     },
     "mapDefaultAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 12,
           "default": 0,
@@ -3204,7 +3204,7 @@
       },
     },
     "mapFirstMatchAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 40,
           "default": 1,
@@ -3223,7 +3223,7 @@
       },
     },
     "mapFloatFloatAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 20,
           "default": 0,
@@ -3241,7 +3241,7 @@
       },
     },
     "mapImplicitDefaultAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 24,
           "default": 0,
@@ -3259,7 +3259,7 @@
       },
     },
     "mapImplicitFloatKeyAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 36,
           "default": 0,
@@ -3277,7 +3277,7 @@
       },
     },
     "mapImplicitKeyAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 28,
           "default": 0,
@@ -3295,7 +3295,7 @@
       },
     },
     "mapImplicitKeyMixedRowsAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 32,
           "default": 0,
@@ -3313,7 +3313,7 @@
       },
     },
     "mapIntFloatAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 16,
           "default": 0,
@@ -3331,7 +3331,7 @@
       },
     },
     "mapIntIntAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 4,
           "default": 0,
@@ -3349,7 +3349,7 @@
       },
     },
     "mapZeroRowsAssertions": {
-      "memoryMap": {
+      "memory": {
         "input": {
           "byteAddress": 44,
           "default": 5,

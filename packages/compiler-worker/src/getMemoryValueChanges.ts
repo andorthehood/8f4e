@@ -17,33 +17,33 @@ export default function getMemoryValueChanges(
 			break;
 		}
 
-		for (const [memoryIdentifier, memory] of Object.entries(compiledModule.memoryMap)) {
-			const previousMemory = previousModule.memoryMap[memoryIdentifier];
-			if (!previousMemory) {
-				break;
-			}
+		for (const [memoryIdentifier, memory] of Object.entries(compiledModule.memory)) {
+			const memoryDefault = compiledModule.memoryDefaults[memoryIdentifier];
+			const previousMemoryDefault = previousModule.memoryDefaults[memoryIdentifier];
+			const defaultValue = memoryDefault.value;
+			const previousDefaultValue = previousMemoryDefault.value;
 
-			if (typeof memory.default === 'object' && typeof previousMemory.default === 'object') {
-				if (!compareObject(memory.default, previousMemory.default)) {
+			if (typeof defaultValue === 'object' && typeof previousDefaultValue === 'object') {
+				if (!compareObject(defaultValue, previousDefaultValue)) {
 					changes.push({
 						memoryIndex: memory.memoryIndex,
 						...(memory.memoryRegionName ? { memoryRegionName: memory.memoryRegionName } : {}),
 						wordAlignedSize: memory.wordAlignedSize,
 						wordAlignedAddress: memory.wordAlignedAddress,
-						value: memory.default,
+						value: defaultValue,
 						isInteger: memory.isInteger,
 						isFloat64: memory.isFloat64,
 						elementWordSize: memory.elementWordSize,
 					});
 				}
 			} else {
-				if (previousMemory.default !== memory.default) {
+				if (previousDefaultValue !== defaultValue) {
 					changes.push({
 						memoryIndex: memory.memoryIndex,
 						...(memory.memoryRegionName ? { memoryRegionName: memory.memoryRegionName } : {}),
 						wordAlignedSize: memory.wordAlignedSize,
 						wordAlignedAddress: memory.wordAlignedAddress,
-						value: memory.default,
+						value: defaultValue,
 						isInteger: memory.isInteger,
 						isFloat64: memory.isFloat64,
 						elementWordSize: memory.elementWordSize,

@@ -1,12 +1,10 @@
 import type {
 	CompilationContext,
-	DataStructure,
-	MemoryDefaultValue,
 	MemoryLayoutPlan,
-	MemoryMap,
 	MemoryPointerMetadata,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
+	ResolvedMemoryDeclaration,
 } from '@8f4e/compiler-spec';
 
 type MemoryPlanContext = Pick<CompilationContext, 'currentPlannedModule' | 'memoryPlan' | 'namespace'>;
@@ -39,27 +37,8 @@ export function getPlannedMemoryDeclaration(
 	return module?.memory[memoryId];
 }
 
-/** Records the resolved default state for one declaration in the active module. */
-export function setMemoryDefault(
-	context: CompilationContext,
-	memoryId: string,
-	value: MemoryDefaultValue,
-	hasExplicitDefault?: boolean
-): void {
-	context.memoryDefaults[memoryId] = {
-		value,
-		hasExplicitDefault: hasExplicitDefault === true,
-		isInherited: context.isInherited === true,
-	};
-}
-
-/** Records pointer target metadata for one declaration in the active module. */
-export function setPointerMetadata(
-	context: CompilationContext,
-	memoryId: string,
-	metadata: MemoryPointerMetadata
-): void {
-	context.pointerMetadata[memoryId] = metadata;
+interface ResolvedMemoryOverlay {
+	pointerMetadata: Record<string, MemoryPointerMetadata>;
 }
 
 function getPointerMetadataWithDefinedFields(metadata: MemoryPointerMetadata | undefined): MemoryPointerMetadata {
@@ -70,47 +49,37 @@ function getPointerMetadataWithDefinedFields(metadata: MemoryPointerMetadata | u
 	};
 }
 
-/** Materializes the resolved declaration shape used by codegen and public compiler output. */
-export function createMemoryItem(
+function createResolvedMemoryDeclaration(
 	declaration: PlannedMemoryDeclaration,
-	context: Pick<CompilationContext, 'memoryDefaults' | 'pointerMetadata'>
-): DataStructure {
-	const memoryDefault = context.memoryDefaults[declaration.id];
-	const pointerMetadata = getPointerMetadataWithDefinedFields(context.pointerMetadata[declaration.id]);
-
+	overlay: ResolvedMemoryOverlay
+): ResolvedMemoryDeclaration {
 	return {
 		...declaration,
-		default: memoryDefault?.value ?? 0,
-		...(memoryDefault ? { hasExplicitDefault: memoryDefault.hasExplicitDefault === true } : {}),
-		isInherited: memoryDefault?.isInherited ?? false,
-		...pointerMetadata,
+		...getPointerMetadataWithDefinedFields(overlay.pointerMetadata[declaration.id]),
 	};
 }
 
-/** Returns a resolved memory item for the active module, or for a target module plan without semantic overlays. */
-export function getMemoryItem(
+function getResolvedMemoryOverlay(
+	context: CompilationContext,
+	moduleId = context.namespace.moduleName
+): ResolvedMemoryOverlay {
+	if (!moduleId || moduleId === context.namespace.moduleName) {
+		return context;
+	}
+
+	return context.namespace.namespaces[moduleId];
+}
+
+/** Returns a resolved memory declaration for the active module, or for a target module namespace. */
+export function getResolvedMemoryDeclaration(
 	context: CompilationContext,
 	memoryId: string,
 	moduleId = context.namespace.moduleName
-): DataStructure | undefined {
+): ResolvedMemoryDeclaration | undefined {
 	const declaration = getPlannedMemoryDeclaration(context, memoryId, moduleId);
 	if (!declaration) {
 		return undefined;
 	}
 
-	if (!moduleId || moduleId === context.namespace.moduleName) {
-		return createMemoryItem(declaration, context);
-	}
-
-	return createMemoryItem(declaration, { memoryDefaults: {}, pointerMetadata: {} });
-}
-
-/** Materializes a module's resolved memory map for compiler output and memory initialization. */
-export function createMemoryMapFromPlan(
-	module: PlannedMemoryModule,
-	context: Pick<CompilationContext, 'memoryDefaults' | 'pointerMetadata'>
-): MemoryMap {
-	return Object.fromEntries(
-		Object.entries(module.memory).map(([id, declaration]) => [id, createMemoryItem(declaration, context)])
-	) as MemoryMap;
+	return createResolvedMemoryDeclaration(declaration, getResolvedMemoryOverlay(context, moduleId));
 }

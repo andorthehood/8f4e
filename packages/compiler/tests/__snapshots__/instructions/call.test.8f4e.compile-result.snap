@@ -1504,19 +1504,19 @@
   },
   "moduleMemory": {
     "callConstantFunction": {
-      "memoryMap": {},
+      "memory": {},
     },
     "callFloat64ReturningFunction": {
-      "memoryMap": {},
+      "memory": {},
     },
     "callFloat64RoundTrip": {
-      "memoryMap": {},
+      "memory": {},
     },
     "callFunctionWithParameter": {
-      "memoryMap": {},
+      "memory": {},
     },
     "callImpureFunctionWithExplicitLoadAndStore": {
-      "memoryMap": {
+      "memory": {
         "gain": {
           "byteAddress": 144,
           "default": 0.5,
@@ -1564,13 +1564,13 @@
       },
     },
     "callMultipleFunctions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "callNestedFunction": {
-      "memoryMap": {},
+      "memory": {},
     },
     "callPointerParamsWithLocalDereference": {
-      "memoryMap": {
+      "memory": {
         "delta": {
           "byteAddress": 132,
           "default": 0.5,

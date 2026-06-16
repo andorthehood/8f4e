@@ -262,7 +262,7 @@
   },
   "moduleMemory": {
     "continuationPointerSource": {
-      "memoryMap": {
+      "memory": {
         "samples": {
           "byteAddress": 4,
           "default": {
@@ -283,10 +283,10 @@
       },
     },
     "continuedNegativeLiteralAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "splitByteDefaultAssertions": {
-      "memoryMap": {
+      "memory": {
         "color": {
           "byteAddress": 40,
           "default": 2835283968,
@@ -305,7 +305,7 @@
       },
     },
     "splitPointerDeclarationAssertions": {
-      "memoryMap": {
+      "memory": {
         "readHead": {
           "byteAddress": 36,
           "default": 4,

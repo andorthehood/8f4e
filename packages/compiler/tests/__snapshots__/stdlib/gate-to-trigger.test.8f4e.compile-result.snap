@@ -979,7 +979,7 @@
   },
   "moduleMemory": {
     "gateToTriggerFloatAssertions": {
-      "memoryMap": {
+      "memory": {
         "previousFloat": {
           "byteAddress": 8,
           "default": 0,
@@ -997,7 +997,7 @@
       },
     },
     "gateToTriggerIntAssertions": {
-      "memoryMap": {
+      "memory": {
         "previousInt": {
           "byteAddress": 4,
           "default": 0,

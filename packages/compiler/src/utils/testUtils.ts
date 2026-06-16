@@ -3,7 +3,8 @@ import type {
 	CompilationContext,
 	CompilerASTLine,
 	InstructionCompiler,
-	MemoryMap,
+	MemoryDefaultValue,
+	MemoryPointerMetadata,
 	MemoryPointerMetadataMap,
 	PlannedMemoryDeclaration,
 } from '@8f4e/compiler-spec';
@@ -12,6 +13,15 @@ import { WASM_IF, WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 import { expect } from 'vitest';
 import { createCompilationContext } from '../semantic/createCompilationContext';
 import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
+
+export type MemoryFixture = PlannedMemoryDeclaration &
+	MemoryPointerMetadata & {
+		default?: MemoryDefaultValue;
+		hasExplicitDefault?: boolean;
+		isInherited?: boolean;
+	};
+
+type MemoryFixtureMap = Record<string, MemoryFixture>;
 
 /**
  * Creates a compilation context fixture for instruction compiler tests.
@@ -39,10 +49,13 @@ export default function createInstructionCompilerTestContext(
 	});
 }
 
-/** Seeds compiler memory-plan context fields from a resolved memory map fixture. */
-export function seedTestMemoryMap(context: CompilationContext, memoryMap: MemoryMap): CompilationContext {
+/** Seeds compiler memory-plan context fields from planned memory declaration fixtures. */
+export function seedTestMemoryDeclarations(
+	context: CompilationContext,
+	memoryDeclarations: MemoryFixtureMap
+): CompilationContext {
 	const memory = Object.fromEntries(
-		Object.entries(memoryMap).map(([id, memoryItem]) => {
+		Object.entries(memoryDeclarations).map(([id, memoryItem]) => {
 			const {
 				default: _default,
 				hasExplicitDefault: _hasExplicitDefault,
@@ -56,7 +69,7 @@ export function seedTestMemoryMap(context: CompilationContext, memoryMap: Memory
 		})
 	);
 	const pointerMetadata = Object.fromEntries(
-		Object.entries(memoryMap)
+		Object.entries(memoryDeclarations)
 			.filter(([, memoryItem]) => memoryItem.pointeeBaseType)
 			.map(([id, memoryItem]) => [
 				id,
@@ -83,6 +96,7 @@ export function seedTestMemoryMap(context: CompilationContext, memoryMap: Memory
 		wordAlignedSize,
 		memory,
 		declarations,
+		declarationSources: [],
 		memoryIndex: context.currentMemoryIndex,
 		...(context.currentMemoryRegionName ? { memoryRegionName: context.currentMemoryRegionName } : {}),
 	};
@@ -94,7 +108,7 @@ export function seedTestMemoryMap(context: CompilationContext, memoryMap: Memory
 	};
 	context.currentPlannedModule = module;
 	context.memoryDefaults = Object.fromEntries(
-		Object.entries(memoryMap).map(([id, memoryItem]) => [
+		Object.entries(memoryDeclarations).map(([id, memoryItem]) => [
 			id,
 			{
 				value: memoryItem.default ?? 0,

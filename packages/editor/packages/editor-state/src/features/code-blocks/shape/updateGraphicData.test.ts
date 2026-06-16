@@ -1,4 +1,4 @@
-import type { CompiledModule, DataStructure, ValidatedModuleAST } from '@8f4e/compiler-spec';
+import type { CompiledModule, MemoryDefaults, PlannedMemoryDeclaration, ValidatedModuleAST } from '@8f4e/compiler-spec';
 import { MemoryTypes } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
@@ -36,7 +36,9 @@ function createModuleAst(): ValidatedModuleAST {
 	} as unknown as ValidatedModuleAST;
 }
 
-function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+type MemoryFixture = PlannedMemoryDeclaration & { isInherited?: boolean };
+
+function createMemory(overrides: Partial<MemoryFixture> = {}): MemoryFixture {
 	return {
 		id: 'memory',
 		numberOfElements: 1,
@@ -46,7 +48,6 @@ function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
 		byteAddress: 20,
 		wordAlignedAddress: 5,
 		wordAlignedSize: 1,
-		default: 0,
 		lineNumber: 1,
 		isInteger: false,
 		pointerDepth: 0,
@@ -55,14 +56,31 @@ function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
 	};
 }
 
-function createCompiledModule(memoryMap: CompiledModule['memoryMap'] = {}): CompiledModule {
+function splitMemoryFixtures(memoryFixtures: Record<string, MemoryFixture>) {
+	const memory: CompiledModule['memory'] = {};
+	const memoryDefaults: MemoryDefaults = {};
+
+	for (const [id, memoryFixture] of Object.entries(memoryFixtures)) {
+		const { isInherited = false, ...declaration } = memoryFixture;
+		memory[id] = declaration;
+		memoryDefaults[id] = { value: 0, isInherited };
+	}
+
+	return { memory, memoryDefaults };
+}
+
+function createCompiledModule(memoryFixtures: Record<string, MemoryFixture> = {}): CompiledModule {
+	const { memory, memoryDefaults } = splitMemoryFixtures(memoryFixtures);
 	return {
 		ast: createModuleAst(),
-		memoryMap,
+		memory,
+		memoryDefaults,
+		pointerMetadata: {},
+		declarations: Object.values(memory),
 	} as CompiledModule;
 }
 
-function createInheritedMemoryMap(count: number): CompiledModule['memoryMap'] {
+function createInheritedMemory(count: number): Record<string, MemoryFixture> {
 	return Object.fromEntries(
 		Array.from({ length: count }, (_, index) => [
 			`memory${index}`,
@@ -80,7 +98,7 @@ describe('shape', () => {
 		const state = createMockState({
 			compiler: {
 				compiledModules: {
-					filterA: createCompiledModule(createInheritedMemoryMap(4)),
+					filterA: createCompiledModule(createInheritedMemory(4)),
 				},
 			},
 		});

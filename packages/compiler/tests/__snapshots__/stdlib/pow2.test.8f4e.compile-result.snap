@@ -257,7 +257,7 @@
   },
   "moduleMemory": {
     "pow2Assertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

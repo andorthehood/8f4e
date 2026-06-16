@@ -805,7 +805,7 @@
   },
   "moduleMemory": {
     "storeBytesPopOrderAssertions": {
-      "memoryMap": {
+      "memory": {
         "dest": {
           "byteAddress": 4,
           "default": {},
@@ -823,7 +823,7 @@
       },
     },
     "storeBytesTruncationAssertions": {
-      "memoryMap": {
+      "memory": {
         "buf": {
           "byteAddress": 12,
           "default": {},
@@ -841,7 +841,7 @@
       },
     },
     "storeBytesZeroCountAssertions": {
-      "memoryMap": {
+      "memory": {
         "dest": {
           "byteAddress": 16,
           "default": 42,

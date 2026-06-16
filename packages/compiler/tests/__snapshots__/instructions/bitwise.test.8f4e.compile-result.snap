@@ -590,19 +590,19 @@
   },
   "moduleMemory": {
     "andAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "orAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "shiftLeftAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "shiftRightAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "xorAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

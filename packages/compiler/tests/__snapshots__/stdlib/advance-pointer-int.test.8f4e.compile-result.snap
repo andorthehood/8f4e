@@ -928,7 +928,7 @@
   },
   "moduleMemory": {
     "advancePointerIntAssertions": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 4,
           "default": {

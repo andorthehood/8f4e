@@ -30,7 +30,7 @@ describe('switch interaction', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							testSwitch: {
 								wordAlignedAddress: 5,
 							},
