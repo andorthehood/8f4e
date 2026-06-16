@@ -10,6 +10,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./testing": {
+      "types": "./dist/testing.d.ts",
+      "default": "./dist/testing.js"
     }
   },
   "sideEffects": false,
@@ -24,7 +28,8 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/compiler-spec": "*"
+    "@8f4e/compiler-spec": "*",
+    "@8f4e/memory-reference-inliner": "*"
   },
   "devDependencies": {
     "@types/node": "24.13.2"

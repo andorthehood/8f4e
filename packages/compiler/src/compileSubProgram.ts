@@ -37,6 +37,7 @@ import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsI
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
 import { type MemoryLayoutSourceModule, MemoryPlannerError, planMemoryLayout } from '@8f4e/memory-planner';
 import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
+import { analyzeStack } from '@8f4e/stack-analyzer';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
 import { compileModules } from './compileModules';
@@ -594,18 +595,32 @@ export function compileSubProgram(
 		signatures: [],
 		baseTypeIndex: 3,
 	};
+	const stackReport = analyzeStack({
+		ast: {
+			modules: inlinedAstModules,
+			functions: inlinedAstFunctions,
+		},
+		namespaces,
+		memoryPlan,
+		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
+		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		functions: functionRegistry,
+		functionTypeRegistry,
+		memoryRegions: options.memoryRegions ?? [],
+		prototypeShapes: inlinedPrototypeShapesById,
+	});
 
 	const compiledFunctions = inlinedAstFunctions.map(ast => {
 		const signatureMetadata = getEffectiveFunctionMetadata(ast, inlinedPrototypeShapesById);
 		const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
-		const functionMetadata = functionRegistry.byId[functionId];
-		if (!functionMetadata) {
-			throw getError(ErrorCode.UNDEFINED_FUNCTION, ast.functionLine, {
-				codeBlockType: ast.type,
-				...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
-			});
-		}
-		return compileFunction(ast, namespaces, functionTypeRegistry, functionMetadata, functionRegistry, options);
+		return compileFunction(
+			ast,
+			namespaces,
+			functionTypeRegistry,
+			functionRegistry,
+			stackReport.functions[functionId],
+			options
+		);
 	});
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
@@ -619,6 +634,7 @@ export function compileSubProgram(
 		},
 		namespaces,
 		memoryPlan,
+		stackReport,
 		functionRegistry,
 		functionTypeRegistry,
 		inlinedPrototypeShapesById

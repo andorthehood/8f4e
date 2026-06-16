@@ -10,7 +10,7 @@ import type {
 } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
 import { WASM_IF, WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
-import { analyzeInstruction } from '@8f4e/stack-analyzer';
+import { analyzeInstruction } from '@8f4e/stack-analyzer/testing';
 import { expect } from 'vitest';
 import { createCompilationContext } from '../semantic/createCompilationContext';
 

@@ -1,5 +1,5 @@
 import type { CompilerASTLine } from '@8f4e/compiler-spec';
-import { analyzeInstruction } from '@8f4e/stack-analyzer';
+import { analyzeInstruction } from '@8f4e/stack-analyzer/testing';
 import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 import and from './and';

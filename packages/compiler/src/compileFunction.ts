@@ -1,16 +1,14 @@
 import type {
 	AnalyzedLine,
 	CompiledFunction,
-	CompiledStackAnalysisLine,
 	CompileOptions,
 	FunctionCompilationContext,
-	FunctionMetadata,
 	FunctionRegistry,
 	FunctionTypeRegistry,
 	Namespaces,
 	ValidatedFunctionAST,
 } from '@8f4e/compiler-spec';
-import { ErrorCode, getError } from '@8f4e/compiler-spec';
+import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/compiler-spec';
 import {
 	createFunction,
 	createLocalDeclaration,
@@ -18,8 +16,8 @@ import {
 	WASM_TYPE_F64,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import { compileLine, toCompiledStackAnalysisLine } from './compileLine';
-import instructions from './instructionCompilers';
+import type { StackAnalyzedFunction } from '@8f4e/stack-analyzer';
+import { attachStackAnalysis, compileCodegenLine } from './compileLine';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import normalizeValueArguments from './semantic/normalizeValueArguments';
 
@@ -27,24 +25,14 @@ type CompletedFunctionCompilationContext = FunctionCompilationContext & {
 	currentFunctionTypeIndex: number;
 };
 
-const importedFunctionAllowedInstructions = new Set([
-	'function',
-	'#import',
-	'#impure',
-	'#loopCap',
-	'param',
-	'paramShape',
-	'functionEnd',
-]);
-
 /**
  * Compiles one validated function AST into a WebAssembly function body or import metadata.
  *
  * @param ast - Validated AST being processed.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param typeRegistry - Function type registry used for WASM block signatures.
- * @param functionMetadata - Metadata for the function being compiled.
  * @param functions - Function registry available to compilation.
+ * @param stackReport - Stack-analysis report for this function.
  * @param options - Compiler options for this compilation pass.
  * @returns The compiled function artifact.
  */
@@ -52,10 +40,11 @@ export function compileFunction(
 	ast: ValidatedFunctionAST,
 	namespaces: Namespaces,
 	typeRegistry: FunctionTypeRegistry,
-	functionMetadata: FunctionMetadata,
 	functions: FunctionRegistry,
+	stackReport: StackAnalyzedFunction,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
+	const functionMetadata = stackReport.functionMetadata;
 	const context = createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces,
@@ -83,26 +72,15 @@ export function compileFunction(
 		functionTypeRegistry: typeRegistry,
 	});
 
-	const stackAnalysis: CompiledStackAnalysisLine[] = [];
+	const analyzedLines = stackReport.analyzedLines;
+	let analyzedLineIndex = 0;
 	for (const originalLine of ast.lines) {
 		const line = normalizeValueArguments(originalLine, context);
-		if (ast.importLine && !importedFunctionAllowedInstructions.has(line.instruction)) {
-			throw getError(
-				line.instruction === '#export' ? ErrorCode.IMPORT_EXPORT_CONFLICT : ErrorCode.IMPORTED_FUNCTION_BODY,
-				line,
-				context
-			);
-		}
-
-		if (ast.importLine && line.instruction === 'functionEnd') {
-			instructions.functionEnd(line as AnalyzedLine, context);
+		if (isSemanticInstructionLine(line) || isMemoryDeclarationLine(line)) {
 			continue;
 		}
-
-		const analyzedLine = compileLine(line, context);
-		if (options.includeStackAnalysis && analyzedLine) {
-			stackAnalysis.push(toCompiledStackAnalysisLine(analyzedLine));
-		}
+		const analyzedLine = attachStackAnalysis(line, analyzedLines[analyzedLineIndex++] as AnalyzedLine);
+		compileCodegenLine(analyzedLine, context);
 	}
 
 	// Collect locals (excluding parameters)
@@ -142,6 +120,6 @@ export function compileFunction(
 		ast,
 		...(functionMetadata.used ? { used: true } : {}),
 		...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
-		...(options.includeStackAnalysis ? { stackAnalysis } : {}),
+		...(options.includeStackAnalysis ? { stackAnalysis: stackReport.stackAnalysis } : {}),
 	};
 }
