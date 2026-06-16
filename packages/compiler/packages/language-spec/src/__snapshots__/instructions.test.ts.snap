@@ -1,0 +1,87 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`instruction block classification > snapshots derived block tables 1`] = `
+{
+  "compiledModuleBlockTypes": [
+    "module",
+  ],
+  "compilerBlockInstructionPairs": [
+    {
+      "end": "blockEnd",
+      "start": "block",
+    },
+    {
+      "end": "constantsEnd",
+      "start": "constants",
+    },
+    {
+      "end": "functionEnd",
+      "start": "function",
+    },
+    {
+      "end": "ifEnd",
+      "start": "if",
+    },
+    {
+      "end": "loopEnd",
+      "start": "loop",
+    },
+    {
+      "end": "mapEnd",
+      "start": "mapBegin",
+    },
+    {
+      "end": "moduleEnd",
+      "start": "module",
+    },
+    {
+      "end": "prototypeEnd",
+      "start": "prototype",
+    },
+  ],
+  "compilerSourceBlockInstructionPairs": [
+    {
+      "compilationMode": null,
+      "compilesToModule": false,
+      "end": "constantsEnd",
+      "start": "constants",
+      "type": "constants",
+    },
+    {
+      "compilationMode": "function",
+      "compilesToModule": false,
+      "end": "functionEnd",
+      "start": "function",
+      "type": "function",
+    },
+    {
+      "compilationMode": "module",
+      "compilesToModule": true,
+      "end": "moduleEnd",
+      "start": "module",
+      "type": "module",
+    },
+    {
+      "compilationMode": null,
+      "compilesToModule": false,
+      "end": "prototypeEnd",
+      "start": "prototype",
+      "type": "prototype",
+    },
+  ],
+  "stackBlockInstructionPairs": [
+    {
+      "end": "blockEnd",
+      "start": "block",
+    },
+    {
+      "end": "ifEnd",
+      "start": "if",
+    },
+    {
+      "end": "loopEnd",
+      "start": "loop",
+    },
+  ],
+}
+`;
