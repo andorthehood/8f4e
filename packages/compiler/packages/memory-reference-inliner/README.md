@@ -10,10 +10,11 @@ The intended order is:
 
 1. Parse and validate source into ASTs.
 2. Inline constants.
-3. Build effective module memory declarations, including `shape` expansion.
-4. Plan memory layout with `@8f4e/memory-planner`.
+3. Normalize layout declaration counts into planner-ready source lines.
+4. Plan memory layout with `@8f4e/memory-planner`, including `shape` expansion.
 5. Inline memory references once with `@8f4e/memory-reference-inliner`.
-6. Run semantic analysis and code generation on the inlined lines.
+6. Resolve memory defaults and pointer target metadata with `@8f4e/memory-default-resolver`.
+7. Run semantic analysis and code generation on the inlined lines plus resolved memory data.
 
 This pass should not be used to make memory declarations plan-able. Declaration sizes handed to the memory planner must already be literal layout input. Layout-dependent declaration sizes, such as `int[] dest count(source)`, are not part of this pass.
 
@@ -24,7 +25,9 @@ The pass receives:
 - The whole project AST, grouped by block kind, whose constants have already been inlined.
 - The completed `@8f4e/memory-planner` layout plan for that same project AST.
 
-The memory layout plan remains the source of truth while references are resolved. This package should read planned modules and declarations directly from that plan rather than converting it into compiler namespace or `MemoryMap` state. Pointer facts discovered while inlining scalar pointer defaults may be kept as a per-module metadata overlay next to the plan.
+The memory layout plan remains the source of truth while references are resolved. This package should read planned modules and declarations directly from that plan rather than converting it into compiler namespace or `MemoryMap` state.
+
+The inliner may keep temporary pointer facts while traversing a module so later references like `count(*ptr)` can be resolved during the same pass. Persistent pointer metadata for compiler contexts belongs to `@8f4e/memory-default-resolver`.
 
 ## Output
 
@@ -39,7 +42,10 @@ Within memory declaration lines, this pass may inline scalar default values and 
 There should be one project-level call during compilation:
 
 ```ts
-const memoryPlan = planMemoryLayout(layoutSource);
+const memoryPlan = planMemoryLayout({
+	prototypes,
+	modules,
+});
 const result = inlineMemoryReferences({
 	ast: {
 		prototypes,
@@ -89,8 +95,9 @@ This package must not:
 
 - Inline constants. That belongs to `@8f4e/constant-inliner`.
 - Decide module or declaration addresses. That belongs to `@8f4e/memory-planner`.
-- Expand `shape` declarations. That belongs to the effective memory declaration source builder before planning.
+- Expand `shape` declarations. That belongs to `@8f4e/memory-planner`.
 - Apply scalar defaults or array initializer defaults.
+- Return persistent pointer target metadata for compiler contexts. That belongs to `@8f4e/memory-default-resolver`.
 - Resolve calls, function overloads, locals, stack effects, or code generation details.
 - Validate duplicate module ids, duplicate declarations, instruction arity, or syntax.
 - Add compatibility shims for old compiler-internal normalization APIs.

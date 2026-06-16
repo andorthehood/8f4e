@@ -172,7 +172,6 @@ export interface CompilationContext {
 	currentMemoryRegionName?: string;
 	memoryPlan: MemoryLayoutPlan;
 	currentPlannedModule?: PlannedMemoryModule;
-	currentPlannedMemoryDeclarationIndex: number;
 	memoryDefaults: MemoryDefaults;
 	pointerMetadata: MemoryPointerMetadataMap;
 	memoryRegions: string[];
@@ -192,8 +191,6 @@ export interface CompilationContext {
 	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>;
-	expandPrototypeShapes?: boolean;
-	isInherited?: boolean;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;
