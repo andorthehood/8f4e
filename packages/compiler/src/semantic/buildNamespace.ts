@@ -1,5 +1,4 @@
 import {
-	type CompileOptions,
 	type CompilerDiagnosticContext,
 	compilerSourceBlockInstructionByType,
 	createFunctionId,
@@ -14,7 +13,6 @@ import {
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
-	validateMemoryRegionOptions,
 } from '@8f4e/language-spec';
 import type { ResolveMemoryDefaultsResult } from '@8f4e/memory-default-resolver';
 import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
@@ -160,16 +158,13 @@ export function assertUniqueModuleIds(asts: readonly ValidatedModuleAST[]): void
  * @param asts - Validated ASTs being processed.
  * @param memoryPlan - Completed memory layout plan for the project.
  * @param defaultResolution - Resolved defaults and pointer metadata keyed by module id.
- * @param options - Compiler options for this compilation pass.
  * @returns The computed result.
  */
 export function collectNamespacesFromASTs(
 	asts: readonly ValidatedModuleAST[],
 	memoryPlan: MemoryLayoutPlan,
-	defaultResolution: ResolveMemoryDefaultsResult,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
+	defaultResolution: ResolveMemoryDefaultsResult
 ): Namespaces {
-	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
 	const namespaces: Namespaces = {};
 
 	for (const plannedModule of memoryPlan.moduleList) {
