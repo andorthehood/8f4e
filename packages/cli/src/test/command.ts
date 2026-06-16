@@ -1,4 +1,4 @@
-import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
+import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/language-spec';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { compileProject } from '../compile/compileProject';

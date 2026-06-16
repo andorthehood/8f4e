@@ -82,7 +82,7 @@ Only memory-start provenance should carry allocation-level element count unless 
 
 - `npx nx run compiler:test -- --run src/semantic/resolveCompileTimeArgument.test.ts src/stackAnalysis/analyzeInstruction.test.ts tests/instructions/constantExpressions.test.ts`
 - `npx nx run @8f4e/compiler:typecheck`
-- `rg -n "pointeeElementCount|safeRange|clampRange|localSet|pointsTo" packages/compiler packages/compiler/packages/compiler-spec -g '*.ts'`
+- `rg -n "pointeeElementCount|safeRange|clampRange|localSet|pointsTo" packages/compiler packages/compiler/packages/language-spec -g '*.ts'`
 
 ## Success Criteria
 
@@ -93,8 +93,8 @@ Only memory-start provenance should carry allocation-level element count unless 
 
 ## Affected Components
 
-- `packages/compiler/packages/compiler-spec/src/semantic.ts`
-- `packages/compiler/packages/compiler-spec/src/memory.ts`
+- `packages/compiler/packages/language-spec/src/semantic.ts`
+- `packages/compiler/packages/language-spec/src/memory.ts`
 - `packages/compiler/src/semantic/declarations/createDeclarationCompiler.ts`
 - `packages/compiler/src/stackAnalysis/analyzeInstruction.ts`
 - `packages/compiler/src/instructionCompilers/localSet.ts`

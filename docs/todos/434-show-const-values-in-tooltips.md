@@ -65,7 +65,7 @@ If the value or type is unavailable, omit the unavailable row entirely. Do not s
 
 - `npx nx run @8f4e/compiler:test -- --run tests/instructions/constants.test.ts tests/instructions/constantExpressions.test.ts`
 - `npx nx run @8f4e/editor-state:test -- --run src/features/tooltip/sourceLine.test.ts src/features/tooltip/content.test.ts src/features/tooltip/effect.test.ts`
-- `npx nx run-many --target=typecheck --projects=@8f4e/compiler-spec,@8f4e/compiler,@8f4e/editor-state`
+- `npx nx run-many --target=typecheck --projects=@8f4e/language-spec,@8f4e/compiler,@8f4e/editor-state`
 
 ## Success Criteria
 
@@ -77,7 +77,7 @@ If the value or type is unavailable, omit the unavailable row entirely. Do not s
 
 ## Affected Components
 
-- `packages/compiler/packages/compiler-spec/src/compiled.ts` - compiler result metadata contract.
+- `packages/compiler/packages/language-spec/src/compiled.ts` - compiler result metadata contract.
 - `packages/compiler/src/compiler.ts` - resolved constant metadata returned to consumers.
 - `packages/editor/packages/editor-state/src/features/tooltip/` - selected-line tooltip lookup and rendering.
 

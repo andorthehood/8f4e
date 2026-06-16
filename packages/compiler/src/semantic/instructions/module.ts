@@ -3,7 +3,7 @@ import {
 	type CompilationContext,
 	compilerSourceBlockInstructionByType,
 	type ModuleLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 
 import { pushBlock } from '../../utils/blockStack';
 

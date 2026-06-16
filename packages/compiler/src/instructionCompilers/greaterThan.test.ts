@@ -1,5 +1,5 @@
-import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { WASM_F64_GT } from '@8f4e/compiler-wasm-utils';
+import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';

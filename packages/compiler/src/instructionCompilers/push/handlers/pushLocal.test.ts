@@ -1,5 +1,5 @@
-import type { ResolvedLocalPushLine } from '@8f4e/compiler-spec';
 import { localGet } from '@8f4e/compiler-wasm-utils';
+import type { ResolvedLocalPushLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';

@@ -1,4 +1,4 @@
-import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
+import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
 import { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 import { getProjectBlockName, isProjectGapLine } from './projectLines';

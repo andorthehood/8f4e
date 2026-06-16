@@ -1,5 +1,5 @@
-import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
-import { ArgumentType, ErrorCode, getError, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine } from '@8f4e/language-spec';
+import { ArgumentType, ErrorCode, getError, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/language-spec';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**

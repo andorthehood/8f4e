@@ -6,7 +6,7 @@
  * (tokenizer/syntax or semantic/compiler) produced the error.
  */
 
-import type { CompilerDiagnostic, CompilerStageError } from '@8f4e/compiler-spec';
+import type { CompilerDiagnostic, CompilerStageError } from '@8f4e/language-spec';
 import { SyntaxRulesError } from '@8f4e/tokenizer';
 
 const FALLBACK_LINE = {

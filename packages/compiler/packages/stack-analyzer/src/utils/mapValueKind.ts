@@ -4,8 +4,8 @@ import type {
 	CompilerASTLine,
 	StackItem,
 	StackValueType,
-} from '@8f4e/compiler-spec';
-import { ErrorCode, getError } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ErrorCode, getError } from '@8f4e/language-spec';
 
 export type MapKind = 'int32' | 'float32' | 'float64';
 

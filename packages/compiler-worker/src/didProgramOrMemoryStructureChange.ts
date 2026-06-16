@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
+import type { CompiledModuleLookup, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 
 function didMemoryDeclarationChange(current: PlannedMemoryDeclaration, previous: PlannedMemoryDeclaration): boolean {
 	return (

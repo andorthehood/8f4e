@@ -1,4 +1,4 @@
-import { type CompiledFunction, createFunctionId, type ValidatedFunctionAST } from '@8f4e/compiler-spec';
+import { type CompiledFunction, createFunctionId, type ValidatedFunctionAST } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
 import type { DirectiveDerivedState } from '../features/directives/registry';

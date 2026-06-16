@@ -24,7 +24,6 @@ export { default as hasMemoryReferencePrefixStart } from './hasMemoryReferencePr
 export { default as hasPointeeElementMaxPrefix } from './hasPointeeElementMaxPrefix';
 export { default as hasPointeeElementWordSizePrefix } from './hasPointeeElementWordSizePrefix';
 export { default as instructionParser } from './instructionParser';
-export { default as isArrayDeclarationInstruction } from './isArrayDeclarationInstruction';
 export { default as isComment } from './isComment';
 export { default as isConstantName } from './isConstantName';
 export { default as isInstructionLikeLine } from './isInstructionLikeLine';
@@ -35,7 +34,6 @@ export { default as isIntermodularElementWordSizeReference } from './isIntermodu
 export { default as isIntermodularModuleReference } from './isIntermodularModuleReference';
 export { default as isIntermodularReference } from './isIntermodularReference';
 export { default as isIntermodularReferencePattern } from './isIntermodularReferencePattern';
-export { default as isMemoryDeclarationInstruction } from './isMemoryDeclarationInstruction';
 export { default as isMemoryPointerIdentifier, default as isMemoryPointerSyntax } from './isMemoryPointerIdentifier';
 export { default as isSkipExecutionDirective } from './isSkipExecutionDirective';
 export {

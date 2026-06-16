@@ -1,29 +1,29 @@
-import type { Argument, SourceArgumentShapeRule, SourceArgumentsSpec } from '@8f4e/compiler-spec';
+import type { Argument, SourceArgumentShapeRule, SourceArgumentsSpec } from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	FUNCTION_TYPE_IDENTIFIERS,
 	getInstructionSpec,
+	isArrayMemoryDeclarationInstructionName,
+	isBlockResultTypeIdentifier,
 	isKnownInstructionName,
+	isMemoryDeclarationInstructionName,
 	SCALAR_TYPE_IDENTIFIERS,
-} from '@8f4e/compiler-spec';
-import isArrayDeclarationInstruction from './isArrayDeclarationInstruction';
+} from '@8f4e/language-spec';
 import isConstantName from './isConstantName';
-import isMemoryDeclarationInstruction from './isMemoryDeclarationInstruction';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntaxError';
 
 const supportedScalarTypeIdentifiers: ReadonlySet<string> = new Set(SCALAR_TYPE_IDENTIFIERS);
 const supportedFunctionTypeIdentifiers: ReadonlySet<string> = new Set(FUNCTION_TYPE_IDENTIFIERS);
-const supportedIfResultTypeIdentifiers = new Set(['int', 'float']);
 
 function getInstructionArgumentSpec(instruction: string): SourceArgumentsSpec | undefined {
-	if (isArrayDeclarationInstruction(instruction)) {
+	if (isArrayMemoryDeclarationInstructionName(instruction)) {
 		return {
 			minArguments: 2,
 			argumentTypes: ['identifier', 'compileTimeValue'],
 		};
 	}
 
-	if (isMemoryDeclarationInstruction(instruction)) {
+	if (isMemoryDeclarationInstructionName(instruction)) {
 		return undefined;
 	}
 
@@ -116,7 +116,7 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
 			}
 			return;
 		case 'ifResultType':
-			if (argument.type !== ArgumentType.IDENTIFIER || !supportedIfResultTypeIdentifiers.has(argument.value)) {
+			if (argument.type !== ArgumentType.IDENTIFIER || !isBlockResultTypeIdentifier(argument.value)) {
 				invalid(`Invalid argument for ${instruction}: expected result type (int or float).`);
 			}
 			return;
@@ -168,7 +168,7 @@ export default function validateInstructionArguments(instruction: string, args: 
 			}
 			validateArgumentShape(argument, spec.argumentTypes[i], instruction);
 		}
-		if (isArrayDeclarationInstruction(instruction)) {
+		if (isArrayMemoryDeclarationInstructionName(instruction)) {
 			for (let i = spec.argumentTypes.length; i < args.length; i++) {
 				validateArgumentShape(args[i], 'compileTimeValue', instruction);
 			}

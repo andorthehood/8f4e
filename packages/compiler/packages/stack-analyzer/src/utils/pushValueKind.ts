@@ -1,4 +1,4 @@
-import type { ResolvedMemoryDeclaration, StackItem } from '@8f4e/compiler-spec';
+import type { ResolvedMemoryDeclaration, StackItem } from '@8f4e/language-spec';
 
 export type PushValueKind = 'int32' | 'float32' | 'float64';
 

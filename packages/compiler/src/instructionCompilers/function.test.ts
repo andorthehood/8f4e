@@ -1,5 +1,5 @@
-import type { CompilerASTLine, FunctionTypeRegistry } from '@8f4e/compiler-spec';
-import { createFunctionId } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, FunctionTypeRegistry } from '@8f4e/language-spec';
+import { createFunctionId } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';

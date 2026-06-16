@@ -1,4 +1,4 @@
-import type { StackItem } from '@8f4e/compiler-spec';
+import type { StackItem } from '@8f4e/language-spec';
 
 /**
  * Reads the top stack operands without mutating the stack, returning an empty list when unavailable.

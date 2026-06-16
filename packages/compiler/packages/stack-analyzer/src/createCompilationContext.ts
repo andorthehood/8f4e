@@ -4,8 +4,8 @@ import type {
 	CompilationContext,
 	LoopBlockStackFrame,
 	MapBlockStackFrame,
-} from '@8f4e/compiler-spec';
-import { BlockType } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { BlockType } from '@8f4e/language-spec';
 import { createEmptyMemoryPlan } from './utils/memoryState';
 
 /** Partial context shape used by tests and compiler stages when seeding a compilation context. */

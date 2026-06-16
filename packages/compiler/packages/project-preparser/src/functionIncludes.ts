@@ -1,4 +1,4 @@
-import type { Module } from '@8f4e/compiler-spec';
+import type { Module } from '@8f4e/language-spec';
 import { INCLUDES_BLOCK_DELIMITER } from './delimiters';
 import { isProjectGapLine } from './projectLines';
 import type { ProjectBlock } from './types';

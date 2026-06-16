@@ -4,8 +4,8 @@ import type {
 	CompilerASTLine,
 	StackItem,
 	StackValueType,
-} from '@8f4e/compiler-spec';
-import { ErrorCode, getError } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ErrorCode, getError } from '@8f4e/language-spec';
 
 /** Internal scalar kind used to choose typed WASM operations for map rows and values. */
 export type MapKind = 'int32' | 'float32' | 'float64';

@@ -14,7 +14,7 @@ completed: null
 
 Compiler diagnostic ownership is currently split across package boundaries:
 
-- `@8f4e/compiler-spec` owns shared diagnostic shapes and `ErrorCode`.
+- `@8f4e/language-spec` owns shared diagnostic shapes and `ErrorCode`.
 - `packages/compiler/src/compilerError.ts` owns `getError(...)` and the default compiler error messages.
 - compiler-adjacent packages such as `@8f4e/constant-inliner` cannot emit normal compiler diagnostics without
   importing compiler internals or throwing a package-local error that the compiler wraps at the integration boundary.
@@ -24,7 +24,7 @@ appear.
 
 ## Proposed Solution
 
-Create a small `@8f4e/compiler-diagnostics` package that depends on `@8f4e/compiler-spec` and owns compiler diagnostic
+Create a small `@8f4e/compiler-diagnostics` package that depends on `@8f4e/language-spec` and owns compiler diagnostic
 construction.
 
 The package should export:
@@ -34,7 +34,7 @@ The package should export:
 - shared detail formatting types/helpers;
 - lightweight helpers for attaching source/block diagnostic context if they can stay generic.
 
-Keep `@8f4e/compiler-spec` focused on shared types, codes, and structural contracts. Keep phase-specific context
+Keep `@8f4e/language-spec` focused on shared types, codes, and structural contracts. Keep phase-specific context
 assembly in the compiler or the package that owns the phase.
 
 ## Anti-Patterns
@@ -42,7 +42,7 @@ assembly in the compiler or the package that owns the phase.
 - Do not make compiler-adjacent packages import `packages/compiler/src/compilerError.ts`.
 - Do not move broad compiler phase logic into the diagnostics package.
 - Do not let diagnostics depend on tokenizer, compiler, or constant-inliner implementation details.
-- Do not turn `compiler-spec` into the message-formatting package unless a dedicated diagnostics package proves too
+- Do not turn `language-spec` into the message-formatting package unless a dedicated diagnostics package proves too
   costly.
 
 ## Implementation Plan
@@ -51,13 +51,13 @@ assembly in the compiler or the package that owns the phase.
 
 - Add `packages/compiler/packages/diagnostics`.
 - Configure Nx build, typecheck, test, and package metadata following nearby compiler subpackages.
-- Add a dependency on `@8f4e/compiler-spec`.
+- Add a dependency on `@8f4e/language-spec`.
 
 ### Step 2: Move Diagnostic Construction
 
 - Move `getError(...)` and its detail formatting support out of `packages/compiler/src/compilerError.ts`.
 - Re-export or replace compiler imports so current compiler code keeps using a stable import path.
-- Keep error codes and diagnostic shapes in `@8f4e/compiler-spec`.
+- Keep error codes and diagnostic shapes in `@8f4e/language-spec`.
 
 ### Step 3: Update Compiler-Adjacent Packages
 
@@ -84,13 +84,13 @@ assembly in the compiler or the package that owns the phase.
 - [ ] `getError(...)` lives outside `packages/compiler/src`.
 - [ ] compiler diagnostics remain message-compatible unless intentionally changed.
 - [ ] compiler-adjacent packages can use shared diagnostic construction without depending on `@8f4e/compiler`.
-- [ ] `@8f4e/compiler-spec` remains the home of diagnostic types and error codes, not message formatting.
+- [ ] `@8f4e/language-spec` remains the home of diagnostic types and error codes, not message formatting.
 - [ ] Existing compiler diagnostic snapshots pass or are updated only for intentional wording/context changes.
 
 ## Affected Components
 
 - `packages/compiler/src/compilerError.ts` - likely deleted, reduced to a re-export, or moved.
-- `packages/compiler/packages/compiler-spec/src/errors.ts` - remains the source of error codes and diagnostic types.
+- `packages/compiler/packages/language-spec/src/errors.ts` - remains the source of error codes and diagnostic types.
 - `packages/compiler/packages/constant-inliner` - candidate consumer for shared diagnostics.
 - `packages/compiler/src/compileSubProgram.ts` - current `ConstantInliningError` wrapper may become thinner.
 

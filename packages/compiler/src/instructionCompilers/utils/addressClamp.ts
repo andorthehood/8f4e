@@ -4,7 +4,7 @@ import { getOrCreateMemoryGuardLocal } from './memoryAccessGuard';
 
 export { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '../../utils/addressClamp';
 
-import type { CodegenContext, CompilationContext, CompilerASTLine, MemoryAddressRange } from '@8f4e/compiler-spec';
+import type { CodegenContext, CompilationContext, CompilerASTLine, MemoryAddressRange } from '@8f4e/language-spec';
 
 /**
  * Builds bytecode that clamps the top stack address between lower and upper bounds.

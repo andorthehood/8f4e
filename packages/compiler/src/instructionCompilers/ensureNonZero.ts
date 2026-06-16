@@ -1,5 +1,3 @@
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
 import {
 	f32const,
 	f64const,
@@ -15,6 +13,8 @@ import {
 	WASM_TYPE_I32,
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
+import type { InstructionCompiler } from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 import { saveByteCode } from './utils/saveByteCode';
 
 /**

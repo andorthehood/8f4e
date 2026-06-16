@@ -1,5 +1,5 @@
-import type { PointeeBaseType } from '@8f4e/compiler-spec';
-import { BASE_TYPE_METADATA } from '@8f4e/compiler-spec';
+import type { PointeeBaseType } from '@8f4e/language-spec';
+import { BASE_TYPE_METADATA } from '@8f4e/language-spec';
 
 /**
  * Builds semantic memory flags from a base type and pointer depth.

@@ -1,5 +1,5 @@
-import { arrayMemoryDeclarationInstructions } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, EventDispatcher, PianoKeyboard, State } from '@8f4e/editor-state-types';
+import { arrayMemoryDeclarationInstructions } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockClickEvent } from '../../codeBlockDragger/effect';
 import findPianoKeyboardWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';

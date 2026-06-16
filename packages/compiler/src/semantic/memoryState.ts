@@ -5,7 +5,7 @@ import type {
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
 	ResolvedMemoryDeclaration,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 
 type MemoryPlanContext = Pick<CompilationContext, 'currentPlannedModule' | 'memoryPlan' | 'namespace'>;
 

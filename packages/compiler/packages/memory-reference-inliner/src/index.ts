@@ -20,8 +20,8 @@ import type {
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
-} from '@8f4e/compiler-spec';
-import { ArgumentType, isScalarMemoryDeclarationLine, POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ArgumentType, isScalarMemoryDeclarationLine, POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/language-spec';
 import type { MemoryLayoutPlan, PlannedMemoryModule } from '@8f4e/memory-planner';
 import { evaluateResolvedValueExpression } from './evaluateResolvedValueExpression';
 import {

@@ -1,6 +1,6 @@
-import type { CompilerDiagnostic } from '@8f4e/compiler-spec';
-import { documentBlockInstructionByType, ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
+import type { CompilerDiagnostic } from '@8f4e/language-spec';
+import { documentBlockInstructionByType, ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import type { ProjectBlock } from '@8f4e/project-preparser';
 import { ProjectIncludeError, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
 import type { StateManager } from '@8f4e/state-manager';

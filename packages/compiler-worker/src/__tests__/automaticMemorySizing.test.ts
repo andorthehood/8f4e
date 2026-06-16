@@ -1,4 +1,4 @@
-import type { CompileInput, Module } from '@8f4e/compiler-spec';
+import type { CompileInput, Module } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';

@@ -1,4 +1,4 @@
-import { createFunctionId } from '@8f4e/compiler-spec';
+import { createFunctionId } from '@8f4e/language-spec';
 import { describe, expect, test } from 'vitest';
 
 import { getExportedFunction, instantiateFixtureProgramSource } from './testUtils';

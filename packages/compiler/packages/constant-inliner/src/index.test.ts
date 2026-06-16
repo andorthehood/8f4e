@@ -11,8 +11,8 @@ import type {
 	UseLine,
 	ValidatedConstantsAST,
 	ValidatedModuleAST,
-} from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import { ConstantInliningError, ConstantInliningErrorCode, inlineConstantsInAST, inlineConstantsInASTs } from './index';

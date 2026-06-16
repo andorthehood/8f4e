@@ -1,6 +1,6 @@
-import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
-import { MemoryTypes } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import { MemoryTypes } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 import updateOutputsGraphicData from './updateGraphicData';

@@ -1,5 +1,5 @@
-import type { ArgumentIdentifier } from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
+import type { ArgumentIdentifier } from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 
 /**
  * Classifies intermodular module-base and memory-reference identifier forms.

@@ -1,4 +1,3 @@
-import type { InstructionCompiler, MapBlockStackFrame, MapEndLine } from '@8f4e/compiler-spec';
 import type { WASMInstructionCode } from '@8f4e/compiler-wasm-utils';
 import {
 	f32const,
@@ -15,6 +14,7 @@ import {
 	WASM_I32_OR,
 	WASM_SELECT,
 } from '@8f4e/compiler-wasm-utils';
+import type { InstructionCompiler, MapBlockStackFrame, MapEndLine } from '@8f4e/language-spec';
 import { popBlock } from '../utils/blockStack';
 import type { MapKind } from '../utils/mapValueKind';
 import { resolveMapKind } from '../utils/mapValueKind';

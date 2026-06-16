@@ -1,5 +1,5 @@
-import type { ResolvedMemoryPushLine } from '@8f4e/compiler-spec';
 import { i32const, i32load } from '@8f4e/compiler-wasm-utils';
+import type { ResolvedMemoryPushLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';

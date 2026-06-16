@@ -1,4 +1,4 @@
-import type { CodegenContext, NormalizedArgumentLiteral } from '@8f4e/compiler-spec';
+import type { CodegenContext, NormalizedArgumentLiteral } from '@8f4e/language-spec';
 import { saveByteCode } from '../../utils/saveByteCode';
 import { constOpcode, resolveArgumentValueKind } from '../shared';
 

@@ -1,4 +1,4 @@
-import type { CompilationContext, Stack, StackItem, StackValueType } from '@8f4e/compiler-spec';
+import type { CompilationContext, Stack, StackItem, StackValueType } from '@8f4e/language-spec';
 
 /**
  * Creates a value stack item with optional known-value metadata preserved for later guards.

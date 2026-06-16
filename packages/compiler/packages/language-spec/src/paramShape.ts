@@ -1,20 +1,16 @@
-import {
-	type CompilerASTLine,
-	type CompilerDiagnosticContext,
-	ErrorCode,
-	FUNCTION_TYPE_IDENTIFIERS,
-	type FunctionMetadata,
-	type FunctionParamShapeExpansion,
-	type FunctionValueType,
-	getError,
-	type MemoryDeclarationLine,
-	type ParamShapeLine,
-	type ValidatedFunctionAST,
-	type ValidatedPrototypeAST,
-} from '@8f4e/compiler-spec';
-import { getPrototypeMemoryDeclarationId } from './prototypeShapes';
-
-const functionTypeIdentifiers = new Set<string>(FUNCTION_TYPE_IDENTIFIERS);
+import { ArgumentType } from './arguments';
+import type {
+	CompilerASTLine,
+	MemoryDeclarationLine,
+	ParamShapeLine,
+	ValidatedFunctionAST,
+	ValidatedPrototypeAST,
+} from './ast';
+import type { FunctionMetadata, FunctionParamShapeExpansion } from './compiled';
+import { ErrorCode, getError } from './compilerError';
+import type { CompilerDiagnosticContext } from './diagnostics';
+import type { FunctionValueType } from './functionTypes';
+import { isFunctionValueType } from './functionTypes';
 
 function getAstDiagnosticContext(ast: ValidatedFunctionAST): CompilerDiagnosticContext {
 	return {
@@ -33,29 +29,40 @@ function getPointerDepth(type: string): number {
 	return 0;
 }
 
+export function getPrototypeMemoryDeclarationId(
+	line: MemoryDeclarationLine,
+	sourceLine: CompilerASTLine,
+	context: CompilerDiagnosticContext
+): string {
+	const idArgument = line.arguments[0];
+	if (idArgument.type !== ArgumentType.IDENTIFIER || idArgument.referenceKind !== 'plain') {
+		throw getError(ErrorCode.EXPECTED_IDENTIFIER, sourceLine, context);
+	}
+
+	return idArgument.value;
+}
+
 export function getParamType(
 	line: MemoryDeclarationLine,
 	sourceLine: CompilerASTLine,
 	context: CompilerDiagnosticContext
-) {
+): FunctionValueType {
 	const declarationType = line.instruction.endsWith('[]') ? line.instruction.slice(0, -2) : line.instruction;
 	const normalizedType = declarationType === 'int32' ? 'int' : declarationType;
 	const pointerDepth = getPointerDepth(normalizedType);
 	const expandedPointerDepth = pointerDepth + 1;
 
-	// Function value types currently stop at double pointers; paramShape would need one extra layer
-	// for every shaped declaration, so deeper prototype pointer declarations are rejected for now.
 	if (expandedPointerDepth > 2) {
 		throw getError(ErrorCode.PARAM_SHAPE_UNSUPPORTED_POINTER_DEPTH, sourceLine, context);
 	}
 
 	const baseType = normalizedType.replace(/\*+$/, '');
 	const paramType = `${baseType}${'*'.repeat(expandedPointerDepth)}`;
-	if (!functionTypeIdentifiers.has(paramType)) {
+	if (!isFunctionValueType(paramType)) {
 		throw getError(ErrorCode.PARAM_SHAPE_UNSUPPORTED_POINTER_DEPTH, sourceLine, context);
 	}
 
-	return paramType as FunctionValueType;
+	return paramType;
 }
 
 function getParamShapeExpansion(

@@ -1,5 +1,5 @@
-import type { CompiledModule, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import type { CompiledModule, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export interface ConnectorMemoryDeclaration {

@@ -1,4 +1,4 @@
-import type { ExportLine, FunctionCodegenContext, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { ExportLine, FunctionCodegenContext, InstructionCompiler } from '@8f4e/language-spec';
 
 /**
  * Instruction compiler for `#export`.

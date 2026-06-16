@@ -1,4 +1,4 @@
-import type { MemoryDefaults, MemoryLayoutPlan } from '@8f4e/compiler-spec';
+import type { MemoryDefaults, MemoryLayoutPlan } from '@8f4e/language-spec';
 import createMemoryDataSegmentCandidate from './createMemoryDataSegmentCandidate';
 import mergeAdjacentInitialMemoryDataSegments from './mergeAdjacentInitialMemoryDataSegments';
 import type { InitialMemoryDataSegment } from './types';

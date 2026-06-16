@@ -1,5 +1,5 @@
-import type { CodegenContext, CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
-import { ErrorCode, getError } from '@8f4e/compiler-spec';
+import type { CodegenContext, CompilationContext, CompilerASTLine } from '@8f4e/language-spec';
+import { ErrorCode, getError } from '@8f4e/language-spec';
 
 /**
  * Throws when a function attempts memory IO without the `#impure` directive.

@@ -1,5 +1,5 @@
-import type { BlockStack, BlockTypeValue, CodegenContext, CompilationContext } from '@8f4e/compiler-spec';
-import { BlockType } from '@8f4e/compiler-spec';
+import type { BlockStack, BlockTypeValue, CodegenContext, CompilationContext } from '@8f4e/language-spec';
+import { BlockType } from '@8f4e/language-spec';
 
 /** Context shape shared by semantic analysis and codegen while mutating block state. */
 type BlockContext = CodegenContext | CompilationContext;

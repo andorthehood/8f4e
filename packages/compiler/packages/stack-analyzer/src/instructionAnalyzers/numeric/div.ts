@@ -1,5 +1,5 @@
-import type { CompilationContext, CompilerASTLine } from '@8f4e/compiler-spec';
-import { BASE_TYPE_METADATA, ErrorCode, getError } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine } from '@8f4e/language-spec';
+import { BASE_TYPE_METADATA, ErrorCode, getError } from '@8f4e/language-spec';
 import { deriveKnownIntegerValue } from '../../utils/knownIntegerValue';
 import { consume, produce } from '../stack';
 import type { InstructionAnalysisResult } from '../types';

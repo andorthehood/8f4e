@@ -13,10 +13,10 @@ import type { DocumentOnlyInstructionName, SemanticInstructionName } from './ins
 import { semanticInstructionNames } from './instructions';
 import {
 	type ArrayDeclarationInstruction,
-	arrayMemoryDeclarationInstructions,
-	memoryDeclarationInstructions,
+	isArrayMemoryDeclarationInstructionName,
+	isMemoryDeclarationInstructionName,
+	isScalarMemoryDeclarationInstructionName,
 	type ScalarMemoryDeclarationInstruction,
-	scalarMemoryDeclarationInstructions,
 } from './memory';
 
 type ClampAddressInstructionName = 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress';
@@ -31,8 +31,15 @@ export type CompileTimeValueArgument = ArgumentLiteral | ArgumentIdentifier | Ar
 export type PushArgument = ArgumentLiteral | ArgumentIdentifier | ArgumentCompileTimeExpression | ArgumentStringLiteral;
 export type PushLine = ASTLineBase<'push', [PushArgument]>;
 
-export type BlockResultType = 'int' | 'float';
+export const BLOCK_RESULT_TYPE_IDENTIFIERS = ['int', 'float'] as const;
+export type BlockResultType = (typeof BLOCK_RESULT_TYPE_IDENTIFIERS)[number];
 export type BlockResultTypes = BlockResultType[];
+
+const blockResultTypeIdentifierSet: ReadonlySet<string> = new Set(BLOCK_RESULT_TYPE_IDENTIFIERS);
+
+export function isBlockResultTypeIdentifier(type: string): type is BlockResultType {
+	return blockResultTypeIdentifierSet.has(type);
+}
 
 /** Parser metadata linking an `if` line to its closing line and result shape. */
 export interface IfBlockMetadata {
@@ -316,9 +323,6 @@ export type ValidatedFunctionAST = ValidatedAST<FunctionAST>;
 export type ValidatedConstantsAST = ValidatedAST<ConstantsAST>;
 export type ValidatedPrototypeAST = ValidatedAST<PrototypeAST>;
 
-const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
-const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);
-const memoryDeclarationInstructionSet = new Set<string>(memoryDeclarationInstructions);
 const semanticInstructionSet = new Set<string>(semanticInstructionNames);
 
 /**
@@ -352,7 +356,7 @@ export function isCompilerDirectiveLine(line: CompilerASTLine | undefined): line
  * @returns True when the line declares memory.
  */
 export function isMemoryDeclarationLine(line: CompilerASTLine | undefined): line is MemoryDeclarationLine {
-	return line !== undefined && memoryDeclarationInstructionSet.has(line.instruction);
+	return line !== undefined && isMemoryDeclarationInstructionName(line.instruction);
 }
 
 /**
@@ -362,7 +366,7 @@ export function isMemoryDeclarationLine(line: CompilerASTLine | undefined): line
  * @returns True when the line declares scalar memory.
  */
 export function isScalarMemoryDeclarationLine(line: CompilerASTLine | undefined): line is ScalarMemoryDeclarationLine {
-	return line !== undefined && scalarMemoryDeclarationInstructionSet.has(line.instruction);
+	return line !== undefined && isScalarMemoryDeclarationInstructionName(line.instruction);
 }
 
 /**
@@ -372,7 +376,7 @@ export function isScalarMemoryDeclarationLine(line: CompilerASTLine | undefined)
  * @returns True when the line declares array memory.
  */
 export function isArrayMemoryDeclarationLine(line: CompilerASTLine | undefined): line is ArrayMemoryDeclarationLine {
-	return line !== undefined && arrayMemoryDeclarationInstructionSet.has(line.instruction);
+	return line !== undefined && isArrayMemoryDeclarationInstructionName(line.instruction);
 }
 
 /**

@@ -1,7 +1,8 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import { isMemoryDeclarationInstructionName } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType } from '@8f4e/project-preparser';
 import type { StateManager } from '@8f4e/state-manager';
-import { getPointerDepth, isMemoryDeclarationInstruction } from '@8f4e/tokenizer';
+import { getPointerDepth } from '@8f4e/tokenizer';
 import gapCalculator from '../code-editing/gapCalculator';
 import highlightSyntax8f4e from '../code-editing/highlightSyntax8f4e';
 import highlightSyntaxGlsl from '../code-editing/highlightSyntaxGlsl';
@@ -40,7 +41,9 @@ import wrapText from './utils/wrapText';
 
 function shouldRenderBlankLineNumber(sourceLine: string): boolean {
 	const instruction = sourceLine.match(/^\s*([^\s;]+)/)?.[1];
-	return instruction !== undefined && isMemoryDeclarationInstruction(instruction) && getPointerDepth(instruction) > 0;
+	return (
+		instruction !== undefined && isMemoryDeclarationInstructionName(instruction) && getPointerDepth(instruction) > 0
+	);
 }
 
 function getLineNumberPrefix(

@@ -1,6 +1,6 @@
-import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { PianoKeyboard } from '@8f4e/editor-state-types';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { Engine } from 'glugglug';
 import { describe, expect, it, vi } from 'vitest';
 import type { MemoryViews } from '../../../types';

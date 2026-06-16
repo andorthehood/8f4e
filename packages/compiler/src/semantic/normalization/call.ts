@@ -6,8 +6,8 @@ import type {
 	NormalizedPushLine,
 	PushArgument,
 	PushLine,
-} from '@8f4e/compiler-spec';
-import { ArgumentType, ErrorCode, getError } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ArgumentType, ErrorCode, getError } from '@8f4e/language-spec';
 import normalizePush from './push';
 
 function createInlinePushLine(line: CallLine, argument: PushArgument): PushLine {

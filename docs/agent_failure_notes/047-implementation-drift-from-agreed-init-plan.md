@@ -33,7 +33,7 @@ That implementation worked for repeated `init()` semantics, but it violated the 
 - Optimizing zero-fill work at the range level before measuring or needing that complexity.
 - Failing to stop after discovering the WebAssembly primitive that made the simpler plan direct: one `memory.fill`, then passive `memory.init`.
 
-The tempting reasoning was that implicit zero arrays had already been excluded from passive data segments, so init should only clear those skipped ranges. That missed the simpler contract: init should restore the full declared initial memory image, and a whole-program zero fill does that with less compiler-specific segmentation logic.
+The tempting reasoning was that implicit zero arrays had already been excluded from passive data segments, so init should only clear those skipped ranges. That missed the simpler contract: init should restore the full declared initial memory image, and a whole-program zero fill does that with less language-specific segmentation logic.
 
 ## Failure Pattern
 

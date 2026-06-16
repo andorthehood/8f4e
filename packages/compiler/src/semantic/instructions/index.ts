@@ -1,4 +1,4 @@
-import type { CompilationContext, NormalizedSemanticInstructionLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, NormalizedSemanticInstructionLine } from '@8f4e/language-spec';
 import semanticModule from './module';
 import semanticModuleEnd from './moduleEnd';
 import semanticRegion from './region';

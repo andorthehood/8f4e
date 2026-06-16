@@ -1,5 +1,5 @@
-import type { CompileInput, Module } from '@8f4e/compiler-spec';
-import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
+import type { CompileInput, Module } from '@8f4e/language-spec';
+import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
 import type { ProjectIncludeResolverAsync } from './functionIncludes';
 import { resolveProjectIncludesAsync } from './functionIncludes';
