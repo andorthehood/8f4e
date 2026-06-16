@@ -1,4 +1,3 @@
-import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
 import type {
 	AST,
 	CompiledFunction,
@@ -10,7 +9,7 @@ import type {
 	MemoryPointerMetadata,
 	PlannedMemoryDeclaration,
 } from '@8f4e/language-spec';
-import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/language-spec';
+import { POINTER_FUNCTION_TYPE_IDENTIFIERS, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import {
 	type ProjectBlock,
 	type ProjectDocument,
