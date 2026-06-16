@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/memory-reference-inliner",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "private": true,
   "description": "8f4e AST memory reference inliner package",
   "type": "module",
