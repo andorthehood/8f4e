@@ -139,7 +139,19 @@ describe('constant inlining', () => {
 		const pushSizeLine = pushLine(22, id('SIZE', 'constant'));
 		const mainAst = moduleAst('main', [mainLine, useSharedLine, pushSizeLine, moduleEndLine(23)], mainLine);
 
-		const [inlinedSharedAst, inlinedMainAst] = inlineConstantsInASTs([sharedAst, mainAst]);
+		const {
+			ast: {
+				constants: [inlinedSharedAst],
+				modules: [inlinedMainAst],
+			},
+		} = inlineConstantsInASTs({
+			ast: {
+				prototypes: [],
+				modules: [mainAst],
+				constants: [sharedAst],
+				functions: [],
+			},
+		});
 
 		expect(inlinedSharedAst).toBe(sharedAst);
 		expect(inlinedMainAst).toBe(mainAst);
@@ -206,9 +218,16 @@ describe('constant inlining', () => {
 		const sharedModuleLine = moduleLine(4, 'shared');
 		const module = moduleAst('shared', [sharedModuleLine, moduleEndLine(5)], sharedModuleLine);
 
-		expect(() => inlineConstantsInASTs([constants, module])).toThrowError(ConstantInliningError);
-		expect(() => inlineConstantsInASTs([constants, module])).toThrowError(
-			ConstantInliningErrorCode.DUPLICATE_NAMESPACE
-		);
+		const input = {
+			ast: {
+				prototypes: [],
+				modules: [module],
+				constants: [constants],
+				functions: [],
+			},
+		};
+
+		expect(() => inlineConstantsInASTs(input)).toThrowError(ConstantInliningError);
+		expect(() => inlineConstantsInASTs(input)).toThrowError(ConstantInliningErrorCode.DUPLICATE_NAMESPACE);
 	});
 });
