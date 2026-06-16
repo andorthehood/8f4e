@@ -15,6 +15,9 @@ import {
 	ErrorCode,
 	type ErrorCodeValue,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	getDefaultMemoryRegion,
+	getMemoryRegionByIndex,
+	getMemoryRegionByName,
 	isMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
 } from '@8f4e/compiler-spec';
@@ -83,39 +86,18 @@ function plannerError(
 	return new MemoryPlannerError(compilerErrorCode, line, message, details);
 }
 
-function getCustomMemoryRegionName(memoryRegions: readonly string[], memoryIndex: number): string | undefined {
-	return memoryIndex === 0 ? undefined : memoryRegions[memoryIndex - 1];
-}
-
-function resolveMemoryRegionByIndex(memoryIndex: number, memoryRegions: readonly string[]): MemoryRegionIdentity {
-	const memoryRegionName = getCustomMemoryRegionName(memoryRegions, memoryIndex);
-	return {
-		memoryIndex,
-		...(memoryRegionName ? { memoryRegionName } : {}),
-	};
-}
-
-function resolveMemoryRegionName(memoryRegionName: string, memoryRegions: readonly string[]): MemoryRegionIdentity {
-	const regionIndex = memoryRegions.indexOf(memoryRegionName);
-
-	return {
-		memoryIndex: regionIndex + 1,
-		memoryRegionName,
-	};
-}
-
 function getModuleRegion(ast: MemoryLayoutSourceModule, memoryRegions: readonly string[]): MemoryRegionIdentity {
 	const regionLine = ast.regionLine;
 	if (!regionLine) {
-		return { memoryIndex: 0 };
+		return getDefaultMemoryRegion();
 	}
 
 	const [argument] = regionLine.arguments;
 	if (argument.type === ArgumentType.LITERAL) {
-		return resolveMemoryRegionByIndex(argument.value, memoryRegions);
+		return getMemoryRegionByIndex(argument.value, memoryRegions);
 	}
 
-	return resolveMemoryRegionName(argument.value, memoryRegions);
+	return getMemoryRegionByName(argument.value, memoryRegions);
 }
 
 function getScalarDeclarationId(line: MemoryDeclarationLine): string {
