@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@8f4e/compiler": "*",
-    "@8f4e/compiler-spec": "*",
+    "@8f4e/language-spec": "*",
     "@8f4e/editor": "*",
     "@8f4e/editor-state": "*",
     "@8f4e/project-preparser": "*",

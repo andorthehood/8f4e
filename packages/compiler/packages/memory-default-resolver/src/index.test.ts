@@ -1,5 +1,5 @@
-import type { ArrayMemoryDeclarationLine, MemoryDeclarationLine, ModuleLine, ShapeLine } from '@8f4e/compiler-spec';
-import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
+import type { ArrayMemoryDeclarationLine, MemoryDeclarationLine, ModuleLine, ShapeLine } from '@8f4e/language-spec';
+import { ArgumentType, ErrorCode } from '@8f4e/language-spec';
 import {
 	type MemoryLayoutSourceModule,
 	type MemoryLayoutSourcePrototype,

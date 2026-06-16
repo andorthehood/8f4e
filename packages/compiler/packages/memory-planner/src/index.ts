@@ -9,7 +9,7 @@ import type {
 	PlannedMemoryModule,
 	RegionLine,
 	ShapeLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	ErrorCode,
@@ -20,7 +20,7 @@ import {
 	getMemoryRegionByName,
 	isMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { planArrayDeclarationLayout, planScalarDeclarationLayout } from './declarations';
 import { advanceModuleByteAddress, createModuleAddressCursor, getNextModuleByteAddress } from './modules';
 
@@ -30,7 +30,7 @@ export type {
 	PlannedMemoryDeclaration,
 	PlannedMemoryDeclarationSource,
 	PlannedMemoryModule,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 
 interface MemoryPlannerErrorDetails {
 	identifier?: string;

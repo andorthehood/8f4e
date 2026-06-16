@@ -216,7 +216,7 @@ export interface SourceArgumentsSpec {
 	restArgumentType?: SourceArgumentShapeRule;
 }
 
-/** Complete compiler specification for a source instruction. */
+/** Complete language specification for a source instruction. */
 export interface InstructionSpec<TLine = unknown> extends ValidationSpec<TLine> {
 	codegen?: false;
 	sourceInstruction?: false;
@@ -269,7 +269,7 @@ const memoryDeclarationSpec = {
 	placement: { sourceBlocks: ['module', 'prototype'] },
 } satisfies InstructionSpec;
 
-/** Central compiler spec table for parsing, placement, stack effects, and semantic effects. */
+/** Central language spec table for parsing, placement, stack effects, and semantic effects. */
 export const instructionSpecs = {
 	// abs (int -- int), abs (float -- float), abs (float64 -- float64)
 	abs: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {

@@ -1,5 +1,5 @@
-import type { CompilableBlockType, CompilerSourceBlockType } from '@8f4e/compiler-spec';
-import { compilableBlockTypes, compilerSourceBlockInstructionPairs } from '@8f4e/compiler-spec';
+import type { CompilableBlockType, CompilerSourceBlockType } from '@8f4e/language-spec';
+import { compilableBlockTypes, compilerSourceBlockInstructionPairs } from '@8f4e/language-spec';
 
 export type CodeBlockType = CompilerSourceBlockType | 'unknown';
 

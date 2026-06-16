@@ -1,5 +1,5 @@
-import type { CodegenContext, ResolvedLocalPointerPushLine } from '@8f4e/compiler-spec';
 import { localGet } from '@8f4e/compiler-wasm-utils';
+import type { CodegenContext, ResolvedLocalPointerPushLine } from '@8f4e/language-spec';
 import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../utils/saveByteCode';
 import { buildPointerDereferenceByteCode } from '../shared';

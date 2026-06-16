@@ -1,4 +1,4 @@
-import type { AnalyzedLine, CompilationContext, CompilerASTLine, StackAnalysisResult } from '@8f4e/compiler-spec';
+import type { AnalyzedLine, CompilationContext, CompilerASTLine, StackAnalysisResult } from '@8f4e/language-spec';
 import { analyzeByInstruction } from './instructionAnalyzers';
 import { cloneStack } from './instructionAnalyzers/stack';
 import { validateInstruction } from './validateInstruction';

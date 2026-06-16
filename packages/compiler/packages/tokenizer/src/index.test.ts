@@ -1,4 +1,4 @@
-import { ArgumentType, isCompilerDirectiveLine } from '@8f4e/compiler-spec';
+import { ArgumentType, isCompilerDirectiveLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { compileToAST } from './index';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
@@ -94,7 +94,7 @@ describe('compileToAST', () => {
 		);
 	});
 
-	it('rejects shape instructions outside module blocks based on compiler spec placement', () => {
+	it('rejects shape instructions outside module blocks based on language spec placement', () => {
 		for (const code of [
 			['shape oscillatorState'],
 			['function mix', 'shape oscillatorState', 'functionEnd'],
@@ -111,7 +111,7 @@ describe('compileToAST', () => {
 		}
 	});
 
-	it('rejects paramShape instructions outside function blocks based on compiler spec placement', () => {
+	it('rejects paramShape instructions outside function blocks based on language spec placement', () => {
 		for (const code of [
 			['paramShape oscillatorState'],
 			['module mix', 'paramShape oscillatorState', 'moduleEnd'],

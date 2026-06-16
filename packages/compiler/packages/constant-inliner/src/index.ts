@@ -10,8 +10,8 @@ import type {
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
-} from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 
 type InlineableAST = ValidatedModuleAST | ValidatedConstantsAST | ValidatedFunctionAST | ValidatedPrototypeAST;
 export type ConstantEnvironment = Readonly<Record<string, Const>>;

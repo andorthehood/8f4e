@@ -12,7 +12,7 @@ completed: null
 
 ## Problem Description
 
-`StackItem` in `packages/compiler/packages/compiler-spec/src/semantic.ts` currently represents every stack value with one broad interface:
+`StackItem` in `packages/compiler/packages/language-spec/src/semantic.ts` currently represents every stack value with one broad interface:
 
 - numeric value type facts (`isInteger`, `isFloat64`)
 - optional address metadata (`address`)
@@ -77,7 +77,7 @@ The key rule: use `kind: 'address'` when the compiler knows the stack value is a
 
 ### Step 1: Introduce the discriminated stack types
 
-- Update `packages/compiler/packages/compiler-spec/src/semantic.ts`.
+- Update `packages/compiler/packages/language-spec/src/semantic.ts`.
 - Add `StackValue`, `StackAddress`, and `PointeeMetadata`.
 - Change `StackItem` to the union.
 - Add small constructors/narrowing helpers if they reduce repeated object literals.
@@ -109,8 +109,8 @@ The key rule: use `kind: 'address'` when the compiler knows the stack value is a
 
 ## Validation Checkpoints
 
-- `rg -n "isInteger|isFloat64|pointeeBaseType|isPointingToPointer|address\\?\\.|pointeeMemoryIndex|pointeeMemoryRegionName" packages/compiler/packages/compiler-spec/src/semantic.ts packages/compiler/src -g '*.ts'`
-- `npx nx run @8f4e/compiler-spec:typecheck`
+- `rg -n "isInteger|isFloat64|pointeeBaseType|isPointingToPointer|address\\?\\.|pointeeMemoryIndex|pointeeMemoryRegionName" packages/compiler/packages/language-spec/src/semantic.ts packages/compiler/src -g '*.ts'`
+- `npx nx run @8f4e/language-spec:typecheck`
 - `npx nx run compiler:typecheck`
 - `npx nx run compiler:test`
 - `npx nx run @8f4e/editor-state:typecheck`
@@ -127,7 +127,7 @@ The key rule: use `kind: 'address'` when the compiler knows the stack value is a
 
 ## Affected Components
 
-- `packages/compiler/packages/compiler-spec/src/semantic.ts` - stack item public contracts.
+- `packages/compiler/packages/language-spec/src/semantic.ts` - stack item public contracts.
 - `packages/compiler/src/stackAnalysis/analyzeInstruction.ts` - stack item production and narrowing.
 - `packages/compiler/src/instructionCompilers/` - codegen consumers of analyzed stack operands.
 - `packages/compiler/src/utils/memoryData.ts` - pointer and dereference metadata helpers.
@@ -136,7 +136,7 @@ The key rule: use `kind: 'address'` when the compiler knows the stack value is a
 
 ## Risks & Considerations
 
-- **Broad type fallout**: `StackItem` is shared across compiler-spec, compiler, and editor-state. Expect many compile errors during the migration.
+- **Broad type fallout**: `StackItem` is shared across language-spec, compiler, and editor-state. Expect many compile errors during the migration.
 - **Runtime semantics should not change**: Addresses remain integer values in emitted WebAssembly. The stricter types should only change compiler metadata and narrowing.
 - **Stack analysis is the boundary**: Prefer fixing stack analysis to produce precise items over adding defensive codegen fallbacks.
 - **No compatibility layer**: The project is not released yet, so update consumers directly instead of keeping old optional fields.

@@ -1,4 +1,4 @@
-import type { CompiledFunctionLookup, CompiledModuleLookup, CompileOptions } from '@8f4e/compiler-spec';
+import type { CompiledFunctionLookup, CompiledModuleLookup, CompileOptions } from '@8f4e/language-spec';
 import type {
 	ProjectBlock,
 	ProjectBlockType,

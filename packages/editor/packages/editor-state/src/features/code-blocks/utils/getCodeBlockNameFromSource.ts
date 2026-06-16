@@ -1,4 +1,4 @@
-import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
+import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import { instructionParser } from '@8f4e/tokenizer';
 
 const namedBlockStarts: ReadonlySet<string> = new Set([

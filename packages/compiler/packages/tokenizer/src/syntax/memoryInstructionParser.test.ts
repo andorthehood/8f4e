@@ -1,4 +1,4 @@
-import { ArgumentType } from '@8f4e/compiler-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { parseMemoryInstructionArgumentsShape } from './memoryInstructionParser';
 import { classifyIdentifier } from './parseArgument';

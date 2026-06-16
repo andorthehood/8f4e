@@ -1,4 +1,4 @@
-import type { CompiledStackAnalysisLine, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
+import type { CompiledStackAnalysisLine, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { getSelectedLineTooltipColors } from './colors';
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getLiveTooltipContent } from './liveValues';

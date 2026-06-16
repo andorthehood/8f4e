@@ -1,5 +1,5 @@
-import type { CompilationContext, CompilerASTLine, LocalSetLine, Stack } from '@8f4e/compiler-spec';
-import { ErrorCode, getError } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine, LocalSetLine, Stack } from '@8f4e/language-spec';
+import { ErrorCode, getError } from '@8f4e/language-spec';
 import { consume } from './stack';
 
 /**

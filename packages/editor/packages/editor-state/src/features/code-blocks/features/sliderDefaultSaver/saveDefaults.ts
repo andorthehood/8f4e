@@ -1,10 +1,10 @@
+import type { CodeBlockGraphicData, Slider } from '@8f4e/editor-state-types';
 import {
 	ArgumentType,
 	type CompilerASTLine,
 	isMemoryDeclarationLine,
 	scalarMemoryDeclarationInstructions,
-} from '@8f4e/compiler-spec';
-import type { CodeBlockGraphicData, Slider } from '@8f4e/editor-state-types';
+} from '@8f4e/language-spec';
 import { parseLine } from '@8f4e/tokenizer';
 
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);

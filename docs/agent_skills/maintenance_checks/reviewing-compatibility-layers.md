@@ -43,31 +43,31 @@ Do not rely on explicit compatibility language. Most leftover compatibility laye
 Search for duplicate metadata, registries, and derived lists near the owning spec:
 
 ```sh
-rg -n "Spec|Specs|Names|List|Map|Registry|Table|Record<|Set<|ReadonlySet" packages/compiler/packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
+rg -n "Spec|Specs|Names|List|Map|Registry|Table|Record<|Set<|ReadonlySet" packages/compiler/packages/language-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
 Search for alias-only type layers and renamed shapes that may only preserve an old interface:
 
 ```sh
-rg -n "export type .* = .*;|type .* = .*;" packages/compiler/packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
+rg -n "export type .* = .*;|type .* = .*;" packages/compiler/packages/language-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
 Search for broad input types that may keep runtime code responsible for ambiguity:
 
 ```sh
-rg -n "unknown|any|string \\||\\| string|Partial<|Record<string|\\?:" packages/compiler/packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
+rg -n "unknown|any|string \\||\\| string|Partial<|Record<string|\\?:" packages/compiler/packages/language-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
 Search for pass-through wrappers and old-to-new conversion functions:
 
 ```sh
-rg -n "normalize|resolve|to[A-Z]|from[A-Z]|create|build|parse" packages/compiler/packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
+rg -n "normalize|resolve|to[A-Z]|from[A-Z]|create|build|parse" packages/compiler/packages/language-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
 Search for fallback-style control flow and runtime checks that might exist only because the type interface is still too loose:
 
 ```sh
-rg -n "fallback|if \\(!.*\\)|\\?\\?|as unknown|as any|Exclude<|Extract<|throw getError|throw new" packages/compiler/packages/compiler-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
+rg -n "fallback|if \\(!.*\\)|\\?\\?|as unknown|as any|Exclude<|Extract<|throw getError|throw new" packages/compiler/packages/language-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'
 ```
 
 Only after structural searches, do a low-confidence sweep for explicit labels:
@@ -122,7 +122,7 @@ These searches are intentionally noisy. Review matches by intent, not by keyword
    For compiler/type-interface changes, prefer:
 
    ```sh
-   npx nx run compiler-spec:typecheck
+   npx nx run @8f4e/language-spec:typecheck
    npx nx run @8f4e/tokenizer:typecheck
    npx nx run compiler:typecheck
    npx nx run @8f4e/tokenizer:test

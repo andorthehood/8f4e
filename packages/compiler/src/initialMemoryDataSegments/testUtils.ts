@@ -4,8 +4,8 @@ import type {
 	MemoryLayoutPlan,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
-} from '@8f4e/compiler-spec';
-import { MemoryTypes } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { MemoryTypes } from '@8f4e/language-spec';
 
 /**
  * Creates a memory data structure fixture for initial memory segment tests.

@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
+import type { CompiledModuleLookup, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 
 export interface RuntimeRunner {
 	initialize(): void;

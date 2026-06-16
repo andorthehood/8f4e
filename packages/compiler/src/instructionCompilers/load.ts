@@ -1,5 +1,3 @@
-import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryLoadVariant } from '@8f4e/compiler-spec';
-import { getInstructionSpec } from '@8f4e/compiler-spec';
 import {
 	f32load,
 	i32load,
@@ -9,6 +7,8 @@ import {
 	i32load16u,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
+import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryLoadVariant } from '@8f4e/language-spec';
+import { getInstructionSpec } from '@8f4e/language-spec';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';

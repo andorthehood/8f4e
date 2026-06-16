@@ -1,4 +1,4 @@
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
 
 /**
  * Converts a word offset relative to a byte base into an absolute byte address.
