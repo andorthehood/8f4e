@@ -18,7 +18,7 @@ import type {
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { createFunctionId, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
-import { ConstantInliningError, inlineConstantsInASTs } from '@8f4e/constant-inliner';
+import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsInASTs } from '@8f4e/constant-inliner';
 import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction } from './compileFunction';
@@ -210,7 +210,22 @@ function getAstDiagnosticContext(ast: ValidatedAST) {
 	};
 }
 
-function wrapConstantInliningError(error: unknown, asts: readonly ValidatedAST[]): unknown {
+function findAstContainingLine(
+	projectAst: InlineConstantsProjectAST,
+	line: ValidatedAST['lines'][number]
+): ValidatedAST | undefined {
+	const groups = [projectAst.prototypes, projectAst.modules, projectAst.constants, projectAst.functions];
+	for (const asts of groups) {
+		const ast = asts.find(candidate => candidate.lines.includes(line));
+		if (ast) {
+			return ast;
+		}
+	}
+
+	return undefined;
+}
+
+function wrapConstantInliningError(error: unknown, projectAst: InlineConstantsProjectAST): unknown {
 	if (!(error instanceof ConstantInliningError)) {
 		return error;
 	}
@@ -220,7 +235,7 @@ function wrapConstantInliningError(error: unknown, asts: readonly ValidatedAST[]
 		return error;
 	}
 
-	const ast = asts.find(candidate => candidate.lines.includes(line));
+	const ast = findAstContainingLine(projectAst, line);
 	return getError(ErrorCode.CONSTANT_RESOLUTION_FAILED, line, ast ? getAstDiagnosticContext(ast) : undefined, {
 		reason: `${error.detail} (${error.code})`,
 	});
@@ -326,37 +341,37 @@ export function compileSubProgram(
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
 	assertUniqueModuleIds(astModules);
-	const projectAst = {
+	const projectAst: InlineConstantsProjectAST<
+		ValidatedPrototypeAST,
+		ValidatedModuleAST,
+		ValidatedConstantsAST,
+		ValidatedFunctionAST
+	> = {
 		prototypes: astPrototypes,
 		modules: astModules,
 		constants: astConstants,
 		functions: astFunctions,
 	};
-	const inlineableAsts = [
-		...projectAst.prototypes,
-		...projectAst.modules,
-		...projectAst.constants,
-		...projectAst.functions,
-	];
+	let constantInlinedAst: typeof projectAst;
 	try {
-		inlineConstantsInASTs(inlineableAsts);
+		constantInlinedAst = inlineConstantsInASTs({ ast: projectAst }).ast;
 	} catch (error) {
-		throw wrapConstantInliningError(error, inlineableAsts);
+		throw wrapConstantInliningError(error, projectAst);
 	}
 
-	const prototypeShapesById = collectPrototypeShapes(astPrototypes);
+	const prototypeShapesById = collectPrototypeShapes(constantInlinedAst.prototypes);
 	const memoryPlan = createMemoryLayoutPlanFromASTs(
-		astModules,
+		constantInlinedAst.modules,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
-		astModules,
+		constantInlinedAst.modules,
 		options,
 		prototypeShapesById
 	);
 	const {
 		ast: { prototypes: inlinedAstPrototypes, modules: inlinedAstModules, functions: inlinedAstFunctions },
 	} = inlineMemoryReferences({
-		ast: projectAst,
+		ast: constantInlinedAst,
 		memoryPlan,
 	});
 	const inlinedPrototypeShapesById = collectPrototypeShapes(inlinedAstPrototypes);
@@ -371,7 +386,7 @@ export function compileSubProgram(
 		memoryPlan
 	);
 
-	const importedUserFunctionCount = astFunctions.filter(ast => ast.import).length;
+	const importedUserFunctionCount = inlinedAstFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
