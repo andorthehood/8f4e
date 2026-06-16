@@ -5,12 +5,19 @@ import type {
 	CompilerASTLine,
 	CompileTimeOperand,
 	Const,
+	ConstantsAST,
+	FunctionAST,
 	FunctionValueType,
 	LocalMap,
 	MemoryMap,
+	ModuleAST,
 	NormalizedArgumentLiteral,
 	PointerLocalBinding,
-	ValidatedAST,
+	PrototypeAST,
+	ValidatedConstantsAST,
+	ValidatedFunctionAST,
+	ValidatedModuleAST,
+	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { ArgumentType, isScalarMemoryDeclarationLine, POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 import type { MemoryLayoutPlan, PlannedMemoryDeclaration } from '@8f4e/memory-planner';
@@ -28,13 +35,40 @@ export {
 	resolveMemoryExpressionOperand,
 } from './resolveMemoryExpressionOperand';
 
-export interface InlineMemoryReferencesInput<TAst extends AST = ValidatedAST> {
-	ast: readonly TAst[];
+export interface MemoryReferenceProjectAST<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TConstants extends ConstantsAST = ValidatedConstantsAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+> {
+	prototypes: readonly TPrototype[];
+	modules: readonly TModule[];
+	constants: readonly TConstants[];
+	functions: readonly TFunction[];
+}
+
+export interface InlineMemoryReferencesInput<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TConstants extends ConstantsAST = ValidatedConstantsAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+> {
+	ast: MemoryReferenceProjectAST<TPrototype, TModule, TConstants, TFunction>;
 	memoryPlan: MemoryLayoutPlan;
 }
 
-export interface InlineMemoryReferencesResult<TAst extends AST = ValidatedAST> {
-	ast: TAst[];
+export interface InlineMemoryReferencesResult<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TConstants extends ConstantsAST = ValidatedConstantsAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+> {
+	ast: {
+		prototypes: TPrototype[];
+		modules: TModule[];
+		constants: TConstants[];
+		functions: TFunction[];
+	};
 }
 
 function toLayoutMemoryItem(declaration: PlannedMemoryDeclaration): MemoryMap[string] {
@@ -361,11 +395,21 @@ function inlineMemoryReferencesInAst<TAst extends AST>(
  * @param input - Project AST and completed memory layout plan to transform.
  * @returns Inlined project AST collection.
  */
-export function inlineMemoryReferences<TAst extends AST>(
-	input: InlineMemoryReferencesInput<TAst>
-): InlineMemoryReferencesResult<TAst> {
+export function inlineMemoryReferences<
+	TPrototype extends PrototypeAST,
+	TModule extends ModuleAST,
+	TConstants extends ConstantsAST,
+	TFunction extends FunctionAST,
+>(
+	input: InlineMemoryReferencesInput<TPrototype, TModule, TConstants, TFunction>
+): InlineMemoryReferencesResult<TPrototype, TModule, TConstants, TFunction> {
 	const namespaces = createModuleNamespaces(input.memoryPlan);
 	return {
-		ast: input.ast.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
+		ast: {
+			prototypes: input.ast.prototypes.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
+			modules: input.ast.modules.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
+			constants: input.ast.constants.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
+			functions: input.ast.functions.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
+		},
 	};
 }
