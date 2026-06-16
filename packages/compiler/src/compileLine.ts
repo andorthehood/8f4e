@@ -1,7 +1,6 @@
 import type {
 	AnalyzedLine,
 	CompilationContext,
-	CompiledStackAnalysisLine,
 	CompilerASTLine,
 	InstructionCompiler,
 	ResolvedCallLine,
@@ -20,20 +19,6 @@ export function compileCodegenLine(line: AnalyzedLine, context: CompilationConte
 	const instruction = line.instruction as Instruction;
 	const compileInstruction = instructions[instruction] as InstructionCompiler;
 	compileInstruction(line, context);
-}
-
-/**
- * Converts an analyzed instruction into the stack-analysis shape exposed in compile results.
- *
- * @param line - AST line being processed.
- * @returns The relevant stack items for the analysis step.
- */
-export function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAnalysisLine {
-	return {
-		lineNumber: line.lineNumber,
-		instruction: line.instruction,
-		stackAnalysis: line.stackAnalysis,
-	};
 }
 
 /**

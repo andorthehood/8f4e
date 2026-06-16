@@ -14,11 +14,9 @@ import {
 } from '@8f4e/compiler-spec';
 import { getResolvedMemoryDeclaration } from '../utils/memoryState';
 import {
-	hasCollectedNamespaces,
-	isIntermoduleReferenceKind,
 	normalizeArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
-	validateOrDeferValueExpression,
+	validateUnresolvedValueExpression,
 } from './helpers';
 
 function isResolvedPointerLocal(
@@ -76,22 +74,11 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 
 	const argument = normalized.arguments[0];
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferValueExpression(argument, line, context);
-		if (deferred) {
-			return normalized as NormalizedPushLine;
-		}
+		validateUnresolvedValueExpression(argument, line, context);
 	}
 	if (argument?.type === ArgumentType.IDENTIFIER) {
 		const { value, referenceKind } = argument;
-		const isIntermodule = isIntermoduleReferenceKind(referenceKind);
-		if (!hasCollectedNamespaces(context) && isIntermodule) {
-			return normalized as NormalizedPushLine;
-		}
-		// Validate intermodule references first
 		validateIntermoduleAddressReference(argument, line, context);
-		if (isIntermodule) {
-			return normalized as NormalizedPushLine;
-		}
 		if (referenceKind === 'plain') {
 			const local = context.locals[value];
 			if (local) {
