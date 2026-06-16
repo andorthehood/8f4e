@@ -29,6 +29,9 @@ export type SourceArgumentShapeRule =
 /** Top-level source block kinds that own independently parsed compiler ASTs. */
 export type SourceBlockPlacement = 'module' | 'function' | 'constants' | 'prototype';
 
+/** Source block kinds that compile into executable compiler units. */
+export type SourceBlockCompilationMode = 'module' | 'function' | null;
+
 /** Nested block kinds tracked inside module and function source blocks. */
 export type NestedBlockPlacement = 'loop' | 'map' | 'block' | 'if';
 
@@ -55,8 +58,21 @@ export type InstructionPlacement = {
 		parents?: readonly BlockPlacement[];
 		/** Whether this block kind may be nested inside itself. */
 		nestable?: boolean;
+		/** Top-level source-block metadata for blocks that own independently parsed ASTs. */
+		sourceBlock?: {
+			compilesToModule: boolean;
+			compilationMode: SourceBlockCompilationMode;
+		};
+		/** Whether this block participates in stack/control-flow block matching. */
+		stackBlock?: boolean;
 	};
 };
+
+/** Function declaration metadata for instructions allowed before executable body code. */
+export interface FunctionDeclarationInstructionSpec {
+	preBody?: boolean;
+	importedFunction?: boolean;
+}
 
 /** Minimal line shape needed by the stack signature resolver for `storeBytes`. */
 type StoreBytesSourceLine = { arguments: [{ value: number }] };
@@ -216,11 +232,12 @@ export interface SourceArgumentsSpec {
 	restArgumentType?: SourceArgumentShapeRule;
 }
 
-/** Complete compiler specification for a source instruction. */
+/** Complete language specification for a source instruction. */
 export interface InstructionSpec<TLine = unknown> extends ValidationSpec<TLine> {
 	codegen?: false;
 	sourceInstruction?: false;
 	sourceArguments?: SourceArgumentsSpec;
+	functionDeclaration?: FunctionDeclarationInstructionSpec;
 	docs?: InstructionDocumentation;
 	stack?: StackEffectSpec<TLine>;
 	effects?: InstructionEffectsSpec;
@@ -269,27 +286,23 @@ const memoryDeclarationSpec = {
 	placement: { sourceBlocks: ['module', 'prototype'] },
 } satisfies InstructionSpec;
 
-/** Central compiler spec table for parsing, placement, stack effects, and semantic effects. */
+/** Central language spec table for parsing, placement, stack effects, and semantic effects. */
 export const instructionSpecs = {
-	// abs (int -- int), abs (float -- float), abs (float64 -- float64)
 	abs: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Returns the absolute value of the top stack value.',
 		inputs: ['T'],
 		outputs: ['T'],
 	}),
-	// add (int int -- int), add (float float -- float), add (float64 float64 -- float64)
 	add: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Adds two numbers of the same type and pushes the result.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),
-	// and (int int -- int)
 	and: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Performs a bitwise AND on two integers.',
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
-	// block ( -- )
 	block: {
 		sourceArguments: noSourceArguments,
 		placement: {
@@ -299,12 +312,12 @@ export const instructionSpecs = {
 				role: 'start',
 				parents: ['module', 'function', 'loop', 'block', 'if'],
 				nestable: true,
+				stackBlock: true,
 			},
 		},
 		docs: { shortDescription: 'Starts a block that can be exited with branch instructions.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// blockEnd ( -- ), blockEnd (T -- T)
 	blockEnd: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'ifResultType' },
 		placement: {
@@ -316,14 +329,12 @@ export const instructionSpecs = {
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
 		effects: blockClose(BlockType.BLOCK, { restoreResult: true }),
 	},
-	// branch ( -- )
 	branch: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
 		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Branches out of one or more enclosing blocks.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// branchIfTrue (int -- )
 	branchIfTrue: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'literal' },
 		placement: moduleOrFunctionPlacement,
@@ -332,14 +343,12 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Branches out of enclosing blocks when the condition is non-zero.' },
 		stack: stack({ inputs: ['int'], outputs: [], effect: stackMutation(1) }),
 	},
-	// call (args... -- returns...)
 	call: {
 		sourceArguments: { minArguments: 1, argumentTypes: ['identifier'], restArgumentType: 'pushValue' },
 		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Calls a function, consuming its parameters and pushing its return values.' },
 		stack: stack({ inputs: ['args...'], outputs: ['returns...'] }),
 	},
-	// castToFloat (int -- float)
 	castToFloat: {
 		sourceArguments: noSourceArguments,
 		placement: moduleOrFunctionPlacement,
@@ -352,14 +361,12 @@ export const instructionSpecs = {
 			effect: stackMutation(1, [{ kind: 'float', isNonZero: 'fromInput' }]),
 		}),
 	},
-	// castToFloat64 (int -- float64), castToFloat64 (float -- float64), castToFloat64 (float64 -- float64)
 	castToFloat64: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Converts a numeric stack value to float64.',
 		inputs: ['T'],
 		outputs: ['float64'],
 		effect: stackMutation(1, [{ kind: 'float64', isNonZero: 'fromInput' }]),
 	}),
-	// castToInt (float -- int), castToInt (float64 -- int)
 	castToInt: {
 		sourceArguments: noSourceArguments,
 		placement: moduleOrFunctionPlacement,
@@ -372,7 +379,6 @@ export const instructionSpecs = {
 			effect: stackMutation(1, [{ kind: 'int', isNonZero: 'fromInput' }]),
 		}),
 	},
-	// clampAddress (ptr -- ptr)
 	clampAddress: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
 		placement: moduleOrFunctionPlacement,
@@ -381,7 +387,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Clamps a pointer so it stays inside the active memory range.' },
 		stack: stack({ inputs: ['ptr'], outputs: ['ptr'] }),
 	},
-	// clampModuleAddress (ptr -- ptr)
 	clampModuleAddress: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
 		placement: modulePlacement,
@@ -390,7 +395,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Clamps a pointer so it stays inside module memory.' },
 		stack: stack({ inputs: ['ptr'], outputs: ['ptr'] }),
 	},
-	// clampGlobalAddress (ptr -- ptr)
 	clampGlobalAddress: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
 		placement: moduleOrFunctionPlacement,
@@ -399,14 +403,12 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Clamps a pointer so it stays inside global memory.' },
 		stack: stack({ inputs: ['ptr'], outputs: ['ptr'] }),
 	},
-	// clearStack (... -- )
 	clearStack: {
 		sourceArguments: noSourceArguments,
 		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Removes every value from the stack.' },
 		stack: stack({ inputs: ['...'], outputs: [], effect: { consumes: 'all', produces: [], dropped: 'consumed' } }),
 	},
-	// const <NAME> <value> ( -- )
 	const: {
 		codegen: false,
 		sourceArguments: {
@@ -415,16 +417,23 @@ export const instructionSpecs = {
 			argumentTypes: ['constantIdentifier', 'compileTimeValue'],
 		},
 		placement: constantsPlacement,
+		functionDeclaration: { preBody: true },
 		docs: { shortDescription: 'Declares a compile-time constant.' },
 	},
-	// constants <id> ( -- )
 	constants: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
-		placement: { block: { kind: 'constants', role: 'start', parents: [], nestable: false } },
+		placement: {
+			block: {
+				kind: 'constants',
+				role: 'start',
+				parents: [],
+				nestable: false,
+				sourceBlock: { compilesToModule: false, compilationMode: null },
+			},
+		},
 		docs: { shortDescription: 'Starts a constants block.' },
 	},
-	// constantsEnd ( -- )
 	constantsEnd: {
 		codegen: false,
 		sourceArguments: noSourceArguments,
@@ -434,27 +443,23 @@ export const instructionSpecs = {
 		},
 		docs: { shortDescription: 'Ends a constants block.' },
 	},
-	// default ( -- )
 	default: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'compileTimeValue' },
 		placement: mapPlacement,
 		docs: { shortDescription: 'Defines the fallback value for a map block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// div (int int -- int), div (float float -- float), div (float64 float64 -- float64)
 	div: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Divides the first value by the second value and pushes the quotient.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),
-	// drop (T -- )
 	drop: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Removes the top value from the stack.',
 		inputs: ['T'],
 		outputs: [],
 		effect: stackMutation(1),
 	}),
-	// else ( -- )
 	else: {
 		sourceArguments: noSourceArguments,
 		placement: {
@@ -466,7 +471,6 @@ export const instructionSpecs = {
 		stack: stack({ inputs: [], outputs: [] }),
 		effects: blockClose(BlockType.CONDITION, { validateFloatResult: true }),
 	},
-	// ensureNonZero (int -- int), ensureNonZero (float -- float), ensureNonZero (float64 -- float64)
 	ensureNonZero: withDocsAndStack(
 		{ ...unaryModuleOrFunctionSpec, sourceArguments: { maxArguments: 1, argumentTypes: 'literal' } },
 		{
@@ -476,21 +480,18 @@ export const instructionSpecs = {
 			effect: stackMutation(1, [{ kind: 'same', isNonZero: true }]),
 		}
 	),
-	// equal (int int -- int), equal (float float -- int), equal (float64 float64 -- int)
 	equal: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Compares two values and pushes 1 when they are equal, otherwise 0.',
 		inputs: ['T', 'T'],
 		outputs: ['int'],
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// equalToZero (int -- int), equalToZero (float -- int), equalToZero (float64 -- int)
 	equalToZero: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Pushes 1 when the value is zero, otherwise 0.',
 		inputs: ['T'],
 		outputs: ['int'],
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// exitIfTrue (int -- )
 	exitIfTrue: {
 		sourceArguments: noSourceArguments,
 		placement: modulePlacement,
@@ -499,44 +500,48 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Exits the enclosing module when the condition is non-zero.' },
 		stack: stack({ inputs: ['int'], outputs: [] }),
 	},
-	// function <id> ( -- )
 	function: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
-		placement: { block: { kind: 'function', role: 'start', parents: [], nestable: false } },
+		placement: {
+			block: {
+				kind: 'function',
+				role: 'start',
+				parents: [],
+				nestable: false,
+				sourceBlock: { compilesToModule: false, compilationMode: 'function' },
+			},
+		},
+		functionDeclaration: { preBody: true, importedFunction: true },
 		docs: { shortDescription: 'Starts a function block.' },
 	},
-	// functionEnd (returns... -- )
 	functionEnd: {
 		sourceArguments: { argumentTypes: 'functionTypeIdentifier' },
 		placement: {
 			...functionPlacement,
 			block: { kind: 'function', role: 'end' },
 		},
+		functionDeclaration: { preBody: true, importedFunction: true },
 		docs: { shortDescription: 'Ends a function and records its return signature.' },
 		stack: stack({ inputs: ['returns...'], outputs: [] }),
 	},
-	// greaterOrEqual (int int -- int), greaterOrEqual (float float -- int), greaterOrEqual (float64 float64 -- int)
 	greaterOrEqual: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes 1 when the first value is greater than or equal to the second value.',
 		inputs: ['T', 'T'],
 		outputs: ['int'],
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// greaterOrEqualUnsigned (int int -- int), greaterOrEqualUnsigned (float float -- int)
 	greaterOrEqualUnsigned: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Compares two values as unsigned numbers and pushes the result.',
 		inputs: ['T', 'T'],
 		outputs: ['int'],
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// greaterThan (int int -- int), greaterThan (float float -- int), greaterThan (float64 float64 -- int)
 	greaterThan: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes 1 when the first value is greater than the second value.',
 		inputs: ['T', 'T'],
 		outputs: ['int'],
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// if (int -- )
 	if: {
 		sourceArguments: noSourceArguments,
 		placement: {
@@ -546,6 +551,7 @@ export const instructionSpecs = {
 				role: 'start',
 				parents: ['module', 'function', 'loop', 'block', 'if'],
 				nestable: true,
+				stackBlock: true,
 			},
 		},
 		minOperands: 1,
@@ -553,7 +559,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Starts a conditional block when the condition is non-zero.' },
 		stack: stack({ inputs: ['int'], outputs: [], effect: stackMutation(1) }),
 	},
-	// ifEnd ( -- ), ifEnd (T -- T)
 	ifEnd: {
 		sourceArguments: { argumentTypes: 'ifResultType' },
 		placement: {
@@ -565,21 +570,18 @@ export const instructionSpecs = {
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
 		effects: blockClose(BlockType.CONDITION, { restoreResult: true, validateFloatResult: true }),
 	},
-	// lessOrEqual (int int -- int), lessOrEqual (float float -- int), lessOrEqual (float64 float64 -- int)
 	lessOrEqual: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes 1 when the first value is less than or equal to the second value.',
 		inputs: ['T', 'T'],
 		outputs: ['int'],
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// lessThan (int int -- int), lessThan (float float -- int), lessThan (float64 float64 -- int)
 	lessThan: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes 1 when the first value is less than the second value.',
 		inputs: ['T', 'T'],
 		outputs: ['int'],
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// load (ptr -- int)
 	load: loadInstruction(loadSpec, {
 		loadVariant: 'i32',
 		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
@@ -588,7 +590,6 @@ export const instructionSpecs = {
 		output: 'int',
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// load8u (ptr -- int)
 	load8u: loadInstruction(loadSpec, {
 		loadVariant: 'i32_8u',
 		accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH,
@@ -597,7 +598,6 @@ export const instructionSpecs = {
 		output: 'int',
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// load16u (ptr -- int)
 	load16u: loadInstruction(loadSpec, {
 		loadVariant: 'i32_16u',
 		accessByteWidth: HALF_WORD_MEMORY_ACCESS_WIDTH,
@@ -606,7 +606,6 @@ export const instructionSpecs = {
 		output: 'int',
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// load8s (ptr -- int)
 	load8s: loadInstruction(loadSpec, {
 		loadVariant: 'i32_8s',
 		accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH,
@@ -615,7 +614,6 @@ export const instructionSpecs = {
 		output: 'int',
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// load16s (ptr -- int)
 	load16s: loadInstruction(loadSpec, {
 		loadVariant: 'i32_16s',
 		accessByteWidth: HALF_WORD_MEMORY_ACCESS_WIDTH,
@@ -624,7 +622,6 @@ export const instructionSpecs = {
 		output: 'int',
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// loadFloat (ptr -- float)
 	loadFloat: loadInstruction(loadSpec, {
 		loadVariant: 'f32',
 		accessByteWidth: WORD_MEMORY_ACCESS_WIDTH,
@@ -633,7 +630,6 @@ export const instructionSpecs = {
 		output: 'float',
 		effect: stackMutation(1, [{ kind: 'float', isNonZero: false }]),
 	}),
-	// local ( -- )
 	local: {
 		sourceArguments: {
 			minArguments: 2,
@@ -644,7 +640,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Declares a local variable in the current function or module block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// localSet (T -- )
 	localSet: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		placement: moduleOrFunctionPlacement,
@@ -652,7 +647,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Stores the top stack value into a local variable.' },
 		stack: stack({ inputs: ['T'], outputs: [] }),
 	},
-	// loop ( -- )
 	loop: {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'nonNegativeIntegerCompileTimeValue' },
 		placement: {
@@ -662,19 +656,19 @@ export const instructionSpecs = {
 				role: 'start',
 				parents: ['module', 'function', 'loop', 'block', 'if'],
 				nestable: true,
+				stackBlock: true,
 			},
 		},
 		docs: { shortDescription: 'Starts a loop block that repeats until a branch exits it.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// #loopCap ( -- )
 	'#loopCap': {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
 		placement: moduleOrFunctionPlacement,
+		functionDeclaration: { preBody: true, importedFunction: true },
 		docs: { shortDescription: 'Sets the loop iteration cap for loops in the current block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// #region <name|index> ( -- )
 	'#region': {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'regionReference' },
@@ -682,16 +676,15 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Selects the memory region used by subsequent module declarations.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// #export [exportName] ( -- )
 	'#export': {
 		sourceArguments: { maxArguments: 1, argumentTypes: 'identifier' },
 		placement: functionPlacement,
+		functionDeclaration: { preBody: true },
 		docs: {
 			shortDescription: 'Exports the current function under the provided name, or the function name if omitted.',
 		},
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// #import <name> ( -- )
 	'#import': {
 		sourceArguments: {
 			minArguments: 1,
@@ -699,26 +692,25 @@ export const instructionSpecs = {
 			argumentTypes: 'identifierOrStringLiteral',
 		},
 		placement: functionPlacement,
+		functionDeclaration: { preBody: true, importedFunction: true },
 		docs: {
 			shortDescription: 'Declares that the current function is provided by a WebAssembly host import.',
 		},
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// #skipExecution ( -- )
 	'#skipExecution': {
 		sourceArguments: noSourceArguments,
 		placement: modulePlacement,
 		docs: { shortDescription: 'Skips the current module during main execution.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// #impure ( -- )
 	'#impure': {
 		sourceArguments: noSourceArguments,
 		placement: functionPlacement,
+		functionDeclaration: { preBody: true, importedFunction: true },
 		docs: { shortDescription: 'Allows the current function to perform explicit memory IO.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// loopEnd ( -- ), loopEnd (T -- T)
 	loopEnd: {
 		sourceArguments: noSourceArguments,
 		placement: {
@@ -730,21 +722,18 @@ export const instructionSpecs = {
 		stack: stack({ inputs: ['T?'], outputs: ['T?'] }),
 		effects: blockClose(BlockType.LOOP, { restoreResult: true }),
 	},
-	// loopIndex ( -- int)
 	loopIndex: {
 		sourceArguments: noSourceArguments,
 		placement: loopPlacement,
 		docs: { shortDescription: 'Pushes the current zero-based loop iteration index.' },
 		stack: stack({ inputs: [], outputs: ['int'], effect: stackMutation(0, [{ kind: 'int', isNonZero: false }]) }),
 	},
-	// map ( -- )
 	map: {
 		sourceArguments: { minArguments: 1, maxArguments: 2, argumentTypes: 'mapValue' },
 		placement: mapPlacement,
 		docs: { shortDescription: 'Starts a map case inside a map block.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// mapBegin ( -- )
 	mapBegin: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'typeIdentifier' },
 		placement: {
@@ -760,15 +749,16 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Starts a map block that chooses a value from map cases.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// mapEnd (int -- T), mapEnd (float -- T), mapEnd (float64 -- T)
 	mapEnd: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'typeIdentifier' },
-		placement: mapPlacement,
+		placement: {
+			...mapPlacement,
+			block: { kind: 'map', role: 'end' },
+		},
 		minOperands: 1,
 		docs: { shortDescription: 'Ends a map block and leaves the selected mapped value on the stack.' },
 		stack: stack({ inputs: ['T'], outputs: ['T'] }),
 	},
-	// memoryCopy (ptr ptr -- )
 	memoryCopy: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeCompileTimeValue' },
 		placement: moduleOrFunctionPlacement,
@@ -778,34 +768,37 @@ export const instructionSpecs = {
 		stack: stack({ inputs: ['ptr', 'ptr'], outputs: [], effect: stackMutation(2) }),
 		effects: { memory: { kind: 'copy', addressOperandIndex: 0 } },
 	},
-	// min (int int -- int), min (float float -- float), min (float64 float64 -- float64)
 	min: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes the smaller of two values of the same type.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 		effect: stackMutation(2, [{ kind: 'same', isNonZero: false }]),
 	}),
-	// max (int int -- int), max (float float -- float), max (float64 float64 -- float64)
 	max: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Pushes the larger of two values of the same type.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 		effect: stackMutation(2, [{ kind: 'same', isNonZero: false }]),
 	}),
-	// mul (int int -- int), mul (float float -- float), mul (float64 float64 -- float64)
 	mul: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Multiplies two numbers of the same type and pushes the result.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),
-	// module <id> ( -- )
 	module: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
-		placement: { block: { kind: 'module', role: 'start', parents: [], nestable: false } },
+		placement: {
+			block: {
+				kind: 'module',
+				role: 'start',
+				parents: [],
+				nestable: false,
+				sourceBlock: { compilesToModule: true, compilationMode: 'module' },
+			},
+		},
 		docs: { shortDescription: 'Starts a module block.' },
 	},
-	// moduleEnd ( -- )
 	moduleEnd: {
 		codegen: false,
 		sourceArguments: noSourceArguments,
@@ -815,14 +808,20 @@ export const instructionSpecs = {
 		},
 		docs: { shortDescription: 'Ends a module block.' },
 	},
-	// prototype <id> ( -- )
 	prototype: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
-		placement: { block: { kind: 'prototype', role: 'start', parents: [], nestable: false } },
+		placement: {
+			block: {
+				kind: 'prototype',
+				role: 'start',
+				parents: [],
+				nestable: false,
+				sourceBlock: { compilesToModule: false, compilationMode: null },
+			},
+		},
 		docs: { shortDescription: 'Starts a reusable module memory shape block.' },
 	},
-	// prototypeEnd ( -- )
 	prototypeEnd: {
 		codegen: false,
 		sourceArguments: noSourceArguments,
@@ -832,34 +831,29 @@ export const instructionSpecs = {
 		},
 		docs: { shortDescription: 'Ends a reusable module memory shape block.' },
 	},
-	// shape <prototypeId> ( -- )
 	shape: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		placement: modulePlacement,
 		docs: { shortDescription: 'Expands a prototype memory shape into the current module.' },
 	},
-	// notEqual (int int -- int), notEqual (float float -- int), notEqual (float64 float64 -- int)
 	notEqual: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Compares two values and pushes 1 when they are not equal, otherwise 0.',
 		inputs: ['T', 'T'],
 		outputs: ['int'],
 		effect: stackMutation(2, [{ kind: 'int', isNonZero: false }]),
 	}),
-	// notZero (int -- int), notZero (float -- int), notZero (float64 -- int)
 	notZero: withDocsAndStack(unaryNoSourceModuleOrFunctionSpec, {
 		shortDescription: 'Pushes 1 when the value is non-zero, otherwise 0.',
 		inputs: ['T'],
 		outputs: ['int'],
 		effect: stackMutation(1, [{ kind: 'int', isNonZero: 'fromInput' }]),
 	}),
-	// or (int int -- int)
 	or: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Performs a bitwise OR on two integers.',
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
-	// param ( -- )
 	param: {
 		sourceArguments: {
 			minArguments: 2,
@@ -867,24 +861,23 @@ export const instructionSpecs = {
 			argumentTypes: ['functionTypeIdentifier', 'identifier'],
 		},
 		placement: functionPlacement,
+		functionDeclaration: { preBody: true, importedFunction: true },
 		docs: { shortDescription: 'Declares a parameter for the current function.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// paramShape <prototypeId> ( -- )
 	paramShape: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		placement: functionPlacement,
+		functionDeclaration: { preBody: true, importedFunction: true },
 		docs: { shortDescription: 'Expands a prototype memory shape into pointer parameters for the current function.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	// push ( -- T)
 	push: {
 		sourceArguments: { minArguments: 1, maxArguments: 1 },
 		placement: moduleOrFunctionPlacement,
 		docs: { shortDescription: 'Pushes a literal, memory value, local value, address, or constant onto the stack.' },
 		stack: stack({ inputs: [], outputs: ['T'] }),
 	},
-	// pushShape <prototypeId> ( -- ptr...)
 	pushShape: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		placement: modulePlacement,
@@ -893,13 +886,11 @@ export const instructionSpecs = {
 		},
 		stack: stack({ inputs: [], outputs: ['ptr'] }),
 	},
-	// remainder (int int -- int)
 	remainder: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Divides one integer by another and pushes the remainder.',
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
-	// return (returns... -- never)
 	return: {
 		sourceArguments: noSourceArguments,
 		placement: functionPlacement,
@@ -910,7 +901,6 @@ export const instructionSpecs = {
 			effect: { consumes: 'all', produces: [], dropped: 'consumed' },
 		}),
 	},
-	// round (float -- float)
 	round: {
 		sourceArguments: noSourceArguments,
 		placement: moduleOrFunctionPlacement,
@@ -923,25 +913,21 @@ export const instructionSpecs = {
 			effect: stackMutation(1, [{ kind: 'float', isNonZero: false }]),
 		}),
 	},
-	// shiftLeft (int int -- int)
 	shiftLeft: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Shifts an integer left by the requested number of bits.',
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
-	// shiftRight (int int -- int)
 	shiftRight: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Shifts an integer right by the requested number of bits.',
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
-	// shiftRightUnsigned (int int -- int)
 	shiftRightUnsigned: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Shifts an integer right without preserving the sign bit.',
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
-	// sqrt (float -- float)
 	sqrt: {
 		sourceArguments: noSourceArguments,
 		placement: moduleOrFunctionPlacement,
@@ -954,7 +940,6 @@ export const instructionSpecs = {
 			effect: stackMutation(1, [{ kind: 'same', isNonZero: false }]),
 		}),
 	},
-	// store (ptr int -- ), store (ptr float -- ), store (ptr float64 -- )
 	store: {
 		sourceArguments: noSourceArguments,
 		placement: moduleOrFunctionPlacement,
@@ -964,7 +949,6 @@ export const instructionSpecs = {
 		stack: stack({ inputs: ['ptr', 'T'], outputs: [], effect: stackMutation(2) }),
 		effects: { memory: { kind: 'store', addressOperandIndex: 0, valueOperandIndex: 1 } },
 	},
-	// storeBytes (int... ptr -- )
 	storeBytes: {
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
 		placement: moduleOrFunctionPlacement,
@@ -992,26 +976,23 @@ export const instructionSpecs = {
 		},
 		effects: { memory: { kind: 'storeBytes', accessByteWidth: BYTE_MEMORY_ACCESS_WIDTH } },
 	},
-	// sub (int int -- int), sub (float float -- float), sub (float64 float64 -- float64)
 	sub: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Subtracts the second value from the first value and pushes the result.',
 		inputs: ['T', 'T'],
 		outputs: ['T'],
 	}),
-	// use <moduleId> ( -- )
 	use: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		placement: constantsPlacement,
+		functionDeclaration: { preBody: true },
 		docs: { shortDescription: 'Imports declarations from another module or constants block.' },
 	},
-	// xor (int int -- int)
 	xor: withDocsAndStack(binaryIntegerSpec, {
 		shortDescription: 'Performs a bitwise XOR on two integers.',
 		inputs: ['int', 'int'],
 		outputs: ['int'],
 	}),
-	// memoryDeclaration ( -- )
 	memoryDeclaration: withDocsAndStack(memoryDeclarationSpec, {
 		shortDescription: 'Declares memory storage for values used by the module.',
 		inputs: [],

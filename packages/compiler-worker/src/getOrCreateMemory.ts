@@ -1,5 +1,5 @@
-import type { CompiledModuleLookup, GetOrCreateMemoryResult, MemoryAction } from '@8f4e/compiler-spec';
-import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-spec';
+import type { CompiledModuleLookup, GetOrCreateMemoryResult, MemoryAction } from '@8f4e/language-spec';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import didProgramOrMemoryStructureChange from './didProgramOrMemoryStructureChange';
 
 let memoryRefCache: WebAssembly.Memory | null = null;

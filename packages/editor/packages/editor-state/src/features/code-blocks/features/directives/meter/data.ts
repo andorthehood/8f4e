@@ -1,4 +1,4 @@
-import { ArgumentType, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
+import { ArgumentType, isMemoryDeclarationLine } from '@8f4e/language-spec';
 import { parseLine } from '@8f4e/tokenizer';
 
 export interface MeterDirectiveData {

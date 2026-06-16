@@ -1,5 +1,3 @@
-import type { CodegenContext } from '@8f4e/compiler-spec';
-import { WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/compiler-spec';
 import {
 	f32const,
 	f32load,
@@ -13,12 +11,13 @@ import {
 	i32load16u,
 	localGet,
 } from '@8f4e/compiler-wasm-utils';
-import type { PointerMetadata } from '../../utils/memoryData';
+import type { CodegenContext, PointerMetadata } from '@8f4e/language-spec';
 import {
 	getDereferencedValueKindFromMetadata,
 	getDereferencedValueWordSizeFromMetadata,
 	getPointerDepthFromMetadata,
-} from '../../utils/memoryData';
+	WORD_MEMORY_ACCESS_WIDTH,
+} from '@8f4e/language-spec';
 import { type PushValueKind, valueKindToWasmType } from '../../utils/pushValueKind';
 import { guardedAddressOperation } from '../utils/memoryAccessGuard';
 

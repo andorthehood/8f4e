@@ -1,4 +1,4 @@
-import type { ImpureLine, InstructionCompiler } from '@8f4e/compiler-spec';
+import type { ImpureLine, InstructionCompiler } from '@8f4e/language-spec';
 
 /**
  * Instruction compiler for `#impure` compiler directive.

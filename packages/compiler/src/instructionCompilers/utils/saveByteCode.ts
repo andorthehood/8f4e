@@ -1,4 +1,4 @@
-import type { CodegenContext } from '@8f4e/compiler-spec';
+import type { CodegenContext } from '@8f4e/language-spec';
 
 /**
  * Appends one bytecode fragment to the active code generation context.

@@ -11,8 +11,8 @@ import type {
 	ModuleLine,
 	PrototypeLine,
 	RegionLine,
-} from '@8f4e/compiler-spec';
-import { DEFAULT_HOST_IMPORT_MODULE_NAME, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME, isMemoryDeclarationLine } from '@8f4e/language-spec';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 
 /** Accumulates module-specific lines while the tokenizer builds a validated AST. */

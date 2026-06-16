@@ -1,6 +1,5 @@
-import type { CompilationContext, RegionLine } from '@8f4e/compiler-spec';
-
-import { resolveRegionDirective } from '../memoryRegions';
+import type { CompilationContext, RegionLine } from '@8f4e/language-spec';
+import { resolveRegionDirective } from '@8f4e/language-spec';
 
 /**
  * Applies the `#region` directive to switch the active memory region for subsequent declarations.

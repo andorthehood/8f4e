@@ -1,5 +1,5 @@
-import type { CompilerASTLine, ResolvedMemoryDeclaration } from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
+import type { CompilerASTLine, ResolvedMemoryDeclaration } from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';

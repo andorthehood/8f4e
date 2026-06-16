@@ -1,6 +1,6 @@
 {
-  "name": "@8f4e/compiler-spec",
-  "sourceRoot": "packages/compiler/packages/compiler-spec/src",
+  "name": "@8f4e/language-spec",
+  "sourceRoot": "packages/compiler/packages/language-spec/src",
   "projectType": "library",
   "targets": {
     "build": {
@@ -13,11 +13,11 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/@8f4e/compiler-spec"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/language-spec"],
       "dependsOn": ["^build"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/compiler-spec"
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/language-spec"
       }
     },
     "typecheck": {

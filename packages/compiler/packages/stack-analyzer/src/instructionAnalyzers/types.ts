@@ -1,4 +1,4 @@
-import type { CompilationContext, CompilerASTLine, Stack } from '@8f4e/compiler-spec';
+import type { CompilationContext, CompilerASTLine, Stack } from '@8f4e/language-spec';
 
 /** Stack delta produced by analyzing one compiler instruction. */
 export type InstructionAnalysisResult = {

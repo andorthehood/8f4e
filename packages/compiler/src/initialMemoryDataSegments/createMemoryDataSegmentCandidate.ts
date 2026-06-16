@@ -1,4 +1,4 @@
-import type { MemoryDefault, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
+import type { MemoryDefault, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import materializeByteChunks from './materializeByteChunks';
 
 import type { InitialMemoryDataSegmentCandidate } from './types';

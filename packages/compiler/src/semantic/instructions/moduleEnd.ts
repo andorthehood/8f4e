@@ -1,4 +1,4 @@
-import type { CompilationContext, ModuleEndLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, ModuleEndLine } from '@8f4e/language-spec';
 
 import { popBlock } from '../../utils/blockStack';
 

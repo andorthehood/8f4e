@@ -185,7 +185,7 @@ Potential renames:
 ## Migration path
 
 1. Add a shared compiler input preparer in `@8f4e/project-preparser`.
-2. Make that preparer return the exact `CompileInput` type from `@8f4e/compiler-spec`.
+2. Make that preparer return the exact `CompileInput` type from `@8f4e/language-spec`.
 3. Move include expansion out of `parse8f4eProject` and into the preparer.
 4. Migrate CLI compilation to use the preparer instead of manually mapping `ProjectCompilerBlocks`.
 5. Migrate editor-state compilation to map editor blocks into ordered plain project blocks, then use the same preparer instead of maintaining `flattenProjectForCompiler`.

@@ -6,7 +6,7 @@ import {
 	getError,
 	isArrayMemoryDeclarationLine,
 	type MemoryDeclarationLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	normalizeArgumentsAtIndexes,
 	validateIntermoduleAddressReference,

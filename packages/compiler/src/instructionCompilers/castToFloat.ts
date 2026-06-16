@@ -1,5 +1,5 @@
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
 import { WASM_F32_CONVERT_I32_S } from '@8f4e/compiler-wasm-utils';
+import type { InstructionCompiler } from '@8f4e/language-spec';
 import { saveByteCode } from './utils/saveByteCode';
 
 /**

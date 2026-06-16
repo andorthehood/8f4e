@@ -1,5 +1,5 @@
-import type { DocumentBlockType } from '@8f4e/compiler-spec';
-import { compilableBlockTypes, documentBlockInstructionByType } from '@8f4e/compiler-spec';
+import type { DocumentBlockType } from '@8f4e/language-spec';
+import { compilableBlockTypes, documentBlockInstructionByType } from '@8f4e/language-spec';
 import { BLOCK_DELIMITERS } from './delimiters';
 import { getProjectCloserKeyword, getProjectOpenerKeyword, startsWithInstruction } from './projectKeywords';
 import { isProjectGapLine } from './projectLines';

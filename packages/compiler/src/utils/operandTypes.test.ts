@@ -1,4 +1,4 @@
-import type { StackItem } from '@8f4e/compiler-spec';
+import type { StackItem } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import {
 	areAllOperandsFloat64,

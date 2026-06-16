@@ -1,5 +1,5 @@
-import type { CompiledStackAnalysisLine } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { CompiledStackAnalysisLine } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { getCompiledFunctionForCodeBlock } from '../code-blocks/utils/getCompiledFunctionForCodeBlock';
 import { TOOLTIP_WRAP_WIDTH } from './constants';

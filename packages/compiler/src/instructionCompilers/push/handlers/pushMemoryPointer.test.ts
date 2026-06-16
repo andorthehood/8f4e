@@ -1,5 +1,5 @@
-import type { ResolvedMemoryDeclaration, ResolvedMemoryPointerPushLine } from '@8f4e/compiler-spec';
 import { f64load, i32const, i32load, i32load8s, i32load8u, i32load16s, i32load16u } from '@8f4e/compiler-wasm-utils';
+import type { ResolvedMemoryDeclaration, ResolvedMemoryPointerPushLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../../utils/testUtils';

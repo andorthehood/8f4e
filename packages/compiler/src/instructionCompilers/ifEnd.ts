@@ -1,5 +1,5 @@
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
 import { WASM_END } from '@8f4e/compiler-wasm-utils';
+import type { InstructionCompiler } from '@8f4e/language-spec';
 
 import { popBlock } from '../utils/blockStack';
 import { saveByteCode } from './utils/saveByteCode';

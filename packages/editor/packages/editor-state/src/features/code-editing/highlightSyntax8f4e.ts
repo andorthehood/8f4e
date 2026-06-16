@@ -1,4 +1,4 @@
-import { knownInstructionNameSet } from '@8f4e/compiler-spec';
+import { knownInstructionNameSet } from '@8f4e/language-spec';
 
 import highlightEditorDirective from './highlightEditorDirective';
 

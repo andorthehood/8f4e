@@ -1,5 +1,5 @@
-import { BASE_TYPE_METADATA, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { TooltipLiveValueSource } from '@8f4e/editor-state-types';
+import { BASE_TYPE_METADATA, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { SpriteLookup } from 'glugglug';
 import { getTooltipLineColors } from './colors';
 import { maxLiveMemoryAddressLength, maxLiveMemoryValueLength } from './constants';

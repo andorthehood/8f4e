@@ -4,7 +4,7 @@ import {
 	type CompilerASTLine,
 	ErrorCode,
 	type MemoryLayoutPlan,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { classifyIdentifier, parseArgument } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 

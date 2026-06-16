@@ -1,5 +1,5 @@
-import type { CompiledModule, MemoryDefaults, PlannedMemoryDeclaration, ValidatedModuleAST } from '@8f4e/compiler-spec';
-import { MemoryTypes } from '@8f4e/compiler-spec';
+import type { CompiledModule, MemoryDefaults, PlannedMemoryDeclaration, ValidatedModuleAST } from '@8f4e/language-spec';
+import { MemoryTypes } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
 import type { DirectiveDerivedState } from '../features/directives/registry';

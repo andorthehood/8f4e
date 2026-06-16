@@ -1,5 +1,5 @@
-import type { CodegenContext, ResolvedMemoryPushLine } from '@8f4e/compiler-spec';
 import { i32const } from '@8f4e/compiler-wasm-utils';
+import type { CodegenContext, ResolvedMemoryPushLine } from '@8f4e/language-spec';
 import { saveByteCode } from '../../utils/saveByteCode';
 import { loadOpcode, resolveMemoryValueKind } from '../shared';
 

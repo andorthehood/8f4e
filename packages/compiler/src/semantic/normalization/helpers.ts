@@ -9,7 +9,7 @@ import {
 	getError,
 	type NormalizedArgumentLiteral,
 	type ReferenceKind,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 
 /**
  * Returns whether namespace discovery has populated any module or constants namespaces.

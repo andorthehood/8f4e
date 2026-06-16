@@ -1,4 +1,4 @@
-import type { StackItem } from '@8f4e/compiler-spec';
+import type { StackItem } from '@8f4e/language-spec';
 
 /**
  * Returns whether every operand is an integer stack value.

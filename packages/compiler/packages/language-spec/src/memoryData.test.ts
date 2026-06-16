@@ -1,6 +1,6 @@
-import type { PlannedMemoryDeclaration, PointeeBaseType } from '@8f4e/compiler-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY, MemoryTypes } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from './constants';
+import { MemoryTypes, type PlannedMemoryDeclaration, type PointeeBaseType } from './memory';
 import {
 	getDereferencedValueKindFromMetadata,
 	getDereferencedValueWordSizeFromMetadata,

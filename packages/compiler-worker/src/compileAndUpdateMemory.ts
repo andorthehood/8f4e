@@ -6,7 +6,7 @@ import type {
 	CompileOptions,
 	CompilerCache,
 	GetOrCreateWasmInstanceResult,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import getMemoryValueChanges from './getMemoryValueChanges';
 import getOrCreateMemory from './getOrCreateMemory';
 

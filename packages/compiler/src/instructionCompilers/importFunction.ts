@@ -1,5 +1,5 @@
-import type { ImportLine, InstructionCompiler } from '@8f4e/compiler-spec';
-import { DEFAULT_HOST_IMPORT_MODULE_NAME } from '@8f4e/compiler-spec';
+import type { ImportLine, InstructionCompiler } from '@8f4e/language-spec';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME } from '@8f4e/language-spec';
 
 /**
  * Instruction compiler for `#import`.

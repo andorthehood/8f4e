@@ -5,8 +5,8 @@ import type {
 	PlannedMemoryDeclaration,
 	PointeeBaseType,
 	ScalarMemoryDeclarationInstruction,
-} from '@8f4e/compiler-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
 import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from './layoutAddresses';
 import getMemoryFlags from './memoryFlags';
 

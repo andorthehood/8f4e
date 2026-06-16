@@ -1,5 +1,5 @@
-import type { FunctionCodegenContext, FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/compiler-spec';
-import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
+import type { FunctionCodegenContext, FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/language-spec';
+import { functionValueTypeToLocalBinding } from '@8f4e/language-spec';
 
 /**
  * Instruction compiler for `param`.

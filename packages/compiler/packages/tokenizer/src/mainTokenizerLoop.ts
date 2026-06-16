@@ -12,7 +12,7 @@ import type {
 	InstructionPlacement,
 	NestedBlockPlacement,
 	SourceBlockPlacement,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	blockEndToStartInstruction,
 	blockStartInstructions,
@@ -21,7 +21,7 @@ import {
 	isCompilerDirectiveLine,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { parseLine } from './parseLine';
 import {
 	applySourceBlockASTLine,
@@ -90,12 +90,12 @@ const sourceBlockEndInstructionSet: ReadonlySet<string> = new Set(
 	compilerSourceBlockInstructionPairs.map(({ end }) => end)
 );
 
-/** Narrows an instruction string to block-start instructions known by the compiler spec. */
+/** Narrows an instruction string to block-start instructions known by the language spec. */
 function isBlockStartInstruction(instruction: string): instruction is BlockStartInstruction {
 	return blockStartInstructionSet.has(instruction as BlockStartInstruction);
 }
 
-/** Narrows an instruction string to block-end instructions known by the compiler spec. */
+/** Narrows an instruction string to block-end instructions known by the language spec. */
 function isBlockEndInstruction(instruction: string): instruction is BlockEndInstruction {
 	return Object.hasOwn(blockEndToStartInstruction, instruction);
 }
@@ -146,9 +146,10 @@ function isSourceBlockPlacement(block: string): block is SourceBlockPlacement {
 	return block === 'module' || block === 'function' || block === 'constants' || block === 'prototype';
 }
 
-/** Reads block metadata for a block-start instruction from the compiler spec. */
+/** Reads block metadata for a block-start instruction from the language spec. */
 function getBlockStartPlacement(instruction: BlockStartInstruction): InstructionPlacement['block'] | undefined {
-	return getInstructionSpec(instruction)?.placement?.block;
+	const placement = getInstructionSpec(instruction)?.placement as InstructionPlacement | undefined;
+	return placement?.block;
 }
 
 /** Resolves the placement kind of the current immediate parent block. */
@@ -179,7 +180,7 @@ function validatePlacementParent(
 	}
 }
 
-/** Applies compiler-spec placement rules using tokenizer-maintained block state. */
+/** Applies language-spec placement rules using tokenizer-maintained block state. */
 function validateInstructionPlacement(
 	line: CompilerASTLine,
 	state: ParserBlockState,

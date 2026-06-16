@@ -1,5 +1,5 @@
 import compile from '@8f4e/compiler';
-import type { CompiledModuleLookup, CompileOptions } from '@8f4e/compiler-spec';
+import type { CompiledModuleLookup, CompileOptions } from '@8f4e/language-spec';
 import { type ProjectIncludeResolverAsync, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
 import { resolveStdlibInclude } from '../shared/stdlibResolver';
 import type { ProjectBlock } from '../shared/types';
