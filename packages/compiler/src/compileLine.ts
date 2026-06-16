@@ -4,12 +4,10 @@ import type {
 	CompiledStackAnalysisLine,
 	CompilerASTLine,
 	InstructionCompiler,
+	ResolvedCallLine,
 } from '@8f4e/compiler-spec';
-import { isSemanticInstructionLine } from '@8f4e/compiler-spec';
-import { analyzeInstruction } from '@8f4e/stack-analyzer';
 import type { Instruction } from './instructionCompilers';
 import instructions from './instructionCompilers';
-import { applySemanticLine } from './semantic/buildNamespace';
 
 /**
  * Emits bytecode for one already-analyzed instruction line.
@@ -39,19 +37,18 @@ export function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAn
 }
 
 /**
- * Applies semantic lines or analyzes and emits one codegen line for the active compilation context.
+ * Attaches stack-analysis facts from the project stack report to a codegen-normalized line.
  *
  * @param line - AST line being processed.
- * @param context - Compilation context used by the operation.
+ * @param analyzedLine - Matching stack-analyzed report line.
  * @returns The computed result.
  */
-export function compileLine(line: CompilerASTLine, context: CompilationContext): AnalyzedLine | undefined {
-	if (isSemanticInstructionLine(line)) {
-		applySemanticLine(line, context);
-		return;
-	}
-
-	const analyzedLine = analyzeInstruction(line, context);
-	compileCodegenLine(analyzedLine, context);
-	return analyzedLine;
+export function attachStackAnalysis(line: CompilerASTLine, analyzedLine: AnalyzedLine): AnalyzedLine {
+	return {
+		...line,
+		...(analyzedLine.instruction === 'call'
+			? { targetFunction: (analyzedLine as AnalyzedLine<ResolvedCallLine>).targetFunction }
+			: {}),
+		stackAnalysis: analyzedLine.stackAnalysis,
+	} as AnalyzedLine;
 }

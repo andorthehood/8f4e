@@ -16,7 +16,7 @@ function getPointerParts(type: PointerFunctionValueType) {
 	return { baseType, pointerDepth };
 }
 
-function functionValueTypeToLocalBinding(type: FunctionValueType, index: number): LocalBinding {
+export function functionValueTypeToLocalBinding(type: FunctionValueType, index: number): LocalBinding {
 	if (type === 'int') {
 		return { isInteger: true, index };
 	}

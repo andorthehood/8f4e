@@ -6,13 +6,21 @@ const baseConfig = createLibConfig({
 	outDir: 'dist',
 	formats: ['es'],
 	fileName: () => 'index.js',
-	external: ['@8f4e/compiler-spec'],
+	external: ['@8f4e/compiler-spec', '@8f4e/memory-reference-inliner'],
 });
 
 export default defineConfig({
 	...baseConfig,
 	build: {
 		...baseConfig.build,
+		lib: {
+			entry: {
+				index: './src/index.ts',
+				testing: './src/testing.ts',
+			},
+			formats: ['es'],
+			fileName: (_format, entryName) => `${entryName}.js`,
+		},
 		emptyOutDir: false,
 	},
 });
