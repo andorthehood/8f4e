@@ -1,5 +1,4 @@
 import {
-	ArgumentType,
 	type CompilationContext,
 	type CompileOptions,
 	type CompilerDiagnosticContext,
@@ -9,30 +8,17 @@ import {
 	type FunctionMetadata,
 	type FunctionMetadataLookup,
 	type FunctionRegistry,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	isArrayMemoryDeclarationLine,
-	isMemoryDeclarationLine,
-	isSemanticInstructionLine,
-	type MemoryDeclarationLine,
-	type NamespaceBuildContext,
 	type Namespaces,
 	type SemanticInstructionLine,
-	type ShapeLine,
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import type { ResolveMemoryDefaultsResult } from '@8f4e/memory-default-resolver';
-import { type MemoryLayoutPlan, type MemoryLayoutSourceModule, planMemoryLayout } from '@8f4e/memory-planner';
+import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
 import { getError } from '../compilerError';
-import { createCompilationContext } from './createCompilationContext';
 import applySemanticInstruction from './instructions';
-import { getDefaultMemoryRegion, getMemoryRegionFields, validateMemoryRegionOptions } from './memoryRegions';
-import {
-	normalizeArgumentsAtIndexes,
-	validateOrDeferUnresolvedIdentifier,
-	validateOrDeferValueExpression,
-} from './normalization/helpers';
+import { getMemoryRegionFields, validateMemoryRegionOptions } from './memoryRegions';
 import normalizeValueArguments from './normalizeValueArguments';
 import { getEffectiveFunctionMetadata } from './paramShape';
 
@@ -183,162 +169,6 @@ export function applySemanticLine(line: SemanticInstructionLine, context: Compil
 	applySemanticInstruction(normalizedLine, context);
 }
 
-function createLayoutSourceBuildContext(
-	ast: ValidatedModuleAST,
-	namespaces: Namespaces,
-	startingByteAddress = 0,
-	functions?: FunctionRegistry,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
-): NamespaceBuildContext {
-	const currentMemoryRegion = getDefaultMemoryRegion();
-	return createCompilationContext<NamespaceBuildContext>({
-		namespace: {
-			namespaces,
-			moduleName: undefined,
-			functions,
-			prototypeShapeIds: [],
-		},
-		locals: {},
-		byteCode: [],
-		stack: [],
-		blockStack: [],
-		startingByteAddress,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: currentMemoryRegion.memoryIndex,
-		...(currentMemoryRegion.memoryRegionName ? { currentMemoryRegionName: currentMemoryRegion.memoryRegionName } : {}),
-		memoryDefaults: {},
-		pointerMetadata: {},
-		memoryRegions: options.memoryRegions ?? [],
-		mode: moduleBlock.type,
-		codeBlockType: ast.type,
-		projectBlockId: ast.projectBlockId,
-	});
-}
-
-function isShapeLine(line: SemanticInstructionLine): line is ShapeLine {
-	return line.instruction === 'shape';
-}
-
-function normalizeLayoutMemoryDeclarationLine(
-	line: MemoryDeclarationLine,
-	context: NamespaceBuildContext
-): MemoryDeclarationLine {
-	if (!isArrayMemoryDeclarationLine(line)) {
-		return line;
-	}
-
-	const { line: normalizedLine } = normalizeArgumentsAtIndexes(line, context, [1]);
-	const elementCount = normalizedLine.arguments[1];
-	if (elementCount.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferValueExpression(elementCount, line, context);
-		if (deferred) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-				identifier: `${elementCount.left.value}${elementCount.operator}${elementCount.right.value}`,
-			});
-		}
-	}
-	if (elementCount.type === ArgumentType.IDENTIFIER) {
-		const deferred = validateOrDeferUnresolvedIdentifier(elementCount, line, context);
-		if (deferred) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: elementCount.value });
-		}
-	}
-
-	return normalizedLine;
-}
-
-function appendLayoutMemoryDeclarationLine(
-	sourceModule: MemoryLayoutSourceModule,
-	context: NamespaceBuildContext,
-	line: MemoryDeclarationLine
-): void {
-	const normalizedLine = normalizeLayoutMemoryDeclarationLine(line, context);
-
-	sourceModule.lines = [...sourceModule.lines, normalizedLine];
-}
-
-function appendLayoutShapeLine(sourceModule: MemoryLayoutSourceModule, line: ShapeLine): void {
-	sourceModule.lines = [...sourceModule.lines, line];
-}
-
-function collectModuleMemoryLayoutSourceLines(
-	ast: ValidatedModuleAST,
-	namespaces: Namespaces,
-	startingByteAddress: number,
-	functions: FunctionRegistry | undefined,
-	options: Pick<CompileOptions, 'memoryRegions'>
-): MemoryLayoutSourceModule {
-	const sourceModule: MemoryLayoutSourceModule = {
-		id: ast.id,
-		moduleLine: ast.moduleLine,
-		...(ast.regionLine ? { regionLine: ast.regionLine } : {}),
-		lines: [],
-	};
-	const context = createLayoutSourceBuildContext(ast, namespaces, startingByteAddress, functions, options);
-
-	for (const line of ast.lines) {
-		if (isMemoryDeclarationLine(line)) {
-			appendLayoutMemoryDeclarationLine(sourceModule, context, line);
-			continue;
-		}
-
-		if (!isSemanticInstructionLine(line)) {
-			continue;
-		}
-
-		if (!isShapeLine(line)) {
-			applySemanticLine(line, context);
-			continue;
-		}
-
-		appendLayoutShapeLine(sourceModule, line);
-	}
-
-	return sourceModule;
-}
-
-function createMemoryLayoutSourceModules(
-	asts: readonly ValidatedModuleAST[],
-	namespaces: Namespaces,
-	startingByteAddress: number,
-	functions: FunctionRegistry | undefined,
-	options: Pick<CompileOptions, 'memoryRegions'>
-): MemoryLayoutSourceModule[] {
-	return asts.map(ast =>
-		collectModuleMemoryLayoutSourceLines(ast, namespaces, startingByteAddress, functions, options)
-	);
-}
-
-/**
- * Creates the whole-project memory layout plan used by namespace collection and
- * memory reference inlining.
- *
- * @param asts - Validated module ASTs being processed.
- * @param prototypes - Validated prototype ASTs available for shape expansion.
- * @param startingByteAddress - Absolute byte address where layout should begin.
- * @param compiledFunctions - Function registry available to module compilation.
- * @param options - Compiler options for this compilation pass.
- * @returns Planned module and memory declaration layout.
- */
-export function createMemoryLayoutPlanFromASTs(
-	asts: readonly ValidatedModuleAST[],
-	prototypes: readonly ValidatedPrototypeAST[],
-	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
-	compiledFunctions?: FunctionRegistry,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
-): MemoryLayoutPlan {
-	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
-	const namespaces: Namespaces = {};
-
-	return planMemoryLayout({
-		prototypes,
-		modules: createMemoryLayoutSourceModules(asts, namespaces, startingByteAddress, compiledFunctions, options),
-		startingByteAddress,
-		memoryRegions: options.memoryRegions ?? [],
-	});
-}
-
 /**
  * Discovers planned namespaces for modules.
  *
@@ -363,7 +193,6 @@ export function collectNamespacesFromASTs(
 			...getMemoryRegionFields(plannedModule.memoryIndex, plannedModule.memoryRegionName),
 			byteAddress: plannedModule.byteAddress,
 			wordAlignedSize: plannedModule.wordAlignedSize,
-			isMemoryLayoutFinalized: true,
 			memoryDefaults: defaultResolution.memoryDefaultsByModuleId[plannedModule.id]!,
 			pointerMetadata: defaultResolution.pointerMetadataByModuleId[plannedModule.id]!,
 		};
