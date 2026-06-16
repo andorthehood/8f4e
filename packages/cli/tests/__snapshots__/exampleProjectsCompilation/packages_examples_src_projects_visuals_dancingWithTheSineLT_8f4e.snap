@@ -77,13 +77,13 @@
           "byteAddress": 4,
           "id": "sin0",
           "lineNumber": 3,
-          "default": 0,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin1": {
           "numberOfElements": 1,
@@ -94,13 +94,13 @@
           "byteAddress": 8,
           "id": "sin1",
           "lineNumber": 4,
-          "default": 0.0246,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.0246,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin2": {
           "numberOfElements": 1,
@@ -111,13 +111,13 @@
           "byteAddress": 12,
           "id": "sin2",
           "lineNumber": 5,
-          "default": 0.0493,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.0493,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin3": {
           "numberOfElements": 1,
@@ -128,13 +128,13 @@
           "byteAddress": 16,
           "id": "sin3",
           "lineNumber": 6,
-          "default": 0.0739,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.0739,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin4": {
           "numberOfElements": 1,
@@ -145,13 +145,13 @@
           "byteAddress": 20,
           "id": "sin4",
           "lineNumber": 7,
-          "default": 0.0984,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.0984,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin5": {
           "numberOfElements": 1,
@@ -162,13 +162,13 @@
           "byteAddress": 24,
           "id": "sin5",
           "lineNumber": 8,
-          "default": 0.1229,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.1229,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin6": {
           "numberOfElements": 1,
@@ -179,13 +179,13 @@
           "byteAddress": 28,
           "id": "sin6",
           "lineNumber": 9,
-          "default": 0.1473,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.1473,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin7": {
           "numberOfElements": 1,
@@ -196,13 +196,13 @@
           "byteAddress": 32,
           "id": "sin7",
           "lineNumber": 10,
-          "default": 0.1716,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.1716,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin8": {
           "numberOfElements": 1,
@@ -213,13 +213,13 @@
           "byteAddress": 36,
           "id": "sin8",
           "lineNumber": 11,
-          "default": 0.1958,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.1958,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin9": {
           "numberOfElements": 1,
@@ -230,13 +230,13 @@
           "byteAddress": 40,
           "id": "sin9",
           "lineNumber": 12,
-          "default": 0.2199,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.2199,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin10": {
           "numberOfElements": 1,
@@ -247,13 +247,13 @@
           "byteAddress": 44,
           "id": "sin10",
           "lineNumber": 13,
-          "default": 0.2439,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.2439,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin11": {
           "numberOfElements": 1,
@@ -264,13 +264,13 @@
           "byteAddress": 48,
           "id": "sin11",
           "lineNumber": 14,
-          "default": 0.2677,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.2677,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin12": {
           "numberOfElements": 1,
@@ -281,13 +281,13 @@
           "byteAddress": 52,
           "id": "sin12",
           "lineNumber": 15,
-          "default": 0.2914,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.2914,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin13": {
           "numberOfElements": 1,
@@ -298,13 +298,13 @@
           "byteAddress": 56,
           "id": "sin13",
           "lineNumber": 16,
-          "default": 0.3149,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3149,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin14": {
           "numberOfElements": 1,
@@ -315,13 +315,13 @@
           "byteAddress": 60,
           "id": "sin14",
           "lineNumber": 17,
-          "default": 0.3382,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3382,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin15": {
           "numberOfElements": 1,
@@ -332,13 +332,13 @@
           "byteAddress": 64,
           "id": "sin15",
           "lineNumber": 18,
-          "default": 0.3612,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3612,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin16": {
           "numberOfElements": 1,
@@ -349,13 +349,13 @@
           "byteAddress": 68,
           "id": "sin16",
           "lineNumber": 19,
-          "default": 0.3841,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3841,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin17": {
           "numberOfElements": 1,
@@ -366,13 +366,13 @@
           "byteAddress": 72,
           "id": "sin17",
           "lineNumber": 20,
-          "default": 0.4067,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.4067,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin18": {
           "numberOfElements": 1,
@@ -383,13 +383,13 @@
           "byteAddress": 76,
           "id": "sin18",
           "lineNumber": 21,
-          "default": 0.4291,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.4291,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin19": {
           "numberOfElements": 1,
@@ -400,13 +400,13 @@
           "byteAddress": 80,
           "id": "sin19",
           "lineNumber": 22,
-          "default": 0.4512,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.4512,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin20": {
           "numberOfElements": 1,
@@ -417,13 +417,13 @@
           "byteAddress": 84,
           "id": "sin20",
           "lineNumber": 23,
-          "default": 0.4731,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.4731,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin21": {
           "numberOfElements": 1,
@@ -434,13 +434,13 @@
           "byteAddress": 88,
           "id": "sin21",
           "lineNumber": 24,
-          "default": 0.4947,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.4947,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin22": {
           "numberOfElements": 1,
@@ -451,13 +451,13 @@
           "byteAddress": 92,
           "id": "sin22",
           "lineNumber": 25,
-          "default": 0.5159,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5159,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin23": {
           "numberOfElements": 1,
@@ -468,13 +468,13 @@
           "byteAddress": 96,
           "id": "sin23",
           "lineNumber": 26,
-          "default": 0.5369,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5369,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin24": {
           "numberOfElements": 1,
@@ -485,13 +485,13 @@
           "byteAddress": 100,
           "id": "sin24",
           "lineNumber": 27,
-          "default": 0.5575,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5575,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin25": {
           "numberOfElements": 1,
@@ -502,13 +502,13 @@
           "byteAddress": 104,
           "id": "sin25",
           "lineNumber": 28,
-          "default": 0.5778,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5778,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin26": {
           "numberOfElements": 1,
@@ -519,13 +519,13 @@
           "byteAddress": 108,
           "id": "sin26",
           "lineNumber": 29,
-          "default": 0.5977,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5977,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin27": {
           "numberOfElements": 1,
@@ -536,13 +536,13 @@
           "byteAddress": 112,
           "id": "sin27",
           "lineNumber": 30,
-          "default": 0.6173,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6173,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin28": {
           "numberOfElements": 1,
@@ -553,13 +553,13 @@
           "byteAddress": 116,
           "id": "sin28",
           "lineNumber": 31,
-          "default": 0.6365,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6365,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin29": {
           "numberOfElements": 1,
@@ -570,13 +570,13 @@
           "byteAddress": 120,
           "id": "sin29",
           "lineNumber": 32,
-          "default": 0.6553,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6553,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin30": {
           "numberOfElements": 1,
@@ -587,13 +587,13 @@
           "byteAddress": 124,
           "id": "sin30",
           "lineNumber": 33,
-          "default": 0.6737,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6737,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin31": {
           "numberOfElements": 1,
@@ -604,13 +604,13 @@
           "byteAddress": 128,
           "id": "sin31",
           "lineNumber": 34,
-          "default": 0.6917,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6917,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin32": {
           "numberOfElements": 1,
@@ -621,13 +621,13 @@
           "byteAddress": 132,
           "id": "sin32",
           "lineNumber": 35,
-          "default": 0.7093,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7093,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin33": {
           "numberOfElements": 1,
@@ -638,13 +638,13 @@
           "byteAddress": 136,
           "id": "sin33",
           "lineNumber": 36,
-          "default": 0.7264,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7264,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin34": {
           "numberOfElements": 1,
@@ -655,13 +655,13 @@
           "byteAddress": 140,
           "id": "sin34",
           "lineNumber": 37,
-          "default": 0.7431,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7431,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin35": {
           "numberOfElements": 1,
@@ -672,13 +672,13 @@
           "byteAddress": 144,
           "id": "sin35",
           "lineNumber": 38,
-          "default": 0.7594,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7594,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin36": {
           "numberOfElements": 1,
@@ -689,13 +689,13 @@
           "byteAddress": 148,
           "id": "sin36",
           "lineNumber": 39,
-          "default": 0.7752,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7752,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin37": {
           "numberOfElements": 1,
@@ -706,13 +706,13 @@
           "byteAddress": 152,
           "id": "sin37",
           "lineNumber": 40,
-          "default": 0.7905,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7905,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin38": {
           "numberOfElements": 1,
@@ -723,13 +723,13 @@
           "byteAddress": 156,
           "id": "sin38",
           "lineNumber": 41,
-          "default": 0.8054,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8054,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin39": {
           "numberOfElements": 1,
@@ -740,13 +740,13 @@
           "byteAddress": 160,
           "id": "sin39",
           "lineNumber": 42,
-          "default": 0.8197,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8197,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin40": {
           "numberOfElements": 1,
@@ -757,13 +757,13 @@
           "byteAddress": 164,
           "id": "sin40",
           "lineNumber": 43,
-          "default": 0.8336,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8336,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin41": {
           "numberOfElements": 1,
@@ -774,13 +774,13 @@
           "byteAddress": 168,
           "id": "sin41",
           "lineNumber": 44,
-          "default": 0.847,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.847,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin42": {
           "numberOfElements": 1,
@@ -791,13 +791,13 @@
           "byteAddress": 172,
           "id": "sin42",
           "lineNumber": 45,
-          "default": 0.8598,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8598,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin43": {
           "numberOfElements": 1,
@@ -808,13 +808,13 @@
           "byteAddress": 176,
           "id": "sin43",
           "lineNumber": 46,
-          "default": 0.8721,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8721,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin44": {
           "numberOfElements": 1,
@@ -825,13 +825,13 @@
           "byteAddress": 180,
           "id": "sin44",
           "lineNumber": 47,
-          "default": 0.8839,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8839,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin45": {
           "numberOfElements": 1,
@@ -842,13 +842,13 @@
           "byteAddress": 184,
           "id": "sin45",
           "lineNumber": 48,
-          "default": 0.8952,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8952,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin46": {
           "numberOfElements": 1,
@@ -859,13 +859,13 @@
           "byteAddress": 188,
           "id": "sin46",
           "lineNumber": 49,
-          "default": 0.9059,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9059,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin47": {
           "numberOfElements": 1,
@@ -876,13 +876,13 @@
           "byteAddress": 192,
           "id": "sin47",
           "lineNumber": 50,
-          "default": 0.916,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.916,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin48": {
           "numberOfElements": 1,
@@ -893,13 +893,13 @@
           "byteAddress": 196,
           "id": "sin48",
           "lineNumber": 51,
-          "default": 0.9256,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9256,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin49": {
           "numberOfElements": 1,
@@ -910,13 +910,13 @@
           "byteAddress": 200,
           "id": "sin49",
           "lineNumber": 52,
-          "default": 0.9347,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9347,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin50": {
           "numberOfElements": 1,
@@ -927,13 +927,13 @@
           "byteAddress": 204,
           "id": "sin50",
           "lineNumber": 53,
-          "default": 0.9432,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9432,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin51": {
           "numberOfElements": 1,
@@ -944,13 +944,13 @@
           "byteAddress": 208,
           "id": "sin51",
           "lineNumber": 54,
-          "default": 0.9511,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9511,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin52": {
           "numberOfElements": 1,
@@ -961,13 +961,13 @@
           "byteAddress": 212,
           "id": "sin52",
           "lineNumber": 55,
-          "default": 0.9584,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9584,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin53": {
           "numberOfElements": 1,
@@ -978,13 +978,13 @@
           "byteAddress": 216,
           "id": "sin53",
           "lineNumber": 56,
-          "default": 0.9651,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9651,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin54": {
           "numberOfElements": 1,
@@ -995,13 +995,13 @@
           "byteAddress": 220,
           "id": "sin54",
           "lineNumber": 57,
-          "default": 0.9713,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9713,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin55": {
           "numberOfElements": 1,
@@ -1012,13 +1012,13 @@
           "byteAddress": 224,
           "id": "sin55",
           "lineNumber": 58,
-          "default": 0.9768,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9768,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin56": {
           "numberOfElements": 1,
@@ -1029,13 +1029,13 @@
           "byteAddress": 228,
           "id": "sin56",
           "lineNumber": 59,
-          "default": 0.9818,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9818,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin57": {
           "numberOfElements": 1,
@@ -1046,13 +1046,13 @@
           "byteAddress": 232,
           "id": "sin57",
           "lineNumber": 60,
-          "default": 0.9862,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9862,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin58": {
           "numberOfElements": 1,
@@ -1063,13 +1063,13 @@
           "byteAddress": 236,
           "id": "sin58",
           "lineNumber": 61,
-          "default": 0.99,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.99,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin59": {
           "numberOfElements": 1,
@@ -1080,13 +1080,13 @@
           "byteAddress": 240,
           "id": "sin59",
           "lineNumber": 62,
-          "default": 0.9932,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9932,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin60": {
           "numberOfElements": 1,
@@ -1097,13 +1097,13 @@
           "byteAddress": 244,
           "id": "sin60",
           "lineNumber": 63,
-          "default": 0.9957,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9957,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin61": {
           "numberOfElements": 1,
@@ -1114,13 +1114,13 @@
           "byteAddress": 248,
           "id": "sin61",
           "lineNumber": 64,
-          "default": 0.9977,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9977,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin62": {
           "numberOfElements": 1,
@@ -1131,13 +1131,13 @@
           "byteAddress": 252,
           "id": "sin62",
           "lineNumber": 65,
-          "default": 0.9991,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9991,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin63": {
           "numberOfElements": 1,
@@ -1148,13 +1148,13 @@
           "byteAddress": 256,
           "id": "sin63",
           "lineNumber": 66,
-          "default": 0.9998,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9998,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin64": {
           "numberOfElements": 1,
@@ -1165,13 +1165,13 @@
           "byteAddress": 260,
           "id": "sin64",
           "lineNumber": 67,
-          "default": 1,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 1,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin65": {
           "numberOfElements": 1,
@@ -1182,13 +1182,13 @@
           "byteAddress": 264,
           "id": "sin65",
           "lineNumber": 68,
-          "default": 0.9995,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9995,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin66": {
           "numberOfElements": 1,
@@ -1199,13 +1199,13 @@
           "byteAddress": 268,
           "id": "sin66",
           "lineNumber": 69,
-          "default": 0.9985,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9985,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin67": {
           "numberOfElements": 1,
@@ -1216,13 +1216,13 @@
           "byteAddress": 272,
           "id": "sin67",
           "lineNumber": 70,
-          "default": 0.9968,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9968,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin68": {
           "numberOfElements": 1,
@@ -1233,13 +1233,13 @@
           "byteAddress": 276,
           "id": "sin68",
           "lineNumber": 71,
-          "default": 0.9945,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9945,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin69": {
           "numberOfElements": 1,
@@ -1250,13 +1250,13 @@
           "byteAddress": 280,
           "id": "sin69",
           "lineNumber": 72,
-          "default": 0.9916,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9916,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin70": {
           "numberOfElements": 1,
@@ -1267,13 +1267,13 @@
           "byteAddress": 284,
           "id": "sin70",
           "lineNumber": 73,
-          "default": 0.9882,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9882,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin71": {
           "numberOfElements": 1,
@@ -1284,13 +1284,13 @@
           "byteAddress": 288,
           "id": "sin71",
           "lineNumber": 74,
-          "default": 0.9841,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9841,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin72": {
           "numberOfElements": 1,
@@ -1301,13 +1301,13 @@
           "byteAddress": 292,
           "id": "sin72",
           "lineNumber": 75,
-          "default": 0.9794,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9794,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin73": {
           "numberOfElements": 1,
@@ -1318,13 +1318,13 @@
           "byteAddress": 296,
           "id": "sin73",
           "lineNumber": 76,
-          "default": 0.9741,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9741,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin74": {
           "numberOfElements": 1,
@@ -1335,13 +1335,13 @@
           "byteAddress": 300,
           "id": "sin74",
           "lineNumber": 77,
-          "default": 0.9683,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9683,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin75": {
           "numberOfElements": 1,
@@ -1352,13 +1352,13 @@
           "byteAddress": 304,
           "id": "sin75",
           "lineNumber": 78,
-          "default": 0.9618,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9618,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin76": {
           "numberOfElements": 1,
@@ -1369,13 +1369,13 @@
           "byteAddress": 308,
           "id": "sin76",
           "lineNumber": 79,
-          "default": 0.9548,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9548,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin77": {
           "numberOfElements": 1,
@@ -1386,13 +1386,13 @@
           "byteAddress": 312,
           "id": "sin77",
           "lineNumber": 80,
-          "default": 0.9472,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9472,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin78": {
           "numberOfElements": 1,
@@ -1403,13 +1403,13 @@
           "byteAddress": 316,
           "id": "sin78",
           "lineNumber": 81,
-          "default": 0.939,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.939,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin79": {
           "numberOfElements": 1,
@@ -1420,13 +1420,13 @@
           "byteAddress": 320,
           "id": "sin79",
           "lineNumber": 82,
-          "default": 0.9302,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9302,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin80": {
           "numberOfElements": 1,
@@ -1437,13 +1437,13 @@
           "byteAddress": 324,
           "id": "sin80",
           "lineNumber": 83,
-          "default": 0.9209,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9209,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin81": {
           "numberOfElements": 1,
@@ -1454,13 +1454,13 @@
           "byteAddress": 328,
           "id": "sin81",
           "lineNumber": 84,
-          "default": 0.911,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.911,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin82": {
           "numberOfElements": 1,
@@ -1471,13 +1471,13 @@
           "byteAddress": 332,
           "id": "sin82",
           "lineNumber": 85,
-          "default": 0.9006,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.9006,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin83": {
           "numberOfElements": 1,
@@ -1488,13 +1488,13 @@
           "byteAddress": 336,
           "id": "sin83",
           "lineNumber": 86,
-          "default": 0.8896,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8896,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin84": {
           "numberOfElements": 1,
@@ -1505,13 +1505,13 @@
           "byteAddress": 340,
           "id": "sin84",
           "lineNumber": 87,
-          "default": 0.8781,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8781,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin85": {
           "numberOfElements": 1,
@@ -1522,13 +1522,13 @@
           "byteAddress": 344,
           "id": "sin85",
           "lineNumber": 88,
-          "default": 0.866,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.866,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin86": {
           "numberOfElements": 1,
@@ -1539,13 +1539,13 @@
           "byteAddress": 348,
           "id": "sin86",
           "lineNumber": 89,
-          "default": 0.8534,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8534,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin87": {
           "numberOfElements": 1,
@@ -1556,13 +1556,13 @@
           "byteAddress": 352,
           "id": "sin87",
           "lineNumber": 90,
-          "default": 0.8403,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8403,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin88": {
           "numberOfElements": 1,
@@ -1573,13 +1573,13 @@
           "byteAddress": 356,
           "id": "sin88",
           "lineNumber": 91,
-          "default": 0.8267,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8267,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin89": {
           "numberOfElements": 1,
@@ -1590,13 +1590,13 @@
           "byteAddress": 360,
           "id": "sin89",
           "lineNumber": 92,
-          "default": 0.8126,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.8126,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin90": {
           "numberOfElements": 1,
@@ -1607,13 +1607,13 @@
           "byteAddress": 364,
           "id": "sin90",
           "lineNumber": 93,
-          "default": 0.798,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.798,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin91": {
           "numberOfElements": 1,
@@ -1624,13 +1624,13 @@
           "byteAddress": 368,
           "id": "sin91",
           "lineNumber": 94,
-          "default": 0.7829,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7829,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin92": {
           "numberOfElements": 1,
@@ -1641,13 +1641,13 @@
           "byteAddress": 372,
           "id": "sin92",
           "lineNumber": 95,
-          "default": 0.7674,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7674,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin93": {
           "numberOfElements": 1,
@@ -1658,13 +1658,13 @@
           "byteAddress": 376,
           "id": "sin93",
           "lineNumber": 96,
-          "default": 0.7513,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7513,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin94": {
           "numberOfElements": 1,
@@ -1675,13 +1675,13 @@
           "byteAddress": 380,
           "id": "sin94",
           "lineNumber": 97,
-          "default": 0.7348,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7348,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin95": {
           "numberOfElements": 1,
@@ -1692,13 +1692,13 @@
           "byteAddress": 384,
           "id": "sin95",
           "lineNumber": 98,
-          "default": 0.7179,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7179,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin96": {
           "numberOfElements": 1,
@@ -1709,13 +1709,13 @@
           "byteAddress": 388,
           "id": "sin96",
           "lineNumber": 99,
-          "default": 0.7005,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.7005,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin97": {
           "numberOfElements": 1,
@@ -1726,13 +1726,13 @@
           "byteAddress": 392,
           "id": "sin97",
           "lineNumber": 100,
-          "default": 0.6827,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6827,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin98": {
           "numberOfElements": 1,
@@ -1743,13 +1743,13 @@
           "byteAddress": 396,
           "id": "sin98",
           "lineNumber": 101,
-          "default": 0.6645,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6645,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin99": {
           "numberOfElements": 1,
@@ -1760,13 +1760,13 @@
           "byteAddress": 400,
           "id": "sin99",
           "lineNumber": 102,
-          "default": 0.6459,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6459,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin100": {
           "numberOfElements": 1,
@@ -1777,13 +1777,13 @@
           "byteAddress": 404,
           "id": "sin100",
           "lineNumber": 103,
-          "default": 0.6269,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6269,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin101": {
           "numberOfElements": 1,
@@ -1794,13 +1794,13 @@
           "byteAddress": 408,
           "id": "sin101",
           "lineNumber": 104,
-          "default": 0.6075,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.6075,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin102": {
           "numberOfElements": 1,
@@ -1811,13 +1811,13 @@
           "byteAddress": 412,
           "id": "sin102",
           "lineNumber": 105,
-          "default": 0.5878,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5878,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin103": {
           "numberOfElements": 1,
@@ -1828,13 +1828,13 @@
           "byteAddress": 416,
           "id": "sin103",
           "lineNumber": 106,
-          "default": 0.5677,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5677,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin104": {
           "numberOfElements": 1,
@@ -1845,13 +1845,13 @@
           "byteAddress": 420,
           "id": "sin104",
           "lineNumber": 107,
-          "default": 0.5472,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5472,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin105": {
           "numberOfElements": 1,
@@ -1862,13 +1862,13 @@
           "byteAddress": 424,
           "id": "sin105",
           "lineNumber": 108,
-          "default": 0.5264,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5264,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin106": {
           "numberOfElements": 1,
@@ -1879,13 +1879,13 @@
           "byteAddress": 428,
           "id": "sin106",
           "lineNumber": 109,
-          "default": 0.5053,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.5053,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin107": {
           "numberOfElements": 1,
@@ -1896,13 +1896,13 @@
           "byteAddress": 432,
           "id": "sin107",
           "lineNumber": 110,
-          "default": 0.4839,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.4839,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin108": {
           "numberOfElements": 1,
@@ -1913,13 +1913,13 @@
           "byteAddress": 436,
           "id": "sin108",
           "lineNumber": 111,
-          "default": 0.4622,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.4622,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin109": {
           "numberOfElements": 1,
@@ -1930,13 +1930,13 @@
           "byteAddress": 440,
           "id": "sin109",
           "lineNumber": 112,
-          "default": 0.4402,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.4402,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin110": {
           "numberOfElements": 1,
@@ -1947,13 +1947,13 @@
           "byteAddress": 444,
           "id": "sin110",
           "lineNumber": 113,
-          "default": 0.418,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.418,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin111": {
           "numberOfElements": 1,
@@ -1964,13 +1964,13 @@
           "byteAddress": 448,
           "id": "sin111",
           "lineNumber": 114,
-          "default": 0.3955,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3955,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin112": {
           "numberOfElements": 1,
@@ -1981,13 +1981,13 @@
           "byteAddress": 452,
           "id": "sin112",
           "lineNumber": 115,
-          "default": 0.3727,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3727,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin113": {
           "numberOfElements": 1,
@@ -1998,13 +1998,13 @@
           "byteAddress": 456,
           "id": "sin113",
           "lineNumber": 116,
-          "default": 0.3497,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3497,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin114": {
           "numberOfElements": 1,
@@ -2015,13 +2015,13 @@
           "byteAddress": 460,
           "id": "sin114",
           "lineNumber": 117,
-          "default": 0.3265,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3265,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin115": {
           "numberOfElements": 1,
@@ -2032,13 +2032,13 @@
           "byteAddress": 464,
           "id": "sin115",
           "lineNumber": 118,
-          "default": 0.3032,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.3032,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin116": {
           "numberOfElements": 1,
@@ -2049,13 +2049,13 @@
           "byteAddress": 468,
           "id": "sin116",
           "lineNumber": 119,
-          "default": 0.2796,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.2796,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin117": {
           "numberOfElements": 1,
@@ -2066,13 +2066,13 @@
           "byteAddress": 472,
           "id": "sin117",
           "lineNumber": 120,
-          "default": 0.2558,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.2558,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin118": {
           "numberOfElements": 1,
@@ -2083,13 +2083,13 @@
           "byteAddress": 476,
           "id": "sin118",
           "lineNumber": 121,
-          "default": 0.2319,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.2319,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin119": {
           "numberOfElements": 1,
@@ -2100,13 +2100,13 @@
           "byteAddress": 480,
           "id": "sin119",
           "lineNumber": 122,
-          "default": 0.2079,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.2079,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin120": {
           "numberOfElements": 1,
@@ -2117,13 +2117,13 @@
           "byteAddress": 484,
           "id": "sin120",
           "lineNumber": 123,
-          "default": 0.1837,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.1837,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin121": {
           "numberOfElements": 1,
@@ -2134,13 +2134,13 @@
           "byteAddress": 488,
           "id": "sin121",
           "lineNumber": 124,
-          "default": 0.1595,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.1595,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin122": {
           "numberOfElements": 1,
@@ -2151,13 +2151,13 @@
           "byteAddress": 492,
           "id": "sin122",
           "lineNumber": 125,
-          "default": 0.1351,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.1351,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin123": {
           "numberOfElements": 1,
@@ -2168,13 +2168,13 @@
           "byteAddress": 496,
           "id": "sin123",
           "lineNumber": 126,
-          "default": 0.1107,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.1107,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin124": {
           "numberOfElements": 1,
@@ -2185,13 +2185,13 @@
           "byteAddress": 500,
           "id": "sin124",
           "lineNumber": 127,
-          "default": 0.0861,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.0861,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin125": {
           "numberOfElements": 1,
@@ -2202,13 +2202,13 @@
           "byteAddress": 504,
           "id": "sin125",
           "lineNumber": 128,
-          "default": 0.0616,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.0616,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin126": {
           "numberOfElements": 1,
@@ -2219,13 +2219,13 @@
           "byteAddress": 508,
           "id": "sin126",
           "lineNumber": 129,
-          "default": 0.037,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.037,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin127": {
           "numberOfElements": 1,
@@ -2236,13 +2236,13 @@
           "byteAddress": 512,
           "id": "sin127",
           "lineNumber": 130,
-          "default": 0.0123,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0.0123,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin128": {
           "numberOfElements": 1,
@@ -2253,13 +2253,13 @@
           "byteAddress": 516,
           "id": "sin128",
           "lineNumber": 131,
-          "default": -0.0123,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.0123,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin129": {
           "numberOfElements": 1,
@@ -2270,13 +2270,13 @@
           "byteAddress": 520,
           "id": "sin129",
           "lineNumber": 132,
-          "default": -0.037,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.037,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin130": {
           "numberOfElements": 1,
@@ -2287,13 +2287,13 @@
           "byteAddress": 524,
           "id": "sin130",
           "lineNumber": 133,
-          "default": -0.0616,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.0616,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin131": {
           "numberOfElements": 1,
@@ -2304,13 +2304,13 @@
           "byteAddress": 528,
           "id": "sin131",
           "lineNumber": 134,
-          "default": -0.0861,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.0861,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin132": {
           "numberOfElements": 1,
@@ -2321,13 +2321,13 @@
           "byteAddress": 532,
           "id": "sin132",
           "lineNumber": 135,
-          "default": -0.1107,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.1107,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin133": {
           "numberOfElements": 1,
@@ -2338,13 +2338,13 @@
           "byteAddress": 536,
           "id": "sin133",
           "lineNumber": 136,
-          "default": -0.1351,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.1351,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin134": {
           "numberOfElements": 1,
@@ -2355,13 +2355,13 @@
           "byteAddress": 540,
           "id": "sin134",
           "lineNumber": 137,
-          "default": -0.1595,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.1595,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin135": {
           "numberOfElements": 1,
@@ -2372,13 +2372,13 @@
           "byteAddress": 544,
           "id": "sin135",
           "lineNumber": 138,
-          "default": -0.1837,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.1837,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin136": {
           "numberOfElements": 1,
@@ -2389,13 +2389,13 @@
           "byteAddress": 548,
           "id": "sin136",
           "lineNumber": 139,
-          "default": -0.2079,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.2079,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin137": {
           "numberOfElements": 1,
@@ -2406,13 +2406,13 @@
           "byteAddress": 552,
           "id": "sin137",
           "lineNumber": 140,
-          "default": -0.2319,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.2319,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin138": {
           "numberOfElements": 1,
@@ -2423,13 +2423,13 @@
           "byteAddress": 556,
           "id": "sin138",
           "lineNumber": 141,
-          "default": -0.2558,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.2558,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin139": {
           "numberOfElements": 1,
@@ -2440,13 +2440,13 @@
           "byteAddress": 560,
           "id": "sin139",
           "lineNumber": 142,
-          "default": -0.2796,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.2796,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin140": {
           "numberOfElements": 1,
@@ -2457,13 +2457,13 @@
           "byteAddress": 564,
           "id": "sin140",
           "lineNumber": 143,
-          "default": -0.3032,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3032,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin141": {
           "numberOfElements": 1,
@@ -2474,13 +2474,13 @@
           "byteAddress": 568,
           "id": "sin141",
           "lineNumber": 144,
-          "default": -0.3265,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3265,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin142": {
           "numberOfElements": 1,
@@ -2491,13 +2491,13 @@
           "byteAddress": 572,
           "id": "sin142",
           "lineNumber": 145,
-          "default": -0.3497,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3497,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin143": {
           "numberOfElements": 1,
@@ -2508,13 +2508,13 @@
           "byteAddress": 576,
           "id": "sin143",
           "lineNumber": 146,
-          "default": -0.3727,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3727,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin144": {
           "numberOfElements": 1,
@@ -2525,13 +2525,13 @@
           "byteAddress": 580,
           "id": "sin144",
           "lineNumber": 147,
-          "default": -0.3955,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3955,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin145": {
           "numberOfElements": 1,
@@ -2542,13 +2542,13 @@
           "byteAddress": 584,
           "id": "sin145",
           "lineNumber": 148,
-          "default": -0.418,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.418,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin146": {
           "numberOfElements": 1,
@@ -2559,13 +2559,13 @@
           "byteAddress": 588,
           "id": "sin146",
           "lineNumber": 149,
-          "default": -0.4402,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.4402,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin147": {
           "numberOfElements": 1,
@@ -2576,13 +2576,13 @@
           "byteAddress": 592,
           "id": "sin147",
           "lineNumber": 150,
-          "default": -0.4622,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.4622,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin148": {
           "numberOfElements": 1,
@@ -2593,13 +2593,13 @@
           "byteAddress": 596,
           "id": "sin148",
           "lineNumber": 151,
-          "default": -0.4839,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.4839,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin149": {
           "numberOfElements": 1,
@@ -2610,13 +2610,13 @@
           "byteAddress": 600,
           "id": "sin149",
           "lineNumber": 152,
-          "default": -0.5053,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5053,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin150": {
           "numberOfElements": 1,
@@ -2627,13 +2627,13 @@
           "byteAddress": 604,
           "id": "sin150",
           "lineNumber": 153,
-          "default": -0.5264,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5264,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin151": {
           "numberOfElements": 1,
@@ -2644,13 +2644,13 @@
           "byteAddress": 608,
           "id": "sin151",
           "lineNumber": 154,
-          "default": -0.5472,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5472,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin152": {
           "numberOfElements": 1,
@@ -2661,13 +2661,13 @@
           "byteAddress": 612,
           "id": "sin152",
           "lineNumber": 155,
-          "default": -0.5677,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5677,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin153": {
           "numberOfElements": 1,
@@ -2678,13 +2678,13 @@
           "byteAddress": 616,
           "id": "sin153",
           "lineNumber": 156,
-          "default": -0.5878,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5878,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin154": {
           "numberOfElements": 1,
@@ -2695,13 +2695,13 @@
           "byteAddress": 620,
           "id": "sin154",
           "lineNumber": 157,
-          "default": -0.6075,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6075,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin155": {
           "numberOfElements": 1,
@@ -2712,13 +2712,13 @@
           "byteAddress": 624,
           "id": "sin155",
           "lineNumber": 158,
-          "default": -0.6269,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6269,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin156": {
           "numberOfElements": 1,
@@ -2729,13 +2729,13 @@
           "byteAddress": 628,
           "id": "sin156",
           "lineNumber": 159,
-          "default": -0.6459,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6459,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin157": {
           "numberOfElements": 1,
@@ -2746,13 +2746,13 @@
           "byteAddress": 632,
           "id": "sin157",
           "lineNumber": 160,
-          "default": -0.6645,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6645,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin158": {
           "numberOfElements": 1,
@@ -2763,13 +2763,13 @@
           "byteAddress": 636,
           "id": "sin158",
           "lineNumber": 161,
-          "default": -0.6827,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6827,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin159": {
           "numberOfElements": 1,
@@ -2780,13 +2780,13 @@
           "byteAddress": 640,
           "id": "sin159",
           "lineNumber": 162,
-          "default": -0.7005,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7005,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin160": {
           "numberOfElements": 1,
@@ -2797,13 +2797,13 @@
           "byteAddress": 644,
           "id": "sin160",
           "lineNumber": 163,
-          "default": -0.7179,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7179,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin161": {
           "numberOfElements": 1,
@@ -2814,13 +2814,13 @@
           "byteAddress": 648,
           "id": "sin161",
           "lineNumber": 164,
-          "default": -0.7348,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7348,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin162": {
           "numberOfElements": 1,
@@ -2831,13 +2831,13 @@
           "byteAddress": 652,
           "id": "sin162",
           "lineNumber": 165,
-          "default": -0.7513,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7513,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin163": {
           "numberOfElements": 1,
@@ -2848,13 +2848,13 @@
           "byteAddress": 656,
           "id": "sin163",
           "lineNumber": 166,
-          "default": -0.7674,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7674,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin164": {
           "numberOfElements": 1,
@@ -2865,13 +2865,13 @@
           "byteAddress": 660,
           "id": "sin164",
           "lineNumber": 167,
-          "default": -0.7829,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7829,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin165": {
           "numberOfElements": 1,
@@ -2882,13 +2882,13 @@
           "byteAddress": 664,
           "id": "sin165",
           "lineNumber": 168,
-          "default": -0.798,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.798,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin166": {
           "numberOfElements": 1,
@@ -2899,13 +2899,13 @@
           "byteAddress": 668,
           "id": "sin166",
           "lineNumber": 169,
-          "default": -0.8126,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8126,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin167": {
           "numberOfElements": 1,
@@ -2916,13 +2916,13 @@
           "byteAddress": 672,
           "id": "sin167",
           "lineNumber": 170,
-          "default": -0.8267,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8267,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin168": {
           "numberOfElements": 1,
@@ -2933,13 +2933,13 @@
           "byteAddress": 676,
           "id": "sin168",
           "lineNumber": 171,
-          "default": -0.8403,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8403,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin169": {
           "numberOfElements": 1,
@@ -2950,13 +2950,13 @@
           "byteAddress": 680,
           "id": "sin169",
           "lineNumber": 172,
-          "default": -0.8534,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8534,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin170": {
           "numberOfElements": 1,
@@ -2967,13 +2967,13 @@
           "byteAddress": 684,
           "id": "sin170",
           "lineNumber": 173,
-          "default": -0.866,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.866,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin171": {
           "numberOfElements": 1,
@@ -2984,13 +2984,13 @@
           "byteAddress": 688,
           "id": "sin171",
           "lineNumber": 174,
-          "default": -0.8781,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8781,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin172": {
           "numberOfElements": 1,
@@ -3001,13 +3001,13 @@
           "byteAddress": 692,
           "id": "sin172",
           "lineNumber": 175,
-          "default": -0.8896,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8896,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin173": {
           "numberOfElements": 1,
@@ -3018,13 +3018,13 @@
           "byteAddress": 696,
           "id": "sin173",
           "lineNumber": 176,
-          "default": -0.9006,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9006,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin174": {
           "numberOfElements": 1,
@@ -3035,13 +3035,13 @@
           "byteAddress": 700,
           "id": "sin174",
           "lineNumber": 177,
-          "default": -0.911,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.911,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin175": {
           "numberOfElements": 1,
@@ -3052,13 +3052,13 @@
           "byteAddress": 704,
           "id": "sin175",
           "lineNumber": 178,
-          "default": -0.9209,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9209,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin176": {
           "numberOfElements": 1,
@@ -3069,13 +3069,13 @@
           "byteAddress": 708,
           "id": "sin176",
           "lineNumber": 179,
-          "default": -0.9302,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9302,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin177": {
           "numberOfElements": 1,
@@ -3086,13 +3086,13 @@
           "byteAddress": 712,
           "id": "sin177",
           "lineNumber": 180,
-          "default": -0.939,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.939,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin178": {
           "numberOfElements": 1,
@@ -3103,13 +3103,13 @@
           "byteAddress": 716,
           "id": "sin178",
           "lineNumber": 181,
-          "default": -0.9472,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9472,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin179": {
           "numberOfElements": 1,
@@ -3120,13 +3120,13 @@
           "byteAddress": 720,
           "id": "sin179",
           "lineNumber": 182,
-          "default": -0.9548,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9548,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin180": {
           "numberOfElements": 1,
@@ -3137,13 +3137,13 @@
           "byteAddress": 724,
           "id": "sin180",
           "lineNumber": 183,
-          "default": -0.9618,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9618,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin181": {
           "numberOfElements": 1,
@@ -3154,13 +3154,13 @@
           "byteAddress": 728,
           "id": "sin181",
           "lineNumber": 184,
-          "default": -0.9683,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9683,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin182": {
           "numberOfElements": 1,
@@ -3171,13 +3171,13 @@
           "byteAddress": 732,
           "id": "sin182",
           "lineNumber": 185,
-          "default": -0.9741,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9741,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin183": {
           "numberOfElements": 1,
@@ -3188,13 +3188,13 @@
           "byteAddress": 736,
           "id": "sin183",
           "lineNumber": 186,
-          "default": -0.9794,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9794,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin184": {
           "numberOfElements": 1,
@@ -3205,13 +3205,13 @@
           "byteAddress": 740,
           "id": "sin184",
           "lineNumber": 187,
-          "default": -0.9841,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9841,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin185": {
           "numberOfElements": 1,
@@ -3222,13 +3222,13 @@
           "byteAddress": 744,
           "id": "sin185",
           "lineNumber": 188,
-          "default": -0.9882,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9882,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin186": {
           "numberOfElements": 1,
@@ -3239,13 +3239,13 @@
           "byteAddress": 748,
           "id": "sin186",
           "lineNumber": 189,
-          "default": -0.9916,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9916,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin187": {
           "numberOfElements": 1,
@@ -3256,13 +3256,13 @@
           "byteAddress": 752,
           "id": "sin187",
           "lineNumber": 190,
-          "default": -0.9945,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9945,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin188": {
           "numberOfElements": 1,
@@ -3273,13 +3273,13 @@
           "byteAddress": 756,
           "id": "sin188",
           "lineNumber": 191,
-          "default": -0.9968,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9968,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin189": {
           "numberOfElements": 1,
@@ -3290,13 +3290,13 @@
           "byteAddress": 760,
           "id": "sin189",
           "lineNumber": 192,
-          "default": -0.9985,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9985,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin190": {
           "numberOfElements": 1,
@@ -3307,13 +3307,13 @@
           "byteAddress": 764,
           "id": "sin190",
           "lineNumber": 193,
-          "default": -0.9995,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9995,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin191": {
           "numberOfElements": 1,
@@ -3324,13 +3324,13 @@
           "byteAddress": 768,
           "id": "sin191",
           "lineNumber": 194,
-          "default": -1,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -1,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin192": {
           "numberOfElements": 1,
@@ -3341,13 +3341,13 @@
           "byteAddress": 772,
           "id": "sin192",
           "lineNumber": 195,
-          "default": -0.9998,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9998,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin193": {
           "numberOfElements": 1,
@@ -3358,13 +3358,13 @@
           "byteAddress": 776,
           "id": "sin193",
           "lineNumber": 196,
-          "default": -0.9991,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9991,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin194": {
           "numberOfElements": 1,
@@ -3375,13 +3375,13 @@
           "byteAddress": 780,
           "id": "sin194",
           "lineNumber": 197,
-          "default": -0.9977,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9977,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin195": {
           "numberOfElements": 1,
@@ -3392,13 +3392,13 @@
           "byteAddress": 784,
           "id": "sin195",
           "lineNumber": 198,
-          "default": -0.9957,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9957,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin196": {
           "numberOfElements": 1,
@@ -3409,13 +3409,13 @@
           "byteAddress": 788,
           "id": "sin196",
           "lineNumber": 199,
-          "default": -0.9932,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9932,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin197": {
           "numberOfElements": 1,
@@ -3426,13 +3426,13 @@
           "byteAddress": 792,
           "id": "sin197",
           "lineNumber": 200,
-          "default": -0.99,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.99,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin198": {
           "numberOfElements": 1,
@@ -3443,13 +3443,13 @@
           "byteAddress": 796,
           "id": "sin198",
           "lineNumber": 201,
-          "default": -0.9862,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9862,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin199": {
           "numberOfElements": 1,
@@ -3460,13 +3460,13 @@
           "byteAddress": 800,
           "id": "sin199",
           "lineNumber": 202,
-          "default": -0.9818,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9818,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin200": {
           "numberOfElements": 1,
@@ -3477,13 +3477,13 @@
           "byteAddress": 804,
           "id": "sin200",
           "lineNumber": 203,
-          "default": -0.9768,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9768,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin201": {
           "numberOfElements": 1,
@@ -3494,13 +3494,13 @@
           "byteAddress": 808,
           "id": "sin201",
           "lineNumber": 204,
-          "default": -0.9713,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9713,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin202": {
           "numberOfElements": 1,
@@ -3511,13 +3511,13 @@
           "byteAddress": 812,
           "id": "sin202",
           "lineNumber": 205,
-          "default": -0.9651,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9651,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin203": {
           "numberOfElements": 1,
@@ -3528,13 +3528,13 @@
           "byteAddress": 816,
           "id": "sin203",
           "lineNumber": 206,
-          "default": -0.9584,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9584,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin204": {
           "numberOfElements": 1,
@@ -3545,13 +3545,13 @@
           "byteAddress": 820,
           "id": "sin204",
           "lineNumber": 207,
-          "default": -0.9511,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9511,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin205": {
           "numberOfElements": 1,
@@ -3562,13 +3562,13 @@
           "byteAddress": 824,
           "id": "sin205",
           "lineNumber": 208,
-          "default": -0.9432,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9432,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin206": {
           "numberOfElements": 1,
@@ -3579,13 +3579,13 @@
           "byteAddress": 828,
           "id": "sin206",
           "lineNumber": 209,
-          "default": -0.9347,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9347,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin207": {
           "numberOfElements": 1,
@@ -3596,13 +3596,13 @@
           "byteAddress": 832,
           "id": "sin207",
           "lineNumber": 210,
-          "default": -0.9256,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9256,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin208": {
           "numberOfElements": 1,
@@ -3613,13 +3613,13 @@
           "byteAddress": 836,
           "id": "sin208",
           "lineNumber": 211,
-          "default": -0.916,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.916,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin209": {
           "numberOfElements": 1,
@@ -3630,13 +3630,13 @@
           "byteAddress": 840,
           "id": "sin209",
           "lineNumber": 212,
-          "default": -0.9059,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.9059,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin210": {
           "numberOfElements": 1,
@@ -3647,13 +3647,13 @@
           "byteAddress": 844,
           "id": "sin210",
           "lineNumber": 213,
-          "default": -0.8952,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8952,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin211": {
           "numberOfElements": 1,
@@ -3664,13 +3664,13 @@
           "byteAddress": 848,
           "id": "sin211",
           "lineNumber": 214,
-          "default": -0.8839,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8839,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin212": {
           "numberOfElements": 1,
@@ -3681,13 +3681,13 @@
           "byteAddress": 852,
           "id": "sin212",
           "lineNumber": 215,
-          "default": -0.8721,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8721,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin213": {
           "numberOfElements": 1,
@@ -3698,13 +3698,13 @@
           "byteAddress": 856,
           "id": "sin213",
           "lineNumber": 216,
-          "default": -0.8598,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8598,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin214": {
           "numberOfElements": 1,
@@ -3715,13 +3715,13 @@
           "byteAddress": 860,
           "id": "sin214",
           "lineNumber": 217,
-          "default": -0.847,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.847,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin215": {
           "numberOfElements": 1,
@@ -3732,13 +3732,13 @@
           "byteAddress": 864,
           "id": "sin215",
           "lineNumber": 218,
-          "default": -0.8336,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8336,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin216": {
           "numberOfElements": 1,
@@ -3749,13 +3749,13 @@
           "byteAddress": 868,
           "id": "sin216",
           "lineNumber": 219,
-          "default": -0.8197,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8197,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin217": {
           "numberOfElements": 1,
@@ -3766,13 +3766,13 @@
           "byteAddress": 872,
           "id": "sin217",
           "lineNumber": 220,
-          "default": -0.8054,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.8054,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin218": {
           "numberOfElements": 1,
@@ -3783,13 +3783,13 @@
           "byteAddress": 876,
           "id": "sin218",
           "lineNumber": 221,
-          "default": -0.7905,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7905,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin219": {
           "numberOfElements": 1,
@@ -3800,13 +3800,13 @@
           "byteAddress": 880,
           "id": "sin219",
           "lineNumber": 222,
-          "default": -0.7752,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7752,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin220": {
           "numberOfElements": 1,
@@ -3817,13 +3817,13 @@
           "byteAddress": 884,
           "id": "sin220",
           "lineNumber": 223,
-          "default": -0.7594,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7594,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin221": {
           "numberOfElements": 1,
@@ -3834,13 +3834,13 @@
           "byteAddress": 888,
           "id": "sin221",
           "lineNumber": 224,
-          "default": -0.7431,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7431,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin222": {
           "numberOfElements": 1,
@@ -3851,13 +3851,13 @@
           "byteAddress": 892,
           "id": "sin222",
           "lineNumber": 225,
-          "default": -0.7264,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7264,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin223": {
           "numberOfElements": 1,
@@ -3868,13 +3868,13 @@
           "byteAddress": 896,
           "id": "sin223",
           "lineNumber": 226,
-          "default": -0.7093,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.7093,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin224": {
           "numberOfElements": 1,
@@ -3885,13 +3885,13 @@
           "byteAddress": 900,
           "id": "sin224",
           "lineNumber": 227,
-          "default": -0.6917,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6917,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin225": {
           "numberOfElements": 1,
@@ -3902,13 +3902,13 @@
           "byteAddress": 904,
           "id": "sin225",
           "lineNumber": 228,
-          "default": -0.6737,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6737,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin226": {
           "numberOfElements": 1,
@@ -3919,13 +3919,13 @@
           "byteAddress": 908,
           "id": "sin226",
           "lineNumber": 229,
-          "default": -0.6553,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6553,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin227": {
           "numberOfElements": 1,
@@ -3936,13 +3936,13 @@
           "byteAddress": 912,
           "id": "sin227",
           "lineNumber": 230,
-          "default": -0.6365,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6365,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin228": {
           "numberOfElements": 1,
@@ -3953,13 +3953,13 @@
           "byteAddress": 916,
           "id": "sin228",
           "lineNumber": 231,
-          "default": -0.6173,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.6173,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin229": {
           "numberOfElements": 1,
@@ -3970,13 +3970,13 @@
           "byteAddress": 920,
           "id": "sin229",
           "lineNumber": 232,
-          "default": -0.5977,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5977,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin230": {
           "numberOfElements": 1,
@@ -3987,13 +3987,13 @@
           "byteAddress": 924,
           "id": "sin230",
           "lineNumber": 233,
-          "default": -0.5778,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5778,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin231": {
           "numberOfElements": 1,
@@ -4004,13 +4004,13 @@
           "byteAddress": 928,
           "id": "sin231",
           "lineNumber": 234,
-          "default": -0.5575,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5575,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin232": {
           "numberOfElements": 1,
@@ -4021,13 +4021,13 @@
           "byteAddress": 932,
           "id": "sin232",
           "lineNumber": 235,
-          "default": -0.5369,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5369,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin233": {
           "numberOfElements": 1,
@@ -4038,13 +4038,13 @@
           "byteAddress": 936,
           "id": "sin233",
           "lineNumber": 236,
-          "default": -0.5159,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.5159,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin234": {
           "numberOfElements": 1,
@@ -4055,13 +4055,13 @@
           "byteAddress": 940,
           "id": "sin234",
           "lineNumber": 237,
-          "default": -0.4947,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.4947,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin235": {
           "numberOfElements": 1,
@@ -4072,13 +4072,13 @@
           "byteAddress": 944,
           "id": "sin235",
           "lineNumber": 238,
-          "default": -0.4731,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.4731,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin236": {
           "numberOfElements": 1,
@@ -4089,13 +4089,13 @@
           "byteAddress": 948,
           "id": "sin236",
           "lineNumber": 239,
-          "default": -0.4512,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.4512,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin237": {
           "numberOfElements": 1,
@@ -4106,13 +4106,13 @@
           "byteAddress": 952,
           "id": "sin237",
           "lineNumber": 240,
-          "default": -0.4291,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.4291,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin238": {
           "numberOfElements": 1,
@@ -4123,13 +4123,13 @@
           "byteAddress": 956,
           "id": "sin238",
           "lineNumber": 241,
-          "default": -0.4067,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.4067,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin239": {
           "numberOfElements": 1,
@@ -4140,13 +4140,13 @@
           "byteAddress": 960,
           "id": "sin239",
           "lineNumber": 242,
-          "default": -0.3841,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3841,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin240": {
           "numberOfElements": 1,
@@ -4157,13 +4157,13 @@
           "byteAddress": 964,
           "id": "sin240",
           "lineNumber": 243,
-          "default": -0.3612,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3612,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin241": {
           "numberOfElements": 1,
@@ -4174,13 +4174,13 @@
           "byteAddress": 968,
           "id": "sin241",
           "lineNumber": 244,
-          "default": -0.3382,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3382,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin242": {
           "numberOfElements": 1,
@@ -4191,13 +4191,13 @@
           "byteAddress": 972,
           "id": "sin242",
           "lineNumber": 245,
-          "default": -0.3149,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.3149,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin243": {
           "numberOfElements": 1,
@@ -4208,13 +4208,13 @@
           "byteAddress": 976,
           "id": "sin243",
           "lineNumber": 246,
-          "default": -0.2914,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.2914,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin244": {
           "numberOfElements": 1,
@@ -4225,13 +4225,13 @@
           "byteAddress": 980,
           "id": "sin244",
           "lineNumber": 247,
-          "default": -0.2677,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.2677,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin245": {
           "numberOfElements": 1,
@@ -4242,13 +4242,13 @@
           "byteAddress": 984,
           "id": "sin245",
           "lineNumber": 248,
-          "default": -0.2439,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.2439,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin246": {
           "numberOfElements": 1,
@@ -4259,13 +4259,13 @@
           "byteAddress": 988,
           "id": "sin246",
           "lineNumber": 249,
-          "default": -0.2199,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.2199,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin247": {
           "numberOfElements": 1,
@@ -4276,13 +4276,13 @@
           "byteAddress": 992,
           "id": "sin247",
           "lineNumber": 250,
-          "default": -0.1958,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.1958,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin248": {
           "numberOfElements": 1,
@@ -4293,13 +4293,13 @@
           "byteAddress": 996,
           "id": "sin248",
           "lineNumber": 251,
-          "default": -0.1716,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.1716,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin249": {
           "numberOfElements": 1,
@@ -4310,13 +4310,13 @@
           "byteAddress": 1000,
           "id": "sin249",
           "lineNumber": 252,
-          "default": -0.1473,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.1473,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin250": {
           "numberOfElements": 1,
@@ -4327,13 +4327,13 @@
           "byteAddress": 1004,
           "id": "sin250",
           "lineNumber": 253,
-          "default": -0.1229,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.1229,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin251": {
           "numberOfElements": 1,
@@ -4344,13 +4344,13 @@
           "byteAddress": 1008,
           "id": "sin251",
           "lineNumber": 254,
-          "default": -0.0984,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.0984,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin252": {
           "numberOfElements": 1,
@@ -4361,13 +4361,13 @@
           "byteAddress": 1012,
           "id": "sin252",
           "lineNumber": 255,
-          "default": -0.0739,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.0739,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin253": {
           "numberOfElements": 1,
@@ -4378,13 +4378,13 @@
           "byteAddress": 1016,
           "id": "sin253",
           "lineNumber": 256,
-          "default": -0.0493,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.0493,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin254": {
           "numberOfElements": 1,
@@ -4395,13 +4395,13 @@
           "byteAddress": 1020,
           "id": "sin254",
           "lineNumber": 257,
-          "default": -0.0246,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": -0.0246,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "sin255": {
           "numberOfElements": 1,
@@ -4412,13 +4412,13 @@
           "byteAddress": 1024,
           "id": "sin255",
           "lineNumber": 258,
-          "default": 0,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0,
+          "hasExplicitDefault": true,
+          "isInherited": false
         }
       },
       "wordAlignedSize": 256,
@@ -13766,14 +13766,14 @@
           "byteAddress": 1028,
           "id": "sin",
           "lineNumber": 5,
-          "default": 4,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "last": {
@@ -13785,14 +13785,14 @@
           "byteAddress": 1032,
           "id": "last",
           "lineNumber": 6,
-          "default": 1024,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 1024,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "first": {
@@ -13804,14 +13804,14 @@
           "byteAddress": 1036,
           "id": "first",
           "lineNumber": 7,
-          "default": 4,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "offset": {
@@ -13823,13 +13823,13 @@
           "byteAddress": 1040,
           "id": "offset",
           "lineNumber": 8,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false,
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
         }
       },
       "wordAlignedSize": 4,
@@ -14383,14 +14383,14 @@
           "byteAddress": 1044,
           "id": "sin",
           "lineNumber": 2,
-          "default": 132,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 132,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "last": {
@@ -14402,14 +14402,14 @@
           "byteAddress": 1048,
           "id": "last",
           "lineNumber": 3,
-          "default": 1024,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 1024,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "first": {
@@ -14421,14 +14421,14 @@
           "byteAddress": 1052,
           "id": "first",
           "lineNumber": 4,
-          "default": 4,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "offset": {
@@ -14440,13 +14440,13 @@
           "byteAddress": 1056,
           "id": "offset",
           "lineNumber": 5,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false,
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
         }
       },
       "wordAlignedSize": 4,
@@ -15000,14 +15000,14 @@
           "byteAddress": 1060,
           "id": "sin",
           "lineNumber": 3,
-          "default": 260,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 260,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "last": {
@@ -15019,14 +15019,14 @@
           "byteAddress": 1064,
           "id": "last",
           "lineNumber": 4,
-          "default": 1024,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 1024,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "first": {
@@ -15038,14 +15038,14 @@
           "byteAddress": 1068,
           "id": "first",
           "lineNumber": 5,
-          "default": 4,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "offset": {
@@ -15057,13 +15057,13 @@
           "byteAddress": 1072,
           "id": "offset",
           "lineNumber": 6,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false,
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
         }
       },
       "wordAlignedSize": 4,
@@ -15617,14 +15617,14 @@
           "byteAddress": 1076,
           "id": "sin",
           "lineNumber": 3,
-          "default": 260,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 260,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "last": {
@@ -15636,14 +15636,14 @@
           "byteAddress": 1080,
           "id": "last",
           "lineNumber": 4,
-          "default": 1024,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 1024,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "first": {
@@ -15655,14 +15655,14 @@
           "byteAddress": 1084,
           "id": "first",
           "lineNumber": 5,
-          "default": 4,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "offsetX": {
@@ -15674,14 +15674,14 @@
           "byteAddress": 1088,
           "id": "offsetX",
           "lineNumber": 6,
-          "default": 1040,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 1040,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "offsetY": {
@@ -15693,13 +15693,13 @@
           "byteAddress": 1092,
           "id": "offsetY",
           "lineNumber": 8,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false,
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
         }
       },
       "wordAlignedSize": 5,
