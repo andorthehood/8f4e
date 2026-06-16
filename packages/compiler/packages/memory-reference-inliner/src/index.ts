@@ -9,7 +9,7 @@ import type {
 	FunctionAST,
 	FunctionValueType,
 	LocalMap,
-	MemoryMap,
+	MemoryPointerMetadataMap,
 	ModuleAST,
 	NormalizedArgumentLiteral,
 	PointerLocalBinding,
@@ -20,10 +20,11 @@ import type {
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { ArgumentType, isScalarMemoryDeclarationLine, POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
-import type { MemoryLayoutPlan, PlannedMemoryDeclaration } from '@8f4e/memory-planner';
+import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
 import { evaluateResolvedValueExpression } from './evaluateResolvedValueExpression';
 import {
 	type MemoryReferenceModuleNamespace,
+	type MemoryReferencePointerMetadataByModuleId,
 	type MemoryReferenceResolutionContext,
 	resolveMemoryExpressionOperand,
 } from './resolveMemoryExpressionOperand';
@@ -31,6 +32,7 @@ import {
 export { memoryEndAddressValue, memoryStartAddressValue, moduleAddressValue } from './addressValues';
 export {
 	type MemoryReferenceModuleNamespace,
+	type MemoryReferencePointerMetadataByModuleId,
 	type MemoryReferenceResolutionContext,
 	resolveMemoryExpressionOperand,
 } from './resolveMemoryExpressionOperand';
@@ -71,46 +73,16 @@ export interface InlineMemoryReferencesResult<
 	};
 }
 
-function toLayoutMemoryItem(declaration: PlannedMemoryDeclaration): MemoryMap[string] {
-	return {
-		...declaration,
-		default: 0,
-		isInherited: false,
-	};
-}
-
-function toMemoryMap(memory: Record<string, PlannedMemoryDeclaration>): MemoryMap {
-	return Object.fromEntries(
-		Object.entries(memory).map(([id, declaration]) => [id, toLayoutMemoryItem(declaration)])
-	) as MemoryMap;
-}
-
-function createModuleNamespaces(memoryPlan: MemoryLayoutPlan): Record<string, MemoryReferenceModuleNamespace> {
-	return Object.fromEntries(
-		memoryPlan.moduleList.map(module => [
-			module.id,
-			{
-				kind: 'module' as const,
-				memory: toMemoryMap(module.memory),
-				byteAddress: module.byteAddress,
-				wordAlignedSize: module.wordAlignedSize,
-				isMemoryLayoutFinalized: true as const,
-				memoryIndex: module.memoryIndex,
-				...(module.memoryRegionName ? { memoryRegionName: module.memoryRegionName } : {}),
-			},
-		])
-	);
-}
-
 function createResolutionContext(
 	memoryPlan: MemoryLayoutPlan,
-	namespaces: Readonly<Record<string, MemoryReferenceModuleNamespace>>,
+	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
 	moduleId?: string
 ): MemoryReferenceResolutionContext {
 	const module = moduleId ? memoryPlan.modules[moduleId] : undefined;
 	return {
-		memory: module ? (namespaces[module.id]?.memory ?? toMemoryMap(module.memory)) : {},
-		namespaces,
+		memoryPlan,
+		currentModule: module,
+		pointerMetadata,
 		...(moduleId ? { moduleName: moduleId } : {}),
 		locals: {},
 		startingByteAddress: module?.byteAddress ?? 0,
@@ -154,17 +126,14 @@ function collectFunctionLocal(line: CompilerASTLine, locals: LocalMap, nextLocal
 function getPointeeMemoryItem(
 	safeRange: NonNullable<AddressMetadata['safeRange']>,
 	context: MemoryReferenceResolutionContext
-): MemoryMap[string] | undefined {
+): MemoryReferenceModuleNamespace['memory'][string] | undefined {
 	const memoryId = safeRange.memoryId;
 	if (!memoryId) {
 		return undefined;
 	}
 
-	if (safeRange.moduleId) {
-		return context.namespaces[safeRange.moduleId]?.memory[memoryId];
-	}
-
-	return context.memory[memoryId];
+	const moduleId = safeRange.moduleId ?? context.moduleName ?? context.currentModule?.id;
+	return moduleId ? context.memoryPlan.modules[moduleId]?.memory[memoryId] : undefined;
 }
 
 function getPointeeElementCount(
@@ -196,15 +165,20 @@ function updatePointerMemoryMetadata(line: CompilerASTLine, context: MemoryRefer
 		return;
 	}
 
-	const declaration = context.memory[idArgument.value];
+	const declaration = context.currentModule?.memory[idArgument.value];
 	if (!declaration?.pointeeBaseType) {
 		return;
 	}
 
 	const defaultAddress = (defaultArgument as NormalizedArgumentLiteral).address;
 	const pointeeElementCount = getPointeeElementCount(defaultAddress, context);
-	context.memory[idArgument.value] = {
-		...declaration,
+	const moduleId = context.moduleName ?? context.currentModule?.id;
+	if (!moduleId) {
+		return;
+	}
+
+	const modulePointerMetadata = (context.pointerMetadata[moduleId] ??= {});
+	modulePointerMetadata[idArgument.value] = {
 		pointeeMemoryIndex: defaultAddress?.memoryIndex ?? 0,
 		...(defaultAddress?.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
 		...(pointeeElementCount !== undefined && pointeeElementCount !== 1 ? { pointeeElementCount } : {}),
@@ -326,10 +300,10 @@ function replaceLine<TLine extends CompilerASTLine | undefined>(
 function inlineMemoryReferencesInAst<TAst extends AST>(
 	ast: TAst,
 	memoryPlan: MemoryLayoutPlan,
-	namespaces: Readonly<Record<string, MemoryReferenceModuleNamespace>>
+	pointerMetadata: MemoryReferencePointerMetadataByModuleId
 ): TAst {
 	const moduleId = ast.type === 'module' ? ast.id : undefined;
-	const context = createResolutionContext(memoryPlan, namespaces, moduleId);
+	const context = createResolutionContext(memoryPlan, pointerMetadata, moduleId);
 	const replacements = new Map<CompilerASTLine, CompilerASTLine>();
 	let nextLocalIndex = 0;
 	const lines = ast.lines.map(line => {
@@ -401,13 +375,13 @@ export function inlineMemoryReferences<
 >(
 	input: InlineMemoryReferencesInput<TPrototype, TModule, TConstants, TFunction>
 ): InlineMemoryReferencesResult<TPrototype, TModule, TConstants, TFunction> {
-	const namespaces = createModuleNamespaces(input.memoryPlan);
+	const pointerMetadata: Record<string, MemoryPointerMetadataMap> = {};
 	return {
 		ast: {
-			prototypes: input.ast.prototypes.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
-			modules: input.ast.modules.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
-			constants: input.ast.constants.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
-			functions: input.ast.functions.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, namespaces)),
+			prototypes: input.ast.prototypes.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata)),
+			modules: input.ast.modules.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata)),
+			constants: input.ast.constants.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata)),
+			functions: input.ast.functions.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata)),
 		},
 	};
 }

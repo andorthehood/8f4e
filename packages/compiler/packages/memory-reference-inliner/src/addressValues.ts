@@ -1,7 +1,12 @@
-import type { Const, DataStructure } from '@8f4e/compiler-spec';
+import type { Const, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
 import { getEndByteAddress } from './layoutAddresses';
 import { getMemoryRegionFields } from './memoryRegions';
+
+type AddressableMemoryDeclaration = Pick<
+	PlannedMemoryDeclaration,
+	'id' | 'byteAddress' | 'wordAlignedSize' | 'memoryIndex' | 'memoryRegionName'
+>;
 
 /**
  * Converts word-aligned size to the byte length that is safe from the memory start address.
@@ -30,7 +35,7 @@ export function getEndAddressSafeByteLength(wordAlignedSize: number): number {
  * @param moduleId - Optional owning module id for intermodule safe-range metadata.
  * @returns Integer value with address safe-range metadata.
  */
-export function memoryStartAddressValue(memoryItem: DataStructure, moduleId?: string): Const {
+export function memoryStartAddressValue(memoryItem: AddressableMemoryDeclaration, moduleId?: string): Const {
 	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
 		value: memoryItem.byteAddress,
@@ -56,7 +61,7 @@ export function memoryStartAddressValue(memoryItem: DataStructure, moduleId?: st
  * @param moduleId - Optional owning module id for intermodule safe-range metadata.
  * @returns Integer value with address safe-range metadata.
  */
-export function memoryEndAddressValue(memoryItem: DataStructure, moduleId?: string): Const {
+export function memoryEndAddressValue(memoryItem: AddressableMemoryDeclaration, moduleId?: string): Const {
 	const byteAddress = getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
 	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
