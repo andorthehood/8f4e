@@ -61,6 +61,17 @@ const importedFunctionAllowedInstructions = new Set([
 	'functionEnd',
 ]);
 
+const functionParameterPhaseInstructions = new Set([
+	'function',
+	'#import',
+	'#impure',
+	'#loopCap',
+	'#export',
+	'param',
+	'paramShape',
+	'functionEnd',
+]);
+
 export interface AnalyzeStackProjectInput {
 	ast: {
 		modules: readonly ValidatedModuleAST[];
@@ -181,13 +192,6 @@ function registerFunctionParameter(
 	line: CompilerASTLine,
 	context: FunctionCompilationContext
 ): void {
-	const paramCount = context.currentFunctionParameterCount;
-	const localCount = Object.keys(context.locals).length;
-
-	if (localCount > paramCount) {
-		throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
-	}
-
 	if (context.locals[paramName] !== undefined) {
 		throw getError(ErrorCode.DUPLICATE_PARAMETER_NAME, line, context);
 	}
@@ -574,6 +578,7 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 	const functionMetadata = getFunctionMetadata(input, ast);
 	const context = createFunctionContext(input, ast, functionMetadata);
 	const analyzedLines: AnalyzedLine[] = [];
+	let functionBodyStarted = false;
 
 	for (const originalLine of ast.lines) {
 		const line = normalizeValueArguments(originalLine, context);
@@ -584,12 +589,18 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 				context
 			);
 		}
+		if (functionBodyStarted && (line.instruction === 'param' || line.instruction === 'paramShape')) {
+			throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
+		}
 
 		const analyzedLine = analyzeNormalizedLine(line, context, {
 			skipImportedFunctionEnd: !!ast.importLine,
 		});
 		if (analyzedLine) {
 			analyzedLines.push(analyzedLine);
+		}
+		if (!functionParameterPhaseInstructions.has(line.instruction)) {
+			functionBodyStarted = true;
 		}
 	}
 

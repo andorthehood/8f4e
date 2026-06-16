@@ -11,7 +11,7 @@ const paramShape: InstructionCompiler<ParamShapeLine, FunctionCodegenContext> = 
 	)!;
 
 	for (const parameter of expansion.parameters) {
-		registerFunctionParameter(parameter.type, parameter.name, line, context);
+		registerFunctionParameter(parameter.type, parameter.name, context);
 	}
 
 	return context;

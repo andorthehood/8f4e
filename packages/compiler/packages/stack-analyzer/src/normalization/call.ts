@@ -37,12 +37,9 @@ function isCodegenPushLine(line: NormalizedPushLine): line is CodegenPushLine {
  * @returns Normalized call line.
  */
 export default function normalizeCall(line: CallLine, context: CompilationContext): CallLine | NormalizedCallLine {
-	if (!context.namespace.functions) {
-		return line;
-	}
-
 	const functionName = line.arguments[0].value;
-	if (context.namespace.functions.arityByName[functionName] === undefined) {
+	const functionRegistry = context.namespace.functions!;
+	if (functionRegistry.arityByName[functionName] === undefined) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
 	}
 

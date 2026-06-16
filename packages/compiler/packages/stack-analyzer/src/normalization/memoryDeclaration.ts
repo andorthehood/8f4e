@@ -2,16 +2,14 @@ import {
 	ArgumentType,
 	type CompilationContext,
 	type CompilerASTLine,
-	ErrorCode,
-	getError,
 	isArrayMemoryDeclarationLine,
 	type MemoryDeclarationLine,
 } from '@8f4e/compiler-spec';
 import {
 	normalizeArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
-	validateOrDeferUnresolvedIdentifier,
-	validateOrDeferValueExpression,
+	validateUnresolvedIdentifier,
+	validateUnresolvedValueExpression,
 } from './helpers';
 
 function requireResolvedArrayValue(
@@ -20,19 +18,11 @@ function requireResolvedArrayValue(
 	context: CompilationContext
 ) {
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferValueExpression(argument, line, context);
-		if (deferred) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-				identifier: `${argument.left.value}${argument.operator}${argument.right.value}`,
-			});
-		}
+		validateUnresolvedValueExpression(argument, line, context);
 	}
 
 	if (argument?.type === ArgumentType.IDENTIFIER) {
-		const deferred = validateOrDeferUnresolvedIdentifier(argument, line, context);
-		if (deferred) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
-		}
+		validateUnresolvedIdentifier(argument, line, context);
 	}
 }
 
@@ -61,10 +51,7 @@ export default function normalizeMemoryDeclaration(
 	for (const index of scalarValidationIndexes) {
 		const argument = normalized.arguments[index];
 		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-			const deferred = validateOrDeferValueExpression(argument, line, context);
-			if (deferred) {
-				continue;
-			}
+			validateUnresolvedValueExpression(argument, line, context);
 		}
 		if (index === 1 && argument?.type === ArgumentType.IDENTIFIER) {
 			validateIntermoduleAddressReference(argument, line, context);
