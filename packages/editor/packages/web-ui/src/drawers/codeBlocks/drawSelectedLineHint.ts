@@ -1,11 +1,15 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State, TooltipLiveValue } from '@8f4e/editor-state-types';
 import type { Engine, SpriteLookup } from 'glugglug';
 import type { MemoryViews } from '../../types';
 import formatDebuggerValue, { formatDebuggerValueAtAddress } from './widgets/formatDebuggerValue';
 
-function getMemoryForLiveValueLine(state: State, moduleId: string, memoryId: string): DataStructure | undefined {
-	return state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
+function getMemoryForLiveValueLine(
+	state: State,
+	moduleId: string,
+	memoryId: string
+): PlannedMemoryDeclaration | undefined {
+	return state.compiler.compiledModules[moduleId]?.memory[memoryId];
 }
 
 function getLiveValueText(state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): string | undefined {

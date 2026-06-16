@@ -500,19 +500,19 @@
   },
   "moduleMemory": {
     "functionEndFloat64Return": {
-      "memoryMap": {},
+      "memory": {},
     },
     "functionEndFloat64SignatureSnapshot": {
-      "memoryMap": {},
+      "memory": {},
     },
     "functionEndFloatReturn": {
-      "memoryMap": {},
+      "memory": {},
     },
     "functionEndIntReturn": {
-      "memoryMap": {},
+      "memory": {},
     },
     "functionEndStackValidationRuntimeResult": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

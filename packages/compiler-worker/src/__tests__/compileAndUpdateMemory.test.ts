@@ -32,8 +32,8 @@ moduleEnd
 	});
 
 	const getAddresses = (compiledModules: CompiledModuleLookup) => ({
-		base: compiledModules.setup.memoryMap.base.byteAddress / 4,
-		derived: compiledModules.setup.memoryMap.derived.byteAddress / 4,
+		base: compiledModules.setup.memory.base.byteAddress / 4,
+		derived: compiledModules.setup.memory.derived.byteAddress / 4,
 	});
 
 	beforeEach(async () => {
@@ -112,7 +112,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 		];
 
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(1.5)), compilerOptions);
-		const memEntry = firstResult.compiledModules.mymod.memoryMap.value;
+		const memEntry = firstResult.compiledModules.mymod.memory.value;
 		const float64Index = memEntry.byteAddress / 8;
 		const firstView = new Float64Array(firstResult.memoryRef.buffer);
 
@@ -130,7 +130,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 		];
 
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(3.14)), compilerOptions);
-		const memEntry = firstResult.compiledModules.mymod.memoryMap.value;
+		const memEntry = firstResult.compiledModules.mymod.memory.value;
 		const float64Index = memEntry.byteAddress / 8;
 
 		const firstView = new Float64Array(firstResult.memoryRef.buffer);

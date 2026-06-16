@@ -1,4 +1,4 @@
-import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
@@ -30,7 +30,7 @@ describe('piano directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							keys1: {
 								id: 'keys1',
 								wordAlignedAddress: 5,
@@ -136,8 +136,8 @@ describe('piano directive widget resolution', () => {
 			lineNumber: 0,
 			keys: [],
 			startingNumber: 60,
-			pressedKeysListMemory: { wordAlignedAddress: 0 } as DataStructure,
-			pressedNumberOfKeysMemory: { wordAlignedAddress: 0 } as DataStructure,
+			pressedKeysListMemory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
+			pressedNumberOfKeysMemory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
 		};
 
 		runDirectiveResolution();

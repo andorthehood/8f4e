@@ -695,7 +695,7 @@
   },
   "moduleMemory": {
     "guardedMemoryCopyAssertions": {
-      "memoryMap": {
+      "memory": {
         "source": {
           "byteAddress": 44,
           "default": {},
@@ -731,7 +731,7 @@
       },
     },
     "memoryCopyAssertions": {
-      "memoryMap": {
+      "memory": {
         "source": {
           "byteAddress": 4,
           "default": {

@@ -1,4 +1,4 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { createMemoryLookup } from './memoryLookup';
 import type { CreateRuntimeRunnerOptions, MemoryLookup, RuntimeRunner } from './types';
 
@@ -22,7 +22,7 @@ function getWebAssemblyApi(): WebAssemblyApiLike {
 	return (globalThis as unknown as { WebAssembly: WebAssemblyApiLike }).WebAssembly;
 }
 
-function readScalar(view: DataView, data: DataStructure): number {
+function readScalar(view: DataView, data: PlannedMemoryDeclaration): number {
 	if (data.isInteger) {
 		if (data.elementWordSize === 1) {
 			return view.getInt8(data.byteAddress);
@@ -43,7 +43,7 @@ function readScalar(view: DataView, data: DataStructure): number {
 	return view.getFloat32(data.byteAddress, true);
 }
 
-function writeScalar(view: DataView, data: DataStructure, value: number): void {
+function writeScalar(view: DataView, data: PlannedMemoryDeclaration, value: number): void {
 	if (data.isInteger) {
 		if (!Number.isInteger(value)) {
 			throw new Error(`Expected integer value for ${data.id}, got ${value}`);
@@ -72,7 +72,7 @@ function writeScalar(view: DataView, data: DataStructure, value: number): void {
 	view.setFloat32(data.byteAddress, value, true);
 }
 
-function readValue(view: DataView, data: DataStructure): number | number[] {
+function readValue(view: DataView, data: PlannedMemoryDeclaration): number | number[] {
 	if (data.numberOfElements === 1) {
 		return readScalar(view, data);
 	}
@@ -86,7 +86,7 @@ function readValue(view: DataView, data: DataStructure): number | number[] {
 	return values;
 }
 
-function writeValue(view: DataView, data: DataStructure, value: number | number[]): void {
+function writeValue(view: DataView, data: PlannedMemoryDeclaration, value: number | number[]): void {
 	if (data.numberOfElements === 1) {
 		if (typeof value !== 'number') {
 			throw new Error(`Expected scalar value for ${data.id}`);
@@ -109,7 +109,7 @@ function writeValue(view: DataView, data: DataStructure, value: number | number[
 	}
 }
 
-function writeBytes(view: DataView, data: DataStructure, bytes: Uint8Array): void {
+function writeBytes(view: DataView, data: PlannedMemoryDeclaration, bytes: Uint8Array): void {
 	const capacityBytes = data.numberOfElements * data.elementWordSize;
 	if (bytes.byteLength > capacityBytes) {
 		throw new Error(`Binary payload for ${data.id} is too large: ${bytes.byteLength} > ${capacityBytes} bytes`);
@@ -120,7 +120,7 @@ function writeBytes(view: DataView, data: DataStructure, bytes: Uint8Array): voi
 	target.set(bytes);
 }
 
-function readBytes(view: DataView, data: DataStructure): Uint8Array {
+function readBytes(view: DataView, data: PlannedMemoryDeclaration): Uint8Array {
 	const lengthBytes = data.numberOfElements * data.elementWordSize;
 	const source = new Uint8Array(view.buffer, data.byteAddress, lengthBytes);
 	return Uint8Array.from(source);

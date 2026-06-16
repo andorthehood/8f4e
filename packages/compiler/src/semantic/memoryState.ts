@@ -1,12 +1,10 @@
 import type {
 	CompilationContext,
-	DataStructure,
-	MemoryDefaults,
 	MemoryLayoutPlan,
-	MemoryMap,
 	MemoryPointerMetadata,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
+	ResolvedMemoryDeclaration,
 } from '@8f4e/compiler-spec';
 
 type MemoryPlanContext = Pick<CompilationContext, 'currentPlannedModule' | 'memoryPlan' | 'namespace'>;
@@ -40,7 +38,6 @@ export function getPlannedMemoryDeclaration(
 }
 
 interface ResolvedMemoryOverlay {
-	memoryDefaults: MemoryDefaults;
 	pointerMetadata: Record<string, MemoryPointerMetadata>;
 }
 
@@ -52,17 +49,13 @@ function getPointerMetadataWithDefinedFields(metadata: MemoryPointerMetadata | u
 	};
 }
 
-/** Materializes the resolved declaration shape used by codegen and public compiler output. */
-export function createMemoryItem(declaration: PlannedMemoryDeclaration, overlay: ResolvedMemoryOverlay): DataStructure {
-	const memoryDefault = overlay.memoryDefaults[declaration.id]!;
-	const pointerMetadata = getPointerMetadataWithDefinedFields(overlay.pointerMetadata[declaration.id]);
-
+function createResolvedMemoryDeclaration(
+	declaration: PlannedMemoryDeclaration,
+	overlay: ResolvedMemoryOverlay
+): ResolvedMemoryDeclaration {
 	return {
 		...declaration,
-		default: memoryDefault.value,
-		hasExplicitDefault: memoryDefault.hasExplicitDefault === true,
-		isInherited: memoryDefault.isInherited,
-		...pointerMetadata,
+		...getPointerMetadataWithDefinedFields(overlay.pointerMetadata[declaration.id]),
 	};
 }
 
@@ -77,23 +70,16 @@ function getResolvedMemoryOverlay(
 	return context.namespace.namespaces[moduleId];
 }
 
-/** Returns a resolved memory item for the active module, or for a target module namespace. */
-export function getMemoryItem(
+/** Returns a resolved memory declaration for the active module, or for a target module namespace. */
+export function getResolvedMemoryDeclaration(
 	context: CompilationContext,
 	memoryId: string,
 	moduleId = context.namespace.moduleName
-): DataStructure | undefined {
+): ResolvedMemoryDeclaration | undefined {
 	const declaration = getPlannedMemoryDeclaration(context, memoryId, moduleId);
 	if (!declaration) {
 		return undefined;
 	}
 
-	return createMemoryItem(declaration, getResolvedMemoryOverlay(context, moduleId));
-}
-
-/** Materializes a module's resolved memory map for compiler output and memory initialization. */
-export function createMemoryMapFromPlan(module: PlannedMemoryModule, overlay: ResolvedMemoryOverlay): MemoryMap {
-	return Object.fromEntries(
-		Object.entries(module.memory).map(([id, declaration]) => [id, createMemoryItem(declaration, overlay)])
-	) as MemoryMap;
+	return createResolvedMemoryDeclaration(declaration, getResolvedMemoryOverlay(context, moduleId));
 }

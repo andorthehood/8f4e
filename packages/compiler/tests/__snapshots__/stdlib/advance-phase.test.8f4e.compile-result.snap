@@ -531,7 +531,7 @@
   },
   "moduleMemory": {
     "advancePhaseAssertions": {
-      "memoryMap": {
+      "memory": {
         "phase": {
           "byteAddress": 4,
           "default": 0,

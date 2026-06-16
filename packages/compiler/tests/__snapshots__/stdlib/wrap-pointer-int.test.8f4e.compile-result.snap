@@ -867,7 +867,7 @@
   },
   "moduleMemory": {
     "wrapPointerIntAssertions": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 4,
           "default": {

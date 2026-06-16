@@ -14,7 +14,10 @@
       "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "memoryMap": {},
+      "memory": {},
+      "declarations": [],
+      "memoryDefaults": {},
+      "pointerMetadata": {},
       "wordAlignedSize": 0,
       "ast": {
         "type": "module",
@@ -67,7 +70,10 @@
       "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "memoryMap": {},
+      "memory": {},
+      "declarations": [],
+      "memoryDefaults": {},
+      "pointerMetadata": {},
       "wordAlignedSize": 0,
       "ast": {
         "type": "module",
@@ -120,7 +126,7 @@
       "memoryIndex": 0,
       "byteAddress": 4,
       "wordAlignedAddress": 1,
-      "memoryMap": {
+      "memory": {
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -133,12 +139,33 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+          "byteAddress": 4,
+          "id": "out",
+          "lineNumber": 4,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "out": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
         }
       },
+      "pointerMetadata": {},
       "wordAlignedSize": 1,
       "ast": {
         "type": "module",
@@ -218,7 +245,7 @@
       "memoryIndex": 0,
       "byteAddress": 8,
       "wordAlignedAddress": 2,
-      "memoryMap": {
+      "memory": {
         "out": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -231,12 +258,33 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 2,
+          "wordAlignedSize": 1,
+          "byteAddress": 8,
+          "id": "out",
+          "lineNumber": 3,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "out": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
         }
       },
+      "pointerMetadata": {},
       "wordAlignedSize": 1,
       "ast": {
         "type": "module",
@@ -349,7 +397,7 @@
       "memoryIndex": 0,
       "byteAddress": 12,
       "wordAlignedAddress": 3,
-      "memoryMap": {
+      "memory": {
         "in1": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -363,11 +411,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 28,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -381,10 +425,7 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "in2": {
           "numberOfElements": 1,
@@ -399,10 +440,77 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 4,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 3,
+          "wordAlignedSize": 1,
+          "byteAddress": 12,
+          "id": "in1",
+          "lineNumber": 4,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+          "byteAddress": 16,
+          "id": "out",
+          "lineNumber": 5,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+          "byteAddress": 20,
+          "id": "in2",
+          "lineNumber": 6,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in1": {
+          "value": 28,
           "hasExplicitDefault": true,
-          "isInherited": false,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "in2": {
+          "value": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in1": {
+          "pointeeMemoryIndex": 0
+        },
+        "in2": {
           "pointeeMemoryIndex": 0
         }
       },
@@ -779,7 +887,7 @@
       "memoryIndex": 0,
       "byteAddress": 24,
       "wordAlignedAddress": 6,
-      "memoryMap": {
+      "memory": {
         "in1": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -793,11 +901,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 16,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -811,10 +915,7 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "in2": {
           "numberOfElements": 1,
@@ -829,10 +930,77 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 8,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 6,
+          "wordAlignedSize": 1,
+          "byteAddress": 24,
+          "id": "in1",
+          "lineNumber": 4,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 7,
+          "wordAlignedSize": 1,
+          "byteAddress": 28,
+          "id": "out",
+          "lineNumber": 5,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 8,
+          "wordAlignedSize": 1,
+          "byteAddress": 32,
+          "id": "in2",
+          "lineNumber": 6,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in1": {
+          "value": 16,
           "hasExplicitDefault": true,
-          "isInherited": false,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "in2": {
+          "value": 8,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in1": {
+          "pointeeMemoryIndex": 0
+        },
+        "in2": {
           "pointeeMemoryIndex": 0
         }
       },
@@ -1261,7 +1429,7 @@
       "memoryIndex": 0,
       "byteAddress": 36,
       "wordAlignedAddress": 9,
-      "memoryMap": {
+      "memory": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -1275,11 +1443,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 28,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "buffer": {
           "numberOfElements": 64,
@@ -1293,10 +1457,7 @@
           "isInteger": true,
           "pointerDepth": 0,
           "type": "int",
-          "isUnsigned": false,
-          "default": {},
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "bufferPointer": {
           "numberOfElements": 1,
@@ -1310,10 +1471,74 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 40,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 9,
+          "wordAlignedSize": 1,
+          "byteAddress": 36,
+          "id": "in",
+          "lineNumber": 3,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 64,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedSize": 64,
+          "wordAlignedAddress": 10,
+          "id": "buffer",
+          "lineNumber": 4,
+          "byteAddress": 40,
+          "isInteger": true,
+          "pointerDepth": 0,
+          "type": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 74,
+          "wordAlignedSize": 1,
+          "byteAddress": 296,
+          "id": "bufferPointer",
+          "lineNumber": 5,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in": {
+          "value": 28,
           "hasExplicitDefault": true,
           "isInherited": false
+        },
+        "buffer": {
+          "value": {},
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "bufferPointer": {
+          "value": 40,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 66,
@@ -1720,7 +1945,7 @@
       "memoryIndex": 0,
       "byteAddress": 300,
       "wordAlignedAddress": 75,
-      "memoryMap": {
+      "memory": {
         "set": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -1733,10 +1958,7 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "reset": {
           "numberOfElements": 1,
@@ -1750,12 +1972,52 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 75,
+          "wordAlignedSize": 1,
+          "byteAddress": 300,
+          "id": "set",
+          "lineNumber": 5,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 76,
+          "wordAlignedSize": 1,
+          "byteAddress": 304,
+          "id": "reset",
+          "lineNumber": 6,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "set": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "reset": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
         }
       },
+      "pointerMetadata": {},
       "wordAlignedSize": 2,
       "ast": {
         "type": "module",
@@ -1887,7 +2149,7 @@
       "memoryIndex": 0,
       "byteAddress": 308,
       "wordAlignedAddress": 77,
-      "memoryMap": {
+      "memory": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -1901,11 +2163,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 304,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -1919,10 +2177,55 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 77,
+          "wordAlignedSize": 1,
+          "byteAddress": 308,
+          "id": "in",
+          "lineNumber": 3,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 78,
+          "wordAlignedSize": 1,
+          "byteAddress": 312,
+          "id": "out",
+          "lineNumber": 4,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in": {
+          "value": 304,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
           "hasExplicitDefault": false,
           "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 2,
@@ -2218,7 +2521,7 @@
       "memoryIndex": 0,
       "byteAddress": 316,
       "wordAlignedAddress": 79,
-      "memoryMap": {
+      "memory": {
         "in1": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -2232,11 +2535,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 332,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -2250,10 +2549,7 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "in2": {
           "numberOfElements": 1,
@@ -2268,10 +2564,77 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 300,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 79,
+          "wordAlignedSize": 1,
+          "byteAddress": 316,
+          "id": "in1",
+          "lineNumber": 4,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 80,
+          "wordAlignedSize": 1,
+          "byteAddress": 320,
+          "id": "out",
+          "lineNumber": 5,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 81,
+          "wordAlignedSize": 1,
+          "byteAddress": 324,
+          "id": "in2",
+          "lineNumber": 6,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in1": {
+          "value": 332,
           "hasExplicitDefault": true,
-          "isInherited": false,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "in2": {
+          "value": 300,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in1": {
+          "pointeeMemoryIndex": 0
+        },
+        "in2": {
           "pointeeMemoryIndex": 0
         }
       },
@@ -2651,7 +3014,7 @@
       "memoryIndex": 0,
       "byteAddress": 328,
       "wordAlignedAddress": 82,
-      "memoryMap": {
+      "memory": {
         "in1": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -2665,11 +3028,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 320,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "out": {
           "numberOfElements": 1,
@@ -2683,10 +3042,7 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "in2": {
           "numberOfElements": 1,
@@ -2701,10 +3057,77 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 312,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 82,
+          "wordAlignedSize": 1,
+          "byteAddress": 328,
+          "id": "in1",
+          "lineNumber": 4,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 83,
+          "wordAlignedSize": 1,
+          "byteAddress": 332,
+          "id": "out",
+          "lineNumber": 5,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 84,
+          "wordAlignedSize": 1,
+          "byteAddress": 336,
+          "id": "in2",
+          "lineNumber": 6,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in1": {
+          "value": 320,
           "hasExplicitDefault": true,
-          "isInherited": false,
+          "isInherited": false
+        },
+        "out": {
+          "value": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "in2": {
+          "value": 312,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in1": {
+          "pointeeMemoryIndex": 0
+        },
+        "in2": {
           "pointeeMemoryIndex": 0
         }
       },
@@ -3135,7 +3558,7 @@
       "memoryIndex": 0,
       "byteAddress": 340,
       "wordAlignedAddress": 85,
-      "memoryMap": {
+      "memory": {
         "in": {
           "numberOfElements": 1,
           "elementWordSize": 4,
@@ -3149,11 +3572,7 @@
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "int",
-          "isUnsigned": false,
-          "default": 332,
-          "hasExplicitDefault": true,
-          "isInherited": false,
-          "pointeeMemoryIndex": 0
+          "isUnsigned": false
         },
         "buffer": {
           "numberOfElements": 64,
@@ -3167,10 +3586,7 @@
           "isInteger": true,
           "pointerDepth": 0,
           "type": "int",
-          "isUnsigned": false,
-          "default": {},
-          "hasExplicitDefault": false,
-          "isInherited": false
+          "isUnsigned": false
         },
         "bufferPointer": {
           "numberOfElements": 1,
@@ -3184,10 +3600,74 @@
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false,
-          "default": 344,
+          "isUnsigned": false
+        }
+      },
+      "declarations": [
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 85,
+          "wordAlignedSize": 1,
+          "byteAddress": 340,
+          "id": "in",
+          "lineNumber": 3,
+          "type": "int*",
+          "pointerDepth": 1,
+          "isInteger": true,
+          "pointeeBaseType": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 64,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedSize": 64,
+          "wordAlignedAddress": 86,
+          "id": "buffer",
+          "lineNumber": 4,
+          "byteAddress": 344,
+          "isInteger": true,
+          "pointerDepth": 0,
+          "type": "int",
+          "isUnsigned": false
+        },
+        {
+          "numberOfElements": 1,
+          "elementWordSize": 4,
+          "memoryIndex": 0,
+          "wordAlignedAddress": 150,
+          "wordAlignedSize": 1,
+          "byteAddress": 600,
+          "id": "bufferPointer",
+          "lineNumber": 5,
+          "type": "int",
+          "pointerDepth": 0,
+          "isInteger": true,
+          "isUnsigned": false
+        }
+      ],
+      "memoryDefaults": {
+        "in": {
+          "value": 332,
           "hasExplicitDefault": true,
           "isInherited": false
+        },
+        "buffer": {
+          "value": {},
+          "hasExplicitDefault": false,
+          "isInherited": false
+        },
+        "bufferPointer": {
+          "value": 344,
+          "hasExplicitDefault": true,
+          "isInherited": false
+        }
+      },
+      "pointerMetadata": {
+        "in": {
+          "pointeeMemoryIndex": 0
         }
       },
       "wordAlignedSize": 66,

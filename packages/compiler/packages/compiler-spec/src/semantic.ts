@@ -35,11 +35,12 @@ import type { FunctionImportMetadata, FunctionValueType } from './functionTypes'
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
 import type {
 	ArrayDeclarationInstruction,
-	DataStructure,
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 	PlannedMemoryModule,
+	PointeeBaseType,
+	ResolvedMemoryDeclaration,
 } from './memory';
 
 /** Proven byte range associated with an address expression or memory boundary. */
@@ -110,7 +111,7 @@ export interface ScalarLocalBinding {
 export interface PointerLocalBinding {
 	isInteger: true;
 	isFloat64?: false;
-	pointeeBaseType: NonNullable<DataStructure['pointeeBaseType']>;
+	pointeeBaseType: PointeeBaseType;
 	pointerDepth: number;
 	pointeeMemoryIndex?: number;
 	pointeeMemoryRegionName?: string;
@@ -228,7 +229,7 @@ export type StackValueType = 'int' | 'float' | 'float64';
 
 /** Metadata describing values reachable from an address stack item. */
 export interface PointeeMetadata {
-	baseType: DataStructure['pointeeBaseType'];
+	baseType: PointeeBaseType;
 	memoryIndex: number;
 	memoryRegionName?: string;
 	pointerDepth: number;
@@ -334,7 +335,7 @@ export type ResolvedMemoryPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier];
 	resolvedTarget: {
 		kind: 'memory';
-		memoryItem: DataStructure;
+		memoryItem: ResolvedMemoryDeclaration;
 	};
 };
 
@@ -342,7 +343,7 @@ export type ResolvedMemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 	resolvedTarget: {
 		kind: 'memory-pointer';
-		memoryItem: DataStructure;
+		memoryItem: ResolvedMemoryDeclaration;
 	};
 };
 

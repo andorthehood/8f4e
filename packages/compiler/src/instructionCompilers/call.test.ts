@@ -11,7 +11,7 @@ import { describe, expect, it } from 'vitest';
 import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
 import createInstructionCompilerTestContext, {
 	analyzeAndCompileInstruction,
-	seedTestMemoryMap,
+	seedTestMemoryDeclarations,
 } from '../utils/testUtils';
 import call from './call';
 
@@ -165,7 +165,7 @@ describe('call instruction compiler', () => {
 	});
 
 	it('resolves pointer overloads from known memory address literals', () => {
-		const context = seedTestMemoryMap(createInstructionCompilerTestContext(), {
+		const context = seedTestMemoryDeclarations(createInstructionCompilerTestContext(), {
 			previousTrigger: {
 				id: 'previousTrigger',
 				numberOfElements: 1,

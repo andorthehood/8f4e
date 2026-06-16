@@ -1,9 +1,6 @@
-import type { DataStructure } from './memory';
-
 /** Optional settings that control compiler layout and emitted metadata. */
 export interface CompileOptions {
 	startingMemoryWordAddress?: number;
-	globalDataStructures?: DataStructure[];
 	/**
 	 * Ordered custom memory region names. WebAssembly memory index 0 is always the
 	 * implicit default memory and is not listed here; custom names map to

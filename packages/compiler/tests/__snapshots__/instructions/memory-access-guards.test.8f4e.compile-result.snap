@@ -522,13 +522,13 @@
   },
   "moduleMemory": {
     "guardedFloatLoadAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "guardedIntLoadAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "guardedLocalPointerDereferenceAssertions": {
-      "memoryMap": {
+      "memory": {
         "value": {
           "byteAddress": 4,
           "default": 0,

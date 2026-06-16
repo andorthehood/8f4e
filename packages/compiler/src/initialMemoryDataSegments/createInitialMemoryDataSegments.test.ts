@@ -1,43 +1,45 @@
 import { describe, expect, test } from 'vitest';
 
 import createInitialMemoryDataSegments from './createInitialMemoryDataSegments';
-import { createCompiledModule, createMemory, serializeSegments } from './testUtils';
+import {
+	createMemory,
+	createMemoryDefault,
+	createMemoryDefaults,
+	createMemoryPlan,
+	serializeSegments,
+} from './testUtils';
 
 describe('createInitialMemoryDataSegments', () => {
 	test('skips implicit zero defaults while retaining non-zero and explicit defaults', () => {
-		const compiledModules = [
-			createCompiledModule({
-				memoryMap: {
-					scalarZero: createMemory({ id: 'scalarZero', byteAddress: 0, default: 0 }),
-					scalarValue: createMemory({ id: 'scalarValue', byteAddress: 4, default: 5 }),
-					implicitArray: createMemory({
-						id: 'implicitArray',
-						byteAddress: 8,
-						numberOfElements: 4,
-						wordAlignedSize: 4,
-						default: {},
-					}),
-					explicitArray: createMemory({
-						id: 'explicitArray',
-						byteAddress: 24,
-						numberOfElements: 3,
-						wordAlignedSize: 3,
-						hasExplicitDefault: true,
-						default: {
-							1: 2,
-						},
-					}),
-					explicitScalarZero: createMemory({
-						id: 'explicitScalarZero',
-						byteAddress: 36,
-						hasExplicitDefault: true,
-						default: 0,
-					}),
-				},
+		const memoryPlan = createMemoryPlan({
+			scalarZero: createMemory({ id: 'scalarZero', byteAddress: 0 }),
+			scalarValue: createMemory({ id: 'scalarValue', byteAddress: 4 }),
+			implicitArray: createMemory({
+				id: 'implicitArray',
+				byteAddress: 8,
+				numberOfElements: 4,
+				wordAlignedSize: 4,
 			}),
-		];
+			explicitArray: createMemory({
+				id: 'explicitArray',
+				byteAddress: 24,
+				numberOfElements: 3,
+				wordAlignedSize: 3,
+			}),
+			explicitScalarZero: createMemory({
+				id: 'explicitScalarZero',
+				byteAddress: 36,
+			}),
+		});
+		const memoryDefaultsByModuleId = createMemoryDefaults({
+			scalarZero: createMemoryDefault(0),
+			scalarValue: createMemoryDefault(5),
+			implicitArray: createMemoryDefault({}),
+			explicitArray: createMemoryDefault({ 1: 2 }, { hasExplicitDefault: true }),
+			explicitScalarZero: createMemoryDefault(0, { hasExplicitDefault: true }),
+		});
 
-		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([
+		expect(serializeSegments(createInitialMemoryDataSegments(memoryPlan, memoryDefaultsByModuleId))).toEqual([
 			{
 				memoryIndex: 0,
 				byteAddress: 4,
@@ -47,21 +49,18 @@ describe('createInitialMemoryDataSegments', () => {
 	});
 
 	test('skips explicit zero-filled array defaults', () => {
-		const compiledModules = [
-			createCompiledModule({
-				memoryMap: {
-					zeroArray: createMemory({
-						id: 'zeroArray',
-						byteAddress: 0,
-						numberOfElements: 2,
-						wordAlignedSize: 2,
-						hasExplicitDefault: true,
-						default: { 0: 0 },
-					}),
-				},
+		const memoryPlan = createMemoryPlan({
+			zeroArray: createMemory({
+				id: 'zeroArray',
+				byteAddress: 0,
+				numberOfElements: 2,
+				wordAlignedSize: 2,
 			}),
-		];
+		});
+		const memoryDefaultsByModuleId = createMemoryDefaults({
+			zeroArray: createMemoryDefault({ 0: 0 }, { hasExplicitDefault: true }),
+		});
 
-		expect(serializeSegments(createInitialMemoryDataSegments(compiledModules))).toEqual([]);
+		expect(serializeSegments(createInitialMemoryDataSegments(memoryPlan, memoryDefaultsByModuleId))).toEqual([]);
 	});
 });

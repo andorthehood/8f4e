@@ -1851,7 +1851,7 @@
   },
   "moduleMemory": {
     "readInterpolatedInt16Assertions": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 4,
           "default": {

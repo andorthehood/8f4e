@@ -1510,7 +1510,7 @@
   },
   "moduleMemory": {
     "triggerToGateFloatAssertions": {
-      "memoryMap": {
+      "memory": {
         "remainingSamples": {
           "byteAddress": 8,
           "default": 0,
@@ -1528,7 +1528,7 @@
       },
     },
     "triggerToGateIntAssertions": {
-      "memoryMap": {
+      "memory": {
         "remainingSamples": {
           "byteAddress": 4,
           "default": 0,

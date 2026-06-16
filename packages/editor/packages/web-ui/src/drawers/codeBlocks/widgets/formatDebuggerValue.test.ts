@@ -1,4 +1,4 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
 import formatDebuggerValue from './formatDebuggerValue';
 
@@ -16,7 +16,7 @@ function createMemoryViews() {
 	};
 }
 
-function createMemory(overrides: Partial<DataStructure>): DataStructure {
+function createMemory(overrides: Partial<PlannedMemoryDeclaration>): PlannedMemoryDeclaration {
 	return {
 		id: 'value',
 		type: 'int',

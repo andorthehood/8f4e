@@ -1727,7 +1727,7 @@
   },
   "moduleMemory": {
     "constantExpressionAssertions": {
-      "memoryMap": {
+      "memory": {
         "defaultFromExpression": {
           "byteAddress": 140,
           "default": 4,
@@ -1774,7 +1774,7 @@
       },
     },
     "exponentExpressionAssertions": {
-      "memoryMap": {
+      "memory": {
         "defaultFromExponent": {
           "byteAddress": 196,
           "default": 9,
@@ -1821,7 +1821,7 @@
       },
     },
     "fractionLiteralAssertions": {
-      "memoryMap": {
+      "memory": {
         "floatFraction": {
           "byteAddress": 12,
           "default": 0.0625,
@@ -1885,7 +1885,7 @@
       },
     },
     "literalMulDivExpressionAssertions": {
-      "memoryMap": {
+      "memory": {
         "literalSizedBuffer": {
           "byteAddress": 28,
           "default": {},
@@ -1918,7 +1918,7 @@
       },
     },
     "sizeAndCountExpressionAssertions": {
-      "memoryMap": {
+      "memory": {
         "floatSamples": {
           "byteAddress": 152,
           "default": {},
@@ -2000,7 +2000,7 @@
       },
     },
     "validConstantNameAssertions": {
-      "memoryMap": {
+      "memory": {
         "output3": {
           "byteAddress": 4,
           "default": 69,

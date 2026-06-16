@@ -334,7 +334,7 @@
   },
   "moduleMemory": {
     "activeEntryModule": {
-      "memoryMap": {
+      "memory": {
         "counter": {
           "byteAddress": 4,
           "default": 0,
@@ -353,7 +353,7 @@
       },
     },
     "skippedEntryModule": {
-      "memoryMap": {
+      "memory": {
         "counter": {
           "byteAddress": 8,
           "default": 0,
