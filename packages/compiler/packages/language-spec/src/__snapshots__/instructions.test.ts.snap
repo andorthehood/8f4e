@@ -1,5 +1,93 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`function instruction classification > snapshots function classification tables 1`] = `
+{
+  "functionPreBodyInstructionNames": [
+    "const",
+    "function",
+    "functionEnd",
+    "#loopCap",
+    "#export",
+    "#import",
+    "#impure",
+    "param",
+    "paramShape",
+    "use",
+  ],
+  "importedFunctionDeclarationInstructionNames": [
+    "function",
+    "functionEnd",
+    "#loopCap",
+    "#import",
+    "#impure",
+    "param",
+    "paramShape",
+  ],
+  "samples": {
+    "#export": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": false,
+    },
+    "#import": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "#impure": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "#loopCap": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "call": {
+      "isFunctionBody": true,
+      "isFunctionPreBody": false,
+      "isImportedFunctionDeclaration": false,
+    },
+    "const": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": false,
+    },
+    "functionEnd": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "local": {
+      "isFunctionBody": true,
+      "isFunctionPreBody": false,
+      "isImportedFunctionDeclaration": false,
+    },
+    "param": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "paramShape": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "push": {
+      "isFunctionBody": true,
+      "isFunctionPreBody": false,
+      "isImportedFunctionDeclaration": false,
+    },
+    "use": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": false,
+    },
+  },
+}
+`;
+
 exports[`instruction block classification > snapshots derived block tables 1`] = `
 {
   "compiledModuleBlockTypes": [
