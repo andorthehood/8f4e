@@ -1,5 +1,20 @@
-import type { CompilationContext, CompileTimeOperand, Const } from '@8f4e/compiler-spec';
+import type {
+	CompileTimeOperand,
+	Const,
+	LocalMap,
+	MemoryLayoutPlan,
+	MemoryPointerMetadataMap,
+	PlannedMemoryDeclaration,
+	PlannedMemoryModule,
+} from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
+import {
+	getWordAlignedByteLength,
+	memoryEndAddressValue,
+	memoryStartAddressValue,
+	moduleAddressValue,
+} from './addressValues';
+import { getEndByteAddress } from './layoutAddresses';
 import {
 	getElementCount,
 	getElementMaxValue,
@@ -12,15 +27,76 @@ import {
 	getPointeeElementMinValueFromMetadata,
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
-} from '../../utils/memoryData';
-import { getEndByteAddress } from '../layoutAddresses';
-import { getMemoryRegionFields } from '../memoryRegions';
-import {
-	getWordAlignedByteLength,
-	memoryEndAddressValue,
-	memoryStartAddressValue,
-	moduleAddressValue,
-} from './addressValues';
+	type PointerMetadata,
+} from './memoryData';
+import { getMemoryRegionFields } from './memoryRegions';
+
+export type MemoryReferenceModuleNamespace = PlannedMemoryModule;
+
+export type MemoryReferencePointerMetadataByModuleId = Record<string, MemoryPointerMetadataMap>;
+
+export interface MemoryReferenceResolutionContext {
+	memoryPlan: MemoryLayoutPlan;
+	currentModule?: PlannedMemoryModule;
+	pointerMetadata: MemoryReferencePointerMetadataByModuleId;
+	moduleName?: string;
+	locals: LocalMap;
+	startingByteAddress: number;
+	currentModuleWordAlignedSize: number;
+	currentMemoryIndex: number;
+	currentMemoryRegionName?: string;
+}
+
+function getCurrentModuleId(context: MemoryReferenceResolutionContext): string | undefined {
+	return context.moduleName ?? context.currentModule?.id;
+}
+
+function getCurrentModule(context: MemoryReferenceResolutionContext): PlannedMemoryModule | undefined {
+	const moduleId = getCurrentModuleId(context);
+	return context.currentModule ?? (moduleId ? context.memoryPlan.modules[moduleId] : undefined);
+}
+
+function getModule(
+	context: MemoryReferenceResolutionContext,
+	moduleId: string | undefined
+): PlannedMemoryModule | undefined {
+	if (!moduleId || moduleId === 'this') {
+		return getCurrentModule(context);
+	}
+
+	return context.memoryPlan.modules[moduleId];
+}
+
+function getMemoryDeclaration(
+	context: MemoryReferenceResolutionContext,
+	memoryId: string,
+	moduleId = getCurrentModuleId(context)
+): PlannedMemoryDeclaration | undefined {
+	return getModule(context, moduleId)?.memory[memoryId];
+}
+
+function getPointerMetadata(
+	context: MemoryReferenceResolutionContext,
+	memoryId: string,
+	moduleId = getCurrentModuleId(context)
+): MemoryPointerMetadataMap[string] | undefined {
+	return moduleId ? context.pointerMetadata[moduleId]?.[memoryId] : undefined;
+}
+
+function getPointerFacts(
+	context: MemoryReferenceResolutionContext,
+	declaration: PlannedMemoryDeclaration | undefined,
+	moduleId = getCurrentModuleId(context)
+): PointerMetadata | undefined {
+	if (!declaration) {
+		return undefined;
+	}
+
+	return {
+		...declaration,
+		...getPointerMetadata(context, declaration.id, moduleId),
+	};
+}
 
 function hasKnownPointeeElementCount(
 	pointerMetadata: { pointeeBaseType?: unknown; pointeeElementCount?: number } | undefined
@@ -39,23 +115,17 @@ function hasKnownPointeeElementCount(
  */
 export function resolveMemoryExpressionOperand(
 	operand: CompileTimeOperand,
-	context: CompilationContext
+	context: MemoryReferenceResolutionContext
 ): Const | undefined {
-	const { namespace } = context;
 	if (operand.type === ArgumentType.LITERAL) {
 		return undefined;
 	}
 
-	const { memory } = namespace;
-
 	if (operand.referenceKind === 'intermodular-element-word-size') {
-		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
-		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
+		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, operand.targetModuleId);
+		if (targetMemory) {
 			return {
-				value: getElementWordSize(targetMemory, operand.targetMemoryId),
+				value: getElementWordSize(targetMemory),
 				isInteger: true,
 			};
 		}
@@ -63,13 +133,10 @@ export function resolveMemoryExpressionOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-element-count') {
-		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
-		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
+		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, operand.targetModuleId);
+		if (targetMemory) {
 			return {
-				value: getElementCount(targetMemory, operand.targetMemoryId),
+				value: getElementCount(targetMemory),
 				isInteger: true,
 			};
 		}
@@ -77,30 +144,22 @@ export function resolveMemoryExpressionOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-element-max') {
-		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
-		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
-			const memoryItem = targetMemory[operand.targetMemoryId];
+		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, operand.targetModuleId);
+		if (targetMemory) {
 			return {
-				value: getElementMaxValue(targetMemory, operand.targetMemoryId),
-				isInteger: !!memoryItem?.isInteger,
+				value: getElementMaxValue(targetMemory),
+				isInteger: !!targetMemory.isInteger,
 			};
 		}
 		return undefined;
 	}
 
 	if (operand.referenceKind === 'intermodular-element-min') {
-		const targetMemory =
-			namespace.namespaces[operand.targetModuleId]?.kind === 'module'
-				? namespace.namespaces[operand.targetModuleId]?.memory
-				: undefined;
-		if (targetMemory && Object.hasOwn(targetMemory, operand.targetMemoryId)) {
-			const memoryItem = targetMemory[operand.targetMemoryId];
+		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, operand.targetModuleId);
+		if (targetMemory) {
 			return {
-				value: getElementMinValue(targetMemory, operand.targetMemoryId),
-				isInteger: !!memoryItem?.isInteger,
+				value: getElementMinValue(targetMemory),
+				isInteger: !!targetMemory.isInteger,
 			};
 		}
 		return undefined;
@@ -109,7 +168,7 @@ export function resolveMemoryExpressionOperand(
 	// count(*name) — known pointee element count
 	if (operand.referenceKind === 'pointee-element-count') {
 		const base = operand.targetMemoryId;
-		const memoryItem = memory[base];
+		const memoryItem = getPointerFacts(context, getMemoryDeclaration(context, base));
 		if (hasKnownPointeeElementCount(memoryItem)) {
 			return { value: memoryItem.pointeeElementCount, isInteger: true };
 		}
@@ -123,9 +182,10 @@ export function resolveMemoryExpressionOperand(
 	// sizeof(*name) — pointee element word size
 	if (operand.referenceKind === 'pointee-element-word-size') {
 		const base = operand.targetMemoryId;
-		if (Object.hasOwn(memory, base)) {
+		const memoryItem = getPointerFacts(context, getMemoryDeclaration(context, base));
+		if (memoryItem) {
 			return {
-				value: getPointeeElementWordSize(memory, base),
+				value: getPointeeElementWordSize(memoryItem),
 				isInteger: true,
 			};
 		}
@@ -139,8 +199,9 @@ export function resolveMemoryExpressionOperand(
 	// sizeof(name) — element word size
 	if (operand.referenceKind === 'element-word-size') {
 		const base = operand.targetMemoryId;
-		if (Object.hasOwn(memory, base)) {
-			return { value: getElementWordSize(memory, base), isInteger: true };
+		const memoryItem = getMemoryDeclaration(context, base);
+		if (memoryItem) {
+			return { value: getElementWordSize(memoryItem), isInteger: true };
 		}
 		return undefined;
 	}
@@ -148,8 +209,9 @@ export function resolveMemoryExpressionOperand(
 	// count(name) — element count
 	if (operand.referenceKind === 'element-count') {
 		const base = operand.targetMemoryId;
-		if (Object.hasOwn(memory, base)) {
-			return { value: getElementCount(memory, base), isInteger: true };
+		const memoryItem = getMemoryDeclaration(context, base);
+		if (memoryItem) {
+			return { value: getElementCount(memoryItem), isInteger: true };
 		}
 		return undefined;
 	}
@@ -157,10 +219,10 @@ export function resolveMemoryExpressionOperand(
 	// max(*name) — pointee element max value
 	if (operand.referenceKind === 'pointee-element-max') {
 		const base = operand.targetMemoryId;
-		if (Object.hasOwn(memory, base)) {
-			const memoryItem = memory[base];
+		const memoryItem = getPointerFacts(context, getMemoryDeclaration(context, base));
+		if (memoryItem) {
 			return {
-				value: getPointeeElementMaxValue(memory, base),
+				value: getPointeeElementMaxValue(memoryItem),
 				isInteger: getPointeeElementIsIntegerFromMetadata(memoryItem),
 			};
 		}
@@ -177,11 +239,11 @@ export function resolveMemoryExpressionOperand(
 	// max(name) — element max value
 	if (operand.referenceKind === 'element-max') {
 		const base = operand.targetMemoryId;
-		if (Object.hasOwn(memory, base)) {
-			const memoryItem = memory[base];
+		const memoryItem = getMemoryDeclaration(context, base);
+		if (memoryItem) {
 			return {
-				value: getElementMaxValue(memory, base),
-				isInteger: !!memoryItem?.isInteger,
+				value: getElementMaxValue(memoryItem),
+				isInteger: !!memoryItem.isInteger,
 			};
 		}
 		return undefined;
@@ -190,10 +252,10 @@ export function resolveMemoryExpressionOperand(
 	// min(*name) — pointee element min value
 	if (operand.referenceKind === 'pointee-element-min') {
 		const base = operand.targetMemoryId;
-		if (Object.hasOwn(memory, base)) {
-			const memoryItem = memory[base];
+		const memoryItem = getPointerFacts(context, getMemoryDeclaration(context, base));
+		if (memoryItem) {
 			return {
-				value: getPointeeElementMinValue(memory, base),
+				value: getPointeeElementMinValue(memoryItem),
 				isInteger: getPointeeElementIsIntegerFromMetadata(memoryItem),
 			};
 		}
@@ -210,11 +272,11 @@ export function resolveMemoryExpressionOperand(
 	// min(name) — element min value
 	if (operand.referenceKind === 'element-min') {
 		const base = operand.targetMemoryId;
-		if (Object.hasOwn(memory, base)) {
-			const memoryItem = memory[base];
+		const memoryItem = getMemoryDeclaration(context, base);
+		if (memoryItem) {
 			return {
-				value: getElementMinValue(memory, base),
-				isInteger: !!memoryItem?.isInteger,
+				value: getElementMinValue(memoryItem),
+				isInteger: !!memoryItem.isInteger,
 			};
 		}
 		return undefined;
@@ -224,22 +286,18 @@ export function resolveMemoryExpressionOperand(
 	// module:& — end-word base byte address of a module
 	if (operand.referenceKind === 'intermodular-module-reference') {
 		const targetModuleId = operand.targetModuleId;
-		const targetNamespace = namespace.namespaces[targetModuleId];
-		if (
-			targetNamespace?.kind === 'module' &&
-			typeof targetNamespace.byteAddress === 'number' &&
-			typeof targetNamespace.wordAlignedSize === 'number'
-		) {
+		const targetModule = getModule(context, targetModuleId);
+		if (targetModule) {
 			const value = operand.isEndAddress
-				? getEndByteAddress(targetNamespace.byteAddress, targetNamespace.wordAlignedSize)
-				: targetNamespace.byteAddress;
+				? getEndByteAddress(targetModule.byteAddress, targetModule.wordAlignedSize)
+				: targetModule.byteAddress;
 			return moduleAddressValue(
 				operand.isEndAddress ? 'module-end' : 'module-start',
 				value,
-				targetNamespace.wordAlignedSize,
+				targetModule.wordAlignedSize,
 				targetModuleId,
-				targetNamespace.memoryIndex,
-				targetNamespace.memoryRegionName
+				targetModule.memoryIndex,
+				targetModule.memoryRegionName
 			);
 		}
 		return undefined;
@@ -249,29 +307,11 @@ export function resolveMemoryExpressionOperand(
 	// &this:N — start byte address of the Nth memory item (0-indexed) within the current module
 	if (operand.referenceKind === 'intermodular-module-nth-reference') {
 		const targetModuleId = operand.targetModuleId;
-		const targetNamespace =
-			targetModuleId === 'this'
-				? {
-						kind: 'module' as const,
-						byteAddress: context.startingByteAddress,
-						wordAlignedSize: context.currentModuleWordAlignedSize,
-						memory,
-						isMemoryLayoutFinalized: true,
-					}
-				: namespace.namespaces[targetModuleId];
-		if (
-			targetNamespace?.kind !== 'module' ||
-			typeof targetNamespace.byteAddress !== 'number' ||
-			(targetModuleId !== 'this' && targetNamespace.isMemoryLayoutFinalized !== true) ||
-			!targetNamespace.memory
-		) {
-			return undefined;
-		}
-		const items = Object.values(targetNamespace.memory);
-		const item = items[operand.targetMemoryIndex];
+		const targetModule = getModule(context, targetModuleId);
+		const item = targetModule?.declarations[operand.targetMemoryIndex];
 		if (item) {
 			const memoryRegionFields = getMemoryRegionFields(item.memoryIndex, item.memoryRegionName);
-			const resolvedModuleId = targetModuleId === 'this' ? context.namespace.moduleName : targetModuleId;
+			const resolvedModuleId = targetModuleId === 'this' ? getCurrentModuleId(context) : targetModuleId;
 			return {
 				...memoryStartAddressValue(item, resolvedModuleId),
 				address: {
@@ -294,12 +334,7 @@ export function resolveMemoryExpressionOperand(
 	// module:memory& — end-word base byte address of a remote memory item
 	if (operand.referenceKind === 'intermodular-reference') {
 		const targetModuleId = operand.targetModuleId;
-		const targetNamespace = namespace.namespaces[targetModuleId];
-		// Only resolve once the target module has been laid out (byteAddress is set on the namespace entry)
-		if (targetNamespace?.kind !== 'module' || typeof targetNamespace.byteAddress !== 'number') {
-			return undefined;
-		}
-		const targetMemory = targetNamespace.memory?.[operand.targetMemoryId];
+		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, targetModuleId);
 		if (targetMemory) {
 			return operand.isEndAddress
 				? memoryEndAddressValue(targetMemory, targetModuleId)
@@ -313,33 +348,39 @@ export function resolveMemoryExpressionOperand(
 	if (operand.referenceKind === 'memory-reference') {
 		const base = operand.targetMemoryId;
 		if (base === 'this') {
+			const currentModule = getCurrentModule(context);
+			if (!currentModule) {
+				return undefined;
+			}
+
 			if (!operand.isEndAddress) {
 				return moduleAddressValue(
 					'module-start',
-					context.startingByteAddress,
-					context.currentModuleWordAlignedSize,
-					context.namespace.moduleName,
-					context.currentMemoryIndex,
-					context.currentMemoryRegionName
+					currentModule.byteAddress,
+					currentModule.wordAlignedSize,
+					currentModule.id,
+					currentModule.memoryIndex,
+					currentModule.memoryRegionName
 				);
 			}
-			if (typeof context.currentModuleWordAlignedSize === 'number') {
-				const byteAddress = getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
-				return {
-					...moduleAddressValue(
-						'module-end',
-						byteAddress,
-						context.currentModuleWordAlignedSize,
-						context.namespace.moduleName,
-						context.currentMemoryIndex,
-						context.currentMemoryRegionName
-					),
-				};
-			}
-			return undefined;
+
+			const byteAddress = getEndByteAddress(currentModule.byteAddress, currentModule.wordAlignedSize);
+			return {
+				...moduleAddressValue(
+					'module-end',
+					byteAddress,
+					currentModule.wordAlignedSize,
+					currentModule.id,
+					currentModule.memoryIndex,
+					currentModule.memoryRegionName
+				),
+			};
 		}
-		if (Object.hasOwn(memory, base)) {
-			return operand.isEndAddress ? memoryEndAddressValue(memory[base]) : memoryStartAddressValue(memory[base]);
+		const memoryItem = getMemoryDeclaration(context, base);
+		if (memoryItem) {
+			return operand.isEndAddress
+				? memoryEndAddressValue(memoryItem, context.moduleName)
+				: memoryStartAddressValue(memoryItem, context.moduleName);
 		}
 		return undefined;
 	}

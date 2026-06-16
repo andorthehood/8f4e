@@ -33,7 +33,14 @@ import type {
 import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMetadata } from './compiled';
 import type { FunctionImportMetadata, FunctionValueType } from './functionTypes';
 import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
-import type { ArrayDeclarationInstruction, DataStructure, MemoryLayoutDeclaration, MemoryMap } from './memory';
+import type {
+	ArrayDeclarationInstruction,
+	DataStructure,
+	MemoryDefaults,
+	MemoryLayoutPlan,
+	MemoryPointerMetadataMap,
+	PlannedMemoryModule,
+} from './memory';
 
 /** Proven byte range associated with an address expression or memory boundary. */
 export interface MemoryAddressRange {
@@ -117,7 +124,6 @@ export type LocalMap = Record<string, LocalBinding>;
 
 /** Mutable namespace state available while compiling modules, constants, and functions. */
 export interface Namespace {
-	memory: MemoryMap;
 	moduleName: string | undefined;
 	namespaces: Namespaces;
 	functions?: FunctionRegistry;
@@ -127,12 +133,13 @@ export interface Namespace {
 /** Compiled namespace summary recorded for later imports and cross-module references. */
 export interface CollectedNamespace {
 	kind: CompiledModuleBlockType;
-	memory?: MemoryMap;
 	memoryIndex: number;
 	memoryRegionName?: string;
 	byteAddress?: number;
 	wordAlignedSize?: number;
 	isMemoryLayoutFinalized?: boolean;
+	memoryDefaults?: MemoryDefaults;
+	pointerMetadata?: MemoryPointerMetadataMap;
 }
 
 export type Namespaces = Record<string, CollectedNamespace>;
@@ -163,8 +170,11 @@ export interface CompilationContext {
 	currentModuleWordAlignedSize: number;
 	currentMemoryIndex: number;
 	currentMemoryRegionName?: string;
-	memoryLayoutDeclarations?: readonly MemoryLayoutDeclaration[];
-	currentMemoryLayoutDeclarationIndex?: number;
+	memoryPlan: MemoryLayoutPlan;
+	currentPlannedModule?: PlannedMemoryModule;
+	currentPlannedMemoryDeclarationIndex: number;
+	memoryDefaults: MemoryDefaults;
+	pointerMetadata: MemoryPointerMetadataMap;
 	memoryRegions: string[];
 	byteCode: Array<WASMInstructionCode | WasmTypeValue | number>;
 	mode: CompilationMode;

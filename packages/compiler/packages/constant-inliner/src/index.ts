@@ -17,6 +17,41 @@ type InlineableAST = ValidatedModuleAST | ValidatedConstantsAST | ValidatedFunct
 export type ConstantEnvironment = Readonly<Record<string, Const>>;
 export type ConstantNamespaceMap = Readonly<Record<string, ConstantEnvironment>>;
 
+export interface InlineConstantsProjectAST<
+	TPrototype extends ValidatedPrototypeAST = ValidatedPrototypeAST,
+	TModule extends ValidatedModuleAST = ValidatedModuleAST,
+	TConstants extends ValidatedConstantsAST = ValidatedConstantsAST,
+	TFunction extends ValidatedFunctionAST = ValidatedFunctionAST,
+> {
+	prototypes: readonly TPrototype[];
+	modules: readonly TModule[];
+	constants: readonly TConstants[];
+	functions: readonly TFunction[];
+}
+
+export interface InlineConstantsInput<
+	TPrototype extends ValidatedPrototypeAST = ValidatedPrototypeAST,
+	TModule extends ValidatedModuleAST = ValidatedModuleAST,
+	TConstants extends ValidatedConstantsAST = ValidatedConstantsAST,
+	TFunction extends ValidatedFunctionAST = ValidatedFunctionAST,
+> {
+	ast: InlineConstantsProjectAST<TPrototype, TModule, TConstants, TFunction>;
+}
+
+export interface InlineConstantsResult<
+	TPrototype extends ValidatedPrototypeAST = ValidatedPrototypeAST,
+	TModule extends ValidatedModuleAST = ValidatedModuleAST,
+	TConstants extends ValidatedConstantsAST = ValidatedConstantsAST,
+	TFunction extends ValidatedFunctionAST = ValidatedFunctionAST,
+> {
+	ast: {
+		prototypes: TPrototype[];
+		modules: TModule[];
+		constants: TConstants[];
+		functions: TFunction[];
+	};
+}
+
 export const ConstantInliningErrorCode = {
 	DUPLICATE_NAMESPACE: 'DUPLICATE_NAMESPACE',
 	UNRESOLVED_CONSTANT_VALUE: 'UNRESOLVED_CONSTANT_VALUE',
@@ -206,7 +241,11 @@ function findUnresolvedUseLine(
 	return undefined;
 }
 
-export function collectConstantNamespaces(
+function flattenProjectAST(input: InlineConstantsProjectAST): InlineableAST[] {
+	return [...input.prototypes, ...input.modules, ...input.constants, ...input.functions];
+}
+
+function collectConstantNamespacesFromAsts(
 	asts: readonly InlineableAST[],
 	options: InlineConstantsOptions = {}
 ): ConstantNamespaceMap {
@@ -250,6 +289,13 @@ export function collectConstantNamespaces(
 	return namespaces;
 }
 
+export function collectConstantNamespaces(
+	input: InlineConstantsInput,
+	options: InlineConstantsOptions = {}
+): ConstantNamespaceMap {
+	return collectConstantNamespacesFromAsts(flattenProjectAST(input.ast), options);
+}
+
 function inlineConstantsInASTWithNamespaces<TAST extends InlineableAST>(
 	ast: TAST,
 	namespaces: ConstantNamespaceMap
@@ -282,19 +328,31 @@ function inlineConstantsInASTWithNamespaces<TAST extends InlineableAST>(
 	return ast;
 }
 
-export function inlineConstantsInASTs<TAST extends InlineableAST>(
-	asts: readonly TAST[],
+export function inlineConstantsInASTs<
+	TPrototype extends ValidatedPrototypeAST,
+	TModule extends ValidatedModuleAST,
+	TConstants extends ValidatedConstantsAST,
+	TFunction extends ValidatedFunctionAST,
+>(
+	input: InlineConstantsInput<TPrototype, TModule, TConstants, TFunction>,
 	options: InlineConstantsOptions = {}
-): TAST[] {
-	const namespaces = collectConstantNamespaces(asts, options);
-	return asts.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces));
+): InlineConstantsResult<TPrototype, TModule, TConstants, TFunction> {
+	const namespaces = collectConstantNamespaces(input, options);
+	return {
+		ast: {
+			prototypes: input.ast.prototypes.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces)),
+			modules: input.ast.modules.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces)),
+			constants: input.ast.constants.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces)),
+			functions: input.ast.functions.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces)),
+		},
+	};
 }
 
 export function inlineConstantsInAST<TAST extends InlineableAST>(
 	ast: TAST,
 	options: InlineConstantsOptions = {}
 ): TAST {
-	const namespaces = collectConstantNamespaces([ast], options);
+	const namespaces = collectConstantNamespacesFromAsts([ast], options);
 	return inlineConstantsInASTWithNamespaces(ast, namespaces);
 }
 

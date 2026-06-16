@@ -168,13 +168,13 @@
           "byteAddress": 4,
           "id": "defaultFreq",
           "lineNumber": 4,
-          "default": 440,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 440,
+          "hasExplicitDefault": true,
+          "isInherited": false
         },
         "frequency": {
           "numberOfElements": 1,
@@ -185,14 +185,14 @@
           "byteAddress": 8,
           "id": "frequency",
           "lineNumber": 5,
-          "default": 4,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 4,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "phase": {
@@ -204,13 +204,13 @@
           "byteAddress": 12,
           "id": "phase",
           "lineNumber": 6,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
         },
         "out": {
           "numberOfElements": 1,
@@ -221,13 +221,13 @@
           "byteAddress": 16,
           "id": "out",
           "lineNumber": 7,
-          "default": 0,
-          "hasExplicitDefault": false,
-          "isInherited": false,
           "type": "float",
           "pointerDepth": 0,
           "isInteger": false,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 0,
+          "hasExplicitDefault": false,
+          "isInherited": false
         }
       },
       "wordAlignedSize": 4,
@@ -288,12 +288,20 @@
                 "scope": "local"
               },
               {
-                "type": "identifier",
-                "value": "&defaultFreq",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "defaultFreq",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 4,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 4,
+                    "safeByteLength": 4,
+                    "moduleId": "phaseAccumulator",
+                    "memoryId": "defaultFreq"
+                  }
+                }
               }
             ],
             "hasExplicitMemoryDefault": true
@@ -341,12 +349,20 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "&phase",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "phase",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 12,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 12,
+                    "safeByteLength": 4,
+                    "moduleId": "phaseAccumulator",
+                    "memoryId": "phase"
+                  }
+                }
               }
             ]
           },
@@ -471,12 +487,20 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "&phase",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "phase",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 12,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 12,
+                    "safeByteLength": 4,
+                    "moduleId": "phaseAccumulator",
+                    "memoryId": "phase"
+                  }
+                }
               }
             ]
           },
@@ -510,12 +534,20 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "&out",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "out",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 16,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 16,
+                    "safeByteLength": 4,
+                    "moduleId": "phaseAccumulator",
+                    "memoryId": "out"
+                  }
+                }
               }
             ]
           },
@@ -596,12 +628,20 @@
                 "scope": "local"
               },
               {
-                "type": "identifier",
-                "value": "&defaultFreq",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "defaultFreq",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 4,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 4,
+                    "safeByteLength": 4,
+                    "moduleId": "phaseAccumulator",
+                    "memoryId": "defaultFreq"
+                  }
+                }
               }
             ],
             "hasExplicitMemoryDefault": true
@@ -744,14 +784,14 @@
           "byteAddress": 20,
           "id": "in",
           "lineNumber": 5,
-          "default": 16,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "float*",
           "pointerDepth": 1,
           "isInteger": true,
           "pointeeBaseType": "float",
           "isUnsigned": false,
+          "default": 16,
+          "hasExplicitDefault": true,
+          "isInherited": false,
           "pointeeMemoryIndex": 0
         },
         "buffer": {
@@ -763,13 +803,13 @@
           "id": "buffer",
           "lineNumber": 8,
           "byteAddress": 24,
-          "default": {},
-          "hasExplicitDefault": false,
-          "isInherited": false,
           "isInteger": false,
           "pointerDepth": 0,
           "type": "float",
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": {},
+          "hasExplicitDefault": false,
+          "isInherited": false
         },
         "pointer": {
           "numberOfElements": 1,
@@ -780,13 +820,13 @@
           "byteAddress": 536,
           "id": "pointer",
           "lineNumber": 9,
-          "default": 24,
-          "hasExplicitDefault": true,
-          "isInherited": false,
           "type": "int",
           "pointerDepth": 0,
           "isInteger": true,
-          "isUnsigned": false
+          "isUnsigned": false,
+          "default": 24,
+          "hasExplicitDefault": true,
+          "isInherited": false
         }
       },
       "wordAlignedSize": 130,
@@ -829,13 +869,20 @@
                 "scope": "local"
               },
               {
-                "type": "identifier",
-                "value": "&phaseAccumulator:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "phaseAccumulator",
-                "targetMemoryId": "out",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 16,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 16,
+                    "safeByteLength": 4,
+                    "moduleId": "phaseAccumulator",
+                    "memoryId": "out"
+                  }
+                }
               }
             ],
             "referencedNamespaceIds": [
@@ -872,12 +919,20 @@
                 "scope": "local"
               },
               {
-                "type": "identifier",
-                "value": "&buffer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 24,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 24,
+                    "safeByteLength": 512,
+                    "moduleId": "audioout",
+                    "memoryId": "buffer"
+                  }
+                }
               }
             ],
             "hasExplicitMemoryDefault": true
@@ -918,12 +973,20 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "&pointer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "pointer",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 536,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 536,
+                    "safeByteLength": 4,
+                    "moduleId": "audioout",
+                    "memoryId": "pointer"
+                  }
+                }
               }
             ]
           },
@@ -944,11 +1007,9 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "sizeof(buffer)",
-                "referenceKind": "element-word-size",
-                "scope": "local",
-                "targetMemoryId": "buffer"
+                "type": "literal",
+                "value": 4,
+                "isInteger": true
               }
             ]
           },
@@ -979,12 +1040,20 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "buffer&",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": true
+                "type": "literal",
+                "value": 532,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-end",
+                    "memoryIndex": 0,
+                    "byteAddress": 532,
+                    "safeByteLength": 4,
+                    "moduleId": "audioout",
+                    "memoryId": "buffer"
+                  }
+                }
               }
             ]
           },
@@ -1008,12 +1077,20 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "&pointer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "pointer",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 536,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 536,
+                    "safeByteLength": 4,
+                    "moduleId": "audioout",
+                    "memoryId": "pointer"
+                  }
+                }
               }
             ]
           },
@@ -1022,12 +1099,20 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "identifier",
-                "value": "&buffer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 24,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 24,
+                    "safeByteLength": 512,
+                    "moduleId": "audioout",
+                    "memoryId": "buffer"
+                  }
+                }
               }
             ]
           },
@@ -1075,13 +1160,20 @@
                 "scope": "local"
               },
               {
-                "type": "identifier",
-                "value": "&phaseAccumulator:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "phaseAccumulator",
-                "targetMemoryId": "out",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 16,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 16,
+                    "safeByteLength": 4,
+                    "moduleId": "phaseAccumulator",
+                    "memoryId": "out"
+                  }
+                }
               }
             ],
             "referencedNamespaceIds": [
@@ -1118,12 +1210,20 @@
                 "scope": "local"
               },
               {
-                "type": "identifier",
-                "value": "&buffer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": false
+                "type": "literal",
+                "value": 24,
+                "isInteger": true,
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "source": "memory-start",
+                    "memoryIndex": 0,
+                    "byteAddress": 24,
+                    "safeByteLength": 512,
+                    "moduleId": "audioout",
+                    "memoryId": "buffer"
+                  }
+                }
               }
             ],
             "hasExplicitMemoryDefault": true

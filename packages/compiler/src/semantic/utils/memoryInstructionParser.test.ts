@@ -1,21 +1,30 @@
 import type { Argument, CompilationContext } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { describe, expect, it } from 'vitest';
+import createInstructionCompilerTestContext, { seedTestMemoryMap } from '../../utils/testUtils';
 import parseMemoryInstructionArguments from './memoryInstructionParser';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('parseMemoryInstructionArguments', () => {
-	const mockContext = {
-		namespace: {
-			memory: {
-				myVar: {
-					byteAddress: 100,
-					wordAlignedSize: 5,
-				} as unknown as CompilationContext['namespace']['memory'][string],
-			},
+	const mockContext = seedTestMemoryMap(createInstructionCompilerTestContext(), {
+		myVar: {
+			id: 'myVar',
+			byteAddress: 100,
+			wordAlignedAddress: 25,
+			wordAlignedSize: 5,
+			numberOfElements: 5,
+			elementWordSize: 4,
+			type: 'int',
+			default: 0,
+			isInherited: false,
+			isInteger: true,
+			pointerDepth: 0,
+			isUnsigned: false,
+			lineNumber: 1,
+			memoryIndex: 0,
 		},
-	} as unknown as CompilationContext;
+	}) as CompilationContext;
 
 	it('parses literal argument as anonymous variable', () => {
 		const args: Argument[] = [{ type: ArgumentType.LITERAL, value: 123, isInteger: true }];
@@ -381,25 +390,6 @@ describe('parseMemoryInstructionArguments', () => {
 				context
 			).defaultValue
 		).toBe(28);
-	});
-
-	it('falls back to zero for current-module end-address default before module size is known', () => {
-		const context = {
-			...mockContext,
-			startingByteAddress: 20,
-			currentModuleWordAlignedSize: undefined,
-		} as unknown as CompilationContext;
-
-		const result = parseMemoryInstructionArguments(
-			{
-				lineNumber: 163,
-				instruction: 'int*',
-				arguments: [classifyIdentifier('ptr'), classifyIdentifier('this&')],
-			},
-			context
-		);
-
-		expect(result.defaultValue).toBe(0);
 	});
 
 	it('resolves memory-reference end-address default (myVar&) to last byte address', () => {

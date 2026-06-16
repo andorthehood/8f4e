@@ -6,6 +6,7 @@ import type {
 	MapBlockStackFrame,
 } from '@8f4e/compiler-spec';
 import { BlockType } from '@8f4e/compiler-spec';
+import { createEmptyMemoryPlan } from './memoryState';
 
 /** Partial context shape used by tests and compiler stages when seeding a compilation context. */
 type CompilationContextOverrides<TContext extends CompilationContext = CompilationContext> = Partial<
@@ -64,7 +65,6 @@ export function createCompilationContext<TContext extends CompilationContext = C
 	const base: CompilationContext = {
 		namespace: {
 			namespaces: {},
-			memory: {},
 			moduleName: undefined,
 			prototypeShapeIds: [],
 		},
@@ -86,6 +86,10 @@ export function createCompilationContext<TContext extends CompilationContext = C
 		currentModuleNextWordOffset: 0,
 		currentModuleWordAlignedSize: 0,
 		currentMemoryIndex: 0,
+		memoryPlan: createEmptyMemoryPlan(),
+		currentPlannedMemoryDeclarationIndex: 0,
+		memoryDefaults: {},
+		pointerMetadata: {},
 		memoryRegions: [],
 		mode: 'module',
 		expandPrototypeShapes: false,

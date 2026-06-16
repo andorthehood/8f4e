@@ -4,6 +4,7 @@ import type {
 	CompileOptions,
 	FunctionRegistry,
 	FunctionTypeRegistry,
+	MemoryLayoutPlan,
 	ModuleCompilationContext,
 	Namespaces,
 	ValidatedModuleAST,
@@ -27,6 +28,7 @@ import { getError } from './compilerError';
 import { applySemanticLine } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
+import { createMemoryMapFromPlan } from './semantic/memoryState';
 import normalizeValueArguments from './semantic/normalizeValueArguments';
 import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
@@ -35,7 +37,7 @@ import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
  *
  * @param ast - Validated AST being processed.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
- * @param startingByteAddress - Absolute byte address where layout should begin.
+ * @param memoryPlan - Completed memory layout plan for the project.
  * @param index - WASM index or source index assigned to the compiled item.
  * @param functions - Function registry available to compilation.
  * @param options - Compiler options for this compilation pass.
@@ -46,7 +48,7 @@ import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 export function compileModule(
 	ast: ValidatedModuleAST,
 	namespaces: Namespaces,
-	startingByteAddress = 0,
+	memoryPlan: MemoryLayoutPlan,
 	index: number,
 	functions?: FunctionRegistry,
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
@@ -54,13 +56,13 @@ export function compileModule(
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule {
 	const namespace = namespaces[ast.id];
-	const memoryIndex = namespace?.memoryIndex ?? 0;
-	const memoryRegionName = namespace?.memoryRegionName;
-	const moduleWordAlignedSize = namespace?.wordAlignedSize ?? 0;
+	const plannedModule = memoryPlan.modules[ast.id];
+	const memoryIndex = plannedModule.memoryIndex;
+	const memoryRegionName = plannedModule.memoryRegionName;
+	const moduleWordAlignedSize = plannedModule.wordAlignedSize;
 	const context = createCompilationContext<ModuleCompilationContext>({
 		namespace: {
 			namespaces,
-			memory: namespace?.memory ?? {},
 			moduleName: undefined,
 			functions,
 			prototypeShapeIds: collectPrototypeShapeIds(ast),
@@ -69,11 +71,16 @@ export function compileModule(
 		byteCode: [],
 		stack: [],
 		blockStack: [],
-		startingByteAddress,
+		startingByteAddress: plannedModule.byteAddress,
 		currentModuleNextWordOffset: moduleWordAlignedSize,
 		currentModuleWordAlignedSize: moduleWordAlignedSize,
 		currentMemoryIndex: memoryIndex,
 		...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
+		memoryPlan,
+		currentPlannedModule: plannedModule,
+		currentPlannedMemoryDeclarationIndex: 0,
+		memoryDefaults: namespace.memoryDefaults ?? {},
+		pointerMetadata: namespace.pointerMetadata ?? {},
 		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
 		functionTypeRegistry: typeRegistry,
@@ -121,9 +128,9 @@ export function compileModule(
 		),
 		initFunctionBody: [],
 		...getMemoryRegionFields(memoryIndex, memoryRegionName),
-		byteAddress: startingByteAddress,
-		wordAlignedAddress: startingByteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
-		memoryMap: context.namespace.memory,
+		byteAddress: plannedModule.byteAddress,
+		wordAlignedAddress: plannedModule.byteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
+		memoryMap: createMemoryMapFromPlan(plannedModule, context),
 		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis } : {}),

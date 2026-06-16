@@ -10,6 +10,7 @@ import type {
 } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { getMemoryRegionFields } from '../../semantic/memoryRegions';
+import { getMemoryItem } from '../../semantic/memoryState';
 import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../../utils/memoryData';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../../utils/pushValueKind';
 import { createStackValue, produce } from './stack';
@@ -21,11 +22,7 @@ function getAddressMemoryItem(context: CompilationContext, address: AddressMetad
 		return undefined;
 	}
 
-	if (range.moduleId) {
-		return context.namespace.namespaces[range.moduleId]?.memory?.[memoryId];
-	}
-
-	return context.namespace.memory[memoryId];
+	return getMemoryItem(context, memoryId, range.moduleId);
 }
 
 function getAddressPointeeMetadata(context: CompilationContext, address: AddressMetadata) {

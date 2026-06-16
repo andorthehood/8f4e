@@ -25,6 +25,23 @@ function resolvedMemoryPointerPushLine(id: string, memoryItem: MemoryMap[string]
 	} as CompilerASTLine;
 }
 
+function createMemoryItem(overrides: Partial<MemoryMap[string]> & Pick<MemoryMap[string], 'id' | 'byteAddress'>) {
+	return {
+		id: overrides.id,
+		numberOfElements: 1,
+		elementWordSize: 4,
+		wordAlignedAddress: 0,
+		wordAlignedSize: 1,
+		byteAddress: overrides.byteAddress,
+		default: 0,
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+		type: 'int',
+		...overrides,
+	} as MemoryMap[string];
+}
+
 describe('push instruction compiler', () => {
 	it('pushes a literal value', () => {
 		const context = createInstructionCompilerTestContext();
@@ -243,21 +260,17 @@ describe('push instruction compiler', () => {
 
 	describe('float64 memory push', () => {
 		it('pushes a float64 memory identifier using f64.load', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						myF64: {
-							byteAddress: 0,
-							elementWordSize: 8,
-							isInteger: false,
-							isFloat64: true,
-						} as unknown as MemoryMap[string],
-					},
-				},
+			const memoryItem = createMemoryItem({
+				id: 'myF64',
+				byteAddress: 0,
+				elementWordSize: 8,
+				isInteger: false,
+				isFloat64: true,
+				type: 'float64',
 			});
+			const context = createInstructionCompilerTestContext();
 
-			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), context);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', memoryItem), context);
 
 			expect({
 				stack: context.stack,
@@ -266,167 +279,129 @@ describe('push instruction compiler', () => {
 		});
 
 		it('tracks isFloat64 on the stack item', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						myF64: {
-							byteAddress: 8,
-							elementWordSize: 8,
-							isInteger: false,
-							isFloat64: true,
-						} as unknown as MemoryMap[string],
-					},
-				},
+			const memoryItem = createMemoryItem({
+				id: 'myF64',
+				byteAddress: 8,
+				elementWordSize: 8,
+				isInteger: false,
+				isFloat64: true,
+				type: 'float64',
 			});
+			const context = createInstructionCompilerTestContext();
 
-			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), context);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', memoryItem), context);
 
 			expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 		});
 
 		it('float32 memory push does not set isFloat64', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						myF32: {
-							byteAddress: 0,
-							elementWordSize: 4,
-							isInteger: false,
-							isFloat64: false,
-						} as unknown as MemoryMap[string],
-					},
-				},
+			const memoryItem = createMemoryItem({
+				id: 'myF32',
+				byteAddress: 0,
+				elementWordSize: 4,
+				isInteger: false,
+				isFloat64: false,
+				type: 'float',
 			});
+			const context = createInstructionCompilerTestContext();
 
-			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF32', context.namespace.memory.myF32), context);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF32', memoryItem), context);
 
 			expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float' });
 		});
 
 		it('emits f64.load (opcode 43) for float64 memory', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						myF64: {
-							byteAddress: 0,
-							elementWordSize: 8,
-							isInteger: false,
-							isFloat64: true,
-						} as unknown as MemoryMap[string],
-					},
-				},
+			const memoryItem = createMemoryItem({
+				id: 'myF64',
+				byteAddress: 0,
+				elementWordSize: 8,
+				isInteger: false,
+				isFloat64: true,
+				type: 'float64',
 			});
+			const context = createInstructionCompilerTestContext();
 
-			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), context);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', memoryItem), context);
 
 			// byteCode: i32const(0) + f64load() = [65, 0, 43, 3, 0]
 			expect(context.byteCode).toContain(43); // F64_LOAD opcode
 		});
 
 		it('emits f32.load (opcode 42) for float32 memory, not f64.load', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						myF32: {
-							byteAddress: 0,
-							elementWordSize: 4,
-							isInteger: false,
-						} as unknown as MemoryMap[string],
-					},
-				},
+			const memoryItem = createMemoryItem({
+				id: 'myF32',
+				byteAddress: 0,
+				elementWordSize: 4,
+				isInteger: false,
+				type: 'float',
 			});
+			const context = createInstructionCompilerTestContext();
 
-			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF32', context.namespace.memory.myF32), context);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF32', memoryItem), context);
 
 			expect(context.byteCode).toContain(42); // F32_LOAD opcode
 			expect(context.byteCode).not.toContain(43); // no F64_LOAD
 		});
 
 		it('dereferencing float64* emits f64.load and marks stack item as float64', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						floatPointer: {
-							byteAddress: 0,
-							type: 'float64*',
-							pointeeBaseType: 'float64',
-							pointerDepth: 1,
-						} as unknown as MemoryMap[string],
-					},
-				},
+			const memoryItem = createMemoryItem({
+				id: 'floatPointer',
+				byteAddress: 0,
+				type: 'float64*',
+				pointeeBaseType: 'float64',
+				pointerDepth: 1,
 			});
+			const context = createInstructionCompilerTestContext();
 
-			analyzeAndCompileInstruction(
-				push,
-				resolvedMemoryPointerPushLine('floatPointer', context.namespace.memory.floatPointer),
-				context
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPointerPushLine('floatPointer', memoryItem), context);
 
 			expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 			expect(context.byteCode).toContain(43); // F64_LOAD opcode
 		});
 
 		it('dereferencing float64** once resolves to a pointer value', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						floatPointerPointer: {
-							byteAddress: 0,
-							type: 'float64**',
-							pointeeBaseType: 'float64',
-							pointerDepth: 2,
-						} as unknown as MemoryMap[string],
-					},
-				},
+			const memoryItem = createMemoryItem({
+				id: 'floatPointerPointer',
+				byteAddress: 0,
+				type: 'float64**',
+				pointeeBaseType: 'float64',
+				pointerDepth: 2,
 			});
+			const context = createInstructionCompilerTestContext();
 
-			analyzeAndCompileInstruction(
-				push,
-				resolvedMemoryPointerPushLine('floatPointerPointer', context.namespace.memory.floatPointerPointer),
-				context
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPointerPushLine('floatPointerPointer', memoryItem), context);
 
 			expect(context.stack[0]).toMatchObject({ kind: 'address', valueType: 'int' });
 			expect(context.byteCode).not.toContain(43); // no F64_LOAD opcode for one-level dereference
 		});
 
 		it('handles mixed int32/float32/float64 memory layout', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						myInt: {
-							byteAddress: 0,
-							elementWordSize: 4,
-							isInteger: true,
-						} as unknown as MemoryMap[string],
-						myFloat: {
-							byteAddress: 4,
-							elementWordSize: 4,
-							isInteger: false,
-						} as unknown as MemoryMap[string],
-						myF64: {
-							byteAddress: 8,
-							elementWordSize: 8,
-							isInteger: false,
-							isFloat64: true,
-						} as unknown as MemoryMap[string],
-					},
-				},
-			});
+			const memory = {
+				myInt: createMemoryItem({ id: 'myInt', byteAddress: 0, elementWordSize: 4, isInteger: true }),
+				myFloat: createMemoryItem({
+					id: 'myFloat',
+					byteAddress: 4,
+					elementWordSize: 4,
+					isInteger: false,
+					type: 'float',
+				}),
+				myF64: createMemoryItem({
+					id: 'myF64',
+					byteAddress: 8,
+					elementWordSize: 8,
+					isInteger: false,
+					isFloat64: true,
+					type: 'float64',
+				}),
+			};
+			const context = createInstructionCompilerTestContext();
 
 			const contextInt = {
 				...context,
 				stack: [] as typeof context.stack,
 				byteCode: [] as typeof context.byteCode,
 			};
-			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myInt', context.namespace.memory.myInt), contextInt);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myInt', memory.myInt), contextInt);
 			expect(contextInt.stack[0]).toMatchObject({ kind: 'value', valueType: 'int' });
 			expect(contextInt.byteCode).not.toContain(42);
 			expect(contextInt.byteCode).not.toContain(43);
@@ -436,11 +411,7 @@ describe('push instruction compiler', () => {
 				stack: [] as typeof context.stack,
 				byteCode: [] as typeof context.byteCode,
 			};
-			analyzeAndCompileInstruction(
-				push,
-				resolvedMemoryPushLine('myFloat', context.namespace.memory.myFloat),
-				contextFloat
-			);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myFloat', memory.myFloat), contextFloat);
 			expect(contextFloat.stack[0]).toMatchObject({ kind: 'value', valueType: 'float' });
 			expect(contextFloat.byteCode).toContain(42); // F32_LOAD
 
@@ -449,30 +420,26 @@ describe('push instruction compiler', () => {
 				stack: [] as typeof context.stack,
 				byteCode: [] as typeof context.byteCode,
 			};
-			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', context.namespace.memory.myF64), contextF64);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('myF64', memory.myF64), contextF64);
 			expect(contextF64.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 			expect(contextF64.byteCode).toContain(43); // F64_LOAD
 		});
 
 		it('tracks pointer metadata when pushing a pointer-typed memory identifier', () => {
-			const context = createInstructionCompilerTestContext({
-				namespace: {
-					...createInstructionCompilerTestContext().namespace,
-					memory: {
-						ptr: {
-							byteAddress: 0,
-							elementWordSize: 4,
-							isInteger: true,
-							pointeeBaseType: 'int',
-							pointerDepth: 1,
-							pointeeMemoryIndex: 2,
-							pointeeMemoryRegionName: 'slow',
-						} as unknown as MemoryMap[string],
-					},
-				},
+			const memoryItem = createMemoryItem({
+				id: 'ptr',
+				byteAddress: 0,
+				elementWordSize: 4,
+				isInteger: true,
+				pointeeBaseType: 'int',
+				pointerDepth: 1,
+				pointeeMemoryIndex: 2,
+				pointeeMemoryRegionName: 'slow',
+				type: 'int*',
 			});
+			const context = createInstructionCompilerTestContext();
 
-			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('ptr', context.namespace.memory.ptr), context);
+			analyzeAndCompileInstruction(push, resolvedMemoryPushLine('ptr', memoryItem), context);
 
 			expect(context.stack[0]).toMatchObject({
 				kind: 'address',

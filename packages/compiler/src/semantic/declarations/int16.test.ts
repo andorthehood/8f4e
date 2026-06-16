@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext from '../../utils/testUtils';
 import int16 from './int16';
-import { applyPlannedMemoryDeclaration } from './testUtils';
+import { applyPlannedMemoryDeclaration, getTestMemoryMap } from './testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -22,7 +22,7 @@ describe('int16 instruction compiler', () => {
 			context
 		);
 
-		const entry = context.namespace.memory['ptr'];
+		const entry = getTestMemoryMap(context)['ptr'];
 		expect(entry.elementWordSize).toBe(4);
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.isInteger).toBe(true);
@@ -44,7 +44,7 @@ describe('int16 instruction compiler', () => {
 			context
 		);
 
-		const entry = context.namespace.memory['pptr'];
+		const entry = getTestMemoryMap(context)['pptr'];
 		expect(entry.elementWordSize).toBe(4);
 		expect(entry.wordAlignedSize).toBe(1);
 		expect(entry.isInteger).toBe(true);
@@ -67,7 +67,7 @@ describe('int16 instruction compiler', () => {
 		);
 
 		// Pointer slot always occupies 1 word (4 bytes)
-		expect(context.namespace.memory['p'].wordAlignedSize).toBe(1);
-		expect(context.namespace.memory['p'].elementWordSize).toBe(4);
+		expect(getTestMemoryMap(context)['p'].wordAlignedSize).toBe(1);
+		expect(getTestMemoryMap(context)['p'].elementWordSize).toBe(4);
 	});
 });
