@@ -8,6 +8,7 @@ import {
 	type FunctionMetadata,
 	type FunctionMetadataLookup,
 	type FunctionRegistry,
+	getError,
 	type Namespaces,
 	type SemanticInstructionLine,
 	type ValidatedFunctionAST,
@@ -16,7 +17,6 @@ import {
 } from '@8f4e/compiler-spec';
 import type { ResolveMemoryDefaultsResult } from '@8f4e/memory-default-resolver';
 import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
-import { getError } from '../compilerError';
 import applySemanticInstruction from './instructions';
 import { getMemoryRegionFields, validateMemoryRegionOptions } from './memoryRegions';
 import normalizeValueArguments from './normalizeValueArguments';

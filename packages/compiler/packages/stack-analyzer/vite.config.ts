@@ -1,0 +1,26 @@
+import { createLibConfig } from '@8f4e/config/vite';
+import { defineConfig } from 'vite';
+
+const baseConfig = createLibConfig({
+	entry: './src/index.ts',
+	outDir: 'dist',
+	formats: ['es'],
+	fileName: () => 'index.js',
+	external: ['@8f4e/compiler-spec', '@8f4e/memory-reference-inliner'],
+});
+
+export default defineConfig({
+	...baseConfig,
+	build: {
+		...baseConfig.build,
+		lib: {
+			entry: {
+				index: './src/index.ts',
+				testing: './src/testing.ts',
+			},
+			formats: ['es'],
+			fileName: (_format, entryName) => `${entryName}.js`,
+		},
+		emptyOutDir: false,
+	},
+});
