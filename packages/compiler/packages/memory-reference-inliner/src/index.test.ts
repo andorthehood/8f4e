@@ -677,6 +677,7 @@ describe('tryResolveValueArgument', () => {
 					memoryIndex: 0,
 					byteAddress: 24,
 					safeByteLength: 20,
+					moduleId: 'main',
 				},
 			},
 		});
@@ -690,18 +691,20 @@ describe('tryResolveValueArgument', () => {
 					memoryIndex: 0,
 					byteAddress: 40,
 					safeByteLength: 4,
+					moduleId: 'main',
 				},
 			},
 		});
 	});
 
-	it('returns undefined for current-module end address before module size is known', () => {
-		const contextWithoutModuleSize = {
+	it('returns undefined for current-module shorthands without a current planned module', () => {
+		const contextWithoutCurrentModule = {
 			...mockContext,
-			currentModuleWordAlignedSize: undefined,
+			currentModule: undefined,
 		} as unknown as MemoryReferenceResolutionContext;
 
-		expect(tryResolveValueArgument(contextWithoutModuleSize, classifyIdentifier('this&'))).toBeUndefined();
+		expect(tryResolveValueArgument(contextWithoutCurrentModule, classifyIdentifier('&this'))).toBeUndefined();
+		expect(tryResolveValueArgument(contextWithoutCurrentModule, classifyIdentifier('this&'))).toBeUndefined();
 	});
 
 	it('keeps address metadata when adding an in-range integer offset to an address expression', () => {

@@ -8,10 +8,12 @@ import type {
 	ConstantsAST,
 	FunctionAST,
 	FunctionValueType,
+	LocalDeclarationLine,
 	LocalMap,
 	MemoryPointerMetadataMap,
 	ModuleAST,
 	NormalizedArgumentLiteral,
+	ParamLine,
 	PointerLocalBinding,
 	PrototypeAST,
 	ValidatedConstantsAST,
@@ -20,7 +22,7 @@ import type {
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
 import { ArgumentType, isScalarMemoryDeclarationLine, POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
-import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
+import type { MemoryLayoutPlan, PlannedMemoryModule } from '@8f4e/memory-planner';
 import { evaluateResolvedValueExpression } from './evaluateResolvedValueExpression';
 import {
 	type MemoryReferenceModuleNamespace,
@@ -73,22 +75,35 @@ export interface InlineMemoryReferencesResult<
 	};
 }
 
-function createResolutionContext(
+function createProjectResolutionContext(
+	memoryPlan: MemoryLayoutPlan,
+	pointerMetadata: MemoryReferencePointerMetadataByModuleId
+): MemoryReferenceResolutionContext {
+	return {
+		memoryPlan,
+		pointerMetadata,
+		locals: {},
+		startingByteAddress: 0,
+		currentModuleWordAlignedSize: 0,
+		currentMemoryIndex: 0,
+	};
+}
+
+function createModuleResolutionContext(
 	memoryPlan: MemoryLayoutPlan,
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
-	moduleId?: string
+	module: PlannedMemoryModule
 ): MemoryReferenceResolutionContext {
-	const module = moduleId ? memoryPlan.modules[moduleId] : undefined;
 	return {
 		memoryPlan,
 		currentModule: module,
 		pointerMetadata,
-		...(moduleId ? { moduleName: moduleId } : {}),
+		moduleName: module.id,
 		locals: {},
-		startingByteAddress: module?.byteAddress ?? 0,
-		currentModuleWordAlignedSize: module?.wordAlignedSize ?? 0,
-		currentMemoryIndex: module?.memoryIndex ?? 0,
-		...(module?.memoryRegionName ? { currentMemoryRegionName: module.memoryRegionName } : {}),
+		startingByteAddress: module.byteAddress,
+		currentModuleWordAlignedSize: module.wordAlignedSize,
+		currentMemoryIndex: module.memoryIndex,
+		...(module.memoryRegionName ? { currentMemoryRegionName: module.memoryRegionName } : {}),
 	};
 }
 
@@ -107,17 +122,25 @@ function createPointerLocalBinding(type: FunctionValueType, index: number): Poin
 	};
 }
 
-function collectFunctionLocal(line: CompilerASTLine, locals: LocalMap, nextLocalIndex: number): number {
+type FunctionLocalDeclarationLine = ParamLine | LocalDeclarationLine;
+
+function isFunctionLocalDeclarationLine(line: CompilerASTLine): line is FunctionLocalDeclarationLine {
 	if (line.instruction !== 'param' && line.instruction !== 'local') {
+		return false;
+	}
+
+	return true;
+}
+
+function collectFunctionLocal(line: CompilerASTLine, locals: LocalMap, nextLocalIndex: number): number {
+	if (!isFunctionLocalDeclarationLine(line)) {
 		return nextLocalIndex;
 	}
 
 	const [typeArgument, nameArgument] = line.arguments;
-	if (typeArgument?.type === ArgumentType.IDENTIFIER && nameArgument?.type === ArgumentType.IDENTIFIER) {
-		const pointerLocal = createPointerLocalBinding(typeArgument.value as FunctionValueType, nextLocalIndex);
-		if (pointerLocal) {
-			locals[nameArgument.value] = pointerLocal;
-		}
+	const pointerLocal = createPointerLocalBinding(typeArgument.value as FunctionValueType, nextLocalIndex);
+	if (pointerLocal) {
+		locals[nameArgument.value] = pointerLocal;
 	}
 
 	return nextLocalIndex + 1;
@@ -302,8 +325,10 @@ function inlineMemoryReferencesInAst<TAst extends AST>(
 	memoryPlan: MemoryLayoutPlan,
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId
 ): TAst {
-	const moduleId = ast.type === 'module' ? ast.id : undefined;
-	const context = createResolutionContext(memoryPlan, pointerMetadata, moduleId);
+	const context =
+		ast.type === 'module'
+			? createModuleResolutionContext(memoryPlan, pointerMetadata, memoryPlan.modules[ast.id])
+			: createProjectResolutionContext(memoryPlan, pointerMetadata);
 	const replacements = new Map<CompilerASTLine, CompilerASTLine>();
 	let nextLocalIndex = 0;
 	const lines = ast.lines.map(line => {
