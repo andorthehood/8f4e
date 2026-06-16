@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/project-preparser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "8f4e project source preparser and compiler input preparation package",
   "type": "module",

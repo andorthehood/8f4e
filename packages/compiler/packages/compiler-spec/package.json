@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/compiler-spec",
-  "version": "2.4.8",
+  "version": "2.4.9",
   "private": true,
   "description": "Shared public spec and contracts for the 8f4e compiler",
   "type": "module",
