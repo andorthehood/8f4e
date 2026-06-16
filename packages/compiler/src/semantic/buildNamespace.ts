@@ -1,5 +1,4 @@
 import {
-	type CompilationContext,
 	type CompileOptions,
 	type CompilerDiagnosticContext,
 	compilerSourceBlockInstructionByType,
@@ -12,7 +11,6 @@ import {
 	getError,
 	getMemoryRegionFields,
 	type Namespaces,
-	type SemanticInstructionLine,
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
@@ -20,8 +18,6 @@ import {
 } from '@8f4e/language-spec';
 import type { ResolveMemoryDefaultsResult } from '@8f4e/memory-default-resolver';
 import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
-import applySemanticInstruction from './instructions';
-import normalizeValueArguments from './normalizeValueArguments';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
@@ -156,18 +152,6 @@ export function assertUniqueModuleIds(asts: readonly ValidatedModuleAST[]): void
 		}
 		seenModuleIds.add(id);
 	}
-}
-
-/**
- * Normalizes and applies one semantic instruction, trusting tokenizer placement validation.
- *
- * @param line - AST line being processed.
- * @param context - Compilation context used by the operation.
- * @returns Nothing.
- */
-export function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext) {
-	const normalizedLine = normalizeValueArguments(line, context);
-	applySemanticInstruction(normalizedLine, context);
 }
 
 /**

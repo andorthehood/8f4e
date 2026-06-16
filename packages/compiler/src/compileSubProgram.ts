@@ -29,7 +29,6 @@ import {
 	createFunctionId,
 	ErrorCode,
 	GLOBAL_ALIGNMENT_BOUNDARY,
-	getCustomMemoryRegionName,
 	getDefaultMemoryRegion,
 	getEffectiveFunctionMetadata,
 	getError,
@@ -41,24 +40,21 @@ import {
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
 import { type MemoryLayoutSourceModule, MemoryPlannerError, planMemoryLayout } from '@8f4e/memory-planner';
 import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
-import { analyzeStack } from '@8f4e/stack-analyzer';
-import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
-import { compileFunction } from './compileFunction';
-import { compileModules } from './compileModules';
-import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
-import type { InitialMemoryDataSegment } from './initialMemoryDataSegments/types';
 import {
 	applySemanticLine,
+	createCompilationContext,
+	normalizeArgumentsAtIndexes,
+	validateOrDeferUnresolvedIdentifier,
+	validateOrDeferValueExpression,
+} from '@8f4e/semantic-utils';
+import { analyzeStack } from '@8f4e/stack-analyzer';
+import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
+import { compileFunction, compileModules } from '@8f4e/wasm-codegen';
+import {
 	assertUniqueModuleIds,
 	collectFunctionMetadataFromAsts,
 	collectNamespacesFromASTs,
 } from './semantic/buildNamespace';
-import { createCompilationContext } from './semantic/createCompilationContext';
-import {
-	normalizeArgumentsAtIndexes,
-	validateOrDeferUnresolvedIdentifier,
-	validateOrDeferValueExpression,
-} from './semantic/normalization/helpers';
 
 /** Module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
@@ -103,14 +99,6 @@ export type CompiledSubProgram = {
 	definedFunctions: CompiledFunction[];
 	/** Function type table accumulated while compiling calls and definitions. */
 	functionTypeRegistry: FunctionTypeRegistry;
-	/** Required linear-memory byte size keyed by WebAssembly memory index. */
-	requiredMemoryBytesByIndex: Record<number, number>;
-	/** Required byte size for default memory. */
-	requiredMemoryBytes: number;
-	/** Required byte size keyed by configured custom memory region name. */
-	requiredMemoryBytesByRegion: Record<string, number>;
-	/** Initial data segments that materialize memory defaults. */
-	initialMemoryDataSegments: InitialMemoryDataSegment[];
 	/** Project memory layout produced by the memory planner. */
 	memoryPlan: MemoryLayoutPlan;
 	/** Resolved memory defaults keyed by module id. */
@@ -166,37 +154,6 @@ function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionReg
 	}
 
 	return { byId, arityByName };
-}
-
-/** Calculates required byte size for each WebAssembly memory index. */
-function getRequiredMemoryBytesByIndex(
-	items: Pick<CompiledModule, 'memoryIndex' | 'byteAddress' | 'wordAlignedSize'>[]
-) {
-	return items.reduce<Record<number, number>>((result, item) => {
-		const memoryIndex = item.memoryIndex;
-		const requiredBytes = item.byteAddress + item.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
-		result[memoryIndex] = Math.max(result[memoryIndex] ?? 0, requiredBytes);
-		return result;
-	}, {});
-}
-
-/** Converts non-default memory byte requirements into configured memory region names. */
-function getRequiredMemoryBytesByRegion(
-	requiredMemoryBytesByIndex: Record<number, number>,
-	memoryRegions: readonly string[]
-): Record<string, number> {
-	const result: Record<string, number> = {};
-
-	for (const [memoryIndexString, requiredBytes] of Object.entries(requiredMemoryBytesByIndex)) {
-		const memoryIndex = Number(memoryIndexString);
-		if (memoryIndex === 0 || requiredBytes <= 0) {
-			continue;
-		}
-
-		result[getCustomMemoryRegionName(memoryRegions, memoryIndex)] = requiredBytes;
-	}
-
-	return result;
 }
 
 /** Indexes prototype ASTs by id and rejects duplicate prototype declarations. */
@@ -641,20 +598,6 @@ export function compileSubProgram(
 		executionEntryName: moduleEntryNames[index],
 	}));
 
-	const requiredMemoryBytesByIndexFromModules = getRequiredMemoryBytesByIndex(compiledModules);
-	const requiredMemoryBytes = requiredMemoryBytesByIndexFromModules[0] ?? 0;
-	const requiredMemoryBytesByIndex: Record<number, number> = {
-		...requiredMemoryBytesByIndexFromModules,
-		0: requiredMemoryBytes,
-	};
-	const requiredMemoryBytesByRegion = getRequiredMemoryBytesByRegion(
-		requiredMemoryBytesByIndex,
-		options.memoryRegions ?? []
-	);
-	const initialMemoryDataSegments = createInitialMemoryDataSegments(
-		memoryPlan,
-		memoryDefaultResolution.memoryDefaultsByModuleId
-	);
 	const compiledModulesMap = Object.fromEntries(compiledModules.map(module => [module.id, module]));
 
 	return {
@@ -668,10 +611,6 @@ export function compileSubProgram(
 		importedUserFunctions,
 		definedFunctions,
 		functionTypeRegistry,
-		requiredMemoryBytesByIndex,
-		requiredMemoryBytes,
-		requiredMemoryBytesByRegion,
-		initialMemoryDataSegments,
 		memoryPlan,
 		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
 		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,

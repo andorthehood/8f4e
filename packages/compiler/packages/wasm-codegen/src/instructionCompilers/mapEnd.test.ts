@@ -1,0 +1,82 @@
+import type { CompilerASTLine } from '@8f4e/language-spec';
+import { BlockType } from '@8f4e/language-spec';
+import { describe, expect, it } from 'vitest';
+
+import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import mapEnd from './mapEnd';
+
+const { classifyIdentifier } = await import('@8f4e/tokenizer');
+
+describe('mapEnd instruction compiler', () => {
+	it('throws on missing argument', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [
+				{
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
+				},
+				{
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
+					mapState: {
+						inputIsInteger: true,
+						inputIsFloat64: false,
+						rows: [],
+						defaultSet: false,
+					},
+				},
+			],
+		});
+		context.stack.push({ kind: 'value', valueType: 'int' });
+
+		expect(() => {
+			analyzeAndCompileInstruction(
+				mapEnd,
+				{
+					lineNumber: 1,
+					instruction: 'mapEnd',
+					arguments: [],
+				} as CompilerASTLine,
+				context
+			);
+		}).toThrowError();
+	});
+
+	it('emits DROP + typed zero for zero rows', () => {
+		const context = createInstructionCompilerTestContext({
+			blockStack: [
+				{
+					blockType: BlockType.MODULE,
+					expectedResultTypes: [],
+				},
+				{
+					blockType: BlockType.MAP,
+					expectedResultTypes: [],
+					mapState: {
+						inputIsInteger: true,
+						inputIsFloat64: false,
+						rows: [],
+						defaultSet: false,
+					},
+				},
+			],
+		});
+		context.stack.push({ kind: 'value', valueType: 'int' });
+
+		analyzeAndCompileInstruction(
+			mapEnd,
+			{
+				lineNumber: 1,
+				instruction: 'mapEnd',
+				arguments: [classifyIdentifier('int')],
+			} as CompilerASTLine,
+			context
+		);
+
+		expect({
+			stack: context.stack,
+			byteCode: context.byteCode,
+			blockStack: context.blockStack,
+		}).toMatchSnapshot();
+	});
+});
