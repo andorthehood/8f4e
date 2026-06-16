@@ -131,9 +131,7 @@ function resolveMemoryDefaultValue(
 				if (!arg.isEndAddress) {
 					return context.startingByteAddress;
 				}
-				return typeof context.currentModuleWordAlignedSize === 'number'
-					? getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize)
-					: 0;
+				return getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
 			}
 			const memoryItem = getMemoryItemOrThrow(arg.base, lineForError, context);
 			return arg.isEndAddress
