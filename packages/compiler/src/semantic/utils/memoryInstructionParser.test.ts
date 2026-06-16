@@ -392,25 +392,6 @@ describe('parseMemoryInstructionArguments', () => {
 		).toBe(28);
 	});
 
-	it('falls back to zero for current-module end-address default before module size is known', () => {
-		const context = {
-			...mockContext,
-			startingByteAddress: 20,
-			currentModuleWordAlignedSize: undefined,
-		} as unknown as CompilationContext;
-
-		const result = parseMemoryInstructionArguments(
-			{
-				lineNumber: 163,
-				instruction: 'int*',
-				arguments: [classifyIdentifier('ptr'), classifyIdentifier('this&')],
-			},
-			context
-		);
-
-		expect(result.defaultValue).toBe(0);
-	});
-
 	it('resolves memory-reference end-address default (myVar&) to last byte address', () => {
 		const args: Argument[] = [classifyIdentifier('ptr'), classifyIdentifier('myVar&')];
 		const result = parseMemoryInstructionArguments(

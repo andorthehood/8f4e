@@ -4,7 +4,6 @@ import {
 	type CompilerASTLine,
 	ErrorCode,
 	isArrayMemoryDeclarationLine,
-	isScalarMemoryDeclarationLine,
 	type MemoryDeclarationLine,
 } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
@@ -56,7 +55,7 @@ export default function normalizeMemoryDeclaration(
 	const normalizeIndexes = isArrayDeclaration
 		? line.arguments.map((_, index) => index).filter(index => index > 0)
 		: [0, 1];
-	let { line: normalized } = normalizeArgumentsAtIndexes(line, context, normalizeIndexes);
+	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, normalizeIndexes);
 
 	const scalarValidationIndexes = isArrayDeclaration ? [0] : [0, 1];
 	for (const index of scalarValidationIndexes) {
@@ -69,18 +68,6 @@ export default function normalizeMemoryDeclaration(
 		}
 		if (index === 1 && argument?.type === ArgumentType.IDENTIFIER) {
 			validateIntermoduleAddressReference(argument, line, context);
-
-			// If the argument could not be folded to a literal (referenceKind is an address-style
-			// intermodule ref whose target module has not yet been laid out), strip the default
-			// from the line. The deferred state is owned here rather than relying on
-			// parseMemoryInstructionArguments to fabricate a placeholder 0.
-			if (
-				isScalarMemoryDeclarationLine(normalized) &&
-				(argument.referenceKind === 'intermodular-module-reference' ||
-					argument.referenceKind === 'intermodular-reference')
-			) {
-				normalized = { ...normalized, arguments: [normalized.arguments[0]] };
-			}
 		}
 	}
 

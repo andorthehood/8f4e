@@ -8,14 +8,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/compiler-spec';
-import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
 import { compileModule } from './compileModule';
-import {
-	assertUniqueModuleIds,
-	collectNamespacesFromASTs,
-	createMemoryLayoutPlanFromASTs,
-} from './semantic/buildNamespace';
 
 /**
  * Compiles validated module ASTs using a shared namespace and function type registry.
@@ -31,60 +24,22 @@ import {
 export function compileModules(
 	modules: ValidatedModuleAST[],
 	options: CompileOptions,
-	namespaces?: Namespaces,
+	namespaces: Namespaces,
+	memoryPlan: MemoryLayoutPlan,
 	compiledFunctions?: FunctionRegistry,
 	typeRegistry?: FunctionTypeRegistry,
-	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>,
-	memoryPlan?: MemoryLayoutPlan
+	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule[] {
-	const startingByteAddress = (options.startingMemoryWordAddress ?? 0) * GLOBAL_ALIGNMENT_BOUNDARY;
-	let compiledModules = modules;
-	let ns = namespaces;
-	let plan = memoryPlan;
-
-	if (!namespaces) {
-		assertUniqueModuleIds(modules);
-		plan = createMemoryLayoutPlanFromASTs(
-			modules,
-			startingByteAddress,
-			compiledFunctions,
-			modules,
-			options,
-			prototypeShapes
-		);
-		compiledModules = inlineMemoryReferences({
-			ast: {
-				prototypes: [],
-				modules,
-				constants: [],
-				functions: [],
-			},
-			memoryPlan: plan,
-		}).ast.modules;
-		ns = collectNamespacesFromASTs(
-			compiledModules,
-			startingByteAddress,
-			compiledFunctions,
-			compiledModules,
-			options,
-			prototypeShapes,
-			plan
-		);
-	}
-
-	return compiledModules.map((ast, index) => {
-		const moduleStartingByteAddress =
-			ns?.[ast.id]?.byteAddress !== undefined ? ns[ast.id].byteAddress : startingByteAddress;
+	return modules.map((ast, index) => {
 		const module = compileModule(
 			ast,
-			ns ?? {},
-			moduleStartingByteAddress,
+			namespaces,
+			memoryPlan,
 			index,
 			compiledFunctions,
 			options,
 			typeRegistry,
-			prototypeShapes,
-			plan
+			prototypeShapes
 		);
 		return module;
 	});

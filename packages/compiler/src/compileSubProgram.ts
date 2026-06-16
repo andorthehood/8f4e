@@ -378,12 +378,12 @@ export function compileSubProgram(
 
 	const namespaces = collectNamespacesFromASTs(
 		inlinedAstModules,
+		memoryPlan,
 		GLOBAL_ALIGNMENT_BOUNDARY,
 		undefined,
 		inlinedAstModules,
 		options,
-		inlinedPrototypeShapesById,
-		memoryPlan
+		inlinedPrototypeShapesById
 	);
 
 	const importedUserFunctionCount = inlinedAstFunctions.filter(ast => ast.import).length;
@@ -430,10 +430,10 @@ export function compileSubProgram(
 			startingMemoryWordAddress: 1,
 		},
 		namespaces,
+		memoryPlan,
 		functionRegistry,
 		functionTypeRegistry,
-		inlinedPrototypeShapesById,
-		memoryPlan
+		inlinedPrototypeShapesById
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],
