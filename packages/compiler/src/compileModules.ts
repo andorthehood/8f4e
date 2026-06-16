@@ -8,6 +8,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
+import type { StackAnalysisProjectReport } from '@8f4e/stack-analyzer';
 import { compileModule } from './compileModule';
 
 /**
@@ -19,6 +20,7 @@ import { compileModule } from './compileModule';
  * @param compiledFunctions - Function registry available to module compilation.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
+ * @param stackReport - Project stack-analysis report.
  * @returns The compiled module artifact.
  */
 export function compileModules(
@@ -26,6 +28,7 @@ export function compileModules(
 	options: CompileOptions,
 	namespaces: Namespaces,
 	memoryPlan: MemoryLayoutPlan,
+	stackReport: StackAnalysisProjectReport,
 	compiledFunctions?: FunctionRegistry,
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
@@ -37,6 +40,7 @@ export function compileModules(
 			memoryPlan,
 			index,
 			compiledFunctions,
+			stackReport.modules[ast.id],
 			options,
 			typeRegistry,
 			prototypeShapes

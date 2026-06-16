@@ -1,0 +1,1 @@
+export { analyzeInstruction } from './analyzeInstruction';
