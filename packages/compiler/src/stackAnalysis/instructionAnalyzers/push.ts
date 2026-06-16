@@ -1,16 +1,17 @@
 import type {
 	AddressMetadata,
 	CompilationContext,
-	DataStructure,
 	LocalBinding,
 	NormalizedPushLine,
+	PointeeBaseType,
 	PointeeMetadata,
+	ResolvedMemoryDeclaration,
 	ResolvedPushLine,
 	Stack,
 } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { getMemoryRegionFields } from '../../semantic/memoryRegions';
-import { getMemoryItem } from '../../semantic/memoryState';
+import { getResolvedMemoryDeclaration } from '../../semantic/memoryState';
 import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../../utils/memoryData';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../../utils/pushValueKind';
 import { createStackValue, produce } from './stack';
@@ -22,7 +23,7 @@ function getAddressMemoryItem(context: CompilationContext, address: AddressMetad
 		return undefined;
 	}
 
-	return getMemoryItem(context, memoryId, range.moduleId);
+	return getResolvedMemoryDeclaration(context, memoryId, range.moduleId);
 }
 
 function getAddressPointeeMetadata(context: CompilationContext, address: AddressMetadata) {
@@ -36,9 +37,7 @@ function getAddressPointeeMetadata(context: CompilationContext, address: Address
 		return undefined;
 	}
 
-	const baseType = (memoryItem.pointeeBaseType ?? memoryItem.type.replace(/\*+$/, '')) as NonNullable<
-		DataStructure['pointeeBaseType']
-	>;
+	const baseType = (memoryItem.pointeeBaseType ?? memoryItem.type.replace(/\*+$/, '')) as PointeeBaseType;
 
 	return {
 		baseType,
@@ -77,7 +76,7 @@ function pushLiteralStackItems(line: NormalizedPushLine, context: CompilationCon
 	];
 }
 
-function getPointeeMetadata(pointerMetadata: DataStructure | LocalBinding): PointeeMetadata | undefined {
+function getPointeeMetadata(pointerMetadata: ResolvedMemoryDeclaration | LocalBinding): PointeeMetadata | undefined {
 	return pointerMetadata.pointeeBaseType
 		? {
 				baseType: pointerMetadata.pointeeBaseType,
@@ -103,6 +102,9 @@ function pushDereferencedPointerStackItems(
 				? line.resolvedTarget.local
 				: undefined;
 	if (!pointerMetadata) {
+		return [];
+	}
+	if (!pointerMetadata.pointeeBaseType) {
 		return [];
 	}
 

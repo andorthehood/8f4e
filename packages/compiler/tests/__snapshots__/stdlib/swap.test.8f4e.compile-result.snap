@@ -692,7 +692,7 @@
   },
   "moduleMemory": {
     "swapAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

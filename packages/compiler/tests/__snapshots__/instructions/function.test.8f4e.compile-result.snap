@@ -493,13 +493,13 @@
   },
   "moduleMemory": {
     "functionReturnConstant": {
-      "memoryMap": {},
+      "memory": {},
     },
     "functionWithParameter": {
-      "memoryMap": {},
+      "memory": {},
     },
     "functionWithTwoParameters": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

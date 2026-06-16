@@ -1,11 +1,11 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { MemoryTypes } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
 import updateOutputsGraphicData from './updateGraphicData';
 
-function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemoryDeclaration {
 	return {
 		id: 'output1',
 		numberOfElements: 1,
@@ -15,7 +15,6 @@ function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
 		byteAddress: 20,
 		wordAlignedAddress: 5,
 		wordAlignedSize: 1,
-		default: 0,
 		lineNumber: 1,
 		isInteger: true,
 		pointerDepth: 0,
@@ -43,8 +42,11 @@ describe('updateOutputsGraphicData', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							output1: createMemory(),
+						},
+						memoryDefaults: {
+							output1: { value: 0, isInherited: false },
 						},
 					},
 				},
@@ -60,7 +62,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('adds output widgets from non-pointer array memory metadata', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = createMemory({
+		mockState.compiler.compiledModules['test-block'].memory['output1'] = createMemory({
 			type: MemoryTypes.int,
 			numberOfElements: 4,
 			wordAlignedSize: 4,
@@ -73,7 +75,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('ignores pointer memory metadata', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = createMemory({
+		mockState.compiler.compiledModules['test-block'].memory['output1'] = createMemory({
 			type: MemoryTypes['int*'],
 			pointerDepth: 1,
 		});
@@ -113,12 +115,13 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('does not render outputs for private entities', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['_privateOutput'] = createMemory({
+		mockState.compiler.compiledModules['test-block'].memory['_privateOutput'] = createMemory({
 			id: '_privateOutput',
 			wordAlignedAddress: 7,
 			byteAddress: 28,
 		});
-		delete mockState.compiler.compiledModules['test-block'].memoryMap['output1'];
+		mockState.compiler.compiledModules['test-block'].memoryDefaults._privateOutput = { value: 0, isInherited: false };
+		delete mockState.compiler.compiledModules['test-block'].memory['output1'];
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -127,12 +130,13 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('renders anonymous scalar allocations from metadata', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['__anonymous__1'] = createMemory({
+		mockState.compiler.compiledModules['test-block'].memory['__anonymous__1'] = createMemory({
 			id: '__anonymous__1',
 			wordAlignedAddress: 8,
 			byteAddress: 32,
 		});
-		delete mockState.compiler.compiledModules['test-block'].memoryMap['output1'];
+		mockState.compiler.compiledModules['test-block'].memoryDefaults.__anonymous__1 = { value: 0, isInherited: false };
+		delete mockState.compiler.compiledModules['test-block'].memory['output1'];
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -162,7 +166,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('handles multiple outputs in line-number order', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['output2'] = createMemory({
+		mockState.compiler.compiledModules['test-block'].memory['output2'] = createMemory({
 			id: 'output2',
 			type: MemoryTypes.float,
 			wordAlignedAddress: 6,
@@ -170,6 +174,7 @@ describe('updateOutputsGraphicData', () => {
 			lineNumber: 2,
 			isInteger: false,
 		});
+		mockState.compiler.compiledModules['test-block'].memoryDefaults.output2 = { value: 0, isInherited: false };
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -184,7 +189,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('positions outputs at the metadata line number', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['output1'] = createMemory({ lineNumber: 2 });
+		mockState.compiler.compiledModules['test-block'].memory['output1'] = createMemory({ lineNumber: 2 });
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -195,15 +200,18 @@ describe('updateOutputsGraphicData', () => {
 
 	it('positions shape-sourced outputs below the shape instruction', () => {
 		mockGraphicData.gaps = new Map([[1, { size: 2 }]]);
-		mockState.compiler.compiledModules['test-block'].memoryMap = {
+		mockState.compiler.compiledModules['test-block'].memory = {
 			input1: createMemory({
 				id: 'input1',
 				type: MemoryTypes['int*'],
 				pointerDepth: 1,
 				lineNumber: 1,
-				isInherited: true,
 			}),
-			output1: createMemory({ lineNumber: 1, isInherited: true }),
+			output1: createMemory({ lineNumber: 1 }),
+		};
+		mockState.compiler.compiledModules['test-block'].memoryDefaults = {
+			input1: { value: 0, isInherited: true },
+			output1: { value: 0, isInherited: true },
 		};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);

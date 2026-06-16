@@ -627,7 +627,7 @@
   },
   "moduleMemory": {
     "risingEdgeFloatAssertions": {
-      "memoryMap": {
+      "memory": {
         "previousFloat": {
           "byteAddress": 4,
           "default": 0,

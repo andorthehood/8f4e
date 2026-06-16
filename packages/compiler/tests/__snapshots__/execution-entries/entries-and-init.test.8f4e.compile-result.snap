@@ -492,7 +492,7 @@
   },
   "moduleMemory": {
     "auxEntryCounter": {
-      "memoryMap": {
+      "memory": {
         "value": {
           "byteAddress": 8,
           "default": 0,
@@ -511,7 +511,7 @@
       },
     },
     "mainEntryCounter": {
-      "memoryMap": {
+      "memory": {
         "value": {
           "byteAddress": 4,
           "default": 0,
@@ -530,7 +530,7 @@
       },
     },
     "userInitEntryCounter": {
-      "memoryMap": {
+      "memory": {
         "value": {
           "byteAddress": 12,
           "default": 0,

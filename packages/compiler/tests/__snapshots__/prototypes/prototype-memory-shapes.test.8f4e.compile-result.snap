@@ -513,13 +513,14 @@
   },
   "moduleMemory": {
     "oscA": {
-      "memoryMap": {
+      "memory": {
         "frequency": {
           "byteAddress": 8,
           "default": 440,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "frequency",
+          "isInherited": true,
           "isInteger": false,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -549,6 +550,7 @@
           "default": 0,
           "elementWordSize": 4,
           "id": "phase",
+          "isInherited": true,
           "isInteger": false,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -561,13 +563,14 @@
       },
     },
     "oscB": {
-      "memoryMap": {
+      "memory": {
         "frequency": {
           "byteAddress": 24,
           "default": 440,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "frequency",
+          "isInherited": true,
           "isInteger": false,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -597,6 +600,7 @@
           "default": 0,
           "elementWordSize": 4,
           "id": "phase",
+          "isInherited": true,
           "isInteger": false,
           "isUnsigned": false,
           "memoryIndex": 0,

@@ -1,4 +1,4 @@
-import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, MemoryIdentifier, State } from '@8f4e/editor-state-types';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
@@ -31,7 +31,7 @@ describe('plot directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							buffer1: {
 								wordAlignedAddress: 0,
 								byteAddress: 0,
@@ -82,7 +82,7 @@ describe('plot directive widget resolution', () => {
 			minValue: -8,
 			maxValue: 8,
 			startAddress: {
-				memory: { wordAlignedAddress: 0 } as DataStructure,
+				memory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
 				showAddress: true,
 				showEndAddress: false,
 				bufferPointer: 0,
@@ -100,7 +100,7 @@ describe('plot directive widget resolution', () => {
 
 	it('handles multiple plot directives', () => {
 		setMockCodeBlockCode(mockGraphicData, ['; @plot &buffer1 count(buffer1)', '; @plot &buffer2 count(buffer2)']);
-		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
+		mockState.compiler.compiledModules['test-block'].memory['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
 			numberOfElements: 100,
@@ -119,7 +119,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('derives float plot ranges as -1..1', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['floatBuffer'] = {
+		mockState.compiler.compiledModules['test-block'].memory['floatBuffer'] = {
 			wordAlignedAddress: 4,
 			byteAddress: 16,
 			numberOfElements: 16,
@@ -168,7 +168,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('supports pointer starts with count() lengths', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['bufferPtr'] = {
+		mockState.compiler.compiledModules['test-block'].memory['bufferPtr'] = {
 			wordAlignedAddress: 8,
 			byteAddress: 32,
 			numberOfElements: 1,

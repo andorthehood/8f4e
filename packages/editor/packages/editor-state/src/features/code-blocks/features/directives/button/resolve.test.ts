@@ -31,7 +31,7 @@ describe('button directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							btn1: {
 								id: 'btn1',
 								wordAlignedAddress: 5,

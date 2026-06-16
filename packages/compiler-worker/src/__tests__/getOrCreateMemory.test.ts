@@ -9,7 +9,7 @@ describe('getOrCreateMemory', () => {
 			cycleFunction: 'function loop() {}',
 			initFunctionBody: 'init body',
 			wordAlignedSize: 100,
-			memoryMap: {},
+			memory: {},
 		},
 	});
 
@@ -56,7 +56,7 @@ describe('getOrCreateMemory', () => {
 					cycleFunction: 'function loop2() {}',
 					initFunctionBody: 'init body 2',
 					wordAlignedSize: 200,
-					memoryMap: {},
+					memory: {},
 				},
 			};
 			const result = getOrCreateMemory(65536, compiledModules2, compiledModules1);
@@ -93,7 +93,7 @@ describe('getOrCreateMemory', () => {
 					cycleFunction: 'function loop2() {}',
 					initFunctionBody: 'init body 2',
 					wordAlignedSize: 200,
-					memoryMap: {},
+					memory: {},
 				},
 			};
 			const result = getOrCreateMemory(131072, compiledModules2, compiledModules1);

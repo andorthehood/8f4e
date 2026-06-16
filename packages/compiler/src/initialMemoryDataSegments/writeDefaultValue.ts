@@ -1,17 +1,17 @@
-import type { DataStructure } from '@8f4e/compiler-spec';
+import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 
 /**
  * Writes one memory declaration default value into a data segment byte view.
  *
  * @param view - DataView receiving the encoded bytes.
- * @param memory - Memory declaration or data structure being materialized.
+ * @param memory - Planned memory declaration being materialized.
  * @param byteAddress - Byte address where the value should be written.
  * @param value - Default value to write.
  * @returns Nothing.
  */
 export default function writeDefaultValue(
 	view: DataView,
-	memory: Pick<DataStructure, 'isInteger' | 'isUnsigned' | 'elementWordSize'>,
+	memory: Pick<PlannedMemoryDeclaration, 'isInteger' | 'isUnsigned' | 'elementWordSize'>,
 	byteAddress: number,
 	value: number
 ) {

@@ -82,7 +82,7 @@ describe('drawConnections', () => {
 			compiler: {
 				compiledModules: {
 					inputModule: {
-						memoryMap: {
+						memory: {
 							in: {
 								byteAddress: 8,
 								wordAlignedAddress: 2,

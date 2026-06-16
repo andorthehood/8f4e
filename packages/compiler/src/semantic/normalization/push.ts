@@ -12,7 +12,7 @@ import {
 	type ResolvedMemoryPushLine,
 } from '@8f4e/compiler-spec';
 import { getError } from '../../compilerError';
-import { getMemoryItem } from '../memoryState';
+import { getResolvedMemoryDeclaration } from '../memoryState';
 import {
 	hasCollectedNamespaces,
 	isIntermoduleReferenceKind,
@@ -51,7 +51,7 @@ function throwIfPointeeCountIsUnknown(line: PushLine, context: CompilationContex
 	}
 
 	const base = argument.targetMemoryId;
-	const pointerMetadata = getMemoryItem(context, base) ?? context.locals[base];
+	const pointerMetadata = getResolvedMemoryDeclaration(context, base) ?? context.locals[base];
 	if (pointerMetadata?.pointeeBaseType && pointerMetadata.pointeeElementCount === undefined) {
 		throw getError(ErrorCode.POINTEE_ELEMENT_COUNT_UNKNOWN, line, context, { identifier: argument.value });
 	}
@@ -102,7 +102,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 				return { ...resolvedLine, resolvedTarget: { kind: 'local' as const, local } };
 			}
 
-			const memoryItem = getMemoryItem(context, value);
+			const memoryItem = getResolvedMemoryDeclaration(context, value);
 			if (memoryItem) {
 				const resolvedLine: Omit<ResolvedMemoryPushLine, 'resolvedTarget'> = {
 					...normalizedPushLine,
@@ -113,7 +113,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 		}
 		if (referenceKind === 'memory-pointer') {
 			const pointerArgument = argument as MemoryPointerIdentifier;
-			const memoryItem = getMemoryItem(context, pointerArgument.targetMemoryId);
+			const memoryItem = getResolvedMemoryDeclaration(context, pointerArgument.targetMemoryId);
 			if (memoryItem) {
 				validateDereferenceDepth(pointerArgument, memoryItem, line, context);
 				const resolvedLine: Omit<ResolvedMemoryPointerPushLine, 'resolvedTarget'> = {

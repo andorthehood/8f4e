@@ -31,7 +31,7 @@ describe('switch directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							sw1: {
 								id: 'sw1',
 								wordAlignedAddress: 5,
