@@ -12,56 +12,13 @@ import {
 } from './instructions';
 
 describe('instruction block classification', () => {
-	it('derives compiler block pairs from instruction specs', () => {
-		expect(compilerBlockInstructionPairs).toEqual([
-			{ start: 'block', end: 'blockEnd' },
-			{ start: 'constants', end: 'constantsEnd' },
-			{ start: 'function', end: 'functionEnd' },
-			{ start: 'if', end: 'ifEnd' },
-			{ start: 'loop', end: 'loopEnd' },
-			{ start: 'mapBegin', end: 'mapEnd' },
-			{ start: 'module', end: 'moduleEnd' },
-			{ start: 'prototype', end: 'prototypeEnd' },
-		]);
-	});
-
-	it('derives stack and source block tables from instruction specs', () => {
-		expect(stackBlockInstructionPairs).toEqual([
-			{ start: 'block', end: 'blockEnd' },
-			{ start: 'if', end: 'ifEnd' },
-			{ start: 'loop', end: 'loopEnd' },
-		]);
-		expect(compilerSourceBlockInstructionPairs).toEqual([
-			{
-				type: 'constants',
-				start: 'constants',
-				end: 'constantsEnd',
-				compilesToModule: false,
-				compilationMode: null,
-			},
-			{
-				type: 'function',
-				start: 'function',
-				end: 'functionEnd',
-				compilesToModule: false,
-				compilationMode: 'function',
-			},
-			{
-				type: 'module',
-				start: 'module',
-				end: 'moduleEnd',
-				compilesToModule: true,
-				compilationMode: 'module',
-			},
-			{
-				type: 'prototype',
-				start: 'prototype',
-				end: 'prototypeEnd',
-				compilesToModule: false,
-				compilationMode: null,
-			},
-		]);
-		expect(compiledModuleBlockTypes).toEqual(['module']);
+	it('snapshots derived block tables', () => {
+		expect({
+			compiledModuleBlockTypes,
+			compilerBlockInstructionPairs,
+			compilerSourceBlockInstructionPairs,
+			stackBlockInstructionPairs,
+		}).toMatchSnapshot();
 	});
 });
 
