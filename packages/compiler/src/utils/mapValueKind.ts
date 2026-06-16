@@ -5,8 +5,7 @@ import type {
 	StackItem,
 	StackValueType,
 } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { ErrorCode, getError } from '@8f4e/compiler-spec';
 
 /** Internal scalar kind used to choose typed WASM operations for map rows and values. */
 export type MapKind = 'int32' | 'float32' | 'float64';

@@ -16,7 +16,7 @@ import type { SourceMetadata } from '@8f4e/compiler-spec';
  * Boundary rule:
  *   If the error can be detected before building semantic context → it belongs here.
  *   If detecting it requires symbol resolution, scope, stack state, or type knowledge
- *   → use ErrorCode / getError in compilerError.ts.
+ *   → use ErrorCode / getError from @8f4e/compiler-spec.
  */
 
 export const SyntaxErrorCode = {

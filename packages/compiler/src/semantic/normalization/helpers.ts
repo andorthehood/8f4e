@@ -6,10 +6,10 @@ import {
 	type CompilerASTLine,
 	type Const,
 	ErrorCode,
+	getError,
 	type NormalizedArgumentLiteral,
 	type ReferenceKind,
 } from '@8f4e/compiler-spec';
-import { getError } from '../../compilerError';
 
 /**
  * Returns whether namespace discovery has populated any module or constants namespaces.
