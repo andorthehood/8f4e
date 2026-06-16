@@ -1,0 +1,175 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`function instruction classification > snapshots function classification tables 1`] = `
+{
+  "functionPreBodyInstructionNames": [
+    "const",
+    "function",
+    "functionEnd",
+    "#loopCap",
+    "#export",
+    "#import",
+    "#impure",
+    "param",
+    "paramShape",
+    "use",
+  ],
+  "importedFunctionDeclarationInstructionNames": [
+    "function",
+    "functionEnd",
+    "#loopCap",
+    "#import",
+    "#impure",
+    "param",
+    "paramShape",
+  ],
+  "samples": {
+    "#export": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": false,
+    },
+    "#import": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "#impure": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "#loopCap": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "call": {
+      "isFunctionBody": true,
+      "isFunctionPreBody": false,
+      "isImportedFunctionDeclaration": false,
+    },
+    "const": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": false,
+    },
+    "functionEnd": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "local": {
+      "isFunctionBody": true,
+      "isFunctionPreBody": false,
+      "isImportedFunctionDeclaration": false,
+    },
+    "param": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "paramShape": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": true,
+    },
+    "push": {
+      "isFunctionBody": true,
+      "isFunctionPreBody": false,
+      "isImportedFunctionDeclaration": false,
+    },
+    "use": {
+      "isFunctionBody": false,
+      "isFunctionPreBody": true,
+      "isImportedFunctionDeclaration": false,
+    },
+  },
+}
+`;
+
+exports[`instruction block classification > snapshots derived block tables 1`] = `
+{
+  "compiledModuleBlockTypes": [
+    "module",
+  ],
+  "compilerBlockInstructionPairs": [
+    {
+      "end": "blockEnd",
+      "start": "block",
+    },
+    {
+      "end": "constantsEnd",
+      "start": "constants",
+    },
+    {
+      "end": "functionEnd",
+      "start": "function",
+    },
+    {
+      "end": "ifEnd",
+      "start": "if",
+    },
+    {
+      "end": "loopEnd",
+      "start": "loop",
+    },
+    {
+      "end": "mapEnd",
+      "start": "mapBegin",
+    },
+    {
+      "end": "moduleEnd",
+      "start": "module",
+    },
+    {
+      "end": "prototypeEnd",
+      "start": "prototype",
+    },
+  ],
+  "compilerSourceBlockInstructionPairs": [
+    {
+      "compilationMode": null,
+      "compilesToModule": false,
+      "end": "constantsEnd",
+      "start": "constants",
+      "type": "constants",
+    },
+    {
+      "compilationMode": "function",
+      "compilesToModule": false,
+      "end": "functionEnd",
+      "start": "function",
+      "type": "function",
+    },
+    {
+      "compilationMode": "module",
+      "compilesToModule": true,
+      "end": "moduleEnd",
+      "start": "module",
+      "type": "module",
+    },
+    {
+      "compilationMode": null,
+      "compilesToModule": false,
+      "end": "prototypeEnd",
+      "start": "prototype",
+      "type": "prototype",
+    },
+  ],
+  "stackBlockInstructionPairs": [
+    {
+      "end": "blockEnd",
+      "start": "block",
+    },
+    {
+      "end": "ifEnd",
+      "start": "if",
+    },
+    {
+      "end": "loopEnd",
+      "start": "loop",
+    },
+  ],
+}
+`;

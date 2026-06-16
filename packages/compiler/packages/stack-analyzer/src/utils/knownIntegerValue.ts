@@ -1,4 +1,4 @@
-import type { StackItem } from '@8f4e/compiler-spec';
+import type { StackItem } from '@8f4e/language-spec';
 
 /**
  * Derives known integer and non-zero metadata when both operands are compile-time known.

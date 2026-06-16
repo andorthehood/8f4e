@@ -1,4 +1,5 @@
 import compile, { deriveEffectiveMemorySize, serializeDiagnostic } from '@8f4e/compiler';
+import type { CompilationResult, Editor } from '@8f4e/editor';
 import type {
 	CompiledModuleLookup,
 	CompileInput,
@@ -6,8 +7,7 @@ import type {
 	CompilerCache,
 	CompilerDiagnostic,
 	MemoryAction,
-} from '@8f4e/compiler-spec';
-import type { CompilationResult, Editor } from '@8f4e/editor';
+} from '@8f4e/language-spec';
 
 let compilerCache: CompilerCache | undefined;
 let memoryRef: WebAssembly.Memory | null = null;

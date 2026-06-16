@@ -1,4 +1,4 @@
-import type { StackItem } from '@8f4e/compiler-spec';
+import type { StackItem } from '@8f4e/language-spec';
 
 export function areAllOperandsIntegers(...operands: StackItem[]): boolean {
 	return operands.every(operand => operand.valueType === 'int');

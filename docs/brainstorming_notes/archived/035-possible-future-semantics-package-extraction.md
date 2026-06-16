@@ -39,7 +39,7 @@ The semantic layer is improved, but it is still not stable enough to freeze into
 
 Current reasons to wait:
 
-- semantic code still lives close to compiler-specific context and types
+- semantic code still lives close to language-specific context and types
 - some validation responsibilities are still being moved out of instruction compilers
 - tokenizer/compiler boundary is cleaner than semantic/codegen boundary
 - some data structures are still shared too casually between semantic planning and codegen

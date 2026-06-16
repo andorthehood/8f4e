@@ -1,5 +1,5 @@
-import type { ConditionBlockStackFrame, InstructionCompiler } from '@8f4e/compiler-spec';
 import { WASM_ELSE } from '@8f4e/compiler-wasm-utils';
+import type { ConditionBlockStackFrame, InstructionCompiler } from '@8f4e/language-spec';
 
 import { popBlock, pushBlock } from '../utils/blockStack';
 import { saveByteCode } from './utils/saveByteCode';

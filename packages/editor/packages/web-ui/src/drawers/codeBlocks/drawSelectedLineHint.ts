@@ -1,5 +1,5 @@
-import type { PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, State, TooltipLiveValue } from '@8f4e/editor-state-types';
+import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { Engine, SpriteLookup } from 'glugglug';
 import type { MemoryViews } from '../../types';
 import formatDebuggerValue, { formatDebuggerValueAtAddress } from './widgets/formatDebuggerValue';

@@ -1,4 +1,4 @@
-import type { SourceMetadata } from '@8f4e/compiler-spec';
+import type { SourceMetadata } from '@8f4e/language-spec';
 
 /**
  * Syntax errors — raised when source structure is invalid before semantic analysis.
@@ -16,7 +16,7 @@ import type { SourceMetadata } from '@8f4e/compiler-spec';
  * Boundary rule:
  *   If the error can be detected before building semantic context → it belongs here.
  *   If detecting it requires symbol resolution, scope, stack state, or type knowledge
- *   → use ErrorCode / getError from @8f4e/compiler-spec.
+ *   → use ErrorCode / getError from @8f4e/language-spec.
  */
 
 export const SyntaxErrorCode = {

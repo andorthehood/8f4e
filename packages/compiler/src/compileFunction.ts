@@ -1,3 +1,10 @@
+import {
+	createFunction,
+	createLocalDeclaration,
+	WASM_TYPE_F32,
+	WASM_TYPE_F64,
+	WASM_TYPE_I32,
+} from '@8f4e/compiler-wasm-utils';
 import type {
 	AnalyzedLine,
 	CompiledFunction,
@@ -7,15 +14,8 @@ import type {
 	FunctionTypeRegistry,
 	Namespaces,
 	ValidatedFunctionAST,
-} from '@8f4e/compiler-spec';
-import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/compiler-spec';
-import {
-	createFunction,
-	createLocalDeclaration,
-	WASM_TYPE_F32,
-	WASM_TYPE_F64,
-	WASM_TYPE_I32,
-} from '@8f4e/compiler-wasm-utils';
+} from '@8f4e/language-spec';
+import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/language-spec';
 import type { StackAnalyzedFunction } from '@8f4e/stack-analyzer';
 import { attachStackAnalysis, compileCodegenLine } from './compileLine';
 import { createCompilationContext } from './semantic/createCompilationContext';

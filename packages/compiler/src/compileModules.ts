@@ -7,7 +7,7 @@ import type {
 	Namespaces,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import type { StackAnalysisProjectReport } from '@8f4e/stack-analyzer';
 import { compileModule } from './compileModule';
 

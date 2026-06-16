@@ -1,6 +1,5 @@
-import { documentBlockInstructionByType } from '@8f4e/compiler-spec';
-
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { documentBlockInstructionByType } from '@8f4e/language-spec';
 
 const moduleBlockType = documentBlockInstructionByType.module.type;
 

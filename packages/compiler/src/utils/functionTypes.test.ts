@@ -3,7 +3,7 @@ import {
 	createFunctionParameterSignatureKey,
 	encodeFunctionValueType,
 	type FunctionValueType,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 describe('function type id helpers', () => {

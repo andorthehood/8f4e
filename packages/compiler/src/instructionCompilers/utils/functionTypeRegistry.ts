@@ -1,6 +1,6 @@
-import type { FunctionTypeRegistry, FunctionTypeSignature } from '@8f4e/compiler-spec';
 import type { WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import { createFunctionType } from '@8f4e/compiler-wasm-utils';
+import type { FunctionTypeRegistry, FunctionTypeSignature } from '@8f4e/language-spec';
 
 /** Compares two WebAssembly type lists by value and order. */
 function wasmTypeListsEqual(left: WasmTypeValue[], right: WasmTypeValue[]): boolean {

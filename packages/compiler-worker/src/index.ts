@@ -1,5 +1,5 @@
 import { serializeDiagnostic } from '@8f4e/compiler';
-import type { CompileInput, CompileOptions } from '@8f4e/compiler-spec';
+import type { CompileInput, CompileOptions } from '@8f4e/language-spec';
 import compileAndUpdateMemory from './compileAndUpdateMemory';
 
 async function compile(input: CompileInput, compilerOptions: CompileOptions) {

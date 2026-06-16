@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup } from '@8f4e/compiler-spec';
+import type { CompiledModuleLookup } from '@8f4e/language-spec';
 import type { MemoryLookup, ResolvedMemoryReference } from './types';
 
 export function createMemoryLookup(compiledModules: CompiledModuleLookup): MemoryLookup {

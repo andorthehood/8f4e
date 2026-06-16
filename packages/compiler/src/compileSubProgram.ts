@@ -1,3 +1,4 @@
+import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsInASTs } from '@8f4e/constant-inliner';
 import type {
 	CompiledFunction,
 	CompiledFunctionLookup,
@@ -22,18 +23,21 @@ import type {
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	createFunctionId,
 	ErrorCode,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	getCustomMemoryRegionName,
+	getDefaultMemoryRegion,
+	getEffectiveFunctionMetadata,
 	getError,
 	isArrayMemoryDeclarationLine,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
-} from '@8f4e/compiler-spec';
-import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsInASTs } from '@8f4e/constant-inliner';
+	validateMemoryRegionOptions,
+} from '@8f4e/language-spec';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
 import { type MemoryLayoutSourceModule, MemoryPlannerError, planMemoryLayout } from '@8f4e/memory-planner';
 import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
@@ -51,16 +55,10 @@ import {
 } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import {
-	getCustomMemoryRegionName,
-	getDefaultMemoryRegion,
-	validateMemoryRegionOptions,
-} from './semantic/memoryRegions';
-import {
 	normalizeArgumentsAtIndexes,
 	validateOrDeferUnresolvedIdentifier,
 	validateOrDeferValueExpression,
 } from './semantic/normalization/helpers';
-import { getEffectiveFunctionMetadata } from './semantic/paramShape';
 
 /** Module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {

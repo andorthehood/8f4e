@@ -1,4 +1,4 @@
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
+import type { InstructionCompiler } from '@8f4e/language-spec';
 
 /**
  * Instruction compiler for `#skipExecution` compiler directive.

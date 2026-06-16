@@ -1,4 +1,4 @@
-import type { CompilationContext, ShapeLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, ShapeLine } from '@8f4e/language-spec';
 
 /**
  * Records a prototype `shape` instruction for the active module.

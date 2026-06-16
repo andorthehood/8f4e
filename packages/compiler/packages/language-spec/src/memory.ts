@@ -53,6 +53,26 @@ export const memoryDeclarationInstructions = [
 	...arrayMemoryDeclarationInstructions,
 ] as readonly MemoryDeclarationInstruction[];
 
+const scalarMemoryDeclarationInstructionSet: ReadonlySet<string> = new Set(scalarMemoryDeclarationInstructions);
+const arrayMemoryDeclarationInstructionSet: ReadonlySet<string> = new Set(arrayMemoryDeclarationInstructions);
+const memoryDeclarationInstructionSet: ReadonlySet<string> = new Set(memoryDeclarationInstructions);
+
+export function isScalarMemoryDeclarationInstructionName(
+	instruction: string
+): instruction is ScalarMemoryDeclarationInstruction {
+	return scalarMemoryDeclarationInstructionSet.has(instruction);
+}
+
+export function isArrayMemoryDeclarationInstructionName(
+	instruction: string
+): instruction is ArrayDeclarationInstruction {
+	return arrayMemoryDeclarationInstructionSet.has(instruction);
+}
+
+export function isMemoryDeclarationInstructionName(instruction: string): instruction is MemoryDeclarationInstruction {
+	return memoryDeclarationInstructionSet.has(instruction);
+}
+
 export type BaseMemoryType = 'int' | 'int8' | 'int16' | 'float' | 'float64';
 type ReservedUnsignedBaseMemoryType = 'int8u' | 'int16u';
 export type PointeeBaseType = BaseMemoryType | ReservedUnsignedBaseMemoryType;
@@ -176,13 +196,17 @@ export interface PlannedMemoryModule extends MemoryRegionIdentity {
 	lineNumber: number;
 	byteAddress: number;
 	wordAlignedSize: number;
+	/** Declaration lookup by id, materialized by the planner from the ordered declarations below. */
 	memory: Record<string, PlannedMemoryDeclaration>;
+	/** Declarations in planned/source order; entries are the same objects exposed through `memory`. */
 	declarations: readonly PlannedMemoryDeclaration[];
 	declarationSources: readonly PlannedMemoryDeclarationSource[];
 }
 
 export interface MemoryLayoutPlan {
+	/** Module lookup by id, materialized by the planner from the ordered module list below. */
 	modules: Record<string, PlannedMemoryModule>;
+	/** Modules in planned/source order; entries are the same objects exposed through `modules`. */
 	moduleList: readonly PlannedMemoryModule[];
 	nextByteAddressByMemoryIndex: Record<number, number>;
 }

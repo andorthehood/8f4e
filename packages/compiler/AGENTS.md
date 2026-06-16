@@ -5,7 +5,7 @@
 - Consumed via alias `@8f4e/compiler`.
 - Compiles custom assembly language into WebAssembly bytecode.
 - Supports modules (stateful, with memory) and pure functions (stateless, stack-only).
-- Shared compiler contracts live in the nested standalone subpackage `@8f4e/compiler-spec` (`packages/compiler/packages/compiler-spec`).
+- Shared language contracts live in the nested standalone subpackage `@8f4e/language-spec` (`packages/compiler/packages/language-spec`).
 - Syntax parsing now lives in the nested subpackage `@8f4e/tokenizer` (`packages/compiler/packages/tokenizer`).
 - Project preparsing lives in the nested standalone subpackage `@8f4e/project-preparser` (`packages/compiler/packages/project-preparser`).
 - Standard library sources live in the nested source package `@8f4e/stdlib` (`packages/compiler/packages/stdlib`).

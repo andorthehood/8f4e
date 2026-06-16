@@ -4,13 +4,13 @@ import {
 	type CompilationContext,
 	ErrorCode,
 	getError,
+	getParamType,
+	getPrototypeMemoryDeclarationId,
 	type PushShapeLine,
 	type ResolvedPushShapeLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { memoryStartAddressValue } from '@8f4e/memory-reference-inliner';
 import { getResolvedMemoryDeclaration } from '../utils/memoryState';
-import { getParamType } from '../utils/paramShape';
-import { getPrototypeMemoryDeclarationId } from '../utils/prototypeShapes';
 
 function createAddressPushLine(line: PushShapeLine, memoryId: string, context: CompilationContext): CodegenPushLine {
 	const address = memoryStartAddressValue(

@@ -4,7 +4,7 @@ import {
 	getError,
 	type LocalSetLine,
 	type ResolvedLocalSetLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 
 /**
  * Validates that localSet targets an already-declared local.
