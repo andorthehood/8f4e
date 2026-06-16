@@ -1,36 +1,35 @@
+import { type ScalarMemoryDeclarationInstruction, scalarMemoryDeclarationInstructions } from './memory';
 import type { LocalBinding, StackItem } from './semantic';
 
-export const SCALAR_TYPE_IDENTIFIERS = ['int', 'float', 'float64'] as const;
-
-export const POINTER_FUNCTION_TYPE_IDENTIFIERS = [
-	'int*',
-	'int**',
-	'int8*',
-	'int8**',
-	'int8u*',
-	'int8u**',
-	'int16*',
-	'int16**',
-	'int16u*',
-	'int16u**',
-	'float*',
-	'float**',
-	'float64*',
-	'float64**',
-] as const;
-
-export const FUNCTION_TYPE_IDENTIFIERS = [...SCALAR_TYPE_IDENTIFIERS, ...POINTER_FUNCTION_TYPE_IDENTIFIERS] as const;
-
-export const MAX_FUNCTION_PARAMETERS = 16;
-export const MAX_FUNCTION_RETURN_VALUES = 8;
-
-export type ScalarTypeIdentifier = (typeof SCALAR_TYPE_IDENTIFIERS)[number];
-export type PointerFunctionTypeIdentifier = (typeof POINTER_FUNCTION_TYPE_IDENTIFIERS)[number];
-export type FunctionTypeIdentifier = (typeof FUNCTION_TYPE_IDENTIFIERS)[number];
+export type ScalarTypeIdentifier = Exclude<ScalarMemoryDeclarationInstruction, `${string}*`>;
+export type PointerFunctionTypeIdentifier = Extract<ScalarMemoryDeclarationInstruction, `${string}*`>;
+export type FunctionTypeIdentifier = ScalarTypeIdentifier | PointerFunctionTypeIdentifier;
 export type FunctionValueType = FunctionTypeIdentifier;
 
 type PointerFunctionValueType = Extract<FunctionValueType, `${string}*`>;
 type PointerFunctionPointeeBaseType = NonNullable<LocalBinding['pointeeBaseType']>;
+
+function isPointerFunctionTypeIdentifier(
+	type: ScalarMemoryDeclarationInstruction
+): type is PointerFunctionTypeIdentifier {
+	return type.endsWith('*');
+}
+
+export const SCALAR_TYPE_IDENTIFIERS = scalarMemoryDeclarationInstructions.filter(
+	(type): type is ScalarTypeIdentifier => !isPointerFunctionTypeIdentifier(type)
+);
+
+export const POINTER_FUNCTION_TYPE_IDENTIFIERS = scalarMemoryDeclarationInstructions.filter(
+	isPointerFunctionTypeIdentifier
+);
+
+export const FUNCTION_TYPE_IDENTIFIERS = [
+	...SCALAR_TYPE_IDENTIFIERS,
+	...POINTER_FUNCTION_TYPE_IDENTIFIERS,
+] as readonly FunctionTypeIdentifier[];
+
+export const MAX_FUNCTION_PARAMETERS = 16;
+export const MAX_FUNCTION_RETURN_VALUES = 8;
 
 const pointerFunctionValueTypes: ReadonlySet<string> = new Set(POINTER_FUNCTION_TYPE_IDENTIFIERS);
 const functionValueTypes: ReadonlySet<string> = new Set(FUNCTION_TYPE_IDENTIFIERS);
