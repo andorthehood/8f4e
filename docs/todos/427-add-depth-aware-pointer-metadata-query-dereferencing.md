@@ -73,7 +73,7 @@ Expected semantics:
 ## Validation Checkpoints
 
 - `npx nx run compiler:test -- --run packages/tokenizer/src/syntax/parseArgument.test.ts src/semantic/resolveCompileTimeArgument.test.ts src/utils/memoryData.test.ts tests/instructions/call.test.ts`
-- `npx nx run @8f4e/compiler-spec:typecheck`
+- `npx nx run @8f4e/language-spec:typecheck`
 - `npx nx run @8f4e/compiler:typecheck`
 
 ## Success Criteria
@@ -86,7 +86,7 @@ Expected semantics:
 
 ## Affected Components
 
-- `packages/compiler/packages/compiler-spec/src/arguments.ts` - argument metadata shape for pointee queries.
+- `packages/compiler/packages/language-spec/src/arguments.ts` - argument metadata shape for pointee queries.
 - `packages/compiler/packages/tokenizer/src/syntax/parseArgument.ts` - parsing/classification of pointer metadata queries.
 - `packages/compiler/src/semantic/resolveCompileTimeArgument.ts` - compile-time metadata resolution.
 - `packages/compiler/src/utils/memoryData.ts` - depth-aware pointer metadata helpers.

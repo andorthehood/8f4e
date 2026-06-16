@@ -4,8 +4,8 @@ import type {
 	CompilerASTLine,
 	FunctionMetadata,
 	ResolvedCallLine,
-} from '@8f4e/compiler-spec';
-import { ArgumentType, createFunctionId, ErrorCode } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ArgumentType, createFunctionId, ErrorCode } from '@8f4e/language-spec';
 import { analyzeInstruction } from '@8f4e/stack-analyzer/testing';
 import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext, {

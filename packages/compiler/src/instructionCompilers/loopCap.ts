@@ -1,4 +1,4 @@
-import type { InstructionCompiler, LoopCapLine } from '@8f4e/compiler-spec';
+import type { InstructionCompiler, LoopCapLine } from '@8f4e/language-spec';
 
 /**
  * Instruction compiler for `#loopCap` compiler directive.

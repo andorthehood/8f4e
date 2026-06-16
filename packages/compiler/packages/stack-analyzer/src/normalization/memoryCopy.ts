@@ -5,7 +5,7 @@ import {
 	getError,
 	type MemoryCopyLine,
 	type NormalizedMemoryCopyLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**

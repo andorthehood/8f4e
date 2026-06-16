@@ -1,5 +1,3 @@
-import type { CompileInput, CompileOptions, CompileResult } from '@8f4e/compiler-spec';
-import { DEFAULT_HOST_IMPORT_MODULE_NAME, getCustomMemoryRegionName } from '@8f4e/compiler-spec';
 import {
 	call,
 	createCodeSection,
@@ -23,6 +21,8 @@ import {
 	WASM_MEMORY_PAGE_SIZE,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
+import type { CompileInput, CompileOptions, CompileResult } from '@8f4e/language-spec';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME, getCustomMemoryRegionName } from '@8f4e/language-spec';
 import { compileSubProgram, createCompilerCache } from './compileSubProgram';
 
 export { deriveEffectiveMemorySize } from '@8f4e/compiler-wasm-utils';

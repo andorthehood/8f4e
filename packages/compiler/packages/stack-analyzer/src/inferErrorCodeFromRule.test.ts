@@ -1,4 +1,4 @@
-import { ErrorCode } from '@8f4e/compiler-spec';
+import { ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';

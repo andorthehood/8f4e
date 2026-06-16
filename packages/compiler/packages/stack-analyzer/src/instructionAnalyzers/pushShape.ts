@@ -1,5 +1,5 @@
-import type { CompilationContext, ResolvedPushShapeLine, Stack, StackAddress } from '@8f4e/compiler-spec';
-import { functionValueTypeToStackItem } from '@8f4e/compiler-spec';
+import type { CompilationContext, ResolvedPushShapeLine, Stack, StackAddress } from '@8f4e/language-spec';
+import { functionValueTypeToStackItem } from '@8f4e/language-spec';
 import { analyzePush } from './push';
 
 /**

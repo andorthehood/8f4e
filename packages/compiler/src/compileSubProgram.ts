@@ -1,3 +1,4 @@
+import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsInASTs } from '@8f4e/constant-inliner';
 import type {
 	CompiledFunction,
 	CompiledFunctionLookup,
@@ -22,7 +23,7 @@ import type {
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	createFunctionId,
@@ -36,8 +37,7 @@ import {
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	validateMemoryRegionOptions,
-} from '@8f4e/compiler-spec';
-import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsInASTs } from '@8f4e/constant-inliner';
+} from '@8f4e/language-spec';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
 import { type MemoryLayoutSourceModule, MemoryPlannerError, planMemoryLayout } from '@8f4e/memory-planner';
 import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';

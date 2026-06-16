@@ -49,7 +49,7 @@ typed table indices, but raw integers should not automatically become callable w
 
 ### Step 1: Define the function reference type
 
-- Add a function reference type to compiler-spec value/type metadata.
+- Add a function reference type to language-spec value/type metadata.
 - Decide its source syntax, such as a `funcref` scalar type or a signature-aware spelling like `fn<int,float>`.
 - Encode the referenced function signature in compiler metadata so stack analysis can validate indirect call arguments.
 - Decide whether function references are initially limited to concrete non-overloaded function ids or can refer to
@@ -97,7 +97,7 @@ typed table indices, but raw integers should not automatically become callable w
 
 ## Affected Components
 
-- `packages/compiler/packages/compiler-spec/src/` - value type, function metadata, and compiled output contracts.
+- `packages/compiler/packages/language-spec/src/` - value type, function metadata, and compiled output contracts.
 - `packages/compiler/src/semantic/` - function reference parsing, resolution, and reachability metadata.
 - `packages/compiler/src/stackAnalysis/` - function-reference stack metadata and indirect-call validation.
 - `packages/compiler/src/instructionCompilers/` - `call_indirect` bytecode emission.

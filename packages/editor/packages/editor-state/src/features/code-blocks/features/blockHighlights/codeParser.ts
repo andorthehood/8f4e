@@ -1,4 +1,4 @@
-import { stackBlockInstructionPairs } from '@8f4e/compiler-spec';
+import { stackBlockInstructionPairs } from '@8f4e/language-spec';
 import { instructionParser } from '@8f4e/tokenizer';
 
 const endInstructionByStartInstruction = new Map<string, string>(

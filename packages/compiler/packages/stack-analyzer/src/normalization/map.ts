@@ -1,5 +1,5 @@
-import type { CompilationContext, MapLine, NormalizedArgumentLiteral, NormalizedMapLine } from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
+import type { CompilationContext, MapLine, NormalizedArgumentLiteral, NormalizedMapLine } from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /** Creates the implicit key argument for one-argument `map` rows from the active map state. */

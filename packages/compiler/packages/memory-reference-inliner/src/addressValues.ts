@@ -1,5 +1,5 @@
-import type { Const, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY, getMemoryRegionFields } from '@8f4e/compiler-spec';
+import type { Const, PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import { GLOBAL_ALIGNMENT_BOUNDARY, getMemoryRegionFields } from '@8f4e/language-spec';
 import { getEndByteAddress } from './layoutAddresses';
 
 type AddressableMemoryDeclaration = Pick<

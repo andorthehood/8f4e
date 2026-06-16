@@ -2,7 +2,7 @@
  * Types for code-blocks feature - manages code block entities, rendering, and interactions.
  */
 
-import type { DocumentBlockType, PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
+import type { DocumentBlockType, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { SpriteLookup } from 'glugglug';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 

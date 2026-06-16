@@ -1,4 +1,4 @@
-import type { CompilationContext, DefaultLine, NormalizedDefaultLine } from '@8f4e/compiler-spec';
+import type { CompilationContext, DefaultLine, NormalizedDefaultLine } from '@8f4e/language-spec';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**

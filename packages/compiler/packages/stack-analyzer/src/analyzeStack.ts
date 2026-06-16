@@ -24,7 +24,7 @@ import type {
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import {
 	ArgumentType,
 	BlockType,
@@ -41,7 +41,7 @@ import {
 	isSemanticInstructionLine,
 	MAX_FUNCTION_PARAMETERS,
 	resolveRegionDirective,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { analyzeInstruction } from './analyzeInstruction';
 import { popBlock, pushBlock } from './blockStack';
 import { createCompilationContext } from './createCompilationContext';

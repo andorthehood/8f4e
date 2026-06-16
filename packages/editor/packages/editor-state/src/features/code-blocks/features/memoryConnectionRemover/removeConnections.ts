@@ -3,7 +3,7 @@ import {
 	type CompilerASTLine,
 	isArrayMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 import { parseLine } from '@8f4e/tokenizer';
 
 function parseSourceLine(line: string, lineNumber: number): CompilerASTLine | undefined {

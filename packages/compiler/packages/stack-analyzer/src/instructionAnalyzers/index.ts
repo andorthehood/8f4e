@@ -6,8 +6,8 @@ import type {
 	NormalizedPushLine,
 	ResolvedCallLine,
 	ResolvedPushShapeLine,
-} from '@8f4e/compiler-spec';
-import { getInstructionSpec } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { getInstructionSpec } from '@8f4e/language-spec';
 import { analyzeCall } from './call';
 import { analyzeExitIfTrue } from './controlFlow';
 import { analyzeFunctionEnd } from './functionEnd';

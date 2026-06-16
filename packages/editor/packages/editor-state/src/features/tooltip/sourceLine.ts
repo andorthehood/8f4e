@@ -4,7 +4,7 @@ import {
 	getInstructionSpec,
 	type InstructionSpec,
 	memoryDeclarationInstructions,
-} from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
 
 import { getInstructionStackSignature } from './stackSignature';
 

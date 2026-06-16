@@ -12,7 +12,7 @@ completed: null
 
 ## Problem Description
 
-Several compiler-spec contracts still act as broad "swiss army" shapes that combine multiple semantic variants behind optional fields. A quick attempt to split some apparently small cases showed that even those changes cascade across stack analysis, codegen, semantic normalization, and snapshots.
+Several language-spec contracts still act as broad "swiss army" shapes that combine multiple semantic variants behind optional fields. A quick attempt to split some apparently small cases showed that even those changes cascade across stack analysis, codegen, semantic normalization, and snapshots.
 
 Known candidates:
 
@@ -45,7 +45,7 @@ Prefer a staged plan over one large refactor. The likely order is:
 
 ## Anti-Patterns
 
-- Do not start by changing several shared compiler-spec contracts at once.
+- Do not start by changing several shared language-spec contracts at once.
 - Do not treat `MapBlockState` or `CollectedNamespace` as isolated "tiny" refactors without checking stack analysis, snapshots, and semantic normalization.
 - Do not add a discriminant while leaving the old optional-field model active indefinitely.
 - Do not introduce compatibility aliases for old shapes unless a temporary migration helper is essential inside one commit.
@@ -73,9 +73,9 @@ Prefer a staged plan over one large refactor. The likely order is:
 
 ## Validation Checkpoints
 
-- `rg -n "interface (DataStructure|LocalBinding|CompilationContext|MapBlockState|CollectedNamespace)|type Const|NormalizedArgumentLiteral|interface StackItem" packages/compiler/packages/compiler-spec/src -g '*.ts'`
-- `rg -n "\\?\\.|!|pointeeBaseType|isPointingToPointer|defaultSet|defaultIs|memory\\?\\[|byteAddress\\?|wordAlignedSize\\?" packages/compiler/src packages/compiler/packages/compiler-spec/src -g '*.ts'`
-- Confirm the resulting plan does not require editing unrelated editor/runtime packages unless the shared compiler-spec contract truly crosses that boundary.
+- `rg -n "interface (DataStructure|LocalBinding|CompilationContext|MapBlockState|CollectedNamespace)|type Const|NormalizedArgumentLiteral|interface StackItem" packages/compiler/packages/language-spec/src -g '*.ts'`
+- `rg -n "\\?\\.|!|pointeeBaseType|isPointingToPointer|defaultSet|defaultIs|memory\\?\\[|byteAddress\\?|wordAlignedSize\\?" packages/compiler/src packages/compiler/packages/language-spec/src -g '*.ts'`
+- Confirm the resulting plan does not require editing unrelated editor/runtime packages unless the shared language-spec contract truly crosses that boundary.
 
 ## Success Criteria
 
@@ -86,8 +86,8 @@ Prefer a staged plan over one large refactor. The likely order is:
 
 ## Affected Components
 
-- `packages/compiler/packages/compiler-spec/src/semantic.ts` - shared semantic contracts for stack, locals, context, maps, namespaces, and constants.
-- `packages/compiler/packages/compiler-spec/src/memory.ts` - `DataStructure` and memory value/default metadata.
+- `packages/compiler/packages/language-spec/src/semantic.ts` - shared semantic contracts for stack, locals, context, maps, namespaces, and constants.
+- `packages/compiler/packages/language-spec/src/memory.ts` - `DataStructure` and memory value/default metadata.
 - `packages/compiler/src/stackAnalysis/` - stack item production, consumption, and map validation.
 - `packages/compiler/src/semantic/` - namespace collection, compile-time argument normalization, and memory declaration metadata.
 - `packages/compiler/src/instructionCompilers/` - codegen consumers that currently rely on broad metadata shapes.
@@ -96,7 +96,7 @@ Prefer a staged plan over one large refactor. The likely order is:
 
 - **Cascade risk**: Apparently small shape changes can update snapshots, analysis, codegen, and semantic normalization at the same time.
 - **Ordering matters**: Splitting dependent types before `StackItem` may cause churn that is later rewritten.
-- **Public contract churn**: These types live in `compiler-spec`, so editor-state or tooling consumers may need follow-up changes.
+- **Public contract churn**: These types live in `language-spec`, so editor-state or tooling consumers may need follow-up changes.
 - **No release compatibility burden**: Prefer direct updates over compatibility aliases because the project has not been released yet.
 
 ## Related Items

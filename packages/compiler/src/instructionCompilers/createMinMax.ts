@@ -1,4 +1,3 @@
-import type { InstructionCompiler } from '@8f4e/compiler-spec';
 import {
 	localGet,
 	localSet,
@@ -13,6 +12,7 @@ import {
 	WASM_IF,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
+import type { InstructionCompiler } from '@8f4e/language-spec';
 
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '../utils/operandTypes';
 import { saveByteCode } from './utils/saveByteCode';

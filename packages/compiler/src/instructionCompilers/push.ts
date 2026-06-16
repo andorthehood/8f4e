@@ -6,8 +6,8 @@ import type {
 	ResolvedMemoryPointerPushLine,
 	ResolvedMemoryPushLine,
 	ResolvedPushLine,
-} from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
+} from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 import pushLiteral from './push/handlers/pushLiteral';
 import pushLocal from './push/handlers/pushLocal';
 import pushLocalPointer from './push/handlers/pushLocalPointer';

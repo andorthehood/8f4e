@@ -1,4 +1,4 @@
-import type { CompilableBlockType } from '@8f4e/compiler-spec';
+import type { CompilableBlockType } from '@8f4e/language-spec';
 
 export interface ProjectBlock {
 	id: number;

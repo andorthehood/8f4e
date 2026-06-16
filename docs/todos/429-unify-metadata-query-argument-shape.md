@@ -17,7 +17,7 @@ Metadata query parsing currently has separate argument variants and classifier b
 
 Current state:
 - tokenizer code repeats the same local/intermodule/pointee branching for each query
-- compiler-spec has many reference kinds for one conceptual operation family
+- language-spec has many reference kinds for one conceptual operation family
 - semantic resolution has matching repeated branches for each query and pointer variant
 - adding `count(*name)` and `min(*name)` required touching several parallel paths
 
@@ -56,7 +56,7 @@ The exact field names can change, but the important part is that the query kind,
 ## Implementation Plan
 
 ### Step 1: Add the unified argument shape
-- Replace metadata-specific reference kinds in `packages/compiler/packages/compiler-spec/src/arguments.ts`.
+- Replace metadata-specific reference kinds in `packages/compiler/packages/language-spec/src/arguments.ts`.
 - Include explicit `query` and `dereferenceDepth` fields.
 - Keep address references, plain identifiers, constants, and runtime pointer dereferences as separate concepts.
 
@@ -77,12 +77,12 @@ The exact field names can change, but the important part is that the query kind,
 ## Validation Checkpoints
 
 - `npx nx run compiler:test -- --run packages/tokenizer/src/syntax/parseArgument.test.ts src/semantic/resolveCompileTimeArgument.test.ts`
-- `npx nx run @8f4e/compiler-spec:typecheck`
+- `npx nx run @8f4e/language-spec:typecheck`
 - `npx nx run @8f4e/compiler:typecheck`
 
 ## Success Criteria
 
-- [ ] Metadata queries use one compiler-spec argument variant.
+- [ ] Metadata queries use one language-spec argument variant.
 - [ ] Parser logic for `count`, `sizeof`, `max`, and `min` is table-driven or otherwise centralized.
 - [ ] Pointer metadata queries carry explicit dereference depth.
 - [ ] Old metadata reference kinds are removed.
@@ -90,7 +90,7 @@ The exact field names can change, but the important part is that the query kind,
 
 ## Affected Components
 
-- `packages/compiler/packages/compiler-spec/src/arguments.ts`
+- `packages/compiler/packages/language-spec/src/arguments.ts`
 - `packages/compiler/packages/tokenizer/src/syntax/parseArgument.ts`
 - `packages/compiler/src/semantic/resolveCompileTimeArgument.ts`
 - `packages/compiler/src/semantic/normalizeCompileTimeArguments.ts`

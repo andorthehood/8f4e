@@ -1,5 +1,5 @@
-import type { AnalyzedLine, CodegenPushLine, InstructionCompiler, ResolvedCallLine } from '@8f4e/compiler-spec';
 import { call as wasmCall } from '@8f4e/compiler-wasm-utils';
+import type { AnalyzedLine, CodegenPushLine, InstructionCompiler, ResolvedCallLine } from '@8f4e/language-spec';
 import push from './push';
 import { saveByteCode } from './utils/saveByteCode';
 
