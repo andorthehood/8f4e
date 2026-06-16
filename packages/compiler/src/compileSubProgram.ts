@@ -11,42 +11,18 @@ import type {
 	FunctionMetadataLookup,
 	FunctionRegistry,
 	FunctionTypeRegistry,
-	MemoryDeclarationLine,
 	MemoryLayoutPlan,
 	Module,
-	NamespaceBuildContext,
-	Namespaces,
-	SemanticInstructionLine,
-	ShapeLine,
 	ValidatedAST,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import {
-	ArgumentType,
-	createFunctionId,
-	ErrorCode,
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	getDefaultMemoryRegion,
-	getEffectiveFunctionMetadata,
-	getError,
-	isArrayMemoryDeclarationLine,
-	isMemoryDeclarationLine,
-	isSemanticInstructionLine,
-	validateMemoryRegionOptions,
-} from '@8f4e/language-spec';
+import { createFunctionId, ErrorCode, getEffectiveFunctionMetadata, getError } from '@8f4e/language-spec';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
-import { type MemoryLayoutSourceModule, MemoryPlannerError, planMemoryLayout } from '@8f4e/memory-planner';
+import { MemoryPlannerError, planProjectMemoryLayout } from '@8f4e/memory-planner';
 import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
-import {
-	applySemanticLine,
-	createCompilationContext,
-	normalizeArgumentsAtIndexes,
-	validateOrDeferUnresolvedIdentifier,
-	validateOrDeferValueExpression,
-} from '@8f4e/semantic-utils';
 import { analyzeStack } from '@8f4e/stack-analyzer';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction, compileModules } from '@8f4e/wasm-codegen';
@@ -156,153 +132,8 @@ function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionReg
 	return { byId, arityByName };
 }
 
-/** Indexes prototype ASTs by id and rejects duplicate prototype declarations. */
-function collectPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
-	const prototypeShapesById: Record<string, ValidatedPrototypeAST> = {};
-
-	for (const prototype of prototypes) {
-		const existing = prototypeShapesById[prototype.id];
-		if (existing) {
-			throw getError(
-				ErrorCode.DUPLICATE_IDENTIFIER,
-				prototype.prototypeLine,
-				{
-					codeBlockType: prototype.type,
-					...(prototype.projectBlockId !== undefined ? { projectBlockId: prototype.projectBlockId } : {}),
-				},
-				{
-					identifier: prototype.id,
-				}
-			);
-		}
-		prototypeShapesById[prototype.id] = prototype;
-	}
-
-	return prototypeShapesById;
-}
-
-function createMemoryLayoutSourceBuildContext(
-	ast: ValidatedModuleAST,
-	namespaces: Namespaces,
-	startingByteAddress: number,
-	options: Pick<CompileOptions, 'memoryRegions'>
-): NamespaceBuildContext {
-	const currentMemoryRegion = getDefaultMemoryRegion();
-	return createCompilationContext<NamespaceBuildContext>({
-		namespace: {
-			namespaces,
-			moduleName: undefined,
-			prototypeShapeIds: [],
-		},
-		locals: {},
-		byteCode: [],
-		stack: [],
-		blockStack: [],
-		startingByteAddress,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: currentMemoryRegion.memoryIndex,
-		...(currentMemoryRegion.memoryRegionName ? { currentMemoryRegionName: currentMemoryRegion.memoryRegionName } : {}),
-		memoryDefaults: {},
-		pointerMetadata: {},
-		memoryRegions: options.memoryRegions ?? [],
-		mode: 'module',
-		codeBlockType: ast.type,
-		projectBlockId: ast.projectBlockId,
-	});
-}
-
-function isShapeLine(line: SemanticInstructionLine): line is ShapeLine {
-	return line.instruction === 'shape';
-}
-
-function normalizeLayoutMemoryDeclarationLine(
-	line: MemoryDeclarationLine,
-	context: NamespaceBuildContext
-): MemoryDeclarationLine {
-	if (!isArrayMemoryDeclarationLine(line)) {
-		return line;
-	}
-
-	const { line: normalizedLine } = normalizeArgumentsAtIndexes(line, context, [1]);
-	const elementCount = normalizedLine.arguments[1];
-	if (elementCount.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const deferred = validateOrDeferValueExpression(elementCount, line, context);
-		if (deferred) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, {
-				identifier: `${elementCount.left.value}${elementCount.operator}${elementCount.right.value}`,
-			});
-		}
-	}
-	if (elementCount.type === ArgumentType.IDENTIFIER) {
-		const deferred = validateOrDeferUnresolvedIdentifier(elementCount, line, context);
-		if (deferred) {
-			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: elementCount.value });
-		}
-	}
-
-	return normalizedLine;
-}
-
-function collectModuleMemoryLayoutSourceLines(
-	ast: ValidatedModuleAST,
-	namespaces: Namespaces,
-	startingByteAddress: number,
-	options: Pick<CompileOptions, 'memoryRegions'>
-): MemoryLayoutSourceModule {
-	const sourceModule: MemoryLayoutSourceModule = {
-		id: ast.id,
-		moduleLine: ast.moduleLine,
-		...(ast.regionLine ? { regionLine: ast.regionLine } : {}),
-		lines: [],
-	};
-	const context = createMemoryLayoutSourceBuildContext(ast, namespaces, startingByteAddress, options);
-
-	for (const line of ast.lines) {
-		if (isMemoryDeclarationLine(line)) {
-			sourceModule.lines = [...sourceModule.lines, normalizeLayoutMemoryDeclarationLine(line, context)];
-			continue;
-		}
-
-		if (!isSemanticInstructionLine(line)) {
-			continue;
-		}
-
-		if (!isShapeLine(line)) {
-			applySemanticLine(line, context);
-			continue;
-		}
-
-		sourceModule.lines = [...sourceModule.lines, line];
-	}
-
-	return sourceModule;
-}
-
-function createMemoryLayoutSourceModules(
-	asts: readonly ValidatedModuleAST[],
-	namespaces: Namespaces,
-	startingByteAddress: number,
-	options: Pick<CompileOptions, 'memoryRegions'>
-): MemoryLayoutSourceModule[] {
-	return asts.map(ast => collectModuleMemoryLayoutSourceLines(ast, namespaces, startingByteAddress, options));
-}
-
-function planProjectMemoryLayout(
-	asts: readonly ValidatedModuleAST[],
-	prototypes: readonly ValidatedPrototypeAST[],
-	startingByteAddress = GLOBAL_ALIGNMENT_BOUNDARY,
-	options: Pick<CompileOptions, 'memoryRegions'> = {}
-): MemoryLayoutPlan {
-	validateMemoryRegionOptions(options, asts[0]?.lines[0]);
-	const namespaces: Namespaces = {};
-
-	return planMemoryLayout({
-		prototypes,
-		modules: createMemoryLayoutSourceModules(asts, namespaces, startingByteAddress, options),
-		startingByteAddress,
-		memoryRegions: options.memoryRegions ?? [],
-	});
+function indexPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
+	return Object.fromEntries(prototypes.map(prototype => [prototype.id, prototype]));
 }
 
 function getAstDiagnosticId(ast: ValidatedAST): string | undefined {
@@ -427,7 +258,6 @@ export function compileSubProgram(
 	options: CompileOptions,
 	cache = createCompilerCache()
 ): CompiledSubProgram {
-	validateMemoryRegionOptions(options);
 	const inputEntryNames = Object.keys(input.entries);
 	const entryModules = Object.entries(input.entries).flatMap(([entryName, modules]) =>
 		modules.map((module, index) => ({ entryName, module, index }))
@@ -489,15 +319,13 @@ export function compileSubProgram(
 		throw wrapConstantInliningError(error, projectAst);
 	}
 
-	const constantInlinedPrototypeShapesById = collectPrototypeShapes(constantInlinedAst.prototypes);
 	let memoryPlan: ReturnType<typeof planProjectMemoryLayout>;
 	try {
-		memoryPlan = planProjectMemoryLayout(
-			constantInlinedAst.modules,
-			Object.values(constantInlinedPrototypeShapesById),
-			GLOBAL_ALIGNMENT_BOUNDARY,
-			options
-		);
+		memoryPlan = planProjectMemoryLayout({
+			prototypes: constantInlinedAst.prototypes,
+			modules: constantInlinedAst.modules,
+			memoryRegions: options.memoryRegions,
+		});
 	} catch (error) {
 		throw wrapMemoryPlannerError(error, constantInlinedAst);
 	}
@@ -518,7 +346,7 @@ export function compileSubProgram(
 		constants: inlinedAstConstants,
 		functions: inlinedAstFunctions,
 	};
-	const inlinedPrototypeShapesById = collectPrototypeShapes(inlinedAstPrototypes);
+	const inlinedPrototypeShapesById = indexPrototypeShapes(inlinedAstPrototypes);
 	let memoryDefaultResolution: ReturnType<typeof resolveMemoryDefaults>;
 	try {
 		memoryDefaultResolution = resolveMemoryDefaults({
@@ -528,7 +356,7 @@ export function compileSubProgram(
 		throw wrapMemoryDefaultResolverError(error, inlinedProjectAst);
 	}
 
-	const namespaces = collectNamespacesFromASTs(inlinedAstModules, memoryPlan, memoryDefaultResolution, options);
+	const namespaces = collectNamespacesFromASTs(inlinedAstModules, memoryPlan, memoryDefaultResolution);
 
 	const importedUserFunctionCount = inlinedAstFunctions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;

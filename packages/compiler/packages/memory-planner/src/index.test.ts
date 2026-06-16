@@ -1,4 +1,12 @@
-import type { MemoryDeclarationLine, RegionLine, ShapeLine } from '@8f4e/language-spec';
+import type {
+	ArgumentCompileTimeExpression,
+	CompilerASTLine,
+	MemoryDeclarationLine,
+	RegionLine,
+	ShapeLine,
+	ValidatedModuleAST,
+	ValidatedPrototypeAST,
+} from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import {
@@ -6,6 +14,7 @@ import {
 	type MemoryLayoutSourcePrototype,
 	MemoryPlannerError,
 	planMemoryLayout,
+	planProjectMemoryLayout,
 } from './index';
 
 function identifier(value: string) {
@@ -23,6 +32,20 @@ function literal(value: number) {
 		value,
 		isInteger: true,
 	} as const;
+}
+
+function expression(
+	left: ReturnType<typeof literal>,
+	operator: ArgumentCompileTimeExpression['operator'],
+	right: ReturnType<typeof literal>
+): ArgumentCompileTimeExpression {
+	return {
+		type: ArgumentType.COMPILE_TIME_EXPRESSION,
+		left,
+		operator,
+		right,
+		intermoduleIds: [],
+	};
 }
 
 function moduleAst(
@@ -59,6 +82,44 @@ function shapeLine(id: string, lineNumber: number): ShapeLine {
 		instruction: 'shape',
 		arguments: [identifier(id)],
 	};
+}
+
+function moduleLine(id: string, lineNumber: number) {
+	return {
+		lineNumber,
+		instruction: 'module',
+		arguments: [identifier(id)],
+	} as const;
+}
+
+function validatedModuleAst(id: string, lineNumber: number, lines: readonly CompilerASTLine[]): ValidatedModuleAST {
+	return {
+		type: 'module',
+		id,
+		lines: [moduleLine(id, lineNumber), ...lines],
+		moduleLine: moduleLine(id, lineNumber),
+		memoryDeclarationLines: [],
+	} as ValidatedModuleAST;
+}
+
+function prototypeAst(
+	id: string,
+	lineNumber: number,
+	memoryDeclarationLines: readonly MemoryDeclarationLine[]
+): ValidatedPrototypeAST {
+	const prototypeLine = {
+		lineNumber,
+		instruction: 'prototype',
+		arguments: [identifier(id)],
+	} as const;
+
+	return {
+		type: 'prototype',
+		id,
+		lines: [prototypeLine, ...memoryDeclarationLines],
+		prototypeLine,
+		memoryDeclarationLines,
+	} as ValidatedPrototypeAST;
 }
 
 describe('planMemoryLayout', () => {
@@ -213,6 +274,70 @@ describe('planMemoryLayout', () => {
 			planMemoryLayout({
 				prototypes: [],
 				modules: [moduleAst('main', 1, [shapeLine('missing', 11)])],
+			})
+		).toThrow(MemoryPlannerError);
+	});
+});
+
+describe('planProjectMemoryLayout', () => {
+	it('builds planner-ready source from validated module and prototype ASTs', () => {
+		const inherited = {
+			lineNumber: 20,
+			instruction: 'int',
+			hasExplicitMemoryDefault: false,
+			arguments: [identifier('inherited')],
+		} satisfies MemoryDeclarationLine;
+		const local = {
+			lineNumber: 4,
+			instruction: 'int[]',
+			hasExplicitMemoryDefault: false,
+			arguments: [identifier('values'), expression(literal(2), '*', literal(3))],
+		} satisfies MemoryDeclarationLine;
+
+		const plan = planProjectMemoryLayout({
+			prototypes: [prototypeAst('state', 19, [inherited])],
+			modules: [validatedModuleAst('main', 1, [shapeLine('state', 3), local])],
+			startingByteAddress: 4,
+		});
+
+		expect(plan.modules.main.declarations.map(declaration => declaration.id)).toEqual(['inherited', 'values']);
+		expect(plan.modules.main.memory.values.numberOfElements).toBe(6);
+		expect(plan.modules.main.declarationSources).toEqual([
+			{ line: { ...inherited, lineNumber: 3 }, isInherited: true },
+			{
+				line: {
+					...local,
+					arguments: [identifier('values'), literal(6)],
+				},
+				isInherited: false,
+			},
+		]);
+	});
+
+	it('rejects unresolved array declaration sizes while building planner input', () => {
+		const line = {
+			lineNumber: 4,
+			instruction: 'int[]',
+			hasExplicitMemoryDefault: false,
+			arguments: [identifier('values'), identifier('missing')],
+		} satisfies MemoryDeclarationLine;
+
+		expect(() =>
+			planProjectMemoryLayout({
+				prototypes: [],
+				modules: [validatedModuleAst('main', 1, [line])],
+			})
+		).toThrow(MemoryPlannerError);
+	});
+
+	it('rejects duplicate prototype ids while building planner input', () => {
+		const first = prototypeAst('state', 1, []);
+		const second = prototypeAst('state', 10, []);
+
+		expect(() =>
+			planProjectMemoryLayout({
+				prototypes: [first, second],
+				modules: [],
 			})
 		).toThrow(MemoryPlannerError);
 	});
