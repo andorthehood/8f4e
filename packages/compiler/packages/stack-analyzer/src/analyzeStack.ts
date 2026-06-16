@@ -42,9 +42,8 @@ import {
 	MAX_FUNCTION_PARAMETERS,
 	resolveRegionDirective,
 } from '@8f4e/language-spec';
+import { createCompilationContext, popBlock, pushBlock } from '@8f4e/semantic-utils';
 import { analyzeInstruction } from './analyzeInstruction';
-import { popBlock, pushBlock } from './blockStack';
-import { createCompilationContext } from './createCompilationContext';
 import { cloneStack } from './instructionAnalyzers/stack';
 import normalizeValueArguments from './normalizeValueArguments';
 import { resolveMapKind, validateMapValueKind } from './utils/mapValueKind';
