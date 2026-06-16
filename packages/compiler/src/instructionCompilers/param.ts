@@ -5,8 +5,7 @@ import type {
 	InstructionCompiler,
 	ParamLine,
 } from '@8f4e/compiler-spec';
-import { ErrorCode, MAX_FUNCTION_PARAMETERS } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { ErrorCode, getError, MAX_FUNCTION_PARAMETERS } from '@8f4e/compiler-spec';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 
 /**

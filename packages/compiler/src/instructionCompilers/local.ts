@@ -1,6 +1,5 @@
 import type { FunctionValueType, InstructionCompiler, LocalDeclarationLine } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { ErrorCode, getError } from '@8f4e/compiler-spec';
 import { getPlannedMemoryDeclaration } from '../semantic/memoryState';
 import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
 

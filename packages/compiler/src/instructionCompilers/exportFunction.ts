@@ -1,6 +1,5 @@
 import type { ExportLine, FunctionCodegenContext, InstructionCompiler } from '@8f4e/compiler-spec';
-import { ErrorCode } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
+import { ErrorCode, getError } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `#export`.

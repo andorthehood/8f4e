@@ -1,7 +1,6 @@
 import type { CompilationContext, CompilerASTLine, FunctionValueType, Stack } from '@8f4e/compiler-spec';
-import { ErrorCode, MAX_FUNCTION_RETURN_VALUES } from '@8f4e/compiler-spec';
-import { getError } from '../../compilerError';
-import { stackItemMatchesFunctionValueType } from '../../utils/functionValueType';
+import { ErrorCode, getError, MAX_FUNCTION_RETURN_VALUES } from '@8f4e/compiler-spec';
+import { stackItemMatchesFunctionValueType } from '../utils/functionValueType';
 import { consume } from './stack';
 
 /**

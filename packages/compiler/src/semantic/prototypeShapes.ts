@@ -3,9 +3,9 @@ import {
 	type CompilerASTLine,
 	type CompilerDiagnosticContext,
 	ErrorCode,
+	getError,
 	type MemoryDeclarationLine,
 } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
 
 /**
  * Reads the field id from a prototype memory declaration line.

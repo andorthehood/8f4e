@@ -6,12 +6,12 @@ import {
 	type FunctionMetadata,
 	type FunctionParamShapeExpansion,
 	type FunctionValueType,
+	getError,
 	type MemoryDeclarationLine,
 	type ParamShapeLine,
 	type ValidatedFunctionAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { getError } from '../compilerError';
 import { getPrototypeMemoryDeclarationId } from './prototypeShapes';
 
 const functionTypeIdentifiers = new Set<string>(FUNCTION_TYPE_IDENTIFIERS);

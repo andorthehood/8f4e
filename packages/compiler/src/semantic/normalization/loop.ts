@@ -1,7 +1,5 @@
 import type { CompilationContext, LoopLine, NormalizedLoopLine } from '@8f4e/compiler-spec';
-import { ArgumentType, ErrorCode } from '@8f4e/compiler-spec';
-
-import { getError } from '../../compilerError';
+import { ArgumentType, ErrorCode, getError } from '@8f4e/compiler-spec';
 import { normalizeAndValidateResolvableArgs } from './helpers';
 
 /**

@@ -3,11 +3,11 @@ import {
 	type CodegenPushLine,
 	type CompilationContext,
 	ErrorCode,
+	getError,
 	type PushShapeLine,
 	type ResolvedPushShapeLine,
 } from '@8f4e/compiler-spec';
 import { memoryStartAddressValue } from '@8f4e/memory-reference-inliner';
-import { getError } from '../../compilerError';
 import { getResolvedMemoryDeclaration } from '../memoryState';
 import { getParamType } from '../paramShape';
 import { getPrototypeMemoryDeclarationId } from '../prototypeShapes';

@@ -1,9 +1,8 @@
 import type { CompilerASTLine } from '@8f4e/compiler-spec';
 import { ArgumentType } from '@8f4e/compiler-spec';
 import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
+import { analyzeInstruction } from '@8f4e/stack-analyzer';
 import { describe, expect, it } from 'vitest';
-
-import { validateInstruction } from '../stackAnalysis/validateInstruction';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../utils/testUtils';
 import storeBytes from './storeBytes';
 
@@ -22,7 +21,7 @@ describe('storeBytes instruction compiler', () => {
 		} as CompilerASTLine;
 
 		expect(() => {
-			validateInstruction(line, context);
+			analyzeInstruction(line, context);
 		}).toThrow();
 	});
 

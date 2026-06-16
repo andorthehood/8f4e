@@ -1,5 +1,5 @@
 import type { MemoryAddressRange, StackAddress, StackItem } from '@8f4e/compiler-spec';
-import { getMemoryRegionFields } from '../../semantic/memoryRegions';
+import { getMemoryRegionFields } from './memoryRegionFields';
 
 /** Shifts a proven safe range forward by a known byte offset, dropping it when unsafe. */
 function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {

@@ -13,6 +13,7 @@ import type {
 import {
 	ErrorCode,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	getError,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 } from '@8f4e/compiler-spec';
@@ -23,13 +24,12 @@ import {
 	WASM_TYPE_F64,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
+import { analyzeInstruction } from '@8f4e/stack-analyzer';
 import { compileCodegenLine, toCompiledStackAnalysisLine } from './compileLine';
-import { getError } from './compilerError';
 import { applySemanticLine } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import { getMemoryRegionFields } from './semantic/memoryRegions';
 import normalizeValueArguments from './semantic/normalizeValueArguments';
-import { analyzeInstruction } from './stackAnalysis/analyzeInstruction';
 
 /**
  * Compiles one validated module AST into its WebAssembly cycle function and memory metadata.

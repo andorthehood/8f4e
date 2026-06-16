@@ -6,9 +6,8 @@ import type {
 	ResolvedCallLine,
 } from '@8f4e/compiler-spec';
 import { ArgumentType, createFunctionId, ErrorCode } from '@8f4e/compiler-spec';
+import { analyzeInstruction } from '@8f4e/stack-analyzer';
 import { describe, expect, it } from 'vitest';
-
-import { analyzeInstruction } from '../stackAnalysis/analyzeInstruction';
 import createInstructionCompilerTestContext, {
 	analyzeAndCompileInstruction,
 	seedTestMemoryDeclarations,

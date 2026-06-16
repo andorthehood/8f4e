@@ -1,5 +1,5 @@
 import type { StackItem, StackValueType } from '@8f4e/compiler-spec';
-import { areAllOperandsFloat64, areAllOperandsIntegers } from '../../../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers } from '../../utils/operandTypes';
 import { createStackValue } from '../stack';
 
 /**
