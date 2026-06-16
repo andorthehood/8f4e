@@ -50,9 +50,14 @@ export function compileModules(
 			prototypeShapes
 		);
 		compiledModules = inlineMemoryReferences({
-			ast: modules,
+			ast: {
+				prototypes: [],
+				modules,
+				constants: [],
+				functions: [],
+			},
 			memoryPlan,
-		}).ast;
+		}).ast.modules;
 		ns = collectNamespacesFromASTs(
 			compiledModules,
 			startingByteAddress,

@@ -66,12 +66,17 @@ describe('inlineMemoryReferences', () => {
 		} satisfies MemoryLayoutPlan;
 
 		const result = inlineMemoryReferences({
-			ast: [ast],
+			ast: {
+				prototypes: [],
+				modules: [ast],
+				constants: [],
+				functions: [],
+			},
 			memoryPlan,
 		});
 
-		expect(result.ast[0]).not.toBe(ast);
-		expect(result.ast[0].lines[1].arguments[0]).toEqual({
+		expect(result.ast.modules[0]).not.toBe(ast);
+		expect(result.ast.modules[0].lines[1].arguments[0]).toEqual({
 			type: ArgumentType.LITERAL,
 			value: 20,
 			isInteger: true,
@@ -176,11 +181,16 @@ describe('inlineMemoryReferences', () => {
 		} satisfies MemoryLayoutPlan;
 
 		const result = inlineMemoryReferences({
-			ast: [ast],
+			ast: {
+				prototypes: [],
+				modules: [ast],
+				constants: [],
+				functions: [],
+			},
 			memoryPlan,
 		});
 
-		expect(result.ast[0].lines[3].arguments[0]).toEqual({
+		expect(result.ast.modules[0].lines[3].arguments[0]).toEqual({
 			type: ArgumentType.LITERAL,
 			value: 4,
 			isInteger: true,

@@ -326,7 +326,18 @@ export function compileSubProgram(
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
 	assertUniqueModuleIds(astModules);
-	const inlineableAsts = [...astPrototypes, ...astModules, ...astConstants, ...astFunctions];
+	const projectAst = {
+		prototypes: astPrototypes,
+		modules: astModules,
+		constants: astConstants,
+		functions: astFunctions,
+	};
+	const inlineableAsts = [
+		...projectAst.prototypes,
+		...projectAst.modules,
+		...projectAst.constants,
+		...projectAst.functions,
+	];
 	try {
 		inlineConstantsInASTs(inlineableAsts);
 	} catch (error) {
@@ -342,18 +353,12 @@ export function compileSubProgram(
 		options,
 		prototypeShapesById
 	);
-	const { ast: memoryInlinedAsts } = inlineMemoryReferences({
-		ast: inlineableAsts,
+	const {
+		ast: { prototypes: inlinedAstPrototypes, modules: inlinedAstModules, functions: inlinedAstFunctions },
+	} = inlineMemoryReferences({
+		ast: projectAst,
 		memoryPlan,
 	});
-	const inlinedAstPrototypes = memoryInlinedAsts.slice(0, astPrototypes.length) as ValidatedPrototypeAST[];
-	const inlinedAstModules = memoryInlinedAsts.slice(
-		astPrototypes.length,
-		astPrototypes.length + astModules.length
-	) as ValidatedModuleAST[];
-	const inlinedAstFunctions = memoryInlinedAsts.slice(
-		astPrototypes.length + astModules.length + astConstants.length
-	) as ValidatedFunctionAST[];
 	const inlinedPrototypeShapesById = collectPrototypeShapes(inlinedAstPrototypes);
 
 	const namespaces = collectNamespacesFromASTs(

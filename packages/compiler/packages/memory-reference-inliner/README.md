@@ -21,12 +21,12 @@ This pass should not be used to make memory declarations plan-able. Declaration 
 
 The pass receives:
 
-- The whole project AST collection whose constants have already been inlined.
+- The whole project AST, grouped by block kind, whose constants have already been inlined.
 - The completed `@8f4e/memory-planner` layout plan for that same project AST.
 
 ## Output
 
-The pass returns a copied project AST collection with memory-layout value references replaced by literal arguments.
+The pass returns the same project AST grouping with memory-layout value references replaced by literal arguments.
 
 When an inlined value is an address, the literal should keep the address metadata needed by later compiler stages, such as memory index, memory region name, safe range, and clamp range.
 
@@ -39,7 +39,12 @@ There should be one project-level call during compilation:
 ```ts
 const memoryPlan = planMemoryLayout(layoutSource);
 const result = inlineMemoryReferences({
-	ast,
+	ast: {
+		prototypes,
+		modules,
+		constants,
+		functions,
+	},
 	memoryPlan,
 });
 ```
@@ -100,7 +105,12 @@ The package entry point is an `index.ts` function that returns an explicit resul
 
 ```ts
 const result = inlineMemoryReferences({
-	ast,
+	ast: {
+		prototypes,
+		modules,
+		constants,
+		functions,
+	},
 	memoryPlan,
 });
 ```
