@@ -1341,28 +1341,28 @@
   },
   "moduleMemory": {
     "localAfterParamAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "mixedWidthParamAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "namedParamAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "noParamFunctionAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "paramDifferentOrderAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "paramOrderAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "paramPartialUseAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "paramRepeatedUseAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

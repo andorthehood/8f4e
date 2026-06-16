@@ -516,7 +516,7 @@
   },
   "moduleMemory": {
     "lcgAssertions": {
-      "memoryMap": {
+      "memory": {
         "seed": {
           "byteAddress": 4,
           "default": 69420,

@@ -1,4 +1,4 @@
-import { BASE_TYPE_METADATA, type DataStructure } from '@8f4e/compiler-spec';
+import { BASE_TYPE_METADATA, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { TooltipLiveValueSource } from '@8f4e/editor-state-types';
 import type { SpriteLookup } from 'glugglug';
 import { getTooltipLineColors } from './colors';
@@ -21,14 +21,14 @@ export interface LiveTooltipContent {
 /**
  * Returns true when memory tooltip content should include a dereferenced value.
  */
-function isPointerMemory(memory: DataStructure): boolean {
+function isPointerMemory(memory: PlannedMemoryDeclaration): boolean {
 	return memory.pointerDepth > 0;
 }
 
 /**
  * Describes how the drawer should read a pointer's dereferenced live value.
  */
-function getDereferencedMemoryFormat(memory: DataStructure) {
+function getDereferencedMemoryFormat(memory: PlannedMemoryDeclaration) {
 	const pointeeType = memory.pointerDepth > 1 ? 'pointer' : memory.pointeeBaseType!;
 	const metadata = BASE_TYPE_METADATA[pointeeType];
 
@@ -43,7 +43,7 @@ function getDereferencedMemoryFormat(memory: DataStructure) {
  * Builds tooltip rows and live-value targets for selected memory declarations.
  */
 export function getLiveTooltipContent(
-	memory: DataStructure | undefined,
+	memory: PlannedMemoryDeclaration | undefined,
 	moduleId: string | undefined,
 	memoryId: string | undefined,
 	firstLineIndex: number,

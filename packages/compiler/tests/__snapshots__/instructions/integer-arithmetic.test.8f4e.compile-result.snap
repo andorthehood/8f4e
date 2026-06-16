@@ -827,22 +827,22 @@
   },
   "moduleMemory": {
     "absAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "addAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "divAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "mulAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "remainderAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "subAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

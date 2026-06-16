@@ -4,7 +4,10 @@ import type {
 	CompiledModule,
 	CompileResult,
 	CompilerASTLine,
-	DataStructure,
+	MemoryDefault,
+	MemoryDefaultValue,
+	MemoryPointerMetadata,
+	PlannedMemoryDeclaration,
 } from '@8f4e/compiler-spec';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/compiler-spec';
 import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/compiler-wasm-utils';
@@ -180,7 +183,7 @@ function sortRecord<T, Result>(
 	);
 }
 
-function serializeDefaultValue(value: DataStructure['default']): DataStructure['default'] {
+function serializeDefaultValue(value: MemoryDefaultValue): MemoryDefaultValue {
 	if (value === null || typeof value !== 'object') {
 		return value;
 	}
@@ -188,7 +191,11 @@ function serializeDefaultValue(value: DataStructure['default']): DataStructure['
 	return sortRecord(value, item => item);
 }
 
-function serializeMemoryData(data: DataStructure): Record<string, unknown> {
+function serializeMemoryData(
+	data: PlannedMemoryDeclaration,
+	memoryDefault: MemoryDefault | undefined,
+	pointerMetadata: MemoryPointerMetadata | undefined
+): Record<string, unknown> {
 	return {
 		id: data.id,
 		type: data.type,
@@ -199,14 +206,21 @@ function serializeMemoryData(data: DataStructure): Record<string, unknown> {
 		wordAlignedAddress: data.wordAlignedAddress,
 		memoryIndex: data.memoryIndex,
 		...(data.memoryRegionName ? { memoryRegionName: data.memoryRegionName } : {}),
-		default: serializeDefaultValue(data.default),
-		...(data.hasExplicitDefault ? { hasExplicitDefault: true } : {}),
+		default: serializeDefaultValue(memoryDefault?.value ?? 0),
+		...(memoryDefault?.hasExplicitDefault ? { hasExplicitDefault: true } : {}),
+		...(memoryDefault?.isInherited ? { isInherited: true } : {}),
 		isInteger: data.isInteger,
 		...(data.isFloat64 ? { isFloat64: true } : {}),
 		...(data.pointeeBaseType ? { pointeeBaseType: data.pointeeBaseType } : {}),
-		...(data.pointeeMemoryIndex !== undefined ? { pointeeMemoryIndex: data.pointeeMemoryIndex } : {}),
-		...(data.pointeeMemoryRegionName ? { pointeeMemoryRegionName: data.pointeeMemoryRegionName } : {}),
-		...(data.pointeeElementCount !== undefined ? { pointeeElementCount: data.pointeeElementCount } : {}),
+		...(pointerMetadata?.pointeeMemoryIndex !== undefined
+			? { pointeeMemoryIndex: pointerMetadata.pointeeMemoryIndex }
+			: {}),
+		...(pointerMetadata?.pointeeMemoryRegionName
+			? { pointeeMemoryRegionName: pointerMetadata.pointeeMemoryRegionName }
+			: {}),
+		...(pointerMetadata?.pointeeElementCount !== undefined
+			? { pointeeElementCount: pointerMetadata.pointeeElementCount }
+			: {}),
 		pointerDepth: data.pointerDepth,
 		isUnsigned: data.isUnsigned,
 	};
@@ -263,7 +277,9 @@ function serializeCompiledModuleOverview(module: CompiledModule): Record<string,
 
 function serializeCompiledModuleMemory(module: CompiledModule): Record<string, unknown> {
 	return {
-		memoryMap: sortRecord(module.memoryMap, serializeMemoryData),
+		memory: sortRecord(module.memory, (data, id) =>
+			serializeMemoryData(data, module.memoryDefaults[id], module.pointerMetadata[id])
+		),
 	};
 }
 

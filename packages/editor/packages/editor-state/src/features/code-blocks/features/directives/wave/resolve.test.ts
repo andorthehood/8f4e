@@ -1,4 +1,4 @@
-import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import type { CodeBlockGraphicData, MemoryIdentifier, State } from '@8f4e/editor-state-types';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
@@ -31,7 +31,7 @@ describe('wave directive widget resolution', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							buffer1: {
 								wordAlignedAddress: 0,
 								byteAddress: 0,
@@ -104,7 +104,7 @@ describe('wave directive widget resolution', () => {
 			x: 0,
 			y: 0,
 			startAddress: {
-				memory: { wordAlignedAddress: 0 } as DataStructure,
+				memory: { wordAlignedAddress: 0 } as PlannedMemoryDeclaration,
 				showAddress: true,
 				showEndAddress: false,
 				bufferPointer: 0,
@@ -115,7 +115,7 @@ describe('wave directive widget resolution', () => {
 			baseSampleShift: 0,
 			length: 16,
 			pointer: {
-				memory: { wordAlignedAddress: 10 } as DataStructure,
+				memory: { wordAlignedAddress: 10 } as PlannedMemoryDeclaration,
 				showAddress: false,
 				showEndAddress: false,
 				bufferPointer: 0,
@@ -161,7 +161,7 @@ describe('wave directive widget resolution', () => {
 
 	it('handles multiple wave directives', () => {
 		setMockCodeBlockCode(mockGraphicData, ['; @wave bufferAddress 16 pointer1', '; @wave &buffer2 len2 pointer2']);
-		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2'] = {
+		mockState.compiler.compiledModules['test-block'].memory['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
 			numberOfElements: 100,
@@ -173,7 +173,7 @@ describe('wave directive widget resolution', () => {
 			id: 'buffer2',
 			pointerDepth: 0,
 		};
-		mockState.compiler.compiledModules['test-block'].memoryMap['buffer2Address'] = {
+		mockState.compiler.compiledModules['test-block'].memory['buffer2Address'] = {
 			wordAlignedAddress: 2,
 			byteAddress: 8,
 			numberOfElements: 1,
@@ -186,7 +186,7 @@ describe('wave directive widget resolution', () => {
 			pointeeBaseType: 'int8',
 			pointerDepth: 1,
 		};
-		mockState.compiler.compiledModules['test-block'].memoryMap['len2'] = {
+		mockState.compiler.compiledModules['test-block'].memory['len2'] = {
 			wordAlignedAddress: 15,
 			byteAddress: 60,
 			numberOfElements: 1,
@@ -198,7 +198,7 @@ describe('wave directive widget resolution', () => {
 			id: 'len2',
 			pointerDepth: 0,
 		};
-		mockState.compiler.compiledModules['test-block'].memoryMap['pointer2'] = {
+		mockState.compiler.compiledModules['test-block'].memory['pointer2'] = {
 			wordAlignedAddress: 20,
 			byteAddress: 80,
 			numberOfElements: 1,
@@ -237,7 +237,7 @@ describe('wave directive widget resolution', () => {
 	});
 
 	it('does not add a wave when the start memory does not encode element size', () => {
-		mockState.compiler.compiledModules['test-block'].memoryMap['plainInt'] = {
+		mockState.compiler.compiledModules['test-block'].memory['plainInt'] = {
 			wordAlignedAddress: 30,
 			byteAddress: 120,
 			numberOfElements: 1,

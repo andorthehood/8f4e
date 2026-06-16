@@ -1,4 +1,4 @@
-import type { DataStructure, StackItem } from '@8f4e/compiler-spec';
+import type { ResolvedMemoryDeclaration, StackItem } from '@8f4e/compiler-spec';
 import { WASM_TYPE_F32, WASM_TYPE_F64, WASM_TYPE_I32 } from '@8f4e/compiler-wasm-utils';
 
 /** Scalar kind used by push analysis and code generation before choosing concrete stack or WASM types. */
@@ -10,7 +10,7 @@ export type PushValueKind = 'int32' | 'float32' | 'float64';
  * @param memoryItem - Memory item whose scalar kind should be resolved.
  * @returns The computed result.
  */
-export function resolveMemoryValueKind(memoryItem: DataStructure): PushValueKind {
+export function resolveMemoryValueKind(memoryItem: ResolvedMemoryDeclaration): PushValueKind {
 	if (memoryItem.isInteger) return 'int32';
 	if (memoryItem.isFloat64) return 'float64';
 	return 'float32';

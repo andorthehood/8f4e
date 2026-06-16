@@ -178,7 +178,7 @@ describe('tooltip effect', () => {
 			compiler: {
 				compiledModules: {
 					test: {
-						memoryMap: {
+						memory: {
 							value: {
 								id: 'value',
 								numberOfElements: 1,

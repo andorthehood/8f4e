@@ -919,7 +919,7 @@
   },
   "moduleMemory": {
     "crossRegionCopyAssertions": {
-      "memoryMap": {
+      "memory": {
         "copy": {
           "byteAddress": 20,
           "default": {},
@@ -937,7 +937,7 @@
       },
     },
     "numericCustomRegion": {
-      "memoryMap": {
+      "memory": {
         "pixel": {
           "byteAddress": 4,
           "default": 9,
@@ -957,7 +957,7 @@
       },
     },
     "numericDefaultRegion": {
-      "memoryMap": {
+      "memory": {
         "value": {
           "byteAddress": 24,
           "default": 7,
@@ -976,7 +976,7 @@
       },
     },
     "rawAddressDefaultReader": {
-      "memoryMap": {
+      "memory": {
         "result": {
           "byteAddress": 8,
           "default": 0,
@@ -1009,7 +1009,7 @@
       },
     },
     "rawAddressRegionSource": {
-      "memoryMap": {
+      "memory": {
         "source": {
           "byteAddress": 8,
           "default": 99,
@@ -1029,7 +1029,7 @@
       },
     },
     "regionCopySource": {
-      "memoryMap": {
+      "memory": {
         "values": {
           "byteAddress": 12,
           "default": {
@@ -1054,7 +1054,7 @@
       },
     },
     "regionPointerReader": {
-      "memoryMap": {
+      "memory": {
         "ptr": {
           "byteAddress": 16,
           "default": 4,
@@ -1091,7 +1091,7 @@
       },
     },
     "regionSamples": {
-      "memoryMap": {
+      "memory": {
         "values": {
           "byteAddress": 4,
           "default": {

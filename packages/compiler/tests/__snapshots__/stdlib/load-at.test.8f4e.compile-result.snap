@@ -362,7 +362,7 @@
   },
   "moduleMemory": {
     "loadAtAssertions": {
-      "memoryMap": {
+      "memory": {
         "buffer": {
           "byteAddress": 4,
           "default": {

@@ -1815,16 +1815,16 @@
   },
   "moduleMemory": {
     "floatParameterFunctionAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "functionConstantAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "functionControlFlowAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "impureFunctionAssertions": {
-      "memoryMap": {
+      "memory": {
         "dest": {
           "byteAddress": 8,
           "default": 0,
@@ -1857,19 +1857,19 @@
       },
     },
     "intParameterFunctionAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "localFunctionAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "mixedParameterFunctionAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "multipleReturnFunctionAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "zeroValueFunctionAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

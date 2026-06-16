@@ -1291,7 +1291,7 @@
   },
   "moduleMemory": {
     "constantLoopCapAssertions": {
-      "memoryMap": {
+      "memory": {
         "counter": {
           "byteAddress": 16,
           "default": 0,
@@ -1323,7 +1323,7 @@
       },
     },
     "defaultLoopCapAssertions": {
-      "memoryMap": {
+      "memory": {
         "counter": {
           "byteAddress": 4,
           "default": 0,
@@ -1341,7 +1341,7 @@
       },
     },
     "directiveLoopCapAssertions": {
-      "memoryMap": {
+      "memory": {
         "counter": {
           "byteAddress": 8,
           "default": 0,
@@ -1359,7 +1359,7 @@
       },
     },
     "explicitCapOverridesDirectiveAssertions": {
-      "memoryMap": {
+      "memory": {
         "counter": {
           "byteAddress": 24,
           "default": 0,
@@ -1377,7 +1377,7 @@
       },
     },
     "explicitLoopCapAssertions": {
-      "memoryMap": {
+      "memory": {
         "counter": {
           "byteAddress": 12,
           "default": 0,
@@ -1395,10 +1395,10 @@
       },
     },
     "functionLoopCapAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
     "nestedLoopCapAssertions": {
-      "memoryMap": {
+      "memory": {
         "innerCounter": {
           "byteAddress": 32,
           "default": 0,
@@ -1430,7 +1430,7 @@
       },
     },
     "zeroLoopCapAssertions": {
-      "memoryMap": {
+      "memory": {
         "counter": {
           "byteAddress": 36,
           "default": 0,

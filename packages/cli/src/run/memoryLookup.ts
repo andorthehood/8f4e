@@ -6,7 +6,7 @@ export function createMemoryLookup(compiledModules: CompiledModuleLookup): Memor
 	const byBareId = new Map<string, ResolvedMemoryReference | null>();
 
 	for (const [moduleId, compiledModule] of Object.entries(compiledModules)) {
-		for (const [memoryId, data] of Object.entries(compiledModule.memoryMap)) {
+		for (const [memoryId, data] of Object.entries(compiledModule.memory)) {
 			const resolved: ResolvedMemoryReference = {
 				key: `${moduleId}:${memoryId}`,
 				moduleId,

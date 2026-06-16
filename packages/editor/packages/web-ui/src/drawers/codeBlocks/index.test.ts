@@ -1,4 +1,4 @@
-import { type DataStructure, MemoryTypes } from '@8f4e/compiler-spec';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/compiler-spec';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { Engine } from 'glugglug';
 import { describe, expect, it, vi } from 'vitest';
@@ -55,7 +55,7 @@ function createTooltipCharacters(lines: string[]): number[][] {
 	return lines.map(createCharacters);
 }
 
-function createMemory(overrides: Partial<DataStructure> = {}): DataStructure {
+function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemoryDeclaration {
 	return {
 		id: 'value',
 		numberOfElements: 1,
@@ -440,7 +440,7 @@ describe('drawModules', () => {
 			compiler: {
 				compiledModules: {
 					test: {
-						memoryMap: {
+						memory: {
 							pointer: createMemory({
 								id: 'pointer',
 								type: MemoryTypes['int*'],

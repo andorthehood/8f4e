@@ -515,13 +515,14 @@
   },
   "moduleMemory": {
     "main": {
-      "memoryMap": {
+      "memory": {
         "a": {
           "byteAddress": 4,
           "default": 2,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "a",
+          "isInherited": true,
           "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -537,6 +538,7 @@
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "b",
+          "isInherited": true,
           "isInteger": false,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -549,7 +551,7 @@
       },
     },
     "overrides": {
-      "memoryMap": {
+      "memory": {
         "a": {
           "byteAddress": 20,
           "default": 8,

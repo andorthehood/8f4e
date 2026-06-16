@@ -51,7 +51,7 @@ function getFrameBufferByteAddress(state: State, target: string): number | undef
 		return undefined;
 	}
 
-	const memory = state.compiler.compiledModules[moduleId]?.memoryMap[memoryId];
+	const memory = state.compiler.compiledModules[moduleId]?.memory[memoryId];
 	return typeof memory?.byteAddress === 'number' ? memory.byteAddress : undefined;
 }
 

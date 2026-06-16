@@ -373,7 +373,7 @@
   },
   "moduleMemory": {
     "lerpAssertions": {
-      "memoryMap": {},
+      "memory": {},
     },
   },
   "overview": {

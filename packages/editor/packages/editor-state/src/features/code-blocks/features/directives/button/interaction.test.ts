@@ -30,7 +30,7 @@ describe('button interaction', () => {
 			compiler: {
 				compiledModules: {
 					'test-block': {
-						memoryMap: {
+						memory: {
 							testButton: {
 								wordAlignedAddress: 5,
 							},

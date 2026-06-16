@@ -1,3 +1,5 @@
+import type { MemoryDeclarationLine } from './ast';
+
 export const scalarMemoryDeclarationInstructions = [
 	'int',
 	'int*',
@@ -135,8 +137,8 @@ export const BASE_TYPE_METADATA: Record<BaseTypeMetadataKey, BaseTypeMetadata> =
 	},
 };
 
-/** Resolved memory declaration with layout, defaults, and type metadata. */
-export interface DataStructure {
+/** Memory declaration metadata produced by layout planning before semantic defaults are applied. */
+export interface PlannedMemoryDeclaration {
 	numberOfElements: number;
 	elementWordSize: number;
 	type: MemoryType;
@@ -147,9 +149,6 @@ export interface DataStructure {
 	byteAddress: number;
 	wordAlignedSize: number;
 	wordAlignedAddress: number;
-	default: number | Record<string, number>;
-	hasExplicitDefault?: boolean;
-	isInherited: boolean;
 	lineNumber: number;
 	isInteger: boolean;
 	isFloat64?: boolean;
@@ -161,30 +160,16 @@ export interface DataStructure {
 	 * - `'int8u'` / `'int16u'`: narrow unsigned integer pointee
 	 */
 	pointeeBaseType?: PointeeBaseType;
-	/** Resolved WebAssembly memory index where this pointer dereferences. */
-	pointeeMemoryIndex?: number;
-	/** Configured logical region name for this pointer's pointee memory. */
-	pointeeMemoryRegionName?: string;
-	/** Element count of the known pointee memory item, when initialized from a tracked memory address. */
-	pointeeElementCount?: number;
 	id: string;
 	/** Number of pointer layers in the declaration. Non-pointers have depth 0. */
 	pointerDepth: number;
 	isUnsigned: boolean;
 }
 
-/** Memory declaration metadata produced by layout planning before semantic defaults are applied. */
-export type MemoryLayoutDeclaration = Omit<
-	DataStructure,
-	| 'default'
-	| 'hasExplicitDefault'
-	| 'isInherited'
-	| 'pointeeMemoryIndex'
-	| 'pointeeMemoryRegionName'
-	| 'pointeeElementCount'
->;
-
-export type PlannedMemoryDeclaration = MemoryLayoutDeclaration;
+export interface PlannedMemoryDeclarationSource {
+	line: MemoryDeclarationLine;
+	isInherited: boolean;
+}
 
 export interface PlannedMemoryModule extends MemoryRegionIdentity {
 	id: string;
@@ -193,6 +178,7 @@ export interface PlannedMemoryModule extends MemoryRegionIdentity {
 	wordAlignedSize: number;
 	memory: Record<string, PlannedMemoryDeclaration>;
 	declarations: readonly PlannedMemoryDeclaration[];
+	declarationSources: readonly PlannedMemoryDeclarationSource[];
 }
 
 export interface MemoryLayoutPlan {
@@ -201,7 +187,7 @@ export interface MemoryLayoutPlan {
 	nextByteAddressByMemoryIndex: Record<number, number>;
 }
 
-export type MemoryDefaultValue = DataStructure['default'];
+export type MemoryDefaultValue = number | Record<string, number>;
 
 export interface MemoryDefault {
 	value: MemoryDefaultValue;
@@ -211,14 +197,18 @@ export interface MemoryDefault {
 
 export type MemoryDefaults = Record<string, MemoryDefault>;
 
-export type MemoryPointerMetadata = Pick<
-	DataStructure,
-	'pointeeMemoryIndex' | 'pointeeMemoryRegionName' | 'pointeeElementCount'
->;
+export interface MemoryPointerMetadata {
+	/** Resolved WebAssembly memory index where this pointer dereferences. */
+	pointeeMemoryIndex?: number;
+	/** Configured logical region name for this pointer's pointee memory. */
+	pointeeMemoryRegionName?: string;
+	/** Element count of the known pointee memory item, when initialized from a tracked memory address. */
+	pointeeElementCount?: number;
+}
 
 export type MemoryPointerMetadataMap = Record<string, MemoryPointerMetadata>;
 
-export type MemoryMap = Record<string, DataStructure>;
+export type ResolvedMemoryDeclaration = PlannedMemoryDeclaration & MemoryPointerMetadata;
 
 export type MemoryBuffer = Int32Array;
 
