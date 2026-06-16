@@ -1,5 +1,5 @@
 import type { FunctionValueType, InstructionCompiler, LocalDeclarationLine } from '@8f4e/compiler-spec';
-import { functionValueTypeToLocalBinding } from '../utils/functionValueType';
+import { functionValueTypeToLocalBinding } from '@8f4e/compiler-spec';
 
 /**
  * Instruction compiler for `local`.

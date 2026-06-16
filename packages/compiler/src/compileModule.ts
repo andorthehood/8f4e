@@ -10,7 +10,12 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/compiler-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY, isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/compiler-spec';
+import {
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	getMemoryRegionFields,
+	isMemoryDeclarationLine,
+	isSemanticInstructionLine,
+} from '@8f4e/compiler-spec';
 import {
 	createFunction,
 	createLocalDeclaration,
@@ -22,7 +27,6 @@ import type { StackAnalyzedModule } from '@8f4e/stack-analyzer';
 import { attachStackAnalysis, compileCodegenLine } from './compileLine';
 import { applySemanticLine } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
-import { getMemoryRegionFields } from './semantic/memoryRegions';
 import normalizeValueArguments from './semantic/normalizeValueArguments';
 
 /**

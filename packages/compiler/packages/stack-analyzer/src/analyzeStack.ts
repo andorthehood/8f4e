@@ -32,23 +32,23 @@ import {
 	createFunctionId,
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	ErrorCode,
+	functionValueTypeToLocalBinding,
+	getEffectiveFunctionMetadata,
 	getError,
 	isFunctionBodyInstructionName,
 	isImportedFunctionDeclarationInstructionName,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	MAX_FUNCTION_PARAMETERS,
+	resolveRegionDirective,
 } from '@8f4e/compiler-spec';
 import { analyzeInstruction } from './analyzeInstruction';
 import { popBlock, pushBlock } from './blockStack';
 import { createCompilationContext } from './createCompilationContext';
 import { cloneStack } from './instructionAnalyzers/stack';
 import normalizeValueArguments from './normalizeValueArguments';
-import { functionValueTypeToLocalBinding } from './utils/functionValueType';
 import { resolveMapKind, validateMapValueKind } from './utils/mapValueKind';
-import { resolveRegionDirective } from './utils/memoryRegions';
 import { getPlannedMemoryDeclaration } from './utils/memoryState';
-import { getEffectiveFunctionMetadata } from './utils/paramShape';
 
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;

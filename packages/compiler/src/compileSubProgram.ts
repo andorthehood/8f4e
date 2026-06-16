@@ -28,10 +28,14 @@ import {
 	createFunctionId,
 	ErrorCode,
 	GLOBAL_ALIGNMENT_BOUNDARY,
+	getCustomMemoryRegionName,
+	getDefaultMemoryRegion,
+	getEffectiveFunctionMetadata,
 	getError,
 	isArrayMemoryDeclarationLine,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
+	validateMemoryRegionOptions,
 } from '@8f4e/compiler-spec';
 import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsInASTs } from '@8f4e/constant-inliner';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
@@ -51,16 +55,10 @@ import {
 } from './semantic/buildNamespace';
 import { createCompilationContext } from './semantic/createCompilationContext';
 import {
-	getCustomMemoryRegionName,
-	getDefaultMemoryRegion,
-	validateMemoryRegionOptions,
-} from './semantic/memoryRegions';
-import {
 	normalizeArgumentsAtIndexes,
 	validateOrDeferUnresolvedIdentifier,
 	validateOrDeferValueExpression,
 } from './semantic/normalization/helpers';
-import { getEffectiveFunctionMetadata } from './semantic/paramShape';
 
 /** Module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {

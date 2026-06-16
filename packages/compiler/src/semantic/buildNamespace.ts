@@ -8,19 +8,20 @@ import {
 	type FunctionMetadata,
 	type FunctionMetadataLookup,
 	type FunctionRegistry,
+	getEffectiveFunctionMetadata,
 	getError,
+	getMemoryRegionFields,
 	type Namespaces,
 	type SemanticInstructionLine,
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
+	validateMemoryRegionOptions,
 } from '@8f4e/compiler-spec';
 import type { ResolveMemoryDefaultsResult } from '@8f4e/memory-default-resolver';
 import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
 import applySemanticInstruction from './instructions';
-import { getMemoryRegionFields, validateMemoryRegionOptions } from './memoryRegions';
 import normalizeValueArguments from './normalizeValueArguments';
-import { getEffectiveFunctionMetadata } from './paramShape';
 
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 

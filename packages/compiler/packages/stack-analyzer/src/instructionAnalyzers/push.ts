@@ -9,9 +9,12 @@ import type {
 	ResolvedPushLine,
 	Stack,
 } from '@8f4e/compiler-spec';
-import { ArgumentType } from '@8f4e/compiler-spec';
-import { getDereferencedValueKindFromMetadata, getPointerDepthFromMetadata } from '../utils/memoryData';
-import { getMemoryRegionFields } from '../utils/memoryRegionFields';
+import {
+	ArgumentType,
+	getDereferencedValueKindFromMetadata,
+	getMemoryRegionFields,
+	getPointerDepthFromMetadata,
+} from '@8f4e/compiler-spec';
 import { getResolvedMemoryDeclaration } from '../utils/memoryState';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
 import { createStackValue, produce } from './stack';

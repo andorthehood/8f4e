@@ -1,14 +1,17 @@
 import type { Argument, CompilerASTLine, MemoryDeclarationLine } from '@8f4e/compiler-spec';
-import { ArgumentType, isMemoryDeclarationLine } from '@8f4e/compiler-spec';
-import isArrayDeclarationInstruction from './syntax/isArrayDeclarationInstruction';
-import isMemoryDeclarationInstruction from './syntax/isMemoryDeclarationInstruction';
+import {
+	ArgumentType,
+	isArrayMemoryDeclarationInstructionName,
+	isMemoryDeclarationInstructionName,
+	isMemoryDeclarationLine,
+} from '@8f4e/compiler-spec';
 import { parseArgument } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';
 
 /** Determines whether a memory declaration includes a default value source argument. */
 function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): boolean {
-	if (isArrayDeclarationInstruction(instruction)) {
+	if (isArrayMemoryDeclarationInstructionName(instruction)) {
 		return args.length > 2;
 	}
 
@@ -130,7 +133,7 @@ export function parseLine(line: string, lineNumber: number): CompilerASTLine {
 		const tokens = tokenizeInstruction(line);
 		const [first = '', ...args] = tokens;
 		instruction = first;
-		const isMemoryDeclaration = isMemoryDeclarationInstruction(instruction);
+		const isMemoryDeclaration = isMemoryDeclarationInstructionName(instruction);
 		const parsedArguments: Argument[] = [];
 		const referencedNamespaceIds = new Set<string>();
 		for (const arg of args) {
