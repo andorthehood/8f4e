@@ -348,30 +348,33 @@ export function resolveMemoryExpressionOperand(
 	if (operand.referenceKind === 'memory-reference') {
 		const base = operand.targetMemoryId;
 		if (base === 'this') {
+			const currentModule = getCurrentModule(context);
+			if (!currentModule) {
+				return undefined;
+			}
+
 			if (!operand.isEndAddress) {
 				return moduleAddressValue(
 					'module-start',
-					context.startingByteAddress,
-					context.currentModuleWordAlignedSize,
-					context.moduleName,
-					context.currentMemoryIndex,
-					context.currentMemoryRegionName
+					currentModule.byteAddress,
+					currentModule.wordAlignedSize,
+					currentModule.id,
+					currentModule.memoryIndex,
+					currentModule.memoryRegionName
 				);
 			}
-			if (typeof context.currentModuleWordAlignedSize === 'number') {
-				const byteAddress = getEndByteAddress(context.startingByteAddress, context.currentModuleWordAlignedSize);
-				return {
-					...moduleAddressValue(
-						'module-end',
-						byteAddress,
-						context.currentModuleWordAlignedSize,
-						context.moduleName,
-						context.currentMemoryIndex,
-						context.currentMemoryRegionName
-					),
-				};
-			}
-			return undefined;
+
+			const byteAddress = getEndByteAddress(currentModule.byteAddress, currentModule.wordAlignedSize);
+			return {
+				...moduleAddressValue(
+					'module-end',
+					byteAddress,
+					currentModule.wordAlignedSize,
+					currentModule.id,
+					currentModule.memoryIndex,
+					currentModule.memoryRegionName
+				),
+			};
 		}
 		const memoryItem = getMemoryDeclaration(context, base);
 		if (memoryItem) {

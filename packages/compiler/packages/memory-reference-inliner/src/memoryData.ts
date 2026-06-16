@@ -58,33 +58,33 @@ export function getPointerDepthFromMetadata(pointerMetadata: PointerMetadata | u
 }
 
 /**
- * Returns a declared memory item's byte address, or zero when absent.
+ * Returns a declared memory item's byte address.
  *
  * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getDataStructureByteAddress(memoryItem: PlannedMemoryDeclaration | undefined): number {
-	return memoryItem ? memoryItem.byteAddress : 0;
+export function getDataStructureByteAddress(memoryItem: PlannedMemoryDeclaration): number {
+	return memoryItem.byteAddress;
 }
 
 /**
- * Returns the inclusive last byte address of a memory item's aligned storage, or zero when absent.
+ * Returns the inclusive last byte address of a memory item's aligned storage.
  *
  * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getMemoryStringLastByteAddress(memoryItem: PlannedMemoryDeclaration | undefined): number {
-	return memoryItem ? getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize) : 0;
+export function getMemoryStringLastByteAddress(memoryItem: PlannedMemoryDeclaration): number {
+	return getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
 }
 
 /**
- * Returns the declared element count for a memory item, or zero when absent.
+ * Returns the declared element count for a memory item.
  *
  * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getElementCount(memoryItem: PlannedMemoryDeclaration | undefined): number {
-	return memoryItem ? memoryItem.numberOfElements : 0;
+export function getElementCount(memoryItem: PlannedMemoryDeclaration): number {
+	return memoryItem.numberOfElements;
 }
 
 /**
@@ -109,13 +109,13 @@ export function getPointeeElementCount(memoryItem: PointerMetadata | undefined):
 }
 
 /**
- * Returns the declared element word size for a memory item, or zero when absent.
+ * Returns the declared element word size for a memory item.
  *
  * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getElementWordSize(memoryItem: PlannedMemoryDeclaration | undefined): number {
-	return memoryItem ? memoryItem.elementWordSize : 0;
+export function getElementWordSize(memoryItem: PlannedMemoryDeclaration): number {
+	return memoryItem.elementWordSize;
 }
 
 /**
@@ -202,9 +202,7 @@ export function getDereferencedValueKindFromMetadata(
  * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getElementMaxValue(memoryItem: PlannedMemoryDeclaration | undefined): number {
-	if (!memoryItem) return 0;
-
+export function getElementMaxValue(memoryItem: PlannedMemoryDeclaration): number {
 	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
 	return memoryItem.isUnsigned ? (metadata.unsignedMax ?? metadata.max) : metadata.max;
 }
@@ -238,9 +236,7 @@ export function getPointeeElementMaxValue(memoryItem: PointerMetadata | undefine
  * @param memoryItem - Memory declaration to inspect.
  * @returns The resolved numeric value.
  */
-export function getElementMinValue(memoryItem: PlannedMemoryDeclaration | undefined): number {
-	if (!memoryItem) return 0;
-
+export function getElementMinValue(memoryItem: PlannedMemoryDeclaration): number {
 	const metadata = getDeclaredBaseTypeMetadata(memoryItem);
 	return memoryItem.isUnsigned ? (metadata.unsignedMin ?? metadata.min) : metadata.min;
 }
