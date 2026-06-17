@@ -1972,5 +1972,85 @@
 				"maxRangesPerFunction": 6
 			}
 		}
+	},
+	{
+		"schemaVersion": 2,
+		"commit": "b814b0be642a17a10fd5f5343807f0d4fd59e6dc",
+		"version": "3.4.1",
+		"benchmark": "sineGenerator.8f4e",
+		"coverage": {
+			"compilerPipeline": {
+				"coveredFunctions": 399,
+				"functionEntries": 8605,
+				"rangeExecutions": 29712,
+				"maxRangesPerFunction": 33
+			},
+			"compiler": {
+				"coveredFunctions": 48,
+				"functionEntries": 599,
+				"rangeExecutions": 1574,
+				"maxRangesPerFunction": 14
+			},
+			"tokenizer": {
+				"coveredFunctions": 48,
+				"functionEntries": 2930,
+				"rangeExecutions": 16341,
+				"maxRangesPerFunction": 32
+			},
+			"memoryPlanner": {
+				"coveredFunctions": 25,
+				"functionEntries": 88,
+				"rangeExecutions": 274,
+				"maxRangesPerFunction": 7
+			},
+			"memoryReferenceInliner": {
+				"coveredFunctions": 26,
+				"functionEntries": 1068,
+				"rangeExecutions": 2660,
+				"maxRangesPerFunction": 33
+			},
+			"memoryDefaultResolver": {
+				"coveredFunctions": 13,
+				"functionEntries": 52,
+				"rangeExecutions": 87,
+				"maxRangesPerFunction": 10
+			},
+			"semanticReferenceResolver": {
+				"coveredFunctions": 35,
+				"functionEntries": 727,
+				"rangeExecutions": 1573,
+				"maxRangesPerFunction": 13
+			},
+			"semanticUtils": {
+				"coveredFunctions": 13,
+				"functionEntries": 322,
+				"rangeExecutions": 397,
+				"maxRangesPerFunction": 8
+			},
+			"stackAnalyzer": {
+				"coveredFunctions": 61,
+				"functionEntries": 1452,
+				"rangeExecutions": 4248,
+				"maxRangesPerFunction": 27
+			},
+			"wasmCodegen": {
+				"coveredFunctions": 83,
+				"functionEntries": 446,
+				"rangeExecutions": 1114,
+				"maxRangesPerFunction": 12
+			},
+			"compilerWasmUtils": {
+				"coveredFunctions": 27,
+				"functionEntries": 283,
+				"rangeExecutions": 567,
+				"maxRangesPerFunction": 8
+			},
+			"languageSpec": {
+				"coveredFunctions": 20,
+				"functionEntries": 638,
+				"rangeExecutions": 877,
+				"maxRangesPerFunction": 6
+			}
+		}
 	}
 ]
