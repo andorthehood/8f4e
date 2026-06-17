@@ -6,10 +6,10 @@ import {
 	getError,
 	getParamType,
 	getPrototypeMemoryDeclarationId,
+	memoryStartAddressValue,
 	type PushShapeLine,
 	type ResolvedPushShapeLine,
 } from '@8f4e/language-spec';
-import { memoryStartAddressValue } from '@8f4e/memory-reference-inliner';
 import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
 
 function createAddressPushLine(line: PushShapeLine, memoryId: string, context: CompilationContext): CodegenPushLine {
@@ -33,13 +33,16 @@ function createAddressPushLine(line: PushShapeLine, memoryId: string, context: C
 }
 
 /**
- * Normalizes `pushShape` into the explicit address pushes for the current module's effective shape memory.
+ * Resolves `pushShape` into the explicit address pushes for the current module's effective shape memory.
  *
  * @param line - Source AST line being processed.
  * @param context - Compilation context used by the operation.
  * @returns Resolved pushShape line with codegen-ready address pushes.
  */
-export default function normalizePushShape(line: PushShapeLine, context: CompilationContext): ResolvedPushShapeLine {
+export default function resolvePushShapeReferences(
+	line: PushShapeLine,
+	context: CompilationContext
+): ResolvedPushShapeLine {
 	const prototypeId = line.arguments[0].value;
 	const prototype = context.prototypeShapes?.[prototypeId];
 	if (!prototype) {

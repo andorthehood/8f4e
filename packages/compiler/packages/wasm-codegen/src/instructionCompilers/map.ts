@@ -1,4 +1,4 @@
-import type { InstructionCompiler, NormalizedMapLine } from '@8f4e/language-spec';
+import type { InstructionCompiler, ResolvedMapLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 
 /**
@@ -7,7 +7,7 @@ import { ArgumentType } from '@8f4e/language-spec';
  * lowering happens at `mapEnd`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const map: InstructionCompiler<NormalizedMapLine> = (line: NormalizedMapLine, context) => {
+const map: InstructionCompiler<ResolvedMapLine> = (line: ResolvedMapLine, context) => {
 	const { mapState } = context.activeMapBlock!;
 	const keyArg = line.arguments[0];
 	const valueArg = line.arguments[1];

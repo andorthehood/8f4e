@@ -246,7 +246,7 @@ export type CompilerASTLines = CompilerASTLine[];
 
 /**
  * Checks whether a parsed line carries resolved namespace reference metadata.
- * Namespace references are added by semantic normalization for instructions that
+ * Namespace references are added by semantic reference resolution for instructions that
  * may depend on other modules or constants blocks, so callers can avoid probing
  * optional metadata by hand.
  *

@@ -58,21 +58,43 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
 |  call targets/signatures    |          +-----------------------------+
 +-----------------------------+                         |
         |                                               |
+        +-----------------------+-----------------------+
+                                |
+                                v
+                  +-----------------------------+
+                  |  6. Semantic references     |
+                  |  resolveSemanticReferences()|
+                  |                             |
+                  |  resolve value refs once    |
+                  |  for the whole project      |
+                  +-----------------------------+
+                                |
+                                v
+                  +-----------------------------+
+                  |  7. Stack analysis          |
+                  |  analyzeStack()             |
+                  |                             |
+                  |  validate stack effects     |
+                  |  from reference report      |
+                  +-----------------------------+
+                                |
+                                v
+        +-----------------------+-----------------------+
+        |                                               |
         v                                               v
 +-----------------------------+          +-----------------------------+
-|  6a. Function codegen       |          |  6b. Module codegen         |
+|  8a. Function codegen       |          |  8b. Module codegen         |
 |  compileFunction()          |          |  compileModule()            |
 |                             |          |                             |
-|  normalize compile-time     |          |  prepass again, normalize   |
-|  args, validate stack,      |          |  compile-time args, validate|
-|  emit WASM body             |          |  stack, emit WASM cycle fn  |
+|  emit WASM body from        |          |  emit WASM cycle fn from    |
+|  AST + semantic/stack facts |          |  AST + semantic/stack facts |
 +-----------------------------+          +-----------------------------+
         |                                               |
         +-----------------------+-----------------------+
                                 |
                                 v
                   +-----------------------------+
-                  |  7. Initial memory data     |
+                  |  9. Initial memory data     |
                   |  createInitialMemory...     |
                   |                             |
                   |  defaults become passive    |
@@ -81,7 +103,7 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                                 |
                                 v
                   +-----------------------------+
-                  |  8. WASM assembly           |
+                  |  10. WASM assembly          |
                   |                             |
                   |  type/import/function/      |
                   |  export/code/data sections  |
@@ -106,7 +128,8 @@ source
   -> AST
   -> caller-provided module order
   -> namespace + memory layout
-  -> semantic normalization + validation
-  -> instruction codegen
+  -> semantic reference resolution
+  -> stack validation
+  -> instruction codegen from AST + pass reports
   -> WASM module + runtime metadata
 ```

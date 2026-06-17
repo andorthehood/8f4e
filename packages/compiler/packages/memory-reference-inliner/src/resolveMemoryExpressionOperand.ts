@@ -21,9 +21,11 @@ import {
 	getPointeeElementMinValueFromMetadata,
 	getPointeeElementWordSize,
 	getPointeeElementWordSizeFromMetadata,
+	memoryEndAddressValue,
+	memoryStartAddressValue,
+	moduleAddressValue,
 	type PointerMetadata,
 } from '@8f4e/language-spec';
-import { memoryEndAddressValue, memoryStartAddressValue, moduleAddressValue } from './addressValues';
 
 export type MemoryReferenceModuleNamespace = PlannedMemoryModule;
 

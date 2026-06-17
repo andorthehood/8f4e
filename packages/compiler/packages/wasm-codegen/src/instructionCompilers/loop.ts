@@ -11,7 +11,7 @@ import {
 	WASM_LOOP,
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
-import type { InstructionCompiler, LoopBlockStackFrame, LoopLine, NormalizedLoopLine } from '@8f4e/language-spec';
+import type { InstructionCompiler, LoopBlockStackFrame, LoopLine, ResolvedLoopLine } from '@8f4e/language-spec';
 import { ArgumentType, BlockType, ErrorCode, getError } from '@8f4e/language-spec';
 import { pushBlock } from '@8f4e/semantic-utils';
 import { saveByteCode } from './utils/saveByteCode';
@@ -22,7 +22,7 @@ const DEFAULT_LOOP_CAP = 1000;
  * Instruction compiler for `loop`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const loop: InstructionCompiler<NormalizedLoopLine | LoopLine> = (line, context) => {
+const loop: InstructionCompiler<ResolvedLoopLine | LoopLine> = (line, context) => {
 	const capArg = line.arguments[0];
 	if (capArg !== undefined && capArg.type !== ArgumentType.LITERAL) {
 		throw getError(ErrorCode.EXPECTED_VALUE, line, context);

@@ -1,5 +1,6 @@
-import type { Const, PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/language-spec';
-import { getMemoryRegionFields } from '@8f4e/language-spec';
+import type { PlannedMemoryDeclaration, PlannedMemoryModule } from './memory';
+import { getMemoryRegionFields } from './memoryRegions';
+import type { Const } from './semantic';
 
 /**
  * Creates a resolved value representing the start byte address of a memory item.
