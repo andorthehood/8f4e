@@ -201,8 +201,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -233,8 +232,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           }
         ],
         "projectBlockId": 20
@@ -328,8 +326,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 8,
@@ -360,8 +357,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           }
         ],
         "projectBlockId": 30
@@ -593,8 +589,7 @@
             ],
             "referencedNamespaceIds": [
               "norGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -606,8 +601,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -631,8 +625,7 @@
             ],
             "referencedNamespaceIds": [
               "setButton"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 10,
@@ -800,8 +793,7 @@
             ],
             "referencedNamespaceIds": [
               "norGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -813,8 +805,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -838,8 +829,7 @@
             ],
             "referencedNamespaceIds": [
               "setButton"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           }
         ],
         "projectBlockId": 39
@@ -1071,8 +1061,7 @@
             ],
             "referencedNamespaceIds": [
               "norGate2"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -1084,8 +1073,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -1109,8 +1097,7 @@
             ],
             "referencedNamespaceIds": [
               "resetButton"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 10,
@@ -1278,8 +1265,7 @@
             ],
             "referencedNamespaceIds": [
               "norGate2"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -1291,8 +1277,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -1316,8 +1301,7 @@
             ],
             "referencedNamespaceIds": [
               "resetButton"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           }
         ],
         "projectBlockId": 63
@@ -1596,8 +1580,7 @@
             ],
             "referencedNamespaceIds": [
               "norGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -1614,8 +1597,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 5,
@@ -1635,8 +1617,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -1842,8 +1823,7 @@
             ],
             "referencedNamespaceIds": [
               "norGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -1860,8 +1840,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 5,
@@ -1881,8 +1860,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           }
         ],
         "projectBlockId": 87
@@ -2017,8 +1995,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2030,8 +2007,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 14,
@@ -2062,8 +2038,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2075,8 +2050,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           }
         ],
         "projectBlockId": 116
@@ -2255,8 +2229,7 @@
             ],
             "referencedNamespaceIds": [
               "buttons"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -2268,8 +2241,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2418,8 +2390,7 @@
             ],
             "referencedNamespaceIds": [
               "buttons"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -2431,8 +2402,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           }
         ],
         "projectBlockId": 131
@@ -2667,8 +2637,7 @@
             ],
             "referencedNamespaceIds": [
               "andGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -2680,8 +2649,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2705,8 +2673,7 @@
             ],
             "referencedNamespaceIds": [
               "buttons"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -2874,8 +2841,7 @@
             ],
             "referencedNamespaceIds": [
               "andGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -2887,8 +2853,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2912,8 +2877,7 @@
             ],
             "referencedNamespaceIds": [
               "buttons"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           }
         ],
         "projectBlockId": 149
@@ -3148,8 +3112,7 @@
             ],
             "referencedNamespaceIds": [
               "orGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -3161,8 +3124,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -3186,8 +3148,7 @@
             ],
             "referencedNamespaceIds": [
               "negate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -3355,8 +3316,7 @@
             ],
             "referencedNamespaceIds": [
               "orGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -3368,8 +3328,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -3393,8 +3352,7 @@
             ],
             "referencedNamespaceIds": [
               "negate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           }
         ],
         "projectBlockId": 172
@@ -3675,8 +3633,7 @@
             ],
             "referencedNamespaceIds": [
               "andGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -3693,8 +3650,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 5,
@@ -3714,8 +3670,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -3921,8 +3876,7 @@
             ],
             "referencedNamespaceIds": [
               "andGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -3939,8 +3893,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 5,
@@ -3960,8 +3913,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           }
         ],
         "projectBlockId": 195

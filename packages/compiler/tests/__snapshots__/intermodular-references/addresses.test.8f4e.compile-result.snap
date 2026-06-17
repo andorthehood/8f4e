@@ -34,7 +34,6 @@
               "value": "&addressSource:buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "addressSource",
@@ -57,7 +56,6 @@
               "value": "&addressSource:",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "addressSource",
@@ -139,7 +137,6 @@
               "value": "addressSource:buffer&",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "addressSource",
@@ -163,7 +160,6 @@
               "value": "addressSource:scalar&",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "addressSource",
@@ -186,7 +182,6 @@
               "value": "addressSource:&",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "addressSource",
@@ -329,7 +324,6 @@
               "value": 33,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -346,7 +340,6 @@
               "value": 42,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -363,7 +356,6 @@
               "value": 99,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -401,7 +393,6 @@
               "value": 10,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -418,7 +409,6 @@
               "value": 20,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -445,7 +435,6 @@
               "value": 40,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -465,7 +454,6 @@
               "value": "&this",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
         },
         {
@@ -485,7 +473,6 @@
               "value": "this&",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
         },
         {
@@ -505,7 +492,6 @@
               "value": "&this:1",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "this",
@@ -684,7 +670,6 @@
               "value": 8,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -725,7 +710,6 @@
               "value": "&nthAddressSource:0",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "nthAddressSource",
@@ -748,7 +732,6 @@
               "value": "&nthAddressSource:",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "nthAddressSource",
@@ -771,7 +754,6 @@
               "value": "&nthAddressSource:1",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "nthAddressSource",
@@ -794,7 +776,6 @@
               "value": "&nthAddressSource:2",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "nthAddressSource",
@@ -964,7 +945,6 @@
               "value": 10,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -981,7 +961,6 @@
               "value": 20,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -998,7 +977,6 @@
               "value": 30,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -1039,7 +1017,6 @@
               "value": "&nthArraySource:1",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "nthArraySource",
@@ -1114,7 +1091,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -1131,7 +1107,6 @@
               "value": 60,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -1173,7 +1148,6 @@
               "value": "&lateAddressSource:buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "lateAddressSource",
@@ -1197,7 +1171,6 @@
               "value": "lateAddressSource:buffer&",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "lateAddressSource",
@@ -1321,7 +1294,6 @@
               "value": 5,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -1341,7 +1313,6 @@
               "value": "&buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
         },
         {
@@ -1361,7 +1332,6 @@
               "value": "buffer&",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
         },
         {

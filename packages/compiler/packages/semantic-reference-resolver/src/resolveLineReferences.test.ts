@@ -276,7 +276,6 @@ describe('resolveLineReferences', () => {
 			lineNumber: 1,
 			instruction: 'int',
 			arguments: [classifyIdentifier('buffer'), classifyIdentifier('&source:missingBuffer')],
-			hasExplicitMemoryDefault: true,
 		};
 
 		expect(() => resolveLineReferences(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -300,7 +299,6 @@ describe('resolveLineReferences', () => {
 			lineNumber: 1,
 			instruction: 'int',
 			arguments: [classifyIdentifier('ptr'), classifyIdentifier('&source:buffer')],
-			hasExplicitMemoryDefault: true,
 		};
 
 		const result = resolveLineReferences(line, context);
@@ -326,7 +324,6 @@ describe('resolveLineReferences', () => {
 			lineNumber: 1,
 			instruction: 'int[]',
 			arguments: [classifyIdentifier('buffer'), classifyIdentifier('&source:buffer')],
-			hasExplicitMemoryDefault: false,
 		};
 
 		expect(() => resolveLineReferences(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
@@ -341,7 +338,6 @@ describe('resolveLineReferences', () => {
 			lineNumber: 1,
 			instruction: 'int',
 			arguments: [classifyIdentifier('buffer'), parseArgument('2*MISSING')],
-			hasExplicitMemoryDefault: true,
 		};
 
 		expect(() => resolveLineReferences(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);

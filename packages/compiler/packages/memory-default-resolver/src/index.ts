@@ -291,6 +291,27 @@ function createArrayDefaultValues(line: ArrayMemoryDeclarationLine, plannedDecla
 	}, {});
 }
 
+function declarationHasExplicitDefault(line: MemoryDeclarationLine): boolean {
+	if (isArrayMemoryDeclarationLine(line)) {
+		return line.arguments.length > 2;
+	}
+
+	const firstArg = line.arguments[0];
+	if (!firstArg) {
+		return false;
+	}
+
+	if (firstArg.type !== ArgumentType.IDENTIFIER) {
+		return true;
+	}
+
+	if (firstArg.referenceKind === 'constant') {
+		return true;
+	}
+
+	return line.arguments.length > 1;
+}
+
 function setMemoryDefault(
 	defaults: MemoryDefaults,
 	memoryId: string,
@@ -300,7 +321,7 @@ function setMemoryDefault(
 ): void {
 	defaults[memoryId] = {
 		value,
-		hasExplicitDefault: line.hasExplicitMemoryDefault === true,
+		hasExplicitDefault: declarationHasExplicitDefault(line),
 		isInherited,
 	};
 }

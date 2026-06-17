@@ -521,7 +521,6 @@
               "value": 7,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -541,7 +540,6 @@
               "value": "&buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

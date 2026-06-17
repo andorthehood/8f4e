@@ -1551,7 +1551,6 @@
               "value": 40,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float[]",
         },
         {
@@ -1571,7 +1570,6 @@
               "value": "&buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

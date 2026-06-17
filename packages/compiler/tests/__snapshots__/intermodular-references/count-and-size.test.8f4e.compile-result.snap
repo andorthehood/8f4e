@@ -34,7 +34,6 @@
               "value": "&combinedCountSizeSource:buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "combinedCountSizeSource",
@@ -57,7 +56,6 @@
               "value": "count(combinedCountSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "combinedCountSizeSource",
@@ -80,7 +78,6 @@
               "value": "sizeof(combinedCountSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "combinedCountSizeSource",
@@ -209,7 +206,6 @@
               "value": 12,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -250,7 +246,6 @@
               "value": "count(countSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "countSizeSource",
@@ -273,7 +268,6 @@
               "value": "count(countSizeSource:data)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "countSizeSource",
@@ -350,7 +344,6 @@
               "value": "sizeof(countSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "countSizeSource",
@@ -373,7 +366,6 @@
               "value": "sizeof(countSizeSource:data)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "countSizeSource",
@@ -396,7 +388,6 @@
               "value": "sizeof(pointerSizeSource:ptr)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "pointerSizeSource",
@@ -431,7 +422,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "shortSizeSource",
@@ -585,7 +575,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -607,7 +596,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float[]",
         },
         {
@@ -650,7 +638,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -691,7 +678,6 @@
               "value": "count(lateCountSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "lateCountSizeSource",
@@ -714,7 +700,6 @@
               "value": "sizeof(lateCountSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "lateCountSizeSource",
@@ -804,7 +789,6 @@
               "value": "ptr",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int*",
         },
         {
@@ -847,7 +831,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16[]",
         },
         {

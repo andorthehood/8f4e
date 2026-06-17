@@ -228,7 +228,6 @@
               "value": 12.5,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -245,7 +244,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {

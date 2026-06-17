@@ -1,33 +1,8 @@
-import type { Argument, CompilerASTLine, MemoryDeclarationLine } from '@8f4e/language-spec';
-import {
-	ArgumentType,
-	isArrayMemoryDeclarationInstructionName,
-	isMemoryDeclarationInstructionName,
-	isMemoryDeclarationLine,
-} from '@8f4e/language-spec';
+import type { Argument, CompilerASTLine } from '@8f4e/language-spec';
+import { ArgumentType, isMemoryDeclarationInstructionName } from '@8f4e/language-spec';
 import { parseArgument } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';
-
-/** Determines whether a memory declaration includes a default value source argument. */
-function hasExplicitMemoryDefault(instruction: string, args: Array<Argument>): boolean {
-	if (isArrayMemoryDeclarationInstructionName(instruction)) {
-		return args.length > 2;
-	}
-
-	if (args.length === 0) {
-		return false;
-	}
-
-	const firstArg = args[0];
-	if (firstArg.type !== ArgumentType.IDENTIFIER) {
-		return true;
-	}
-	if (firstArg.referenceKind === 'constant') {
-		return true;
-	}
-	return args.length > 1;
-}
 
 /** Adds namespace references discovered from syntax-level arguments to a line accumulator. */
 function addReferencedNamespaceIdsFromArgument(referencedNamespaceIds: Set<string>, argument: Argument): void {
@@ -150,11 +125,6 @@ export function parseLine(line: string, lineNumber: number): CompilerASTLine {
 			arguments: parsedArguments,
 			...(referencedNamespaceIds.size > 0 ? { referencedNamespaceIds: [...referencedNamespaceIds] } : {}),
 		} as CompilerASTLine;
-
-		if (isMemoryDeclarationLine(parsedLine)) {
-			const memoryLine: MemoryDeclarationLine = parsedLine;
-			memoryLine.hasExplicitMemoryDefault = hasExplicitMemoryDefault(instruction, parsedArguments);
-		}
 
 		return parsedLine;
 	} catch (error) {

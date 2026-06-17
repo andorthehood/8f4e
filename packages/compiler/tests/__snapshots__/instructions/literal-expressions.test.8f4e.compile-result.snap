@@ -57,7 +57,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -113,7 +112,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -314,7 +312,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -626,7 +623,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -697,7 +693,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -742,7 +737,6 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int32[]",
         },
         {
@@ -844,7 +838,6 @@
               "value": 0.0625,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -888,7 +881,6 @@
               "value": 0.0625,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -932,7 +924,6 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -976,7 +967,6 @@
               "value": -0.5,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -1300,7 +1290,6 @@
               "value": 12,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -1344,7 +1333,6 @@
               "value": 8,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -1410,7 +1398,6 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int16[]",
         },
         {
@@ -1633,7 +1620,6 @@
               "value": 8,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "float[]",
         },
         {
@@ -1653,7 +1639,6 @@
               "value": "&floatSamples",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float*",
         },
         {
@@ -1699,7 +1684,6 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int8[]",
         },
         {
@@ -1719,7 +1703,6 @@
               "value": "&smallSamples",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8*",
         },
         {
@@ -1889,7 +1872,6 @@
               "value": "TEST3",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

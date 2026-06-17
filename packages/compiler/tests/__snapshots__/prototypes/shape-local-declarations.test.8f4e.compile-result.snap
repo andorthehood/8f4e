@@ -34,7 +34,6 @@
               "value": "&tau:foo",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "tau",
@@ -58,7 +57,6 @@
               "value": "&tau:bar",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "tau",
@@ -82,7 +80,6 @@
               "value": "&tau:he",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "tau",
@@ -221,7 +218,6 @@
               "value": 10,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -238,7 +234,6 @@
               "value": 44,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -255,7 +250,6 @@
               "value": 8,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -272,7 +266,6 @@
               "value": 16,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

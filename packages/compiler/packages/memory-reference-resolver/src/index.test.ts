@@ -192,13 +192,11 @@ describe('resolveMemoryReferences', () => {
 			lineNumber: 2,
 			instruction: 'float[]',
 			arguments: [classifyIdentifier('samples'), { type: ArgumentType.LITERAL, value: 4, isInteger: true }],
-			hasExplicitMemoryDefault: false,
 		};
 		const pointerLine = {
 			lineNumber: 3,
 			instruction: 'float*',
 			arguments: [classifyIdentifier('ptr'), classifyIdentifier('&samples')],
-			hasExplicitMemoryDefault: true,
 		};
 		const pushLine = {
 			lineNumber: 4,
