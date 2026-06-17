@@ -25,7 +25,7 @@ This package does not own:
 
 - Loading include files from disk, the network, editor state, or any other environment.
 - Tokenizing compiler source blocks into ASTs.
-- Constant inlining, memory planning, stack analysis, or code generation.
+- Constant resolution, memory planning, stack analysis, or code generation.
 - Editor layout, rendering, storage, or VS Code/webview state.
 
 Groups are project organization metadata. They are parsed as project structure, but compiler input preparation only emits basic compiler blocks.

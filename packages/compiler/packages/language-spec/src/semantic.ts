@@ -274,6 +274,14 @@ export interface StackAnalysisLineFacts {
 	localPointer?: StackAnalysisLocalPointerFact;
 }
 
+export interface ConstantResolutionLineFacts {
+	arguments?: CompilerASTLine['arguments'];
+}
+
+export interface ConstantResolutionBlockFacts {
+	lineFacts: Array<ConstantResolutionLineFacts | undefined>;
+}
+
 export type CodegenContext<TContext extends CompilationContext = CompilationContext> = Omit<TContext, 'stack'>;
 export type FunctionCodegenContext = CodegenContext<FunctionCompilationContext>;
 
