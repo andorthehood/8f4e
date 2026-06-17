@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/semantic-reference-resolver",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "description": "Project-level semantic reference resolver for 8f4e compiler ASTs",
   "type": "module",
