@@ -6,7 +6,6 @@ export * from './addressClamp';
 export * from './blockStack';
 export * from './createCompilationContext';
 export { default as applySemanticInstruction } from './instructions';
-export * from './layoutAddresses';
 export * from './mapValueKind';
 export * from './memoryState';
 export { default as dispatchNormalization } from './normalization';

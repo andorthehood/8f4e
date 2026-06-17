@@ -5,7 +5,19 @@ import type {
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
 } from '@8f4e/language-spec';
-import { MemoryTypes } from '@8f4e/language-spec';
+import { GLOBAL_ALIGNMENT_BOUNDARY, MemoryTypes } from '@8f4e/language-spec';
+
+function getWordAlignedByteLength(wordAlignedSize: number): number {
+	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
+}
+
+function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
+	return wordAlignedSize <= 0 ? byteAddress : byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
+}
+
+function getEndAddressSafeByteLength(wordAlignedSize: number): number {
+	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
+}
 
 /**
  * Creates a memory data structure fixture for initial memory segment tests.
@@ -16,7 +28,7 @@ import { MemoryTypes } from '@8f4e/language-spec';
 export function createMemory(
 	overrides: Partial<PlannedMemoryDeclaration> & Pick<PlannedMemoryDeclaration, 'id' | 'byteAddress'>
 ): PlannedMemoryDeclaration {
-	return {
+	const declaration = {
 		numberOfElements: 1,
 		elementWordSize: 4,
 		type: MemoryTypes.int,
@@ -28,6 +40,14 @@ export function createMemory(
 		pointerDepth: 0,
 		isUnsigned: false,
 		...overrides,
+	};
+
+	return {
+		...declaration,
+		elementByteLength: declaration.numberOfElements * declaration.elementWordSize,
+		wordAlignedByteLength: getWordAlignedByteLength(declaration.wordAlignedSize),
+		endByteAddress: getEndByteAddress(declaration.byteAddress, declaration.wordAlignedSize),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(declaration.wordAlignedSize),
 	};
 }
 
@@ -60,6 +80,9 @@ export function createMemoryPlan(
 		lineNumber: overrides.lineNumber ?? 0,
 		byteAddress,
 		wordAlignedSize,
+		wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
+		endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
 		memoryIndex: overrides.memoryIndex ?? 0,
 		...(overrides.memoryRegionName ? { memoryRegionName: overrides.memoryRegionName } : {}),
 		memory,

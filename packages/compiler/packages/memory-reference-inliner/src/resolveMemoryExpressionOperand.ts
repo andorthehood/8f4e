@@ -23,13 +23,7 @@ import {
 	getPointeeElementWordSizeFromMetadata,
 	type PointerMetadata,
 } from '@8f4e/language-spec';
-import {
-	getWordAlignedByteLength,
-	memoryEndAddressValue,
-	memoryStartAddressValue,
-	moduleAddressValue,
-} from './addressValues';
-import { getEndByteAddress } from './layoutAddresses';
+import { memoryEndAddressValue, memoryStartAddressValue, moduleAddressValue } from './addressValues';
 
 export type MemoryReferenceModuleNamespace = PlannedMemoryModule;
 
@@ -288,17 +282,7 @@ export function resolveMemoryExpressionOperand(
 		const targetModuleId = operand.targetModuleId;
 		const targetModule = getModule(context, targetModuleId);
 		if (targetModule) {
-			const value = operand.isEndAddress
-				? getEndByteAddress(targetModule.byteAddress, targetModule.wordAlignedSize)
-				: targetModule.byteAddress;
-			return moduleAddressValue(
-				operand.isEndAddress ? 'module-end' : 'module-start',
-				value,
-				targetModule.wordAlignedSize,
-				targetModuleId,
-				targetModule.memoryIndex,
-				targetModule.memoryRegionName
-			);
+			return moduleAddressValue(targetModule, operand.isEndAddress ? 'module-end' : 'module-start', targetModuleId);
 		}
 		return undefined;
 	}
@@ -320,7 +304,7 @@ export function resolveMemoryExpressionOperand(
 						source: 'module-nth-memory-start',
 						...memoryRegionFields,
 						byteAddress: item.byteAddress,
-						safeByteLength: getWordAlignedByteLength(item.wordAlignedSize),
+						safeByteLength: item.wordAlignedByteLength,
 						moduleId: resolvedModuleId,
 						...(item.id ? { memoryId: item.id } : {}),
 					},
@@ -354,27 +338,10 @@ export function resolveMemoryExpressionOperand(
 			}
 
 			if (!operand.isEndAddress) {
-				return moduleAddressValue(
-					'module-start',
-					currentModule.byteAddress,
-					currentModule.wordAlignedSize,
-					currentModule.id,
-					currentModule.memoryIndex,
-					currentModule.memoryRegionName
-				);
+				return moduleAddressValue(currentModule, 'module-start', currentModule.id);
 			}
 
-			const byteAddress = getEndByteAddress(currentModule.byteAddress, currentModule.wordAlignedSize);
-			return {
-				...moduleAddressValue(
-					'module-end',
-					byteAddress,
-					currentModule.wordAlignedSize,
-					currentModule.id,
-					currentModule.memoryIndex,
-					currentModule.memoryRegionName
-				),
-			};
+			return moduleAddressValue(currentModule, 'module-end', currentModule.id);
 		}
 		const memoryItem = getMemoryDeclaration(context, base);
 		if (memoryItem) {

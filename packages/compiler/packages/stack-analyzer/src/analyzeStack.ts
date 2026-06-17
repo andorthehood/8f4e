@@ -42,12 +42,17 @@ import {
 	MAX_FUNCTION_PARAMETERS,
 	resolveRegionDirective,
 } from '@8f4e/language-spec';
-import { createCompilationContext, popBlock, pushBlock } from '@8f4e/semantic-utils';
+import {
+	createCompilationContext,
+	getPlannedMemoryDeclaration,
+	popBlock,
+	pushBlock,
+	resolveMapKind,
+	validateMapValueKind,
+} from '@8f4e/semantic-utils';
 import { analyzeInstruction } from './analyzeInstruction';
 import { cloneStack } from './instructionAnalyzers/stack';
 import normalizeValueArguments from './normalizeValueArguments';
-import { resolveMapKind, validateMapValueKind } from './utils/mapValueKind';
-import { getPlannedMemoryDeclaration } from './utils/memoryState';
 
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;

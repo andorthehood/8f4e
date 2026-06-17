@@ -1,22 +1,8 @@
-import type {
-	CodegenContext,
-	CompilationContext,
-	CompilerASTLine,
-	StackItem,
-	StackValueType,
-} from '@8f4e/language-spec';
+import type { CodegenContext, CompilationContext, CompilerASTLine, StackValueType } from '@8f4e/language-spec';
 import { ErrorCode, getError } from '@8f4e/language-spec';
 
 /** Internal scalar kind used to choose typed WASM operations for map rows and values. */
 export type MapKind = 'int32' | 'float32' | 'float64';
-
-interface MapValueKind {
-	valueType: StackValueType;
-}
-
-function normalizeMapValueKind(valueKind: MapValueKind | StackItem): MapValueKind {
-	return { valueType: valueKind.valueType };
-}
 
 /**
  * Resolves map value metadata to the internal map kind used for typed WASM emission.
@@ -24,13 +10,12 @@ function normalizeMapValueKind(valueKind: MapValueKind | StackItem): MapValueKin
  * @param valueKind - Map or stack value metadata to resolve.
  * @returns The computed result.
  */
-export function resolveMapKind(valueKind: MapValueKind | StackItem): MapKind {
-	const normalizedValueKind = normalizeMapValueKind(valueKind);
-	if (normalizedValueKind.valueType === 'int') {
+export function resolveMapKind(valueKind: { valueType: StackValueType }): MapKind {
+	if (valueKind.valueType === 'int') {
 		return 'int32';
 	}
 
-	return normalizedValueKind.valueType === 'float64' ? 'float64' : 'float32';
+	return valueKind.valueType === 'float64' ? 'float64' : 'float32';
 }
 
 /**
@@ -43,34 +28,32 @@ export function resolveMapKind(valueKind: MapValueKind | StackItem): MapKind {
  * @returns Nothing.
  */
 export function validateMapValueKind(
-	valueKind: MapValueKind | StackItem,
+	valueKind: { valueType: StackValueType },
 	expectedKind: MapKind,
 	line: CompilerASTLine,
 	context: CodegenContext | CompilationContext
 ) {
-	const normalizedValueKind = normalizeMapValueKind(valueKind);
-
 	if (expectedKind === 'float64') {
-		if (normalizedValueKind.valueType === 'int') {
+		if (valueKind.valueType === 'int') {
 			throw getError(ErrorCode.ONLY_FLOATS, line, context);
 		}
-		if (normalizedValueKind.valueType !== 'float64') {
+		if (valueKind.valueType !== 'float64') {
 			throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 		}
 		return;
 	}
 
 	if (expectedKind === 'int32') {
-		if (normalizedValueKind.valueType !== 'int') {
+		if (valueKind.valueType !== 'int') {
 			throw getError(ErrorCode.ONLY_INTEGERS, line, context);
 		}
 		return;
 	}
 
-	if (normalizedValueKind.valueType === 'int') {
+	if (valueKind.valueType === 'int') {
 		throw getError(ErrorCode.ONLY_FLOATS, line, context);
 	}
-	if (normalizedValueKind.valueType === 'float64') {
+	if (valueKind.valueType === 'float64') {
 		throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
 	}
 }

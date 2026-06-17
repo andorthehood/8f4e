@@ -2,35 +2,19 @@ import type {
 	ArrayDeclarationInstruction,
 	MemoryRegionIdentity,
 	MemoryType,
-	PlannedMemoryDeclaration,
 	PointeeBaseType,
 	ScalarMemoryDeclarationInstruction,
 } from '@8f4e/language-spec';
 import { GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
-import { alignAbsoluteWordOffset, getAbsoluteWordOffset, getByteAddressFromWordOffset } from './layoutAddresses';
+import {
+	alignAbsoluteWordOffset,
+	getAbsoluteWordOffset,
+	getByteAddressFromWordOffset,
+	getEndAddressSafeByteLength,
+	getEndByteAddress,
+	getWordAlignedByteLength,
+} from './layoutAddresses';
 import getMemoryFlags from './memoryFlags';
-
-interface BaseDeclarationLayoutInput {
-	id: string;
-	lineNumber: number;
-	startingByteAddress: number;
-	localWordOffset: number;
-	region: MemoryRegionIdentity;
-}
-
-export interface ScalarDeclarationLayoutInput extends BaseDeclarationLayoutInput {
-	instruction: ScalarMemoryDeclarationInstruction;
-}
-
-export interface ArrayDeclarationLayoutInput extends BaseDeclarationLayoutInput {
-	instruction: ArrayDeclarationInstruction;
-	numberOfElements: number;
-}
-
-export interface PlannedMemoryDeclarationResult {
-	declaration: PlannedMemoryDeclaration;
-	nextLocalWordOffset: number;
-}
 
 function getPointerDepth(instruction: string): number {
 	return instruction.endsWith('**') || instruction.includes('**[]') ? 2 : instruction.includes('*') ? 1 : 0;
@@ -66,22 +50,36 @@ function getArrayPointeeBaseType(instruction: ArrayDeclarationInstruction): Poin
  * @param input - Declaration layout facts already resolved by the compiler.
  * @returns The planned declaration and updated local word offset.
  */
-export function planScalarDeclarationLayout(input: ScalarDeclarationLayoutInput): PlannedMemoryDeclarationResult {
+export function planScalarDeclarationLayout(input: {
+	id: string;
+	lineNumber: number;
+	startingByteAddress: number;
+	localWordOffset: number;
+	region: MemoryRegionIdentity;
+	instruction: ScalarMemoryDeclarationInstruction;
+}) {
 	const pointerDepth = getPointerDepth(input.instruction);
 	const baseType = getScalarBaseType(input.instruction);
 	const flags = getMemoryFlags(baseType, pointerDepth);
 	const nonPointerElementWordSize = baseType === 'float64' ? 8 : 4;
 
 	if (pointerDepth > 0 || nonPointerElementWordSize === 4) {
+		const numberOfElements = 1;
+		const elementWordSize = 4;
 		const wordAlignedSize = 1;
+		const byteAddress = getByteAddressFromWordOffset(input.startingByteAddress, input.localWordOffset);
 		return {
 			declaration: {
-				numberOfElements: 1,
-				elementWordSize: 4,
+				numberOfElements,
+				elementWordSize,
 				...input.region,
 				wordAlignedAddress: getAbsoluteWordOffset(input.startingByteAddress, input.localWordOffset),
 				wordAlignedSize,
-				byteAddress: getByteAddressFromWordOffset(input.startingByteAddress, input.localWordOffset),
+				wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
+				byteAddress,
+				elementByteLength: numberOfElements * elementWordSize,
+				endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
+				endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
 				id: input.id,
 				lineNumber: input.lineNumber,
 				type: input.instruction,
@@ -91,19 +89,25 @@ export function planScalarDeclarationLayout(input: ScalarDeclarationLayoutInput)
 		};
 	}
 
+	const numberOfElements = 1;
 	const absoluteWordOffset = getAbsoluteWordOffset(input.startingByteAddress, input.localWordOffset);
 	const alignedAbsoluteWordOffset = alignAbsoluteWordOffset(absoluteWordOffset, nonPointerElementWordSize);
 	const alignmentPadding = alignedAbsoluteWordOffset - absoluteWordOffset;
 	const wordAlignedSize = alignmentPadding + 2;
+	const byteAddress = getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset);
 
 	return {
 		declaration: {
-			numberOfElements: 1,
+			numberOfElements,
 			elementWordSize: nonPointerElementWordSize,
 			...input.region,
 			wordAlignedAddress: alignedAbsoluteWordOffset,
 			wordAlignedSize,
-			byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
+			wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
+			byteAddress,
+			elementByteLength: numberOfElements * nonPointerElementWordSize,
+			endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
+			endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
 			id: input.id,
 			lineNumber: input.lineNumber,
 			type: input.instruction,
@@ -119,7 +123,15 @@ export function planScalarDeclarationLayout(input: ScalarDeclarationLayoutInput)
  * @param input - Declaration layout facts already resolved by the compiler.
  * @returns The planned declaration and updated local word offset.
  */
-export function planArrayDeclarationLayout(input: ArrayDeclarationLayoutInput): PlannedMemoryDeclarationResult {
+export function planArrayDeclarationLayout(input: {
+	id: string;
+	lineNumber: number;
+	startingByteAddress: number;
+	localWordOffset: number;
+	region: MemoryRegionIdentity;
+	instruction: ArrayDeclarationInstruction;
+	numberOfElements: number;
+}) {
 	const elementWordSize = getArrayElementWordSize(input.instruction);
 	const pointerDepth = getPointerDepth(input.instruction);
 	const absoluteWordOffset = getAbsoluteWordOffset(input.startingByteAddress, input.localWordOffset);
@@ -128,6 +140,7 @@ export function planArrayDeclarationLayout(input: ArrayDeclarationLayoutInput): 
 	const wordAlignedSize =
 		alignmentPadding + Math.ceil((input.numberOfElements * elementWordSize) / GLOBAL_ALIGNMENT_BOUNDARY);
 	const pointeeBaseType = getArrayPointeeBaseType(input.instruction);
+	const byteAddress = getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset);
 
 	return {
 		declaration: {
@@ -135,10 +148,14 @@ export function planArrayDeclarationLayout(input: ArrayDeclarationLayoutInput): 
 			elementWordSize,
 			...input.region,
 			wordAlignedSize,
+			wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
 			wordAlignedAddress: alignedAbsoluteWordOffset,
 			id: input.id,
 			lineNumber: input.lineNumber,
-			byteAddress: getByteAddressFromWordOffset(0, alignedAbsoluteWordOffset),
+			byteAddress,
+			elementByteLength: input.numberOfElements * elementWordSize,
+			endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
+			endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
 			isInteger: input.instruction.startsWith('int') || input.instruction.includes('*'),
 			pointerDepth,
 			...(pointeeBaseType ? { pointeeBaseType } : {}),
