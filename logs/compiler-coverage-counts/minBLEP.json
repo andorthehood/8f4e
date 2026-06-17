@@ -1892,5 +1892,85 @@
 				"maxRangesPerFunction": 14
 			}
 		}
+	},
+	{
+		"schemaVersion": 2,
+		"commit": "18e95c540842c589a9980f70c18cbbb51891f3bc",
+		"version": "3.4.0",
+		"benchmark": "minBLEP.8f4e",
+		"coverage": {
+			"compilerPipeline": {
+				"coveredFunctions": 432,
+				"functionEntries": 56557,
+				"rangeExecutions": 189146,
+				"maxRangesPerFunction": 39
+			},
+			"compiler": {
+				"coveredFunctions": 49,
+				"functionEntries": 2665,
+				"rangeExecutions": 8737,
+				"maxRangesPerFunction": 16
+			},
+			"tokenizer": {
+				"coveredFunctions": 54,
+				"functionEntries": 15131,
+				"rangeExecutions": 98371,
+				"maxRangesPerFunction": 32
+			},
+			"memoryPlanner": {
+				"coveredFunctions": 25,
+				"functionEntries": 2742,
+				"rangeExecutions": 7389,
+				"maxRangesPerFunction": 7
+			},
+			"memoryReferenceInliner": {
+				"coveredFunctions": 28,
+				"functionEntries": 6330,
+				"rangeExecutions": 15625,
+				"maxRangesPerFunction": 39
+			},
+			"memoryDefaultResolver": {
+				"coveredFunctions": 16,
+				"functionEntries": 1953,
+				"rangeExecutions": 4376,
+				"maxRangesPerFunction": 12
+			},
+			"semanticReferenceResolver": {
+				"coveredFunctions": 35,
+				"functionEntries": 5046,
+				"rangeExecutions": 12274,
+				"maxRangesPerFunction": 13
+			},
+			"semanticUtils": {
+				"coveredFunctions": 13,
+				"functionEntries": 1108,
+				"rangeExecutions": 1650,
+				"maxRangesPerFunction": 9
+			},
+			"stackAnalyzer": {
+				"coveredFunctions": 64,
+				"functionEntries": 4881,
+				"rangeExecutions": 14793,
+				"maxRangesPerFunction": 26
+			},
+			"wasmCodegen": {
+				"coveredFunctions": 93,
+				"functionEntries": 2892,
+				"rangeExecutions": 10202,
+				"maxRangesPerFunction": 13
+			},
+			"compilerWasmUtils": {
+				"coveredFunctions": 28,
+				"functionEntries": 843,
+				"rangeExecutions": 1965,
+				"maxRangesPerFunction": 8
+			},
+			"languageSpec": {
+				"coveredFunctions": 27,
+				"functionEntries": 12966,
+				"rangeExecutions": 13764,
+				"maxRangesPerFunction": 14
+			}
+		}
 	}
 ]
