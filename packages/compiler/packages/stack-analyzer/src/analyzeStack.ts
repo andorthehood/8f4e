@@ -15,11 +15,11 @@ import type {
 	MemoryPointerMetadataMap,
 	ModuleCompilationContext,
 	Namespaces,
-	NormalizedDefaultLine,
-	NormalizedLine,
-	NormalizedMapLine,
+	ResolvedDefaultLine,
 	ResolvedLocalSetLine,
+	ResolvedMapLine,
 	SemanticInstructionLine,
+	SemanticReferenceLine,
 	Stack,
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
@@ -39,15 +39,13 @@ import {
 	isImportedFunctionDeclarationInstructionName,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
-	MAX_FUNCTION_PARAMETERS,
-	type PlannedMemoryDeclaration,
 	resolveRegionDirective,
 } from '@8f4e/language-spec';
+import type { SemanticReferenceReport } from '@8f4e/semantic-reference-resolver';
 import { createCompilationContext, popBlock, pushBlock, resolveMapKind } from '@8f4e/semantic-utils';
 import { analyzeInstruction } from './analyzeInstruction';
 import { cloneStack } from './instructionAnalyzers/stack';
 import { validateMapValueKind } from './mapValueKind';
-import normalizeValueArguments from './normalizeValueArguments';
 
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
@@ -57,6 +55,7 @@ export interface AnalyzeStackProjectInput {
 		modules: readonly ValidatedModuleAST[];
 		functions: readonly ValidatedFunctionAST[];
 	};
+	semanticReferences: SemanticReferenceReport;
 	namespaces: Namespaces;
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
@@ -68,7 +67,6 @@ export interface AnalyzeStackProjectInput {
 }
 
 export interface StackAnalyzedModule {
-	ast: ValidatedModuleAST;
 	analyzedLines: AnalyzedLine[];
 	stackAnalysis: CompiledStackAnalysisLine[];
 	finalStack: Stack;
@@ -76,7 +74,6 @@ export interface StackAnalyzedModule {
 }
 
 export interface StackAnalyzedFunction {
-	ast: ValidatedFunctionAST;
 	functionMetadata: FunctionMetadata;
 	analyzedLines: AnalyzedLine[];
 	stackAnalysis: CompiledStackAnalysisLine[];
@@ -169,19 +166,10 @@ function applySemanticLine(line: SemanticInstructionLine, context: CompilationCo
 function registerFunctionParameter(
 	paramType: FunctionValueType,
 	paramName: string,
-	line: CompilerASTLine,
 	context: FunctionCompilationContext
 ): void {
-	if (context.locals[paramName] !== undefined) {
-		throw getError(ErrorCode.DUPLICATE_PARAMETER_NAME, line, context);
-	}
-
 	context.locals[paramName] = functionValueTypeToLocalBinding(paramType, Object.keys(context.locals).length);
 	context.currentFunctionParameterCount += 1;
-
-	if (context.currentFunctionParameterCount > MAX_FUNCTION_PARAMETERS) {
-		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
-	}
 }
 
 function applyFunctionLine(line: CompilerASTLine, context: FunctionCompilationContext): void {
@@ -211,7 +199,7 @@ function applyParamShapeLine(line: CompilerASTLine, context: FunctionCompilation
 	)!;
 
 	for (const parameter of expansion.parameters) {
-		registerFunctionParameter(parameter.type, parameter.name, line, context);
+		registerFunctionParameter(parameter.type, parameter.name, context);
 	}
 }
 
@@ -220,21 +208,7 @@ function applyLocalLine(line: CompilerASTLine, context: CompilationContext): voi
 	const nameArg = line.arguments[1] as { value: string };
 	const localName = nameArg.value;
 
-	if (getPlannedMemoryDeclaration(context, localName)) {
-		throw getError(ErrorCode.LOCAL_NAME_COLLISION_WITH_MEMORY, line, context, { identifier: localName });
-	}
-
 	context.locals[localName] = functionValueTypeToLocalBinding(typeArg.value, Object.keys(context.locals).length);
-}
-
-function getPlannedMemoryDeclaration(
-	context: CompilationContext,
-	memoryId: string,
-	moduleId = context.namespace.moduleName
-): PlannedMemoryDeclaration | undefined {
-	const currentModule = context.currentPlannedModule;
-	const module = !moduleId || moduleId === currentModule?.id ? currentModule : context.memoryPlan.modules[moduleId];
-	return module?.memory[memoryId];
 }
 
 function applyLocalSetLine(line: AnalyzedLine<ResolvedLocalSetLine>): void {
@@ -290,7 +264,7 @@ function applyMapBeginLine(line: CompilerASTLine, context: CompilationContext): 
 	});
 }
 
-function resolveMapArgumentValue(argument: NormalizedMapLine['arguments'][number]) {
+function resolveMapArgumentValue(argument: ResolvedMapLine['arguments'][number]) {
 	if (argument.type === ArgumentType.LITERAL) {
 		return {
 			value: argument.value,
@@ -306,7 +280,7 @@ function resolveMapArgumentValue(argument: NormalizedMapLine['arguments'][number
 	};
 }
 
-function applyMapLine(line: NormalizedMapLine, context: CompilationContext): void {
+function applyMapLine(line: ResolvedMapLine, context: CompilationContext): void {
 	const { mapState } = context.activeMapBlock!;
 	const key = resolveMapArgumentValue(line.arguments[0]);
 	const value = resolveMapArgumentValue(line.arguments[1]);
@@ -331,7 +305,7 @@ function applyMapLine(line: NormalizedMapLine, context: CompilationContext): voi
 	});
 }
 
-function applyDefaultLine(line: NormalizedDefaultLine, context: CompilationContext): void {
+function applyDefaultLine(line: ResolvedDefaultLine, context: CompilationContext): void {
 	const { mapState } = context.activeMapBlock!;
 	const valueArg = line.arguments[0];
 
@@ -352,7 +326,7 @@ function applyAnalyzedLineEffect(line: AnalyzedLine, context: CompilationContext
 		case 'param': {
 			const paramType = line.arguments[0].value as FunctionValueType;
 			const paramName = line.arguments[1].value;
-			registerFunctionParameter(paramType, paramName, line, context as FunctionCompilationContext);
+			registerFunctionParameter(paramType, paramName, context as FunctionCompilationContext);
 			return;
 		}
 		case 'paramShape':
@@ -389,10 +363,10 @@ function applyAnalyzedLineEffect(line: AnalyzedLine, context: CompilationContext
 			applyMapBeginLine(line, context);
 			return;
 		case 'map':
-			applyMapLine(line as AnalyzedLine<NormalizedMapLine>, context);
+			applyMapLine(line as AnalyzedLine<ResolvedMapLine>, context);
 			return;
 		case 'default':
-			applyDefaultLine(line as AnalyzedLine<NormalizedDefaultLine>, context);
+			applyDefaultLine(line as AnalyzedLine<ResolvedDefaultLine>, context);
 			return;
 		case 'mapEnd':
 			popBlock(context);
@@ -435,8 +409,8 @@ function applyAnalyzedLineEffect(line: AnalyzedLine, context: CompilationContext
 	}
 }
 
-function analyzeNormalizedLine(
-	line: NormalizedLine<CompilerASTLine>,
+function analyzeSemanticReferenceLine(
+	line: SemanticReferenceLine,
 	context: CompilationContext,
 	options: { skipImportedFunctionEnd?: boolean } = {}
 ): AnalyzedLine | undefined {
@@ -491,10 +465,11 @@ function createModuleContext(input: AnalyzeStackProjectInput, ast: ValidatedModu
 function analyzeModule(input: AnalyzeStackProjectInput, ast: ValidatedModuleAST): StackAnalyzedModule {
 	const context = createModuleContext(input, ast);
 	const analyzedLines: AnalyzedLine[] = [];
+	const lineFacts = input.semanticReferences.modules[ast.id].lineFacts;
 
-	for (const originalLine of ast.lines) {
-		const line = normalizeValueArguments(originalLine, context);
-		const analyzedLine = analyzeNormalizedLine(line, context);
+	for (const [index, sourceLine] of ast.lines.entries()) {
+		const line = { ...sourceLine, ...(lineFacts[index] ?? {}) } as SemanticReferenceLine;
+		const analyzedLine = analyzeSemanticReferenceLine(line, context);
 		if (analyzedLine) {
 			analyzedLines.push(analyzedLine);
 		}
@@ -505,7 +480,6 @@ function analyzeModule(input: AnalyzeStackProjectInput, ast: ValidatedModuleAST)
 	}
 
 	return {
-		ast,
 		analyzedLines,
 		stackAnalysis: analyzedLines.map(toCompiledStackAnalysisLine),
 		finalStack: cloneStack(context.stack),
@@ -568,10 +542,11 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 	const functionMetadata = getFunctionMetadata(input, ast);
 	const context = createFunctionContext(input, ast, functionMetadata);
 	const analyzedLines: AnalyzedLine[] = [];
+	const lineFacts = input.semanticReferences.functions[functionMetadata.id].lineFacts;
 	let functionBodyStarted = false;
 
-	for (const originalLine of ast.lines) {
-		const line = normalizeValueArguments(originalLine, context);
+	for (const [index, sourceLine] of ast.lines.entries()) {
+		const line = { ...sourceLine, ...(lineFacts[index] ?? {}) } as SemanticReferenceLine;
 		if (ast.importLine && !isImportedFunctionDeclarationInstructionName(line.instruction)) {
 			throw getError(
 				line.instruction === '#export' ? ErrorCode.IMPORT_EXPORT_CONFLICT : ErrorCode.IMPORTED_FUNCTION_BODY,
@@ -583,7 +558,7 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 			throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
 		}
 
-		const analyzedLine = analyzeNormalizedLine(line, context, {
+		const analyzedLine = analyzeSemanticReferenceLine(line, context, {
 			skipImportedFunctionEnd: !!ast.importLine,
 		});
 		if (analyzedLine) {
@@ -595,7 +570,6 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 	}
 
 	return {
-		ast,
 		functionMetadata,
 		analyzedLines,
 		stackAnalysis: analyzedLines.map(toCompiledStackAnalysisLine),

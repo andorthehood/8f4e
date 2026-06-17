@@ -1,4 +1,4 @@
-import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/language-spec';
+import type { InstructionCompiler, ResolvedDefaultLine } from '@8f4e/language-spec';
 
 /**
  * Instruction compiler for `default`.
@@ -6,7 +6,7 @@ import type { InstructionCompiler, NormalizedDefaultLine } from '@8f4e/language-
  * lowering happens at `mapEnd`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const _default: InstructionCompiler<NormalizedDefaultLine> = (line: NormalizedDefaultLine, context) => {
+const _default: InstructionCompiler<ResolvedDefaultLine> = (line: ResolvedDefaultLine, context) => {
 	const { mapState } = context.activeMapBlock!;
 
 	const valueArg = line.arguments[0];

@@ -6,7 +6,7 @@ import {
 	type MemoryDeclarationLine,
 } from '@8f4e/language-spec';
 import {
-	normalizeArgumentsAtIndexes,
+	resolveArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
 	validateUnresolvedIdentifier,
 	validateUnresolvedValueExpression,
@@ -27,29 +27,29 @@ function requireResolvedArrayValue(
 }
 
 /**
- * Normalizes value arguments for memory declaration instructions
+ * Resolves value arguments for memory declaration instructions
  * (int, float, float64, array types, pointer types, etc.).
- * Scalar declarations normalize the name/default slots; array declarations normalize
+ * Scalar declarations resolve the name/default slots; array declarations resolve
  * the element-count slot and all inline initializer values.
  * Validates intermodule references in default/initializer values if present.
  *
  * @param line - Source AST line being processed.
  * @param context - Compilation context used by the operation.
- * @returns Normalized memory declaration line.
+ * @returns Memory declaration line with resolved value arguments.
  */
-export default function normalizeMemoryDeclaration(
+export default function resolveMemoryDeclarationReferences(
 	line: MemoryDeclarationLine,
 	context: CompilationContext
 ): MemoryDeclarationLine {
 	const isArrayDeclaration = isArrayMemoryDeclarationLine(line);
-	const normalizeIndexes = isArrayDeclaration
+	const resolveIndexes = isArrayDeclaration
 		? line.arguments.map((_, index) => index).filter(index => index > 0)
 		: [0, 1];
-	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, normalizeIndexes);
+	const { line: resolved } = resolveArgumentsAtIndexes(line, context, resolveIndexes);
 
 	const scalarValidationIndexes = isArrayDeclaration ? [0] : [0, 1];
 	for (const index of scalarValidationIndexes) {
-		const argument = normalized.arguments[index];
+		const argument = resolved.arguments[index];
 		if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 			validateUnresolvedValueExpression(argument, line, context);
 		}
@@ -58,13 +58,13 @@ export default function normalizeMemoryDeclaration(
 		}
 	}
 
-	if (isArrayMemoryDeclarationLine(normalized)) {
-		requireResolvedArrayValue(normalized.arguments[1], line, context);
+	if (isArrayMemoryDeclarationLine(resolved)) {
+		requireResolvedArrayValue(resolved.arguments[1], line, context);
 
-		for (let index = 2; index < normalized.arguments.length; index++) {
-			requireResolvedArrayValue(normalized.arguments[index], line, context);
+		for (let index = 2; index < resolved.arguments.length; index++) {
+			requireResolvedArrayValue(resolved.arguments[index], line, context);
 		}
 	}
 
-	return normalized;
+	return resolved;
 }

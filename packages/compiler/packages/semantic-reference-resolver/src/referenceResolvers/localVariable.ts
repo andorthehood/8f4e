@@ -8,13 +8,13 @@ import {
 
 /**
  * Validates that localSet targets an already-declared local.
- * This keeps local existence checks in semantic normalization instead of the dispatcher/codegen layers.
+ * This keeps local existence checks in semantic reference resolution instead of the dispatcher/codegen layers.
  *
  * @param line - Source AST line being processed.
  * @param context - Compilation context used by the operation.
- * @returns Normalized local variable access line.
+ * @returns localSet line with resolved local metadata.
  */
-export default function normalizeLocalVariableAccess(
+export default function resolveLocalVariableAccess(
 	line: LocalSetLine,
 	context: CompilationContext
 ): ResolvedLocalSetLine {

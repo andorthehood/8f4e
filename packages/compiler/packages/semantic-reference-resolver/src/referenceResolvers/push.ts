@@ -5,16 +5,16 @@ import {
 	getError,
 	type LocalBinding,
 	type MemoryPointerIdentifier,
-	type NormalizedPushLine,
 	type PushLine,
 	type ResolvedLocalPointerPushLine,
 	type ResolvedLocalPushLine,
 	type ResolvedMemoryPointerPushLine,
 	type ResolvedMemoryPushLine,
+	type SemanticPushLine,
 } from '@8f4e/language-spec';
 import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
 import {
-	normalizeArgumentsAtIndexes,
+	resolveArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
 	validateUnresolvedValueExpression,
 } from './helpers';
@@ -56,23 +56,22 @@ function throwIfPointeeCountIsUnknown(line: PushLine, context: CompilationContex
 }
 
 /**
- * Normalizes value arguments for the `push` instruction.
- * The value argument (index 0) is normalized.
+ * Resolves value arguments for the `push` instruction.
  * For identifier arguments, validates that the identifier is a known memory item, pointer,
  * memory reference, local, or valid intermodule reference.
  * Throws UNDECLARED_IDENTIFIER for unrecognized identifiers.
  *
  * @param line - Source AST line being processed.
  * @param context - Compilation context used by the operation.
- * @returns Normalized push line.
+ * @returns Push line with resolved target metadata where needed.
  */
-export default function normalizePush(line: PushLine, context: CompilationContext): NormalizedPushLine {
-	const { line: normalized } = normalizeArgumentsAtIndexes(line, context, [0]);
-	const normalizedPushLine = normalized as PushLine;
+export default function resolvePushReferences(line: PushLine, context: CompilationContext): SemanticPushLine {
+	const { line: resolved } = resolveArgumentsAtIndexes(line, context, [0]);
+	const resolvedPushLine = resolved as PushLine;
 
-	throwIfPointeeCountIsUnknown(normalizedPushLine, context);
+	throwIfPointeeCountIsUnknown(resolvedPushLine, context);
 
-	const argument = normalized.arguments[0];
+	const argument = resolved.arguments[0];
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		validateUnresolvedValueExpression(argument, line, context);
 	}
@@ -83,7 +82,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 			const local = context.locals[value];
 			if (local) {
 				const resolvedLine: Omit<ResolvedLocalPushLine, 'resolvedTarget'> = {
-					...normalizedPushLine,
+					...resolvedPushLine,
 					arguments: [argument],
 				};
 				return { ...resolvedLine, resolvedTarget: { kind: 'local' as const, local } };
@@ -92,7 +91,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 			const memoryItem = getResolvedMemoryDeclaration(context, value);
 			if (memoryItem) {
 				const resolvedLine: Omit<ResolvedMemoryPushLine, 'resolvedTarget'> = {
-					...normalizedPushLine,
+					...resolvedPushLine,
 					arguments: [argument],
 				};
 				return { ...resolvedLine, resolvedTarget: { kind: 'memory' as const, memoryItem } };
@@ -104,7 +103,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 			if (memoryItem) {
 				validateDereferenceDepth(pointerArgument, memoryItem, line, context);
 				const resolvedLine: Omit<ResolvedMemoryPointerPushLine, 'resolvedTarget'> = {
-					...normalizedPushLine,
+					...resolvedPushLine,
 					arguments: [pointerArgument],
 				};
 				return { ...resolvedLine, resolvedTarget: { kind: 'memory-pointer' as const, memoryItem } };
@@ -114,7 +113,7 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 			if (isResolvedPointerLocal(local)) {
 				validateDereferenceDepth(pointerArgument, local, line, context);
 				const resolvedLine: Omit<ResolvedLocalPointerPushLine, 'resolvedTarget'> = {
-					...normalizedPushLine,
+					...resolvedPushLine,
 					arguments: [pointerArgument],
 				};
 				return { ...resolvedLine, resolvedTarget: { kind: 'local-pointer' as const, local } };
@@ -124,5 +123,5 @@ export default function normalizePush(line: PushLine, context: CompilationContex
 		throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: value });
 	}
 
-	return normalized as NormalizedPushLine;
+	return resolved as SemanticPushLine;
 }

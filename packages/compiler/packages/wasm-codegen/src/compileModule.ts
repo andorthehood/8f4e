@@ -6,7 +6,6 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import type {
-	AnalyzedLine,
 	CompiledModule,
 	CompileOptions,
 	FunctionRegistry,
@@ -26,8 +25,7 @@ import {
 import { createCompilationContext } from '@8f4e/semantic-utils';
 import type { StackAnalyzedModule } from '@8f4e/stack-analyzer';
 import { applySemanticLine } from './applySemanticLine';
-import { attachStackAnalysis, compileCodegenLine } from './compileLine';
-import normalizeValueArguments from './normalizeValueArguments';
+import { compileCodegenLine } from './compileLine';
 
 /**
  * Compiles one validated module AST into its WebAssembly cycle function and memory metadata.
@@ -89,12 +87,11 @@ export function compileModule(
 
 	const analyzedLines = stackReport.analyzedLines;
 	let analyzedLineIndex = 0;
-	for (const originalLine of ast.lines) {
-		const line = normalizeValueArguments(originalLine, context);
-		if (isSemanticInstructionLine(line)) {
-			applySemanticLine(line, context);
-		} else if (!isMemoryDeclarationLine(line)) {
-			const analyzedLine = attachStackAnalysis(line, analyzedLines[analyzedLineIndex++] as AnalyzedLine);
+	for (const sourceLine of ast.lines) {
+		if (isSemanticInstructionLine(sourceLine)) {
+			applySemanticLine(sourceLine, context);
+		} else if (!isMemoryDeclarationLine(sourceLine)) {
+			const analyzedLine = analyzedLines[analyzedLineIndex++];
 			compileCodegenLine(analyzedLine, context);
 		}
 	}
