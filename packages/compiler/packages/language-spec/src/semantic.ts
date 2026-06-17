@@ -10,24 +10,14 @@ import type {
 	ArrayMemoryDeclarationLine,
 	CallLine,
 	CompilerASTLine,
-	ConstantsEndLine,
-	ConstantsLine,
-	ConstLine,
 	DefaultLine,
 	LocalSetLine,
 	LoopLine,
 	MapLine,
 	MemoryCopyLine,
-	ModuleEndLine,
-	ModuleLine,
-	PrototypeEndLine,
-	PrototypeLine,
 	PushArgument,
 	PushLine,
 	PushShapeLine,
-	RegionLine,
-	ShapeLine,
-	UseLine,
 	ValidatedPrototypeAST,
 } from './ast';
 import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMetadata } from './compiled';
@@ -87,12 +77,12 @@ export type Const = {
 
 export type Consts = Record<string, Const>;
 
-export type NormalizedArgumentLiteral = ArgumentLiteral & {
-	/** Address metadata when semantic normalization resolves this literal from an address expression. */
+export type ResolvedArgumentLiteral = ArgumentLiteral & {
+	/** Address metadata when semantic reference resolution resolves this literal from an address expression. */
 	address?: AddressMetadata;
 };
 
-export type NormalizedIntegerArgumentLiteral = NormalizedArgumentLiteral & {
+export type ResolvedIntegerArgumentLiteral = ResolvedArgumentLiteral & {
 	isInteger: true;
 	isFloat64?: false;
 };
@@ -279,52 +269,40 @@ export type AnalyzedLine<TLine extends CompilerASTLine = CompilerASTLine> = TLin
 export type CodegenContext<TContext extends CompilationContext = CompilationContext> = Omit<TContext, 'stack'>;
 export type FunctionCodegenContext = CodegenContext<FunctionCompilationContext>;
 
-export type ResolvedMapValueArgument = NormalizedArgumentLiteral | ArgumentStringLiteral;
+export type ResolvedMapValueArgument = ResolvedArgumentLiteral | ArgumentStringLiteral;
 
-export type NormalizedMapLine = Omit<MapLine, 'arguments'> & {
+export type ResolvedMapLine = Omit<MapLine, 'arguments'> & {
 	arguments: [ResolvedMapValueArgument, ResolvedMapValueArgument];
 };
 
-export type NormalizedDefaultLine = Omit<DefaultLine, 'arguments'> & {
-	arguments: [NormalizedArgumentLiteral];
+export type ResolvedDefaultLine = Omit<DefaultLine, 'arguments'> & {
+	arguments: [ResolvedArgumentLiteral];
 };
 
-export type NormalizedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
-	arguments: [NormalizedArgumentLiteral];
+export type ResolvedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
+	arguments: [ResolvedArgumentLiteral];
 };
 
-export type NormalizedLoopLine = Omit<LoopLine, 'arguments'> & {
-	arguments: [] | [NormalizedArgumentLiteral];
+export type ResolvedLoopLine = Omit<LoopLine, 'arguments'> & {
+	arguments: [] | [ResolvedArgumentLiteral];
 };
 
 export type ArrayDeclarationInitializerArgument =
 	| ArgumentCompileTimeExpression
 	| ArgumentIdentifier
-	| NormalizedArgumentLiteral;
+	| ResolvedArgumentLiteral;
 
 export type ArrayDeclarationLine = Omit<ArrayMemoryDeclarationLine, 'instruction' | 'arguments'> & {
 	instruction: ArrayDeclarationInstruction;
 	arguments: [ArgumentIdentifier, ArgumentLiteral, ...ArrayDeclarationInitializerArgument[]];
 };
 
-export type NormalizedSemanticInstructionLine =
-	| ConstLine
-	| UseLine
-	| ModuleLine
-	| RegionLine
-	| ModuleEndLine
-	| ConstantsLine
-	| ConstantsEndLine
-	| PrototypeLine
-	| PrototypeEndLine
-	| ShapeLine;
-
 export type ResolvedLocalSetLine = LocalSetLine & {
 	local: LocalBinding;
 };
 
 export type LiteralPushLine = Omit<PushLine, 'arguments'> & {
-	arguments: [NormalizedArgumentLiteral | ArgumentStringLiteral];
+	arguments: [ResolvedArgumentLiteral | ArgumentStringLiteral];
 };
 
 export type DeferredPushLine = Omit<PushLine, 'arguments'> & {
@@ -370,7 +348,7 @@ export type ResolvedPushLine =
 	| ResolvedLocalPointerPushLine;
 
 export type CodegenPushLine = LiteralPushLine | ResolvedPushLine;
-export type NormalizedPushLine = CodegenPushLine | DeferredPushLine;
+export type SemanticPushLine = CodegenPushLine | DeferredPushLine;
 
 export type PushIdentifierLine = Omit<PushLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier];
@@ -379,12 +357,12 @@ export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 };
 
-export type NormalizedCallLine = Omit<CallLine, 'arguments'> & {
+export type SemanticCallLine = Omit<CallLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...PushArgument[]];
 	inlineArgumentPushes?: CodegenPushLine[];
 };
 
-export type ResolvedCallLine = NormalizedCallLine & {
+export type ResolvedCallLine = SemanticCallLine & {
 	targetFunction: FunctionMetadata;
 };
 
@@ -398,25 +376,33 @@ export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
 	shapeExpansions: PushShapeExpansion[];
 };
 
-export type NormalizedLine<TLine extends CompilerASTLine> = TLine extends DefaultLine
-	? NormalizedDefaultLine | DefaultLine
+export type SemanticReferenceLine<TLine extends CompilerASTLine = CompilerASTLine> = TLine extends DefaultLine
+	? ResolvedDefaultLine | DefaultLine
 	: TLine extends CallLine
-		? ResolvedCallLine | NormalizedCallLine | CallLine
+		? ResolvedCallLine | SemanticCallLine | CallLine
 		: TLine extends MapLine
-			? NormalizedMapLine
+			? ResolvedMapLine
 			: TLine extends LocalSetLine
 				? ResolvedLocalSetLine
 				: TLine extends PushLine
-					? NormalizedPushLine
+					? SemanticPushLine
 					: TLine extends PushShapeLine
 						? ResolvedPushShapeLine
 						: TLine extends LoopLine
-							? NormalizedLoopLine | LoopLine
+							? ResolvedLoopLine | LoopLine
 							: TLine extends MemoryCopyLine
-								? NormalizedMemoryCopyLine | MemoryCopyLine
+								? ResolvedMemoryCopyLine | MemoryCopyLine
 								: TLine extends ArrayDeclarationLine
 									? ArrayDeclarationLine
 									: TLine;
+
+export interface SemanticReferenceLineFacts {
+	arguments?: SemanticReferenceLine['arguments'];
+	inlineArgumentPushes?: NonNullable<SemanticCallLine['inlineArgumentPushes']>;
+	local?: ResolvedLocalSetLine['local'];
+	resolvedTarget?: ResolvedPushLine['resolvedTarget'];
+	shapeExpansions?: ResolvedPushShapeLine['shapeExpansions'];
+}
 
 export const BlockType = {
 	MODULE: 0,

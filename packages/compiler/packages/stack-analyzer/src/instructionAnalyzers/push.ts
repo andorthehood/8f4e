@@ -2,11 +2,11 @@ import type {
 	AddressMetadata,
 	CompilationContext,
 	LocalBinding,
-	NormalizedPushLine,
 	PointeeBaseType,
 	PointeeMetadata,
 	ResolvedMemoryDeclaration,
 	ResolvedPushLine,
+	SemanticPushLine,
 	Stack,
 } from '@8f4e/language-spec';
 import {
@@ -51,7 +51,7 @@ function getAddressPointeeMetadata(context: CompilationContext, address: Address
 	} satisfies PointeeMetadata;
 }
 
-function pushLiteralStackItems(line: NormalizedPushLine, context: CompilationContext): Stack {
+function pushLiteralStackItems(line: SemanticPushLine, context: CompilationContext): Stack {
 	const argument = line.arguments[0];
 
 	if (argument.type === ArgumentType.STRING_LITERAL) {
@@ -187,13 +187,13 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 }
 
 /**
- * Produces stack items for a normalized push line and appends them to the current stack.
+ * Produces stack items for a semantic-reference push line and appends them to the current stack.
  *
  * @param line - AST line being processed.
  * @param context - Compilation context used by the operation.
  * @returns The relevant stack items for the analysis step.
  */
-export function analyzePush(line: NormalizedPushLine, context: CompilationContext): Stack {
+export function analyzePush(line: SemanticPushLine, context: CompilationContext): Stack {
 	const produced = 'resolvedTarget' in line ? pushResolvedTargetStackItems(line) : pushLiteralStackItems(line, context);
 	produce(context, produced);
 	return produced;

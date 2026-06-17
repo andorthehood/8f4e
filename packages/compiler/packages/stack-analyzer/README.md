@@ -5,6 +5,7 @@
 ```ts
 const stackReport = analyzeStack({
 	ast: { modules, functions },
+	semanticReferences,
 	namespaces,
 	memoryPlan,
 	memoryDefaultsByModuleId,
@@ -16,7 +17,7 @@ const stackReport = analyzeStack({
 });
 ```
 
-The root package entrypoint exports `analyzeStack`. It receives the project ASTs plus the compiler metadata that already exists after namespace, memory layout, memory default, memory reference, and function metadata passes. It returns a project stack-analysis report keyed by module id and function id.
+The root package entrypoint exports `analyzeStack`. It receives the unchanged project ASTs, a semantic reference report, and the compiler metadata that already exists after namespace, memory layout, memory default, memory reference, function metadata, and semantic reference resolver passes. It returns a project stack-analysis report keyed by module id and function id.
 
 Each module/function report contains:
 
@@ -36,8 +37,8 @@ The stack analyzer is responsible for:
 - block result stack validation
 - map input/output stack compatibility
 - address, pointer, clamp-range, and known-integer stack metadata propagation
-- `push`, pointer dereference, and `pushShape` stack item production after semantic normalization
+- `push`, pointer dereference, and `pushShape` stack item production from resolved semantic facts
 
-It is not responsible for parsing, syntax validation, namespace construction, memory layout planning, memory default resolution, memory-reference inlining, or WASM/codegen emission. Those earlier passes provide the resolved AST and metadata; later codegen consumes the report and does not perform stack analysis.
+It is not responsible for parsing, syntax validation, namespace construction, memory layout planning, memory default resolution, memory-reference inlining, semantic reference resolution, or WASM/codegen emission. Those earlier passes provide the AST and semantic metadata; later codegen consumes the stack report and does not perform stack analysis.
 
 `@8f4e/stack-analyzer/testing` exposes the package-private one-line analyzer for instruction compiler tests only. Compiler production code should use the project-level `analyzeStack` report.

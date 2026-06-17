@@ -1,3 +1,4 @@
+export * from './addressValues';
 export * from './arguments';
 export * from './ast';
 export * from './cache';

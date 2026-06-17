@@ -14,6 +14,7 @@ export default defineConfig({
 				'@8f4e/memory-default-resolver',
 				'@8f4e/memory-reference-inliner',
 				'@8f4e/memory-planner',
+				'@8f4e/semantic-reference-resolver',
 				'@8f4e/semantic-utils',
 				'@8f4e/stack-analyzer',
 				'@8f4e/wasm-codegen',

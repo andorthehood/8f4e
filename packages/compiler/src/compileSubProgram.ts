@@ -23,6 +23,7 @@ import { createFunctionId, ErrorCode, getEffectiveFunctionMetadata, getError } f
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
 import { MemoryPlannerError, planProjectMemoryLayout } from '@8f4e/memory-planner';
 import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
+import { resolveSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { analyzeStack } from '@8f4e/stack-analyzer';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileFunction, compileModules } from '@8f4e/wasm-codegen';
@@ -378,11 +379,23 @@ export function compileSubProgram(
 		signatures: [],
 		baseTypeIndex: 3,
 	};
+	const semanticReferences = resolveSemanticReferences({
+		ast: inlinedProjectAst,
+		namespaces,
+		memoryPlan,
+		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
+		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		functions: functionRegistry,
+		functionTypeRegistry,
+		memoryRegions: options.memoryRegions ?? [],
+		prototypeShapes: inlinedPrototypeShapesById,
+	}).references;
 	const stackReport = analyzeStack({
 		ast: {
 			modules: inlinedAstModules,
 			functions: inlinedAstFunctions,
 		},
+		semanticReferences,
 		namespaces,
 		memoryPlan,
 		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,

@@ -87,6 +87,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 462 | Extract semantic reference resolver | 2026-06-17 | Semantic reference resolution now runs once in compileSubProgram and returns a report consumed by stack analysis and WASM codegen alongside unchanged ASTs. |
 | 384 | Add compiler algorithmic regression metrics | 2026-06-14 | Archived with the exact completion date unknown; compiler complexity metrics now provide release-level regression signals. |
 | 381 | Add #follow module layout directive | 2026-06-14 | Cancelled; no strict `#follow` module layout adjacency directive is planned. |
 | 280 | Add reverse stack instruction with explicit item count | 2026-06-14 | Cancelled; no explicit `reverse <count>` stack instruction is planned. |

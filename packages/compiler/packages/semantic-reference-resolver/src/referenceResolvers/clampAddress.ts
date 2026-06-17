@@ -1,17 +1,20 @@
 import type { CompilationContext, CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, getError, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/language-spec';
-import { normalizeAndValidateResolvableArgs } from './helpers';
+import { resolveAndValidateValueArguments } from './helpers';
 
 /**
- * Normalizes and validates optional access-width arguments for clamp-address instructions.
+ * Resolves and validates optional access-width arguments for clamp-address instructions.
  *
  * @param line - AST line being processed.
  * @param context - Compilation context used by the operation.
  * @returns The computed result.
  */
-export default function normalizeClampAddress(line: CompilerASTLine, context: CompilationContext): CompilerASTLine {
-	const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);
-	const argument = normalized.arguments[0];
+export default function resolveClampAddressReferences(
+	line: CompilerASTLine,
+	context: CompilationContext
+): CompilerASTLine {
+	const resolved = resolveAndValidateValueArguments(line, context, [0]);
+	const argument = resolved.arguments[0];
 
 	if (
 		argument?.type === ArgumentType.LITERAL &&
@@ -20,5 +23,5 @@ export default function normalizeClampAddress(line: CompilerASTLine, context: Co
 		throw getError(ErrorCode.INVALID_ACCESS_WIDTH, line, context);
 	}
 
-	return normalized;
+	return resolved;
 }
