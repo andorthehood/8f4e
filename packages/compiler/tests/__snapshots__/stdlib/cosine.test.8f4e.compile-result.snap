@@ -114,9 +114,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 1.570796326794896,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "HALF_PI",
             },
           ],
           "instruction": "push",
@@ -132,9 +133,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 3.141592653589793,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "PI",
             },
           ],
           "instruction": "push",
@@ -204,9 +206,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 1.570796326794896,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "HALF_PI",
             },
           ],
           "instruction": "push",
@@ -236,9 +239,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 3.141592653589793,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "PI",
             },
           ],
           "instruction": "push",
@@ -424,9 +428,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": -0.0013888888,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "T3",
             },
           ],
           "instruction": "push",
@@ -438,9 +443,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 0.0416666666,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "T2",
             },
           ],
           "instruction": "push",
@@ -467,9 +473,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": -0.5,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "T1",
             },
           ],
           "instruction": "push",

@@ -29,7 +29,7 @@ const coverageComponents = [
 		pathFragment: '/packages/compiler/packages/tokenizer/dist/',
 	},
 	{
-		id: 'constantInliner',
+		id: 'constantResolver',
 		label: 'constant resolver',
 		pathFragment: '/packages/compiler/packages/constant-resolver/dist/',
 	},
@@ -39,9 +39,9 @@ const coverageComponents = [
 		pathFragment: '/packages/compiler/packages/memory-planner/dist/',
 	},
 	{
-		id: 'memoryReferenceInliner',
-		label: 'memory reference inliner',
-		pathFragment: '/packages/compiler/packages/memory-reference-inliner/dist/',
+		id: 'memoryReferenceResolver',
+		label: 'memory reference resolver',
+		pathFragment: '/packages/compiler/packages/memory-reference-resolver/dist/',
 	},
 	{
 		id: 'memoryDefaultResolver',

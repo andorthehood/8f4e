@@ -600,20 +600,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 24,
-                  "memoryId": "truthyOutput",
-                  "memoryIndex": 0,
-                  "moduleId": "ifVoidAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 24,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "truthyOutput",
+              "type": "identifier",
+              "value": "&truthyOutput",
             },
           ],
           "instruction": "push",
@@ -639,20 +631,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 24,
-                  "memoryId": "truthyOutput",
-                  "memoryIndex": 0,
-                  "moduleId": "ifVoidAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 24,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "truthyOutput",
+              "type": "identifier",
+              "value": "&truthyOutput",
             },
           ],
           "instruction": "push",
@@ -749,20 +733,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 32,
-                  "memoryId": "falsyOutput",
-                  "memoryIndex": 0,
-                  "moduleId": "ifVoidAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 32,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "falsyOutput",
+              "type": "identifier",
+              "value": "&falsyOutput",
             },
           ],
           "instruction": "push",
@@ -788,20 +764,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 32,
-                  "memoryId": "falsyOutput",
-                  "memoryIndex": 0,
-                  "moduleId": "ifVoidAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 32,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "falsyOutput",
+              "type": "identifier",
+              "value": "&falsyOutput",
             },
           ],
           "instruction": "push",

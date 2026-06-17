@@ -13,7 +13,7 @@ export default defineConfig({
 				'@8f4e/constant-resolver',
 				'@8f4e/language-spec',
 				'@8f4e/memory-default-resolver',
-				'@8f4e/memory-reference-inliner',
+				'@8f4e/memory-reference-resolver',
 				'@8f4e/memory-planner',
 				'@8f4e/semantic-reference-resolver',
 				'@8f4e/semantic-utils',

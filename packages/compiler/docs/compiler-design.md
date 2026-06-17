@@ -26,7 +26,7 @@ In short:
 
 - source code
 - AST with literals and expressions
-- AST with inlined values
+- original AST plus resolved value reports
 - compilation
 
 ## Design Rule

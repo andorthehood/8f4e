@@ -74,9 +74,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 0.31830988618379,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "INV_PI",
             },
           ],
           "instruction": "push",
