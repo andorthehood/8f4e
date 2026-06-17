@@ -16,7 +16,7 @@ completed: null
 
 Unlike constants blocks, this check is not currently pure duplication: prototypes do not enter the normal module/function compile and stack-validation pipeline. Removing the check without replacing it would allow executable lines inside prototypes until prototype-body expansion is implemented deliberately.
 
-The validation still belongs closer to parsing, because the tokenizer/parser already owns prototype block construction and already classifies memory declaration lines while building `PrototypeAST.memoryDeclarationLines`.
+The validation still belongs closer to parsing, because the tokenizer/parser owns prototype block construction and can reject non-memory prototype body lines from the source-block context without adding derived indexes to `PrototypeAST`.
 
 ## Proposed Solution
 
@@ -36,7 +36,7 @@ When prototype body expansion is implemented, this rule should be updated delibe
 
 - Update `packages/compiler/packages/tokenizer/src/parser.ts`.
 - While applying prototype AST lines, reject non-memory, non-boundary instructions according to the current rule.
-- Keep `memoryDeclarationLines` collection source ordered.
+- Keep accepted memory declaration lines source ordered in `PrototypeAST.lines`.
 
 ### Step 2: Remove Compiler-Side Prototype Loop
 
@@ -74,4 +74,3 @@ When prototype body expansion is implemented, this rule should be updated delibe
 - **Error domain**: Decide whether this should remain a compiler semantic diagnostic or become a tokenizer syntax diagnostic. Since it depends on source-block context but not symbol resolution, tokenizer/parser ownership is likely appropriate.
 - **Future body support**: Do not hard-code assumptions that make prototype body expansion harder. Keep the parser structure ready to collect body lines later.
 - **No compatibility burden**: The software has not been released yet, so update internal APIs directly and do not add compatibility shims.
-

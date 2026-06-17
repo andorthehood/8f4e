@@ -1,5 +1,5 @@
 import type { CompilerASTLine } from '@8f4e/language-spec';
-import { ArgumentType, isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/language-spec';
+import { ArgumentType, isSemanticInstructionLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { parseLine } from './parseLine';
 import { classifyIdentifier } from './syntax/parseArgument';
@@ -21,7 +21,6 @@ describe('parseLine', () => {
 				],
 				instruction: 'int',
 				lineNumber: 1,
-				hasExplicitMemoryDefault: true,
 			},
 		],
 		[
@@ -55,24 +54,6 @@ describe('parseLine', () => {
 	it('does not narrow runtime/codegen instructions as semantic instructions', () => {
 		expect(isSemanticInstructionLine(parseLine('push 1', 0))).toBe(false);
 		expect(isSemanticInstructionLine(parseLine('int value 1', 0))).toBe(false);
-	});
-
-	it('marks explicit memory defaults from source syntax', () => {
-		const implicitScalarDefault = parseLine('int value', 0);
-		const explicitScalarDefault = parseLine('int value 0', 0);
-		const anonymousScalarDefault = parseLine('int 0', 0);
-		const implicitArrayDefault = parseLine('int[] buffer 4', 0);
-		const explicitArrayDefault = parseLine('int[] buffer 4 0', 0);
-
-		expect(isMemoryDeclarationLine(implicitScalarDefault) && implicitScalarDefault.hasExplicitMemoryDefault).toBe(
-			false
-		);
-		expect(isMemoryDeclarationLine(explicitScalarDefault) && explicitScalarDefault.hasExplicitMemoryDefault).toBe(true);
-		expect(isMemoryDeclarationLine(anonymousScalarDefault) && anonymousScalarDefault.hasExplicitMemoryDefault).toBe(
-			true
-		);
-		expect(isMemoryDeclarationLine(implicitArrayDefault) && implicitArrayDefault.hasExplicitMemoryDefault).toBe(false);
-		expect(isMemoryDeclarationLine(explicitArrayDefault) && explicitArrayDefault.hasExplicitMemoryDefault).toBe(true);
 	});
 
 	it('rejects wrong arity and raw argument shape in tokenizer', () => {

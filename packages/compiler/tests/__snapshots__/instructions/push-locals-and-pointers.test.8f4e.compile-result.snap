@@ -353,7 +353,6 @@
               "value": 42,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -428,7 +427,6 @@
               "value": 1.5,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -448,7 +446,6 @@
               "value": "&value",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float*",
         },
         {
@@ -468,7 +465,6 @@
               "value": "&ptr",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float**",
         },
         {

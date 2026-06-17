@@ -712,7 +712,6 @@
               "value": 127,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8[]",
         },
         {
@@ -863,7 +862,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",
@@ -960,7 +958,6 @@
               "value": 255,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8u[]",
         },
         {
@@ -1111,7 +1108,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",
@@ -1203,7 +1199,6 @@
               "value": 32767,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16[]",
         },
         {
@@ -1362,7 +1357,6 @@
               "value": 65535,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16u[]",
         },
         {

@@ -52,7 +52,6 @@
               "value": "ROOT",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -68,7 +67,6 @@
               "type": "compile_time_expression",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -84,7 +82,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -293,7 +290,6 @@
               "value": 2,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -442,7 +438,6 @@
               "value": 53,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -722,7 +717,6 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8[]",
         },
         {
@@ -754,7 +748,6 @@
               "value": 3000,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16[]",
         },
         {
@@ -1178,7 +1171,6 @@
               "value": 1,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {

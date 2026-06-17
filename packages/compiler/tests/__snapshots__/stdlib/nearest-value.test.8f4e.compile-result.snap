@@ -1236,7 +1236,6 @@
               "value": 2,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float[]",
         },
         {
@@ -1263,7 +1262,6 @@
               "value": 0.75,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float[]",
         },
         {
@@ -1572,7 +1570,6 @@
               "value": 20,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -1599,7 +1596,6 @@
               "value": 10,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
