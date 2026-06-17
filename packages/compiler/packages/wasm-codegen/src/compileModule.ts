@@ -23,9 +23,11 @@ import {
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 } from '@8f4e/language-spec';
-import { applySemanticLine, createCompilationContext, normalizeValueArguments } from '@8f4e/semantic-utils';
+import { createCompilationContext } from '@8f4e/semantic-utils';
 import type { StackAnalyzedModule } from '@8f4e/stack-analyzer';
+import { applySemanticLine } from './applySemanticLine';
 import { attachStackAnalysis, compileCodegenLine } from './compileLine';
+import normalizeValueArguments from './normalizeValueArguments';
 
 /**
  * Compiles one validated module AST into its WebAssembly cycle function and memory metadata.

@@ -6,7 +6,7 @@ const baseConfig = createLibConfig({
 	outDir: 'dist',
 	formats: ['es'],
 	fileName: () => 'index.js',
-	external: ['@8f4e/language-spec', '@8f4e/memory-reference-inliner'],
+	external: ['@8f4e/language-spec'],
 });
 
 export default defineConfig({
