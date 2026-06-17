@@ -270,7 +270,6 @@ describe('compileToAST line parsing', () => {
 				{ type: ArgumentType.IDENTIFIER, value: '&source:samples' },
 			],
 			referencedNamespaceIds: ['source'],
-			hasExplicitMemoryDefault: true,
 		});
 	});
 

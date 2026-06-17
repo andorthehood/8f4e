@@ -1300,7 +1300,6 @@
               "value": 42,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -1312,7 +1311,6 @@
               "value": "dest",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {

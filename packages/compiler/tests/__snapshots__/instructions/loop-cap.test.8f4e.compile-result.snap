@@ -163,7 +163,6 @@
               "value": "counter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -275,7 +274,6 @@
               "value": "expressionCounter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -402,7 +400,6 @@
               "value": "counter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -523,7 +520,6 @@
               "value": "counter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -644,7 +640,6 @@
               "value": "counter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -760,7 +755,6 @@
               "value": "counter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -924,7 +918,6 @@
               "value": "outerCounter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -936,7 +929,6 @@
               "value": "innerCounter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -1135,7 +1127,6 @@
               "value": "counter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {

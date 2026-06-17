@@ -34,7 +34,6 @@
               "value": "&combinedBoundsSource:buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
           "referencedNamespaceIds": [
             "combinedBoundsSource",
@@ -57,7 +56,6 @@
               "value": "count(combinedBoundsSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "combinedBoundsSource",
@@ -80,7 +78,6 @@
               "value": "min(combinedBoundsSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "combinedBoundsSource",
@@ -103,7 +100,6 @@
               "value": "max(combinedBoundsSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "combinedBoundsSource",
@@ -259,7 +255,6 @@
               "value": 12,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -300,7 +295,6 @@
               "value": "min(floatBoundsSource:floats)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
           "referencedNamespaceIds": [
             "floatBoundsSource",
@@ -323,7 +317,6 @@
               "value": "max(floatBoundsSource:floats)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
           "referencedNamespaceIds": [
             "floatBoundsSource",
@@ -423,7 +416,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float[]",
         },
         {
@@ -466,7 +458,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -488,7 +479,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int32[]",
         },
         {
@@ -510,7 +500,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16[]",
         },
         {
@@ -532,7 +521,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16u[]",
         },
         {
@@ -554,7 +542,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8[]",
         },
         {
@@ -576,7 +563,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8u[]",
         },
         {
@@ -617,7 +603,6 @@
               "value": "min(intBoundsSource:ints)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -640,7 +625,6 @@
               "value": "max(intBoundsSource:ints)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -663,7 +647,6 @@
               "value": "min(intBoundsSource:int32s)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -686,7 +669,6 @@
               "value": "max(intBoundsSource:int32s)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -709,7 +691,6 @@
               "value": "min(intBoundsSource:signed16)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -732,7 +713,6 @@
               "value": "max(intBoundsSource:signed16)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -755,7 +735,6 @@
               "value": "min(intBoundsSource:unsigned16)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -778,7 +757,6 @@
               "value": "max(intBoundsSource:unsigned16)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -801,7 +779,6 @@
               "value": "min(intBoundsSource:signed8)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -824,7 +801,6 @@
               "value": "max(intBoundsSource:signed8)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -847,7 +823,6 @@
               "value": "min(intBoundsSource:unsigned8)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -870,7 +845,6 @@
               "value": "max(intBoundsSource:unsigned8)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "intBoundsSource",
@@ -1240,7 +1214,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -1281,7 +1254,6 @@
               "value": "min(lateBoundsSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "lateBoundsSource",
@@ -1304,7 +1276,6 @@
               "value": "max(lateBoundsSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
           "referencedNamespaceIds": [
             "lateBoundsSource",

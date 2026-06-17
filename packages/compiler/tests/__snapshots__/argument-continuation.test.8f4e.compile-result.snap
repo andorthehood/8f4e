@@ -35,7 +35,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float[]",
         },
         {
@@ -127,7 +126,6 @@
               "value": 255,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -196,7 +194,6 @@
               "value": "&continuationPointerSource:samples",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float*",
           "referencedNamespaceIds": [
             "continuationPointerSource",

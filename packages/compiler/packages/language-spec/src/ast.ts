@@ -151,15 +151,10 @@ export type MemoryDeclarationArgument =
 	| ArgumentCompileTimeExpression
 	| ArgumentStringLiteral;
 
-type ExplicitMemoryDefaultMetadata = {
-	hasExplicitMemoryDefault: boolean;
-};
-
 export type ScalarMemoryDeclarationLine = ASTLineBase<
 	ScalarMemoryDeclarationInstruction,
 	[MemoryDeclarationArgument, ...MemoryDeclarationArgument[]]
 > &
-	ExplicitMemoryDefaultMetadata &
 	ReferencedNamespaceIdsMetadata;
 export type NamedScalarMemoryDeclarationLine = Omit<ScalarMemoryDeclarationLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...MemoryDeclarationArgument[]];
@@ -168,7 +163,6 @@ export type ArrayMemoryDeclarationLine = ASTLineBase<
 	ArrayDeclarationInstruction,
 	[ArgumentIdentifier, CompileTimeValueArgument, ...MemoryDeclarationArgument[]]
 > &
-	ExplicitMemoryDefaultMetadata &
 	ReferencedNamespaceIdsMetadata;
 export type MemoryDeclarationLine = ScalarMemoryDeclarationLine | ArrayMemoryDeclarationLine;
 

@@ -25,7 +25,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -236,7 +235,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -577,7 +575,6 @@
               "value": 1,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -689,7 +686,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "float",
         },
         {
@@ -1040,7 +1036,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -1255,7 +1250,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "float",
         },
         {
@@ -1384,7 +1378,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -1735,7 +1728,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -1990,7 +1982,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -2341,7 +2332,6 @@
               "value": "input",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -2863,7 +2853,6 @@
               "value": 5,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

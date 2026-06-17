@@ -712,7 +712,6 @@
               "value": 127,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8[]",
         },
         {
@@ -960,7 +959,6 @@
               "value": 255,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8u[]",
         },
         {
@@ -1203,7 +1201,6 @@
               "value": 32767,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16[]",
         },
         {
@@ -1362,7 +1359,6 @@
               "value": 65535,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16u[]",
         },
         {
