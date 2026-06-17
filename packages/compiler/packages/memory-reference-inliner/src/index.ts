@@ -174,8 +174,7 @@ function getPointeeElementCount(
 	}
 
 	const byteOffset = Math.max(0, safeRange.byteAddress - memoryItem.byteAddress);
-	const byteLength = memoryItem.numberOfElements * memoryItem.elementWordSize;
-	return Math.max(0, Math.floor((byteLength - byteOffset) / memoryItem.elementWordSize));
+	return Math.max(0, Math.floor((memoryItem.elementByteLength - byteOffset) / memoryItem.elementWordSize));
 }
 
 function updatePointerMemoryMetadata(line: CompilerASTLine, context: MemoryReferenceResolutionContext): void {

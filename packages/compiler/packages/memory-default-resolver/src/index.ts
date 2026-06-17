@@ -168,10 +168,6 @@ function getMemoryDeclarationOrThrow(
 	return declaration;
 }
 
-function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
-	return byteAddress + Math.max(0, wordAlignedSize - 1) * 4;
-}
-
 function getIntermoduleMemoryDeclaration(
 	shape: Extract<
 		MemoryArgumentShape,
@@ -218,12 +214,10 @@ function resolveMemoryDefaultValue(
 			return shape.value;
 		case 'memory-reference': {
 			if (shape.base === 'this') {
-				return shape.isEndAddress ? getEndByteAddress(module.byteAddress, module.wordAlignedSize) : module.byteAddress;
+				return shape.isEndAddress ? module.endByteAddress : module.byteAddress;
 			}
 			const declaration = getMemoryDeclarationOrThrow(module, shape.base, line);
-			return shape.isEndAddress
-				? getEndByteAddress(declaration.byteAddress, declaration.wordAlignedSize)
-				: declaration.byteAddress;
+			return shape.isEndAddress ? declaration.endByteAddress : declaration.byteAddress;
 		}
 		case 'element-count':
 			return getMemoryDeclarationOrThrow(module, shape.base, line).numberOfElements;
@@ -234,9 +228,7 @@ function resolveMemoryDefaultValue(
 					identifier: shape.module,
 				});
 			}
-			return shape.isEndAddress
-				? getEndByteAddress(targetModule.byteAddress, targetModule.wordAlignedSize)
-				: targetModule.byteAddress;
+			return shape.isEndAddress ? targetModule.endByteAddress : targetModule.byteAddress;
 		}
 		case 'intermodular-element-count':
 			return getIntermoduleMemoryDeclaration(shape, line, memoryPlan).numberOfElements;
@@ -345,8 +337,7 @@ function getPointeeElementCount(
 	}
 
 	const byteOffset = Math.max(0, safeRange.byteAddress - memoryItem.byteAddress);
-	const byteLength = memoryItem.numberOfElements * memoryItem.elementWordSize;
-	return Math.max(0, Math.floor((byteLength - byteOffset) / memoryItem.elementWordSize));
+	return Math.max(0, Math.floor((memoryItem.elementByteLength - byteOffset) / memoryItem.elementWordSize));
 }
 
 function setMemoryDefault(

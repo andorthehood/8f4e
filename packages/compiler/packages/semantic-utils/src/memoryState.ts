@@ -7,8 +7,6 @@ import type {
 	ResolvedMemoryDeclaration,
 } from '@8f4e/language-spec';
 
-type MemoryPlanContext = Pick<CompilationContext, 'currentPlannedModule' | 'memoryPlan' | 'namespace'>;
-
 /** Creates an empty memory plan for contexts that do not compile module memory. */
 export function createEmptyMemoryPlan(): MemoryLayoutPlan {
 	return {
@@ -19,26 +17,19 @@ export function createEmptyMemoryPlan(): MemoryLayoutPlan {
 }
 
 /** Returns the active module plan for contexts compiling a module body. */
-export function getCurrentPlannedModule(context: MemoryPlanContext): PlannedMemoryModule | undefined {
-	return (
-		context.currentPlannedModule ??
-		(context.namespace.moduleName ? context.memoryPlan.modules[context.namespace.moduleName] : undefined)
-	);
+export function getCurrentPlannedModule(context: CompilationContext): PlannedMemoryModule | undefined {
+	return context.currentPlannedModule;
 }
 
 /** Returns the planned memory declaration for a local or explicitly targeted module. */
 export function getPlannedMemoryDeclaration(
-	context: MemoryPlanContext,
+	context: CompilationContext,
 	memoryId: string,
 	moduleId = context.namespace.moduleName
 ): PlannedMemoryDeclaration | undefined {
 	const currentModule = getCurrentPlannedModule(context);
 	const module = !moduleId || moduleId === currentModule?.id ? currentModule : context.memoryPlan.modules[moduleId];
 	return module?.memory[memoryId];
-}
-
-interface ResolvedMemoryOverlay {
-	pointerMetadata: Record<string, MemoryPointerMetadata>;
 }
 
 function getPointerMetadataWithDefinedFields(metadata: MemoryPointerMetadata | undefined): MemoryPointerMetadata {
@@ -51,23 +42,23 @@ function getPointerMetadataWithDefinedFields(metadata: MemoryPointerMetadata | u
 
 function createResolvedMemoryDeclaration(
 	declaration: PlannedMemoryDeclaration,
-	overlay: ResolvedMemoryOverlay
+	pointerMetadata: Record<string, MemoryPointerMetadata>
 ): ResolvedMemoryDeclaration {
 	return {
 		...declaration,
-		...getPointerMetadataWithDefinedFields(overlay.pointerMetadata[declaration.id]),
+		...getPointerMetadataWithDefinedFields(pointerMetadata[declaration.id]),
 	};
 }
 
-function getResolvedMemoryOverlay(
+function getResolvedPointerMetadata(
 	context: CompilationContext,
 	moduleId = context.namespace.moduleName
-): ResolvedMemoryOverlay {
+): Record<string, MemoryPointerMetadata> {
 	if (!moduleId || moduleId === context.namespace.moduleName) {
-		return context;
+		return context.pointerMetadata;
 	}
 
-	return context.namespace.namespaces[moduleId];
+	return context.namespace.namespaces[moduleId].pointerMetadata;
 }
 
 /** Returns a resolved memory declaration for the active module, or for a target module namespace. */
@@ -81,5 +72,5 @@ export function getResolvedMemoryDeclaration(
 		return undefined;
 	}
 
-	return createResolvedMemoryDeclaration(declaration, getResolvedMemoryOverlay(context, moduleId));
+	return createResolvedMemoryDeclaration(declaration, getResolvedPointerMetadata(context, moduleId));
 }
