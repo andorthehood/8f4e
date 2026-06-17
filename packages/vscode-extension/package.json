@@ -76,7 +76,7 @@
     "@8f4e/runtime-main-thread": "*",
     "@8f4e/stdlib": "*",
     "@types/node": "24.13.2",
-    "@types/vscode": "1.120.0",
+    "@types/vscode": "1.125.0",
     "@vscode/vsce": "3.9.2",
     "vite": "7.3.5"
   }
