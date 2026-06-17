@@ -86,20 +86,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "dest",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesPopOrderAssertions",
-                  "safeByteLength": 8,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "&dest",
             },
           ],
           "instruction": "push",
@@ -117,20 +109,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "dest",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesPopOrderAssertions",
-                  "safeByteLength": 8,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "&dest",
             },
           ],
           "instruction": "push",
@@ -158,20 +142,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "dest",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesPopOrderAssertions",
-                  "safeByteLength": 8,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "&dest",
             },
           ],
           "instruction": "push",
@@ -189,9 +165,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
+              "referenceKind": "element-word-size",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "sizeof(dest)",
             },
           ],
           "instruction": "push",
@@ -227,20 +205,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "dest",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesPopOrderAssertions",
-                  "safeByteLength": 8,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "&dest",
             },
           ],
           "instruction": "push",
@@ -258,9 +228,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
+              "referenceKind": "element-word-size",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "sizeof(dest)",
             },
           ],
           "instruction": "push",
@@ -296,20 +268,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "dest",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesPopOrderAssertions",
-                  "safeByteLength": 8,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "&dest",
             },
           ],
           "instruction": "push",
@@ -327,9 +291,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
+              "referenceKind": "element-word-size",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "sizeof(dest)",
             },
           ],
           "instruction": "push",
@@ -365,20 +331,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "dest",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesPopOrderAssertions",
-                  "safeByteLength": 8,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "&dest",
             },
           ],
           "instruction": "push",
@@ -396,9 +354,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
+              "referenceKind": "element-word-size",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "sizeof(dest)",
             },
           ],
           "instruction": "push",
@@ -434,20 +394,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "dest",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesPopOrderAssertions",
-                  "safeByteLength": 8,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "&dest",
             },
           ],
           "instruction": "push",
@@ -465,9 +417,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
+              "referenceKind": "element-word-size",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "sizeof(dest)",
             },
           ],
           "instruction": "push",
@@ -561,20 +515,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 12,
-                  "memoryId": "buf",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesTruncationAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 12,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buf",
+              "type": "identifier",
+              "value": "&buf",
             },
           ],
           "instruction": "push",
@@ -592,20 +538,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 12,
-                  "memoryId": "buf",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesTruncationAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 12,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buf",
+              "type": "identifier",
+              "value": "&buf",
             },
           ],
           "instruction": "push",
@@ -633,20 +571,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 12,
-                  "memoryId": "buf",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesTruncationAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 12,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buf",
+              "type": "identifier",
+              "value": "&buf",
             },
           ],
           "instruction": "push",
@@ -664,9 +594,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
+              "referenceKind": "element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buf",
+              "type": "identifier",
+              "value": "sizeof(buf)",
             },
           ],
           "instruction": "push",
@@ -740,20 +672,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 16,
-                  "memoryId": "dest",
-                  "memoryIndex": 0,
-                  "moduleId": "storeBytesZeroCountAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 16,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "dest",
+              "type": "identifier",
+              "value": "&dest",
             },
           ],
           "instruction": "push",

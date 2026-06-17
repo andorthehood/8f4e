@@ -564,6 +564,15 @@ describe('resolveSemanticReferences', () => {
 			memoryPlan: createEmptyMemoryPlan(),
 			memoryDefaultsByModuleId: {},
 			pointerMetadataByModuleId: {},
+			constantReferences: { prototypes: [], modules: [], constants: [], functions: [{ lineFacts: [] }] },
+			memoryReferences: {
+				prototypes: [],
+				modules: [],
+				constants: [],
+				functions: [{ lineFacts: [] }],
+				declarationSourcesByModuleId: {},
+				pointerMetadataByModuleId: {},
+			},
 			functions: {
 				byId: {
 					[functionId]: {

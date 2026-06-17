@@ -22,7 +22,7 @@ import type {
 import { createFunctionId, ErrorCode, getEffectiveFunctionMetadata, getError } from '@8f4e/language-spec';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
 import { MemoryPlannerError, planProjectMemoryLayout } from '@8f4e/memory-planner';
-import { inlineMemoryReferences } from '@8f4e/memory-reference-inliner';
+import { resolveMemoryReferences } from '@8f4e/memory-reference-resolver';
 import { resolveSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { analyzeStack } from '@8f4e/stack-analyzer';
 import { compileToAST, createASTCache, SyntaxRulesError } from '@8f4e/tokenizer';
@@ -331,48 +331,36 @@ export function compileSubProgram(
 	} catch (error) {
 		throw wrapMemoryPlannerError(error, projectAst);
 	}
-	const {
-		ast: {
-			prototypes: inlinedAstPrototypes,
-			modules: inlinedAstModules,
-			constants: inlinedAstConstants,
-			functions: inlinedAstFunctions,
-		},
-	} = inlineMemoryReferences({
+	const memoryReferenceResolution = resolveMemoryReferences({
 		ast: projectAst,
 		memoryPlan,
 		constantReferences: constantResolution.references,
 	});
-	const inlinedProjectAst = {
-		prototypes: inlinedAstPrototypes,
-		modules: inlinedAstModules,
-		constants: inlinedAstConstants,
-		functions: inlinedAstFunctions,
-	};
-	const inlinedPrototypeShapesById = indexPrototypeShapes(inlinedAstPrototypes);
+	const prototypeShapesById = indexPrototypeShapes(projectAst.prototypes);
 	let memoryDefaultResolution: ReturnType<typeof resolveMemoryDefaults>;
 	try {
 		memoryDefaultResolution = resolveMemoryDefaults({
 			memoryPlan,
+			memoryReferences: memoryReferenceResolution.references,
 		});
 	} catch (error) {
-		throw wrapMemoryDefaultResolverError(error, inlinedProjectAst);
+		throw wrapMemoryDefaultResolverError(error, projectAst);
 	}
 
-	const namespaces = collectNamespacesFromASTs(inlinedAstModules, memoryPlan, memoryDefaultResolution);
+	const namespaces = collectNamespacesFromASTs(projectAst.modules, memoryPlan, memoryDefaultResolution);
 
-	const importedUserFunctionCount = inlinedAstFunctions.filter(ast => ast.import).length;
+	const importedUserFunctionCount = projectAst.functions.filter(ast => ast.import).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
 
 	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
-	const userFunctionMetadata = collectFunctionMetadataFromAsts(inlinedAstFunctions, {
+	const userFunctionMetadata = collectFunctionMetadataFromAsts(projectAst.functions, {
 		importedFunctionBaseIndex: 0,
 		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
 		reservedFunctionIds: entryNames,
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
-		prototypeShapes: inlinedPrototypeShapesById,
+		prototypeShapes: prototypeShapesById,
 	});
 	const functionRegistry = mergeFunctionRegistries(entryFunctionMetadata, userFunctionMetadata);
 
@@ -382,20 +370,22 @@ export function compileSubProgram(
 		baseTypeIndex: 3,
 	};
 	const semanticReferences = resolveSemanticReferences({
-		ast: inlinedProjectAst,
+		ast: projectAst,
 		namespaces,
 		memoryPlan,
 		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
 		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		constantReferences: constantResolution.references,
+		memoryReferences: memoryReferenceResolution.references,
 		functions: functionRegistry,
 		functionTypeRegistry,
 		memoryRegions: options.memoryRegions ?? [],
-		prototypeShapes: inlinedPrototypeShapesById,
+		prototypeShapes: prototypeShapesById,
 	}).references;
 	const stackReport = analyzeStack({
 		ast: {
-			modules: inlinedAstModules,
-			functions: inlinedAstFunctions,
+			modules: projectAst.modules,
+			functions: projectAst.functions,
 		},
 		semanticReferences,
 		namespaces,
@@ -405,11 +395,11 @@ export function compileSubProgram(
 		functions: functionRegistry,
 		functionTypeRegistry,
 		memoryRegions: options.memoryRegions ?? [],
-		prototypeShapes: inlinedPrototypeShapesById,
+		prototypeShapes: prototypeShapesById,
 	});
 
-	const compiledFunctions = inlinedAstFunctions.map(ast => {
-		const signatureMetadata = getEffectiveFunctionMetadata(ast, inlinedPrototypeShapesById);
+	const compiledFunctions = projectAst.functions.map(ast => {
+		const signatureMetadata = getEffectiveFunctionMetadata(ast, prototypeShapesById);
 		const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
 		return compileFunction(
 			ast,
@@ -426,7 +416,7 @@ export function compileSubProgram(
 	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
 
 	const compiledModules = compileModules(
-		inlinedAstModules,
+		projectAst.modules,
 		{
 			...options,
 			startingMemoryWordAddress: 1,
@@ -437,7 +427,7 @@ export function compileSubProgram(
 		stackReport,
 		functionRegistry,
 		functionTypeRegistry,
-		inlinedPrototypeShapesById
+		prototypeShapesById
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],

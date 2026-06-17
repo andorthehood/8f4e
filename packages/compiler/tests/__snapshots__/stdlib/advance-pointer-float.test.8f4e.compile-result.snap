@@ -100,9 +100,12 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
             },
           ],
           "instruction": "push",
@@ -160,9 +163,12 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
             },
           ],
           "instruction": "push",
@@ -355,9 +361,12 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
             },
           ],
           "instruction": "push",
@@ -415,9 +424,12 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
             },
           ],
           "instruction": "push",
@@ -581,20 +593,12 @@
               "value": "pointer",
             },
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "buffer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 12,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
             },
           ],
           "hasExplicitMemoryDefault": true,
@@ -603,20 +607,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 16,
-                  "memoryId": "pointer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 16,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "pointer",
+              "type": "identifier",
+              "value": "&pointer",
             },
           ],
           "instruction": "push",
@@ -624,20 +620,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "buffer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 12,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
             },
           ],
           "instruction": "push",
@@ -645,9 +633,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 3,
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "count(buffer)",
             },
           ],
           "instruction": "push",
@@ -677,20 +667,24 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 8,
-                  "memoryId": "buffer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 8,
-                  "source": "memory-start",
-                },
+              "intermoduleIds": [],
+              "left": {
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "&buffer",
               },
-              "isInteger": true,
-              "type": "literal",
-              "value": 8,
+              "operator": "+",
+              "right": {
+                "referenceKind": "element-word-size",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "sizeof(buffer)",
+              },
+              "type": "compile_time_expression",
             },
           ],
           "instruction": "push",
@@ -709,20 +703,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 16,
-                  "memoryId": "pointer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 16,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "pointer",
+              "type": "identifier",
+              "value": "&pointer",
             },
           ],
           "instruction": "push",
@@ -730,20 +716,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "buffer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 12,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
             },
           ],
           "instruction": "push",
@@ -751,9 +729,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 3,
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "count(buffer)",
             },
           ],
           "instruction": "push",
@@ -783,20 +763,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 12,
-                  "memoryId": "buffer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-end",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 12,
+              "isEndAddress": true,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "buffer&",
             },
           ],
           "instruction": "push",
@@ -815,20 +787,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 16,
-                  "memoryId": "pointer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 16,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "pointer",
+              "type": "identifier",
+              "value": "&pointer",
             },
           ],
           "instruction": "push",
@@ -836,20 +800,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "buffer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 12,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
             },
           ],
           "instruction": "push",
@@ -857,9 +813,11 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 3,
+              "referenceKind": "element-count",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "count(buffer)",
             },
           ],
           "instruction": "push",
@@ -889,20 +847,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "buffer",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePointerFloatAssertions",
-                  "safeByteLength": 12,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "&buffer",
             },
           ],
           "instruction": "push",
