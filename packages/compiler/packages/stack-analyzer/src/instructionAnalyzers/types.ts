@@ -5,6 +5,7 @@ export type InstructionAnalysisResult = {
 	consumed: Stack;
 	produced: Stack;
 	dropped?: Stack;
+	targetFunctionId?: string;
 };
 
 /** Function shape shared by stack analyzers that handle specific compiler instructions. */

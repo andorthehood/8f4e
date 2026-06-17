@@ -21,8 +21,8 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `ensureNonZero`.
  * @see [Instruction docs](../../docs/instructions/math-helpers.md)
  */
-const ensureNonZero: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+const ensureNonZero: InstructionCompiler = (line, context, facts) => {
+	const [operand] = facts.stackAnalysis.consumedOperands;
 
 	const isInteger = operand.valueType === 'int';
 	const isFloat64 = operand.valueType === 'float64';
