@@ -586,9 +586,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate"
             ]
           },
           {
@@ -622,9 +619,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "setButton"
             ]
           },
           {
@@ -790,9 +784,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate"
             ]
           },
           {
@@ -826,9 +817,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "setButton"
             ]
           }
         ],
@@ -1058,9 +1046,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate2"
             ]
           },
           {
@@ -1094,9 +1079,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "resetButton"
             ]
           },
           {
@@ -1262,9 +1244,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate2"
             ]
           },
           {
@@ -1298,9 +1277,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "resetButton"
             ]
           }
         ],
@@ -1577,9 +1553,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate"
             ]
           },
           {
@@ -1820,9 +1793,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate"
             ]
           },
           {
@@ -2226,9 +2196,6 @@
                 "targetMemoryId": "reset",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "buttons"
             ]
           },
           {
@@ -2387,9 +2354,6 @@
                 "targetMemoryId": "reset",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "buttons"
             ]
           },
           {
@@ -2634,9 +2598,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "andGate"
             ]
           },
           {
@@ -2670,9 +2631,6 @@
                 "targetMemoryId": "set",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "buttons"
             ]
           },
           {
@@ -2838,9 +2796,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "andGate"
             ]
           },
           {
@@ -2874,9 +2829,6 @@
                 "targetMemoryId": "set",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "buttons"
             ]
           }
         ],
@@ -3109,9 +3061,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "orGate"
             ]
           },
           {
@@ -3145,9 +3094,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "negate"
             ]
           },
           {
@@ -3313,9 +3259,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "orGate"
             ]
           },
           {
@@ -3349,9 +3292,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "negate"
             ]
           }
         ],
@@ -3630,9 +3570,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "andGate"
             ]
           },
           {
@@ -3873,9 +3810,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "andGate"
             ]
           },
           {

@@ -19619,9 +19619,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -19643,9 +19640,6 @@
                 "targetMemoryId": "sin255",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -19667,9 +19661,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -19902,9 +19893,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -19926,9 +19914,6 @@
                 "targetMemoryId": "sin255",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -19950,9 +19935,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20273,9 +20255,6 @@
                 "targetMemoryId": "sin32",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20297,9 +20276,6 @@
                 "targetMemoryId": "sin255",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20321,9 +20297,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20556,9 +20529,6 @@
                 "targetMemoryId": "sin32",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20580,9 +20550,6 @@
                 "targetMemoryId": "sin255",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20604,9 +20571,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20927,9 +20891,6 @@
                 "targetMemoryId": "sin64",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20951,9 +20912,6 @@
                 "targetMemoryId": "sin255",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -20975,9 +20933,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21210,9 +21165,6 @@
                 "targetMemoryId": "sin64",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21234,9 +21186,6 @@
                 "targetMemoryId": "sin255",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21258,9 +21207,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21627,9 +21573,6 @@
                 "targetMemoryId": "sin64",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21651,9 +21594,6 @@
                 "targetMemoryId": "sin255",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21675,9 +21615,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21699,9 +21636,6 @@
                 "targetMemoryId": "offset",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "dancer1"
             ]
           },
           {
@@ -21934,9 +21868,6 @@
                 "targetMemoryId": "sin64",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21958,9 +21889,6 @@
                 "targetMemoryId": "sin255",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -21982,9 +21910,6 @@
                 "targetMemoryId": "sin0",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "sineLT"
             ]
           },
           {
@@ -22006,9 +21931,6 @@
                 "targetMemoryId": "offset",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "dancer1"
             ]
           },
           {

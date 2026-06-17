@@ -342,7 +342,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",
@@ -401,7 +400,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",

@@ -35,9 +35,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "combinedCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -57,9 +54,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "combinedCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -79,9 +73,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "combinedCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -247,9 +238,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "countSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -269,9 +257,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "countSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -345,9 +330,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "countSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -367,9 +349,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "countSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -389,9 +368,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "pointerSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -402,9 +378,6 @@
               "value": "doubledShortSize",
             },
             {
-              "intermoduleIds": [
-                "shortSizeSource",
-              ],
               "left": {
                 "isInteger": true,
                 "type": "literal",
@@ -423,9 +396,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "shortSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -679,9 +649,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "lateCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -701,9 +668,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "lateCountSizeSource",
-          ],
         },
         {
           "arguments": [

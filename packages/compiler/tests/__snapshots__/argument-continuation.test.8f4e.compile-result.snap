@@ -195,9 +195,6 @@
             },
           ],
           "instruction": "float*",
-          "referencedNamespaceIds": [
-            "continuationPointerSource",
-          ],
         },
         {
           "arguments": [

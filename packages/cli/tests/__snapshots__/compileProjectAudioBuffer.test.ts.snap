@@ -302,9 +302,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             ],
             "instruction": "float*",
             "lineNumber": 5,
-            "referencedNamespaceIds": [
-              "phaseAccumulator",
-            ],
           },
           {
             "arguments": [
@@ -534,9 +531,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             ],
             "instruction": "float*",
             "lineNumber": 5,
-            "referencedNamespaceIds": [
-              "phaseAccumulator",
-            ],
           },
           {
             "arguments": [

@@ -151,13 +151,6 @@ export type ArgumentCompileTimeExpression = {
 	left: CompileTimeOperand;
 	operator: '+' | '-' | '*' | '/' | '^';
 	right: CompileTimeOperand;
-	/**
-	 * Module IDs referenced by intermodular operands in this expression.
-	 * Pre-computed by the tokenizer so that compiler consumers (module sort, namespace
-	 * collection, intermodule deferral) can read this field directly instead of
-	 * inspecting each operand's type and referenceKind themselves.
-	 */
-	intermoduleIds: ReadonlyArray<string>;
 };
 
 export type Argument = ArgumentLiteral | ArgumentIdentifier | ArgumentStringLiteral | ArgumentCompileTimeExpression;
