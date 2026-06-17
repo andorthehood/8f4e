@@ -16,7 +16,7 @@ Compiler diagnostic ownership is currently split across package boundaries:
 
 - `@8f4e/language-spec` owns shared diagnostic shapes and `ErrorCode`.
 - `packages/compiler/src/compilerError.ts` owns `getError(...)` and the default compiler error messages.
-- compiler-adjacent packages such as `@8f4e/constant-inliner` cannot emit normal compiler diagnostics without
+- compiler-adjacent packages such as `@8f4e/constant-resolver` cannot emit normal compiler diagnostics without
   importing compiler internals or throwing a package-local error that the compiler wraps at the integration boundary.
 
 This keeps package boundaries clean, but it makes shared diagnostics feel adapter-heavy as more compiler subpackages
@@ -41,7 +41,7 @@ assembly in the compiler or the package that owns the phase.
 
 - Do not make compiler-adjacent packages import `packages/compiler/src/compilerError.ts`.
 - Do not move broad compiler phase logic into the diagnostics package.
-- Do not let diagnostics depend on tokenizer, compiler, or constant-inliner implementation details.
+- Do not let diagnostics depend on tokenizer, compiler, or constant-resolver implementation details.
 - Do not turn `language-spec` into the message-formatting package unless a dedicated diagnostics package proves too
   costly.
 
@@ -61,7 +61,7 @@ assembly in the compiler or the package that owns the phase.
 
 ### Step 3: Update Compiler-Adjacent Packages
 
-- Let packages such as `@8f4e/constant-inliner` decide whether to keep package-local domain errors or throw shared
+- Let packages such as `@8f4e/constant-resolver` decide whether to keep package-local domain errors or throw shared
   diagnostics directly when they have enough context.
 - If a wrapper remains useful, make it a thin context adapter rather than a message-shaping adapter.
 
@@ -91,8 +91,8 @@ assembly in the compiler or the package that owns the phase.
 
 - `packages/compiler/src/compilerError.ts` - likely deleted, reduced to a re-export, or moved.
 - `packages/compiler/packages/language-spec/src/errors.ts` - remains the source of error codes and diagnostic types.
-- `packages/compiler/packages/constant-inliner` - candidate consumer for shared diagnostics.
-- `packages/compiler/src/compileSubProgram.ts` - current `ConstantInliningError` wrapper may become thinner.
+- `packages/compiler/packages/constant-resolver` - candidate consumer for shared diagnostics.
+- `packages/compiler/src/compileSubProgram.ts` - current `ConstantResolverError` wrapper may become thinner.
 
 ## Risks & Considerations
 
@@ -104,4 +104,4 @@ assembly in the compiler or the package that owns the phase.
 
 - **Related**: `docs/todos/292-refactor-error-systems-and-document-syntax-vs-compiler-error-boundaries.md`
 - **Related**: `docs/todos/458-decouple-module-execution-order-from-memory-layout.md`
-- **Related**: PR #808, which introduced `@8f4e/constant-inliner` and a local-to-compiler diagnostic adapter.
+- **Related**: PR #808, which introduced the constant resolver package and a local-to-compiler diagnostic adapter.

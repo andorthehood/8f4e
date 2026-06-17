@@ -5,6 +5,8 @@ import type {
 	CompilerASTLine,
 	CompileTimeOperand,
 	Const,
+	ConstantResolutionBlockFacts,
+	ConstantResolutionLineFacts,
 	ConstLine,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
@@ -13,11 +15,11 @@ import type {
 } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 
-type InlineableAST = ValidatedModuleAST | ValidatedConstantsAST | ValidatedFunctionAST | ValidatedPrototypeAST;
+type ConstantResolvableAST = ValidatedModuleAST | ValidatedConstantsAST | ValidatedFunctionAST | ValidatedPrototypeAST;
 export type ConstantEnvironment = Readonly<Record<string, Const>>;
 export type ConstantNamespaceMap = Readonly<Record<string, ConstantEnvironment>>;
 
-export interface InlineConstantsProjectAST<
+export interface ResolveConstantsProjectAST<
 	TPrototype extends ValidatedPrototypeAST = ValidatedPrototypeAST,
 	TModule extends ValidatedModuleAST = ValidatedModuleAST,
 	TConstants extends ValidatedConstantsAST = ValidatedConstantsAST,
@@ -29,52 +31,50 @@ export interface InlineConstantsProjectAST<
 	functions: readonly TFunction[];
 }
 
-export interface InlineConstantsInput<
+export interface ResolveConstantsInput<
 	TPrototype extends ValidatedPrototypeAST = ValidatedPrototypeAST,
 	TModule extends ValidatedModuleAST = ValidatedModuleAST,
 	TConstants extends ValidatedConstantsAST = ValidatedConstantsAST,
 	TFunction extends ValidatedFunctionAST = ValidatedFunctionAST,
 > {
-	ast: InlineConstantsProjectAST<TPrototype, TModule, TConstants, TFunction>;
+	ast: ResolveConstantsProjectAST<TPrototype, TModule, TConstants, TFunction>;
 }
 
-export interface InlineConstantsResult<
-	TPrototype extends ValidatedPrototypeAST = ValidatedPrototypeAST,
-	TModule extends ValidatedModuleAST = ValidatedModuleAST,
-	TConstants extends ValidatedConstantsAST = ValidatedConstantsAST,
-	TFunction extends ValidatedFunctionAST = ValidatedFunctionAST,
-> {
-	ast: {
-		prototypes: TPrototype[];
-		modules: TModule[];
-		constants: TConstants[];
-		functions: TFunction[];
-	};
+export interface ConstantResolutionReport {
+	prototypes: ConstantResolutionBlockFacts[];
+	modules: ConstantResolutionBlockFacts[];
+	constants: ConstantResolutionBlockFacts[];
+	functions: ConstantResolutionBlockFacts[];
 }
 
-export const ConstantInliningErrorCode = {
+export interface ResolveConstantsResult {
+	namespaces: ConstantNamespaceMap;
+	references: ConstantResolutionReport;
+}
+
+export const ConstantResolverErrorCode = {
 	DUPLICATE_NAMESPACE: 'DUPLICATE_NAMESPACE',
 	UNRESOLVED_CONSTANT_VALUE: 'UNRESOLVED_CONSTANT_VALUE',
 	UNRESOLVED_NAMESPACE: 'UNRESOLVED_NAMESPACE',
 } as const;
 
-export type ConstantInliningErrorCodeValue = (typeof ConstantInliningErrorCode)[keyof typeof ConstantInliningErrorCode];
+export type ConstantResolverErrorCodeValue = (typeof ConstantResolverErrorCode)[keyof typeof ConstantResolverErrorCode];
 
-export class ConstantInliningError extends Error {
-	readonly code: ConstantInliningErrorCodeValue;
+export class ConstantResolverError extends Error {
+	readonly code: ConstantResolverErrorCodeValue;
 	readonly detail: string;
 	readonly line?: CompilerASTLine;
 
-	constructor(code: ConstantInliningErrorCodeValue, message: string, line?: CompilerASTLine) {
+	constructor(code: ConstantResolverErrorCodeValue, message: string, line?: CompilerASTLine) {
 		super(`${message} (${code})`);
-		this.name = 'ConstantInliningError';
+		this.name = 'ConstantResolverError';
 		this.code = code;
 		this.detail = message;
 		this.line = line;
 	}
 }
 
-export interface InlineConstantsOptions {
+export interface ResolveConstantsOptions {
 	readonly namespaces?: ConstantNamespaceMap;
 }
 
@@ -150,7 +150,7 @@ function resolveConstantArgument(argument: Argument, constants: ConstantEnvironm
 	return leftConst && rightConst ? evaluateExpression(leftConst, rightConst, argument.operator) : undefined;
 }
 
-function inlineArgument(argument: Argument, constants: ConstantEnvironment): Argument {
+function resolveConstantArgumentReference(argument: Argument, constants: ConstantEnvironment): Argument {
 	if (argument.type === ArgumentType.IDENTIFIER) {
 		const resolved = resolveConstantOperand(argument, constants);
 		return resolved ? constToLiteral(resolved) : argument;
@@ -160,8 +160,8 @@ function inlineArgument(argument: Argument, constants: ConstantEnvironment): Arg
 		return argument;
 	}
 
-	const left = inlineOperand(argument.left, constants);
-	const right = inlineOperand(argument.right, constants);
+	const left = resolveConstantOperandReference(argument.left, constants);
+	const right = resolveConstantOperandReference(argument.right, constants);
 	if (left === argument.left && right === argument.right) {
 		return argument;
 	}
@@ -173,7 +173,10 @@ function inlineArgument(argument: Argument, constants: ConstantEnvironment): Arg
 	};
 }
 
-function inlineOperand(operand: CompileTimeOperand, constants: ConstantEnvironment): CompileTimeOperand {
+function resolveConstantOperandReference(
+	operand: CompileTimeOperand,
+	constants: ConstantEnvironment
+): CompileTimeOperand {
 	const resolved = operand.type === ArgumentType.IDENTIFIER ? resolveConstantOperand(operand, constants) : undefined;
 	return resolved ? constToLiteral(resolved) : operand;
 }
@@ -181,8 +184,8 @@ function inlineOperand(operand: CompileTimeOperand, constants: ConstantEnvironme
 function resolveConstLine(line: ConstLine, constants: Record<string, Const>): Const {
 	const resolved = resolveConstantArgument(line.arguments[1], constants);
 	if (!resolved) {
-		throw new ConstantInliningError(
-			ConstantInliningErrorCode.UNRESOLVED_CONSTANT_VALUE,
+		throw new ConstantResolverError(
+			ConstantResolverErrorCode.UNRESOLVED_CONSTANT_VALUE,
 			`Unable to resolve constant ${line.arguments[0].value}`,
 			line
 		);
@@ -241,13 +244,13 @@ function findUnresolvedUseLine(
 	return undefined;
 }
 
-function flattenProjectAST(input: InlineConstantsProjectAST): InlineableAST[] {
+function flattenProjectAST(input: ResolveConstantsProjectAST): ConstantResolvableAST[] {
 	return [...input.prototypes, ...input.modules, ...input.constants, ...input.functions];
 }
 
 function collectConstantNamespacesFromAsts(
-	asts: readonly InlineableAST[],
-	options: InlineConstantsOptions = {}
+	asts: readonly ConstantResolvableAST[],
+	options: ResolveConstantsOptions = {}
 ): ConstantNamespaceMap {
 	const namespaces: Record<string, ConstantEnvironment> = { ...(options.namespaces ?? {}) };
 	const pending = asts.filter((ast): ast is ValidatedModuleAST | ValidatedConstantsAST => {
@@ -260,8 +263,8 @@ function collectConstantNamespacesFromAsts(
 		for (let index = pending.length - 1; index >= 0; index--) {
 			const ast = pending[index];
 			if (Object.hasOwn(namespaces, ast.id)) {
-				throw new ConstantInliningError(
-					ConstantInliningErrorCode.DUPLICATE_NAMESPACE,
+				throw new ConstantResolverError(
+					ConstantResolverErrorCode.DUPLICATE_NAMESPACE,
 					`Duplicate constant namespace ${ast.id}`,
 					ast.lines[0]
 				);
@@ -278,8 +281,8 @@ function collectConstantNamespacesFromAsts(
 		}
 
 		if (!madeProgress) {
-			throw new ConstantInliningError(
-				ConstantInliningErrorCode.UNRESOLVED_NAMESPACE,
+			throw new ConstantResolverError(
+				ConstantResolverErrorCode.UNRESOLVED_NAMESPACE,
 				'Unable to resolve constant namespace dependencies',
 				findUnresolvedUseLine(pending, namespaces) ?? pending[0].lines[0]
 			);
@@ -290,70 +293,76 @@ function collectConstantNamespacesFromAsts(
 }
 
 export function collectConstantNamespaces(
-	input: InlineConstantsInput,
-	options: InlineConstantsOptions = {}
+	input: ResolveConstantsInput,
+	options: ResolveConstantsOptions = {}
 ): ConstantNamespaceMap {
 	return collectConstantNamespacesFromAsts(flattenProjectAST(input.ast), options);
 }
 
-function inlineConstantsInASTWithNamespaces<TAST extends InlineableAST>(
-	ast: TAST,
-	namespaces: ConstantNamespaceMap
-): TAST {
-	const constants: Record<string, Const> = {};
+function haveSameArguments(left: CompilerASTLine['arguments'], right: CompilerASTLine['arguments']): boolean {
+	return left.length === right.length && left.every((argument, index) => argument === right[index]);
+}
 
-	for (const line of ast.lines) {
+function collectLineFacts(
+	sourceLine: CompilerASTLine,
+	resolvedArguments: CompilerASTLine['arguments'] | undefined
+): ConstantResolutionLineFacts | undefined {
+	if (!resolvedArguments || haveSameArguments(sourceLine.arguments, resolvedArguments)) {
+		return undefined;
+	}
+
+	return { arguments: resolvedArguments };
+}
+
+function resolveConstantsInASTWithNamespaces(
+	ast: ConstantResolvableAST,
+	namespaces: ConstantNamespaceMap
+): ConstantResolutionBlockFacts {
+	const constants: Record<string, Const> = {};
+	const lineFacts = ast.lines.map(line => {
 		if (!importConstants(line, constants, namespaces)) {
-			throw new ConstantInliningError(
-				ConstantInliningErrorCode.UNRESOLVED_NAMESPACE,
+			throw new ConstantResolverError(
+				ConstantResolverErrorCode.UNRESOLVED_NAMESPACE,
 				'Unable to resolve constant namespace',
 				line
 			);
 		}
 
 		if (line.instruction === 'const') {
-			line.arguments[1] = constToLiteral(resolveConstLine(line, constants));
-			continue;
+			const resolvedValue = constToLiteral(resolveConstLine(line, constants));
+			return collectLineFacts(line, [line.arguments[0], resolvedValue] as CompilerASTLine['arguments']);
 		}
 
 		if (line.instruction === 'use') {
-			continue;
+			return undefined;
 		}
 
-		for (let index = 0; index < line.arguments.length; index++) {
-			line.arguments[index] = inlineArgument(line.arguments[index], constants);
-		}
-	}
+		const resolvedArguments = line.arguments.map(argument => resolveConstantArgumentReference(argument, constants));
+		return collectLineFacts(line, resolvedArguments);
+	});
 
-	return ast;
+	return { lineFacts };
 }
 
-export function inlineConstantsInASTs<
+export function resolveConstants<
 	TPrototype extends ValidatedPrototypeAST,
 	TModule extends ValidatedModuleAST,
 	TConstants extends ValidatedConstantsAST,
 	TFunction extends ValidatedFunctionAST,
 >(
-	input: InlineConstantsInput<TPrototype, TModule, TConstants, TFunction>,
-	options: InlineConstantsOptions = {}
-): InlineConstantsResult<TPrototype, TModule, TConstants, TFunction> {
+	input: ResolveConstantsInput<TPrototype, TModule, TConstants, TFunction>,
+	options: ResolveConstantsOptions = {}
+): ResolveConstantsResult {
 	const namespaces = collectConstantNamespaces(input, options);
 	return {
-		ast: {
-			prototypes: input.ast.prototypes.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces)),
-			modules: input.ast.modules.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces)),
-			constants: input.ast.constants.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces)),
-			functions: input.ast.functions.map(ast => inlineConstantsInASTWithNamespaces(ast, namespaces)),
+		namespaces,
+		references: {
+			prototypes: input.ast.prototypes.map(ast => resolveConstantsInASTWithNamespaces(ast, namespaces)),
+			modules: input.ast.modules.map(ast => resolveConstantsInASTWithNamespaces(ast, namespaces)),
+			constants: input.ast.constants.map(ast => resolveConstantsInASTWithNamespaces(ast, namespaces)),
+			functions: input.ast.functions.map(ast => resolveConstantsInASTWithNamespaces(ast, namespaces)),
 		},
 	};
 }
 
-export function inlineConstantsInAST<TAST extends InlineableAST>(
-	ast: TAST,
-	options: InlineConstantsOptions = {}
-): TAST {
-	const namespaces = collectConstantNamespacesFromAsts([ast], options);
-	return inlineConstantsInASTWithNamespaces(ast, namespaces);
-}
-
-export type { InlineableAST };
+export type { ConstantResolvableAST };
