@@ -7,12 +7,10 @@ import type {
 	FunctionEndLine,
 	FunctionLine,
 	ImportLine,
-	MemoryDeclarationLine,
 	ModuleLine,
 	PrototypeLine,
-	RegionLine,
 } from '@8f4e/language-spec';
-import { DEFAULT_HOST_IMPORT_MODULE_NAME, isMemoryDeclarationLine } from '@8f4e/language-spec';
+import { DEFAULT_HOST_IMPORT_MODULE_NAME } from '@8f4e/language-spec';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 
 /** Accumulates module-specific lines while the tokenizer builds a validated AST. */
@@ -20,8 +18,6 @@ type ModuleASTBuilder = {
 	type: 'module';
 	id: string;
 	moduleLine: ModuleLine;
-	regionLine?: RegionLine;
-	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
 /** Accumulates function-specific metadata while the tokenizer builds a validated AST. */
@@ -51,7 +47,6 @@ type PrototypeASTBuilder = {
 	type: 'prototype';
 	id: string;
 	prototypeLine: PrototypeLine;
-	memoryDeclarationLines: MemoryDeclarationLine[];
 };
 
 /** Source block builder selected from the first valid source block in parsed input. */
@@ -70,7 +65,6 @@ export function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockA
 				type: 'module',
 				id: line.arguments[0].value,
 				moduleLine: line,
-				memoryDeclarationLines: [],
 			};
 		case 'function':
 			return {
@@ -89,26 +83,10 @@ export function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockA
 				type: 'prototype',
 				id: line.arguments[0].value,
 				prototypeLine: line,
-				memoryDeclarationLines: [],
 			};
 		default:
 			return undefined;
 	}
-}
-
-/** Records module-only metadata while source lines are streamed into a module builder. */
-function applyModuleASTLine(builder: ModuleASTBuilder, line: CompilerASTLine): void {
-	switch (line.instruction) {
-		case '#region':
-			builder.regionLine = line;
-			return;
-		default:
-			if (!isMemoryDeclarationLine(line)) {
-				return;
-			}
-	}
-
-	builder.memoryDeclarationLines.push(line);
 }
 
 /** Records function import, export, and end metadata for a function builder. */
@@ -140,7 +118,6 @@ function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine
 export function applySourceBlockASTLine(builder: SourceBlockASTBuilder, line: CompilerASTLine): void {
 	switch (builder.type) {
 		case 'module':
-			applyModuleASTLine(builder, line);
 			return;
 		case 'function':
 			applyFunctionASTLine(builder, line);
@@ -148,9 +125,6 @@ export function applySourceBlockASTLine(builder: SourceBlockASTBuilder, line: Co
 		case 'constants':
 			return;
 		case 'prototype':
-			if (isMemoryDeclarationLine(line)) {
-				builder.memoryDeclarationLines.push(line);
-			}
 			return;
 	}
 }
@@ -170,8 +144,6 @@ export function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlo
 				id: builder.id,
 				lines,
 				moduleLine: builder.moduleLine,
-				...(builder.regionLine ? { regionLine: builder.regionLine } : {}),
-				memoryDeclarationLines: builder.memoryDeclarationLines,
 			};
 		case 'function':
 			if (!builder.functionEndLine) {
@@ -203,7 +175,6 @@ export function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlo
 				id: builder.id,
 				lines,
 				prototypeLine: builder.prototypeLine,
-				memoryDeclarationLines: builder.memoryDeclarationLines,
 			};
 	}
 }

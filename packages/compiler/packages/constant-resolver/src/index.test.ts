@@ -120,7 +120,6 @@ function moduleAst(id: string, lines: CompilerASTLine[], moduleLineRef: ModuleLi
 		id,
 		lines,
 		moduleLine: moduleLineRef,
-		memoryDeclarationLines: [],
 	} as unknown as ValidatedModuleAST;
 }
 

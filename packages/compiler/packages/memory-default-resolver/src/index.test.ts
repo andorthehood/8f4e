@@ -8,7 +8,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType, ErrorCode, isMemoryDeclarationLine } from '@8f4e/language-spec';
+import { ArgumentType, ErrorCode } from '@8f4e/language-spec';
 import { planProjectMemoryLayout } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from './index';
@@ -63,11 +63,10 @@ function moduleAst(id: string, lines: readonly CompilerASTLine[]): ValidatedModu
 		id,
 		moduleLine: line,
 		lines: [line, ...lines],
-		memoryDeclarationLines: lines.filter(isMemoryDeclarationLine),
 	} as ValidatedModuleAST;
 }
 
-function prototypeAst(id: string, memoryDeclarationLines: readonly MemoryDeclarationLine[]): ValidatedPrototypeAST {
+function prototypeAst(id: string, declarationLines: readonly MemoryDeclarationLine[]): ValidatedPrototypeAST {
 	const prototypeLine = {
 		lineNumber: 1,
 		instruction: 'prototype',
@@ -77,9 +76,8 @@ function prototypeAst(id: string, memoryDeclarationLines: readonly MemoryDeclara
 	return {
 		type: 'prototype',
 		id,
-		lines: [prototypeLine, ...memoryDeclarationLines],
+		lines: [prototypeLine, ...declarationLines],
 		prototypeLine,
-		memoryDeclarationLines,
 	} as ValidatedPrototypeAST;
 }
 
