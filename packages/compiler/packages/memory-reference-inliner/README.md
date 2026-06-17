@@ -9,7 +9,7 @@ The pass is separate from memory planning. The memory planner decides where modu
 The intended order is:
 
 1. Parse and validate source into ASTs.
-2. Inline constants.
+2. Resolve constants with `@8f4e/constant-resolver`.
 3. Normalize layout declaration counts into planner-ready source lines.
 4. Plan memory layout with `@8f4e/memory-planner`, including `shape` expansion.
 5. Inline memory references once with `@8f4e/memory-reference-inliner`.
@@ -22,7 +22,8 @@ This pass should not be used to make memory declarations plan-able. Declaration 
 
 The pass receives:
 
-- The whole project AST, grouped by block kind, whose constants have already been inlined.
+- The whole project AST, grouped by block kind.
+- Constant-resolution facts aligned with that AST.
 - The completed `@8f4e/memory-planner` layout plan for that same project AST.
 
 The memory layout plan remains the source of truth while references are resolved. This package should read planned modules and declarations directly from that plan rather than converting them into compiler namespace state.
@@ -54,6 +55,7 @@ const result = inlineMemoryReferences({
 		functions,
 	},
 	memoryPlan,
+	constantReferences,
 });
 ```
 
@@ -93,7 +95,7 @@ Pointer metadata that depends on locals created while compiling an instruction s
 
 This package must not:
 
-- Inline constants. That belongs to `@8f4e/constant-inliner`.
+- Resolve constants. That belongs to `@8f4e/constant-resolver`.
 - Decide module or declaration addresses. That belongs to `@8f4e/memory-planner`.
 - Expand `shape` declarations. That belongs to `@8f4e/memory-planner`.
 - Apply scalar defaults or array initializer defaults.

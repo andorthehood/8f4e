@@ -19,7 +19,7 @@ This package owns:
 This package does not own:
 
 - Project document parsing. That belongs to `@8f4e/project-preparser`.
-- Constant inlining, memory reference inlining, or memory layout planning.
+- Constant resolution, memory reference resolution, or memory layout planning.
 - Symbol resolution, scope checks, stack analysis, type compatibility, or code generation.
 - Semantic compiler errors that require compiler state.
 

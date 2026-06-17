@@ -1,6 +1,6 @@
 {
-	"name": "@8f4e/constant-inliner",
-	"sourceRoot": "packages/compiler/packages/constant-inliner/src",
+	"name": "@8f4e/constant-resolver",
+	"sourceRoot": "packages/compiler/packages/constant-resolver/src",
 	"projectType": "library",
 	"targets": {
 		"build": {
@@ -14,7 +14,7 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "biome check --write packages/compiler/packages/constant-inliner/src",
+				"command": "biome check --write packages/compiler/packages/constant-resolver/src",
 				"cwd": "{workspaceRoot}"
 			}
 		},
@@ -27,11 +27,11 @@
 		},
 		"test": {
 			"executor": "@nx/vitest:test",
-			"outputs": ["{workspaceRoot}/coverage/@8f4e/constant-inliner"],
+			"outputs": ["{workspaceRoot}/coverage/@8f4e/constant-resolver"],
 			"dependsOn": ["^build"],
 			"options": {
 				"config": "{projectRoot}/vitest.config.ts",
-				"reportsDirectory": "{workspaceRoot}/coverage/@8f4e/constant-inliner"
+				"reportsDirectory": "{workspaceRoot}/coverage/@8f4e/constant-resolver"
 			}
 		},
 		"typecheck": {
