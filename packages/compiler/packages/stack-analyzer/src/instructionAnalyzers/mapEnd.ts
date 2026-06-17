@@ -1,5 +1,6 @@
 import type { CompilationContext, MapEndLine, Stack } from '@8f4e/language-spec';
-import { resolveMapKind, validateMapValueKind } from '@8f4e/semantic-utils';
+import { resolveMapKind } from '@8f4e/semantic-utils';
+import { validateMapValueKind } from '../mapValueKind';
 import { consume, createStackValue, produce } from './stack';
 
 /**
