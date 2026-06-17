@@ -4,26 +4,11 @@ import type {
 	StackAnalysisLineFacts,
 	StackAnalysisResult,
 } from '@8f4e/language-spec';
+import { getInstructionSpec, hasBinaryMatchingOperands } from '@8f4e/language-spec';
 import { analyzeByInstruction } from './instructionAnalyzers';
 import { getNumericOperandKind } from './instructionAnalyzers/numeric/shared';
 import { cloneStack } from './instructionAnalyzers/stack';
 import { validateInstruction } from './validateInstruction';
-
-const numericOperandKindInstructions = new Set<CompilerASTLine['instruction']>([
-	'add',
-	'sub',
-	'mul',
-	'div',
-	'equal',
-	'notEqual',
-	'greaterThan',
-	'lessThan',
-	'greaterOrEqual',
-	'lessOrEqual',
-	'greaterOrEqualUnsigned',
-	'min',
-	'max',
-]);
 
 /**
  * Validates one AST line, updates stack state, and records the before/after stack analysis metadata.
@@ -42,7 +27,7 @@ export function analyzeInstruction(line: CompilerASTLine, context: CompilationCo
 	);
 	const derivedNumericOperandKind =
 		numericOperandKind ??
-		(numericOperandKindInstructions.has(line.instruction)
+		(hasBinaryMatchingOperands(getInstructionSpec(line.instruction))
 			? getNumericOperandKind(consumed[0], consumed[1])
 			: undefined);
 	const stackAnalysis: StackAnalysisResult = {
