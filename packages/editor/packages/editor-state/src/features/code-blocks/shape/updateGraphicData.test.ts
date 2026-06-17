@@ -32,7 +32,6 @@ function createModuleAst(): ValidatedModuleAST {
 			{ lineNumber: 2, instruction: 'float', arguments: [{ value: 'cutoff' }, { value: 1200 }] },
 			{ lineNumber: 3, instruction: 'moduleEnd', arguments: [] },
 		],
-		memoryDeclarationLines: [],
 	} as unknown as ValidatedModuleAST;
 }
 

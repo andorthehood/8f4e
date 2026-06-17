@@ -1,4 +1,4 @@
-import { createFunctionId } from '@8f4e/language-spec';
+import { createFunctionId, isMemoryDeclarationLine } from '@8f4e/language-spec';
 import { describe, expect, test } from 'vitest';
 
 import { compileFixtureProgramSource } from './testUtils';
@@ -102,6 +102,7 @@ constantsEnd
 
 		expect(second.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast).toBe(cachedModuleAst);
 		expect(second.compileResult.compiledModules.cachedConstants.memory.buffer.numberOfElements).toBe(4);
-		expect(cachedModuleAst?.memoryDeclarationLines[0].arguments[1]).toEqual(expect.objectContaining({ value: 'SIZE' }));
+		const cachedMemoryDeclaration = cachedModuleAst?.lines.find(isMemoryDeclarationLine);
+		expect(cachedMemoryDeclaration?.arguments[1]).toEqual(expect.objectContaining({ value: 'SIZE' }));
 	});
 });

@@ -53,7 +53,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 4
       },
       "index": 0,
@@ -674,69 +673,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "defaultFreq",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 440,
-                "type": "literal",
-                "isInteger": true
-              }
-            ]
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "frequency",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&defaultFreq",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "defaultFreq",
-                "isEndAddress": false
-              }
-            ]
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "phase",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 7,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          }
-        ],
         "projectBlockId": 12
       },
       "index": 1,
@@ -1243,67 +1179,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&phaseAccumulator:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "phaseAccumulator",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ]
-          },
-          {
-            "lineNumber": 8,
-            "instruction": "float[]",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "buffer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "AUDIO_BUFFER_SIZE",
-                "referenceKind": "constant",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 9,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "pointer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&buffer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": false
-              }
-            ]
-          }
-        ],
         "projectBlockId": 55
       },
       "index": 2,
@@ -1359,7 +1234,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 96
       },
       "index": 3,

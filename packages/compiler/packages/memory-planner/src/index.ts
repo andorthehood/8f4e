@@ -70,7 +70,7 @@ export class MemoryPlannerError extends Error {
 
 interface MemoryLayoutSourcePrototype {
 	id: string;
-	memoryDeclarationLines: readonly MemoryDeclarationLine[];
+	declarationLines: readonly MemoryDeclarationLine[];
 }
 
 type MemoryLayoutSourceLine = MemoryDeclarationLine | ShapeLine;
@@ -78,7 +78,7 @@ type MemoryLayoutSourceLine = MemoryDeclarationLine | ShapeLine;
 interface MemoryLayoutSourceModule {
 	id: string;
 	moduleLine: Pick<ModuleLine, 'lineNumber'>;
-	regionLine?: Pick<RegionLine, 'arguments'>;
+	regionDirective?: Pick<RegionLine, 'arguments'>;
 	lines: readonly MemoryLayoutSourceLine[];
 }
 
@@ -110,12 +110,12 @@ function plannerError(
 }
 
 function getModuleRegion(ast: MemoryLayoutSourceModule, memoryRegions: readonly string[]): MemoryRegionIdentity {
-	const regionLine = ast.regionLine;
-	if (!regionLine) {
+	const regionDirective = ast.regionDirective;
+	if (!regionDirective) {
 		return getDefaultMemoryRegion();
 	}
 
-	const [argument] = regionLine.arguments;
+	const [argument] = regionDirective.arguments;
 	if (argument.type === ArgumentType.LITERAL) {
 		return getMemoryRegionByIndex(argument.value, memoryRegions);
 	}
@@ -162,7 +162,7 @@ function getPrototypeSources(
 
 		return {
 			id: prototype.id,
-			memoryDeclarationLines: prototype.lines
+			declarationLines: prototype.lines
 				.map((line, lineIndex) => applyConstantFacts(line, blockFacts?.lineFacts[lineIndex]))
 				.filter(isMemoryDeclarationLine),
 		};
@@ -278,7 +278,7 @@ function collectModuleMemoryLayoutSourceLines(
 	for (let lineIndex = 0; lineIndex < ast.lines.length; lineIndex++) {
 		const line = applyConstantFacts(ast.lines[lineIndex], constantReferences?.lineFacts[lineIndex]);
 		if (line.instruction === '#region') {
-			sourceModule.regionLine = line;
+			sourceModule.regionDirective = line;
 			continue;
 		}
 
@@ -322,7 +322,7 @@ function getEffectiveMemoryDeclarationSources(
 			});
 		}
 
-		for (const declarationLine of prototype.memoryDeclarationLines) {
+		for (const declarationLine of prototype.declarationLines) {
 			declarationSources.push({
 				line: {
 					...declarationLine,

@@ -137,7 +137,6 @@ describe('resolveMemoryReferences', () => {
 			id: 'main',
 			lines: [moduleLine, pushLine],
 			moduleLine,
-			memoryDeclarationLines: [],
 		} as unknown as ValidatedModuleAST;
 		const buffer = createMemoryDeclaration('buffer', {
 			lineNumber: 3,
@@ -208,7 +207,6 @@ describe('resolveMemoryReferences', () => {
 			id: 'main',
 			lines: [moduleLine, samplesLine, pointerLine, pushLine],
 			moduleLine,
-			memoryDeclarationLines: [samplesLine, pointerLine],
 		} as unknown as ValidatedModuleAST;
 		const samples = createMemoryDeclaration('samples', {
 			lineNumber: 2,
@@ -266,7 +264,6 @@ describe('resolveMemoryReferences', () => {
 			id: 'main',
 			lines: [moduleLine, pushLine],
 			moduleLine,
-			memoryDeclarationLines: [],
 		} as unknown as ValidatedModuleAST;
 		const buffer = createMemoryDeclaration('buffer', {
 			lineNumber: 3,
