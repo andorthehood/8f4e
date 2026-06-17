@@ -1,6 +1,7 @@
 import {
 	ArgumentType,
 	type CompilerASTLine,
+	type CompileTimeOperand,
 	isArrayMemoryDeclarationLine,
 	isScalarMemoryDeclarationLine,
 } from '@8f4e/language-spec';
@@ -99,12 +100,19 @@ function getMemoryDefaultArgumentStartIndex(parsedLine: CompilerASTLine): number
 	return firstArg?.type === ArgumentType.IDENTIFIER && firstArg.referenceKind === 'plain' ? 1 : undefined;
 }
 
+function isIntermodularOperand(operand: CompileTimeOperand): boolean {
+	return operand.type === ArgumentType.IDENTIFIER && operand.scope === 'intermodule';
+}
+
 function isIntermodularMemorySourceArgument(argument: CompilerASTLine['arguments'][number]): boolean {
 	if (argument.type === ArgumentType.IDENTIFIER) {
 		return argument.scope === 'intermodule';
 	}
 
-	return argument.type === ArgumentType.COMPILE_TIME_EXPRESSION && argument.intermoduleIds.length > 0;
+	return (
+		argument.type === ArgumentType.COMPILE_TIME_EXPRESSION &&
+		(isIntermodularOperand(argument.left) || isIntermodularOperand(argument.right))
+	);
 }
 
 function removeIntermodularMemoryConnectionsFromLine(line: string, lineNumber: number): string | undefined {

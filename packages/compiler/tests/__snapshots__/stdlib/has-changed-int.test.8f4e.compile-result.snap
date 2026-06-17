@@ -295,7 +295,6 @@
               "value": "previousInt",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {

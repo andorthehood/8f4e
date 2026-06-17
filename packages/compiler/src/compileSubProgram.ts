@@ -349,7 +349,7 @@ export function compileSubProgram(
 
 	const namespaces = collectNamespacesFromASTs(projectAst.modules, memoryPlan, memoryDefaultResolution);
 
-	const importedUserFunctionCount = projectAst.functions.filter(ast => ast.import).length;
+	const importedUserFunctionCount = projectAst.functions.filter(ast => ast.importLine).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;
 	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;

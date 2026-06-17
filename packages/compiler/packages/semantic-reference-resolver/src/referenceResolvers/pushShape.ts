@@ -6,6 +6,7 @@ import {
 	getError,
 	getParamType,
 	getPrototypeMemoryDeclarationId,
+	isMemoryDeclarationLine,
 	memoryStartAddressValue,
 	type PushShapeLine,
 	type ResolvedPushShapeLine,
@@ -55,7 +56,7 @@ export default function resolvePushShapeReferences(
 
 	return {
 		...line,
-		shapeExpansions: prototype.memoryDeclarationLines.map(declarationLine => ({
+		shapeExpansions: prototype.lines.filter(isMemoryDeclarationLine).map(declarationLine => ({
 			pushLine: createAddressPushLine(line, getPrototypeMemoryDeclarationId(declarationLine, line, context), context),
 			pointerType: getParamType(declarationLine, line, context),
 		})),

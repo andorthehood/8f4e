@@ -41,7 +41,6 @@
               "value": 11,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -252,7 +251,6 @@
               "value": 22,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

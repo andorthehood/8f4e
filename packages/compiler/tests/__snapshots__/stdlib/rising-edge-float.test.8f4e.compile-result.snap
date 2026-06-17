@@ -295,7 +295,6 @@
               "value": "previousFloat",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "float",
         },
         {

@@ -455,7 +455,6 @@ describe('parseArgument', () => {
 				scope: 'local',
 				targetMemoryId: 'name',
 			},
-			intermoduleIds: [],
 		});
 		expect(parseArgument('2*SIZE')).toEqual({
 			type: ArgumentType.COMPILE_TIME_EXPRESSION,
@@ -467,7 +466,6 @@ describe('parseArgument', () => {
 				referenceKind: 'constant',
 				scope: 'local',
 			},
-			intermoduleIds: [],
 		});
 		expect(parseArgument('4143.5689/SAMPLE_RATE')).toEqual({
 			type: ArgumentType.COMPILE_TIME_EXPRESSION,
@@ -479,7 +477,6 @@ describe('parseArgument', () => {
 				referenceKind: 'constant',
 				scope: 'local',
 			},
-			intermoduleIds: [],
 		});
 		expect(parseArgument('SIZE*sizeof(name)')).toEqual({
 			type: ArgumentType.COMPILE_TIME_EXPRESSION,
@@ -497,11 +494,10 @@ describe('parseArgument', () => {
 				scope: 'local',
 				targetMemoryId: 'name',
 			},
-			intermoduleIds: [],
 		});
 	});
 
-	it('populates intermoduleIds for intermodular operands', () => {
+	it('keeps intermodular operand metadata inside compile-time expressions', () => {
 		expect(parseArgument('2*sizeof(source:buffer)')).toEqual({
 			type: ArgumentType.COMPILE_TIME_EXPRESSION,
 			left: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
@@ -514,7 +510,6 @@ describe('parseArgument', () => {
 				targetModuleId: 'source',
 				targetMemoryId: 'buffer',
 			},
-			intermoduleIds: ['source'],
 		});
 	});
 
@@ -678,7 +673,6 @@ describe('parseArgument', () => {
 				left: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
 				operator: '^',
 				right: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
-				intermoduleIds: [],
 			});
 		});
 
@@ -688,7 +682,6 @@ describe('parseArgument', () => {
 				left: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
 				operator: '^',
 				right: { type: ArgumentType.IDENTIFIER, value: 'SIZE', referenceKind: 'constant', scope: 'local' },
-				intermoduleIds: [],
 			});
 		});
 
@@ -704,7 +697,6 @@ describe('parseArgument', () => {
 				},
 				operator: '^',
 				right: { type: ArgumentType.LITERAL, value: 2, isInteger: true },
-				intermoduleIds: [],
 			});
 		});
 

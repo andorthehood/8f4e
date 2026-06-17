@@ -447,7 +447,6 @@
               "value": 8,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -464,7 +463,6 @@
               "value": 1.5,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {

@@ -25,7 +25,6 @@
               "value": "counter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -170,7 +169,6 @@
               "value": "counter",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {

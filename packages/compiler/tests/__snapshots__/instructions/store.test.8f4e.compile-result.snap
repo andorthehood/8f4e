@@ -25,7 +25,6 @@
               "value": "dest",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "float64",
         },
         {
@@ -42,7 +41,6 @@
               "value": 1.5,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float64",
         },
         {
@@ -225,7 +223,6 @@
               "value": "dest",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "float",
         },
         {
@@ -242,7 +239,6 @@
               "value": 3.14,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -330,7 +326,6 @@
               "value": "dest",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -347,7 +342,6 @@
               "value": 42,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

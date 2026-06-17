@@ -53,7 +53,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 4
       },
       "index": 0,
@@ -382,8 +381,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -403,8 +401,7 @@
                 "targetMemoryId": "defaultFreq",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -416,8 +413,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 7,
@@ -429,8 +425,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -678,73 +673,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "defaultFreq",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 440,
-                "type": "literal",
-                "isInteger": true
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "frequency",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&defaultFreq",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "defaultFreq",
-                "isEndAddress": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "phase",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 7,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 12
       },
       "index": 1,
@@ -1030,11 +958,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "phaseAccumulator"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 8,
@@ -1052,8 +976,7 @@
                 "referenceKind": "constant",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -1073,8 +996,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 15,
@@ -1257,73 +1179,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&phaseAccumulator:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "phaseAccumulator",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "phaseAccumulator"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 8,
-            "instruction": "float[]",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "buffer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "AUDIO_BUFFER_SIZE",
-                "referenceKind": "constant",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 9,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "pointer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&buffer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 55
       },
       "index": 2,
@@ -1379,7 +1234,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 96
       },
       "index": 3,

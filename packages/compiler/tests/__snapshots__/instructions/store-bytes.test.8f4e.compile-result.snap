@@ -30,7 +30,6 @@
               "value": 8,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int8[]",
         },
         {
@@ -489,7 +488,6 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int8[]",
         },
         {
@@ -666,7 +664,6 @@
               "value": 42,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
