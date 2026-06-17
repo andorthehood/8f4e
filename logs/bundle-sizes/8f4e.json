@@ -1453,5 +1453,20 @@
 			"gzip": 74326,
 			"brotli": 63354
 		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-06-17T08:21:53.462Z",
+		"commit": "598fd8ae7e9d2186bacb6d1540ff907c70dfb3f3",
+		"branch": "main",
+		"releaseTag": "app@1.4.18",
+		"packageName": "8f4e",
+		"projectName": "app",
+		"version": "1.4.18",
+		"bytes": {
+			"raw": 272204,
+			"gzip": 74328,
+			"brotli": 63424
+		}
 	}
 ]

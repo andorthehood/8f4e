@@ -1744,5 +1744,79 @@
 				"maxRangesPerFunction": 14
 			}
 		}
+	},
+	{
+		"schemaVersion": 2,
+		"commit": "598fd8ae7e9d2186bacb6d1540ff907c70dfb3f3",
+		"version": "3.3.1",
+		"benchmark": "minBLEP.8f4e",
+		"coverage": {
+			"compilerPipeline": {
+				"coveredFunctions": 430,
+				"functionEntries": 47216,
+				"rangeExecutions": 180863,
+				"maxRangesPerFunction": 39
+			},
+			"compiler": {
+				"coveredFunctions": 49,
+				"functionEntries": 2665,
+				"rangeExecutions": 8737,
+				"maxRangesPerFunction": 16
+			},
+			"tokenizer": {
+				"coveredFunctions": 54,
+				"functionEntries": 15131,
+				"rangeExecutions": 98371,
+				"maxRangesPerFunction": 32
+			},
+			"memoryPlanner": {
+				"coveredFunctions": 25,
+				"functionEntries": 2742,
+				"rangeExecutions": 7389,
+				"maxRangesPerFunction": 7
+			},
+			"memoryReferenceInliner": {
+				"coveredFunctions": 30,
+				"functionEntries": 6397,
+				"rangeExecutions": 15692,
+				"maxRangesPerFunction": 39
+			},
+			"memoryDefaultResolver": {
+				"coveredFunctions": 16,
+				"functionEntries": 1953,
+				"rangeExecutions": 4376,
+				"maxRangesPerFunction": 12
+			},
+			"semanticUtils": {
+				"coveredFunctions": 36,
+				"functionEntries": 4347,
+				"rangeExecutions": 9599,
+				"maxRangesPerFunction": 13
+			},
+			"stackAnalyzer": {
+				"coveredFunctions": 76,
+				"functionEntries": 7300,
+				"rangeExecutions": 20745,
+				"maxRangesPerFunction": 26
+			},
+			"wasmCodegen": {
+				"coveredFunctions": 93,
+				"functionEntries": 3134,
+				"rangeExecutions": 10681,
+				"maxRangesPerFunction": 13
+			},
+			"compilerWasmUtils": {
+				"coveredFunctions": 28,
+				"functionEntries": 843,
+				"rangeExecutions": 1965,
+				"maxRangesPerFunction": 8
+			},
+			"languageSpec": {
+				"coveredFunctions": 23,
+				"functionEntries": 2704,
+				"rangeExecutions": 3308,
+				"maxRangesPerFunction": 14
+			}
+		}
 	}
 ]
