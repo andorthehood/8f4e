@@ -37,7 +37,7 @@ const declarationKinds = new Map([
 await main();
 
 async function main() {
-	const packageEntries = await collectPackageEntries(packagesRoot);
+	const packageEntries = (await Promise.all(getPackageRoots().map(collectPackageEntries))).flat();
 	const commit = getGitCommit();
 	const recordedAt = new Date().toISOString();
 	const loggedEntries = [];
@@ -45,15 +45,6 @@ async function main() {
 
 	for (const packageEntry of packageEntries) {
 		const files = await collectMeasuredFiles(packageEntry.sourceRoot);
-
-		if (files.length === 0) {
-			skippedEntries.push({
-				...packageEntry,
-				reason: 'no measured TypeScript source files',
-			});
-			continue;
-		}
-
 		const coverage = await measurePackageCoverage(files);
 		const logEntry = {
 			commit,
@@ -71,6 +62,42 @@ async function main() {
 	}
 
 	printResults(loggedEntries, skippedEntries);
+}
+
+function getPackageRoots() {
+	const packageRootArgs = getArgValues('--package-root');
+
+	if (packageRootArgs.length === 0) {
+		return [packagesRoot];
+	}
+
+	return packageRootArgs.map(packageRoot => path.resolve(workspaceRoot, packageRoot));
+}
+
+function getArgValues(name) {
+	const values = [];
+
+	for (let index = 2; index < process.argv.length; index += 1) {
+		const arg = process.argv[index];
+
+		if (arg === name) {
+			const value = process.argv[index + 1];
+
+			if (!value) {
+				throw new Error(`${name} requires a value`);
+			}
+
+			values.push(value);
+			index += 1;
+			continue;
+		}
+
+		if (arg.startsWith(`${name}=`)) {
+			values.push(arg.slice(name.length + 1));
+		}
+	}
+
+	return values;
 }
 
 async function collectPackageEntries(root) {
