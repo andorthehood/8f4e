@@ -78,4 +78,30 @@ functionEnd int
 		expect(second.compileResult.cache.ast.entries.get('function:0')?.ast).toBe(cachedFunctionAst);
 		expect(second.compileResult.cache.ast.stats.hits).toBeGreaterThanOrEqual(2);
 	});
+
+	test('re-resolves constants when reusing an unchanged module AST from cache', async () => {
+		const createSource = (size: number) => `
+8f4e/v1
+
+entry main
+module cachedConstants
+use config
+int[] buffer SIZE
+moduleEnd
+entryEnd
+
+constants config
+const SIZE ${size}
+constantsEnd
+`;
+		const first = await compileFixtureProgramSource(createSource(2));
+		const cachedModuleAst = first.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast;
+		const second = await compileFixtureProgramSource(createSource(4), {
+			cache: first.compileResult.cache,
+		});
+
+		expect(second.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast).toBe(cachedModuleAst);
+		expect(second.compileResult.compiledModules.cachedConstants.memory.buffer.numberOfElements).toBe(4);
+		expect(cachedModuleAst?.memoryDeclarationLines[0].arguments[1]).toEqual(expect.objectContaining({ value: 'SIZE' }));
+	});
 });

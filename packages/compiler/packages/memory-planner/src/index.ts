@@ -4,6 +4,8 @@ import type {
 	CompileOptions,
 	CompilerASTLine,
 	Const,
+	ConstantResolutionBlockFacts,
+	ConstantResolutionLineFacts,
 	MemoryDeclarationLine,
 	MemoryLayoutPlan,
 	MemoryRegionIdentity,
@@ -90,6 +92,10 @@ interface MemoryLayoutPlanInput {
 export interface ProjectMemoryLayoutPlanInput {
 	prototypes: readonly ValidatedPrototypeAST[];
 	modules: readonly ValidatedModuleAST[];
+	constantReferences: {
+		prototypes: readonly ConstantResolutionBlockFacts[];
+		modules: readonly ConstantResolutionBlockFacts[];
+	};
 	startingByteAddress?: number;
 	memoryRegions?: Pick<CompileOptions, 'memoryRegions'>['memoryRegions'];
 }
@@ -132,10 +138,17 @@ function getPrototypeMap(
 	return Object.fromEntries(prototypes.map(prototype => [prototype.id, prototype]));
 }
 
-function getPrototypeSources(prototypes: readonly ValidatedPrototypeAST[]): MemoryLayoutSourcePrototype[] {
+function applyConstantFacts<TLine extends CompilerASTLine>(line: TLine, facts?: ConstantResolutionLineFacts): TLine {
+	return facts?.arguments ? ({ ...line, arguments: facts.arguments } as TLine) : line;
+}
+
+function getPrototypeSources(
+	prototypes: readonly ValidatedPrototypeAST[],
+	constantReferences: readonly ConstantResolutionBlockFacts[]
+): MemoryLayoutSourcePrototype[] {
 	const seenPrototypeIds = new Set<string>();
 
-	return prototypes.map(prototype => {
+	return prototypes.map((prototype, prototypeIndex) => {
 		if (seenPrototypeIds.has(prototype.id)) {
 			throw plannerError(
 				ErrorCode.DUPLICATE_IDENTIFIER,
@@ -145,10 +158,13 @@ function getPrototypeSources(prototypes: readonly ValidatedPrototypeAST[]): Memo
 			);
 		}
 		seenPrototypeIds.add(prototype.id);
+		const blockFacts = constantReferences[prototypeIndex];
 
 		return {
 			id: prototype.id,
-			memoryDeclarationLines: prototype.memoryDeclarationLines,
+			memoryDeclarationLines: prototype.lines
+				.map((line, lineIndex) => applyConstantFacts(line, blockFacts?.lineFacts[lineIndex]))
+				.filter(isMemoryDeclarationLine),
 		};
 	});
 }
@@ -249,15 +265,23 @@ function isShapeLine(line: CompilerASTLine): line is ShapeLine {
 	return line.instruction === 'shape';
 }
 
-function collectModuleMemoryLayoutSourceLines(ast: ValidatedModuleAST): MemoryLayoutSourceModule {
+function collectModuleMemoryLayoutSourceLines(
+	ast: ValidatedModuleAST,
+	constantReferences: ConstantResolutionBlockFacts | undefined
+): MemoryLayoutSourceModule {
 	const sourceModule: MemoryLayoutSourceModule = {
 		id: ast.id,
 		moduleLine: ast.moduleLine,
-		...(ast.regionLine ? { regionLine: ast.regionLine } : {}),
 		lines: [],
 	};
 
-	for (const line of ast.lines) {
+	for (let lineIndex = 0; lineIndex < ast.lines.length; lineIndex++) {
+		const line = applyConstantFacts(ast.lines[lineIndex], constantReferences?.lineFacts[lineIndex]);
+		if (line.instruction === '#region') {
+			sourceModule.regionLine = line;
+			continue;
+		}
+
 		if (isMemoryDeclarationLine(line)) {
 			sourceModule.lines = [...sourceModule.lines, normalizeLayoutMemoryDeclarationLine(line)];
 			continue;
@@ -271,8 +295,11 @@ function collectModuleMemoryLayoutSourceLines(ast: ValidatedModuleAST): MemoryLa
 	return sourceModule;
 }
 
-function createMemoryLayoutSourceModules(asts: readonly ValidatedModuleAST[]): MemoryLayoutSourceModule[] {
-	return asts.map(collectModuleMemoryLayoutSourceLines);
+function createMemoryLayoutSourceModules(
+	asts: readonly ValidatedModuleAST[],
+	constantReferences: readonly ConstantResolutionBlockFacts[]
+): MemoryLayoutSourceModule[] {
+	return asts.map((ast, index) => collectModuleMemoryLayoutSourceLines(ast, constantReferences[index]));
 }
 
 function getEffectiveMemoryDeclarationSources(
@@ -411,8 +438,8 @@ function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 
 /**
  * Builds planner-ready source from validated project ASTs and plans module memory layout.
- * Constant inlining must already have run, so array declaration counts are either
- * literal values or pure literal arithmetic that can be folded here.
+ * Constant references are supplied as pass facts, so array declaration counts
+ * are either literal values or pure literal arithmetic that can be folded here.
  *
  * @param input - Validated project ASTs plus optional layout settings.
  * @returns Address and size metadata for modules and memory declarations.
@@ -421,8 +448,8 @@ export function planProjectMemoryLayout(input: ProjectMemoryLayoutPlanInput): Me
 	validateMemoryRegionOptions(input);
 
 	return planMemoryLayout({
-		prototypes: getPrototypeSources(input.prototypes),
-		modules: createMemoryLayoutSourceModules(input.modules),
+		prototypes: getPrototypeSources(input.prototypes, input.constantReferences.prototypes),
+		modules: createMemoryLayoutSourceModules(input.modules, input.constantReferences.modules),
 		startingByteAddress: input.startingByteAddress ?? GLOBAL_ALIGNMENT_BOUNDARY,
 		memoryRegions: input.memoryRegions ?? [],
 	});

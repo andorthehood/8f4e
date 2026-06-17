@@ -30,8 +30,8 @@ const coverageComponents = [
 	},
 	{
 		id: 'constantInliner',
-		label: 'constant inliner',
-		pathFragment: '/packages/compiler/packages/constant-inliner/dist/',
+		label: 'constant resolver',
+		pathFragment: '/packages/compiler/packages/constant-resolver/dist/',
 	},
 	{
 		id: 'memoryPlanner',

@@ -37,7 +37,7 @@ Create a standalone compiler pass package, likely named `@8f4e/semantic-referenc
 
 The pass should run once in `compileSubProgram`, after:
 
-1. constant inlining;
+1. constant resolution;
 2. memory planning;
 3. memory reference inlining;
 4. memory default resolving;

@@ -2,12 +2,13 @@
 
 `@8f4e/memory-planner` decides module addresses and memory declaration addresses for a project.
 
-The project-level entry point receives validated module and prototype ASTs whose constants have already been inlined:
+The project-level entry point receives validated module and prototype ASTs plus constant-resolution facts:
 
 ```ts
 const memoryPlan = planProjectMemoryLayout({
 	prototypes,
 	modules,
+	constantReferences,
 	startingByteAddress,
 	memoryRegions,
 });
@@ -40,11 +41,11 @@ This package owns:
 
 This package does not own:
 
-- Constant inlining.
+- Constant resolution.
 - Memory-reference inlining.
 - Default value resolution.
 - Pointer target metadata overlays.
 - Function parameter shape expansion.
 - Code generation or stack/type validation.
 
-The planner expects array element counts to already be literal planner-ready values. Layout-dependent declaration sizes, such as `int[] dest count(source)`, are not supported.
+The planner reads constant-resolution facts before normalizing declaration sizes. It expects array element counts to become literal planner-ready values after those facts and pure literal arithmetic are applied. Layout-dependent declaration sizes, such as `int[] dest count(source)`, are not supported.
