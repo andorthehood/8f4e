@@ -40,18 +40,13 @@ import {
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 	MAX_FUNCTION_PARAMETERS,
+	type PlannedMemoryDeclaration,
 	resolveRegionDirective,
 } from '@8f4e/language-spec';
-import {
-	createCompilationContext,
-	getPlannedMemoryDeclaration,
-	popBlock,
-	pushBlock,
-	resolveMapKind,
-	validateMapValueKind,
-} from '@8f4e/semantic-utils';
+import { createCompilationContext, popBlock, pushBlock, resolveMapKind } from '@8f4e/semantic-utils';
 import { analyzeInstruction } from './analyzeInstruction';
 import { cloneStack } from './instructionAnalyzers/stack';
+import { validateMapValueKind } from './mapValueKind';
 import normalizeValueArguments from './normalizeValueArguments';
 
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
@@ -230,6 +225,16 @@ function applyLocalLine(line: CompilerASTLine, context: CompilationContext): voi
 	}
 
 	context.locals[localName] = functionValueTypeToLocalBinding(typeArg.value, Object.keys(context.locals).length);
+}
+
+function getPlannedMemoryDeclaration(
+	context: CompilationContext,
+	memoryId: string,
+	moduleId = context.namespace.moduleName
+): PlannedMemoryDeclaration | undefined {
+	const currentModule = context.currentPlannedModule;
+	const module = !moduleId || moduleId === currentModule?.id ? currentModule : context.memoryPlan.modules[moduleId];
+	return module?.memory[memoryId];
 }
 
 function applyLocalSetLine(line: AnalyzedLine<ResolvedLocalSetLine>): void {

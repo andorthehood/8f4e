@@ -1,8 +1,8 @@
 import { WASM_I32_LT_S, WASM_I32_LT_U, WASM_MEMORY_SIZE, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
 import type { CompilerASTLine, MemoryAddressRange, PlannedMemoryModule } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
-import { normalizeClampAddress } from '@8f4e/semantic-utils';
 import { describe, expect, it } from 'vitest';
+import normalizeValueArguments from '../normalizeValueArguments';
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
@@ -213,7 +213,7 @@ describe('clamp address instruction compilers', () => {
 	it('rejects zero access width', () => {
 		const context = createInstructionCompilerTestContext();
 
-		expect(() => normalizeClampAddress(createLine('clampAddress', 0), context)).toThrow(
+		expect(() => normalizeValueArguments(createLine('clampAddress', 0), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
 		);
 	});
@@ -221,7 +221,7 @@ describe('clamp address instruction compilers', () => {
 	it('rejects unsupported access widths', () => {
 		const context = createInstructionCompilerTestContext();
 
-		expect(() => normalizeClampAddress(createLine('clampAddress', 3), context)).toThrow(
+		expect(() => normalizeValueArguments(createLine('clampAddress', 3), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
 		);
 	});
