@@ -69,7 +69,6 @@ Active todo files are listed below.
 | 457 | Make load infer narrow width from pointer metadata | 🟡 | 4-8h | 2026-06-12 | Let plain `load` choose narrow signed or unsigned integer loads when address metadata proves the pointee width, while keeping raw integer addresses 32-bit. |
 | 458 | Decouple module execution order from memory layout | 🟡 | 4-8h | 2026-06-14 | Keep module execution order user-controlled while deriving memory layout from a stable module ordering policy such as module id. |
 | 459 | Extract compiler diagnostics package | 🟡 | 2-4h | 2026-06-15 | Move compiler diagnostic construction into a small shared package so compiler-adjacent packages can emit consistent diagnostics without importing compiler internals. |
-| 460 | Fix cross-block constant cache dependencies | 🟡 | 4-8h | 2026-06-15 | Make future transformed AST caching account for constants imported from other source blocks instead of relying only on local source hashes. |
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
 
@@ -88,6 +87,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 460 | Fix cross-block constant cache dependencies | 2026-06-17 | Constant resolution now returns per-line facts beside source-shaped cached ASTs, and recompiling with a changed constants block re-resolves unchanged cached module ASTs correctly. |
 | 462 | Extract semantic reference resolver | 2026-06-17 | Semantic reference resolution now runs once in compileSubProgram and returns a report consumed by stack analysis and WASM codegen alongside unchanged ASTs. |
 | 384 | Add compiler algorithmic regression metrics | 2026-06-14 | Archived with the exact completion date unknown; compiler complexity metrics now provide release-level regression signals. |
 | 381 | Add #follow module layout directive | 2026-06-14 | Cancelled; no strict `#follow` module layout adjacency directive is planned. |

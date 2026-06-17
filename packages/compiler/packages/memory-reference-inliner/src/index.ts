@@ -5,6 +5,8 @@ import type {
 	CompilerASTLine,
 	CompileTimeOperand,
 	Const,
+	ConstantResolutionBlockFacts,
+	ConstantResolutionLineFacts,
 	ConstantsAST,
 	FunctionAST,
 	FunctionValueType,
@@ -58,6 +60,12 @@ export interface InlineMemoryReferencesInput<
 > {
 	ast: MemoryReferenceProjectAST<TPrototype, TModule, TConstants, TFunction>;
 	memoryPlan: MemoryLayoutPlan;
+	constantReferences: {
+		prototypes: readonly ConstantResolutionBlockFacts[];
+		modules: readonly ConstantResolutionBlockFacts[];
+		constants: readonly ConstantResolutionBlockFacts[];
+		functions: readonly ConstantResolutionBlockFacts[];
+	};
 }
 
 export interface InlineMemoryReferencesResult<
@@ -318,10 +326,15 @@ function replaceLine<TLine extends CompilerASTLine | undefined>(
 	return line ? ((replacements.get(line) ?? line) as TLine) : line;
 }
 
+function applyConstantFacts<TLine extends CompilerASTLine>(line: TLine, facts?: ConstantResolutionLineFacts): TLine {
+	return facts?.arguments ? ({ ...line, arguments: facts.arguments } as TLine) : line;
+}
+
 function inlineMemoryReferencesInAst<TAst extends AST>(
 	ast: TAst,
 	memoryPlan: MemoryLayoutPlan,
-	pointerMetadata: MemoryReferencePointerMetadataByModuleId
+	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
+	constantReferences: ConstantResolutionBlockFacts | undefined
 ): TAst {
 	const context =
 		ast.type === 'module'
@@ -329,13 +342,14 @@ function inlineMemoryReferencesInAst<TAst extends AST>(
 			: createProjectResolutionContext(memoryPlan, pointerMetadata);
 	const replacements = new Map<CompilerASTLine, CompilerASTLine>();
 	let nextLocalIndex = 0;
-	const lines = ast.lines.map(line => {
-		const nextLine = inlineMemoryReferencesInLine(line, context);
+	const lines = ast.lines.map((line, lineIndex) => {
+		const constantResolvedLine = applyConstantFacts(line, constantReferences?.lineFacts[lineIndex]);
+		const nextLine = inlineMemoryReferencesInLine(constantResolvedLine, context);
 		if (nextLine !== line) {
 			replacements.set(line, nextLine);
 		}
 		if (ast.type === 'function') {
-			nextLocalIndex = collectFunctionLocal(line, context.locals, nextLocalIndex);
+			nextLocalIndex = collectFunctionLocal(nextLine, context.locals, nextLocalIndex);
 		}
 		if (ast.type === 'module') {
 			updatePointerMemoryMetadata(nextLine, context);
@@ -401,10 +415,18 @@ export function inlineMemoryReferences<
 	const pointerMetadata: Record<string, MemoryPointerMetadataMap> = {};
 	return {
 		ast: {
-			prototypes: input.ast.prototypes.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata)),
-			modules: input.ast.modules.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata)),
-			constants: input.ast.constants.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata)),
-			functions: input.ast.functions.map(ast => inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata)),
+			prototypes: input.ast.prototypes.map((ast, index) =>
+				inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.prototypes[index])
+			),
+			modules: input.ast.modules.map((ast, index) =>
+				inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.modules[index])
+			),
+			constants: input.ast.constants.map((ast, index) =>
+				inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.constants[index])
+			),
+			functions: input.ast.functions.map((ast, index) =>
+				inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.functions[index])
+			),
 		},
 	};
 }

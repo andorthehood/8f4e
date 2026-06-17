@@ -12,7 +12,7 @@ It owns:
 It does not own:
 
 - source tokenization or syntax validation;
-- constant inlining;
+- constant resolution;
 - memory layout planning;
 - memory address/reference inlining;
 - stack-effect validation;

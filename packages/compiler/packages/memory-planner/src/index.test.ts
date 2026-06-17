@@ -96,6 +96,13 @@ function prototypeAst(
 	} as ValidatedPrototypeAST;
 }
 
+function noConstantReferences() {
+	return {
+		prototypes: [],
+		modules: [],
+	};
+}
+
 describe('planProjectMemoryLayout', () => {
 	it('plans module start addresses and declaration addresses from ASTs', () => {
 		const plan = planProjectMemoryLayout({
@@ -124,6 +131,7 @@ describe('planProjectMemoryLayout', () => {
 					},
 				]),
 			],
+			constantReferences: noConstantReferences(),
 			startingByteAddress: 4,
 		});
 
@@ -168,6 +176,7 @@ describe('planProjectMemoryLayout', () => {
 					audioRegionLine
 				),
 			],
+			constantReferences: noConstantReferences(),
 			startingByteAddress: 4,
 			memoryRegions: ['audio'],
 		});
@@ -202,6 +211,7 @@ describe('planProjectMemoryLayout', () => {
 					},
 				]),
 			],
+			constantReferences: noConstantReferences(),
 		});
 
 		expect(plan.modules.main.memory.values.numberOfElements).toBe(4);
@@ -219,6 +229,7 @@ describe('planProjectMemoryLayout', () => {
 		const plan = planProjectMemoryLayout({
 			prototypes: [],
 			modules: [validatedModuleAst('main', 1, [line])],
+			constantReferences: noConstantReferences(),
 		});
 
 		expect(plan.modules.main.declarations[0].id).toBe('__anonymous__2');
@@ -248,6 +259,7 @@ describe('planProjectMemoryLayout', () => {
 		const plan = planProjectMemoryLayout({
 			prototypes: [prototypeAst('state', 1, [foo, bar])],
 			modules: [validatedModuleAst('main', 1, [shapeLine('state', 11), local])],
+			constantReferences: noConstantReferences(),
 			startingByteAddress: 4,
 		});
 
@@ -265,6 +277,7 @@ describe('planProjectMemoryLayout', () => {
 			planProjectMemoryLayout({
 				prototypes: [],
 				modules: [validatedModuleAst('main', 1, [shapeLine('missing', 11)])],
+				constantReferences: noConstantReferences(),
 			})
 		).toThrow(MemoryPlannerError);
 	});
@@ -288,6 +301,7 @@ describe('planner input building', () => {
 		const plan = planProjectMemoryLayout({
 			prototypes: [prototypeAst('state', 19, [inherited])],
 			modules: [validatedModuleAst('main', 1, [shapeLine('state', 3), local])],
+			constantReferences: noConstantReferences(),
 			startingByteAddress: 4,
 		});
 
@@ -317,6 +331,7 @@ describe('planner input building', () => {
 			planProjectMemoryLayout({
 				prototypes: [],
 				modules: [validatedModuleAst('main', 1, [line])],
+				constantReferences: noConstantReferences(),
 			})
 		).toThrow(MemoryPlannerError);
 	});
@@ -329,7 +344,40 @@ describe('planner input building', () => {
 			planProjectMemoryLayout({
 				prototypes: [first, second],
 				modules: [],
+				constantReferences: noConstantReferences(),
 			})
 		).toThrow(MemoryPlannerError);
+	});
+
+	it('uses constant resolution facts while keeping source declaration lines unchanged', () => {
+		const sizeIdentifier = identifier('SIZE');
+		const line = {
+			lineNumber: 4,
+			instruction: 'int[]',
+			hasExplicitMemoryDefault: false,
+			arguments: [identifier('values'), sizeIdentifier],
+		} satisfies MemoryDeclarationLine;
+
+		const plan = planProjectMemoryLayout({
+			prototypes: [],
+			modules: [validatedModuleAst('main', 1, [line])],
+			constantReferences: {
+				prototypes: [],
+				modules: [
+					{
+						lineFacts: [
+							undefined,
+							{
+								arguments: [identifier('values'), literal(7)],
+							},
+							undefined,
+						],
+					},
+				],
+			},
+		});
+
+		expect(line.arguments[1]).toBe(sizeIdentifier);
+		expect(plan.modules.main.memory.values.numberOfElements).toBe(7);
 	});
 });

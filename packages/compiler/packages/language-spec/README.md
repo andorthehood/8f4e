@@ -17,7 +17,7 @@ This package does not own:
 - Parsing source text into ASTs. That belongs to `@8f4e/tokenizer`.
 - Project document parsing or include reduction. That belongs to `@8f4e/project-preparser`.
 - Compiler pass orchestration. That belongs to `@8f4e/compiler`.
-- Memory layout, constant inlining, memory reference inlining, default resolution, stack analysis, or code generation.
+- Memory layout, constant resolution, memory reference resolution, default resolution, stack analysis, or code generation.
 - WebAssembly byte encoding helpers or WASM-specific section construction.
 
 When adding a new shared truth, prefer deriving it from an existing spec table when possible instead of creating a second source of truth.

@@ -10,6 +10,7 @@ export default defineConfig({
 			...createEsLibConfig('./src/index.ts', 'dist').build?.rollupOptions,
 			external: [
 				'@8f4e/tokenizer',
+				'@8f4e/constant-resolver',
 				'@8f4e/language-spec',
 				'@8f4e/memory-default-resolver',
 				'@8f4e/memory-reference-inliner',

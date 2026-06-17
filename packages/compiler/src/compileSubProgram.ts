@@ -1,4 +1,4 @@
-import { ConstantInliningError, type InlineConstantsProjectAST, inlineConstantsInASTs } from '@8f4e/constant-inliner';
+import { ConstantResolverError, type ResolveConstantsProjectAST, resolveConstants } from '@8f4e/constant-resolver';
 import type {
 	CompiledFunction,
 	CompiledFunctionLookup,
@@ -155,7 +155,7 @@ function getAstDiagnosticContext(ast: ValidatedAST) {
 }
 
 function findAstContainingLine(
-	projectAst: InlineConstantsProjectAST,
+	projectAst: ResolveConstantsProjectAST,
 	line: ValidatedAST['lines'][number]
 ): ValidatedAST | undefined {
 	const groups = [projectAst.prototypes, projectAst.modules, projectAst.constants, projectAst.functions];
@@ -169,8 +169,8 @@ function findAstContainingLine(
 	return undefined;
 }
 
-function wrapConstantInliningError(error: unknown, projectAst: InlineConstantsProjectAST): unknown {
-	if (!(error instanceof ConstantInliningError)) {
+function wrapConstantResolverError(error: unknown, projectAst: ResolveConstantsProjectAST): unknown {
+	if (!(error instanceof ConstantResolverError)) {
 		return error;
 	}
 
@@ -185,7 +185,7 @@ function wrapConstantInliningError(error: unknown, projectAst: InlineConstantsPr
 	});
 }
 
-function wrapMemoryDefaultResolverError(error: unknown, projectAst: InlineConstantsProjectAST): unknown {
+function wrapMemoryDefaultResolverError(error: unknown, projectAst: ResolveConstantsProjectAST): unknown {
 	if (!(error instanceof MemoryDefaultResolverError)) {
 		return error;
 	}
@@ -194,7 +194,7 @@ function wrapMemoryDefaultResolverError(error: unknown, projectAst: InlineConsta
 	return getError(error.compilerErrorCode, error.line, ast ? getAstDiagnosticContext(ast) : undefined, error.details);
 }
 
-function wrapMemoryPlannerError(error: unknown, projectAst: InlineConstantsProjectAST): unknown {
+function wrapMemoryPlannerError(error: unknown, projectAst: ResolveConstantsProjectAST): unknown {
 	if (!(error instanceof MemoryPlannerError)) {
 		return error;
 	}
@@ -302,7 +302,7 @@ export function compileSubProgram(
 	const astModules = astModuleEntries.map(({ ast }) => ast);
 	const moduleEntryNames = astModuleEntries.map(({ entryName }) => entryName);
 	assertUniqueModuleIds(astModules);
-	const projectAst: InlineConstantsProjectAST<
+	const projectAst: ResolveConstantsProjectAST<
 		ValidatedPrototypeAST,
 		ValidatedModuleAST,
 		ValidatedConstantsAST,
@@ -313,22 +313,23 @@ export function compileSubProgram(
 		constants: astConstants,
 		functions: astFunctions,
 	};
-	let constantInlinedAst: typeof projectAst;
+	let constantResolution: ReturnType<typeof resolveConstants>;
 	try {
-		constantInlinedAst = inlineConstantsInASTs({ ast: projectAst }).ast;
+		constantResolution = resolveConstants({ ast: projectAst });
 	} catch (error) {
-		throw wrapConstantInliningError(error, projectAst);
+		throw wrapConstantResolverError(error, projectAst);
 	}
 
 	let memoryPlan: ReturnType<typeof planProjectMemoryLayout>;
 	try {
 		memoryPlan = planProjectMemoryLayout({
-			prototypes: constantInlinedAst.prototypes,
-			modules: constantInlinedAst.modules,
+			prototypes: projectAst.prototypes,
+			modules: projectAst.modules,
+			constantReferences: constantResolution.references,
 			memoryRegions: options.memoryRegions,
 		});
 	} catch (error) {
-		throw wrapMemoryPlannerError(error, constantInlinedAst);
+		throw wrapMemoryPlannerError(error, projectAst);
 	}
 	const {
 		ast: {
@@ -338,8 +339,9 @@ export function compileSubProgram(
 			functions: inlinedAstFunctions,
 		},
 	} = inlineMemoryReferences({
-		ast: constantInlinedAst,
+		ast: projectAst,
 		memoryPlan,
+		constantReferences: constantResolution.references,
 	});
 	const inlinedProjectAst = {
 		prototypes: inlinedAstPrototypes,
