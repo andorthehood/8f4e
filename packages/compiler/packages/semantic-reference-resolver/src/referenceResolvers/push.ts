@@ -3,8 +3,8 @@ import {
 	type CompilationContext,
 	ErrorCode,
 	getError,
-	type LocalBinding,
 	type MemoryPointerIdentifier,
+	type PointerLocalBinding,
 	type PushLine,
 	type ResolvedLocalPointerPushLine,
 	type ResolvedLocalPushLine,
@@ -19,9 +19,7 @@ import {
 	validateUnresolvedValueExpression,
 } from './helpers';
 
-function isResolvedPointerLocal(
-	local: LocalBinding | undefined
-): local is ResolvedLocalPointerPushLine['resolvedTarget']['local'] {
+function isResolvedPointerLocal(local: CompilationContext['locals'][string] | undefined): local is PointerLocalBinding {
 	return !!local?.pointeeBaseType;
 }
 
@@ -85,7 +83,7 @@ export default function resolvePushReferences(line: PushLine, context: Compilati
 					...resolvedPushLine,
 					arguments: [argument],
 				};
-				return { ...resolvedLine, resolvedTarget: { kind: 'local' as const, local } };
+				return { ...resolvedLine, resolvedTarget: { kind: 'local' as const, localName: value } };
 			}
 
 			const memoryItem = getResolvedMemoryDeclaration(context, value);
@@ -116,7 +114,10 @@ export default function resolvePushReferences(line: PushLine, context: Compilati
 					...resolvedPushLine,
 					arguments: [pointerArgument],
 				};
-				return { ...resolvedLine, resolvedTarget: { kind: 'local-pointer' as const, local } };
+				return {
+					...resolvedLine,
+					resolvedTarget: { kind: 'local-pointer' as const, localName: pointerArgument.targetMemoryId },
+				};
 			}
 		}
 

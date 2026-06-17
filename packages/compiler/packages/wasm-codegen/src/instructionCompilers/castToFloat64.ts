@@ -7,8 +7,8 @@ import { saveByteCode } from './utils/saveByteCode';
  * Casts int32 and float32 values to float64. Float64 input is a no-op.
  * @see [Instruction docs](../../docs/instructions/conversion.md)
  */
-const castToFloat64: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+const castToFloat64: InstructionCompiler = (line, context, facts) => {
+	const [operand] = facts.stackAnalysis.consumedOperands;
 
 	if (operand.valueType === 'int') {
 		return saveByteCode(context, [WASM_F64_CONVERT_I32_S]);

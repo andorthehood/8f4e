@@ -262,9 +262,17 @@ export interface StackAnalysisResult {
 	droppedStackItems?: Stack;
 }
 
-export type AnalyzedLine<TLine extends CompilerASTLine = CompilerASTLine> = TLine & {
+export interface StackAnalysisLocalPointerFact {
+	localName: string;
+	pointeeMemoryIndex: number;
+	pointeeMemoryRegionName?: string;
+}
+
+export interface StackAnalysisLineFacts {
 	stackAnalysis: StackAnalysisResult;
-};
+	targetFunctionId?: string;
+	localPointer?: StackAnalysisLocalPointerFact;
+}
 
 export type CodegenContext<TContext extends CompilationContext = CompilationContext> = Omit<TContext, 'stack'>;
 export type FunctionCodegenContext = CodegenContext<FunctionCompilationContext>;
@@ -297,10 +305,6 @@ export type ArrayDeclarationLine = Omit<ArrayMemoryDeclarationLine, 'instruction
 	arguments: [ArgumentIdentifier, ArgumentLiteral, ...ArrayDeclarationInitializerArgument[]];
 };
 
-export type ResolvedLocalSetLine = LocalSetLine & {
-	local: LocalBinding;
-};
-
 export type LiteralPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [ResolvedArgumentLiteral | ArgumentStringLiteral];
 };
@@ -329,7 +333,7 @@ export type ResolvedLocalPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier];
 	resolvedTarget: {
 		kind: 'local';
-		local: LocalBinding;
+		localName: string;
 	};
 };
 
@@ -337,7 +341,7 @@ export type ResolvedLocalPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 	resolvedTarget: {
 		kind: 'local-pointer';
-		local: PointerLocalBinding;
+		localName: string;
 	};
 };
 
@@ -362,10 +366,6 @@ export type SemanticCallLine = Omit<CallLine, 'arguments'> & {
 	inlineArgumentPushes?: CodegenPushLine[];
 };
 
-export type ResolvedCallLine = SemanticCallLine & {
-	targetFunction: FunctionMetadata;
-};
-
 export type PushShapeExpansion = {
 	pushLine: CodegenPushLine;
 	pointerType: FunctionValueType;
@@ -379,11 +379,11 @@ export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
 export type SemanticReferenceLine<TLine extends CompilerASTLine = CompilerASTLine> = TLine extends DefaultLine
 	? ResolvedDefaultLine | DefaultLine
 	: TLine extends CallLine
-		? ResolvedCallLine | SemanticCallLine | CallLine
+		? SemanticCallLine | CallLine
 		: TLine extends MapLine
 			? ResolvedMapLine
 			: TLine extends LocalSetLine
-				? ResolvedLocalSetLine
+				? LocalSetLine
 				: TLine extends PushLine
 					? SemanticPushLine
 					: TLine extends PushShapeLine
@@ -399,7 +399,6 @@ export type SemanticReferenceLine<TLine extends CompilerASTLine = CompilerASTLin
 export interface SemanticReferenceLineFacts {
 	arguments?: SemanticReferenceLine['arguments'];
 	inlineArgumentPushes?: NonNullable<SemanticCallLine['inlineArgumentPushes']>;
-	local?: ResolvedLocalSetLine['local'];
 	resolvedTarget?: ResolvedPushLine['resolvedTarget'];
 	shapeExpansions?: ResolvedPushShapeLine['shapeExpansions'];
 }
@@ -492,4 +491,4 @@ export type BlockStack = BlockStackFrame[];
 export type InstructionCompiler<
 	TLine extends CompilerASTLine = CompilerASTLine,
 	TContext extends CodegenContext = CodegenContext,
-> = (line: AnalyzedLine<TLine>, context: TContext) => TContext;
+> = (line: TLine, context: TContext, facts: StackAnalysisLineFacts) => TContext;

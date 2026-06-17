@@ -1,9 +1,8 @@
 import type {
-	AnalyzedLine,
 	CompilationContext,
 	CompilerASTLine,
 	FunctionMetadata,
-	ResolvedCallLine,
+	StackAnalysisLineFacts,
 } from '@8f4e/language-spec';
 import { ArgumentType, createFunctionId, ErrorCode } from '@8f4e/language-spec';
 import { analyzeInstruction } from '@8f4e/stack-analyzer/testing';
@@ -30,17 +29,17 @@ function registerFunction(context: CompilationContext, ...targetFunctions: Funct
 	};
 }
 
-function analyzeAndCompileCall(line: CompilerASTLine, context: CompilationContext): AnalyzedLine<ResolvedCallLine> {
-	const analyzedLine = analyzeInstruction(line, context) as AnalyzedLine<ResolvedCallLine>;
-	call(analyzedLine, context);
-	return analyzedLine;
+function analyzeAndCompileCall(line: CompilerASTLine, context: CompilationContext): StackAnalysisLineFacts {
+	const facts = analyzeInstruction(line, context);
+	call(line, context, facts);
+	return facts;
 }
 
 describe('call instruction compiler', () => {
 	it('emits call bytecode and pushes returns', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
-			id: 'foo',
+			id: createFunctionId('foo', ['int', 'float']),
 			name: 'foo',
 			signature: { parameters: ['int', 'float'], returns: ['int'] },
 			wasmIndex: 2,
@@ -57,7 +56,6 @@ describe('call instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('foo')],
-				targetFunction,
 			} as CompilerASTLine,
 			context
 		);
@@ -71,7 +69,7 @@ describe('call instruction compiler', () => {
 	it('tracks float64 parameter and return types on stack', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
-			id: 'foo64',
+			id: createFunctionId('foo64', ['float64']),
 			name: 'foo64',
 			signature: { parameters: ['float64'], returns: ['float64'] },
 			wasmIndex: 2,
@@ -85,7 +83,6 @@ describe('call instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('foo64')],
-				targetFunction,
 			} as CompilerASTLine,
 			context
 		);
@@ -111,7 +108,7 @@ describe('call instruction compiler', () => {
 		registerFunction(context, intOverload, floatOverload);
 		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
-		const analyzedLine = analyzeAndCompileCall(
+		const facts = analyzeAndCompileCall(
 			{
 				lineNumber: 1,
 				instruction: 'call',
@@ -120,9 +117,9 @@ describe('call instruction compiler', () => {
 			context
 		);
 
-		expect(analyzedLine.targetFunction).toBe(floatOverload);
-		expect(floatOverload.used).toBe(true);
-		expect(intOverload.used).toBeUndefined();
+		expect(facts.targetFunctionId).toBe(floatOverload.id);
+		expect('used' in floatOverload).toBe(false);
+		expect('used' in intOverload).toBe(false);
 		expect(context.byteCode).toEqual([0x10, floatOverload.wasmIndex]);
 		expect(context.stack).toEqual([]);
 	});
@@ -149,7 +146,7 @@ describe('call instruction compiler', () => {
 			pointsTo: { baseType: 'float', memoryIndex: 0, pointerDepth: 1 },
 		});
 
-		const analyzedLine = analyzeAndCompileCall(
+		const facts = analyzeAndCompileCall(
 			{
 				lineNumber: 1,
 				instruction: 'call',
@@ -158,7 +155,7 @@ describe('call instruction compiler', () => {
 			context
 		);
 
-		expect(analyzedLine.targetFunction).toBe(pointerOverload);
+		expect(facts.targetFunctionId).toBe(pointerOverload.id);
 		expect(context.byteCode).toEqual([0x10, pointerOverload.wasmIndex]);
 		expect(context.stack).toEqual([]);
 	});
@@ -223,7 +220,7 @@ describe('call instruction compiler', () => {
 			context
 		);
 
-		const analyzedLine = analyzeAndCompileCall(
+		const facts = analyzeAndCompileCall(
 			{
 				lineNumber: 3,
 				instruction: 'call',
@@ -232,7 +229,7 @@ describe('call instruction compiler', () => {
 			context
 		);
 
-		expect(analyzedLine.targetFunction).toBe(targetFunction);
+		expect(facts.targetFunctionId).toBe(targetFunction.id);
 		expect(context.byteCode).toEqual([0x10, targetFunction.wasmIndex]);
 		expect(context.stack).toEqual([]);
 	});
@@ -240,7 +237,7 @@ describe('call instruction compiler', () => {
 	it('emits inline argument pushes before the call', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
-			id: 'foo',
+			id: createFunctionId('foo', ['int', 'float']),
 			name: 'foo',
 			signature: { parameters: ['int', 'float'], returns: ['int'] },
 			wasmIndex: 2,
@@ -257,7 +254,6 @@ describe('call instruction compiler', () => {
 					{ type: ArgumentType.LITERAL, value: 2, isInteger: true },
 					{ type: ArgumentType.LITERAL, value: 1.3, isInteger: false },
 				],
-				targetFunction,
 				inlineArgumentPushes: [
 					{
 						lineNumber: 1,
@@ -283,7 +279,7 @@ describe('call instruction compiler', () => {
 	it('throws on float32 argument passed to float64 parameter', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
-			id: 'foo64',
+			id: createFunctionId('foo64', ['float64']),
 			name: 'foo64',
 			signature: { parameters: ['float64'], returns: [] },
 			wasmIndex: 2,
@@ -298,7 +294,6 @@ describe('call instruction compiler', () => {
 					lineNumber: 1,
 					instruction: 'call',
 					arguments: [classifyIdentifier('foo64')],
-					targetFunction,
 				} as CompilerASTLine,
 				context
 			);
@@ -378,7 +373,7 @@ describe('call instruction compiler', () => {
 	it('tracks pointer return types on the stack', () => {
 		const context = createInstructionCompilerTestContext();
 		const targetFunction = {
-			id: 'addr',
+			id: createFunctionId('addr', []),
 			name: 'addr',
 			signature: { parameters: [], returns: ['float*'] },
 			wasmIndex: 2,
@@ -391,7 +386,6 @@ describe('call instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'call',
 				arguments: [classifyIdentifier('addr')],
-				targetFunction,
 			} as CompilerASTLine,
 			context
 		);

@@ -15,6 +15,7 @@ import type {
 	ValidatedFunctionAST,
 } from '@8f4e/language-spec';
 import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/language-spec';
+import type { FunctionSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { createCompilationContext } from '@8f4e/semantic-utils';
 import type { StackAnalyzedFunction } from '@8f4e/stack-analyzer';
 import { compileCodegenLine } from './compileLine';
@@ -35,10 +36,11 @@ export function compileFunction(
 	namespaces: Namespaces,
 	typeRegistry: FunctionTypeRegistry,
 	functions: FunctionRegistry,
+	semanticReferences: FunctionSemanticReferences,
 	stackReport: StackAnalyzedFunction,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
-	const functionMetadata = stackReport.functionMetadata;
+	const functionMetadata = functions.byId[stackReport.functionId]!;
 	const context = createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces,
@@ -66,14 +68,11 @@ export function compileFunction(
 		functionTypeRegistry: typeRegistry,
 	});
 
-	const analyzedLines = stackReport.analyzedLines;
-	let analyzedLineIndex = 0;
-	for (const sourceLine of ast.lines) {
+	for (const [lineIndex, sourceLine] of ast.lines.entries()) {
 		if (isSemanticInstructionLine(sourceLine) || isMemoryDeclarationLine(sourceLine)) {
 			continue;
 		}
-		const analyzedLine = analyzedLines[analyzedLineIndex++];
-		compileCodegenLine(analyzedLine, context);
+		compileCodegenLine(sourceLine, semanticReferences.lineFacts[lineIndex], stackReport.lineFacts[lineIndex]!, context);
 	}
 
 	// Collect locals (excluding parameters)
@@ -109,7 +108,7 @@ export function compileFunction(
 		wasmIndex: functionMetadata.wasmIndex,
 		typeIndex: context.currentFunctionTypeIndex!,
 		ast,
-		...(functionMetadata.used ? { used: true } : {}),
+		...(stackReport.used ? { used: true } : {}),
 		...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		...(options.includeStackAnalysis ? { stackAnalysis: stackReport.stackAnalysis } : {}),
 	};

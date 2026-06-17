@@ -1,22 +1,21 @@
 import { localSet } from '@8f4e/compiler-wasm-utils';
-import type { InstructionCompiler, ResolvedLocalSetLine } from '@8f4e/language-spec';
+import type { InstructionCompiler, LocalSetLine } from '@8f4e/language-spec';
 
 import { saveByteCode } from './utils/saveByteCode';
-import { requireStackAddress } from './utils/stackItem';
 
 /**
  * Instruction compiler for `localSet`.
  * @see [Instruction docs](../../docs/instructions/declarations-and-locals.md)
  */
-const _localSet: InstructionCompiler<ResolvedLocalSetLine> = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
-	const { local } = line;
+const _localSet: InstructionCompiler<LocalSetLine> = (line, context, facts) => {
+	const localName = line.arguments[0].value;
+	const local = context.locals[localName]!;
+	const pointerFact = facts.localPointer;
 
-	if (local.pointeeBaseType) {
-		const address = requireStackAddress(operand, line, context);
-		local.pointeeMemoryIndex = address.address.memoryIndex;
-		if (address.address.memoryRegionName) {
-			local.pointeeMemoryRegionName = address.address.memoryRegionName;
+	if (pointerFact) {
+		local.pointeeMemoryIndex = pointerFact.pointeeMemoryIndex;
+		if (pointerFact.pointeeMemoryRegionName) {
+			local.pointeeMemoryRegionName = pointerFact.pointeeMemoryRegionName;
 		} else {
 			delete local.pointeeMemoryRegionName;
 		}

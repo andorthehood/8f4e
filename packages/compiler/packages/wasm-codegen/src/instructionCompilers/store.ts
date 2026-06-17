@@ -12,15 +12,15 @@ type StoreLine = ASTLineBase<'store', []>;
  * Instruction compiler for `store`.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const store: InstructionCompiler<StoreLine> = (line, context) => {
+const store: InstructionCompiler<StoreLine> = (line, context, facts) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const operand2Address = requireStackAddress(
-		line.stackAnalysis.consumedOperands[operation.addressOperandIndex],
+		facts.stackAnalysis.consumedOperands[operation.addressOperandIndex],
 		line,
 		context
 	);
-	const operand1Value = line.stackAnalysis.consumedOperands[operation.valueOperandIndex];
+	const operand1Value = facts.stackAnalysis.consumedOperands[operation.valueOperandIndex];
 	const valueIsInteger = operand1Value.valueType === 'int';
 	const valueIsFloat64 = operand1Value.valueType === 'float64';
 	const memoryIndex = operand2Address.address.memoryIndex;

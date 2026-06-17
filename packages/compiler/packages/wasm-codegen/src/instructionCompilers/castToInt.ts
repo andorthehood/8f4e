@@ -11,8 +11,8 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `castToInt`.
  * @see [Instruction docs](../../docs/instructions/conversion.md)
  */
-const castToInt: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+const castToInt: InstructionCompiler = (line, context, facts) => {
+	const [operand] = facts.stackAnalysis.consumedOperands;
 
 	// Use the non-trapping saturating conversion so NaN and out-of-range floats do not stop the runtime.
 	return saveByteCode(

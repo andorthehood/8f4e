@@ -90,9 +90,6 @@ function collectLineFacts(
 	if ('inlineArgumentPushes' in resolvedLine && resolvedLine.inlineArgumentPushes) {
 		facts.inlineArgumentPushes = resolvedLine.inlineArgumentPushes;
 	}
-	if ('local' in resolvedLine) {
-		facts.local = resolvedLine.local;
-	}
 	if ('resolvedTarget' in resolvedLine) {
 		facts.resolvedTarget = resolvedLine.resolvedTarget;
 	}

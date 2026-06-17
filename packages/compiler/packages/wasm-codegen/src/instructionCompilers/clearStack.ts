@@ -6,8 +6,8 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `clearStack`.
  * @see [Instruction docs](../../docs/instructions/stack.md)
  */
-const clearStack: InstructionCompiler = (line, context) => {
-	const length = line.stackAnalysis.droppedStackItems?.length ?? line.stackAnalysis.consumedOperands.length;
+const clearStack: InstructionCompiler = (line, context, facts) => {
+	const length = facts.stackAnalysis.droppedStackItems?.length ?? facts.stackAnalysis.consumedOperands.length;
 
 	return saveByteCode(context, new Array(length).fill(WASM_DROP));
 };
