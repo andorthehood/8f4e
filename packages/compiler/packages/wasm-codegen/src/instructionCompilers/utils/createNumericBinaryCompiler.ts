@@ -1,6 +1,5 @@
 import type { InstructionCompiler, StackItem } from '@8f4e/language-spec';
 
-import { areAllOperandsFloat64, areAllOperandsIntegers } from '@8f4e/semantic-utils';
 import { saveByteCode } from './saveByteCode';
 
 type NumericBinaryOpcodes = {
@@ -35,11 +34,12 @@ export default function createNumericBinaryCompiler({
 }: NumericBinaryCompilerOptions): InstructionCompiler {
 	return (line, context, facts) => {
 		const [left, right] = facts.stackAnalysis.consumedOperands;
-		const isInteger = areAllOperandsIntegers(left, right);
-		const isFloat64 = areAllOperandsFloat64(left, right);
+		const numericOperandKind = facts.numericOperandKind!;
+		const isInteger = numericOperandKind === 'int32';
+		const isFloat64 = numericOperandKind === 'float64';
 
 		validate?.({ left, right, isInteger, isFloat64, line, context });
 
-		return saveByteCode(context, [isInteger ? opcodes.int32 : isFloat64 ? opcodes.float64 : opcodes.float32]);
+		return saveByteCode(context, [opcodes[numericOperandKind]]);
 	};
 }

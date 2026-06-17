@@ -2,6 +2,7 @@ import type { CompilationContext, MapEndLine, Stack } from '@8f4e/language-spec'
 import { resolveMapKind } from '@8f4e/semantic-utils';
 import { validateMapValueKind } from '../mapValueKind';
 import { consume, createStackValue, produce } from './stack';
+import type { InstructionAnalysisResult } from './types';
 
 /**
  * Validates active map input/output values and produces the map result stack item.
@@ -10,7 +11,7 @@ import { consume, createStackValue, produce } from './stack';
  * @param context - Compilation context used by the operation.
  * @returns Stack-analysis result for the map end instruction.
  */
-export function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { consumed: Stack; produced: Stack } {
+export function analyzeMapEnd(line: MapEndLine, context: CompilationContext): InstructionAnalysisResult {
 	const { mapState } = context.activeMapBlock!;
 
 	const outputType = line.arguments[0].value;
@@ -51,5 +52,5 @@ export function analyzeMapEnd(line: MapEndLine, context: CompilationContext): { 
 	const consumed = consume(context, 1);
 	const produced: Stack = [createStackValue(outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float')];
 	produce(context, produced);
-	return { consumed, produced };
+	return { consumed, produced, map: { inputKind, outputKind } };
 }

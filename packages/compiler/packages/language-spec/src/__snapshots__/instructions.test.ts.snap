@@ -90,6 +90,21 @@ exports[`function instruction classification > snapshots function classification
 
 exports[`instruction block classification > snapshots derived block tables 1`] = `
 {
+  "binaryMatchingInstructionNames": [
+    "add",
+    "div",
+    "equal",
+    "greaterOrEqual",
+    "greaterOrEqualUnsigned",
+    "greaterThan",
+    "lessOrEqual",
+    "lessThan",
+    "min",
+    "max",
+    "mul",
+    "notEqual",
+    "sub",
+  ],
   "compiledModuleBlockTypes": [
     "module",
   ],
