@@ -68,8 +68,6 @@ export interface FunctionMetadata {
 	name: string;
 	signature: FunctionSignature;
 	wasmIndex: number;
-	/** Whether a resolved call instruction has marked this concrete overload as used. */
-	used?: boolean;
 	import?: FunctionImportMetadata;
 	paramShapeExpansions?: FunctionParamShapeExpansion[];
 }
@@ -87,6 +85,7 @@ export interface CompiledFunction extends FunctionMetadata {
 	body: number[];
 	locals: Array<{ isInteger: boolean; count: number }>;
 	exportName?: string;
+	used?: boolean;
 	typeIndex: number;
 	ast: ValidatedFunctionAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];

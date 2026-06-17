@@ -10,7 +10,7 @@ import { requireStackAddress } from './utils/stackItem';
  * Instruction compiler for `storeBytes`.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
+const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context, facts) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const count = line.arguments[0].value;
 	const operation = getInstructionSpec(line.instruction).effects.memory;
@@ -18,7 +18,7 @@ const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context) => {
 
 	const lineNumber = line.lineNumber;
 	const address = requireStackAddress(
-		line.stackAnalysis.consumedOperands[line.stackAnalysis.consumedOperands.length - 1],
+		facts.stackAnalysis.consumedOperands[facts.stackAnalysis.consumedOperands.length - 1],
 		line,
 		context
 	);

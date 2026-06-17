@@ -29,9 +29,9 @@ const loadVariantByteCode: Record<MemoryLoadVariant, (memoryIndex: number) => nu
 	f32: memoryIndex => f32load(2, 0, memoryIndex),
 };
 
-const load: InstructionCompiler<LoadLine> = (line, context) => {
+const load: InstructionCompiler<LoadLine> = (line, context, facts) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const [rawAddress] = line.stackAnalysis.consumedOperands;
+	const [rawAddress] = facts.stackAnalysis.consumedOperands;
 	const address = requireStackAddress(rawAddress, line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const buildInstructions = loadVariantByteCode[operation.loadVariant];

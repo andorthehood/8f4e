@@ -1,4 +1,9 @@
-import type { AnalyzedLine, CompilationContext, CompilerASTLine, StackAnalysisResult } from '@8f4e/language-spec';
+import type {
+	CompilationContext,
+	CompilerASTLine,
+	StackAnalysisLineFacts,
+	StackAnalysisResult,
+} from '@8f4e/language-spec';
 import { analyzeByInstruction } from './instructionAnalyzers';
 import { cloneStack } from './instructionAnalyzers/stack';
 import { validateInstruction } from './validateInstruction';
@@ -10,11 +15,11 @@ import { validateInstruction } from './validateInstruction';
  * @param context - Compilation context used by the operation.
  * @returns The computed result.
  */
-export function analyzeInstruction(line: CompilerASTLine, context: CompilationContext): AnalyzedLine {
+export function analyzeInstruction(line: CompilerASTLine, context: CompilationContext): StackAnalysisLineFacts {
 	validateInstruction(line, context);
 
 	const stackBefore = cloneStack(context.stack);
-	const { consumed, produced, dropped } = analyzeByInstruction(line, context);
+	const { consumed, produced, dropped, targetFunctionId } = analyzeByInstruction(line, context);
 	const stackAnalysis: StackAnalysisResult = {
 		stackBefore,
 		stackAfter: cloneStack(context.stack),
@@ -23,5 +28,8 @@ export function analyzeInstruction(line: CompilerASTLine, context: CompilationCo
 		...(dropped ? { droppedStackItems: cloneStack(dropped) } : {}),
 	};
 
-	return { ...line, stackAnalysis } as AnalyzedLine;
+	return {
+		stackAnalysis,
+		...(targetFunctionId ? { targetFunctionId } : {}),
+	};
 }

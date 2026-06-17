@@ -195,7 +195,6 @@ describe('resolveLineReferences', () => {
 	});
 
 	it('resolves push identifier arguments when the identifier is a known local', () => {
-		const local = { kind: 'value', valueType: 'int', index: 0 };
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'push',
@@ -206,12 +205,12 @@ describe('resolveLineReferences', () => {
 				moduleName: 'test',
 				namespaces: {},
 			},
-			locals: { localVar: local },
+			locals: { localVar: { isInteger: true, index: 0 } },
 		} as unknown as CompilationContext;
 
 		expect(resolveLineReferences(line, context)).toEqual({
 			...line,
-			resolvedTarget: { kind: 'local', local },
+			resolvedTarget: { kind: 'local', localName: 'localVar' },
 		});
 	});
 
@@ -584,7 +583,7 @@ describe('resolveSemanticReferences', () => {
 		expect(result.references.functions[functionId].lineFacts[2]).toEqual({
 			resolvedTarget: {
 				kind: 'local',
-				local: { isInteger: true, index: 0 },
+				localName: 'value',
 			},
 		});
 	});

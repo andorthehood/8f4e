@@ -414,6 +414,7 @@ export function compileSubProgram(
 			namespaces,
 			functionTypeRegistry,
 			functionRegistry,
+			semanticReferences.functions[functionId],
 			stackReport.functions[functionId],
 			options
 		);
@@ -430,6 +431,7 @@ export function compileSubProgram(
 		},
 		namespaces,
 		memoryPlan,
+		semanticReferences,
 		stackReport,
 		functionRegistry,
 		functionTypeRegistry,

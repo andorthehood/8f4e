@@ -71,9 +71,9 @@ describe('analyzeInstruction', () => {
 			arguments: [],
 		} as CompilerASTLine;
 
-		const analyzedLine = analyzeInstruction(line, context);
+		const facts = analyzeInstruction(line, context);
 
-		expect(analyzedLine.stackAnalysis).toEqual({
+		expect(facts.stackAnalysis).toEqual({
 			stackBefore: [
 				{ kind: 'value', valueType: 'int', isNonZero: false },
 				{ kind: 'value', valueType: 'int', isNonZero: true },
@@ -107,9 +107,9 @@ describe('analyzeInstruction', () => {
 			arguments: [{ type: ArgumentType.LITERAL, value: 7, isInteger: true }],
 		} as CompilerASTLine;
 
-		const analyzedLine = analyzeInstruction(line, context);
+		const facts = analyzeInstruction(line, context);
 
-		expect(analyzedLine.stackAnalysis.producedStackItems).toEqual([
+		expect(facts.stackAnalysis.producedStackItems).toEqual([
 			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 7 },
 		]);
 		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 7 }]);

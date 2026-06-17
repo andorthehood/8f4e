@@ -8,6 +8,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
+import type { SemanticReferenceReport } from '@8f4e/semantic-reference-resolver';
 import type { StackAnalysisProjectReport } from '@8f4e/stack-analyzer';
 import { compileModule } from './compileModule';
 
@@ -28,6 +29,7 @@ export function compileModules(
 	options: CompileOptions,
 	namespaces: Namespaces,
 	memoryPlan: MemoryLayoutPlan,
+	semanticReferences: SemanticReferenceReport,
 	stackReport: StackAnalysisProjectReport,
 	compiledFunctions?: FunctionRegistry,
 	typeRegistry?: FunctionTypeRegistry,
@@ -40,6 +42,7 @@ export function compileModules(
 			memoryPlan,
 			index,
 			compiledFunctions,
+			semanticReferences.modules[ast.id],
 			stackReport.modules[ast.id],
 			options,
 			typeRegistry,
