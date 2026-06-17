@@ -9,7 +9,7 @@ import type {
 	MemoryPointerMetadataMap,
 	PlannedMemoryDeclaration,
 } from '@8f4e/language-spec';
-import { BlockType } from '@8f4e/language-spec';
+import { BlockType, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
 import { createCompilationContext } from '@8f4e/semantic-utils';
 import { analyzeInstruction } from '@8f4e/stack-analyzer/testing';
 import { expect } from 'vitest';
@@ -22,6 +22,18 @@ export type MemoryFixture = PlannedMemoryDeclaration &
 	};
 
 type MemoryFixtureMap = Record<string, MemoryFixture>;
+
+function getWordAlignedByteLength(wordAlignedSize: number): number {
+	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
+}
+
+function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
+	return wordAlignedSize <= 0 ? byteAddress : byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
+}
+
+function getEndAddressSafeByteLength(wordAlignedSize: number): number {
+	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
+}
 
 /**
  * Creates a compilation context fixture for instruction compiler tests.
@@ -89,11 +101,15 @@ export function seedTestMemoryDeclarations(
 		(max, declaration) => Math.max(max, declaration.wordAlignedAddress + declaration.wordAlignedSize),
 		0
 	);
+	const byteAddress = 0;
 	const module = {
 		id: context.namespace.moduleName ?? 'test',
 		lineNumber: 0,
-		byteAddress: 0,
+		byteAddress,
 		wordAlignedSize,
+		wordAlignedByteLength: getWordAlignedByteLength(wordAlignedSize),
+		endByteAddress: getEndByteAddress(byteAddress, wordAlignedSize),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(wordAlignedSize),
 		memory,
 		declarations,
 		declarationSources: [],

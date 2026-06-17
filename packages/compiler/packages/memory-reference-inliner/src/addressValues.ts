@@ -1,31 +1,5 @@
-import type { Const, PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import { GLOBAL_ALIGNMENT_BOUNDARY, getMemoryRegionFields } from '@8f4e/language-spec';
-import { getEndByteAddress } from './layoutAddresses';
-
-type AddressableMemoryDeclaration = Pick<
-	PlannedMemoryDeclaration,
-	'id' | 'byteAddress' | 'wordAlignedSize' | 'memoryIndex' | 'memoryRegionName'
->;
-
-/**
- * Converts word-aligned size to the byte length that is safe from the memory start address.
- *
- * @param wordAlignedSize - Size measured in aligned memory words.
- * @returns Safe byte length available from the start address.
- */
-export function getWordAlignedByteLength(wordAlignedSize: number): number {
-	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
-}
-
-/**
- * Converts word-aligned size to the byte length that is safe from the memory end address.
- *
- * @param wordAlignedSize - Size measured in aligned memory words.
- * @returns Safe byte length available from the end address.
- */
-export function getEndAddressSafeByteLength(wordAlignedSize: number): number {
-	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
-}
+import type { Const, PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/language-spec';
+import { getMemoryRegionFields } from '@8f4e/language-spec';
 
 /**
  * Creates a resolved value representing the start byte address of a memory item.
@@ -34,7 +8,7 @@ export function getEndAddressSafeByteLength(wordAlignedSize: number): number {
  * @param moduleId - Optional owning module id for intermodule safe-range metadata.
  * @returns Integer value with address safe-range metadata.
  */
-export function memoryStartAddressValue(memoryItem: AddressableMemoryDeclaration, moduleId?: string): Const {
+export function memoryStartAddressValue(memoryItem: PlannedMemoryDeclaration, moduleId?: string): Const {
 	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
 		value: memoryItem.byteAddress,
@@ -45,7 +19,7 @@ export function memoryStartAddressValue(memoryItem: AddressableMemoryDeclaration
 				source: 'memory-start',
 				...memoryRegionFields,
 				byteAddress: memoryItem.byteAddress,
-				safeByteLength: getWordAlignedByteLength(memoryItem.wordAlignedSize),
+				safeByteLength: memoryItem.wordAlignedByteLength,
 				...(moduleId ? { moduleId } : {}),
 				...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
 			},
@@ -60,19 +34,18 @@ export function memoryStartAddressValue(memoryItem: AddressableMemoryDeclaration
  * @param moduleId - Optional owning module id for intermodule safe-range metadata.
  * @returns Integer value with address safe-range metadata.
  */
-export function memoryEndAddressValue(memoryItem: AddressableMemoryDeclaration, moduleId?: string): Const {
-	const byteAddress = getEndByteAddress(memoryItem.byteAddress, memoryItem.wordAlignedSize);
+export function memoryEndAddressValue(memoryItem: PlannedMemoryDeclaration, moduleId?: string): Const {
 	const memoryRegionFields = getMemoryRegionFields(memoryItem.memoryIndex, memoryItem.memoryRegionName);
 	return {
-		value: byteAddress,
+		value: memoryItem.endByteAddress,
 		isInteger: true,
 		address: {
 			...memoryRegionFields,
 			safeRange: {
 				source: 'memory-end',
 				...memoryRegionFields,
-				byteAddress,
-				safeByteLength: getEndAddressSafeByteLength(memoryItem.wordAlignedSize),
+				byteAddress: memoryItem.endByteAddress,
+				safeByteLength: memoryItem.endAddressSafeByteLength,
 				...(moduleId ? { moduleId } : {}),
 				...(memoryItem.id ? { memoryId: memoryItem.id } : {}),
 			},
@@ -83,23 +56,18 @@ export function memoryEndAddressValue(memoryItem: AddressableMemoryDeclaration, 
 /**
  * Creates a resolved value representing a module start or end byte address.
  *
+ * @param module - Module whose address should be represented.
  * @param source - Address source kind to record in safe-range metadata.
- * @param byteAddress - Resolved module byte address.
- * @param wordAlignedSize - Module size in aligned words.
  * @param moduleId - Optional module id for safe-range metadata.
- * @param memoryIndex - Memory region index for the address.
- * @param memoryRegionName - Optional named memory region.
  * @returns Integer value with module address safe-range metadata.
  */
 export function moduleAddressValue(
+	module: PlannedMemoryModule,
 	source: 'module-start' | 'module-end',
-	byteAddress: number,
-	wordAlignedSize: number,
-	moduleId?: string,
-	memoryIndex = 0,
-	memoryRegionName?: string
+	moduleId: string | undefined = module.id
 ): Const {
-	const memoryRegionFields = getMemoryRegionFields(memoryIndex, memoryRegionName);
+	const byteAddress = source === 'module-start' ? module.byteAddress : module.endByteAddress;
+	const memoryRegionFields = getMemoryRegionFields(module.memoryIndex, module.memoryRegionName);
 	return {
 		value: byteAddress,
 		isInteger: true,
@@ -109,10 +77,7 @@ export function moduleAddressValue(
 				source,
 				...memoryRegionFields,
 				byteAddress,
-				safeByteLength:
-					source === 'module-start'
-						? getWordAlignedByteLength(wordAlignedSize)
-						: getEndAddressSafeByteLength(wordAlignedSize),
+				safeByteLength: source === 'module-start' ? module.wordAlignedByteLength : module.endAddressSafeByteLength,
 				...(moduleId ? { moduleId } : {}),
 			},
 		},
