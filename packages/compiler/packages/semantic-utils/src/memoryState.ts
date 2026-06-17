@@ -16,13 +16,11 @@ export function createEmptyMemoryPlan(): MemoryLayoutPlan {
 	};
 }
 
-/** Returns the active module plan for contexts compiling a module body. */
-export function getCurrentPlannedModule(context: CompilationContext): PlannedMemoryModule | undefined {
+function getCurrentPlannedModule(context: CompilationContext): PlannedMemoryModule | undefined {
 	return context.currentPlannedModule;
 }
 
-/** Returns the planned memory declaration for a local or explicitly targeted module. */
-export function getPlannedMemoryDeclaration(
+function getPlannedMemoryDeclaration(
 	context: CompilationContext,
 	memoryId: string,
 	moduleId = context.namespace.moduleName

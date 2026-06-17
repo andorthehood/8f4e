@@ -1,7 +1,16 @@
 import type { CompilationContext, CompilerASTLine, OperandRule, StackItem } from '@8f4e/language-spec';
 import { ErrorCode, getError } from '@8f4e/language-spec';
-import { areAllOperandsFloats, areAllOperandsIntegers, hasMixedFloatWidth } from '@8f4e/semantic-utils';
+import { areAllOperandsIntegers } from '@8f4e/semantic-utils';
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
+
+function areAllOperandsFloats(...operands: StackItem[]): boolean {
+	return operands.every(operand => operand.valueType === 'float' || operand.valueType === 'float64');
+}
+
+function hasMixedFloatWidth(...operands: StackItem[]): boolean {
+	const floats = operands.filter(op => op.valueType === 'float' || op.valueType === 'float64');
+	return floats.some(op => op.valueType === 'float64') && floats.some(op => op.valueType === 'float');
+}
 
 /**
  * Enforces operand type rules from the instruction spec against already-peeked stack operands.
