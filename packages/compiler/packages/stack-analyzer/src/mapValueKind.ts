@@ -1,6 +1,10 @@
-import type { CompilationContext, CompilerASTLine, StackValueType } from '@8f4e/language-spec';
+import type {
+	CompilationContext,
+	CompilerASTLine,
+	StackAnalysisNumericValueKind,
+	StackValueType,
+} from '@8f4e/language-spec';
 import { ErrorCode, getError } from '@8f4e/language-spec';
-import type { MapKind } from '@8f4e/semantic-utils';
 
 /**
  * Validates that a map input, row value, or default value matches the expected map kind.
@@ -13,7 +17,7 @@ import type { MapKind } from '@8f4e/semantic-utils';
  */
 export function validateMapValueKind(
 	valueKind: { valueType: StackValueType },
-	expectedKind: MapKind,
+	expectedKind: StackAnalysisNumericValueKind,
 	line: CompilerASTLine,
 	context: CompilationContext
 ) {
