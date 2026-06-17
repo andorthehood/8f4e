@@ -31,6 +31,7 @@ import {
 	validateMemoryRegionOptions,
 } from '@8f4e/language-spec';
 import { planArrayDeclarationLayout, planScalarDeclarationLayout } from './declarations';
+import { getEndAddressSafeByteLength, getEndByteAddress, getWordAlignedByteLength } from './layoutAddresses';
 import { advanceModuleByteAddress, createModuleAddressCursor, getNextModuleByteAddress } from './modules';
 
 export type {
@@ -342,7 +343,10 @@ function planModuleMemory(
 	moduleByteAddress: number,
 	region: MemoryRegionIdentity,
 	prototypesById: Readonly<Record<string, MemoryLayoutSourcePrototype>>
-): Omit<PlannedMemoryModule, 'byteAddress' | 'id' | 'lineNumber'> {
+): Omit<
+	PlannedMemoryModule,
+	'byteAddress' | 'id' | 'lineNumber' | 'wordAlignedByteLength' | 'endByteAddress' | 'endAddressSafeByteLength'
+> {
 	let localWordOffset = 0;
 	const memory: Record<string, PlannedMemoryDeclaration> = {};
 	const declarations: PlannedMemoryDeclaration[] = [];
@@ -385,6 +389,9 @@ function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 			lineNumber: sourceModule.moduleLine.lineNumber,
 			byteAddress: moduleByteAddress,
 			wordAlignedSize: moduleMemory.wordAlignedSize,
+			wordAlignedByteLength: getWordAlignedByteLength(moduleMemory.wordAlignedSize),
+			endByteAddress: getEndByteAddress(moduleByteAddress, moduleMemory.wordAlignedSize),
+			endAddressSafeByteLength: getEndAddressSafeByteLength(moduleMemory.wordAlignedSize),
 			memory: moduleMemory.memory,
 			declarations: moduleMemory.declarations,
 			declarationSources: moduleMemory.declarationSources,

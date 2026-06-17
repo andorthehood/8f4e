@@ -49,8 +49,7 @@ export function getMemoryByteAddress(memoryItem: PlannedMemoryDeclaration): numb
 }
 
 export function getMemoryStringLastByteAddress(memoryItem: PlannedMemoryDeclaration): number {
-	if (memoryItem.wordAlignedSize <= 0) return memoryItem.byteAddress;
-	return memoryItem.byteAddress + (memoryItem.wordAlignedSize - 1) * BASE_TYPE_METADATA.pointer.wordSize;
+	return memoryItem.endByteAddress;
 }
 
 export function getElementCount(memoryItem: PlannedMemoryDeclaration): number {

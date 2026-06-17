@@ -1,5 +1,5 @@
 import type { StackItem, StackValueType } from '@8f4e/language-spec';
-import { areAllOperandsFloat64, areAllOperandsIntegers } from '../../utils/operandTypes';
+import { areAllOperandsFloat64, areAllOperandsIntegers } from '@8f4e/semantic-utils';
 import { createStackValue } from '../stack';
 
 /**
