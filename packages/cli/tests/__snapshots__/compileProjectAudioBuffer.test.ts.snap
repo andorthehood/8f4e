@@ -291,20 +291,13 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "in",
               },
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 16,
-                    "memoryId": "out",
-                    "memoryIndex": 0,
-                    "moduleId": "phaseAccumulator",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 16,
+                "isEndAddress": false,
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetMemoryId": "out",
+                "targetModuleId": "phaseAccumulator",
+                "type": "identifier",
+                "value": "&phaseAccumulator:out",
               },
             ],
             "hasExplicitMemoryDefault": true,
@@ -323,9 +316,10 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "buffer",
               },
               {
-                "isInteger": true,
-                "type": "literal",
-                "value": 128,
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "AUDIO_BUFFER_SIZE",
               },
             ],
             "hasExplicitMemoryDefault": false,
@@ -341,20 +335,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "pointer",
               },
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 24,
-                    "memoryId": "buffer",
-                    "memoryIndex": 0,
-                    "moduleId": "audioout",
-                    "safeByteLength": 512,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 24,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "&buffer",
               },
             ],
             "hasExplicitMemoryDefault": true,
@@ -395,20 +381,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 536,
-                    "memoryId": "pointer",
-                    "memoryIndex": 0,
-                    "moduleId": "audioout",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 536,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "pointer",
+                "type": "identifier",
+                "value": "&pointer",
               },
             ],
             "instruction": "push",
@@ -429,9 +407,11 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "isInteger": true,
-                "type": "literal",
-                "value": 4,
+                "referenceKind": "element-word-size",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "sizeof(buffer)",
               },
             ],
             "instruction": "push",
@@ -462,20 +442,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 532,
-                    "memoryId": "buffer",
-                    "memoryIndex": 0,
-                    "moduleId": "audioout",
-                    "safeByteLength": 4,
-                    "source": "memory-end",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 532,
+                "isEndAddress": true,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "buffer&",
               },
             ],
             "instruction": "push",
@@ -499,20 +471,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 536,
-                    "memoryId": "pointer",
-                    "memoryIndex": 0,
-                    "moduleId": "audioout",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 536,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "pointer",
+                "type": "identifier",
+                "value": "&pointer",
               },
             ],
             "instruction": "push",
@@ -521,20 +485,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 24,
-                    "memoryId": "buffer",
-                    "memoryIndex": 0,
-                    "moduleId": "audioout",
-                    "safeByteLength": 512,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 24,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "&buffer",
               },
             ],
             "instruction": "push",
@@ -570,20 +526,13 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "in",
               },
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 16,
-                    "memoryId": "out",
-                    "memoryIndex": 0,
-                    "moduleId": "phaseAccumulator",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 16,
+                "isEndAddress": false,
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetMemoryId": "out",
+                "targetModuleId": "phaseAccumulator",
+                "type": "identifier",
+                "value": "&phaseAccumulator:out",
               },
             ],
             "hasExplicitMemoryDefault": true,
@@ -602,9 +551,10 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "buffer",
               },
               {
-                "isInteger": true,
-                "type": "literal",
-                "value": 128,
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "AUDIO_BUFFER_SIZE",
               },
             ],
             "hasExplicitMemoryDefault": false,
@@ -620,20 +570,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "pointer",
               },
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 24,
-                    "memoryId": "buffer",
-                    "memoryIndex": 0,
-                    "moduleId": "audioout",
-                    "safeByteLength": 512,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 24,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "buffer",
+                "type": "identifier",
+                "value": "&buffer",
               },
             ],
             "hasExplicitMemoryDefault": true,
@@ -1004,20 +946,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "frequency",
               },
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 4,
-                    "memoryId": "defaultFreq",
-                    "memoryIndex": 0,
-                    "moduleId": "phaseAccumulator",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 4,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "defaultFreq",
+                "type": "identifier",
+                "value": "&defaultFreq",
               },
             ],
             "hasExplicitMemoryDefault": true,
@@ -1065,20 +999,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 12,
-                    "memoryId": "phase",
-                    "memoryIndex": 0,
-                    "moduleId": "phaseAccumulator",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 12,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "phase",
+                "type": "identifier",
+                "value": "&phase",
               },
             ],
             "instruction": "push",
@@ -1099,9 +1025,10 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "isInteger": false,
-                "type": "literal",
-                "value": 6.283185307179586,
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "TAU",
               },
             ],
             "instruction": "push",
@@ -1129,9 +1056,10 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "isInteger": true,
-                "type": "literal",
-                "value": 48000,
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SAMPLE_RATE",
               },
             ],
             "instruction": "push",
@@ -1177,9 +1105,10 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "isInteger": false,
-                "type": "literal",
-                "value": 3.141592653589793,
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "PI",
               },
             ],
             "instruction": "push",
@@ -1203,20 +1132,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 12,
-                    "memoryId": "phase",
-                    "memoryIndex": 0,
-                    "moduleId": "phaseAccumulator",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 12,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "phase",
+                "type": "identifier",
+                "value": "&phase",
               },
             ],
             "instruction": "push",
@@ -1225,9 +1146,10 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "isInteger": false,
-                "type": "literal",
-                "value": -3.141592653589793,
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "NEG_PI",
               },
             ],
             "instruction": "push",
@@ -1250,20 +1172,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           {
             "arguments": [
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 16,
-                    "memoryId": "out",
-                    "memoryIndex": 0,
-                    "moduleId": "phaseAccumulator",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 16,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "out",
+                "type": "identifier",
+                "value": "&out",
               },
             ],
             "instruction": "push",
@@ -1332,20 +1246,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "frequency",
               },
               {
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "byteAddress": 4,
-                    "memoryId": "defaultFreq",
-                    "memoryIndex": 0,
-                    "moduleId": "phaseAccumulator",
-                    "safeByteLength": 4,
-                    "source": "memory-start",
-                  },
-                },
-                "isInteger": true,
-                "type": "literal",
-                "value": 4,
+                "isEndAddress": false,
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "defaultFreq",
+                "type": "identifier",
+                "value": "&defaultFreq",
               },
             ],
             "hasExplicitMemoryDefault": true,
