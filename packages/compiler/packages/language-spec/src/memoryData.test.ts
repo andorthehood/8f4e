@@ -21,7 +21,7 @@ import {
 
 function memory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemoryDeclaration {
 	const byteAddress = overrides.byteAddress ?? 100;
-	return {
+	const declaration = {
 		id: 'memory',
 		type: MemoryTypes.int,
 		numberOfElements: 10,
@@ -35,6 +35,17 @@ function memory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemor
 		pointerDepth: 0,
 		isUnsigned: false,
 		...overrides,
+	};
+
+	return {
+		...declaration,
+		elementByteLength: declaration.numberOfElements * declaration.elementWordSize,
+		wordAlignedByteLength: Math.max(0, declaration.wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY,
+		endByteAddress:
+			declaration.wordAlignedSize <= 0
+				? declaration.byteAddress
+				: declaration.byteAddress + (declaration.wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY,
+		endAddressSafeByteLength: declaration.wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0,
 	};
 }
 

@@ -25,6 +25,14 @@ export function getEndByteAddress(byteAddress: number, wordAlignedSize: number):
 	return byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY;
 }
 
+export function getWordAlignedByteLength(wordAlignedSize: number): number {
+	return Math.max(0, wordAlignedSize) * GLOBAL_ALIGNMENT_BOUNDARY;
+}
+
+export function getEndAddressSafeByteLength(wordAlignedSize: number): number {
+	return wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0;
+}
+
 /**
  * Converts a local word offset into an absolute word offset.
  *

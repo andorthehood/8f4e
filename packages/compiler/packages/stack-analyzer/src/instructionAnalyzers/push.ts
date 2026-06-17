@@ -15,7 +15,7 @@ import {
 	getMemoryRegionFields,
 	getPointerDepthFromMetadata,
 } from '@8f4e/language-spec';
-import { getResolvedMemoryDeclaration } from '../utils/memoryState';
+import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from '../utils/pushValueKind';
 import { createStackValue, produce } from './stack';
 

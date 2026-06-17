@@ -1,5 +1,5 @@
 import { WASM_I32_LT_S, WASM_I32_LT_U, WASM_MEMORY_SIZE, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine, MemoryAddressRange } from '@8f4e/language-spec';
+import type { CompilerASTLine, MemoryAddressRange, PlannedMemoryModule } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
 import { normalizeClampAddress } from '@8f4e/semantic-utils';
 import { describe, expect, it } from 'vitest';
@@ -13,6 +13,25 @@ const range: MemoryAddressRange = {
 	safeByteLength: 128,
 	memoryId: 'arr',
 };
+
+function createPlannedModule(overrides: Partial<PlannedMemoryModule> = {}): PlannedMemoryModule {
+	const byteAddress = overrides.byteAddress ?? 0;
+	const wordAlignedSize = overrides.wordAlignedSize ?? 0;
+	return {
+		id: overrides.id ?? 'test',
+		lineNumber: overrides.lineNumber ?? 0,
+		byteAddress,
+		wordAlignedSize,
+		wordAlignedByteLength: wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
+		endByteAddress: wordAlignedSize > 0 ? byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY : byteAddress,
+		endAddressSafeByteLength: wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0,
+		memory: overrides.memory ?? {},
+		declarations: overrides.declarations ?? [],
+		declarationSources: overrides.declarationSources ?? [],
+		memoryIndex: overrides.memoryIndex ?? 0,
+		...(overrides.memoryRegionName ? { memoryRegionName: overrides.memoryRegionName } : {}),
+	};
+}
 
 function createLine(
 	instruction: 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress',
@@ -129,9 +148,15 @@ describe('clamp address instruction compilers', () => {
 	});
 
 	it('clamps to the current module range', () => {
+		const plannedModule = createPlannedModule({
+			id: 'osc',
+			byteAddress: 64,
+			wordAlignedSize: 8,
+		});
 		const context = createInstructionCompilerTestContext({
 			startingByteAddress: 64,
 			currentModuleWordAlignedSize: 8,
+			currentPlannedModule: plannedModule,
 			namespace: {
 				...createInstructionCompilerTestContext().namespace,
 				moduleName: 'osc',
