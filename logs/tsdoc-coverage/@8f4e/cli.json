@@ -2436,5 +2436,51 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "598fd8ae7e9d2186bacb6d1540ff907c70dfb3f3",
+		"recordedAt": "2026-06-17T08:21:59.045Z",
+		"coverage": {
+			"documented": 0,
+			"total": 180,
+			"percentage": 0,
+			"byKind": {
+				"interface": {
+					"documented": 0,
+					"total": 16,
+					"percentage": 0
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 79,
+					"percentage": 0
+				},
+				"function": {
+					"documented": 0,
+					"total": 59,
+					"percentage": 0
+				},
+				"variable": {
+					"documented": 0,
+					"total": 4,
+					"percentage": 0
+				},
+				"class-method": {
+					"documented": 0,
+					"total": 8,
+					"percentage": 0
+				},
+				"type": {
+					"documented": 0,
+					"total": 7,
+					"percentage": 0
+				},
+				"method-signature": {
+					"documented": 0,
+					"total": 7,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]
