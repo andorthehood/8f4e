@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/stack-analyzer",
-  "version": "1.0.4",
+  "name": "@8f4e/semantic-reference-resolver",
+  "version": "1.0.0",
   "private": true,
-  "description": "Semantic stack validation and stack-effect analysis for 8f4e compiler lines",
+  "description": "Project-level semantic reference resolver for 8f4e compiler ASTs",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,10 +10,6 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./testing": {
-      "types": "./dist/testing.d.ts",
-      "default": "./dist/testing.js"
     }
   },
   "sideEffects": false,
@@ -29,10 +25,10 @@
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
     "@8f4e/language-spec": "*",
-    "@8f4e/semantic-reference-resolver": "*",
     "@8f4e/semantic-utils": "*"
   },
   "devDependencies": {
+    "@8f4e/tokenizer": "*",
     "@types/node": "24.13.2"
   }
 }
