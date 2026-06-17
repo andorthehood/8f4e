@@ -2,7 +2,6 @@ import type {
 	CompilationContext,
 	FunctionMetadata,
 	FunctionValueType,
-	ResolvedCallLine,
 	SemanticCallLine,
 	Stack,
 	StackItem,
@@ -70,20 +69,18 @@ function resolveTargetFunction(line: SemanticCallLine, context: CompilationConte
  * @returns The relevant stack items for the analysis step.
  */
 export function analyzeCall(
-	line: SemanticCallLine | ResolvedCallLine,
+	line: SemanticCallLine,
 	context: CompilationContext
-): { consumed: Stack; produced: Stack } {
+): { consumed: Stack; produced: Stack; targetFunctionId: string } {
 	for (const inlinePushLine of line.inlineArgumentPushes ?? []) {
 		analyzePush(inlinePushLine, context);
 	}
 
 	const targetFunction = resolveTargetFunction(line, context);
-	(line as ResolvedCallLine).targetFunction = targetFunction;
-	targetFunction.used = true;
 	const { parameters, returns } = targetFunction.signature;
 
 	const consumed = consume(context, parameters.length);
 	const produced = returns.map(returnType => functionValueTypeToStackItem(returnType));
 	produce(context, produced);
-	return { consumed, produced };
+	return { consumed, produced, targetFunctionId: targetFunction.id };
 }

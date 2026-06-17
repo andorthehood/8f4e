@@ -1,5 +1,4 @@
 import type {
-	AnalyzedLine,
 	CompilationContext,
 	CompiledStackAnalysisLine,
 	CompilerASTLine,
@@ -16,11 +15,12 @@ import type {
 	ModuleCompilationContext,
 	Namespaces,
 	ResolvedDefaultLine,
-	ResolvedLocalSetLine,
 	ResolvedMapLine,
 	SemanticInstructionLine,
 	SemanticReferenceLine,
 	Stack,
+	StackAnalysisLineFacts,
+	StackAnalysisLocalPointerFact,
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
@@ -67,50 +67,48 @@ export interface AnalyzeStackProjectInput {
 }
 
 export interface StackAnalyzedModule {
-	analyzedLines: AnalyzedLine[];
+	lineFacts: Array<StackAnalysisLineFacts | undefined>;
 	stackAnalysis: CompiledStackAnalysisLine[];
 	finalStack: Stack;
 	skipExecutionInCycle?: boolean;
 }
 
 export interface StackAnalyzedFunction {
-	functionMetadata: FunctionMetadata;
-	analyzedLines: AnalyzedLine[];
+	functionId: string;
+	lineFacts: Array<StackAnalysisLineFacts | undefined>;
 	stackAnalysis: CompiledStackAnalysisLine[];
 	finalStack: Stack;
 	locals: Record<string, LocalBinding>;
 	parameterCount: number;
 	import?: FunctionImportMetadata;
 	exportName?: string;
+	used?: boolean;
 }
 
 export interface StackAnalysisProjectReport {
 	modules: Record<string, StackAnalyzedModule>;
 	functions: Record<string, StackAnalyzedFunction>;
+	usedFunctionIds: string[];
 }
 
-function toCompiledStackAnalysisLine(line: AnalyzedLine): CompiledStackAnalysisLine {
+function toCompiledStackAnalysisLine(line: CompilerASTLine, facts: StackAnalysisLineFacts): CompiledStackAnalysisLine {
 	return {
 		lineNumber: line.lineNumber,
 		instruction: line.instruction,
-		stackAnalysis: line.stackAnalysis,
+		stackAnalysis: facts.stackAnalysis,
 	};
 }
 
-function createEmptyAnalyzedLine<TLine extends CompilerASTLine>(
-	line: TLine,
-	context: CompilationContext
-): AnalyzedLine<TLine> {
+function createEmptyLineFacts(_line: CompilerASTLine, context: CompilationContext): StackAnalysisLineFacts {
 	const stackBefore = cloneStack(context.stack);
 	return {
-		...line,
 		stackAnalysis: {
 			stackBefore,
 			stackAfter: cloneStack(context.stack),
 			consumedOperands: [],
 			producedStackItems: [],
 		},
-	} as AnalyzedLine<TLine>;
+	};
 }
 
 function collectPrototypeShapeIds(ast: ValidatedModuleAST): string[] {
@@ -211,11 +209,16 @@ function applyLocalLine(line: CompilerASTLine, context: CompilationContext): voi
 	context.locals[localName] = functionValueTypeToLocalBinding(typeArg.value, Object.keys(context.locals).length);
 }
 
-function applyLocalSetLine(line: AnalyzedLine<ResolvedLocalSetLine>): void {
-	const [operand] = line.stackAnalysis.consumedOperands;
-	const { local } = line;
+function applyLocalSetLine(
+	line: CompilerASTLine,
+	facts: StackAnalysisLineFacts,
+	context: CompilationContext
+): StackAnalysisLocalPointerFact | undefined {
+	const [operand] = facts.stackAnalysis.consumedOperands;
+	const localName = (line.arguments[0] as { value: string }).value;
+	const local = context.locals[localName]!;
 	if (!local.pointeeBaseType || operand?.kind !== 'address') {
-		return;
+		return undefined;
 	}
 
 	local.pointeeMemoryIndex = operand.address.memoryIndex;
@@ -224,6 +227,12 @@ function applyLocalSetLine(line: AnalyzedLine<ResolvedLocalSetLine>): void {
 	} else {
 		delete local.pointeeMemoryRegionName;
 	}
+
+	return {
+		localName,
+		pointeeMemoryIndex: operand.address.memoryIndex,
+		...(operand.address.memoryRegionName ? { pointeeMemoryRegionName: operand.address.memoryRegionName } : {}),
+	};
 }
 
 function getResultTypes(line: CompilerASTLine): Array<'int' | 'float'> {
@@ -315,7 +324,11 @@ function applyDefaultLine(line: ResolvedDefaultLine, context: CompilationContext
 	mapState.defaultSet = true;
 }
 
-function applyAnalyzedLineEffect(line: AnalyzedLine, context: CompilationContext): void {
+function applyStackLineEffect(
+	line: SemanticReferenceLine,
+	facts: StackAnalysisLineFacts,
+	context: CompilationContext
+): void {
 	switch (line.instruction) {
 		case 'function':
 			applyFunctionLine(line, context as FunctionCompilationContext);
@@ -335,9 +348,13 @@ function applyAnalyzedLineEffect(line: AnalyzedLine, context: CompilationContext
 		case 'local':
 			applyLocalLine(line, context);
 			return;
-		case 'localSet':
-			applyLocalSetLine(line as AnalyzedLine<ResolvedLocalSetLine>);
+		case 'localSet': {
+			const localPointer = applyLocalSetLine(line, facts, context);
+			if (localPointer) {
+				facts.localPointer = localPointer;
+			}
 			return;
+		}
 		case 'block':
 			pushBlock(context, { blockType: BlockType.BLOCK, expectedResultTypes: getResultTypes(line) });
 			return;
@@ -363,10 +380,10 @@ function applyAnalyzedLineEffect(line: AnalyzedLine, context: CompilationContext
 			applyMapBeginLine(line, context);
 			return;
 		case 'map':
-			applyMapLine(line as AnalyzedLine<ResolvedMapLine>, context);
+			applyMapLine(line as ResolvedMapLine, context);
 			return;
 		case 'default':
-			applyDefaultLine(line as AnalyzedLine<ResolvedDefaultLine>, context);
+			applyDefaultLine(line as ResolvedDefaultLine, context);
 			return;
 		case 'mapEnd':
 			popBlock(context);
@@ -413,7 +430,7 @@ function analyzeSemanticReferenceLine(
 	line: SemanticReferenceLine,
 	context: CompilationContext,
 	options: { skipImportedFunctionEnd?: boolean } = {}
-): AnalyzedLine | undefined {
+): StackAnalysisLineFacts | undefined {
 	if (isSemanticInstructionLine(line)) {
 		applySemanticLine(line, context);
 		return undefined;
@@ -423,12 +440,12 @@ function analyzeSemanticReferenceLine(
 		return undefined;
 	}
 
-	const analyzedLine =
+	const facts =
 		options.skipImportedFunctionEnd && line.instruction === 'functionEnd'
-			? createEmptyAnalyzedLine(line, context)
+			? createEmptyLineFacts(line, context)
 			: analyzeInstruction(line, context);
-	applyAnalyzedLineEffect(analyzedLine, context);
-	return analyzedLine;
+	applyStackLineEffect(line, facts, context);
+	return facts;
 }
 
 function createModuleContext(input: AnalyzeStackProjectInput, ast: ValidatedModuleAST): ModuleCompilationContext {
@@ -464,14 +481,16 @@ function createModuleContext(input: AnalyzeStackProjectInput, ast: ValidatedModu
 
 function analyzeModule(input: AnalyzeStackProjectInput, ast: ValidatedModuleAST): StackAnalyzedModule {
 	const context = createModuleContext(input, ast);
-	const analyzedLines: AnalyzedLine[] = [];
-	const lineFacts = input.semanticReferences.modules[ast.id].lineFacts;
+	const semanticLineFacts = input.semanticReferences.modules[ast.id].lineFacts;
+	const stackLineFacts: Array<StackAnalysisLineFacts | undefined> = [];
+	const stackAnalysis: CompiledStackAnalysisLine[] = [];
 
 	for (const [index, sourceLine] of ast.lines.entries()) {
-		const line = { ...sourceLine, ...(lineFacts[index] ?? {}) } as SemanticReferenceLine;
-		const analyzedLine = analyzeSemanticReferenceLine(line, context);
-		if (analyzedLine) {
-			analyzedLines.push(analyzedLine);
+		const line = { ...sourceLine, ...(semanticLineFacts[index] ?? {}) } as SemanticReferenceLine;
+		const facts = analyzeSemanticReferenceLine(line, context);
+		stackLineFacts.push(facts);
+		if (facts) {
+			stackAnalysis.push(toCompiledStackAnalysisLine(sourceLine, facts));
 		}
 	}
 
@@ -480,8 +499,8 @@ function analyzeModule(input: AnalyzeStackProjectInput, ast: ValidatedModuleAST)
 	}
 
 	return {
-		analyzedLines,
-		stackAnalysis: analyzedLines.map(toCompiledStackAnalysisLine),
+		lineFacts: stackLineFacts,
+		stackAnalysis,
 		finalStack: cloneStack(context.stack),
 		...(context.skipExecutionInCycle ? { skipExecutionInCycle: true } : {}),
 	};
@@ -541,12 +560,13 @@ function createFunctionContext(
 function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunctionAST): StackAnalyzedFunction {
 	const functionMetadata = getFunctionMetadata(input, ast);
 	const context = createFunctionContext(input, ast, functionMetadata);
-	const analyzedLines: AnalyzedLine[] = [];
-	const lineFacts = input.semanticReferences.functions[functionMetadata.id].lineFacts;
+	const semanticLineFacts = input.semanticReferences.functions[functionMetadata.id].lineFacts;
+	const stackLineFacts: Array<StackAnalysisLineFacts | undefined> = [];
+	const stackAnalysis: CompiledStackAnalysisLine[] = [];
 	let functionBodyStarted = false;
 
 	for (const [index, sourceLine] of ast.lines.entries()) {
-		const line = { ...sourceLine, ...(lineFacts[index] ?? {}) } as SemanticReferenceLine;
+		const line = { ...sourceLine, ...(semanticLineFacts[index] ?? {}) } as SemanticReferenceLine;
 		if (ast.importLine && !isImportedFunctionDeclarationInstructionName(line.instruction)) {
 			throw getError(
 				line.instruction === '#export' ? ErrorCode.IMPORT_EXPORT_CONFLICT : ErrorCode.IMPORTED_FUNCTION_BODY,
@@ -562,17 +582,18 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 			skipImportedFunctionEnd: !!ast.importLine,
 		});
 		if (analyzedLine) {
-			analyzedLines.push(analyzedLine);
+			stackAnalysis.push(toCompiledStackAnalysisLine(sourceLine, analyzedLine));
 		}
+		stackLineFacts.push(analyzedLine);
 		if (isFunctionBodyInstructionName(line.instruction)) {
 			functionBodyStarted = true;
 		}
 	}
 
 	return {
-		functionMetadata,
-		analyzedLines,
-		stackAnalysis: analyzedLines.map(toCompiledStackAnalysisLine),
+		functionId: functionMetadata.id,
+		lineFacts: stackLineFacts,
+		stackAnalysis,
 		finalStack: cloneStack(context.stack),
 		locals: { ...context.locals },
 		parameterCount: context.currentFunctionParameterCount,
@@ -582,13 +603,40 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 }
 
 export function analyzeStack(input: AnalyzeStackProjectInput): StackAnalysisProjectReport {
-	const functions = Object.fromEntries(
+	const functionReports = Object.fromEntries(
 		input.ast.functions.map(ast => {
 			const report = analyzeFunction(input, ast);
-			return [report.functionMetadata.id, report];
+			return [report.functionId, report];
 		})
 	);
 	const modules = Object.fromEntries(input.ast.modules.map(ast => [ast.id, analyzeModule(input, ast)]));
+	const usedFunctionIds = new Set<string>();
+	for (const functionReport of Object.values(functionReports)) {
+		if (functionReport.exportName) {
+			usedFunctionIds.add(functionReport.functionId);
+		}
+		for (const facts of functionReport.lineFacts) {
+			if (facts?.targetFunctionId) {
+				usedFunctionIds.add(facts.targetFunctionId);
+			}
+		}
+	}
+	for (const moduleReport of Object.values(modules)) {
+		for (const facts of moduleReport.lineFacts) {
+			if (facts?.targetFunctionId) {
+				usedFunctionIds.add(facts.targetFunctionId);
+			}
+		}
+	}
+	const functions = Object.fromEntries(
+		Object.values(functionReports).map(functionReport => [
+			functionReport.functionId,
+			{
+				...functionReport,
+				...(usedFunctionIds.has(functionReport.functionId) ? { used: true } : {}),
+			},
+		])
+	);
 
-	return { modules, functions };
+	return { modules, functions, usedFunctionIds: [...usedFunctionIds] };
 }

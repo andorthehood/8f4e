@@ -96,13 +96,14 @@ function getPointeeMetadata(pointerMetadata: ResolvedMemoryDeclaration | LocalBi
 }
 
 function pushDereferencedPointerStackItems(
-	line: Extract<ResolvedPushLine, { resolvedTarget: { kind: 'memory-pointer' | 'local-pointer' } }>
+	line: Extract<ResolvedPushLine, { resolvedTarget: { kind: 'memory-pointer' | 'local-pointer' } }>,
+	context: CompilationContext
 ): Stack {
 	const pointerMetadata =
 		line.resolvedTarget.kind === 'memory-pointer'
 			? line.resolvedTarget.memoryItem
 			: line.resolvedTarget.kind === 'local-pointer'
-				? line.resolvedTarget.local
+				? context.locals[line.resolvedTarget.localName]!
 				: undefined;
 	if (!pointerMetadata) {
 		return [];
@@ -140,7 +141,7 @@ function pushDereferencedPointerStackItems(
 	return [kindToStackItem(kind, { isNonZero: false })];
 }
 
-function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
+function pushResolvedTargetStackItems(line: ResolvedPushLine, context: CompilationContext): Stack {
 	switch (line.resolvedTarget.kind) {
 		case 'memory': {
 			const { memoryItem } = line.resolvedTarget;
@@ -157,17 +158,19 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
 		}
 		case 'memory-pointer': {
 			return pushDereferencedPointerStackItems(
-				line as Extract<ResolvedPushLine, { resolvedTarget: { kind: 'memory-pointer' } }>
+				line as Extract<ResolvedPushLine, { resolvedTarget: { kind: 'memory-pointer' } }>,
+				context
 			);
 		}
 		case 'local-pointer': {
 			return pushDereferencedPointerStackItems(
-				line as Extract<ResolvedPushLine, { resolvedTarget: { kind: 'local-pointer' } }>
+				line as Extract<ResolvedPushLine, { resolvedTarget: { kind: 'local-pointer' } }>,
+				context
 			);
 		}
 		case 'local':
 		default: {
-			const { local } = line.resolvedTarget;
+			const local = context.locals[line.resolvedTarget.localName]!;
 			const pointsTo = getPointeeMetadata(local);
 
 			return [
@@ -194,7 +197,8 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine): Stack {
  * @returns The relevant stack items for the analysis step.
  */
 export function analyzePush(line: SemanticPushLine, context: CompilationContext): Stack {
-	const produced = 'resolvedTarget' in line ? pushResolvedTargetStackItems(line) : pushLiteralStackItems(line, context);
+	const produced =
+		'resolvedTarget' in line ? pushResolvedTargetStackItems(line, context) : pushLiteralStackItems(line, context);
 	produce(context, produced);
 	return produced;
 }

@@ -10,12 +10,12 @@ import { requireStackAddress } from './utils/stackItem';
  * Instruction compiler for `memoryCopy`.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const memoryCopy: InstructionCompiler<ResolvedMemoryCopyLine> = (line, context) => {
+const memoryCopy: InstructionCompiler<ResolvedMemoryCopyLine> = (line, context, facts) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const destinationIndex = operation.addressOperandIndex;
-	const destination = requireStackAddress(line.stackAnalysis.consumedOperands[destinationIndex], line, context);
-	const source = requireStackAddress(line.stackAnalysis.consumedOperands[destinationIndex + 1], line, context);
+	const destination = requireStackAddress(facts.stackAnalysis.consumedOperands[destinationIndex], line, context);
+	const source = requireStackAddress(facts.stackAnalysis.consumedOperands[destinationIndex + 1], line, context);
 	const byteLength = line.arguments[0].value;
 	const destinationMemoryIndex = destination.address.memoryIndex;
 	const sourceMemoryIndex = source.address.memoryIndex;

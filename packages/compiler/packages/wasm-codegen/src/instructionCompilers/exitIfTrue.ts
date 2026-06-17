@@ -13,8 +13,8 @@ import { saveByteCode } from './utils/saveByteCode';
  *
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = (line, context) => {
-	const drops = (line.stackAnalysis.droppedStackItems ?? []).flatMap(() => [WASM_DROP]);
+const exitIfTrue: InstructionCompiler<ExitIfTrueLine> = (line, context, facts) => {
+	const drops = (facts.stackAnalysis.droppedStackItems ?? []).flatMap(() => [WASM_DROP]);
 
 	return saveByteCode(context, [WASM_IF, WASM_TYPE_VOID, ...drops, WASM_RETURN, WASM_END]);
 };

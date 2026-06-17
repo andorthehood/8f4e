@@ -1,6 +1,5 @@
 import { WASM_IF, WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 import type {
-	AnalyzedLine,
 	CompilationContext,
 	CompilerASTLine,
 	InstructionCompiler,
@@ -151,7 +150,8 @@ export function analyzeAndCompileInstruction<TLine extends CompilerASTLine>(
 	line: TLine,
 	context: CompilationContext
 ): CompilationContext {
-	compileInstruction(analyzeInstruction(line, context) as AnalyzedLine<TLine>, context);
+	const facts = analyzeInstruction(line, context);
+	compileInstruction(line, context, facts);
 	return context;
 }
 
