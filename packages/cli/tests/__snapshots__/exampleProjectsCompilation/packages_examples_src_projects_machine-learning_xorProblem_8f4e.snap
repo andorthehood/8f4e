@@ -152,20 +152,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 72,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 72,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn3",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&activationFn3:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "activationFn3",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -203,20 +196,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 72,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 72,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn3",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&activationFn3:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "activationFn3",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -720,20 +706,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 8,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 8,
-                    "safeByteLength": 4,
-                    "moduleId": "switches",
-                    "memoryId": "in1"
-                  }
-                }
+                "type": "identifier",
+                "value": "&switches:in1",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "switches",
+                "targetMemoryId": "in1",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -752,20 +731,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 12,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 12,
-                    "safeByteLength": 4,
-                    "moduleId": "switches",
-                    "memoryId": "in2"
-                  }
-                }
+                "type": "identifier",
+                "value": "&switches:in2",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "switches",
+                "targetMemoryId": "in2",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -797,8 +769,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": 10.056234,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -814,8 +786,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": -42.53689,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -831,8 +803,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": -3.92453,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -842,20 +814,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 24,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 24,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&out",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ]
           },
@@ -878,9 +842,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 10.056234,
-                "isInteger": false
+                "type": "identifier",
+                "value": "W1",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -908,9 +873,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": -42.53689,
-                "isInteger": false
+                "type": "identifier",
+                "value": "W2",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -929,9 +895,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": -3.92453,
-                "isInteger": false
+                "type": "identifier",
+                "value": "BIAS",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -975,20 +942,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 8,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 8,
-                    "safeByteLength": 4,
-                    "moduleId": "switches",
-                    "memoryId": "in1"
-                  }
-                }
+                "type": "identifier",
+                "value": "&switches:in1",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "switches",
+                "targetMemoryId": "in1",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -1007,20 +967,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 12,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 12,
-                    "safeByteLength": 4,
-                    "moduleId": "switches",
-                    "memoryId": "in2"
-                  }
-                }
+                "type": "identifier",
+                "value": "&switches:in2",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "switches",
+                "targetMemoryId": "in2",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -1267,20 +1220,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 8,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 8,
-                    "safeByteLength": 4,
-                    "moduleId": "switches",
-                    "memoryId": "in1"
-                  }
-                }
+                "type": "identifier",
+                "value": "&switches:in1",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "switches",
+                "targetMemoryId": "in1",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -1299,20 +1245,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 12,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 12,
-                    "safeByteLength": 4,
-                    "moduleId": "switches",
-                    "memoryId": "in2"
-                  }
-                }
+                "type": "identifier",
+                "value": "&switches:in2",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "switches",
+                "targetMemoryId": "in2",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -1344,8 +1283,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": -70.313797,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -1361,8 +1300,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": 24.76387,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -1378,8 +1317,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": -8.765101,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -1389,20 +1328,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 36,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 36,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron2",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&out",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ]
           },
@@ -1425,9 +1356,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": -70.313797,
-                "isInteger": false
+                "type": "identifier",
+                "value": "W1",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -1455,9 +1387,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 24.76387,
-                "isInteger": false
+                "type": "identifier",
+                "value": "W2",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -1476,9 +1409,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": -8.765101,
-                "isInteger": false
+                "type": "identifier",
+                "value": "BIAS",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -1522,20 +1456,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 8,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 8,
-                    "safeByteLength": 4,
-                    "moduleId": "switches",
-                    "memoryId": "in1"
-                  }
-                }
+                "type": "identifier",
+                "value": "&switches:in1",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "switches",
+                "targetMemoryId": "in1",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -1554,20 +1481,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 12,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 12,
-                    "safeByteLength": 4,
-                    "moduleId": "switches",
-                    "memoryId": "in2"
-                  }
-                }
+                "type": "identifier",
+                "value": "&switches:in2",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "switches",
+                "targetMemoryId": "in2",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -1743,20 +1663,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 24,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 24,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&perceptron:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "perceptron",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -1782,20 +1695,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 44,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 44,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&out",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ]
           },
@@ -1860,20 +1765,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 24,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 24,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&perceptron:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "perceptron",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -2049,20 +1947,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 36,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 36,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron2",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&perceptron2:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "perceptron2",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -2088,20 +1979,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 52,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 52,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn2",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&out",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ]
           },
@@ -2166,20 +2049,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 36,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 36,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron2",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&perceptron2:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "perceptron2",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -2427,20 +2303,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 44,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 44,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&activationFn:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "activationFn",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -2459,20 +2328,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 52,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 52,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn2",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&activationFn2:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "activationFn2",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -2504,8 +2366,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": 6.94625,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -2521,8 +2383,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": 6.64608,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -2538,8 +2400,8 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
                 "value": 6.05782,
+                "type": "literal",
                 "isInteger": false
               }
             ]
@@ -2549,20 +2411,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 64,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 64,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron3",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&out",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ]
           },
@@ -2585,9 +2439,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 6.94625,
-                "isInteger": false
+                "type": "identifier",
+                "value": "W1",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -2615,9 +2470,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 6.64608,
-                "isInteger": false
+                "type": "identifier",
+                "value": "W2",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -2636,9 +2492,10 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 6.05782,
-                "isInteger": false
+                "type": "identifier",
+                "value": "BIAS",
+                "referenceKind": "constant",
+                "scope": "local"
               }
             ]
           },
@@ -2682,20 +2539,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 44,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 44,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&activationFn:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "activationFn",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -2714,20 +2564,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 52,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 52,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn2",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&activationFn2:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "activationFn2",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -2919,20 +2762,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 64,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 64,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron3",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&perceptron3:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "perceptron3",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -2958,20 +2794,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 72,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 72,
-                    "safeByteLength": 4,
-                    "moduleId": "activationFn3",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&out",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ]
           },
@@ -3109,20 +2937,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 64,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 64,
-                    "safeByteLength": 4,
-                    "moduleId": "perceptron3",
-                    "memoryId": "out"
-                  }
-                }
+                "type": "identifier",
+                "value": "&perceptron3:out",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "perceptron3",
+                "targetMemoryId": "out",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
