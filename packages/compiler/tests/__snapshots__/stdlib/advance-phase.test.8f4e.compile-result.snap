@@ -128,9 +128,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 3.141592653589793,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "PI",
             },
           ],
           "instruction": "push",
@@ -138,9 +139,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": -3.141592653589793,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "NEG_PI",
             },
           ],
           "instruction": "push",
@@ -211,9 +213,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": 3.141592653589793,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "PI",
             },
           ],
           "instruction": "push",
@@ -240,9 +243,10 @@
         {
           "arguments": [
             {
-              "isInteger": false,
-              "type": "literal",
-              "value": -3.141592653589793,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "NEG_PI",
             },
           ],
           "instruction": "push",
@@ -334,20 +338,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "phase",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePhaseAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "phase",
+              "type": "identifier",
+              "value": "&phase",
             },
           ],
           "instruction": "push",
@@ -429,20 +425,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "phase",
-                  "memoryIndex": 0,
-                  "moduleId": "advancePhaseAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "phase",
+              "type": "identifier",
+              "value": "&phase",
             },
           ],
           "instruction": "push",

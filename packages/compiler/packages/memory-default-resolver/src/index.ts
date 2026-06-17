@@ -1,5 +1,4 @@
 import type {
-	AddressMetadata,
 	ArrayMemoryDeclarationLine,
 	CompilerASTLine,
 	ErrorCodeValue,
@@ -7,20 +6,15 @@ import type {
 	MemoryDefault,
 	MemoryDefaults,
 	MemoryLayoutPlan,
-	MemoryPointerMetadata,
 	MemoryPointerMetadataMap,
+	MemoryReferenceResolutionLineFacts,
+	MemoryReferenceResolutionReport,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
 	PointeeBaseType,
-	ResolvedArgumentLiteral,
 	ScalarMemoryDeclarationLine,
 } from '@8f4e/language-spec';
 import { ArgumentType, BASE_TYPE_METADATA, ErrorCode, isArrayMemoryDeclarationLine } from '@8f4e/language-spec';
-import {
-	inlineMemoryReferencesInLine,
-	type MemoryReferencePointerMetadataByModuleId,
-	type MemoryReferenceResolutionContext,
-} from '@8f4e/memory-reference-inliner';
 import {
 	type MemoryArgumentShape,
 	parseMemoryInstructionArgumentsShape,
@@ -31,6 +25,7 @@ import {
 
 export interface ResolveMemoryDefaultsInput {
 	memoryPlan: MemoryLayoutPlan;
+	memoryReferences: MemoryReferenceResolutionReport;
 }
 
 export interface ResolveMemoryDefaultsResult {
@@ -64,7 +59,6 @@ export class MemoryDefaultResolverError extends Error {
 
 interface ScalarDefaultResolution {
 	defaultValue: number;
-	defaultAddress?: AddressMetadata;
 }
 
 const MAX_SPLIT_BYTE_WIDTH = 4;
@@ -144,16 +138,6 @@ function assertDeclarableScalarIdentifier(shape: MemoryArgumentShape, line: Scal
 		default:
 			throw resolverError(ErrorCode.UNDECLARED_IDENTIFIER, line, 'Invalid memory identifier.', { identifier: '' });
 	}
-}
-
-function getResolvedAddressMetadata(
-	argument: CompilerASTLine['arguments'][number] | undefined
-): AddressMetadata | undefined {
-	if (argument?.type !== ArgumentType.LITERAL || !('address' in argument)) {
-		return undefined;
-	}
-
-	return (argument as ResolvedArgumentLiteral).address;
 }
 
 function getMemoryDeclarationOrThrow(
@@ -281,10 +265,8 @@ function resolveScalarDefault(
 		};
 	}
 
-	const defaultAddress = getResolvedAddressMetadata(line.arguments[1]);
 	return {
 		defaultValue: resolveMemoryDefaultValue(shape.secondArg, line, module, memoryPlan),
-		...(defaultAddress ? { defaultAddress } : {}),
 	};
 }
 
@@ -309,37 +291,6 @@ function createArrayDefaultValues(line: ArrayMemoryDeclarationLine, plannedDecla
 	}, {});
 }
 
-function getPointeeMemoryDeclaration(
-	defaultAddress: AddressMetadata | undefined,
-	context: MemoryReferenceResolutionContext
-): PlannedMemoryDeclaration | undefined {
-	const safeRange = defaultAddress?.safeRange;
-	if (!safeRange?.memoryId) {
-		return undefined;
-	}
-
-	const moduleId = safeRange.moduleId ?? context.moduleName ?? context.currentModule?.id;
-	return moduleId ? context.memoryPlan.modules[moduleId]?.memory[safeRange.memoryId] : undefined;
-}
-
-function getPointeeElementCount(
-	defaultAddress: AddressMetadata | undefined,
-	context: MemoryReferenceResolutionContext
-): number | undefined {
-	const safeRange = defaultAddress?.safeRange;
-	if (!safeRange || safeRange.source !== 'memory-start') {
-		return undefined;
-	}
-
-	const memoryItem = getPointeeMemoryDeclaration(defaultAddress, context);
-	if (!memoryItem) {
-		return undefined;
-	}
-
-	const byteOffset = Math.max(0, safeRange.byteAddress - memoryItem.byteAddress);
-	return Math.max(0, Math.floor((memoryItem.elementByteLength - byteOffset) / memoryItem.elementWordSize));
-}
-
 function setMemoryDefault(
 	defaults: MemoryDefaults,
 	memoryId: string,
@@ -354,72 +305,45 @@ function setMemoryDefault(
 	};
 }
 
-function setPointerMetadata(
-	pointerMetadata: MemoryPointerMetadataMap,
-	memoryId: string,
-	metadata: MemoryPointerMetadata
-): void {
-	pointerMetadata[memoryId] = metadata;
-}
-
-function createModuleResolutionContext(
-	memoryPlan: MemoryLayoutPlan,
-	module: PlannedMemoryModule,
-	pointerMetadata: MemoryReferencePointerMetadataByModuleId
-): MemoryReferenceResolutionContext {
-	return {
-		memoryPlan,
-		currentModule: module,
-		pointerMetadata,
-		moduleName: module.id,
-		locals: {},
-		startingByteAddress: module.byteAddress,
-		currentModuleWordAlignedSize: module.wordAlignedSize,
-		currentMemoryIndex: module.memoryIndex,
-		...(module.memoryRegionName ? { currentMemoryRegionName: module.memoryRegionName } : {}),
-	};
+function applyMemoryReferenceFacts<TLine extends CompilerASTLine>(
+	line: TLine,
+	facts?: MemoryReferenceResolutionLineFacts
+): TLine {
+	return facts?.arguments ? ({ ...line, arguments: facts.arguments } as TLine) : line;
 }
 
 function resolveModuleMemoryDefaults(
 	plannedModule: PlannedMemoryModule,
 	memoryPlan: MemoryLayoutPlan,
-	pointerMetadataByModuleId: MemoryReferencePointerMetadataByModuleId
+	memoryReferences: MemoryReferenceResolutionReport
 ): { memoryDefaults: MemoryDefaults; pointerMetadata: MemoryPointerMetadataMap } {
 	const memoryDefaults: MemoryDefaults = {};
-	const pointerMetadata = (pointerMetadataByModuleId[plannedModule.id] ??= {});
-	const context = createModuleResolutionContext(memoryPlan, plannedModule, pointerMetadataByModuleId);
+	const pointerMetadata = memoryReferences.pointerMetadataByModuleId[plannedModule.id]!;
+	const declarationSourceFacts = memoryReferences.declarationSourcesByModuleId[plannedModule.id]!.lineFacts;
 
 	plannedModule.declarationSources.forEach(({ line, isInherited }, index) => {
 		const plannedDeclaration = plannedModule.declarations[index]!;
 
-		const inlinedLine = inlineMemoryReferencesInLine(line, context);
-		if (isArrayMemoryDeclarationLine(inlinedLine)) {
+		const resolvedLine = applyMemoryReferenceFacts(line, declarationSourceFacts[index]);
+		if (isArrayMemoryDeclarationLine(resolvedLine)) {
 			setMemoryDefault(
 				memoryDefaults,
 				plannedDeclaration.id,
-				createArrayDefaultValues(inlinedLine, plannedDeclaration),
-				inlinedLine,
+				createArrayDefaultValues(resolvedLine, plannedDeclaration),
+				resolvedLine,
 				isInherited
 			);
 			return;
 		}
 
-		const { defaultValue, defaultAddress } = resolveScalarDefault(inlinedLine, plannedModule, memoryPlan);
+		const { defaultValue } = resolveScalarDefault(resolvedLine, plannedModule, memoryPlan);
 		setMemoryDefault(
 			memoryDefaults,
 			plannedDeclaration.id,
 			plannedDeclaration.isInteger ? Math.trunc(defaultValue) : defaultValue,
-			inlinedLine,
+			resolvedLine,
 			isInherited
 		);
-		if (plannedDeclaration.pointerDepth > 0) {
-			const pointeeElementCount = getPointeeElementCount(defaultAddress, context);
-			setPointerMetadata(pointerMetadata, plannedDeclaration.id, {
-				pointeeMemoryIndex: defaultAddress?.memoryIndex ?? 0,
-				...(defaultAddress?.memoryRegionName ? { pointeeMemoryRegionName: defaultAddress.memoryRegionName } : {}),
-				...(pointeeElementCount !== undefined && pointeeElementCount !== 1 ? { pointeeElementCount } : {}),
-			});
-		}
 	});
 
 	return { memoryDefaults, pointerMetadata };
@@ -431,16 +355,21 @@ function resolveModuleMemoryDefaults(
  * The memory plan is the source of truth for declaration order, layout, and
  * effective declaration source lines after shape expansion.
  *
- * @param input - Completed memory plan for the project.
+ * @param input - Completed memory plan and memory-reference facts for the project.
  * @returns Defaults and pointer metadata keyed by module id.
  */
 export function resolveMemoryDefaults(input: ResolveMemoryDefaultsInput): ResolveMemoryDefaultsResult {
-	const pointerMetadataByModuleId: MemoryReferencePointerMetadataByModuleId = {};
+	const pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap> = {};
 	const memoryDefaultsByModuleId: Record<string, MemoryDefaults> = {};
 
 	for (const plannedModule of input.memoryPlan.moduleList) {
-		const { memoryDefaults } = resolveModuleMemoryDefaults(plannedModule, input.memoryPlan, pointerMetadataByModuleId);
+		const { memoryDefaults, pointerMetadata } = resolveModuleMemoryDefaults(
+			plannedModule,
+			input.memoryPlan,
+			input.memoryReferences
+		);
 		memoryDefaultsByModuleId[plannedModule.id] = memoryDefaults;
+		pointerMetadataByModuleId[plannedModule.id] = pointerMetadata;
 	}
 
 	return {

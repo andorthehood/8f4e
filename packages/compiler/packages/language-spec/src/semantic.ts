@@ -282,6 +282,23 @@ export interface ConstantResolutionBlockFacts {
 	lineFacts: Array<ConstantResolutionLineFacts | undefined>;
 }
 
+export interface MemoryReferenceResolutionLineFacts {
+	arguments?: CompilerASTLine['arguments'];
+}
+
+export interface MemoryReferenceResolutionBlockFacts {
+	lineFacts: Array<MemoryReferenceResolutionLineFacts | undefined>;
+}
+
+export interface MemoryReferenceResolutionReport {
+	prototypes: readonly MemoryReferenceResolutionBlockFacts[];
+	modules: readonly MemoryReferenceResolutionBlockFacts[];
+	constants: readonly MemoryReferenceResolutionBlockFacts[];
+	functions: readonly MemoryReferenceResolutionBlockFacts[];
+	declarationSourcesByModuleId: Record<string, MemoryReferenceResolutionBlockFacts>;
+	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+}
+
 export type CodegenContext<TContext extends CompilationContext = CompilationContext> = Omit<TContext, 'stack'>;
 export type FunctionCodegenContext = CodegenContext<FunctionCompilationContext>;
 

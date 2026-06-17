@@ -1701,7 +1701,7 @@
 				"rangeExecutions": 21770,
 				"maxRangesPerFunction": 8
 			},
-			"memoryReferenceInliner": {
+			"memoryReferenceResolver": {
 				"coveredFunctions": 28,
 				"functionEntries": 37627,
 				"rangeExecutions": 67941,
@@ -1775,7 +1775,7 @@
 				"rangeExecutions": 25255,
 				"maxRangesPerFunction": 8
 			},
-			"memoryReferenceInliner": {
+			"memoryReferenceResolver": {
 				"coveredFunctions": 27,
 				"functionEntries": 36620,
 				"rangeExecutions": 66934,
@@ -1849,7 +1849,7 @@
 				"rangeExecutions": 25255,
 				"maxRangesPerFunction": 8
 			},
-			"memoryReferenceInliner": {
+			"memoryReferenceResolver": {
 				"coveredFunctions": 27,
 				"functionEntries": 36620,
 				"rangeExecutions": 66934,
@@ -1923,7 +1923,7 @@
 				"rangeExecutions": 25255,
 				"maxRangesPerFunction": 8
 			},
-			"memoryReferenceInliner": {
+			"memoryReferenceResolver": {
 				"coveredFunctions": 26,
 				"functionEntries": 35613,
 				"rangeExecutions": 65927,
@@ -2003,7 +2003,7 @@
 				"rangeExecutions": 25255,
 				"maxRangesPerFunction": 8
 			},
-			"memoryReferenceInliner": {
+			"memoryReferenceResolver": {
 				"coveredFunctions": 26,
 				"functionEntries": 35613,
 				"rangeExecutions": 65927,
@@ -2089,7 +2089,7 @@
 				"rangeExecutions": 33395,
 				"maxRangesPerFunction": 8
 			},
-			"memoryReferenceInliner": {
+			"memoryReferenceResolver": {
 				"coveredFunctions": 27,
 				"functionEntries": 39125,
 				"rangeExecutions": 75133,
