@@ -10,7 +10,6 @@ import type {
 	ModuleLine,
 	PrototypeLine,
 } from '@8f4e/language-spec';
-import { DEFAULT_HOST_IMPORT_MODULE_NAME } from '@8f4e/language-spec';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 
 /** Accumulates module-specific lines while the tokenizer builds a validated AST. */
@@ -27,12 +26,7 @@ type FunctionASTBuilder = {
 	functionLine: FunctionLine;
 	functionEndLine?: FunctionEndLine;
 	exportLine?: ExportLine;
-	exportName?: string;
 	importLine?: ImportLine;
-	import?: {
-		moduleName: string;
-		fieldName: string;
-	};
 };
 
 /** Accumulates constants-block metadata while the tokenizer builds a validated AST. */
@@ -97,14 +91,9 @@ function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine
 			return;
 		case '#export':
 			builder.exportLine = line;
-			builder.exportName = builder.exportLine.arguments[0]?.value ?? builder.name;
 			return;
 		case '#import':
 			builder.importLine = line;
-			builder.import = {
-				moduleName: DEFAULT_HOST_IMPORT_MODULE_NAME,
-				fieldName: line.arguments[0].value,
-			};
 	}
 }
 
@@ -159,8 +148,8 @@ export function createASTFromBuilder(lines: CompilerASTLines, builder: SourceBlo
 				lines,
 				functionLine: builder.functionLine,
 				functionEndLine: builder.functionEndLine,
-				...(builder.exportLine ? { exportLine: builder.exportLine, exportName: builder.exportName } : {}),
-				...(builder.importLine ? { importLine: builder.importLine, import: builder.import } : {}),
+				...(builder.exportLine ? { exportLine: builder.exportLine } : {}),
+				...(builder.importLine ? { importLine: builder.importLine } : {}),
 			};
 		case 'constants':
 			return {
