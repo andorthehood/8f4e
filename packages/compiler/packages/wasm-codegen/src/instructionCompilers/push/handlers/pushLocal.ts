@@ -10,7 +10,7 @@ import { saveByteCode } from '../../utils/saveByteCode';
  * @returns The computed result.
  */
 export default function pushLocal(line: ResolvedLocalPushLine, context: CodegenContext): CodegenContext {
-	const { local } = line.resolvedTarget;
+	const local = context.locals[line.resolvedTarget.localName]!;
 
 	return saveByteCode(context, localGet(local.index));
 }

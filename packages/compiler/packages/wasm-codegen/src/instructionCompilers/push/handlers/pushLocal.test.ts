@@ -21,7 +21,7 @@ describe('pushLocal', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('temp')],
-				resolvedTarget: { kind: 'local', local },
+				resolvedTarget: { kind: 'local', localName: 'temp' },
 			} as ResolvedLocalPushLine,
 			context
 		);
