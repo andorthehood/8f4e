@@ -4,7 +4,7 @@ import resolveInstructionReferences from './referenceResolvers';
 /**
  * Resolves semantic value arguments for one AST line.
  * This folds memory/layout expressions in instruction-specific value positions.
- * Constant identifiers are expected to have been inlined before semantic reference resolution.
+ * Constant and memory-reference facts are expected to have been applied before semantic reference resolution.
  *
  * @param line - AST line being processed.
  * @param context - Compilation context used by the operation.

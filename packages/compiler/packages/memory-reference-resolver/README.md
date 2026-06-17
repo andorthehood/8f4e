@@ -1,8 +1,8 @@
-# @8f4e/memory-reference-inliner
+# @8f4e/memory-reference-resolver
 
-`@8f4e/memory-reference-inliner` is the compiler pass that replaces memory-layout references in validated AST lines with literal values.
+`@8f4e/memory-reference-resolver` is the compiler pass that resolves memory-layout references into report facts aligned with validated AST lines.
 
-The pass is separate from memory planning. The memory planner decides where modules and declarations live. The memory reference inliner uses that completed layout as source data when later compiler stages need concrete values.
+The pass is separate from memory planning. The memory planner decides where modules and declarations live. The memory reference resolver uses that completed layout as source data when later compiler stages need concrete values.
 
 ## Pipeline Position
 
@@ -12,9 +12,9 @@ The intended order is:
 2. Resolve constants with `@8f4e/constant-resolver`.
 3. Normalize layout declaration counts into planner-ready source lines.
 4. Plan memory layout with `@8f4e/memory-planner`, including `shape` expansion.
-5. Inline memory references once with `@8f4e/memory-reference-inliner`.
+5. Resolve memory references once with `@8f4e/memory-reference-resolver`.
 6. Resolve memory defaults and pointer target metadata with `@8f4e/memory-default-resolver`.
-7. Run semantic analysis and code generation on the inlined lines plus resolved memory data.
+7. Run semantic analysis and code generation on the original AST plus pass reports.
 
 This pass should not be used to make memory declarations plan-able. Declaration sizes handed to the memory planner must already be literal layout input. Layout-dependent declaration sizes, such as `int[] dest count(source)`, are not part of this pass.
 
@@ -28,17 +28,21 @@ The pass receives:
 
 The memory layout plan remains the source of truth while references are resolved. This package should read planned modules and declarations directly from that plan rather than converting them into compiler namespace state.
 
-The inliner may keep temporary pointer facts while traversing a module so later references like `count(*ptr)` can be resolved during the same pass. Persistent pointer metadata for compiler contexts belongs to `@8f4e/memory-default-resolver`.
+The resolver returns pointer metadata discovered from planned memory declaration sources so later passes can use the same pointer facts without re-running memory-reference resolution.
 
 ## Output
 
-The pass returns the same project AST grouping with memory-layout value references replaced by literal arguments.
+The pass returns `references`, a report containing:
 
-When an inlined value is an address, the literal should keep the address metadata needed by later compiler stages, such as memory index, memory region name, safe range, and clamp range.
+- `prototypes`, `modules`, `constants`, and `functions`: per-line argument facts aligned with the input AST arrays.
+- `declarationSourcesByModuleId`: per-line argument facts aligned with each planned module's effective declaration sources.
+- `pointerMetadataByModuleId`: pointer target facts derived from resolved declaration-source address defaults.
 
-The pass should not mutate the caller's AST or namespace tables.
+When a resolved value is an address, the literal should keep the address metadata needed by later compiler stages, such as memory index, memory region name, safe range, and clamp range.
 
-Within memory declaration lines, this pass may inline scalar default values and array initializer values. It must not be used to make array element-count arguments plan-able; those counts are layout input and must already be literal before the memory planner runs.
+The pass must not mutate the caller's AST or namespace tables.
+
+Within memory declaration lines, this pass may resolve scalar default values and array initializer values into report facts. It must not be used to make array element-count arguments plan-able; those counts are layout input and must already be literal before the memory planner runs.
 
 There should be one project-level call during compilation:
 
@@ -47,7 +51,7 @@ const memoryPlan = planProjectMemoryLayout({
 	prototypes,
 	modules,
 });
-const result = inlineMemoryReferences({
+const memoryReferences = resolveMemoryReferences({
 	ast: {
 		prototypes,
 		modules,
@@ -59,11 +63,11 @@ const result = inlineMemoryReferences({
 });
 ```
 
-The inliner may traverse modules internally to resolve module-local forms such as `&this` or `count(buffer)`, but callers should not invoke the pass once per module. Module scoping is part of the pass.
+The resolver may traverse modules internally to resolve module-local forms such as `&this` or `count(buffer)`, but callers should not invoke the pass once per module. Module scoping is part of the pass.
 
 ## References Owned By This Pass
 
-The memory reference inliner owns value resolution for memory-layout expressions, including:
+The memory reference resolver owns value resolution for memory-layout expressions, including:
 
 - `count(name)`
 - `sizeof(name)`
@@ -99,14 +103,13 @@ This package must not:
 - Decide module or declaration addresses. That belongs to `@8f4e/memory-planner`.
 - Expand `shape` declarations. That belongs to `@8f4e/memory-planner`.
 - Apply scalar defaults or array initializer defaults.
-- Return persistent pointer target metadata for compiler contexts. That belongs to `@8f4e/memory-default-resolver`.
 - Resolve calls, function overloads, locals, stack effects, or code generation details.
 - Validate duplicate module ids, duplicate declarations, instruction arity, or syntax.
 - Add compatibility shims for old compiler-internal argument-resolution APIs.
 
 ## Error Ownership
 
-The pass leaves unresolved references unchanged. Callers that require full resolution must validate the returned line and report compiler-compatible semantic errors.
+The pass leaves unresolved references unchanged. Callers that require full resolution must validate the composed line and report compiler-compatible semantic errors.
 
 It should not revalidate facts guaranteed by earlier stages, such as token shape, argument count, or whether a declaration id is unique. Those checks belong to the parser, semantic compiler, or memory planner input builder as appropriate.
 
@@ -115,7 +118,7 @@ It should not revalidate facts guaranteed by earlier stages, such as token shape
 The package entry point is an `index.ts` function that returns an explicit result object rather than using callbacks:
 
 ```ts
-const result = inlineMemoryReferences({
+const result = resolveMemoryReferences({
 	ast: {
 		prototypes,
 		modules,
@@ -123,7 +126,8 @@ const result = inlineMemoryReferences({
 		functions,
 	},
 	memoryPlan,
+	constantReferences,
 });
 ```
 
-Lower-level argument and line helpers are available for package tests and focused tooling, but the compiler pipeline should use the project-level entry point.
+The compiler pipeline should use the project-level entry point and pass the returned report to later compiler stages.

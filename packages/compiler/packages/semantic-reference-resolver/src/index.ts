@@ -1,5 +1,6 @@
 import type {
 	CompilerASTLine,
+	ConstantResolutionBlockFacts,
 	FunctionCompilationContext,
 	FunctionMetadata,
 	FunctionRegistry,
@@ -8,6 +9,9 @@ import type {
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
+	MemoryReferenceResolutionBlockFacts,
+	MemoryReferenceResolutionLineFacts,
+	MemoryReferenceResolutionReport,
 	ModuleCompilationContext,
 	Namespaces,
 	ResolvedMapLine,
@@ -50,6 +54,13 @@ export interface ResolveSemanticReferencesInput {
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	constantReferences: {
+		prototypes: readonly ConstantResolutionBlockFacts[];
+		modules: readonly ConstantResolutionBlockFacts[];
+		constants: readonly ConstantResolutionBlockFacts[];
+		functions: readonly ConstantResolutionBlockFacts[];
+	};
+	memoryReferences: MemoryReferenceResolutionReport;
 	functions: FunctionRegistry;
 	functionTypeRegistry: FunctionTypeRegistry;
 	memoryRegions: readonly string[];
@@ -98,6 +109,28 @@ function collectLineFacts(
 	}
 
 	return Object.keys(facts).length > 0 ? facts : undefined;
+}
+
+function applyConstantFacts<TLine extends CompilerASTLine>(
+	line: TLine,
+	facts?: ConstantResolutionBlockFacts['lineFacts'][number]
+): TLine {
+	return facts?.arguments ? ({ ...line, arguments: facts.arguments } as TLine) : line;
+}
+
+function applyMemoryReferenceFacts<TLine extends CompilerASTLine>(
+	line: TLine,
+	facts?: MemoryReferenceResolutionLineFacts
+): TLine {
+	return facts?.arguments ? ({ ...line, arguments: facts.arguments } as TLine) : line;
+}
+
+function applyResolvedArgumentFacts<TLine extends CompilerASTLine>(
+	line: TLine,
+	constantFacts: ConstantResolutionBlockFacts['lineFacts'][number],
+	memoryReferenceFacts: MemoryReferenceResolutionLineFacts | undefined
+): TLine {
+	return applyMemoryReferenceFacts(applyConstantFacts(line, constantFacts), memoryReferenceFacts);
 }
 
 function collectPrototypeShapeIds(ast: ValidatedModuleAST): string[] {
@@ -396,12 +429,19 @@ function createFunctionContext(
 
 function resolveLineFacts<TContext extends ModuleCompilationContext | FunctionCompilationContext>(
 	lines: readonly CompilerASTLine[],
-	context: TContext
+	context: TContext,
+	constantReferences: ConstantResolutionBlockFacts | undefined,
+	memoryReferences: MemoryReferenceResolutionBlockFacts | undefined
 ): Array<SemanticReferenceLineFacts | undefined> {
 	const lineFacts: Array<SemanticReferenceLineFacts | undefined> = [];
 
-	for (const originalLine of lines) {
-		const line = resolveLineReferences(originalLine, context);
+	for (const [lineIndex, originalLine] of lines.entries()) {
+		const sourceLine = applyResolvedArgumentFacts(
+			originalLine,
+			constantReferences?.lineFacts[lineIndex],
+			memoryReferences?.lineFacts[lineIndex]
+		);
+		const line = resolveLineReferences(sourceLine, context);
 		lineFacts.push(collectLineFacts(originalLine, line));
 		applyResolvedLineEffect(line, context);
 	}
@@ -411,18 +451,30 @@ function resolveLineFacts<TContext extends ModuleCompilationContext | FunctionCo
 
 function resolveModuleReferences(
 	input: ResolveSemanticReferencesInput,
-	ast: ValidatedModuleAST
+	ast: ValidatedModuleAST,
+	astIndex: number
 ): [string, ModuleSemanticReferences] {
-	const lineFacts = resolveLineFacts(ast.lines, createModuleContext(input, ast));
+	const lineFacts = resolveLineFacts(
+		ast.lines,
+		createModuleContext(input, ast),
+		input.constantReferences.modules[astIndex],
+		input.memoryReferences.modules[astIndex]
+	);
 	return [ast.id, { lineFacts }];
 }
 
 function resolveFunctionReferences(
 	input: ResolveSemanticReferencesInput,
-	ast: ValidatedFunctionAST
+	ast: ValidatedFunctionAST,
+	astIndex: number
 ): [string, FunctionSemanticReferences] {
 	const functionMetadata = getFunctionMetadata(input, ast);
-	const lineFacts = resolveLineFacts(ast.lines, createFunctionContext(input, ast, functionMetadata));
+	const lineFacts = resolveLineFacts(
+		ast.lines,
+		createFunctionContext(input, ast, functionMetadata),
+		input.constantReferences.functions[astIndex],
+		input.memoryReferences.functions[astIndex]
+	);
 	return [functionMetadata.id, { functionId: functionMetadata.id, lineFacts }];
 }
 
@@ -435,8 +487,10 @@ function resolveFunctionReferences(
 export function resolveSemanticReferences(input: ResolveSemanticReferencesInput): ResolveSemanticReferencesResult {
 	return {
 		references: {
-			modules: Object.fromEntries(input.ast.modules.map(ast => resolveModuleReferences(input, ast))),
-			functions: Object.fromEntries(input.ast.functions.map(ast => resolveFunctionReferences(input, ast))),
+			modules: Object.fromEntries(input.ast.modules.map((ast, index) => resolveModuleReferences(input, ast, index))),
+			functions: Object.fromEntries(
+				input.ast.functions.map((ast, index) => resolveFunctionReferences(input, ast, index))
+			),
 		},
 	};
 }
