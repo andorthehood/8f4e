@@ -2,8 +2,8 @@ import type {
 	CompilationContext,
 	FunctionMetadata,
 	FunctionValueType,
-	NormalizedCallLine,
 	ResolvedCallLine,
+	SemanticCallLine,
 	Stack,
 	StackItem,
 } from '@8f4e/language-spec';
@@ -27,7 +27,7 @@ function formatFunctionCallSignature(functionName: string, parameters: readonly 
 	return `${functionName}(${parameters.join(', ')})`;
 }
 
-function resolveTargetFunction(line: NormalizedCallLine, context: CompilationContext): FunctionMetadata {
+function resolveTargetFunction(line: SemanticCallLine, context: CompilationContext): FunctionMetadata {
 	const functionName = line.arguments[0].value;
 	const functionRegistry = context.namespace.functions;
 	if (!functionRegistry) {
@@ -70,7 +70,7 @@ function resolveTargetFunction(line: NormalizedCallLine, context: CompilationCon
  * @returns The relevant stack items for the analysis step.
  */
 export function analyzeCall(
-	line: NormalizedCallLine | ResolvedCallLine,
+	line: SemanticCallLine | ResolvedCallLine,
 	context: CompilationContext
 ): { consumed: Stack; produced: Stack } {
 	for (const inlinePushLine of line.inlineArgumentPushes ?? []) {

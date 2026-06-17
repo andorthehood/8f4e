@@ -4,24 +4,24 @@ import {
 	ErrorCode,
 	getError,
 	type MemoryCopyLine,
-	type NormalizedMemoryCopyLine,
+	type ResolvedMemoryCopyLine,
 } from '@8f4e/language-spec';
-import { normalizeAndValidateResolvableArgs } from './helpers';
+import { resolveAndValidateValueArguments } from './helpers';
 
 /**
- * Normalizes and validates the byte-length argument for `memoryCopy`.
+ * Resolves and validates the byte-length argument for `memoryCopy`.
  *
  * @param line - AST line being processed.
  * @param context - Compilation context used by the operation.
  * @returns The computed result.
  */
-export default function normalizeMemoryCopy(
+export default function resolveMemoryCopyReferences(
 	line: MemoryCopyLine,
 	context: CompilationContext
-): NormalizedMemoryCopyLine | MemoryCopyLine {
-	const normalized = normalizeAndValidateResolvableArgs(line, context, [0]);
+): ResolvedMemoryCopyLine | MemoryCopyLine {
+	const resolved = resolveAndValidateValueArguments(line, context, [0]);
 
-	const argument = normalized.arguments[0];
+	const argument = resolved.arguments[0];
 	if (argument?.type === ArgumentType.LITERAL && !argument.isInteger) {
 		throw getError(ErrorCode.TYPE_MISMATCH, line, context);
 	}
@@ -29,5 +29,5 @@ export default function normalizeMemoryCopy(
 		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	}
 
-	return normalized as NormalizedMemoryCopyLine | MemoryCopyLine;
+	return resolved as ResolvedMemoryCopyLine | MemoryCopyLine;
 }

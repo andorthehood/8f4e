@@ -9,10 +9,10 @@ import type {
 	MemoryLayoutPlan,
 	MemoryPointerMetadata,
 	MemoryPointerMetadataMap,
-	NormalizedArgumentLiteral,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
 	PointeeBaseType,
+	ResolvedArgumentLiteral,
 	ScalarMemoryDeclarationLine,
 } from '@8f4e/language-spec';
 import { ArgumentType, BASE_TYPE_METADATA, ErrorCode, isArrayMemoryDeclarationLine } from '@8f4e/language-spec';
@@ -146,14 +146,14 @@ function assertDeclarableScalarIdentifier(shape: MemoryArgumentShape, line: Scal
 	}
 }
 
-function getNormalizedAddressMetadata(
+function getResolvedAddressMetadata(
 	argument: CompilerASTLine['arguments'][number] | undefined
 ): AddressMetadata | undefined {
 	if (argument?.type !== ArgumentType.LITERAL || !('address' in argument)) {
 		return undefined;
 	}
 
-	return (argument as NormalizedArgumentLiteral).address;
+	return (argument as ResolvedArgumentLiteral).address;
 }
 
 function getMemoryDeclarationOrThrow(
@@ -281,7 +281,7 @@ function resolveScalarDefault(
 		};
 	}
 
-	const defaultAddress = getNormalizedAddressMetadata(line.arguments[1]);
+	const defaultAddress = getResolvedAddressMetadata(line.arguments[1]);
 	return {
 		defaultValue: resolveMemoryDefaultValue(shape.secondArg, line, module, memoryPlan),
 		...(defaultAddress ? { defaultAddress } : {}),

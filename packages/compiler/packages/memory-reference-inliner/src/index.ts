@@ -12,10 +12,10 @@ import type {
 	LocalMap,
 	MemoryPointerMetadataMap,
 	ModuleAST,
-	NormalizedArgumentLiteral,
 	ParamLine,
 	PointerLocalBinding,
 	PrototypeAST,
+	ResolvedArgumentLiteral,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
@@ -31,7 +31,6 @@ import {
 	resolveMemoryExpressionOperand,
 } from './resolveMemoryExpressionOperand';
 
-export { memoryEndAddressValue, memoryStartAddressValue, moduleAddressValue } from './addressValues';
 export {
 	type MemoryReferenceModuleNamespace,
 	type MemoryReferencePointerMetadataByModuleId,
@@ -192,7 +191,7 @@ function updatePointerMemoryMetadata(line: CompilerASTLine, context: MemoryRefer
 		return;
 	}
 
-	const defaultAddress = (defaultArgument as NormalizedArgumentLiteral).address;
+	const defaultAddress = (defaultArgument as ResolvedArgumentLiteral).address;
 	const pointeeElementCount = getPointeeElementCount(defaultAddress, context);
 	const moduleId = context.moduleName ?? context.currentModule?.id;
 	if (!moduleId) {
@@ -222,7 +221,7 @@ function resolveValueOperand(
 	return resolveMemoryExpressionOperand(operand, context);
 }
 
-function resolvedValueToLiteral(resolved: Const): NormalizedArgumentLiteral {
+function resolvedValueToLiteral(resolved: Const): ResolvedArgumentLiteral {
 	return {
 		type: ArgumentType.LITERAL,
 		value: resolved.value,
@@ -276,7 +275,7 @@ export function tryResolveValueArgument(
 export function inlineMemoryReferenceArgument(
 	argument: Argument,
 	context: MemoryReferenceResolutionContext
-): Argument | NormalizedArgumentLiteral {
+): Argument | ResolvedArgumentLiteral {
 	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
 		return argument;
 	}
