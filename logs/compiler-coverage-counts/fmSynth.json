@@ -1972,5 +1972,85 @@
 				"maxRangesPerFunction": 9
 			}
 		}
+	},
+	{
+		"schemaVersion": 2,
+		"commit": "b814b0be642a17a10fd5f5343807f0d4fd59e6dc",
+		"version": "3.4.1",
+		"benchmark": "fmSynth.8f4e",
+		"coverage": {
+			"compilerPipeline": {
+				"coveredFunctions": 492,
+				"functionEntries": 87398,
+				"rangeExecutions": 291411,
+				"maxRangesPerFunction": 35
+			},
+			"compiler": {
+				"coveredFunctions": 53,
+				"functionEntries": 5107,
+				"rangeExecutions": 14385,
+				"maxRangesPerFunction": 15
+			},
+			"tokenizer": {
+				"coveredFunctions": 54,
+				"functionEntries": 25155,
+				"rangeExecutions": 144262,
+				"maxRangesPerFunction": 34
+			},
+			"memoryPlanner": {
+				"coveredFunctions": 28,
+				"functionEntries": 2904,
+				"rangeExecutions": 7796,
+				"maxRangesPerFunction": 8
+			},
+			"memoryReferenceInliner": {
+				"coveredFunctions": 27,
+				"functionEntries": 10019,
+				"rangeExecutions": 27273,
+				"maxRangesPerFunction": 35
+			},
+			"memoryDefaultResolver": {
+				"coveredFunctions": 13,
+				"functionEntries": 1701,
+				"rangeExecutions": 3644,
+				"maxRangesPerFunction": 12
+			},
+			"semanticReferenceResolver": {
+				"coveredFunctions": 48,
+				"functionEntries": 7911,
+				"rangeExecutions": 17698,
+				"maxRangesPerFunction": 13
+			},
+			"semanticUtils": {
+				"coveredFunctions": 15,
+				"functionEntries": 3122,
+				"rangeExecutions": 4539,
+				"maxRangesPerFunction": 8
+			},
+			"stackAnalyzer": {
+				"coveredFunctions": 77,
+				"functionEntries": 12102,
+				"rangeExecutions": 36978,
+				"maxRangesPerFunction": 27
+			},
+			"wasmCodegen": {
+				"coveredFunctions": 108,
+				"functionEntries": 6172,
+				"rangeExecutions": 16459,
+				"maxRangesPerFunction": 17
+			},
+			"compilerWasmUtils": {
+				"coveredFunctions": 32,
+				"functionEntries": 2830,
+				"rangeExecutions": 6345,
+				"maxRangesPerFunction": 8
+			},
+			"languageSpec": {
+				"coveredFunctions": 37,
+				"functionEntries": 10375,
+				"rangeExecutions": 12032,
+				"maxRangesPerFunction": 9
+			}
+		}
 	}
 ]
