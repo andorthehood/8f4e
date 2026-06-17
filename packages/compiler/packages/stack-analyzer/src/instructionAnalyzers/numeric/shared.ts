@@ -1,6 +1,21 @@
-import type { StackItem, StackValueType } from '@8f4e/language-spec';
+import type { StackAnalysisNumericValueKind, StackItem, StackValueType } from '@8f4e/language-spec';
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '@8f4e/semantic-utils';
 import { createStackValue } from '../stack';
+
+/**
+ * Resolves two numeric operands to the concrete value kind used by downstream codegen.
+ *
+ * @param left - Left stack operand.
+ * @param right - Right stack operand.
+ * @returns The numeric value kind shared through stack-analysis facts.
+ */
+export function getNumericOperandKind(left: StackItem, right: StackItem): StackAnalysisNumericValueKind {
+	if (areAllOperandsIntegers(left, right)) {
+		return 'int32';
+	}
+
+	return areAllOperandsFloat64(left, right) ? 'float64' : 'float32';
+}
 
 /**
  * Builds the stack item produced by a two-operand numeric instruction.
@@ -15,10 +30,10 @@ export function numericResult(
 	right: StackItem,
 	deriveIntegerMetadata?: (left: StackItem, right: StackItem) => Partial<StackItem>
 ): StackItem {
-	const isInteger = areAllOperandsIntegers(left, right);
-	const isFloat64 = areAllOperandsFloat64(left, right);
+	const numericOperandKind = getNumericOperandKind(left, right);
+	const isInteger = numericOperandKind === 'int32';
 	const integerMetadata = isInteger ? (deriveIntegerMetadata?.(left, right) ?? {}) : {};
-	const valueType: StackValueType = isInteger ? 'int' : isFloat64 ? 'float64' : 'float';
+	const valueType: StackValueType = isInteger ? 'int' : numericOperandKind === 'float64' ? 'float64' : 'float';
 	if (isInteger && 'kind' in integerMetadata && integerMetadata.kind === 'address' && integerMetadata.address) {
 		return {
 			kind: 'address',

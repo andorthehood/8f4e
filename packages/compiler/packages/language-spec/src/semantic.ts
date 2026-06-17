@@ -268,10 +268,26 @@ export interface StackAnalysisLocalPointerFact {
 	pointeeMemoryRegionName?: string;
 }
 
+export type StackAnalysisNumericValueKind = 'int32' | 'float32' | 'float64';
+
+export interface StackAnalysisMapFact {
+	inputKind: StackAnalysisNumericValueKind;
+	outputKind: StackAnalysisNumericValueKind;
+}
+
+export interface StackAnalysisClampFact {
+	accessByteWidth: number;
+	memoryIndex: number;
+	range?: MemoryAddressRange;
+}
+
 export interface StackAnalysisLineFacts {
 	stackAnalysis: StackAnalysisResult;
 	targetFunctionId?: string;
 	localPointer?: StackAnalysisLocalPointerFact;
+	numericOperandKind?: StackAnalysisNumericValueKind;
+	map?: StackAnalysisMapFact;
+	clamp?: StackAnalysisClampFact;
 }
 
 export interface ConstantResolutionLineFacts {

@@ -14,15 +14,14 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import type { InstructionCompiler } from '@8f4e/language-spec';
 
-import { areAllOperandsFloat64, areAllOperandsIntegers } from '@8f4e/semantic-utils';
 import { saveByteCode } from './utils/saveByteCode';
 
 const createMinMax =
 	(instruction: 'min' | 'max'): InstructionCompiler =>
 	(line, context, facts) => {
-		const [operand1, operand2] = facts.stackAnalysis.consumedOperands;
-		const isInteger = areAllOperandsIntegers(operand1, operand2);
-		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
+		const numericOperandKind = facts.numericOperandKind!;
+		const isInteger = numericOperandKind === 'int32';
+		const isFloat64 = numericOperandKind === 'float64';
 
 		if (isInteger) {
 			const leftName = `__${instruction}_left${line.lineNumber}`;

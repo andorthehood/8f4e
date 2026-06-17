@@ -1,10 +1,6 @@
 import { i32const, localGet, localSet, WASM_I32_GT_U, WASM_I32_LT_S, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
-
-import { getOrCreateMemoryGuardLocal } from './memoryAccessGuard';
-
-export { getClampAccessByteWidth, getClampedAddressStackItem, getModuleAddressRange } from '@8f4e/semantic-utils';
-
 import type { CodegenContext, CompilationContext, CompilerASTLine, MemoryAddressRange } from '@8f4e/language-spec';
+import { getOrCreateMemoryGuardLocal } from './memoryAccessGuard';
 
 /**
  * Builds bytecode that clamps the top stack address between lower and upper bounds.
