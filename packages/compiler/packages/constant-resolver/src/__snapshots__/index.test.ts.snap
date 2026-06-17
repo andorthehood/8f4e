@@ -1,0 +1,65 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`constant resolver > keeps AST lines immutable while reporting resolved constant arguments 1`] = `
+{
+  "namespaces": {
+    "SHARED": {
+      "SIZE": {
+        "isInteger": true,
+        "value": 8,
+      },
+    },
+    "main": {
+      "SIZE": {
+        "isInteger": true,
+        "value": 8,
+      },
+    },
+  },
+  "references": {
+    "constants": [
+      {
+        "lineFacts": [
+          undefined,
+          {
+            "arguments": [
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SIZE",
+              },
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
+              },
+            ],
+          },
+          undefined,
+        ],
+      },
+    ],
+    "functions": [],
+    "modules": [
+      {
+        "lineFacts": [
+          undefined,
+          undefined,
+          {
+            "arguments": [
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
+              },
+            ],
+          },
+          undefined,
+        ],
+      },
+    ],
+    "prototypes": [],
+  },
+}
+`;

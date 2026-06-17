@@ -90,6 +90,13 @@ function prototypeAst(id: string, memoryDeclarationLines: readonly MemoryDeclara
 	} as ValidatedPrototypeAST;
 }
 
+function noConstantReferences() {
+	return {
+		prototypes: [],
+		modules: [],
+	};
+}
+
 describe('resolveMemoryDefaults', () => {
 	it('resolves scalar and array declaration defaults', () => {
 		const counter = scalarLine(2, 'int', [classifyIdentifier('counter'), literal(7)]);
@@ -103,6 +110,7 @@ describe('resolveMemoryDefaults', () => {
 		const memoryPlan = planProjectMemoryLayout({
 			prototypes: [],
 			modules: [module],
+			constantReferences: noConstantReferences(),
 		});
 
 		const result = resolveMemoryDefaults({
@@ -122,6 +130,7 @@ describe('resolveMemoryDefaults', () => {
 		const memoryPlan = planProjectMemoryLayout({
 			prototypes: [],
 			modules: [module],
+			constantReferences: noConstantReferences(),
 			startingByteAddress: 4,
 		});
 
@@ -154,6 +163,7 @@ describe('resolveMemoryDefaults', () => {
 		const memoryPlan = planProjectMemoryLayout({
 			prototypes: [prototype],
 			modules: [module],
+			constantReferences: noConstantReferences(),
 		});
 
 		const result = resolveMemoryDefaults({
@@ -178,6 +188,7 @@ describe('resolveMemoryDefaults', () => {
 		const memoryPlan = planProjectMemoryLayout({
 			prototypes: [],
 			modules: [module],
+			constantReferences: noConstantReferences(),
 		});
 
 		expect(() =>

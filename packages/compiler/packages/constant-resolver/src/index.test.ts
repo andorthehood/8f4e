@@ -15,7 +15,7 @@ import type {
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import { ConstantInliningError, ConstantInliningErrorCode, inlineConstantsInAST, inlineConstantsInASTs } from './index';
+import { ConstantResolverError, ConstantResolverErrorCode, resolveConstants } from './index';
 
 function id(value: string, referenceKind: 'plain' | 'constant' = 'plain'): ArgumentIdentifier {
 	return {
@@ -125,8 +125,8 @@ function moduleAst(id: string, lines: CompilerASTLine[], moduleLineRef: ModuleLi
 	} as unknown as ValidatedModuleAST;
 }
 
-describe('constant inlining', () => {
-	it('mutates the same AST and line objects while replacing constant references', () => {
+describe('constant resolver', () => {
+	it('keeps AST lines immutable while reporting resolved constant arguments', () => {
 		const sharedLine = constantsLine(10, 'SHARED');
 		const sharedConstLine = constLine(11, 'SIZE', literal(8));
 		const sharedAst = constantsAst(
@@ -139,12 +139,7 @@ describe('constant inlining', () => {
 		const pushSizeLine = pushLine(22, id('SIZE', 'constant'));
 		const mainAst = moduleAst('main', [mainLine, useSharedLine, pushSizeLine, moduleEndLine(23)], mainLine);
 
-		const {
-			ast: {
-				constants: [inlinedSharedAst],
-				modules: [inlinedMainAst],
-			},
-		} = inlineConstantsInASTs({
+		const result = resolveConstants({
 			ast: {
 				prototypes: [],
 				modules: [mainAst],
@@ -153,17 +148,15 @@ describe('constant inlining', () => {
 			},
 		});
 
-		expect(inlinedSharedAst).toBe(sharedAst);
-		expect(inlinedMainAst).toBe(mainAst);
-		expect(inlinedMainAst.lines[1]).toBe(useSharedLine);
-		expect(inlinedMainAst.lines[2]).toBe(pushSizeLine);
-		expect(inlinedMainAst.lines.map(line => line.lineNumber)).toEqual([20, 21, 22, 23]);
+		expect(mainAst.lines[1]).toBe(useSharedLine);
+		expect(mainAst.lines[2]).toBe(pushSizeLine);
 		expect(useSharedLine.arguments[0]).toEqual(id('SHARED', 'constant'));
 		expect(sharedConstLine.arguments[0]).toEqual(id('SIZE', 'constant'));
-		expect(pushSizeLine.arguments[0]).toEqual(literal(8));
+		expect(pushSizeLine.arguments[0]).toEqual(id('SIZE', 'constant'));
+		expect(result).toMatchSnapshot();
 	});
 
-	it('keeps memory operands and only replaces constant operands inside expressions', () => {
+	it('keeps memory operands and only resolves constant operands inside expressions', () => {
 		const mainLine = moduleLine(1, 'main');
 		const sizeTimesElementSize = expression(id('SIZE', 'constant'), '*', sizeofId('buffer'));
 		const literalExpression = expression(literal(2), '*', literal(3));
@@ -179,29 +172,77 @@ describe('constant inlining', () => {
 			mainLine
 		);
 
-		inlineConstantsInAST(ast);
-
-		expect(ast.lines[2].arguments[0]).toEqual({
-			...sizeTimesElementSize,
-			left: literal(4),
+		const result = resolveConstants({
+			ast: {
+				prototypes: [],
+				modules: [ast],
+				constants: [],
+				functions: [],
+			},
 		});
-		expect(ast.lines[3].arguments[0]).toBe(literalExpression);
+
+		expect(ast.lines[2].arguments[0]).toBe(sizeTimesElementSize);
+		expect(result.references.modules[0].lineFacts[2]).toEqual({
+			arguments: [
+				{
+					...sizeTimesElementSize,
+					left: literal(4),
+				},
+			],
+		});
+		expect(result.references.modules[0].lineFacts[3]).toBeUndefined();
 	});
 
 	it('throws when a constant declaration needs memory knowledge', () => {
 		const mainLine = moduleLine(1, 'main');
 		const ast = moduleAst('main', [mainLine, constLine(2, 'BAD', sizeofId('buffer')), moduleEndLine(3)], mainLine);
 
-		expect(() => inlineConstantsInAST(ast)).toThrowError(ConstantInliningError);
-		expect(() => inlineConstantsInAST(ast)).toThrowError(ConstantInliningErrorCode.UNRESOLVED_CONSTANT_VALUE);
+		expect(() =>
+			resolveConstants({
+				ast: {
+					prototypes: [],
+					modules: [ast],
+					constants: [],
+					functions: [],
+				},
+			})
+		).toThrowError(ConstantResolverError);
+		expect(() =>
+			resolveConstants({
+				ast: {
+					prototypes: [],
+					modules: [ast],
+					constants: [],
+					functions: [],
+				},
+			})
+		).toThrowError(ConstantResolverErrorCode.UNRESOLVED_CONSTANT_VALUE);
 	});
 
 	it('throws when a used constants namespace cannot be collected', () => {
 		const mainLine = moduleLine(1, 'main');
 		const ast = moduleAst('main', [mainLine, useLine(2, 'MISSING'), moduleEndLine(3)], mainLine);
 
-		expect(() => inlineConstantsInAST(ast)).toThrowError(ConstantInliningError);
-		expect(() => inlineConstantsInAST(ast)).toThrowError(ConstantInliningErrorCode.UNRESOLVED_NAMESPACE);
+		expect(() =>
+			resolveConstants({
+				ast: {
+					prototypes: [],
+					modules: [ast],
+					constants: [],
+					functions: [],
+				},
+			})
+		).toThrowError(ConstantResolverError);
+		expect(() =>
+			resolveConstants({
+				ast: {
+					prototypes: [],
+					modules: [ast],
+					constants: [],
+					functions: [],
+				},
+			})
+		).toThrowError(ConstantResolverErrorCode.UNRESOLVED_NAMESPACE);
 	});
 
 	it('throws when a module and constants block share a constant namespace id', () => {
@@ -218,16 +259,25 @@ describe('constant inlining', () => {
 		const sharedModuleLine = moduleLine(4, 'shared');
 		const module = moduleAst('shared', [sharedModuleLine, moduleEndLine(5)], sharedModuleLine);
 
-		const input = {
-			ast: {
-				prototypes: [],
-				modules: [module],
-				constants: [constants],
-				functions: [],
-			},
-		};
-
-		expect(() => inlineConstantsInASTs(input)).toThrowError(ConstantInliningError);
-		expect(() => inlineConstantsInASTs(input)).toThrowError(ConstantInliningErrorCode.DUPLICATE_NAMESPACE);
+		expect(() =>
+			resolveConstants({
+				ast: {
+					prototypes: [],
+					modules: [module],
+					constants: [constants],
+					functions: [],
+				},
+			})
+		).toThrowError(ConstantResolverError);
+		expect(() =>
+			resolveConstants({
+				ast: {
+					prototypes: [],
+					modules: [module],
+					constants: [constants],
+					functions: [],
+				},
+			})
+		).toThrowError(ConstantResolverErrorCode.DUPLICATE_NAMESPACE);
 	});
 });

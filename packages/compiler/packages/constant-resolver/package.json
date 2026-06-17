@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/constant-inliner",
+  "name": "@8f4e/constant-resolver",
   "version": "2.0.10",
   "private": true,
-  "description": "8f4e AST constant inliner package",
+  "description": "8f4e compiler constant resolution pass",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -108,6 +108,15 @@ function withRemoteModules(
 	};
 }
 
+function noConstantReferences() {
+	return {
+		prototypes: [],
+		modules: [],
+		constants: [],
+		functions: [],
+	};
+}
+
 describe('inlineMemoryReferences', () => {
 	it('inlines memory references across a project AST using the memory plan', () => {
 		const moduleLine = {
@@ -148,6 +157,7 @@ describe('inlineMemoryReferences', () => {
 				functions: [],
 			},
 			memoryPlan,
+			constantReferences: noConstantReferences(),
 		});
 
 		expect(result.ast.modules[0]).not.toBe(ast);
@@ -230,12 +240,76 @@ describe('inlineMemoryReferences', () => {
 				functions: [],
 			},
 			memoryPlan,
+			constantReferences: noConstantReferences(),
 		});
 
 		expect(result.ast.modules[0].lines[3].arguments[0]).toEqual({
 			type: ArgumentType.LITERAL,
 			value: 4,
 			isInteger: true,
+		});
+	});
+
+	it('applies constant facts before inlining memory references', () => {
+		const moduleLine = {
+			lineNumber: 1,
+			instruction: 'module',
+			arguments: [classifyIdentifier('main')],
+		};
+		const pushLine = {
+			lineNumber: 2,
+			instruction: 'push',
+			arguments: [parseArgument('&buffer+OFFSET')],
+		};
+		const ast = {
+			type: 'module',
+			id: 'main',
+			lines: [moduleLine, pushLine],
+			moduleLine,
+			memoryDeclarationLines: [],
+		} as unknown as ValidatedModuleAST;
+		const buffer = createMemoryDeclaration('buffer', {
+			lineNumber: 3,
+			type: 'int',
+			numberOfElements: 4,
+			elementWordSize: 4,
+			wordAlignedAddress: 4,
+			wordAlignedSize: 4,
+			byteAddress: 16,
+		});
+		const memoryPlan = createMemoryPlan([
+			createPlannedModule('main', { buffer }, { byteAddress: 16, wordAlignedSize: 4 }),
+		]);
+
+		const result = inlineMemoryReferences({
+			ast: {
+				prototypes: [],
+				modules: [ast],
+				constants: [],
+				functions: [],
+			},
+			memoryPlan,
+			constantReferences: {
+				prototypes: [],
+				modules: [
+					{
+						lineFacts: [
+							undefined,
+							{
+								arguments: [parseArgument('&buffer+4')],
+							},
+						],
+					},
+				],
+				constants: [],
+				functions: [],
+			},
+		});
+
+		expect(pushLine.arguments[0]).toEqual(parseArgument('&buffer+OFFSET'));
+		expect(result.ast.modules[0].lines[1].arguments[0]).toMatchObject({
+			type: ArgumentType.LITERAL,
+			value: 20,
 		});
 	});
 });
