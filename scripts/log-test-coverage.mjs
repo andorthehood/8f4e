@@ -12,21 +12,45 @@ const suiteName = 'test-coverage';
 
 const ignoredDirectories = new Set(['.tmp', 'coverage', 'dist', 'node_modules']);
 const ignoredPackages = new Set(['glugglug']);
+const excludedSourceFilePatterns = [/\.d\.ts$/, /\.test\.ts$/, /\.spec\.ts$/];
 const coverageMetrics = ['statements', 'branches', 'functions', 'lines'];
 
 await main();
 
 async function main() {
-	const packageEntries = await collectPackageEntries(packagesRoot);
+	const packageEntries = (await Promise.all(getPackageRoots().map(collectPackageEntries))).flat();
 	const commit = getGitCommit();
 	const recordedAt = new Date().toISOString();
 	const loggedEntries = [];
 	const skippedEntries = [];
+	let loggedCoverageSummaryCount = 0;
 
 	for (const packageEntry of packageEntries) {
 		const coverageSummaryPath = await findCoverageSummaryPath(packageEntry);
 
 		if (!coverageSummaryPath) {
+			if (
+				!packageEntry.hasTestTarget &&
+				packageEntry.sourceRoot &&
+				!(await hasMeasuredTypeScriptFiles(packageEntry.sourceRoot))
+			) {
+				const coverage = createEmptyCoverageResult();
+				const logEntry = {
+					commit,
+					recordedAt,
+					coverage,
+				};
+				const outputPath = getPackageLogPath(packageEntry);
+
+				await appendLogEntry(outputPath, logEntry);
+				loggedEntries.push({
+					...logEntry,
+					packageName: packageEntry.name,
+					outputPath,
+				});
+				continue;
+			}
+
 			skippedEntries.push({
 				...packageEntry,
 				reason: 'no coverage summary',
@@ -36,6 +60,7 @@ async function main() {
 
 		const summary = await readJson(coverageSummaryPath);
 		const coverage = toCoverageResult(summary.total);
+		loggedCoverageSummaryCount += 1;
 		const logEntry = {
 			commit,
 			recordedAt,
@@ -51,12 +76,48 @@ async function main() {
 		});
 	}
 
-	if (loggedEntries.length === 0) {
+	if (loggedCoverageSummaryCount === 0) {
 		console.error('No test coverage summaries were found. Run tests with --coverage before logging.');
 		process.exit(1);
 	}
 
 	printResults(loggedEntries, skippedEntries);
+}
+
+function getPackageRoots() {
+	const packageRootArgs = getArgValues('--package-root');
+
+	if (packageRootArgs.length === 0) {
+		return [packagesRoot];
+	}
+
+	return packageRootArgs.map(packageRoot => path.resolve(workspaceRoot, packageRoot));
+}
+
+function getArgValues(name) {
+	const values = [];
+
+	for (let index = 2; index < process.argv.length; index += 1) {
+		const arg = process.argv[index];
+
+		if (arg === name) {
+			const value = process.argv[index + 1];
+
+			if (!value) {
+				throw new Error(`${name} requires a value`);
+			}
+
+			values.push(value);
+			index += 1;
+			continue;
+		}
+
+		if (arg.startsWith(`${name}=`)) {
+			values.push(arg.slice(name.length + 1));
+		}
+	}
+
+	return values;
 }
 
 async function collectPackageEntries(root) {
@@ -75,14 +136,18 @@ async function collectPackageEntries(root) {
 
 		const [projectJson, packageJson] = await Promise.all([readJson(projectJsonPath), readJson(packageJsonPath)]);
 
-		if (!projectJson.targets?.test || !packageJson.name || ignoredPackages.has(packageJson.name)) {
+		if (!packageJson.name || ignoredPackages.has(packageJson.name)) {
 			continue;
 		}
+
+		const sourceRoot = await resolveSourceRoot(packageRoot, projectJson);
 
 		packageEntries.push({
 			name: packageJson.name,
 			root: packageRoot,
 			relativeRoot: toWorkspacePath(packageRoot),
+			hasTestTarget: Boolean(projectJson.targets?.test),
+			sourceRoot,
 		});
 	}
 
@@ -109,6 +174,29 @@ async function collectProjectJsonPaths(dir, projectJsonPaths) {
 	}
 }
 
+async function resolveSourceRoot(packageRoot, projectJson) {
+	const packageRelativeSourceRoot = path.join(packageRoot, 'src');
+	const configuredSourceRoot = projectJson.sourceRoot;
+
+	if (!configuredSourceRoot) {
+		return (await pathExists(packageRelativeSourceRoot)) ? packageRelativeSourceRoot : null;
+	}
+
+	const sourceRootIsWorkspaceRelative =
+		configuredSourceRoot === 'packages' || configuredSourceRoot.startsWith('packages/');
+	const workspaceRelativeSourceRoot = sourceRootIsWorkspaceRelative
+		? path.resolve(workspaceRoot, configuredSourceRoot)
+		: null;
+
+	if (workspaceRelativeSourceRoot && (await pathExists(workspaceRelativeSourceRoot))) {
+		return workspaceRelativeSourceRoot;
+	}
+
+	const localSourceRoot = path.resolve(packageRoot, configuredSourceRoot);
+
+	return (await pathExists(localSourceRoot)) ? localSourceRoot : null;
+}
+
 async function findCoverageSummaryPath(packageEntry) {
 	const packageNameCoveragePath = path.join(workspaceRoot, 'coverage', packageEntry.name, 'coverage-summary.json');
 	const workspaceCoveragePath = path.join(
@@ -130,6 +218,32 @@ async function findCoverageSummaryPath(packageEntry) {
 	return (await pathExists(packageCoveragePath)) ? packageCoveragePath : null;
 }
 
+async function hasMeasuredTypeScriptFiles(root) {
+	const entries = await fs.readdir(root, { withFileTypes: true });
+
+	for (const entry of entries) {
+		const entryPath = path.join(root, entry.name);
+
+		if (entry.isDirectory()) {
+			if (!ignoredDirectories.has(entry.name) && (await hasMeasuredTypeScriptFiles(entryPath))) {
+				return true;
+			}
+
+			continue;
+		}
+
+		if (entry.isFile() && shouldMeasureSourceFile(entryPath)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function shouldMeasureSourceFile(filePath) {
+	return filePath.endsWith('.ts') && !excludedSourceFilePatterns.some(pattern => pattern.test(filePath));
+}
+
 function toCoverageResult(total) {
 	return Object.fromEntries(
 		coverageMetrics.map(metric => {
@@ -148,6 +262,19 @@ function toCoverageResult(total) {
 				},
 			];
 		})
+	);
+}
+
+function createEmptyCoverageResult() {
+	return Object.fromEntries(
+		coverageMetrics.map(metric => [
+			metric,
+			{
+				covered: 0,
+				total: 0,
+				percentage: 100,
+			},
+		])
 	);
 }
 
