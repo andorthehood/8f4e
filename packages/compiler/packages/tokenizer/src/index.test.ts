@@ -65,7 +65,6 @@ describe('compileToAST', () => {
 			functionLine: { instruction: 'function' },
 			functionEndLine: { instruction: 'functionEnd' },
 			exportLine: { instruction: '#export' },
-			exportName: 'mixExport',
 		});
 		expect(ast.lines[0].instruction).toBe('const');
 	});
@@ -237,10 +236,6 @@ describe('compileToAST', () => {
 			type: 'function',
 			name: 'hostLog',
 			importLine: { instruction: '#import' },
-			import: {
-				moduleName: 'host',
-				fieldName: 'log.value',
-			},
 		});
 	});
 

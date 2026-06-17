@@ -2,7 +2,9 @@ import {
 	type CompilerDiagnosticContext,
 	compilerSourceBlockInstructionByType,
 	createFunctionId,
+	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	ErrorCode,
+	type FunctionImportMetadata,
 	type FunctionMetadata,
 	type FunctionMetadataLookup,
 	type FunctionRegistry,
@@ -36,6 +38,21 @@ type FunctionMetadataCollectionOptions = {
 	reservedExportNames: readonly string[];
 	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>;
 };
+
+function getFunctionImportMetadata(ast: ValidatedFunctionAST): FunctionImportMetadata | undefined {
+	if (!ast.importLine) {
+		return undefined;
+	}
+
+	return {
+		moduleName: DEFAULT_HOST_IMPORT_MODULE_NAME,
+		fieldName: ast.importLine.arguments[0].value,
+	};
+}
+
+function getFunctionExportName(ast: ValidatedFunctionAST): string | undefined {
+	return ast.exportLine ? (ast.exportLine.arguments[0]?.value ?? ast.name) : undefined;
+}
 
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
@@ -88,9 +105,9 @@ export function collectFunctionMetadataFromAsts(
 			}
 		}
 
-		const importedFunction = ast.import;
+		const importedFunction = getFunctionImportMetadata(ast);
 		// Imported functions cannot be valid exports; keep that conflict in per-function directive validation.
-		const exportName = importedFunction ? undefined : ast.exportName;
+		const exportName = importedFunction ? undefined : getFunctionExportName(ast);
 		if (exportName && overloadCountsByName[name] > 1) {
 			throw getError(
 				ErrorCode.OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED,
