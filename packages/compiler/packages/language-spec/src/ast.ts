@@ -7,7 +7,6 @@ import type {
 } from './arguments';
 import { ArgumentType } from './arguments';
 import type { SourceMetadata } from './compiled';
-import type { FunctionImportMetadata } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecTypes';
 import type { DocumentOnlyInstructionName, SemanticInstructionName } from './instructions';
 import { semanticInstructionNames } from './instructions';
@@ -255,9 +254,7 @@ export interface FunctionAST extends SourceBlockMetadata {
 	functionLine: FunctionLine;
 	functionEndLine: FunctionEndLine;
 	exportLine?: ExportLine;
-	exportName?: string;
 	importLine?: ImportLine;
-	import?: FunctionImportMetadata;
 }
 
 /** Parsed AST for a constants block. */
