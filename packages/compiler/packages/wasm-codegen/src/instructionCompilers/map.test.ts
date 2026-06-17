@@ -95,7 +95,7 @@ describe('map instruction compiler', () => {
 		]);
 	});
 
-	it('records a normalized implicit key row', () => {
+	it('records a resolved implicit key row', () => {
 		const context = createInstructionCompilerTestContext({
 			blockStack: [
 				{

@@ -100,7 +100,7 @@ This package must not:
 - Return persistent pointer target metadata for compiler contexts. That belongs to `@8f4e/memory-default-resolver`.
 - Resolve calls, function overloads, locals, stack effects, or code generation details.
 - Validate duplicate module ids, duplicate declarations, instruction arity, or syntax.
-- Add compatibility shims for old compiler-internal normalization APIs.
+- Add compatibility shims for old compiler-internal argument-resolution APIs.
 
 ## Error Ownership
 

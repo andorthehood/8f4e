@@ -65,7 +65,7 @@ describe('push instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('pushes a normalized literal value', () => {
+	it('pushes a resolved literal value', () => {
 		const context = createInstructionCompilerTestContext();
 
 		analyzeAndCompileInstruction(
@@ -84,7 +84,7 @@ describe('push instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('tracks address range metadata on normalized address literals', () => {
+	it('tracks address range metadata on resolved address literals', () => {
 		const context = createInstructionCompilerTestContext();
 
 		analyzeAndCompileInstruction(
@@ -194,7 +194,7 @@ describe('push instruction compiler', () => {
 		expect(context.stack[0]).toMatchObject({ kind: 'value', valueType: 'float64' });
 	});
 
-	it('pushes a normalized f64 literal emitting f64.const', () => {
+	it('pushes a resolved f64 literal emitting f64.const', () => {
 		const context = createInstructionCompilerTestContext();
 
 		analyzeAndCompileInstruction(
@@ -220,7 +220,7 @@ describe('push instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('tracks isFloat64 on the stack item for normalized f64 literal', () => {
+	it('tracks isFloat64 on the stack item for resolved f64 literal', () => {
 		const context = createInstructionCompilerTestContext();
 
 		analyzeAndCompileInstruction(

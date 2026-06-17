@@ -49,6 +49,11 @@ const coverageComponents = [
 		pathFragment: '/packages/compiler/packages/memory-default-resolver/dist/',
 	},
 	{
+		id: 'semanticReferenceResolver',
+		label: 'semantic reference resolver',
+		pathFragment: '/packages/compiler/packages/semantic-reference-resolver/dist/',
+	},
+	{
 		id: 'semanticUtils',
 		label: 'semantic utils',
 		pathFragment: '/packages/compiler/packages/semantic-utils/dist/',

@@ -2,13 +2,13 @@ import type {
 	CallLine,
 	CodegenPushLine,
 	CompilationContext,
-	NormalizedCallLine,
-	NormalizedPushLine,
 	PushArgument,
 	PushLine,
+	SemanticCallLine,
+	SemanticPushLine,
 } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, getError } from '@8f4e/language-spec';
-import normalizePush from './push';
+import resolvePushReferences from './push';
 
 function createInlinePushLine(line: CallLine, argument: PushArgument): PushLine {
 	return {
@@ -18,7 +18,7 @@ function createInlinePushLine(line: CallLine, argument: PushArgument): PushLine 
 	};
 }
 
-function isCodegenPushLine(line: NormalizedPushLine): line is CodegenPushLine {
+function isCodegenPushLine(line: SemanticPushLine): line is CodegenPushLine {
 	return (
 		line.arguments[0].type === ArgumentType.LITERAL ||
 		line.arguments[0].type === ArgumentType.STRING_LITERAL ||
@@ -27,43 +27,46 @@ function isCodegenPushLine(line: NormalizedPushLine): line is CodegenPushLine {
 }
 
 /**
- * Semantic normalizer for the `call` instruction.
+ * Semantic reference resolver for the `call` instruction.
  * Validates that the call target function name exists in the function registry
- * and normalizes inline argument pushes before stack analysis resolves the
+ * and resolves inline argument pushes before stack analysis resolves the
  * concrete overload.
  *
  * @param line - Source AST line being processed.
  * @param context - Compilation context used by the operation.
- * @returns Normalized call line.
+ * @returns Call line with resolved inline push references when possible.
  */
-export default function normalizeCall(line: CallLine, context: CompilationContext): CallLine | NormalizedCallLine {
+export default function resolveCallReferences(
+	line: CallLine,
+	context: CompilationContext
+): CallLine | SemanticCallLine {
 	const functionName = line.arguments[0].value;
 	const functionRegistry = context.namespace.functions!;
 	if (functionRegistry.arityByName[functionName] === undefined) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
 	}
 
-	const inlineArgumentPushes: NormalizedPushLine[] = [];
-	const normalizedInlineArguments: PushArgument[] = [];
+	const inlineArgumentPushes: SemanticPushLine[] = [];
+	const resolvedInlineArguments: PushArgument[] = [];
 	let allInlinePushesAreCodegen = true;
 
 	for (const argument of line.arguments.slice(1)) {
-		const pushLine = normalizePush(createInlinePushLine(line, argument), context);
+		const pushLine = resolvePushReferences(createInlinePushLine(line, argument), context);
 		inlineArgumentPushes.push(pushLine);
-		normalizedInlineArguments.push(pushLine.arguments[0]);
+		resolvedInlineArguments.push(pushLine.arguments[0]);
 		allInlinePushesAreCodegen &&= isCodegenPushLine(pushLine);
 	}
 
-	const normalizedLine = normalizedInlineArguments.length
-		? { ...line, arguments: [line.arguments[0], ...normalizedInlineArguments] as CallLine['arguments'] }
+	const resolvedLine = resolvedInlineArguments.length
+		? { ...line, arguments: [line.arguments[0], ...resolvedInlineArguments] as CallLine['arguments'] }
 		: line;
 
 	if (!allInlinePushesAreCodegen) {
-		return normalizedLine;
+		return resolvedLine;
 	}
 
 	return {
-		...normalizedLine,
+		...resolvedLine,
 		...(inlineArgumentPushes.length > 0 ? { inlineArgumentPushes } : {}),
 	};
 }

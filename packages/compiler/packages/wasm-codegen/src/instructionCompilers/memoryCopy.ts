@@ -1,5 +1,5 @@
 import { i32const, memoryCopy as wasmMemoryCopy } from '@8f4e/compiler-wasm-utils';
-import type { InstructionCompiler, NormalizedMemoryCopyLine } from '@8f4e/language-spec';
+import type { InstructionCompiler, ResolvedMemoryCopyLine } from '@8f4e/language-spec';
 import { getInstructionSpec } from '@8f4e/language-spec';
 import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { guardedMemoryCopy, isSafeMemoryCopy } from './utils/memoryAccessGuard';
@@ -10,7 +10,7 @@ import { requireStackAddress } from './utils/stackItem';
  * Instruction compiler for `memoryCopy`.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const memoryCopy: InstructionCompiler<NormalizedMemoryCopyLine> = (line, context) => {
+const memoryCopy: InstructionCompiler<ResolvedMemoryCopyLine> = (line, context) => {
 	assertFunctionMemoryIoAllowed(line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const destinationIndex = operation.addressOperandIndex;

@@ -39,7 +39,7 @@ type FunctionMetadataCollectionOptions = {
 
 /**
  * Scans function ASTs and collects pre-codegen function metadata.
- * This allows semantic normalization (e.g. `call` target validation) and
+ * This allows semantic reference resolution (e.g. `call` target validation) and
  * function-body codegen to rely on the same registry before full function
  * compilation completes.
  *
