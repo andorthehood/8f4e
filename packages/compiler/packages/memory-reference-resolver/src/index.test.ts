@@ -1,8 +1,11 @@
 import { ArgumentType, type ValidatedModuleAST } from '@8f4e/language-spec';
 import type { MemoryLayoutPlan, PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
-import type { MemoryReferenceResolutionContext } from './index';
-import { inlineMemoryReferences, resolveMemoryExpressionOperand, tryResolveValueArgument } from './index';
+import { resolveMemoryReferences, tryResolveValueArgument } from './index';
+import {
+	type MemoryReferenceResolutionContext,
+	resolveMemoryExpressionOperand,
+} from './resolveMemoryExpressionOperand';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
@@ -117,8 +120,8 @@ function noConstantReferences() {
 	};
 }
 
-describe('inlineMemoryReferences', () => {
-	it('inlines memory references across a project AST using the memory plan', () => {
+describe('resolveMemoryReferences', () => {
+	it('resolves memory references across a project AST using the memory plan', () => {
 		const moduleLine = {
 			lineNumber: 1,
 			instruction: 'module',
@@ -149,7 +152,7 @@ describe('inlineMemoryReferences', () => {
 			createPlannedModule('main', { buffer }, { byteAddress: 16, wordAlignedSize: 4 }),
 		]);
 
-		const result = inlineMemoryReferences({
+		const result = resolveMemoryReferences({
 			ast: {
 				prototypes: [],
 				modules: [ast],
@@ -160,8 +163,7 @@ describe('inlineMemoryReferences', () => {
 			constantReferences: noConstantReferences(),
 		});
 
-		expect(result.ast.modules[0]).not.toBe(ast);
-		expect(result.ast.modules[0].lines[1].arguments[0]).toEqual({
+		expect(result.references.modules[0].lineFacts[1]?.arguments?.[0]).toEqual({
 			type: ArgumentType.LITERAL,
 			value: 20,
 			isInteger: true,
@@ -232,7 +234,7 @@ describe('inlineMemoryReferences', () => {
 			createPlannedModule('main', { samples, ptr }, { byteAddress: 16, wordAlignedSize: 5 }),
 		]);
 
-		const result = inlineMemoryReferences({
+		const result = resolveMemoryReferences({
 			ast: {
 				prototypes: [],
 				modules: [ast],
@@ -243,14 +245,14 @@ describe('inlineMemoryReferences', () => {
 			constantReferences: noConstantReferences(),
 		});
 
-		expect(result.ast.modules[0].lines[3].arguments[0]).toEqual({
+		expect(result.references.modules[0].lineFacts[3]?.arguments?.[0]).toEqual({
 			type: ArgumentType.LITERAL,
 			value: 4,
 			isInteger: true,
 		});
 	});
 
-	it('applies constant facts before inlining memory references', () => {
+	it('applies constant facts before resolving memory references', () => {
 		const moduleLine = {
 			lineNumber: 1,
 			instruction: 'module',
@@ -281,7 +283,7 @@ describe('inlineMemoryReferences', () => {
 			createPlannedModule('main', { buffer }, { byteAddress: 16, wordAlignedSize: 4 }),
 		]);
 
-		const result = inlineMemoryReferences({
+		const result = resolveMemoryReferences({
 			ast: {
 				prototypes: [],
 				modules: [ast],
@@ -307,7 +309,7 @@ describe('inlineMemoryReferences', () => {
 		});
 
 		expect(pushLine.arguments[0]).toEqual(parseArgument('&buffer+OFFSET'));
-		expect(result.ast.modules[0].lines[1].arguments[0]).toMatchObject({
+		expect(result.references.modules[0].lineFacts[1]?.arguments?.[0]).toMatchObject({
 			type: ArgumentType.LITERAL,
 			value: 20,
 		});

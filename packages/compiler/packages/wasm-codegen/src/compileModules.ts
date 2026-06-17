@@ -25,7 +25,7 @@ import { compileModule } from './compileModule';
  * @returns The compiled module artifact.
  */
 export function compileModules(
-	modules: ValidatedModuleAST[],
+	modules: readonly ValidatedModuleAST[],
 	options: CompileOptions,
 	namespaces: Namespaces,
 	memoryPlan: MemoryLayoutPlan,

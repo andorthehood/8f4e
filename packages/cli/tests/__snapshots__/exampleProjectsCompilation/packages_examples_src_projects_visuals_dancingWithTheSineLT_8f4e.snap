@@ -20123,20 +20123,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20155,20 +20148,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1024,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1024,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin255"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin255",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin255",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20187,20 +20173,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20226,20 +20205,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1028,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1028,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer1",
-                    "memoryId": "sin"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sin",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "sin",
+                "isEndAddress": false
               }
             ]
           },
@@ -20320,20 +20291,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1028,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1028,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer1",
-                    "memoryId": "sin"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sin",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "sin",
+                "isEndAddress": false
               }
             ]
           },
@@ -20368,20 +20331,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1040,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1040,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer1",
-                    "memoryId": "offset"
-                  }
-                }
+                "type": "identifier",
+                "value": "&offset",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "offset",
+                "isEndAddress": false
               }
             ]
           },
@@ -20455,20 +20410,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20487,20 +20435,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1024,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1024,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin255"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin255",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin255",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20519,20 +20460,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20851,20 +20785,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 132,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 132,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin32"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin32",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin32",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20883,20 +20810,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1024,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1024,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin255"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin255",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin255",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20915,20 +20835,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -20954,20 +20867,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1044,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1044,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer2",
-                    "memoryId": "sin"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sin",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "sin",
+                "isEndAddress": false
               }
             ]
           },
@@ -21048,20 +20953,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1044,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1044,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer2",
-                    "memoryId": "sin"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sin",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "sin",
+                "isEndAddress": false
               }
             ]
           },
@@ -21096,20 +20993,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1056,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1056,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer2",
-                    "memoryId": "offset"
-                  }
-                }
+                "type": "identifier",
+                "value": "&offset",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "offset",
+                "isEndAddress": false
               }
             ]
           },
@@ -21183,20 +21072,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 132,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 132,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin32"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin32",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin32",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -21215,20 +21097,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1024,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1024,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin255"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin255",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin255",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -21247,20 +21122,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -21579,20 +21447,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 260,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 260,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin64"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin64",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin64",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -21611,20 +21472,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1024,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1024,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin255"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin255",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin255",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -21643,20 +21497,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -21682,20 +21529,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1060,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1060,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer3",
-                    "memoryId": "sin"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sin",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "sin",
+                "isEndAddress": false
               }
             ]
           },
@@ -21776,20 +21615,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1060,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1060,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer3",
-                    "memoryId": "sin"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sin",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "sin",
+                "isEndAddress": false
               }
             ]
           },
@@ -21824,20 +21655,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1072,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1072,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer3",
-                    "memoryId": "offset"
-                  }
-                }
+                "type": "identifier",
+                "value": "&offset",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "offset",
+                "isEndAddress": false
               }
             ]
           },
@@ -21911,20 +21734,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 260,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 260,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin64"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin64",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin64",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -21943,20 +21759,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1024,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1024,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin255"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin255",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin255",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -21975,20 +21784,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -22353,20 +22155,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 260,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 260,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin64"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin64",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin64",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -22385,20 +22180,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1024,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1024,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin255"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin255",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin255",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -22417,20 +22205,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -22449,20 +22230,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1040,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1040,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer1",
-                    "memoryId": "offset"
-                  }
-                }
+                "type": "identifier",
+                "value": "&dancer1:offset",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "dancer1",
+                "targetMemoryId": "offset",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -22488,20 +22262,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1076,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1076,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer4",
-                    "memoryId": "sin"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sin",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "sin",
+                "isEndAddress": false
               }
             ]
           },
@@ -22582,20 +22348,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1076,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1076,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer4",
-                    "memoryId": "sin"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sin",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "sin",
+                "isEndAddress": false
               }
             ]
           },
@@ -22630,20 +22388,12 @@
             "instruction": "push",
             "arguments": [
               {
-                "type": "literal",
-                "value": 1092,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1092,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer4",
-                    "memoryId": "offsetY"
-                  }
-                }
+                "type": "identifier",
+                "value": "&offsetY",
+                "referenceKind": "memory-reference",
+                "scope": "local",
+                "targetMemoryId": "offsetY",
+                "isEndAddress": false
               }
             ]
           },
@@ -22717,20 +22467,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 260,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 260,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin64"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin64",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin64",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -22749,20 +22492,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1024,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1024,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin255"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin255",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin255",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -22781,20 +22517,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 4,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 4,
-                    "safeByteLength": 4,
-                    "moduleId": "sineLT",
-                    "memoryId": "sin0"
-                  }
-                }
+                "type": "identifier",
+                "value": "&sineLT:sin0",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "sineLT",
+                "targetMemoryId": "sin0",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
@@ -22813,20 +22542,13 @@
                 "scope": "local"
               },
               {
-                "type": "literal",
-                "value": 1040,
-                "isInteger": true,
-                "address": {
-                  "memoryIndex": 0,
-                  "safeRange": {
-                    "source": "memory-start",
-                    "memoryIndex": 0,
-                    "byteAddress": 1040,
-                    "safeByteLength": 4,
-                    "moduleId": "dancer1",
-                    "memoryId": "offset"
-                  }
-                }
+                "type": "identifier",
+                "value": "&dancer1:offset",
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetModuleId": "dancer1",
+                "targetMemoryId": "offset",
+                "isEndAddress": false
               }
             ],
             "referencedNamespaceIds": [
