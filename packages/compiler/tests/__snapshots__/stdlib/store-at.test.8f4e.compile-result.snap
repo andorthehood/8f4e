@@ -198,7 +198,6 @@
               "value": 44,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {

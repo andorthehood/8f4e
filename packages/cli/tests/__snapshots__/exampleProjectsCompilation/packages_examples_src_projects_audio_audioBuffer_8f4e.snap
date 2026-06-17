@@ -382,8 +382,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -403,8 +402,7 @@
                 "targetMemoryId": "defaultFreq",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -416,8 +414,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 7,
@@ -429,8 +426,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -694,8 +690,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -715,8 +710,7 @@
                 "targetMemoryId": "defaultFreq",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -728,8 +722,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 7,
@@ -741,8 +734,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           }
         ],
         "projectBlockId": 12
@@ -1033,8 +1025,7 @@
             ],
             "referencedNamespaceIds": [
               "phaseAccumulator"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 8,
@@ -1052,8 +1043,7 @@
                 "referenceKind": "constant",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -1073,8 +1063,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 15,
@@ -1280,8 +1269,7 @@
             ],
             "referencedNamespaceIds": [
               "phaseAccumulator"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 8,
@@ -1299,8 +1287,7 @@
                 "referenceKind": "constant",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -1320,8 +1307,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           }
         ],
         "projectBlockId": 55

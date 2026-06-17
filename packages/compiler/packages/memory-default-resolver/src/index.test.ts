@@ -8,7 +8,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType, ErrorCode } from '@8f4e/language-spec';
+import { ArgumentType, ErrorCode, isMemoryDeclarationLine } from '@8f4e/language-spec';
 import { planProjectMemoryLayout } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from './index';
@@ -34,13 +34,11 @@ function moduleLine(id: string, lineNumber = 1): ModuleLine {
 function scalarLine(
 	lineNumber: number,
 	instruction: MemoryDeclarationLine['instruction'],
-	args: MemoryDeclarationLine['arguments'],
-	hasExplicitMemoryDefault = args.length > 1
+	args: MemoryDeclarationLine['arguments']
 ): MemoryDeclarationLine {
 	return {
 		lineNumber,
 		instruction,
-		hasExplicitMemoryDefault,
 		arguments: args,
 	} as MemoryDeclarationLine;
 }
@@ -48,19 +46,13 @@ function scalarLine(
 function arrayLine(
 	lineNumber: number,
 	instruction: ArrayMemoryDeclarationLine['instruction'],
-	args: ArrayMemoryDeclarationLine['arguments'],
-	hasExplicitMemoryDefault = args.length > 2
+	args: ArrayMemoryDeclarationLine['arguments']
 ): ArrayMemoryDeclarationLine {
 	return {
 		lineNumber,
 		instruction,
-		hasExplicitMemoryDefault,
 		arguments: args,
 	};
-}
-
-function isMemoryDeclaration(line: CompilerASTLine): line is MemoryDeclarationLine {
-	return 'hasExplicitMemoryDefault' in line;
 }
 
 function moduleAst(id: string, lines: readonly CompilerASTLine[]): ValidatedModuleAST {
@@ -71,7 +63,7 @@ function moduleAst(id: string, lines: readonly CompilerASTLine[]): ValidatedModu
 		id,
 		moduleLine: line,
 		lines: [line, ...lines],
-		memoryDeclarationLines: lines.filter(isMemoryDeclaration),
+		memoryDeclarationLines: lines.filter(isMemoryDeclarationLine),
 	} as ValidatedModuleAST;
 }
 
@@ -135,6 +127,33 @@ describe('resolveMemoryDefaults', () => {
 		expect(result.memoryDefaultsByModuleId.main).toEqual({
 			counter: { value: 7, hasExplicitDefault: true, isInherited: false },
 			values: { value: { 0: 1.5, 1: 2.5 }, hasExplicitDefault: true, isInherited: false },
+		});
+	});
+
+	it('derives explicit default markers from declaration syntax', () => {
+		const implicitScalar = scalarLine(2, 'int', [classifyIdentifier('implicitScalar')]);
+		const explicitScalar = scalarLine(3, 'int', [classifyIdentifier('explicitScalar'), literal(0)]);
+		const anonymousScalar = scalarLine(4, 'int', [literal(9)]);
+		const implicitArray = arrayLine(5, 'int[]', [classifyIdentifier('implicitArray'), literal(2)]);
+		const explicitArray = arrayLine(6, 'int[]', [classifyIdentifier('explicitArray'), literal(2), literal(1)]);
+		const module = moduleAst('main', [implicitScalar, explicitScalar, anonymousScalar, implicitArray, explicitArray]);
+		const memoryPlan = planProjectMemoryLayout({
+			prototypes: [],
+			modules: [module],
+			constantReferences: noConstantReferences(),
+		});
+
+		const result = resolveMemoryDefaults({
+			memoryPlan,
+			memoryReferences: noMemoryReferences(memoryPlan),
+		});
+
+		expect(result.memoryDefaultsByModuleId.main).toMatchObject({
+			implicitScalar: { hasExplicitDefault: false },
+			explicitScalar: { hasExplicitDefault: true },
+			__anonymous__4: { hasExplicitDefault: true },
+			implicitArray: { hasExplicitDefault: false },
+			explicitArray: { hasExplicitDefault: true },
 		});
 	});
 

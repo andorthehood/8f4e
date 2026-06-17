@@ -112,13 +112,11 @@ describe('planProjectMemoryLayout', () => {
 					{
 						lineNumber: 2,
 						instruction: 'int',
-						hasExplicitMemoryDefault: false,
 						arguments: [identifier('counter')],
 					},
 					{
 						lineNumber: 3,
 						instruction: 'int8[]',
-						hasExplicitMemoryDefault: false,
 						arguments: [identifier('bytes'), literal(5)],
 					},
 				]),
@@ -126,7 +124,6 @@ describe('planProjectMemoryLayout', () => {
 					{
 						lineNumber: 11,
 						instruction: 'float64',
-						hasExplicitMemoryDefault: false,
 						arguments: [identifier('phase')],
 					},
 				]),
@@ -158,7 +155,6 @@ describe('planProjectMemoryLayout', () => {
 					{
 						lineNumber: 2,
 						instruction: 'int[]',
-						hasExplicitMemoryDefault: false,
 						arguments: [identifier('values'), literal(3)],
 					},
 				]),
@@ -169,7 +165,6 @@ describe('planProjectMemoryLayout', () => {
 						{
 							lineNumber: 11,
 							instruction: 'float[]',
-							hasExplicitMemoryDefault: false,
 							arguments: [identifier('samples'), literal(2)],
 						},
 					],
@@ -206,7 +201,6 @@ describe('planProjectMemoryLayout', () => {
 					{
 						lineNumber: 2,
 						instruction: 'int[]',
-						hasExplicitMemoryDefault: false,
 						arguments: [identifier('values'), literal(4)],
 					},
 				]),
@@ -222,7 +216,6 @@ describe('planProjectMemoryLayout', () => {
 		const line = {
 			lineNumber: 2,
 			instruction: 'float',
-			hasExplicitMemoryDefault: false,
 			arguments: [],
 		} as MemoryDeclarationLine;
 
@@ -240,19 +233,16 @@ describe('planProjectMemoryLayout', () => {
 		const foo = {
 			lineNumber: 2,
 			instruction: 'int',
-			hasExplicitMemoryDefault: false,
 			arguments: [identifier('foo')],
 		} satisfies MemoryDeclarationLine;
 		const bar = {
 			lineNumber: 3,
 			instruction: 'float[]',
-			hasExplicitMemoryDefault: false,
 			arguments: [identifier('bar'), literal(2)],
 		} satisfies MemoryDeclarationLine;
 		const local = {
 			lineNumber: 12,
 			instruction: 'int',
-			hasExplicitMemoryDefault: false,
 			arguments: [identifier('local')],
 		} satisfies MemoryDeclarationLine;
 
@@ -288,13 +278,11 @@ describe('planner input building', () => {
 		const inherited = {
 			lineNumber: 20,
 			instruction: 'int',
-			hasExplicitMemoryDefault: false,
 			arguments: [identifier('inherited')],
 		} satisfies MemoryDeclarationLine;
 		const local = {
 			lineNumber: 4,
 			instruction: 'int[]',
-			hasExplicitMemoryDefault: false,
 			arguments: [identifier('values'), expression(literal(2), '*', literal(3))],
 		} satisfies MemoryDeclarationLine;
 
@@ -323,7 +311,6 @@ describe('planner input building', () => {
 		const line = {
 			lineNumber: 4,
 			instruction: 'int[]',
-			hasExplicitMemoryDefault: false,
 			arguments: [identifier('values'), identifier('missing')],
 		} satisfies MemoryDeclarationLine;
 
@@ -354,7 +341,6 @@ describe('planner input building', () => {
 		const line = {
 			lineNumber: 4,
 			instruction: 'int[]',
-			hasExplicitMemoryDefault: false,
 			arguments: [identifier('values'), sizeIdentifier],
 		} satisfies MemoryDeclarationLine;
 

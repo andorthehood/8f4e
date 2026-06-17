@@ -295,7 +295,6 @@
               "value": "previousFloat",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "float",
         },
         {
@@ -607,7 +606,6 @@
               "value": "previousInt",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
