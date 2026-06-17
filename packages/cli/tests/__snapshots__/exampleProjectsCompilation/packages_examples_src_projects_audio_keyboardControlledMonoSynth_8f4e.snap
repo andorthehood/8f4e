@@ -406,9 +406,6 @@
                 "targetMemoryId": "keyCode",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "keyboard"
             ]
           },
           {
@@ -506,9 +503,6 @@
                 "targetMemoryId": "keyCode",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "keyboard"
             ]
           },
           {
@@ -8900,9 +8894,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "janko"
             ]
           },
           {
@@ -8935,9 +8926,6 @@
                 "targetModuleId": "midiLUT",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "midiLUT"
             ]
           },
           {
@@ -9049,9 +9037,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "janko"
             ]
           },
           {
@@ -9084,9 +9069,6 @@
                 "targetModuleId": "midiLUT",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "midiLUT"
             ]
           }
         ],
@@ -9659,9 +9641,6 @@
                 "targetMemoryId": "keyPressed",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "keyboard"
             ]
           },
           {
@@ -10206,9 +10185,6 @@
                 "targetMemoryId": "keyPressed",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "keyboard"
             ]
           },
           {
@@ -10649,9 +10625,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "midiNote2Freq"
             ]
           },
           {
@@ -10961,9 +10934,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "midiNote2Freq"
             ]
           },
           {
@@ -11209,9 +11179,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "phaseAccumulator"
             ]
           },
           {
@@ -11233,9 +11200,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "arEnv"
             ]
           },
           {
@@ -11340,9 +11304,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "phaseAccumulator"
             ]
           },
           {
@@ -11364,9 +11325,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "arEnv"
             ]
           },
           {
@@ -11669,9 +11627,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "vca"
             ]
           },
           {
@@ -11913,9 +11868,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "vca"
             ]
           },
           {

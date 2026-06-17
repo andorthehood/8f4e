@@ -716,9 +716,6 @@
             },
           ],
           "instruction": "int8*",
-          "referencedNamespaceIds": [
-            "regionSamples",
-          ],
         },
         {
           "arguments": [

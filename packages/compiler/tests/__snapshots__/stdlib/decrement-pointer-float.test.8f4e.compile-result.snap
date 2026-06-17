@@ -749,7 +749,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "isEndAddress": false,
                 "referenceKind": "memory-reference",

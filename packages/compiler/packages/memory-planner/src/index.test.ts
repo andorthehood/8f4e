@@ -38,7 +38,6 @@ function expression(
 		left,
 		operator,
 		right,
-		intermoduleIds: [],
 	};
 }
 
