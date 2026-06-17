@@ -12,7 +12,7 @@ import {
 	type ResolvedMemoryPointerPushLine,
 	type ResolvedMemoryPushLine,
 } from '@8f4e/language-spec';
-import { getResolvedMemoryDeclaration } from '../memoryState';
+import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
 import {
 	hasCollectedNamespaces,
 	isIntermoduleReferenceKind,
