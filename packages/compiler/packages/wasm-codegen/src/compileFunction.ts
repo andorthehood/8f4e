@@ -16,9 +16,10 @@ import type {
 	ValidatedFunctionAST,
 } from '@8f4e/language-spec';
 import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/language-spec';
-import { createCompilationContext, normalizeValueArguments } from '@8f4e/semantic-utils';
+import { createCompilationContext } from '@8f4e/semantic-utils';
 import type { StackAnalyzedFunction } from '@8f4e/stack-analyzer';
 import { attachStackAnalysis, compileCodegenLine } from './compileLine';
+import normalizeValueArguments from './normalizeValueArguments';
 
 /**
  * Compiles one validated function AST into a WebAssembly function body or import metadata.

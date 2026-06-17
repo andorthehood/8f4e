@@ -1,0 +1,43 @@
+import type { CompilationContext, CompilerASTLine, StackValueType } from '@8f4e/language-spec';
+import { ErrorCode, getError } from '@8f4e/language-spec';
+import type { MapKind } from '@8f4e/semantic-utils';
+
+/**
+ * Validates that a map input, row value, or default value matches the expected map kind.
+ *
+ * @param valueKind - Map or stack value metadata to resolve.
+ * @param expectedKind - Map kind that the value must match.
+ * @param line - AST line being processed.
+ * @param context - Compilation context used by the operation.
+ * @returns Nothing.
+ */
+export function validateMapValueKind(
+	valueKind: { valueType: StackValueType },
+	expectedKind: MapKind,
+	line: CompilerASTLine,
+	context: CompilationContext
+) {
+	if (expectedKind === 'float64') {
+		if (valueKind.valueType === 'int') {
+			throw getError(ErrorCode.ONLY_FLOATS, line, context);
+		}
+		if (valueKind.valueType !== 'float64') {
+			throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
+		}
+		return;
+	}
+
+	if (expectedKind === 'int32') {
+		if (valueKind.valueType !== 'int') {
+			throw getError(ErrorCode.ONLY_INTEGERS, line, context);
+		}
+		return;
+	}
+
+	if (valueKind.valueType === 'int') {
+		throw getError(ErrorCode.ONLY_FLOATS, line, context);
+	}
+	if (valueKind.valueType === 'float64') {
+		throw getError(ErrorCode.MIXED_FLOAT_WIDTH, line, context);
+	}
+}

@@ -2,7 +2,7 @@
   "name": "@8f4e/semantic-utils",
   "version": "2.0.1",
   "private": true,
-  "description": "Target-independent semantic normalization and context helpers for the 8f4e compiler pipeline",
+  "description": "Target-independent semantic context helpers for the 8f4e compiler pipeline",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,11 +24,9 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/language-spec": "*",
-    "@8f4e/memory-reference-inliner": "*"
+    "@8f4e/language-spec": "*"
   },
   "devDependencies": {
-    "@8f4e/tokenizer": "*",
     "@types/node": "24.13.2"
   }
 }
