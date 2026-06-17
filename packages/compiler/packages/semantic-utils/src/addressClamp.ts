@@ -3,6 +3,7 @@ import type {
 	CompilationContext,
 	CompilerASTLine,
 	MemoryAddressRange,
+	StackAddress,
 	StackItem,
 } from '@8f4e/language-spec';
 import { ArgumentType, getMemoryRegionFields, WORD_MEMORY_ACCESS_WIDTH } from '@8f4e/language-spec';
@@ -53,7 +54,7 @@ export function getClampedAddressStackItem(
 	operand: StackItem,
 	range: MemoryAddressRange | undefined,
 	accessByteWidth: number
-): StackItem {
+): StackAddress {
 	const safeAccessByteWidth = Math.min(accessByteWidth, range?.safeByteLength ?? accessByteWidth);
 	const memoryIndex = range?.memoryIndex ?? (operand.kind === 'address' ? operand.address.memoryIndex : 0);
 	const memoryRegionName =

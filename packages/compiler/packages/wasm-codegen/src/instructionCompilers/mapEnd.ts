@@ -14,18 +14,22 @@ import {
 	WASM_I32_OR,
 	WASM_SELECT,
 } from '@8f4e/compiler-wasm-utils';
-import type { InstructionCompiler, MapBlockStackFrame, MapEndLine } from '@8f4e/language-spec';
-import type { MapKind } from '@8f4e/semantic-utils';
-import { popBlock, resolveMapKind } from '@8f4e/semantic-utils';
+import type {
+	InstructionCompiler,
+	MapBlockStackFrame,
+	MapEndLine,
+	StackAnalysisNumericValueKind,
+} from '@8f4e/language-spec';
+import { popBlock } from '@8f4e/semantic-utils';
 import { saveByteCode } from './utils/saveByteCode';
 
-const constOp: Record<MapKind, (v: number) => number[]> = {
+const constOp: Record<StackAnalysisNumericValueKind, (v: number) => number[]> = {
 	int32: i32const,
 	float32: f32const,
 	float64: f64const,
 };
 
-const eqOpcode: Record<MapKind, WASMInstructionCode> = {
+const eqOpcode: Record<StackAnalysisNumericValueKind, WASMInstructionCode> = {
 	int32: WASM_I32_EQ,
 	float32: WASM_F32_EQ,
 	float64: WASM_F64_EQ,
@@ -50,24 +54,19 @@ const eqOpcode: Record<MapKind, WASMInstructionCode> = {
  *
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context) => {
-	const outputType = line.arguments[0].value;
-	const outputIsInteger = outputType === 'int';
-	const outputIsFloat64 = outputType === 'float64';
-	const outputKind = resolveMapKind({ valueType: outputIsInteger ? 'int' : outputIsFloat64 ? 'float64' : 'float' });
+const mapEnd: InstructionCompiler<MapEndLine> = (_line: MapEndLine, context, facts) => {
+	const { inputKind, outputKind } = facts.map!;
+	const outputIsInteger = outputKind === 'int32';
+	const outputIsFloat64 = outputKind === 'float64';
 
 	const { mapState } = popBlock(context) as MapBlockStackFrame;
-
-	const inputKind = resolveMapKind({
-		valueType: mapState.inputIsInteger ? 'int' : mapState.inputIsFloat64 ? 'float64' : 'float',
-	});
 
 	const rows = mapState.rows;
 	const hasDefault = mapState.defaultSet;
 	const defaultValue = hasDefault ? mapState.defaultValue! : 0;
 
-	const inputIsFloat64 = mapState.inputIsFloat64;
-	const inputIsInteger = mapState.inputIsInteger;
+	const inputIsFloat64 = inputKind === 'float64';
+	const inputIsInteger = inputKind === 'int32';
 
 	if (rows.length === 0) {
 		// No rows: discard the input and push the default/zero value

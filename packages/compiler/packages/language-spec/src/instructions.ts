@@ -190,6 +190,15 @@ export const codegenInstructionNames = instructionSpecEntries
 	.filter(([, spec]) => spec.sourceInstruction !== false && spec.codegen !== false)
 	.map(([instruction]) => instruction) as CodegenInstructionName[];
 
+export function hasBinaryMatchingOperands(spec: InstructionSpec | undefined): boolean {
+	return (
+		spec?.operandTypes === 'matching' &&
+		spec.minOperands === 2 &&
+		spec.stack?.inputs.length === 2 &&
+		spec.stack.inputs.every(input => input === 'T')
+	);
+}
+
 export type FunctionPreBodyInstructionName = FunctionDeclarationInstructionsByFlag<'preBody'>;
 
 export const functionPreBodyInstructionNames = instructionSpecEntries
