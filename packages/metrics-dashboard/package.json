@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/metrics-dashboard",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "private": true,
   "description": "Local dashboard for 8f4e release metrics",
   "type": "module",
