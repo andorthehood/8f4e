@@ -1,21 +1,14 @@
-import type { CompilerASTLine, InstructionCompiler, MemoryAddressRange, StackItem } from '@8f4e/language-spec';
-import {
-	clampAddressByteCode,
-	getClampAccessByteWidth,
-	getModuleAddressRange,
-	rangeUpperByteAddressCode,
-} from './utils/addressClamp';
+import type { CompilerASTLine, InstructionCompiler, MemoryAddressRange } from '@8f4e/language-spec';
+import { clampAddressByteCode, rangeUpperByteAddressCode } from './utils/addressClamp';
 import { linearLastValidStartAddress } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
-import { requireStackAddress } from './utils/stackItem';
 
 function clampToRange(
 	line: CompilerASTLine,
 	context: Parameters<InstructionCompiler>[1],
-	operand: StackItem,
-	range: MemoryAddressRange
+	range: MemoryAddressRange,
+	accessByteWidth: number
 ) {
-	const accessByteWidth = getClampAccessByteWidth(line);
 	return saveByteCode(
 		context,
 		clampAddressByteCode(context, line, range.byteAddress, rangeUpperByteAddressCode(range, accessByteWidth))
@@ -30,11 +23,9 @@ function clampToRange(
  * @returns The updated compilation context.
  */
 export const clampAddress: InstructionCompiler = (line, context, facts) => {
-	const [rawOperand] = facts.stackAnalysis.consumedOperands;
-	const operand = requireStackAddress(rawOperand, line, context);
-	const range = operand.address.clampRange ?? operand.address.safeRange;
+	const { accessByteWidth, range } = facts.clamp!;
 
-	return clampToRange(line, context, operand, range!);
+	return clampToRange(line, context, range!, accessByteWidth);
 };
 
 /**
@@ -45,9 +36,9 @@ export const clampAddress: InstructionCompiler = (line, context, facts) => {
  * @returns The updated compilation context.
  */
 export const clampModuleAddress: InstructionCompiler = (line, context, facts) => {
-	const [rawOperand] = facts.stackAnalysis.consumedOperands;
-	const operand = requireStackAddress(rawOperand, line, context);
-	return clampToRange(line, context, operand, getModuleAddressRange(context));
+	const { accessByteWidth, range } = facts.clamp!;
+
+	return clampToRange(line, context, range!, accessByteWidth);
 };
 
 /**
@@ -58,12 +49,10 @@ export const clampModuleAddress: InstructionCompiler = (line, context, facts) =>
  * @returns The updated compilation context.
  */
 export const clampGlobalAddress: InstructionCompiler = (line, context, facts) => {
-	const [rawOperand] = facts.stackAnalysis.consumedOperands;
-	const operand = requireStackAddress(rawOperand, line, context);
-	const accessByteWidth = getClampAccessByteWidth(line);
+	const { accessByteWidth, memoryIndex } = facts.clamp!;
 
 	return saveByteCode(
 		context,
-		clampAddressByteCode(context, line, 0, linearLastValidStartAddress(accessByteWidth, operand.address.memoryIndex))
+		clampAddressByteCode(context, line, 0, linearLastValidStartAddress(accessByteWidth, memoryIndex))
 	);
 };

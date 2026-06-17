@@ -33,5 +33,13 @@ export function analyzeClampAddress(line: CompilerASTLine, context: CompilationC
 
 	const produced = [getClampedAddressStackItem(consumed[0], range, accessByteWidth)];
 	produce(context, produced);
-	return { consumed, produced };
+	return {
+		consumed,
+		produced,
+		clamp: {
+			accessByteWidth,
+			memoryIndex: produced[0].address.memoryIndex,
+			...(range ? { range } : {}),
+		},
+	};
 }
