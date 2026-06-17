@@ -33,8 +33,8 @@ export default function createNumericBinaryCompiler({
 	opcodes,
 	validate,
 }: NumericBinaryCompilerOptions): InstructionCompiler {
-	return (line, context) => {
-		const [left, right] = line.stackAnalysis.consumedOperands;
+	return (line, context, facts) => {
+		const [left, right] = facts.stackAnalysis.consumedOperands;
 		const isInteger = areAllOperandsIntegers(left, right);
 		const isFloat64 = areAllOperandsFloat64(left, right);
 

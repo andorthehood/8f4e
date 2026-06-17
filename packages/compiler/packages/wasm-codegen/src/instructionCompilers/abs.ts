@@ -18,8 +18,8 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `abs`.
  * @see [Instruction docs](../../docs/instructions/math-helpers.md)
  */
-const abs: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+const abs: InstructionCompiler = (line, context, facts) => {
+	const [operand] = facts.stackAnalysis.consumedOperands;
 
 	if (operand.valueType === 'int') {
 		const valueName = '__absify_value' + line.lineNumber;

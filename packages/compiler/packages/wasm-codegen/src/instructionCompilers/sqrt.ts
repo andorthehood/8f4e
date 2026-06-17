@@ -6,8 +6,8 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `sqrt`.
  * @see [Instruction docs](../../docs/instructions/math-helpers.md)
  */
-const sqrt: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+const sqrt: InstructionCompiler = (line, context, facts) => {
+	const [operand] = facts.stackAnalysis.consumedOperands;
 
 	return saveByteCode(context, [operand.valueType === 'float64' ? WASM_F64_SQRT : WASM_F32_SQRT]);
 };

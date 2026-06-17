@@ -19,8 +19,8 @@ import { saveByteCode } from './utils/saveByteCode';
 
 const createMinMax =
 	(instruction: 'min' | 'max'): InstructionCompiler =>
-	(line, context) => {
-		const [operand1, operand2] = line.stackAnalysis.consumedOperands;
+	(line, context, facts) => {
+		const [operand1, operand2] = facts.stackAnalysis.consumedOperands;
 		const isInteger = areAllOperandsIntegers(operand1, operand2);
 		const isFloat64 = areAllOperandsFloat64(operand1, operand2);
 

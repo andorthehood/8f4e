@@ -2,7 +2,6 @@ import type {
 	CompilationContext,
 	CompilerASTLine,
 	MapEndLine,
-	ResolvedCallLine,
 	ResolvedPushShapeLine,
 	SemanticCallLine,
 	SemanticPushLine,
@@ -87,7 +86,7 @@ export function analyzeByInstruction(line: CompilerASTLine, context: Compilation
 		case 'functionEnd':
 			return { consumed: analyzeFunctionEnd(line, context), produced: [] };
 		case 'call':
-			return analyzeCall(line as SemanticCallLine | ResolvedCallLine, context);
+			return analyzeCall(line as SemanticCallLine, context);
 		case 'mapEnd':
 			return analyzeMapEnd(line as MapEndLine, context);
 		default:

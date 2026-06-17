@@ -6,8 +6,8 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `notZero`.
  * @see [Instruction docs](../../docs/instructions/comparison.md)
  */
-const notZero: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+const notZero: InstructionCompiler = (line, context, facts) => {
+	const [operand] = facts.stackAnalysis.consumedOperands;
 
 	if (operand.valueType === 'int') {
 		return saveByteCode(context, [...i32const(0), WASM_I32_NE]);

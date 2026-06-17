@@ -12,9 +12,9 @@ type LoadFloatLine = ASTLineBase<FloatLoadInstructionSpecName, []>;
  * Instruction compiler for `loadFloat`.
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
-const loadFloat: InstructionCompiler<LoadFloatLine> = (line, context) => {
+const loadFloat: InstructionCompiler<LoadFloatLine> = (line, context, facts) => {
 	assertFunctionMemoryIoAllowed(line, context);
-	const [rawAddress] = line.stackAnalysis.consumedOperands;
+	const [rawAddress] = facts.stackAnalysis.consumedOperands;
 	const address = requireStackAddress(rawAddress, line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const accessByteWidth = operation.accessByteWidth;

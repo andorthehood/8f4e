@@ -6,8 +6,8 @@ import { saveByteCode } from './utils/saveByteCode';
  * Instruction compiler for `equalToZero`.
  * @see [Instruction docs](../../docs/instructions/comparison.md)
  */
-const equalToZero: InstructionCompiler = (line, context) => {
-	const [operand] = line.stackAnalysis.consumedOperands;
+const equalToZero: InstructionCompiler = (line, context, facts) => {
+	const [operand] = facts.stackAnalysis.consumedOperands;
 
 	if (operand.valueType === 'int') {
 		return saveByteCode(context, [WASM_I32_EQZ]);

@@ -21,7 +21,7 @@ describe('pushLocalPointer', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('*lut')],
-				resolvedTarget: { kind: 'local-pointer', local },
+				resolvedTarget: { kind: 'local-pointer', localName: 'lut' },
 			} as ResolvedLocalPointerPushLine,
 			context
 		);
@@ -47,7 +47,7 @@ describe('pushLocalPointer', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('*bytes')],
-				resolvedTarget: { kind: 'local-pointer', local },
+				resolvedTarget: { kind: 'local-pointer', localName: 'bytes' },
 			} as ResolvedLocalPointerPushLine,
 			context
 		);

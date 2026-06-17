@@ -22,6 +22,7 @@ import {
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
 } from '@8f4e/language-spec';
+import type { ModuleSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { createCompilationContext } from '@8f4e/semantic-utils';
 import type { StackAnalyzedModule } from '@8f4e/stack-analyzer';
 import { applySemanticLine } from './applySemanticLine';
@@ -47,6 +48,7 @@ export function compileModule(
 	memoryPlan: MemoryLayoutPlan,
 	index: number,
 	functions: FunctionRegistry | undefined,
+	semanticReferences: ModuleSemanticReferences,
 	stackReport: StackAnalyzedModule,
 	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
 	typeRegistry?: FunctionTypeRegistry,
@@ -85,14 +87,16 @@ export function compileModule(
 		source: ast.source,
 	});
 
-	const analyzedLines = stackReport.analyzedLines;
-	let analyzedLineIndex = 0;
-	for (const sourceLine of ast.lines) {
+	for (const [lineIndex, sourceLine] of ast.lines.entries()) {
 		if (isSemanticInstructionLine(sourceLine)) {
 			applySemanticLine(sourceLine, context);
 		} else if (!isMemoryDeclarationLine(sourceLine)) {
-			const analyzedLine = analyzedLines[analyzedLineIndex++];
-			compileCodegenLine(analyzedLine, context);
+			compileCodegenLine(
+				sourceLine,
+				semanticReferences.lineFacts[lineIndex],
+				stackReport.lineFacts[lineIndex]!,
+				context
+			);
 		}
 	}
 

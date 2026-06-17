@@ -71,6 +71,7 @@ Active todo files are listed below.
 | 459 | Extract compiler diagnostics package | 🟡 | 2-4h | 2026-06-15 | Move compiler diagnostic construction into a small shared package so compiler-adjacent packages can emit consistent diagnostics without importing compiler internals. |
 | 460 | Fix cross-block constant cache dependencies | 🟡 | 4-8h | 2026-06-15 | Make future transformed AST caching account for constants imported from other source blocks instead of relying only on local source hashes. |
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
+| 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
 
 ### 🟢 Low Priority
 
