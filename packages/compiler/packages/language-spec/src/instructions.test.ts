@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { instructionSpecs } from './instructionSpecs';
 import {
 	compiledModuleBlockTypes,
 	compilerBlockInstructionPairs,
 	compilerSourceBlockInstructionPairs,
 	functionPreBodyInstructionNames,
+	hasBinaryMatchingOperands,
 	importedFunctionDeclarationInstructionNames,
 	isFunctionBodyInstructionName,
 	isFunctionPreBodyInstructionName,
@@ -28,7 +30,12 @@ const functionInstructionClassificationSamples = [
 
 describe('instruction block classification', () => {
 	it('snapshots derived block tables', () => {
+		const binaryMatchingInstructionNames = Object.entries(instructionSpecs)
+			.filter(([, spec]) => hasBinaryMatchingOperands(spec))
+			.map(([instruction]) => instruction);
+
 		expect({
+			binaryMatchingInstructionNames,
 			compiledModuleBlockTypes,
 			compilerBlockInstructionPairs,
 			compilerSourceBlockInstructionPairs,
