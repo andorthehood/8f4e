@@ -61,24 +61,22 @@ function validatedModuleAst(
 	id: string,
 	lineNumber: number,
 	lines: readonly CompilerASTLine[],
-	regionLine?: RegionLine
+	regionDirectiveLine?: RegionLine
 ): ValidatedModuleAST {
 	const line = moduleLine(id, lineNumber);
 
 	return {
 		type: 'module',
 		id,
-		lines: [line, ...(regionLine ? [regionLine] : []), ...lines],
+		lines: [line, ...(regionDirectiveLine ? [regionDirectiveLine] : []), ...lines],
 		moduleLine: line,
-		...(regionLine ? { regionLine } : {}),
-		memoryDeclarationLines: [],
 	} as ValidatedModuleAST;
 }
 
 function prototypeAst(
 	id: string,
 	lineNumber: number,
-	memoryDeclarationLines: readonly MemoryDeclarationLine[]
+	declarationLines: readonly MemoryDeclarationLine[]
 ): ValidatedPrototypeAST {
 	const prototypeLine = {
 		lineNumber,
@@ -89,9 +87,8 @@ function prototypeAst(
 	return {
 		type: 'prototype',
 		id,
-		lines: [prototypeLine, ...memoryDeclarationLines],
+		lines: [prototypeLine, ...declarationLines],
 		prototypeLine,
-		memoryDeclarationLines,
 	} as ValidatedPrototypeAST;
 }
 

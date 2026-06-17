@@ -1,4 +1,4 @@
-import { ArgumentType, isCompilerDirectiveLine } from '@8f4e/language-spec';
+import { ArgumentType, isCompilerDirectiveLine, isMemoryDeclarationLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { compileToAST } from './index';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
@@ -22,12 +22,15 @@ describe('compileToAST', () => {
 			type: 'module',
 			id: 'target',
 			moduleLine: { instruction: 'module' },
-			regionLine: { instruction: '#region' },
 		});
 		if (ast.type !== 'module') {
 			throw new Error('Expected module AST');
 		}
-		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['counter', 'sourceStart']);
+		expect(ast.lines.find(line => line.instruction === '#region')).toMatchObject({ instruction: '#region' });
+		expect(ast.lines.filter(isMemoryDeclarationLine).map(line => line.arguments[0].value)).toEqual([
+			'counter',
+			'sourceStart',
+		]);
 	});
 
 	it('keeps shape instructions in module lines without adding module metadata', () => {
@@ -221,7 +224,10 @@ describe('compileToAST', () => {
 		if (ast.type !== 'prototype') {
 			throw new Error('Expected prototype AST');
 		}
-		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['phase', 'frequency']);
+		expect(ast.lines.filter(isMemoryDeclarationLine).map(line => line.arguments[0].value)).toEqual([
+			'phase',
+			'frequency',
+		]);
 	});
 
 	it('constructs imported function metadata from the source-block parse path', () => {

@@ -244,8 +244,6 @@ export interface ModuleAST extends SourceBlockMetadata {
 	id: string;
 	lines: CompilerASTLines;
 	moduleLine: ModuleLine;
-	regionLine?: RegionLine;
-	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
 /** Parsed AST for a function block. */
@@ -276,7 +274,6 @@ export interface PrototypeAST extends SourceBlockMetadata {
 	id: string;
 	lines: CompilerASTLines;
 	prototypeLine: PrototypeLine;
-	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
 export type AST = ModuleAST | FunctionAST | ConstantsAST | PrototypeAST;
