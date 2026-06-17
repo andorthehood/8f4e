@@ -1,7 +1,6 @@
 import type {
 	AddressMetadata,
 	Argument,
-	AST,
 	CompilerASTLine,
 	CompileTimeOperand,
 	Const,
@@ -13,6 +12,9 @@ import type {
 	LocalDeclarationLine,
 	LocalMap,
 	MemoryPointerMetadataMap,
+	MemoryReferenceResolutionBlockFacts,
+	MemoryReferenceResolutionLineFacts,
+	MemoryReferenceResolutionReport,
 	ModuleAST,
 	ParamLine,
 	PointerLocalBinding,
@@ -33,12 +35,11 @@ import {
 	resolveMemoryExpressionOperand,
 } from './resolveMemoryExpressionOperand';
 
-export {
-	type MemoryReferenceModuleNamespace,
-	type MemoryReferencePointerMetadataByModuleId,
-	type MemoryReferenceResolutionContext,
-	resolveMemoryExpressionOperand,
-} from './resolveMemoryExpressionOperand';
+export type {
+	MemoryReferenceResolutionBlockFacts,
+	MemoryReferenceResolutionLineFacts,
+	MemoryReferenceResolutionReport,
+} from '@8f4e/language-spec';
 
 export interface MemoryReferenceProjectAST<
 	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
@@ -52,7 +53,7 @@ export interface MemoryReferenceProjectAST<
 	functions: readonly TFunction[];
 }
 
-export interface InlineMemoryReferencesInput<
+export interface ResolveMemoryReferencesInput<
 	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
 	TModule extends ModuleAST = ValidatedModuleAST,
 	TConstants extends ConstantsAST = ValidatedConstantsAST,
@@ -68,18 +69,8 @@ export interface InlineMemoryReferencesInput<
 	};
 }
 
-export interface InlineMemoryReferencesResult<
-	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
-	TModule extends ModuleAST = ValidatedModuleAST,
-	TConstants extends ConstantsAST = ValidatedConstantsAST,
-	TFunction extends FunctionAST = ValidatedFunctionAST,
-> {
-	ast: {
-		prototypes: TPrototype[];
-		modules: TModule[];
-		constants: TConstants[];
-		functions: TFunction[];
-	};
+export interface ResolveMemoryReferencesResult {
+	references: MemoryReferenceResolutionReport;
 }
 
 function createProjectResolutionContext(
@@ -190,7 +181,7 @@ function updatePointerMemoryMetadata(line: CompilerASTLine, context: MemoryRefer
 	}
 
 	const [idArgument, defaultArgument] = line.arguments;
-	if (idArgument?.type !== ArgumentType.IDENTIFIER || defaultArgument?.type !== ArgumentType.LITERAL) {
+	if (idArgument?.type !== ArgumentType.IDENTIFIER) {
 		return;
 	}
 
@@ -199,7 +190,8 @@ function updatePointerMemoryMetadata(line: CompilerASTLine, context: MemoryRefer
 		return;
 	}
 
-	const defaultAddress = (defaultArgument as ResolvedArgumentLiteral).address;
+	const defaultAddress =
+		defaultArgument?.type === ArgumentType.LITERAL ? (defaultArgument as ResolvedArgumentLiteral).address : undefined;
 	const pointeeElementCount = getPointeeElementCount(defaultAddress, context);
 	const moduleId = context.moduleName ?? context.currentModule?.id;
 	if (!moduleId) {
@@ -241,7 +233,7 @@ function resolvedValueToLiteral(resolved: Const): ResolvedArgumentLiteral {
 
 /**
  * Attempts to fold an argument into a semantic value using the current memory layout context.
- * Constant identifiers are expected to have been inlined before this pass runs.
+ * Constant identifiers are expected to have been resolved before this pass runs.
  *
  * @param context - Compilation context used by the operation.
  * @param argument - Argument whose resolved value or metadata should be used.
@@ -273,14 +265,7 @@ export function tryResolveValueArgument(
 	return resolveValueOperand(argument, context);
 }
 
-/**
- * Inlines one memory-layout value argument when the provided layout context can resolve it.
- *
- * @param argument - Argument to inline.
- * @param context - Compilation context used by the operation.
- * @returns The original argument or a literal carrying resolved value/address metadata.
- */
-export function inlineMemoryReferenceArgument(
+function resolveMemoryReferenceArgument(
 	argument: Argument,
 	context: MemoryReferenceResolutionContext
 ): Argument | ResolvedArgumentLiteral {
@@ -296,137 +281,110 @@ export function inlineMemoryReferenceArgument(
 	return resolvedValueToLiteral(resolved);
 }
 
-/**
- * Returns a copied line with all resolvable memory-layout value references inlined.
- *
- * @param line - AST line to transform.
- * @param context - Compilation context used by the operation.
- * @returns Original line when unchanged, otherwise a copied line with inlined arguments.
- */
-export function inlineMemoryReferencesInLine<TLine extends CompilerASTLine>(
-	line: TLine,
+function resolveMemoryReferenceLineFacts(
+	line: CompilerASTLine,
 	context: MemoryReferenceResolutionContext
-): TLine {
+): MemoryReferenceResolutionLineFacts | undefined {
 	let changed = false;
 	const nextArguments = line.arguments.map(argument => {
-		const inlined = inlineMemoryReferenceArgument(argument, context);
-		if (inlined !== argument) {
+		const resolved = resolveMemoryReferenceArgument(argument, context);
+		if (resolved !== argument) {
 			changed = true;
 		}
-		return inlined;
+		return resolved;
 	});
 
-	return changed ? ({ ...line, arguments: nextArguments } as TLine) : line;
-}
-
-function replaceLine<TLine extends CompilerASTLine | undefined>(
-	line: TLine,
-	replacements: ReadonlyMap<CompilerASTLine, CompilerASTLine>
-): TLine {
-	return line ? ((replacements.get(line) ?? line) as TLine) : line;
+	return changed ? { arguments: nextArguments } : undefined;
 }
 
 function applyConstantFacts<TLine extends CompilerASTLine>(line: TLine, facts?: ConstantResolutionLineFacts): TLine {
 	return facts?.arguments ? ({ ...line, arguments: facts.arguments } as TLine) : line;
 }
 
-function inlineMemoryReferencesInAst<TAst extends AST>(
-	ast: TAst,
+function applyMemoryReferenceFacts<TLine extends CompilerASTLine>(
+	line: TLine,
+	facts?: MemoryReferenceResolutionLineFacts
+): TLine {
+	return facts?.arguments ? ({ ...line, arguments: facts.arguments } as TLine) : line;
+}
+
+function resolveMemoryReferencesInAst(
+	ast: PrototypeAST | ModuleAST | ConstantsAST | FunctionAST,
 	memoryPlan: MemoryLayoutPlan,
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
 	constantReferences: ConstantResolutionBlockFacts | undefined
-): TAst {
+): MemoryReferenceResolutionBlockFacts {
 	const context =
 		ast.type === 'module'
 			? createModuleResolutionContext(memoryPlan, pointerMetadata, memoryPlan.modules[ast.id])
 			: createProjectResolutionContext(memoryPlan, pointerMetadata);
-	const replacements = new Map<CompilerASTLine, CompilerASTLine>();
 	let nextLocalIndex = 0;
-	const lines = ast.lines.map((line, lineIndex) => {
+	const lineFacts = ast.lines.map((line, lineIndex) => {
 		const constantResolvedLine = applyConstantFacts(line, constantReferences?.lineFacts[lineIndex]);
-		const nextLine = inlineMemoryReferencesInLine(constantResolvedLine, context);
-		if (nextLine !== line) {
-			replacements.set(line, nextLine);
-		}
+		const memoryReferenceFacts = resolveMemoryReferenceLineFacts(constantResolvedLine, context);
+		const resolvedLine = applyMemoryReferenceFacts(constantResolvedLine, memoryReferenceFacts);
 		if (ast.type === 'function') {
-			nextLocalIndex = collectFunctionLocal(nextLine, context.locals, nextLocalIndex);
+			nextLocalIndex = collectFunctionLocal(resolvedLine, context.locals, nextLocalIndex);
 		}
 		if (ast.type === 'module') {
-			updatePointerMemoryMetadata(nextLine, context);
+			updatePointerMemoryMetadata(resolvedLine, context);
 		}
-		return nextLine;
+		return memoryReferenceFacts;
 	});
 
-	if (replacements.size === 0) {
-		return ast;
-	}
+	return { lineFacts };
+}
 
-	if (ast.type === 'module') {
-		return {
-			...ast,
-			lines,
-			moduleLine: replaceLine(ast.moduleLine, replacements),
-			...(ast.regionLine ? { regionLine: replaceLine(ast.regionLine, replacements) } : {}),
-			memoryDeclarationLines: ast.memoryDeclarationLines.map(line => replaceLine(line, replacements)),
-		} as TAst;
-	}
+function resolveDeclarationSourceReferences(
+	module: PlannedMemoryModule,
+	memoryPlan: MemoryLayoutPlan,
+	pointerMetadata: MemoryReferencePointerMetadataByModuleId
+): MemoryReferenceResolutionBlockFacts {
+	pointerMetadata[module.id] = pointerMetadata[module.id] ?? {};
+	const context = createModuleResolutionContext(memoryPlan, pointerMetadata, module);
+	const lineFacts = module.declarationSources.map(({ line }) => {
+		const memoryReferenceFacts = resolveMemoryReferenceLineFacts(line, context);
+		updatePointerMemoryMetadata(applyMemoryReferenceFacts(line, memoryReferenceFacts), context);
+		return memoryReferenceFacts;
+	});
 
-	if (ast.type === 'function') {
-		return {
-			...ast,
-			lines,
-			functionLine: replaceLine(ast.functionLine, replacements),
-			functionEndLine: replaceLine(ast.functionEndLine, replacements),
-			...(ast.exportLine ? { exportLine: replaceLine(ast.exportLine, replacements) } : {}),
-			...(ast.importLine ? { importLine: replaceLine(ast.importLine, replacements) } : {}),
-		} as TAst;
-	}
-
-	if (ast.type === 'constants') {
-		return {
-			...ast,
-			lines,
-			constantsLine: replaceLine(ast.constantsLine, replacements),
-		} as TAst;
-	}
-
-	return {
-		...ast,
-		lines,
-		prototypeLine: replaceLine(ast.prototypeLine, replacements),
-		memoryDeclarationLines: ast.memoryDeclarationLines.map(line => replaceLine(line, replacements)),
-	} as TAst;
+	return { lineFacts };
 }
 
 /**
- * Returns a copied project AST with resolvable memory-layout value references inlined.
+ * Resolves memory-layout value references once for the full compiler project.
  *
- * @param input - Project AST and completed memory layout plan to transform.
- * @returns Inlined project AST collection.
+ * @param input - Project AST, completed memory layout plan, and constant-resolution facts.
+ * @returns Memory-reference facts aligned with the input AST and planned memory declaration sources.
  */
-export function inlineMemoryReferences<
-	TPrototype extends PrototypeAST,
-	TModule extends ModuleAST,
-	TConstants extends ConstantsAST,
-	TFunction extends FunctionAST,
->(
-	input: InlineMemoryReferencesInput<TPrototype, TModule, TConstants, TFunction>
-): InlineMemoryReferencesResult<TPrototype, TModule, TConstants, TFunction> {
+export function resolveMemoryReferences(input: ResolveMemoryReferencesInput): ResolveMemoryReferencesResult {
 	const pointerMetadata: Record<string, MemoryPointerMetadataMap> = {};
+	const declarationSourcesByModuleId: Record<string, MemoryReferenceResolutionBlockFacts> = {};
+
+	for (const plannedModule of input.memoryPlan.moduleList) {
+		declarationSourcesByModuleId[plannedModule.id] = resolveDeclarationSourceReferences(
+			plannedModule,
+			input.memoryPlan,
+			pointerMetadata
+		);
+	}
+
 	return {
-		ast: {
+		references: {
 			prototypes: input.ast.prototypes.map((ast, index) =>
-				inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.prototypes[index])
+				resolveMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.prototypes[index])
 			),
 			modules: input.ast.modules.map((ast, index) =>
-				inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.modules[index])
+				resolveMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.modules[index])
 			),
 			constants: input.ast.constants.map((ast, index) =>
-				inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.constants[index])
+				resolveMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.constants[index])
 			),
 			functions: input.ast.functions.map((ast, index) =>
-				inlineMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.functions[index])
+				resolveMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.functions[index])
 			),
+			declarationSourcesByModuleId,
+			pointerMetadataByModuleId: pointerMetadata,
 		},
 	};
 }

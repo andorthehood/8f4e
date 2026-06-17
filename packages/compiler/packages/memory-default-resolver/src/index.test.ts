@@ -2,6 +2,7 @@ import type {
 	ArrayMemoryDeclarationLine,
 	CompilerASTLine,
 	MemoryDeclarationLine,
+	MemoryReferenceResolutionReport,
 	ModuleLine,
 	ShapeLine,
 	ValidatedModuleAST,
@@ -97,6 +98,19 @@ function noConstantReferences() {
 	};
 }
 
+function noMemoryReferences(memoryPlan: ReturnType<typeof planProjectMemoryLayout>): MemoryReferenceResolutionReport {
+	return {
+		prototypes: [],
+		modules: [],
+		constants: [],
+		functions: [],
+		declarationSourcesByModuleId: Object.fromEntries(
+			memoryPlan.moduleList.map(module => [module.id, { lineFacts: [] }])
+		),
+		pointerMetadataByModuleId: Object.fromEntries(memoryPlan.moduleList.map(module => [module.id, {}])),
+	};
+}
+
 describe('resolveMemoryDefaults', () => {
 	it('resolves scalar and array declaration defaults', () => {
 		const counter = scalarLine(2, 'int', [classifyIdentifier('counter'), literal(7)]);
@@ -115,6 +129,7 @@ describe('resolveMemoryDefaults', () => {
 
 		const result = resolveMemoryDefaults({
 			memoryPlan,
+			memoryReferences: noMemoryReferences(memoryPlan),
 		});
 
 		expect(result.memoryDefaultsByModuleId.main).toEqual({
@@ -133,9 +148,44 @@ describe('resolveMemoryDefaults', () => {
 			constantReferences: noConstantReferences(),
 			startingByteAddress: 4,
 		});
+		const bufferDeclaration = memoryPlan.modules.main.memory.buffer;
+		const memoryReferences = noMemoryReferences(memoryPlan);
+		memoryReferences.declarationSourcesByModuleId.main = {
+			lineFacts: [
+				undefined,
+				{
+					arguments: [
+						classifyIdentifier('ptr'),
+						{
+							type: ArgumentType.LITERAL,
+							value: bufferDeclaration.byteAddress,
+							isInteger: true,
+							address: {
+								memoryIndex: 0,
+								safeRange: {
+									source: 'memory-start',
+									memoryIndex: 0,
+									byteAddress: bufferDeclaration.byteAddress,
+									safeByteLength: bufferDeclaration.elementByteLength,
+									moduleId: 'main',
+									memoryId: 'buffer',
+								},
+							},
+						},
+					],
+				},
+			],
+		};
+		memoryReferences.pointerMetadataByModuleId.main = {
+			ptr: {
+				pointeeMemoryIndex: 0,
+				pointeeElementCount: 4,
+			},
+		};
 
 		const result = resolveMemoryDefaults({
 			memoryPlan,
+			memoryReferences,
 		});
 
 		expect(result.memoryDefaultsByModuleId.main.ptr).toMatchObject({
@@ -168,6 +218,7 @@ describe('resolveMemoryDefaults', () => {
 
 		const result = resolveMemoryDefaults({
 			memoryPlan,
+			memoryReferences: noMemoryReferences(memoryPlan),
 		});
 
 		expect(result.memoryDefaultsByModuleId.main).toEqual({
@@ -194,11 +245,13 @@ describe('resolveMemoryDefaults', () => {
 		expect(() =>
 			resolveMemoryDefaults({
 				memoryPlan,
+				memoryReferences: noMemoryReferences(memoryPlan),
 			})
 		).toThrow(MemoryDefaultResolverError);
 		expect(() =>
 			resolveMemoryDefaults({
 				memoryPlan,
+				memoryReferences: noMemoryReferences(memoryPlan),
 			})
 		).toThrow(expect.objectContaining({ compilerErrorCode: ErrorCode.ARRAY_INITIALIZER_TOO_LONG }));
 	});

@@ -120,8 +120,8 @@ function evaluateLiteralExpression(
 }
 
 /**
- * Attempts to fold pure literal arithmetic after constants and memory references
- * have already been inlined by earlier project-level passes.
+ * Attempts to fold pure literal arithmetic after constant and memory-reference
+ * facts have already been applied by earlier project-level passes.
  *
  * @param argument - Argument whose literal value should be used.
  * @returns The computed result.

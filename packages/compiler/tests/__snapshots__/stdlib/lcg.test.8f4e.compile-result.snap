@@ -110,9 +110,10 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 65536,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "MODULUS",
             },
           ],
           "instruction": "push",
@@ -128,9 +129,10 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 65536,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "MODULUS",
             },
           ],
           "instruction": "push",
@@ -142,9 +144,10 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 65536,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "MODULUS",
             },
           ],
           "instruction": "push",
@@ -160,9 +163,10 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 26125,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "MULTIPLIER_MOD",
             },
           ],
           "instruction": "push",
@@ -174,9 +178,10 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 62303,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "INCREMENT_MOD",
             },
           ],
           "instruction": "push",
@@ -188,9 +193,10 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": 65536,
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "MODULUS",
             },
           ],
           "instruction": "push",
@@ -284,20 +290,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "seed",
-                  "memoryIndex": 0,
-                  "moduleId": "lcgAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "seed",
+              "type": "identifier",
+              "value": "&seed",
             },
           ],
           "instruction": "push",
@@ -359,20 +357,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "seed",
-                  "memoryIndex": 0,
-                  "moduleId": "lcgAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "seed",
+              "type": "identifier",
+              "value": "&seed",
             },
           ],
           "instruction": "push",
@@ -434,20 +424,12 @@
         {
           "arguments": [
             {
-              "address": {
-                "memoryIndex": 0,
-                "safeRange": {
-                  "byteAddress": 4,
-                  "memoryId": "seed",
-                  "memoryIndex": 0,
-                  "moduleId": "lcgAssertions",
-                  "safeByteLength": 4,
-                  "source": "memory-start",
-                },
-              },
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
+              "isEndAddress": false,
+              "referenceKind": "memory-reference",
+              "scope": "local",
+              "targetMemoryId": "seed",
+              "type": "identifier",
+              "value": "&seed",
             },
           ],
           "instruction": "push",

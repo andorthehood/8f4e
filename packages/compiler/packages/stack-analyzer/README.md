@@ -39,6 +39,6 @@ The stack analyzer is responsible for:
 - address, pointer, clamp-range, and known-integer stack metadata propagation
 - `push`, pointer dereference, and `pushShape` stack item production from resolved semantic facts
 
-It is not responsible for parsing, syntax validation, namespace construction, memory layout planning, memory default resolution, memory-reference inlining, semantic reference resolution, or WASM/codegen emission. Those earlier passes provide the AST and semantic metadata; later codegen consumes the stack report and does not perform stack analysis.
+It is not responsible for parsing, syntax validation, namespace construction, memory layout planning, memory default resolution, memory-reference resolution, semantic reference resolution, or WASM/codegen emission. Those earlier passes provide the AST and semantic metadata; later codegen consumes the stack report and does not perform stack analysis.
 
 `@8f4e/stack-analyzer/testing` exposes the package-private one-line analyzer for instruction compiler tests only. Compiler production code should use the project-level `analyzeStack` report.
