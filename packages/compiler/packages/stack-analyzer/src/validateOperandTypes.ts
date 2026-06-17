@@ -1,7 +1,7 @@
 import type { CompilationContext, CompilerASTLine, OperandRule, StackItem } from '@8f4e/language-spec';
 import { ErrorCode, getError } from '@8f4e/language-spec';
+import { areAllOperandsFloats, areAllOperandsIntegers, hasMixedFloatWidth } from '@8f4e/semantic-utils';
 import { inferErrorCodeFromRule } from './inferErrorCodeFromRule';
-import { areAllOperandsFloats, areAllOperandsIntegers, hasMixedFloatWidth } from './utils/operandTypes';
 
 /**
  * Enforces operand type rules from the instruction spec against already-peeked stack operands.

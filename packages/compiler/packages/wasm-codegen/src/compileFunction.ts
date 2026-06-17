@@ -20,10 +20,6 @@ import { createCompilationContext, normalizeValueArguments } from '@8f4e/semanti
 import type { StackAnalyzedFunction } from '@8f4e/stack-analyzer';
 import { attachStackAnalysis, compileCodegenLine } from './compileLine';
 
-type CompletedFunctionCompilationContext = FunctionCompilationContext & {
-	currentFunctionTypeIndex: number;
-};
-
 /**
  * Compiles one validated function AST into a WebAssembly function body or import metadata.
  *
@@ -94,13 +90,11 @@ export function compileFunction(
 			count: 1,
 		}));
 
-	const completedContext = context as CompletedFunctionCompilationContext;
-
 	return {
 		id: functionMetadata.id,
 		name: functionMetadata.name,
 		signature: functionMetadata.signature,
-		body: completedContext.currentFunctionImport
+		body: context.currentFunctionImport
 			? []
 			: createFunction(
 					localDeclarations.map(local =>
@@ -111,11 +105,11 @@ export function compileFunction(
 					),
 					context.byteCode
 				),
-		locals: completedContext.currentFunctionImport ? [] : localDeclarations,
-		...(completedContext.currentFunctionExportName ? { exportName: completedContext.currentFunctionExportName } : {}),
-		...(completedContext.currentFunctionImport ? { import: completedContext.currentFunctionImport } : {}),
+		locals: context.currentFunctionImport ? [] : localDeclarations,
+		...(context.currentFunctionExportName ? { exportName: context.currentFunctionExportName } : {}),
+		...(context.currentFunctionImport ? { import: context.currentFunctionImport } : {}),
 		wasmIndex: functionMetadata.wasmIndex,
-		typeIndex: completedContext.currentFunctionTypeIndex,
+		typeIndex: context.currentFunctionTypeIndex!,
 		ast,
 		...(functionMetadata.used ? { used: true } : {}),
 		...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),

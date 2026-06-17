@@ -6,11 +6,23 @@ import { inlineMemoryReferences, resolveMemoryExpressionOperand, tryResolveValue
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
+function getWordAlignedByteLength(wordAlignedSize: number): number {
+	return Math.max(0, wordAlignedSize) * 4;
+}
+
+function getEndByteAddress(byteAddress: number, wordAlignedSize: number): number {
+	return wordAlignedSize <= 0 ? byteAddress : byteAddress + (wordAlignedSize - 1) * 4;
+}
+
+function getEndAddressSafeByteLength(wordAlignedSize: number): number {
+	return wordAlignedSize > 0 ? 4 : 0;
+}
+
 function createMemoryDeclaration(
 	id: string,
 	overrides: Partial<PlannedMemoryDeclaration> = {}
 ): PlannedMemoryDeclaration {
-	return {
+	const declaration = {
 		id,
 		lineNumber: 0,
 		type: 'int',
@@ -24,6 +36,14 @@ function createMemoryDeclaration(
 		pointerDepth: 0,
 		isUnsigned: false,
 		...overrides,
+	};
+
+	return {
+		...declaration,
+		elementByteLength: declaration.numberOfElements * declaration.elementWordSize,
+		wordAlignedByteLength: getWordAlignedByteLength(declaration.wordAlignedSize),
+		endByteAddress: getEndByteAddress(declaration.byteAddress, declaration.wordAlignedSize),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(declaration.wordAlignedSize),
 	} as PlannedMemoryDeclaration;
 }
 
@@ -32,7 +52,7 @@ function createPlannedModule(
 	memory: Record<string, PlannedMemoryDeclaration>,
 	overrides: Partial<PlannedMemoryModule> = {}
 ): PlannedMemoryModule {
-	return {
+	const module = {
 		id,
 		lineNumber: 0,
 		byteAddress: 24,
@@ -42,6 +62,13 @@ function createPlannedModule(
 		declarations: Object.values(memory),
 		declarationSources: [],
 		...overrides,
+	};
+
+	return {
+		...module,
+		wordAlignedByteLength: getWordAlignedByteLength(module.wordAlignedSize),
+		endByteAddress: getEndByteAddress(module.byteAddress, module.wordAlignedSize),
+		endAddressSafeByteLength: getEndAddressSafeByteLength(module.wordAlignedSize),
 	} as PlannedMemoryModule;
 }
 
@@ -100,47 +127,18 @@ describe('inlineMemoryReferences', () => {
 			moduleLine,
 			memoryDeclarationLines: [],
 		} as unknown as ValidatedModuleAST;
-		const buffer = {
-			id: 'buffer',
+		const buffer = createMemoryDeclaration('buffer', {
 			lineNumber: 3,
-			type: 'int[]',
+			type: 'int',
 			numberOfElements: 4,
 			elementWordSize: 4,
 			wordAlignedAddress: 4,
 			wordAlignedSize: 4,
 			byteAddress: 16,
-			memoryIndex: 0,
-			isInteger: true,
-			pointerDepth: 0,
-			isUnsigned: false,
-		} satisfies PlannedMemoryDeclaration;
-		const memoryPlan = {
-			modules: {
-				main: {
-					id: 'main',
-					lineNumber: 1,
-					byteAddress: 16,
-					wordAlignedSize: 4,
-					memoryIndex: 0,
-					memory: { buffer },
-					declarations: [buffer],
-					declarationSources: [],
-				},
-			},
-			moduleList: [
-				{
-					id: 'main',
-					lineNumber: 1,
-					byteAddress: 16,
-					wordAlignedSize: 4,
-					memoryIndex: 0,
-					memory: { buffer },
-					declarations: [buffer],
-					declarationSources: [],
-				},
-			],
-			nextByteAddressByMemoryIndex: { 0: 32 },
-		} satisfies MemoryLayoutPlan;
+		});
+		const memoryPlan = createMemoryPlan([
+			createPlannedModule('main', { buffer }, { byteAddress: 16, wordAlignedSize: 4 }),
+		]);
 
 		const result = inlineMemoryReferences({
 			ast: {
@@ -202,8 +200,7 @@ describe('inlineMemoryReferences', () => {
 			moduleLine,
 			memoryDeclarationLines: [samplesLine, pointerLine],
 		} as unknown as ValidatedModuleAST;
-		const samples = {
-			id: 'samples',
+		const samples = createMemoryDeclaration('samples', {
 			lineNumber: 2,
 			type: 'float',
 			numberOfElements: 4,
@@ -211,53 +208,19 @@ describe('inlineMemoryReferences', () => {
 			wordAlignedAddress: 4,
 			wordAlignedSize: 4,
 			byteAddress: 16,
-			memoryIndex: 0,
 			isInteger: false,
-			pointerDepth: 0,
-			isUnsigned: false,
-		} satisfies PlannedMemoryDeclaration;
-		const ptr = {
-			id: 'ptr',
+		});
+		const ptr = createMemoryDeclaration('ptr', {
 			lineNumber: 3,
 			type: 'float*',
-			numberOfElements: 1,
-			elementWordSize: 4,
 			wordAlignedAddress: 8,
-			wordAlignedSize: 1,
 			byteAddress: 32,
-			memoryIndex: 0,
-			isInteger: true,
 			pointeeBaseType: 'float',
 			pointerDepth: 1,
-			isUnsigned: false,
-		} satisfies PlannedMemoryDeclaration;
-		const memoryPlan = {
-			modules: {
-				main: {
-					id: 'main',
-					lineNumber: 1,
-					byteAddress: 16,
-					wordAlignedSize: 5,
-					memoryIndex: 0,
-					memory: { samples, ptr },
-					declarations: [samples, ptr],
-					declarationSources: [],
-				},
-			},
-			moduleList: [
-				{
-					id: 'main',
-					lineNumber: 1,
-					byteAddress: 16,
-					wordAlignedSize: 5,
-					memoryIndex: 0,
-					memory: { samples, ptr },
-					declarations: [samples, ptr],
-					declarationSources: [],
-				},
-			],
-			nextByteAddressByMemoryIndex: { 0: 36 },
-		} satisfies MemoryLayoutPlan;
+		});
+		const memoryPlan = createMemoryPlan([
+			createPlannedModule('main', { samples, ptr }, { byteAddress: 16, wordAlignedSize: 5 }),
+		]);
 
 		const result = inlineMemoryReferences({
 			ast: {

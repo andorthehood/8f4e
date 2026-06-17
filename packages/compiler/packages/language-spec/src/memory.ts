@@ -167,8 +167,16 @@ export interface PlannedMemoryDeclaration {
 	/** Configured logical region name for non-default memories. */
 	memoryRegionName?: string;
 	byteAddress: number;
+	/** Actual value bytes covered by declared elements, excluding alignment padding. */
+	elementByteLength: number;
 	wordAlignedSize: number;
+	/** Byte length represented by `wordAlignedSize`. */
+	wordAlignedByteLength: number;
 	wordAlignedAddress: number;
+	/** Last aligned byte address occupied by this declaration. */
+	endByteAddress: number;
+	/** Safe byte length when addressing this declaration through its end address. */
+	endAddressSafeByteLength: number;
 	lineNumber: number;
 	isInteger: boolean;
 	isFloat64?: boolean;
@@ -196,6 +204,12 @@ export interface PlannedMemoryModule extends MemoryRegionIdentity {
 	lineNumber: number;
 	byteAddress: number;
 	wordAlignedSize: number;
+	/** Byte length represented by `wordAlignedSize`. */
+	wordAlignedByteLength: number;
+	/** Last aligned byte address occupied by this module. */
+	endByteAddress: number;
+	/** Safe byte length when addressing this module through its end address. */
+	endAddressSafeByteLength: number;
 	/** Declaration lookup by id, materialized by the planner from the ordered declarations below. */
 	memory: Record<string, PlannedMemoryDeclaration>;
 	/** Declarations in planned/source order; entries are the same objects exposed through `memory`. */

@@ -27,12 +27,13 @@ export function getClampAccessByteWidth(line: CompilerASTLine): number {
  * @returns The resolved memory address range.
  */
 export function getModuleAddressRange(context: CodegenContext | CompilationContext): MemoryAddressRange {
+	const plannedModule = context.currentPlannedModule!;
 	return {
 		source: 'module-start',
-		...getMemoryRegionFields(context.currentMemoryIndex, context.currentMemoryRegionName),
-		byteAddress: context.startingByteAddress,
-		safeByteLength: Math.max(0, context.currentModuleWordAlignedSize * WORD_MEMORY_ACCESS_WIDTH),
-		...(context.namespace.moduleName ? { moduleId: context.namespace.moduleName } : {}),
+		...getMemoryRegionFields(plannedModule.memoryIndex, plannedModule.memoryRegionName),
+		byteAddress: plannedModule.byteAddress,
+		safeByteLength: plannedModule.wordAlignedByteLength,
+		moduleId: plannedModule.id,
 	};
 }
 

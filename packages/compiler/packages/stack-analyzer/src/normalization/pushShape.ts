@@ -10,7 +10,7 @@ import {
 	type ResolvedPushShapeLine,
 } from '@8f4e/language-spec';
 import { memoryStartAddressValue } from '@8f4e/memory-reference-inliner';
-import { getResolvedMemoryDeclaration } from '../utils/memoryState';
+import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
 
 function createAddressPushLine(line: PushShapeLine, memoryId: string, context: CompilationContext): CodegenPushLine {
 	const address = memoryStartAddressValue(
