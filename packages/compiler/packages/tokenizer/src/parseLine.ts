@@ -1,26 +1,7 @@
 import type { Argument, CompilerASTLine } from '@8f4e/language-spec';
-import { ArgumentType, isMemoryDeclarationInstructionName } from '@8f4e/language-spec';
 import { parseArgument } from './syntax/parseArgument';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 import validateInstructionArguments from './syntax/validateInstructionArguments';
-
-/** Adds namespace references discovered from syntax-level arguments to a line accumulator. */
-function addReferencedNamespaceIdsFromArgument(referencedNamespaceIds: Set<string>, argument: Argument): void {
-	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		for (const moduleId of argument.intermoduleIds) {
-			referencedNamespaceIds.add(moduleId);
-		}
-		return;
-	}
-
-	if (argument.type !== ArgumentType.IDENTIFIER) {
-		return;
-	}
-
-	if (argument.scope === 'intermodule' && argument.targetModuleId) {
-		referencedNamespaceIds.add(argument.targetModuleId);
-	}
-}
 
 /**
  * Tokenizes an instruction line, treating quoted strings as single tokens.
@@ -108,22 +89,16 @@ export function parseLine(line: string, lineNumber: number): CompilerASTLine {
 		const tokens = tokenizeInstruction(line);
 		const [first = '', ...args] = tokens;
 		instruction = first;
-		const isMemoryDeclaration = isMemoryDeclarationInstructionName(instruction);
 		const parsedArguments: Argument[] = [];
-		const referencedNamespaceIds = new Set<string>();
 		for (const arg of args) {
 			const parsedArgument = parseArgument(arg);
 			parsedArguments.push(parsedArgument);
-			if (isMemoryDeclaration) {
-				addReferencedNamespaceIdsFromArgument(referencedNamespaceIds, parsedArgument);
-			}
 		}
 		validateInstructionArguments(instruction, parsedArguments);
 		const parsedLine = {
 			lineNumber,
 			instruction,
 			arguments: parsedArguments,
-			...(referencedNamespaceIds.size > 0 ? { referencedNamespaceIds: [...referencedNamespaceIds] } : {}),
 		} as CompilerASTLine;
 
 		return parsedLine;

@@ -35,9 +35,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "addressSource",
-          ],
         },
         {
           "arguments": [
@@ -57,9 +54,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "addressSource",
-          ],
         },
         {
           "arguments": [
@@ -138,9 +132,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "addressSource",
-          ],
         },
         {
           "arguments": [
@@ -161,9 +152,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "addressSource",
-          ],
         },
         {
           "arguments": [
@@ -183,9 +171,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "addressSource",
-          ],
         },
         {
           "arguments": [
@@ -493,9 +478,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "this",
-          ],
         },
         {
           "arguments": [
@@ -711,9 +693,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "nthAddressSource",
-          ],
         },
         {
           "arguments": [
@@ -733,9 +712,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "nthAddressSource",
-          ],
         },
         {
           "arguments": [
@@ -755,9 +731,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "nthAddressSource",
-          ],
         },
         {
           "arguments": [
@@ -777,9 +750,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "nthAddressSource",
-          ],
         },
         {
           "arguments": [
@@ -1018,9 +988,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "nthArraySource",
-          ],
         },
         {
           "arguments": [
@@ -1149,9 +1116,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "lateAddressSource",
-          ],
         },
         {
           "arguments": [
@@ -1172,9 +1136,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "lateAddressSource",
-          ],
         },
         {
           "arguments": [

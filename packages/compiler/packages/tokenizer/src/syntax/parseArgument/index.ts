@@ -59,18 +59,11 @@ export function parseArgument(argument: string): Argument {
 			if (compileTimeExpression !== null) {
 				const left = parseCompileTimeOperand(compileTimeExpression.lhs);
 				const right = parseCompileTimeOperand(compileTimeExpression.rhs);
-				const intermoduleIds: string[] = [];
-				for (const operand of [left, right]) {
-					if (operand.type === ArgumentType.IDENTIFIER && operand.scope === 'intermodule' && operand.targetModuleId) {
-						intermoduleIds.push(operand.targetModuleId);
-					}
-				}
 				return {
 					type: ArgumentType.COMPILE_TIME_EXPRESSION,
 					left,
 					operator: compileTimeExpression.operator,
 					right,
-					intermoduleIds,
 				};
 			}
 

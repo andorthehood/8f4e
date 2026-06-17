@@ -35,9 +35,6 @@
             },
           ],
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "combinedBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -57,9 +54,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "combinedBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -79,9 +73,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "combinedBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -101,9 +92,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "combinedBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -296,9 +284,6 @@
             },
           ],
           "instruction": "float",
-          "referencedNamespaceIds": [
-            "floatBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -318,9 +303,6 @@
             },
           ],
           "instruction": "float",
-          "referencedNamespaceIds": [
-            "floatBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -604,9 +586,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -626,9 +605,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -648,9 +624,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -670,9 +643,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -692,9 +662,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -714,9 +681,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -736,9 +700,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -758,9 +719,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -780,9 +738,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -802,9 +757,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -824,9 +776,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -846,9 +795,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "intBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -1255,9 +1201,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "lateBoundsSource",
-          ],
         },
         {
           "arguments": [
@@ -1277,9 +1220,6 @@
             },
           ],
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "lateBoundsSource",
-          ],
         },
         {
           "arguments": [

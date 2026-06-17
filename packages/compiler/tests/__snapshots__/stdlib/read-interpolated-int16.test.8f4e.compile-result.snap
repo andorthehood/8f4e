@@ -1756,7 +1756,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",

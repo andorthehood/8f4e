@@ -28,7 +28,6 @@ describe('compileToAST', () => {
 			throw new Error('Expected module AST');
 		}
 		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['counter', 'sourceStart']);
-		expect(ast.memoryDeclarationLines[1].referencedNamespaceIds).toEqual(['source']);
 	});
 
 	it('keeps shape instructions in module lines without adding module metadata', () => {
@@ -248,12 +247,6 @@ describe('compileToAST', () => {
 			constantsLine: { instruction: 'constants' },
 		});
 	});
-
-	it('does not record namespace references from use lines while parsing lines', () => {
-		const ast = compileToAST(['module target', 'use shared', 'moduleEnd']);
-
-		expect(ast.lines[1]).not.toHaveProperty('referencedNamespaceIds');
-	});
 });
 
 describe('compileToAST line parsing', () => {
@@ -269,7 +262,6 @@ describe('compileToAST line parsing', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'readHead' },
 				{ type: ArgumentType.IDENTIFIER, value: '&source:samples' },
 			],
-			referencedNamespaceIds: ['source'],
 		});
 	});
 

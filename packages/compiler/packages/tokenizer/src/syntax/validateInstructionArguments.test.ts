@@ -46,7 +46,6 @@ describe('validateInstructionArguments', () => {
 					left: parseCompileTimeOperand('SIZE'),
 					operator: '*',
 					right: parseCompileTimeOperand('2'),
-					intermoduleIds: [],
 				},
 			])
 		).not.toThrow();
@@ -203,7 +202,6 @@ describe('validateInstructionArguments', () => {
 					left: parseCompileTimeOperand('NOTE'),
 					operator: '+',
 					right: parseCompileTimeOperand('1'),
-					intermoduleIds: [],
 				},
 			])
 		).not.toThrow();

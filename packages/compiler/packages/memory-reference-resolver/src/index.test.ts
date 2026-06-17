@@ -565,7 +565,6 @@ describe('tryResolveValueArgument', () => {
 				left: parseCompileTimeOperand('2'),
 				operator: '*',
 				right: parseCompileTimeOperand('sizeof(samples)'),
-				intermoduleIds: [],
 			})
 		).toEqual({
 			value: 4,

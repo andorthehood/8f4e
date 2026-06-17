@@ -52,7 +52,6 @@
               "value": "ROOT",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -68,7 +67,6 @@
               "type": "compile_time_expression",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",

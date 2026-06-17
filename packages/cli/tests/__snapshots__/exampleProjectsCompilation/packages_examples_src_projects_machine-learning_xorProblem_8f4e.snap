@@ -160,9 +160,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn3"
             ]
           },
           {
@@ -203,9 +200,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn3"
             ]
           }
         ],
@@ -708,9 +702,6 @@
                 "targetMemoryId": "in1",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
             ]
           },
           {
@@ -732,9 +723,6 @@
                 "targetMemoryId": "in2",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
             ]
           },
           {
@@ -941,9 +929,6 @@
                 "targetMemoryId": "in1",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
             ]
           },
           {
@@ -965,9 +950,6 @@
                 "targetMemoryId": "in2",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
             ]
           },
           {
@@ -1216,9 +1198,6 @@
                 "targetMemoryId": "in1",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
             ]
           },
           {
@@ -1240,9 +1219,6 @@
                 "targetMemoryId": "in2",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
             ]
           },
           {
@@ -1449,9 +1425,6 @@
                 "targetMemoryId": "in1",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
             ]
           },
           {
@@ -1473,9 +1446,6 @@
                 "targetMemoryId": "in2",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
             ]
           },
           {
@@ -1653,9 +1623,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron"
             ]
           },
           {
@@ -1753,9 +1720,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron"
             ]
           },
           {
@@ -1933,9 +1897,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron2"
             ]
           },
           {
@@ -2033,9 +1994,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron2"
             ]
           },
           {
@@ -2285,9 +2243,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn"
             ]
           },
           {
@@ -2309,9 +2264,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn2"
             ]
           },
           {
@@ -2518,9 +2470,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn"
             ]
           },
           {
@@ -2542,9 +2491,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn2"
             ]
           },
           {
@@ -2738,9 +2684,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron3"
             ]
           },
           {
@@ -2911,9 +2854,6 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron3"
             ]
           },
           {
