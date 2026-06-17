@@ -300,12 +300,8 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "&phaseAccumulator:out",
               },
             ],
-            "hasExplicitMemoryDefault": true,
             "instruction": "float*",
             "lineNumber": 5,
-            "referencedNamespaceIds": [
-              "phaseAccumulator",
-            ],
           },
           {
             "arguments": [
@@ -322,7 +318,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "AUDIO_BUFFER_SIZE",
               },
             ],
-            "hasExplicitMemoryDefault": false,
             "instruction": "float[]",
             "lineNumber": 8,
           },
@@ -343,7 +338,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "&buffer",
               },
             ],
-            "hasExplicitMemoryDefault": true,
             "instruction": "int",
             "lineNumber": 9,
           },
@@ -514,73 +508,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             "arguments": [],
             "instruction": "moduleEnd",
             "lineNumber": 40,
-          },
-        ],
-        "memoryDeclarationLines": [
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "in",
-              },
-              {
-                "isEndAddress": false,
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetMemoryId": "out",
-                "targetModuleId": "phaseAccumulator",
-                "type": "identifier",
-                "value": "&phaseAccumulator:out",
-              },
-            ],
-            "hasExplicitMemoryDefault": true,
-            "instruction": "float*",
-            "lineNumber": 5,
-            "referencedNamespaceIds": [
-              "phaseAccumulator",
-            ],
-          },
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "buffer",
-              },
-              {
-                "referenceKind": "constant",
-                "scope": "local",
-                "type": "identifier",
-                "value": "AUDIO_BUFFER_SIZE",
-              },
-            ],
-            "hasExplicitMemoryDefault": false,
-            "instruction": "float[]",
-            "lineNumber": 8,
-          },
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "pointer",
-              },
-              {
-                "isEndAddress": false,
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "type": "identifier",
-                "value": "&buffer",
-              },
-            ],
-            "hasExplicitMemoryDefault": true,
-            "instruction": "int",
-            "lineNumber": 9,
           },
         ],
         "moduleLine": {
@@ -856,7 +783,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             "lineNumber": 8,
           },
         ],
-        "memoryDeclarationLines": [],
         "moduleLine": {
           "arguments": [
             {
@@ -933,7 +859,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": 440,
               },
             ],
-            "hasExplicitMemoryDefault": true,
             "instruction": "float",
             "lineNumber": 4,
           },
@@ -954,7 +879,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "&defaultFreq",
               },
             ],
-            "hasExplicitMemoryDefault": true,
             "instruction": "float*",
             "lineNumber": 5,
           },
@@ -967,7 +891,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "phase",
               },
             ],
-            "hasExplicitMemoryDefault": false,
             "instruction": "float",
             "lineNumber": 6,
           },
@@ -980,7 +903,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
                 "value": "out",
               },
             ],
-            "hasExplicitMemoryDefault": false,
             "instruction": "float",
             "lineNumber": 7,
           },
@@ -1216,73 +1138,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             "arguments": [],
             "instruction": "moduleEnd",
             "lineNumber": 42,
-          },
-        ],
-        "memoryDeclarationLines": [
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "defaultFreq",
-              },
-              {
-                "isInteger": true,
-                "type": "literal",
-                "value": 440,
-              },
-            ],
-            "hasExplicitMemoryDefault": true,
-            "instruction": "float",
-            "lineNumber": 4,
-          },
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "frequency",
-              },
-              {
-                "isEndAddress": false,
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "defaultFreq",
-                "type": "identifier",
-                "value": "&defaultFreq",
-              },
-            ],
-            "hasExplicitMemoryDefault": true,
-            "instruction": "float*",
-            "lineNumber": 5,
-          },
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "phase",
-              },
-            ],
-            "hasExplicitMemoryDefault": false,
-            "instruction": "float",
-            "lineNumber": 6,
-          },
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "out",
-              },
-            ],
-            "hasExplicitMemoryDefault": false,
-            "instruction": "float",
-            "lineNumber": 7,
           },
         ],
         "moduleLine": {
@@ -1605,7 +1460,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             "lineNumber": 7,
           },
         ],
-        "memoryDeclarationLines": [],
         "moduleLine": {
           "arguments": [
             {

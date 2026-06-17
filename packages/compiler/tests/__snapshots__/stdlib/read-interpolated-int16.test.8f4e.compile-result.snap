@@ -1551,7 +1551,6 @@
               "value": 40,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16[]",
         },
         {
@@ -1571,7 +1570,6 @@
               "value": "&buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -1758,7 +1756,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",

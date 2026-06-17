@@ -323,7 +323,6 @@
               "value": "value",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {

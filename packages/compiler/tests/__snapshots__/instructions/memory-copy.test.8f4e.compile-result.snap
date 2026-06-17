@@ -30,7 +30,6 @@
               "value": 2,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -57,7 +56,6 @@
               "value": 2,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -266,7 +264,6 @@
               "value": 50,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -283,7 +280,6 @@
               "value": 5,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {

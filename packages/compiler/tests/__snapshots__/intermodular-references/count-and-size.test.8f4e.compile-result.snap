@@ -34,11 +34,7 @@
               "value": "&combinedCountSizeSource:buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int*",
-          "referencedNamespaceIds": [
-            "combinedCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -57,11 +53,7 @@
               "value": "count(combinedCountSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "combinedCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -80,11 +72,7 @@
               "value": "sizeof(combinedCountSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "combinedCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -209,7 +197,6 @@
               "value": 12,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -250,11 +237,7 @@
               "value": "count(countSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "countSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -273,11 +256,7 @@
               "value": "count(countSizeSource:data)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "countSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -350,11 +329,7 @@
               "value": "sizeof(countSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "countSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -373,11 +348,7 @@
               "value": "sizeof(countSizeSource:data)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "countSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -396,11 +367,7 @@
               "value": "sizeof(pointerSizeSource:ptr)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "pointerSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -411,9 +378,6 @@
               "value": "doubledShortSize",
             },
             {
-              "intermoduleIds": [
-                "shortSizeSource",
-              ],
               "left": {
                 "isInteger": true,
                 "type": "literal",
@@ -431,11 +395,7 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "shortSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -585,7 +545,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -607,7 +566,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float[]",
         },
         {
@@ -650,7 +608,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int[]",
         },
         {
@@ -691,11 +648,7 @@
               "value": "count(lateCountSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "lateCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -714,11 +667,7 @@
               "value": "sizeof(lateCountSizeSource:buffer)",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
-          "referencedNamespaceIds": [
-            "lateCountSizeSource",
-          ],
         },
         {
           "arguments": [
@@ -804,7 +753,6 @@
               "value": "ptr",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int*",
         },
         {
@@ -847,7 +795,6 @@
               "value": 0,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int16[]",
         },
         {

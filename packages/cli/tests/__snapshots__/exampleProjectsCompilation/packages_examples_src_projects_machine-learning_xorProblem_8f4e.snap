@@ -53,7 +53,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 4
       },
       "index": 0,
@@ -160,11 +159,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn3"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 10,
@@ -184,33 +179,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 8,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&activationFn3:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "activationFn3",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn3"
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 11
       },
       "index": 1,
@@ -266,7 +234,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 22
       },
       "index": 2,
@@ -404,8 +371,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 7,
@@ -422,8 +388,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -443,44 +408,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in1",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 1,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 7,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in2",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 0,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 32
       },
       "index": 3,
@@ -714,11 +641,7 @@
                 "targetMemoryId": "in1",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -739,11 +662,7 @@
                 "targetMemoryId": "in2",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -755,8 +674,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -930,71 +848,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in1",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&switches:in1",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "switches",
-                "targetMemoryId": "in1",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in2",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&switches:in2",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "switches",
-                "targetMemoryId": "in2",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 42
       },
       "index": 4,
@@ -1228,11 +1081,7 @@
                 "targetMemoryId": "in1",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -1253,11 +1102,7 @@
                 "targetMemoryId": "in2",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -1269,8 +1114,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -1444,71 +1288,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in1",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&switches:in1",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "switches",
-                "targetMemoryId": "in1",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in2",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&switches:in2",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "switches",
-                "targetMemoryId": "in2",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "switches"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 67
       },
       "index": 5,
@@ -1671,11 +1450,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -1687,8 +1462,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -1753,46 +1527,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&perceptron:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "perceptron",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 92
       },
       "index": 6,
@@ -1955,11 +1689,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron2"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -1971,8 +1701,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2037,46 +1766,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&perceptron2:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "perceptron2",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron2"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 104
       },
       "index": 7,
@@ -2311,11 +2000,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -2336,11 +2021,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn2"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -2352,8 +2033,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -2527,71 +2207,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in1",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&activationFn:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "activationFn",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in2",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&activationFn2:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "activationFn2",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "activationFn2"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 116
       },
       "index": 8,
@@ -2770,11 +2385,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron3"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -2786,8 +2397,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2925,46 +2535,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&perceptron3:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "perceptron3",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "perceptron3"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 141
       },
       "index": 9,

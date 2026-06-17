@@ -53,7 +53,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 4
       },
       "index": 0,
@@ -109,7 +108,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 11
       },
       "index": 1,
@@ -201,8 +199,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -222,21 +219,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 20
       },
       "index": 2,
@@ -328,8 +310,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 8,
@@ -349,21 +330,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 30
       },
       "index": 3,
@@ -590,11 +556,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -606,8 +568,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -628,11 +589,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "setButton"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 10,
@@ -777,71 +734,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in1",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&norGate:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "norGate",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "norGate"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in2",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&setButton:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "setButton",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "setButton"
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 39
       },
       "index": 4,
@@ -1068,11 +960,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate2"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -1084,8 +972,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -1106,11 +993,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "resetButton"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 10,
@@ -1255,71 +1138,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in1",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&norGate2:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "norGate2",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "norGate2"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in2",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&resetButton:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "resetButton",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "resetButton"
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 63
       },
       "index": 5,
@@ -1593,11 +1411,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "norGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -1614,8 +1428,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 5,
@@ -1635,8 +1448,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -1819,72 +1631,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&norGate:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "norGate",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "norGate"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "int[]",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "buffer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 64,
-                "type": "literal",
-                "isInteger": true
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "bufferPointer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&buffer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 87
       },
       "index": 6,
@@ -2017,8 +1763,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2030,8 +1775,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 14,
@@ -2051,34 +1795,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 5,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "set",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "reset",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 116
       },
       "index": 7,
@@ -2252,11 +1968,7 @@
                 "targetMemoryId": "reset",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "buttons"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -2268,8 +1980,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2395,46 +2106,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&buttons:reset",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "buttons",
-                "targetMemoryId": "reset",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "buttons"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 131
       },
       "index": 8,
@@ -2664,11 +2335,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "andGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -2680,8 +2347,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -2702,11 +2368,7 @@
                 "targetMemoryId": "set",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "buttons"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -2851,71 +2513,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in1",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&andGate:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "andGate",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "andGate"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in2",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&buttons:set",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "buttons",
-                "targetMemoryId": "set",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "buttons"
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 149
       },
       "index": 9,
@@ -3145,11 +2742,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "orGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -3161,8 +2754,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 6,
@@ -3183,11 +2775,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "negate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -3332,71 +2920,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in1",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&orGate:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "orGate",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "orGate"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in2",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&negate:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "negate",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "negate"
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 172
       },
       "index": 10,
@@ -3672,11 +3195,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "andGate"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -3693,8 +3212,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 5,
@@ -3714,8 +3232,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -3898,72 +3415,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&andGate:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "andGate",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "andGate"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "int[]",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "buffer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 64,
-                "type": "literal",
-                "isInteger": true
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "bufferPointer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&buffer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 195
       },
       "index": 11,

@@ -555,7 +555,6 @@
               "value": "remainingSamples",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {
@@ -862,7 +861,6 @@
               "value": "remainingSamples",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int",
         },
         {

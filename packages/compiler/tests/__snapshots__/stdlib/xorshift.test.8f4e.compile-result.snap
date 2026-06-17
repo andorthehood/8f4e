@@ -283,7 +283,6 @@
               "value": 69420,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

@@ -6,6 +6,7 @@ import type {
 	ValidatedFunctionAST,
 	ValidatedPrototypeAST,
 } from './ast';
+import { isMemoryDeclarationLine } from './ast';
 import type { FunctionMetadata, FunctionParamShapeExpansion } from './compiled';
 import { ErrorCode, getError } from './compilerError';
 import type { CompilerDiagnosticContext } from './diagnostics';
@@ -78,7 +79,7 @@ function getParamShapeExpansion(
 
 	return {
 		lineNumber: line.lineNumber,
-		parameters: prototype.memoryDeclarationLines.map(declarationLine => ({
+		parameters: prototype.lines.filter(isMemoryDeclarationLine).map(declarationLine => ({
 			type: getParamType(declarationLine, line, context),
 			name: getPrototypeMemoryDeclarationId(declarationLine, line, context),
 		})),

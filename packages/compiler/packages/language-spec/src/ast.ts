@@ -7,7 +7,6 @@ import type {
 } from './arguments';
 import { ArgumentType } from './arguments';
 import type { SourceMetadata } from './compiled';
-import type { FunctionImportMetadata } from './functionTypes';
 import type { NoSourceArgumentInstructionName } from './instructionSpecTypes';
 import type { DocumentOnlyInstructionName, SemanticInstructionName } from './instructions';
 import { semanticInstructionNames } from './instructions';
@@ -99,10 +98,7 @@ export type PrototypeEndLine = ASTLineBase<'prototypeEnd', []>;
 export type ShapeLine = ASTLineBase<'shape', [ArgumentIdentifier]>;
 export type ParamShapeLine = ASTLineBase<'paramShape', [ArgumentIdentifier]>;
 export type PushShapeLine = ASTLineBase<'pushShape', [ArgumentIdentifier]>;
-export type ReferencedNamespaceIdsMetadata = {
-	referencedNamespaceIds?: readonly string[];
-};
-export type UseLine = ASTLineBase<'use', [ArgumentIdentifier]> & ReferencedNamespaceIdsMetadata;
+export type UseLine = ASTLineBase<'use', [ArgumentIdentifier]>;
 export type LocalDeclarationLine = ASTLineBase<'local', [ArgumentIdentifier, ArgumentIdentifier]>;
 export type ParamLine = ASTLineBase<'param', [ArgumentIdentifier, ArgumentIdentifier]>;
 export type MapBeginLine = ASTLineBase<'mapBegin', [ArgumentIdentifier]>;
@@ -112,8 +108,7 @@ export type BranchIfTrueLine = ASTLineBase<'branchIfTrue', [ArgumentLiteral]>;
 export type ExitIfTrueLine = ASTLineBase<'exitIfTrue', []>;
 export type StoreBytesLine = ASTLineBase<'storeBytes', [ArgumentLiteral]>;
 export type MemoryCopyLine = ASTLineBase<'memoryCopy', [CompileTimeValueArgument]>;
-export type ConstLine = ASTLineBase<'const', [ArgumentIdentifier, CompileTimeValueArgument]> &
-	ReferencedNamespaceIdsMetadata;
+export type ConstLine = ASTLineBase<'const', [ArgumentIdentifier, CompileTimeValueArgument]>;
 export type EnsureNonZeroLine = ASTLineBase<'ensureNonZero', [] | [ArgumentLiteral]>;
 
 export type MapValueArgument =
@@ -151,25 +146,17 @@ export type MemoryDeclarationArgument =
 	| ArgumentCompileTimeExpression
 	| ArgumentStringLiteral;
 
-type ExplicitMemoryDefaultMetadata = {
-	hasExplicitMemoryDefault: boolean;
-};
-
 export type ScalarMemoryDeclarationLine = ASTLineBase<
 	ScalarMemoryDeclarationInstruction,
 	[MemoryDeclarationArgument, ...MemoryDeclarationArgument[]]
-> &
-	ExplicitMemoryDefaultMetadata &
-	ReferencedNamespaceIdsMetadata;
+>;
 export type NamedScalarMemoryDeclarationLine = Omit<ScalarMemoryDeclarationLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...MemoryDeclarationArgument[]];
 };
 export type ArrayMemoryDeclarationLine = ASTLineBase<
 	ArrayDeclarationInstruction,
 	[ArgumentIdentifier, CompileTimeValueArgument, ...MemoryDeclarationArgument[]]
-> &
-	ExplicitMemoryDefaultMetadata &
-	ReferencedNamespaceIdsMetadata;
+>;
 export type MemoryDeclarationLine = ScalarMemoryDeclarationLine | ArrayMemoryDeclarationLine;
 
 export type SemanticInstructionLine =
@@ -244,25 +231,6 @@ export type CompilerASTLine = ExplicitCompilerASTLine | ASTLineBase<DocumentOnly
 
 export type CompilerASTLines = CompilerASTLine[];
 
-/**
- * Checks whether a parsed line carries resolved namespace reference metadata.
- * Namespace references are added by semantic reference resolution for instructions that
- * may depend on other modules or constants blocks, so callers can avoid probing
- * optional metadata by hand.
- *
- * @param line - Parsed compiler AST line to inspect.
- * @returns True when the line carries resolved namespace reference ids.
- */
-export function hasReferencedNamespaceIds(
-	line: CompilerASTLine | undefined
-): line is CompilerASTLine & { referencedNamespaceIds: readonly string[] } {
-	return (
-		line !== undefined &&
-		'referencedNamespaceIds' in line &&
-		(line as ReferencedNamespaceIdsMetadata).referencedNamespaceIds !== undefined
-	);
-}
-
 /** Compiler project/source metadata carried with a parsed source block. */
 export interface SourceBlockMetadata {
 	projectBlockId?: number;
@@ -275,8 +243,6 @@ export interface ModuleAST extends SourceBlockMetadata {
 	id: string;
 	lines: CompilerASTLines;
 	moduleLine: ModuleLine;
-	regionLine?: RegionLine;
-	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
 /** Parsed AST for a function block. */
@@ -288,9 +254,7 @@ export interface FunctionAST extends SourceBlockMetadata {
 	functionLine: FunctionLine;
 	functionEndLine: FunctionEndLine;
 	exportLine?: ExportLine;
-	exportName?: string;
 	importLine?: ImportLine;
-	import?: FunctionImportMetadata;
 }
 
 /** Parsed AST for a constants block. */
@@ -307,7 +271,6 @@ export interface PrototypeAST extends SourceBlockMetadata {
 	id: string;
 	lines: CompilerASTLines;
 	prototypeLine: PrototypeLine;
-	memoryDeclarationLines: readonly MemoryDeclarationLine[];
 }
 
 export type AST = ModuleAST | FunctionAST | ConstantsAST | PrototypeAST;

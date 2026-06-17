@@ -1,4 +1,4 @@
-import { ArgumentType, isCompilerDirectiveLine } from '@8f4e/language-spec';
+import { ArgumentType, isCompilerDirectiveLine, isMemoryDeclarationLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { compileToAST } from './index';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
@@ -22,13 +22,15 @@ describe('compileToAST', () => {
 			type: 'module',
 			id: 'target',
 			moduleLine: { instruction: 'module' },
-			regionLine: { instruction: '#region' },
 		});
 		if (ast.type !== 'module') {
 			throw new Error('Expected module AST');
 		}
-		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['counter', 'sourceStart']);
-		expect(ast.memoryDeclarationLines[1].referencedNamespaceIds).toEqual(['source']);
+		expect(ast.lines.find(line => line.instruction === '#region')).toMatchObject({ instruction: '#region' });
+		expect(ast.lines.filter(isMemoryDeclarationLine).map(line => line.arguments[0].value)).toEqual([
+			'counter',
+			'sourceStart',
+		]);
 	});
 
 	it('keeps shape instructions in module lines without adding module metadata', () => {
@@ -63,7 +65,6 @@ describe('compileToAST', () => {
 			functionLine: { instruction: 'function' },
 			functionEndLine: { instruction: 'functionEnd' },
 			exportLine: { instruction: '#export' },
-			exportName: 'mixExport',
 		});
 		expect(ast.lines[0].instruction).toBe('const');
 	});
@@ -222,7 +223,10 @@ describe('compileToAST', () => {
 		if (ast.type !== 'prototype') {
 			throw new Error('Expected prototype AST');
 		}
-		expect(ast.memoryDeclarationLines.map(line => line.arguments[0].value)).toEqual(['phase', 'frequency']);
+		expect(ast.lines.filter(isMemoryDeclarationLine).map(line => line.arguments[0].value)).toEqual([
+			'phase',
+			'frequency',
+		]);
 	});
 
 	it('constructs imported function metadata from the source-block parse path', () => {
@@ -232,10 +236,6 @@ describe('compileToAST', () => {
 			type: 'function',
 			name: 'hostLog',
 			importLine: { instruction: '#import' },
-			import: {
-				moduleName: 'host',
-				fieldName: 'log.value',
-			},
 		});
 	});
 
@@ -247,12 +247,6 @@ describe('compileToAST', () => {
 			id: 'sizes',
 			constantsLine: { instruction: 'constants' },
 		});
-	});
-
-	it('does not record namespace references from use lines while parsing lines', () => {
-		const ast = compileToAST(['module target', 'use shared', 'moduleEnd']);
-
-		expect(ast.lines[1]).not.toHaveProperty('referencedNamespaceIds');
 	});
 });
 
@@ -269,8 +263,6 @@ describe('compileToAST line parsing', () => {
 				{ type: ArgumentType.IDENTIFIER, value: 'readHead' },
 				{ type: ArgumentType.IDENTIFIER, value: '&source:samples' },
 			],
-			referencedNamespaceIds: ['source'],
-			hasExplicitMemoryDefault: true,
 		});
 	});
 

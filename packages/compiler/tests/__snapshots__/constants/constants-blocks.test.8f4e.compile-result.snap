@@ -53,7 +53,6 @@
               "value": "VALUE",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -141,7 +140,6 @@
               "value": "PI",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -159,7 +157,6 @@
               "value": "TAU",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -177,7 +174,6 @@
               "value": "GRAVITY",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -319,7 +315,6 @@
               "value": "SIZE",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -337,7 +332,6 @@
               "value": "HALF",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -458,7 +452,6 @@
               "value": "BAR",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -535,7 +528,6 @@
               "value": "SECRET",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -671,7 +663,6 @@
               "value": "DOUBLE",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

@@ -41,7 +41,6 @@
               "value": "dividedBuffer",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -57,7 +56,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -97,7 +95,6 @@
               "value": "multipliedBuffer",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -113,7 +110,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -153,7 +149,6 @@
               "value": "HALF",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -207,7 +202,6 @@
               "value": "SIGNED",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "isInteger": true,
                 "type": "literal",
@@ -255,7 +249,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -298,7 +291,6 @@
               "value": "defaultFromExpression",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -314,7 +306,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -433,7 +424,6 @@
               "value": "TOTAL",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -503,7 +493,6 @@
               "value": "RESULT",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "isInteger": true,
                 "type": "literal",
@@ -551,7 +540,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "isInteger": true,
                 "type": "literal",
@@ -610,7 +598,6 @@
               "value": "defaultFromExponent",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -626,7 +613,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -681,7 +667,6 @@
               "value": "exponentialBuffer",
             },
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -697,7 +682,6 @@
               "type": "compile_time_expression",
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -742,13 +726,11 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int32[]",
         },
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",
@@ -844,7 +826,6 @@
               "value": 0.0625,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -888,7 +869,6 @@
               "value": 0.0625,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -932,7 +912,6 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -976,7 +955,6 @@
               "value": -0.5,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float",
         },
         {
@@ -1300,7 +1278,6 @@
               "value": 12,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {
@@ -1344,7 +1321,6 @@
               "value": 8,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int[]",
         },
         {
@@ -1410,13 +1386,11 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int16[]",
         },
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",
@@ -1470,7 +1444,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "constant",
                 "scope": "local",
@@ -1509,7 +1482,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "referenceKind": "element-word-size",
                 "scope": "local",
@@ -1547,7 +1519,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "isInteger": true,
                 "type": "literal",
@@ -1585,7 +1556,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "isInteger": true,
                 "type": "literal",
@@ -1633,7 +1603,6 @@
               "value": 8,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "float[]",
         },
         {
@@ -1653,7 +1622,6 @@
               "value": "&floatSamples",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float*",
         },
         {
@@ -1699,7 +1667,6 @@
               "value": 4,
             },
           ],
-          "hasExplicitMemoryDefault": false,
           "instruction": "int8[]",
         },
         {
@@ -1719,7 +1686,6 @@
               "value": "&smallSamples",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int8*",
         },
         {
@@ -1889,7 +1855,6 @@
               "value": "TEST3",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "int",
         },
         {

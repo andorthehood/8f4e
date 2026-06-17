@@ -581,7 +581,6 @@
               "value": 1,
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float[]",
         },
         {
@@ -601,7 +600,6 @@
               "value": "&buffer",
             },
           ],
-          "hasExplicitMemoryDefault": true,
           "instruction": "float*",
         },
         {
@@ -751,7 +749,6 @@
         {
           "arguments": [
             {
-              "intermoduleIds": [],
               "left": {
                 "isEndAddress": false,
                 "referenceKind": "memory-reference",

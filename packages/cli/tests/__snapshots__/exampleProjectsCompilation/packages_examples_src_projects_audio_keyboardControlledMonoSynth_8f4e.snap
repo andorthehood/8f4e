@@ -53,7 +53,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [],
         "projectBlockId": 8
       },
       "index": 0,
@@ -186,8 +185,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 10,
@@ -199,8 +197,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 15,
@@ -220,34 +217,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 9,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "keyPressed",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 10,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "keyCode",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 17
       },
       "index": 1,
@@ -410,11 +379,7 @@
                 "targetMemoryId": "keyCode",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "keyboard"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 14,
@@ -426,8 +391,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 15,
@@ -492,46 +456,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 13,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&keyboard:keyCode",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "keyboard",
-                "targetMemoryId": "keyCode",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "keyboard"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 14,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 33
       },
       "index": 2,
@@ -5829,8 +5753,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -5841,8 +5764,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -5853,8 +5775,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -5865,8 +5786,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 7,
@@ -5877,8 +5797,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 8,
@@ -5889,8 +5808,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -5901,8 +5819,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 10,
@@ -5913,8 +5830,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 11,
@@ -5925,8 +5841,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 12,
@@ -5937,8 +5852,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 13,
@@ -5949,8 +5863,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 14,
@@ -5961,8 +5874,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 15,
@@ -5973,8 +5885,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 16,
@@ -5985,8 +5896,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 17,
@@ -5997,8 +5907,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 18,
@@ -6009,8 +5918,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 19,
@@ -6021,8 +5929,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 20,
@@ -6033,8 +5940,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 21,
@@ -6045,8 +5951,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 22,
@@ -6057,8 +5962,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 23,
@@ -6069,8 +5973,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 24,
@@ -6081,8 +5984,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 25,
@@ -6093,8 +5995,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 26,
@@ -6105,8 +6006,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 27,
@@ -6117,8 +6017,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 28,
@@ -6129,8 +6028,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 29,
@@ -6141,8 +6039,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 30,
@@ -6153,8 +6050,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 31,
@@ -6165,8 +6061,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 32,
@@ -6177,8 +6072,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 33,
@@ -6189,8 +6083,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 34,
@@ -6201,8 +6094,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 35,
@@ -6213,8 +6105,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 36,
@@ -6225,8 +6116,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 37,
@@ -6237,8 +6127,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 38,
@@ -6249,8 +6138,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 39,
@@ -6261,8 +6149,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 40,
@@ -6273,8 +6160,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 41,
@@ -6285,8 +6171,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 42,
@@ -6297,8 +6182,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 43,
@@ -6309,8 +6193,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 44,
@@ -6321,8 +6204,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 45,
@@ -6333,8 +6215,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 46,
@@ -6345,8 +6226,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 47,
@@ -6357,8 +6237,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 48,
@@ -6369,8 +6248,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 49,
@@ -6381,8 +6259,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 50,
@@ -6393,8 +6270,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 51,
@@ -6405,8 +6281,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 52,
@@ -6417,8 +6292,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 53,
@@ -6429,8 +6303,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 54,
@@ -6441,8 +6314,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 55,
@@ -6453,8 +6325,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 56,
@@ -6465,8 +6336,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 57,
@@ -6477,8 +6347,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 58,
@@ -6489,8 +6358,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 59,
@@ -6501,8 +6369,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 60,
@@ -6513,8 +6380,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 61,
@@ -6525,8 +6391,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 62,
@@ -6537,8 +6402,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 63,
@@ -6549,8 +6413,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 64,
@@ -6561,8 +6424,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 65,
@@ -6573,8 +6435,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 66,
@@ -6585,8 +6446,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 67,
@@ -6597,8 +6457,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 68,
@@ -6609,8 +6468,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 69,
@@ -6621,8 +6479,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 70,
@@ -6633,8 +6490,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 71,
@@ -6645,8 +6501,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 72,
@@ -6657,8 +6512,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 73,
@@ -6669,8 +6523,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 74,
@@ -6681,8 +6534,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 75,
@@ -6693,8 +6545,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 76,
@@ -6705,8 +6556,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 77,
@@ -6717,8 +6567,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 78,
@@ -6729,8 +6578,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 79,
@@ -6741,8 +6589,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 80,
@@ -6753,8 +6600,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 81,
@@ -6765,8 +6611,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 82,
@@ -6777,8 +6622,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 83,
@@ -6789,8 +6633,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 84,
@@ -6801,8 +6644,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 85,
@@ -6813,8 +6655,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 86,
@@ -6825,8 +6666,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 87,
@@ -6837,8 +6677,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 88,
@@ -6849,8 +6688,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 89,
@@ -6861,8 +6699,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 90,
@@ -6873,8 +6710,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 91,
@@ -6885,8 +6721,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 92,
@@ -6897,8 +6732,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 93,
@@ -6909,8 +6743,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 94,
@@ -6921,8 +6754,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 95,
@@ -6933,8 +6765,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 96,
@@ -6945,8 +6776,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 97,
@@ -6957,8 +6787,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 98,
@@ -6969,8 +6798,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 99,
@@ -6981,8 +6809,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 100,
@@ -6993,8 +6820,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 101,
@@ -7005,8 +6831,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 102,
@@ -7017,8 +6842,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 103,
@@ -7029,8 +6853,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 104,
@@ -7041,8 +6864,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 105,
@@ -7053,8 +6875,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 106,
@@ -7065,8 +6886,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 107,
@@ -7077,8 +6897,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 108,
@@ -7089,8 +6908,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 109,
@@ -7101,8 +6919,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 110,
@@ -7113,8 +6930,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 111,
@@ -7125,8 +6941,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 112,
@@ -7137,8 +6952,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 113,
@@ -7149,8 +6963,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 114,
@@ -7161,8 +6974,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 115,
@@ -7173,8 +6985,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 116,
@@ -7185,8 +6996,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 117,
@@ -7197,8 +7007,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 118,
@@ -7209,8 +7018,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 119,
@@ -7221,8 +7029,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 120,
@@ -7233,8 +7040,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 121,
@@ -7245,8 +7051,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 122,
@@ -7257,8 +7062,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 123,
@@ -7269,8 +7073,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 124,
@@ -7281,8 +7084,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 125,
@@ -7293,8 +7095,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 126,
@@ -7305,8 +7106,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 127,
@@ -7317,8 +7117,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 128,
@@ -7329,8 +7128,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 129,
@@ -7341,8 +7139,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 130,
@@ -7353,8 +7150,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 132,
@@ -7374,1544 +7170,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 8.1758,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 8.662,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 9.177,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 9.7227,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 7,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 10.3009,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 8,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 10.9134,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 9,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 11.5623,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 10,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 12.2499,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 11,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 12.9783,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 12,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 13.75,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 13,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 14.5676,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 14,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 15.4339,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 15,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 16.3516,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 16,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 17.3239,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 17,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 18.354,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 18,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 19.4454,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 19,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 20.6017,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 20,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 21.8268,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 21,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 23.1247,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 22,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 24.4997,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 23,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 25.9565,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 24,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 27.5,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 25,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 29.1352,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 26,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 30.8677,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 27,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 32.7032,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 28,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 34.6478,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 29,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 36.7081,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 30,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 38.8909,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 31,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 41.2034,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 32,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 43.6535,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 33,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 46.2493,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 34,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 48.9994,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 35,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 51.9131,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 36,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 55,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 37,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 58.2705,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 38,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 61.7354,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 39,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 65.4064,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 40,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 69.2957,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 41,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 73.4162,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 42,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 77.7817,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 43,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 82.4069,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 44,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 87.3071,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 45,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 92.4986,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 46,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 97.9989,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 47,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 103.8262,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 48,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 110,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 49,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 116.5409,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 50,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 123.4708,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 51,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 130.8128,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 52,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 138.5913,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 53,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 146.8324,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 54,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 155.5635,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 55,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 164.8138,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 56,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 174.6141,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 57,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 184.9972,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 58,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 195.9977,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 59,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 207.6523,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 60,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 220,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 61,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 233.0819,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 62,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 246.9417,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 63,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 261.6256,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 64,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 277.1826,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 65,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 293.6648,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 66,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 311.127,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 67,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 329.6276,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 68,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 349.2282,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 69,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 369.9944,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 70,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 391.9954,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 71,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 415.3047,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 72,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 440,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 73,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 466.1638,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 74,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 493.8833,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 75,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 523.2511,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 76,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 554.3653,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 77,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 587.3295,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 78,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 622.254,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 79,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 659.2551,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 80,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 698.4565,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 81,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 739.9888,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 82,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 783.9909,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 83,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 830.6094,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 84,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 880,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 85,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 932.3275,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 86,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 987.7666,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 87,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1046.5023,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 88,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1108.7305,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 89,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1174.6591,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 90,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1244.5079,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 91,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1318.5102,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 92,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1396.9129,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 93,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1479.9777,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 94,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1567.9817,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 95,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1661.2188,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 96,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1760,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 97,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1864.655,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 98,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 1975.5332,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 99,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 2093.0045,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 100,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 2217.461,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 101,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 2349.3181,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 102,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 2489.0159,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 103,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 2637.0205,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 104,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 2793.8259,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 105,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 2959.9554,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 106,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 3135.9635,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 107,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 3322.4376,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 108,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 3520,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 109,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 3729.3101,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 110,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 3951.0664,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 111,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 4186.009,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 112,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 4434.9221,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 113,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 4698.6363,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 114,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 4978.0317,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 115,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 5274.0409,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 116,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 5587.6517,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 117,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 5919.9108,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 118,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 6271.927,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 119,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 6644.8752,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 120,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 7040,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 121,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 7458.6202,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 122,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 7902.1328,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 123,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 8372.0181,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 124,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 8869.8442,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 125,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 9397.2726,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 126,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 9956.0635,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 127,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 10548.0818,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 128,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 11175.3034,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 129,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 11839.8215,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 130,
-            "instruction": "float",
-            "arguments": [
-              {
-                "value": 12543.854,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 55
       },
       "index": 3,
@@ -9164,11 +7422,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "janko"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -9180,8 +7434,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 5,
@@ -9201,11 +7454,7 @@
                 "targetModuleId": "midiLUT",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "midiLUT"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 9,
@@ -9296,70 +7545,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&janko:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "janko",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "janko"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "notes",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&midiLUT:",
-                "referenceKind": "intermodular-module-reference",
-                "scope": "intermodule",
-                "targetModuleId": "midiLUT",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "midiLUT"
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 188
       },
       "index": 4,
@@ -9891,8 +8076,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -9909,8 +8093,7 @@
                 "type": "literal",
                 "isInteger": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 8,
@@ -9931,11 +8114,7 @@
                 "targetMemoryId": "keyPressed",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "keyboard"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 10,
@@ -9955,8 +8134,7 @@
                 "targetMemoryId": "dAttack",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 11,
@@ -9976,8 +8154,7 @@
                 "targetMemoryId": "dRelease",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 12,
@@ -9989,8 +8166,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 14,
@@ -10007,8 +8183,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 15,
@@ -10020,8 +8195,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 17,
@@ -10430,155 +8604,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 5,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "dAttack",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 0.0001,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "dRelease",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 0.0001,
-                "type": "literal",
-                "isInteger": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 8,
-            "instruction": "int*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "trigger",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&keyboard:keyPressed",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "keyboard",
-                "targetMemoryId": "keyPressed",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "keyboard"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 10,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "attackRate",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&dAttack",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "dAttack",
-                "isEndAddress": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 11,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "releaseRate",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&dRelease",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "dRelease",
-                "isEndAddress": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 12,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 14,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "attacking",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 0,
-                "type": "literal",
-                "isInteger": true
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 15,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "previousTrigger",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 207
       },
       "index": 5,
@@ -10914,8 +8939,7 @@
                 "type": "literal",
                 "isInteger": true
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -10936,11 +8960,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "midiNote2Freq"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 6,
@@ -10952,8 +8972,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 7,
@@ -10965,8 +8984,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 9,
@@ -11214,77 +9232,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "defaultFreq",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "value": 440,
-                "type": "literal",
-                "isInteger": true
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "frequency",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&midiNote2Freq:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "midiNote2Freq",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "midiNote2Freq"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 6,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "phase",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 7,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 268
       },
       "index": 6,
@@ -11503,11 +9450,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "phaseAccumulator"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 4,
@@ -11528,11 +9471,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "arEnv"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 5,
@@ -11544,8 +9483,7 @@
                 "referenceKind": "plain",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 7,
@@ -11617,71 +9555,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 3,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&phaseAccumulator:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "phaseAccumulator",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "phaseAccumulator"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 4,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "volume",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&arEnv:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "arEnv",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "arEnv"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 5,
-            "instruction": "float",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "out",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          }
-        ],
         "projectBlockId": 311
       },
       "index": 7,
@@ -11969,11 +9842,7 @@
                 "targetMemoryId": "out",
                 "isEndAddress": false
               }
-            ],
-            "referencedNamespaceIds": [
-              "vca"
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 7,
@@ -11991,8 +9860,7 @@
                 "referenceKind": "constant",
                 "scope": "local"
               }
-            ],
-            "hasExplicitMemoryDefault": false
+            ]
           },
           {
             "lineNumber": 8,
@@ -12012,8 +9880,7 @@
                 "targetMemoryId": "buffer",
                 "isEndAddress": false
               }
-            ],
-            "hasExplicitMemoryDefault": true
+            ]
           },
           {
             "lineNumber": 14,
@@ -12196,73 +10063,6 @@
             }
           ]
         },
-        "memoryDeclarationLines": [
-          {
-            "lineNumber": 4,
-            "instruction": "float*",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "in",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&vca:out",
-                "referenceKind": "intermodular-reference",
-                "scope": "intermodule",
-                "targetModuleId": "vca",
-                "targetMemoryId": "out",
-                "isEndAddress": false
-              }
-            ],
-            "referencedNamespaceIds": [
-              "vca"
-            ],
-            "hasExplicitMemoryDefault": true
-          },
-          {
-            "lineNumber": 7,
-            "instruction": "float[]",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "buffer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "AUDIO_BUFFER_SIZE",
-                "referenceKind": "constant",
-                "scope": "local"
-              }
-            ],
-            "hasExplicitMemoryDefault": false
-          },
-          {
-            "lineNumber": 8,
-            "instruction": "int",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "pointer",
-                "referenceKind": "plain",
-                "scope": "local"
-              },
-              {
-                "type": "identifier",
-                "value": "&buffer",
-                "referenceKind": "memory-reference",
-                "scope": "local",
-                "targetMemoryId": "buffer",
-                "isEndAddress": false
-              }
-            ],
-            "hasExplicitMemoryDefault": true
-          }
-        ],
         "projectBlockId": 325
       },
       "index": 8,
