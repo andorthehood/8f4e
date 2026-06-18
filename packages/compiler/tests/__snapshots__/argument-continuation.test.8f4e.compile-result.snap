@@ -268,7 +268,7 @@
     "splitByteDefaultAssertions": {
       "memory": {
         "color": {
-          "byteAddress": 40,
+          "byteAddress": 36,
           "default": 2835283968,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -279,7 +279,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 10,
+          "wordAlignedAddress": 9,
           "wordAlignedSize": 1,
         },
       },
@@ -287,7 +287,7 @@
     "splitPointerDeclarationAssertions": {
       "memory": {
         "readHead": {
-          "byteAddress": 36,
+          "byteAddress": 40,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -301,7 +301,7 @@
           "pointeeMemoryIndex": 0,
           "pointerDepth": 1,
           "type": "float*",
-          "wordAlignedAddress": 9,
+          "wordAlignedAddress": 10,
           "wordAlignedSize": 1,
         },
       },

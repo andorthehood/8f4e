@@ -439,25 +439,6 @@
     "auxEntryCounter": {
       "memory": {
         "value": {
-          "byteAddress": 8,
-          "default": 0,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "value",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 2,
-          "wordAlignedSize": 1,
-        },
-      },
-    },
-    "mainEntryCounter": {
-      "memory": {
-        "value": {
           "byteAddress": 4,
           "default": 0,
           "elementWordSize": 4,
@@ -470,6 +451,25 @@
           "pointerDepth": 0,
           "type": "int",
           "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "mainEntryCounter": {
+      "memory": {
+        "value": {
+          "byteAddress": 8,
+          "default": 0,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "value",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
       },
