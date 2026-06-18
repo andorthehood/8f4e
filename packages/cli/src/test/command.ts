@@ -251,14 +251,10 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 		}
 	);
 
-	if (!compileResult.compiledWasm) {
-		throw new Error('Unable to run tests: compilation did not produce runnable output');
-	}
-
 	const failures: AssertionFailure[] = [];
 	let assertionCount = 0;
 	const memoryImports = createMemoryImports(
-		compileResult.requiredMemoryBytes ?? 0,
+		compileResult.requiredMemoryBytes,
 		compileResult.requiredMemoryBytesByRegion
 	);
 	const { instance } = await getWebAssemblyApi().instantiate(Buffer.from(compileResult.compiledWasm, 'base64'), {

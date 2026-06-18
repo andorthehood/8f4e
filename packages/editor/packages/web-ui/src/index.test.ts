@@ -1,4 +1,5 @@
 import { createMockState } from '@8f4e/editor-state-testing';
+import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => {
@@ -61,6 +62,28 @@ vi.mock('./drawers/dialog', () => ({
 vi.mock('./drawers/modeOverlay', () => ({
 	default: mocks.drawModeOverlay,
 }));
+
+function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemoryDeclaration {
+	return {
+		id: 'rgba',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		type: MemoryTypes.int,
+		memoryIndex: 0,
+		byteAddress: 0,
+		elementByteLength: 4,
+		wordAlignedSize: 1,
+		wordAlignedByteLength: 4,
+		wordAlignedAddress: 0,
+		endByteAddress: 0,
+		endAddressSafeByteLength: 4,
+		lineNumber: 1,
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+		...overrides,
+	};
+}
 
 describe('web-ui init', () => {
 	beforeEach(() => {
@@ -150,15 +173,32 @@ describe('web-ui init', () => {
 	it('can draw a WebAssembly-generated RGBA8 frame texture', async () => {
 		const { default: init } = await import('./index');
 		const state = createMockState();
-		state.compiler.compiledModules = {
-			screen: {
-				memory: {
-					rgba: {
-						byteAddress: 4,
+		const rgba = createMemory({
+			byteAddress: 4,
+			wordAlignedAddress: 1,
+			endByteAddress: 4,
+		});
+		state.compiler.memoryPlan = {
+			modules: {
+				screen: {
+					id: 'screen',
+					lineNumber: 1,
+					memoryIndex: 0,
+					byteAddress: 4,
+					wordAlignedSize: 1,
+					wordAlignedByteLength: 4,
+					endByteAddress: 4,
+					endAddressSafeByteLength: 4,
+					memory: {
+						rgba,
 					},
+					declarations: [rgba],
+					declarationSources: [],
 				},
 			},
-		} as typeof state.compiler.compiledModules;
+			moduleList: [],
+			nextByteAddressByMemoryIndex: { 0: 8 },
+		};
 		const memoryBuffer = new ArrayBuffer(24);
 		const memoryViews = {
 			int8: new Int8Array(memoryBuffer),

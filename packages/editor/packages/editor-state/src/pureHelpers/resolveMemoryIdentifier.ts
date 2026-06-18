@@ -52,7 +52,7 @@ export default function resolveMemoryIdentifier(
 		memoryIdentifier = memoryIdentifier.replace(/\[\d+\]/, '');
 	}
 
-	memory = state.compiler.compiledModules[moduleId]?.memory[memoryIdentifier];
+	memory = state.compiler.memoryPlan.modules[moduleId]?.memory[memoryIdentifier];
 
 	if (!memory) {
 		return;

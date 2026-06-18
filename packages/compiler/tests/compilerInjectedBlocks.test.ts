@@ -26,8 +26,9 @@ entryEnd
 			}
 		);
 		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);
-		const output = fixture.compileResult.compiledModules.injectedPrototypeCaller.memory.output.byteAddress;
-		const injectedValue = fixture.compileResult.compiledModules.injectedPrototypeCaller.memory.value.byteAddress;
+		const memoryPlan = fixture.compileResult.memoryPlan.modules.injectedPrototypeCaller!;
+		const output = memoryPlan.memory.output!.byteAddress;
+		const injectedValue = memoryPlan.memory.value!.byteAddress;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();

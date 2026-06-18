@@ -28,14 +28,28 @@ describe('switch interaction', () => {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							testSwitch: {
-								wordAlignedAddress: 5,
+				memoryPlan: {
+					modules: {
+						'test-block': {
+							id: 'test-block',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								testSwitch: {
+									wordAlignedAddress: 5,
+								},
 							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 			callbacks: {

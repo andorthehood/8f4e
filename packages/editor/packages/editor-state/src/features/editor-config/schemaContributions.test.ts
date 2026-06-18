@@ -33,13 +33,30 @@ const store = {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					audioout: {
-						memory: {
-							buffer: { wordAlignedAddress: 32 },
+				compiledModules: {},
+				memoryPlan: {
+					modules: {
+						audioout: {
+							id: 'audioout',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								buffer: { id: 'buffer', wordAlignedAddress: 32 },
+							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
+				memoryDefaultsByModuleId: {},
+				pointerMetadataByModuleId: {},
 			},
 		}) as State,
 } as StateManager<State>;

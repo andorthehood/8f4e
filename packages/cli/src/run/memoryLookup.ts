@@ -1,12 +1,12 @@
-import type { CompiledModuleLookup } from '@8f4e/language-spec';
+import type { MemoryLayoutPlan } from '@8f4e/language-spec';
 import type { MemoryLookup, ResolvedMemoryReference } from './types';
 
-export function createMemoryLookup(compiledModules: CompiledModuleLookup): MemoryLookup {
+export function createMemoryLookup(memoryPlan: MemoryLayoutPlan): MemoryLookup {
 	const qualified = new Map<string, ResolvedMemoryReference>();
 	const byBareId = new Map<string, ResolvedMemoryReference | null>();
 
-	for (const [moduleId, compiledModule] of Object.entries(compiledModules)) {
-		for (const [memoryId, data] of Object.entries(compiledModule.memory)) {
+	for (const [moduleId, plannedModule] of Object.entries(memoryPlan.modules)) {
+		for (const [memoryId, data] of Object.entries(plannedModule.memory)) {
 			const resolved: ResolvedMemoryReference = {
 				key: `${moduleId}:${memoryId}`,
 				moduleId,

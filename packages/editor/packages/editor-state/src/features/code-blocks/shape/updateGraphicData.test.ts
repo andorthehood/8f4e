@@ -1,4 +1,4 @@
-import type { CompiledModule, MemoryDefaults, PlannedMemoryDeclaration, ValidatedModuleAST } from '@8f4e/language-spec';
+import type { MemoryDefaults, PlannedMemoryDeclaration, ValidatedModuleAST } from '@8f4e/language-spec';
 import { MemoryTypes } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { createMockState } from '../../../pureHelpers/testingUtils/testUtils';
@@ -56,7 +56,7 @@ function createMemory(overrides: Partial<MemoryFixture> = {}): MemoryFixture {
 }
 
 function splitMemoryFixtures(memoryFixtures: Record<string, MemoryFixture>) {
-	const memory: CompiledModule['memory'] = {};
+	const memory: Record<string, PlannedMemoryDeclaration> = {};
 	const memoryDefaults: MemoryDefaults = {};
 
 	for (const [id, memoryFixture] of Object.entries(memoryFixtures)) {
@@ -68,15 +68,45 @@ function splitMemoryFixtures(memoryFixtures: Record<string, MemoryFixture>) {
 	return { memory, memoryDefaults };
 }
 
-function createCompiledModule(memoryFixtures: Record<string, MemoryFixture> = {}): CompiledModule {
+function createCompilerReports(memoryFixtures: Record<string, MemoryFixture> = {}, ast = createModuleAst()) {
 	const { memory, memoryDefaults } = splitMemoryFixtures(memoryFixtures);
-	return {
-		ast: createModuleAst(),
+	const plannedModule = {
+		id: 'filterA',
+		lineNumber: 0,
+		memoryIndex: 0,
+		byteAddress: 0,
+		wordAlignedSize: 0,
+		wordAlignedByteLength: 0,
+		endByteAddress: 0,
+		endAddressSafeByteLength: 0,
 		memory,
-		memoryDefaults,
-		pointerMetadata: {},
 		declarations: Object.values(memory),
-	} as CompiledModule;
+		declarationSources: [],
+	};
+	return {
+		compiledModules: {
+			filterA: {
+				id: 'filterA',
+				index: 0,
+				initFunctionBody: [],
+				cycleFunction: [],
+				ast,
+			},
+		},
+		memoryPlan: {
+			modules: {
+				filterA: plannedModule,
+			},
+			moduleList: [plannedModule],
+			nextByteAddressByMemoryIndex: {},
+		},
+		memoryDefaultsByModuleId: {
+			filterA: memoryDefaults,
+		},
+		pointerMetadataByModuleId: {
+			filterA: {},
+		},
+	};
 }
 
 function createInheritedMemory(count: number): Record<string, MemoryFixture> {
@@ -96,9 +126,7 @@ describe('shape', () => {
 		});
 		const state = createMockState({
 			compiler: {
-				compiledModules: {
-					filterA: createCompiledModule(createInheritedMemory(4)),
-				},
+				...createCompilerReports(createInheritedMemory(4)),
 			},
 		});
 		const directiveState = createDirectiveState();
@@ -115,9 +143,7 @@ describe('shape', () => {
 		});
 		const state = createMockState({
 			compiler: {
-				compiledModules: {
-					filterA: createCompiledModule(),
-				},
+				...createCompilerReports(),
 			},
 		});
 		const directiveState = createDirectiveState();
@@ -141,29 +167,27 @@ describe('shape', () => {
 				hGrid: 16,
 			},
 			compiler: {
-				compiledModules: {
-					filterA: {
-						...createCompiledModule({
-							input: createMemory({
-								id: 'input',
-								lineNumber: 2,
-								isInherited: true,
-								type: MemoryTypes['float*'],
-								pointerDepth: 1,
-							}),
-							output: createMemory({ id: 'output', lineNumber: 2, isInherited: true, type: MemoryTypes.int }),
+				...createCompilerReports(
+					{
+						input: createMemory({
+							id: 'input',
+							lineNumber: 2,
+							isInherited: true,
+							type: MemoryTypes['float*'],
+							pointerDepth: 1,
 						}),
-						ast: {
-							...createModuleAst(),
-							lines: [
-								{ lineNumber: 0, instruction: 'module', arguments: [{ value: 'filterA' }] },
-								{ lineNumber: 1, instruction: 'comment', arguments: [] },
-								{ lineNumber: 2, instruction: 'shape', arguments: [{ value: 'filterState' }] },
-								{ lineNumber: 3, instruction: 'moduleEnd', arguments: [] },
-							],
-						},
+						output: createMemory({ id: 'output', lineNumber: 2, isInherited: true, type: MemoryTypes.int }),
 					},
-				},
+					{
+						...createModuleAst(),
+						lines: [
+							{ lineNumber: 0, instruction: 'module', arguments: [{ value: 'filterA' }] },
+							{ lineNumber: 1, instruction: 'comment', arguments: [] },
+							{ lineNumber: 2, instruction: 'shape', arguments: [{ value: 'filterState' }] },
+							{ lineNumber: 3, instruction: 'moduleEnd', arguments: [] },
+						],
+					} as unknown as ValidatedModuleAST
+				),
 			},
 		});
 		const directiveState = {

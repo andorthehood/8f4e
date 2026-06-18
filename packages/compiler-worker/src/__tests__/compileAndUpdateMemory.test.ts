@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup, CompileInput, Module } from '@8f4e/language-spec';
+import type { CompileAndUpdateMemoryResult, CompileInput, Module } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
@@ -31,9 +31,9 @@ moduleEnd
 		prototypes: [],
 	});
 
-	const getAddresses = (compiledModules: CompiledModuleLookup) => ({
-		base: compiledModules.setup.memory.base.byteAddress / 4,
-		derived: compiledModules.setup.memory.derived.byteAddress / 4,
+	const getAddresses = (result: CompileAndUpdateMemoryResult) => ({
+		base: result.memoryPlan.modules.setup!.memory.base!.byteAddress / 4,
+		derived: result.memoryPlan.modules.setup!.memory.derived!.byteAddress / 4,
 	});
 
 	beforeEach(async () => {
@@ -43,7 +43,7 @@ moduleEnd
 
 	it('initializes defaults without running execution entries', async () => {
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(1)), compilerOptions);
-		const addresses = getAddresses(firstResult.compiledModules);
+		const addresses = getAddresses(firstResult);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
 
 		const exportKeys = Object.keys(
@@ -72,7 +72,7 @@ moduleEnd
 
 	it('does not run execution entries when defaults are unchanged', async () => {
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(3)), compilerOptions);
-		const addresses = getAddresses(firstResult.compiledModules);
+		const addresses = getAddresses(firstResult);
 		const memoryView = new Int32Array(firstResult.memoryRef.buffer);
 
 		expect(firstResult.initOnlyReran).toBe(false);
@@ -112,7 +112,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 		];
 
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(1.5)), compilerOptions);
-		const memEntry = firstResult.compiledModules.mymod.memory.value;
+		const memEntry = firstResult.memoryPlan.modules.mymod!.memory.value!;
 		const float64Index = memEntry.byteAddress / 8;
 		const firstView = new Float64Array(firstResult.memoryRef.buffer);
 
@@ -130,7 +130,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 		];
 
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(3.14)), compilerOptions);
-		const memEntry = firstResult.compiledModules.mymod.memory.value;
+		const memEntry = firstResult.memoryPlan.modules.mymod!.memory.value!;
 		const float64Index = memEntry.byteAddress / 8;
 
 		const firstView = new Float64Array(firstResult.memoryRef.buffer);

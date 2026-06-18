@@ -29,21 +29,35 @@ describe('switch directive widget resolution', () => {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							sw1: {
-								id: 'sw1',
-								wordAlignedAddress: 5,
-								isInteger: true,
+				memoryPlan: {
+					modules: {
+						'test-block': {
+							id: 'test-block',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								sw1: {
+									id: 'sw1',
+									wordAlignedAddress: 5,
+									isInteger: true,
+								},
+								sw2: {
+									id: 'sw2',
+									wordAlignedAddress: 6,
+									isInteger: true,
+								},
 							},
-							sw2: {
-								id: 'sw2',
-								wordAlignedAddress: 6,
-								isInteger: true,
-							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 		});

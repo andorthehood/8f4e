@@ -49,14 +49,14 @@ describe('compileProject (example project layout)', () => {
 		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
 		const result = await cliModule.compileProject(project);
 
-		const compiledModuleLayout = Object.values(result.compiledModules ?? {})
+		const compiledModuleLayout = Object.values(result.compiledModules)
 			.sort((a, b) => a.index - b.index)
 			.map(module => ({
 				id: module.id,
 				index: module.index,
-				byteAddress: module.byteAddress,
-				wordAlignedAddress: module.wordAlignedAddress,
-				wordAlignedSize: module.wordAlignedSize,
+				byteAddress: result.memoryPlan.modules[module.id].byteAddress,
+				wordAlignedAddress: result.memoryPlan.modules[module.id].byteAddress / 4,
+				wordAlignedSize: result.memoryPlan.modules[module.id].wordAlignedSize,
 				skipExecutionInCycle: module.skipExecutionInCycle ?? false,
 			}));
 
