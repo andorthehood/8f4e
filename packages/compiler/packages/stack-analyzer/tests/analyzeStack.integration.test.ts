@@ -63,261 +63,261 @@ describe('analyzeStack integration', () => {
 			moduleId: 'main',
 			memoryId: 'buffer',
 		} as const;
-		const stackAnalyzerInput = {
-			ast: {
-				modules: [
-					{
-						type: 'module',
-						id: 'main',
-						moduleLine,
-						lines: [
+		expect(
+			analyzeStack({
+				ast: {
+					modules: [
+						{
+							type: 'module',
+							id: 'main',
 							moduleLine,
-							bufferDeclarationLine,
-							{
-								lineNumber: 3,
-								instruction: 'push',
-								arguments: [
-									{
-										type: 'identifier',
-										value: '&buffer',
-										referenceKind: 'memory-reference',
-										scope: 'local',
-										targetMemoryId: 'buffer',
-										isEndAddress: false,
-									},
-								],
-							},
-							{
-								lineNumber: 4,
-								instruction: 'clampAddress',
-								arguments: [{ type: 'literal', value: 4, isInteger: true }],
-							},
-							{ lineNumber: 5, instruction: 'drop', arguments: [] },
-							{
-								lineNumber: 6,
-								instruction: 'push',
-								arguments: [{ type: 'literal', value: 5, isInteger: true }],
-							},
-							{
-								lineNumber: 7,
-								instruction: 'call',
-								arguments: [{ type: 'identifier', value: 'increment', referenceKind: 'plain', scope: 'local' }],
-							},
-							{ lineNumber: 8, instruction: 'drop', arguments: [] },
-							moduleEndLine,
-						],
-					},
-				],
-				functions: [
-					{
-						type: 'function',
-						name: 'increment',
-						functionLine,
-						functionEndLine,
-						exportLine,
-						lines: [
-							functionLine,
-							exportLine,
-							{
-								lineNumber: 3,
-								instruction: 'param',
-								arguments: [
-									{ type: 'identifier', value: 'int', referenceKind: 'plain', scope: 'local' },
-									{ type: 'identifier', value: 'value', referenceKind: 'plain', scope: 'local' },
-								],
-							},
-							{
-								lineNumber: 4,
-								instruction: 'local',
-								arguments: [
-									{ type: 'identifier', value: 'int', referenceKind: 'plain', scope: 'local' },
-									{ type: 'identifier', value: 'temp', referenceKind: 'plain', scope: 'local' },
-								],
-							},
-							{
-								lineNumber: 5,
-								instruction: 'push',
-								arguments: [{ type: 'identifier', value: 'value', referenceKind: 'plain', scope: 'local' }],
-							},
-							{
-								lineNumber: 6,
-								instruction: 'push',
-								arguments: [{ type: 'literal', value: 1, isInteger: true }],
-							},
-							{ lineNumber: 7, instruction: 'add', arguments: [] },
-							{
-								lineNumber: 8,
-								instruction: 'localSet',
-								arguments: [{ type: 'identifier', value: 'temp', referenceKind: 'plain', scope: 'local' }],
-							},
-							{
-								lineNumber: 9,
-								instruction: 'push',
-								arguments: [{ type: 'identifier', value: 'temp', referenceKind: 'plain', scope: 'local' }],
-							},
-							functionEndLine,
-						],
-					},
-				],
-			},
-			semanticReferences: {
-				modules: {
-					main: {
-						lineFacts: [
-							undefined,
-							undefined,
-							{
-								arguments: [
-									{
-										type: 'literal',
-										value: 4,
-										isInteger: true,
-										address: {
-											memoryIndex: 0,
-											safeRange: bufferRange,
+							lines: [
+								moduleLine,
+								bufferDeclarationLine,
+								{
+									lineNumber: 3,
+									instruction: 'push',
+									arguments: [
+										{
+											type: 'identifier',
+											value: '&buffer',
+											referenceKind: 'memory-reference',
+											scope: 'local',
+											targetMemoryId: 'buffer',
+											isEndAddress: false,
 										},
+									],
+								},
+								{
+									lineNumber: 4,
+									instruction: 'clampAddress',
+									arguments: [{ type: 'literal', value: 4, isInteger: true }],
+								},
+								{ lineNumber: 5, instruction: 'drop', arguments: [] },
+								{
+									lineNumber: 6,
+									instruction: 'push',
+									arguments: [{ type: 'literal', value: 5, isInteger: true }],
+								},
+								{
+									lineNumber: 7,
+									instruction: 'call',
+									arguments: [{ type: 'identifier', value: 'increment', referenceKind: 'plain', scope: 'local' }],
+								},
+								{ lineNumber: 8, instruction: 'drop', arguments: [] },
+								moduleEndLine,
+							],
+						},
+					],
+					functions: [
+						{
+							type: 'function',
+							name: 'increment',
+							functionLine,
+							functionEndLine,
+							exportLine,
+							lines: [
+								functionLine,
+								exportLine,
+								{
+									lineNumber: 3,
+									instruction: 'param',
+									arguments: [
+										{ type: 'identifier', value: 'int', referenceKind: 'plain', scope: 'local' },
+										{ type: 'identifier', value: 'value', referenceKind: 'plain', scope: 'local' },
+									],
+								},
+								{
+									lineNumber: 4,
+									instruction: 'local',
+									arguments: [
+										{ type: 'identifier', value: 'int', referenceKind: 'plain', scope: 'local' },
+										{ type: 'identifier', value: 'temp', referenceKind: 'plain', scope: 'local' },
+									],
+								},
+								{
+									lineNumber: 5,
+									instruction: 'push',
+									arguments: [{ type: 'identifier', value: 'value', referenceKind: 'plain', scope: 'local' }],
+								},
+								{
+									lineNumber: 6,
+									instruction: 'push',
+									arguments: [{ type: 'literal', value: 1, isInteger: true }],
+								},
+								{ lineNumber: 7, instruction: 'add', arguments: [] },
+								{
+									lineNumber: 8,
+									instruction: 'localSet',
+									arguments: [{ type: 'identifier', value: 'temp', referenceKind: 'plain', scope: 'local' }],
+								},
+								{
+									lineNumber: 9,
+									instruction: 'push',
+									arguments: [{ type: 'identifier', value: 'temp', referenceKind: 'plain', scope: 'local' }],
+								},
+								functionEndLine,
+							],
+						},
+					],
+				},
+				semanticReferences: {
+					modules: {
+						main: {
+							lineFacts: [
+								undefined,
+								undefined,
+								{
+									arguments: [
+										{
+											type: 'literal',
+											value: 4,
+											isInteger: true,
+											address: {
+												memoryIndex: 0,
+												safeRange: bufferRange,
+											},
+										},
+									],
+								},
+								undefined,
+								undefined,
+								undefined,
+								undefined,
+								undefined,
+								undefined,
+							],
+						},
+					},
+					functions: {
+						increment__int: {
+							functionId: 'increment__int',
+							lineFacts: [
+								undefined,
+								undefined,
+								undefined,
+								undefined,
+								{
+									resolvedTarget: {
+										kind: 'local',
+										localName: 'value',
 									},
-								],
-							},
-							undefined,
-							undefined,
-							undefined,
-							undefined,
-							undefined,
-							undefined,
-						],
+								},
+								undefined,
+								undefined,
+								undefined,
+								{
+									resolvedTarget: {
+										kind: 'local',
+										localName: 'temp',
+									},
+								},
+								undefined,
+							],
+						},
 					},
 				},
-				functions: {
-					increment__int: {
-						functionId: 'increment__int',
-						lineFacts: [
-							undefined,
-							undefined,
-							undefined,
-							undefined,
-							{
-								resolvedTarget: {
-									kind: 'local',
-									localName: 'value',
-								},
+				namespaces: {
+					main: {
+						kind: 'module',
+						memoryIndex: 0,
+						byteAddress: 4,
+						wordAlignedSize: 4,
+						memoryDefaults: {
+							buffer: {
+								value: 0,
+								hasExplicitDefault: false,
+								isInherited: false,
 							},
-							undefined,
-							undefined,
-							undefined,
-							{
-								resolvedTarget: {
-									kind: 'local',
-									localName: 'temp',
-								},
-							},
-							undefined,
-						],
+						},
+						pointerMetadata: {},
 					},
 				},
-			},
-			namespaces: {
-				main: {
-					kind: 'module',
-					memoryIndex: 0,
-					byteAddress: 4,
-					wordAlignedSize: 4,
-					memoryDefaults: {
+				memoryPlan: {
+					modules: {
+						main: {
+							id: 'main',
+							lineNumber: 1,
+							byteAddress: 4,
+							wordAlignedSize: 4,
+							wordAlignedByteLength: 16,
+							endByteAddress: 16,
+							endAddressSafeByteLength: 4,
+							memoryIndex: 0,
+							memory: {
+								buffer: bufferMemory,
+							},
+							declarations: [bufferMemory],
+							declarationSources: [
+								{
+									line: bufferDeclarationLine,
+									isInherited: false,
+								},
+							],
+						},
+					},
+					moduleList: [
+						{
+							id: 'main',
+							lineNumber: 1,
+							byteAddress: 4,
+							wordAlignedSize: 4,
+							wordAlignedByteLength: 16,
+							endByteAddress: 16,
+							endAddressSafeByteLength: 4,
+							memoryIndex: 0,
+							memory: {
+								buffer: bufferMemory,
+							},
+							declarations: [bufferMemory],
+							declarationSources: [
+								{
+									line: bufferDeclarationLine,
+									isInherited: false,
+								},
+							],
+						},
+					],
+					nextByteAddressByMemoryIndex: {
+						0: 20,
+					},
+				},
+				memoryDefaultsByModuleId: {
+					main: {
 						buffer: {
 							value: 0,
 							hasExplicitDefault: false,
 							isInherited: false,
 						},
 					},
-					pointerMetadata: {},
 				},
-			},
-			memoryPlan: {
-				modules: {
-					main: {
-						id: 'main',
-						lineNumber: 1,
-						byteAddress: 4,
-						wordAlignedSize: 4,
-						wordAlignedByteLength: 16,
-						endByteAddress: 16,
-						endAddressSafeByteLength: 4,
-						memoryIndex: 0,
-						memory: {
-							buffer: bufferMemory,
-						},
-						declarations: [bufferMemory],
-						declarationSources: [
-							{
-								line: bufferDeclarationLine,
-								isInherited: false,
+				pointerMetadataByModuleId: {
+					main: {},
+				},
+				functions: {
+					byId: {
+						increment__int: {
+							id: 'increment__int',
+							name: 'increment',
+							signature: {
+								parameters: ['int'],
+								returns: ['int'],
 							},
-						],
-					},
-				},
-				moduleList: [
-					{
-						id: 'main',
-						lineNumber: 1,
-						byteAddress: 4,
-						wordAlignedSize: 4,
-						wordAlignedByteLength: 16,
-						endByteAddress: 16,
-						endAddressSafeByteLength: 4,
-						memoryIndex: 0,
-						memory: {
-							buffer: bufferMemory,
+							wasmIndex: 2,
 						},
-						declarations: [bufferMemory],
-						declarationSources: [
-							{
-								line: bufferDeclarationLine,
-								isInherited: false,
-							},
-						],
 					},
-				],
-				nextByteAddressByMemoryIndex: {
-					0: 20,
-				},
-			},
-			memoryDefaultsByModuleId: {
-				main: {
-					buffer: {
-						value: 0,
-						hasExplicitDefault: false,
-						isInherited: false,
+					arityByName: {
+						increment: 1,
 					},
 				},
-			},
-			pointerMetadataByModuleId: {
-				main: {},
-			},
-			functions: {
-				byId: {
-					increment__int: {
-						id: 'increment__int',
-						name: 'increment',
-						signature: {
-							parameters: ['int'],
-							returns: ['int'],
-						},
-						wasmIndex: 2,
-					},
+				functionTypeRegistry: {
+					types: [],
+					signatures: [],
+					baseTypeIndex: 3,
 				},
-				arityByName: {
-					increment: 1,
-				},
-			},
-			functionTypeRegistry: {
-				types: [],
-				signatures: [],
-				baseTypeIndex: 3,
-			},
-			memoryRegions: [],
-			prototypeShapes: {},
-		} as unknown as AnalyzeStackProjectInput;
-
-		expect(analyzeStack(stackAnalyzerInput)).toMatchSnapshot();
+				memoryRegions: [],
+				prototypeShapes: {},
+			} as unknown as AnalyzeStackProjectInput)
+		).toMatchSnapshot();
 	});
 });
