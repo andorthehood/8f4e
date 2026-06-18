@@ -1,20 +1,27 @@
 import compile from '@8f4e/compiler';
-import type { CompiledModuleLookup, CompileOptions } from '@8f4e/language-spec';
+import type {
+	CompiledModuleLookup,
+	CompileOptions,
+	MemoryDefaults,
+	MemoryLayoutPlan,
+	MemoryPointerMetadataMap,
+} from '@8f4e/language-spec';
 import { type ProjectIncludeResolverAsync, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
 import { resolveStdlibInclude } from '../shared/stdlibResolver';
 import type { ProjectBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
-	includeModules?: boolean;
-	includeWasm?: boolean;
 	resolveInclude?: ProjectIncludeResolverAsync;
 }
 
 interface CompileProjectModulesResult {
-	compiledModules?: CompiledModuleLookup;
-	compiledWasm?: string;
-	requiredMemoryBytes?: number;
+	compiledModules: CompiledModuleLookup;
+	memoryPlan: MemoryLayoutPlan;
+	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
+	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	compiledWasm: string;
+	requiredMemoryBytes: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
 }
 
@@ -26,16 +33,17 @@ export default async function compileProjectModules(
 	blocks: ProjectBlock[],
 	options: CompileProjectModulesOptions
 ): Promise<CompileProjectModulesResult> {
-	const includeModules = options.includeModules ?? true;
-	const includeWasm = options.includeWasm ?? true;
 	const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(blocks, {
 		resolveInclude: options.resolveInclude ?? resolveStdlibInclude,
 	});
 
 	if (!hasModuleBlocks(compilerInput.entries) && compilerInput.constants.length === 0) {
 		return {
-			compiledModules: includeModules ? {} : undefined,
-			compiledWasm: includeWasm ? '' : undefined,
+			compiledModules: {},
+			memoryPlan: { modules: {}, moduleList: [], nextByteAddressByMemoryIndex: {} },
+			memoryDefaultsByModuleId: {},
+			pointerMetadataByModuleId: {},
+			compiledWasm: '',
 			requiredMemoryBytes: 0,
 		};
 	}
@@ -43,8 +51,11 @@ export default async function compileProjectModules(
 	const result = compile(compilerInput, options.compilerOptions);
 
 	return {
-		compiledModules: includeModules ? result.compiledModules : undefined,
-		compiledWasm: includeWasm ? Buffer.from(result.codeBuffer).toString('base64') : undefined,
+		compiledModules: result.compiledModules,
+		memoryPlan: result.memoryPlan,
+		memoryDefaultsByModuleId: result.memoryDefaultsByModuleId,
+		pointerMetadataByModuleId: result.pointerMetadataByModuleId,
+		compiledWasm: Buffer.from(result.codeBuffer).toString('base64'),
 		requiredMemoryBytes: result.requiredMemoryBytes,
 		requiredMemoryBytesByRegion: result.requiredMemoryBytesByRegion,
 	};

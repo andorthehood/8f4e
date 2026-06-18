@@ -33,23 +33,37 @@ describe('meter directive widget resolution', () => {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							level: {
-								wordAlignedAddress: 0,
-								byteAddress: 0,
-								numberOfElements: 1,
-								elementWordSize: 4,
-								type: MemoryTypes.float,
-								wordAlignedSize: 1,
-								default: 0,
-								isInteger: false,
-								id: 'level',
-								pointerDepth: 0,
+				memoryPlan: {
+					modules: {
+						'test-block': {
+							id: 'test-block',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								level: {
+									wordAlignedAddress: 0,
+									byteAddress: 0,
+									numberOfElements: 1,
+									elementWordSize: 4,
+									type: MemoryTypes.float,
+									wordAlignedSize: 1,
+									default: 0,
+									isInteger: false,
+									id: 'level',
+									pointerDepth: 0,
+								},
 							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 		});
@@ -125,7 +139,7 @@ describe('meter directive widget resolution', () => {
 
 	it('infers the memory id from a trailing memory declaration comment', () => {
 		setMockCodeBlockCode(mockGraphicData, ['float out ; @meter']);
-		mockState.compiler.compiledModules['test-block'].memory['out'] = {
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['out'] = {
 			wordAlignedAddress: 4,
 			byteAddress: 16,
 			numberOfElements: 1,

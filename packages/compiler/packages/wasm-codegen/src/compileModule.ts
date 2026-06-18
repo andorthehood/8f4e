@@ -16,12 +16,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import {
-	GLOBAL_ALIGNMENT_BOUNDARY,
-	getMemoryRegionFields,
-	isMemoryDeclarationLine,
-	isSemanticInstructionLine,
-} from '@8f4e/language-spec';
+import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/language-spec';
 import type { ModuleSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { createCompilationContext } from '@8f4e/semantic-utils';
 import type { StackAnalyzedModule } from '@8f4e/stack-analyzer';
@@ -112,14 +107,6 @@ export function compileModule(
 			context.byteCode
 		),
 		initFunctionBody: [],
-		...getMemoryRegionFields(memoryIndex, memoryRegionName),
-		byteAddress: plannedModule.byteAddress,
-		wordAlignedAddress: plannedModule.byteAddress / GLOBAL_ALIGNMENT_BOUNDARY,
-		memory: plannedModule.memory,
-		declarations: plannedModule.declarations,
-		memoryDefaults: context.memoryDefaults,
-		pointerMetadata: context.pointerMetadata,
-		wordAlignedSize: context.currentModuleWordAlignedSize,
 		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis: stackReport.stackAnalysis } : {}),
 		index,

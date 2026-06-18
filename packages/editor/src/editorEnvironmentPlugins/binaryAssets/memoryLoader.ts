@@ -12,7 +12,7 @@ function resolveBinaryAssetTarget(
 		return null;
 	}
 
-	const memory = state.compiler.compiledModules[moduleId]?.memory[memoryName];
+	const memory = state.compiler.memoryPlan.modules[moduleId]?.memory[memoryName];
 	if (!memory) {
 		return null;
 	}
@@ -68,12 +68,12 @@ export default function createBinaryAssetMemoryLoader({
 	}
 
 	store.subscribe('binaryAssets', loadPendingBinaryFilesIntoMemory);
-	store.subscribe('compiler.compiledModules', reloadBinaryFilesIntoMemory);
+	store.subscribe('compiler.memoryPlan', reloadBinaryFilesIntoMemory);
 
 	loadPendingBinaryFilesIntoMemory();
 
 	return () => {
 		store.unsubscribe('binaryAssets', loadPendingBinaryFilesIntoMemory);
-		store.unsubscribe('compiler.compiledModules', reloadBinaryFilesIntoMemory);
+		store.unsubscribe('compiler.memoryPlan', reloadBinaryFilesIntoMemory);
 	};
 }

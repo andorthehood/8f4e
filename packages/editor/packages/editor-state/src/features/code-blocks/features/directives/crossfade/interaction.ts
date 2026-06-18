@@ -47,7 +47,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 			return;
 		}
 
-		const module = state.compiler.compiledModules[codeBlock.name];
+		const module = state.compiler.memoryPlan.modules[codeBlock.name];
 		const leftMemory = module?.memory[crossfade.leftId];
 		const rightMemory = module?.memory[crossfade.rightId];
 

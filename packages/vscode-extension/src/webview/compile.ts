@@ -1,7 +1,6 @@
 import compile, { deriveEffectiveMemorySize, serializeDiagnostic } from '@8f4e/compiler';
 import type { CompilationResult, Editor } from '@8f4e/editor';
 import type {
-	CompiledModuleLookup,
 	CompileInput,
 	CompileOptions,
 	CompilerCache,
@@ -59,10 +58,13 @@ export async function compileCode(
 			byteCodeSize: nextCodeBuffer.length,
 			codeBuffer: nextCodeBuffer,
 			compiledFunctions: result.compiledFunctions,
-			compiledModules: result.compiledModules as CompiledModuleLookup,
+			compiledModules: result.compiledModules,
 			hasWasmInstanceBeenReset: true,
 			initOnlyReran: false,
 			memoryAction,
+			memoryDefaultsByModuleId: result.memoryDefaultsByModuleId,
+			memoryPlan: result.memoryPlan,
+			pointerMetadataByModuleId: result.pointerMetadataByModuleId,
 			requiredMemoryBytes: result.requiredMemoryBytes,
 		};
 	} catch (error) {
