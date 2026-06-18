@@ -1,11 +1,5 @@
 import { ArgumentType } from './arguments';
-import type {
-	CompilerASTLine,
-	MemoryDeclarationLine,
-	ParamShapeLine,
-	ValidatedFunctionAST,
-	ValidatedPrototypeAST,
-} from './ast';
+import type { CompilerASTLine, FunctionAST, MemoryDeclarationLine, ParamShapeLine, PrototypeAST } from './ast';
 import { isMemoryDeclarationLine } from './ast';
 import type { FunctionMetadata, FunctionParamShapeExpansion } from './compiled';
 import { ErrorCode, getError } from './compilerError';
@@ -13,7 +7,7 @@ import type { CompilerDiagnosticContext } from './diagnostics';
 import type { FunctionValueType } from './functionTypes';
 import { isFunctionValueType } from './functionTypes';
 
-function getAstDiagnosticContext(ast: ValidatedFunctionAST): CompilerDiagnosticContext {
+function getAstDiagnosticContext(ast: FunctionAST): CompilerDiagnosticContext {
 	return {
 		codeBlockType: ast.type,
 		...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
@@ -68,7 +62,7 @@ export function getParamType(
 
 function getParamShapeExpansion(
 	line: ParamShapeLine,
-	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>,
+	prototypeShapes: Readonly<Record<string, PrototypeAST>>,
 	context: CompilerDiagnosticContext
 ): FunctionParamShapeExpansion {
 	const prototypeId = line.arguments[0].value;
@@ -87,8 +81,8 @@ function getParamShapeExpansion(
 }
 
 export function getEffectiveFunctionMetadata(
-	ast: ValidatedFunctionAST,
-	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>
+	ast: FunctionAST,
+	prototypeShapes: Readonly<Record<string, PrototypeAST>>
 ): Pick<FunctionMetadata, 'signature' | 'paramShapeExpansions'> {
 	const parameters: FunctionMetadata['signature']['parameters'] = [];
 	const paramShapeExpansions: FunctionParamShapeExpansion[] = [];

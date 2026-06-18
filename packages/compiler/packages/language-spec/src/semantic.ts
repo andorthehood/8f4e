@@ -15,10 +15,10 @@ import type {
 	LoopLine,
 	MapLine,
 	MemoryCopyLine,
+	PrototypeAST,
 	PushArgument,
 	PushLine,
 	PushShapeLine,
-	ValidatedPrototypeAST,
 } from './ast';
 import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMetadata } from './compiled';
 import type { FunctionImportMetadata, FunctionValueType } from './functionTypes';
@@ -180,7 +180,7 @@ export interface CompilationContext {
 	currentFunctionExportName?: string;
 	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
-	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>;
+	prototypeShapes?: Readonly<Record<string, PrototypeAST>>;
 	skipExecutionInCycle?: boolean;
 	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
 	loopCap?: number;

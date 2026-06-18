@@ -1,5 +1,13 @@
+import type { ConstantsAST, FunctionAST, ModuleAST, PrototypeAST } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { type ResolveMemoryReferencesInput, resolveMemoryReferences } from '../src';
+
+type MemoryReferenceResolverIntegrationInput = ResolveMemoryReferencesInput<
+	PrototypeAST,
+	ModuleAST,
+	ConstantsAST,
+	FunctionAST
+>;
 
 describe('resolveMemoryReferences integration', () => {
 	it('resolves project-level memory references from pass-shaped fixtures', () => {
@@ -362,7 +370,7 @@ describe('resolveMemoryReferences integration', () => {
 				ast,
 				memoryPlan,
 				constantReferences,
-			} as unknown as ResolveMemoryReferencesInput)
+			} satisfies MemoryReferenceResolverIntegrationInput)
 		).toMatchSnapshot();
 	});
 });

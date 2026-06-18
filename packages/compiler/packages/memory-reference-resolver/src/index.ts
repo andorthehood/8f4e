@@ -306,7 +306,12 @@ function resolveDeclarationSourceReferences(
  * @param input - Project AST, completed memory layout plan, and constant-resolution facts.
  * @returns Memory-reference facts aligned with the input AST and planned memory declaration sources.
  */
-export function resolveMemoryReferences(input: ResolveMemoryReferencesInput): ResolveMemoryReferencesResult {
+export function resolveMemoryReferences<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TConstants extends ConstantsAST = ValidatedConstantsAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+>(input: ResolveMemoryReferencesInput<TPrototype, TModule, TConstants, TFunction>): ResolveMemoryReferencesResult {
 	const pointerMetadata: Record<string, MemoryPointerMetadataMap> = {};
 	const declarationSourcesByModuleId: Record<string, MemoryReferenceResolutionBlockFacts> = {};
 

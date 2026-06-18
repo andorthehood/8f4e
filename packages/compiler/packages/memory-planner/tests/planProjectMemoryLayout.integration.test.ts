@@ -1,5 +1,8 @@
+import type { ModuleAST, PrototypeAST } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { type ProjectMemoryLayoutPlanInput, planProjectMemoryLayout } from '../src';
+
+type MemoryPlannerIntegrationInput = ProjectMemoryLayoutPlanInput<PrototypeAST, ModuleAST>;
 
 describe('planProjectMemoryLayout integration', () => {
 	it('plans project-level memory layout from pass-shaped fixtures', () => {
@@ -143,7 +146,7 @@ describe('planProjectMemoryLayout integration', () => {
 				constantReferences,
 				startingByteAddress: 4,
 				memoryRegions: ['audio'],
-			} as unknown as ProjectMemoryLayoutPlanInput)
+			} satisfies MemoryPlannerIntegrationInput)
 		).toMatchSnapshot();
 	});
 });
