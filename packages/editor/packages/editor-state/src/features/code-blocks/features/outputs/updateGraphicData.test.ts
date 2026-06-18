@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { MemoryDefaults, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { MemoryTypes } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
@@ -23,6 +23,29 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 	};
 }
 
+function setModuleMemory(
+	state: State,
+	memory: Record<string, PlannedMemoryDeclaration>,
+	memoryDefaults: MemoryDefaults
+): void {
+	const plannedModule = {
+		id: 'test-block',
+		lineNumber: 0,
+		memoryIndex: 0,
+		byteAddress: 0,
+		wordAlignedSize: 1,
+		wordAlignedByteLength: 4,
+		endByteAddress: 4,
+		endAddressSafeByteLength: 0,
+		memory,
+		declarations: Object.values(memory),
+		declarationSources: [],
+	};
+	state.compiler.memoryPlan.modules['test-block'] = plannedModule;
+	state.compiler.memoryPlan.moduleList = [plannedModule];
+	state.compiler.memoryDefaultsByModuleId['test-block'] = memoryDefaults;
+}
+
 describe('updateOutputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
 	let mockState: State;
@@ -39,19 +62,8 @@ describe('updateOutputsGraphicData', () => {
 			codeBlockRendering: {
 				outputsByWordAddress: new Map(),
 			},
-			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							output1: createMemory(),
-						},
-						memoryDefaults: {
-							output1: { value: 0, isInherited: false },
-						},
-					},
-				},
-			},
 		});
+		setModuleMemory(mockState, { output1: createMemory() }, { output1: { value: 0, isInherited: false } });
 	});
 
 	it('adds output widgets from non-pointer scalar memory metadata', () => {
@@ -62,7 +74,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('adds output widgets from non-pointer array memory metadata', () => {
-		mockState.compiler.compiledModules['test-block'].memory['output1'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['output1'] = createMemory({
 			type: MemoryTypes.int,
 			numberOfElements: 4,
 			wordAlignedSize: 4,
@@ -75,7 +87,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('ignores pointer memory metadata', () => {
-		mockState.compiler.compiledModules['test-block'].memory['output1'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['output1'] = createMemory({
 			type: MemoryTypes['int*'],
 			pointerDepth: 1,
 		});
@@ -106,7 +118,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('does not add outputs when compiled module metadata is missing', () => {
-		mockState.compiler.compiledModules = {};
+		mockState.compiler.memoryPlan.modules = {};
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -115,13 +127,13 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('does not render outputs for private entities', () => {
-		mockState.compiler.compiledModules['test-block'].memory['_privateOutput'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['_privateOutput'] = createMemory({
 			id: '_privateOutput',
 			wordAlignedAddress: 7,
 			byteAddress: 28,
 		});
-		mockState.compiler.compiledModules['test-block'].memoryDefaults._privateOutput = { value: 0, isInherited: false };
-		delete mockState.compiler.compiledModules['test-block'].memory['output1'];
+		mockState.compiler.memoryDefaultsByModuleId['test-block']!._privateOutput = { value: 0, isInherited: false };
+		delete mockState.compiler.memoryPlan.modules['test-block']!.memory['output1'];
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -130,13 +142,13 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('renders anonymous scalar allocations from metadata', () => {
-		mockState.compiler.compiledModules['test-block'].memory['__anonymous__1'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['__anonymous__1'] = createMemory({
 			id: '__anonymous__1',
 			wordAlignedAddress: 8,
 			byteAddress: 32,
 		});
-		mockState.compiler.compiledModules['test-block'].memoryDefaults.__anonymous__1 = { value: 0, isInherited: false };
-		delete mockState.compiler.compiledModules['test-block'].memory['output1'];
+		mockState.compiler.memoryDefaultsByModuleId['test-block']!.__anonymous__1 = { value: 0, isInherited: false };
+		delete mockState.compiler.memoryPlan.modules['test-block']!.memory['output1'];
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -166,7 +178,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('handles multiple outputs in line-number order', () => {
-		mockState.compiler.compiledModules['test-block'].memory['output2'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['output2'] = createMemory({
 			id: 'output2',
 			type: MemoryTypes.float,
 			wordAlignedAddress: 6,
@@ -174,7 +186,7 @@ describe('updateOutputsGraphicData', () => {
 			lineNumber: 2,
 			isInteger: false,
 		});
-		mockState.compiler.compiledModules['test-block'].memoryDefaults.output2 = { value: 0, isInherited: false };
+		mockState.compiler.memoryDefaultsByModuleId['test-block']!.output2 = { value: 0, isInherited: false };
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -189,7 +201,7 @@ describe('updateOutputsGraphicData', () => {
 	});
 
 	it('positions outputs at the metadata line number', () => {
-		mockState.compiler.compiledModules['test-block'].memory['output1'] = createMemory({ lineNumber: 2 });
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['output1'] = createMemory({ lineNumber: 2 });
 
 		updateOutputsGraphicData(mockGraphicData, mockState);
 
@@ -200,7 +212,7 @@ describe('updateOutputsGraphicData', () => {
 
 	it('positions shape-sourced outputs below the shape instruction', () => {
 		mockGraphicData.gaps = new Map([[1, { size: 2 }]]);
-		mockState.compiler.compiledModules['test-block'].memory = {
+		mockState.compiler.memoryPlan.modules['test-block']!.memory = {
 			input1: createMemory({
 				id: 'input1',
 				type: MemoryTypes['int*'],
@@ -209,7 +221,7 @@ describe('updateOutputsGraphicData', () => {
 			}),
 			output1: createMemory({ lineNumber: 1 }),
 		};
-		mockState.compiler.compiledModules['test-block'].memoryDefaults = {
+		mockState.compiler.memoryDefaultsByModuleId['test-block'] = {
 			input1: { value: 0, isInherited: true },
 			output1: { value: 0, isInherited: true },
 		};

@@ -56,10 +56,6 @@ export async function runCompileCommand(args: string[]): Promise<void> {
 
 	const { compiledWasm } = await compileProject(project);
 
-	if (compiledWasm === undefined) {
-		throw new Error('Unable to write WASM output: compiledWasm is missing from compiler output.');
-	}
-
 	await fs.mkdir(path.dirname(resolvedWasmOutput), { recursive: true });
 	await fs.writeFile(resolvedWasmOutput, Buffer.from(compiledWasm, 'base64'));
 }

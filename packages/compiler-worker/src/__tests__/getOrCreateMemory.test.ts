@@ -1,22 +1,34 @@
+import compile from '@8f4e/compiler';
 import { describe, expect, it } from 'vitest';
-
+import type { ProgramMemoryStructure } from '../didProgramOrMemoryStructureChange';
 import getOrCreateMemory from '../getOrCreateMemory';
 
 describe('getOrCreateMemory', () => {
-	// Helper to create a minimal CompiledModuleLookup for testing
-	const createMockCompiledModules = () => ({
-		module1: {
-			cycleFunction: 'function loop() {}',
-			initFunctionBody: 'init body',
-			wordAlignedSize: 100,
-			memory: {},
-		},
-	});
+	function createProgramMemoryStructure(moduleIds = ['module1']): ProgramMemoryStructure {
+		const result = compile(
+			{
+				entries: {
+					main: moduleIds.map(id => ({
+						code: [`module ${id}`, 'int value 0', 'moduleEnd'],
+					})),
+				},
+				functions: [],
+				constants: [],
+				prototypes: [],
+			},
+			{ startingMemoryWordAddress: 0 }
+		);
+
+		return {
+			compiledModules: result.compiledModules,
+			memoryPlan: result.memoryPlan,
+		};
+	}
 
 	describe('memory action reporting', () => {
 		it('should report "no-instance" reason when memory is created for the first time', () => {
-			const compiledModules = createMockCompiledModules();
-			const result = getOrCreateMemory(65536, compiledModules);
+			const current = createProgramMemoryStructure();
+			const result = getOrCreateMemory(65536, current);
 
 			expect(result.memoryAction).toEqual({
 				action: 'recreated',
@@ -27,12 +39,12 @@ describe('getOrCreateMemory', () => {
 
 		it('should report "memory-size-changed" reason when memory size changes', () => {
 			// First call creates initial memory
-			const compiledModules1 = createMockCompiledModules();
-			getOrCreateMemory(65536, compiledModules1);
+			const previous = createProgramMemoryStructure();
+			getOrCreateMemory(65536, previous);
 
 			// Second call with different size
-			const compiledModules2 = createMockCompiledModules();
-			const result = getOrCreateMemory(131072, compiledModules2, compiledModules1);
+			const current = createProgramMemoryStructure();
+			const result = getOrCreateMemory(131072, current, previous);
 
 			expect(result.memoryAction).toEqual({
 				action: 'recreated',
@@ -46,20 +58,12 @@ describe('getOrCreateMemory', () => {
 
 		it('should report "memory-structure-changed" reason when structure changes', () => {
 			// First call creates initial memory
-			const compiledModules1 = createMockCompiledModules();
-			getOrCreateMemory(65536, compiledModules1);
+			const previous = createProgramMemoryStructure();
+			getOrCreateMemory(65536, previous);
 
 			// Second call with same size but structure changed (different module count)
-			const compiledModules2 = {
-				...createMockCompiledModules(),
-				module2: {
-					cycleFunction: 'function loop2() {}',
-					initFunctionBody: 'init body 2',
-					wordAlignedSize: 200,
-					memory: {},
-				},
-			};
-			const result = getOrCreateMemory(65536, compiledModules2, compiledModules1);
+			const current = createProgramMemoryStructure(['module1', 'module2']);
+			const result = getOrCreateMemory(65536, current, previous);
 
 			expect(result.memoryAction).toEqual({
 				action: 'recreated',
@@ -69,12 +73,12 @@ describe('getOrCreateMemory', () => {
 
 		it('should report "reused" action when memory is reused', () => {
 			// First call creates initial memory
-			const compiledModules1 = createMockCompiledModules();
-			getOrCreateMemory(65536, compiledModules1);
+			const previous = createProgramMemoryStructure();
+			getOrCreateMemory(65536, previous);
 
 			// Second call with same size and no structure change
-			const compiledModules2 = createMockCompiledModules();
-			const result = getOrCreateMemory(65536, compiledModules2, compiledModules1);
+			const current = createProgramMemoryStructure();
+			const result = getOrCreateMemory(65536, current, previous);
 
 			expect(result.memoryAction).toEqual({
 				action: 'reused',
@@ -83,20 +87,12 @@ describe('getOrCreateMemory', () => {
 
 		it('should prioritize memory-size-changed over memory-structure-changed when both occur', () => {
 			// First call creates initial memory
-			const compiledModules1 = createMockCompiledModules();
-			getOrCreateMemory(65536, compiledModules1);
+			const previous = createProgramMemoryStructure();
+			getOrCreateMemory(65536, previous);
 
 			// Second call with both size and structure changed
-			const compiledModules2 = {
-				...createMockCompiledModules(),
-				module2: {
-					cycleFunction: 'function loop2() {}',
-					initFunctionBody: 'init body 2',
-					wordAlignedSize: 200,
-					memory: {},
-				},
-			};
-			const result = getOrCreateMemory(131072, compiledModules2, compiledModules1);
+			const current = createProgramMemoryStructure(['module1', 'module2']);
+			const result = getOrCreateMemory(131072, current, previous);
 
 			expect(result.memoryAction).toEqual({
 				action: 'recreated',
@@ -112,8 +108,8 @@ describe('getOrCreateMemory', () => {
 	describe('memory creation behavior', () => {
 		it('should create shared memory with correct page count', () => {
 			const memorySizeBytes = 65536 * 2; // 2 pages
-			const compiledModules = createMockCompiledModules();
-			const result = getOrCreateMemory(memorySizeBytes, compiledModules);
+			const current = createProgramMemoryStructure();
+			const result = getOrCreateMemory(memorySizeBytes, current);
 
 			expect(result.memoryRef).toBeInstanceOf(WebAssembly.Memory);
 			expect(result.memoryRef.buffer.byteLength).toBe(memorySizeBytes);
@@ -122,8 +118,8 @@ describe('getOrCreateMemory', () => {
 		it('should round up memory size to page boundary', () => {
 			// Request slightly more than 1 page
 			const memorySizeBytes = 65536 + 1;
-			const compiledModules = createMockCompiledModules();
-			const result = getOrCreateMemory(memorySizeBytes, compiledModules);
+			const current = createProgramMemoryStructure();
+			const result = getOrCreateMemory(memorySizeBytes, current);
 
 			// Should allocate 2 full pages
 			expect(result.memoryRef.buffer.byteLength).toBe(65536 * 2);

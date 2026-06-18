@@ -136,7 +136,7 @@ function createWebAssemblyMemory(requiredMemoryBytes: number): WebAssemblyMemory
 }
 
 export async function createRuntimeRunner(options: CreateRuntimeRunnerOptions): Promise<RuntimeRunner> {
-	const lookup: MemoryLookup = createMemoryLookup(options.compiledModules);
+	const lookup: MemoryLookup = createMemoryLookup(options.memoryPlan);
 	const memory = createWebAssemblyMemory(options.requiredMemoryBytes);
 	const program = Buffer.from(options.compiledWasmBase64, 'base64');
 	const { instance } = await getWebAssemblyApi().instantiate(program, {

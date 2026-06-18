@@ -42,7 +42,7 @@ functionEnd int
 			}
 		);
 		const memory = fixture.host.memory as WebAssembly.Memory;
-		const output = fixture.compileResult.compiledModules.hostImportCaller.memory.output.byteAddress;
+		const output = fixture.compileResult.memoryPlan.modules.hostImportCaller!.memory.output!.byteAddress;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();
@@ -83,7 +83,7 @@ add
 functionEnd float
 `);
 		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);
-		const output = fixture.compileResult.compiledModules.inlineCallArguments.memory.output.byteAddress;
+		const output = fixture.compileResult.memoryPlan.modules.inlineCallArguments!.memory.output!.byteAddress;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();
@@ -124,7 +124,7 @@ functionEnd
 			}
 		);
 
-		const memory = fixture.compileResult.compiledModules.shapeImportCaller.memory;
+		const memory = fixture.compileResult.memoryPlan.modules.shapeImportCaller!.memory;
 
 		getExportedFunction(fixture.instance.exports, 'initDefaults')();
 		getExportedFunction(fixture.instance.exports, 'main')();

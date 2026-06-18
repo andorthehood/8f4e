@@ -101,7 +101,7 @@ constantsEnd
 		});
 
 		expect(second.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast).toBe(cachedModuleAst);
-		expect(second.compileResult.compiledModules.cachedConstants.memory.buffer.numberOfElements).toBe(4);
+		expect(second.compileResult.memoryPlan.modules.cachedConstants!.memory.buffer!.numberOfElements).toBe(4);
 		const cachedMemoryDeclaration = cachedModuleAst?.lines.find(isMemoryDeclarationLine);
 		expect(cachedMemoryDeclaration?.arguments[1]).toEqual(expect.objectContaining({ value: 'SIZE' }));
 	});

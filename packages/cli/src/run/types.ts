@@ -1,4 +1,4 @@
-import type { CompiledModuleLookup, PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { MemoryLayoutPlan, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 
 export interface RuntimeRunner {
 	initialize(): void;
@@ -22,6 +22,6 @@ export interface MemoryLookup {
 
 export interface CreateRuntimeRunnerOptions {
 	compiledWasmBase64: string;
-	compiledModules: CompiledModuleLookup;
+	memoryPlan: MemoryLayoutPlan;
 	requiredMemoryBytes: number;
 }

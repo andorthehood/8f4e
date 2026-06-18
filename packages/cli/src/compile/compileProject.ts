@@ -16,16 +16,17 @@ export async function compileProject(
 
 	const moduleResult = await compileProjectModules(project.codeBlocks, {
 		compilerOptions,
-		includeModules,
-		includeWasm,
 		resolveInclude: options.resolveInclude,
 	});
 
 	const outputProject: Record<string, unknown> = { ...project };
-	if (includeModules && moduleResult.compiledModules !== undefined) {
+	if (includeModules) {
 		outputProject.compiledModules = moduleResult.compiledModules;
+		outputProject.memoryPlan = moduleResult.memoryPlan;
+		outputProject.memoryDefaultsByModuleId = moduleResult.memoryDefaultsByModuleId;
+		outputProject.pointerMetadataByModuleId = moduleResult.pointerMetadataByModuleId;
 	}
-	if (includeWasm && moduleResult.compiledWasm !== undefined) {
+	if (includeWasm) {
 		outputProject.compiledWasm = moduleResult.compiledWasm;
 	}
 
@@ -33,6 +34,9 @@ export async function compileProject(
 		outputProject,
 		compilerOptions,
 		compiledModules: moduleResult.compiledModules,
+		memoryPlan: moduleResult.memoryPlan,
+		memoryDefaultsByModuleId: moduleResult.memoryDefaultsByModuleId,
+		pointerMetadataByModuleId: moduleResult.pointerMetadataByModuleId,
 		compiledFunctions: undefined,
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,

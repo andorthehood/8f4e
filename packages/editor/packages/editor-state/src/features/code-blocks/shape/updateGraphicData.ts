@@ -1,12 +1,13 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { MemoryDefaults, PlannedMemoryModule } from '@8f4e/language-spec';
 import gapCalculator from '../../code-editing/gapCalculator';
 import type { DirectiveDerivedState } from '../features/directives/registry';
 
-function getInheritedDeclarationRowOffsets(compiledModule: NonNullable<State['compiler']['compiledModules'][string]>) {
+function getInheritedDeclarationRowOffsets(plannedModule: PlannedMemoryModule, memoryDefaults: MemoryDefaults) {
 	const rowOffsetByLineNumber = new Map<number, number>();
 
-	return Object.values(compiledModule.memory)
-		.filter(memory => compiledModule.memoryDefaults[memory.id]!.isInherited === true)
+	return Object.values(plannedModule.memory)
+		.filter(memory => memoryDefaults[memory.id]!.isInherited === true)
 		.map(memory => {
 			const rowOffset = (rowOffsetByLineNumber.get(memory.lineNumber) ?? 0) + 1;
 			rowOffsetByLineNumber.set(memory.lineNumber, rowOffset);
@@ -29,13 +30,15 @@ export default function shape(
 	}
 
 	const compiledModule = graphicData.name ? state.compiler.compiledModules[graphicData.name] : undefined;
+	const plannedModule = graphicData.name ? state.compiler.memoryPlan.modules[graphicData.name] : undefined;
 	if (!compiledModule || compiledModule.ast.type !== 'module') {
 		return;
 	}
 
-	const inheritedDeclarationCountByLineNumber = Object.values(compiledModule.memory).reduce<Map<number, number>>(
+	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[graphicData.name!]!;
+	const inheritedDeclarationCountByLineNumber = Object.values(plannedModule!.memory).reduce<Map<number, number>>(
 		(result, memory) => {
-			if (compiledModule.memoryDefaults[memory.id]!.isInherited === true) {
+			if (memoryDefaults[memory.id]!.isInherited === true) {
 				result.set(memory.lineNumber, (result.get(memory.lineNumber) ?? 0) + 1);
 			}
 			return result;
@@ -71,12 +74,14 @@ export function updateShapeDeclarations(
 	}
 
 	const compiledModule = graphicData.name ? state.compiler.compiledModules[graphicData.name] : undefined;
+	const plannedModule = graphicData.name ? state.compiler.memoryPlan.modules[graphicData.name] : undefined;
 	if (!compiledModule || compiledModule.ast.type !== 'module') {
 		return;
 	}
 
 	const textX = (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid;
-	for (const { memory, rowOffset } of getInheritedDeclarationRowOffsets(compiledModule)) {
+	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[graphicData.name!]!;
+	for (const { memory, rowOffset } of getInheritedDeclarationRowOffsets(plannedModule!, memoryDefaults)) {
 		const displayRow = directiveState.displayModel.rawRowToDisplayRow[memory.lineNumber];
 		if (displayRow === undefined) {
 			continue;
