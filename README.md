@@ -14,11 +14,24 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 └── packages/
     ├── <a href="./packages/compiler/README.md">compiler</a> (The core compiler that transforms 8f4e code into WebAssembly)
     │   └── packages/
-    │       ├── <a href="./packages/compiler/packages/wasm-utils/README.md">wasm-utils</a>
-    │       └── <a href="./packages/compiler/packages/tokenizer/README.md">tokenizer</a>
+    │       ├── <a href="./packages/compiler/packages/language-spec/README.md">language-spec</a> (Shared language contracts and target-independent compiler facts)
+    │       ├── <a href="./packages/compiler/packages/project-preparser/README.md">project-preparser</a> (Parses .8f4e project documents into compiler input)
+    │       ├── <a href="./packages/compiler/packages/tokenizer/README.md">tokenizer</a> (Parses source blocks into validated ASTs)
+    │       ├── <a href="./packages/compiler/packages/constant-resolver/README.md">constant-resolver</a> (Resolves const declarations and namespace imports)
+    │       ├── <a href="./packages/compiler/packages/memory-planner/README.md">memory-planner</a> (Plans module and memory declaration layout)
+    │       ├── <a href="./packages/compiler/packages/memory-reference-resolver/README.md">memory-reference-resolver</a> (Resolves memory layout references)
+    │       ├── <a href="./packages/compiler/packages/memory-default-resolver/README.md">memory-default-resolver</a> (Resolves memory defaults and pointer metadata)
+    │       ├── <a href="./packages/compiler/packages/semantic-reference-resolver/README.md">semantic-reference-resolver</a> (Resolves semantic value references)
+    │       ├── <a href="./packages/compiler/packages/stack-analyzer/README.md">stack-analyzer</a> (Validates and reports stack effects)
+    │       ├── <a href="./packages/compiler/packages/semantic-utils/README.md">semantic-utils</a> (Shared target-independent semantic helpers)
+    │       ├── <a href="./packages/compiler/packages/wasm-codegen/README.md">wasm-codegen</a> (WebAssembly code generation)
+    │       ├── <a href="./packages/compiler/packages/wasm-utils/README.md">wasm-utils</a> (Low-level WebAssembly byte construction helpers)
+    │       └── <a href="./packages/compiler/packages/stdlib/README.md">stdlib</a> (Standard-library include source files)
     ├── <a href="./packages/editor/README.md">editor</a> (The main editor package)
     │   └── packages/
     │       ├── <a href="./packages/editor/packages/editor-state/README.md">editor-state</a> (Editor state management)
+    │       ├── editor-state-types (Shared public editor-state model types)
+    │       ├── <a href="./packages/editor/packages/editor-state-testing/README.md">editor-state-testing</a> (Framework-agnostic editor-state test helpers)
     │       ├── <a href="./packages/editor/packages/glugglug/README.md">glugglug</a> (2D WebGL graphics utilities)
     │       ├── <a href="./packages/editor/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
     │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
@@ -29,6 +42,8 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     ├── <a href="./packages/runtime-web-worker/README.md">runtime-web-worker</a>  ┘ for different execution contexts)
     ├── <a href="./packages/cli/README.md">cli</a> (CLI for compiling 8f4e project files)
     ├── <a href="./packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
+    ├── <a href="./packages/vscode-extension/README.md">vscode-extension</a> (Local VS Code custom editor for .8f4e files)
+    ├── metrics-dashboard (Local dashboard for release metrics)
     └── <a href="./packages/config/README.md">config</a> (Shared tooling and configuration helpers for the workspace)
 </pre>
 
