@@ -9,10 +9,12 @@ import type {
 	MemoryDeclarationLine,
 	MemoryLayoutPlan,
 	MemoryRegionIdentity,
+	ModuleAST,
 	ModuleLine,
 	PlannedMemoryDeclaration,
 	PlannedMemoryDeclarationSource,
 	PlannedMemoryModule,
+	PrototypeAST,
 	RegionLine,
 	ScalarMemoryDeclarationLine,
 	ShapeLine,
@@ -89,9 +91,12 @@ interface MemoryLayoutPlanInput {
 	memoryRegions?: readonly string[];
 }
 
-export interface ProjectMemoryLayoutPlanInput {
-	prototypes: readonly ValidatedPrototypeAST[];
-	modules: readonly ValidatedModuleAST[];
+export interface ProjectMemoryLayoutPlanInput<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+> {
+	prototypes: readonly TPrototype[];
+	modules: readonly TModule[];
 	constantReferences: {
 		prototypes: readonly ConstantResolutionBlockFacts[];
 		modules: readonly ConstantResolutionBlockFacts[];
@@ -143,7 +148,7 @@ function applyConstantFacts<TLine extends CompilerASTLine>(line: TLine, facts?: 
 }
 
 function getPrototypeSources(
-	prototypes: readonly ValidatedPrototypeAST[],
+	prototypes: readonly PrototypeAST[],
 	constantReferences: readonly ConstantResolutionBlockFacts[]
 ): MemoryLayoutSourcePrototype[] {
 	const seenPrototypeIds = new Set<string>();
@@ -266,7 +271,7 @@ function isShapeLine(line: CompilerASTLine): line is ShapeLine {
 }
 
 function collectModuleMemoryLayoutSourceLines(
-	ast: ValidatedModuleAST,
+	ast: ModuleAST,
 	constantReferences: ConstantResolutionBlockFacts | undefined
 ): MemoryLayoutSourceModule {
 	const sourceModule: MemoryLayoutSourceModule = {
@@ -296,7 +301,7 @@ function collectModuleMemoryLayoutSourceLines(
 }
 
 function createMemoryLayoutSourceModules(
-	asts: readonly ValidatedModuleAST[],
+	asts: readonly ModuleAST[],
 	constantReferences: readonly ConstantResolutionBlockFacts[]
 ): MemoryLayoutSourceModule[] {
 	return asts.map((ast, index) => collectModuleMemoryLayoutSourceLines(ast, constantReferences[index]));
@@ -444,7 +449,10 @@ function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
  * @param input - Validated project ASTs plus optional layout settings.
  * @returns Address and size metadata for modules and memory declarations.
  */
-export function planProjectMemoryLayout(input: ProjectMemoryLayoutPlanInput): MemoryLayoutPlan {
+export function planProjectMemoryLayout<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+>(input: ProjectMemoryLayoutPlanInput<TPrototype, TModule>): MemoryLayoutPlan {
 	validateMemoryRegionOptions(input);
 
 	return planMemoryLayout({
