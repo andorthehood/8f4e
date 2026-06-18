@@ -292,7 +292,7 @@ function collectConstantNamespacesFromAsts(
 	return namespaces;
 }
 
-export function collectConstantNamespaces(
+function collectConstantNamespaces(
 	input: ResolveConstantsInput,
 	options: ResolveConstantsOptions = {}
 ): ConstantNamespaceMap {

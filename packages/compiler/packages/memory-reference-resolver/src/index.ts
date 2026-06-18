@@ -2,7 +2,6 @@ import type {
 	AddressMetadata,
 	Argument,
 	CompilerASTLine,
-	CompileTimeOperand,
 	Const,
 	ConstantResolutionBlockFacts,
 	ConstantResolutionLineFacts,
@@ -27,13 +26,12 @@ import type {
 } from '@8f4e/language-spec';
 import { ArgumentType, isScalarMemoryDeclarationLine, POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/language-spec';
 import type { MemoryLayoutPlan, PlannedMemoryModule } from '@8f4e/memory-planner';
-import { evaluateResolvedValueExpression } from './evaluateResolvedValueExpression';
-import {
-	type MemoryReferenceModuleNamespace,
-	type MemoryReferencePointerMetadataByModuleId,
-	type MemoryReferenceResolutionContext,
-	resolveMemoryExpressionOperand,
+import type {
+	MemoryReferenceModuleNamespace,
+	MemoryReferencePointerMetadataByModuleId,
+	MemoryReferenceResolutionContext,
 } from './resolveMemoryExpressionOperand';
+import { tryResolveValueArgument } from './tryResolveValueArgument';
 
 export type {
 	MemoryReferenceResolutionBlockFacts,
@@ -206,21 +204,6 @@ function updatePointerMemoryMetadata(line: CompilerASTLine, context: MemoryRefer
 	};
 }
 
-function resolveValueOperand(
-	operand: CompileTimeOperand,
-	context: MemoryReferenceResolutionContext
-): Const | undefined {
-	if (operand.type === ArgumentType.LITERAL) {
-		return {
-			value: operand.value,
-			isInteger: operand.isInteger,
-			...(operand.isFloat64 ? { isFloat64: true } : {}),
-		};
-	}
-
-	return resolveMemoryExpressionOperand(operand, context);
-}
-
 function resolvedValueToLiteral(resolved: Const): ResolvedArgumentLiteral {
 	return {
 		type: ArgumentType.LITERAL,
@@ -229,40 +212,6 @@ function resolvedValueToLiteral(resolved: Const): ResolvedArgumentLiteral {
 		...(resolved.isFloat64 ? { isFloat64: true } : {}),
 		...(resolved.address ? { address: resolved.address } : {}),
 	};
-}
-
-/**
- * Attempts to fold an argument into a semantic value using the current memory layout context.
- * Constant identifiers are expected to have been resolved before this pass runs.
- *
- * @param context - Compilation context used by the operation.
- * @param argument - Argument whose resolved value or metadata should be used.
- * @returns Resolved value, or `undefined` when the argument cannot be folded.
- */
-export function tryResolveValueArgument(
-	context: MemoryReferenceResolutionContext,
-	argument: Argument
-): Const | undefined {
-	if (argument.type !== ArgumentType.IDENTIFIER && argument.type !== ArgumentType.COMPILE_TIME_EXPRESSION) {
-		return undefined;
-	}
-
-	if (argument.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
-		const leftConst = resolveValueOperand(argument.left, context);
-		const rightConst = resolveValueOperand(argument.right, context);
-
-		if (leftConst === undefined || rightConst === undefined) {
-			return undefined;
-		}
-
-		if (argument.operator === '/' && rightConst.value === 0) {
-			return undefined;
-		}
-
-		return evaluateResolvedValueExpression(leftConst, rightConst, argument.operator);
-	}
-
-	return resolveValueOperand(argument, context);
 }
 
 function resolveMemoryReferenceArgument(

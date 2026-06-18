@@ -5,10 +5,10 @@ import type {
 	StackAnalysisLineFacts,
 } from '@8f4e/language-spec';
 import { ArgumentType, createFunctionId, ErrorCode } from '@8f4e/language-spec';
-import { analyzeInstruction } from '@8f4e/stack-analyzer/testing';
 import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext, {
 	analyzeAndCompileInstruction,
+	analyzeInstructionForCodegenTest,
 	seedTestMemoryDeclarations,
 } from '../testUtils';
 import call from './call';
@@ -30,7 +30,7 @@ function registerFunction(context: CompilationContext, ...targetFunctions: Funct
 }
 
 function analyzeAndCompileCall(line: CompilerASTLine, context: CompilationContext): StackAnalysisLineFacts {
-	const facts = analyzeInstruction(line, context);
+	const facts = analyzeInstructionForCodegenTest(line, context);
 	call(line, context, facts);
 	return facts;
 }
@@ -187,7 +187,7 @@ describe('call instruction compiler', () => {
 		} satisfies FunctionMetadata;
 		registerFunction(context, targetFunction);
 
-		analyzeInstruction(
+		analyzeInstructionForCodegenTest(
 			{
 				lineNumber: 1,
 				instruction: 'push',
@@ -195,7 +195,7 @@ describe('call instruction compiler', () => {
 			},
 			context
 		);
-		analyzeInstruction(
+		analyzeInstructionForCodegenTest(
 			{
 				lineNumber: 2,
 				instruction: 'push',
@@ -318,7 +318,7 @@ describe('call instruction compiler', () => {
 		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: false });
 
 		try {
-			analyzeInstruction(
+			analyzeInstructionForCodegenTest(
 				{
 					lineNumber: 1,
 					instruction: 'call',
@@ -353,7 +353,7 @@ describe('call instruction compiler', () => {
 		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
 		try {
-			analyzeInstruction(
+			analyzeInstructionForCodegenTest(
 				{
 					lineNumber: 1,
 					instruction: 'call',
