@@ -103,5 +103,5 @@ assembly in the compiler or the package that owns the phase.
 ## Related Items
 
 - **Related**: `docs/todos/292-refactor-error-systems-and-document-syntax-vs-compiler-error-boundaries.md`
-- **Related**: `docs/todos/458-decouple-module-execution-order-from-memory-layout.md`
+- **Related**: `docs/todos/archived/458-decouple-module-execution-order-from-memory-layout.md`
 - **Related**: PR #808, which introduced the constant resolver package and a local-to-compiler diagnostic adapter.

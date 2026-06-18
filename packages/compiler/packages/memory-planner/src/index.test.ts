@@ -137,6 +137,36 @@ describe('planProjectMemoryLayout', () => {
 		expect(plan.nextByteAddressByMemoryIndex[0]).toBe(24);
 	});
 
+	it('allocates modules alphabetically by id instead of source order', () => {
+		const plan = planProjectMemoryLayout({
+			prototypes: [],
+			modules: [
+				validatedModuleAst('zeta', 1, [
+					{
+						lineNumber: 2,
+						instruction: 'int',
+						arguments: [identifier('last')],
+					},
+				]),
+				validatedModuleAst('alpha', 10, [
+					{
+						lineNumber: 11,
+						instruction: 'int[]',
+						arguments: [identifier('first'), literal(2)],
+					},
+				]),
+			],
+			constantReferences: noConstantReferences(),
+			startingByteAddress: 4,
+		});
+
+		expect(plan.moduleList.map(module => module.id)).toEqual(['alpha', 'zeta']);
+		expect(plan.modules.alpha.byteAddress).toBe(4);
+		expect(plan.modules.alpha.memory.first.byteAddress).toBe(4);
+		expect(plan.modules.zeta.byteAddress).toBe(12);
+		expect(plan.modules.zeta.memory.last.byteAddress).toBe(12);
+	});
+
 	it('keeps module address cursors independent per memory region', () => {
 		const audioRegionLine: RegionLine = {
 			lineNumber: 10,
