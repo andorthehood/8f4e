@@ -14,7 +14,7 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "biome check --write packages/compiler/packages/memory-planner/src",
+				"command": "biome check --write packages/compiler/packages/memory-planner/src packages/compiler/packages/memory-planner/tests",
 				"cwd": "{workspaceRoot}"
 			}
 		},
