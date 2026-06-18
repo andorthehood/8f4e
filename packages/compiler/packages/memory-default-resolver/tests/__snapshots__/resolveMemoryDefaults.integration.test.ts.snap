@@ -1,0 +1,55 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolveMemoryDefaults integration > resolves project-level memory defaults from pass-shaped fixtures 1`] = `
+{
+  "memoryDefaultsByModuleId": {
+    "audio": {
+      "samples": {
+        "hasExplicitDefault": false,
+        "isInherited": false,
+        "value": {},
+      },
+    },
+    "main": {
+      "copiedCount": {
+        "hasExplicitDefault": true,
+        "isInherited": false,
+        "value": 6,
+      },
+      "gain": {
+        "hasExplicitDefault": true,
+        "isInherited": false,
+        "value": 1.75,
+      },
+      "inheritedCounter": {
+        "hasExplicitDefault": true,
+        "isInherited": true,
+        "value": 7,
+      },
+      "ptr": {
+        "hasExplicitDefault": true,
+        "isInherited": false,
+        "value": 8,
+      },
+      "values": {
+        "hasExplicitDefault": true,
+        "isInherited": false,
+        "value": {
+          "0": 1,
+          "1": 2,
+          "2": 3,
+        },
+      },
+    },
+  },
+  "pointerMetadataByModuleId": {
+    "audio": {},
+    "main": {
+      "ptr": {
+        "pointeeElementCount": 3,
+        "pointeeMemoryIndex": 0,
+      },
+    },
+  },
+}
+`;
