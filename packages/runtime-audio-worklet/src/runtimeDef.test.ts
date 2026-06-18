@@ -24,6 +24,60 @@ describe('storeAudioWorkletRuntimeValues', () => {
 });
 
 describe('AudioWorklet runtime config', () => {
+	function createMemoryPlan(
+		memories: Record<string, Record<string, { wordAlignedAddress: number }>>
+	): State['compiler']['memoryPlan'] {
+		const modules = Object.fromEntries(
+			Object.entries(memories).map(([moduleId, moduleMemory], moduleIndex) => {
+				const memory = Object.fromEntries(
+					Object.entries(moduleMemory).map(([memoryId, memoryData]) => [
+						memoryId,
+						{
+							id: memoryId,
+							numberOfElements: 1,
+							elementWordSize: 4,
+							type: 'int',
+							memoryIndex: 0,
+							byteAddress: memoryData.wordAlignedAddress * 4,
+							elementByteLength: 4,
+							wordAlignedSize: 1,
+							wordAlignedByteLength: 4,
+							wordAlignedAddress: memoryData.wordAlignedAddress,
+							endByteAddress: memoryData.wordAlignedAddress * 4,
+							endAddressSafeByteLength: 4,
+							lineNumber: 1,
+							isInteger: true,
+							pointerDepth: 0,
+							isUnsigned: false,
+						},
+					])
+				);
+				return [
+					moduleId,
+					{
+						id: moduleId,
+						lineNumber: 1,
+						memoryIndex: 0,
+						byteAddress: moduleIndex * 4,
+						wordAlignedSize: Object.keys(memory).length,
+						wordAlignedByteLength: Object.keys(memory).length * 4,
+						endByteAddress: moduleIndex * 4,
+						endAddressSafeByteLength: 4,
+						memory,
+						declarations: Object.values(memory),
+						declarationSources: [],
+					},
+				];
+			})
+		);
+
+		return {
+			modules,
+			moduleList: Object.values(modules),
+			nextByteAddressByMemoryIndex: {},
+		};
+	}
+
 	function createState(): State {
 		return {
 			editorConfig: {
@@ -34,18 +88,10 @@ describe('AudioWorklet runtime config', () => {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					audiooutL: {
-						memory: {
-							buffer: { wordAlignedAddress: 8 },
-						},
-					},
-					audiooutR: {
-						memory: {
-							buffer: { wordAlignedAddress: 24 },
-						},
-					},
-				},
+				memoryPlan: createMemoryPlan({
+					audiooutL: { buffer: { wordAlignedAddress: 8 } },
+					audiooutR: { buffer: { wordAlignedAddress: 24 } },
+				}),
 			},
 		} as State;
 	}

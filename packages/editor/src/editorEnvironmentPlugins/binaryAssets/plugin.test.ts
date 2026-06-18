@@ -17,6 +17,46 @@ vi.mock('./loadBinaryAssetIntoMemory', () => ({
 const fetchBinaryAssetsMock = vi.mocked(fetchBinaryAssets);
 const loadBinaryAssetIntoMemoryMock = vi.mocked(loadBinaryAssetIntoMemory);
 
+function createMemoryPlan(byteAddress: number): State['compiler']['memoryPlan'] {
+	const buffer = {
+		id: 'buffer',
+		numberOfElements: 1,
+		elementWordSize: 4,
+		type: 'int',
+		memoryIndex: 0,
+		byteAddress,
+		elementByteLength: 4,
+		wordAlignedSize: 4,
+		wordAlignedByteLength: 16,
+		wordAlignedAddress: byteAddress / 4,
+		endByteAddress: byteAddress,
+		endAddressSafeByteLength: 4,
+		lineNumber: 1,
+		isInteger: true,
+		pointerDepth: 0,
+		isUnsigned: false,
+	};
+	const samples = {
+		id: 'samples',
+		lineNumber: 1,
+		memoryIndex: 0,
+		byteAddress,
+		wordAlignedSize: buffer.wordAlignedSize,
+		wordAlignedByteLength: buffer.wordAlignedByteLength,
+		endByteAddress: byteAddress,
+		endAddressSafeByteLength: 4,
+		memory: { buffer },
+		declarations: [buffer],
+		declarationSources: [],
+	};
+
+	return {
+		modules: { samples },
+		moduleList: [samples],
+		nextByteAddressByMemoryIndex: {},
+	};
+}
+
 function createState({
 	url = 'https://example.com/amen.pcm',
 	byteAddress = 16,
@@ -37,16 +77,7 @@ function createState({
 			},
 		},
 		compiler: {
-			compiledModules: {
-				samples: {
-					memory: {
-						buffer: {
-							byteAddress,
-							wordAlignedSize: 4,
-						},
-					},
-				},
-			},
+			memoryPlan: createMemoryPlan(byteAddress),
 		},
 		binaryAssets: [],
 	} as unknown as State;
@@ -142,7 +173,7 @@ describe('binary assets plugin', () => {
 		expect(store.getState().binaryAssets).toEqual([]);
 	});
 
-	it('reloads assets when compiled modules change after a project load with reused asset ids', async () => {
+	it('reloads assets when memory plan changes after a project load with reused asset ids', async () => {
 		fetchBinaryAssetsMock.mockImplementation(async urls =>
 			urls.map(url => ({
 				url,
@@ -173,16 +204,7 @@ describe('binary assets plugin', () => {
 		} as State['editorConfig']['bin']);
 		await flushPromises();
 
-		store.set('compiler.compiledModules', {
-			samples: {
-				memory: {
-					buffer: {
-						byteAddress: 16,
-						wordAlignedSize: 4,
-					},
-				},
-			},
-		} as unknown as State['compiler']['compiledModules']);
+		store.set('compiler.memoryPlan', createMemoryPlan(16));
 		await flushPromises();
 
 		expect(loadBinaryAssetIntoMemoryMock).toHaveBeenLastCalledWith(
