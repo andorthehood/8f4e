@@ -15,7 +15,7 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "biome check --write packages/compiler/packages/semantic-reference-resolver/src",
+				"command": "biome check --write packages/compiler/packages/semantic-reference-resolver/src packages/compiler/packages/semantic-reference-resolver/tests",
 				"cwd": "{workspaceRoot}"
 			}
 		},

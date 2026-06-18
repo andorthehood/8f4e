@@ -14,7 +14,7 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "biome check --write packages/compiler/packages/stack-analyzer/src",
+				"command": "biome check --write packages/compiler/packages/stack-analyzer/src packages/compiler/packages/stack-analyzer/tests",
 				"cwd": "{workspaceRoot}"
 			}
 		},
