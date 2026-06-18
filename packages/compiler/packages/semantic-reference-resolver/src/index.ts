@@ -1,6 +1,8 @@
 import type {
 	CompilerASTLine,
 	ConstantResolutionBlockFacts,
+	ConstantsAST,
+	FunctionAST,
 	FunctionCompilationContext,
 	FunctionMetadata,
 	FunctionRegistry,
@@ -12,8 +14,10 @@ import type {
 	MemoryReferenceResolutionBlockFacts,
 	MemoryReferenceResolutionLineFacts,
 	MemoryReferenceResolutionReport,
+	ModuleAST,
 	ModuleCompilationContext,
 	Namespaces,
+	PrototypeAST,
 	ResolvedMapLine,
 	SemanticReferenceLine,
 	SemanticReferenceLineFacts,
@@ -41,15 +45,25 @@ import resolveLineReferences from './resolveLineReferences';
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
 
-export interface SemanticReferenceResolverProjectAST {
-	prototypes: readonly ValidatedPrototypeAST[];
-	modules: readonly ValidatedModuleAST[];
-	constants: readonly ValidatedConstantsAST[];
-	functions: readonly ValidatedFunctionAST[];
+export interface SemanticReferenceResolverProjectAST<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TConstants extends ConstantsAST = ValidatedConstantsAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+> {
+	prototypes: readonly TPrototype[];
+	modules: readonly TModule[];
+	constants: readonly TConstants[];
+	functions: readonly TFunction[];
 }
 
-export interface ResolveSemanticReferencesInput {
-	ast: SemanticReferenceResolverProjectAST;
+export interface ResolveSemanticReferencesInput<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TConstants extends ConstantsAST = ValidatedConstantsAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+> {
+	ast: SemanticReferenceResolverProjectAST<TPrototype, TModule, TConstants, TFunction>;
 	namespaces: Namespaces;
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
@@ -64,7 +78,7 @@ export interface ResolveSemanticReferencesInput {
 	functions: FunctionRegistry;
 	functionTypeRegistry: FunctionTypeRegistry;
 	memoryRegions: readonly string[];
-	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>;
+	prototypeShapes: Readonly<Record<string, TPrototype>>;
 }
 
 export interface ModuleSemanticReferences {
@@ -133,7 +147,7 @@ function applyResolvedArgumentFacts<TLine extends CompilerASTLine>(
 	return applyMemoryReferenceFacts(applyConstantFacts(line, constantFacts), memoryReferenceFacts);
 }
 
-function collectPrototypeShapeIds(ast: ValidatedModuleAST): string[] {
+function collectPrototypeShapeIds(ast: ModuleAST): string[] {
 	const prototypeShapeIds: string[] = [];
 	for (const line of ast.lines) {
 		if (line.instruction !== 'shape') {
@@ -345,7 +359,10 @@ function applyResolvedLineEffect(
 	}
 }
 
-function createModuleContext(input: ResolveSemanticReferencesInput, ast: ValidatedModuleAST): ModuleCompilationContext {
+function createModuleContext(
+	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
+	ast: ModuleAST
+): ModuleCompilationContext {
 	const plannedModule = input.memoryPlan.modules[ast.id];
 	return createCompilationContext<ModuleCompilationContext>({
 		namespace: {
@@ -376,7 +393,10 @@ function createModuleContext(input: ResolveSemanticReferencesInput, ast: Validat
 	});
 }
 
-function getFunctionMetadata(input: ResolveSemanticReferencesInput, ast: ValidatedFunctionAST): FunctionMetadata {
+function getFunctionMetadata(
+	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
+	ast: FunctionAST
+): FunctionMetadata {
 	const signatureMetadata = getEffectiveFunctionMetadata(ast, input.prototypeShapes);
 	const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
 	const functionMetadata = input.functions.byId[functionId];
@@ -391,8 +411,8 @@ function getFunctionMetadata(input: ResolveSemanticReferencesInput, ast: Validat
 }
 
 function createFunctionContext(
-	input: ResolveSemanticReferencesInput,
-	ast: ValidatedFunctionAST,
+	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
+	ast: FunctionAST,
 	functionMetadata: FunctionMetadata
 ): FunctionCompilationContext {
 	return createCompilationContext<FunctionCompilationContext>({
@@ -450,8 +470,8 @@ function resolveLineFacts<TContext extends ModuleCompilationContext | FunctionCo
 }
 
 function resolveModuleReferences(
-	input: ResolveSemanticReferencesInput,
-	ast: ValidatedModuleAST,
+	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
+	ast: ModuleAST,
 	astIndex: number
 ): [string, ModuleSemanticReferences] {
 	const lineFacts = resolveLineFacts(
@@ -464,8 +484,8 @@ function resolveModuleReferences(
 }
 
 function resolveFunctionReferences(
-	input: ResolveSemanticReferencesInput,
-	ast: ValidatedFunctionAST,
+	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
+	ast: FunctionAST,
 	astIndex: number
 ): [string, FunctionSemanticReferences] {
 	const functionMetadata = getFunctionMetadata(input, ast);
@@ -484,7 +504,12 @@ function resolveFunctionReferences(
  * @param input - Project AST and semantic facts produced by earlier compiler passes.
  * @returns Semantic reference facts keyed back to the original project AST.
  */
-export function resolveSemanticReferences(input: ResolveSemanticReferencesInput): ResolveSemanticReferencesResult {
+export function resolveSemanticReferences<
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TConstants extends ConstantsAST = ValidatedConstantsAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+>(input: ResolveSemanticReferencesInput<TPrototype, TModule, TConstants, TFunction>): ResolveSemanticReferencesResult {
 	return {
 		references: {
 			modules: Object.fromEntries(input.ast.modules.map((ast, index) => resolveModuleReferences(input, ast, index))),
