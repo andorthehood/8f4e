@@ -1,0 +1,150 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolveSemanticReferences integration > resolves project-level semantic references from pass-shaped fixtures 1`] = `
+{
+  "references": {
+    "functions": {
+      "increment__int": {
+        "functionId": "increment__int",
+        "lineFacts": [
+          undefined,
+          undefined,
+          undefined,
+          {
+            "resolvedTarget": {
+              "kind": "local",
+              "localName": "amount",
+            },
+          },
+          undefined,
+          {
+            "resolvedTarget": {
+              "kind": "local",
+              "localName": "temp",
+            },
+          },
+          undefined,
+        ],
+      },
+    },
+    "modules": {
+      "main": {
+        "lineFacts": [
+          undefined,
+          undefined,
+          {
+            "resolvedTarget": {
+              "kind": "memory",
+              "memoryItem": {
+                "byteAddress": 4,
+                "elementByteLength": 4,
+                "elementWordSize": 4,
+                "endAddressSafeByteLength": 4,
+                "endByteAddress": 4,
+                "id": "value",
+                "isInteger": true,
+                "isUnsigned": false,
+                "lineNumber": 2,
+                "memoryIndex": 0,
+                "numberOfElements": 1,
+                "pointerDepth": 0,
+                "type": "int",
+                "wordAlignedAddress": 1,
+                "wordAlignedByteLength": 4,
+                "wordAlignedSize": 1,
+              },
+            },
+          },
+          {
+            "arguments": [
+              {
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "value",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 4,
+                    "source": "memory-start",
+                  },
+                },
+                "isInteger": true,
+                "type": "literal",
+                "value": 4,
+              },
+            ],
+          },
+          {
+            "inlineArgumentPushes": [
+              {
+                "arguments": [
+                  {
+                    "referenceKind": "plain",
+                    "scope": "local",
+                    "type": "identifier",
+                    "value": "value",
+                  },
+                ],
+                "instruction": "push",
+                "lineNumber": 5,
+                "resolvedTarget": {
+                  "kind": "memory",
+                  "memoryItem": {
+                    "byteAddress": 4,
+                    "elementByteLength": 4,
+                    "elementWordSize": 4,
+                    "endAddressSafeByteLength": 4,
+                    "endByteAddress": 4,
+                    "id": "value",
+                    "isInteger": true,
+                    "isUnsigned": false,
+                    "lineNumber": 2,
+                    "memoryIndex": 0,
+                    "numberOfElements": 1,
+                    "pointerDepth": 0,
+                    "type": "int",
+                    "wordAlignedAddress": 1,
+                    "wordAlignedByteLength": 4,
+                    "wordAlignedSize": 1,
+                  },
+                },
+              },
+            ],
+          },
+          {
+            "shapeExpansions": [
+              {
+                "pointerType": "int*",
+                "pushLine": {
+                  "arguments": [
+                    {
+                      "address": {
+                        "memoryIndex": 0,
+                        "safeRange": {
+                          "byteAddress": 4,
+                          "memoryId": "value",
+                          "memoryIndex": 0,
+                          "moduleId": "main",
+                          "safeByteLength": 4,
+                          "source": "memory-start",
+                        },
+                      },
+                      "isInteger": true,
+                      "type": "literal",
+                      "value": 4,
+                    },
+                  ],
+                  "instruction": "push",
+                  "lineNumber": 6,
+                },
+              },
+            ],
+          },
+          undefined,
+        ],
+      },
+    },
+  },
+}
+`;

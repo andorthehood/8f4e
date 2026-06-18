@@ -14,7 +14,7 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "biome check --write packages/compiler/packages/memory-default-resolver/src",
+				"command": "biome check --write packages/compiler/packages/memory-default-resolver/src packages/compiler/packages/memory-default-resolver/tests",
 				"cwd": "{workspaceRoot}"
 			}
 		},
