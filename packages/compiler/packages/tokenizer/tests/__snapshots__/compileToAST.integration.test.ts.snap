@@ -1,0 +1,611 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`compileToAST integration > tokenizes source blocks into validated ASTs from source-shaped fixtures 1`] = `
+{
+  "constants": {
+    "constantsLine": {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "sizes",
+        },
+      ],
+      "instruction": "constants",
+      "lineNumber": 0,
+    },
+    "id": "sizes",
+    "lines": [
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "sizes",
+          },
+        ],
+        "instruction": "constants",
+        "lineNumber": 0,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "TABLE_SIZE",
+          },
+          {
+            "isInteger": true,
+            "type": "literal",
+            "value": 8,
+          },
+        ],
+        "instruction": "const",
+        "lineNumber": 1,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "START",
+          },
+          {
+            "isEndAddress": false,
+            "referenceKind": "intermodular-reference",
+            "scope": "intermodule",
+            "targetMemoryId": "buffer",
+            "targetModuleId": "synth",
+            "type": "identifier",
+            "value": "&synth:buffer",
+          },
+        ],
+        "instruction": "const",
+        "lineNumber": 2,
+      },
+      {
+        "arguments": [],
+        "instruction": "constantsEnd",
+        "lineNumber": 3,
+      },
+    ],
+    "type": "constants",
+  },
+  "function": {
+    "exportLine": {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "mixExport",
+        },
+      ],
+      "instruction": "#export",
+      "isBlockPrologue": true,
+      "lineNumber": 2,
+    },
+    "functionEndLine": {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "int",
+        },
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "float",
+        },
+      ],
+      "instruction": "functionEnd",
+      "lineNumber": 10,
+    },
+    "functionLine": {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "mix",
+        },
+      ],
+      "instruction": "function",
+      "lineNumber": 1,
+    },
+    "lines": [
+      {
+        "arguments": [
+          {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "SCALE",
+          },
+          {
+            "isInteger": true,
+            "type": "literal",
+            "value": 2,
+          },
+        ],
+        "instruction": "const",
+        "lineNumber": 0,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "mix",
+          },
+        ],
+        "instruction": "function",
+        "lineNumber": 1,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "mixExport",
+          },
+        ],
+        "instruction": "#export",
+        "isBlockPrologue": true,
+        "lineNumber": 2,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "int",
+          },
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "left",
+          },
+        ],
+        "instruction": "param",
+        "lineNumber": 3,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "float",
+          },
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "right",
+          },
+        ],
+        "instruction": "param",
+        "lineNumber": 4,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "float",
+          },
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "output",
+          },
+        ],
+        "instruction": "local",
+        "lineNumber": 5,
+      },
+      {
+        "arguments": [],
+        "blockBlock": {
+          "matchingBlockEndIndex": 8,
+          "resultTypes": [
+            "float",
+          ],
+        },
+        "instruction": "block",
+        "lineNumber": 6,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "right",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 7,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "float",
+          },
+        ],
+        "blockEndBlock": {
+          "matchingBlockIndex": 6,
+          "resultTypes": [
+            "float",
+          ],
+        },
+        "instruction": "blockEnd",
+        "lineNumber": 8,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "left",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 9,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "int",
+          },
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "float",
+          },
+        ],
+        "instruction": "functionEnd",
+        "lineNumber": 10,
+      },
+    ],
+    "name": "mix",
+    "type": "function",
+  },
+  "module": {
+    "id": "synth",
+    "lines": [
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "synth",
+          },
+        ],
+        "instruction": "module",
+        "lineNumber": 0,
+      },
+      {
+        "arguments": [],
+        "instruction": "#skipExecution",
+        "isBlockPrologue": true,
+        "lineNumber": 1,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "fastMemory",
+          },
+        ],
+        "instruction": "#region",
+        "isBlockPrologue": true,
+        "lineNumber": 2,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "phase",
+          },
+          {
+            "isInteger": false,
+            "type": "literal",
+            "value": 0.5,
+          },
+        ],
+        "instruction": "float",
+        "lineNumber": 3,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "buffer",
+          },
+          {
+            "isInteger": true,
+            "type": "literal",
+            "value": 4,
+          },
+          {
+            "isHex": true,
+            "isInteger": true,
+            "type": "literal",
+            "value": 10,
+          },
+        ],
+        "instruction": "int[]",
+        "lineNumber": 4,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "readHead",
+          },
+          {
+            "isEndAddress": false,
+            "referenceKind": "intermodular-reference",
+            "scope": "intermodule",
+            "targetMemoryId": "samples",
+            "targetModuleId": "audio",
+            "type": "identifier",
+            "value": "&audio:samples",
+          },
+        ],
+        "instruction": "float*",
+        "lineNumber": 7,
+      },
+      {
+        "arguments": [
+          {
+            "type": "string_literal",
+            "value": "ready",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 8,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "element-count",
+            "scope": "local",
+            "targetMemoryId": "buffer",
+            "type": "identifier",
+            "value": "count(buffer)",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 9,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "intermodular-element-word-size",
+            "scope": "intermodule",
+            "targetMemoryId": "samples",
+            "targetModuleId": "audio",
+            "type": "identifier",
+            "value": "sizeof(audio:samples)",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 10,
+      },
+      {
+        "arguments": [
+          {
+            "isEndAddress": false,
+            "referenceKind": "memory-reference",
+            "scope": "local",
+            "targetMemoryId": "buffer",
+            "type": "identifier",
+            "value": "&buffer",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 11,
+      },
+      {
+        "arguments": [
+          {
+            "isEndAddress": true,
+            "referenceKind": "memory-reference",
+            "scope": "local",
+            "targetMemoryId": "buffer",
+            "type": "identifier",
+            "value": "buffer&",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 12,
+      },
+      {
+        "arguments": [
+          {
+            "dereferenceDepth": 1,
+            "referenceKind": "memory-pointer",
+            "scope": "local",
+            "targetMemoryId": "readHead",
+            "type": "identifier",
+            "value": "*readHead",
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 13,
+      },
+      {
+        "arguments": [],
+        "ifBlock": {
+          "hasElse": true,
+          "matchingIfEndIndex": 16,
+          "resultTypes": [
+            "int",
+          ],
+        },
+        "instruction": "if",
+        "lineNumber": 14,
+      },
+      {
+        "arguments": [
+          {
+            "isInteger": true,
+            "type": "literal",
+            "value": 1,
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 15,
+      },
+      {
+        "arguments": [],
+        "instruction": "else",
+        "lineNumber": 16,
+      },
+      {
+        "arguments": [
+          {
+            "isInteger": true,
+            "type": "literal",
+            "value": 0,
+          },
+        ],
+        "instruction": "push",
+        "lineNumber": 17,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "int",
+          },
+        ],
+        "ifEndBlock": {
+          "matchingIfIndex": 12,
+          "resultTypes": [
+            "int",
+          ],
+        },
+        "instruction": "ifEnd",
+        "lineNumber": 18,
+      },
+      {
+        "arguments": [],
+        "instruction": "moduleEnd",
+        "lineNumber": 19,
+      },
+    ],
+    "moduleLine": {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "synth",
+        },
+      ],
+      "instruction": "module",
+      "lineNumber": 0,
+    },
+    "type": "module",
+  },
+  "prototype": {
+    "id": "state",
+    "lines": [
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "state",
+          },
+        ],
+        "instruction": "prototype",
+        "lineNumber": 0,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "phase",
+          },
+        ],
+        "instruction": "float",
+        "lineNumber": 1,
+      },
+      {
+        "arguments": [
+          {
+            "referenceKind": "plain",
+            "scope": "local",
+            "type": "identifier",
+            "value": "history",
+          },
+          {
+            "referenceKind": "constant",
+            "scope": "local",
+            "type": "identifier",
+            "value": "TABLE_SIZE",
+          },
+        ],
+        "instruction": "int[]",
+        "lineNumber": 2,
+      },
+      {
+        "arguments": [],
+        "instruction": "prototypeEnd",
+        "lineNumber": 4,
+      },
+    ],
+    "prototypeLine": {
+      "arguments": [
+        {
+          "referenceKind": "plain",
+          "scope": "local",
+          "type": "identifier",
+          "value": "state",
+        },
+      ],
+      "instruction": "prototype",
+      "lineNumber": 0,
+    },
+    "type": "prototype",
+  },
+}
+`;
