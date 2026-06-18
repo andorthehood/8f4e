@@ -1,0 +1,197 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolveMemoryReferences integration > resolves project-level memory references from pass-shaped fixtures 1`] = `
+{
+  "references": {
+    "constants": [
+      {
+        "lineFacts": [
+          undefined,
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "int",
+              },
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "AUDIO_SAMPLE_COUNT",
+              },
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 6,
+              },
+            ],
+          },
+          undefined,
+        ],
+      },
+    ],
+    "declarationSourcesByModuleId": {
+      "audio": {
+        "lineFacts": [
+          undefined,
+        ],
+      },
+      "main": {
+        "lineFacts": [
+          undefined,
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "ptr",
+              },
+              {
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "samples",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isInteger": true,
+                "type": "literal",
+                "value": 4,
+              },
+            ],
+          },
+        ],
+      },
+    },
+    "functions": [
+      {
+        "lineFacts": [
+          undefined,
+          undefined,
+          {
+            "arguments": [
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 4,
+              },
+            ],
+          },
+          undefined,
+        ],
+      },
+    ],
+    "modules": [
+      {
+        "lineFacts": [
+          undefined,
+          undefined,
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "ptr",
+              },
+              {
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "samples",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isInteger": true,
+                "type": "literal",
+                "value": 4,
+              },
+            ],
+          },
+          {
+            "arguments": [
+              {
+                "address": {
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 8,
+                    "memoryId": "samples",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 12,
+                    "source": "memory-start",
+                  },
+                },
+                "isInteger": true,
+                "type": "literal",
+                "value": 8,
+              },
+            ],
+          },
+          {
+            "arguments": [
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 4,
+              },
+            ],
+          },
+          {
+            "arguments": [
+              {
+                "address": {
+                  "memoryIndex": 1,
+                  "memoryRegionName": "audio",
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "samples",
+                    "memoryIndex": 1,
+                    "memoryRegionName": "audio",
+                    "moduleId": "audio",
+                    "safeByteLength": 12,
+                    "source": "memory-start",
+                  },
+                },
+                "isInteger": true,
+                "type": "literal",
+                "value": 4,
+              },
+            ],
+          },
+          undefined,
+        ],
+      },
+      {
+        "lineFacts": [
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+        ],
+      },
+    ],
+    "pointerMetadataByModuleId": {
+      "audio": {},
+      "main": {
+        "ptr": {
+          "pointeeElementCount": 4,
+          "pointeeMemoryIndex": 0,
+        },
+      },
+    },
+    "prototypes": [],
+  },
+}
+`;
