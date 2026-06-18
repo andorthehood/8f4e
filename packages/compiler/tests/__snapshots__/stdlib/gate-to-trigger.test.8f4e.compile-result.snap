@@ -899,7 +899,7 @@
     "gateToTriggerFloatAssertions": {
       "memory": {
         "previousFloat": {
-          "byteAddress": 8,
+          "byteAddress": 4,
           "default": 0,
           "elementWordSize": 4,
           "id": "previousFloat",
@@ -909,7 +909,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 2,
+          "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
         },
       },
@@ -917,7 +917,7 @@
     "gateToTriggerIntAssertions": {
       "memory": {
         "previousInt": {
-          "byteAddress": 4,
+          "byteAddress": 8,
           "default": 0,
           "elementWordSize": 4,
           "id": "previousInt",
@@ -927,7 +927,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
       },

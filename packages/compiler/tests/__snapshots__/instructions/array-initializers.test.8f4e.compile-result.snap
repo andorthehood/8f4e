@@ -1344,7 +1344,7 @@
     "expressionInitializerAssertions": {
       "memory": {
         "notes": {
-          "byteAddress": 44,
+          "byteAddress": 4,
           "default": {
             "0": 48,
             "1": 50,
@@ -1359,7 +1359,7 @@
           "numberOfElements": 4,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 11,
+          "wordAlignedAddress": 1,
           "wordAlignedSize": 4,
         },
       },
@@ -1367,7 +1367,7 @@
     "hexadecimalInitializerAssertions": {
       "memory": {
         "foo": {
-          "byteAddress": 60,
+          "byteAddress": 20,
           "default": {
             "0": 1,
             "1": 2,
@@ -1381,7 +1381,7 @@
           "numberOfElements": 2,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 15,
+          "wordAlignedAddress": 5,
           "wordAlignedSize": 2,
         },
       },
@@ -1389,7 +1389,7 @@
     "intArrayInitializerAssertions": {
       "memory": {
         "notes": {
-          "byteAddress": 4,
+          "byteAddress": 28,
           "default": {
             "0": 48,
             "1": 50,
@@ -1404,7 +1404,7 @@
           "numberOfElements": 10,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 7,
           "wordAlignedSize": 10,
         },
       },

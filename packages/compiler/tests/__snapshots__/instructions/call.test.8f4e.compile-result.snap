@@ -1484,7 +1484,7 @@
     "callImpureFunctionWithExplicitLoadAndStore": {
       "memory": {
         "gain": {
-          "byteAddress": 144,
+          "byteAddress": 12,
           "default": 0.5,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1495,11 +1495,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 36,
+          "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
         },
         "input": {
-          "byteAddress": 136,
+          "byteAddress": 4,
           "default": 3.5,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1510,11 +1510,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 34,
+          "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
         },
         "output": {
-          "byteAddress": 140,
+          "byteAddress": 8,
           "default": 0,
           "elementWordSize": 4,
           "id": "output",
@@ -1524,7 +1524,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 35,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
       },
@@ -1538,7 +1538,7 @@
     "callPointerParamsWithLocalDereference": {
       "memory": {
         "delta": {
-          "byteAddress": 132,
+          "byteAddress": 144,
           "default": 0.5,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1549,11 +1549,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 33,
+          "wordAlignedAddress": 36,
           "wordAlignedSize": 1,
         },
         "lut": {
-          "byteAddress": 4,
+          "byteAddress": 16,
           "default": {},
           "elementWordSize": 4,
           "id": "lut",
@@ -1563,7 +1563,7 @@
           "numberOfElements": 32,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 4,
           "wordAlignedSize": 32,
         },
       },

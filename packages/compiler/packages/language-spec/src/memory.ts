@@ -220,7 +220,7 @@ export interface PlannedMemoryModule extends MemoryRegionIdentity {
 export interface MemoryLayoutPlan {
 	/** Module lookup by id, materialized by the planner from the ordered module list below. */
 	modules: Record<string, PlannedMemoryModule>;
-	/** Modules in planned/source order; entries are the same objects exposed through `modules`. */
+	/** Modules in alphabetical layout order by id; entries are the same objects exposed through `modules`. */
 	moduleList: readonly PlannedMemoryModule[];
 	nextByteAddressByMemoryIndex: Record<number, number>;
 }
