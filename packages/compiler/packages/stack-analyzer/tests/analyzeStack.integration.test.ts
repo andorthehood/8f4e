@@ -1,5 +1,8 @@
+import type { FunctionAST, ModuleAST, PrototypeAST } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { type AnalyzeStackProjectInput, analyzeStack } from '../src';
+
+type StackAnalyzerIntegrationInput = AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>;
 
 describe('analyzeStack integration', () => {
 	it('analyzes a project-level module and function report from pass-shaped fixtures', () => {
@@ -328,7 +331,7 @@ describe('analyzeStack integration', () => {
 				functionTypeRegistry,
 				memoryRegions,
 				prototypeShapes,
-			} as unknown as AnalyzeStackProjectInput)
+			} satisfies StackAnalyzerIntegrationInput)
 		).toMatchSnapshot();
 	});
 });
