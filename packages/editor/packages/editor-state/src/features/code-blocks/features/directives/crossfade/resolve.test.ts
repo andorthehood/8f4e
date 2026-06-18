@@ -27,35 +27,49 @@ describe('crossfade directive widget resolution', () => {
 				hGrid: 20,
 			},
 			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							dry: {
-								id: 'dry',
-								wordAlignedAddress: 0,
-								byteAddress: 0,
-								numberOfElements: 1,
-								elementWordSize: 1,
-								type: MemoryTypes.float,
-								wordAlignedSize: 1,
-								default: 0,
-								isInteger: false,
-								isFloat64: false,
+				memoryPlan: {
+					modules: {
+						'test-block': {
+							id: 'test-block',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								dry: {
+									id: 'dry',
+									wordAlignedAddress: 0,
+									byteAddress: 0,
+									numberOfElements: 1,
+									elementWordSize: 1,
+									type: MemoryTypes.float,
+									wordAlignedSize: 1,
+									default: 0,
+									isInteger: false,
+									isFloat64: false,
+								},
+								wet: {
+									id: 'wet',
+									wordAlignedAddress: 1,
+									byteAddress: 4,
+									numberOfElements: 1,
+									elementWordSize: 1,
+									type: MemoryTypes.float,
+									wordAlignedSize: 1,
+									default: 0,
+									isInteger: false,
+									isFloat64: false,
+								},
 							},
-							wet: {
-								id: 'wet',
-								wordAlignedAddress: 1,
-								byteAddress: 4,
-								numberOfElements: 1,
-								elementWordSize: 1,
-								type: MemoryTypes.float,
-								wordAlignedSize: 1,
-								default: 0,
-								isInteger: false,
-								isFloat64: false,
-							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 		});
@@ -84,7 +98,7 @@ describe('crossfade directive widget resolution', () => {
 	});
 
 	it('does not add a crossfade when the bound memory is not float32 scalar', () => {
-		mockState.compiler.compiledModules['test-block'].memory.wet.isInteger = true;
+		mockState.compiler.memoryPlan.modules['test-block']!.memory.wet.isInteger = true;
 
 		runDirectiveResolution();
 

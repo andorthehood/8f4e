@@ -128,14 +128,10 @@ export async function runCaptureCommand(args: string[]): Promise<void> {
 		},
 	});
 
-	if (!compileResult.compiledWasm || !compileResult.compiledModules) {
-		throw new Error('Unable to capture project: compilation did not produce runnable output');
-	}
-
 	const runner = await createRuntimeRunner({
 		compiledWasmBase64: compileResult.compiledWasm,
-		compiledModules: compileResult.compiledModules,
-		requiredMemoryBytes: compileResult.requiredMemoryBytes ?? 0,
+		memoryPlan: compileResult.memoryPlan,
+		requiredMemoryBytes: compileResult.requiredMemoryBytes,
 	});
 
 	runner.initialize();

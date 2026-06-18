@@ -37,6 +37,9 @@ describe('compileProject (example projects)', () => {
 		const snapshotPayload = {
 			compilerOptions: result.compilerOptions,
 			compiledModules: result.compiledModules,
+			memoryPlan: result.memoryPlan,
+			memoryDefaultsByModuleId: result.memoryDefaultsByModuleId,
+			pointerMetadataByModuleId: result.pointerMetadataByModuleId,
 			compiledWasm: result.compiledWasm,
 			requiredMemoryBytes: result.requiredMemoryBytes,
 		};

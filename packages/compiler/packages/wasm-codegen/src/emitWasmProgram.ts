@@ -60,10 +60,8 @@ export type WasmProgramInput = {
 };
 
 /** Calculates required byte size for each WebAssembly memory index. */
-function getRequiredMemoryBytesByIndex(
-	items: Pick<CompiledModule, 'memoryIndex' | 'byteAddress' | 'wordAlignedSize'>[]
-) {
-	return items.reduce<Record<number, number>>((result, item) => {
+function getRequiredMemoryBytesByIndex(memoryPlan: MemoryLayoutPlan) {
+	return memoryPlan.moduleList.reduce<Record<number, number>>((result, item) => {
 		const memoryIndex = item.memoryIndex;
 		const requiredBytes = item.byteAddress + item.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY;
 		result[memoryIndex] = Math.max(result[memoryIndex] ?? 0, requiredBytes);
@@ -117,7 +115,7 @@ export function emitWasmProgram(
 		pointerMetadataByModuleId,
 		cache,
 	} = program;
-	const requiredMemoryBytesByIndexFromModules = getRequiredMemoryBytesByIndex(compiledModules);
+	const requiredMemoryBytesByIndexFromModules = getRequiredMemoryBytesByIndex(memoryPlan);
 	const requiredMemoryBytes = requiredMemoryBytesByIndexFromModules[0] ?? 0;
 	const requiredMemoryBytesByIndex: Record<number, number> = {
 		...requiredMemoryBytesByIndexFromModules,

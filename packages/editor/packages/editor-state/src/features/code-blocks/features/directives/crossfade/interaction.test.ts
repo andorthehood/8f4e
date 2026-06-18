@@ -26,17 +26,31 @@ describe('crossfade interaction', () => {
 				y: 0,
 			},
 			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							dry: {
-								wordAlignedAddress: 5,
+				memoryPlan: {
+					modules: {
+						'test-block': {
+							id: 'test-block',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								dry: {
+									wordAlignedAddress: 5,
+								},
+								wet: {
+									wordAlignedAddress: 6,
+								},
 							},
-							wet: {
-								wordAlignedAddress: 6,
-							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 			callbacks: {

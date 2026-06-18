@@ -2,7 +2,7 @@ import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
 import type { ValidatedAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature, FunctionValueType } from './functionTypes';
-import type { MemoryDefaults, MemoryLayoutPlan, MemoryPointerMetadataMap, PlannedMemoryDeclaration } from './memory';
+import type { MemoryDefaults, MemoryLayoutPlan, MemoryPointerMetadataMap } from './memory';
 import type { StackAnalysisResult } from './semantic';
 
 export type CompiledStackAnalysisLine = {
@@ -18,15 +18,6 @@ export interface CompiledModule {
 	cycleFunction: number[];
 	id: string;
 	executionEntryName?: string;
-	memoryIndex: number;
-	memoryRegionName?: string;
-	byteAddress: number;
-	wordAlignedAddress: number;
-	memory: Record<string, PlannedMemoryDeclaration>;
-	declarations: readonly PlannedMemoryDeclaration[];
-	memoryDefaults: MemoryDefaults;
-	pointerMetadata: MemoryPointerMetadataMap;
-	wordAlignedSize: number;
 	ast: ValidatedModuleAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;

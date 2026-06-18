@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
-import type { CompiledModule, PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { MemoryDefaults, PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/language-spec';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 
 export interface ConnectorMemoryDeclaration {
@@ -12,10 +12,10 @@ export interface ConnectorMemoryDeclaration {
 
 function getInheritedRowOffset(
 	memory: PlannedMemoryDeclaration,
-	compiledModule: CompiledModule,
+	memoryDefaults: MemoryDefaults,
 	inheritedRowOffsetByLineNumber: Map<number, number>
 ): number {
-	if (compiledModule.memoryDefaults[memory.id]!.isInherited !== true) {
+	if (memoryDefaults[memory.id]!.isInherited !== true) {
 		return 0;
 	}
 
@@ -25,19 +25,21 @@ function getInheritedRowOffset(
 }
 
 export function getConnectorMemoryDeclarations(
-	compiledModule: CompiledModule | undefined
+	plannedModule: PlannedMemoryModule | undefined,
+	memoryDefaults: MemoryDefaults | undefined
 ): ConnectorMemoryDeclaration[] {
-	if (!compiledModule) {
+	if (!plannedModule) {
 		return [];
 	}
 
 	const inheritedRowOffsetByLineNumber = new Map<number, number>();
-	return Object.values(compiledModule.memory)
+	const defaults = memoryDefaults!;
+	return Object.values(plannedModule.memory)
 		.map(memory => ({
 			memory,
 			position: {
 				lineNumber: memory.lineNumber,
-				rowOffset: getInheritedRowOffset(memory, compiledModule, inheritedRowOffsetByLineNumber),
+				rowOffset: getInheritedRowOffset(memory, defaults, inheritedRowOffsetByLineNumber),
 			},
 		}))
 		.sort((left, right) => {
