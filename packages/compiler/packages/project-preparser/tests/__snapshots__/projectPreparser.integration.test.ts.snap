@@ -1,0 +1,166 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`project-preparser integration > parses project source and prepares compiler input from source-shaped fixtures 1`] = `
+{
+  "compilerInput": {
+    "constants": [
+      {
+        "code": [
+          "constants shared",
+          "const int tableSize 16",
+          "constantsEnd",
+        ],
+        "projectBlockId": 8,
+      },
+    ],
+    "entries": {
+      "main": [
+        {
+          "code": [
+            "module main",
+            "shape state",
+            "int counter",
+            "moduleEnd",
+          ],
+          "projectBlockId": 26,
+        },
+      ],
+    },
+    "functions": [
+      {
+        "code": [
+          "function risingEdge",
+          "functionEnd int",
+        ],
+        "source": {
+          "includeId": "std/events/risingEdge",
+          "kind": "include",
+          "symbolName": "risingEdge",
+        },
+      },
+      {
+        "code": [
+          "function wrapPointer",
+          "functionEnd int*",
+        ],
+        "source": {
+          "includeId": "std/memory/wrapPointer",
+          "kind": "include",
+          "symbolName": "wrapPointer",
+        },
+      },
+      {
+        "code": [
+          "function wrapPointer",
+          "functionEnd float*",
+        ],
+        "source": {
+          "includeId": "std/memory/wrapPointer",
+          "kind": "include",
+          "symbolName": "wrapPointer",
+        },
+      },
+      {
+        "code": [
+          "function helper",
+          "functionEnd int",
+        ],
+        "projectBlockId": 12,
+      },
+    ],
+    "prototypes": [
+      {
+        "code": [
+          "prototype state",
+          "float phase",
+          "int[] buffer 8",
+          "prototypeEnd",
+        ],
+        "projectBlockId": 15,
+      },
+    ],
+  },
+  "project": {
+    "codeBlocks": [
+      {
+        "code": [
+          "includes",
+          "include std/events/risingEdge",
+          "include std/memory/wrapPointer",
+          "includesEnd",
+        ],
+        "id": 3,
+      },
+      {
+        "code": [
+          "constants shared",
+          "const int tableSize 16",
+          "constantsEnd",
+        ],
+        "id": 8,
+      },
+      {
+        "code": [
+          "function helper",
+          "functionEnd int",
+        ],
+        "id": 12,
+      },
+      {
+        "code": [
+          "prototype state",
+          "float phase",
+          "int[] buffer 8",
+          "prototypeEnd",
+        ],
+        "id": 15,
+      },
+      {
+        "code": [
+          "note",
+          "; @pos 2 3",
+          "Document-only project note.",
+          "noteEnd",
+        ],
+        "id": 20,
+      },
+      {
+        "code": [
+          "module main",
+          "shape state",
+          "int counter",
+          "moduleEnd",
+        ],
+        "entry": "main",
+        "id": 26,
+      },
+    ],
+    "groups": [
+      {
+        "codeBlocks": [
+          {
+            "code": [
+              "module grouped",
+              "int ignoredByCompilerInput",
+              "moduleEnd",
+            ],
+            "entry": "main",
+            "id": 31,
+          },
+          {
+            "code": [
+              "function groupedHelper",
+              "functionEnd int",
+            ],
+            "entry": "main",
+            "id": 34,
+          },
+        ],
+        "entry": "main",
+        "groups": [],
+        "name": "audio",
+      },
+    ],
+  },
+}
+`;
