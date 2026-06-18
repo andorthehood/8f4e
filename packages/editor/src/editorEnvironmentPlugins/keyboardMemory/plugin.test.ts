@@ -40,6 +40,51 @@ function createKeyboardEventLike(code: string, key: string, keyCode: number): Ke
 	return { code, key, keyCode } as KeyboardEvent;
 }
 
+function createMemoryPlan(memories: Record<string, { wordAlignedAddress: number }>): State['compiler']['memoryPlan'] {
+	const memory = Object.fromEntries(
+		Object.entries(memories).map(([memoryId, memoryData]) => [
+			memoryId,
+			{
+				id: memoryId,
+				numberOfElements: 1,
+				elementWordSize: 4,
+				type: 'int',
+				memoryIndex: 0,
+				byteAddress: memoryData.wordAlignedAddress * 4,
+				elementByteLength: 4,
+				wordAlignedSize: 1,
+				wordAlignedByteLength: 4,
+				wordAlignedAddress: memoryData.wordAlignedAddress,
+				endByteAddress: memoryData.wordAlignedAddress * 4,
+				endAddressSafeByteLength: 4,
+				lineNumber: 1,
+				isInteger: true,
+				pointerDepth: 0,
+				isUnsigned: false,
+			},
+		])
+	);
+	const keys = {
+		id: 'keys',
+		lineNumber: 1,
+		memoryIndex: 0,
+		byteAddress: 0,
+		wordAlignedSize: Object.keys(memory).length,
+		wordAlignedByteLength: Object.keys(memory).length * 4,
+		endByteAddress: 0,
+		endAddressSafeByteLength: 4,
+		memory,
+		declarations: Object.values(memory),
+		declarationSources: [],
+	};
+
+	return {
+		modules: { keys },
+		moduleList: [keys],
+		nextByteAddressByMemoryIndex: {},
+	};
+}
+
 describe('keyboardMemoryPlugin', () => {
 	const originalWindow = globalThis.window;
 	let mockWindow: MockWindow;
@@ -63,14 +108,10 @@ describe('keyboardMemoryPlugin', () => {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					keys: {
-						memory: {
-							code: { wordAlignedAddress: 4 },
-							pressed: { wordAlignedAddress: 5 },
-						},
-					},
-				},
+				memoryPlan: createMemoryPlan({
+					code: { wordAlignedAddress: 4 },
+					pressed: { wordAlignedAddress: 5 },
+				}),
 			},
 			callbacks: {
 				setWordInMemory,
@@ -115,13 +156,9 @@ describe('keyboardMemoryPlugin', () => {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					keys: {
-						memory: {
-							pressed: { wordAlignedAddress: 8 },
-						},
-					},
-				},
+				memoryPlan: createMemoryPlan({
+					pressed: { wordAlignedAddress: 8 },
+				}),
 			},
 			callbacks: {
 				setWordInMemory,
