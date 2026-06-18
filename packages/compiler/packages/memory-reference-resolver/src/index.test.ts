@@ -1,11 +1,12 @@
 import { ArgumentType, type ValidatedModuleAST } from '@8f4e/language-spec';
 import type { MemoryLayoutPlan, PlannedMemoryDeclaration, PlannedMemoryModule } from '@8f4e/memory-planner';
 import { describe, expect, it } from 'vitest';
-import { resolveMemoryReferences, tryResolveValueArgument } from './index';
+import { resolveMemoryReferences } from './index';
 import {
 	type MemoryReferenceResolutionContext,
 	resolveMemoryExpressionOperand,
 } from './resolveMemoryExpressionOperand';
+import { tryResolveValueArgument } from './tryResolveValueArgument';
 
 const { classifyIdentifier, parseArgument, parseCompileTimeOperand } = await import('@8f4e/tokenizer');
 
