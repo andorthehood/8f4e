@@ -2,6 +2,7 @@ import type {
 	CompilationContext,
 	CompiledStackAnalysisLine,
 	CompilerASTLine,
+	FunctionAST,
 	FunctionCompilationContext,
 	FunctionImportMetadata,
 	FunctionMetadata,
@@ -12,8 +13,10 @@ import type {
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
+	ModuleAST,
 	ModuleCompilationContext,
 	Namespaces,
+	PrototypeAST,
 	ResolvedDefaultLine,
 	ResolvedMapLine,
 	SemanticInstructionLine,
@@ -50,10 +53,14 @@ import { validateMapValueKind } from './mapValueKind';
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
 
-export interface AnalyzeStackProjectInput {
+export interface AnalyzeStackProjectInput<
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+> {
 	ast: {
-		modules: readonly ValidatedModuleAST[];
-		functions: readonly ValidatedFunctionAST[];
+		modules: readonly TModule[];
+		functions: readonly TFunction[];
 	};
 	semanticReferences: SemanticReferenceReport;
 	namespaces: Namespaces;
@@ -63,7 +70,7 @@ export interface AnalyzeStackProjectInput {
 	functions: FunctionRegistry;
 	functionTypeRegistry: FunctionTypeRegistry;
 	memoryRegions: readonly string[];
-	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>;
+	prototypeShapes: Readonly<Record<string, TPrototype>>;
 }
 
 export interface StackAnalyzedModule {
@@ -111,7 +118,7 @@ function createEmptyLineFacts(_line: CompilerASTLine, context: CompilationContex
 	};
 }
 
-function collectPrototypeShapeIds(ast: ValidatedModuleAST): string[] {
+function collectPrototypeShapeIds(ast: ModuleAST): string[] {
 	const prototypeShapeIds: string[] = [];
 	for (const line of ast.lines) {
 		if (line.instruction !== 'shape') {
@@ -448,7 +455,10 @@ function analyzeSemanticReferenceLine(
 	return facts;
 }
 
-function createModuleContext(input: AnalyzeStackProjectInput, ast: ValidatedModuleAST): ModuleCompilationContext {
+function createModuleContext(
+	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	ast: ModuleAST
+): ModuleCompilationContext {
 	const plannedModule = input.memoryPlan.modules[ast.id];
 	return createCompilationContext<ModuleCompilationContext>({
 		namespace: {
@@ -479,7 +489,10 @@ function createModuleContext(input: AnalyzeStackProjectInput, ast: ValidatedModu
 	});
 }
 
-function analyzeModule(input: AnalyzeStackProjectInput, ast: ValidatedModuleAST): StackAnalyzedModule {
+function analyzeModule(
+	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	ast: ModuleAST
+): StackAnalyzedModule {
 	const context = createModuleContext(input, ast);
 	const semanticLineFacts = input.semanticReferences.modules[ast.id].lineFacts;
 	const stackLineFacts: Array<StackAnalysisLineFacts | undefined> = [];
@@ -506,7 +519,10 @@ function analyzeModule(input: AnalyzeStackProjectInput, ast: ValidatedModuleAST)
 	};
 }
 
-function getFunctionMetadata(input: AnalyzeStackProjectInput, ast: ValidatedFunctionAST): FunctionMetadata {
+function getFunctionMetadata(
+	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	ast: FunctionAST
+): FunctionMetadata {
 	const signatureMetadata = getEffectiveFunctionMetadata(ast, input.prototypeShapes);
 	const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
 	const functionMetadata = input.functions.byId[functionId];
@@ -521,8 +537,8 @@ function getFunctionMetadata(input: AnalyzeStackProjectInput, ast: ValidatedFunc
 }
 
 function createFunctionContext(
-	input: AnalyzeStackProjectInput,
-	ast: ValidatedFunctionAST,
+	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	ast: FunctionAST,
 	functionMetadata: FunctionMetadata
 ): FunctionCompilationContext {
 	return createCompilationContext<FunctionCompilationContext>({
@@ -557,7 +573,10 @@ function createFunctionContext(
 	});
 }
 
-function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunctionAST): StackAnalyzedFunction {
+function analyzeFunction(
+	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	ast: FunctionAST
+): StackAnalyzedFunction {
 	const functionMetadata = getFunctionMetadata(input, ast);
 	const context = createFunctionContext(input, ast, functionMetadata);
 	const semanticLineFacts = input.semanticReferences.functions[functionMetadata.id].lineFacts;
@@ -602,7 +621,11 @@ function analyzeFunction(input: AnalyzeStackProjectInput, ast: ValidatedFunction
 	};
 }
 
-export function analyzeStack(input: AnalyzeStackProjectInput): StackAnalysisProjectReport {
+export function analyzeStack<
+	TModule extends ModuleAST = ValidatedModuleAST,
+	TFunction extends FunctionAST = ValidatedFunctionAST,
+	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
+>(input: AnalyzeStackProjectInput<TModule, TFunction, TPrototype>): StackAnalysisProjectReport {
 	const functionReports = Object.fromEntries(
 		input.ast.functions.map(ast => {
 			const report = analyzeFunction(input, ast);
