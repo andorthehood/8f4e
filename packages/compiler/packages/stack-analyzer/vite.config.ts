@@ -13,14 +13,6 @@ export default defineConfig({
 	...baseConfig,
 	build: {
 		...baseConfig.build,
-		lib: {
-			entry: {
-				index: './src/index.ts',
-				testing: './src/testing.ts',
-			},
-			formats: ['es'],
-			fileName: (_format, entryName) => `${entryName}.js`,
-		},
 		emptyOutDir: false,
 	},
 });
