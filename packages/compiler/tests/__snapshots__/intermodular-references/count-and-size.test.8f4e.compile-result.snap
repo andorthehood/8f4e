@@ -809,7 +809,7 @@
     "combinedCountSizeAssertions": {
       "memory": {
         "elemSize": {
-          "byteAddress": 172,
+          "byteAddress": 12,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -820,12 +820,12 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 43,
+          "wordAlignedAddress": 3,
           "wordAlignedSize": 1,
         },
         "ptr": {
-          "byteAddress": 164,
-          "default": 176,
+          "byteAddress": 4,
+          "default": 16,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "ptr",
@@ -838,11 +838,11 @@
           "pointeeMemoryIndex": 0,
           "pointerDepth": 1,
           "type": "int*",
-          "wordAlignedAddress": 41,
+          "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
         },
         "size": {
-          "byteAddress": 168,
+          "byteAddress": 8,
           "default": 12,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -853,7 +853,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 42,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 1,
         },
       },
@@ -861,7 +861,7 @@
     "combinedCountSizeSource": {
       "memory": {
         "buffer": {
-          "byteAddress": 176,
+          "byteAddress": 16,
           "default": {
             "0": 12,
           },
@@ -874,7 +874,7 @@
           "numberOfElements": 12,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 44,
+          "wordAlignedAddress": 4,
           "wordAlignedSize": 12,
         },
       },
@@ -882,7 +882,7 @@
     "countSizeAssertions": {
       "memory": {
         "bufferCount": {
-          "byteAddress": 100,
+          "byteAddress": 64,
           "default": 10,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -893,11 +893,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 25,
+          "wordAlignedAddress": 16,
           "wordAlignedSize": 1,
         },
         "dataCount": {
-          "byteAddress": 104,
+          "byteAddress": 68,
           "default": 7,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -908,11 +908,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 26,
+          "wordAlignedAddress": 17,
           "wordAlignedSize": 1,
         },
         "doubledShortSize": {
-          "byteAddress": 120,
+          "byteAddress": 84,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -923,11 +923,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 30,
+          "wordAlignedAddress": 21,
           "wordAlignedSize": 1,
         },
         "floatElementSize": {
-          "byteAddress": 112,
+          "byteAddress": 76,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -938,11 +938,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 28,
+          "wordAlignedAddress": 19,
           "wordAlignedSize": 1,
         },
         "intElementSize": {
-          "byteAddress": 108,
+          "byteAddress": 72,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -953,11 +953,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 27,
+          "wordAlignedAddress": 18,
           "wordAlignedSize": 1,
         },
         "pointerElementSize": {
-          "byteAddress": 116,
+          "byteAddress": 80,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -968,7 +968,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 29,
+          "wordAlignedAddress": 20,
           "wordAlignedSize": 1,
         },
       },
@@ -976,7 +976,7 @@
     "countSizeSource": {
       "memory": {
         "buffer": {
-          "byteAddress": 4,
+          "byteAddress": 88,
           "default": {
             "0": 0,
           },
@@ -989,11 +989,11 @@
           "numberOfElements": 10,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 22,
           "wordAlignedSize": 10,
         },
         "data": {
-          "byteAddress": 44,
+          "byteAddress": 128,
           "default": {
             "0": 0,
           },
@@ -1006,7 +1006,7 @@
           "numberOfElements": 7,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 11,
+          "wordAlignedAddress": 32,
           "wordAlignedSize": 7,
         },
       },
@@ -1014,7 +1014,7 @@
     "lateCountSizeSource": {
       "memory": {
         "buffer": {
-          "byteAddress": 132,
+          "byteAddress": 156,
           "default": {
             "0": 0,
           },
@@ -1027,7 +1027,7 @@
           "numberOfElements": 8,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 33,
+          "wordAlignedAddress": 39,
           "wordAlignedSize": 8,
         },
       },
@@ -1035,7 +1035,7 @@
     "outOfOrderCountSizeAssertions": {
       "memory": {
         "laterCount": {
-          "byteAddress": 124,
+          "byteAddress": 188,
           "default": 8,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1046,11 +1046,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 31,
+          "wordAlignedAddress": 47,
           "wordAlignedSize": 1,
         },
         "laterSize": {
-          "byteAddress": 128,
+          "byteAddress": 192,
           "default": 4,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -1061,7 +1061,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 32,
+          "wordAlignedAddress": 48,
           "wordAlignedSize": 1,
         },
       },
@@ -1069,7 +1069,7 @@
     "pointerSizeSource": {
       "memory": {
         "ptr": {
-          "byteAddress": 72,
+          "byteAddress": 196,
           "default": 0,
           "elementWordSize": 4,
           "id": "ptr",
@@ -1081,7 +1081,7 @@
           "pointeeMemoryIndex": 0,
           "pointerDepth": 1,
           "type": "int*",
-          "wordAlignedAddress": 18,
+          "wordAlignedAddress": 49,
           "wordAlignedSize": 1,
         },
       },
@@ -1089,7 +1089,7 @@
     "shortSizeSource": {
       "memory": {
         "buffer": {
-          "byteAddress": 76,
+          "byteAddress": 200,
           "default": {
             "0": 0,
           },
@@ -1102,7 +1102,7 @@
           "numberOfElements": 12,
           "pointerDepth": 0,
           "type": "int16",
-          "wordAlignedAddress": 19,
+          "wordAlignedAddress": 50,
           "wordAlignedSize": 6,
         },
       },

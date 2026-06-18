@@ -93,6 +93,6 @@ to later compiler passes beside the original AST. Do not cache transformed/inlin
 
 ## Related Items
 
-- **Related**: `docs/todos/458-decouple-module-execution-order-from-memory-layout.md`
+- **Related**: `docs/todos/archived/458-decouple-module-execution-order-from-memory-layout.md`
 - **Related**: `docs/todos/459-extract-compiler-diagnostics-package.md`
 - **Related**: PR #808, which decoupled constants from memory before the resolver-report model.

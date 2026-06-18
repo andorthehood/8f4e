@@ -11,32 +11,32 @@
     {
       "id": "projectConfig",
       "index": 0,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
+      "byteAddress": 540,
+      "wordAlignedAddress": 135,
       "wordAlignedSize": 0,
       "skipExecutionInCycle": false
     },
     {
       "id": "phaseAccumulator",
       "index": 1,
-      "byteAddress": 4,
-      "wordAlignedAddress": 1,
+      "byteAddress": 524,
+      "wordAlignedAddress": 131,
       "wordAlignedSize": 4,
       "skipExecutionInCycle": false
     },
     {
       "id": "audioout",
       "index": 2,
-      "byteAddress": 20,
-      "wordAlignedAddress": 5,
+      "byteAddress": 4,
+      "wordAlignedAddress": 1,
       "wordAlignedSize": 130,
       "skipExecutionInCycle": false
     },
     {
       "id": "notes",
       "index": 3,
-      "byteAddress": 540,
-      "wordAlignedAddress": 135,
+      "byteAddress": 524,
+      "wordAlignedAddress": 131,
       "wordAlignedSize": 0,
       "skipExecutionInCycle": false
     }

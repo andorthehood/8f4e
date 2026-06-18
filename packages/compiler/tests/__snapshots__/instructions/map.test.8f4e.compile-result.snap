@@ -2975,6 +2975,24 @@
     "mapCharLiteralAssertions": {
       "memory": {
         "input": {
+          "byteAddress": 4,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "input",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "mapDefaultAssertions": {
+      "memory": {
+        "input": {
           "byteAddress": 8,
           "default": 0,
           "elementWordSize": 4,
@@ -2990,12 +3008,13 @@
         },
       },
     },
-    "mapDefaultAssertions": {
+    "mapFirstMatchAssertions": {
       "memory": {
         "input": {
           "byteAddress": 12,
-          "default": 0,
+          "default": 1,
           "elementWordSize": 4,
+          "hasExplicitDefault": true,
           "id": "input",
           "isInteger": true,
           "isUnsigned": false,
@@ -3008,29 +3027,10 @@
         },
       },
     },
-    "mapFirstMatchAssertions": {
-      "memory": {
-        "input": {
-          "byteAddress": 40,
-          "default": 1,
-          "elementWordSize": 4,
-          "hasExplicitDefault": true,
-          "id": "input",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 10,
-          "wordAlignedSize": 1,
-        },
-      },
-    },
     "mapFloatFloatAssertions": {
       "memory": {
         "input": {
-          "byteAddress": 20,
+          "byteAddress": 16,
           "default": 0,
           "elementWordSize": 4,
           "id": "input",
@@ -3040,7 +3040,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 5,
+          "wordAlignedAddress": 4,
           "wordAlignedSize": 1,
         },
       },
@@ -3048,7 +3048,7 @@
     "mapImplicitDefaultAssertions": {
       "memory": {
         "input": {
-          "byteAddress": 24,
+          "byteAddress": 20,
           "default": 0,
           "elementWordSize": 4,
           "id": "input",
@@ -3058,7 +3058,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 6,
+          "wordAlignedAddress": 5,
           "wordAlignedSize": 1,
         },
       },
@@ -3066,7 +3066,7 @@
     "mapImplicitFloatKeyAssertions": {
       "memory": {
         "input": {
-          "byteAddress": 36,
+          "byteAddress": 24,
           "default": 0,
           "elementWordSize": 4,
           "id": "input",
@@ -3076,7 +3076,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 9,
+          "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
         },
       },
@@ -3120,7 +3120,7 @@
     "mapIntFloatAssertions": {
       "memory": {
         "input": {
-          "byteAddress": 16,
+          "byteAddress": 36,
           "default": 0,
           "elementWordSize": 4,
           "id": "input",
@@ -3130,7 +3130,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 4,
+          "wordAlignedAddress": 9,
           "wordAlignedSize": 1,
         },
       },
@@ -3138,7 +3138,7 @@
     "mapIntIntAssertions": {
       "memory": {
         "input": {
-          "byteAddress": 4,
+          "byteAddress": 40,
           "default": 0,
           "elementWordSize": 4,
           "id": "input",
@@ -3148,7 +3148,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 10,
           "wordAlignedSize": 1,
         },
       },

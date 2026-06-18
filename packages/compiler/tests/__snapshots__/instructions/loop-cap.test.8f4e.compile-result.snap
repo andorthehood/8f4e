@@ -1223,38 +1223,6 @@
     "constantLoopCapAssertions": {
       "memory": {
         "counter": {
-          "byteAddress": 16,
-          "default": 0,
-          "elementWordSize": 4,
-          "id": "counter",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 4,
-          "wordAlignedSize": 1,
-        },
-        "expressionCounter": {
-          "byteAddress": 20,
-          "default": 0,
-          "elementWordSize": 4,
-          "id": "expressionCounter",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 5,
-          "wordAlignedSize": 1,
-        },
-      },
-    },
-    "defaultLoopCapAssertions": {
-      "memory": {
-        "counter": {
           "byteAddress": 4,
           "default": 0,
           "elementWordSize": 4,
@@ -1268,15 +1236,11 @@
           "wordAlignedAddress": 1,
           "wordAlignedSize": 1,
         },
-      },
-    },
-    "directiveLoopCapAssertions": {
-      "memory": {
-        "counter": {
+        "expressionCounter": {
           "byteAddress": 8,
           "default": 0,
           "elementWordSize": 4,
-          "id": "counter",
+          "id": "expressionCounter",
           "isInteger": true,
           "isUnsigned": false,
           "memoryIndex": 0,
@@ -1288,25 +1252,7 @@
         },
       },
     },
-    "explicitCapOverridesDirectiveAssertions": {
-      "memory": {
-        "counter": {
-          "byteAddress": 24,
-          "default": 0,
-          "elementWordSize": 4,
-          "id": "counter",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 6,
-          "wordAlignedSize": 1,
-        },
-      },
-    },
-    "explicitLoopCapAssertions": {
+    "defaultLoopCapAssertions": {
       "memory": {
         "counter": {
           "byteAddress": 12,
@@ -1320,6 +1266,60 @@
           "pointerDepth": 0,
           "type": "int",
           "wordAlignedAddress": 3,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "directiveLoopCapAssertions": {
+      "memory": {
+        "counter": {
+          "byteAddress": 16,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "counter",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 4,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "explicitCapOverridesDirectiveAssertions": {
+      "memory": {
+        "counter": {
+          "byteAddress": 20,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "counter",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 5,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "explicitLoopCapAssertions": {
+      "memory": {
+        "counter": {
+          "byteAddress": 24,
+          "default": 0,
+          "elementWordSize": 4,
+          "id": "counter",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointerDepth": 0,
+          "type": "int",
+          "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
         },
       },

@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-06-14
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-06-18
 ---
 
 # TODO: Decouple Module Execution Order From Memory Layout
@@ -80,11 +80,11 @@ declarations, regions, or sizes actually change.
 
 ## Success Criteria
 
-- [ ] Reordering modules changes execution order without changing stable module memory addresses.
-- [ ] Memory layout remains deterministic across recompiles for unchanged module ids and declarations.
-- [ ] Entry dispatchers still execute modules in user-specified order.
-- [ ] Worker memory reuse/recreation decisions account for any true memory layout change.
-- [ ] Existing intermodule address references continue to resolve correctly.
+- [x] Reordering modules changes execution order without changing stable module memory addresses.
+- [x] Memory layout remains deterministic across recompiles for unchanged module ids and declarations.
+- [x] Entry dispatchers still execute modules in user-specified order.
+- [x] Worker memory reuse/recreation decisions account for any true memory layout change.
+- [x] Existing intermodule address references continue to resolve correctly.
 
 ## Affected Components
 

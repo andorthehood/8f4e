@@ -19,7 +19,7 @@ The planner builds planner-ready memory layout source from those ASTs:
 - `prototypes`: prototype ids with normalized memory declaration lines.
 - `modules`: module ids, optional memory region lines, and ordered layout source lines.
 
-Module layout source lines are either memory declarations or `shape` lines. The planner expands `shape` lines into effective declaration sources, then plans those declarations in order.
+Modules are allocated in alphabetical order by module id, independent from source or execution order. Module layout source lines are either memory declarations or `shape` lines. The planner expands `shape` lines into effective declaration sources, then plans those declarations in order within each module.
 
 The returned plan contains:
 
