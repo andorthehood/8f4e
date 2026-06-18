@@ -411,7 +411,9 @@ function planMemoryLayout(input: MemoryLayoutPlanInput): MemoryLayoutPlan {
 	const modules: Record<string, PlannedMemoryModule> = {};
 	const moduleList: PlannedMemoryModule[] = [];
 
-	for (const sourceModule of input.modules) {
+	for (const sourceModule of [...input.modules].sort((left, right) =>
+		left.id < right.id ? -1 : left.id > right.id ? 1 : 0
+	)) {
 		const region = getModuleRegion(sourceModule, memoryRegions);
 		const moduleByteAddress = getNextModuleByteAddress(cursor, region.memoryIndex, startingByteAddress);
 		const moduleMemory = planModuleMemory(sourceModule, moduleByteAddress, region, prototypesById);

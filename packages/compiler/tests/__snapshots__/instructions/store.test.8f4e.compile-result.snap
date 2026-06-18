@@ -411,7 +411,7 @@
     "float64StoreAssertions": {
       "memory": {
         "dest": {
-          "byteAddress": 24,
+          "byteAddress": 8,
           "default": 0,
           "elementWordSize": 8,
           "id": "dest",
@@ -422,11 +422,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float64",
-          "wordAlignedAddress": 6,
+          "wordAlignedAddress": 2,
           "wordAlignedSize": 3,
         },
         "src": {
-          "byteAddress": 32,
+          "byteAddress": 16,
           "default": 1.5,
           "elementWordSize": 8,
           "hasExplicitDefault": true,
@@ -438,7 +438,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float64",
-          "wordAlignedAddress": 8,
+          "wordAlignedAddress": 4,
           "wordAlignedSize": 2,
         },
       },
@@ -446,7 +446,7 @@
     "floatStoreAssertions": {
       "memory": {
         "dest": {
-          "byteAddress": 12,
+          "byteAddress": 24,
           "default": 0,
           "elementWordSize": 4,
           "id": "dest",
@@ -456,11 +456,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 3,
+          "wordAlignedAddress": 6,
           "wordAlignedSize": 1,
         },
         "src": {
-          "byteAddress": 16,
+          "byteAddress": 28,
           "default": 3.14,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -471,7 +471,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "float",
-          "wordAlignedAddress": 4,
+          "wordAlignedAddress": 7,
           "wordAlignedSize": 1,
         },
       },
@@ -479,7 +479,7 @@
     "intStoreAssertions": {
       "memory": {
         "dest": {
-          "byteAddress": 4,
+          "byteAddress": 32,
           "default": 0,
           "elementWordSize": 4,
           "id": "dest",
@@ -489,11 +489,11 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 1,
+          "wordAlignedAddress": 8,
           "wordAlignedSize": 1,
         },
         "src": {
-          "byteAddress": 8,
+          "byteAddress": 36,
           "default": 42,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
@@ -504,7 +504,7 @@
           "numberOfElements": 1,
           "pointerDepth": 0,
           "type": "int",
-          "wordAlignedAddress": 2,
+          "wordAlignedAddress": 9,
           "wordAlignedSize": 1,
         },
       },
