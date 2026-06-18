@@ -1,16 +1,23 @@
 import compile, { deriveEffectiveMemorySize } from '@8f4e/compiler';
 import type {
 	CompileAndUpdateMemoryResult,
-	CompiledModuleLookup,
 	CompileInput,
 	CompileOptions,
 	CompilerCache,
 	GetOrCreateWasmInstanceResult,
+	MemoryDefaults,
+	MemoryLayoutPlan,
 } from '@8f4e/language-spec';
 import getMemoryValueChanges from './getMemoryValueChanges';
 import getOrCreateMemory from './getOrCreateMemory';
 
-let previousCompiledModules: CompiledModuleLookup | undefined;
+interface PreviousCompileState {
+	compiledModules: CompileAndUpdateMemoryResult['compiledModules'];
+	memoryPlan: MemoryLayoutPlan;
+	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
+}
+
+let previousCompileState: PreviousCompileState | undefined;
 let compilerCache: CompilerCache | undefined;
 
 let wasmInstanceRef: WebAssembly.Instance | null = null;
@@ -40,16 +47,30 @@ export default async function compileAndUpdateMemory(
 	input: CompileInput,
 	compilerOptions: CompileOptions
 ): Promise<CompileAndUpdateMemoryResult> {
-	const { codeBuffer, compiledModules, requiredMemoryBytes, compiledFunctions, cache } = compile(
-		input,
-		compilerOptions,
-		compilerCache
-	);
+	const {
+		codeBuffer,
+		compiledModules,
+		requiredMemoryBytes,
+		compiledFunctions,
+		memoryPlan,
+		memoryDefaultsByModuleId,
+		pointerMetadataByModuleId,
+		cache,
+	} = compile(input, compilerOptions, compilerCache);
 	compilerCache = cache;
 	const allocatedMemoryBytes = deriveEffectiveMemorySize(requiredMemoryBytes);
 	// We must recreate when size changes (even when shrinking) because the WASM module's
 	// declared maximum must match the memory's maximum exactly
-	const { memoryRef, memoryAction } = getOrCreateMemory(allocatedMemoryBytes, compiledModules, previousCompiledModules);
+	const currentCompileState = {
+		compiledModules,
+		memoryPlan,
+		memoryDefaultsByModuleId,
+	};
+	const { memoryRef, memoryAction } = getOrCreateMemory(
+		allocatedMemoryBytes,
+		currentCompileState,
+		previousCompileState
+	);
 
 	const memoryWasRecreated = memoryAction.action === 'recreated';
 	const { wasmInstanceRef, hasWasmInstanceBeenReset } = await getOrCreateWasmInstanceRef(
@@ -65,7 +86,7 @@ export default async function compileAndUpdateMemory(
 	// - First compilation (!previousCompiledModules)
 	// - Memory structure changed
 	// - Memory was recreated
-	const needsInitialization = !previousCompiledModules || memoryWasRecreated;
+	const needsInitialization = !previousCompileState || memoryWasRecreated;
 
 	if (needsInitialization) {
 		initDefaults();
@@ -74,7 +95,7 @@ export default async function compileAndUpdateMemory(
 		const memoryBufferInt = new Int32Array(memoryRef.buffer);
 		const memoryBufferFloat = new Float32Array(memoryRef.buffer);
 		const memoryBufferFloat64 = new Float64Array(memoryRef.buffer);
-		const memoryValueChanges = getMemoryValueChanges(compiledModules, previousCompiledModules);
+		const memoryValueChanges = getMemoryValueChanges(currentCompileState, previousCompileState);
 
 		memoryValueChanges.forEach(change => {
 			if (change.isInteger) {
@@ -108,12 +129,15 @@ export default async function compileAndUpdateMemory(
 		initOnlyReran = false;
 	}
 
-	previousCompiledModules = compiledModules;
+	previousCompileState = currentCompileState;
 
 	return {
 		codeBuffer,
 		compiledModules,
 		compiledFunctions,
+		memoryPlan,
+		memoryDefaultsByModuleId,
+		pointerMetadataByModuleId,
 		requiredMemoryBytes,
 		allocatedMemoryBytes,
 		astCacheStats: { ...cache.ast.stats },

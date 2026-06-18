@@ -19,14 +19,13 @@ describe('compileProjectModules', () => {
 			],
 			{
 				compilerOptions: { startingMemoryWordAddress: 0 },
-				includeWasm: false,
 			}
 		);
 
-		expect(result.compiledModules?.target.index).toBe(0);
-		expect(result.compiledModules?.source.index).toBe(1);
-		expect(result.compiledModules?.target.memoryDefaults.ptr.value).toBe(
-			result.compiledModules?.source.memory.value.byteAddress
+		expect(result.compiledModules.target.index).toBe(0);
+		expect(result.compiledModules.source.index).toBe(1);
+		expect(result.memoryDefaultsByModuleId.target!.ptr!.value).toBe(
+			result.memoryPlan.modules.source!.memory.value!.byteAddress
 		);
 	});
 
@@ -46,14 +45,13 @@ describe('compileProjectModules', () => {
 			],
 			{
 				compilerOptions: { startingMemoryWordAddress: 0 },
-				includeWasm: false,
 			}
 		);
 
-		expect(result.compiledModules?.source.index).toBe(0);
-		expect(result.compiledModules?.target.index).toBe(1);
-		expect(result.compiledModules?.target.memoryDefaults.ptr.value).toBe(
-			result.compiledModules?.source.memory.value.byteAddress
+		expect(result.compiledModules.source.index).toBe(0);
+		expect(result.compiledModules.target.index).toBe(1);
+		expect(result.memoryDefaultsByModuleId.target!.ptr!.value).toBe(
+			result.memoryPlan.modules.source!.memory.value!.byteAddress
 		);
 	});
 
@@ -68,11 +66,10 @@ describe('compileProjectModules', () => {
 			],
 			{
 				compilerOptions: { startingMemoryWordAddress: 0 },
-				includeWasm: false,
 			}
 		);
 
-		expect(result.compiledModules?.addWorks.executionEntryName).toBe('test');
+		expect(result.compiledModules.addWorks.executionEntryName).toBe('test');
 	});
 
 	it('compiles test dependencies as ordinary blocks', async () => {
@@ -91,12 +88,11 @@ describe('compileProjectModules', () => {
 			],
 			{
 				compilerOptions: { startingMemoryWordAddress: 0 },
-				includeWasm: false,
 			}
 		);
 
-		expect(result.compiledModules?.target.executionEntryName).toBe('test');
-		expect(result.compiledModules?.dependency.executionEntryName).toBe('main');
+		expect(result.compiledModules.target.executionEntryName).toBe('test');
+		expect(result.compiledModules.dependency.executionEntryName).toBe('main');
 	});
 
 	it('compiles included functions resolved from includes blocks with parsed project modules', async () => {
@@ -114,7 +110,6 @@ describe('compileProjectModules', () => {
 			],
 			{
 				compilerOptions: { startingMemoryWordAddress: 0 },
-				includeWasm: false,
 				resolveInclude: includeId =>
 					includeId === 'std/test/includedOne'
 						? ['function includedOne', 'push 1', 'functionEnd int'].join('\n')
@@ -122,6 +117,6 @@ describe('compileProjectModules', () => {
 			}
 		);
 
-		expect(result.compiledModules?.target).toBeDefined();
+		expect(result.compiledModules.target).toBeDefined();
 	});
 });

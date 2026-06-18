@@ -1,13 +1,13 @@
 import type {
 	AST,
 	CompiledFunction,
-	CompiledModule,
 	CompileResult,
 	CompilerASTLine,
 	MemoryDefault,
 	MemoryDefaultValue,
 	MemoryPointerMetadata,
 	PlannedMemoryDeclaration,
+	PlannedMemoryModule,
 } from '@8f4e/language-spec';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import {
@@ -260,24 +260,32 @@ function serializeAst(ast: AST | undefined): Record<string, unknown> | undefined
 	};
 }
 
-function serializeCompiledModuleOverview(module: CompiledModule): Record<string, unknown> {
+function serializeCompiledModuleOverview(
+	module: CompileResult['compiledModules'][string],
+	plannedModule: PlannedMemoryModule
+): Record<string, unknown> {
 	return {
 		id: module.id,
 		index: module.index,
 		...(module.executionEntryName ? { executionEntryName: module.executionEntryName } : {}),
-		memoryIndex: module.memoryIndex,
-		...(module.memoryRegionName ? { memoryRegionName: module.memoryRegionName } : {}),
-		byteAddress: module.byteAddress,
-		wordAlignedAddress: module.wordAlignedAddress,
-		wordAlignedSize: module.wordAlignedSize,
+		memoryIndex: plannedModule.memoryIndex,
+		...(plannedModule.memoryRegionName ? { memoryRegionName: plannedModule.memoryRegionName } : {}),
+		byteAddress: plannedModule.byteAddress,
+		wordAlignedAddress: plannedModule.byteAddress / 4,
+		wordAlignedSize: plannedModule.wordAlignedSize,
 		...(module.skipExecutionInCycle ? { skipExecutionInCycle: true } : {}),
 	};
 }
 
-function serializeCompiledModuleMemory(module: CompiledModule): Record<string, unknown> {
+function serializeCompiledModuleMemory(
+	result: CompileResult,
+	plannedModule: PlannedMemoryModule
+): Record<string, unknown> {
+	const memoryDefaults = result.memoryDefaultsByModuleId[plannedModule.id]!;
+	const pointerMetadata = result.pointerMetadataByModuleId[plannedModule.id]!;
 	return {
-		memory: sortRecord(module.memory, (data, id) =>
-			serializeMemoryData(data, module.memoryDefaults[id], module.pointerMetadata[id])
+		memory: sortRecord(plannedModule.memory, (data, id) =>
+			serializeMemoryData(data, memoryDefaults[id], pointerMetadata[id])
 		),
 	};
 }
@@ -303,10 +311,10 @@ export function serializeCompileResult(result: CompileResult): FixtureCompileSna
 	const moduleEntries = Object.entries(result.compiledModules).sort(([left], [right]) => left.localeCompare(right));
 
 	const moduleOverview = Object.fromEntries(
-		moduleEntries.map(([id, module]) => [id, serializeCompiledModuleOverview(module)])
+		moduleEntries.map(([id, module]) => [id, serializeCompiledModuleOverview(module, result.memoryPlan.modules[id]!)])
 	);
 	const moduleMemory = Object.fromEntries(
-		moduleEntries.map(([id, module]) => [id, serializeCompiledModuleMemory(module)])
+		moduleEntries.map(([id]) => [id, serializeCompiledModuleMemory(result, result.memoryPlan.modules[id]!)])
 	);
 	const moduleAst = Object.fromEntries(moduleEntries.map(([id, module]) => [id, serializeAst(module.ast)]));
 	const functionOverview = Object.fromEntries(

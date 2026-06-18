@@ -30,8 +30,9 @@ moduleEnd
 entryEnd
 `);
 		const memory = new Int32Array((fixture.host.memory as WebAssembly.Memory).buffer);
-		const scratch = fixture.compileResult.compiledModules.resettableDefaults.memory.scratch;
-		const marker = fixture.compileResult.compiledModules.resettableDefaults.memory.marker;
+		const plannedModule = fixture.compileResult.memoryPlan.modules.resettableDefaults!;
+		const scratch = plannedModule.memory.scratch!;
+		const marker = plannedModule.memory.marker!;
 		const initDefaults = getExportedFunction(fixture.instance.exports, 'initDefaults');
 		const main = getExportedFunction(fixture.instance.exports, 'main');
 

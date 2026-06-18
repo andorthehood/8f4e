@@ -44,11 +44,16 @@ export default function drawInfoOverlay(
 		state.codeBlockRendering.selectedCodeBlock && state.codeBlockRendering.selectedCodeBlock.name
 			? state.compiler.compiledModules[state.codeBlockRendering.selectedCodeBlock.name]
 			: undefined;
+	const selectedPlannedModule =
+		state.codeBlockRendering.selectedCodeBlock && state.codeBlockRendering.selectedCodeBlock.name
+			? state.compiler.memoryPlan.modules[state.codeBlockRendering.selectedCodeBlock.name]
+			: undefined;
 
 	if (selectedModule) {
+		const plannedModule = selectedPlannedModule!;
 		debugText.push('Selected module: ' + selectedModule.id);
-		debugText.push('Memory footprint: ' + formatBytes(selectedModule.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY));
-		debugText.push('Memory address: ' + selectedModule.byteAddress + ' (nth byte)');
+		debugText.push('Memory footprint: ' + formatBytes(plannedModule.wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY));
+		debugText.push('Memory address: ' + plannedModule.byteAddress + ' (nth byte)');
 		debugText.push('Index: ' + selectedModule.index);
 	}
 

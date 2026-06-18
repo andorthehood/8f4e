@@ -1,9 +1,14 @@
-import type { CompiledModuleLookup, MemoryValueChange } from '@8f4e/language-spec';
+import type { MemoryDefaults, MemoryLayoutPlan, MemoryValueChange } from '@8f4e/language-spec';
 import compareObject from './compareObject';
 
+export interface ProgramMemoryDefaults {
+	memoryPlan: MemoryLayoutPlan;
+	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
+}
+
 export default function getMemoryValueChanges(
-	compiledModules: CompiledModuleLookup,
-	previous: CompiledModuleLookup | undefined
+	current: ProgramMemoryDefaults,
+	previous: ProgramMemoryDefaults | undefined
 ): MemoryValueChange[] {
 	const changes: MemoryValueChange[] = [];
 
@@ -11,15 +16,10 @@ export default function getMemoryValueChanges(
 		return [];
 	}
 
-	for (const [id, compiledModule] of Object.entries(compiledModules)) {
-		const previousModule = previous[id];
-		if (!previousModule) {
-			break;
-		}
-
-		for (const [memoryIdentifier, memory] of Object.entries(compiledModule.memory)) {
-			const memoryDefault = compiledModule.memoryDefaults[memoryIdentifier];
-			const previousMemoryDefault = previousModule.memoryDefaults[memoryIdentifier];
+	for (const [id, plannedModule] of Object.entries(current.memoryPlan.modules)) {
+		for (const [memoryIdentifier, memory] of Object.entries(plannedModule.memory)) {
+			const memoryDefault = current.memoryDefaultsByModuleId[id]![memoryIdentifier]!;
+			const previousMemoryDefault = previous.memoryDefaultsByModuleId[id]![memoryIdentifier]!;
 			const defaultValue = memoryDefault.value;
 			const previousDefaultValue = previousMemoryDefault.value;
 

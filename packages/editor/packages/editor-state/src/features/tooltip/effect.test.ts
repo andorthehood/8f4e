@@ -176,17 +176,31 @@ describe('tooltip effect', () => {
 		});
 		const state = createMockState({
 			compiler: {
-				compiledModules: {
-					test: {
-						memory: {
-							value: {
-								id: 'value',
-								numberOfElements: 1,
-								byteAddress: 4,
-								wordAlignedAddress: 1,
+				memoryPlan: {
+					modules: {
+						test: {
+							id: 'test',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								value: {
+									id: 'value',
+									numberOfElements: 1,
+									byteAddress: 4,
+									wordAlignedAddress: 1,
+								},
 							},
+							declarations: [],
+							declarationSources: [],
 						},
-					} as never,
+					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 			codeBlockRendering: {

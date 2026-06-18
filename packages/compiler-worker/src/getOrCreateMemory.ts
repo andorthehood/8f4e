@@ -1,16 +1,16 @@
-import type { CompiledModuleLookup, GetOrCreateMemoryResult, MemoryAction } from '@8f4e/language-spec';
+import type { GetOrCreateMemoryResult, MemoryAction } from '@8f4e/language-spec';
 import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
-import didProgramOrMemoryStructureChange from './didProgramOrMemoryStructureChange';
+import didProgramOrMemoryStructureChange, { type ProgramMemoryStructure } from './didProgramOrMemoryStructureChange';
 
 let memoryRefCache: WebAssembly.Memory | null = null;
 let currentMemorySize = 0;
 
 export default function getOrCreateMemory(
 	allocatedMemoryBytes: number,
-	compiledModules: CompiledModuleLookup,
-	previousCompiledModules?: CompiledModuleLookup
+	current: ProgramMemoryStructure,
+	previous?: ProgramMemoryStructure
 ): GetOrCreateMemoryResult {
-	const memoryStructureChanged = didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules);
+	const memoryStructureChanged = didProgramOrMemoryStructureChange(current, previous);
 	const memorySizeChange = currentMemorySize !== allocatedMemoryBytes;
 	const shouldRecreate = !memoryRefCache || memoryStructureChanged || memorySizeChange;
 	let memoryAction: MemoryAction;

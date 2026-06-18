@@ -29,24 +29,38 @@ describe('plot directive widget resolution', () => {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							buffer1: {
-								wordAlignedAddress: 0,
-								byteAddress: 0,
-								numberOfElements: 16,
-								elementWordSize: 1,
-								type: MemoryTypes.int,
-								wordAlignedSize: 16,
-								default: 0,
-								isInteger: true,
-								isUnsigned: false,
-								id: 'buffer1',
-								pointerDepth: 0,
+				memoryPlan: {
+					modules: {
+						'test-block': {
+							id: 'test-block',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								buffer1: {
+									wordAlignedAddress: 0,
+									byteAddress: 0,
+									numberOfElements: 16,
+									elementWordSize: 1,
+									type: MemoryTypes.int,
+									wordAlignedSize: 16,
+									default: 0,
+									isInteger: true,
+									isUnsigned: false,
+									id: 'buffer1',
+									pointerDepth: 0,
+								},
 							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 		});
@@ -100,7 +114,7 @@ describe('plot directive widget resolution', () => {
 
 	it('handles multiple plot directives', () => {
 		setMockCodeBlockCode(mockGraphicData, ['; @plot &buffer1 count(buffer1)', '; @plot &buffer2 count(buffer2)']);
-		mockState.compiler.compiledModules['test-block'].memory['buffer2'] = {
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['buffer2'] = {
 			wordAlignedAddress: 1,
 			byteAddress: 4,
 			numberOfElements: 100,
@@ -119,7 +133,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('derives float plot ranges as -1..1', () => {
-		mockState.compiler.compiledModules['test-block'].memory['floatBuffer'] = {
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['floatBuffer'] = {
 			wordAlignedAddress: 4,
 			byteAddress: 16,
 			numberOfElements: 16,
@@ -168,7 +182,7 @@ describe('plot directive widget resolution', () => {
 	});
 
 	it('supports pointer starts with count() lengths', () => {
-		mockState.compiler.compiledModules['test-block'].memory['bufferPtr'] = {
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['bufferPtr'] = {
 			wordAlignedAddress: 8,
 			byteAddress: 32,
 			numberOfElements: 1,

@@ -13,8 +13,9 @@ export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicDa
 		return;
 	}
 
-	const compiledModule = state.compiler.compiledModules[graphicData.name];
-	getConnectorMemoryDeclarations(compiledModule).forEach(declaration => {
+	const plannedModule = state.compiler.memoryPlan.modules[graphicData.name];
+	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[graphicData.name];
+	getConnectorMemoryDeclarations(plannedModule, memoryDefaults).forEach(declaration => {
 		const { memory } = declaration;
 		if (!isOutputMemoryDeclaration(memory)) return;
 

@@ -9,7 +9,7 @@ function getMemoryForLiveValueLine(
 	moduleId: string,
 	memoryId: string
 ): PlannedMemoryDeclaration | undefined {
-	return state.compiler.compiledModules[moduleId]?.memory[memoryId];
+	return state.compiler.memoryPlan.modules[moduleId]?.memory[memoryId];
 }
 
 function getLiveValueText(state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): string | undefined {

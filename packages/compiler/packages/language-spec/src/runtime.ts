@@ -1,5 +1,6 @@
 import type { ASTCacheStats } from './cache';
 import type { CompiledFunctionLookup, CompiledModuleLookup } from './compiled';
+import type { MemoryDefaults, MemoryLayoutPlan, MemoryPointerMetadataMap } from './memory';
 
 export type MemoryReinitReason =
 	| { kind: 'no-instance' }
@@ -22,6 +23,9 @@ export type CompileAndUpdateMemoryResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;
+	memoryPlan: MemoryLayoutPlan;
+	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
+	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	requiredMemoryBytes: number;
 	allocatedMemoryBytes: number;
 	astCacheStats: ASTCacheStats;

@@ -1,4 +1,9 @@
-import type { CompiledModuleLookup, PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { CompiledModuleLookup, MemoryLayoutPlan, PlannedMemoryDeclaration } from '@8f4e/language-spec';
+
+export interface ProgramMemoryStructure {
+	compiledModules: CompiledModuleLookup;
+	memoryPlan: MemoryLayoutPlan;
+}
 
 function didMemoryDeclarationChange(current: PlannedMemoryDeclaration, previous: PlannedMemoryDeclaration): boolean {
 	return (
@@ -19,8 +24,8 @@ function didMemoryDeclarationChange(current: PlannedMemoryDeclaration, previous:
 }
 
 function didMemoryStructureChange(
-	current: CompiledModuleLookup[string]['memory'],
-	previous: CompiledModuleLookup[string]['memory']
+	current: Record<string, PlannedMemoryDeclaration>,
+	previous: Record<string, PlannedMemoryDeclaration>
 ): boolean {
 	const currentMemoryIds = Object.keys(current);
 	const previousMemoryIds = Object.keys(previous);
@@ -35,22 +40,22 @@ function didMemoryStructureChange(
 }
 
 export default function didProgramOrMemoryStructureChange(
-	compiledModules: CompiledModuleLookup,
-	previous: CompiledModuleLookup | undefined
+	current: ProgramMemoryStructure,
+	previous: ProgramMemoryStructure | undefined
 ) {
 	if (!previous) {
 		return true;
 	}
 
-	const currentKeys = Object.keys(compiledModules);
-	const previousKeys = Object.keys(previous);
+	const currentKeys = Object.keys(current.compiledModules);
+	const previousKeys = Object.keys(previous.compiledModules);
 
 	if (currentKeys.length !== previousKeys.length) {
 		return true;
 	}
 
-	for (const [id, compiledModule] of Object.entries(compiledModules)) {
-		const previousModule = previous[id];
+	for (const [id, compiledModule] of Object.entries(current.compiledModules)) {
+		const previousModule = previous.compiledModules[id];
 		if (!previousModule) {
 			return true;
 		}
@@ -63,11 +68,14 @@ export default function didProgramOrMemoryStructureChange(
 			return true;
 		}
 
-		if (compiledModule.wordAlignedSize !== previousModule.wordAlignedSize) {
+		const plannedModule = current.memoryPlan.modules[id]!;
+		const previousPlannedModule = previous.memoryPlan.modules[id]!;
+
+		if (plannedModule.wordAlignedSize !== previousPlannedModule.wordAlignedSize) {
 			return true;
 		}
 
-		if (didMemoryStructureChange(compiledModule.memory, previousModule.memory)) {
+		if (didMemoryStructureChange(plannedModule.memory, previousPlannedModule.memory)) {
 			return true;
 		}
 	}

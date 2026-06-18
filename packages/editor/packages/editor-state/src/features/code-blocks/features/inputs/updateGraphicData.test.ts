@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { MemoryDefaults, PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { MemoryTypes } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState, findWidgetById } from '~/pureHelpers/testingUtils/testUtils';
@@ -23,6 +23,29 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 	};
 }
 
+function setModuleMemory(
+	state: State,
+	memory: Record<string, PlannedMemoryDeclaration>,
+	memoryDefaults: MemoryDefaults
+): void {
+	const plannedModule = {
+		id: 'test-block',
+		lineNumber: 0,
+		memoryIndex: 0,
+		byteAddress: 0,
+		wordAlignedSize: 1,
+		wordAlignedByteLength: 4,
+		endByteAddress: 4,
+		endAddressSafeByteLength: 0,
+		memory,
+		declarations: Object.values(memory),
+		declarationSources: [],
+	};
+	state.compiler.memoryPlan.modules['test-block'] = plannedModule;
+	state.compiler.memoryPlan.moduleList = [plannedModule];
+	state.compiler.memoryDefaultsByModuleId['test-block'] = memoryDefaults;
+}
+
 describe('updateInputsGraphicData', () => {
 	let mockGraphicData: CodeBlockGraphicData;
 	let mockState: State;
@@ -34,20 +57,8 @@ describe('updateInputsGraphicData', () => {
 			gaps: new Map(),
 		});
 
-		mockState = createMockState({
-			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							input1: createMemory(),
-						},
-						memoryDefaults: {
-							input1: { value: 0, isInherited: false },
-						},
-					},
-				},
-			},
-		});
+		mockState = createMockState();
+		setModuleMemory(mockState, { input1: createMemory() }, { input1: { value: 0, isInherited: false } });
 	});
 
 	it('adds input widgets from pointer scalar memory metadata', () => {
@@ -58,7 +69,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('ignores non-pointer memory metadata', () => {
-		mockState.compiler.compiledModules['test-block'].memory['input1'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['input1'] = createMemory({
 			type: MemoryTypes.int,
 			pointerDepth: 0,
 		});
@@ -69,7 +80,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('adds input widgets from pointer array memory metadata', () => {
-		mockState.compiler.compiledModules['test-block'].memory['input1'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['input1'] = createMemory({
 			type: MemoryTypes['float*'],
 			pointerDepth: 1,
 		});
@@ -90,7 +101,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('does not add inputs when compiled module metadata is missing', () => {
-		mockState.compiler.compiledModules = {};
+		mockState.compiler.memoryPlan.modules = {};
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
@@ -116,7 +127,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('handles multiple inputs in line-number order', () => {
-		mockState.compiler.compiledModules['test-block'].memory['input2'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['input2'] = createMemory({
 			id: 'input2',
 			type: MemoryTypes['float*'],
 			wordAlignedAddress: 6,
@@ -124,7 +135,7 @@ describe('updateInputsGraphicData', () => {
 			lineNumber: 2,
 			isInteger: false,
 		});
-		mockState.compiler.compiledModules['test-block'].memoryDefaults.input2 = { value: 0, isInherited: false };
+		mockState.compiler.memoryDefaultsByModuleId['test-block']!.input2 = { value: 0, isInherited: false };
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
@@ -137,7 +148,7 @@ describe('updateInputsGraphicData', () => {
 	});
 
 	it('positions inputs at the metadata line number', () => {
-		mockState.compiler.compiledModules['test-block'].memory['input1'] = createMemory({ lineNumber: 2 });
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['input1'] = createMemory({ lineNumber: 2 });
 
 		updateInputsGraphicData(mockGraphicData, mockState);
 
@@ -148,10 +159,10 @@ describe('updateInputsGraphicData', () => {
 
 	it('positions shape-sourced inputs below the shape instruction', () => {
 		mockGraphicData.gaps = new Map([[1, { size: 1 }]]);
-		mockState.compiler.compiledModules['test-block'].memory['input1'] = createMemory({
+		mockState.compiler.memoryPlan.modules['test-block']!.memory['input1'] = createMemory({
 			lineNumber: 1,
 		});
-		mockState.compiler.compiledModules['test-block'].memoryDefaults = {
+		mockState.compiler.memoryDefaultsByModuleId['test-block'] = {
 			input1: { value: 0, isInherited: true },
 		};
 

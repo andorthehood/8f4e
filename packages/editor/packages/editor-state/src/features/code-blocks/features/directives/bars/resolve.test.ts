@@ -29,23 +29,37 @@ describe('bars directive widget resolution', () => {
 				},
 			},
 			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							bins: {
-								wordAlignedAddress: 0,
-								byteAddress: 0,
-								numberOfElements: 16,
-								elementWordSize: 4,
-								type: MemoryTypes.float,
-								wordAlignedSize: 16,
-								default: 0,
-								isInteger: false,
-								id: 'bins',
-								pointerDepth: 0,
+				memoryPlan: {
+					modules: {
+						'test-block': {
+							id: 'test-block',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								bins: {
+									wordAlignedAddress: 0,
+									byteAddress: 0,
+									numberOfElements: 16,
+									elementWordSize: 4,
+									type: MemoryTypes.float,
+									wordAlignedSize: 16,
+									default: 0,
+									isInteger: false,
+									id: 'bins',
+									pointerDepth: 0,
+								},
 							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 		});

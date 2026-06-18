@@ -5,6 +5,13 @@ export default function createDefaultState() {
 		compiler: {
 			isCompiling: false,
 			compiledModules: {},
+			memoryPlan: {
+				modules: {},
+				moduleList: [],
+				nextByteAddressByMemoryIndex: {},
+			},
+			memoryDefaultsByModuleId: {},
+			pointerMetadataByModuleId: {},
 		},
 		codeBlockRendering: {
 			codeBlocks: [],

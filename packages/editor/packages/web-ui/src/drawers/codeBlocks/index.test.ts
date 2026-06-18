@@ -63,9 +63,13 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 		type: MemoryTypes.int,
 		memoryIndex: 0,
 		byteAddress: 0,
+		elementByteLength: 4,
 		wordAlignedSize: 1,
+		wordAlignedByteLength: 4,
 		wordAlignedAddress: 0,
-		default: 0,
+		endByteAddress: 0,
+		endAddressSafeByteLength: 4,
+		lineNumber: 1,
 		isInteger: true,
 		pointerDepth: 0,
 		isUnsigned: false,
@@ -436,20 +440,36 @@ describe('drawModules', () => {
 			codeToRender: [],
 			codeColors: [],
 		});
+		const pointer = createMemory({
+			id: 'pointer',
+			type: MemoryTypes['int*'],
+			byteAddress: 8,
+			wordAlignedAddress: 2,
+			endByteAddress: 8,
+			pointeeBaseType: 'int',
+		});
 		const state = createMockState({
 			compiler: {
-				compiledModules: {
-					test: {
-						memory: {
-							pointer: createMemory({
-								id: 'pointer',
-								type: MemoryTypes['int*'],
-								byteAddress: 8,
-								wordAlignedAddress: 2,
-								pointeeBaseType: 'int',
-							}),
+				memoryPlan: {
+					modules: {
+						test: {
+							id: 'test',
+							lineNumber: 1,
+							memoryIndex: 0,
+							byteAddress: 8,
+							wordAlignedSize: 1,
+							wordAlignedByteLength: 4,
+							endByteAddress: 8,
+							endAddressSafeByteLength: 4,
+							memory: {
+								pointer,
+							},
+							declarations: [pointer],
+							declarationSources: [],
 						},
-					} as never,
+					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: { 0: 12 },
 				},
 			},
 			spriteLookups: {

@@ -91,6 +91,9 @@ export default function compiler(store: StateManager<State>) {
 
 			store.set('compiler.compiledFunctions', result.compiledFunctions);
 			store.set('compiler.compiledModules', result.compiledModules);
+			store.set('compiler.memoryPlan', result.memoryPlan);
+			store.set('compiler.memoryDefaultsByModuleId', result.memoryDefaultsByModuleId);
+			store.set('compiler.pointerMetadataByModuleId', result.pointerMetadataByModuleId);
 			store.set('compiler.isCompiling', false);
 			setCompilerInfo({
 				isCompiling: false,
