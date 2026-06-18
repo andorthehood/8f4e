@@ -1,0 +1,1116 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`analyzeStack integration > analyzes a project-level module and function report from pass-shaped fixtures 1`] = `
+{
+  "functions": {
+    "increment__int": {
+      "exportName": "inc",
+      "finalStack": [],
+      "functionId": "increment__int",
+      "lineFacts": [
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 1,
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 1,
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "numericOperandKind": "int32",
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 1,
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 1,
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+      ],
+      "locals": {
+        "temp": {
+          "index": 1,
+          "isInteger": true,
+        },
+        "value": {
+          "index": 0,
+          "isInteger": true,
+        },
+      },
+      "parameterCount": 1,
+      "stackAnalysis": [
+        {
+          "instruction": "function",
+          "lineNumber": 1,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [],
+          },
+        },
+        {
+          "instruction": "#export",
+          "lineNumber": 2,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [],
+          },
+        },
+        {
+          "instruction": "param",
+          "lineNumber": 3,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [],
+          },
+        },
+        {
+          "instruction": "local",
+          "lineNumber": 4,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [],
+          },
+        },
+        {
+          "instruction": "push",
+          "lineNumber": 5,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [],
+          },
+        },
+        {
+          "instruction": "push",
+          "lineNumber": 6,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 1,
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 1,
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "instruction": "add",
+          "lineNumber": 7,
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 1,
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 1,
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "instruction": "localSet",
+          "lineNumber": 8,
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "instruction": "push",
+          "lineNumber": 9,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [],
+          },
+        },
+        {
+          "instruction": "functionEnd",
+          "lineNumber": 10,
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [
+              {
+                "isNonZero": false,
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+      ],
+      "used": true,
+    },
+  },
+  "modules": {
+    "main": {
+      "finalStack": [],
+      "lineFacts": [
+        undefined,
+        undefined,
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [],
+          },
+        },
+        {
+          "clamp": {
+            "accessByteWidth": 4,
+            "memoryIndex": 0,
+            "range": {
+              "byteAddress": 4,
+              "memoryId": "buffer",
+              "memoryIndex": 0,
+              "moduleId": "main",
+              "safeByteLength": 16,
+              "source": "memory-start",
+            },
+          },
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeAccessByteWidth": 4,
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeAccessByteWidth": 4,
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeAccessByteWidth": 4,
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeAccessByteWidth": 4,
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 5,
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 5,
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [],
+          },
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 5,
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [
+              {
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 5,
+                "valueType": "int",
+              },
+            ],
+          },
+          "targetFunctionId": "increment__int",
+        },
+        {
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [
+              {
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        undefined,
+      ],
+      "stackAnalysis": [
+        {
+          "instruction": "push",
+          "lineNumber": 3,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [],
+          },
+        },
+        {
+          "instruction": "clampAddress",
+          "lineNumber": 4,
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeAccessByteWidth": 4,
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeAccessByteWidth": 4,
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "instruction": "drop",
+          "lineNumber": 5,
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeAccessByteWidth": 4,
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [
+              {
+                "address": {
+                  "clampRange": {
+                    "byteAddress": 4,
+                    "memoryId": "buffer",
+                    "memoryIndex": 0,
+                    "moduleId": "main",
+                    "safeByteLength": 16,
+                    "source": "memory-start",
+                  },
+                  "memoryIndex": 0,
+                  "safeAccessByteWidth": 4,
+                },
+                "isNonZero": true,
+                "kind": "address",
+                "knownIntegerValue": 4,
+                "pointsTo": {
+                  "baseType": "int",
+                  "elementCount": 4,
+                  "memoryIndex": 0,
+                  "pointerDepth": 1,
+                },
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "instruction": "push",
+          "lineNumber": 6,
+          "stackAnalysis": {
+            "consumedOperands": [],
+            "producedStackItems": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 5,
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 5,
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [],
+          },
+        },
+        {
+          "instruction": "call",
+          "lineNumber": 7,
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 5,
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [
+              {
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackAfter": [
+              {
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "stackBefore": [
+              {
+                "isNonZero": true,
+                "kind": "value",
+                "knownIntegerValue": 5,
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+        {
+          "instruction": "drop",
+          "lineNumber": 8,
+          "stackAnalysis": {
+            "consumedOperands": [
+              {
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+            "producedStackItems": [],
+            "stackAfter": [],
+            "stackBefore": [
+              {
+                "kind": "value",
+                "valueType": "int",
+              },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  "usedFunctionIds": [
+    "increment__int",
+  ],
+}
+`;
