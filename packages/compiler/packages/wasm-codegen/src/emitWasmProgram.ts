@@ -60,7 +60,7 @@ export type WasmProgramInput = {
 };
 
 /** Calculates required byte size for each WebAssembly memory index. */
-export function getRequiredMemoryBytesByIndex(
+function getRequiredMemoryBytesByIndex(
 	items: Pick<CompiledModule, 'memoryIndex' | 'byteAddress' | 'wordAlignedSize'>[]
 ) {
 	return items.reduce<Record<number, number>>((result, item) => {
@@ -72,7 +72,7 @@ export function getRequiredMemoryBytesByIndex(
 }
 
 /** Converts non-default memory byte requirements into configured memory region names. */
-export function getRequiredMemoryBytesByRegion(
+function getRequiredMemoryBytesByRegion(
 	requiredMemoryBytesByIndex: Record<number, number>,
 	memoryRegions: readonly string[]
 ): Record<string, number> {
