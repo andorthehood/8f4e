@@ -102,7 +102,7 @@ describe('compile prototype validation', () => {
 			{ disableSharedMemory: true }
 		);
 
-		expect(result.compiledModules.main.memoryDefaults.value?.value).toBe(7);
+		expect(result.memoryDefaultsByModuleId.main!.value?.value).toBe(7);
 	});
 
 	it('marks shape-expanded declarations as inherited at the shape line', () => {
@@ -128,15 +128,16 @@ describe('compile prototype validation', () => {
 			{ disableSharedMemory: true }
 		);
 
-		const module = result.compiledModules.filterA;
-		expect(module.memory.input).toMatchObject({ lineNumber: 1 });
-		expect(module.memoryDefaults.input).toMatchObject({ isInherited: true });
-		expect(module.memory.resonance).toMatchObject({ lineNumber: 1 });
-		expect(module.memoryDefaults.resonance).toMatchObject({ isInherited: true });
-		expect(module.memory.output).toMatchObject({ lineNumber: 1 });
-		expect(module.memoryDefaults.output).toMatchObject({ isInherited: true });
-		expect(module.memory.cutoff).toMatchObject({ lineNumber: 2 });
-		expect(module.memoryDefaults.cutoff).toMatchObject({ isInherited: false });
+		const memory = result.memoryPlan.modules.filterA!.memory;
+		const memoryDefaults = result.memoryDefaultsByModuleId.filterA!;
+		expect(memory.input).toMatchObject({ lineNumber: 1 });
+		expect(memoryDefaults.input).toMatchObject({ isInherited: true });
+		expect(memory.resonance).toMatchObject({ lineNumber: 1 });
+		expect(memoryDefaults.resonance).toMatchObject({ isInherited: true });
+		expect(memory.output).toMatchObject({ lineNumber: 1 });
+		expect(memoryDefaults.output).toMatchObject({ isInherited: true });
+		expect(memory.cutoff).toMatchObject({ lineNumber: 2 });
+		expect(memoryDefaults.cutoff).toMatchObject({ isInherited: false });
 	});
 
 	it('rejects function ids that collide with generated entry function ids during semantic metadata collection', () => {

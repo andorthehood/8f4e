@@ -15,8 +15,7 @@ function resolveWordAlignedAddress(state: State, memoryId?: string): number | un
 
 	const moduleId = memoryId.slice(0, separatorIndex);
 	const memoryName = memoryId.slice(separatorIndex + 1);
-	const compiledModule = state.compiler.compiledModules[moduleId];
-	return compiledModule?.memory[memoryName]?.wordAlignedAddress;
+	return state.compiler.memoryPlan.modules[moduleId]?.memory[memoryName]?.wordAlignedAddress;
 }
 
 function writeIntegerToMemory(state: State, wordAlignedAddress: number | undefined, value: number): void {

@@ -1,4 +1,11 @@
-import type { CompiledFunctionLookup, CompiledModuleLookup, CompileOptions } from '@8f4e/language-spec';
+import type {
+	CompiledFunctionLookup,
+	CompiledModuleLookup,
+	CompileOptions,
+	MemoryDefaults,
+	MemoryLayoutPlan,
+	MemoryPointerMetadataMap,
+} from '@8f4e/language-spec';
 import type {
 	ProjectBlock,
 	ProjectBlockType,
@@ -19,10 +26,13 @@ export interface CompileProjectOptions {
 export interface CompileProjectResult {
 	outputProject: Record<string, unknown>;
 	compilerOptions?: CompileOptions;
-	compiledModules?: CompiledModuleLookup;
+	compiledModules: CompiledModuleLookup;
+	memoryPlan: MemoryLayoutPlan;
+	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
+	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	compiledFunctions?: CompiledFunctionLookup;
-	compiledWasm?: string;
-	requiredMemoryBytes?: number;
+	compiledWasm: string;
+	requiredMemoryBytes: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
 }
 

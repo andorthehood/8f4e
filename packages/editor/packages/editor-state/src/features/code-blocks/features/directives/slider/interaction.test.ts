@@ -29,15 +29,29 @@ describe('slider interaction', () => {
 				y: 0,
 			},
 			compiler: {
-				compiledModules: {
-					'test-block': {
-						memory: {
-							testSlider: {
-								wordAlignedAddress: 5,
-								isInteger: true,
+				memoryPlan: {
+					modules: {
+						'test-block': {
+							id: 'test-block',
+							lineNumber: 0,
+							memoryIndex: 0,
+							byteAddress: 0,
+							wordAlignedSize: 0,
+							wordAlignedByteLength: 0,
+							endByteAddress: 0,
+							endAddressSafeByteLength: 0,
+							memory: {
+								testSlider: {
+									wordAlignedAddress: 5,
+									isInteger: true,
+								},
 							},
+							declarations: [],
+							declarationSources: [],
 						},
 					},
+					moduleList: [],
+					nextByteAddressByMemoryIndex: {},
 				},
 			},
 			callbacks: {
