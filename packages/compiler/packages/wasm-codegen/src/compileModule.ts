@@ -106,7 +106,6 @@ export function compileModule(
 			}),
 			context.byteCode
 		),
-		initFunctionBody: [],
 		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis: stackReport.stackAnalysis } : {}),
 		index,
