@@ -1,4 +1,5 @@
 function cosine
+#export
 ; Polynomial approximation
 ; of the cosine function with
 ; Taylor series (6th order).

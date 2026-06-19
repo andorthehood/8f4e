@@ -1,4 +1,5 @@
 function triggerToGate
+#export
 #impure
 ; Converts an int trigger to a
 ; held gate by resetting the
@@ -33,6 +34,7 @@ ifEnd int
 functionEnd int
 
 function triggerToGate
+#export
 #impure
 ; Converts a float trigger to a
 ; held gate by resetting the

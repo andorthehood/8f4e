@@ -1,4 +1,5 @@
 function clamp
+#export
 param int value
 param int minValue
 param int maxValue
@@ -12,6 +13,7 @@ min
 functionEnd int
 
 function clamp
+#export
 param float value
 param float minValue
 param float maxValue

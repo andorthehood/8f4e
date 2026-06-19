@@ -1,4 +1,5 @@
 function dup
+#export
 param int value
 
 push value
@@ -7,6 +8,7 @@ push value
 functionEnd int int
 
 function dup
+#export
 param float value
 
 push value

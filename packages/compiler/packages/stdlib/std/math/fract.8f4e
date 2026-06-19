@@ -1,4 +1,5 @@
 function fract
+#export
 ; Returns the fractional part of
 ; a float by subtracting its
 ; integer-truncated value.

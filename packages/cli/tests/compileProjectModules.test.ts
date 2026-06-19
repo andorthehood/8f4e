@@ -112,7 +112,7 @@ describe('compileProjectModules', () => {
 				compilerOptions: { startingMemoryWordAddress: 0 },
 				resolveInclude: includeId =>
 					includeId === 'std/test/includedOne'
-						? ['function includedOne', 'push 1', 'functionEnd int'].join('\n')
+						? ['function includedOne', '#export', 'push 1', 'functionEnd int'].join('\n')
 						: undefined,
 			}
 		);

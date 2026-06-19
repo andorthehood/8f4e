@@ -43,11 +43,15 @@ entryEnd
 ```
 
 Each `include` line accepts one standard library include id. An include id may provide multiple overloads of the
-same function name.
+same function name, or multiple public functions when the stdlib source marks them with include-local `#export`.
 
 Includes are resolved during project loading. The CLI loads the shipped standard library files from the installed
 package, while browser-based tools load those same files lazily. The compiler receives the included source as ordinary
 function blocks, so overload resolution, stack typing, and `call` behavior are the same as user-defined functions.
+
+Inside standard-library source files, `#export` marks functions that become public to the including project. The project
+preparser consumes those markers before compilation, so they do not create WebAssembly exports. Non-exported functions in
+an included source file are treated as private helpers and are renamed with an include-specific prefix.
 
 ## `std/stack/dup`
 
