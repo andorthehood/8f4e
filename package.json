@@ -25,7 +25,7 @@
     "@biomejs/biome": "2.5.0",
     "@nx/js": "22.7.5",
     "@nx/vite": "22.7.5",
-    "@playwright/test": "1.60.0",
+    "@playwright/test": "1.61.0",
     "@types/audioworklet": "0.0.100",
     "@types/node": "24.13.2",
     "@types/offscreencanvas": "2019.7.3",
