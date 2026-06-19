@@ -7,36 +7,6 @@ param int pointer
 param int* buffer
 param int itemCount
 
-push pointer
-push buffer
-push itemCount
-call wrapPointerAddress
-
-functionEnd int*
-
-function wrapPointer
-#export
-; Bidirectionally wraps a float
-; byte address into a circular
-; float buffer.
-param int pointer
-param float* buffer
-param int itemCount
-
-push pointer
-push buffer
-push itemCount
-call wrapPointerAddress
-
-functionEnd float*
-
-function wrapPointerAddress
-; Private int-buffer wrapping
-; helper used by wrapPointer.
-param int pointer
-param int* buffer
-param int itemCount
-
 local int byteLength
 
 push itemCount
@@ -60,9 +30,11 @@ add
 
 functionEnd int*
 
-function wrapPointerAddress
-; Private float-buffer wrapping
-; helper used by wrapPointer.
+function wrapPointer
+#export
+; Bidirectionally wraps a float
+; byte address into a circular
+; float buffer.
 param int pointer
 param float* buffer
 param int itemCount
