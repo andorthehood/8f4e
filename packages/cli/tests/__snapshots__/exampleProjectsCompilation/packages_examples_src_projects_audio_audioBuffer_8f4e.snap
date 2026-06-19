@@ -10,7 +10,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "projectConfig",
@@ -155,7 +154,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "phaseAccumulator",
@@ -588,7 +586,6 @@
         11,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "audioout",
@@ -869,7 +866,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "notes",

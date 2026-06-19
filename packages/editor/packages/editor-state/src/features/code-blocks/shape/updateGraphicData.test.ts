@@ -88,7 +88,6 @@ function createCompilerReports(memoryFixtures: Record<string, MemoryFixture> = {
 			filterA: {
 				id: 'filterA',
 				index: 0,
-				initFunctionBody: [],
 				cycleFunction: [],
 				ast,
 			},

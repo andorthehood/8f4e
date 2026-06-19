@@ -1,9 +1,7 @@
 import { ConstantResolverError, type ResolveConstantsProjectAST, resolveConstants } from '@8f4e/constant-resolver';
 import type {
 	CompiledFunction,
-	CompiledFunctionLookup,
 	CompiledModule,
-	CompiledModuleLookup,
 	CompileInput,
 	CompileOptions,
 	CompilerCache,
@@ -58,22 +56,10 @@ type CompilerSource = {
 export type CompiledSubProgram = {
 	/** Public entry names generated for this source program. */
 	entryNames: string[];
-	/** Number of imported user functions emitted before built-ins and defined functions. */
-	importedFunctionCount: number;
-	/** Number of built-in helper functions emitted before user-defined functions. */
-	builtInFunctionCount: number;
 	/** Compiled module bodies in source order. */
 	compiledModules: CompiledModule[];
-	/** Compiled module lookup keyed by module id. */
-	compiledModulesMap: CompiledModuleLookup;
 	/** Compiled user functions in source order. */
 	compiledFunctions: CompiledFunction[];
-	/** Compiled function lookup keyed by function id. */
-	compiledFunctionsMap: CompiledFunctionLookup;
-	/** User functions imported from the host environment. */
-	importedUserFunctions: CompiledFunction[];
-	/** User functions defined by the source program. */
-	definedFunctions: CompiledFunction[];
 	/** Function type table accumulated while compiling calls and definitions. */
 	functionTypeRegistry: FunctionTypeRegistry;
 	/** Project memory layout produced by the memory planner. */
@@ -411,10 +397,6 @@ export function compileSubProgram(
 			options
 		);
 	});
-	const importedUserFunctions = compiledFunctions.filter(func => func.import);
-	const definedFunctions = compiledFunctions.filter(func => !func.import);
-	const compiledFunctionsMap = Object.fromEntries(compiledFunctions.map(func => [func.id, func]));
-
 	const compiledModules = compileModules(
 		projectAst.modules,
 		{
@@ -433,18 +415,10 @@ export function compileSubProgram(
 		executionEntryName: moduleEntryNames[index],
 	}));
 
-	const compiledModulesMap = Object.fromEntries(compiledModules.map(module => [module.id, module]));
-
 	return {
 		entryNames,
-		importedFunctionCount,
-		builtInFunctionCount,
 		compiledModules,
-		compiledModulesMap,
 		compiledFunctions,
-		compiledFunctionsMap,
-		importedUserFunctions,
-		definedFunctions,
 		functionTypeRegistry,
 		memoryPlan,
 		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
