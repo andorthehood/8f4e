@@ -618,7 +618,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "executionEntryName": "main",
       "id": "audioout",
       "index": 2,
-      "initFunctionBody": [],
       "skipExecutionInCycle": undefined,
     },
     "notes": {
@@ -666,7 +665,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "executionEntryName": "main",
       "id": "notes",
       "index": 3,
-      "initFunctionBody": [],
       "skipExecutionInCycle": undefined,
     },
     "phaseAccumulator": {
@@ -1113,7 +1111,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "executionEntryName": "main",
       "id": "phaseAccumulator",
       "index": 1,
-      "initFunctionBody": [],
       "skipExecutionInCycle": undefined,
     },
     "projectConfig": {
@@ -1161,7 +1158,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       "executionEntryName": "main",
       "id": "projectConfig",
       "index": 0,
-      "initFunctionBody": [],
       "skipExecutionInCycle": undefined,
     },
   },

@@ -95,7 +95,6 @@ export interface StackAnalyzedFunction {
 export interface StackAnalysisProjectReport {
 	modules: Record<string, StackAnalyzedModule>;
 	functions: Record<string, StackAnalyzedFunction>;
-	usedFunctionIds: string[];
 }
 
 function toCompiledStackAnalysisLine(line: CompilerASTLine, facts: StackAnalysisLineFacts): CompiledStackAnalysisLine {
@@ -633,21 +632,21 @@ export function analyzeStack<
 		})
 	);
 	const modules = Object.fromEntries(input.ast.modules.map(ast => [ast.id, analyzeModule(input, ast)]));
-	const usedFunctionIds = new Set<string>();
+	const usedFunctionIdSet = new Set<string>();
 	for (const functionReport of Object.values(functionReports)) {
 		if (functionReport.exportName) {
-			usedFunctionIds.add(functionReport.functionId);
+			usedFunctionIdSet.add(functionReport.functionId);
 		}
 		for (const facts of functionReport.lineFacts) {
 			if (facts?.targetFunctionId) {
-				usedFunctionIds.add(facts.targetFunctionId);
+				usedFunctionIdSet.add(facts.targetFunctionId);
 			}
 		}
 	}
 	for (const moduleReport of Object.values(modules)) {
 		for (const facts of moduleReport.lineFacts) {
 			if (facts?.targetFunctionId) {
-				usedFunctionIds.add(facts.targetFunctionId);
+				usedFunctionIdSet.add(facts.targetFunctionId);
 			}
 		}
 	}
@@ -656,10 +655,10 @@ export function analyzeStack<
 			functionReport.functionId,
 			{
 				...functionReport,
-				...(usedFunctionIds.has(functionReport.functionId) ? { used: true } : {}),
+				...(usedFunctionIdSet.has(functionReport.functionId) ? { used: true } : {}),
 			},
 		])
 	);
 
-	return { modules, functions, usedFunctionIds: [...usedFunctionIds] };
+	return { modules, functions };
 }
