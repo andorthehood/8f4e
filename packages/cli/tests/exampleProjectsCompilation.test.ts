@@ -4,8 +4,6 @@ import { fileURLToPath, pathToFileURL } from 'url';
 
 import { describe, expect, it } from 'vitest';
 
-import parse8f4eToProject from '../src/shared/parse8f4e';
-
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDir, '..');
 const repoRoot = path.resolve(packageRoot, '..', '..');
@@ -23,16 +21,15 @@ function getSnapshotPath(relativePath: string): string {
 	return path.join(testDir, '__snapshots__', 'exampleProjectsCompilation', fileName);
 }
 
-async function loadExampleProject(relativePath: string) {
-	const raw = await fs.readFile(path.join(repoRoot, relativePath), 'utf8');
-	return parse8f4eToProject(raw);
+async function loadExampleProjectSource(relativePath: string) {
+	return fs.readFile(path.join(repoRoot, relativePath), 'utf8');
 }
 
 describe('compileProject (example projects)', () => {
 	it.each(exampleProjects)('compiles %s consistently', async relativePath => {
-		const project = await loadExampleProject(relativePath);
+		const source = await loadExampleProjectSource(relativePath);
 		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
-		const result = await cliModule.compileProject(project);
+		const result = await cliModule.compileProjectSource(source);
 
 		const snapshotPayload = {
 			compilerOptions: result.compilerOptions,

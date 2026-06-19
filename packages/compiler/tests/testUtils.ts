@@ -1,3 +1,4 @@
+import { resolveIncludeSourceTreeAsync } from '@8f4e/include-resolver';
 import type {
 	AST,
 	CompiledFunction,
@@ -14,7 +15,7 @@ import {
 	type ProjectBlock,
 	type ProjectDocument,
 	parseProjectSource,
-	prepareCompilerInputAsync,
+	prepareCompilerInputFromProjectSourceTreeAsync,
 } from '@8f4e/project-preparser';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -349,20 +350,9 @@ export async function compileFixtureProgramSource(
 	const normalizedSource = source.trimStart();
 	const project = parseProjectSource(normalizedSource);
 	const memoryRegions = getTestMemoryRegions(normalizedSource);
-	const codeBlocks = [
-		...project.codeBlocks,
-		...(options.extraCodeBlocks ?? []),
-		...(options.includeAssertions ? assertFunctionBlocks : []),
-	];
-	const compilerInput = await prepareCompilerInputAsync(
-		{
-			...project,
-			codeBlocks,
-		},
-		{
-			resolveInclude: resolveStdlibInclude,
-		}
-	);
+	const sourceTree = await resolveIncludeSourceTreeAsync(normalizedSource, resolveStdlibInclude);
+	const extraBlocks = [...(options.extraCodeBlocks ?? []), ...(options.includeAssertions ? assertFunctionBlocks : [])];
+	const compilerInput = await prepareCompilerInputFromProjectSourceTreeAsync(sourceTree, { extraBlocks });
 
 	return {
 		source: normalizedSource,

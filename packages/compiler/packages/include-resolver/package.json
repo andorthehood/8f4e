@@ -1,20 +1,16 @@
 {
-  "name": "@8f4e/cli",
-  "version": "1.7.17",
+  "name": "@8f4e/include-resolver",
+  "version": "0.1.0",
   "private": true,
-  "description": "CLI for compiling 8f4e projects",
+  "description": "8f4e include source resolution pass",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "bin": {
-    "cli": "bin/cli.js"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./cli": "./dist/cli.js"
+    }
   },
   "sideEffects": false,
   "repository": {
@@ -28,14 +24,9 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "@8f4e/compiler": "*",
-    "@8f4e/include-resolver": "*",
-    "@8f4e/language-spec": "*",
-    "@8f4e/project-preparser": "*",
-    "@8f4e/stdlib": "*"
+    "@8f4e/language-spec": "*"
   },
   "devDependencies": {
-    "@types/node": "24.13.2",
-    "vitest": "4.1.7"
+    "@types/node": "24.13.2"
   }
 }

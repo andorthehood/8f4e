@@ -21,6 +21,7 @@ export interface CompileProjectOptions {
 	includeWasm?: boolean;
 	includeFunctions?: boolean;
 	resolveInclude?: ProjectIncludeResolverAsync;
+	extraCodeBlocks?: ProjectBlock[];
 }
 
 export interface CompileProjectResult {

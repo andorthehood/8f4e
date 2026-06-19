@@ -2,12 +2,27 @@ import type { CompileInput, Module } from '@8f4e/language-spec';
 import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
 import type { ProjectIncludeResolverAsync } from './functionIncludes';
-import { resolveProjectIncludesAsync } from './functionIncludes';
+import { resolveFunctionIncludeSource, resolveProjectIncludesAsync } from './functionIncludes';
 import { parseProjectSource } from './parseProjectSource';
 import type { ProjectBlock, ProjectDocument } from './types';
 
 export interface PrepareCompilerInputOptions {
 	resolveInclude?: ProjectIncludeResolverAsync;
+}
+
+export interface ProjectSourceTreeNode {
+	includeId: string;
+	source: string;
+	children: readonly ProjectSourceTreeNode[];
+}
+
+export interface ProjectSourceTree {
+	source: string;
+	children: readonly ProjectSourceTreeNode[];
+}
+
+export interface PrepareCompilerInputFromProjectSourceTreeOptions {
+	extraBlocks?: readonly ProjectBlock[];
 }
 
 const constantsBlockType = documentBlockInstructionByType.constants.type;
@@ -40,9 +55,9 @@ async function resolveIncludesBlock(
 	return resolveProjectIncludesAsync([block], resolveInclude);
 }
 
-export async function prepareCompilerInputFromProjectBlocksAsync(
+async function prepareCompilerInputFromProjectBlocksCoreAsync(
 	blocks: readonly ProjectBlock[],
-	options: PrepareCompilerInputOptions = {}
+	resolveIncludesBlockForCompilerInput?: (block: ProjectBlock) => Module[] | Promise<Module[]>
 ): Promise<CompileInput> {
 	const entries: CompileInput['entries'] = { main: [] };
 	const constants: Module[] = [];
@@ -78,11 +93,22 @@ export async function prepareCompilerInputFromProjectBlocksAsync(
 			continue;
 		}
 		if (getDocumentProjectBlockType(block.code) === includesBlockType) {
-			functions.push(...(await resolveIncludesBlock(block, options.resolveInclude)));
+			if (resolveIncludesBlockForCompilerInput) {
+				functions.push(...(await resolveIncludesBlockForCompilerInput(block)));
+			}
 		}
 	}
 
 	return { entries, functions, constants, prototypes };
+}
+
+export async function prepareCompilerInputFromProjectBlocksAsync(
+	blocks: readonly ProjectBlock[],
+	options: PrepareCompilerInputOptions = {}
+): Promise<CompileInput> {
+	return prepareCompilerInputFromProjectBlocksCoreAsync(blocks, block =>
+		resolveIncludesBlock(block, options.resolveInclude)
+	);
 }
 
 export async function prepareCompilerInputAsync(
@@ -90,6 +116,23 @@ export async function prepareCompilerInputAsync(
 	options: PrepareCompilerInputOptions = {}
 ): Promise<CompileInput> {
 	return prepareCompilerInputFromProjectBlocksAsync(project.codeBlocks, options);
+}
+
+export async function prepareCompilerInputFromProjectSourceTreeAsync(
+	tree: ProjectSourceTree,
+	options: PrepareCompilerInputFromProjectSourceTreeOptions = {}
+): Promise<CompileInput> {
+	const includeFunctions = tree.children.flatMap(child => resolveFunctionIncludeSource(child.includeId, child.source));
+	const blocks = [...parseProjectSource(tree.source).codeBlocks, ...(options.extraBlocks ?? [])];
+	let hasConsumedIncludeTree = false;
+
+	return prepareCompilerInputFromProjectBlocksCoreAsync(blocks, () => {
+		if (hasConsumedIncludeTree) {
+			return [];
+		}
+		hasConsumedIncludeTree = true;
+		return includeFunctions;
+	});
 }
 
 export async function prepareCompilerInputFromProjectSourceAsync(
