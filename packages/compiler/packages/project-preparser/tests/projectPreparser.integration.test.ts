@@ -48,12 +48,14 @@ describe('project-preparser integration', () => {
 		].join('\n');
 		const resolveInclude: ProjectIncludeResolverAsync = includeId =>
 			({
-				'std/events/risingEdge': ['function risingEdge', 'functionEnd int'].join('\n'),
+				'std/events/risingEdge': ['function risingEdge', '#export', 'functionEnd int'].join('\n'),
 				'std/memory/wrapPointer': [
 					'function wrapPointer',
+					'#export',
 					'functionEnd int*',
 					'',
 					'function wrapPointer',
+					'#export',
 					'functionEnd float*',
 				].join('\n'),
 			})[includeId];

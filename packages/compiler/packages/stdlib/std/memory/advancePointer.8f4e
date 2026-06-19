@@ -1,4 +1,5 @@
 function advancePointer
+#export
 #impure
 ; Advances an int pointer by
 ; one element and wraps it
@@ -35,6 +36,7 @@ store
 functionEnd
 
 function advancePointer
+#export
 #impure
 ; Advances a float pointer by
 ; one element and wraps it

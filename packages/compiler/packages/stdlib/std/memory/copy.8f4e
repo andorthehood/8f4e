@@ -1,4 +1,5 @@
 function copy
+#export
 #impure
 ; Copies the value pointed to
 ; by source into dest.
@@ -12,6 +13,7 @@ store
 functionEnd
 
 function copy
+#export
 #impure
 ; Copies the value pointed to
 ; by source into dest.

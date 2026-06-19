@@ -1,4 +1,5 @@
 function smoothstep
+#export
 ; Smoothly maps amount in
 ; 0..1 to an eased 0..1
 ; curve.

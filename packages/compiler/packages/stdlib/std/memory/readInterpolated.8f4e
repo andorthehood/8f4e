@@ -1,4 +1,5 @@
 function readInterpolated
+#export
 #impure
 ; Reads an interpolated float
 ; value from a circular int
@@ -64,6 +65,7 @@ add
 functionEnd float
 
 function readInterpolated
+#export
 #impure
 ; Reads an interpolated float
 ; value from a circular int16
@@ -129,6 +131,7 @@ add
 functionEnd float
 
 function readInterpolated
+#export
 #impure
 ; Reads an interpolated float
 ; value from a circular float
