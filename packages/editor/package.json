@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/editor",
-  "version": "2.7.16",
+  "version": "2.7.17",
   "private": true,
   "description": "8f4e editor package",
   "type": "module",

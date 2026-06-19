@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/runtime-web-worker",
-  "version": "1.4.24",
+  "version": "1.4.25",
   "private": true,
   "description": "8f4e web worker runtime package",
   "type": "module",
