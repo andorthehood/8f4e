@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { compileProjectSource } from './compileProject';
+import { compileProject } from './compileProject';
 
 interface CompileCommandArgs {
 	inputPath?: string;
@@ -52,7 +52,7 @@ export async function runCompileCommand(args: string[]): Promise<void> {
 
 	const inputRaw = await fs.readFile(resolvedInput, 'utf8');
 
-	const { compiledWasm } = await compileProjectSource(inputRaw);
+	const { compiledWasm } = await compileProject(inputRaw);
 
 	await fs.mkdir(path.dirname(resolvedWasmOutput), { recursive: true });
 	await fs.writeFile(resolvedWasmOutput, Buffer.from(compiledWasm, 'base64'));
