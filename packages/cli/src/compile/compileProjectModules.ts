@@ -1,20 +1,21 @@
 import compile from '@8f4e/compiler';
 import type {
 	CompiledModuleLookup,
-	CompileInput,
 	CompileOptions,
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 } from '@8f4e/language-spec';
-import { prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
+import { type ProjectIncludeResolverAsync, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
+import { resolveStdlibInclude } from '../shared/stdlibResolver';
 import type { ProjectBlock } from '../shared/types';
 
-export interface CompileProjectModulesOptions {
+interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
+	resolveInclude?: ProjectIncludeResolverAsync;
 }
 
-export interface CompileProjectModulesResult {
+interface CompileProjectModulesResult {
 	compiledModules: CompiledModuleLookup;
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
@@ -28,10 +29,14 @@ function hasModuleBlocks(entries: Record<string, unknown[]>): boolean {
 	return Object.values(entries).some(entry => entry.length > 0);
 }
 
-export function compileCompilerInput(
-	compilerInput: CompileInput,
-	options: Pick<CompileProjectModulesOptions, 'compilerOptions'>
-): CompileProjectModulesResult {
+export default async function compileProjectModules(
+	blocks: ProjectBlock[],
+	options: CompileProjectModulesOptions
+): Promise<CompileProjectModulesResult> {
+	const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(blocks, {
+		resolveInclude: options.resolveInclude ?? resolveStdlibInclude,
+	});
+
 	if (!hasModuleBlocks(compilerInput.entries) && compilerInput.constants.length === 0) {
 		return {
 			compiledModules: {},
@@ -54,13 +59,4 @@ export function compileCompilerInput(
 		requiredMemoryBytes: result.requiredMemoryBytes,
 		requiredMemoryBytesByRegion: result.requiredMemoryBytesByRegion,
 	};
-}
-
-export default async function compileProjectModules(
-	blocks: ProjectBlock[],
-	options: CompileProjectModulesOptions
-): Promise<CompileProjectModulesResult> {
-	const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(blocks);
-
-	return compileCompilerInput(compilerInput, options);
 }

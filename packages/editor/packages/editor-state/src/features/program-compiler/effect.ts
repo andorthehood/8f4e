@@ -1,12 +1,8 @@
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
-import { IncludeResolutionError, resolveIncludeSourceTreeAsync } from '@8f4e/include-resolver';
 import type { CompilerDiagnostic } from '@8f4e/language-spec';
 import { documentBlockInstructionByType, ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
-import {
-	IncludeFunctionError,
-	type ProjectBlock,
-	prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync,
-} from '@8f4e/project-preparser';
+import type { ProjectBlock } from '@8f4e/project-preparser';
+import { ProjectIncludeError, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
 import type { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
@@ -35,42 +31,13 @@ export function toOrderedProjectBlocksForCompiler(codeBlocks: CodeBlockGraphicDa
 	return sortCodeBlocksByGridPosition(codeBlocks).map(toProjectBlock);
 }
 
-function createIncludeResolutionSourceFromCodeBlocks(blocks: readonly CodeBlockGraphicData[]): {
-	source: string;
-	projectBlockIdByLineNumber: ReadonlyMap<number, number>;
-} {
-	const lines: string[] = [];
-	const projectBlockIdByLineNumber = new Map<number, number>();
-
-	for (const block of blocks) {
-		if (block.disabled || block.blockType !== includesBlockType) {
-			continue;
-		}
-		if (lines.length > 0) {
-			lines.push('');
-		}
-		for (const line of block.code) {
-			lines.push(line);
-			projectBlockIdByLineNumber.set(lines.length, block.creationIndex);
-		}
-	}
-
-	return {
-		source: lines.join('\n'),
-		projectBlockIdByLineNumber,
-	};
-}
-
-function createIncludesDiagnostic(
-	error: IncludeResolutionError | IncludeFunctionError,
-	projectBlockId?: number
-): CompilerDiagnostic {
+function createIncludesDiagnostic(error: ProjectIncludeError): CompilerDiagnostic {
 	return {
 		code: ErrorCode.UNKNOWN_ERROR,
 		message: error.message,
 		line: { lineNumber: error.lineNumber },
 		context: {
-			projectBlockId,
+			projectBlockId: error.projectBlockId,
 		},
 	};
 }
@@ -109,16 +76,9 @@ export default function compiler(store: StateManager<State>) {
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
-			const orderedCodeBlocks = sortCodeBlocksByGridPosition(state.codeBlockRendering.codeBlocks);
-			const projectBlocks = orderedCodeBlocks.map(toProjectBlock);
-			const includeResolutionSource = createIncludeResolutionSourceFromCodeBlocks(orderedCodeBlocks);
-			const includeSourceTree = await resolveIncludeSourceTreeAsync(
-				includeResolutionSource.source,
-				state.callbacks.resolveInclude ?? (() => undefined)
-			);
-			const compilerInput = await prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync(
-				projectBlocks,
-				includeSourceTree
+			const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(
+				toOrderedProjectBlocksForCompiler(state.codeBlockRendering.codeBlocks),
+				{ resolveInclude: state.callbacks.resolveInclude }
 			);
 
 			const result = await state.callbacks.compileCode(compilerInput, compilerOptions);
@@ -162,16 +122,7 @@ export default function compiler(store: StateManager<State>) {
 			store.set('compiler.isCompiling', false);
 			setCompilerInfo({ isCompiling: false });
 			const diagnostic =
-				error instanceof IncludeResolutionError
-					? createIncludesDiagnostic(
-							error,
-							createIncludeResolutionSourceFromCodeBlocks(
-								sortCodeBlocksByGridPosition(state.codeBlockRendering.codeBlocks)
-							).projectBlockIdByLineNumber.get(error.lineNumber)
-						)
-					: error instanceof IncludeFunctionError
-						? createIncludesDiagnostic(error)
-						: (error as CompilerDiagnostic);
+				error instanceof ProjectIncludeError ? createIncludesDiagnostic(error) : (error as CompilerDiagnostic);
 
 			store.set('codeErrors.compilationErrors', [
 				{

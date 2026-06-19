@@ -239,12 +239,17 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 		return { assertions: 0, skipped: true };
 	}
 
-	const compileResult = await compileProject(inputRaw, {
-		compilerOptions: {
-			disableSharedMemory: true,
+	const compileResult = await compileProject(
+		{
+			...project,
+			codeBlocks: [...project.codeBlocks, ...assertFunctionBlocks],
 		},
-		extraCodeBlocks: assertFunctionBlocks,
-	});
+		{
+			compilerOptions: {
+				disableSharedMemory: true,
+			},
+		}
+	);
 
 	const failures: AssertionFailure[] = [];
 	let assertionCount = 0;
