@@ -36,6 +36,7 @@
     "@8f4e/wasm-codegen": "*"
   },
   "devDependencies": {
+    "@8f4e/include-resolver": "*",
     "@8f4e/project-preparser": "*",
     "@8f4e/stdlib": "*",
     "@types/node": "24.13.2"

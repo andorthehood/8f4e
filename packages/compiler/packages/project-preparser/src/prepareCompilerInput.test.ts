@@ -4,6 +4,7 @@ import {
 	prepareCompilerInputAsync,
 	prepareCompilerInputFromProjectBlocksAsync,
 	prepareCompilerInputFromProjectSourceAsync,
+	prepareCompilerInputFromProjectSourceTreeAsync,
 } from './prepareCompilerInput';
 
 const validModuleBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
@@ -176,5 +177,63 @@ describe('prepareCompilerInputFromProjectSourceAsync', () => {
 		await expect(prepareCompilerInputFromProjectSourceAsync(source)).resolves.toEqual(
 			await prepareCompilerInputAsync(parseProjectSource(source))
 		);
+	});
+});
+
+describe('prepareCompilerInputFromProjectSourceTreeAsync', () => {
+	it('prepares compiler input from a raw source tree with pre-resolved includes', async () => {
+		const source = [
+			'8f4e/v1',
+			'',
+			'includes',
+			'include std/events/risingEdge',
+			'includesEnd',
+			'',
+			'entry main',
+			...validModuleBlock,
+			'entryEnd',
+		].join('\n');
+
+		const input = await prepareCompilerInputFromProjectSourceTreeAsync({
+			source,
+			children: [
+				{
+					includeId: 'std/events/risingEdge',
+					source: includeSources['std/events/risingEdge'],
+					children: [],
+				},
+			],
+		});
+
+		expect(input.entries.main).toEqual([{ code: validModuleBlock, projectBlockId: 8 }]);
+		expect(input.functions).toEqual([
+			{
+				code: ['function risingEdge', '', 'functionEnd int'],
+				source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
+			},
+		]);
+	});
+
+	it('appends extra compiler blocks after parsing the source tree', async () => {
+		const source = ['8f4e/v1', '', 'entry main', ...validModuleBlock, 'entryEnd'].join('\n');
+
+		const input = await prepareCompilerInputFromProjectSourceTreeAsync(
+			{ source, children: [] },
+			{
+				extraBlocks: [
+					{
+						id: -1,
+						code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
+					},
+				],
+			}
+		);
+
+		expect(input.functions).toEqual([
+			{
+				code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
+				projectBlockId: -1,
+			},
+		]);
 	});
 });
