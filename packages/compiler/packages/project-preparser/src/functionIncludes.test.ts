@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-	type ProjectIncludeError,
-	resolveFunctionIncludeSource,
-	resolveProjectIncludesAsync,
-} from './functionIncludes';
+import { resolveFunctionIncludeSource } from './functionIncludes';
 
 describe('resolveFunctionIncludeSource', () => {
 	it('splits exported include functions and prefixes internal helper functions', () => {
@@ -120,79 +116,5 @@ describe('resolveFunctionIncludeSource', () => {
 				].join('\n')
 			)
 		).toThrow('call target "convert" is ambiguous');
-	});
-});
-
-describe('resolveProjectIncludesAsync', () => {
-	it('resolves include lines from project includes blocks into function blocks', async () => {
-		await expect(
-			resolveProjectIncludesAsync(
-				[
-					{
-						id: 10,
-						code: [
-							'includes',
-							'; @pos 0 0',
-							'include std/events/risingEdge',
-							'include std/memory/wrapPointer',
-							'includesEnd',
-						],
-					},
-				],
-				async includeId => {
-					if (includeId === 'std/events/risingEdge') {
-						return ['function risingEdge', '#export', 'functionEnd int'].join('\n');
-					}
-					if (includeId === 'std/memory/wrapPointer') {
-						return ['function wrapPointer', '#export', 'functionEnd int*'].join('\n');
-					}
-					return undefined;
-				}
-			)
-		).resolves.toEqual([
-			{
-				code: ['function risingEdge', '', 'functionEnd int'],
-				source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
-			},
-			{
-				code: ['function wrapPointer', '', 'functionEnd int*'],
-				source: { kind: 'include', includeId: 'std/memory/wrapPointer', symbolName: 'wrapPointer' },
-			},
-		]);
-	});
-
-	it('dedupes repeated include declarations by include id', async () => {
-		await expect(
-			resolveProjectIncludesAsync(
-				[
-					{
-						id: 10,
-						code: ['includes', 'include std/events/risingEdge', 'include std/events/risingEdge', 'includesEnd'],
-					},
-				],
-				async includeId =>
-					includeId === 'std/events/risingEdge'
-						? ['function risingEdge', '#export', 'functionEnd int'].join('\n')
-						: undefined
-			)
-		).resolves.toEqual([
-			{
-				code: ['function risingEdge', '', 'functionEnd int'],
-				source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
-			},
-		]);
-	});
-
-	it('throws structured include errors with block-relative line numbers', async () => {
-		await expect(
-			resolveProjectIncludesAsync(
-				[{ id: 10, code: ['includes', 'include std/missing', 'includesEnd'] }],
-				() => undefined
-			)
-		).rejects.toMatchObject({
-			name: 'ProjectIncludeError',
-			lineNumber: 2,
-			message: 'Parse error at line 2: unresolved include "std/missing"',
-		} satisfies Partial<ProjectIncludeError>);
 	});
 });

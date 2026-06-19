@@ -29,7 +29,7 @@ describe('compileProject (example projects)', () => {
 	it.each(exampleProjects)('compiles %s consistently', async relativePath => {
 		const source = await loadExampleProjectSource(relativePath);
 		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
-		const result = await cliModule.compileProjectSource(source);
+		const result = await cliModule.compileProject(source);
 
 		const snapshotPayload = {
 			compilerOptions: result.compilerOptions,

@@ -1,19 +1,12 @@
 import type { Module } from '@8f4e/language-spec';
-import { INCLUDES_BLOCK_DELIMITER } from './delimiters';
-import { isProjectGapLine } from './projectLines';
-import type { ProjectBlock } from './types';
 
-export type ProjectIncludeResolver = (includeId: string) => string | undefined;
-export type ProjectIncludeResolverAsync = (includeId: string) => string | Promise<string | undefined> | undefined;
-
-export class ProjectIncludeError extends Error {
+export class IncludeFunctionError extends Error {
 	constructor(
 		message: string,
-		readonly lineNumber: number,
-		readonly projectBlockId?: number
+		readonly lineNumber: number
 	) {
 		super(`Parse error at line ${lineNumber}: ${message}`);
-		this.name = 'ProjectIncludeError';
+		this.name = 'IncludeFunctionError';
 	}
 }
 
@@ -86,7 +79,7 @@ function getIncludeExport(includeId: string, block: FunctionIncludeBlock): Inclu
 		}
 
 		if (includeExport) {
-			throw new ProjectIncludeError(
+			throw new IncludeFunctionError(
 				`include "${includeId}" function can only declare one #export`,
 				block.startLineNumber + lineIndex
 			);
@@ -94,7 +87,7 @@ function getIncludeExport(includeId: string, block: FunctionIncludeBlock): Inclu
 
 		const [, publicName, ...extraArgs] = line.trim().split(/\s+/);
 		if (extraArgs.length > 0) {
-			throw new ProjectIncludeError(
+			throw new IncludeFunctionError(
 				`include "${includeId}" #export accepts at most one alias`,
 				block.startLineNumber + lineIndex
 			);
@@ -132,7 +125,7 @@ function createIncludeFunctions(includeId: string, blocks: FunctionIncludeBlock[
 	});
 
 	if (functions.every(func => !func.export)) {
-		throw new ProjectIncludeError(`include "${includeId}" must export at least one function`, 1);
+		throw new IncludeFunctionError(`include "${includeId}" must export at least one function`, 1);
 	}
 
 	return functions;
@@ -165,7 +158,7 @@ function createCallTargetRewriteMap(includeId: string, functions: IncludeFunctio
 			}
 			const targetName = getLineFirstArgument(line);
 			if (ambiguousNames.has(targetName)) {
-				throw new ProjectIncludeError(
+				throw new IncludeFunctionError(
 					`include "${includeId}" call target "${targetName}" is ambiguous because that function name expands to multiple public/internal include names`,
 					func.startLineNumber + lineIndex
 				);
@@ -213,119 +206,4 @@ export function resolveFunctionIncludeSource(includeId: string, source: string):
 			symbolName: func.finalName,
 		},
 	}));
-}
-
-function expandProjectInclude(
-	includedFunctionBlocks: Module[],
-	expandedIncludeIds: Set<string>,
-	includeId: string,
-	source: string
-): void {
-	if (expandedIncludeIds.has(includeId)) {
-		return;
-	}
-
-	includedFunctionBlocks.push(...resolveFunctionIncludeSource(includeId, source));
-	expandedIncludeIds.add(includeId);
-}
-
-export function collectProjectIncludeIdsFromBlock(block: Pick<ProjectBlock, 'code' | 'id'>) {
-	const includeIds: Array<{ includeId: string; lineNumber: number }> = [];
-
-	for (const [index, line] of block.code.entries()) {
-		const lineNumber = index + 1;
-		const trimmed = line.trim();
-		if (
-			trimmed === INCLUDES_BLOCK_DELIMITER.opener ||
-			trimmed === INCLUDES_BLOCK_DELIMITER.closer ||
-			isProjectGapLine(trimmed)
-		) {
-			continue;
-		}
-
-		const [instruction, includeId, ...extraArgs] = trimmed.split(/\s+/);
-		if (instruction !== 'include' || !includeId || extraArgs.length > 0) {
-			throw new ProjectIncludeError('include requires exactly one include id', lineNumber, block.id);
-		}
-		includeIds.push({ includeId, lineNumber });
-	}
-
-	return includeIds;
-}
-
-export function collectProjectIncludeIdsFromText(text: string): string[] {
-	const includeIds: string[] = [];
-	const lines = text.split('\n');
-
-	for (let i = 1; i < lines.length; i += 1) {
-		const trimmed = lines[i].trim();
-		if (trimmed !== INCLUDES_BLOCK_DELIMITER.opener) {
-			continue;
-		}
-
-		const blockLines = [lines[i]];
-		const blockStartLineNumber = i + 1;
-		for (i += 1; i < lines.length; i += 1) {
-			blockLines.push(lines[i]);
-			if (lines[i].trim() === INCLUDES_BLOCK_DELIMITER.closer) {
-				break;
-			}
-		}
-
-		includeIds.push(
-			...collectProjectIncludeIdsFromBlock({ id: blockStartLineNumber, code: blockLines }).map(
-				({ includeId }) => includeId
-			)
-		);
-	}
-
-	return includeIds;
-}
-
-export function resolveProjectIncludes(
-	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
-	resolveInclude: ProjectIncludeResolver
-): Module[] {
-	const includedFunctionBlocks: Module[] = [];
-	const expandedIncludeIds = new Set<string>();
-
-	for (const block of includeBlocks) {
-		if (block.disabled) {
-			continue;
-		}
-		for (const { includeId, lineNumber } of collectProjectIncludeIdsFromBlock(block)) {
-			if (expandedIncludeIds.has(includeId)) {
-				continue;
-			}
-
-			const source = resolveInclude(includeId);
-			if (source === undefined) {
-				throw new ProjectIncludeError(`unresolved include "${includeId}"`, lineNumber, block.id);
-			}
-
-			expandProjectInclude(includedFunctionBlocks, expandedIncludeIds, includeId, source);
-		}
-	}
-
-	return includedFunctionBlocks;
-}
-
-export async function resolveProjectIncludesAsync(
-	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
-	resolveInclude: ProjectIncludeResolverAsync
-): Promise<Module[]> {
-	const includeSources = new Map<string, string | undefined>();
-
-	for (const block of includeBlocks) {
-		if (block.disabled) {
-			continue;
-		}
-		for (const { includeId } of collectProjectIncludeIdsFromBlock(block)) {
-			if (!includeSources.has(includeId)) {
-				includeSources.set(includeId, await resolveInclude(includeId));
-			}
-		}
-	}
-
-	return resolveProjectIncludes(includeBlocks, includeId => includeSources.get(includeId));
 }
