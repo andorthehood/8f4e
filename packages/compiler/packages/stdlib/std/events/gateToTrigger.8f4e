@@ -1,4 +1,5 @@
 function gateToTrigger
+#export
 #impure
 ; Returns a one-sample trigger
 ; when an int gate rises above
@@ -16,6 +17,7 @@ store
 functionEnd int
 
 function gateToTrigger
+#export
 #impure
 ; Returns a one-sample trigger
 ; when a float gate rises above

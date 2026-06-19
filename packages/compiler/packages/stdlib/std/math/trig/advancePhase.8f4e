@@ -1,4 +1,5 @@
 function advancePhase
+#export
 #impure
 ; Advances a phase by one sample
 ; and wraps from PI to -PI.

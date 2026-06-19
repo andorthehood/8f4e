@@ -1,4 +1,5 @@
 function pow2
+#export
 param int exponent
 
 push 1

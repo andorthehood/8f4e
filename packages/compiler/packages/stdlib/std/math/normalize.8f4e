@@ -1,4 +1,5 @@
 function normalize
+#export
 #impure
 ; Loads a signed int8 value and
 ; maps it to a clamped -1..1
@@ -20,6 +21,7 @@ min
 functionEnd float
 
 function normalize
+#export
 #impure
 ; Loads an unsigned int8 value
 ; and maps it to a clamped
@@ -41,6 +43,7 @@ min
 functionEnd float
 
 function normalize
+#export
 #impure
 ; Loads a signed int16 value
 ; and maps it to a clamped
@@ -62,6 +65,7 @@ min
 functionEnd float
 
 function normalize
+#export
 #impure
 ; Loads an unsigned int16 value
 ; and maps it to a clamped
@@ -83,6 +87,7 @@ min
 functionEnd float
 
 function normalize
+#export
 #impure
 ; Loads a signed int value and
 ; maps it to a clamped -1..1
