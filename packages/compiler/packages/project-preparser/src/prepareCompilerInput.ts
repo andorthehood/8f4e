@@ -1,23 +1,13 @@
 import type { CompileInput, Module } from '@8f4e/language-spec';
 import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
-import { resolveFunctionIncludeSource } from './functionIncludes';
+import type { ProjectIncludeResolverAsync } from './functionIncludes';
+import { resolveProjectIncludesAsync } from './functionIncludes';
 import { parseProjectSource } from './parseProjectSource';
-import type { ProjectBlock } from './types';
+import type { ProjectBlock, ProjectDocument } from './types';
 
-export interface ProjectSourceTreeNode {
-	includeId: string;
-	source: string;
-	children: readonly ProjectSourceTreeNode[];
-}
-
-export interface ProjectSourceTree {
-	source: string;
-	children: readonly ProjectSourceTreeNode[];
-}
-
-export interface PrepareCompilerInputFromProjectSourceTreeOptions {
-	extraBlocks?: readonly ProjectBlock[];
+export interface PrepareCompilerInputOptions {
+	resolveInclude?: ProjectIncludeResolverAsync;
 }
 
 const constantsBlockType = documentBlockInstructionByType.constants.type;
@@ -25,8 +15,6 @@ const functionBlockType = documentBlockInstructionByType.function.type;
 const includesBlockType = documentBlockInstructionByType.includes.type;
 const moduleBlockType = documentBlockInstructionByType.module.type;
 const prototypeBlockType = documentBlockInstructionByType.prototype.type;
-
-type IncludeSourceTreeChildren = Pick<ProjectSourceTree, 'children'>;
 
 function assertProjectBlockId(block: ProjectBlock): void {
 	if (!Number.isInteger(block.id)) {
@@ -41,13 +29,20 @@ function toCompilerModule(block: ProjectBlock): Module {
 	};
 }
 
-function lowerIncludeSourceTreeChildrenToFunctions(tree: IncludeSourceTreeChildren): Module[] {
-	return tree.children.flatMap(child => resolveFunctionIncludeSource(child.includeId, child.source));
+async function resolveIncludesBlock(
+	block: ProjectBlock,
+	resolveInclude: ProjectIncludeResolverAsync | undefined
+): Promise<Module[]> {
+	if (!resolveInclude) {
+		return resolveProjectIncludesAsync([block], () => undefined);
+	}
+
+	return resolveProjectIncludesAsync([block], resolveInclude);
 }
 
-async function prepareCompilerInputFromProjectBlocksCoreAsync(
+export async function prepareCompilerInputFromProjectBlocksAsync(
 	blocks: readonly ProjectBlock[],
-	resolveIncludesBlockForCompilerInput?: (block: ProjectBlock) => Module[] | Promise<Module[]>
+	options: PrepareCompilerInputOptions = {}
 ): Promise<CompileInput> {
 	const entries: CompileInput['entries'] = { main: [] };
 	const constants: Module[] = [];
@@ -83,46 +78,23 @@ async function prepareCompilerInputFromProjectBlocksCoreAsync(
 			continue;
 		}
 		if (getDocumentProjectBlockType(block.code) === includesBlockType) {
-			if (resolveIncludesBlockForCompilerInput) {
-				functions.push(...(await resolveIncludesBlockForCompilerInput(block)));
-			}
+			functions.push(...(await resolveIncludesBlock(block, options.resolveInclude)));
 		}
 	}
 
 	return { entries, functions, constants, prototypes };
 }
 
-export async function prepareCompilerInputFromProjectBlocksAsync(
-	blocks: readonly ProjectBlock[]
+export async function prepareCompilerInputAsync(
+	project: ProjectDocument,
+	options: PrepareCompilerInputOptions = {}
 ): Promise<CompileInput> {
-	return prepareCompilerInputFromProjectBlocksCoreAsync(blocks);
+	return prepareCompilerInputFromProjectBlocksAsync(project.codeBlocks, options);
 }
 
-export async function prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync(
-	blocks: readonly ProjectBlock[],
-	tree: IncludeSourceTreeChildren,
-	options: PrepareCompilerInputFromProjectSourceTreeOptions = {}
+export async function prepareCompilerInputFromProjectSourceAsync(
+	source: string,
+	options: PrepareCompilerInputOptions = {}
 ): Promise<CompileInput> {
-	const includeFunctions = lowerIncludeSourceTreeChildrenToFunctions(tree);
-	const compilerBlocks = [...blocks, ...(options.extraBlocks ?? [])];
-	let hasConsumedIncludeTree = false;
-
-	return prepareCompilerInputFromProjectBlocksCoreAsync(compilerBlocks, () => {
-		if (hasConsumedIncludeTree) {
-			return [];
-		}
-		hasConsumedIncludeTree = true;
-		return includeFunctions;
-	});
-}
-
-export async function prepareCompilerInputFromProjectSourceTreeAsync(
-	tree: ProjectSourceTree,
-	options: PrepareCompilerInputFromProjectSourceTreeOptions = {}
-): Promise<CompileInput> {
-	return prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync(
-		parseProjectSource(tree.source).codeBlocks,
-		tree,
-		options
-	);
+	return prepareCompilerInputAsync(parseProjectSource(source), options);
 }

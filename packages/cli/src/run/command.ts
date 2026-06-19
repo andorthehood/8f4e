@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { compileProject } from '../compile/compileProject';
+import parse8f4eToProject from '../shared/parse8f4e';
 import { createRuntimeRunner } from './runtimeRunner';
 
 interface RunCommandArgs {
@@ -115,8 +116,9 @@ export async function runRunCommand(args: string[]): Promise<void> {
 	}
 
 	const inputRaw = await fs.readFile(resolvedInput, 'utf8');
+	const project = parse8f4eToProject(inputRaw);
 
-	const compileResult = await compileProject(inputRaw, {
+	const compileResult = await compileProject(project, {
 		compilerOptions: {
 			disableSharedMemory: true,
 		},

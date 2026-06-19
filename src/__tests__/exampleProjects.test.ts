@@ -3,8 +3,8 @@
  */
 
 import compile from '@8f4e/compiler';
-import { resolveIncludeSourceTreeAsync } from '@8f4e/include-resolver';
-import { prepareCompilerInputFromProjectSourceTreeAsync } from '@8f4e/project-preparser';
+import { parse8f4eToProject } from '@8f4e/editor-state';
+import { prepareCompilerInputAsync } from '@8f4e/project-preparser';
 import { readdirSync, readFileSync } from 'fs';
 import { basename, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -32,14 +32,14 @@ const projectPaths = new Map(
 	)
 );
 
-function loadProjectSource(name: string) {
+async function loadProject(name: string) {
 	const projectPath = projectPaths.get(name);
 
 	if (!projectPath) {
 		throw new Error(`Project fixture not found: ${name}`);
 	}
 
-	return readFileSync(projectPath, 'utf-8');
+	return parse8f4eToProject(readFileSync(projectPath, 'utf-8'));
 }
 
 const projectNames = Array.from(projectPaths.keys()).sort();
@@ -52,9 +52,10 @@ describe('Example Projects Compilation', () => {
 	describe('Module Compilation', () => {
 		projectNames.forEach((projectName, index) => {
 			it(`should compile module blocks in project ${index}`, async () => {
-				const source = loadProjectSource(projectName);
-				const sourceTree = await resolveIncludeSourceTreeAsync(source, resolveStdlibInclude);
-				const compilerInput = await prepareCompilerInputFromProjectSourceTreeAsync(sourceTree);
+				const project = await loadProject(projectName);
+				const compilerInput = await prepareCompilerInputAsync(project, {
+					resolveInclude: resolveStdlibInclude,
+				});
 				const moduleCount = Object.values(compilerInput.entries).reduce((sum, group) => sum + group.length, 0);
 
 				const result = compile(compilerInput, COMPILER_OPTIONS);

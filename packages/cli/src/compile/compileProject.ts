@@ -1,26 +1,23 @@
-import { resolveIncludeSourceTreeAsync } from '@8f4e/include-resolver';
 import type { CompileOptions } from '@8f4e/language-spec';
-import { prepareCompilerInputFromProjectSourceTreeAsync } from '@8f4e/project-preparser';
-import parse8f4eToProject from '../shared/parse8f4e';
-import { resolveStdlibInclude } from '../shared/stdlibResolver';
 import type { CompileProjectOptions, CompileProjectResult, ProjectDocument } from '../shared/types';
-import { type CompileProjectModulesResult, compileCompilerInput } from './compileProjectModules';
+import compileProjectModules from './compileProjectModules';
 
-function resolveCompilerOptions(options: CompileProjectOptions): CompileOptions {
-	return {
+export async function compileProject(
+	project: ProjectDocument,
+	options: CompileProjectOptions = {}
+): Promise<CompileProjectResult> {
+	const includeModules = options.includeModules ?? true;
+	const includeWasm = options.includeWasm ?? true;
+
+	const compilerOptions: CompileOptions = {
 		startingMemoryWordAddress: options.compilerOptions?.startingMemoryWordAddress ?? 0,
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 	};
-}
 
-function toCompileProjectResult(
-	project: ProjectDocument,
-	compilerOptions: CompileOptions,
-	moduleResult: CompileProjectModulesResult,
-	options: CompileProjectOptions
-): CompileProjectResult {
-	const includeModules = options.includeModules ?? true;
-	const includeWasm = options.includeWasm ?? true;
+	const moduleResult = await compileProjectModules(project.codeBlocks, {
+		compilerOptions,
+		resolveInclude: options.resolveInclude,
+	});
 
 	const outputProject: Record<string, unknown> = { ...project };
 	if (includeModules) {
@@ -45,19 +42,4 @@ function toCompileProjectResult(
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
 		requiredMemoryBytesByRegion: moduleResult.requiredMemoryBytesByRegion,
 	};
-}
-
-export async function compileProject(
-	source: string,
-	options: CompileProjectOptions = {}
-): Promise<CompileProjectResult> {
-	const compilerOptions = resolveCompilerOptions(options);
-	const sourceTree = await resolveIncludeSourceTreeAsync(source, options.resolveInclude ?? resolveStdlibInclude);
-	const project = parse8f4eToProject(sourceTree.source);
-	const compilerInput = await prepareCompilerInputFromProjectSourceTreeAsync(sourceTree, {
-		extraBlocks: options.extraCodeBlocks,
-	});
-	const moduleResult = compileCompilerInput(compilerInput, { compilerOptions });
-
-	return toCompileProjectResult(project, compilerOptions, moduleResult, options);
 }

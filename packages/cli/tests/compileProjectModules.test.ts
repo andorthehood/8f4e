@@ -94,4 +94,29 @@ describe('compileProjectModules', () => {
 		expect(result.compiledModules.target.executionEntryName).toBe('test');
 		expect(result.compiledModules.dependency.executionEntryName).toBe('main');
 	});
+
+	it('compiles included functions resolved from includes blocks with parsed project modules', async () => {
+		const result = await compileProjectModules(
+			[
+				{
+					id: 1,
+					code: ['includes', 'include std/test/includedOne', 'includesEnd'],
+				},
+				{
+					id: 2,
+					code: ['module target', 'call includedOne', 'drop', 'moduleEnd'],
+					entry: 'main',
+				},
+			],
+			{
+				compilerOptions: { startingMemoryWordAddress: 0 },
+				resolveInclude: includeId =>
+					includeId === 'std/test/includedOne'
+						? ['function includedOne', '#export', 'push 1', 'functionEnd int'].join('\n')
+						: undefined,
+			}
+		);
+
+		expect(result.compiledModules.target).toBeDefined();
+	});
 });
