@@ -3,7 +3,6 @@ import { IncludeResolutionError, resolveIncludeSourceTreeAsync } from '@8f4e/inc
 import type { CompilerDiagnostic } from '@8f4e/language-spec';
 import { documentBlockInstructionByType, ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import {
-	getDocumentProjectBlockType,
 	IncludeFunctionError,
 	type ProjectBlock,
 	prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync,
@@ -36,7 +35,7 @@ export function toOrderedProjectBlocksForCompiler(codeBlocks: CodeBlockGraphicDa
 	return sortCodeBlocksByGridPosition(codeBlocks).map(toProjectBlock);
 }
 
-function createIncludeResolutionSource(blocks: readonly ProjectBlock[]): {
+function createIncludeResolutionSourceFromCodeBlocks(blocks: readonly CodeBlockGraphicData[]): {
 	source: string;
 	projectBlockIdByLineNumber: ReadonlyMap<number, number>;
 } {
@@ -44,7 +43,7 @@ function createIncludeResolutionSource(blocks: readonly ProjectBlock[]): {
 	const projectBlockIdByLineNumber = new Map<number, number>();
 
 	for (const block of blocks) {
-		if (block.disabled || getDocumentProjectBlockType(block.code) !== includesBlockType) {
+		if (block.disabled || block.blockType !== includesBlockType) {
 			continue;
 		}
 		if (lines.length > 0) {
@@ -52,7 +51,7 @@ function createIncludeResolutionSource(blocks: readonly ProjectBlock[]): {
 		}
 		for (const line of block.code) {
 			lines.push(line);
-			projectBlockIdByLineNumber.set(lines.length, block.id);
+			projectBlockIdByLineNumber.set(lines.length, block.creationIndex);
 		}
 	}
 
@@ -110,8 +109,9 @@ export default function compiler(store: StateManager<State>) {
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
-			const projectBlocks = toOrderedProjectBlocksForCompiler(state.codeBlockRendering.codeBlocks);
-			const includeResolutionSource = createIncludeResolutionSource(projectBlocks);
+			const orderedCodeBlocks = sortCodeBlocksByGridPosition(state.codeBlockRendering.codeBlocks);
+			const projectBlocks = orderedCodeBlocks.map(toProjectBlock);
+			const includeResolutionSource = createIncludeResolutionSourceFromCodeBlocks(orderedCodeBlocks);
 			const includeSourceTree = await resolveIncludeSourceTreeAsync(
 				includeResolutionSource.source,
 				state.callbacks.resolveInclude ?? (() => undefined)
@@ -165,8 +165,8 @@ export default function compiler(store: StateManager<State>) {
 				error instanceof IncludeResolutionError
 					? createIncludesDiagnostic(
 							error,
-							createIncludeResolutionSource(
-								toOrderedProjectBlocksForCompiler(state.codeBlockRendering.codeBlocks)
+							createIncludeResolutionSourceFromCodeBlocks(
+								sortCodeBlocksByGridPosition(state.codeBlockRendering.codeBlocks)
 							).projectBlockIdByLineNumber.get(error.lineNumber)
 						)
 					: error instanceof IncludeFunctionError

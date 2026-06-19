@@ -1,5 +1,4 @@
 import compile from '@8f4e/compiler';
-import { type IncludeSourceResolverAsync, resolveIncludeSourceTreeAsync } from '@8f4e/include-resolver';
 import type {
 	CompiledModuleLookup,
 	CompileInput,
@@ -8,16 +7,11 @@ import type {
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 } from '@8f4e/language-spec';
-import {
-	getDocumentProjectBlockType,
-	prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync,
-} from '@8f4e/project-preparser';
-import { resolveStdlibInclude } from '../shared/stdlibResolver';
+import { prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
 import type { ProjectBlock } from '../shared/types';
 
 export interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
-	resolveInclude?: IncludeSourceResolverAsync;
 }
 
 export interface CompileProjectModulesResult {
@@ -32,14 +26,6 @@ export interface CompileProjectModulesResult {
 
 function hasModuleBlocks(entries: Record<string, unknown[]>): boolean {
 	return Object.values(entries).some(entry => entry.length > 0);
-}
-
-function createIncludeResolutionSource(blocks: readonly ProjectBlock[]): string {
-	return blocks
-		.filter(block => !block.disabled)
-		.filter(block => getDocumentProjectBlockType(block.code) === 'includes')
-		.flatMap(block => block.code)
-		.join('\n\n');
 }
 
 export function compileCompilerInput(
@@ -74,14 +60,7 @@ export default async function compileProjectModules(
 	blocks: ProjectBlock[],
 	options: CompileProjectModulesOptions
 ): Promise<CompileProjectModulesResult> {
-	const includeSourceTree = await resolveIncludeSourceTreeAsync(
-		createIncludeResolutionSource(blocks),
-		options.resolveInclude ?? resolveStdlibInclude
-	);
-	const compilerInput = await prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync(
-		blocks,
-		includeSourceTree
-	);
+	const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(blocks);
 
 	return compileCompilerInput(compilerInput, options);
 }
