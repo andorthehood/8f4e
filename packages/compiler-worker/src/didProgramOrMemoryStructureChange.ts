@@ -64,10 +64,6 @@ export default function didProgramOrMemoryStructureChange(
 			return true;
 		}
 
-		if (compiledModule.initFunctionBody.length !== previousModule.initFunctionBody.length) {
-			return true;
-		}
-
 		const plannedModule = current.memoryPlan.modules[id]!;
 		const previousPlannedModule = previous.memoryPlan.modules[id]!;
 

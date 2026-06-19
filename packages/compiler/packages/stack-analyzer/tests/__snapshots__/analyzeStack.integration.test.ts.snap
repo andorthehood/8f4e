@@ -1109,8 +1109,5 @@ exports[`analyzeStack integration > analyzes a project-level module and function
       ],
     },
   },
-  "usedFunctionIds": [
-    "increment__int",
-  ],
 }
 `;

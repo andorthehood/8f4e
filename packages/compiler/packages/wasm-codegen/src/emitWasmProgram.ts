@@ -23,9 +23,7 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import type {
 	CompiledFunction,
-	CompiledFunctionLookup,
 	CompiledModule,
-	CompiledModuleLookup,
 	CompileOptions,
 	CompileResult,
 	CompilerCache,
@@ -44,14 +42,8 @@ import createInitialMemoryDataSegments from './initialMemoryDataSegments/createI
 /** Linkable compiler output consumed by the WebAssembly emitter. */
 export type WasmProgramInput = {
 	entryNames: string[];
-	importedFunctionCount: number;
-	builtInFunctionCount: number;
 	compiledModules: CompiledModule[];
-	compiledModulesMap: CompiledModuleLookup;
 	compiledFunctions: CompiledFunction[];
-	compiledFunctionsMap: CompiledFunctionLookup;
-	importedUserFunctions: CompiledFunction[];
-	definedFunctions: CompiledFunction[];
 	functionTypeRegistry: FunctionTypeRegistry;
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
@@ -101,14 +93,8 @@ export function emitWasmProgram(
 ): CompileResult {
 	const {
 		entryNames,
-		importedFunctionCount,
-		builtInFunctionCount,
 		compiledModules,
-		compiledModulesMap,
 		compiledFunctions,
-		compiledFunctionsMap,
-		importedUserFunctions,
-		definedFunctions,
 		functionTypeRegistry,
 		memoryPlan,
 		memoryDefaultsByModuleId,
@@ -128,6 +114,10 @@ export function emitWasmProgram(
 	const initialMemoryDataSegments = createInitialMemoryDataSegments(memoryPlan, memoryDefaultsByModuleId);
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
+	const importedUserFunctions = compiledFunctions.filter(func => func.import);
+	const definedFunctions = compiledFunctions.filter(func => !func.import);
+	const importedFunctionCount = importedUserFunctions.length;
+	const builtInFunctionCount = 1 + entryNames.length;
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = definedFunctions.map(func => func.typeIndex);
 	const userFunctionCount = definedFunctions.length;
@@ -208,8 +198,8 @@ export function emitWasmProgram(
 				? createDataSection(initialMemoryDataSegments.map(segment => createPassiveDataSegment(segment.bytes)))
 				: []),
 		]),
-		compiledModules: compiledModulesMap,
-		compiledFunctions: compiledFunctionsMap,
+		compiledModules: Object.fromEntries(compiledModules.map(module => [module.id, module])),
+		compiledFunctions: Object.fromEntries(compiledFunctions.map(func => [func.id, func])),
 		memoryPlan,
 		memoryDefaultsByModuleId,
 		pointerMetadataByModuleId,
