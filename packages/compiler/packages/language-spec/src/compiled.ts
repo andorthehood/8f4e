@@ -14,7 +14,6 @@ export type CompiledStackAnalysisLine = {
 /** Code generation output and metadata for a compiled executable module. */
 export interface CompiledModule {
 	index: number;
-	initFunctionBody: number[];
 	cycleFunction: number[];
 	id: string;
 	executionEntryName?: string;

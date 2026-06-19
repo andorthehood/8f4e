@@ -10,7 +10,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "projectConfig",
@@ -57,7 +56,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "sineLT",
@@ -4514,7 +4512,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "dancer1",
@@ -4874,7 +4871,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "dancer2",
@@ -5234,7 +5230,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "dancer3",
@@ -5595,7 +5590,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "dancer4",

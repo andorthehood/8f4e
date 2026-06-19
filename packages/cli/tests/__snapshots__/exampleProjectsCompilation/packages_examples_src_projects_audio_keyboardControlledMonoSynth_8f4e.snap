@@ -10,7 +10,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "projectConfig",
@@ -57,7 +56,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "keyboard",
@@ -145,7 +143,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "janko",
@@ -270,7 +267,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "midiLUT",
@@ -1784,7 +1780,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "midiNote2Freq",
@@ -2072,7 +2067,6 @@
         11,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "arEnv",
@@ -2742,7 +2736,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "phaseAccumulator",
@@ -3116,7 +3109,6 @@
         0,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "vca",
@@ -3354,7 +3346,6 @@
         11,
         11
       ],
-      "initFunctionBody": [],
       "ast": {
         "type": "module",
         "id": "audioout",
