@@ -2013,5 +2013,36 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "9a976f3aa6557f1f0a6298fe2316037223f21f29",
+		"recordedAt": "2026-06-19T14:04:27.761Z",
+		"coverage": {
+			"documented": 113,
+			"total": 719,
+			"percentage": 15.7,
+			"byKind": {
+				"interface": {
+					"documented": 22,
+					"total": 86,
+					"percentage": 25.6
+				},
+				"property-signature": {
+					"documented": 86,
+					"total": 604,
+					"percentage": 14.2
+				},
+				"type": {
+					"documented": 5,
+					"total": 26,
+					"percentage": 19.2
+				},
+				"index-signature": {
+					"documented": 0,
+					"total": 3,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]
