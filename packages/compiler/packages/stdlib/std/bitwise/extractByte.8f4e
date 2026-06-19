@@ -1,4 +1,5 @@
 function extractByte
+#export
 param int word
 param int byteIndex
 

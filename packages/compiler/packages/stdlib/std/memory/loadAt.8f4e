@@ -1,4 +1,5 @@
 function loadAt
+#export
 #impure
 param int* buffer
 param int index

@@ -1,4 +1,5 @@
 function lerp
+#export
 ; Linearly interpolates between
 ; start and end by amount.
 param float start

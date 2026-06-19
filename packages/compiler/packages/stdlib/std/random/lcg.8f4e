@@ -1,4 +1,5 @@
 function lcg
+#export
 #impure
 ; Advances a 16-bit linear
 ; congruential generator seed

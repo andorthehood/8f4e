@@ -1,4 +1,5 @@
 function readInterpolated
+#export
 #impure
 ; Reads an interpolated float
 ; value from a circular int
@@ -17,38 +18,20 @@ push sizeof(*buffer)
 mul
 localSet byteLength
 
-push buffer
 push pointer
 push buffer
-sub
 push byteLength
-ensureNonZero
-remainder
-push byteLength
-add
-push byteLength
-ensureNonZero
-remainder
-add
+call wrapReadAddress
 load
 castToFloat
 localSet first
 
-push buffer
 push pointer
 push sizeof(*buffer)
 add
 push buffer
-sub
 push byteLength
-ensureNonZero
-remainder
-push byteLength
-add
-push byteLength
-ensureNonZero
-remainder
-add
+call wrapReadAddress
 load
 castToFloat
 localSet second
@@ -64,6 +47,7 @@ add
 functionEnd float
 
 function readInterpolated
+#export
 #impure
 ; Reads an interpolated float
 ; value from a circular int16
@@ -82,38 +66,20 @@ push sizeof(*buffer)
 mul
 localSet byteLength
 
-push buffer
 push pointer
 push buffer
-sub
 push byteLength
-ensureNonZero
-remainder
-push byteLength
-add
-push byteLength
-ensureNonZero
-remainder
-add
+call wrapReadAddress
 load16s
 castToFloat
 localSet first
 
-push buffer
 push pointer
 push sizeof(*buffer)
 add
 push buffer
-sub
 push byteLength
-ensureNonZero
-remainder
-push byteLength
-add
-push byteLength
-ensureNonZero
-remainder
-add
+call wrapReadAddress
 load16s
 castToFloat
 localSet second
@@ -129,6 +95,7 @@ add
 functionEnd float
 
 function readInterpolated
+#export
 #impure
 ; Reads an interpolated float
 ; value from a circular float
@@ -147,37 +114,19 @@ push sizeof(*buffer)
 mul
 localSet byteLength
 
-push buffer
 push pointer
 push buffer
-sub
 push byteLength
-ensureNonZero
-remainder
-push byteLength
-add
-push byteLength
-ensureNonZero
-remainder
-add
+call wrapReadAddress
 loadFloat
 localSet first
 
-push buffer
 push pointer
 push sizeof(*buffer)
 add
 push buffer
-sub
 push byteLength
-ensureNonZero
-remainder
-push byteLength
-add
-push byteLength
-ensureNonZero
-remainder
-add
+call wrapReadAddress
 loadFloat
 localSet second
 
@@ -190,3 +139,78 @@ mul
 add
 
 functionEnd float
+
+function wrapReadAddress
+; Wraps an int-buffer byte
+; address into the circular
+; buffer range used by
+; readInterpolated.
+param int pointer
+param int* buffer
+param int byteLength
+
+push buffer
+push pointer
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+
+functionEnd int*
+
+function wrapReadAddress
+; Wraps an int16-buffer byte
+; address into the circular
+; buffer range used by
+; readInterpolated.
+param int pointer
+param int16* buffer
+param int byteLength
+
+push buffer
+push pointer
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+
+functionEnd int16*
+
+function wrapReadAddress
+; Wraps a float-buffer byte
+; address into the circular
+; buffer range used by
+; readInterpolated.
+param int pointer
+param float* buffer
+param int byteLength
+
+push buffer
+push pointer
+push buffer
+sub
+push byteLength
+ensureNonZero
+remainder
+push byteLength
+add
+push byteLength
+ensureNonZero
+remainder
+add
+
+functionEnd float*

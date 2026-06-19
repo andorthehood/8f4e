@@ -12,12 +12,14 @@ const validPrototypeBlock = ['prototype oscillatorState', 'float phase', 'float 
 const validNoteBlock = ['note', '; @pos 2 3', 'remember to tune this later', 'noteEnd'];
 
 const includeSources: Record<string, string> = {
-	'std/events/risingEdge': ['function risingEdge', 'functionEnd int'].join('\n'),
+	'std/events/risingEdge': ['function risingEdge', '#export', 'functionEnd int'].join('\n'),
 	'std/memory/wrapPointer': [
 		'function wrapPointer',
+		'#export',
 		'functionEnd int*',
 		'',
 		'function wrapPointer',
+		'#export',
 		'functionEnd float*',
 	].join('\n'),
 };
@@ -77,15 +79,15 @@ describe('prepareCompilerInputFromProjectBlocksAsync', () => {
 
 		expect(input.functions).toEqual([
 			{
-				code: ['function risingEdge', 'functionEnd int'],
+				code: ['function risingEdge', '', 'functionEnd int'],
 				source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
 			},
 			{
-				code: ['function wrapPointer', 'functionEnd int*'],
+				code: ['function wrapPointer', '', 'functionEnd int*'],
 				source: { kind: 'include', includeId: 'std/memory/wrapPointer', symbolName: 'wrapPointer' },
 			},
 			{
-				code: ['function wrapPointer', 'functionEnd float*'],
+				code: ['function wrapPointer', '', 'functionEnd float*'],
 				source: { kind: 'include', includeId: 'std/memory/wrapPointer', symbolName: 'wrapPointer' },
 			},
 		]);
@@ -162,7 +164,7 @@ describe('prepareCompilerInputFromProjectSourceAsync', () => {
 		expect(input.entries.main).toEqual([{ code: validModuleBlock, projectBlockId: 8 }]);
 		expect(input.functions).toEqual([
 			{
-				code: ['function risingEdge', 'functionEnd int'],
+				code: ['function risingEdge', '', 'functionEnd int'],
 				source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
 			},
 		]);
