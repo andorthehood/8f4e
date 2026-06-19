@@ -238,12 +238,18 @@ describe('program compiler effect', () => {
 		});
 		mockState.callbacks.resolveInclude = vi.fn(async includeId => {
 			if (includeId === 'std/events/risingEdge') {
-				return ['function risingEdge', 'functionEnd int'].join('\n');
+				return ['function risingEdge', '#export', 'functionEnd int'].join('\n');
 			}
 			if (includeId === 'std/memory/wrapPointer') {
-				return ['function wrapPointer', 'functionEnd int*', '', 'function wrapPointer', 'functionEnd float*'].join(
-					'\n'
-				);
+				return [
+					'function wrapPointer',
+					'#export',
+					'functionEnd int*',
+					'',
+					'function wrapPointer',
+					'#export',
+					'functionEnd float*',
+				].join('\n');
 			}
 			return undefined;
 		});
@@ -268,15 +274,15 @@ describe('program compiler effect', () => {
 			expect.objectContaining({
 				functions: expect.arrayContaining([
 					expect.objectContaining({
-						code: ['function risingEdge', 'functionEnd int'],
+						code: ['function risingEdge', '', 'functionEnd int'],
 						source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
 					}),
 					expect.objectContaining({
-						code: ['function wrapPointer', 'functionEnd int*'],
+						code: ['function wrapPointer', '', 'functionEnd int*'],
 						source: { kind: 'include', includeId: 'std/memory/wrapPointer', symbolName: 'wrapPointer' },
 					}),
 					expect.objectContaining({
-						code: ['function wrapPointer', 'functionEnd float*'],
+						code: ['function wrapPointer', '', 'functionEnd float*'],
 						source: { kind: 'include', includeId: 'std/memory/wrapPointer', symbolName: 'wrapPointer' },
 					}),
 				]),

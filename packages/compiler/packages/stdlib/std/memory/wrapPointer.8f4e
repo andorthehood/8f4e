@@ -1,4 +1,5 @@
 function wrapPointer
+#export
 ; Bidirectionally wraps an int
 ; byte address into a circular
 ; int buffer.
@@ -30,6 +31,7 @@ add
 functionEnd int*
 
 function wrapPointer
+#export
 ; Bidirectionally wraps a float
 ; byte address into a circular
 ; float buffer.
