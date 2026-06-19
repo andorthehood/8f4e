@@ -1,7 +1,7 @@
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/language-spec';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { compileProject } from '../compile/compileProject';
+import { compileProjectSource } from '../compile/compileProject';
 import parse8f4eToProject from '../shared/parse8f4e';
 
 import type { ProjectBlock, ProjectDocument } from '../shared/types';
@@ -239,17 +239,12 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 		return { assertions: 0, skipped: true };
 	}
 
-	const compileResult = await compileProject(
-		{
-			...project,
-			codeBlocks: [...project.codeBlocks, ...assertFunctionBlocks],
+	const compileResult = await compileProjectSource(inputRaw, {
+		compilerOptions: {
+			disableSharedMemory: true,
 		},
-		{
-			compilerOptions: {
-				disableSharedMemory: true,
-			},
-		}
-	);
+		extraCodeBlocks: assertFunctionBlocks,
+	});
 
 	const failures: AssertionFailure[] = [];
 	let assertionCount = 0;

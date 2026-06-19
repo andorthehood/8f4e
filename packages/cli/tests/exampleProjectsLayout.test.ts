@@ -25,10 +25,13 @@ function getSnapshotPath(relativePath: string): string {
 
 async function loadExampleProject(relativePath: string) {
 	const raw = await fs.readFile(path.join(repoRoot, relativePath), 'utf8');
-	return parse8f4eToProject(raw);
+	return {
+		raw,
+		project: parse8f4eToProject(raw),
+	};
 }
 
-function getProjectModuleBlocks(project: Awaited<ReturnType<typeof loadExampleProject>>) {
+function getProjectModuleBlocks(project: Awaited<ReturnType<typeof loadExampleProject>>['project']) {
 	return project.codeBlocks.filter(block => {
 		const firstLine = block.code[0]?.trim() ?? '';
 		return firstLine.startsWith('module ') || firstLine.startsWith('constants ');
@@ -43,11 +46,11 @@ function getBlockId(block: { code: string[] }): string {
 
 describe('compileProject (example project layout)', () => {
 	it.each(exampleProjects)('captures layout invariants for %s', async relativePath => {
-		const project = await loadExampleProject(relativePath);
+		const { raw, project } = await loadExampleProject(relativePath);
 		const moduleBlocks = getProjectModuleBlocks(project);
 
 		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
-		const result = await cliModule.compileProject(project);
+		const result = await cliModule.compileProjectSource(raw);
 
 		const compiledModuleLayout = Object.values(result.compiledModules)
 			.sort((a, b) => a.index - b.index)

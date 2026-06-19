@@ -9,11 +9,17 @@ export {
 	resolveProjectIncludesAsync,
 } from './functionIncludes';
 export { parseProjectSource as default, parseProjectSource } from './parseProjectSource';
-export type { PrepareCompilerInputOptions } from './prepareCompilerInput';
+export type {
+	PrepareCompilerInputFromProjectSourceTreeOptions,
+	PrepareCompilerInputOptions,
+	ProjectSourceTree,
+	ProjectSourceTreeNode,
+} from './prepareCompilerInput';
 export {
 	prepareCompilerInputAsync,
 	prepareCompilerInputFromProjectBlocksAsync,
 	prepareCompilerInputFromProjectSourceAsync,
+	prepareCompilerInputFromProjectSourceTreeAsync,
 } from './prepareCompilerInput';
 export { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 export type { ProjectBlock, ProjectBlockType, ProjectDocument, ProjectGroup } from './types';
