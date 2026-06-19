@@ -86,7 +86,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
-| 464 | Require explicit stdlib include exports | 2026-06-19 | Include-local `#export` now marks public stdlib functions, private helpers are prefixed, and `wrapPointer` exercises the private-helper path. |
+| 464 | Require explicit stdlib include exports | 2026-06-19 | Include-local `#export` now marks public stdlib functions, private helpers are prefixed, and `readInterpolated` exercises the private-helper path. |
 | 458 | Decouple module execution order from memory layout | 2026-06-18 | Memory layout now allocates modules alphabetically by id while execution order remains driven by entry/module source order. |
 | 460 | Fix cross-block constant cache dependencies | 2026-06-17 | Constant resolution now returns per-line facts beside source-shaped cached ASTs, and recompiling with a changed constants block re-resolves unchanged cached module ASTs correctly. |
 | 462 | Extract semantic reference resolver | 2026-06-17 | Semantic reference resolution now runs once in compileSubProgram and returns a report consumed by stack analysis and WASM codegen alongside unchanged ASTs. |

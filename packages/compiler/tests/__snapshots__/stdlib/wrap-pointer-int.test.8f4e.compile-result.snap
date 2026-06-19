@@ -1,463 +1,5 @@
 {
   "functionAst": {
-    "__8f4e_std_memory_wrapPointer__wrapPointerAddress__int__float_p__int": {
-      "lines": [
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "__8f4e_std_memory_wrapPointer__wrapPointerAddress",
-            },
-          ],
-          "instruction": "function",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "pointer",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "float*",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "buffer",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "itemCount",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "local",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "itemCount",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "isPointee": true,
-              "referenceKind": "pointee-element-word-size",
-              "scope": "local",
-              "targetMemoryId": "buffer",
-              "type": "identifier",
-              "value": "sizeof(*buffer)",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "mul",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "localSet",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "buffer",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "pointer",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "buffer",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "sub",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "ensureNonZero",
-        },
-        {
-          "arguments": [],
-          "instruction": "remainder",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "add",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "ensureNonZero",
-        },
-        {
-          "arguments": [],
-          "instruction": "remainder",
-        },
-        {
-          "arguments": [],
-          "instruction": "add",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "float*",
-            },
-          ],
-          "instruction": "functionEnd",
-        },
-      ],
-      "name": "__8f4e_std_memory_wrapPointer__wrapPointerAddress",
-      "type": "function",
-    },
-    "__8f4e_std_memory_wrapPointer__wrapPointerAddress__int__int_p__int": {
-      "lines": [
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "__8f4e_std_memory_wrapPointer__wrapPointerAddress",
-            },
-          ],
-          "instruction": "function",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "pointer",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int*",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "buffer",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "itemCount",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "local",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "itemCount",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "isPointee": true,
-              "referenceKind": "pointee-element-word-size",
-              "scope": "local",
-              "targetMemoryId": "buffer",
-              "type": "identifier",
-              "value": "sizeof(*buffer)",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "mul",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "localSet",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "buffer",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "pointer",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "buffer",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "sub",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "ensureNonZero",
-        },
-        {
-          "arguments": [],
-          "instruction": "remainder",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "add",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "byteLength",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "ensureNonZero",
-        },
-        {
-          "arguments": [],
-          "instruction": "remainder",
-        },
-        {
-          "arguments": [],
-          "instruction": "add",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "int*",
-            },
-          ],
-          "instruction": "functionEnd",
-        },
-      ],
-      "name": "__8f4e_std_memory_wrapPointer__wrapPointerAddress",
-      "type": "function",
-    },
     "wrapPointer__int__float_p__int": {
       "lines": [
         {
@@ -528,10 +70,55 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "pointer",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "itemCount",
             },
           ],
           "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "localSet",
         },
         {
           "arguments": [
@@ -550,7 +137,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "itemCount",
+              "value": "pointer",
             },
           ],
           "instruction": "push",
@@ -561,10 +148,71 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_wrapPointer__wrapPointerAddress",
+              "value": "buffer",
             },
           ],
-          "instruction": "call",
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
         },
         {
           "arguments": [
@@ -651,10 +299,55 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "pointer",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "itemCount",
             },
           ],
           "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "buffer",
+              "type": "identifier",
+              "value": "sizeof(*buffer)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "localSet",
         },
         {
           "arguments": [
@@ -673,7 +366,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "itemCount",
+              "value": "pointer",
             },
           ],
           "instruction": "push",
@@ -684,10 +377,71 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_wrapPointer__wrapPointerAddress",
+              "value": "buffer",
             },
           ],
-          "instruction": "call",
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "byteLength",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "ensureNonZero",
+        },
+        {
+          "arguments": [],
+          "instruction": "remainder",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
         },
         {
           "arguments": [
@@ -706,32 +460,6 @@
     },
   },
   "functionOverview": {
-    "__8f4e_std_memory_wrapPointer__wrapPointerAddress__int__float_p__int": {
-      "id": "__8f4e_std_memory_wrapPointer__wrapPointerAddress__int__float_p__int",
-      "signature": {
-        "parameters": [
-          "int",
-          "float*",
-          "int",
-        ],
-        "returns": [
-          "float*",
-        ],
-      },
-    },
-    "__8f4e_std_memory_wrapPointer__wrapPointerAddress__int__int_p__int": {
-      "id": "__8f4e_std_memory_wrapPointer__wrapPointerAddress__int__int_p__int",
-      "signature": {
-        "parameters": [
-          "int",
-          "int*",
-          "int",
-        ],
-        "returns": [
-          "int*",
-        ],
-      },
-    },
     "wrapPointer__int__float_p__int": {
       "id": "wrapPointer__int__float_p__int",
       "signature": {
@@ -1157,8 +885,6 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_memory_wrapPointer__wrapPointerAddress__int__float_p__int",
-      "__8f4e_std_memory_wrapPointer__wrapPointerAddress__int__int_p__int",
       "wrapPointer__int__float_p__int",
       "wrapPointer__int__int_p__int",
     ],
