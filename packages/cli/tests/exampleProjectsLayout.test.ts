@@ -50,7 +50,7 @@ describe('compileProject (example project layout)', () => {
 		const moduleBlocks = getProjectModuleBlocks(project);
 
 		const cliModule = await import(pathToFileURL(path.join(packageRoot, 'dist', 'index.js')).href);
-		const result = await cliModule.compileProjectSource(raw);
+		const result = await cliModule.compileProject(raw);
 
 		const compiledModuleLayout = Object.values(result.compiledModules)
 			.sort((a, b) => a.index - b.index)

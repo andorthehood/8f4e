@@ -4,7 +4,7 @@ import { prepareCompilerInputFromProjectSourceTreeAsync } from '@8f4e/project-pr
 import parse8f4eToProject from '../shared/parse8f4e';
 import { resolveStdlibInclude } from '../shared/stdlibResolver';
 import type { CompileProjectOptions, CompileProjectResult, ProjectDocument } from '../shared/types';
-import compileProjectModules, { type CompileProjectModulesResult, compileCompilerInput } from './compileProjectModules';
+import { type CompileProjectModulesResult, compileCompilerInput } from './compileProjectModules';
 
 function resolveCompilerOptions(options: CompileProjectOptions): CompileOptions {
 	return {
@@ -48,19 +48,6 @@ function toCompileProjectResult(
 }
 
 export async function compileProject(
-	project: ProjectDocument,
-	options: CompileProjectOptions = {}
-): Promise<CompileProjectResult> {
-	const compilerOptions = resolveCompilerOptions(options);
-	const moduleResult = await compileProjectModules([...project.codeBlocks, ...(options.extraCodeBlocks ?? [])], {
-		compilerOptions,
-		resolveInclude: options.resolveInclude,
-	});
-
-	return toCompileProjectResult(project, compilerOptions, moduleResult, options);
-}
-
-export async function compileProjectSource(
 	source: string,
 	options: CompileProjectOptions = {}
 ): Promise<CompileProjectResult> {

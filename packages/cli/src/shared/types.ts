@@ -1,3 +1,4 @@
+import type { IncludeSourceResolverAsync } from '@8f4e/include-resolver';
 import type {
 	CompiledFunctionLookup,
 	CompiledModuleLookup,
@@ -6,12 +7,7 @@ import type {
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 } from '@8f4e/language-spec';
-import type {
-	ProjectBlock,
-	ProjectBlockType,
-	ProjectDocument,
-	ProjectIncludeResolverAsync,
-} from '@8f4e/project-preparser';
+import type { ProjectBlock, ProjectBlockType, ProjectDocument } from '@8f4e/project-preparser';
 
 export type { ProjectBlock, ProjectDocument };
 
@@ -20,7 +16,7 @@ export interface CompileProjectOptions {
 	includeModules?: boolean;
 	includeWasm?: boolean;
 	includeFunctions?: boolean;
-	resolveInclude?: ProjectIncludeResolverAsync;
+	resolveInclude?: IncludeSourceResolverAsync;
 	extraCodeBlocks?: ProjectBlock[];
 }
 

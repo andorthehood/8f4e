@@ -1,14 +1,9 @@
 import type { CompileInput, Module } from '@8f4e/language-spec';
 import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
-import type { ProjectIncludeResolverAsync } from './functionIncludes';
-import { resolveFunctionIncludeSource, resolveProjectIncludesAsync } from './functionIncludes';
+import { resolveFunctionIncludeSource } from './functionIncludes';
 import { parseProjectSource } from './parseProjectSource';
-import type { ProjectBlock, ProjectDocument } from './types';
-
-export interface PrepareCompilerInputOptions {
-	resolveInclude?: ProjectIncludeResolverAsync;
-}
+import type { ProjectBlock } from './types';
 
 export interface ProjectSourceTreeNode {
 	includeId: string;
@@ -31,6 +26,8 @@ const includesBlockType = documentBlockInstructionByType.includes.type;
 const moduleBlockType = documentBlockInstructionByType.module.type;
 const prototypeBlockType = documentBlockInstructionByType.prototype.type;
 
+type IncludeSourceTreeChildren = Pick<ProjectSourceTree, 'children'>;
+
 function assertProjectBlockId(block: ProjectBlock): void {
 	if (!Number.isInteger(block.id)) {
 		throw new Error('Project block is missing numeric id');
@@ -44,15 +41,8 @@ function toCompilerModule(block: ProjectBlock): Module {
 	};
 }
 
-async function resolveIncludesBlock(
-	block: ProjectBlock,
-	resolveInclude: ProjectIncludeResolverAsync | undefined
-): Promise<Module[]> {
-	if (!resolveInclude) {
-		return resolveProjectIncludesAsync([block], () => undefined);
-	}
-
-	return resolveProjectIncludesAsync([block], resolveInclude);
+function lowerIncludeSourceTreeChildrenToFunctions(tree: IncludeSourceTreeChildren): Module[] {
+	return tree.children.flatMap(child => resolveFunctionIncludeSource(child.includeId, child.source));
 }
 
 async function prepareCompilerInputFromProjectBlocksCoreAsync(
@@ -103,30 +93,21 @@ async function prepareCompilerInputFromProjectBlocksCoreAsync(
 }
 
 export async function prepareCompilerInputFromProjectBlocksAsync(
+	blocks: readonly ProjectBlock[]
+): Promise<CompileInput> {
+	return prepareCompilerInputFromProjectBlocksCoreAsync(blocks);
+}
+
+export async function prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync(
 	blocks: readonly ProjectBlock[],
-	options: PrepareCompilerInputOptions = {}
-): Promise<CompileInput> {
-	return prepareCompilerInputFromProjectBlocksCoreAsync(blocks, block =>
-		resolveIncludesBlock(block, options.resolveInclude)
-	);
-}
-
-export async function prepareCompilerInputAsync(
-	project: ProjectDocument,
-	options: PrepareCompilerInputOptions = {}
-): Promise<CompileInput> {
-	return prepareCompilerInputFromProjectBlocksAsync(project.codeBlocks, options);
-}
-
-export async function prepareCompilerInputFromProjectSourceTreeAsync(
-	tree: ProjectSourceTree,
+	tree: IncludeSourceTreeChildren,
 	options: PrepareCompilerInputFromProjectSourceTreeOptions = {}
 ): Promise<CompileInput> {
-	const includeFunctions = tree.children.flatMap(child => resolveFunctionIncludeSource(child.includeId, child.source));
-	const blocks = [...parseProjectSource(tree.source).codeBlocks, ...(options.extraBlocks ?? [])];
+	const includeFunctions = lowerIncludeSourceTreeChildrenToFunctions(tree);
+	const compilerBlocks = [...blocks, ...(options.extraBlocks ?? [])];
 	let hasConsumedIncludeTree = false;
 
-	return prepareCompilerInputFromProjectBlocksCoreAsync(blocks, () => {
+	return prepareCompilerInputFromProjectBlocksCoreAsync(compilerBlocks, () => {
 		if (hasConsumedIncludeTree) {
 			return [];
 		}
@@ -135,9 +116,13 @@ export async function prepareCompilerInputFromProjectSourceTreeAsync(
 	});
 }
 
-export async function prepareCompilerInputFromProjectSourceAsync(
-	source: string,
-	options: PrepareCompilerInputOptions = {}
+export async function prepareCompilerInputFromProjectSourceTreeAsync(
+	tree: ProjectSourceTree,
+	options: PrepareCompilerInputFromProjectSourceTreeOptions = {}
 ): Promise<CompileInput> {
-	return prepareCompilerInputAsync(parseProjectSource(source), options);
+	return prepareCompilerInputFromProjectBlocksWithIncludeSourceTreeAsync(
+		parseProjectSource(tree.source).codeBlocks,
+		tree,
+		options
+	);
 }

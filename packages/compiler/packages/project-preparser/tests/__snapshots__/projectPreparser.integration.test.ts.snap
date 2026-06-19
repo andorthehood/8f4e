@@ -29,42 +29,6 @@ exports[`project-preparser integration > parses project source and prepares comp
     "functions": [
       {
         "code": [
-          "function risingEdge",
-          "",
-          "functionEnd int",
-        ],
-        "source": {
-          "includeId": "std/events/risingEdge",
-          "kind": "include",
-          "symbolName": "risingEdge",
-        },
-      },
-      {
-        "code": [
-          "function wrapPointer",
-          "",
-          "functionEnd int*",
-        ],
-        "source": {
-          "includeId": "std/memory/wrapPointer",
-          "kind": "include",
-          "symbolName": "wrapPointer",
-        },
-      },
-      {
-        "code": [
-          "function wrapPointer",
-          "",
-          "functionEnd float*",
-        ],
-        "source": {
-          "includeId": "std/memory/wrapPointer",
-          "kind": "include",
-          "symbolName": "wrapPointer",
-        },
-      },
-      {
-        "code": [
           "function helper",
           "functionEnd int",
         ],
