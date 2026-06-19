@@ -1,5 +1,4 @@
-import { resolveIncludeSourceTreeAsync } from '@8f4e/include-resolver';
-import { prepareCompilerInputFromProjectSourceTreeAsync } from '@8f4e/project-preparser';
+import { prepareCompilerInputFromProjectSourceAsync } from '@8f4e/project-preparser';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -41,8 +40,9 @@ async function collectErrorFiles(directory: string): Promise<string[]> {
 
 async function compileErrorFixture(filePath: string) {
 	const source = await fs.readFile(filePath, 'utf8');
-	const sourceTree = await resolveIncludeSourceTreeAsync(source, resolveStdlibInclude);
-	const compilerInput = await prepareCompilerInputFromProjectSourceTreeAsync(sourceTree);
+	const compilerInput = await prepareCompilerInputFromProjectSourceAsync(source, {
+		resolveInclude: resolveStdlibInclude,
+	});
 
 	return compile(compilerInput, {
 		disableSharedMemory: true,
