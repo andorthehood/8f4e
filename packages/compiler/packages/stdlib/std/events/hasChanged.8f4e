@@ -1,4 +1,5 @@
 function hasChanged
+#export
 #impure
 param int currentValue
 param int* previousValue
@@ -13,6 +14,7 @@ store
 functionEnd int
 
 function hasChanged
+#export
 #impure
 param float currentValue
 param float* previousValue

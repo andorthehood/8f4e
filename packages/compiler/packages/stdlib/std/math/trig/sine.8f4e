@@ -1,4 +1,5 @@
 function sine
+#export
 ; Polynomial approximation
 ; of the sine function with
 ; Taylor series (7th order).
