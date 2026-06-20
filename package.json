@@ -33,7 +33,7 @@
     "@vitest/ui": "4.1.7",
     "concurrently": "10.0.3",
     "husky": "9.1.7",
-    "lint-staged": "17.0.7",
+    "lint-staged": "17.0.8",
     "nx": "22.7.5",
     "typescript": "6.0.3",
     "vite": "7.3.5",
