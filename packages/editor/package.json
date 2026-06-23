@@ -32,6 +32,6 @@
     "@8f4e/web-ui": "*"
   },
   "devDependencies": {
-    "vite": "7.3.5"
+    "vite": "8.1.0"
   }
 }
