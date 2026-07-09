@@ -24,6 +24,10 @@ function resolveBinaryAssetTarget(
 	};
 }
 
+function getBinaryAssetKey(asset: BinaryAsset): string {
+	return `${asset.id ?? ''}\u0000${asset.url}\u0000${asset.memoryId ?? ''}`;
+}
+
 export default function createBinaryAssetMemoryLoader({
 	store,
 	memoryViews,
@@ -34,13 +38,14 @@ export default function createBinaryAssetMemoryLoader({
 	assetStore: Map<string, ArrayBuffer>;
 }): () => void {
 	async function loadBinaryFilesIntoMemory(assets: BinaryAsset[]): Promise<void> {
-		const state = store.getState();
+		const loadedAssets = new Map<string, BinaryAsset>();
 
 		for (const asset of assets) {
 			if (!asset.memoryId || asset.assetByteLength === undefined) {
 				continue;
 			}
 
+			const state = store.getState();
 			const resolved = resolveBinaryAssetTarget(state, asset.memoryId);
 			if (!resolved) {
 				console.warn('Unable to resolve memory target:', asset.memoryId);
@@ -48,13 +53,41 @@ export default function createBinaryAssetMemoryLoader({
 			}
 
 			try {
-				asset.byteAddress = resolved.byteAddress;
-				asset.memoryByteLength = resolved.memoryByteLength;
-				await loadBinaryAssetIntoMemory(asset, assetStore, memoryViews);
-				asset.loadedIntoMemory = true;
+				const loadedAsset = {
+					...asset,
+					byteAddress: resolved.byteAddress,
+					memoryByteLength: resolved.memoryByteLength,
+					loadedIntoMemory: true,
+				};
+				await loadBinaryAssetIntoMemory(loadedAsset, assetStore, memoryViews);
+				loadedAssets.set(getBinaryAssetKey(asset), loadedAsset);
 			} catch (error) {
 				console.error('Failed to load binary asset into memory:', asset.url, error);
 			}
+		}
+
+		if (loadedAssets.size === 0) {
+			return;
+		}
+
+		let changed = false;
+		const nextAssets = store.getState().binaryAssets.map(asset => {
+			const loadedAsset = loadedAssets.get(getBinaryAssetKey(asset));
+			if (!loadedAsset) {
+				return asset;
+			}
+
+			changed = true;
+			return {
+				...asset,
+				byteAddress: loadedAsset.byteAddress,
+				memoryByteLength: loadedAsset.memoryByteLength,
+				loadedIntoMemory: true,
+			};
+		});
+
+		if (changed) {
+			store.set('binaryAssets', nextAssets);
 		}
 	}
 
