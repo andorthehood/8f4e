@@ -45,7 +45,7 @@ describe('binary asset loading dialog effect', () => {
 		expect(events.dispatch).toHaveBeenCalledWith('addDialog', {
 			id: 'binary-assets-loading',
 			title: 'Loading assets',
-			text: 'Loading binary assets (1/2).',
+			text: 'Loading binary assets...',
 			buttons: [],
 		});
 	});
@@ -65,7 +65,7 @@ describe('binary asset loading dialog effect', () => {
 		expect(events.dispatch).toHaveBeenLastCalledWith('addDialog', {
 			id: 'binary-assets-loading',
 			title: 'Loading assets',
-			text: 'Loading binary assets (0/2).',
+			text: 'Loading binary assets...',
 			buttons: [],
 		});
 
