@@ -259,7 +259,14 @@ describe('binary assets plugin', () => {
 			},
 		} as State['editorConfig']['bin']);
 
-		expect(store.getState().binaryAssets).toEqual([]);
+		expect(store.getState().binaryAssets).toEqual([
+			{
+				id: 'amen',
+				url: 'https://example.com/pneumatic/sample_1.pcm',
+				memoryId: 'samples:buffer',
+				loadedIntoMemory: false,
+			},
+		]);
 
 		resolveFetch([
 			{
@@ -299,7 +306,14 @@ describe('binary assets plugin', () => {
 			setErrors: vi.fn(),
 			services,
 		});
-		expect(store.getState().binaryAssets).toEqual([]);
+		expect(store.getState().binaryAssets).toEqual([
+			{
+				id: 'amen',
+				url: 'https://example.com/pneumatic/sample_1.pcm',
+				memoryId: 'samples:buffer',
+				loadedIntoMemory: false,
+			},
+		]);
 
 		store.set('codeBlockRendering.codeBlocks', [
 			...store.getState().codeBlockRendering.codeBlocks,
@@ -309,7 +323,14 @@ describe('binary assets plugin', () => {
 				code: ['constants env', 'constantsEnd'],
 			},
 		] as State['codeBlockRendering']['codeBlocks']);
-		expect(store.getState().binaryAssets).toEqual([]);
+		expect(store.getState().binaryAssets).toEqual([
+			{
+				id: 'amen',
+				url: 'https://example.com/pneumatic/sample_1.pcm',
+				memoryId: 'samples:buffer',
+				loadedIntoMemory: false,
+			},
+		]);
 
 		resolveFetch([
 			{
