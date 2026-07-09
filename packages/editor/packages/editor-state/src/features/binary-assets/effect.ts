@@ -4,20 +4,19 @@ import type { StateManager } from '@8f4e/state-manager';
 const BINARY_ASSET_LOADING_DIALOG_ID = 'binary-assets-loading';
 
 function createBinaryAssetLoadingDialog(state: State): DialogContent | undefined {
-	const totalAssetCount = state.binaryAssets.length;
-	if (totalAssetCount === 0) {
+	if (state.binaryAssets.length === 0) {
 		return undefined;
 	}
 
-	const loadedAssetCount = state.binaryAssets.filter(asset => asset.loadedIntoMemory).length;
-	if (loadedAssetCount === totalAssetCount) {
+	const hasPendingAssets = state.binaryAssets.some(asset => !asset.loadedIntoMemory);
+	if (!hasPendingAssets) {
 		return undefined;
 	}
 
 	return {
 		id: BINARY_ASSET_LOADING_DIALOG_ID,
 		title: 'Loading assets',
-		text: `Loading binary assets (${loadedAssetCount}/${totalAssetCount}).`,
+		text: 'Loading binary assets...',
 		buttons: [],
 	};
 }
