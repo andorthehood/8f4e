@@ -30,7 +30,15 @@ export default function createBinaryAssetConfigSync({
 		const generation = ++fetchGeneration;
 		setErrors([]);
 
-		store.set('binaryAssets', []);
+		store.set(
+			'binaryAssets',
+			loadRequests.map(asset => ({
+				id: asset.id,
+				url: asset.url,
+				memoryId: asset.memoryId,
+				loadedIntoMemory: false,
+			}))
+		);
 
 		if (loadRequests.length === 0) {
 			return;
