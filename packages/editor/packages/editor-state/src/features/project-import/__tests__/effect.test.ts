@@ -216,11 +216,11 @@ describe('projectImport', () => {
 			const loadProjectByUrlCallback = loadProjectByUrlCall![1];
 
 			await loadProjectByUrlCallback({
-				projectUrl: 'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e',
+				projectUrl: 'https://static.8f4e.com/example-projects/audioBuffer.8f4e',
 			});
 
 			expect(mockState.callbacks.getProject).toHaveBeenCalledWith(
-				'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e'
+				'https://static.8f4e.com/example-projects/audioBuffer.8f4e'
 			);
 
 			expect(mockState.initialProjectState.codeBlocks).toHaveLength(1);
@@ -237,7 +237,7 @@ describe('projectImport', () => {
 			const loadProjectByUrlCallback = loadProjectByUrlCall![1];
 
 			await loadProjectByUrlCallback({
-				projectUrl: 'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e',
+				projectUrl: 'https://static.8f4e.com/example-projects/audioBuffer.8f4e',
 			});
 
 			expect(consoleWarnSpy).toHaveBeenCalledWith('No getProject callback provided');
@@ -256,7 +256,7 @@ describe('projectImport', () => {
 			const loadProjectByUrlCallback = loadProjectByUrlCall![1];
 
 			await loadProjectByUrlCallback({
-				projectUrl: 'https://static.llllllllllll.com/8f4e/example-projects/audioBuffer.8f4e',
+				projectUrl: 'https://static.8f4e.com/example-projects/audioBuffer.8f4e',
 			});
 
 			expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to load project by url:', expect.any(Error));

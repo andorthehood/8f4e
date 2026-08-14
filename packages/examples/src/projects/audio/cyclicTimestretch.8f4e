@@ -10,7 +10,7 @@ includesEnd
 entry main
 module assets
 ; @pos -107 -70
-; @config bin.amen.url https://static.llllllllllll.com/8f4e/assets/we_need_jungle_8s_44100.pcm
+; @config bin.amen.url https://static.8f4e.com/assets/we_need_jungle_8s_44100.pcm
 
 moduleEnd
 module projectConfig

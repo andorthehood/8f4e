@@ -3,7 +3,7 @@
 entry main
 module assets
 ; @pos -107 -70
-; @config bin.amen.url https://static.llllllllllll.com/8f4e/assets/amen-170bpm-8s.pcm
+; @config bin.amen.url https://static.8f4e.com/assets/amen-170bpm-8s.pcm
 
 moduleEnd
 module projectConfig

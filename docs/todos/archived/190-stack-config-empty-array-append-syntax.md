@@ -97,9 +97,9 @@ Example target program (should compile after change):
 rescope "binaryAssets[]"
 
 const PROTOCOL "https://"
-const DOMAIN "llllllllllll.com"
+const DOMAIN "8f4e.com"
 const SUBDOMAIN "static"
-const PATH "/andor/8f4e/"
+const PATH "/8f4e/"
 const SAMPLE "amen"
 const BPM "170bpm"
 const RES "8bit"
