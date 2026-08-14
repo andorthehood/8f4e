@@ -34,7 +34,7 @@
     "concurrently": "10.0.3",
     "husky": "9.1.7",
     "lint-staged": "17.3.0",
-    "nx": "23.0.2",
+    "nx": "23.1.0",
     "typescript": "6.0.3",
     "vite": "7.3.5",
     "vite-plugin-glsl": "1.6.0",
