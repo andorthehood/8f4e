@@ -71,6 +71,7 @@ Active todo files are listed below.
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
 | 468 | Add shader-batched raster caches to glugglug2 | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
+| 469 | Add optional drawing utilities to glugglug2 | 🟡 | 1-2d | 2026-08-19 | Ship a SpriteTarget-based drawing context with nested coordinate offsets and fixed-cell sprite text without expanding the core renderer API. |
 
 ### 🟢 Low Priority
 

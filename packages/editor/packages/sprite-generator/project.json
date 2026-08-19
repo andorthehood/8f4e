@@ -66,6 +66,7 @@
     },
     "test:screenshot": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
         "command": "playwright test",
         "cwd": "{projectRoot}"
@@ -80,6 +81,7 @@
     },
     "test:screenshot:update": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
         "command": "playwright test --update-snapshots",
         "cwd": "{projectRoot}"

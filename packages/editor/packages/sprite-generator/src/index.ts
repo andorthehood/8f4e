@@ -8,11 +8,14 @@ import generateFillColors, { generateLookup as generateLookupForFillColors } fro
 import generateFont, { type FontLookups, generateLookups as generateLookupsForFonts } from './font.ts';
 import decodeFontBase64 from './fonts/font-decoder.ts';
 import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii.ts';
+import { createGlugglug2Atlas, type Glugglug2Atlas } from './glugglug2.ts';
 import generateIcons, { generateLookup as generateLookupForIcons, type IconValue } from './icons.ts';
 import { type ColorScheme, type ColorSchemeOverrides, Command, type Config, FONT_NAMES, type Font } from './types.ts';
 
 export { default as defaultColorScheme } from './defaultColorScheme.ts';
 export type { FillSpriteColorName } from './fillColors.ts';
+export type { Glugglug2Atlas, Glugglug2SpriteIds } from './glugglug2.ts';
+export { createGlugglug2Atlas } from './glugglug2.ts';
 export { Icon } from './icons.ts';
 export type { ColorScheme, ColorSchemeOverrides, Font } from './types.ts';
 export { FONT_NAMES } from './types.ts';
@@ -304,6 +307,7 @@ export function resolveColorScheme(overrides: Config['colorScheme'] = {}): Color
 export default async function generateSprite(config: Config): Promise<{
 	canvas: OffscreenCanvas;
 	spriteLookups: SpriteLookups;
+	glugglug2Atlas: Glugglug2Atlas<SpriteLookups>;
 	characterWidth: number;
 	characterHeight: number;
 }> {
@@ -351,16 +355,19 @@ export default async function generateSprite(config: Config): Promise<{
 		}
 	});
 
+	const spriteLookups: SpriteLookups = {
+		fillColors: generateLookupForFillColors(characterWidth, characterHeight),
+		...generateLookupsForFonts(characterWidth, characterHeight, colorScheme.text),
+		feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons),
+		background: generateLookupForBackground(characterWidth, characterHeight),
+		icons: generateLookupForIcons(characterWidth, characterHeight),
+	};
+
 	return {
 		canvas,
 		characterHeight,
 		characterWidth,
-		spriteLookups: {
-			fillColors: generateLookupForFillColors(characterWidth, characterHeight),
-			...generateLookupsForFonts(characterWidth, characterHeight, colorScheme.text),
-			feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons),
-			background: generateLookupForBackground(characterWidth, characterHeight),
-			icons: generateLookupForIcons(characterWidth, characterHeight),
-		},
+		glugglug2Atlas: createGlugglug2Atlas(canvas, spriteLookups),
+		spriteLookups,
 	};
 }

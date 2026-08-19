@@ -23,9 +23,10 @@
     "url": "https://github.com/andorthehood/8f4e/issues"
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
-  "dependencies": {
-    "glugglug": "*"
-  },
+	"dependencies": {
+		"glugglug": "*",
+		"glugglug2": "*"
+	},
   "devDependencies": {
     "vite": "7.3.5"
   }

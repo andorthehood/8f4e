@@ -2,6 +2,29 @@
 
 This package generates sprite sheets for the 8f4e editor, including fonts, icons, and UI elements.
 
+## glugglug2 atlas output
+
+The generator retains its grouped `spriteLookups` output for the existing renderer and also returns a
+`glugglug2Atlas`. The latter contains the generated `OffscreenCanvas`, one flat deduplicated lookup accepted by
+`glugglug2`, and grouped numeric sprite IDs for hot-path drawing:
+
+```ts
+import generateSprite from '@8f4e/sprite-generator';
+import { Engine } from 'glugglug2';
+
+const { glugglug2Atlas } = await generateSprite({ font: 'ibmvga8x16' });
+const engine = new Engine(canvas);
+
+engine.setSpriteAtlas(glugglug2Atlas.image, glugglug2Atlas.lookup);
+engine.render(() => {
+	engine.drawSprite(20, 20, glugglug2Atlas.spriteIds.fontCode['A']);
+	engine.drawSprite(40, 20, glugglug2Atlas.spriteIds.fillColors.background, 200, 100);
+});
+```
+
+Aliases and semantic roles that refer to the same source rectangle share one dense numeric ID. Callers should retain
+`spriteIds` and pass those numbers directly rather than constructing identifiers inside the render loop.
+
 ## Font Bitmaps
 
 Font bitmaps are precomputed from ASCII art sources and bundled as Base64-encoded payloads to reduce bundle size and eliminate runtime conversion overhead.
@@ -41,7 +64,7 @@ Font bitmaps are automatically regenerated as part of the build process. However
 node tools/generate-font-bitmaps.mjs
 
 # Or using Nx
-npx nx run sprite-generator:generate-fonts
+npx nx run @8f4e/sprite-generator:generate-fonts
 ```
 
 Generated files are located in:
@@ -62,16 +85,16 @@ This approach reduces the production bundle size by ~90% compared to shipping AS
 
 ```bash
 # Build the package
-npx nx run sprite-generator:build
+npx nx run @8f4e/sprite-generator:build
 
 # Run tests
-npx nx run sprite-generator:test
+npx nx run @8f4e/sprite-generator:test
 
 # Type check
-npx nx run sprite-generator:typecheck
+npx nx run @8f4e/sprite-generator:typecheck
 
 # Development mode with watch
-npx nx run sprite-generator:dev
+npx nx run @8f4e/sprite-generator:dev
 ```
 
 ## Visual Regression Testing
@@ -84,23 +107,23 @@ Before running screenshot tests, ensure the sprite-generator package is built:
 
 ```bash
 # Build the package (required for Vite aliases to resolve)
-npx nx run sprite-generator:build
+npx nx run @8f4e/sprite-generator:build
 ```
 
 ### Running Screenshot Tests
 
 ```bash
 # Run all screenshot tests
-npx nx run sprite-generator:test:screenshot
+npx nx run @8f4e/sprite-generator:test:screenshot
 
 # Run with UI mode for debugging
-npx nx run sprite-generator:test:screenshot:ui
+npx nx run @8f4e/sprite-generator:test:screenshot:ui
 
 # Run in headed mode (visible browser)
-npx nx run sprite-generator:test:screenshot:headed
+npx nx run @8f4e/sprite-generator:test:screenshot:headed
 
 # Debug tests step-by-step
-npx nx run sprite-generator:test:screenshot:debug
+npx nx run @8f4e/sprite-generator:test:screenshot:debug
 ```
 
 ### Updating Snapshots
@@ -109,7 +132,7 @@ When sprite rendering changes are intentional (e.g., new features or bug fixes),
 
 ```bash
 # Update all snapshots
-npx nx run sprite-generator:test:screenshot:update
+npx nx run @8f4e/sprite-generator:test:screenshot:update
 ```
 
 ### Test Structure
@@ -125,13 +148,14 @@ Screenshot tests are located in `screenshot-tests/`:
 Current test scenarios include:
 - **sprite-sheet-with-8x16-font** - Default 8x16 font with standard color scheme
 - **sprite-sheet-with-6x10-font** - 6x10 font with custom vibrant color scheme
+- **glugglug2-atlas** - Generated flat lookup and numeric IDs rendered through the glugglug2 WebGL engine
 
 ### Adding New Test Cases
 
 1. Create a new HTML file in `screenshot-tests/test-cases/` (e.g., `my-test.html`)
 2. Create a corresponding TypeScript file (e.g., `my-test.ts`)
 3. Add the test case name to the `testCases` array in `screenshot.test.ts`
-4. Run `npm run test:screenshot:update` to capture the baseline snapshot
+4. Run `npx nx run @8f4e/sprite-generator:test:screenshot:update` to capture the baseline snapshot
 
 ### CI Integration
 
