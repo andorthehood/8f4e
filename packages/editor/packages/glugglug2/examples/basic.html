@@ -32,7 +32,7 @@
 		</main>
 
 		<script type="module">
-			import { Engine, LineDrawer } from '../dist/index.js';
+			import { Engine, LineDrawer, PostProcess, RgbaTextureLayer, ShaderUnderlay } from '../dist/index.js';
 
 			const output = document.querySelector('#output');
 			const status = document.querySelector('#status');
@@ -49,7 +49,45 @@
 			context.clearRect(10, 2, 4, 4);
 
 			const engine = new Engine(output, { initialCapacity: 2 });
+			const underlay = new ShaderUnderlay(engine);
+			underlay.setEffect({
+				fragmentShader: `#version 300 es
+					precision mediump float;
+					in vec2 v_topLeftScreenCoord;
+					uniform float u_time;
+					out vec4 outColor;
+					void main() {
+						float pulse = 0.03 * sin(u_time + v_topLeftScreenCoord.x * 6.283);
+						outColor = vec4(0.025 + pulse, 0.045, 0.10 + v_topLeftScreenCoord.y * 0.08, 1.0);
+					}
+				`,
+			});
+
+			const pixels = new RgbaTextureLayer(engine);
+			const pixelTexture = pixels.uploadRgba8Texture(
+				new Uint8Array([
+					168, 85, 247, 255, 14, 165, 233, 255,
+					249, 115, 22, 220, 34, 197, 94, 180,
+				]),
+				2,
+				2,
+			);
+			pixels.setDrawCallback(layer => layer.drawTexture(pixelTexture, 24, 24, 720, 384, 0.3));
+
 			const lines = new LineDrawer(engine);
+			const postProcess = new PostProcess(engine);
+			postProcess.setEffect({
+				fragmentShader: `#version 300 es
+					precision mediump float;
+					in vec2 v_textureCoord;
+					uniform sampler2D u_renderTexture;
+					out vec4 outColor;
+					void main() {
+						vec4 scene = texture(u_renderTexture, v_textureCoord);
+						outColor = vec4(scene.rgb * vec3(0.98, 1.0, 0.94), scene.a);
+					}
+				`,
+			});
 			engine.setSpriteAtlas(atlas, {
 				blue: { x: 0, y: 0, spriteWidth: 8, spriteHeight: 8 },
 				amber: { x: 8, y: 0, spriteWidth: 8, spriteHeight: 8 },
@@ -65,7 +103,7 @@
 				lines.drawLine(48, 384, 720, 48, 3, [0.22, 0.83, 0.98, 0.9]);
 			});
 
-			status.textContent = 'Rendering three ordered sprites with a separately buffered line overlay.';
+			status.textContent = 'Shader and RGBA underlays, ordered sprites, line overlay, then post-processing.';
 		</script>
 	</body>
 </html>

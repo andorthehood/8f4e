@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4d
 created: 2026-08-19
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-08-19
 ---
 
 # TODO: Add post-process plugin to glugglug2
@@ -25,7 +25,7 @@ is active.
 Add `src/plugins/post-process/` and export `PostProcess`, `PostProcessEffect`, and its options from the package root. The
 plugin registers one retained `postDraw` hook and exposes cold `setEffect()`, `clearEffect()`, and `destroy()` methods.
 
-For the MVP, use a plugin-owned RGBA texture sized to the current drawing buffer:
+For the MVP, use a plugin-owned texture sized to the current drawing buffer:
 
 ```text
 all earlier pre/application/post passes draw to the default framebuffer
@@ -89,13 +89,13 @@ should be included in the effect; place later overlays after it when they must r
 
 ## Success Criteria
 
-- [ ] One active effect can process the complete framebuffer without CPU pixel readback.
-- [ ] Inactive frames perform no capture, allocation, or post-process draw.
-- [ ] `u_renderTexture`, `u_time`, `u_resolution`, and default varyings match the documented contract.
-- [ ] Hook ordering can include or exclude line and other overlay plugins predictably.
-- [ ] Capture storage follows drawing-buffer resize without per-frame reallocation.
-- [ ] Shader replacement is atomic and plugin cleanup is independent and idempotent.
-- [ ] Unit and visual tests cover lifecycle, orientation, resize, and whole-scene processing.
+- [x] One active effect can process the complete framebuffer without CPU pixel readback.
+- [x] Inactive frames perform no capture, allocation, or post-process draw.
+- [x] `u_renderTexture`, `u_time`, `u_resolution`, and default varyings match the documented contract.
+- [x] Hook ordering can include or exclude line and other overlay plugins predictably.
+- [x] Capture storage follows drawing-buffer resize without per-frame reallocation.
+- [x] Shader replacement is atomic and plugin cleanup is independent and idempotent.
+- [x] Unit and visual tests cover lifecycle, orientation, resize, and whole-scene processing.
 
 ## Affected Components
 
@@ -125,6 +125,17 @@ should be included in the effect; place later overlays after it when they must r
 - The GPU-copy MVP preserves the small hook system and includes any pass already drawn to the default framebuffer.
 - A future direct offscreen scene target would need coordination across clear, underlay, sprite, line, and post-process
   boundaries and should be designed explicitly if profiling justifies it.
+- Completed with an exported `PostProcess`. Its inactive hook exits before allocation or GPU calls; an active hook uses
+  one `copyTexSubImage2D()` framebuffer-to-texture copy and one fullscreen draw with required `u_renderTexture` plus
+  optional `u_time` and `u_resolution` uniforms.
+- The engine requests an opaque default framebuffer, so capture storage uses matching `RGB8`/`RGB` data. Chrome reports
+  `INVALID_OPERATION` for the otherwise equivalent copy into RGBA8 storage. Capture storage is allocated lazily and
+  replaced only when drawing-buffer dimensions change.
+- A local headless Chrome/M1 Pro timing probe produced no stable signal above timer resolution at the 160x96 fixture
+  size. The deterministic cost contract is therefore recorded structurally as one full-frame GPU copy plus one quad
+  draw per active frame; a representative application benchmark should precede any offscreen-scene redesign.
+- The Chromium fixture constructs this plugin after `LineDrawer`, proving that the shader processes underlays, sprites,
+  and lines together without vertical inversion or CPU readback.
 
 ## Archive Instructions
 

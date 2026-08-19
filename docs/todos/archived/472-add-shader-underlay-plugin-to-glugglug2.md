@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-08-19
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-08-19
 ---
 
 # TODO: Add shader underlay plugin to glugglug2
@@ -84,13 +84,13 @@ delete those resources; callers destroy the plugin independently.
 
 ## Success Criteria
 
-- [ ] Consumers can set, replace, clear, and destroy one shader underlay.
-- [ ] The active underlay runs from `preDraw` after clear and below every sprite.
-- [ ] `u_time` and `u_resolution` match the documented contract and current drawing buffer.
-- [ ] Effect replacement is atomic when compilation or linking fails.
-- [ ] No-effect frames allocate nothing and perform no draw call.
-- [ ] Plugin-created resources remain externally owned and are deleted idempotently.
-- [ ] Unit and visual tests cover shader lifecycle and underlay/sprite/line layer order.
+- [x] Consumers can set, replace, clear, and destroy one shader underlay.
+- [x] The active underlay runs from `preDraw` after clear and below every sprite.
+- [x] `u_time` and `u_resolution` match the documented contract and current drawing buffer.
+- [x] Effect replacement is atomic when compilation or linking fails.
+- [x] No-effect frames allocate nothing and perform no draw call.
+- [x] Plugin-created resources remain externally owned and are deleted idempotently.
+- [x] Unit and visual tests cover shader lifecycle and underlay/sprite/line layer order.
 
 ## Affected Components
 
@@ -119,6 +119,13 @@ delete those resources; callers destroy the plugin independently.
   `Engine`.
 - Additional application-specific uniforms can be considered separately after the standard time/resolution contract is
   stable.
+- Completed with an exported `ShaderUnderlay` whose optional custom vertex shader defaults to a fullscreen contract
+  exposing `v_screenCoord`, `v_textureCoord`, and top-left-origin `v_topLeftScreenCoord`. Optional `u_time` and
+  `u_resolution` uniforms are resolved once per replacement and updated per active draw.
+- `setEffect()` compiles and links before swapping programs, so failed replacements preserve the prior effect.
+  `clearEffect()` retains reusable geometry; `destroy()` independently detaches the hook and deletes owned resources.
+- The Chromium fixture now renders the shader below RGBA textures, ordered sprites, the line overlay, and the final
+  post-process effect.
 
 ## Archive Instructions
 

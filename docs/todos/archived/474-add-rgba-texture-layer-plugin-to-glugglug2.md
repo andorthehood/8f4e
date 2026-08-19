@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4d
 created: 2026-08-19
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-08-19
 ---
 
 # TODO: Add RGBA texture layer plugin to glugglug2
@@ -95,13 +95,13 @@ The exact callback/retained API may be refined, but phase and ordering semantics
 
 ## Success Criteria
 
-- [ ] Callers can create, update, draw, delete, and replace RGBA8 textures through an exported plugin.
-- [ ] Same-sized updates retain the GPU texture and use `texSubImage2D()`.
-- [ ] Nearest and linear filtering are explicit and visually covered.
-- [ ] Layer phase is fixed and documented; texture draws do not disturb sprite submission order.
-- [ ] Positions use top-left, Y-down coordinates and alpha follows premultiplied blending semantics.
-- [ ] Plugin and individual texture cleanup are independent and idempotent.
-- [ ] Unit and visual tests cover pixel orientation, filtering, updates, layering, and lifecycle.
+- [x] Callers can create, update, draw, delete, and replace RGBA8 textures through an exported plugin.
+- [x] Same-sized updates retain the GPU texture and use `texSubImage2D()`.
+- [x] Nearest and linear filtering are explicit and visually covered.
+- [x] Layer phase is fixed and documented; texture draws do not disturb sprite submission order.
+- [x] Positions use top-left, Y-down coordinates and alpha follows premultiplied blending semantics.
+- [x] Plugin and individual texture cleanup are independent and idempotent.
+- [x] Unit and visual tests cover pixel orientation, filtering, updates, layering, and lifecycle.
 
 ## Affected Components
 
@@ -133,6 +133,14 @@ The exact callback/retained API may be refined, but phase and ordering semantics
 
 - The plugin replaces old RGBA texture features at the capability level; it does not add old method names to `Engine`.
 - The earlier project decision permits non-sprite features to occupy fixed layers. Main sprite ordering remains unchanged.
+- Completed with exported `RgbaTextureLayer`, texture/filter/upload types, `uploadRgba8Texture()`, `drawTexture()`,
+  `setDrawCallback()`, `deleteTexture()`, and `destroy()`. Uploads are the validated cold path; rectangle draws remain
+  unchecked. Same-size updates use `texSubImage2D()`, while size changes replace storage on the same WebGL texture.
+- The constructor fixes the layer to `preDraw` or `postDraw`. The callback lets a WebAssembly framebuffer consumer
+  expose its current `Uint8Array` view, update the retained texture, and draw it during that fixed phase; migrating the
+  current web-ui consumer is intentionally separate from this capability plugin.
+- The Chromium fixture uses asymmetric nearest and linear samples below sprites, then verifies their composition with
+  the shader underlay, line overlay, and final post-process pass.
 
 ## Archive Instructions
 
