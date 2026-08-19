@@ -72,6 +72,9 @@ Active todo files are listed below.
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
 | 468 | Add shader-batched raster caches to glugglug2 | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
 | 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 🟡 | 1-2h | 2026-08-19 | Preserve the old cacheGroup call shape during migration while always drawing immediately and retaining no cache state. |
+| 472 | Add shader underlay plugin to glugglug2 | 🟡 | 1-2d | 2026-08-19 | Provide an exported preDraw plugin for atomic custom background shaders with standard time and resolution uniforms. |
+| 473 | Add post-process plugin to glugglug2 | 🟡 | 2-4d | 2026-08-19 | Capture the completed framebuffer on the GPU and apply one ordered fullscreen post-process effect without changing the sprite shader. |
+| 474 | Add RGBA texture layer plugin to glugglug2 | 🟡 | 2-4d | 2026-08-19 | Upload and update dynamic RGBA8 textures in an explicit fixed underlay or overlay layer for consumers such as the WASM framebuffer renderer. |
 
 ### 🟢 Low Priority
 
