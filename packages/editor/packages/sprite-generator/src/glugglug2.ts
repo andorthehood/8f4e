@@ -2,6 +2,9 @@ import type { SpriteCoordinates, SpriteLookup } from 'glugglug2';
 
 type SpriteLookupGroup = Record<string | number, SpriteCoordinates>;
 
+/** One semantic sprite group resolved to dense numeric atlas identifiers. */
+export type SpriteIdLookup = Record<string | number, number>;
+
 export type Glugglug2SpriteIds<Lookups> = {
 	[Group in keyof Lookups]: {
 		[Sprite in keyof Lookups[Group]]: number;

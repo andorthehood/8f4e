@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import { getBaseValueIndex as getBaseValueIndexFromTypedValueView, getTypedValueView } from './typedValueView';
 
@@ -36,7 +36,7 @@ function getBaseValueIndexFromStartAddress(
 }
 
 export default function drawer(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -45,21 +45,21 @@ export default function drawer(
 		return;
 	}
 
-	engine.setSpriteLookup(state.spriteLookups.fillColors);
+	const fillSprites = state.spriteLookups.fillColors;
 
 	for (const bars of codeBlock.widgets.arrayBars) {
 		const { x, y, width, height, length, valueType, minValue, inverseValueRange, staticColumnLayout } = bars;
-		engine.startGroup(x, y);
+		engine.pushOffset(x, y);
 
 		const baseValueIndex = getBaseValueIndex(bars, memoryViews);
 		const values = getTypedValueView(memoryViews, valueType);
 		const arrayLength =
 			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
 
-		engine.drawSprite(0, 0, 'plotterBackground', width, height);
+		engine.drawSprite(0, 0, fillSprites.plotterBackground, width, height);
 
 		if (arrayLength <= 0) {
-			engine.endGroup();
+			engine.popOffset();
 			continue;
 		}
 
@@ -92,9 +92,9 @@ export default function drawer(
 
 			const barX = column.x;
 			const barY = height - barHeight;
-			engine.drawSprite(barX, barY, 'bars', column.width, barHeight);
+			engine.drawSprite(barX, barY, fillSprites.bars, column.width, barHeight);
 		}
 
-		engine.endGroup();
+		engine.popOffset();
 	}
 }

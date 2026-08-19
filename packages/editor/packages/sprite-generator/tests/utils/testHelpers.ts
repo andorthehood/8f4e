@@ -1,4 +1,4 @@
-import type { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug2';
 import { expect } from 'vitest';
 
 import type { CommandValue, DrawingCommand } from '../../src/types';

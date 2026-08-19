@@ -1,7 +1,6 @@
-import type { SpriteLookups } from '@8f4e/sprite-generator';
-import type { SpriteLookup } from 'glugglug';
+import type { SpriteIdLookup, SpriteIdLookups } from '@8f4e/sprite-generator';
 
-export function generateColorMapWithAllColors(spriteLookups: SpriteLookups) {
+export function generateColorMapWithAllColors(spriteLookups: SpriteIdLookups) {
 	return [
 		[spriteLookups.fontBinaryOne],
 		[spriteLookups.fontBinaryZero],
@@ -22,6 +21,6 @@ export function generateColorMapWithAllColors(spriteLookups: SpriteLookups) {
 	];
 }
 
-export function generateColorMapWithOneColor(color: SpriteLookup, lines: number) {
+export function generateColorMapWithOneColor(color: SpriteIdLookup, lines: number) {
 	return new Array(lines).fill([color]);
 }

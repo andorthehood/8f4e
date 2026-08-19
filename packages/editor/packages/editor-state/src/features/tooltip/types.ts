@@ -1,6 +1,5 @@
 import type { State, TooltipLiveValueSource } from '@8f4e/editor-state-types';
-import type { FillSpriteColorName } from '@8f4e/sprite-generator';
-import type { SpriteLookup } from 'glugglug';
+import type { FillSpriteColorName, SpriteIdLookup } from '@8f4e/sprite-generator';
 
 export type SpriteLookups = NonNullable<State['spriteLookups']>;
 
@@ -19,7 +18,7 @@ export interface TooltipLiveValueTarget {
 	lineIndex: number;
 	column: number;
 	source: TooltipLiveValueSource;
-	color: SpriteLookup | undefined;
+	color: SpriteIdLookup | undefined;
 }
 
 /**
@@ -38,7 +37,7 @@ export interface TooltipHighlightTarget {
 export interface SelectedLineTooltipContent {
 	text: string[];
 	characters: Array<Array<number | string>>;
-	colors: Array<Array<SpriteLookup | undefined>>;
+	colors: Array<Array<SpriteIdLookup | undefined>>;
 	lineCount: number;
 	widthChars: number;
 	highlightTargets: TooltipHighlightTarget[];

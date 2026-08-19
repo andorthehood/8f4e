@@ -1,14 +1,12 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../../drawContext';
 
-export default function drawBlockHighlights(engine: Engine, state: State, codeBlock: CodeBlockGraphicData): void {
+export default function drawBlockHighlights(engine: DrawContext, state: State, codeBlock: CodeBlockGraphicData): void {
 	if (!state.spriteLookups || codeBlock.disabled) {
 		return;
 	}
 
 	for (const { x, y, width, height, color } of codeBlock.widgets.blockHighlights) {
-		engine.setSpriteLookup(state.spriteLookups.fillColors);
-
-		engine.drawSprite(x, y, color, width, height);
+		engine.drawSprite(x, y, state.spriteLookups.fillColors[color], width, height);
 	}
 }

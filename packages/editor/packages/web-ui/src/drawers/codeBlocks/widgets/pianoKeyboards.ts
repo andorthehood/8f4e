@@ -1,26 +1,20 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { SpriteLookups } from '@8f4e/sprite-generator';
-import type { Engine } from 'glugglug';
+import type { SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 
 type PianoKeyboardData = CodeBlockGraphicData['widgets']['pianoKeyboards'][number];
 type PianoKeyboardKey = PianoKeyboardData['keys'][number];
-type PressedOverlayFont = PianoKeyboardKey['pressedOverlayFont'];
 
-function setPressedOverlayLookup(engine: Engine, spriteLookups: SpriteLookups, font: PressedOverlayFont): void {
-	engine.setSpriteLookup(spriteLookups[font]);
-}
-
-function drawPressedKey(engine: Engine, spriteLookups: SpriteLookups, key: PianoKeyboardKey): void {
-	setPressedOverlayLookup(engine, spriteLookups, key.pressedOverlayFont);
+function drawPressedKey(engine: DrawContext, spriteLookups: SpriteIdLookups, key: PianoKeyboardKey): void {
 	for (const y of key.pressedOverlayRows) {
-		engine.drawText(key.pressedOverlayX, y, '//');
+		engine.drawText(key.pressedOverlayX, y, '//', spriteLookups[key.pressedOverlayFont]);
 	}
 }
 
 function drawPressedKeyOffset(
-	engine: Engine,
-	spriteLookups: SpriteLookups,
+	engine: DrawContext,
+	spriteLookups: SpriteIdLookups,
 	keys: PianoKeyboardData['keys'],
 	keyOffset: number
 ): void {
@@ -33,8 +27,8 @@ function drawPressedKeyOffset(
 }
 
 function drawRuntimePressedKeys(
-	engine: Engine,
-	spriteLookups: SpriteLookups,
+	engine: DrawContext,
+	spriteLookups: SpriteIdLookups,
 	keys: PianoKeyboardData['keys'],
 	pressedKeysListMemory: CodeBlockGraphicData['widgets']['pianoKeyboards'][number]['pressedKeysListMemory'],
 	pressedNumberOfKeysMemory: CodeBlockGraphicData['widgets']['pianoKeyboards'][number]['pressedNumberOfKeysMemory'],
@@ -56,7 +50,7 @@ function drawRuntimePressedKeys(
 }
 
 export default function drawer(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -84,16 +78,21 @@ export default function drawer(
 		pressedNumberOfKeysMemory,
 		startingNumber,
 	} of codeBlock.widgets.pianoKeyboards) {
-		engine.startGroup(x, y);
-		engine.setSpriteLookup(spriteLookups.fillColors);
+		engine.pushOffset(x, y);
 
 		for (const key of keys) {
 			if (key.kind === 'black') {
-				engine.drawSprite(key.x, keyY, key.sprite, keyWidth, blackKeyHeight);
-				engine.drawSprite(key.x, blackKeySideY, 'pianoKeyWhite', keyWidth, blackKeySideHeight);
-				engine.drawSprite(key.x + blackKeyGapXOffset, blackKeyGapY, key.sprite, blackKeyGapWidth, blackKeyGapHeight);
+				engine.drawSprite(key.x, keyY, spriteLookups.fillColors[key.sprite], keyWidth, blackKeyHeight);
+				engine.drawSprite(key.x, blackKeySideY, spriteLookups.fillColors.pianoKeyWhite, keyWidth, blackKeySideHeight);
+				engine.drawSprite(
+					key.x + blackKeyGapXOffset,
+					blackKeyGapY,
+					spriteLookups.fillColors[key.sprite],
+					blackKeyGapWidth,
+					blackKeyGapHeight
+				);
 			} else {
-				engine.drawSprite(key.x, keyY, key.sprite, keyWidth, keyHeight);
+				engine.drawSprite(key.x, keyY, spriteLookups.fillColors[key.sprite], keyWidth, keyHeight);
 			}
 		}
 
@@ -107,10 +106,9 @@ export default function drawer(
 			memoryViews
 		);
 
-		engine.setSpriteLookup(spriteLookups.fontCode);
 		for (const key of keys) {
-			engine.drawText(key.labelX, key.labelY, key.label);
+			engine.drawText(key.labelX, key.labelY, key.label, spriteLookups.fontCode);
 		}
-		engine.endGroup();
+		engine.popOffset();
 	}
 }

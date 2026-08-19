@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, CodeError } from '@8f4e/editor-state-types';
-import type { BackgroundEffect, PostProcessEffect } from 'glugglug';
+import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug2';
 import extractShaderSource from './extractShaderSource';
 import getShaderNoteMetadata from './getShaderNoteMetadata';
 
@@ -9,7 +9,7 @@ import getShaderNoteMetadata from './getShaderNoteMetadata';
  */
 export default function deriveShaderEffects(codeBlocks: CodeBlockGraphicData[]): {
 	postProcessEffects: PostProcessEffect[];
-	backgroundEffects: BackgroundEffect[];
+	backgroundEffects: ShaderUnderlayEffect[];
 	errors: CodeError[];
 } {
 	const sortedBlocks = [...codeBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
@@ -54,7 +54,7 @@ export default function deriveShaderEffects(codeBlocks: CodeBlockGraphicData[]):
 	}
 
 	const postProcessEffects: PostProcessEffect[] = [];
-	const backgroundEffects: BackgroundEffect[] = [];
+	const backgroundEffects: ShaderUnderlayEffect[] = [];
 
 	if (postProcessFragment !== null) {
 		postProcessEffects.push({

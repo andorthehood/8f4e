@@ -3,7 +3,7 @@
  */
 
 import type { DocumentBlockType, PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import type { SpriteLookup } from 'glugglug';
+import type { FillSpriteColorName, SpriteIdLookup } from '@8f4e/sprite-generator';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
@@ -286,7 +286,7 @@ export interface CodeBlockGraphicData {
 	code: string[];
 	lineNumberColumnWidth: number;
 	codeToRender: Array<Array<number | string>>;
-	codeColors: Array<Array<SpriteLookup | undefined>>;
+	codeColors: Array<Array<SpriteIdLookup | undefined>>;
 	/** The gaps between lines */
 	gaps: Map<number, { size: number }>;
 	/** Optional minimum grid width override (e.g., for piano keyboards) */
@@ -321,7 +321,7 @@ export interface CodeBlockGraphicData {
 			y: number;
 			height: number;
 			width: number;
-			color: string;
+			color: FillSpriteColorName;
 		}>;
 		inputs: Input[];
 		outputs: Output[];

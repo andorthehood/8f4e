@@ -1,4 +1,4 @@
-import type { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug2';
 
 import { createAtlasLayout, FILL_COLOR_NAMES } from './atlasLayout.ts';
 import { type ColorScheme, Command, type DrawingCommand } from './types.ts';

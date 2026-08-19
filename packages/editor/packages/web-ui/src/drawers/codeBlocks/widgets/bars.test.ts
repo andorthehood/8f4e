@@ -1,7 +1,8 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { ArrayBars } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, type vi } from 'vitest';
+import { createDrawContextMock, createSpriteIdLookupMock } from '../../../__tests__/rendering';
+import type { DrawContext as Engine } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import drawBars from './bars';
 
@@ -18,12 +19,7 @@ function createMemoryViews({ float32 = [] }: { float32?: number[] } = {}): Memor
 }
 
 function createMockEngine(): Engine {
-	return {
-		startGroup: vi.fn(),
-		endGroup: vi.fn(),
-		setSpriteLookup: vi.fn(),
-		drawSprite: vi.fn(),
-	} as unknown as Engine;
+	return createDrawContextMock();
 }
 
 function createBarsWidget(overrides: Partial<ArrayBars> = {}): ArrayBars {
@@ -60,7 +56,7 @@ describe('drawBars', () => {
 	it('renders buffer values as vertical bars', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			spriteLookups: { fillColors: {} } as never,
+			spriteLookups: { fillColors: createSpriteIdLookupMock() } as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {
@@ -81,7 +77,7 @@ describe('drawBars', () => {
 	it('compresses dense arrays by the maximum value in each column', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
-			spriteLookups: { fillColors: {} } as never,
+			spriteLookups: { fillColors: createSpriteIdLookupMock() } as never,
 		});
 		const codeBlock = createMockCodeBlock({
 			widgets: {

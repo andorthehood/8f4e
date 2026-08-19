@@ -1,4 +1,4 @@
-import type { SpriteCoordinates } from 'glugglug';
+import type { LineColor, SpriteCoordinates } from 'glugglug2';
 import { createAtlasLayout } from './atlasLayout.ts';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background.ts';
 import defaultColorScheme from './defaultColorScheme.ts';
@@ -8,13 +8,13 @@ import generateFillColors, { generateLookup as generateLookupForFillColors } fro
 import generateFont, { type FontLookups, generateLookups as generateLookupsForFonts } from './font.ts';
 import decodeFontBase64 from './fonts/font-decoder.ts';
 import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii.ts';
-import { createGlugglug2Atlas, type Glugglug2Atlas } from './glugglug2.ts';
+import { createGlugglug2Atlas, type Glugglug2Atlas, type Glugglug2SpriteIds } from './glugglug2.ts';
 import generateIcons, { generateLookup as generateLookupForIcons, type IconValue } from './icons.ts';
 import { type ColorScheme, type ColorSchemeOverrides, Command, type Config, FONT_NAMES, type Font } from './types.ts';
 
 export { default as defaultColorScheme } from './defaultColorScheme.ts';
 export type { FillSpriteColorName } from './fillColors.ts';
-export type { Glugglug2Atlas, Glugglug2SpriteIds } from './glugglug2.ts';
+export type { Glugglug2Atlas, Glugglug2SpriteIds, SpriteIdLookup } from './glugglug2.ts';
 export { createGlugglug2Atlas } from './glugglug2.ts';
 export { Icon } from './icons.ts';
 export type { ColorScheme, ColorSchemeOverrides, Font } from './types.ts';
@@ -295,6 +295,15 @@ export interface SpriteLookups extends FontLookups {
 	feedbackScale: Record<number, SpriteCoordinates>;
 }
 
+/** Grouped numeric sprite identifiers used by the editor render hot path. */
+export type SpriteIdLookups = Glugglug2SpriteIds<SpriteLookups>;
+
+/** Solid line colors sampled from the generated atlas. */
+export type SpriteLineColors = {
+	wire: LineColor;
+	wireHighlighted: LineColor;
+};
+
 export function resolveColorScheme(overrides: Config['colorScheme'] = {}): ColorScheme {
 	const colorSchemeOverrides = overrides as ColorSchemeOverrides;
 	return {
@@ -308,6 +317,7 @@ export default async function generateSprite(config: Config): Promise<{
 	canvas: OffscreenCanvas;
 	spriteLookups: SpriteLookups;
 	glugglug2Atlas: Glugglug2Atlas<SpriteLookups>;
+	lineColors: SpriteLineColors;
 	characterWidth: number;
 	characterHeight: number;
 }> {
@@ -362,12 +372,21 @@ export default async function generateSprite(config: Config): Promise<{
 		background: generateLookupForBackground(characterWidth, characterHeight),
 		icons: generateLookupForIcons(characterWidth, characterHeight),
 	};
+	const readLineColor = (name: 'wire' | 'wireHighlighted'): LineColor => {
+		const coordinates = spriteLookups.fillColors[name];
+		const [red, green, blue, alpha] = ctx.getImageData(coordinates.x, coordinates.y, 1, 1).data;
+		return [red / 255, green / 255, blue / 255, alpha / 255];
+	};
 
 	return {
 		canvas,
 		characterHeight,
 		characterWidth,
 		glugglug2Atlas: createGlugglug2Atlas(canvas, spriteLookups),
+		lineColors: {
+			wire: readLineColor('wire'),
+			wireHighlighted: readLineColor('wireHighlighted'),
+		},
 		spriteLookups,
 	};
 }

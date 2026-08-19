@@ -1,10 +1,10 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import { Icon } from '@8f4e/sprite-generator';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 
 export default function drawConnectors(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -25,23 +25,18 @@ export default function drawConnectors(
 		output.calibratedMax = Math.max(1, output.calibratedMax, value);
 		output.calibratedMin = Math.min(-1, output.calibratedMin, value);
 
-		engine.setSpriteLookup(state.spriteLookups.feedbackScale);
 		engine.drawSprite(
 			x,
 			y,
-			Math.round(((value - output.calibratedMin) / (output.calibratedMax + Math.abs(output.calibratedMin))) * 5),
+			state.spriteLookups.feedbackScale[
+				Math.round(((value - output.calibratedMin) / (output.calibratedMax + Math.abs(output.calibratedMin))) * 5)
+			],
 			state.viewport.vGrid * 3,
 			state.viewport.hGrid
 		);
-
-		engine.setSpriteLookup(state.spriteLookups.fontCode);
-	}
-
-	if (codeBlock.widgets.inputs.length > 0) {
-		engine.setSpriteLookup(state.spriteLookups.icons);
 	}
 
 	for (const { x, y } of codeBlock.widgets.inputs) {
-		engine.drawSprite(x, y, Icon.INPUT);
+		engine.drawSprite(x, y, state.spriteLookups.icons[Icon.INPUT]);
 	}
 }

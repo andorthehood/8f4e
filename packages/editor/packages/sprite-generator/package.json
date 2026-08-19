@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
 	"dependencies": {
-		"glugglug": "*",
 		"glugglug2": "*"
 	},
   "devDependencies": {

@@ -1,8 +1,8 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../drawContext';
 
 export default function drawSelectedOutline(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlockWidth: number,
 	codeBlockHeight: number
@@ -28,7 +28,7 @@ export default function drawSelectedOutline(
 			: 0;
 	const animationOffset = (Math.floor(progress * perimeterLength) + startOffset) % perimeterLength;
 
-	engine.setSpriteLookup(state.spriteLookups!.fontNumbers);
+	const font = state.spriteLookups!.fontNumbers;
 
 	for (let i = 0; i < segmentLength; i++) {
 		const step = (animationOffset + i) % perimeterLength;
@@ -68,6 +68,6 @@ export default function drawSelectedOutline(
 							: '-'
 					: '|';
 
-		engine.drawText(x, y, character);
+		engine.drawText(x, y, character, font);
 	}
 }

@@ -1,6 +1,7 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-import type { Engine } from 'glugglug';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, type vi } from 'vitest';
+import { createDrawContextMock, createSpriteIdLookupMock } from '../../../__tests__/rendering';
+import type { DrawContext as Engine } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import drawPlotters from './plotters';
 
@@ -17,12 +18,7 @@ function createMemoryViews({ int8 = [], int32 = [] }: { int8?: number[]; int32?:
 }
 
 function createMockEngine(): Engine {
-	return {
-		startGroup: vi.fn(),
-		endGroup: vi.fn(),
-		setSpriteLookup: vi.fn(),
-		drawSprite: vi.fn(),
-	} as unknown as Engine;
+	return createDrawContextMock();
 }
 
 describe('drawPlotters', () => {
@@ -30,7 +26,7 @@ describe('drawPlotters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 			viewport: {
 				hGrid: 4,
@@ -75,7 +71,7 @@ describe('drawPlotters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 			viewport: {
 				hGrid: 4,
@@ -117,7 +113,7 @@ describe('drawPlotters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 			viewport: {
 				hGrid: 4,

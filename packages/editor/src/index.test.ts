@@ -30,11 +30,11 @@ const store = {
 
 const view = {
 	resize: vi.fn(),
-	loadSpriteSheet: vi.fn(),
+	loadSpriteAtlas: vi.fn(),
 	loadPostProcessEffect: vi.fn(),
 	loadBackgroundEffect: vi.fn(),
 	renderFrame: vi.fn(),
-	clearCache: vi.fn(),
+	destroy: vi.fn(),
 };
 
 vi.mock('@8f4e/editor-state', () => ({
@@ -49,6 +49,15 @@ vi.mock('@8f4e/sprite-generator', () => ({
 	default: vi.fn(async () => ({
 		canvas: {} as OffscreenCanvas,
 		spriteLookups: {},
+		glugglug2Atlas: {
+			image: {} as OffscreenCanvas,
+			lookup: {},
+			spriteIds: {},
+		},
+		lineColors: {
+			wire: [0, 0, 0, 1],
+			wireHighlighted: [1, 1, 1, 1],
+		},
 		characterWidth: 8,
 		characterHeight: 16,
 	})),
@@ -181,12 +190,8 @@ describe('editor init', () => {
 			frameBudgetMs: 20,
 			headroomMs: 10,
 			fpsCapacity: 100,
-			quadCount: 25,
-			vertexCount: 150,
-			maxVertices: 300,
-			vertexUsagePercent: 50,
-			cacheItemCount: 3,
-			cacheMaxItems: 50,
+			spriteCount: 25,
+			uploadedInstanceBytes: 500,
 		});
 
 		expect(viewOptions.renderStatsIntervalFrames).toBe(12);
@@ -250,12 +255,8 @@ describe('editor init', () => {
 			frameBudgetMs: 20,
 			headroomMs: 10,
 			fpsCapacity: 100,
-			quadCount: 25,
-			vertexCount: 150,
-			maxVertices: 300,
-			vertexUsagePercent: 50,
-			cacheItemCount: 3,
-			cacheMaxItems: 50,
+			spriteCount: 25,
+			uploadedInstanceBytes: 500,
 		});
 	});
 });

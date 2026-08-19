@@ -1,7 +1,8 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { ArrayMeter } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, type vi } from 'vitest';
+import { createDrawContextMock, createSpriteIdLookupMock } from '../../../__tests__/rendering';
+import type { DrawContext as Engine } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import drawMeters from './meters';
 
@@ -18,12 +19,7 @@ function createMemoryViews({ float32 = [] }: { float32?: number[] } = {}): Memor
 }
 
 function createMockEngine(): Engine {
-	return {
-		startGroup: vi.fn(),
-		endGroup: vi.fn(),
-		setSpriteLookup: vi.fn(),
-		drawSprite: vi.fn(),
-	} as unknown as Engine;
+	return createDrawContextMock();
 }
 
 function createMeterWidget(overrides: Partial<ArrayMeter> = {}): ArrayMeter {
@@ -64,7 +60,7 @@ describe('drawMeters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -86,7 +82,7 @@ describe('drawMeters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -115,7 +111,7 @@ describe('drawMeters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -143,7 +139,7 @@ describe('drawMeters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -176,7 +172,7 @@ describe('drawMeters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -204,7 +200,7 @@ describe('drawMeters', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({

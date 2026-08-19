@@ -2,6 +2,8 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
 import parseCodeBlocks from './codeParser';
 
+const HIGHLIGHT_COLORS = ['codeBlockHighlightLevel1', 'codeBlockHighlightLevel2', 'codeBlockHighlightLevel3'] as const;
+
 export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.widgets.blockHighlights = [];
 	parseCodeBlocks(graphicData.code).forEach(block => {
@@ -21,7 +23,7 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 			y: gapCalculator(highlightStartLine, graphicData.gaps) * state.viewport.hGrid,
 			width: graphicData.width - state.viewport.vGrid * (2 + graphicData.lineNumberColumnWidth),
 			height: (highlightEndLine - highlightStartLine + 1) * state.viewport.hGrid,
-			color: 'codeBlockHighlightLevel' + ((block.depth % 3) + 1),
+			color: HIGHLIGHT_COLORS[block.depth % HIGHLIGHT_COLORS.length],
 		});
 	});
 }

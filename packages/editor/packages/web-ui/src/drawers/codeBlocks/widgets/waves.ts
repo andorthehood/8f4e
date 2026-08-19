@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import { getBaseValueIndex, getTypedValueView } from './typedValueView';
 
@@ -17,7 +17,7 @@ function valueToY(value: number, minValue: number, inverseValueRange: number, he
 }
 
 function drawWaveform(
-	engine: Engine,
+	engine: DrawContext,
 	samples: ArrayLike<number>,
 	baseIndex: number,
 	arrayLength: number,
@@ -27,7 +27,8 @@ function drawWaveform(
 	columnCount: number,
 	minValue: number,
 	maxValue: number,
-	inverseValueRange: number
+	inverseValueRange: number,
+	waveformSpriteId: number
 ): void {
 	for (let column = 0; column < columnCount; column++) {
 		const sliceStart = Math.floor((column / columnCount) * arrayLength);
@@ -48,12 +49,12 @@ function drawWaveform(
 		const rectY = Math.min(minY, maxY);
 		const rectHeight = Math.max(1, Math.abs(maxY - minY) + 1);
 
-		engine.drawSprite(column * columnWidth, rectY, 'waveform', columnWidth, rectHeight);
+		engine.drawSprite(column * columnWidth, rectY, waveformSpriteId, columnWidth, rectHeight);
 	}
 }
 
 export default function drawer(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -62,7 +63,7 @@ export default function drawer(
 		return;
 	}
 
-	engine.setSpriteLookup(state.spriteLookups.fillColors);
+	const fillSprites = state.spriteLookups.fillColors;
 
 	for (const {
 		x,
@@ -79,12 +80,12 @@ export default function drawer(
 		maxValue,
 		inverseValueRange,
 	} of codeBlock.widgets.arrayWaves) {
-		engine.startGroup(x, y);
+		engine.pushOffset(x, y);
 
 		const arrayLength =
 			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
 		if (arrayLength <= 0 || inverseElementByteSize <= 0) {
-			engine.endGroup();
+			engine.popOffset();
 			continue;
 		}
 
@@ -107,7 +108,8 @@ export default function drawer(
 			columnCount,
 			minValue,
 			maxValue,
-			inverseValueRange
+			inverseValueRange,
+			fillSprites.waveform
 		);
 
 		if (pointer) {
@@ -119,9 +121,9 @@ export default function drawer(
 			const scanlineWidth = state.viewport.vGrid / 2;
 			const scanlineX = arrayLength <= 1 ? 0 : Math.floor((clampedIndex / (arrayLength - 1)) * (width - scanlineWidth));
 
-			engine.drawSprite(scanlineX, 0, 'scanLine', scanlineWidth, height);
+			engine.drawSprite(scanlineX, 0, fillSprites.scanLine, scanlineWidth, height);
 		}
 
-		engine.endGroup();
+		engine.popOffset();
 	}
 }

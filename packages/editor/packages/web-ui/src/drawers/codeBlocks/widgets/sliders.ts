@@ -1,9 +1,9 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 
 export default function drawer(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -31,13 +31,12 @@ export default function drawer(
 		const trackWidth = Math.max(width - handleWidth, 1);
 		const handleX = Math.floor(normalizedValue * trackWidth);
 
-		engine.startGroup(x, y);
+		engine.pushOffset(x, y);
 
-		engine.setSpriteLookup(state.spriteLookups.fillColors);
-		engine.drawSprite(0, 0, 'track', width, height);
-		engine.drawSprite(0, 0, 'fill', handleX + handleWidth, height);
-		engine.drawSprite(handleX, 0, 'handle', handleWidth, height);
+		engine.drawSprite(0, 0, state.spriteLookups.fillColors.track, width, height);
+		engine.drawSprite(0, 0, state.spriteLookups.fillColors.fill, handleX + handleWidth, height);
+		engine.drawSprite(handleX, 0, state.spriteLookups.fillColors.handle, handleWidth, height);
 
-		engine.endGroup();
+		engine.popOffset();
 	}
 }

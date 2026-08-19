@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../drawContext';
 import { calculateArrowPlacement } from './arrowPlacement';
 
 const ARROW_CHARACTERS = {
@@ -17,26 +17,36 @@ const ARROW_CHARACTERS = {
  * @param codeBlock - The off-screen code block to draw arrows for
  * @param state - The editor state containing viewport and sprite lookup information
  */
-export default function drawArrow(engine: Engine, codeBlock: CodeBlockGraphicData, state: State): void {
+export default function drawArrow(engine: DrawContext, codeBlock: CodeBlockGraphicData, state: State): void {
 	const arrowPlacement = calculateArrowPlacement(codeBlock, state);
-
-	if (state.spriteLookups?.fontArrow) {
-		engine.setSpriteLookup(state.spriteLookups.fontArrow);
+	const font = state.spriteLookups?.fontArrow;
+	if (!font) {
+		return;
 	}
 
 	if (arrowPlacement.top) {
-		engine.drawText(arrowPlacement.top.x, arrowPlacement.top.y, ARROW_CHARACTERS.top);
+		engine.drawText(arrowPlacement.top.x, arrowPlacement.top.y, ARROW_CHARACTERS.top, font);
 	}
 
 	if (arrowPlacement.right) {
-		engine.drawText(arrowPlacement.right.x - state.viewport.vGrid, arrowPlacement.right.y, ARROW_CHARACTERS.right);
+		engine.drawText(
+			arrowPlacement.right.x - state.viewport.vGrid,
+			arrowPlacement.right.y,
+			ARROW_CHARACTERS.right,
+			font
+		);
 	}
 
 	if (arrowPlacement.bottom) {
-		engine.drawText(arrowPlacement.bottom.x, arrowPlacement.bottom.y - state.viewport.hGrid, ARROW_CHARACTERS.bottom);
+		engine.drawText(
+			arrowPlacement.bottom.x,
+			arrowPlacement.bottom.y - state.viewport.hGrid,
+			ARROW_CHARACTERS.bottom,
+			font
+		);
 	}
 
 	if (arrowPlacement.left) {
-		engine.drawText(arrowPlacement.left.x, arrowPlacement.left.y, ARROW_CHARACTERS.left);
+		engine.drawText(arrowPlacement.left.x, arrowPlacement.left.y, ARROW_CHARACTERS.left, font);
 	}
 }

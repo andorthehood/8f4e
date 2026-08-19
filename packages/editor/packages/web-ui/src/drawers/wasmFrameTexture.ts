@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { Engine, Rgba8Texture, Rgba8TextureFilter } from 'glugglug';
+import type { RgbaTexture, RgbaTextureFilter, RgbaTextureLayer } from 'glugglug2';
 import type { MemoryViews } from '../types';
 
 export type WasmFrameTextureObjectFit = 'fill' | 'cover' | 'contain' | 'none';
@@ -11,7 +11,7 @@ export interface WasmFrameTextureOptions {
 	width: number;
 	height: number;
 	size?: WasmFrameTextureSize;
-	filter?: Rgba8TextureFilter;
+	filter?: RgbaTextureFilter;
 	objectFit?: WasmFrameTextureObjectFit;
 }
 
@@ -124,13 +124,13 @@ export function createWasmFrameTextureDrawer({
 	getMemory,
 	getViewportSize,
 	instantiate = instantiateWasmFrameTexture,
-}: WasmFrameTextureDrawerOptions): (engine: Engine) => void {
+}: WasmFrameTextureDrawerOptions): (layer: RgbaTextureLayer) => void {
 	const sourceWidth = normalizePositiveInteger(frameTexture.width);
 	const sourceHeight = normalizePositiveInteger(frameTexture.height);
 	const byteLength = sourceWidth * sourceHeight * 4;
 	const filter = frameTexture.filter ?? 'nearest';
 	const objectFit = frameTexture.objectFit ?? 'fill';
-	let texture: Rgba8Texture | undefined;
+	let texture: RgbaTexture | undefined;
 	let cachedMemory: WebAssembly.Memory | null = null;
 	let cachedCodeBuffer: Uint8Array | undefined;
 	let cachedExports: WebAssembly.Exports | undefined;
@@ -199,7 +199,7 @@ export function createWasmFrameTextureDrawer({
 		return undefined;
 	}
 
-	return engine => {
+	return layer => {
 		const exports = syncWasmInstance();
 		if (!exports) {
 			return;
@@ -218,7 +218,7 @@ export function createWasmFrameTextureDrawer({
 		}
 
 		const data = memoryViews.uint8.subarray(byteAddress, byteAddress + byteLength);
-		texture = engine.uploadRgba8Texture(data, sourceWidth, sourceHeight, {
+		texture = layer.uploadRgba8Texture(data, sourceWidth, sourceHeight, {
 			texture,
 			filter,
 		});
@@ -231,6 +231,6 @@ export function createWasmFrameTextureDrawer({
 			viewport.height,
 			frameTexture.size
 		);
-		engine.drawTexture(texture, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
+		layer.drawTexture(texture, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
 	};
 }

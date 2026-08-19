@@ -3,28 +3,79 @@ import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec'
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => {
+	let frameTextureDrawCallback: ((layer: unknown) => void) | undefined;
 	const engine = {
-		loadSpriteSheet: vi.fn(),
+		hooks: {
+			preDraw: [] as Array<() => void>,
+			postDraw: [] as Array<() => void>,
+		},
+		frameStats: {
+			spriteCount: 100,
+			uploadedInstanceBytes: 2000,
+		},
+		setSpriteAtlas: vi.fn(),
+		drawSprite: vi.fn(),
 		render: vi.fn(),
-		renderFrame: vi.fn((drawFrame: (timeToRenderMs: number, vertices: number, maxVertices: number) => void) =>
-			drawFrame(12.5, 600, 1200)
-		),
+		renderFrame: vi.fn((drawFrame: () => void) => {
+			for (const hook of engine.hooks.preDraw) hook();
+			drawFrame();
+			for (const hook of engine.hooks.postDraw) hook();
+		}),
 		resize: vi.fn(),
-		setPostProcessEffect: vi.fn(),
-		clearPostProcessEffect: vi.fn(),
-		setBackgroundEffect: vi.fn(),
-		clearBackgroundEffect: vi.fn(),
-		clearAllCache: vi.fn(),
-		getCacheStats: vi.fn(() => ({ itemCount: 7, maxItems: 50, accessOrder: [] })),
+		destroy: vi.fn(),
+	};
+	const background = {
+		setEffect: vi.fn(),
+		clearEffect: vi.fn(),
+		destroy: vi.fn(),
+	};
+	const frameTextureLayer = {
+		setDrawCallback: vi.fn((callback: (layer: unknown) => void) => {
+			frameTextureDrawCallback = callback;
+		}),
 		uploadRgba8Texture: vi.fn(() => ({ texture: {}, width: 128, height: 128, filter: 'nearest' })),
 		drawTexture: vi.fn(),
+		destroy: vi.fn(),
+	};
+	const lines = {
+		drawLine: vi.fn(),
+		destroy: vi.fn(),
+	};
+	const postProcess = {
+		setEffect: vi.fn(),
+		clearEffect: vi.fn(),
+		destroy: vi.fn(),
 	};
 
 	return {
 		engine,
+		background,
+		frameTextureLayer,
+		lines,
+		postProcess,
 		// biome-ignore lint/complexity/useArrowFunction: Engine is constructed with new in the code under test.
 		Engine: vi.fn(function () {
+			engine.hooks.preDraw.length = 0;
+			engine.hooks.postDraw.length = 0;
+			frameTextureDrawCallback = undefined;
 			return engine;
+		}),
+		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
+		ShaderUnderlay: vi.fn(function () {
+			return background;
+		}),
+		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
+		RgbaTextureLayer: vi.fn(function () {
+			engine.hooks.preDraw.push(() => frameTextureDrawCallback?.(frameTextureLayer));
+			return frameTextureLayer;
+		}),
+		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
+		LineDrawer: vi.fn(function () {
+			return lines;
+		}),
+		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
+		PostProcess: vi.fn(function () {
+			return postProcess;
 		}),
 		drawBackground: vi.fn(),
 		drawCodeBlocks: vi.fn(),
@@ -35,8 +86,12 @@ const mocks = vi.hoisted(() => {
 	};
 });
 
-vi.mock('glugglug', () => ({
+vi.mock('glugglug2', () => ({
 	Engine: mocks.Engine,
+	ShaderUnderlay: mocks.ShaderUnderlay,
+	RgbaTextureLayer: mocks.RgbaTextureLayer,
+	LineDrawer: mocks.LineDrawer,
+	PostProcess: mocks.PostProcess,
 }));
 
 vi.mock('./drawers/drawBackground', () => ({
@@ -85,6 +140,22 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 	};
 }
 
+function createSpriteData() {
+	return {
+		glugglug2Atlas: {
+			image: {} as OffscreenCanvas,
+			lookup: {},
+			spriteIds: {},
+		},
+		lineColors: {
+			wire: [0.1, 0.2, 0.3, 1] as const,
+			wireHighlighted: [0.4, 0.5, 0.6, 1] as const,
+		},
+		characterWidth: 8,
+		characterHeight: 16,
+	};
+}
+
 describe('web-ui init', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
@@ -103,23 +174,22 @@ describe('web-ui init', () => {
 			float64: new Float64Array(0),
 		};
 
-		const view = await init(state, {} as HTMLCanvasElement, memoryViews, {
-			canvas: {} as OffscreenCanvas,
-			spriteLookups: {},
-			characterWidth: 8,
-			characterHeight: 16,
-		});
+		const view = await init(state, {} as HTMLCanvasElement, memoryViews, createSpriteData());
 
 		view.renderFrame();
 
 		const frameState = mocks.drawCodeBlocks.mock.calls.at(-1)?.[1];
 
 		expect(frameState).toBe(state);
-		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(mocks.engine, frameState);
+		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(expect.anything(), frameState);
 	});
 
 	it('emits render stats at the configured frame interval', async () => {
-		const performanceNow = vi.spyOn(performance, 'now').mockReturnValueOnce(1000).mockReturnValueOnce(1040);
+		let now = 0;
+		const performanceNow = vi.spyOn(performance, 'now').mockImplementation(() => {
+			now += 10;
+			return now;
+		});
 		const { default: init } = await import('./index');
 		const state = createMockState();
 		const memoryViews = {
@@ -133,21 +203,10 @@ describe('web-ui init', () => {
 		};
 		const onRenderStats = vi.fn();
 
-		const view = await init(
-			state,
-			{} as HTMLCanvasElement,
-			memoryViews,
-			{
-				canvas: {} as OffscreenCanvas,
-				spriteLookups: {},
-				characterWidth: 8,
-				characterHeight: 16,
-			},
-			{
-				onRenderStats,
-				renderStatsIntervalFrames: 2,
-			}
-		);
+		const view = await init(state, {} as HTMLCanvasElement, memoryViews, createSpriteData(), {
+			onRenderStats,
+			renderStatsIntervalFrames: 2,
+		});
 
 		view.renderFrame();
 		expect(onRenderStats).not.toHaveBeenCalled();
@@ -155,17 +214,13 @@ describe('web-ui init', () => {
 		view.renderFrame();
 		expect(onRenderStats).toHaveBeenCalledTimes(1);
 		expect(onRenderStats).toHaveBeenCalledWith({
-			timeToRenderMs: 12.5,
-			fps: 50,
-			frameBudgetMs: 20,
-			headroomMs: 7.5,
-			fpsCapacity: 80,
-			quadCount: 100,
-			vertexCount: 600,
-			maxVertices: 1200,
-			vertexUsagePercent: 50,
-			cacheItemCount: 7,
-			cacheMaxItems: 50,
+			timeToRenderMs: 10,
+			fps: 40,
+			frameBudgetMs: 25,
+			headroomMs: 15,
+			fpsCapacity: 100,
+			spriteCount: 100,
+			uploadedInstanceBytes: 2000,
 		});
 		performanceNow.mockRestore();
 	});
@@ -226,23 +281,12 @@ describe('web-ui init', () => {
 			| undefined;
 		const canvas = { width: 160, height: 90 } as HTMLCanvasElement;
 
-		const view = await init(
-			state,
-			canvas,
-			memoryViews,
-			{
-				canvas: {} as OffscreenCanvas,
-				spriteLookups: {},
-				characterWidth: 8,
-				characterHeight: 16,
-			},
-			{
-				getFrameTexture: () => frameTexture,
-				getCodeBuffer: () => codeBuffer,
-				getMemory: () => memory,
-				instantiateFrameTextureWasm,
-			}
-		);
+		const view = await init(state, canvas, memoryViews, createSpriteData(), {
+			getFrameTexture: () => frameTexture,
+			getCodeBuffer: () => codeBuffer,
+			getMemory: () => memory,
+			instantiateFrameTextureWasm,
+		});
 
 		view.renderFrame();
 		expect(instantiateFrameTextureWasm).not.toHaveBeenCalled();
@@ -263,13 +307,13 @@ describe('web-ui init', () => {
 		view.renderFrame();
 
 		expect(renderFrameExport).toHaveBeenCalledTimes(1);
-		expect(mocks.engine.uploadRgba8Texture).toHaveBeenCalledWith(expect.any(Uint8Array), 1, 1, {
+		expect(mocks.frameTextureLayer.uploadRgba8Texture).toHaveBeenCalledWith(expect.any(Uint8Array), 1, 1, {
 			texture: undefined,
 			filter: 'nearest',
 		});
-		const data = mocks.engine.uploadRgba8Texture.mock.calls.at(-1)?.[0] as Uint8Array;
+		const data = mocks.frameTextureLayer.uploadRgba8Texture.mock.calls.at(-1)?.[0] as Uint8Array;
 		expect([...data]).toEqual([10, 20, 30, 255]);
-		expect(mocks.engine.drawTexture).toHaveBeenCalledWith(
+		expect(mocks.frameTextureLayer.drawTexture).toHaveBeenCalledWith(
 			{ texture: {}, width: 128, height: 128, filter: 'nearest' },
 			0,
 			0,

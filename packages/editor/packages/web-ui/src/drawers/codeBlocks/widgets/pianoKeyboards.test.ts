@@ -1,8 +1,9 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { PianoKeyboard } from '@8f4e/editor-state-types';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import type { Engine } from 'glugglug';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, type vi } from 'vitest';
+import { createDrawContextMock, createSpriteIdLookupMock } from '../../../__tests__/rendering';
+import type { DrawContext as Engine } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import drawPianoKeyboards from './pianoKeyboards';
 
@@ -19,13 +20,7 @@ function createMemoryViews({ int32 = [], float32 = [] }: { int32?: number[]; flo
 }
 
 function createMockEngine(): Engine {
-	return {
-		startGroup: vi.fn(),
-		endGroup: vi.fn(),
-		setSpriteLookup: vi.fn(),
-		drawSprite: vi.fn(),
-		drawText: vi.fn(),
-	} as unknown as Engine;
+	return createDrawContextMock();
 }
 
 function createMockMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemoryDeclaration {
@@ -121,10 +116,10 @@ describe('drawPianoKeyboards', () => {
 				hGrid: 4,
 			},
 			spriteLookups: {
-				fillColors: {},
-				fontCode: {},
-				fontPianoKeyWhitePressedOverlay: {},
-				fontPianoKeyBlackPressedOverlay: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontPianoKeyWhitePressedOverlay: createSpriteIdLookupMock(),
+				fontPianoKeyBlackPressedOverlay: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -138,20 +133,20 @@ describe('drawPianoKeyboards', () => {
 		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
 
-		expect(engine.startGroup).toHaveBeenCalledWith(2, 3);
+		expect(engine.pushOffset).toHaveBeenCalledWith(2, 3);
 		expect(drawSprite).toHaveBeenCalledWith(0, 4, 'pianoKeyWhite', 2, 20);
 		expect(drawSprite).toHaveBeenCalledWith(2, 4, 'pianoKeyBlack', 2, 12);
 		expect(drawSprite).toHaveBeenCalledWith(2, 16, 'pianoKeyWhite', 2, 8);
 		expect(drawSprite).toHaveBeenCalledWith(2.75, 16, 'pianoKeyBlack', 0.5, 8);
 		expect(drawSprite).toHaveBeenCalledWith(4, 4, 'pianoKeyWhite', 2, 20);
-		expect(drawText).toHaveBeenCalledWith(0, 4, '//');
-		expect(drawText).toHaveBeenCalledWith(0, 8, '//');
-		expect(drawText).toHaveBeenCalledWith(0, 12, '//');
-		expect(drawText).toHaveBeenCalledWith(0, 16, '//');
-		expect(drawText).toHaveBeenCalledWith(0, 20, '//');
-		expect(drawText).toHaveBeenCalledWith(2, 4, '//');
-		expect(drawText).toHaveBeenCalledWith(2, 8, '//');
-		expect(drawText).toHaveBeenCalledWith(2, 12, '//');
+		expect(drawText).toHaveBeenCalledWith(0, 4, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(0, 8, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(0, 12, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(0, 16, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(0, 20, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(2, 4, '//', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(2, 8, '//', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(2, 12, '//', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
 		expect(drawText).not.toHaveBeenCalledWith(2, 16, '//');
 		expect(drawText).not.toHaveBeenCalledWith(2, 20, '//');
 	});
@@ -164,10 +159,10 @@ describe('drawPianoKeyboards', () => {
 				hGrid: 4,
 			},
 			spriteLookups: {
-				fillColors: {},
-				fontCode: {},
-				fontPianoKeyWhitePressedOverlay: {},
-				fontPianoKeyBlackPressedOverlay: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontPianoKeyWhitePressedOverlay: createSpriteIdLookupMock(),
+				fontPianoKeyBlackPressedOverlay: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({
@@ -193,10 +188,10 @@ describe('drawPianoKeyboards', () => {
 				hGrid: 4,
 			},
 			spriteLookups: {
-				fillColors: {},
-				fontCode: {},
-				fontPianoKeyWhitePressedOverlay: {},
-				fontPianoKeyBlackPressedOverlay: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontPianoKeyWhitePressedOverlay: createSpriteIdLookupMock(),
+				fontPianoKeyBlackPressedOverlay: createSpriteIdLookupMock(),
 			} as never,
 		});
 		const codeBlock = createMockCodeBlock({

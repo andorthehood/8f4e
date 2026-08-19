@@ -1,6 +1,6 @@
 import type { State } from '@8f4e/editor-state-types';
 import { GLOBAL_ALIGNMENT_BOUNDARY, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../drawContext';
 
 function formatBytes(bytes: number): string {
 	if (bytes < 1000) {
@@ -25,14 +25,14 @@ function getRuntimeInfoNumber(state: State, key: string): number {
 }
 
 export default function drawInfoOverlay(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	{
 		timeToRender,
 		fps,
-		vertices,
-		maxVertices,
-	}: { timeToRender: number; fps: number; vertices: number; maxVertices: number }
+		spriteCount,
+		uploadedInstanceBytes,
+	}: { timeToRender: number; fps: number; spriteCount: number; uploadedInstanceBytes: number }
 ): void {
 	if (!state.spriteLookups) {
 		return;
@@ -59,14 +59,10 @@ export default function drawInfoOverlay(
 
 	// Graphic stats
 	debugText.push('');
-	debugText.push('Quad count: ' + vertices / 6);
-	debugText.push(
-		'Vertex buffer: ' + vertices + '/' + maxVertices + ' (' + Math.round((vertices / maxVertices) * 100) + '%)'
-	);
+	debugText.push('Sprite count: ' + spriteCount);
+	debugText.push('Uploaded instance data: ' + formatBytes(uploadedInstanceBytes));
 	debugText.push('Time to render one frame ' + timeToRender.toFixed(2) + 'ms');
 	debugText.push('FPS: ' + fps);
-	const cs = engine.getCacheStats();
-	debugText.push('Cached items: ' + cs.itemCount + '/' + cs.maxItems);
 
 	// Compiler stats
 	debugText.push('');
@@ -123,21 +119,19 @@ export default function drawInfoOverlay(
 		);
 	}
 
-	engine.startGroup(0, state.viewport.roundedHeight - state.viewport.hGrid * (debugText.length + 1));
+	engine.pushOffset(0, state.viewport.roundedHeight - state.viewport.hGrid * (debugText.length + 1));
 
 	for (let i = 0; i < debugText.length; i++) {
-		engine.setSpriteLookup(state.spriteLookups.fillColors);
 		engine.drawSprite(
 			0,
 			i * state.viewport.hGrid,
-			'debugInfoBackground',
+			state.spriteLookups.fillColors.debugInfoBackground,
 			(debugText[i].length + 2) * state.viewport.vGrid,
 			state.viewport.hGrid
 		);
 
-		engine.setSpriteLookup(state.spriteLookups.fontDebugInfo);
-		engine.drawText(state.viewport.vGrid, i * state.viewport.hGrid, debugText[i]);
+		engine.drawText(state.viewport.vGrid, i * state.viewport.hGrid, debugText[i], state.spriteLookups.fontDebugInfo);
 	}
 
-	engine.endGroup();
+	engine.popOffset();
 }

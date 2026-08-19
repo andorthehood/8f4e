@@ -4,9 +4,9 @@ This package generates sprite sheets for the 8f4e editor, including fonts, icons
 
 ## glugglug2 atlas output
 
-The generator retains its grouped `spriteLookups` output for the existing renderer and also returns a
-`glugglug2Atlas`. The latter contains the generated `OffscreenCanvas`, one flat deduplicated lookup accepted by
-`glugglug2`, and grouped numeric sprite IDs for hot-path drawing:
+The generator returns a `glugglug2Atlas` containing the generated `OffscreenCanvas`, one flat deduplicated lookup
+accepted by `glugglug2`, and grouped numeric sprite IDs for hot-path drawing. Coordinate-based `spriteLookups` remain
+available as cold atlas-generation data, while the editor renderer uses only the numeric IDs:
 
 ```ts
 import generateSprite from '@8f4e/sprite-generator';
