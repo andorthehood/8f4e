@@ -70,6 +70,7 @@ Active todo files are listed below.
 | 459 | Extract compiler diagnostics package | 🟡 | 2-4h | 2026-06-15 | Move compiler diagnostic construction into a small shared package so compiler-adjacent packages can emit consistent diagnostics without importing compiler internals. |
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
+| 468 | Add shader-batched raster caches to glugglug2 | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
 
 ### 🟢 Low Priority
 
@@ -88,6 +89,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 467 | Add instanced sprite-only glugglug2 renderer | 2026-08-19 | Added a sprite-only WebGL2 package with a persistent atlas, compact ordered instance uploads, one instanced draw call, focused tests, and a browser-verified example. |
 | 464 | Require explicit stdlib include exports | 2026-06-19 | Include-local `#export` now marks public stdlib functions, private helpers are prefixed, and `readInterpolated` exercises the private-helper path. |
 | 458 | Decouple module execution order from memory layout | 2026-06-18 | Memory layout now allocates modules alphabetically by id while execution order remains driven by entry/module source order. |
 | 460 | Fix cross-block constant cache dependencies | 2026-06-17 | Constant resolution now returns per-line facts beside source-shaped cached ASTs, and recompiling with a changed constants block re-resolves unchanged cached module ASTs correctly. |

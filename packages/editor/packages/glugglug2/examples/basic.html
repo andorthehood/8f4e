@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="data:," />
+		<title>glugglug2 basic example</title>
+		<style>
+			body {
+				margin: 0;
+				background: #111;
+				color: #ddd;
+				font: 14px/1.5 system-ui, sans-serif;
+			}
+
+			main {
+				width: min(800px, calc(100vw - 32px));
+				margin: 24px auto;
+			}
+
+			canvas {
+				display: block;
+				width: 100%;
+				image-rendering: pixelated;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<canvas id="output" width="768" height="432"></canvas>
+			<p id="status">Starting glugglug2…</p>
+		</main>
+
+		<script type="module">
+			import { Engine } from '../dist/index.js';
+
+			const output = document.querySelector('#output');
+			const status = document.querySelector('#status');
+			const atlas = document.createElement('canvas');
+			atlas.width = 16;
+			atlas.height = 8;
+			const context = atlas.getContext('2d');
+			context.fillStyle = '#38bdf8';
+			context.fillRect(0, 0, 8, 8);
+			context.fillStyle = '#0c4a6e';
+			context.fillRect(2, 2, 4, 4);
+			context.fillStyle = 'rgba(251, 191, 36, 0.75)';
+			context.fillRect(8, 0, 8, 8);
+			context.clearRect(10, 2, 4, 4);
+
+			const engine = new Engine(output, { initialCapacity: 2 });
+			engine.setSpriteAtlas(atlas, {
+				blue: { x: 0, y: 0, spriteWidth: 8, spriteHeight: 8 },
+				amber: { x: 8, y: 0, spriteWidth: 8, spriteHeight: 8 },
+			});
+
+			engine.render(() => {
+				const time = performance.now() / 1000;
+				const offset = Math.round(Math.sin(time * 2) * 80);
+				engine.drawSprite(80 + offset, 80, 'blue', 160, 160);
+				engine.drawSprite(230, 130, 'amber', 220, 180);
+				engine.drawSprite(520 - offset, 230, 'blue', 96, 128);
+			});
+
+			status.textContent = 'Rendering three ordered sprites from one persistent atlas.';
+		</script>
+	</body>
+</html>
