@@ -8,7 +8,8 @@ import type { SpriteAtlasImage, SpriteIdentifier, SpriteLookup } from './types.t
  * Owns the WebGL2 resources used to upload sprite instances and render them in a single instanced draw call.
  */
 export class Renderer {
-	private readonly gl: WebGL2RenderingContext;
+	/** Raw WebGL2 context used by the sprite renderer and trusted render hooks. */
+	readonly gl: WebGL2RenderingContext;
 	private readonly program: WebGLProgram;
 	private readonly instanceBufferObject: WebGLBuffer;
 	private readonly vertexArray: WebGLVertexArrayObject;
@@ -120,12 +121,20 @@ export class Renderer {
 
 	/**
 	 * Starts a frame by clearing the queued instances and the canvas color buffer.
+	 *
+	 * This per-frame path intentionally performs no destruction-state validation.
 	 */
 	beginFrame(): void {
-		this.assertLive();
 		this.instances.reset();
-		this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-		this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+		const gl = this.gl;
+		// Hooks share the raw context and may leave clear-related state dirty. These repeated assignments intentionally
+		// establish the next frame's clear boundary; do not remove them as redundant constructor setup.
+		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+		gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+		gl.colorMask(true, true, true, true);
+		gl.disable(gl.SCISSOR_TEST);
+		gl.clearColor(0, 0, 0, 1);
+		gl.clear(gl.COLOR_BUFFER_BIT);
 	}
 
 	/**
@@ -149,9 +158,10 @@ export class Renderer {
 
 	/**
 	 * Uploads the used portion of the instance buffer and renders all queued sprites in insertion order.
+	 *
+	 * This per-frame path intentionally performs no destruction-state validation.
 	 */
 	flush(): void {
-		this.assertLive();
 		if (this.instances.count === 0) {
 			return;
 		}
@@ -160,9 +170,22 @@ export class Renderer {
 		}
 
 		const gl = this.gl;
+		// Raw-context hooks may change any ordinary WebGL binding or capability. Reassert every state dependency of the
+		// sprite pass here; this defensive work is intentional and must not be cleaned up as apparently duplicate setup.
+		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+		gl.viewport(0, 0, this.canvas.width, this.canvas.height);
 		gl.useProgram(this.program);
 		gl.bindVertexArray(this.vertexArray);
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.instanceBufferObject);
+		gl.enable(gl.BLEND);
+		gl.blendEquation(gl.FUNC_ADD);
+		gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+		gl.colorMask(true, true, true, true);
+		gl.disable(gl.SCISSOR_TEST);
+		gl.disable(gl.DEPTH_TEST);
+		gl.disable(gl.STENCIL_TEST);
+		gl.disable(gl.CULL_FACE);
+		gl.disable(gl.RASTERIZER_DISCARD);
 		if (this.instances.capacity > this.gpuCapacity) {
 			this.gpuCapacity = this.instances.capacity;
 			gl.bufferData(gl.ARRAY_BUFFER, this.gpuCapacity * INSTANCE_BYTE_STRIDE, gl.DYNAMIC_DRAW);
@@ -173,6 +196,8 @@ export class Renderer {
 		gl.bindTexture(gl.TEXTURE_2D, this.atlasTexture);
 		gl.activeTexture(gl.TEXTURE1);
 		gl.bindTexture(gl.TEXTURE_2D, this.lookupTexture);
+		gl.uniform1i(this.atlasSamplerLocation, 0);
+		gl.uniform1i(this.lookupSamplerLocation, 1);
 		gl.uniform2f(this.resolutionLocation, this.canvas.width, this.canvas.height);
 		gl.uniform2f(this.atlasSizeLocation, this.atlasWidth, this.atlasHeight);
 		gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, this.instances.count);

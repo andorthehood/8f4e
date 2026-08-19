@@ -1,6 +1,13 @@
 import { Renderer } from './renderer.ts';
 
-import type { EngineOptions, RenderCallback, SpriteAtlasImage, SpriteIdentifier, SpriteLookup } from './types.ts';
+import type {
+	EngineOptions,
+	RenderCallback,
+	RenderHooks,
+	SpriteAtlasImage,
+	SpriteIdentifier,
+	SpriteLookup,
+} from './types.ts';
 
 const DEFAULT_INITIAL_CAPACITY = 1_024;
 
@@ -12,6 +19,13 @@ const DEFAULT_INITIAL_CAPACITY = 1_024;
  */
 export class Engine {
 	private readonly renderer: Renderer;
+	/** Raw WebGL2 context shared with trusted render-hook plugins. */
+	readonly gl: WebGL2RenderingContext;
+	/** Mutable hook arrays executed in insertion order around the sprite pass. */
+	readonly hooks: RenderHooks = {
+		preDraw: [],
+		postDraw: [],
+	};
 	private destroyed = false;
 	private frameOpen = false;
 	private continuousRendering = false;
@@ -25,6 +39,7 @@ export class Engine {
 	 */
 	constructor(canvas: HTMLCanvasElement, options: EngineOptions = {}) {
 		this.renderer = new Renderer(canvas, options.initialCapacity ?? DEFAULT_INITIAL_CAPACITY);
+		this.gl = this.renderer.gl;
 	}
 
 	/**
@@ -78,20 +93,27 @@ export class Engine {
 	/**
 	 * Clears, builds, uploads, and draws one frame synchronously.
 	 *
+	 * This performance-first per-frame path does not check whether the engine
+	 * was destroyed. Rendering after destruction is a programmer error with
+	 * unspecified consequences.
+	 *
 	 * @param callback - Function that submits the ordered sprites for this frame.
 	 */
 	renderFrame(callback: RenderCallback): void {
-		this.assertLive();
 		if (this.frameOpen) {
 			throw new Error('Cannot start a render frame while another frame is being built.');
 		}
 
-		this.renderer.beginFrame();
 		this.frameOpen = true;
 		try {
+			this.renderer.beginFrame();
+			for (const hook of this.hooks.preDraw) {
+				hook(this.gl);
+			}
 			callback();
-			if (!this.destroyed) {
-				this.renderer.flush();
+			this.renderer.flush();
+			for (const hook of this.hooks.postDraw) {
+				hook(this.gl);
 			}
 		} finally {
 			this.frameOpen = false;

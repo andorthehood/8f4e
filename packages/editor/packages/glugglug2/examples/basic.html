@@ -32,7 +32,7 @@
 		</main>
 
 		<script type="module">
-			import { Engine } from '../dist/index.js';
+			import { Engine, LineDrawer } from '../dist/index.js';
 
 			const output = document.querySelector('#output');
 			const status = document.querySelector('#status');
@@ -49,6 +49,7 @@
 			context.clearRect(10, 2, 4, 4);
 
 			const engine = new Engine(output, { initialCapacity: 2 });
+			const lines = new LineDrawer(engine);
 			engine.setSpriteAtlas(atlas, {
 				blue: { x: 0, y: 0, spriteWidth: 8, spriteHeight: 8 },
 				amber: { x: 8, y: 0, spriteWidth: 8, spriteHeight: 8 },
@@ -60,9 +61,11 @@
 				engine.drawSprite(80 + offset, 80, 'blue', 160, 160);
 				engine.drawSprite(230, 130, 'amber', 220, 180);
 				engine.drawSprite(520 - offset, 230, 'blue', 96, 128);
+				lines.drawLine(48, 48, 720, 384, 3, [0.96, 0.98, 1, 0.9]);
+				lines.drawLine(48, 384, 720, 48, 3, [0.22, 0.83, 0.98, 0.9]);
 			});
 
-			status.textContent = 'Rendering three ordered sprites from one persistent atlas.';
+			status.textContent = 'Rendering three ordered sprites with a separately buffered line overlay.';
 		</script>
 	</body>
 </html>

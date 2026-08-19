@@ -9,6 +9,116 @@ afterEach(() => {
 });
 
 describe('Engine', () => {
+	it('exposes its shared context and runs ordered hooks around sprite rendering', () => {
+		const { engine, webgl } = createEngine();
+		engine.setSpriteAtlas(createAtlasImage(), {
+			player: { x: 0, y: 0, spriteWidth: 8, spriteHeight: 8 },
+		});
+		const order: string[] = [];
+		engine.hooks.preDraw.push(gl => {
+			expect(gl).toBe(webgl);
+			order.push('pre-1');
+		});
+		engine.hooks.preDraw.push(() => order.push('pre-2'));
+		engine.hooks.postDraw.push(() => {
+			expect(webgl.drawArraysInstanced).toHaveBeenCalledOnce();
+			order.push('post');
+		});
+
+		expect(engine.gl).toBe(webgl);
+		engine.renderFrame(() => {
+			order.push('application');
+			engine.drawSprite(0, 0, 'player');
+		});
+
+		expect(order).toEqual(['pre-1', 'pre-2', 'application', 'post']);
+	});
+
+	it('runs post-draw hooks on frames without sprites', () => {
+		const { engine } = createEngine();
+		const postDraw = vi.fn();
+		engine.hooks.postDraw.push(postDraw);
+
+		engine.renderFrame(() => undefined);
+
+		expect(postDraw).toHaveBeenCalledOnce();
+	});
+
+	it('propagates hook errors and closes the frame state', () => {
+		const { engine } = createEngine();
+		const expected = new Error('plugin failure');
+		engine.hooks.preDraw.push(() => {
+			throw expected;
+		});
+
+		expect(() => engine.renderFrame(() => undefined)).toThrow(expected);
+		engine.hooks.preDraw.length = 0;
+		expect(() =>
+			engine.setSpriteAtlas(createAtlasImage(), {
+				player: { x: 0, y: 0, spriteWidth: 8, spriteHeight: 8 },
+			})
+		).not.toThrow();
+	});
+
+	it('restores sprite-pass state after a pre-draw hook dirties the shared context', () => {
+		const { engine, webgl } = createEngine();
+		engine.setSpriteAtlas(createAtlasImage(), {
+			player: { x: 0, y: 0, spriteWidth: 8, spriteHeight: 8 },
+		});
+		const pluginFramebuffer = { plugin: true } as unknown as WebGLFramebuffer;
+		engine.hooks.preDraw.push(gl => {
+			gl.bindFramebuffer(gl.FRAMEBUFFER, pluginFramebuffer);
+			gl.viewport(1, 2, 3, 4);
+			gl.colorMask(false, false, false, false);
+			gl.disable(gl.BLEND);
+			gl.enable(gl.SCISSOR_TEST);
+			gl.enable(gl.DEPTH_TEST);
+			gl.enable(gl.STENCIL_TEST);
+			gl.enable(gl.CULL_FACE);
+			gl.enable(gl.RASTERIZER_DISCARD);
+		});
+
+		engine.renderFrame(() => engine.drawSprite(0, 0, 'player'));
+
+		expect(webgl.bindFramebuffer).toHaveBeenLastCalledWith(webgl.FRAMEBUFFER, null);
+		expect(webgl.viewport).toHaveBeenLastCalledWith(0, 0, 320, 200);
+		expect(webgl.enable).toHaveBeenLastCalledWith(webgl.BLEND);
+		expect(webgl.blendEquation).toHaveBeenLastCalledWith(webgl.FUNC_ADD);
+		expect(webgl.blendFunc).toHaveBeenLastCalledWith(webgl.ONE, webgl.ONE_MINUS_SRC_ALPHA);
+		expect(webgl.colorMask).toHaveBeenLastCalledWith(true, true, true, true);
+		for (const capability of [
+			webgl.SCISSOR_TEST,
+			webgl.DEPTH_TEST,
+			webgl.STENCIL_TEST,
+			webgl.CULL_FACE,
+			webgl.RASTERIZER_DISCARD,
+		]) {
+			expect(webgl.disable).toHaveBeenCalledWith(capability);
+		}
+	});
+
+	it('restores clear state on the frame after a post-draw hook dirties it', () => {
+		const { engine, webgl } = createEngine();
+		const pluginFramebuffer = { plugin: true } as unknown as WebGLFramebuffer;
+		engine.hooks.postDraw.push(gl => {
+			gl.bindFramebuffer(gl.FRAMEBUFFER, pluginFramebuffer);
+			gl.viewport(1, 2, 3, 4);
+			gl.colorMask(false, false, false, false);
+			gl.enable(gl.SCISSOR_TEST);
+			gl.clearColor(1, 0, 0, 0);
+		});
+
+		engine.renderFrame(() => undefined);
+		engine.hooks.postDraw.length = 0;
+		engine.renderFrame(() => undefined);
+
+		expect(webgl.bindFramebuffer).toHaveBeenLastCalledWith(webgl.FRAMEBUFFER, null);
+		expect(webgl.viewport).toHaveBeenLastCalledWith(0, 0, 320, 200);
+		expect(webgl.colorMask).toHaveBeenLastCalledWith(true, true, true, true);
+		expect(webgl.disable).toHaveBeenLastCalledWith(webgl.SCISSOR_TEST);
+		expect(webgl.clearColor).toHaveBeenLastCalledWith(0, 0, 0, 1);
+	});
+
 	it('uploads one ordered instance range and renders it with one instanced draw', () => {
 		const { engine, webgl } = createEngine();
 		engine.setSpriteAtlas(createAtlasImage(), {
@@ -119,7 +229,7 @@ describe('Engine', () => {
 		expect(webgl.deleteBuffer).toHaveBeenCalledOnce();
 		expect(webgl.deleteVertexArray).toHaveBeenCalledOnce();
 		expect(webgl.deleteProgram).toHaveBeenCalledOnce();
-		expect(() => engine.renderFrame(callback)).toThrow('engine has been destroyed');
+		expect(() => engine.resize(640, 360)).toThrow('engine has been destroyed');
 	});
 });
 
@@ -171,7 +281,14 @@ function createFakeWebGl() {
 		UNSIGNED_SHORT: 0x1403,
 		MAX_TEXTURE_SIZE: 0x0d33,
 		COLOR_BUFFER_BIT: 0x4000,
+		FRAMEBUFFER: 0x8d40,
 		BLEND: 0x0be2,
+		SCISSOR_TEST: 0x0c11,
+		DEPTH_TEST: 0x0b71,
+		STENCIL_TEST: 0x0b90,
+		CULL_FACE: 0x0b44,
+		RASTERIZER_DISCARD: 0x8c89,
+		FUNC_ADD: 0x8006,
 		ONE: 1,
 		ONE_MINUS_SRC_ALPHA: 0x0303,
 		TRIANGLE_STRIP: 0x0005,
@@ -206,8 +323,12 @@ function createFakeWebGl() {
 		uniform1i: vi.fn(),
 		uniform2f: vi.fn(),
 		viewport: vi.fn(),
+		bindFramebuffer: vi.fn(),
+		colorMask: vi.fn(),
 		clearColor: vi.fn(),
 		enable: vi.fn(),
+		disable: vi.fn(),
+		blendEquation: vi.fn(),
 		blendFunc: vi.fn(),
 		clear: vi.fn(),
 		getParameter: vi.fn(() => 4_096),

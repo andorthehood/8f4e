@@ -19,11 +19,62 @@ engine.render(() => {
 
 Each sprite instance contains `x`, `y`, `width`, `height`, and one dense numeric sprite id. Calls are drawn in append order with premultiplied-alpha blending. `renderFrame()` is available for one synchronous frame, `resize()` explicitly changes the canvas drawing buffer, and `destroy()` stops the render loop and releases owned WebGL resources.
 
-`drawSprite()` is an unchecked hot path. Atlas validity is checked when `setSpriteAtlas()` runs, but per-sprite lifecycle, identifier, and numeric-value validation is intentionally omitted. Callers must use identifiers from the active atlas and finite rectangle values.
+`drawSprite()` and per-frame rendering are unchecked hot paths. Atlas validity is checked when `setSpriteAtlas()` runs,
+but sprite lifecycle, identifier, numeric-value, and per-frame destruction validation is intentionally omitted. Callers
+must use identifiers from the active atlas, finite rectangle values, and must not render after destroying the engine.
+Violations are programmer errors with unspecified consequences.
 
-See [ADR-001: Do Not Validate Programmer Input in the Sprite Hot Path](docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md) for the decision and its consequences.
+See [ADR-001: Do Not Validate Programmer Input in Render Hot Paths](docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md) for the decision and its consequences.
 
 The core engine intentionally has no caching, lines, text layout, post-processing, or general primitive API.
+
+## Render-hook plugins
+
+The engine exposes its exact `WebGL2RenderingContext` as `engine.gl` and two ordered mutable hook arrays. `preDraw` hooks
+run after the frame clear and before the application callback; `postDraw` hooks run after the sprite pass, including on
+frames with no sprites. This deliberately small plugin surface supports arbitrary underlays and overlays without adding
+checks to `drawSprite()`.
+
+```ts
+engine.hooks.preDraw.push(gl => {
+	background.draw(gl);
+});
+
+engine.hooks.postDraw.push(gl => {
+	diagnostics.draw(gl);
+});
+```
+
+Hooks are trusted code sharing unrestricted context state. The engine defensively restores the state needed by its next
+clear and sprite pass, but this is not a sandbox: hooks can still clear the canvas, lose the context, or deliberately
+discover and destroy engine resources. Hook errors propagate, hook arrays run in insertion order, and mutating an array
+while it is being iterated is a programmer error with unspecified consequences. Plugins own and must delete every GPU
+resource they create.
+
+### Line overlay example plugin
+
+`LineDrawer` is an exported example plugin built on those hooks. It resets a reusable CPU line buffer in `preDraw`, then
+uploads and draws all submitted lines in one instanced `postDraw` call, above every sprite. Each line carries endpoints,
+thickness, and packed RGBA color; it does not use or modify the sprite atlas.
+
+```ts
+import { Engine, LineDrawer } from 'glugglug2';
+
+const engine = new Engine(canvas);
+const lines = new LineDrawer(engine);
+
+engine.renderFrame(() => {
+	engine.drawSprite(20, 20, 'panel', 120, 80);
+	lines.drawLine(20, 20, 140, 100, 2, [1, 0.25, 0.1, 1]);
+});
+
+// External plugins have an independent lifetime.
+lines.destroy();
+engine.destroy();
+```
+
+Color components are normalized from `0` to `1`. Like sprite submission, `drawLine()` performs no hot-path validation;
+invalid coordinates, thicknesses, colors, or lifecycle calls are programmer errors with unspecified consequences.
 
 ## Optional drawing utilities
 
@@ -58,7 +109,7 @@ neither its target nor the atlas, render loop, fonts, or caches.
 ## Visual regression tests
 
 The Chromium snapshot covers atlas selection, default and explicit sizing, positioning, insertion-order layering,
-alpha blending, instance-buffer growth, and clearing between frames.
+alpha blending, instance-buffer growth, clearing between frames, a raw-context underlay, and the line-plugin overlay.
 
 ```sh
 npx nx run glugglug2:test:screenshot

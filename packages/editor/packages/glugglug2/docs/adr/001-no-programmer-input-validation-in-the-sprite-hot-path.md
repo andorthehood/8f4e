@@ -1,4 +1,4 @@
-# ADR-001: Do Not Validate Programmer Input in the Sprite Hot Path
+# ADR-001: Do Not Validate Programmer Input in Render Hot Paths
 
 **Date**: 2026-08-19
 
@@ -6,7 +6,7 @@
 
 ## Context
 
-`glugglug2` is a performance-first WebGL2 sprite renderer. During each render cycle, callers may invoke `drawSprite()` many times to append position, size, and sprite-id data to one reusable instance buffer. Work performed by `drawSprite()` is multiplied by the number of sprites and frames, making it the package's primary CPU hot path.
+`glugglug2` is a performance-first WebGL2 sprite renderer. During each render cycle, callers may invoke `drawSprite()` many times to append position, size, and sprite-id data to one reusable instance buffer. Work performed by `drawSprite()` is multiplied by the number of sprites and frames, making it the package's primary CPU hot path. `renderFrame()` and its renderer `beginFrame()` and `flush()` phases also execute once per frame, so lifecycle checks there create recurring work even when the engine is used correctly.
 
 The initial implementation performed programmer-input validation for every sprite. It checked engine and renderer lifecycle state, verified that calls occurred inside a render callback, checked whether the sprite identifier existed, and called `Number.isFinite()` for all four rectangle values. These checks provided friendlier errors, but repeated validation is not part of producing valid instance data and adds branches and function calls to every sprite submission.
 
@@ -14,7 +14,9 @@ The package already has cold paths where structural validation can happen withou
 
 ## Decision
 
-`drawSprite()` does not validate programmer input.
+`drawSprite()` does not validate programmer input. Per-frame rendering also does not check whether the engine or renderer
+was destroyed. Calling `renderFrame()` after destruction, or destroying the engine from inside a frame and continuing
+that frame, is a programmer error with unspecified consequences.
 
 Invalid calls are programmer errors with unspecified consequences. The package does not guarantee a particular exception, diagnostic, recovery behavior, or rendered result for:
 
@@ -32,7 +34,7 @@ Validation remains appropriate on cold operations, including:
 - shader compilation and program linking;
 - atlas dimensions, sprite source rectangles, and lookup capacity during `setSpriteAtlas()`;
 - atlas replacement while a frame is being built;
-- render-loop lifecycle boundaries;
+- one-time continuous render-loop startup;
 - explicit canvas resize dimensions;
 - resource cleanup.
 
@@ -55,7 +57,7 @@ TypeScript types, focused tests, atlas validation, and application-level validat
 
 ### Positive
 
-- Each sprite submission performs fewer branches and runtime checks.
+- Each sprite submission and render cycle performs fewer branches and runtime checks.
 - The default and only drawing API is the performance-oriented path; callers do not need to opt into a separate unsafe variant.
 - Cold-path validation remains available where its cost is not multiplied by sprite count.
 - The implementation communicates that `glugglug2` is a low-level renderer rather than an input-sanitization boundary.
@@ -71,7 +73,8 @@ TypeScript types, focused tests, atlas validation, and application-level validat
 
 - Buffer growth checks remain because capacity management is required for correct instance storage and reusable allocation behavior.
 - Public string sprite identifiers still require lookup and normalization; this decision removes validation, not necessary sprite resolution.
-- This decision applies to the per-sprite submission path. It does not prohibit validation in setup, lifecycle, or other cold APIs.
+- This decision applies to sprite submission and per-frame orchestration. It does not prohibit validation during setup,
+  explicit configuration, resource cleanup, or one-time continuous-loop startup.
 
 ## Alternatives Considered
 

@@ -1,4 +1,4 @@
-import { Engine } from 'glugglug2';
+import { Engine, LineDrawer } from 'glugglug2';
 
 /** Creates a three-sprite atlas with asymmetric patterns that expose incorrect source rectangles or orientation. */
 function createAtlas(): HTMLCanvasElement {
@@ -34,6 +34,13 @@ if (!canvas) {
 }
 
 const engine = new Engine(canvas, { initialCapacity: 2 });
+engine.hooks.preDraw.push(gl => {
+	gl.enable(gl.SCISSOR_TEST);
+	gl.scissor(16, 16, 128, 64);
+	gl.clearColor(0.04, 0.08, 0.16, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+});
+const lines = new LineDrawer(engine, { initialCapacity: 1 });
 engine.setSpriteAtlas(createAtlas(), {
 	red: { x: 0, y: 0, spriteWidth: 4, spriteHeight: 4 },
 	green: { x: 4, y: 0, spriteWidth: 4, spriteHeight: 4 },
@@ -53,6 +60,8 @@ engine.renderFrame(() => {
 	engine.drawSprite(52, 60, 'green', 52, 28);
 	engine.drawSprite(92, 44, 7, 40, 40);
 	engine.drawSprite(108, 36, 7, 40, 40);
+	lines.drawLine(8, 8, 152, 88, 3, [0.9, 0.95, 1, 1]);
+	lines.drawLine(8, 88, 152, 8, 2, [0.15, 0.8, 1, 0.85]);
 });
 
 document.body.dataset.ready = 'true';

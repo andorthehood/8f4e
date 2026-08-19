@@ -90,6 +90,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 471 | Expose raw WebGL render hooks in glugglug2 | 2026-08-19 | Exposed the shared WebGL2 context and ordered pre/post hooks with defensive state restoration, plus an exported instanced line-overlay example plugin. |
 | 469 | Add optional drawing utilities to glugglug2 | 2026-08-19 | Added an optional SpriteTarget-based DrawContext with reusable nested offsets and allocation-free fixed-cell sprite text under `glugglug2/utils`. |
 | 467 | Add instanced sprite-only glugglug2 renderer | 2026-08-19 | Added a sprite-only WebGL2 package with a persistent atlas, compact ordered instance uploads, one instanced draw call, focused tests, and a browser-verified example. |
 | 464 | Require explicit stdlib include exports | 2026-06-19 | Include-local `#export` now marks public stdlib functions, private helpers are prefixed, and `readInterpolated` exercises the private-helper path. |
