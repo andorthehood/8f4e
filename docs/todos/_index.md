@@ -71,7 +71,7 @@ Active todo files are listed below.
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
 | 468 | Add shader-batched raster caches to glugglug2 | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
-| 469 | Add optional drawing utilities to glugglug2 | 🟡 | 1-2d | 2026-08-19 | Ship a SpriteTarget-based drawing context with nested coordinate offsets and fixed-cell sprite text without expanding the core renderer API. |
+| 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 🟡 | 1-2h | 2026-08-19 | Preserve the old cacheGroup call shape during migration while always drawing immediately and retaining no cache state. |
 
 ### 🟢 Low Priority
 
@@ -90,6 +90,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 469 | Add optional drawing utilities to glugglug2 | 2026-08-19 | Added an optional SpriteTarget-based DrawContext with reusable nested offsets and allocation-free fixed-cell sprite text under `glugglug2/utils`. |
 | 467 | Add instanced sprite-only glugglug2 renderer | 2026-08-19 | Added a sprite-only WebGL2 package with a persistent atlas, compact ordered instance uploads, one instanced draw call, focused tests, and a browser-verified example. |
 | 464 | Require explicit stdlib include exports | 2026-06-19 | Include-local `#export` now marks public stdlib functions, private helpers are prefixed, and `readInterpolated` exercises the private-helper path. |
 | 458 | Decouple module execution order from memory layout | 2026-06-18 | Memory layout now allocates modules alphabetically by id while execution order remains driven by entry/module source order. |

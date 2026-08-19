@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-08-19
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-08-19
 ---
 
 # TODO: Add optional drawing utilities to glugglug2
@@ -142,16 +142,16 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 
 ## Success Criteria
 
-- [ ] Consumers can import `DrawContext`, `SpriteFont`, and `SpriteTarget` from `glugglug2/utils`.
-- [ ] `Engine`, test recorders, and the planned raster-cache builder can satisfy `SpriteTarget` structurally without
+- [x] Consumers can import `DrawContext`, `SpriteFont`, and `SpriteTarget` from `glugglug2/utils`.
+- [x] `Engine`, test recorders, and the planned raster-cache builder can satisfy `SpriteTarget` structurally without
       importing utilities into the core renderer.
-- [ ] The root `glugglug2` API remains focused on direct sprite rendering and GPU resource management.
-- [ ] Nested offsets produce correct final coordinates and restore previous offsets when popped.
-- [ ] `drawText()` appends ordered numeric glyph sprites using fixed horizontal advances.
-- [ ] Undefined glyphs are skipped without changing the position of later cells.
-- [ ] The offset and text hot paths create no per-call or per-glyph temporary objects.
-- [ ] The utility layer contains no application-specific sprite names, font roles, editor types, or atlas generation logic.
-- [ ] Unit tests and package build, typecheck, and lint targets pass.
+- [x] The root `glugglug2` API remains focused on direct sprite rendering and GPU resource management.
+- [x] Nested offsets produce correct final coordinates and restore previous offsets when popped.
+- [x] `drawText()` appends ordered numeric glyph sprites using fixed horizontal advances.
+- [x] Undefined glyphs are skipped without changing the position of later cells.
+- [x] The offset and text hot paths create no per-call or per-glyph temporary objects.
+- [x] The utility layer contains no application-specific sprite names, font roles, editor types, or atlas generation logic.
+- [x] Unit tests and package build, typecheck, and lint targets pass.
 
 ## Affected Components
 
@@ -180,10 +180,17 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 
 - **Depends on**: TODO 467 (Add instanced sprite-only glugglug2 renderer; completed)
 - **Related**: TODO 468 (Add shader-batched raster caches to glugglug2)
+- **Follow-up**: TODO 470 (Add no-op cacheGroup compatibility helper to glugglug2 utilities)
 - **Related**: `packages/editor/packages/glugglug2/docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md`
 
 ## Notes
 
+- Implemented `SpriteTarget`, `SpriteFont`, `GlyphIdTable`, and `DrawContext` under the optional `glugglug2/utils`
+  subpath with no root-entry-point re-exports.
+- `DrawContext` uses retained parallel offset stacks, forwards numeric sprites directly, and expands text in one UTF-16
+  loop without temporary glyph instructions.
+- The proposed API and missing-glyph policy were implemented without changes. Pre-resolved glyph runs, font factories,
+  measurement, rich layout, and cache behavior remain outside this utility layer.
 - `web-ui` can later consume this utility while retaining ownership of semantic sprite-id and syntax-color resolution.
 - `SpriteTarget` is intentionally structural. Core renderers and cache builders should not import the optional utility
   entry point merely to declare conformance.
@@ -194,6 +201,4 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 
 ## Archive Instructions
 
-When completed, move this file to `docs/todos/archived/`, add its completion entry to `docs/todos/_index.md`, and record
-the final utility entry point, public API names, missing-glyph policy, and any differences from the proposed allocation-
-free implementation.
+Completed on 2026-08-19. The final API, missing-glyph behavior, and implemented scope are recorded above.

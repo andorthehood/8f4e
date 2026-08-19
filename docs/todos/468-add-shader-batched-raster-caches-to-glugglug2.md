@@ -75,7 +75,7 @@ engine.renderFrame(() => {
 ```
 
 The cache builder's `drawSprite(x, y, spriteId, width?, height?)` surface should be structurally compatible with the
-`SpriteTarget` contract proposed in TODO 469. This allows `glugglug2/utils` consumers to wrap a cache builder in a
+`SpriteTarget` contract implemented by TODO 469. This allows `glugglug2/utils` consumers to wrap a cache builder in a
 `DrawContext` for offsets and fixed-cell text without making the core cache implementation import the optional utility
 entry point.
 
@@ -134,8 +134,8 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 ### Step 3: Render sprite instructions into cache regions
 
 - Provide a cache-builder callback with the same sprite argument order and unchecked append behavior as `drawSprite()`.
-- Keep the cache builder structurally compatible with TODO 469's `SpriteTarget` contract without adding a core-to-utils
-  dependency.
+- Keep the cache builder structurally compatible with TODO 469's implemented `SpriteTarget` contract without adding a
+  core-to-utils dependency.
 - Render the builder's instances into the allocated cache-atlas rectangle using the ordinary sprite atlas as the source.
 - Restore framebuffer, viewport, scissor, clear color, texture bindings, and other WebGL state needed by the next canvas
   frame.
@@ -186,8 +186,8 @@ stale or foreign handles are programmer errors with unspecified consequences rat
       ordinary sprites.
 - [ ] Cache creation, explicit update, atlas-full failure, full reset, atlas replacement, and engine destruction have
       automated coverage.
-- [ ] The cache builder is structurally compatible with TODO 469's `SpriteTarget`, allowing optional drawing utilities
-      to target a cache without coupling the core renderer to them.
+- [ ] The cache builder is structurally compatible with TODO 469's implemented `SpriteTarget`, allowing optional drawing
+      utilities to target a cache without coupling the core renderer to them.
 - [ ] The visual regression suite covers mixed ordinary/cached rendering and framebuffer orientation.
 - [ ] The MVP has no hashing, automatic invalidation checks in `drawCache()`, LRU eviction, or nested cache composition.
 
@@ -226,7 +226,8 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 - **Depends on**: TODO 467 (Add instanced sprite-only glugglug2 renderer; completed)
 - **Related**: TODO 052 (Simplify Cache Rendering Order in glugglug)
 - **Related**: TODO 155 (Add Framebuffer Memory Accounting in glugglug)
-- **Related**: TODO 469 (Add optional drawing utilities to glugglug2)
+- **Related**: TODO 469 (Add optional drawing utilities to glugglug2; completed)
+- **Related**: TODO 470 (Add no-op cacheGroup compatibility helper to glugglug2 utilities)
 - **Related**: `packages/editor/packages/glugglug2/docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md`
 
 ## Notes
