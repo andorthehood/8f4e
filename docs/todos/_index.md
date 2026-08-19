@@ -71,7 +71,6 @@ Active todo files are listed below.
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
 | 468 | Add shader-batched raster caches to glugglug2 | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
-| 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 🟡 | 1-2h | 2026-08-19 | Preserve the old cacheGroup call shape during migration while always drawing immediately and retaining no cache state. |
 
 ### 🟢 Low Priority
 
@@ -90,6 +89,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 2026-08-19 | Added a DrawContext migration shim that accepts the old call shape, always draws immediately, always returns false, and retains no cache state. |
 | 474 | Add RGBA texture layer plugin to glugglug2 | 2026-08-19 | Added fixed-phase RGBA8 texture uploads, same-storage updates, nearest/linear filtering, top-left rectangle draws, and independent texture/plugin ownership. |
 | 473 | Add post-process plugin to glugglug2 | 2026-08-19 | Added an inactive-zero-cost postDraw effect using a resize-aware RGB8 GPU framebuffer copy, ordered overlay inclusion, atomic replacement, and whole-scene visual coverage. |
 | 472 | Add shader underlay plugin to glugglug2 | 2026-08-19 | Added an atomic fullscreen preDraw effect with old-compatible varyings, optional time/resolution uniforms, independent cleanup, and combined visual coverage. |

@@ -10,6 +10,11 @@ import type { SpriteAtlasImage, SpriteIdentifier, SpriteLookup } from './types.t
 export class Renderer {
 	/** Raw WebGL2 context used by the sprite renderer and trusted render hooks. */
 	readonly gl: WebGL2RenderingContext;
+	/** Mutable internal storage exposed by `Engine` as a readonly live statistics view. */
+	readonly frameStats = {
+		spriteCount: 0,
+		uploadedInstanceBytes: 0,
+	};
 	private readonly program: WebGLProgram;
 	private readonly instanceBufferObject: WebGLBuffer;
 	private readonly vertexArray: WebGLVertexArrayObject;
@@ -162,7 +167,10 @@ export class Renderer {
 	 * This per-frame path intentionally performs no destruction-state validation.
 	 */
 	flush(): void {
-		if (this.instances.count === 0) {
+		const spriteCount = this.instances.count;
+		this.frameStats.spriteCount = spriteCount;
+		this.frameStats.uploadedInstanceBytes = 0;
+		if (spriteCount === 0) {
 			return;
 		}
 		if (!this.atlasTexture || !this.lookupTexture) {
@@ -190,7 +198,9 @@ export class Renderer {
 			this.gpuCapacity = this.instances.capacity;
 			gl.bufferData(gl.ARRAY_BUFFER, this.gpuCapacity * INSTANCE_BYTE_STRIDE, gl.DYNAMIC_DRAW);
 		}
-		gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.instances.usedBytes());
+		const instanceBytes = this.instances.usedBytes();
+		gl.bufferSubData(gl.ARRAY_BUFFER, 0, instanceBytes);
+		this.frameStats.uploadedInstanceBytes = instanceBytes.byteLength;
 
 		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, this.atlasTexture);
@@ -200,7 +210,7 @@ export class Renderer {
 		gl.uniform1i(this.lookupSamplerLocation, 1);
 		gl.uniform2f(this.resolutionLocation, this.canvas.width, this.canvas.height);
 		gl.uniform2f(this.atlasSizeLocation, this.atlasWidth, this.atlasHeight);
-		gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, this.instances.count);
+		gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, spriteCount);
 	}
 
 	/**

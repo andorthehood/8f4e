@@ -5,6 +5,7 @@ import type {
 	RenderCallback,
 	RenderHooks,
 	SpriteAtlasImage,
+	SpriteFrameStats,
 	SpriteIdentifier,
 	SpriteLookup,
 } from './types.ts';
@@ -21,6 +22,8 @@ export class Engine {
 	private readonly renderer: Renderer;
 	/** Raw WebGL2 context shared with trusted render-hook plugins. */
 	readonly gl: WebGL2RenderingContext;
+	/** Live statistics updated after each completed sprite pass. */
+	readonly frameStats: SpriteFrameStats;
 	/** Mutable hook arrays executed in insertion order around the sprite pass. */
 	readonly hooks: RenderHooks = {
 		preDraw: [],
@@ -40,6 +43,7 @@ export class Engine {
 	constructor(canvas: HTMLCanvasElement, options: EngineOptions = {}) {
 		this.renderer = new Renderer(canvas, options.initialCapacity ?? DEFAULT_INITIAL_CAPACITY);
 		this.gl = this.renderer.gl;
+		this.frameStats = this.renderer.frameStats;
 	}
 
 	/**

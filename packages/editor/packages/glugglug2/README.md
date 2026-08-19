@@ -28,6 +28,21 @@ See [ADR-001: Do Not Validate Programmer Input in Render Hot Paths](docs/adr/001
 
 The core engine intentionally has no caching, lines, text layout, post-processing, or general primitive API.
 
+## Frame statistics
+
+`engine.frameStats` is one stable, allocation-free view updated after every completed sprite pass. It reports
+the number of submitted sprite rectangles and the used instance-buffer bytes sent to the GPU:
+
+```ts
+engine.renderFrame(drawScene);
+
+console.log(engine.frameStats.spriteCount);
+console.log(engine.frameStats.uploadedInstanceBytes);
+```
+
+The values describe only the core sprite pass; plugin uploads and draw calls are intentionally independent. During
+sprite submission the view still describes the previous completed pass. `postDraw` hooks observe the current pass.
+
 ## Render-hook plugins
 
 The engine exposes its exact `WebGL2RenderingContext` as `engine.gl` and two ordered mutable hook arrays. `preDraw` hooks
@@ -106,7 +121,8 @@ removes the current effect without detaching the plugin; `destroy()` detaches it
 
 `RgbaTextureLayer` uploads straight-alpha RGBA8 pixel arrays to reusable textures and draws them as top-left-origin
 rectangles. It has one fixed phase for its lifetime: `preDraw` by default, or `postDraw` when constructed as an overlay.
-The callback is where per-frame uploads and draws belong.
+The callback is where per-frame uploads and draws belong. Construct it after `ShaderUnderlay` to composite the RGBA
+framebuffer over that shader while keeping both passes below the sprite scene.
 
 ```ts
 import { RgbaTextureLayer } from 'glugglug2';
@@ -174,6 +190,9 @@ engine.renderFrame(() => {
 	draw.pushOffset(panel.x, panel.y);
 	draw.drawSprite(0, 0, panelSpriteId, panel.width, panel.height);
 	draw.drawText(8, 16, 'status', font);
+	draw.cacheGroup('legacy-code-block', 160, 80, () => {
+		draw.drawText(8, 32, 'always redrawn', font);
+	});
 	draw.popOffset();
 });
 ```
@@ -182,6 +201,11 @@ One context can be reused across frames. Offset pushes and pops must remain bala
 numeric glyph table with JavaScript UTF-16 character codes, skips undefined glyphs while preserving their fixed advance,
 and performs no wrapping, alignment, shaping, measurement, font loading, or semantic sprite resolution. The context owns
 neither its target nor the atlas, render loop, fonts, or caches.
+
+`cacheGroup(cacheId, width, height, draw, enabled?, alpha?)` is only a migration shim for old `glugglug` call sites. It
+executes `draw` exactly once on every call, even when disabled or called repeatedly with the same id, then returns
+`false`. It retains no instructions, textures, or cache metadata; its other arguments are accepted but ignored. It has
+no performance benefit. Real GPU raster caching remains separate future work tracked by TODO 468.
 
 ## Visual regression tests
 

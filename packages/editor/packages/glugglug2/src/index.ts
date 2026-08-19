@@ -23,6 +23,7 @@ export type {
 	RenderPluginHost,
 	SpriteAtlasImage,
 	SpriteCoordinates,
+	SpriteFrameStats,
 	SpriteIdentifier,
 	SpriteLookup,
 } from './types.ts';

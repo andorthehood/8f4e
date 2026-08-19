@@ -1,4 +1,4 @@
-import { describe, expect, expectTypeOf, it } from 'vitest';
+import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 
 import type { Engine } from '../engine.ts';
 import { DrawContext } from './drawContext.ts';
@@ -69,6 +69,68 @@ describe('DrawContext', () => {
 		expect(calls).toEqual([
 			[1, 2, 0, undefined, undefined],
 			[11, 22, 1, undefined, undefined],
+		]);
+	});
+
+	it('executes cache groups immediately and always reports a cache miss', () => {
+		const { calls, target } = createRecorder();
+		const draw = new DrawContext(target);
+		const callback = vi.fn(() => draw.drawSprite(1, 2, 3));
+
+		const firstResult = draw.cacheGroup('panel', 100, 50, callback);
+		const secondResult = draw.cacheGroup('panel', 100, 50, callback, true, 0.5);
+
+		expect(firstResult).toBe(false);
+		expect(secondResult).toBe(false);
+		expect(callback).toHaveBeenCalledTimes(2);
+		expect(calls).toEqual([
+			[1, 2, 3, undefined, undefined],
+			[1, 2, 3, undefined, undefined],
+		]);
+	});
+
+	it('executes disabled cache groups and ignores dimensions and alpha', () => {
+		const { calls, target } = createRecorder();
+		const draw = new DrawContext(target);
+
+		draw.cacheGroup('ignored', -100, Number.NaN, () => draw.drawSprite(3, 5, 7, 11, 13), false, -2);
+
+		expect(calls).toEqual([[3, 5, 7, 11, 13]]);
+	});
+
+	it('preserves the active offset while executing a cache group', () => {
+		const { calls, target } = createRecorder();
+		const draw = new DrawContext(target);
+
+		draw.pushOffset(10, 20);
+		draw.cacheGroup('nested', 30, 40, () => draw.drawSprite(1, 2, 3));
+		draw.drawSprite(4, 5, 6);
+		draw.popOffset();
+
+		expect(calls).toEqual([
+			[11, 22, 3, undefined, undefined],
+			[14, 25, 6, undefined, undefined],
+		]);
+	});
+
+	it('propagates cache-group callback errors without changing offset state', () => {
+		const { calls, target } = createRecorder();
+		const draw = new DrawContext(target);
+		const error = new Error('draw failed');
+
+		draw.pushOffset(10, 20);
+		expect(() =>
+			draw.cacheGroup('broken', 30, 40, () => {
+				throw error;
+			})
+		).toThrow(error);
+		draw.drawSprite(1, 2, 3);
+		draw.popOffset();
+		draw.drawSprite(4, 5, 6);
+
+		expect(calls).toEqual([
+			[11, 22, 3, undefined, undefined],
+			[4, 5, 6, undefined, undefined],
 		]);
 	});
 

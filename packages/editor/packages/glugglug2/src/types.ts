@@ -18,6 +18,14 @@ export type EngineOptions = {
 
 export type RenderCallback = () => void;
 
+/** Statistics for the most recently completed sprite pass. */
+export type SpriteFrameStats = {
+	/** Number of sprite rectangles submitted to the completed sprite pass. */
+	readonly spriteCount: number;
+	/** Number of used instance-buffer bytes uploaded for that sprite pass. */
+	readonly uploadedInstanceBytes: number;
+};
+
 /**
  * Performs one trusted custom WebGL pass during a render frame.
  *

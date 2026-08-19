@@ -148,6 +148,26 @@ describe('Engine', () => {
 		expect(webgl.texImage2D).not.toHaveBeenCalled();
 	});
 
+	it('exposes stable statistics for the most recently uploaded sprite instances', () => {
+		const { engine } = createEngine();
+		const stats = engine.frameStats;
+		expect(stats).toEqual({ spriteCount: 0, uploadedInstanceBytes: 0 });
+		engine.setSpriteAtlas(createAtlasImage(), {
+			player: { x: 0, y: 0, spriteWidth: 8, spriteHeight: 8 },
+		});
+
+		engine.renderFrame(() => {
+			engine.drawSprite(0, 0, 'player');
+			engine.drawSprite(10, 0, 'player');
+		});
+
+		expect(engine.frameStats).toBe(stats);
+		expect(stats).toEqual({ spriteCount: 2, uploadedInstanceBytes: 40 });
+
+		engine.renderFrame(() => undefined);
+		expect(stats).toEqual({ spriteCount: 0, uploadedInstanceBytes: 0 });
+	});
+
 	it('accepts numeric sprite ids', () => {
 		const { engine, webgl } = createEngine();
 		engine.setSpriteAtlas(createAtlasImage(), {

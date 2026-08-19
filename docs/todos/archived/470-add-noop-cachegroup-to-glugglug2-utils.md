@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2h
 created: 2026-08-19
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-08-19
 ---
 
 # TODO: Add no-op cacheGroup compatibility helper to glugglug2 utilities
@@ -101,15 +101,15 @@ sprite submission, and the core renderer should not advertise caching until it o
 
 ## Success Criteria
 
-- [ ] `DrawContext.cacheGroup()` accepts the old `glugglug` parameter order and defaults.
-- [ ] The callback executes exactly once per invocation regardless of id reuse or `enabled`.
-- [ ] The method always returns `false` and creates no retained CPU or GPU cache state.
-- [ ] Active coordinate offsets remain in effect inside the callback and remain unchanged afterward.
-- [ ] Dimensions and alpha are accepted but ignored.
-- [ ] Callback errors propagate without being caught or translated.
-- [ ] `SpriteTarget` and `Engine` remain free of the compatibility method.
-- [ ] README documentation labels the method clearly as a migration shim with no caching or performance benefit.
-- [ ] Package build, typecheck, tests, and lint pass.
+- [x] `DrawContext.cacheGroup()` accepts the old `glugglug` parameter order and defaults.
+- [x] The callback executes exactly once per invocation regardless of id reuse or `enabled`.
+- [x] The method always returns `false` and creates no retained CPU or GPU cache state.
+- [x] Active coordinate offsets remain in effect inside the callback and remain unchanged afterward.
+- [x] Dimensions and alpha are accepted but ignored.
+- [x] Callback errors propagate without being caught or translated.
+- [x] `SpriteTarget` and `Engine` remain free of the compatibility method.
+- [x] README documentation labels the method clearly as a migration shim with no caching or performance benefit.
+- [x] Package build, typecheck, tests, and lint pass.
 
 ## Affected Components
 
@@ -141,6 +141,9 @@ sprite submission, and the core renderer should not advertise caching until it o
   `glugglug` engine.
 - Returning `false` matches the old caching-disabled branch and makes the absence of cache creation explicit.
 - Real caching remains an explicit GPU-resource feature owned by the core renderer, as described in TODO 468.
+- Completed on 2026-08-19 with the planned signature on `DrawContext`. Focused tests cover repeated ids, enabled and
+  disabled calls, ignored dimensions and alpha, inherited offsets, unchanged offset state after errors, and direct error
+  propagation. The transition toward TODO 468 is unchanged: this shim will not silently become a real cache.
 
 ## Archive Instructions
 
