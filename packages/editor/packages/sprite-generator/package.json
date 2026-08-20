@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/sprite-generator",
-  "version": "1.0.26",
+  "version": "1.1.0",
   "private": true,
   "description": "8f4e sprite generator package",
   "type": "module",
@@ -23,9 +23,9 @@
     "url": "https://github.com/andorthehood/8f4e/issues"
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
-	"dependencies": {
-		"glugglug2": "*"
-	},
+  "dependencies": {
+    "glugglug2": "*"
+  },
   "devDependencies": {
     "vite": "7.3.5"
   }
