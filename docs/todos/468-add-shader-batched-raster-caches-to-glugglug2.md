@@ -193,14 +193,14 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 
 ## Affected Components
 
-- `packages/editor/packages/glugglug2/src/engine.ts` - Public cache creation, update, drawing, reset, and lifecycle API.
-- `packages/editor/packages/glugglug2/src/renderer.ts` - Cache atlas, framebuffer, allocation, lookup uploads, and render-target
+- `packages/editor/packages/glugglug/src/engine.ts` - Public cache creation, update, drawing, reset, and lifecycle API.
+- `packages/editor/packages/glugglug/src/renderer.ts` - Cache atlas, framebuffer, allocation, lookup uploads, and render-target
   state.
-- `packages/editor/packages/glugglug2/src/instanceBuffer.ts` - Shared encoded-id constants or helpers if appropriate.
-- `packages/editor/packages/glugglug2/src/shaders.ts` - Cache-id decoding and dual-atlas sampling.
-- `packages/editor/packages/glugglug2/src/types.ts` - Cache options, builder, and opaque handle types.
-- `packages/editor/packages/glugglug2/screenshot-tests/` - Mixed sprite/cache visual regression coverage.
-- `packages/editor/packages/glugglug2/README.md` - Cache API, lifecycle, memory, and invalidation documentation.
+- `packages/editor/packages/glugglug/src/instanceBuffer.ts` - Shared encoded-id constants or helpers if appropriate.
+- `packages/editor/packages/glugglug/src/shaders.ts` - Cache-id decoding and dual-atlas sampling.
+- `packages/editor/packages/glugglug/src/types.ts` - Cache options, builder, and opaque handle types.
+- `packages/editor/packages/glugglug/screenshot-tests/` - Mixed sprite/cache visual regression coverage.
+- `packages/editor/packages/glugglug/README.md` - Cache API, lifecycle, memory, and invalidation documentation.
 
 ## Risks & Considerations
 
@@ -228,7 +228,7 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 - **Related**: TODO 155 (Add Framebuffer Memory Accounting in glugglug)
 - **Related**: TODO 469 (Add optional drawing utilities to glugglug2; completed)
 - **Related**: TODO 470 (Add no-op cacheGroup compatibility helper to glugglug2 utilities)
-- **Related**: `packages/editor/packages/glugglug2/docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md`
+- **Related**: `packages/editor/packages/glugglug/docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md`
 
 ## Notes
 

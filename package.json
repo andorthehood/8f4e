@@ -29,6 +29,8 @@
     "@types/audioworklet": "0.0.100",
     "@types/node": "24.13.2",
     "@types/offscreencanvas": "2019.7.3",
+    "@vitest/browser": "4.1.7",
+    "@vitest/browser-playwright": "4.1.7",
     "@vitest/coverage-v8": "4.1.7",
     "@vitest/ui": "4.1.7",
     "concurrently": "10.0.3",

@@ -13,8 +13,7 @@
 			"!**/jest.config.js",
 			"!**/jest.image.ts",
 			"!logs",
-			"!**/src/fonts/**/generated",
-			"!packages/editor/packages/glugglug"
+			"!**/src/fonts/**/generated"
 		]
 	},
 	"formatter": {
