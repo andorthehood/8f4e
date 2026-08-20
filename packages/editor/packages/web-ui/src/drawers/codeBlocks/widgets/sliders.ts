@@ -31,12 +31,12 @@ export default function drawer(
 		const trackWidth = Math.max(width - handleWidth, 1);
 		const handleX = Math.floor(normalizedValue * trackWidth);
 
-		engine.pushOffset(x, y);
+		engine.startGroup(x, y);
 
 		engine.drawSprite(0, 0, state.spriteLookups.fillColors.track, width, height);
 		engine.drawSprite(0, 0, state.spriteLookups.fillColors.fill, handleX + handleWidth, height);
 		engine.drawSprite(handleX, 0, state.spriteLookups.fillColors.handle, handleWidth, height);
 
-		engine.popOffset();
+		engine.endGroup();
 	}
 }

@@ -49,7 +49,7 @@ export default function drawer(
 
 	for (const bars of codeBlock.widgets.arrayBars) {
 		const { x, y, width, height, length, valueType, minValue, inverseValueRange, staticColumnLayout } = bars;
-		engine.pushOffset(x, y);
+		engine.startGroup(x, y);
 
 		const baseValueIndex = getBaseValueIndex(bars, memoryViews);
 		const values = getTypedValueView(memoryViews, valueType);
@@ -59,7 +59,7 @@ export default function drawer(
 		engine.drawSprite(0, 0, fillSprites.plotterBackground, width, height);
 
 		if (arrayLength <= 0) {
-			engine.popOffset();
+			engine.endGroup();
 			continue;
 		}
 
@@ -95,6 +95,6 @@ export default function drawer(
 			engine.drawSprite(barX, barY, fillSprites.bars, column.width, barHeight);
 		}
 
-		engine.popOffset();
+		engine.endGroup();
 	}
 }

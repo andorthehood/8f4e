@@ -187,20 +187,20 @@ const font: SpriteFont = {
 };
 
 engine.renderFrame(() => {
-	draw.pushOffset(panel.x, panel.y);
+	draw.startGroup(panel.x, panel.y);
 	draw.drawSprite(0, 0, panelSpriteId, panel.width, panel.height);
 	draw.drawText(8, 16, 'status', font);
 	draw.cacheGroup('legacy-code-block', 160, 80, () => {
 		draw.drawText(8, 32, 'always redrawn', font);
 	});
-	draw.popOffset();
+	draw.endGroup();
 });
 ```
 
-One context can be reused across frames. Offset pushes and pops must remain balanced. `drawText()` indexes the supplied
-numeric glyph table with JavaScript UTF-16 character codes, skips undefined glyphs while preserving their fixed advance,
-and performs no wrapping, alignment, shaping, measurement, font loading, or semantic sprite resolution. The context owns
-neither its target nor the atlas, render loop, fonts, or caches.
+One context can be reused across frames. Every `startGroup()` call must have a matching `endGroup()` call. `drawText()`
+indexes the supplied numeric glyph table with JavaScript UTF-16 character codes, skips undefined glyphs while preserving
+their fixed advance, and performs no wrapping, alignment, shaping, measurement, font loading, or semantic sprite
+resolution. The context owns neither its target nor the atlas, render loop, fonts, or caches.
 
 `cacheGroup(cacheId, width, height, draw, enabled?, alpha?)` is only a migration shim for old `glugglug` call sites. It
 executes `draw` exactly once on every call, even when disabled or called repeatedly with the same id, then returns

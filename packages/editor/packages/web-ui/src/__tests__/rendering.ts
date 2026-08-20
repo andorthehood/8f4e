@@ -21,8 +21,8 @@ export function createSpriteIdLookupMock(): SpriteIdLookup {
 /** Creates the reusable numeric drawing surface expected by unit-scoped drawer tests. */
 export function createDrawContextMock(): DrawContext {
 	return {
-		pushOffset: vi.fn(),
-		popOffset: vi.fn(),
+		startGroup: vi.fn(),
+		endGroup: vi.fn(),
 		cacheGroup: vi.fn((_key, _width, _height, draw) => {
 			draw();
 			return false;

@@ -119,7 +119,7 @@ export default function drawInfoOverlay(
 		);
 	}
 
-	engine.pushOffset(0, state.viewport.roundedHeight - state.viewport.hGrid * (debugText.length + 1));
+	engine.startGroup(0, state.viewport.roundedHeight - state.viewport.hGrid * (debugText.length + 1));
 
 	for (let i = 0; i < debugText.length; i++) {
 		engine.drawSprite(
@@ -133,5 +133,5 @@ export default function drawInfoOverlay(
 		engine.drawText(state.viewport.vGrid, i * state.viewport.hGrid, debugText[i], state.spriteLookups.fontDebugInfo);
 	}
 
-	engine.popOffset();
+	engine.endGroup();
 }

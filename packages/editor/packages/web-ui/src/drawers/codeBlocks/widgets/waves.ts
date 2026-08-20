@@ -80,12 +80,12 @@ export default function drawer(
 		maxValue,
 		inverseValueRange,
 	} of codeBlock.widgets.arrayWaves) {
-		engine.pushOffset(x, y);
+		engine.startGroup(x, y);
 
 		const arrayLength =
 			typeof length === 'number' ? length : memoryViews.int32[length.memory.wordAlignedAddress + length.bufferPointer];
 		if (arrayLength <= 0 || inverseElementByteSize <= 0) {
-			engine.popOffset();
+			engine.endGroup();
 			continue;
 		}
 
@@ -124,6 +124,6 @@ export default function drawer(
 			engine.drawSprite(scanlineX, 0, fillSprites.scanLine, scanlineWidth, height);
 		}
 
-		engine.popOffset();
+		engine.endGroup();
 	}
 }

@@ -27,7 +27,7 @@ export default function drawConsoleOverlay(engine: DrawContext, state: State): v
 	const panelX = viewportWidth - panelWidthPixels;
 	const panelY = viewportHeight - panelHeightPixels - PADDING_CHARS * hGrid;
 
-	engine.pushOffset(panelX, panelY);
+	engine.startGroup(panelX, panelY);
 
 	for (let i = 0; i < visibleCount; i++) {
 		const logEntry = logs[startIndex + i];
@@ -56,5 +56,5 @@ export default function drawConsoleOverlay(engine: DrawContext, state: State): v
 		);
 	}
 
-	engine.popOffset();
+	engine.endGroup();
 }

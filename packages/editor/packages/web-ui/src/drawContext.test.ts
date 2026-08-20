@@ -7,10 +7,10 @@ describe('DrawContext', () => {
 		const draw = new DrawContext(target, 8);
 		const glyphIds = { 65: 12, 66: 13 };
 
-		draw.pushOffset(10, 20);
+		draw.startGroup(10, 20);
 		draw.drawSprite(1, 2, 7, 30, 40);
 		draw.drawText(3, 4, 'AB', glyphIds);
-		draw.popOffset();
+		draw.endGroup();
 
 		expect(target.drawSprite.mock.calls).toEqual([
 			[11, 22, 7, 30, 40],

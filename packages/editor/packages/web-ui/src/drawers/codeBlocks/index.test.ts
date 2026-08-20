@@ -20,8 +20,8 @@ function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryVie
 
 function createMockEngine({ drawCachedGroup = true }: { drawCachedGroup?: boolean } = {}): Engine {
 	return {
-		pushOffset: vi.fn(),
-		popOffset: vi.fn(),
+		startGroup: vi.fn(),
+		endGroup: vi.fn(),
 		cacheGroup: vi.fn((_key, _width, _height, draw) => {
 			if (drawCachedGroup) {
 				draw();

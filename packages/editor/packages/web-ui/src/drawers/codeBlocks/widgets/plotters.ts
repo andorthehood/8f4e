@@ -95,7 +95,7 @@ export default function drawer(
 
 	for (const { x, y, startAddress, baseSampleShift, length, valueType, maxValue, minValue } of codeBlock.widgets
 		.arrayPlotters) {
-		engine.pushOffset(x, y);
+		engine.startGroup(x, y);
 
 		const baseValueIndex = getBaseValueIndex(startAddress, memoryViews, baseSampleShift);
 		const values = getTypedValueView(memoryViews, valueType);
@@ -138,6 +138,6 @@ export default function drawer(
 			);
 		}
 
-		engine.popOffset();
+		engine.endGroup();
 	}
 }

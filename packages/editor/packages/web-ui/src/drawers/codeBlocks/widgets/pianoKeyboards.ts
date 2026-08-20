@@ -78,7 +78,7 @@ export default function drawer(
 		pressedNumberOfKeysMemory,
 		startingNumber,
 	} of codeBlock.widgets.pianoKeyboards) {
-		engine.pushOffset(x, y);
+		engine.startGroup(x, y);
 
 		for (const key of keys) {
 			if (key.kind === 'black') {
@@ -109,6 +109,6 @@ export default function drawer(
 		for (const key of keys) {
 			engine.drawText(key.labelX, key.labelY, key.label, spriteLookups.fontCode);
 		}
-		engine.popOffset();
+		engine.endGroup();
 	}
 }

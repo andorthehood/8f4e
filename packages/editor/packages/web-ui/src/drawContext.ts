@@ -58,18 +58,18 @@ export class DrawContext {
 	}
 
 	/**
-	 * Adds a nested translation to later sprite and text submissions.
+	 * Starts a nested coordinate group for later sprite and text submissions.
 	 *
 	 * @param x - X translation to add.
 	 * @param y - Y translation to add.
 	 */
-	pushOffset(x: number, y: number): void {
-		this.sprites.pushOffset(x, y);
+	startGroup(x: number, y: number): void {
+		this.sprites.startGroup(x, y);
 	}
 
-	/** Restores the translation active before the most recent {@link pushOffset} call. */
-	popOffset(): void {
-		this.sprites.popOffset();
+	/** Ends the current coordinate group and restores its parent translation. */
+	endGroup(): void {
+		this.sprites.endGroup();
 	}
 
 	/**

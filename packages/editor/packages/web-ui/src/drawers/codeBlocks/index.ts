@@ -35,7 +35,7 @@ export default function drawModules(engine: DrawContext, state: State, memoryVie
 	const offsetX = -x;
 	const offsetY = -y;
 
-	engine.pushOffset(offsetX, offsetY);
+	engine.startGroup(offsetX, offsetY);
 	drawEntryOutlines(engine, state);
 
 	for (const codeBlock of state.codeBlockRendering.codeBlocks) {
@@ -62,7 +62,7 @@ export default function drawModules(engine: DrawContext, state: State, memoryVie
 			codeBlock.x + codeBlock.offsetX + offsetX < state.viewport.width &&
 			codeBlock.y + codeBlock.offsetY + offsetY < state.viewport.height
 		) {
-			engine.pushOffset(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
+			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
 			engine.cacheGroup(
 				codeBlock.textureCacheKey,
 				codeBlock.width,
@@ -169,12 +169,12 @@ export default function drawModules(engine: DrawContext, state: State, memoryVie
 			drawDebuggers(engine, state, codeBlock, memoryViews);
 			drawSelectedLineHint(engine, state, codeBlock, memoryViews);
 
-			engine.popOffset();
+			engine.endGroup();
 		} else if (state.featureFlags.offscreenBlockArrows) {
 			// Module is off-screen, draw arrow indicators
 			drawArrow(engine, codeBlock, state);
 		}
 	}
 
-	engine.popOffset();
+	engine.endGroup();
 }

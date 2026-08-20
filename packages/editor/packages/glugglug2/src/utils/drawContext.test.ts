@@ -39,13 +39,13 @@ describe('DrawContext', () => {
 		const { calls, target } = createRecorder();
 		const draw = new DrawContext(target);
 
-		draw.pushOffset(10, 20);
+		draw.startGroup(10, 20);
 		draw.drawSprite(1, 2, 3);
-		draw.pushOffset(100, 200);
+		draw.startGroup(100, 200);
 		draw.drawSprite(4, 5, 6);
-		draw.popOffset();
+		draw.endGroup();
 		draw.drawSprite(7, 8, 9);
-		draw.popOffset();
+		draw.endGroup();
 		draw.drawSprite(11, 12, 13);
 
 		expect(calls).toEqual([
@@ -61,9 +61,9 @@ describe('DrawContext', () => {
 		const draw = new DrawContext(target);
 
 		for (let frame = 0; frame < 2; frame += 1) {
-			draw.pushOffset(frame * 10, frame * 20);
+			draw.startGroup(frame * 10, frame * 20);
 			draw.drawSprite(1, 2, frame);
-			draw.popOffset();
+			draw.endGroup();
 		}
 
 		expect(calls).toEqual([
@@ -102,10 +102,10 @@ describe('DrawContext', () => {
 		const { calls, target } = createRecorder();
 		const draw = new DrawContext(target);
 
-		draw.pushOffset(10, 20);
+		draw.startGroup(10, 20);
 		draw.cacheGroup('nested', 30, 40, () => draw.drawSprite(1, 2, 3));
 		draw.drawSprite(4, 5, 6);
-		draw.popOffset();
+		draw.endGroup();
 
 		expect(calls).toEqual([
 			[11, 22, 3, undefined, undefined],
@@ -118,14 +118,14 @@ describe('DrawContext', () => {
 		const draw = new DrawContext(target);
 		const error = new Error('draw failed');
 
-		draw.pushOffset(10, 20);
+		draw.startGroup(10, 20);
 		expect(() =>
 			draw.cacheGroup('broken', 30, 40, () => {
 				throw error;
 			})
 		).toThrow(error);
 		draw.drawSprite(1, 2, 3);
-		draw.popOffset();
+		draw.endGroup();
 		draw.drawSprite(4, 5, 6);
 
 		expect(calls).toEqual([
@@ -146,9 +146,9 @@ describe('DrawContext', () => {
 			},
 		};
 
-		draw.pushOffset(10, 20);
+		draw.startGroup(10, 20);
 		draw.drawText(2, 3, 'ABC', font);
-		draw.popOffset();
+		draw.endGroup();
 
 		expect(calls).toEqual([
 			[12, 23, 101],

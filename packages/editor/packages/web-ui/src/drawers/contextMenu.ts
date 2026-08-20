@@ -8,9 +8,9 @@ export default function drawContextMenu(engine: DrawContext, state: State): void
 		return;
 	}
 
-	engine.pushOffset(x - state.viewport.x, y - state.viewport.y);
+	engine.startGroup(x - state.viewport.x, y - state.viewport.y);
 	for (let i = 0; i < items.length; i++) {
-		engine.pushOffset(0, i * state.viewport.hGrid);
+		engine.startGroup(0, i * state.viewport.hGrid);
 		let font = state.spriteLookups.fontMenuItemText;
 		if (i === highlightedItem && !items[i].disabled && !items[i].divider) {
 			engine.drawSprite(
@@ -28,7 +28,7 @@ export default function drawContextMenu(engine: DrawContext, state: State): void
 		if (!items[i].divider) {
 			engine.drawText(0, 0, items[i].title || '', font);
 		}
-		engine.popOffset();
+		engine.endGroup();
 	}
-	engine.popOffset();
+	engine.endGroup();
 }

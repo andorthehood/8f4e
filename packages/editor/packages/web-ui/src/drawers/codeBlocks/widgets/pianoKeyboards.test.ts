@@ -133,7 +133,7 @@ describe('drawPianoKeyboards', () => {
 		const drawSprite = (engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite;
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
 
-		expect(engine.pushOffset).toHaveBeenCalledWith(2, 3);
+		expect(engine.startGroup).toHaveBeenCalledWith(2, 3);
 		expect(drawSprite).toHaveBeenCalledWith(0, 4, 'pianoKeyWhite', 2, 20);
 		expect(drawSprite).toHaveBeenCalledWith(2, 4, 'pianoKeyBlack', 2, 12);
 		expect(drawSprite).toHaveBeenCalledWith(2, 16, 'pianoKeyWhite', 2, 8);

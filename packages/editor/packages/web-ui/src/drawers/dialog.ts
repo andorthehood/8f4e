@@ -8,11 +8,11 @@ export default function drawDialog(engine: DrawContext, state: State): void {
 		return;
 	}
 
-	engine.pushOffset(0, 0);
+	engine.startGroup(0, 0);
 	engine.drawSprite(0, 0, state.spriteLookups.fillColors.dialogDimmer, state.viewport.width, state.viewport.height);
-	engine.popOffset();
+	engine.endGroup();
 
-	engine.pushOffset(state.dialog.x, state.dialog.y);
+	engine.startGroup(state.dialog.x, state.dialog.y);
 
 	engine.drawSprite(0, 0, state.spriteLookups.fillColors.dialogBackground, state.dialog.width, state.dialog.height);
 
@@ -33,5 +33,5 @@ export default function drawDialog(engine: DrawContext, state: State): void {
 		engine.drawText(state.viewport.vGrid, textY, state.dialog.wrappedText[i], state.spriteLookups.fontDialogText);
 	}
 
-	engine.popOffset();
+	engine.endGroup();
 }

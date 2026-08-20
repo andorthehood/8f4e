@@ -3,8 +3,8 @@ import type { SpriteFont, SpriteTarget } from './types.ts';
 /**
  * Adds reusable CPU-side coordinate offsets and fixed-cell text expansion to a sprite target.
  *
- * A context owns no GPU resources and can be reused across frames. Offset pushes and pops must
- * remain balanced; invalid stack operations are programmer errors with unspecified consequences.
+ * A context owns no GPU resources and can be reused across frames. Every started group must be
+ * ended; invalid group nesting is a programmer error with unspecified consequences.
  */
 export class DrawContext implements SpriteTarget {
 	private offsetX = 0;
@@ -21,14 +21,14 @@ export class DrawContext implements SpriteTarget {
 	constructor(private readonly target: SpriteTarget) {}
 
 	/**
-	 * Adds a nested translation to subsequent sprite and text submissions.
+	 * Starts a nested coordinate group for subsequent sprite and text submissions.
 	 *
 	 * Stack storage is retained and reused after it grows to the required nesting depth.
 	 *
 	 * @param x - X translation added to the current offset.
 	 * @param y - Y translation added to the current offset.
 	 */
-	pushOffset(x: number, y: number): void {
+	startGroup(x: number, y: number): void {
 		this.offsetXStack[this.offsetDepth] = this.offsetX;
 		this.offsetYStack[this.offsetDepth] = this.offsetY;
 		this.offsetDepth += 1;
@@ -37,11 +37,11 @@ export class DrawContext implements SpriteTarget {
 	}
 
 	/**
-	 * Restores the translation that was active before the most recent {@link pushOffset} call.
+	 * Restores the translation that was active before the most recent {@link startGroup} call.
 	 *
-	 * Calling this method without a matching push is a programmer error with unspecified consequences.
+	 * Calling this method without a matching {@link startGroup} is a programmer error with unspecified consequences.
 	 */
-	popOffset(): void {
+	endGroup(): void {
 		this.offsetDepth -= 1;
 		this.offsetX = this.offsetXStack[this.offsetDepth];
 		this.offsetY = this.offsetYStack[this.offsetDepth];

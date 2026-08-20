@@ -64,7 +64,7 @@ export default function drawInfoPanels(engine: DrawContext, state: State, codeBl
 		const panelCells = Math.max(0, Math.floor(panel.width / state.viewport.vGrid));
 		let renderedRows = 0;
 
-		engine.pushOffset(panel.x, panel.y);
+		engine.startGroup(panel.x, panel.y);
 		engine.drawSprite(0, 0, spriteLookups.fillColors.plotterBackground, panel.width, panel.height);
 
 		for (const key in info) {
@@ -88,6 +88,6 @@ export default function drawInfoPanels(engine: DrawContext, state: State, codeBl
 			}
 		}
 
-		engine.popOffset();
+		engine.endGroup();
 	}
 }

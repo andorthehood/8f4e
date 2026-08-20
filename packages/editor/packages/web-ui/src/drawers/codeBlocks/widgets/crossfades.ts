@@ -22,7 +22,7 @@ export default function drawer(
 		const position = clamp(rightValue - leftValue, -1, 1);
 		const handleX = Math.round(((position + 1) / 2) * crossfade.trackWidth);
 
-		engine.pushOffset(crossfade.x, crossfade.y);
+		engine.startGroup(crossfade.x, crossfade.y);
 		engine.drawSprite(0, 0, state.spriteLookups.fillColors.track, crossfade.width, crossfade.height);
 
 		if (handleX !== crossfade.centerX) {
@@ -32,6 +32,6 @@ export default function drawer(
 		}
 
 		engine.drawSprite(handleX, 0, state.spriteLookups.fillColors.handle, crossfade.handleWidth, crossfade.height);
-		engine.popOffset();
+		engine.endGroup();
 	}
 }

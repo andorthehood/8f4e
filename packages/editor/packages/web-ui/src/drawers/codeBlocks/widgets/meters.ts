@@ -81,7 +81,7 @@ export default function drawer(
 			overloadMarkerX,
 			overloadMarkerWidth,
 		} = meter;
-		engine.pushOffset(x, y);
+		engine.startGroup(x, y);
 
 		const values = getTypedValueView(memoryViews, valueType);
 		const value = values[getMeterValueIndex(meter, baseSampleShift, memoryViews)] ?? minValue;
@@ -106,6 +106,6 @@ export default function drawer(
 			engine.drawSprite(overloadMarkerX, 0, fillSprites.meterRed, overloadMarkerWidth, height);
 		}
 
-		engine.popOffset();
+		engine.endGroup();
 	}
 }

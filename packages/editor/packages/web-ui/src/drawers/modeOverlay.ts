@@ -35,7 +35,7 @@ export default function drawModeOverlay(engine: DrawContext, state: State): void
 					? VIEW_MODE_PRESENTATION_HINT
 					: VIEW_MODE_HINT;
 
-	engine.pushOffset(0, 0);
+	engine.startGroup(0, 0);
 	engine.drawSprite(
 		0,
 		0,
@@ -44,5 +44,5 @@ export default function drawModeOverlay(engine: DrawContext, state: State): void
 		state.viewport.hGrid
 	);
 	engine.drawText(state.viewport.vGrid, 0, modeHint, state.spriteLookups.fontDebugInfo);
-	engine.popOffset();
+	engine.endGroup();
 }
