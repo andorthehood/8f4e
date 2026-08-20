@@ -1,6 +1,6 @@
 import type { CodeBlockGraphicData, State, TooltipLiveValue } from '@8f4e/editor-state-types';
 import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import type { SpriteIdLookup } from '@8f4e/sprite-generator';
+import type { SpriteFont } from '@8f4e/sprite-generator';
 import type { DrawContext } from '../../drawContext';
 import type { MemoryViews } from '../../types';
 import formatDebuggerValue, { formatDebuggerValueAtAddress } from './widgets/formatDebuggerValue';
@@ -42,7 +42,7 @@ function drawCharactersWithColors(
 	engine: DrawContext,
 	state: State,
 	characters: Array<number | string>,
-	colors: Array<SpriteIdLookup | undefined> | undefined,
+	colors: Array<SpriteFont | undefined> | undefined,
 	x: number,
 	y: number
 ): void {
@@ -55,7 +55,7 @@ function drawCharactersWithColors(
 		currentLookup = nextLookup;
 
 		if (characters[index] !== 32) {
-			engine.drawSprite(x + index * state.viewport.vGrid, y, currentLookup[characters[index]]);
+			engine.drawSprite(x + index * state.viewport.vGrid, y, currentLookup[characters[index]] ?? currentLookup[63]);
 		}
 	}
 }
@@ -66,13 +66,13 @@ function drawTextCharacters(
 	text: string,
 	x: number,
 	y: number,
-	font: SpriteIdLookup
+	font: SpriteFont
 ): void {
 	for (let index = 0; index < text.length; index++) {
 		const character = text.charCodeAt(index);
 
 		if (character !== 32) {
-			engine.drawSprite(x + index * state.viewport.vGrid, y, font[character]);
+			engine.drawSprite(x + index * state.viewport.vGrid, y, font[character] ?? font[63]);
 		}
 	}
 }

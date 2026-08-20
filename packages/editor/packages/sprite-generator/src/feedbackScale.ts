@@ -50,7 +50,7 @@ export const generateLookup = (
 	characterWidth: number,
 	characterHeight: number,
 	colors: ColorScheme['icons']
-): Record<number, SpriteCoordinates> => {
+): Partial<Record<number, SpriteCoordinates>> => {
 	const feedbackScaleColors = getFeedbackScaleColors(colors);
 	const layout = createAtlasLayout(characterWidth, characterHeight);
 

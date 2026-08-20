@@ -2,7 +2,7 @@ import { describe, expect, expectTypeOf, it } from 'vitest';
 
 import type { Engine } from '../engine.ts';
 import { DrawContext } from './drawContext.ts';
-import type { SpriteFont, SpriteTarget } from './types.ts';
+import type { SpriteTarget } from './types.ts';
 
 type SpriteCall = Parameters<SpriteTarget['drawSprite']>;
 
@@ -70,56 +70,5 @@ describe('DrawContext', () => {
 			[1, 2, 0, undefined, undefined],
 			[11, 22, 1, undefined, undefined],
 		]);
-	});
-
-	it('draws fixed-cell glyphs in order with the active offset', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-		const font: SpriteFont = {
-			advanceX: 8,
-			glyphIds: {
-				65: 101,
-				66: 102,
-				67: 103,
-			},
-		};
-
-		draw.startGroup(10, 20);
-		draw.drawText(2, 3, 'ABC', font);
-		draw.endGroup();
-
-		expect(calls).toEqual([
-			[12, 23, 101],
-			[20, 23, 102],
-			[28, 23, 103],
-		]);
-	});
-
-	it('skips undefined glyphs while preserving their cell advance', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-		const font: SpriteFont = {
-			advanceX: 6,
-			glyphIds: {
-				65: 4,
-				66: 5,
-			},
-		};
-
-		draw.drawText(1, 2, 'A B', font);
-
-		expect(calls).toEqual([
-			[1, 2, 4],
-			[13, 2, 5],
-		]);
-	});
-
-	it('does not submit sprites for empty text', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-
-		draw.drawText(1, 2, '', { advanceX: 8, glyphIds: {} });
-
-		expect(calls).toEqual([]);
 	});
 });

@@ -5,7 +5,7 @@
  */
 
 import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/language-spec';
-import type { FillSpriteColorName, SpriteIdLookup, SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
 import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug2';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
@@ -184,7 +184,7 @@ export interface TooltipLiveValue {
 	x: number;
 	y: number;
 	source: TooltipLiveValueSource;
-	color: SpriteIdLookup | undefined;
+	color: SpriteFont | undefined;
 }
 
 export interface TooltipLayout {
@@ -207,7 +207,7 @@ export interface TooltipHighlight {
 export interface TooltipState {
 	text: string[];
 	characters: Array<Array<number | string>>;
-	colors: Array<Array<SpriteIdLookup | undefined>>;
+	colors: Array<Array<SpriteFont | undefined>>;
 	lineCount: number;
 	widthChars: number;
 	layout: TooltipLayout;

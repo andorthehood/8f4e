@@ -1,7 +1,8 @@
 import type { CodeBlockEntryOutline, State } from '@8f4e/editor-state-types';
+import type { SpriteId } from '@8f4e/sprite-generator';
 import type { DrawContext } from '../../drawContext';
 
-function drawOutline(engine: DrawContext, outline: CodeBlockEntryOutline, thickness: number, spriteId: number): void {
+function drawOutline(engine: DrawContext, outline: CodeBlockEntryOutline, thickness: number, spriteId: SpriteId): void {
 	const left = outline.topLeft.x;
 	const top = outline.topLeft.y;
 	const width = outline.topRight.x - outline.topLeft.x;

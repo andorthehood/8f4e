@@ -43,7 +43,6 @@ export function createCodeBlockGraphicData(
 		cursor,
 		name,
 		code,
-		codeColors: [],
 		codeToRender: [],
 		gaps: new Map(),
 		lineNumberColumnWidth: 1,

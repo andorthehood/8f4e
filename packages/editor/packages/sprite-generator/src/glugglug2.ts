@@ -2,19 +2,24 @@ import type { SpriteCoordinates, SpriteLookup } from 'glugglug2';
 
 type SpriteLookupGroup = Record<string | number, SpriteCoordinates>;
 
-/** One semantic sprite group resolved to dense numeric atlas identifiers. */
-export type SpriteIdLookup = Record<string | number, number>;
+declare const spriteIdBrand: unique symbol;
+
+/** Dense atlas identifier created only after its source rectangle has been validated. */
+export type SpriteId = number & { readonly [spriteIdBrand]: true };
+
+/** One sparse semantic sprite group resolved to validated dense atlas identifiers. */
+export type SpriteIdLookup = Partial<Record<string | number, SpriteId>>;
 
 export type Glugglug2SpriteIds<Lookups> = {
 	[Group in keyof Lookups]: {
-		[Sprite in keyof Lookups[Group]]: number;
+		[Sprite in keyof Lookups[Group]]: undefined extends Lookups[Group][Sprite] ? SpriteId | undefined : SpriteId;
 	};
 };
 
-export type Glugglug2Atlas<Lookups> = {
+export type Glugglug2Atlas<Lookups, SpriteIds = Glugglug2SpriteIds<Lookups>> = {
 	image: OffscreenCanvas;
 	lookup: SpriteLookup;
-	spriteIds: Glugglug2SpriteIds<Lookups>;
+	spriteIds: SpriteIds;
 };
 
 /**
@@ -32,13 +37,14 @@ export function createGlugglug2Atlas<Lookups extends object>(
 	groupedLookups: Lookups
 ): Glugglug2Atlas<Lookups> {
 	const lookup: SpriteLookup = {};
-	const spriteIds: Record<string, Record<string, number>> = {};
-	const idsByRectangle = new Map<string, number>();
+	const spriteIds: Record<string, Record<string, SpriteId>> = {};
+	const idsByRectangle = new Map<string, SpriteId>();
 
 	for (const [groupName, groupLookup] of Object.entries(groupedLookups as Record<string, SpriteLookupGroup>)) {
-		const groupIds: Record<string, number> = {};
+		const groupIds: Record<string, SpriteId> = {};
 
 		for (const [spriteIdentifier, coordinates] of Object.entries(groupLookup)) {
+			assertValidCoordinates(image, groupName, spriteIdentifier, coordinates);
 			const rectangleKey = JSON.stringify([
 				coordinates.x,
 				coordinates.y,
@@ -48,7 +54,7 @@ export function createGlugglug2Atlas<Lookups extends object>(
 			let id = idsByRectangle.get(rectangleKey);
 
 			if (id === undefined) {
-				id = idsByRectangle.size;
+				id = idsByRectangle.size as SpriteId;
 				idsByRectangle.set(rectangleKey, id);
 				lookup[id] = { ...coordinates };
 			}
@@ -64,4 +70,33 @@ export function createGlugglug2Atlas<Lookups extends object>(
 		lookup,
 		spriteIds: spriteIds as Glugglug2SpriteIds<Lookups>,
 	};
+}
+
+/**
+ * Validates a source rectangle before its dense number is branded as a usable sprite id.
+ *
+ * @param image - Atlas image that must fully contain the rectangle.
+ * @param groupName - Semantic lookup group used in validation errors.
+ * @param spriteIdentifier - Semantic sprite key used in validation errors.
+ * @param coordinates - Rectangle to validate against the atlas and packed lookup format.
+ */
+function assertValidCoordinates(
+	image: OffscreenCanvas,
+	groupName: string,
+	spriteIdentifier: string,
+	coordinates: SpriteCoordinates
+): void {
+	const values = [coordinates.x, coordinates.y, coordinates.spriteWidth, coordinates.spriteHeight];
+	if (values.some(value => !Number.isInteger(value) || value < 0 || value > 0xffff)) {
+		throw new RangeError(`Sprite ${groupName}.${spriteIdentifier} contains coordinates outside the uint16 range.`);
+	}
+	if (coordinates.spriteWidth === 0 || coordinates.spriteHeight === 0) {
+		throw new RangeError(`Sprite ${groupName}.${spriteIdentifier} must have positive dimensions.`);
+	}
+	if (
+		coordinates.x + coordinates.spriteWidth > image.width ||
+		coordinates.y + coordinates.spriteHeight > image.height
+	) {
+		throw new RangeError(`Sprite ${groupName}.${spriteIdentifier} extends outside the atlas image.`);
+	}
 }

@@ -36,4 +36,19 @@ describe('glugglug2 atlas output', () => {
 		expect(first.lookup[0]).not.toBe(coordinates);
 		expect(groupedLookups).toEqual({ icons: { play: coordinates } });
 	});
+
+	it('rejects invalid rectangles before assigning validated sprite ids', () => {
+		const image = { width: 16, height: 8 } as OffscreenCanvas;
+
+		expect(() =>
+			createGlugglug2Atlas(image, {
+				icons: { outside: { x: 12, y: 0, spriteWidth: 8, spriteHeight: 8 } },
+			})
+		).toThrow('Sprite icons.outside extends outside the atlas image.');
+		expect(() =>
+			createGlugglug2Atlas(image, {
+				icons: { empty: { x: 0, y: 0, spriteWidth: 0, spriteHeight: 8 } },
+			})
+		).toThrow('Sprite icons.empty must have positive dimensions.');
+	});
 });

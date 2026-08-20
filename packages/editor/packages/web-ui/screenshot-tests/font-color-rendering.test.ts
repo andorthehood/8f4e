@@ -5,7 +5,7 @@ import createCanvas from './utils/createCanvas';
 import createMockMemoryViews from './utils/createMockMemoryViews';
 import createMockSpriteData from './utils/createMockSpriteData';
 import createMockStateWithColors from './utils/createMockStateWithColors';
-import { generateColorMapWithOneColor } from './utils/generateColorMapMock';
+import { resolveCodeWithOneColor } from './utils/generateColorMapMock';
 
 test('font color rendering', async () => {
 	const canvas = createCanvas();
@@ -55,7 +55,7 @@ test('font color rendering', async () => {
 
 		const color = mockState.spriteLookups[colorName];
 		const codeLines = ['', colorName, ...lines.map(line => line.join('')), ''];
-		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
+		const codeToRender = resolveCodeWithOneColor(codeLines, color);
 
 		mockState.codeBlockRendering.codeBlocks.push(
 			createMockCodeBlock({
@@ -65,7 +65,6 @@ test('font color rendering', async () => {
 				width: 256,
 				height: codeLines.length * 16,
 				codeToRender,
-				codeColors: generateColorMapWithOneColor(color, 10),
 			})
 		);
 	});

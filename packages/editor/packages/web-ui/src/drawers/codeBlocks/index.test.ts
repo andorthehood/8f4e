@@ -139,7 +139,6 @@ describe('drawModules', () => {
 			width: 100,
 			height: 50,
 			codeToRender: [],
-			codeColors: [],
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
@@ -174,7 +173,6 @@ describe('drawModules', () => {
 			width: 100,
 			height: 50,
 			codeToRender: [],
-			codeColors: [],
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
@@ -214,7 +212,6 @@ describe('drawModules', () => {
 			width: 100,
 			height: 80,
 			codeToRender: [],
-			codeColors: [],
 		});
 		block.widgets.pianoKeyboards = [
 			{
@@ -310,7 +307,6 @@ describe('drawModules', () => {
 				y: 16,
 			},
 			codeToRender: [],
-			codeColors: [],
 		});
 		const state = createMockState({
 			spriteLookups: {
@@ -432,7 +428,6 @@ describe('drawModules', () => {
 			},
 			code: ['add'],
 			codeToRender: [],
-			codeColors: [],
 		});
 		const pointer = createMemory({
 			id: 'pointer',

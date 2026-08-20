@@ -34,7 +34,6 @@ export default function gaps(graphicData: CodeBlockGraphicData, directiveState: 
 	});
 
 	gaps.forEach(([row, gap]) => {
-		graphicData.codeToRender.splice(row + 1, 0, ...new Array(gap.size).fill(' '));
-		graphicData.codeColors.splice(row + 1, 0, ...new Array(gap.size).fill([]));
+		graphicData.codeToRender.splice(row + 1, 0, ...Array.from({ length: gap.size }, () => []));
 	});
 }

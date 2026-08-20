@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { SpriteId } from '@8f4e/sprite-generator';
 import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import { getBaseValueIndex, getTypedValueView } from './typedValueView';
@@ -28,7 +29,7 @@ function drawWaveform(
 	minValue: number,
 	maxValue: number,
 	inverseValueRange: number,
-	waveformSpriteId: number
+	waveformSpriteId: SpriteId
 ): void {
 	for (let column = 0; column < columnCount; column++) {
 		const sliceStart = Math.floor((column / columnCount) * arrayLength);

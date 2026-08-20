@@ -8,13 +8,19 @@ import generateFillColors, { generateLookup as generateLookupForFillColors } fro
 import generateFont, { type FontLookups, generateLookups as generateLookupsForFonts } from './font.ts';
 import decodeFontBase64 from './fonts/font-decoder.ts';
 import type { FontMetadata } from './fonts/ibmvga8x16/generated/ascii.ts';
-import { createGlugglug2Atlas, type Glugglug2Atlas, type Glugglug2SpriteIds } from './glugglug2.ts';
+import {
+	createGlugglug2Atlas,
+	type Glugglug2Atlas,
+	type Glugglug2SpriteIds,
+	type SpriteId,
+	type SpriteIdLookup,
+} from './glugglug2.ts';
 import generateIcons, { generateLookup as generateLookupForIcons, type IconValue } from './icons.ts';
 import { type ColorScheme, type ColorSchemeOverrides, Command, type Config, FONT_NAMES, type Font } from './types.ts';
 
 export { default as defaultColorScheme } from './defaultColorScheme.ts';
 export type { FillSpriteColorName } from './fillColors.ts';
-export type { Glugglug2Atlas, Glugglug2SpriteIds, SpriteIdLookup } from './glugglug2.ts';
+export type { Glugglug2Atlas, Glugglug2SpriteIds, SpriteId, SpriteIdLookup } from './glugglug2.ts';
 export { createGlugglug2Atlas } from './glugglug2.ts';
 export { Icon } from './icons.ts';
 export type { ColorScheme, ColorSchemeOverrides, Font } from './types.ts';
@@ -292,11 +298,23 @@ export interface SpriteLookups extends FontLookups {
 	fillColors: Record<FillSpriteColorName, SpriteCoordinates>;
 	background: Record<0, SpriteCoordinates>;
 	icons: Record<IconValue, SpriteCoordinates>;
-	feedbackScale: Record<number, SpriteCoordinates>;
+	feedbackScale: Partial<Record<number, SpriteCoordinates>>;
 }
 
+/** Validated fixed-cell font whose fallback glyph is guaranteed to exist. */
+export type SpriteFont = SpriteIdLookup & { readonly 63: SpriteId };
+
+/** Validated feedback scale whose neutral fallback sprite is guaranteed to exist. */
+export type SpriteFeedbackScale = SpriteIdLookup & { readonly 0: SpriteId };
+
+type NonFontSpriteLookups = Omit<SpriteLookups, keyof FontLookups>;
+
 /** Grouped numeric sprite identifiers used by the editor render hot path. */
-export type SpriteIdLookups = Glugglug2SpriteIds<SpriteLookups>;
+export type SpriteIdLookups = Omit<Glugglug2SpriteIds<NonFontSpriteLookups>, 'feedbackScale'> & {
+	feedbackScale: SpriteFeedbackScale;
+} & {
+	[Group in keyof FontLookups]: SpriteFont;
+};
 
 /** Solid line colors sampled from the generated atlas. */
 export type SpriteLineColors = {
@@ -316,7 +334,7 @@ export function resolveColorScheme(overrides: Config['colorScheme'] = {}): Color
 export default async function generateSprite(config: Config): Promise<{
 	canvas: OffscreenCanvas;
 	spriteLookups: SpriteLookups;
-	glugglug2Atlas: Glugglug2Atlas<SpriteLookups>;
+	glugglug2Atlas: Glugglug2Atlas<SpriteLookups, SpriteIdLookups>;
 	lineColors: SpriteLineColors;
 	characterWidth: number;
 	characterHeight: number;
@@ -378,15 +396,39 @@ export default async function generateSprite(config: Config): Promise<{
 		return [red / 255, green / 255, blue / 255, alpha / 255];
 	};
 
+	const rawGlugglug2Atlas = createGlugglug2Atlas(canvas, spriteLookups);
+	const glugglug2Atlas: Glugglug2Atlas<SpriteLookups, SpriteIdLookups> = {
+		...rawGlugglug2Atlas,
+		spriteIds: validateSpriteIds(rawGlugglug2Atlas.spriteIds),
+	};
+
 	return {
 		canvas,
 		characterHeight,
 		characterWidth,
-		glugglug2Atlas: createGlugglug2Atlas(canvas, spriteLookups),
+		glugglug2Atlas,
 		lineColors: {
 			wire: readLineColor('wire'),
 			wireHighlighted: readLineColor('wireHighlighted'),
 		},
 		spriteLookups,
 	};
+}
+
+/**
+ * Strengthens generated lookup groups after confirming that their required fallback sprites exist.
+ *
+ * @param spriteIds - Numeric atlas lookups produced from validated source rectangles.
+ * @returns The same lookups with required font and feedback fallbacks reflected in their types.
+ */
+function validateSpriteIds(spriteIds: Glugglug2SpriteIds<SpriteLookups>): SpriteIdLookups {
+	for (const [groupName, group] of Object.entries(spriteIds)) {
+		if (groupName.startsWith('font') && (group as SpriteIdLookup)[63] === undefined) {
+			throw new Error(`Generated sprite font ${groupName} is missing fallback glyph 63.`);
+		}
+	}
+	if (spriteIds.feedbackScale[0] === undefined) {
+		throw new Error('Generated feedback scale is missing fallback sprite 0.');
+	}
+	return spriteIds as SpriteIdLookups;
 }

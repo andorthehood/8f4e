@@ -1,4 +1,4 @@
-import type { SpriteIdLookup } from '@8f4e/sprite-generator';
+import type { SpriteFont } from '@8f4e/sprite-generator';
 import { getStackSignatureFromSourceLine } from './sourceLine';
 import { getStackValueHighlightRange } from './stackAnalysisTooltip';
 import type { SpriteLookups, TooltipHighlightRange } from './types';
@@ -10,12 +10,12 @@ export function getTooltipLineColors(
 	line: string,
 	spriteLookups: SpriteLookups | undefined,
 	highlightRanges: TooltipHighlightRange[] = []
-): Array<SpriteIdLookup | undefined> {
+): Array<SpriteFont | undefined> {
 	if (!spriteLookups || line.length === 0) {
 		return [];
 	}
 
-	const colors: Array<SpriteIdLookup | undefined> = new Array(line.length).fill(undefined);
+	const colors: Array<SpriteFont | undefined> = new Array(line.length).fill(undefined);
 	colors[0] = spriteLookups.fontTooltipText;
 
 	for (const range of highlightRanges) {
@@ -36,7 +36,7 @@ export function getSelectedLineTooltipColors(
 	line: string | undefined,
 	text: string[],
 	spriteLookups: SpriteLookups | undefined
-): Array<Array<SpriteIdLookup | undefined>> {
+): Array<Array<SpriteFont | undefined>> {
 	const stackSignature = line ? getStackSignatureFromSourceLine(line) : undefined;
 
 	return text.map((tooltipLine, index) => {

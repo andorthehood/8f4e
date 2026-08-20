@@ -157,7 +157,6 @@ describe('shape', () => {
 			blockType: 'module',
 			code: ['module filterA', '; @plot other', 'shape filterState', 'moduleEnd'],
 			codeToRender: [[1], [2], [3], [4]],
-			codeColors: [[undefined], [undefined], [undefined], [undefined]],
 			lineNumberColumnWidth: 1,
 		});
 		const state = createMockState({

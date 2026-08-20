@@ -1,11 +1,11 @@
-import type { SpriteIdLookup } from '@8f4e/sprite-generator';
+import type { SpriteFont, SpriteId } from '@8f4e/sprite-generator';
 import { vi } from 'vitest';
 import type { DrawContext } from '../drawContext';
 
 /** Creates a semantic lookup whose property names remain visible in drawer assertions. */
-export function createSpriteIdLookupMock(): SpriteIdLookup {
+export function createSpriteIdLookupMock(): SpriteFont {
 	return new Proxy(
-		{},
+		{ 63: 63 as SpriteId },
 		{
 			get: (target, key) => {
 				if (typeof key === 'symbol') {
@@ -15,7 +15,7 @@ export function createSpriteIdLookupMock(): SpriteIdLookup {
 				return Number.isNaN(numericKey) ? key : numericKey;
 			},
 		}
-	) as SpriteIdLookup;
+	) as SpriteFont;
 }
 
 /** Creates the reusable numeric drawing surface expected by unit-scoped drawer tests. */
@@ -25,5 +25,6 @@ export function createDrawContextMock(): DrawContext {
 		endGroup: vi.fn(),
 		drawSprite: vi.fn(),
 		drawText: vi.fn(),
+		drawResolvedText: vi.fn(),
 	} as unknown as DrawContext;
 }

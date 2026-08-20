@@ -99,28 +99,19 @@ export default function drawModules(engine: DrawContext, state: State, memoryVie
 			);
 
 			if (!renderHiddenPreview) {
-				let currentFont = codeBlock.disabled ? spriteLookups.fontDisabledCode : spriteLookups.fontCode;
-
 				for (let i = 0; i < codeBlock.codeToRender.length; i++) {
-					for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
-						const lookup = codeBlock.codeColors[i][j];
-						if (!codeBlock.disabled && lookup) {
-							currentFont = lookup;
-						}
-						if (codeBlock.codeToRender[i][j] !== 32) {
-							engine.drawSprite(
-								state.viewport.vGrid * (j + 1),
-								state.viewport.hGrid * i,
-								currentFont[codeBlock.codeToRender[i][j]]
-							);
-						}
-					}
+					engine.drawResolvedText(state.viewport.vGrid, state.viewport.hGrid * i, codeBlock.codeToRender[i]);
 				}
 
 				drawShapeDeclarations(engine, state, codeBlock);
 
 				if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
-					engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_', currentFont);
+					engine.drawText(
+						codeBlock.cursor.x,
+						codeBlock.cursor.y,
+						'_',
+						codeBlock.disabled ? spriteLookups.fontDisabledCode : spriteLookups.fontCode
+					);
 				}
 			}
 

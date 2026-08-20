@@ -1,7 +1,7 @@
-import type { SpriteFont, SpriteTarget } from './types.ts';
+import type { SpriteTarget } from './types.ts';
 
 /**
- * Adds reusable CPU-side coordinate offsets and fixed-cell text expansion to a sprite target.
+ * Adds reusable CPU-side coordinate offsets to a sprite target.
  *
  * A context owns no GPU resources and can be reused across frames. Every started group must be
  * ended; invalid group nesting is a programmer error with unspecified consequences.
@@ -58,31 +58,5 @@ export class DrawContext implements SpriteTarget {
 	 */
 	drawSprite(x: number, y: number, spriteId: number, width?: number, height?: number): void {
 		this.target.drawSprite(x + this.offsetX, y + this.offsetY, spriteId, width, height);
-	}
-
-	/**
-	 * Expands one line of fixed-cell text directly into ordered numeric sprite submissions.
-	 *
-	 * Each JavaScript UTF-16 code unit indexes {@link SpriteFont.glyphIds}. Undefined glyphs are
-	 * skipped while still consuming their cell advance. The loop creates no glyph arrays, substrings,
-	 * or per-character objects.
-	 *
-	 * @param x - First character-cell X coordinate relative to the current context offset.
-	 * @param y - Character-cell Y coordinate relative to the current context offset.
-	 * @param text - Single-line text whose UTF-16 code units select glyph sprite ids.
-	 * @param font - Numeric glyph table and fixed horizontal cell advance.
-	 */
-	drawText(x: number, y: number, text: string, font: SpriteFont): void {
-		let glyphX = x + this.offsetX;
-		const glyphY = y + this.offsetY;
-		const { advanceX, glyphIds } = font;
-
-		for (let index = 0; index < text.length; index += 1) {
-			const spriteId = glyphIds[text.charCodeAt(index)];
-			if (spriteId !== undefined) {
-				this.target.drawSprite(glyphX, glyphY, spriteId);
-			}
-			glyphX += advanceX;
-		}
 	}
 }

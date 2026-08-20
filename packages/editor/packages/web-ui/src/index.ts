@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { Glugglug2Atlas, SpriteLineColors, SpriteLookups } from '@8f4e/sprite-generator';
+import type { Glugglug2Atlas, SpriteIdLookups, SpriteLineColors, SpriteLookups } from '@8f4e/sprite-generator';
 import {
 	Engine,
 	LineDrawer,
@@ -23,7 +23,7 @@ import type { MemoryViews } from './types';
 export type { MemoryViews } from './types';
 
 export interface SpriteData {
-	glugglug2Atlas: Glugglug2Atlas<SpriteLookups>;
+	glugglug2Atlas: Glugglug2Atlas<SpriteLookups, SpriteIdLookups>;
 	lineColors: SpriteLineColors;
 	characterWidth: number;
 	characterHeight: number;

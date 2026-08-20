@@ -1,6 +1,6 @@
 import type { TooltipLiveValueSource } from '@8f4e/editor-state-types';
 import { BASE_TYPE_METADATA, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import type { SpriteIdLookup } from '@8f4e/sprite-generator';
+import type { SpriteFont } from '@8f4e/sprite-generator';
 import { getTooltipLineColors } from './colors';
 import { maxLiveMemoryAddressLength, maxLiveMemoryValueLength } from './constants';
 import type { SpriteLookups, TooltipLiveValueTarget } from './types';
@@ -13,7 +13,7 @@ interface LiveTooltipLine {
 
 export interface LiveTooltipContent {
 	text: string[];
-	colors: Array<Array<SpriteIdLookup | undefined>>;
+	colors: Array<Array<SpriteFont | undefined>>;
 	liveValueTargets: TooltipLiveValueTarget[];
 	maxLineLength: number;
 }

@@ -171,34 +171,27 @@ active effect, the hook returns before allocating capture storage or issuing any
 
 ## Optional drawing utilities
 
-`glugglug2/utils` provides a CPU-only `DrawContext` for nested coordinate offsets and single-line fixed-cell sprite text.
-It wraps the structural `SpriteTarget` interface, so an `Engine`, a test recorder, or a future cache builder can receive
-the final numeric sprite submissions without importing utility code into the core renderer.
+`glugglug2/utils` provides a CPU-only `DrawContext` for nested coordinate offsets. It wraps the structural
+`SpriteTarget` interface, so an `Engine`, a test recorder, or a future cache builder can receive the final numeric sprite
+submissions without importing utility code into the core renderer.
 
 ```ts
 import { Engine } from 'glugglug2';
-import { DrawContext, type SpriteFont } from 'glugglug2/utils';
+import { DrawContext } from 'glugglug2/utils';
 
 const engine = new Engine(canvas);
 const draw = new DrawContext(engine);
-const font: SpriteFont = {
-	advanceX: 8,
-	glyphIds: numericGlyphIds,
-};
 
 engine.renderFrame(() => {
 	draw.startGroup(panel.x, panel.y);
 	draw.drawSprite(0, 0, panelSpriteId, panel.width, panel.height);
-	draw.drawText(8, 16, 'status', font);
-	draw.drawText(8, 32, 'more text', font);
 	draw.endGroup();
 });
 ```
 
-One context can be reused across frames. Every `startGroup()` call must have a matching `endGroup()` call. `drawText()`
-indexes the supplied numeric glyph table with JavaScript UTF-16 character codes, skips undefined glyphs while preserving
-their fixed advance, and performs no wrapping, alignment, shaping, measurement, font loading, or semantic sprite
-resolution. The context owns neither its target nor the atlas, render loop, fonts, or caches.
+One context can be reused across frames. Every `startGroup()` call must have a matching `endGroup()` call. Text, fonts,
+fallback glyphs, and space handling belong to higher-level application utilities. The context owns neither its target nor
+the atlas, render loop, or caches.
 
 ## Visual regression tests
 

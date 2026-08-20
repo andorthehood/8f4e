@@ -129,7 +129,9 @@ function capitalize(word: string) {
 }
 
 export type FontLookups = {
-	[key in keyof ColorScheme['text'] as `font${Capitalize<string & key>}`]: Record<number | string, SpriteCoordinates>;
+	[key in keyof ColorScheme['text'] as `font${Capitalize<string & key>}`]: Partial<
+		Record<number | string, SpriteCoordinates>
+	>;
 };
 
 export const generateLookups = (characterWidth: number, characterHeight: number, colors: ColorScheme['text']) => {

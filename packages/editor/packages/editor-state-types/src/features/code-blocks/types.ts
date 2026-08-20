@@ -3,7 +3,7 @@
  */
 
 import type { DocumentBlockType, PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import type { FillSpriteColorName, SpriteIdLookup } from '@8f4e/sprite-generator';
+import type { FillSpriteColorName, SpriteId } from '@8f4e/sprite-generator';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
@@ -285,8 +285,8 @@ export interface CodeBlockGraphicData {
 	height: number;
 	code: string[];
 	lineNumberColumnWidth: number;
-	codeToRender: Array<Array<number | string>>;
-	codeColors: Array<Array<SpriteIdLookup | undefined>>;
+	/** Render-ready fixed-cell sprite ids; `null` cells advance over spaces without submitting a sprite. */
+	codeToRender: Array<Array<SpriteId | null>>;
 	/** The gaps between lines */
 	gaps: Map<number, { size: number }>;
 	/** Optional minimum grid width override (e.g., for piano keyboards) */

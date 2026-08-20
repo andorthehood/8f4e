@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { SpriteId } from '@8f4e/sprite-generator';
 import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import { getBaseValueIndex, getTypedValueView } from './typedValueView';
@@ -32,7 +33,7 @@ function drawSparsePlot(
 	pointHeight: number,
 	minValue: number,
 	valueRange: number,
-	traceSpriteId: number
+	traceSpriteId: SpriteId
 ): void {
 	for (let i = 0; i < width; i++) {
 		const value = values[baseValueIndex + i];
@@ -52,7 +53,7 @@ function drawDensePlot(
 	minValue: number,
 	maxValue: number,
 	valueRange: number,
-	traceSpriteId: number
+	traceSpriteId: SpriteId
 ): void {
 	for (let column = 0; column < columnCount; column++) {
 		const sliceStart = Math.floor((column / columnCount) * arrayLength);
