@@ -487,49 +487,6 @@ moduleEnd
 - You can manually add or remove the directive to enable/disable blocks.
 - Works with all block types (modules, functions, configs, constants, shaders, comments).
 
-### `@opacity`
-
-Set the parsed opacity preference of a code block in the editor.
-
-```txt
-; @opacity <0..1>
-```
-
-The current glugglug2 sprite renderer draws code block contents directly and does not apply group opacity, so this
-directive currently has no visible effect. The validated value remains available in editor state for future rendering
-support.
-
-**Rules:**
-
-- The value must be a finite number between `0` and `1` inclusive.
-- `0` represents fully transparent.
-- `1` represents fully opaque.
-- Missing, malformed, negative, or greater-than-`1` values are ignored and the block falls back to `1`.
-
-**Current behavior:**
-
-- Code blocks, widgets, and overlays render normally regardless of the parsed value.
-- Changing `@opacity` still updates derived editor state but does not alter GPU drawing.
-
-**Format:**
-The canonical format is: `; @opacity <value>`
-
-Example:
-
-```txt
-module hud
-; @opacity 0.65
-; @pos 2 1
-output out 1
-moduleEnd
-```
-
-**Important:**
-
-- Only the first valid `@opacity` directive in a block takes effect; later ones are ignored.
-- This directive affects editor rendering only. It does not change compilation or serialized position/state behavior.
-- Full-block fading requires future renderer support.
-
 ### `@pos`
 
 Define the grid position of a code block in the editor.

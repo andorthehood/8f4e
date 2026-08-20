@@ -55,7 +55,6 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 					isHome: directiveState.blockState.isHome,
 					homeAlignment: directiveState.blockState.homeAlignment,
 					isFavorite: directiveState.blockState.isFavorite,
-					opacity: directiveState.blockState.opacity,
 					alwaysOnTop: directiveState.blockState.alwaysOnTop ?? false,
 					viewportAnchor: directiveState.blockState.viewportAnchor,
 					parsedDirectives,

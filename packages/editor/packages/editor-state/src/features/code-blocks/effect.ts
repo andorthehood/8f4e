@@ -111,7 +111,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		graphicData.isHome = directiveState.blockState.isHome;
 		graphicData.homeAlignment = directiveState.blockState.homeAlignment;
 		graphicData.isFavorite = directiveState.blockState.isFavorite;
-		graphicData.opacity = directiveState.blockState.opacity;
 		const tabStopsByLine = getTabStopsByLine(graphicData.code);
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
@@ -330,7 +329,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				isHome: directiveState.blockState.isHome,
 				homeAlignment: directiveState.blockState.homeAlignment,
 				isFavorite: directiveState.blockState.isFavorite,
-				opacity: directiveState.blockState.opacity,
 				alwaysOnTop: directiveState.blockState.alwaysOnTop ?? false,
 				viewportAnchor: directiveState.blockState.viewportAnchor,
 				parsedDirectives: blockParsedDirectives,

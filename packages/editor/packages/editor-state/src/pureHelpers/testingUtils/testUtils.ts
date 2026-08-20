@@ -117,7 +117,6 @@ export function createMockCodeBlock(
 		hidden: false,
 		isHome: false,
 		isFavorite: false,
-		opacity: 1,
 		alwaysOnTop: false,
 		parsedDirectives: parseBlockDirectives(code),
 		widgets: {

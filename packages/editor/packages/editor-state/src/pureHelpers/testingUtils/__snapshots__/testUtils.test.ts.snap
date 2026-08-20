@@ -26,7 +26,6 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -78,7 +77,6 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
   "name": "test-block",
   "offsetX": 10,
   "offsetY": 20,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -130,7 +128,6 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -182,7 +179,6 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -234,7 +230,6 @@ exports[`createMockCodeBlock > default values > should create a block with defau
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -286,7 +281,6 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -338,7 +332,6 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
   "name": "test-block",
   "offsetX": -20,
   "offsetY": -30,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -390,7 +383,6 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -443,7 +435,6 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -498,7 +489,6 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -550,7 +540,6 @@ exports[`createMockCodeBlock > override behavior > should override name and offs
   "name": "custom-block",
   "offsetX": 10,
   "offsetY": 20,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],
@@ -602,7 +591,6 @@ exports[`createMockCodeBlock > override behavior > should override position and 
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
   "widgets": {
     "arrayBars": [],

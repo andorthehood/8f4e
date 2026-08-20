@@ -20,7 +20,6 @@ import hideDirective from './hide/plugin';
 import homeDirective from './home/plugin';
 import infoDirective from './info/plugin';
 import meterDirective from './meter/plugin';
-import opacityDirective from './opacity/plugin';
 import pianoDirective from './piano/plugin';
 import plotDirective from './plot/plugin';
 import sliderDirective from './slider/plugin';
@@ -57,7 +56,6 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	favoriteDirective,
 	hideDirective,
 	hiddenDirective,
-	opacityDirective,
 	groupDirective,
 	viewportDirective,
 	alwaysOnTopDirective,
@@ -77,7 +75,6 @@ export function deriveDirectiveState(
 			hidden: false,
 			isHome: false,
 			isFavorite: false,
-			opacity: 1,
 		},
 		displayState: {},
 		displayModel: buildDisplayModel(code),

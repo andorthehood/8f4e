@@ -407,12 +407,6 @@ export interface CodeBlockGraphicData {
 	 */
 	isFavorite: boolean;
 	/**
-	 * Parsed opacity value derived from `; @opacity <0..1>`.
-	 * Retained in editor state even though the current sprite renderer does not apply group opacity.
-	 * When no `; @opacity` directive is specified, this is set to 1.
-	 */
-	opacity: number;
-	/**
 	 * Parsed directive records derived from this block's code lines during the central update pass.
 	 * Covers editor directives (`; @name`).
 	 * Populated once per update; consumers should prefer these over rescanning raw code lines.
