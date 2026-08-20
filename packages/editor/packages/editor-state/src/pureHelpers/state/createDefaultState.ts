@@ -17,7 +17,6 @@ export default function createDefaultState() {
 			codeBlocks: [],
 			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],
-			textureCacheEpoch: 0,
 			nextCodeBlockCreationIndex: 0,
 			outputsByWordAddress: new Map(),
 			showHiddenCodeBlocks: false,

@@ -8,7 +8,7 @@ import type {
 } from '@8f4e/editor-state-types';
 import generateSprite from '@8f4e/sprite-generator';
 import initView, { type MemoryViews, type RenderStats, type WebUiOptions } from '@8f4e/web-ui';
-import type { BackgroundEffect, PostProcessEffect } from 'glugglug';
+import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug2';
 import {
 	BIN_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
 	binaryAssetsEditorConfigSchemaContribution,
@@ -112,12 +112,8 @@ function toGraphicsInfoRecord(stats: RenderStats): InfoRecord {
 		frameBudgetMs: stats.frameBudgetMs,
 		headroomMs: stats.headroomMs,
 		fpsCapacity: stats.fpsCapacity,
-		quadCount: stats.quadCount,
-		vertexCount: stats.vertexCount,
-		maxVertices: stats.maxVertices,
-		vertexUsagePercent: stats.vertexUsagePercent,
-		cacheItemCount: stats.cacheItemCount,
-		cacheMaxItems: stats.cacheMaxItems,
+		spriteCount: stats.spriteCount,
+		uploadedInstanceBytes: stats.uploadedInstanceBytes,
 	};
 }
 
@@ -216,7 +212,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	events.on<PostProcessEffect | null>('loadPostProcessEffect', effect => {
 		view.loadPostProcessEffect(effect);
 	});
-	events.on<BackgroundEffect | null>('loadBackgroundEffect', effect => {
+	events.on<ShaderUnderlayEffect | null>('loadBackgroundEffect', effect => {
 		view.loadBackgroundEffect(effect);
 	});
 
@@ -240,6 +236,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 		getMemoryViews: () => memoryViews,
 		dispose: () => {
+			view.destroy();
 			cleanupPointer();
 			cleanupKeyboard();
 			cleanupEditorEnvironmentPlugins();

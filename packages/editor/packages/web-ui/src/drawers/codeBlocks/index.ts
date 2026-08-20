@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../drawContext';
 import type { MemoryViews } from '../../types';
 import drawArrow from './drawArrow';
 import drawEntryOutlines from './drawEntryOutlines';
@@ -23,7 +23,7 @@ import drawWaves from './widgets/waves';
 
 const corner = '+';
 
-export default function drawModules(engine: Engine, state: State, memoryViews: MemoryViews): void {
+export default function drawModules(engine: DrawContext, state: State, memoryViews: MemoryViews): void {
 	const spriteLookups = state.spriteLookups;
 
 	if (!spriteLookups) {
@@ -63,76 +63,57 @@ export default function drawModules(engine: Engine, state: State, memoryViews: M
 			codeBlock.y + codeBlock.offsetY + offsetY < state.viewport.height
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
-			engine.cacheGroup(
-				codeBlock.textureCacheKey,
-				codeBlock.width,
-				codeBlock.height,
-				() => {
-					if (!renderHiddenPreview) {
-						engine.setSpriteLookup(spriteLookups.fillColors);
+			if (!renderHiddenPreview) {
+				if (codeBlock === state.codeBlockRendering.draggedCodeBlock) {
+					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDragged, codeBlock.width, codeBlock.height);
+				} else if (codeBlock.disabled) {
+					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDisabled, codeBlock.width, codeBlock.height);
+				} else {
+					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackground, codeBlock.width, codeBlock.height);
+				}
 
-						if (codeBlock === state.codeBlockRendering.draggedCodeBlock) {
-							engine.drawSprite(0, 0, 'moduleBackgroundDragged', codeBlock.width, codeBlock.height);
-						} else if (codeBlock.disabled) {
-							engine.drawSprite(0, 0, 'moduleBackgroundDisabled', codeBlock.width, codeBlock.height);
-						} else {
-							engine.drawSprite(0, 0, 'moduleBackground', codeBlock.width, codeBlock.height);
-						}
+				drawBlockHighlights(engine, state, codeBlock);
 
-						drawBlockHighlights(engine, state, codeBlock);
-
-						if (state.featureFlags.codeLineSelection && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
-							engine.drawSprite(0, codeBlock.cursor.y, 'highlightedCodeLine', codeBlock.width, state.viewport.hGrid);
-						}
-					}
-
-					engine.setSpriteLookup(
-						state.codeBlockRendering.selectedCodeBlock === codeBlock
-							? spriteLookups.fontNumbers
-							: spriteLookups.fontCode
+				if (state.featureFlags.codeLineSelection && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
+					engine.drawSprite(
+						0,
+						codeBlock.cursor.y,
+						spriteLookups.fillColors.highlightedCodeLine,
+						codeBlock.width,
+						state.viewport.hGrid
 					);
+				}
+			}
 
-					engine.drawText(0, 0, corner);
-					engine.drawText(codeBlock.width - state.viewport.vGrid, 0, corner);
-					engine.drawText(0, codeBlock.height - state.viewport.hGrid, corner);
-					engine.drawText(codeBlock.width - state.viewport.vGrid, codeBlock.height - state.viewport.hGrid, corner);
+			const cornerFont =
+				state.codeBlockRendering.selectedCodeBlock === codeBlock ? spriteLookups.fontNumbers : spriteLookups.fontCode;
 
-					if (renderHiddenPreview) {
-						return;
-					}
-
-					engine.setSpriteLookup(spriteLookups.fontCode);
-
-					if (codeBlock.disabled) {
-						engine.setSpriteLookup(spriteLookups.fontDisabledCode);
-					}
-
-					for (let i = 0; i < codeBlock.codeToRender.length; i++) {
-						for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
-							const lookup = codeBlock.codeColors[i][j];
-							if (!codeBlock.disabled && lookup) {
-								engine.setSpriteLookup(lookup);
-							}
-							if (codeBlock.codeToRender[i][j] !== 32) {
-								engine.drawSprite(
-									state.viewport.vGrid * (j + 1),
-									state.viewport.hGrid * i,
-									codeBlock.codeToRender[i][j]
-								);
-							}
-						}
-					}
-
-					drawShapeDeclarations(engine, state, codeBlock);
-
-					if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
-						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_');
-					}
-				},
-				// Enable caching only when the block is NOT selected
-				state.codeBlockRendering.selectedCodeBlock !== codeBlock,
-				codeBlock.opacity
+			engine.drawText(0, 0, corner, cornerFont);
+			engine.drawText(codeBlock.width - state.viewport.vGrid, 0, corner, cornerFont);
+			engine.drawText(0, codeBlock.height - state.viewport.hGrid, corner, cornerFont);
+			engine.drawText(
+				codeBlock.width - state.viewport.vGrid,
+				codeBlock.height - state.viewport.hGrid,
+				corner,
+				cornerFont
 			);
+
+			if (!renderHiddenPreview) {
+				for (let i = 0; i < codeBlock.codeToRender.length; i++) {
+					engine.drawResolvedText(state.viewport.vGrid, state.viewport.hGrid * i, codeBlock.codeToRender[i]);
+				}
+
+				drawShapeDeclarations(engine, state, codeBlock);
+
+				if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
+					engine.drawText(
+						codeBlock.cursor.x,
+						codeBlock.cursor.y,
+						'_',
+						codeBlock.disabled ? spriteLookups.fontDisabledCode : spriteLookups.fontCode
+					);
+				}
+			}
 
 			if (state.editorMode === 'presentation' && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
 				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height);

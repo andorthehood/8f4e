@@ -1,19 +1,16 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import formatDebuggerValue from './formatDebuggerValue';
 
-function drawBracketedValue(engine: Engine, state: State, x: number, y: number, value: string): void {
-	engine.setSpriteLookup(state.spriteLookups!.fontCode);
-	engine.drawText(x, y, '[');
-	engine.setSpriteLookup(state.spriteLookups!.fontNumbers);
-	engine.drawText(x + state.viewport.vGrid, y, value);
-	engine.setSpriteLookup(state.spriteLookups!.fontCode);
-	engine.drawText(x + state.viewport.vGrid * (value.length + 1), y, ']');
+function drawBracketedValue(engine: DrawContext, state: State, x: number, y: number, value: string): void {
+	engine.drawText(x, y, '[', state.spriteLookups!.fontCode);
+	engine.drawText(x + state.viewport.vGrid, y, value, state.spriteLookups!.fontNumbers);
+	engine.drawText(x + state.viewport.vGrid * (value.length + 1), y, ']', state.spriteLookups!.fontCode);
 }
 
 export default function drawConnectors(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews

@@ -5,7 +5,7 @@ import createCanvas from './utils/createCanvas';
 import createMockMemoryViews from './utils/createMockMemoryViews';
 import createMockSpriteData from './utils/createMockSpriteData';
 import createMockStateWithColors from './utils/createMockStateWithColors';
-import { generateColorMapWithAllColors } from './utils/generateColorMapMock';
+import { resolveCodeWithAllColors } from './utils/generateColorMapMock';
 
 test('dragged module', async () => {
 	const canvas = createCanvas();
@@ -25,7 +25,7 @@ test('dragged module', async () => {
 			'quis nostrud exercitation',
 			'',
 		];
-		const codeToRender = codeLines.map(line => line.split('').map(char => char.charCodeAt(0)));
+		const codeToRender = resolveCodeWithAllColors(codeLines, mockState.spriteLookups);
 
 		const codeBlockMock = createMockCodeBlock({
 			x: 16,
@@ -33,7 +33,6 @@ test('dragged module', async () => {
 			width: 256,
 			height: codeLines.length * 16,
 			codeToRender,
-			codeColors: generateColorMapWithAllColors(mockState.spriteLookups),
 		});
 
 		mockState.codeBlockRendering.draggedCodeBlock = codeBlockMock;

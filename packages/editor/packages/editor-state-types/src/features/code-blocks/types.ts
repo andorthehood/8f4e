@@ -3,7 +3,7 @@
  */
 
 import type { DocumentBlockType, PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import type { SpriteLookup } from 'glugglug';
+import type { FillSpriteColorName, SpriteId } from '@8f4e/sprite-generator';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 
 /**
@@ -285,8 +285,8 @@ export interface CodeBlockGraphicData {
 	height: number;
 	code: string[];
 	lineNumberColumnWidth: number;
-	codeToRender: Array<Array<number | string>>;
-	codeColors: Array<Array<SpriteLookup | undefined>>;
+	/** Render-ready fixed-cell sprite ids; `null` cells advance over spaces without submitting a sprite. */
+	codeToRender: Array<Array<SpriteId | null>>;
 	/** The gaps between lines */
 	gaps: Map<number, { size: number }>;
 	/** Optional minimum grid width override (e.g., for piano keyboards) */
@@ -321,7 +321,7 @@ export interface CodeBlockGraphicData {
 			y: number;
 			height: number;
 			width: number;
-			color: string;
+			color: FillSpriteColorName;
 		}>;
 		inputs: Input[];
 		outputs: Output[];
@@ -345,11 +345,6 @@ export interface CodeBlockGraphicData {
 		}>;
 	};
 	lastUpdated: number;
-	/**
-	 * Derived cache key for the block's rendered texture.
-	 * Updated automatically whenever graphic data is recomputed.
-	 */
-	textureCacheKey: string;
 	/**
 	 * True when the block is currently rendered in a collapsed form.
 	 */
@@ -412,12 +407,6 @@ export interface CodeBlockGraphicData {
 	 */
 	isFavorite: boolean;
 	/**
-	 * Cached replay opacity value derived from `; @opacity <0..1>`.
-	 * Applied only when the block is rendered through the cached path.
-	 * When no `; @opacity` directive is specified, this is set to 1.
-	 */
-	opacity: number;
-	/**
 	 * Parsed directive records derived from this block's code lines during the central update pass.
 	 * Covers editor directives (`; @name`).
 	 * Populated once per update; consumers should prefer these over rescanning raw code lines.
@@ -463,11 +452,6 @@ export type CodeBlockRendering = {
 	 * only iterate this smaller list instead of the full block array.
 	 */
 	viewportAnchoredCodeBlocks: CodeBlockGraphicData[];
-	/**
-	 * Monotonic render invalidation counter for code block texture caches.
-	 * Increment when render-wide assets change without an individual block edit.
-	 */
-	textureCacheEpoch: number;
 	/**
 	 * Monotonically increasing counter for assigning creationIndex to new code blocks.
 	 * Incremented each time a new code block is created.

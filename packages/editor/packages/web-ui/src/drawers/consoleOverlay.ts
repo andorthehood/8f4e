@@ -1,10 +1,10 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../drawContext';
 
 const PADDING_CHARS = 1;
 const ELLIPSIS = '...';
 
-export default function drawConsoleOverlay(engine: Engine, state: State): void {
+export default function drawConsoleOverlay(engine: DrawContext, state: State): void {
 	if (!state.spriteLookups) {
 		return;
 	}
@@ -40,17 +40,20 @@ export default function drawConsoleOverlay(engine: Engine, state: State): void {
 		const messageWithTimestamp =
 			message + ' ' + (logEntry.category ? `${logEntry.category} ` : '') + logEntry.timestamp;
 
-		engine.setSpriteLookup(state.spriteLookups.fillColors);
 		engine.drawSprite(
 			(panelWidthChars - messageWithTimestamp.length) * vGrid,
 			i * hGrid,
-			'debugInfoBackground',
+			state.spriteLookups.fillColors.debugInfoBackground,
 			panelWidthPixels,
 			hGrid
 		);
 
-		engine.setSpriteLookup(state.spriteLookups.fontDebugInfo);
-		engine.drawText((panelWidthChars - messageWithTimestamp.length) * vGrid, i * hGrid, messageWithTimestamp);
+		engine.drawText(
+			(panelWidthChars - messageWithTimestamp.length) * vGrid,
+			i * hGrid,
+			messageWithTimestamp,
+			state.spriteLookups.fontDebugInfo
+		);
 	}
 
 	engine.endGroup();

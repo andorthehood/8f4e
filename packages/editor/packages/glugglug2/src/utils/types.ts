@@ -16,16 +16,3 @@ export interface SpriteTarget {
 	 */
 	drawSprite(x: number, y: number, spriteId: number, width?: number, height?: number): void;
 }
-
-/** Numeric sprite identifiers indexed by JavaScript UTF-16 character code. */
-export interface GlyphIdTable {
-	readonly [characterCode: number]: number | undefined;
-}
-
-/** Describes one fixed-cell sprite font used by {@link DrawContext.drawText}. */
-export interface SpriteFont {
-	/** Numeric sprite identifiers indexed by JavaScript UTF-16 character code. */
-	readonly glyphIds: GlyphIdTable;
-	/** Horizontal distance in pixels between consecutive character cells. */
-	readonly advanceX: number;
-}

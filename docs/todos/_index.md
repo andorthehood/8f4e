@@ -89,7 +89,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
-| 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 2026-08-19 | Added a DrawContext migration shim that accepts the old call shape, always draws immediately, always returns false, and retains no cache state. |
+| 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 2026-08-19 | Added a temporary migration shim; removed it on 2026-08-20 after web-ui switched to direct drawing. |
 | 474 | Add RGBA texture layer plugin to glugglug2 | 2026-08-19 | Added fixed-phase RGBA8 texture uploads, same-storage updates, nearest/linear filtering, top-left rectangle draws, and independent texture/plugin ownership. |
 | 473 | Add post-process plugin to glugglug2 | 2026-08-19 | Added an inactive-zero-cost postDraw effect using a resize-aware RGB8 GPU framebuffer copy, ordered overlay inclusion, atomic replacement, and whole-scene visual coverage. |
 | 472 | Add shader underlay plugin to glugglug2 | 2026-08-19 | Added an atomic fullscreen preDraw effect with old-compatible varyings, optional time/resolution uniforms, independent cleanup, and combined visual coverage. |

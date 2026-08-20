@@ -1,18 +1,20 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { LineDrawer } from 'glugglug2';
 import type { MemoryViews } from '../../../types';
+import type { WireColors } from '../../../wire-colors';
 
-const WIRE_SPRITE = 'wire';
-const WIRE_HIGHLIGHTED_SPRITE = 'wireHighlighted';
+const WIRE_COLOR = 'wire';
+const WIRE_HIGHLIGHTED_COLOR = 'wireHighlighted';
 
-export default function drawConnections(engine: Engine, state: State, memoryViews: MemoryViews): void {
+export default function drawConnections(
+	lines: LineDrawer,
+	wireColors: WireColors,
+	state: State,
+	memoryViews: MemoryViews
+): void {
 	if (!state.spriteLookups) {
 		return;
 	}
-
-	engine.setSpriteLookup(state.spriteLookups.fillColors);
-
-	engine.startGroup(-state.viewport.x, -state.viewport.y);
 
 	for (const codeBlock of state.codeBlockRendering.codeBlocks) {
 		const isSelected = codeBlock === state.codeBlockRendering.selectedCodeBlock;
@@ -34,16 +36,14 @@ export default function drawConnections(engine: Engine, state: State, memoryView
 				continue;
 			}
 
-			engine.drawLine(
-				codeBlock.x + codeBlock.offsetX + input.wireX,
-				codeBlock.y + codeBlock.offsetY + input.wireY,
-				output.codeBlock.x + output.codeBlock.offsetX + output.wireX,
-				output.codeBlock.y + output.codeBlock.offsetY + output.wireY,
-				isSelected ? WIRE_HIGHLIGHTED_SPRITE : WIRE_SPRITE,
-				1
+			lines.drawLine(
+				codeBlock.x + codeBlock.offsetX + input.wireX - state.viewport.x,
+				codeBlock.y + codeBlock.offsetY + input.wireY - state.viewport.y,
+				output.codeBlock.x + output.codeBlock.offsetX + output.wireX - state.viewport.x,
+				output.codeBlock.y + output.codeBlock.offsetY + output.wireY - state.viewport.y,
+				1,
+				wireColors[isSelected ? WIRE_HIGHLIGHTED_COLOR : WIRE_COLOR]
 			);
 		}
 	}
-
-	engine.endGroup();
 }

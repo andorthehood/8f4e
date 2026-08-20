@@ -37,43 +37,33 @@
     },
     "test:screenshot": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
-        "command": "playwright test",
+        "command": "vitest --config=vitest.browser.config.ts --run",
         "cwd": "{projectRoot}"
       }
     },
     "test:screenshot:ui": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
-        "command": "playwright test --ui",
+        "command": "vitest --config=vitest.browser.config.ts --browser.headless=false --browser.ui=true",
         "cwd": "{projectRoot}"
       }
     },
     "test:screenshot:update": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
-        "command": "playwright test --update-snapshots",
+        "command": "vitest --config=vitest.browser.config.ts --run --update",
         "cwd": "{projectRoot}"
       }
     },
     "test:screenshot:headed": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
-        "command": "playwright test --headed",
-        "cwd": "{projectRoot}"
-      }
-    },
-    "test:screenshot:debug": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "playwright test --debug",
-        "cwd": "{projectRoot}"
-      }
-    },
-    "dev:test": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "vite --config screenshot-tests/vite.config.ts",
+        "command": "vitest --config=vitest.browser.config.ts --run --browser.headless=false",
         "cwd": "{projectRoot}"
       }
     }

@@ -5,8 +5,8 @@
  */
 
 import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/language-spec';
-import type { FillSpriteColorName, SpriteLookups } from '@8f4e/sprite-generator';
-import type { BackgroundEffect, PostProcessEffect, SpriteLookup } from 'glugglug';
+import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug2';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
@@ -184,7 +184,7 @@ export interface TooltipLiveValue {
 	x: number;
 	y: number;
 	source: TooltipLiveValueSource;
-	color: SpriteLookup | undefined;
+	color: SpriteFont | undefined;
 }
 
 export interface TooltipLayout {
@@ -207,7 +207,7 @@ export interface TooltipHighlight {
 export interface TooltipState {
 	text: string[];
 	characters: Array<Array<number | string>>;
-	colors: Array<Array<SpriteLookup | undefined>>;
+	colors: Array<Array<SpriteFont | undefined>>;
 	lineCount: number;
 	widthChars: number;
 	layout: TooltipLayout;
@@ -356,11 +356,11 @@ export interface State {
 	compiler: Compiler;
 	codeBlockRendering: CodeBlockRendering;
 	contextMenu: ContextMenu;
-	spriteLookups?: SpriteLookups;
+	spriteLookups?: SpriteIdLookups;
 	/** Post-process effects configuration for custom visual effects */
 	postProcessEffects: PostProcessEffect[];
 	/** Background effects configuration for custom visual effects */
-	backgroundEffects: BackgroundEffect[];
+	backgroundEffects: ShaderUnderlayEffect[];
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
 	tooltip: TooltipState;

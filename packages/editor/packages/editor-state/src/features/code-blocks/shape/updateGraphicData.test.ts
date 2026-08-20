@@ -9,7 +9,7 @@ import shape, { updateShapeDeclarations } from './updateGraphicData';
 
 function createDirectiveState(): DirectiveDerivedState {
 	return {
-		blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false, opacity: 1 },
+		blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
 		displayState: {},
 		displayModel: {
 			lines: [],
@@ -157,7 +157,6 @@ describe('shape', () => {
 			blockType: 'module',
 			code: ['module filterA', '; @plot other', 'shape filterState', 'moduleEnd'],
 			codeToRender: [[1], [2], [3], [4]],
-			codeColors: [[undefined], [undefined], [undefined], [undefined]],
 			lineNumberColumnWidth: 1,
 		});
 		const state = createMockState({

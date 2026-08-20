@@ -1,16 +1,11 @@
 import { createMockState } from '@8f4e/editor-state-testing';
-import type { Engine } from 'glugglug';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, type vi } from 'vitest';
+import { createDrawContextMock, createSpriteIdLookupMock } from '../__tests__/rendering';
+import type { DrawContext as Engine } from '../drawContext';
 import drawModeOverlay from './modeOverlay';
 
 function createMockEngine(): Engine {
-	return {
-		startGroup: vi.fn(),
-		endGroup: vi.fn(),
-		setSpriteLookup: vi.fn(),
-		drawSprite: vi.fn(),
-		drawText: vi.fn(),
-	} as unknown as Engine;
+	return createDrawContextMock();
 }
 
 describe('drawModeOverlay', () => {
@@ -22,8 +17,8 @@ describe('drawModeOverlay', () => {
 			},
 			editorMode: 'view',
 			spriteLookups: {
-				fillColors: {},
-				fontDebugInfo: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontDebugInfo: createSpriteIdLookupMock(),
 			} as never,
 			presentation: {
 				canPresent: false,
@@ -35,7 +30,8 @@ describe('drawModeOverlay', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			state.viewport.vGrid,
 			0,
-			"You're in view mode, press e to edit"
+			"You're in view mode, press e to edit",
+			state.spriteLookups?.fontDebugInfo
 		);
 	});
 
@@ -47,8 +43,8 @@ describe('drawModeOverlay', () => {
 			},
 			editorMode: 'view',
 			spriteLookups: {
-				fillColors: {},
-				fontDebugInfo: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontDebugInfo: createSpriteIdLookupMock(),
 			} as never,
 			presentation: {
 				canPresent: true,
@@ -60,7 +56,8 @@ describe('drawModeOverlay', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			state.viewport.vGrid,
 			0,
-			"You're in view mode, press e to edit or p to present"
+			"You're in view mode, press e to edit or p to present",
+			state.spriteLookups?.fontDebugInfo
 		);
 	});
 
@@ -73,8 +70,8 @@ describe('drawModeOverlay', () => {
 			},
 			editorMode: 'view',
 			spriteLookups: {
-				fillColors: {},
-				fontDebugInfo: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontDebugInfo: createSpriteIdLookupMock(),
 			} as never,
 		});
 

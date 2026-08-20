@@ -102,7 +102,6 @@ describe('directive registry', () => {
 			isHome: true,
 			homeAlignment: 'center',
 			isFavorite: true,
-			opacity: 1,
 		});
 		expect(result.layoutContributions).toEqual([
 			{ rawRow: 4, rows: 1 },
@@ -156,7 +155,6 @@ describe('directive registry', () => {
 			isHome: true,
 			homeAlignment: 'center',
 			isFavorite: false,
-			opacity: 1,
 		});
 		expect(result.layoutContributions).toEqual([{ rawRow: 2, rows: 8 }]);
 	});

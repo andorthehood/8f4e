@@ -1,6 +1,15 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { SpriteLookups } from '@8f4e/sprite-generator';
-import { type BackgroundEffect, Engine, type PostProcessEffect } from 'glugglug';
+import type { SpriteAtlas, SpriteIdLookups } from '@8f4e/sprite-generator';
+import {
+	Engine,
+	LineDrawer,
+	PostProcess,
+	type PostProcessEffect,
+	RgbaTextureLayer,
+	ShaderUnderlay,
+	type ShaderUnderlayEffect,
+} from 'glugglug2';
+import { DrawContext } from './drawContext';
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';
 import drawContextMenu from './drawers/contextMenu';
@@ -9,13 +18,13 @@ import drawBackground from './drawers/drawBackground';
 import drawModeOverlay from './drawers/modeOverlay';
 import { createWasmFrameTextureDrawer, type WasmFrameTextureOptions } from './drawers/wasmFrameTexture';
 import type { MemoryViews } from './types';
+import { resolveWireColors } from './wire-colors';
 
 // Re-export types
 export type { MemoryViews } from './types';
 
 export interface SpriteData {
-	canvas: OffscreenCanvas;
-	spriteLookups: SpriteLookups;
+	spriteAtlas: SpriteAtlas<SpriteIdLookups>;
 	characterWidth: number;
 	characterHeight: number;
 }
@@ -26,12 +35,8 @@ export interface RenderStats {
 	frameBudgetMs: number;
 	headroomMs: number;
 	fpsCapacity: number;
-	quadCount: number;
-	vertexCount: number;
-	maxVertices: number;
-	vertexUsagePercent: number;
-	cacheItemCount: number;
-	cacheMaxItems: number;
+	spriteCount: number;
+	uploadedInstanceBytes: number;
 }
 
 export interface WebUiOptions {
@@ -55,20 +60,30 @@ export default async function init(
 	options: WebUiOptions = {}
 ): Promise<{
 	resize: (width: number, height: number) => void;
-	loadSpriteSheet: (spriteData: SpriteData) => void;
+	loadSpriteAtlas: (spriteData: SpriteData) => void;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
-	loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
+	loadBackgroundEffect: (effect: ShaderUnderlayEffect | null) => void;
 	renderFrame: () => void;
-	clearCache: () => void;
+	destroy: () => void;
 }> {
-	const engine = new Engine(canvas, { caching: true });
+	const engine = new Engine(canvas);
+	let frameStartedAt = performance.now();
+	engine.hooks.preDraw.push(() => {
+		frameStartedAt = performance.now();
+	});
+	const background = new ShaderUnderlay(engine);
+	const frameTextureLayer = new RgbaTextureLayer(engine);
+	const lines = new LineDrawer(engine);
+	const postProcess = new PostProcess(engine);
+	const draw = new DrawContext(engine, spriteData.characterWidth);
+	let wireColors = resolveWireColors(state.editorConfig.color);
 	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
 	let viewportWidth = canvas.width;
 	let viewportHeight = canvas.height;
 	const getFrameTexture = options.getFrameTexture ?? (() => options.frameTexture);
 	let frameTextureKey = '';
-	let drawWasmFrameTexture: ((engine: Engine) => void) | undefined;
-	function syncWasmFrameTextureDrawer(): ((engine: Engine) => void) | undefined {
+	let drawWasmFrameTexture: ((layer: RgbaTextureLayer) => void) | undefined;
+	function syncWasmFrameTextureDrawer(): ((layer: RgbaTextureLayer) => void) | undefined {
 		const frameTexture = getFrameTexture();
 		const nextFrameTextureKey = frameTexture ? JSON.stringify(frameTexture) : '';
 
@@ -96,7 +111,10 @@ export default async function init(
 	let statsSampleStartFrameCount = 0;
 	let statsSampleStartTime = performance.now();
 
-	engine.loadSpriteSheet(spriteData.canvas);
+	engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
+	frameTextureLayer.setDrawCallback(layer => {
+		syncWasmFrameTextureDrawer()?.(layer);
+	});
 
 	function getSampledFps(): number {
 		const now = performance.now();
@@ -107,7 +125,7 @@ export default async function init(
 		return elapsedMs > 0 ? Math.round((sampledFrameCount * 1000) / elapsedMs) : 0;
 	}
 
-	function emitRenderStats(timeToRenderMs: number, vertexCount: number, maxVertices: number): void {
+	function emitRenderStats(timeToRenderMs: number): void {
 		if (!options.onRenderStats) {
 			return;
 		}
@@ -117,7 +135,6 @@ export default async function init(
 			return;
 		}
 
-		const cacheStats = engine.getCacheStats();
 		const fps = getSampledFps();
 		const frameBudgetMs = fps > 0 ? 1000 / fps : 0;
 		const headroomMs = frameBudgetMs > 0 ? frameBudgetMs - timeToRenderMs : 0;
@@ -128,25 +145,22 @@ export default async function init(
 			frameBudgetMs,
 			headroomMs,
 			fpsCapacity,
-			quadCount: Math.floor(vertexCount / 6),
-			vertexCount,
-			maxVertices,
-			vertexUsagePercent: maxVertices > 0 ? (vertexCount / maxVertices) * 100 : 0,
-			cacheItemCount: cacheStats.itemCount,
-			cacheMaxItems: cacheStats.maxItems,
+			spriteCount: engine.frameStats.spriteCount,
+			uploadedInstanceBytes: engine.frameStats.uploadedInstanceBytes,
 		});
 	}
 
-	const drawFrame = (timeToRenderMs = 0, vertexCount = 0, maxVertices = 0) => {
-		drawBackground(engine, state);
-		syncWasmFrameTextureDrawer()?.(engine);
-		drawCodeBlocks(engine, state, memoryViews);
-		drawConnections(engine, state, memoryViews);
-		drawContextMenu(engine, state);
-		drawModeOverlay(engine, state);
-		drawDialog(engine, state);
-		emitRenderStats(timeToRenderMs, vertexCount, maxVertices);
+	const drawFrame = () => {
+		drawBackground(draw, state);
+		drawCodeBlocks(draw, state, memoryViews);
+		drawConnections(lines, wireColors, state, memoryViews);
+		drawContextMenu(draw, state);
+		drawModeOverlay(draw, state);
+		drawDialog(draw, state);
 	};
+	engine.hooks.postDraw.push(() => {
+		emitRenderStats(performance.now() - frameStartedAt);
+	});
 
 	engine.render(drawFrame);
 
@@ -156,28 +170,34 @@ export default async function init(
 			viewportHeight = height;
 			engine.resize(width, height);
 		},
-		loadSpriteSheet: spriteData => {
-			engine.loadSpriteSheet(spriteData.canvas);
+		loadSpriteAtlas: spriteData => {
+			engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
+			draw.setCharacterWidth(spriteData.characterWidth);
+			wireColors = resolveWireColors(state.editorConfig.color);
 		},
 		loadPostProcessEffect: (effect: PostProcessEffect | null) => {
 			if (effect) {
-				engine.setPostProcessEffect(effect);
+				postProcess.setEffect(effect);
 			} else {
-				engine.clearPostProcessEffect();
+				postProcess.clearEffect();
 			}
 		},
-		loadBackgroundEffect: (effect: BackgroundEffect | null) => {
+		loadBackgroundEffect: (effect: ShaderUnderlayEffect | null) => {
 			if (effect) {
-				engine.setBackgroundEffect(effect);
+				background.setEffect(effect);
 			} else {
-				engine.clearBackgroundEffect();
+				background.clearEffect();
 			}
 		},
 		renderFrame: () => {
 			engine.renderFrame(drawFrame);
 		},
-		clearCache: () => {
-			engine.clearAllCache();
+		destroy: () => {
+			postProcess.destroy();
+			lines.destroy();
+			frameTextureLayer.destroy();
+			background.destroy();
+			engine.destroy();
 		},
 	};
 }

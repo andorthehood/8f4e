@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, State, TooltipLiveValue } from '@8f4e/editor-state-types';
 import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import type { Engine, SpriteLookup } from 'glugglug';
+import type { SpriteFont } from '@8f4e/sprite-generator';
+import type { DrawContext } from '../../drawContext';
 import type { MemoryViews } from '../../types';
 import formatDebuggerValue, { formatDebuggerValueAtAddress } from './widgets/formatDebuggerValue';
 
@@ -38,43 +39,45 @@ function getLiveValueText(state: State, memoryViews: MemoryViews, liveValue: Too
 }
 
 function drawCharactersWithColors(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	characters: Array<number | string>,
-	colors: Array<SpriteLookup | undefined> | undefined,
+	colors: Array<SpriteFont | undefined> | undefined,
 	x: number,
 	y: number
 ): void {
 	const spriteLookups = state.spriteLookups!;
 	let currentLookup = colors?.[0] ?? spriteLookups.fontTooltipText;
 
-	engine.setSpriteLookup(currentLookup);
-
 	for (let index = 0; index < characters.length; index++) {
 		const nextLookup = colors?.[index] ?? currentLookup;
 
-		if (nextLookup !== currentLookup) {
-			engine.setSpriteLookup(nextLookup);
-			currentLookup = nextLookup;
-		}
+		currentLookup = nextLookup;
 
 		if (characters[index] !== 32) {
-			engine.drawSprite(x + index * state.viewport.vGrid, y, characters[index]);
+			engine.drawSprite(x + index * state.viewport.vGrid, y, currentLookup[characters[index]] ?? currentLookup[63]);
 		}
 	}
 }
 
-function drawTextCharacters(engine: Engine, state: State, text: string, x: number, y: number): void {
+function drawTextCharacters(
+	engine: DrawContext,
+	state: State,
+	text: string,
+	x: number,
+	y: number,
+	font: SpriteFont
+): void {
 	for (let index = 0; index < text.length; index++) {
 		const character = text.charCodeAt(index);
 
 		if (character !== 32) {
-			engine.drawSprite(x + index * state.viewport.vGrid, y, character);
+			engine.drawSprite(x + index * state.viewport.vGrid, y, font[character] ?? font[63]);
 		}
 	}
 }
 
-function drawLiveValue(engine: Engine, state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): void {
+function drawLiveValue(engine: DrawContext, state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): void {
 	const spriteLookups = state.spriteLookups!;
 	const value = getLiveValueText(state, memoryViews, liveValue);
 
@@ -82,12 +85,18 @@ function drawLiveValue(engine: Engine, state: State, memoryViews: MemoryViews, l
 		return;
 	}
 
-	engine.setSpriteLookup(liveValue.color ?? spriteLookups.fontTooltipHighlight);
-	drawTextCharacters(engine, state, value, liveValue.x, liveValue.y);
+	drawTextCharacters(
+		engine,
+		state,
+		value,
+		liveValue.x,
+		liveValue.y,
+		liveValue.color ?? spriteLookups.fontTooltipHighlight
+	);
 }
 
 export default function drawSelectedLineHint(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -108,11 +117,16 @@ export default function drawSelectedLineHint(
 
 	const { width, height, x, y, lineX } = state.tooltip.layout;
 
-	engine.setSpriteLookup(spriteLookups.fillColors);
-	engine.drawSprite(x, y, 'tooltipBackground', width, height);
+	engine.drawSprite(x, y, spriteLookups.fillColors.tooltipBackground, width, height);
 
 	for (const highlight of state.tooltip.highlights) {
-		engine.drawSprite(highlight.x, highlight.y, highlight.fillColor, highlight.width, highlight.height);
+		engine.drawSprite(
+			highlight.x,
+			highlight.y,
+			spriteLookups.fillColors[highlight.fillColor],
+			highlight.width,
+			highlight.height
+		);
 	}
 
 	for (let index = 0; index < state.tooltip.characters.length; index++) {

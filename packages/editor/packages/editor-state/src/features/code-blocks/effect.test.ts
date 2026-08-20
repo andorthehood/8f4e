@@ -6,6 +6,29 @@ import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import codeBlockRenderingEffect from './effect';
 
+function createFontIds() {
+	return new Proxy(
+		{ 63: 63 },
+		{
+			get: (target, key) => {
+				const characterCode = Number(key);
+				return Number.isNaN(characterCode) ? Reflect.get(target, key) : characterCode;
+			},
+		}
+	);
+}
+
+function createSpriteLookups() {
+	return {
+		fillColors: {},
+		fontNumbers: createFontIds(),
+		fontCode: createFontIds(),
+		fontDisabledCode: createFontIds(),
+		fontLineNumber: createFontIds(),
+		fontCodeComment: createFontIds(),
+	} as never;
+}
+
 describe('code block rendering error mapping', () => {
 	it('maps compiler errors by creationIndex', () => {
 		const functionBlock = createMockCodeBlock({
@@ -55,14 +78,7 @@ describe('code block rendering hidden directive', () => {
 			codeBlockRendering: {
 				codeBlocks: [hiddenBlock, otherBlock],
 			},
-			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
-			} as never,
+			spriteLookups: createSpriteLookups(),
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -130,14 +146,7 @@ describe('code block rendering line numbers', () => {
 			codeBlockRendering: {
 				codeBlocks: [pointerBlock],
 			},
-			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
-			} as never,
+			spriteLookups: createSpriteLookups(),
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -145,14 +154,26 @@ describe('code block rendering line numbers', () => {
 		codeBlockRenderingEffect(store, events);
 		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
 
-		const renderedLines = pointerBlock.codeToRender.map(line =>
-			line.map(cell => String.fromCharCode(Number(cell))).join('')
-		);
+		expect(pointerBlock.codeToRender[0]?.slice(0, 2)).toEqual([48, null]);
+		expect(pointerBlock.codeToRender[1]?.slice(0, 2)).toEqual([null, null]);
+		expect(pointerBlock.codeToRender[2]?.slice(0, 2)).toEqual([null, null]);
+		expect(pointerBlock.codeToRender[3]?.slice(0, 2)).toEqual([51, null]);
+	});
 
-		expect(renderedLines[0]?.slice(0, 2)).toBe('0 ');
-		expect(renderedLines[1]?.slice(0, 2)).toBe('  ');
-		expect(renderedLines[2]?.slice(0, 2)).toBe('  ');
-		expect(renderedLines[3]?.slice(0, 2)).toBe('3 ');
+	it('resolves unsupported code characters to the validated font fallback before rendering', () => {
+		const codeBlock = createMockCodeBlock({ code: ['é'] });
+		const spriteLookups = createSpriteLookups();
+		spriteLookups.fontCode = { 63: 999 } as never;
+		const state = createMockState({
+			codeBlockRendering: { codeBlocks: [codeBlock] },
+			spriteLookups,
+		});
+		const store = createStateManager(state);
+
+		codeBlockRenderingEffect(store, createMockEventDispatcherWithVitest());
+		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
+
+		expect(codeBlock.codeToRender[0]?.at(-1)).toBe(999);
 	});
 });
 
@@ -170,14 +191,7 @@ describe('code block rendering home directive', () => {
 					},
 				],
 			},
-			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
-			} as never,
+			spriteLookups: createSpriteLookups(),
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -211,14 +225,7 @@ describe('code block rendering home directive', () => {
 				vGrid: 8,
 				hGrid: 16,
 			},
-			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
-			} as never,
+			spriteLookups: createSpriteLookups(),
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -258,14 +265,7 @@ describe('code block rendering home directive', () => {
 				vGrid: 8,
 				hGrid: 16,
 			},
-			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
-			} as never,
+			spriteLookups: createSpriteLookups(),
 		});
 		const store = createStateManager(state);
 		const events = createMockEventDispatcherWithVitest();
@@ -307,14 +307,7 @@ describe('code block rendering home directive', () => {
 				codeBlocks: [selectedBlock],
 				selectedCodeBlock: selectedBlock,
 			},
-			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
-			} as never,
+			spriteLookups: createSpriteLookups(),
 			viewport: {
 				x: 0,
 				y: 0,

@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import { getTypedValueView } from './typedValueView';
 
@@ -32,12 +32,13 @@ function getMeterValueIndex(
 }
 
 function drawSegment(
-	engine: Engine,
+	engine: DrawContext,
 	startX: number,
 	endX: number,
 	fillWidth: number,
 	sprite: 'meterGreen' | 'meterYellow' | 'meterRed',
-	height: number
+	height: number,
+	spriteIds: NonNullable<State['spriteLookups']>['fillColors']
 ): void {
 	const segmentStart = Math.floor(startX);
 	const segmentEnd = Math.floor(endX);
@@ -47,11 +48,11 @@ function drawSegment(
 		return;
 	}
 
-	engine.drawSprite(segmentStart, 0, sprite, width, height);
+	engine.drawSprite(segmentStart, 0, spriteIds[sprite], width, height);
 }
 
 export default function drawer(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -60,7 +61,7 @@ export default function drawer(
 		return;
 	}
 
-	engine.setSpriteLookup(state.spriteLookups.fillColors);
+	const fillSprites = state.spriteLookups.fillColors;
 
 	for (const meter of codeBlock.widgets.arrayMeters) {
 		const {
@@ -92,17 +93,17 @@ export default function drawer(
 		const fillWidth = Math.round(normalized * width);
 		const overloaded = isBipolar ? Math.abs(value) > amplitudeLimit : value < minValue || value > maxValue;
 
-		engine.drawSprite(0, 0, 'plotterBackground', width, height);
-		drawSegment(engine, 0, greenEndX, fillWidth, 'meterGreen', height);
-		drawSegment(engine, greenEndX, yellowEndX, fillWidth, 'meterYellow', height);
-		drawSegment(engine, yellowEndX, width, fillWidth, 'meterRed', height);
+		engine.drawSprite(0, 0, fillSprites.plotterBackground, width, height);
+		drawSegment(engine, 0, greenEndX, fillWidth, 'meterGreen', height, fillSprites);
+		drawSegment(engine, greenEndX, yellowEndX, fillWidth, 'meterYellow', height, fillSprites);
+		drawSegment(engine, yellowEndX, width, fillWidth, 'meterRed', height, fillSprites);
 
 		if (overloaded) {
 			overloadHoldByMeter.set(meter, true);
 		}
 
 		if (overloadHoldByMeter.has(meter)) {
-			engine.drawSprite(overloadMarkerX, 0, 'meterRed', overloadMarkerWidth, height);
+			engine.drawSprite(overloadMarkerX, 0, fillSprites.meterRed, overloadMarkerWidth, height);
 		}
 
 		engine.endGroup();

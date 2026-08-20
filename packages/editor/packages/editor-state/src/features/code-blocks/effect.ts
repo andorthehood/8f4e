@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import { isMemoryDeclarationInstructionName } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType } from '@8f4e/project-preparser';
+import type { SpriteFont, SpriteId } from '@8f4e/sprite-generator';
 import type { StateManager } from '@8f4e/state-manager';
 import { getPointerDepth } from '@8f4e/tokenizer';
 import gapCalculator from '../code-editing/gapCalculator';
@@ -59,6 +60,36 @@ function getLineNumberPrefix(
 	return `${displayRow}`.padStart(lineNumberColumnWidth, '0') + ' ';
 }
 
+/**
+ * Resolves character and syntax-font matrices to render-ready sprite ids outside the draw loop.
+ *
+ * @param characters - Character codes or semantic glyph names arranged by display row.
+ * @param colorTransitions - Sparse font changes aligned with the character matrix.
+ * @param defaultFont - Font used before the first syntax-color transition.
+ * @param disabledFont - Optional font that overrides all syntax coloring.
+ * @returns Validated sprite ids, with spaces represented as empty cells.
+ */
+function resolveCodeCells(
+	characters: Array<Array<number | string>>,
+	colorTransitions: Array<Array<SpriteFont | undefined>>,
+	defaultFont: SpriteFont,
+	disabledFont: SpriteFont | undefined
+): Array<Array<SpriteId | null>> {
+	return characters.map((line, row) => {
+		let currentFont = disabledFont ?? defaultFont;
+		return line.map((character, column) => {
+			const nextFont = colorTransitions[row]?.[column];
+			if (!disabledFont && nextFont) {
+				currentFont = nextFont;
+			}
+			if (character === 32) {
+				return null;
+			}
+			return currentFont[character] ?? currentFont[63];
+		});
+	});
+}
+
 export default function codeBlockRendering(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
 	const shouldExpandCodeBlockForEditing = (codeBlock: CodeBlockGraphicData): boolean =>
@@ -111,12 +142,11 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		graphicData.isHome = directiveState.blockState.isHome;
 		graphicData.homeAlignment = directiveState.blockState.homeAlignment;
 		graphicData.isFavorite = directiveState.blockState.isFavorite;
-		graphicData.opacity = directiveState.blockState.opacity;
 		const tabStopsByLine = getTabStopsByLine(graphicData.code);
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
-		graphicData.codeToRender = displayModel.lines.map(({ text, rawRow, isPlaceholder }, displayRow) => {
+		const codeCharacters = displayModel.lines.map(({ text, rawRow, isPlaceholder }, displayRow) => {
 			const prefix = getLineNumberPrefix(displayRow, graphicData.lineNumberColumnWidth, text, isPlaceholder ?? false);
 			return [...prefix]
 				.map(char => char.charCodeAt(0) as number | string)
@@ -138,7 +168,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		// Merge raw code colors into color matrix aligned with codeWithLineNumbers
 		// by offsetting indices to account for line number prefix
 		const lineNumberPrefixLength = graphicData.lineNumberColumnWidth + 1; // +1 for space
-		graphicData.codeColors = graphicData.codeToRender.map((line, displayRow) => {
+		const codeColors: Array<Array<SpriteFont | undefined>> = codeCharacters.map((line, displayRow) => {
 			const lineColors = new Array(line.length).fill(undefined);
 			const displayLine = displayModel.lines[displayRow];
 			const rawRow = displayModel.displayRowToRawRow[displayRow] ?? 0;
@@ -169,6 +199,12 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 
 			return lineColors;
 		});
+		graphicData.codeToRender = resolveCodeCells(
+			codeCharacters,
+			codeColors,
+			spriteLookups.fontCode,
+			graphicData.disabled ? spriteLookups.fontDisabledCode : undefined
+		);
 
 		shape(graphicData, state, directiveState);
 		paramShape(graphicData, state, directiveState);
@@ -200,8 +236,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		graphicData.groupNonstick = directiveState.blockState.groupNonstick;
 		graphicData.viewportAnchor = directiveState.blockState.viewportAnchor;
 		graphicData.alwaysOnTop = directiveState.blockState.alwaysOnTop ?? false;
-
-		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.codeBlockRendering.textureCacheEpoch}`;
 	};
 
 	const updateGraphicsAll = () => {
@@ -332,7 +366,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				isHome: directiveState.blockState.isHome,
 				homeAlignment: directiveState.blockState.homeAlignment,
 				isFavorite: directiveState.blockState.isFavorite,
-				opacity: directiveState.blockState.opacity,
 				alwaysOnTop: directiveState.blockState.alwaysOnTop ?? false,
 				viewportAnchor: directiveState.blockState.viewportAnchor,
 				parsedDirectives: blockParsedDirectives,
@@ -416,7 +449,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on('spriteSheetRerendered', () => {
-		state.codeBlockRendering.textureCacheEpoch += 1;
 		recomputePixelCoordinatesAndUpdateGraphics();
 		centerViewportOnSelectedCodeBlock();
 	});

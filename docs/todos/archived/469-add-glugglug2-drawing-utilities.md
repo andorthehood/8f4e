@@ -53,15 +53,15 @@ const font: SpriteFont = {
 };
 
 engine.renderFrame(() => {
-	draw.pushOffset(module.x, module.y);
+	draw.startGroup(module.x, module.y);
 	draw.drawSprite(0, 0, moduleBackgroundId, module.width, module.height);
 	draw.drawText(8, 16, 'hello', font);
-	draw.popOffset();
+	draw.endGroup();
 });
 ```
 
 `DrawContext.drawSprite()` should mirror the core sprite argument order and add the current accumulated offset before
-delegating. `pushOffset()` should add a local translation to the accumulated translation; `popOffset()` should restore
+delegating. `startGroup()` should add a local translation to the accumulated translation; `endGroup()` should restore
 the previous translation and support arbitrary nesting without allocating new stack storage after capacity has grown.
 
 `drawText()` should be deliberately limited to one line of fixed-cell sprite text. For each UTF-16 character code, it
@@ -84,7 +84,7 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 - Do not call `setSpriteLookup()` or mutate atlas state while drawing text.
 - Do not allocate a glyph instruction array or substring for each `drawText()` call; append directly to the engine in one
   pass over the input string.
-- Do not describe coordinate offsets as GPU groups, render batches, or caches. They are only CPU-side coordinate
+- Do not interpret coordinate groups as GPU groups, render batches, or caches. They are only CPU-side coordinate
   composition.
 - Do not combine this work with raster caching. Reusable GPU-rendered groups remain a separate feature.
 - Do not add pre-resolved glyph-run drawing, font factories, or text-measurement helpers in this iteration. Add only the
@@ -102,7 +102,7 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 ### Step 2: Implement the drawing context
 
 - Store the current X/Y translation and reusable stack storage in `DrawContext`.
-- Implement nested `pushOffset(x, y)` and `popOffset()` operations.
+- Implement nested `startGroup(x, y)` and `endGroup()` operations.
 - Implement `drawSprite(x, y, spriteId, width?, height?)` by adding the current translation and forwarding directly to
   the wrapped `SpriteTarget`.
 - Avoid per-call objects, closures, array slices, or other allocations in offset and sprite hot paths.
@@ -118,7 +118,7 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 ### Step 4: Document lifecycle and ownership
 
 - Add a concise `glugglug2/utils` example to the package README.
-- State that one context can be reused across frames and must have balanced offset pushes and pops.
+- State that one context can be reused across frames and must have balanced `startGroup()` and `endGroup()` calls.
 - Document that the utility does not own the engine, atlas, render loop, fonts, semantic ids, or caches.
 - Explain that callers select the appropriate numeric font table before calling `drawText()`.
 
@@ -126,7 +126,7 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 
 - Test direct sprite forwarding with and without offsets.
 - Test against a minimal recording `SpriteTarget` rather than requiring WebGL or a concrete engine.
-- Test nested offsets, restoration after popping, and context reuse across frames.
+- Test nested coordinate groups, restoration after ending a group, and context reuse across frames.
 - Test glyph order, fixed advances, non-zero context offsets, empty strings, spaces, and undefined glyphs.
 - Test that drawing text appends directly without changing atlas or renderer state.
 - Add a small browser example only if the existing example cannot clearly demonstrate both nested offsets and text.
@@ -146,7 +146,7 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 - [x] `Engine`, test recorders, and the planned raster-cache builder can satisfy `SpriteTarget` structurally without
       importing utilities into the core renderer.
 - [x] The root `glugglug2` API remains focused on direct sprite rendering and GPU resource management.
-- [x] Nested offsets produce correct final coordinates and restore previous offsets when popped.
+- [x] Nested coordinate groups produce correct final coordinates and restore their parent offset when ended.
 - [x] `drawText()` appends ordered numeric glyph sprites using fixed horizontal advances.
 - [x] Undefined glyphs are skipped without changing the position of later cells.
 - [x] The offset and text hot paths create no per-call or per-glyph temporary objects.
@@ -164,7 +164,7 @@ layer. Consumers that only need direct sprite submission should not instantiate 
 
 ## Risks & Considerations
 
-- **Unbalanced offsets**: A missing `popOffset()` affects later positions. The utility should document balanced use; any
+- **Unbalanced offsets**: A missing `endGroup()` affects later positions. The utility should document balanced use; any
   optional diagnostic checks must not add work to sprite or glyph submission.
 - **Character representation**: UTF-16 code-unit indexing is appropriate for the current bitmap atlases but does not
   provide Unicode shaping or grapheme handling.

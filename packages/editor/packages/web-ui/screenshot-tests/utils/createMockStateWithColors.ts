@@ -8,7 +8,7 @@ import type { SpriteData } from '../../src';
  * This is a helper function to reduce duplication in test setup.
  */
 function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
-	state.spriteLookups = spriteData.spriteLookups;
+	state.spriteLookups = spriteData.spriteAtlas.spriteIds;
 	state.viewport.hGrid = spriteData.characterHeight;
 	state.viewport.vGrid = spriteData.characterWidth;
 }

@@ -1,4 +1,4 @@
-import type { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug2';
 
 import { createAtlasLayout } from './atlasLayout.ts';
 import { drawCharacter } from './font.ts';
@@ -50,7 +50,7 @@ export const generateLookup = (
 	characterWidth: number,
 	characterHeight: number,
 	colors: ColorScheme['icons']
-): Record<number, SpriteCoordinates> => {
+): Partial<Record<number, SpriteCoordinates>> => {
 	const feedbackScaleColors = getFeedbackScaleColors(colors);
 	const layout = createAtlasLayout(characterWidth, characterHeight);
 

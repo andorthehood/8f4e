@@ -5,7 +5,6 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -26,9 +25,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -58,7 +55,6 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -79,9 +75,7 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
   "name": "test-block",
   "offsetX": 10,
   "offsetY": 20,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -111,7 +105,6 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -132,9 +125,7 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -164,7 +155,6 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -185,9 +175,7 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -217,7 +205,6 @@ exports[`createMockCodeBlock > default values > should create a block with defau
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -238,9 +225,7 @@ exports[`createMockCodeBlock > default values > should create a block with defau
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -270,7 +255,6 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -291,9 +275,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -323,7 +305,6 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -344,9 +325,7 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
   "name": "test-block",
   "offsetX": -20,
   "offsetY": -30,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -376,7 +355,6 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -397,9 +375,7 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -429,7 +405,6 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -451,9 +426,7 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -486,7 +459,6 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
     "line1",
     "line2",
   ],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -507,9 +479,7 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -539,7 +509,6 @@ exports[`createMockCodeBlock > override behavior > should override name and offs
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -560,9 +529,7 @@ exports[`createMockCodeBlock > override behavior > should override name and offs
   "name": "custom-block",
   "offsetX": 10,
   "offsetY": 20,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],
@@ -592,7 +559,6 @@ exports[`createMockCodeBlock > override behavior > should override position and 
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeColors": [],
   "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
@@ -613,9 +579,7 @@ exports[`createMockCodeBlock > override behavior > should override position and 
   "name": "test-block",
   "offsetX": 0,
   "offsetY": 0,
-  "opacity": 1,
   "parsedDirectives": [],
-  "textureCacheKey": "",
   "widgets": {
     "arrayBars": [],
     "arrayMeters": [],

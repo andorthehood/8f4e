@@ -2,23 +2,23 @@
 
 This package generates sprite sheets for the 8f4e editor, including fonts, icons, and UI elements.
 
-## glugglug2 atlas output
+## Sprite atlas output
 
-The generator retains its grouped `spriteLookups` output for the existing renderer and also returns a
-`glugglug2Atlas`. The latter contains the generated `OffscreenCanvas`, one flat deduplicated lookup accepted by
-`glugglug2`, and grouped numeric sprite IDs for hot-path drawing:
+The generator returns a `spriteAtlas` containing the generated `OffscreenCanvas`, one flat deduplicated lookup, and
+grouped numeric sprite IDs for hot-path drawing. Source coordinates are an internal generation detail and are not
+included in the public result:
 
 ```ts
 import generateSprite from '@8f4e/sprite-generator';
 import { Engine } from 'glugglug2';
 
-const { glugglug2Atlas } = await generateSprite({ font: 'ibmvga8x16' });
+const { spriteAtlas } = await generateSprite({ font: 'ibmvga8x16' });
 const engine = new Engine(canvas);
 
-engine.setSpriteAtlas(glugglug2Atlas.image, glugglug2Atlas.lookup);
-engine.render(() => {
-	engine.drawSprite(20, 20, glugglug2Atlas.spriteIds.fontCode['A']);
-	engine.drawSprite(40, 20, glugglug2Atlas.spriteIds.fillColors.background, 200, 100);
+engine.setSpriteAtlas(spriteAtlas.image, spriteAtlas.lookup);
+engine.renderFrame(() => {
+	engine.drawSprite(20, 20, spriteAtlas.spriteIds.fontCode[65]);
+	engine.drawSprite(40, 20, spriteAtlas.spriteIds.fillColors.background, 200, 100);
 });
 ```
 
@@ -146,9 +146,9 @@ Screenshot tests are located in `screenshot-tests/`:
 ### Test Cases
 
 Current test scenarios include:
-- **sprite-sheet-with-8x16-font** - Default 8x16 font with standard color scheme
-- **sprite-sheet-with-6x10-font** - 6x10 font with custom vibrant color scheme
-- **glugglug2-atlas** - Generated flat lookup and numeric IDs rendered through the glugglug2 WebGL engine
+- **sprite-sheet-with-8x16-font** - Default 8x16 font with the standard color scheme
+- **sprite-sheet-with-6x10-font** - Sprite sheet generated with the 6x10 font
+- **sprite-atlas** - Generated flat lookup and numeric IDs rendered through the WebGL engine
 
 ### Adding New Test Cases
 

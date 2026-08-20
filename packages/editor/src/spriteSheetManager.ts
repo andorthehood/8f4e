@@ -6,12 +6,11 @@ import type { EventDispatcher } from './events';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 type SpriteSheetView = {
-	loadSpriteSheet: (spriteData: SpriteData) => void;
-	clearCache: () => void;
+	loadSpriteAtlas: (spriteData: SpriteData) => void;
 };
 
 /**
- * Keeps the sprite sheet and render cache in sync with editor state changes.
+ * Keeps generated sprite-sheet data in sync with editor state changes.
  */
 export function createSpriteSheetManager(
 	store: StateManager<State>,
@@ -25,12 +24,11 @@ export function createSpriteSheetManager(
 			colorScheme: state.editorConfig.color,
 		});
 
-		view.loadSpriteSheet(spriteData);
+		view.loadSpriteAtlas(spriteData);
 
 		// Update state with new sprite data
 		updateStateWithSpriteData(state, spriteData);
 
-		view.clearCache();
 		events.dispatch('spriteSheetRerendered');
 	};
 

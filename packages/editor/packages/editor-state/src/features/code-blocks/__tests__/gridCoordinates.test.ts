@@ -93,7 +93,7 @@ describe('Grid Coordinates Integration', () => {
 			expect(codeBlock.x).toBe(80);
 			expect(codeBlock.y).toBe(160);
 
-			// Simulate font change to 6x10 (from reloadSpriteSheet in web-ui/src/index.ts)
+			// Simulate installing a regenerated atlas with a 6x10 font.
 			const newCharacterWidth = 6;
 			const newCharacterHeight = 10;
 			mockState.viewport.vGrid = newCharacterWidth;

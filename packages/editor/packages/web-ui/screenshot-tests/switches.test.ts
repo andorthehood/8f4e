@@ -5,7 +5,7 @@ import createCanvas from './utils/createCanvas';
 import createMockMemoryViews from './utils/createMockMemoryViews';
 import createMockSpriteData from './utils/createMockSpriteData';
 import createMockStateWithColors from './utils/createMockStateWithColors';
-import { generateColorMapWithOneColor } from './utils/generateColorMapMock';
+import { resolveCodeWithOneColor } from './utils/generateColorMapMock';
 
 test('switches', async () => {
 	const canvas = createCanvas();
@@ -29,7 +29,7 @@ test('switches', async () => {
 
 	if (mockState.spriteLookups) {
 		const lines1 = ['selected code block', '', '', '', '', '', '', '', ''];
-		const codeToRender1 = lines1.map(line => line.split('').map(char => char.charCodeAt(0)));
+		const codeToRender1 = resolveCodeWithOneColor(lines1, mockState.spriteLookups.fontCode);
 
 		const codeBlockMock = createMockCodeBlock({
 			x: 16,
@@ -37,7 +37,6 @@ test('switches', async () => {
 			width: 256,
 			height: lines1.length * 16,
 			codeToRender: codeToRender1,
-			codeColors: generateColorMapWithOneColor(mockState.spriteLookups.fontCode, 10),
 			extras: {
 				inputs: [],
 				outputs: [],
@@ -56,7 +55,7 @@ test('switches', async () => {
 		mockState.codeBlockRendering.codeBlocks.push(codeBlockMock);
 
 		const lines2 = ['not selected code block', '', '', '', '', '', '', '', ''];
-		const codeToRender2 = lines2.map(line => line.split('').map(char => char.charCodeAt(0)));
+		const codeToRender2 = resolveCodeWithOneColor(lines2, mockState.spriteLookups.fontCode);
 
 		mockState.codeBlockRendering.codeBlocks.push(
 			createMockCodeBlock({
@@ -65,7 +64,6 @@ test('switches', async () => {
 				width: 256,
 				height: lines2.length * 16,
 				codeToRender: codeToRender2,
-				codeColors: generateColorMapWithOneColor(mockState.spriteLookups.fontCode, 10),
 				extras: {
 					inputs: [],
 					outputs: [],

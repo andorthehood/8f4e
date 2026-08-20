@@ -1,7 +1,8 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
-import type { Engine } from 'glugglug';
 import { describe, expect, it, vi } from 'vitest';
+import { createSpriteIdLookupMock } from '../../__tests__/rendering';
+import type { DrawContext as Engine } from '../../drawContext';
 import type { MemoryViews } from '../../types';
 import drawModules from './index';
 
@@ -17,16 +18,10 @@ function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryVie
 	};
 }
 
-function createMockEngine({ drawCachedGroup = true }: { drawCachedGroup?: boolean } = {}): Engine {
+function createMockEngine(): Engine {
 	return {
 		startGroup: vi.fn(),
 		endGroup: vi.fn(),
-		cacheGroup: vi.fn((_key, _width, _height, draw) => {
-			if (drawCachedGroup) {
-				draw();
-			}
-		}),
-		setSpriteLookup: vi.fn(),
 		drawSprite: vi.fn(),
 		drawText: vi.fn(),
 	} as unknown as Engine;
@@ -81,7 +76,7 @@ describe('drawModules', () => {
 	it('draws precomputed entry outlines before rendering code blocks', () => {
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
+				fillColors: createSpriteIdLookupMock(),
 			} as never,
 			codeBlockRendering: {
 				codeBlocks: [],
@@ -100,7 +95,7 @@ describe('drawModules', () => {
 				hGrid: 16,
 			},
 		});
-		const engine = createMockEngine({ drawCachedGroup: false });
+		const engine = createMockEngine();
 
 		drawModules(engine, state, createMemoryViews());
 
@@ -141,21 +136,19 @@ describe('drawModules', () => {
 	it('renders only the corners for hidden blocks by default', () => {
 		const hiddenBlock = createMockCodeBlock({
 			hidden: true,
-			textureCacheKey: 'hidden-block',
 			width: 100,
 			height: 50,
 			codeToRender: [],
-			codeColors: [],
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontNumbers: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontDisabledCode: createSpriteIdLookupMock(),
+				fontLineNumber: createSpriteIdLookupMock(),
+				fontCodeComment: createSpriteIdLookupMock(),
 			} as never,
 			codeBlockRendering: {
 				codeBlocks: [hiddenBlock],
@@ -170,7 +163,6 @@ describe('drawModules', () => {
 
 		drawModules(engine, state, createMemoryViews());
 
-		expect((engine as unknown as { cacheGroup: ReturnType<typeof vi.fn> }).cacheGroup).toHaveBeenCalled();
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledTimes(4);
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
 	});
@@ -178,21 +170,19 @@ describe('drawModules', () => {
 	it('renders hidden blocks when the reveal override is active', () => {
 		const hiddenBlock = createMockCodeBlock({
 			hidden: true,
-			textureCacheKey: 'hidden-block',
 			width: 100,
 			height: 50,
 			codeToRender: [],
-			codeColors: [],
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontNumbers: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontDisabledCode: createSpriteIdLookupMock(),
+				fontLineNumber: createSpriteIdLookupMock(),
+				fontCodeComment: createSpriteIdLookupMock(),
 			} as never,
 			codeBlockRendering: {
 				codeBlocks: [hiddenBlock],
@@ -208,16 +198,20 @@ describe('drawModules', () => {
 
 		drawModules(engine, state, createMemoryViews());
 
-		expect((engine as unknown as { cacheGroup: ReturnType<typeof vi.fn> }).cacheGroup).toHaveBeenCalled();
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
+			0,
+			0,
+			'moduleBackground',
+			100,
+			50
+		);
 	});
 
-	it('draws piano keyboards outside cached block textures', () => {
+	it('draws piano keyboards after the static block contents', () => {
 		const block = createMockCodeBlock({
-			textureCacheKey: 'cached-block',
 			width: 100,
 			height: 80,
 			codeToRender: [],
-			codeColors: [],
 		});
 		block.widgets.pianoKeyboards = [
 			{
@@ -267,19 +261,19 @@ describe('drawModules', () => {
 		] as never;
 		const state = createMockState({
 			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontPianoKeyWhitePressedOverlay: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontNumbers: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontPianoKeyWhitePressedOverlay: createSpriteIdLookupMock(),
+				fontDisabledCode: createSpriteIdLookupMock(),
+				fontLineNumber: createSpriteIdLookupMock(),
+				fontCodeComment: createSpriteIdLookupMock(),
 			} as never,
 			codeBlockRendering: {
 				codeBlocks: [block],
 			},
 		});
-		const engine = createMockEngine({ drawCachedGroup: false });
+		const engine = createMockEngine();
 
 		drawModules(engine, state, createMemoryViews({ int32: [48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] }));
 
@@ -290,16 +284,20 @@ describe('drawModules', () => {
 			2,
 			4
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(0, 16, '//');
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			0,
+			16,
+			'//',
+			state.spriteLookups?.fontPianoKeyWhitePressedOverlay
+		);
 	});
 
 	it('draws tooltip text next to the selected line', () => {
-		const fillColors = {};
-		const fontCode = {};
-		const fontTooltipHighlight = {};
-		const fontTooltipText = {};
+		const fillColors = createSpriteIdLookupMock();
+		const fontCode = createSpriteIdLookupMock();
+		const fontTooltipHighlight = createSpriteIdLookupMock();
+		const fontTooltipText = createSpriteIdLookupMock();
 		const block = createMockCodeBlock({
-			textureCacheKey: 'selected-block',
 			width: 100,
 			height: 80,
 			cursor: {
@@ -309,16 +307,15 @@ describe('drawModules', () => {
 				y: 16,
 			},
 			codeToRender: [],
-			codeColors: [],
 		});
 		const state = createMockState({
 			spriteLookups: {
 				fillColors,
 				fontCode,
-				fontNumbers: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
+				fontNumbers: createSpriteIdLookupMock(),
+				fontDisabledCode: createSpriteIdLookupMock(),
+				fontLineNumber: createSpriteIdLookupMock(),
+				fontCodeComment: createSpriteIdLookupMock(),
 				fontTooltipHighlight,
 				fontTooltipText,
 			} as never,
@@ -416,17 +413,10 @@ describe('drawModules', () => {
 			64,
 			'['.charCodeAt(0)
 		);
-		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			fontTooltipHighlight
-		);
-		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			fontTooltipText
-		);
 	});
 
 	it('draws live memory declaration values from tooltip metadata', () => {
 		const block = createMockCodeBlock({
-			textureCacheKey: 'selected-memory-block',
 			width: 100,
 			height: 80,
 			name: 'test',
@@ -438,7 +428,6 @@ describe('drawModules', () => {
 			},
 			code: ['add'],
 			codeToRender: [],
-			codeColors: [],
 		});
 		const pointer = createMemory({
 			id: 'pointer',
@@ -473,14 +462,14 @@ describe('drawModules', () => {
 				},
 			},
 			spriteLookups: {
-				fillColors: {},
-				fontNumbers: {},
-				fontCode: {},
-				fontDisabledCode: {},
-				fontLineNumber: {},
-				fontCodeComment: {},
-				fontTooltipHighlight: {},
-				fontTooltipText: {},
+				fillColors: createSpriteIdLookupMock(),
+				fontNumbers: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontDisabledCode: createSpriteIdLookupMock(),
+				fontLineNumber: createSpriteIdLookupMock(),
+				fontCodeComment: createSpriteIdLookupMock(),
+				fontTooltipHighlight: createSpriteIdLookupMock(),
+				fontTooltipText: createSpriteIdLookupMock(),
 			} as never,
 			codeBlockRendering: {
 				codeBlocks: [block],
@@ -508,13 +497,13 @@ describe('drawModules', () => {
 						x: -168 + 'address: '.length * 8,
 						y: 16 + 16,
 						source: { kind: 'memoryAddress', moduleId: 'test', memoryId: 'pointer' },
-						color: {},
+						color: createSpriteIdLookupMock(),
 					},
 					{
 						x: -168 + 'value: '.length * 8,
 						y: 16 + 2 * 16,
 						source: { kind: 'memoryValue', moduleId: 'test', memoryId: 'pointer', elementIndex: 0 },
-						color: {},
+						color: createSpriteIdLookupMock(),
 					},
 					{
 						x: -168 + 'deref: '.length * 8,
@@ -529,7 +518,7 @@ describe('drawModules', () => {
 								isUnsigned: false,
 							},
 						},
-						color: {},
+						color: createSpriteIdLookupMock(),
 					},
 				],
 			},
@@ -574,7 +563,7 @@ describe('drawModules', () => {
 		});
 		const state = createMockState({
 			spriteLookups: {
-				fontArrow: {},
+				fontArrow: createSpriteIdLookupMock(),
 			} as never,
 			codeBlockRendering: {
 				codeBlocks: [offscreenBlock],

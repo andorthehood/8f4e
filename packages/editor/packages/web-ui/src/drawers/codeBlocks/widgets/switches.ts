@@ -1,12 +1,12 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import { Icon } from '@8f4e/sprite-generator';
-import type { Engine } from 'glugglug';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 
 const UNRESOLVED_SWITCH_VALUE_LABEL = '[__]';
 
 export default function drawSwitches(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -19,14 +19,11 @@ export default function drawSwitches(
 		const value = memoryViews.int32[wordAlignedAddress] || 0;
 
 		if (value === onValue) {
-			engine.setSpriteLookup(state.spriteLookups.icons);
-			engine.drawSprite(x, y, Icon.SWITCH_ON);
+			engine.drawSprite(x, y, state.spriteLookups.icons[Icon.SWITCH_ON]);
 		} else if (value === offValue) {
-			engine.setSpriteLookup(state.spriteLookups.icons);
-			engine.drawSprite(x, y, Icon.SWITCH_OFF);
+			engine.drawSprite(x, y, state.spriteLookups.icons[Icon.SWITCH_OFF]);
 		} else {
-			engine.setSpriteLookup(state.spriteLookups.fontNumbers);
-			engine.drawText(x, y, UNRESOLVED_SWITCH_VALUE_LABEL);
+			engine.drawText(x, y, UNRESOLVED_SWITCH_VALUE_LABEL, state.spriteLookups.fontNumbers);
 		}
 	}
 }

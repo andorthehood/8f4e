@@ -15,7 +15,6 @@ This keeps memory churn low and gives the garbage collector less work during int
 ## Allocation Placement
 
 - Prefer doing unavoidable allocation outside the render loop whenever possible.
-- Use renderer-level caching for stable draw groups when available. The code block drawer uses `engine.cacheGroup` so unselected block textures can be reused across frames.
 - Keep per-frame allocations only when they avoid enough repeated looping or recalculation to justify the extra garbage collector pressure.
 
 ## Precomputed Values

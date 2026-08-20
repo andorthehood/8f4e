@@ -2,15 +2,13 @@ import spriteGenerator from '@8f4e/sprite-generator';
 
 (async () => {
 	const canvasElement = document.getElementById('test-canvas') as HTMLCanvasElement;
-	const { canvas, spriteLookups } = await spriteGenerator({
+	const { spriteAtlas } = await spriteGenerator({
 		font: 'ibmvga8x16',
 	});
 
-	void spriteLookups;
-
 	const ctx = canvasElement.getContext('2d');
 	if (ctx) {
-		const blob = await canvas.convertToBlob();
+		const blob = await spriteAtlas.image.convertToBlob();
 		const img = new Image();
 		const objectURL = URL.createObjectURL(blob);
 

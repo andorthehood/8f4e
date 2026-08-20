@@ -1,4 +1,4 @@
-import type { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglug2';
 
 import { createAtlasLayout, TEXT_COLOR_NAMES } from './atlasLayout.ts';
 import { type ColorScheme, Command, type DrawingCommand } from './types.ts';
@@ -129,7 +129,9 @@ function capitalize(word: string) {
 }
 
 export type FontLookups = {
-	[key in keyof ColorScheme['text'] as `font${Capitalize<string & key>}`]: Record<number | string, SpriteCoordinates>;
+	[key in keyof ColorScheme['text'] as `font${Capitalize<string & key>}`]: Partial<
+		Record<number | string, SpriteCoordinates>
+	>;
 };
 
 export const generateLookups = (characterWidth: number, characterHeight: number, colors: ColorScheme['text']) => {

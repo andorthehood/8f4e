@@ -1,8 +1,8 @@
-import { describe, expect, expectTypeOf, it, vi } from 'vitest';
+import { describe, expect, expectTypeOf, it } from 'vitest';
 
 import type { Engine } from '../engine.ts';
 import { DrawContext } from './drawContext.ts';
-import type { SpriteFont, SpriteTarget } from './types.ts';
+import type { SpriteTarget } from './types.ts';
 
 type SpriteCall = Parameters<SpriteTarget['drawSprite']>;
 
@@ -39,13 +39,13 @@ describe('DrawContext', () => {
 		const { calls, target } = createRecorder();
 		const draw = new DrawContext(target);
 
-		draw.pushOffset(10, 20);
+		draw.startGroup(10, 20);
 		draw.drawSprite(1, 2, 3);
-		draw.pushOffset(100, 200);
+		draw.startGroup(100, 200);
 		draw.drawSprite(4, 5, 6);
-		draw.popOffset();
+		draw.endGroup();
 		draw.drawSprite(7, 8, 9);
-		draw.popOffset();
+		draw.endGroup();
 		draw.drawSprite(11, 12, 13);
 
 		expect(calls).toEqual([
@@ -61,127 +61,14 @@ describe('DrawContext', () => {
 		const draw = new DrawContext(target);
 
 		for (let frame = 0; frame < 2; frame += 1) {
-			draw.pushOffset(frame * 10, frame * 20);
+			draw.startGroup(frame * 10, frame * 20);
 			draw.drawSprite(1, 2, frame);
-			draw.popOffset();
+			draw.endGroup();
 		}
 
 		expect(calls).toEqual([
 			[1, 2, 0, undefined, undefined],
 			[11, 22, 1, undefined, undefined],
 		]);
-	});
-
-	it('executes cache groups immediately and always reports a cache miss', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-		const callback = vi.fn(() => draw.drawSprite(1, 2, 3));
-
-		const firstResult = draw.cacheGroup('panel', 100, 50, callback);
-		const secondResult = draw.cacheGroup('panel', 100, 50, callback, true, 0.5);
-
-		expect(firstResult).toBe(false);
-		expect(secondResult).toBe(false);
-		expect(callback).toHaveBeenCalledTimes(2);
-		expect(calls).toEqual([
-			[1, 2, 3, undefined, undefined],
-			[1, 2, 3, undefined, undefined],
-		]);
-	});
-
-	it('executes disabled cache groups and ignores dimensions and alpha', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-
-		draw.cacheGroup('ignored', -100, Number.NaN, () => draw.drawSprite(3, 5, 7, 11, 13), false, -2);
-
-		expect(calls).toEqual([[3, 5, 7, 11, 13]]);
-	});
-
-	it('preserves the active offset while executing a cache group', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-
-		draw.pushOffset(10, 20);
-		draw.cacheGroup('nested', 30, 40, () => draw.drawSprite(1, 2, 3));
-		draw.drawSprite(4, 5, 6);
-		draw.popOffset();
-
-		expect(calls).toEqual([
-			[11, 22, 3, undefined, undefined],
-			[14, 25, 6, undefined, undefined],
-		]);
-	});
-
-	it('propagates cache-group callback errors without changing offset state', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-		const error = new Error('draw failed');
-
-		draw.pushOffset(10, 20);
-		expect(() =>
-			draw.cacheGroup('broken', 30, 40, () => {
-				throw error;
-			})
-		).toThrow(error);
-		draw.drawSprite(1, 2, 3);
-		draw.popOffset();
-		draw.drawSprite(4, 5, 6);
-
-		expect(calls).toEqual([
-			[11, 22, 3, undefined, undefined],
-			[4, 5, 6, undefined, undefined],
-		]);
-	});
-
-	it('draws fixed-cell glyphs in order with the active offset', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-		const font: SpriteFont = {
-			advanceX: 8,
-			glyphIds: {
-				65: 101,
-				66: 102,
-				67: 103,
-			},
-		};
-
-		draw.pushOffset(10, 20);
-		draw.drawText(2, 3, 'ABC', font);
-		draw.popOffset();
-
-		expect(calls).toEqual([
-			[12, 23, 101],
-			[20, 23, 102],
-			[28, 23, 103],
-		]);
-	});
-
-	it('skips undefined glyphs while preserving their cell advance', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-		const font: SpriteFont = {
-			advanceX: 6,
-			glyphIds: {
-				65: 4,
-				66: 5,
-			},
-		};
-
-		draw.drawText(1, 2, 'A B', font);
-
-		expect(calls).toEqual([
-			[1, 2, 4],
-			[13, 2, 5],
-		]);
-	});
-
-	it('does not submit sprites for empty text', () => {
-		const { calls, target } = createRecorder();
-		const draw = new DrawContext(target);
-
-		draw.drawText(1, 2, '', { advanceX: 8, glyphIds: {} });
-
-		expect(calls).toEqual([]);
 	});
 });

@@ -8,7 +8,7 @@ import paramShape, { updateParamShapeDeclarations } from './updateGraphicData';
 
 function createDirectiveState(): DirectiveDerivedState {
 	return {
-		blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false, opacity: 1 },
+		blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
 		displayState: {},
 		displayModel: {
 			lines: [],
@@ -64,7 +64,6 @@ describe('paramShape', () => {
 			blockType: 'function',
 			code: ['function foo', '#impure', 'paramShape bar', 'push *a', 'functionEnd'],
 			codeToRender: [[1], [2], [3], [4], [5]],
-			codeColors: [[undefined], [undefined], [undefined], [undefined], [undefined]],
 			lineNumberColumnWidth: 1,
 			creationIndex: 42,
 		});

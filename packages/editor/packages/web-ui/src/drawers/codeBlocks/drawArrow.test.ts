@@ -1,14 +1,11 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-import type { Engine } from 'glugglug';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, type vi } from 'vitest';
+import { createDrawContextMock, createSpriteIdLookupMock } from '../../__tests__/rendering';
+import type { DrawContext as Engine } from '../../drawContext';
 import drawArrow from './drawArrow';
 
 function createMockEngine(): Engine {
-	return {
-		setSpriteLookup: vi.fn(),
-		drawSprite: vi.fn(),
-		drawText: vi.fn(),
-	} as unknown as Engine;
+	return createDrawContextMock();
 }
 
 describe('drawArrow', () => {
@@ -16,7 +13,7 @@ describe('drawArrow', () => {
 		const engine = createMockEngine();
 		const state = createMockState({
 			spriteLookups: {
-				fontArrow: {},
+				fontArrow: createSpriteIdLookupMock(),
 			} as never,
 			viewport: {
 				width: 1024,
@@ -39,14 +36,37 @@ describe('drawArrow', () => {
 		drawArrow(engine, createMockCodeBlock({ x: -100, y: 384 }), state);
 		drawArrow(engine, createMockCodeBlock({ x: 1200, y: -100 }), state);
 
-		expect((engine as unknown as { setSpriteLookup: ReturnType<typeof vi.fn> }).setSpriteLookup).toHaveBeenCalledWith(
-			state.spriteLookups?.fontArrow
+		const font = state.spriteLookups?.fontArrow;
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			512,
+			0,
+			'^',
+			font
 		);
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(512, 0, '^');
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(1016, 384, '>');
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(512, 752, 'v');
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(0, 384, '<');
-		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(1016, 24, '>');
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			1016,
+			384,
+			'>',
+			font
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			512,
+			752,
+			'v',
+			font
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			0,
+			384,
+			'<',
+			font
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			1016,
+			24,
+			'>',
+			font
+		);
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
 	});
 });

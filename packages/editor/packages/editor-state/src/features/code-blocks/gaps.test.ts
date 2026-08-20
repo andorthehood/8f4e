@@ -6,7 +6,7 @@ import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
 describe('gaps', () => {
 	it('inserts directive gaps using display rows', async () => {
 		const directiveState: DirectiveDerivedState = {
-			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false, opacity: 1 },
+			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
 			displayState: {},
 			displayModel: {
 				lines: [
@@ -24,19 +24,17 @@ describe('gaps', () => {
 		const graphicData = createCodeBlockGraphicData({
 			code: ['module foo', '; @plot buffer', 'push 1', 'moduleEnd'],
 			codeToRender: [[1], [2], [3]],
-			codeColors: [[undefined], [undefined], [undefined]],
 		});
 
 		gaps(graphicData, directiveState);
 
 		expect(graphicData.gaps.get(1)).toEqual({ size: 8 });
 		expect(graphicData.codeToRender).toHaveLength(11);
-		expect(graphicData.codeColors).toHaveLength(11);
 	});
 
 	it('adds multiple layout contributions on the same display row', async () => {
 		const directiveState: DirectiveDerivedState = {
-			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false, opacity: 1 },
+			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
 			displayState: {},
 			displayModel: {
 				lines: [
@@ -57,19 +55,17 @@ describe('gaps', () => {
 		const graphicData = createCodeBlockGraphicData({
 			code: ['module foo', 'shape sharedState', 'moduleEnd'],
 			codeToRender: [[1], [2], [3]],
-			codeColors: [[undefined], [undefined], [undefined]],
 		});
 
 		gaps(graphicData, directiveState);
 
 		expect(graphicData.gaps.get(1)).toEqual({ size: 5 });
 		expect(graphicData.codeToRender).toHaveLength(8);
-		expect(graphicData.codeColors).toHaveLength(8);
 	});
 
 	it('adds error gaps to layout contributions on the same display row', async () => {
 		const directiveState: DirectiveDerivedState = {
-			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false, opacity: 1 },
+			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
 			displayState: {},
 			displayModel: {
 				lines: [
@@ -87,7 +83,6 @@ describe('gaps', () => {
 		const graphicData = createCodeBlockGraphicData({
 			code: ['module foo', 'shape sharedState', 'moduleEnd'],
 			codeToRender: [[1], [2], [3]],
-			codeColors: [[undefined], [undefined], [undefined]],
 			widgets: {
 				blockHighlights: [],
 				inputs: [],
@@ -111,12 +106,11 @@ describe('gaps', () => {
 
 		expect(graphicData.gaps.get(1)).toEqual({ size: 5 });
 		expect(graphicData.codeToRender).toHaveLength(8);
-		expect(graphicData.codeColors).toHaveLength(8);
 	});
 
 	it('skips gaps for raw rows hidden from the display model', async () => {
 		const directiveState: DirectiveDerivedState = {
-			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false, opacity: 1 },
+			blockState: { disabled: false, hidden: false, isHome: false, isFavorite: false },
 			displayState: {},
 			displayModel: {
 				lines: [
@@ -133,7 +127,6 @@ describe('gaps', () => {
 		const graphicData = createCodeBlockGraphicData({
 			code: ['module foo', '; @plot buffer', 'push 1', 'moduleEnd'],
 			codeToRender: [[1], [2]],
-			codeColors: [[undefined], [undefined]],
 			widgets: {
 				blockHighlights: [],
 				inputs: [],
@@ -157,6 +150,5 @@ describe('gaps', () => {
 
 		expect(graphicData.gaps.size).toBe(0);
 		expect(graphicData.codeToRender).toHaveLength(2);
-		expect(graphicData.codeColors).toHaveLength(2);
 	});
 });

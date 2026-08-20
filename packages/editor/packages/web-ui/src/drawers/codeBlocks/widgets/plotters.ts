@@ -1,5 +1,6 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { SpriteId } from '@8f4e/sprite-generator';
+import type { DrawContext } from '../../../drawContext';
 import type { MemoryViews } from '../../../types';
 import { getBaseValueIndex, getTypedValueView } from './typedValueView';
 
@@ -23,7 +24,7 @@ function valueToY(
 }
 
 function drawSparsePlot(
-	engine: Engine,
+	engine: DrawContext,
 	values: ArrayLike<number>,
 	baseValueIndex: number,
 	width: number,
@@ -31,17 +32,18 @@ function drawSparsePlot(
 	plotHeight: number,
 	pointHeight: number,
 	minValue: number,
-	valueRange: number
+	valueRange: number,
+	traceSpriteId: SpriteId
 ): void {
 	for (let i = 0; i < width; i++) {
 		const value = values[baseValueIndex + i];
 		const pointY = valueToY(value, minValue, valueRange, plotHeight, pointHeight);
-		engine.drawSprite(i * columnWidth, pointY, 'trace', columnWidth, pointHeight);
+		engine.drawSprite(i * columnWidth, pointY, traceSpriteId, columnWidth, pointHeight);
 	}
 }
 
 function drawDensePlot(
-	engine: Engine,
+	engine: DrawContext,
 	values: ArrayLike<number>,
 	baseValueIndex: number,
 	arrayLength: number,
@@ -50,7 +52,8 @@ function drawDensePlot(
 	pointHeight: number,
 	minValue: number,
 	maxValue: number,
-	valueRange: number
+	valueRange: number,
+	traceSpriteId: SpriteId
 ): void {
 	for (let column = 0; column < columnCount; column++) {
 		const sliceStart = Math.floor((column / columnCount) * arrayLength);
@@ -71,12 +74,12 @@ function drawDensePlot(
 		const rectY = Math.min(minY, maxY);
 		const rectHeight = Math.max(pointHeight, Math.abs(maxY - minY) + pointHeight);
 
-		engine.drawSprite(column, rectY, 'trace', 1, rectHeight);
+		engine.drawSprite(column, rectY, traceSpriteId, 1, rectHeight);
 	}
 }
 
 export default function drawer(
-	engine: Engine,
+	engine: DrawContext,
 	state: State,
 	codeBlock: CodeBlockGraphicData,
 	memoryViews: MemoryViews
@@ -85,7 +88,7 @@ export default function drawer(
 		return;
 	}
 
-	engine.setSpriteLookup(state.spriteLookups.fillColors);
+	const fillSprites = state.spriteLookups.fillColors;
 
 	const maxPlotterWidth = codeBlock.width - state.viewport.hGrid * 2;
 	const plotHeight = state.viewport.hGrid * 8;
@@ -105,7 +108,7 @@ export default function drawer(
 		const isDense = arrayLength > maxPlotterWidth;
 		const plotWidth = isDense ? maxPlotterWidth : sampleCount * columnWidth;
 
-		engine.drawSprite(0, 0, 'plotterBackground', plotWidth, plotHeight);
+		engine.drawSprite(0, 0, fillSprites.plotterBackground, plotWidth, plotHeight);
 
 		if (isDense) {
 			drawDensePlot(
@@ -118,7 +121,8 @@ export default function drawer(
 				pointHeight,
 				minValue,
 				maxValue,
-				valueRange
+				valueRange,
+				fillSprites.trace
 			);
 		} else {
 			drawSparsePlot(
@@ -130,7 +134,8 @@ export default function drawer(
 				plotHeight,
 				pointHeight,
 				minValue,
-				valueRange
+				valueRange,
+				fillSprites.trace
 			);
 		}
 

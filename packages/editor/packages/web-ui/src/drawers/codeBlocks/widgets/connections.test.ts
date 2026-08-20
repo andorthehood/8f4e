@@ -1,8 +1,9 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { Input, Output } from '@8f4e/editor-state-types';
-import type { Engine } from 'glugglug';
+import type { LineDrawer } from 'glugglug2';
 import { describe, expect, it, vi } from 'vitest';
 import type { MemoryViews } from '../../../types';
+import type { WireColors } from '../../../wire-colors';
 import drawConnections from './connections';
 
 function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryViews {
@@ -17,13 +18,10 @@ function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryVie
 	};
 }
 
-function createMockEngine(): Engine {
+function createMockLines(): LineDrawer {
 	return {
-		startGroup: vi.fn(),
-		endGroup: vi.fn(),
-		setSpriteLookup: vi.fn(),
 		drawLine: vi.fn(),
-	} as unknown as Engine;
+	} as unknown as LineDrawer;
 }
 
 describe('drawConnections', () => {
@@ -101,12 +99,14 @@ describe('drawConnections', () => {
 				outputsByWordAddress: new Map([[80, output]]),
 			},
 		});
-		const engine = createMockEngine();
+		const lines = createMockLines();
+		const wireColors: WireColors = {
+			wire: [1, 1, 1, 0.3],
+			wireHighlighted: [1, 1, 1, 1],
+		};
 
-		drawConnections(engine, state, createMemoryViews({ int32: [0, 0, 80] }));
+		drawConnections(lines, wireColors, state, createMemoryViews({ int32: [0, 0, 80] }));
 
-		expect(engine.startGroup).toHaveBeenCalledWith(-5, -9);
-		expect(engine.drawLine).toHaveBeenCalledWith(122, 256, 468, 480, 'wireHighlighted', 1);
-		expect(engine.endGroup).toHaveBeenCalled();
+		expect(lines.drawLine).toHaveBeenCalledWith(117, 247, 463, 471, 1, wireColors.wireHighlighted);
 	});
 });
