@@ -19,16 +19,13 @@ describe('DrawContext', () => {
 		]);
 	});
 
-	it('uses the updated character width and executes cache groups immediately', () => {
+	it('uses the updated character width', () => {
 		const target = { drawSprite: vi.fn() };
 		const draw = new DrawContext(target, 8);
-		const callback = vi.fn(() => draw.drawText(0, 0, 'AB', { 65: 1, 66: 2 }));
 
 		draw.setCharacterWidth(6);
-		const cached = draw.cacheGroup('label', 100, 20, callback);
+		draw.drawText(0, 0, 'AB', { 65: 1, 66: 2 });
 
-		expect(cached).toBe(false);
-		expect(callback).toHaveBeenCalledOnce();
 		expect(target.drawSprite.mock.calls).toEqual([
 			[0, 0, 1],
 			[6, 0, 2],

@@ -144,6 +144,9 @@ sprite submission, and the core renderer should not advertise caching until it o
 - Completed on 2026-08-19 with the planned signature on `DrawContext`. Focused tests cover repeated ids, enabled and
   disabled calls, ignored dimensions and alpha, inherited offsets, unchanged offset state after errors, and direct error
   propagation. The transition toward TODO 468 is unchanged: this shim will not silently become a real cache.
+- Removed on 2026-08-20 after the migrated web-ui code-block drawer was simplified to draw its contents directly. The
+  compatibility method, its forwarding wrapper, focused tests, cache-only render keys, and invalidation epoch were all
+  deleted; the success criteria above describe the completed intermediate migration step, not the current API.
 
 ## Archive Instructions
 

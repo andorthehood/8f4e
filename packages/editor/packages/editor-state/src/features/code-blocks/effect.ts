@@ -200,8 +200,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		graphicData.groupNonstick = directiveState.blockState.groupNonstick;
 		graphicData.viewportAnchor = directiveState.blockState.viewportAnchor;
 		graphicData.alwaysOnTop = directiveState.blockState.alwaysOnTop ?? false;
-
-		graphicData.textureCacheKey = `codeBlock:${graphicData.creationIndex}:${graphicData.lastUpdated}:${displayModel.isCollapsed ? 'collapsed' : 'expanded'}:${state.codeBlockRendering.textureCacheEpoch}`;
 	};
 
 	const updateGraphicsAll = () => {
@@ -416,7 +414,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
 	events.on('runtimeInitialized', updateGraphicsAll);
 	events.on('spriteSheetRerendered', () => {
-		state.codeBlockRendering.textureCacheEpoch += 1;
 		recomputePixelCoordinatesAndUpdateGraphics();
 		centerViewportOnSelectedCodeBlock();
 	});

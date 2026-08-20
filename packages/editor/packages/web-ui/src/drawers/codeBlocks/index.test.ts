@@ -18,16 +18,10 @@ function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryVie
 	};
 }
 
-function createMockEngine({ drawCachedGroup = true }: { drawCachedGroup?: boolean } = {}): Engine {
+function createMockEngine(): Engine {
 	return {
 		startGroup: vi.fn(),
 		endGroup: vi.fn(),
-		cacheGroup: vi.fn((_key, _width, _height, draw) => {
-			if (drawCachedGroup) {
-				draw();
-			}
-			return false;
-		}),
 		drawSprite: vi.fn(),
 		drawText: vi.fn(),
 	} as unknown as Engine;
@@ -101,7 +95,7 @@ describe('drawModules', () => {
 				hGrid: 16,
 			},
 		});
-		const engine = createMockEngine({ drawCachedGroup: false });
+		const engine = createMockEngine();
 
 		drawModules(engine, state, createMemoryViews());
 
@@ -142,7 +136,6 @@ describe('drawModules', () => {
 	it('renders only the corners for hidden blocks by default', () => {
 		const hiddenBlock = createMockCodeBlock({
 			hidden: true,
-			textureCacheKey: 'hidden-block',
 			width: 100,
 			height: 50,
 			codeToRender: [],
@@ -171,7 +164,6 @@ describe('drawModules', () => {
 
 		drawModules(engine, state, createMemoryViews());
 
-		expect((engine as unknown as { cacheGroup: ReturnType<typeof vi.fn> }).cacheGroup).toHaveBeenCalled();
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledTimes(4);
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
 	});
@@ -179,7 +171,6 @@ describe('drawModules', () => {
 	it('renders hidden blocks when the reveal override is active', () => {
 		const hiddenBlock = createMockCodeBlock({
 			hidden: true,
-			textureCacheKey: 'hidden-block',
 			width: 100,
 			height: 50,
 			codeToRender: [],
@@ -209,12 +200,17 @@ describe('drawModules', () => {
 
 		drawModules(engine, state, createMemoryViews());
 
-		expect((engine as unknown as { cacheGroup: ReturnType<typeof vi.fn> }).cacheGroup).toHaveBeenCalled();
+		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
+			0,
+			0,
+			'moduleBackground',
+			100,
+			50
+		);
 	});
 
-	it('draws piano keyboards outside cached block textures', () => {
+	it('draws piano keyboards after the static block contents', () => {
 		const block = createMockCodeBlock({
-			textureCacheKey: 'cached-block',
 			width: 100,
 			height: 80,
 			codeToRender: [],
@@ -280,7 +276,7 @@ describe('drawModules', () => {
 				codeBlocks: [block],
 			},
 		});
-		const engine = createMockEngine({ drawCachedGroup: false });
+		const engine = createMockEngine();
 
 		drawModules(engine, state, createMemoryViews({ int32: [48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] }));
 
@@ -305,7 +301,6 @@ describe('drawModules', () => {
 		const fontTooltipHighlight = createSpriteIdLookupMock();
 		const fontTooltipText = createSpriteIdLookupMock();
 		const block = createMockCodeBlock({
-			textureCacheKey: 'selected-block',
 			width: 100,
 			height: 80,
 			cursor: {
@@ -426,7 +421,6 @@ describe('drawModules', () => {
 
 	it('draws live memory declaration values from tooltip metadata', () => {
 		const block = createMockCodeBlock({
-			textureCacheKey: 'selected-memory-block',
 			width: 100,
 			height: 80,
 			name: 'test',

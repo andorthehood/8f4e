@@ -61,33 +61,6 @@ export class DrawContext implements SpriteTarget {
 	}
 
 	/**
-	 * Executes a legacy cache-group callback without creating or reusing cached content.
-	 *
-	 * This migration shim always invokes the callback exactly once and returns `false`. It leaves
-	 * the active coordinate offset unchanged, so drawing inside the callback behaves like any other
-	 * immediate drawing. Cache identifiers, dimensions, enablement, and alpha are intentionally ignored.
-	 *
-	 * @param cacheId - Legacy cache identifier, accepted but not retained or inspected.
-	 * @param width - Legacy cache width, accepted but ignored.
-	 * @param height - Legacy cache height, accepted but ignored.
-	 * @param draw - Drawing callback to execute immediately and exactly once.
-	 * @param enabled - Legacy cache toggle, accepted but ignored; the callback always executes.
-	 * @param alpha - Legacy cached-composite alpha, accepted but ignored.
-	 * @returns Always `false`, because no cached content was created or reused.
-	 */
-	cacheGroup(
-		cacheId: string,
-		width: number,
-		height: number,
-		draw: () => void,
-		enabled: boolean = true,
-		alpha: number = 1
-	): boolean {
-		draw();
-		return false;
-	}
-
-	/**
 	 * Expands one line of fixed-cell text directly into ordered numeric sprite submissions.
 	 *
 	 * Each JavaScript UTF-16 code unit indexes {@link SpriteFont.glyphIds}. Undefined glyphs are

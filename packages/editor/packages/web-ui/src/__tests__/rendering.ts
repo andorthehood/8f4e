@@ -23,10 +23,6 @@ export function createDrawContextMock(): DrawContext {
 	return {
 		startGroup: vi.fn(),
 		endGroup: vi.fn(),
-		cacheGroup: vi.fn((_key, _width, _height, draw) => {
-			draw();
-			return false;
-		}),
 		drawSprite: vi.fn(),
 		drawText: vi.fn(),
 	} as unknown as DrawContext;

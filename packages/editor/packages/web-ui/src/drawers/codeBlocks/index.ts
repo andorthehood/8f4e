@@ -63,92 +63,66 @@ export default function drawModules(engine: DrawContext, state: State, memoryVie
 			codeBlock.y + codeBlock.offsetY + offsetY < state.viewport.height
 		) {
 			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
-			engine.cacheGroup(
-				codeBlock.textureCacheKey,
-				codeBlock.width,
-				codeBlock.height,
-				() => {
-					if (!renderHiddenPreview) {
-						if (codeBlock === state.codeBlockRendering.draggedCodeBlock) {
-							engine.drawSprite(
-								0,
-								0,
-								spriteLookups.fillColors.moduleBackgroundDragged,
-								codeBlock.width,
-								codeBlock.height
-							);
-						} else if (codeBlock.disabled) {
-							engine.drawSprite(
-								0,
-								0,
-								spriteLookups.fillColors.moduleBackgroundDisabled,
-								codeBlock.width,
-								codeBlock.height
-							);
-						} else {
-							engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackground, codeBlock.width, codeBlock.height);
-						}
+			if (!renderHiddenPreview) {
+				if (codeBlock === state.codeBlockRendering.draggedCodeBlock) {
+					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDragged, codeBlock.width, codeBlock.height);
+				} else if (codeBlock.disabled) {
+					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDisabled, codeBlock.width, codeBlock.height);
+				} else {
+					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackground, codeBlock.width, codeBlock.height);
+				}
 
-						drawBlockHighlights(engine, state, codeBlock);
+				drawBlockHighlights(engine, state, codeBlock);
 
-						if (state.featureFlags.codeLineSelection && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
-							engine.drawSprite(
-								0,
-								codeBlock.cursor.y,
-								spriteLookups.fillColors.highlightedCodeLine,
-								codeBlock.width,
-								state.viewport.hGrid
-							);
-						}
-					}
-
-					const cornerFont =
-						state.codeBlockRendering.selectedCodeBlock === codeBlock
-							? spriteLookups.fontNumbers
-							: spriteLookups.fontCode;
-
-					engine.drawText(0, 0, corner, cornerFont);
-					engine.drawText(codeBlock.width - state.viewport.vGrid, 0, corner, cornerFont);
-					engine.drawText(0, codeBlock.height - state.viewport.hGrid, corner, cornerFont);
-					engine.drawText(
-						codeBlock.width - state.viewport.vGrid,
-						codeBlock.height - state.viewport.hGrid,
-						corner,
-						cornerFont
+				if (state.featureFlags.codeLineSelection && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
+					engine.drawSprite(
+						0,
+						codeBlock.cursor.y,
+						spriteLookups.fillColors.highlightedCodeLine,
+						codeBlock.width,
+						state.viewport.hGrid
 					);
+				}
+			}
 
-					if (renderHiddenPreview) {
-						return;
-					}
+			const cornerFont =
+				state.codeBlockRendering.selectedCodeBlock === codeBlock ? spriteLookups.fontNumbers : spriteLookups.fontCode;
 
-					let currentFont = codeBlock.disabled ? spriteLookups.fontDisabledCode : spriteLookups.fontCode;
+			engine.drawText(0, 0, corner, cornerFont);
+			engine.drawText(codeBlock.width - state.viewport.vGrid, 0, corner, cornerFont);
+			engine.drawText(0, codeBlock.height - state.viewport.hGrid, corner, cornerFont);
+			engine.drawText(
+				codeBlock.width - state.viewport.vGrid,
+				codeBlock.height - state.viewport.hGrid,
+				corner,
+				cornerFont
+			);
 
-					for (let i = 0; i < codeBlock.codeToRender.length; i++) {
-						for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
-							const lookup = codeBlock.codeColors[i][j];
-							if (!codeBlock.disabled && lookup) {
-								currentFont = lookup;
-							}
-							if (codeBlock.codeToRender[i][j] !== 32) {
-								engine.drawSprite(
-									state.viewport.vGrid * (j + 1),
-									state.viewport.hGrid * i,
-									currentFont[codeBlock.codeToRender[i][j]]
-								);
-							}
+			if (!renderHiddenPreview) {
+				let currentFont = codeBlock.disabled ? spriteLookups.fontDisabledCode : spriteLookups.fontCode;
+
+				for (let i = 0; i < codeBlock.codeToRender.length; i++) {
+					for (let j = 0; j < codeBlock.codeToRender[i].length; j++) {
+						const lookup = codeBlock.codeColors[i][j];
+						if (!codeBlock.disabled && lookup) {
+							currentFont = lookup;
+						}
+						if (codeBlock.codeToRender[i][j] !== 32) {
+							engine.drawSprite(
+								state.viewport.vGrid * (j + 1),
+								state.viewport.hGrid * i,
+								currentFont[codeBlock.codeToRender[i][j]]
+							);
 						}
 					}
+				}
 
-					drawShapeDeclarations(engine, state, codeBlock);
+				drawShapeDeclarations(engine, state, codeBlock);
 
-					if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
-						engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_', currentFont);
-					}
-				},
-				// Enable caching only when the block is NOT selected
-				state.codeBlockRendering.selectedCodeBlock !== codeBlock,
-				codeBlock.opacity
-			);
+				if (state.featureFlags.editing && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
+					engine.drawText(codeBlock.cursor.x, codeBlock.cursor.y, '_', currentFont);
+				}
+			}
 
 			if (state.editorMode === 'presentation' && state.codeBlockRendering.selectedCodeBlock === codeBlock) {
 				drawSelectedOutline(engine, state, codeBlock.width, codeBlock.height);

@@ -71,26 +71,4 @@ export class DrawContext {
 	endGroup(): void {
 		this.sprites.endGroup();
 	}
-
-	/**
-	 * Executes an old cache-group callback immediately without retaining cached content.
-	 *
-	 * @param cacheId - Legacy cache identifier, accepted but ignored.
-	 * @param width - Legacy cache width, accepted but ignored.
-	 * @param height - Legacy cache height, accepted but ignored.
-	 * @param draw - Drawing callback executed exactly once.
-	 * @param enabled - Legacy cache toggle, accepted but ignored.
-	 * @param alpha - Legacy cache alpha, accepted but ignored.
-	 * @returns Always `false` because no cache is created.
-	 */
-	cacheGroup(
-		cacheId: string,
-		width: number,
-		height: number,
-		draw: () => void,
-		enabled: boolean = true,
-		alpha: number = 1
-	): boolean {
-		return this.sprites.cacheGroup(cacheId, width, height, draw, enabled, alpha);
-	}
 }

@@ -10,7 +10,7 @@ type SpriteSheetView = {
 };
 
 /**
- * Keeps the sprite sheet and render cache in sync with editor state changes.
+ * Keeps generated sprite-sheet data in sync with editor state changes.
  */
 export function createSpriteSheetManager(
 	store: StateManager<State>,

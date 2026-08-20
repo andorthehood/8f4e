@@ -489,27 +489,27 @@ moduleEnd
 
 ### `@opacity`
 
-Set the cached replay opacity of a code block in the editor.
+Set the parsed opacity preference of a code block in the editor.
 
 ```txt
 ; @opacity <0..1>
 ```
 
-When present, this directive controls the opacity of the block's cached main body when it is rendered through the cache path.
+The current glugglug2 sprite renderer draws code block contents directly and does not apply group opacity, so this
+directive currently has no visible effect. The validated value remains available in editor state for future rendering
+support.
 
 **Rules:**
 
 - The value must be a finite number between `0` and `1` inclusive.
-- `0` means fully transparent cached replay.
-- `1` means fully opaque cached replay.
+- `0` represents fully transparent.
+- `1` represents fully opaque.
 - Missing, malformed, negative, or greater-than-`1` values are ignored and the block falls back to `1`.
 
-**Behavior:**
+**Current behavior:**
 
-- **Cached Rendering Only**: The opacity is applied only when the block is drawn from its cached texture.
-- **Uncached Rendering**: Selected blocks and any other uncached draw path ignore `@opacity` and render normally.
-- **Overlays**: Widgets and overlays drawn after the cached block body are unaffected.
-- **Cache Reuse**: Changing `@opacity` does not invalidate or recreate the cached texture because the value is applied only at replay time.
+- Code blocks, widgets, and overlays render normally regardless of the parsed value.
+- Changing `@opacity` still updates derived editor state but does not alter GPU drawing.
 
 **Format:**
 The canonical format is: `; @opacity <value>`
@@ -528,7 +528,7 @@ moduleEnd
 
 - Only the first valid `@opacity` directive in a block takes effect; later ones are ignored.
 - This directive affects editor rendering only. It does not change compilation or serialized position/state behavior.
-- If you need full-block fading including uncached overlays, that is outside the current behavior.
+- Full-block fading requires future renderer support.
 
 ### `@pos`
 
