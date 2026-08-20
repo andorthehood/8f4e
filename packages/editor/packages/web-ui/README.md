@@ -52,7 +52,7 @@ interface RenderStats {
 Type representing sprite sheet data:
 ```typescript
 interface SpriteData {
-  glugglug2Atlas: Glugglug2Atlas<SpriteLookups>;
+  spriteAtlas: SpriteAtlas<SpriteIdLookups>;
   lineColors: SpriteLineColors;
   characterWidth: number;
   characterHeight: number;

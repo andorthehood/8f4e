@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { Glugglug2Atlas, SpriteIdLookups, SpriteLineColors, SpriteLookups } from '@8f4e/sprite-generator';
+import type { SpriteAtlas, SpriteIdLookups, SpriteLineColors } from '@8f4e/sprite-generator';
 import {
 	Engine,
 	LineDrawer,
@@ -23,7 +23,7 @@ import type { MemoryViews } from './types';
 export type { MemoryViews } from './types';
 
 export interface SpriteData {
-	glugglug2Atlas: Glugglug2Atlas<SpriteLookups, SpriteIdLookups>;
+	spriteAtlas: SpriteAtlas<SpriteIdLookups>;
 	lineColors: SpriteLineColors;
 	characterWidth: number;
 	characterHeight: number;
@@ -111,7 +111,7 @@ export default async function init(
 	let statsSampleStartFrameCount = 0;
 	let statsSampleStartTime = performance.now();
 
-	engine.setSpriteAtlas(spriteData.glugglug2Atlas.image, spriteData.glugglug2Atlas.lookup);
+	engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
 	frameTextureLayer.setDrawCallback(layer => {
 		syncWasmFrameTextureDrawer()?.(layer);
 	});
@@ -171,7 +171,7 @@ export default async function init(
 			engine.resize(width, height);
 		},
 		loadSpriteAtlas: spriteData => {
-			engine.setSpriteAtlas(spriteData.glugglug2Atlas.image, spriteData.glugglug2Atlas.lookup);
+			engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
 			draw.setCharacterWidth(spriteData.characterWidth);
 			lineColors = spriteData.lineColors;
 		},

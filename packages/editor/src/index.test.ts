@@ -47,9 +47,7 @@ vi.mock('@8f4e/web-ui', () => ({
 
 vi.mock('@8f4e/sprite-generator', () => ({
 	default: vi.fn(async () => ({
-		canvas: {} as OffscreenCanvas,
-		spriteLookups: {},
-		glugglug2Atlas: {
+		spriteAtlas: {
 			image: {} as OffscreenCanvas,
 			lookup: {},
 			spriteIds: {},

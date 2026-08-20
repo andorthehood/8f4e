@@ -142,7 +142,7 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 
 function createSpriteData() {
 	return {
-		glugglug2Atlas: {
+		spriteAtlas: {
 			image: {} as OffscreenCanvas,
 			lookup: {},
 			spriteIds: {},

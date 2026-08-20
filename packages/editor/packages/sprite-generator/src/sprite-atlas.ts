@@ -10,32 +10,32 @@ export type SpriteId = number & { readonly [spriteIdBrand]: true };
 /** One sparse semantic sprite group resolved to validated dense atlas identifiers. */
 export type SpriteIdLookup = Partial<Record<string | number, SpriteId>>;
 
-export type Glugglug2SpriteIds<Lookups> = {
+export type SpriteIds<Lookups> = {
 	[Group in keyof Lookups]: {
 		[Sprite in keyof Lookups[Group]]: undefined extends Lookups[Group][Sprite] ? SpriteId | undefined : SpriteId;
 	};
 };
 
-export type Glugglug2Atlas<Lookups, SpriteIds = Glugglug2SpriteIds<Lookups>> = {
+export type SpriteAtlas<SpriteIds> = {
 	image: OffscreenCanvas;
 	lookup: SpriteLookup;
 	spriteIds: SpriteIds;
 };
 
 /**
- * Converts grouped semantic sprite lookups into the flat numeric lookup expected by glugglug2.
+ * Converts grouped semantic sprite lookups into a flat numeric atlas lookup.
  *
  * Identical source rectangles share one dense id, while `spriteIds` retains the original lookup groups and keys so
  * callers do not need to construct global identifiers in the render loop.
  *
  * @param image - Generated atlas image accepted by `Engine.setSpriteAtlas()`.
  * @param groupedLookups - Existing sprite-generator lookup groups keyed by semantic role and local sprite identifier.
- * @returns A glugglug2 atlas image, flat lookup, and grouped numeric identifiers.
+ * @returns An atlas image, flat lookup, and grouped numeric identifiers.
  */
-export function createGlugglug2Atlas<Lookups extends object>(
+export function createSpriteAtlas<Lookups extends object>(
 	image: OffscreenCanvas,
 	groupedLookups: Lookups
-): Glugglug2Atlas<Lookups> {
+): SpriteAtlas<SpriteIds<Lookups>> {
 	const lookup: SpriteLookup = {};
 	const spriteIds: Record<string, Record<string, SpriteId>> = {};
 	const idsByRectangle = new Map<string, SpriteId>();
@@ -68,7 +68,7 @@ export function createGlugglug2Atlas<Lookups extends object>(
 	return {
 		image,
 		lookup,
-		spriteIds: spriteIds as Glugglug2SpriteIds<Lookups>,
+		spriteIds: spriteIds as SpriteIds<Lookups>,
 	};
 }
 

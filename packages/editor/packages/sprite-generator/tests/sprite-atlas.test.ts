@@ -1,14 +1,14 @@
 import type { SpriteCoordinates, SpriteLookup } from 'glugglug2';
 import { describe, expect, it } from 'vitest';
 
-import { createGlugglug2Atlas } from '../src/index.ts';
+import { createSpriteAtlas } from '../src/index.ts';
 
-describe('glugglug2 atlas output', () => {
+describe('sprite atlas output', () => {
 	it('flattens semantic groups into dense numeric sprite ids', () => {
 		const image = {} as OffscreenCanvas;
 		const red: SpriteCoordinates = { x: 0, y: 0, spriteWidth: 8, spriteHeight: 8 };
 		const green: SpriteCoordinates = { x: 8, y: 0, spriteWidth: 8, spriteHeight: 8 };
-		const atlas = createGlugglug2Atlas(image, {
+		const atlas = createSpriteAtlas(image, {
 			fontCode: { 65: red, A: red },
 			fillColors: { foreground: red, background: green },
 		});
@@ -29,8 +29,8 @@ describe('glugglug2 atlas output', () => {
 		const image = {} as OffscreenCanvas;
 		const coordinates: SpriteCoordinates = { x: 3, y: 5, spriteWidth: 7, spriteHeight: 11 };
 		const groupedLookups = { icons: { play: coordinates } };
-		const first = createGlugglug2Atlas(image, groupedLookups);
-		const second = createGlugglug2Atlas(image, groupedLookups);
+		const first = createSpriteAtlas(image, groupedLookups);
+		const second = createSpriteAtlas(image, groupedLookups);
 
 		expect(second).toEqual(first);
 		expect(first.lookup[0]).not.toBe(coordinates);
@@ -41,12 +41,12 @@ describe('glugglug2 atlas output', () => {
 		const image = { width: 16, height: 8 } as OffscreenCanvas;
 
 		expect(() =>
-			createGlugglug2Atlas(image, {
+			createSpriteAtlas(image, {
 				icons: { outside: { x: 12, y: 0, spriteWidth: 8, spriteHeight: 8 } },
 			})
 		).toThrow('Sprite icons.outside extends outside the atlas image.');
 		expect(() =>
-			createGlugglug2Atlas(image, {
+			createSpriteAtlas(image, {
 				icons: { empty: { x: 0, y: 0, spriteWidth: 0, spriteHeight: 8 } },
 			})
 		).toThrow('Sprite icons.empty must have positive dimensions.');

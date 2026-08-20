@@ -3,19 +3,19 @@ import { Engine } from 'glugglug2';
 
 const output = document.querySelector<HTMLCanvasElement>('#test-canvas');
 if (!output) {
-	throw new Error('Could not find the glugglug2 atlas test canvas.');
+	throw new Error('Could not find the sprite atlas test canvas.');
 }
 
-const { characterHeight, characterWidth, glugglug2Atlas } = await generateSprite({ font: 'ibmvga8x16' });
+const { characterHeight, characterWidth, spriteAtlas } = await generateSprite({ font: 'ibmvga8x16' });
 const engine = new Engine(output, { initialCapacity: 4 });
-const ids = glugglug2Atlas.spriteIds;
+const ids = spriteAtlas.spriteIds;
 
-engine.setSpriteAtlas(glugglug2Atlas.image, glugglug2Atlas.lookup);
+engine.setSpriteAtlas(spriteAtlas.image, spriteAtlas.lookup);
 engine.renderFrame(() => {
 	engine.drawSprite(0, 0, ids.fillColors.background, output.width, output.height);
 	engine.drawSprite(32, 32, ids.fillColors.moduleBackground, 640, 208);
 
-	for (const [index, character] of [...'GLUGGLUG2 ATLAS'].entries()) {
+	for (const [index, character] of [...'SPRITE ATLAS'].entries()) {
 		engine.drawSprite(
 			48 + index * characterWidth * 2,
 			48,
@@ -29,7 +29,7 @@ engine.renderFrame(() => {
 		engine.drawSprite(48 + index * characterWidth, 112, ids.fontCode[character]);
 	}
 
-	for (const [index, character] of [...'sprite-generator -> glugglug2'].entries()) {
+	for (const [index, character] of [...'sprite-generator atlas'].entries()) {
 		engine.drawSprite(48 + index * characterWidth, 144, ids.fontCodeComment[character]);
 	}
 
