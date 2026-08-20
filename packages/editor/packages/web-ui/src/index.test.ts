@@ -46,6 +46,11 @@ const mocks = vi.hoisted(() => {
 		clearEffect: vi.fn(),
 		destroy: vi.fn(),
 	};
+	const wireColors = {
+		wire: [0.1, 0.2, 0.3, 1] as const,
+		wireHighlighted: [0.4, 0.5, 0.6, 1] as const,
+	};
+	const resolveWireColors = vi.fn(() => wireColors);
 
 	return {
 		engine,
@@ -53,6 +58,8 @@ const mocks = vi.hoisted(() => {
 		frameTextureLayer,
 		lines,
 		postProcess,
+		wireColors,
+		resolveWireColors,
 		// biome-ignore lint/complexity/useArrowFunction: Engine is constructed with new in the code under test.
 		Engine: vi.fn(function () {
 			engine.hooks.preDraw.length = 0;
@@ -118,6 +125,10 @@ vi.mock('./drawers/modeOverlay', () => ({
 	default: mocks.drawModeOverlay,
 }));
 
+vi.mock('./wire-colors', () => ({
+	resolveWireColors: mocks.resolveWireColors,
+}));
+
 function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): PlannedMemoryDeclaration {
 	return {
 		id: 'rgba',
@@ -146,10 +157,6 @@ function createSpriteData() {
 			image: {} as OffscreenCanvas,
 			lookup: {},
 			spriteIds: {},
-		},
-		lineColors: {
-			wire: [0.1, 0.2, 0.3, 1] as const,
-			wireHighlighted: [0.4, 0.5, 0.6, 1] as const,
 		},
 		characterWidth: 8,
 		characterHeight: 16,
@@ -181,7 +188,35 @@ describe('web-ui init', () => {
 		const frameState = mocks.drawCodeBlocks.mock.calls.at(-1)?.[1];
 
 		expect(frameState).toBe(state);
+		expect(mocks.resolveWireColors).toHaveBeenCalledWith(state.editorConfig.color);
+		expect(mocks.drawConnections).toHaveBeenCalledWith(mocks.lines, mocks.wireColors, frameState, memoryViews);
 		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(expect.anything(), frameState);
+	});
+
+	it('re-resolves wire colors from the current theme when the atlas is loaded', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState();
+		const memoryViews = {
+			int8: new Int8Array(0),
+			int16: new Int16Array(0),
+			int32: new Int32Array(0),
+			uint8: new Uint8Array(0),
+			uint16: new Uint16Array(0),
+			float32: new Float32Array(0),
+			float64: new Float64Array(0),
+		};
+		const view = await init(state, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+		const nextColorScheme = {
+			fill: {
+				wire: '#123456',
+				wireHighlighted: '#abcdef',
+			},
+		};
+
+		state.editorConfig.color = nextColorScheme;
+		view.loadSpriteAtlas(createSpriteData());
+
+		expect(mocks.resolveWireColors).toHaveBeenLastCalledWith(nextColorScheme);
 	});
 
 	it('emits render stats at the configured frame interval', async () => {

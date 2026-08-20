@@ -1,14 +1,14 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { SpriteLineColors } from '@8f4e/sprite-generator';
 import type { LineDrawer } from 'glugglug2';
 import type { MemoryViews } from '../../../types';
+import type { WireColors } from '../../../wire-colors';
 
-const WIRE_SPRITE = 'wire';
-const WIRE_HIGHLIGHTED_SPRITE = 'wireHighlighted';
+const WIRE_COLOR = 'wire';
+const WIRE_HIGHLIGHTED_COLOR = 'wireHighlighted';
 
 export default function drawConnections(
 	lines: LineDrawer,
-	lineColors: SpriteLineColors,
+	wireColors: WireColors,
 	state: State,
 	memoryViews: MemoryViews
 ): void {
@@ -42,7 +42,7 @@ export default function drawConnections(
 				output.codeBlock.x + output.codeBlock.offsetX + output.wireX - state.viewport.x,
 				output.codeBlock.y + output.codeBlock.offsetY + output.wireY - state.viewport.y,
 				1,
-				lineColors[isSelected ? WIRE_HIGHLIGHTED_SPRITE : WIRE_SPRITE]
+				wireColors[isSelected ? WIRE_HIGHLIGHTED_COLOR : WIRE_COLOR]
 			);
 		}
 	}

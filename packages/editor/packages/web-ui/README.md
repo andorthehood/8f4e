@@ -53,7 +53,6 @@ Type representing sprite sheet data:
 ```typescript
 interface SpriteData {
   spriteAtlas: SpriteAtlas<SpriteIdLookups>;
-  lineColors: SpriteLineColors;
   characterWidth: number;
   characterHeight: number;
 }
@@ -63,7 +62,7 @@ interface SpriteData {
 
 The web-ui package reads from the editor state but does **not** mutate it. Numeric sprite IDs and grid sizes are
 installed by the editor when sprite data is generated. Atlas and font changes are explicit and are applied through
-`loadSpriteAtlas()`.
+`loadSpriteAtlas()`. Wire colors are resolved from the current editor color scheme when the atlas is loaded.
 
 ## Docs
 

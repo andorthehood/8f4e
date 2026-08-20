@@ -52,10 +52,6 @@ vi.mock('@8f4e/sprite-generator', () => ({
 			lookup: {},
 			spriteIds: {},
 		},
-		lineColors: {
-			wire: [0, 0, 0, 1],
-			wireHighlighted: [1, 1, 1, 1],
-		},
 		characterWidth: 8,
 		characterHeight: 16,
 	})),

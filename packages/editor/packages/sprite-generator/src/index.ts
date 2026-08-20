@@ -1,4 +1,4 @@
-import type { LineColor, SpriteCoordinates } from 'glugglug2';
+import type { SpriteCoordinates } from 'glugglug2';
 import { createAtlasLayout } from './atlasLayout.ts';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background.ts';
 import defaultColorScheme from './defaultColorScheme.ts';
@@ -316,12 +316,6 @@ export type SpriteIdLookups = Omit<SpriteIds<NonFontAtlasCoordinates>, 'feedback
 	[Group in keyof FontLookups]: SpriteFont;
 };
 
-/** Solid line colors sampled from the generated atlas. */
-export type SpriteLineColors = {
-	wire: LineColor;
-	wireHighlighted: LineColor;
-};
-
 export function resolveColorScheme(overrides: Config['colorScheme'] = {}): ColorScheme {
 	const colorSchemeOverrides = overrides as ColorSchemeOverrides;
 	return {
@@ -333,7 +327,6 @@ export function resolveColorScheme(overrides: Config['colorScheme'] = {}): Color
 
 export default async function generateSprite(config: Config): Promise<{
 	spriteAtlas: SpriteAtlas<SpriteIdLookups>;
-	lineColors: SpriteLineColors;
 	characterWidth: number;
 	characterHeight: number;
 }> {
@@ -388,12 +381,6 @@ export default async function generateSprite(config: Config): Promise<{
 		background: generateLookupForBackground(characterWidth, characterHeight),
 		icons: generateLookupForIcons(characterWidth, characterHeight),
 	};
-	const readLineColor = (name: 'wire' | 'wireHighlighted'): LineColor => {
-		const coordinates = atlasCoordinates.fillColors[name];
-		const [red, green, blue, alpha] = ctx.getImageData(coordinates.x, coordinates.y, 1, 1).data;
-		return [red / 255, green / 255, blue / 255, alpha / 255];
-	};
-
 	const rawSpriteAtlas = createSpriteAtlas(canvas, atlasCoordinates);
 	const spriteAtlas: SpriteAtlas<SpriteIdLookups> = {
 		...rawSpriteAtlas,
@@ -404,10 +391,6 @@ export default async function generateSprite(config: Config): Promise<{
 		characterHeight,
 		characterWidth,
 		spriteAtlas,
-		lineColors: {
-			wire: readLineColor('wire'),
-			wireHighlighted: readLineColor('wireHighlighted'),
-		},
 	};
 }
 

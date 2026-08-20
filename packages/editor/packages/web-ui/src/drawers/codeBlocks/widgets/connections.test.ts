@@ -1,9 +1,9 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import type { Input, Output } from '@8f4e/editor-state-types';
-import type { SpriteLineColors } from '@8f4e/sprite-generator';
 import type { LineDrawer } from 'glugglug2';
 import { describe, expect, it, vi } from 'vitest';
 import type { MemoryViews } from '../../../types';
+import type { WireColors } from '../../../wire-colors';
 import drawConnections from './connections';
 
 function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryViews {
@@ -100,13 +100,13 @@ describe('drawConnections', () => {
 			},
 		});
 		const lines = createMockLines();
-		const lineColors: SpriteLineColors = {
+		const wireColors: WireColors = {
 			wire: [1, 1, 1, 0.3],
 			wireHighlighted: [1, 1, 1, 1],
 		};
 
-		drawConnections(lines, lineColors, state, createMemoryViews({ int32: [0, 0, 80] }));
+		drawConnections(lines, wireColors, state, createMemoryViews({ int32: [0, 0, 80] }));
 
-		expect(lines.drawLine).toHaveBeenCalledWith(117, 247, 463, 471, 1, lineColors.wireHighlighted);
+		expect(lines.drawLine).toHaveBeenCalledWith(117, 247, 463, 471, 1, wireColors.wireHighlighted);
 	});
 });

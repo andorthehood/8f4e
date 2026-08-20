@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { SpriteAtlas, SpriteIdLookups, SpriteLineColors } from '@8f4e/sprite-generator';
+import type { SpriteAtlas, SpriteIdLookups } from '@8f4e/sprite-generator';
 import {
 	Engine,
 	LineDrawer,
@@ -18,13 +18,13 @@ import drawBackground from './drawers/drawBackground';
 import drawModeOverlay from './drawers/modeOverlay';
 import { createWasmFrameTextureDrawer, type WasmFrameTextureOptions } from './drawers/wasmFrameTexture';
 import type { MemoryViews } from './types';
+import { resolveWireColors } from './wire-colors';
 
 // Re-export types
 export type { MemoryViews } from './types';
 
 export interface SpriteData {
 	spriteAtlas: SpriteAtlas<SpriteIdLookups>;
-	lineColors: SpriteLineColors;
 	characterWidth: number;
 	characterHeight: number;
 }
@@ -76,7 +76,7 @@ export default async function init(
 	const lines = new LineDrawer(engine);
 	const postProcess = new PostProcess(engine);
 	const draw = new DrawContext(engine, spriteData.characterWidth);
-	let lineColors = spriteData.lineColors;
+	let wireColors = resolveWireColors(state.editorConfig.color);
 	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
 	let viewportWidth = canvas.width;
 	let viewportHeight = canvas.height;
@@ -153,7 +153,7 @@ export default async function init(
 	const drawFrame = () => {
 		drawBackground(draw, state);
 		drawCodeBlocks(draw, state, memoryViews);
-		drawConnections(lines, lineColors, state, memoryViews);
+		drawConnections(lines, wireColors, state, memoryViews);
 		drawContextMenu(draw, state);
 		drawModeOverlay(draw, state);
 		drawDialog(draw, state);
@@ -173,7 +173,7 @@ export default async function init(
 		loadSpriteAtlas: spriteData => {
 			engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
 			draw.setCharacterWidth(spriteData.characterWidth);
-			lineColors = spriteData.lineColors;
+			wireColors = resolveWireColors(state.editorConfig.color);
 		},
 		loadPostProcessEffect: (effect: PostProcessEffect | null) => {
 			if (effect) {
