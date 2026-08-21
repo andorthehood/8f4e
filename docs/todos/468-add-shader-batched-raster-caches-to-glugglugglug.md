@@ -193,14 +193,14 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 
 ## Affected Components
 
-- `packages/editor/packages/glugglugglug/src/engine.ts` - Public cache creation, update, drawing, reset, and lifecycle API.
-- `packages/editor/packages/glugglugglug/src/renderer.ts` - Cache atlas, framebuffer, allocation, lookup uploads, and render-target
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/engine.ts` - Public cache creation, update, drawing, reset, and lifecycle API.
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/renderer.ts` - Cache atlas, framebuffer, allocation, lookup uploads, and render-target
   state.
-- `packages/editor/packages/glugglugglug/src/instanceBuffer.ts` - Shared encoded-id constants or helpers if appropriate.
-- `packages/editor/packages/glugglugglug/src/shaders.ts` - Cache-id decoding and dual-atlas sampling.
-- `packages/editor/packages/glugglugglug/src/types.ts` - Cache options, builder, and opaque handle types.
-- `packages/editor/packages/glugglugglug/screenshot-tests/` - Mixed sprite/cache visual regression coverage.
-- `packages/editor/packages/glugglugglug/README.md` - Cache API, lifecycle, memory, and invalidation documentation.
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/instanceBuffer.ts` - Shared encoded-id constants or helpers if appropriate.
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/shaders.ts` - Cache-id decoding and dual-atlas sampling.
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/types.ts` - Cache options, builder, and opaque handle types.
+- `packages/editor/packages/web-ui/packages/glugglugglug/screenshot-tests/` - Mixed sprite/cache visual regression coverage.
+- `packages/editor/packages/web-ui/packages/glugglugglug/README.md` - Cache API, lifecycle, memory, and invalidation documentation.
 
 ## Risks & Considerations
 
@@ -228,7 +228,7 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 - **Related**: TODO 155 (Add Framebuffer Memory Accounting in glugglugglug)
 - **Related**: TODO 469 (Add optional drawing utilities to glugglugglug; completed)
 - **Related**: TODO 470 (Add no-op cacheGroup compatibility helper to glugglugglug utilities)
-- **Related**: `packages/editor/packages/glugglugglug/docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md`
+- **Related**: `packages/editor/packages/web-ui/packages/glugglugglug/docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md`
 
 ## Notes
 

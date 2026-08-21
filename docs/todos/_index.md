@@ -200,7 +200,7 @@ Active todo files are listed below.
 | 257 | Fix collectConstants identifier RHS resolution | 2026-04-02 | Superseded by semantic normalization refactor; constant RHS now resolved via the normalization pipeline without force-casting. |
 | 292 | Refactor error systems and document syntax vs compiler error boundaries | 2026-04-02 | `errors.ts` renamed to `compilerError.ts`; `SyntaxRulesError` centralized; policy comments added to both modules. |
 | 303 | Dedupe font atlas rows for identical text colors | 2026-03-31 | Sprite generator now deduplicates font atlas rows for identical text color roles. |
-| 354 | Extract WASM Utils to Separate Package | 2026-04-02 | WASM utility functions extracted from `packages/compiler/src/wasmUtils` into a nested package at `packages/compiler/packages/wasm-utils`. |
+| 354 | Extract WASM Utils to Separate Package | 2026-04-02 | WASM utility functions extracted from `packages/compiler/src/wasmUtils`; the package now lives under `packages/compiler/packages/wasm-codegen/packages/wasm-utils`. |
 | 355 | Replace `isPointingToInt8`/`isPointingToInt16` booleans with a single `pointeeBaseType` field | 2026-04-07 | Archived after completion; `DataStructure` pointer metadata now uses `pointeeBaseType` as the single source of truth. |
 | 356 | Consolidate declaration compilers into a single factory | 2026-04-08 | Archived after completion; scalar declaration compilers now share `createDeclarationCompiler` instead of duplicating per-type implementation logic. |
 | 357 | Reuse single-block recompute in bulk viewport-anchored loop | 2026-04-15 | Archived after completion; viewport-anchored recomputation now delegates through one shared single-block path using the rounded viewport dimensions expected by the resolver. |

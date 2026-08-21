@@ -39,9 +39,9 @@ Add a lightweight accounting layer that estimates bytes for framebuffer-backed t
 
 ## Affected Components
 
-- `packages/editor/packages/glugglugglug/src/renderer.ts` - render target accounting
-- `packages/editor/packages/glugglugglug/src/CachedRenderer.ts` - cache accounting
-- `packages/editor/packages/glugglugglug/src/types.ts` - optional stats types
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/renderer.ts` - render target accounting
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/CachedRenderer.ts` - cache accounting
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/types.ts` - optional stats types
 
 ## Risks & Considerations
 

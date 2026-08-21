@@ -16,7 +16,7 @@ The editor sprite-generator has several bundled bitmap fonts, but Sergamon is no
 
 Adding it should follow the existing sprite-generator font pipeline instead of introducing a browser font dependency:
 
-- committed source glyph data under `packages/editor/packages/sprite-generator/src/fonts/`
+- committed source glyph data under `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/`
 - generated base64 bitmap metadata under the font's `generated/` directory
 - a `Font` union and `FONT_DEFINITIONS` entry so editor config can select it
 - third-party font attribution and license tracking
@@ -44,15 +44,15 @@ High-level approach:
 
 ### Step 2: Add sprite-generator font sources
 
-- Add `packages/editor/packages/sprite-generator/src/fonts/sergamon/ascii.ts`.
-- Add `packages/editor/packages/sprite-generator/src/fonts/sergamon/glyphs.ts`, using compatible Sergamon glyphs where available and the established fallback strategy otherwise.
+- Add `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/sergamon/ascii.ts`.
+- Add `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/sergamon/glyphs.ts`, using compatible Sergamon glyphs where available and the established fallback strategy otherwise.
 - Add or adapt an import tool that converts Sergamon's `.glyph` format deterministically.
 - Run the existing bitmap generation tool so `generated/ascii.ts` and `generated/glyphs.ts` are created.
 
 ### Step 3: Register the font
 
 - Add `sergamon` to the `Font` type and `FONT_NAMES`.
-- Add a `FONT_DEFINITIONS.sergamon` entry in `packages/editor/packages/sprite-generator/src/index.ts`.
+- Add a `FONT_DEFINITIONS.sergamon` entry in `packages/editor/packages/web-ui/packages/sprite-generator/src/index.ts`.
 - Add test fixture coverage for selecting the font through editor configuration.
 
 ### Step 4: Document attribution
@@ -86,11 +86,11 @@ High-level approach:
 
 ## Affected Components
 
-- `packages/editor/packages/sprite-generator/src/fonts/sergamon/` - new font source and generated bitmap metadata.
-- `packages/editor/packages/sprite-generator/src/types.ts` - font id registration.
-- `packages/editor/packages/sprite-generator/src/index.ts` - font definition and lazy metadata loader.
-- `packages/editor/packages/sprite-generator/tools/` - deterministic Sergamon glyph importer.
-- `packages/editor/packages/sprite-generator/tests/` - fixture, selection, and rendering coverage.
+- `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/sergamon/` - new font source and generated bitmap metadata.
+- `packages/editor/packages/web-ui/packages/sprite-generator/src/types.ts` - font id registration.
+- `packages/editor/packages/web-ui/packages/sprite-generator/src/index.ts` - font definition and lazy metadata loader.
+- `packages/editor/packages/web-ui/packages/sprite-generator/tools/` - deterministic Sergamon glyph importer.
+- `packages/editor/packages/web-ui/packages/sprite-generator/tests/` - fixture, selection, and rendering coverage.
 - `packages/editor/THIRD_PARTY_FONTS.md` - upstream attribution.
 - `packages/editor/licenses/` - Sergamon OFL license text.
 
@@ -107,7 +107,7 @@ High-level approach:
 - **Related**: `docs/todos/388-add-pixelcode-font-to-sprite-generator.md`
 - **Related**: `docs/todos/389-add-eaglespcga-alt3-8x8-font-to-sprite-generator.md`
 - **Related**: `packages/editor/THIRD_PARTY_FONTS.md`
-- **Related**: `packages/editor/packages/sprite-generator/tools/generate-font-bitmaps.mjs`
+- **Related**: `packages/editor/packages/web-ui/packages/sprite-generator/tools/generate-font-bitmaps.mjs`
 
 ## References
 

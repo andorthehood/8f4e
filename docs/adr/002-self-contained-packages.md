@@ -145,8 +145,8 @@ All package `tsconfig.json` files were updated to:
 - `packages/runtime-web-worker-midi/tsconfig.json`
 - `packages/editor/tsconfig.json`
 - `packages/editor/packages/editor-state/tsconfig.json`
-- `packages/editor/packages/glugglugglug/tsconfig.json`
-- `packages/editor/packages/sprite-generator/tsconfig.json`
+- `packages/editor/packages/web-ui/packages/glugglugglug/tsconfig.json`
+- `packages/editor/packages/web-ui/packages/sprite-generator/tsconfig.json`
 - `packages/editor/packages/state-manager/tsconfig.json`
 - `packages/editor/packages/web-ui/tsconfig.json`
 

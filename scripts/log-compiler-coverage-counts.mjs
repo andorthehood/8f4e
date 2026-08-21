@@ -71,7 +71,7 @@ const coverageComponents = [
 	{
 		id: 'compilerWasmUtils',
 		label: 'compiler wasm utils',
-		pathFragment: '/packages/compiler/packages/wasm-utils/dist/',
+		pathFragment: '/packages/compiler/packages/wasm-codegen/packages/wasm-utils/dist/',
 	},
 	{
 		id: 'languageSpec',

@@ -1,6 +1,7 @@
 # WASM Utils Package Guidelines
 
-This file extends the root and `packages/compiler/AGENTS.md` guidance for `packages/compiler/packages/wasm-utils`.
+This file extends the root and `packages/compiler/AGENTS.md` guidance for
+`packages/compiler/packages/wasm-codegen/packages/wasm-utils`.
 
 ## Package Scope
 

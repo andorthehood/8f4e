@@ -14,7 +14,7 @@
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "biome check --write packages/compiler/packages/wasm-utils/src",
+        "command": "biome check --write packages/compiler/packages/wasm-codegen/packages/wasm-utils/src",
         "cwd": "{workspaceRoot}"
       }
     },

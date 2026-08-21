@@ -48,13 +48,13 @@ continue rendering. Thread the callback through web-ui and editor init so the ed
 
 ## Affected Components
 
-- `packages/editor/packages/glugglugglug/src/types.ts` - add callback and error types
-- `packages/editor/packages/glugglugglug/src/utils/createShader.ts` - compile error handling + callback
-- `packages/editor/packages/glugglugglug/src/utils/createProgram.ts` - link error handling + callback
-- `packages/editor/packages/glugglugglug/src/postProcess/PostProcessManager.ts` - skip failed effects
-- `packages/editor/packages/glugglugglug/src/renderer.ts` - pass callback to manager
-- `packages/editor/packages/glugglugglug/src/CachedRenderer.ts` - pass callback to manager
-- `packages/editor/packages/glugglugglug/src/engine.ts` - accept options and pass through
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/types.ts` - add callback and error types
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/utils/createShader.ts` - compile error handling + callback
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/utils/createProgram.ts` - link error handling + callback
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/postProcess/PostProcessManager.ts` - skip failed effects
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/renderer.ts` - pass callback to manager
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/CachedRenderer.ts` - pass callback to manager
+- `packages/editor/packages/web-ui/packages/glugglugglug/src/engine.ts` - accept options and pass through
 - `packages/editor/packages/web-ui/src/index.ts` - expose `onShaderError` option
 - `packages/editor/src/index.ts` - forward handler from editor init options
 

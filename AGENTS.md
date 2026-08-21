@@ -2,7 +2,9 @@
 
 ## Project Structure & Module Organization
 - Root app: `index.html`, `src/` (entry `src/editor.ts`, examples under `src/examples/`).
-- Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`, `editor/packages/glugglugglug`, `editor/packages/sprite-generator`). Each builds to its own `dist/` directory under the package root.
+- Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`,
+  `editor/packages/web-ui/packages/glugglugglug`, `editor/packages/web-ui/packages/sprite-generator`). Each builds to
+  its own `dist/` directory under the package root.
 - Builds: Vite outputs to `dist/` (root). Package bundles are consumed via aliases like `@8f4e/editor`.
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
 - Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
