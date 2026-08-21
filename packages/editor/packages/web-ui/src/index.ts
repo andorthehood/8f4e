@@ -1,5 +1,6 @@
 import type { State } from '@8f4e/editor-state-types';
 import type { SpriteAtlas, SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import {
 	Engine,
 	LineDrawer,
@@ -54,6 +55,7 @@ export interface WebUiOptions {
 
 export default async function init(
 	state: State,
+	renderData: WebUiRenderDataSource,
 	canvas: HTMLCanvasElement,
 	memoryViews: MemoryViews,
 	spriteData: SpriteData,
@@ -152,7 +154,7 @@ export default async function init(
 
 	const drawFrame = () => {
 		drawBackground(draw, state);
-		drawCodeBlocks(draw, state, memoryViews);
+		drawCodeBlocks(draw, state, memoryViews, renderData.getSnapshot());
 		drawConnections(lines, wireColors, state, memoryViews);
 		drawContextMenu(draw, state);
 		drawModeOverlay(draw, state);

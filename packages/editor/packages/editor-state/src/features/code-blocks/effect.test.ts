@@ -137,46 +137,6 @@ describe('code block rendering cursor selection', () => {
 	});
 });
 
-describe('code block rendering line numbers', () => {
-	it('renders blank line-number gutters for pointer declaration instructions', () => {
-		const pointerBlock = createMockCodeBlock({
-			code: ['module demo', 'int* ptr &buffer', 'float* out &buffer', 'push 1', 'moduleEnd'],
-		});
-		const state = createMockState({
-			codeBlockRendering: {
-				codeBlocks: [pointerBlock],
-			},
-			spriteLookups: createSpriteLookups(),
-		});
-		const store = createStateManager(state);
-		const events = createMockEventDispatcherWithVitest();
-
-		codeBlockRenderingEffect(store, events);
-		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
-
-		expect(pointerBlock.codeToRender[0]?.slice(0, 2)).toEqual([48, null]);
-		expect(pointerBlock.codeToRender[1]?.slice(0, 2)).toEqual([null, null]);
-		expect(pointerBlock.codeToRender[2]?.slice(0, 2)).toEqual([null, null]);
-		expect(pointerBlock.codeToRender[3]?.slice(0, 2)).toEqual([51, null]);
-	});
-
-	it('resolves unsupported code characters to the validated font fallback before rendering', () => {
-		const codeBlock = createMockCodeBlock({ code: ['é'] });
-		const spriteLookups = createSpriteLookups();
-		spriteLookups.fontCode = { 63: 999 } as never;
-		const state = createMockState({
-			codeBlockRendering: { codeBlocks: [codeBlock] },
-			spriteLookups,
-		});
-		const store = createStateManager(state);
-
-		codeBlockRenderingEffect(store, createMockEventDispatcherWithVitest());
-		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
-
-		expect(codeBlock.codeToRender[0]?.at(-1)).toBe(999);
-	});
-});
-
 describe('code block rendering home directive', () => {
 	it('renders project-level includes blocks from imported project state', () => {
 		const includesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];

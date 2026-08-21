@@ -47,7 +47,8 @@
   "workspaces": [
     "packages/*",
     "packages/*/*",
-    "packages/*/*/*"
+    "packages/*/*/*",
+    "packages/*/*/*/*/*"
   ],
   "lint-staged": {
     "*.{ts,tsx,js,mjs,cjs}": [

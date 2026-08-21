@@ -63,7 +63,6 @@ describe('paramShape', () => {
 		const func = createCodeBlockGraphicData({
 			blockType: 'function',
 			code: ['function foo', '#impure', 'paramShape bar', 'push *a', 'functionEnd'],
-			codeToRender: [[1], [2], [3], [4], [5]],
 			lineNumberColumnWidth: 1,
 			creationIndex: 42,
 		});

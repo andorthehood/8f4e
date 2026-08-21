@@ -1,10 +1,13 @@
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { WebUiRenderData } from '@8f4e/web-ui-render-projection';
 import { describe, expect, it, vi } from 'vitest';
 import { createSpriteIdLookupMock } from '../../__tests__/rendering';
 import type { DrawContext as Engine } from '../../drawContext';
 import type { MemoryViews } from '../../types';
 import drawModules from './index';
+
+const emptyRenderData: WebUiRenderData = { codeBlocks: new Map() };
 
 function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryViews {
 	return {
@@ -24,6 +27,7 @@ function createMockEngine(): Engine {
 		endGroup: vi.fn(),
 		drawSprite: vi.fn(),
 		drawText: vi.fn(),
+		drawResolvedText: vi.fn(),
 	} as unknown as Engine;
 }
 
@@ -73,6 +77,30 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 }
 
 describe('drawModules', () => {
+	it('draws resolved code cells from projected render data', () => {
+		const block = createMockCodeBlock({ creationIndex: 4, width: 100, height: 50 });
+		const state = createMockState({
+			spriteLookups: {
+				fillColors: createSpriteIdLookupMock(),
+				fontCode: createSpriteIdLookupMock(),
+				fontNumbers: createSpriteIdLookupMock(),
+			} as never,
+			codeBlockRendering: { codeBlocks: [block] },
+		});
+		const engine = createMockEngine();
+		const codeCells = [[1, null, 2]] as never;
+
+		drawModules(engine, state, createMemoryViews(), {
+			codeBlocks: new Map([[block.creationIndex, { codeCells }]]),
+		});
+
+		expect((engine as unknown as { drawResolvedText: ReturnType<typeof vi.fn> }).drawResolvedText).toHaveBeenCalledWith(
+			state.viewport.vGrid,
+			0,
+			codeCells[0]
+		);
+	});
+
 	it('draws precomputed entry outlines before rendering code blocks', () => {
 		const state = createMockState({
 			spriteLookups: {
@@ -97,7 +125,7 @@ describe('drawModules', () => {
 		});
 		const engine = createMockEngine();
 
-		drawModules(engine, state, createMemoryViews());
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenNthCalledWith(
 			1,
@@ -138,7 +166,6 @@ describe('drawModules', () => {
 			hidden: true,
 			width: 100,
 			height: 50,
-			codeToRender: [],
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
@@ -161,7 +188,7 @@ describe('drawModules', () => {
 		});
 		const engine = createMockEngine();
 
-		drawModules(engine, state, createMemoryViews());
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
 
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledTimes(4);
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).not.toHaveBeenCalled();
@@ -172,7 +199,6 @@ describe('drawModules', () => {
 			hidden: true,
 			width: 100,
 			height: 50,
-			codeToRender: [],
 			code: ['module hidden', 'moduleEnd'],
 		});
 		const state = createMockState({
@@ -196,7 +222,7 @@ describe('drawModules', () => {
 		});
 		const engine = createMockEngine();
 
-		drawModules(engine, state, createMemoryViews());
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			0,
@@ -211,7 +237,6 @@ describe('drawModules', () => {
 		const block = createMockCodeBlock({
 			width: 100,
 			height: 80,
-			codeToRender: [],
 		});
 		block.widgets.pianoKeyboards = [
 			{
@@ -275,7 +300,7 @@ describe('drawModules', () => {
 		});
 		const engine = createMockEngine();
 
-		drawModules(engine, state, createMemoryViews({ int32: [48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] }));
+		drawModules(engine, state, createMemoryViews({ int32: [48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] }), emptyRenderData);
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			0,
@@ -306,7 +331,6 @@ describe('drawModules', () => {
 				x: 16,
 				y: 16,
 			},
-			codeToRender: [],
 		});
 		const state = createMockState({
 			spriteLookups: {
@@ -367,7 +391,7 @@ describe('drawModules', () => {
 		});
 		const engine = createMockEngine();
 
-		drawModules(engine, state, createMemoryViews());
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			-192,
@@ -427,7 +451,6 @@ describe('drawModules', () => {
 				y: 16,
 			},
 			code: ['add'],
-			codeToRender: [],
 		});
 		const pointer = createMemory({
 			id: 'pointer',
@@ -525,7 +548,7 @@ describe('drawModules', () => {
 		});
 		const engine = createMockEngine();
 
-		drawModules(engine, state, createMemoryViews({ int32: [0, 0, 20, 0, 0, 123] }));
+		drawModules(engine, state, createMemoryViews({ int32: [0, 0, 20, 0, 0, 123] }), emptyRenderData);
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
 			expect.any(Number),
@@ -587,7 +610,7 @@ describe('drawModules', () => {
 		});
 		const engine = createMockEngine();
 
-		drawModules(engine, state, createMemoryViews());
+		drawModules(engine, state, createMemoryViews(), emptyRenderData);
 
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).not.toHaveBeenCalled();
 	});

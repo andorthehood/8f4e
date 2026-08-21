@@ -36,6 +36,8 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       ├── <a href="./packages/editor/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
     │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
     │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)
+    │           └── packages/
+    │               └── <a href="./packages/editor/packages/web-ui/packages/render-projection/README.md">render-projection</a> (Precalculates web UI-specific render data from editor state)
     ├── <a href="./packages/examples/README.md">examples</a> (Example modules and projects)
     ├── <a href="./packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a>     ┐ 
     ├── <a href="./packages/runtime-main-thread/README.md">runtime-main-thread</a> │ (Various runtime environments 

@@ -1,5 +1,6 @@
 import { createMockCodeBlock } from '@8f4e/editor-state-testing';
 import init from '@8f4e/web-ui';
+import type { CodeBlockRenderData, WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import { expect, test } from 'vitest';
 import createCanvas from './utils/createCanvas';
 import createMockMemoryViews from './utils/createMockMemoryViews';
@@ -12,8 +13,10 @@ test('font color rendering', async () => {
 	const mockState = await createMockStateWithColors();
 	const memoryViews = createMockMemoryViews();
 	const spriteData = await createMockSpriteData(mockState);
+	const codeBlocks = new Map<number, CodeBlockRenderData>();
+	const renderData: WebUiRenderDataSource = { getSnapshot: () => ({ codeBlocks }) };
 
-	await init(mockState, canvas, memoryViews, spriteData);
+	await init(mockState, renderData, canvas, memoryViews, spriteData);
 
 	const allCharacters = Array.from({ length: 128 }, (_, i) => String.fromCharCode(i));
 
@@ -57,16 +60,15 @@ test('font color rendering', async () => {
 		const codeLines = ['', colorName, ...lines.map(line => line.join('')), ''];
 		const codeToRender = resolveCodeWithOneColor(codeLines, color);
 
-		mockState.codeBlockRendering.codeBlocks.push(
-			createMockCodeBlock({
-				id: `codeBlock${index}`,
-				x: (index % 4) * 8 * 32,
-				y: 16 * 12 * Math.floor(index / 4),
-				width: 256,
-				height: codeLines.length * 16,
-				codeToRender,
-			})
-		);
+		const block = createMockCodeBlock({
+			creationIndex: index,
+			x: (index % 4) * 8 * 32,
+			y: 16 * 12 * Math.floor(index / 4),
+			width: 256,
+			height: codeLines.length * 16,
+		});
+		mockState.codeBlockRendering.codeBlocks.push(block);
+		codeBlocks.set(block.creationIndex, { codeCells: codeToRender });
 	});
 
 	await expect(canvas).toMatchScreenshot();

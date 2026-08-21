@@ -37,6 +37,16 @@ const view = {
 	destroy: vi.fn(),
 };
 
+const renderProjection = {
+	getSnapshot: vi.fn(() => ({ codeBlocks: new Map() })),
+	refresh: vi.fn(),
+	dispose: vi.fn(),
+};
+
+vi.mock('@8f4e/web-ui-render-projection', () => ({
+	createWebUiRenderProjection: vi.fn(() => renderProjection),
+}));
+
 vi.mock('@8f4e/editor-state', () => ({
 	default: vi.fn(() => store),
 }));
@@ -176,8 +186,10 @@ describe('editor init', () => {
 			},
 		});
 
-		const viewOptions = vi.mocked(initView).mock.calls.at(-1)![4]!;
+		const viewCall = vi.mocked(initView).mock.calls.at(-1)!;
+		const viewOptions = viewCall[5]!;
 		const initStateOptions = vi.mocked(initState).mock.calls.at(-1)![1];
+		expect(viewCall[1]).toBe(renderProjection);
 		viewOptions.onRenderStats?.({
 			timeToRenderMs: 10,
 			fps: 50,

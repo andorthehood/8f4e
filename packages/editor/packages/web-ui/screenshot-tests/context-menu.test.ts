@@ -1,4 +1,5 @@
 import init from '@8f4e/web-ui';
+import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import { expect, test } from 'vitest';
 import createCanvas from './utils/createCanvas';
 import createMockMemoryViews from './utils/createMockMemoryViews';
@@ -12,7 +13,8 @@ test('context menu', async () => {
 	const memoryViews = createMockMemoryViews();
 	const spriteData = await createMockSpriteData(mockState);
 
-	await init(mockState, canvas, memoryViews, spriteData);
+	const renderData: WebUiRenderDataSource = { getSnapshot: () => ({ codeBlocks: new Map() }) };
+	await init(mockState, renderData, canvas, memoryViews, spriteData);
 	mockState.contextMenu = generateContextMenuMock();
 	await expect(canvas).toMatchScreenshot();
 });
