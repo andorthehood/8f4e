@@ -1,23 +1,10 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
-import { isMemoryDeclarationInstructionName } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType } from '@8f4e/project-preparser';
-import type { SpriteFont, SpriteId } from '@8f4e/sprite-generator';
 import type { StateManager } from '@8f4e/state-manager';
-import { getPointerDepth } from '@8f4e/tokenizer';
 import gapCalculator from '../code-editing/gapCalculator';
-import highlightSyntax8f4e from '../code-editing/highlightSyntax8f4e';
-import highlightSyntaxGlsl from '../code-editing/highlightSyntaxGlsl';
-import highlightSyntaxNote from '../code-editing/highlightSyntaxNote';
 import { moveCaret } from '../code-editing/moveCaret';
 import reverseGapCalculator from '../code-editing/reverseGapCalculator';
-import {
-	expandLineColorsToCells,
-	expandLineToCells,
-	getRawIndexForVisualColumn,
-	getTabStopsByLine,
-	getVisualColumnForRawIndex,
-} from '../code-editing/tabLayout';
-import { isShaderNoteCode } from '../shader-effects/getShaderNoteMetadata';
+import { getRawIndexForVisualColumn, getTabStopsByLine, getVisualColumnForRawIndex } from '../code-editing/tabLayout';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import updateViewport from '../viewport/updateViewport';
 import blockHighlights from './features/blockHighlights/updateGraphicData';
@@ -39,56 +26,6 @@ import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
 import getCodeBlockNameFromSource from './utils/getCodeBlockNameFromSource';
 import { parseBlockDirectives } from './utils/parseBlockDirectives';
 import wrapText from './utils/wrapText';
-
-function shouldRenderBlankLineNumber(sourceLine: string): boolean {
-	const instruction = sourceLine.match(/^\s*([^\s;]+)/)?.[1];
-	return (
-		instruction !== undefined && isMemoryDeclarationInstructionName(instruction) && getPointerDepth(instruction) > 0
-	);
-}
-
-function getLineNumberPrefix(
-	displayRow: number,
-	lineNumberColumnWidth: number,
-	sourceLine: string,
-	isPlaceholder: boolean
-): string {
-	if (!isPlaceholder && shouldRenderBlankLineNumber(sourceLine)) {
-		return ''.padStart(lineNumberColumnWidth + 1, ' ');
-	}
-
-	return `${displayRow}`.padStart(lineNumberColumnWidth, '0') + ' ';
-}
-
-/**
- * Resolves character and syntax-font matrices to render-ready sprite ids outside the draw loop.
- *
- * @param characters - Character codes or semantic glyph names arranged by display row.
- * @param colorTransitions - Sparse font changes aligned with the character matrix.
- * @param defaultFont - Font used before the first syntax-color transition.
- * @param disabledFont - Optional font that overrides all syntax coloring.
- * @returns Validated sprite ids, with spaces represented as empty cells.
- */
-function resolveCodeCells(
-	characters: Array<Array<number | string>>,
-	colorTransitions: Array<Array<SpriteFont | undefined>>,
-	defaultFont: SpriteFont,
-	disabledFont: SpriteFont | undefined
-): Array<Array<SpriteId | null>> {
-	return characters.map((line, row) => {
-		let currentFont = disabledFont ?? defaultFont;
-		return line.map((character, column) => {
-			const nextFont = colorTransitions[row]?.[column];
-			if (!disabledFont && nextFont) {
-				currentFont = nextFont;
-			}
-			if (character === 32) {
-				return null;
-			}
-			return currentFont[character] ?? currentFont[63];
-		});
-	});
-}
 
 export default function codeBlockRendering(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
@@ -125,17 +62,13 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		});
 	};
 
-	const updateGraphics = (graphicData: CodeBlockGraphicData) => {
-		if (!state.spriteLookups) {
-			return;
-		}
-
-		const spriteLookups = state.spriteLookups;
+	const updateBlockDerivedState = (graphicData: CodeBlockGraphicData) => {
 		const directiveState = deriveDirectiveState(graphicData.code, graphicData.parsedDirectives, {
 			isExpandedForEditing: shouldExpandCodeBlockForEditing(graphicData),
 			state,
 		});
 		const displayModel = directiveState.displayModel;
+		graphicData.displayModel = displayModel;
 
 		graphicData.disabled = directiveState.blockState.disabled;
 		graphicData.hidden = directiveState.blockState.hidden && state.codeBlockRendering.selectedCodeBlock !== graphicData;
@@ -146,65 +79,8 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
-		const codeCharacters = displayModel.lines.map(({ text, rawRow, isPlaceholder }, displayRow) => {
-			const prefix = getLineNumberPrefix(displayRow, graphicData.lineNumberColumnWidth, text, isPlaceholder ?? false);
-			return [...prefix]
-				.map(char => char.charCodeAt(0) as number | string)
-				.concat(expandLineToCells(text, tabStopsByLine[rawRow] || []));
-		});
 		graphicData.name = getCodeBlockNameFromSource(graphicData.code);
 		graphicData.isCollapsed = displayModel.isCollapsed;
-
-		// Choose highlighter based on block type and get syntax colors for raw code
-		let rawCodeColors;
-		if (graphicData.blockType === 'note' && isShaderNoteCode(graphicData.code)) {
-			rawCodeColors = highlightSyntaxGlsl(graphicData.code, spriteLookups);
-		} else if (graphicData.blockType === 'note') {
-			rawCodeColors = highlightSyntaxNote(graphicData.code, spriteLookups);
-		} else {
-			rawCodeColors = highlightSyntax8f4e(graphicData.code, spriteLookups);
-		}
-
-		// Merge raw code colors into color matrix aligned with codeWithLineNumbers
-		// by offsetting indices to account for line number prefix
-		const lineNumberPrefixLength = graphicData.lineNumberColumnWidth + 1; // +1 for space
-		const codeColors: Array<Array<SpriteFont | undefined>> = codeCharacters.map((line, displayRow) => {
-			const lineColors = new Array(line.length).fill(undefined);
-			const displayLine = displayModel.lines[displayRow];
-			const rawRow = displayModel.displayRowToRawRow[displayRow] ?? 0;
-
-			// Apply line number color at the first column (color persists until changed)
-			lineColors[0] = spriteLookups.fontLineNumber;
-
-			// Reset to code color after line number prefix (at the space separator)
-			lineColors[graphicData.lineNumberColumnWidth] = displayLine?.isPlaceholder
-				? spriteLookups.fontCodeComment
-				: spriteLookups.fontCode;
-
-			if (displayLine?.isPlaceholder) {
-				return lineColors;
-			}
-
-			// Merge syntax colors from raw code, offset by prefix length
-			const rawColors = expandLineColorsToCells(
-				graphicData.code[rawRow] || '',
-				rawCodeColors[rawRow] || [],
-				tabStopsByLine[rawRow] || []
-			);
-			rawColors.forEach((color, i) => {
-				if (color !== undefined) {
-					lineColors[i + lineNumberPrefixLength] = color;
-				}
-			});
-
-			return lineColors;
-		});
-		graphicData.codeToRender = resolveCodeCells(
-			codeCharacters,
-			codeColors,
-			spriteLookups.fontCode,
-			graphicData.disabled ? spriteLookups.fontDisabledCode : undefined
-		);
 
 		shape(graphicData, state, directiveState);
 		paramShape(graphicData, state, directiveState);
@@ -221,7 +97,8 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		positionOffsetters(graphicData, state);
 		blockHighlights(graphicData, state);
 
-		graphicData.height = graphicData.codeToRender.length * state.viewport.hGrid;
+		const gapRowCount = [...graphicData.gaps.values()].reduce((total, gap) => total + gap.size, 0);
+		graphicData.height = (displayModel.lines.length + gapRowCount) * state.viewport.hGrid;
 		graphicData.cursor.x =
 			(getVisualColumnForRawIndex(
 				graphicData.code[graphicData.cursor.row] || '',
@@ -238,13 +115,13 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		graphicData.alwaysOnTop = directiveState.blockState.alwaysOnTop ?? false;
 	};
 
-	const updateGraphicsAll = () => {
+	const updateAllBlockDerivedState = () => {
 		for (const graphicData of state.codeBlockRendering.codeBlocks) {
-			updateGraphics(graphicData);
+			updateBlockDerivedState(graphicData);
 		}
 	};
 
-	const recomputePixelCoordinatesAndUpdateGraphics = () => {
+	const recomputePixelCoordinatesAndBlockDerivedState = () => {
 		// When viewport grid dimensions change (e.g., font change), recompute pixel positions
 		// from the stable grid coordinates, then update graphics. Combined into single iteration.
 		for (const codeBlock of state.codeBlockRendering.codeBlocks) {
@@ -254,9 +131,9 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				codeBlock.y = codeBlock.gridY * state.viewport.hGrid;
 			}
 			// Viewport-anchored blocks: x/y depend on current block width/height (for right/bottom
-			// anchors). updateGraphics() computes width and height first, then applies the anchored
+			// anchors). Block derivation computes width and height first, then applies the anchored
 			// position at the end of its execution. No pre-assignment needed here.
-			updateGraphics(codeBlock);
+			updateBlockDerivedState(codeBlock);
 		}
 	};
 
@@ -276,7 +153,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		if (!state.codeBlockRendering.selectedCodeBlock) {
 			return;
 		}
-		updateGraphics(state.codeBlockRendering.selectedCodeBlock);
+		updateBlockDerivedState(state.codeBlockRendering.selectedCodeBlock);
 	};
 
 	const updateProgrammaticSelectedCodeBlock = () => {
@@ -284,7 +161,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		if (!block) {
 			return;
 		}
-		updateGraphics(block);
+		updateBlockDerivedState(block);
 	};
 
 	const updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger = () => {
@@ -292,7 +169,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		if (!block) {
 			return;
 		}
-		updateGraphics(block);
+		updateBlockDerivedState(block);
 	};
 
 	const updateHideSelectionTransition = (
@@ -304,7 +181,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				return;
 			}
 
-			updateGraphics(codeBlock);
+			updateBlockDerivedState(codeBlock);
 		});
 	};
 
@@ -336,7 +213,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 			const gridY = posResult?.y ?? 0;
 			const directiveState = deriveDirectiveState(codeBlock.code, blockParsedDirectives);
 
-			// For viewport-anchored blocks, x/y will be resolved after updateGraphics() sets
+			// For viewport-anchored blocks, x/y will be resolved after block derivation sets
 			// width/height; initialize to 0 here as a safe placeholder.
 			const isAnchored = directiveState.blockState.viewportAnchor !== undefined;
 			const pixelX = isAnchored ? 0 : gridX * state.viewport.vGrid;
@@ -415,7 +292,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 						lineNumber: codeError.lineNumber,
 					});
 
-					updateGraphics(codeBlock);
+					updateBlockDerivedState(codeBlock);
 				}
 			});
 		});
@@ -438,7 +315,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				codeBlock.x = posResult.x * state.viewport.vGrid;
 				codeBlock.y = posResult.y * state.viewport.hGrid;
 			}
-			// Viewport-anchored block: x/y will be recomputed by updateGraphics()
+			// Viewport-anchored block: x/y will be recomputed by block derivation
 			// once width/height are up to date.
 		}
 	};
@@ -446,16 +323,16 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 	updateErrorMessages();
 
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
-	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateGraphics(codeBlock));
-	events.on('runtimeInitialized', updateGraphicsAll);
+	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateBlockDerivedState(codeBlock));
+	events.on('runtimeInitialized', updateAllBlockDerivedState);
 	events.on('spriteSheetRerendered', () => {
-		recomputePixelCoordinatesAndUpdateGraphics();
+		recomputePixelCoordinatesAndBlockDerivedState();
 		centerViewportOnSelectedCodeBlock();
 	});
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);
-	store.subscribe('codeBlockRendering.codeBlocks', updateGraphicsAll);
-	store.subscribe('info', updateGraphicsAll);
+	store.subscribe('codeBlockRendering.codeBlocks', updateAllBlockDerivedState);
+	store.subscribe('info', updateAllBlockDerivedState);
 	store.subscribe('codeBlockRendering.selectedCodeBlock', onSelectedCodeBlockChanged);
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', applyPositionFromCodeEdit);

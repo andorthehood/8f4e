@@ -1,3 +1,4 @@
+import type { EditorRenderData } from '@8f4e/editor-render-projection';
 import type { State } from '@8f4e/editor-state-types';
 import type { DrawContext } from '../../drawContext';
 import type { MemoryViews } from '../../types';
@@ -23,7 +24,12 @@ import drawWaves from './widgets/waves';
 
 const corner = '+';
 
-export default function drawModules(engine: DrawContext, state: State, memoryViews: MemoryViews): void {
+export default function drawModules(
+	engine: DrawContext,
+	state: State,
+	memoryViews: MemoryViews,
+	renderData: EditorRenderData
+): void {
 	const spriteLookups = state.spriteLookups;
 
 	if (!spriteLookups) {
@@ -39,6 +45,7 @@ export default function drawModules(engine: DrawContext, state: State, memoryVie
 	drawEntryOutlines(engine, state);
 
 	for (const codeBlock of state.codeBlockRendering.codeBlocks) {
+		const codeCells = renderData.codeBlocks.get(codeBlock.creationIndex)?.codeCells ?? [];
 		const renderHiddenPreview = codeBlock.hidden && !state.codeBlockRendering.showHiddenCodeBlocks;
 
 		// Read position offsets from memory only if the feature is enabled
@@ -99,8 +106,8 @@ export default function drawModules(engine: DrawContext, state: State, memoryVie
 			);
 
 			if (!renderHiddenPreview) {
-				for (let i = 0; i < codeBlock.codeToRender.length; i++) {
-					engine.drawResolvedText(state.viewport.vGrid, state.viewport.hGrid * i, codeBlock.codeToRender[i]);
+				for (let i = 0; i < codeCells.length; i++) {
+					engine.drawResolvedText(state.viewport.vGrid, state.viewport.hGrid * i, codeCells[i]);
 				}
 
 				drawShapeDeclarations(engine, state, codeBlock);

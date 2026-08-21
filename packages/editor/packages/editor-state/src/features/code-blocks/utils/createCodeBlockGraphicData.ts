@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import buildDisplayModel from '../buildDisplayModel';
 import getCodeBlockNameFromSource from './getCodeBlockNameFromSource';
 import { parseBlockDirectives } from './parseBlockDirectives';
 
@@ -43,7 +44,7 @@ export function createCodeBlockGraphicData(
 		cursor,
 		name,
 		code,
-		codeToRender: [],
+		displayModel: buildDisplayModel(code),
 		gaps: new Map(),
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),

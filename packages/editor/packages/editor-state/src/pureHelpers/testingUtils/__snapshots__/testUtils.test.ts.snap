@@ -5,7 +5,6 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor posi
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -55,7 +54,6 @@ exports[`createMockCodeBlock > cursor calculation > should calculate cursor with
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -105,7 +103,6 @@ exports[`createMockCodeBlock > cursor calculation > should prefer explicit curso
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 5,
@@ -155,7 +152,6 @@ exports[`createMockCodeBlock > cursor calculation > should use cursorY convenien
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -205,7 +201,6 @@ exports[`createMockCodeBlock > default values > should create a block with defau
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -255,7 +250,6 @@ exports[`createMockCodeBlock > edge cases > should handle negative coordinates 1
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -305,7 +299,6 @@ exports[`createMockCodeBlock > edge cases > should handle negative offsets 1`] =
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -355,7 +348,6 @@ exports[`createMockCodeBlock > edge cases > should handle zero dimensions 1`] = 
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -405,7 +397,6 @@ exports[`createMockCodeBlock > override behavior > should allow independent over
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -459,7 +450,6 @@ exports[`createMockCodeBlock > override behavior > should allow override of code
     "line1",
     "line2",
   ],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -509,7 +499,6 @@ exports[`createMockCodeBlock > override behavior > should override name and offs
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,
@@ -559,7 +548,6 @@ exports[`createMockCodeBlock > override behavior > should override position and 
   "alwaysOnTop": false,
   "blockType": "unknown",
   "code": [],
-  "codeToRender": [],
   "creationIndex": 0,
   "cursor": {
     "col": 0,

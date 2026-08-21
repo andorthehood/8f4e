@@ -1,3 +1,4 @@
+import type { EditorRenderDataSource } from '@8f4e/editor-render-projection';
 import init from '@8f4e/web-ui';
 import { expect, test } from 'vitest';
 import createCanvas from './utils/createCanvas';
@@ -12,7 +13,8 @@ test('context menu', async () => {
 	const memoryViews = createMockMemoryViews();
 	const spriteData = await createMockSpriteData(mockState);
 
-	await init(mockState, canvas, memoryViews, spriteData);
+	const renderData: EditorRenderDataSource = { getSnapshot: () => ({ codeBlocks: new Map() }) };
+	await init(mockState, renderData, canvas, memoryViews, spriteData);
 	mockState.contextMenu = generateContextMenuMock();
 	await expect(canvas).toMatchScreenshot();
 });

@@ -1,6 +1,10 @@
+import type { EditorRenderDataSource } from '@8f4e/editor-render-projection';
 import { createMockState } from '@8f4e/editor-state-testing';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const renderDataSnapshot = { codeBlocks: new Map() };
+const renderData: EditorRenderDataSource = { getSnapshot: () => renderDataSnapshot };
 
 const mocks = vi.hoisted(() => {
 	let frameTextureDrawCallback: ((layer: unknown) => void) | undefined;
@@ -181,13 +185,15 @@ describe('web-ui init', () => {
 			float64: new Float64Array(0),
 		};
 
-		const view = await init(state, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData());
 
 		view.renderFrame();
 
 		const frameState = mocks.drawCodeBlocks.mock.calls.at(-1)?.[1];
+		const frameRenderData = mocks.drawCodeBlocks.mock.calls.at(-1)?.[3];
 
 		expect(frameState).toBe(state);
+		expect(frameRenderData).toBe(renderDataSnapshot);
 		expect(mocks.resolveWireColors).toHaveBeenCalledWith(state.editorConfig.color);
 		expect(mocks.drawConnections).toHaveBeenCalledWith(mocks.lines, mocks.wireColors, frameState, memoryViews);
 		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(expect.anything(), frameState);
@@ -205,7 +211,7 @@ describe('web-ui init', () => {
 			float32: new Float32Array(0),
 			float64: new Float64Array(0),
 		};
-		const view = await init(state, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData());
 		const nextColorScheme = {
 			fill: {
 				wire: '#123456',
@@ -238,7 +244,7 @@ describe('web-ui init', () => {
 		};
 		const onRenderStats = vi.fn();
 
-		const view = await init(state, {} as HTMLCanvasElement, memoryViews, createSpriteData(), {
+		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData(), {
 			onRenderStats,
 			renderStatsIntervalFrames: 2,
 		});
@@ -316,7 +322,7 @@ describe('web-ui init', () => {
 			| undefined;
 		const canvas = { width: 160, height: 90 } as HTMLCanvasElement;
 
-		const view = await init(state, canvas, memoryViews, createSpriteData(), {
+		const view = await init(state, renderData, canvas, memoryViews, createSpriteData(), {
 			getFrameTexture: () => frameTexture,
 			getCodeBuffer: () => codeBuffer,
 			getMemory: () => memory,

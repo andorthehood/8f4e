@@ -105,7 +105,12 @@ export function createMockCodeBlock(
 		cursor,
 		name,
 		code,
-		codeToRender: [],
+		displayModel: {
+			lines: code.map((text, rawRow) => ({ text, rawRow })),
+			displayRowToRawRow: code.map((_, rawRow) => rawRow),
+			rawRowToDisplayRow: code.map((_, rawRow) => rawRow),
+			isCollapsed: false,
+		},
 		gaps: new Map(),
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),

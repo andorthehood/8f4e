@@ -156,7 +156,6 @@ describe('shape', () => {
 		const module = createCodeBlockGraphicData({
 			blockType: 'module',
 			code: ['module filterA', '; @plot other', 'shape filterState', 'moduleEnd'],
-			codeToRender: [[1], [2], [3], [4]],
 			lineNumberColumnWidth: 1,
 		});
 		const state = createMockState({

@@ -21,15 +21,11 @@ describe('gaps', () => {
 			layoutContributions: [{ rawRow: 1, rows: 8 }],
 			widgets: [],
 		};
-		const graphicData = createCodeBlockGraphicData({
-			code: ['module foo', '; @plot buffer', 'push 1', 'moduleEnd'],
-			codeToRender: [[1], [2], [3]],
-		});
+		const graphicData = createCodeBlockGraphicData({ code: ['module foo', '; @plot buffer', 'push 1', 'moduleEnd'] });
 
 		gaps(graphicData, directiveState);
 
 		expect(graphicData.gaps.get(1)).toEqual({ size: 8 });
-		expect(graphicData.codeToRender).toHaveLength(11);
 	});
 
 	it('adds multiple layout contributions on the same display row', async () => {
@@ -52,15 +48,11 @@ describe('gaps', () => {
 			],
 			widgets: [],
 		};
-		const graphicData = createCodeBlockGraphicData({
-			code: ['module foo', 'shape sharedState', 'moduleEnd'],
-			codeToRender: [[1], [2], [3]],
-		});
+		const graphicData = createCodeBlockGraphicData({ code: ['module foo', 'shape sharedState', 'moduleEnd'] });
 
 		gaps(graphicData, directiveState);
 
 		expect(graphicData.gaps.get(1)).toEqual({ size: 5 });
-		expect(graphicData.codeToRender).toHaveLength(8);
 	});
 
 	it('adds error gaps to layout contributions on the same display row', async () => {
@@ -82,7 +74,6 @@ describe('gaps', () => {
 		};
 		const graphicData = createCodeBlockGraphicData({
 			code: ['module foo', 'shape sharedState', 'moduleEnd'],
-			codeToRender: [[1], [2], [3]],
 			widgets: {
 				blockHighlights: [],
 				inputs: [],
@@ -105,7 +96,6 @@ describe('gaps', () => {
 		gaps(graphicData, directiveState);
 
 		expect(graphicData.gaps.get(1)).toEqual({ size: 5 });
-		expect(graphicData.codeToRender).toHaveLength(8);
 	});
 
 	it('skips gaps for raw rows hidden from the display model', async () => {
@@ -126,7 +116,6 @@ describe('gaps', () => {
 		};
 		const graphicData = createCodeBlockGraphicData({
 			code: ['module foo', '; @plot buffer', 'push 1', 'moduleEnd'],
-			codeToRender: [[1], [2]],
 			widgets: {
 				blockHighlights: [],
 				inputs: [],
@@ -149,6 +138,5 @@ describe('gaps', () => {
 		gaps(graphicData, directiveState);
 
 		expect(graphicData.gaps.size).toBe(0);
-		expect(graphicData.codeToRender).toHaveLength(2);
 	});
 });

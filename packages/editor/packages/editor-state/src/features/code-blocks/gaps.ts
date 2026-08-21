@@ -28,12 +28,4 @@ export default function gaps(graphicData: CodeBlockGraphicData, directiveState: 
 			addGap(graphicData, displayRow, contribution.rows);
 		}
 	});
-
-	const gaps = Array.from(graphicData.gaps).sort(([a], [b]) => {
-		return b - a;
-	});
-
-	gaps.forEach(([row, gap]) => {
-		graphicData.codeToRender.splice(row + 1, 0, ...Array.from({ length: gap.size }, () => []));
-	});
 }

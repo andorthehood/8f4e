@@ -1,3 +1,4 @@
+import type { CodeBlockRenderData, EditorRenderDataSource } from '@8f4e/editor-render-projection';
 import { createMockCodeBlock } from '@8f4e/editor-state-testing';
 import init from '@8f4e/web-ui';
 import { expect, test } from 'vitest';
@@ -12,8 +13,10 @@ test('dragged module', async () => {
 	const mockState = await createMockStateWithColors();
 	const memoryViews = createMockMemoryViews();
 	const spriteData = await createMockSpriteData(mockState);
+	const codeBlocks = new Map<number, CodeBlockRenderData>();
+	const renderData: EditorRenderDataSource = { getSnapshot: () => ({ codeBlocks }) };
 
-	await init(mockState, canvas, memoryViews, spriteData);
+	await init(mockState, renderData, canvas, memoryViews, spriteData);
 
 	if (mockState.spriteLookups) {
 		const codeLines = [
@@ -32,12 +35,12 @@ test('dragged module', async () => {
 			y: 16,
 			width: 256,
 			height: codeLines.length * 16,
-			codeToRender,
 		});
 
 		mockState.codeBlockRendering.draggedCodeBlock = codeBlockMock;
 
 		mockState.codeBlockRendering.codeBlocks.push(codeBlockMock);
+		codeBlocks.set(codeBlockMock.creationIndex, { codeCells: codeToRender });
 	}
 
 	await expect(canvas).toMatchScreenshot();

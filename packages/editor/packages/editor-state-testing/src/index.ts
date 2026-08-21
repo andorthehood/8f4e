@@ -39,6 +39,12 @@ export function createMockCodeBlock(
 		x: cursorX,
 		y: cursorYValue,
 	};
+	const displayModel = {
+		lines: code.map((text, rawRow) => ({ text, rawRow })),
+		displayRowToRawRow: code.map((_, rawRow) => rawRow),
+		rawRowToDisplayRow: code.map((_, rawRow) => rawRow),
+		isCollapsed: false,
+	};
 
 	const defaults: CodeBlockGraphicData = {
 		x,
@@ -52,7 +58,7 @@ export function createMockCodeBlock(
 		cursor,
 		name,
 		code,
-		codeToRender: [],
+		displayModel,
 		gaps: new Map(),
 		lineNumberColumnWidth: 1,
 		lastUpdated: Date.now(),

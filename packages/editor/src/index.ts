@@ -1,3 +1,4 @@
+import { createEditorRenderProjection } from '@8f4e/editor-render-projection';
 import initState from '@8f4e/editor-state';
 import type {
 	Callbacks,
@@ -195,8 +196,9 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	});
 
 	updateStateWithSpriteData(state, spriteData);
+	const renderProjection = createEditorRenderProjection(store, events);
 
-	view = await initView(state, canvas, memoryViews, spriteData, {
+	view = await initView(state, renderProjection, canvas, memoryViews, spriteData, {
 		renderStatsIntervalFrames: options.renderStatsIntervalFrames,
 		frameTexture: options.frameTexture,
 		getFrameTexture: () => resolveWebUiBackgroundConfig(state) ?? options.frameTexture,
@@ -237,6 +239,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		getMemoryViews: () => memoryViews,
 		dispose: () => {
 			view.destroy();
+			renderProjection.dispose();
 			cleanupPointer();
 			cleanupKeyboard();
 			cleanupEditorEnvironmentPlugins();
