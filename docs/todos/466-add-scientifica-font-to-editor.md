@@ -16,7 +16,7 @@ The editor sprite-generator has several bundled bitmap fonts, but Scientifica is
 
 Adding it should follow the existing sprite-generator font pipeline instead of introducing a browser font dependency:
 
-- committed source glyph data under `packages/editor/packages/sprite-generator/src/fonts/`
+- committed source glyph data under `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/`
 - generated base64 bitmap metadata under the font's `generated/` directory
 - a `Font` union and `FONT_DEFINITIONS` entry so editor config can select it
 - third-party font attribution and license tracking
@@ -46,15 +46,15 @@ High-level approach:
 
 ### Step 2: Add sprite-generator font sources
 
-- Use `packages/editor/packages/sprite-generator/tools/import-bdf.mjs` to import the regular Scientifica BDF.
-- Add `packages/editor/packages/sprite-generator/src/fonts/scientifica/ascii.ts`.
-- Add `packages/editor/packages/sprite-generator/src/fonts/scientifica/glyphs.ts`, using compatible Scientifica glyphs where available and the established fallback strategy otherwise.
+- Use `packages/editor/packages/web-ui/packages/sprite-generator/tools/import-bdf.mjs` to import the regular Scientifica BDF.
+- Add `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/scientifica/ascii.ts`.
+- Add `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/scientifica/glyphs.ts`, using compatible Scientifica glyphs where available and the established fallback strategy otherwise.
 - Run the existing bitmap generation tool so `generated/ascii.ts` and `generated/glyphs.ts` are created.
 
 ### Step 3: Register the font
 
 - Add `scientifica` to the `Font` type and `FONT_NAMES`.
-- Add a `FONT_DEFINITIONS.scientifica` entry in `packages/editor/packages/sprite-generator/src/index.ts`.
+- Add a `FONT_DEFINITIONS.scientifica` entry in `packages/editor/packages/web-ui/packages/sprite-generator/src/index.ts`.
 - Add test fixture coverage for selecting the font through editor configuration.
 
 ### Step 4: Document attribution
@@ -90,11 +90,11 @@ High-level approach:
 
 ## Affected Components
 
-- `packages/editor/packages/sprite-generator/src/fonts/scientifica/` - new font source and generated bitmap metadata.
-- `packages/editor/packages/sprite-generator/src/types.ts` - font id registration.
-- `packages/editor/packages/sprite-generator/src/index.ts` - font definition and lazy metadata loader.
-- `packages/editor/packages/sprite-generator/tools/import-bdf.mjs` - BDF conversion path.
-- `packages/editor/packages/sprite-generator/tests/` - fixture, selection, and rendering coverage.
+- `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/scientifica/` - new font source and generated bitmap metadata.
+- `packages/editor/packages/web-ui/packages/sprite-generator/src/types.ts` - font id registration.
+- `packages/editor/packages/web-ui/packages/sprite-generator/src/index.ts` - font definition and lazy metadata loader.
+- `packages/editor/packages/web-ui/packages/sprite-generator/tools/import-bdf.mjs` - BDF conversion path.
+- `packages/editor/packages/web-ui/packages/sprite-generator/tests/` - fixture, selection, and rendering coverage.
 - `packages/editor/THIRD_PARTY_FONTS.md` - upstream attribution.
 - `packages/editor/licenses/` - Scientifica OFL license text.
 
@@ -113,8 +113,8 @@ High-level approach:
 - **Related**: `docs/todos/389-add-eaglespcga-alt3-8x8-font-to-sprite-generator.md`
 - **Related**: `docs/todos/465-add-sergamon-font-to-editor.md`
 - **Related**: `packages/editor/THIRD_PARTY_FONTS.md`
-- **Related**: `packages/editor/packages/sprite-generator/tools/import-bdf.mjs`
-- **Related**: `packages/editor/packages/sprite-generator/tools/generate-font-bitmaps.mjs`
+- **Related**: `packages/editor/packages/web-ui/packages/sprite-generator/tools/import-bdf.mjs`
+- **Related**: `packages/editor/packages/web-ui/packages/sprite-generator/tools/generate-font-bitmaps.mjs`
 
 ## References
 

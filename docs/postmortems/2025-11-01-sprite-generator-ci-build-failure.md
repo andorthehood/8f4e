@@ -22,7 +22,7 @@ The `sprite-generator` package was failing to build in CI with TypeScript errors
 The sprite-generator package's `project.json` had custom `dependsOn` configurations that **overrode** the global Nx `targetDefaults` instead of merging with them:
 
 ```json
-// packages/editor/packages/sprite-generator/project.json (BEFORE)
+// packages/editor/packages/web-ui/packages/sprite-generator/project.json (BEFORE)
 "build": {
   "dependsOn": ["generate-fonts"],  // Missing "^build"!
   ...
@@ -66,7 +66,7 @@ import { SpriteCoordinates } from 'glugglugglug';
 Resolution path:
 1. Looks up the dependency tree for `node_modules/glugglugglug/`
 2. Reads `glugglugglug/package.json` which has `"types": "./dist/index.d.ts"`
-3. Resolves to symlink: `node_modules/glugglugglug/dist/index.d.ts` → `packages/editor/packages/glugglugglug/dist/index.d.ts`
+3. Resolves to symlink: `node_modules/glugglugglug/dist/index.d.ts` → `packages/editor/packages/web-ui/packages/glugglugglug/dist/index.d.ts`
 4. **Must exist at build time** or TypeScript fails
 
 ## The Fix
@@ -74,7 +74,7 @@ Resolution path:
 Added `"^build"` to the `dependsOn` array for all targets that run TypeScript:
 
 ```json
-// packages/editor/packages/sprite-generator/project.json (AFTER)
+// packages/editor/packages/web-ui/packages/sprite-generator/project.json (AFTER)
 "build": {
   "dependsOn": ["^build", "generate-fonts"],  // ✅ Now includes "^build"
   ...
@@ -136,9 +136,9 @@ Initial investigation focused on submodule checkout, but that wasn't the issue. 
 
 Key files involved:
 - `nx.json` - Global targetDefaults with `"build": { "dependsOn": ["^build"] }`
-- `packages/editor/packages/sprite-generator/project.json` - Was missing `^build`
-- `packages/editor/packages/sprite-generator/package.json` - Declares `glugglugglug` dependency
-- `packages/editor/packages/glugglugglug/package.json` - Exports types via `"types": "./dist/index.d.ts"`
+- `packages/editor/packages/web-ui/packages/sprite-generator/project.json` - Was missing `^build`
+- `packages/editor/packages/web-ui/packages/sprite-generator/package.json` - Declares `glugglugglug` dependency
+- `packages/editor/packages/web-ui/packages/glugglugglug/package.json` - Exports types via `"types": "./dist/index.d.ts"`
 
 ## Prevention
 

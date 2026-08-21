@@ -25,19 +25,20 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       ├── <a href="./packages/compiler/packages/stack-analyzer/README.md">stack-analyzer</a> (Validates and reports stack effects)
     │       ├── <a href="./packages/compiler/packages/semantic-utils/README.md">semantic-utils</a> (Shared target-independent semantic helpers)
     │       ├── <a href="./packages/compiler/packages/wasm-codegen/README.md">wasm-codegen</a> (WebAssembly code generation)
-    │       ├── <a href="./packages/compiler/packages/wasm-utils/README.md">wasm-utils</a> (Low-level WebAssembly byte construction helpers)
+    │       │   └── packages/
+    │       │       └── <a href="./packages/compiler/packages/wasm-codegen/packages/wasm-utils/README.md">wasm-utils</a> (Low-level WebAssembly byte construction helpers)
     │       └── <a href="./packages/compiler/packages/stdlib/README.md">stdlib</a> (Standard-library include source files)
     ├── <a href="./packages/editor/README.md">editor</a> (The main editor package)
     │   └── packages/
     │       ├── <a href="./packages/editor/packages/editor-state/README.md">editor-state</a> (Editor state management)
     │       ├── editor-state-types (Shared public editor-state model types)
     │       ├── <a href="./packages/editor/packages/editor-state-testing/README.md">editor-state-testing</a> (Framework-agnostic editor-state test helpers)
-    │       ├── <a href="./packages/editor/packages/glugglugglug/README.md">glugglugglug</a> (2D WebGL graphics utilities)
-    │       ├── <a href="./packages/editor/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
     │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
     │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)
     │           └── packages/
-    │               └── <a href="./packages/editor/packages/web-ui/packages/render-projection/README.md">render-projection</a> (Precalculates web UI-specific render data from editor state)
+    │               ├── <a href="./packages/editor/packages/web-ui/packages/glugglugglug/README.md">glugglugglug</a> (2D WebGL graphics utilities)
+    │               ├── <a href="./packages/editor/packages/web-ui/packages/render-projection/README.md">render-projection</a> (Precalculates web UI-specific render data from editor state)
+    │               └── <a href="./packages/editor/packages/web-ui/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
     ├── <a href="./packages/examples/README.md">examples</a> (Example modules and projects)
     ├── <a href="./packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a>     ┐ 
     ├── <a href="./packages/runtime-main-thread/README.md">runtime-main-thread</a> │ (Various runtime environments 

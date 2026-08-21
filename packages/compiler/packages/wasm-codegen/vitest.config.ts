@@ -3,6 +3,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig(
 	createNodePreset({
+		additionalExclude: ['packages/**'],
 		typecheckEnabled: true,
 	})
 );

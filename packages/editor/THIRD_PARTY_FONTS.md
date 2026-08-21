@@ -4,7 +4,7 @@ This package includes converted and/or derived bitmap fonts based on upstream op
 
 The converted fonts are stored in the editor sprite-generator font sources under:
 
-- `packages/editor/packages/sprite-generator/src/fonts/`
+- `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/`
 
 This file documents the upstream projects, the local derived font names, and the committed license texts that should be kept with redistributions of this package.
 
