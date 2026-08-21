@@ -54,7 +54,7 @@
   "release": {
     "projects": [
       "*",
-      "!glugglug"
+      "!glugglugglug"
     ],
     "projectsRelationship": "independent",
     "releaseTag": {

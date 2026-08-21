@@ -189,7 +189,7 @@ if (window.OffscreenCanvas) {
 **Browser Support**: Universally supported
 
 **Usage Locations**:
-- `packages/editor/packages/glugglug/src/engine.ts`: Frame rendering loop
+- `packages/editor/packages/glugglugglug/src/engine.ts`: Frame rendering loop
 
 **Context**: Smooth animation scheduling
 **Considerations**: Frame rate varies by display, may be throttled in background tabs

@@ -48,9 +48,9 @@ Shader blocks should also drop ID arguments:
 
 ## Affected Components
 
-- `packages/editor/packages/glugglug/src/postProcess/PostProcessManager.ts` - effect tracking and rendering
-- `packages/editor/packages/glugglug/src/renderer.ts` - post-process orchestration
-- `packages/editor/packages/glugglug/README.md` - usage documentation
+- `packages/editor/packages/glugglugglug/src/postProcess/PostProcessManager.ts` - effect tracking and rendering
+- `packages/editor/packages/glugglugglug/src/renderer.ts` - post-process orchestration
+- `packages/editor/packages/glugglugglug/README.md` - usage documentation
 - `packages/editor/packages/editor-state/src/features/shader-effects/*` - shader block parsing/derivation
 - `packages/editor/packages/editor-state/src/features/code-blocks/features/codeBlockCreator/*` - shader block defaults
 
@@ -63,7 +63,7 @@ Shader blocks should also drop ID arguments:
 ## Related Items
 
 - **Related**: `docs/brainstorming_notes/025-post-process-feedback-buffer.md`
-- **Related**: `docs/todos/178-drop-webgl1-glugglug.md`
+- **Related**: `docs/todos/178-drop-webgl1-glugglugglug.md`
 
 ## Notes
 

@@ -1,4 +1,4 @@
-import type { SpriteCoordinates, SpriteLookup } from 'glugglug';
+import type { SpriteCoordinates, SpriteLookup } from 'glugglugglug';
 import { describe, expect, it } from 'vitest';
 
 import { createSpriteAtlas } from '../src/index.ts';

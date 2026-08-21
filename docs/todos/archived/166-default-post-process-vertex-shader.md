@@ -59,7 +59,7 @@ When a fragment shader is present without a matching vertex shader, use a defaul
 ## References
 
 - `src/examples/projects/rippleEffect.ts`
-- `packages/editor/packages/glugglug/src/postProcess/PostProcessManager.ts`
+- `packages/editor/packages/glugglugglug/src/postProcess/PostProcessManager.ts`
 
 ## Notes
 

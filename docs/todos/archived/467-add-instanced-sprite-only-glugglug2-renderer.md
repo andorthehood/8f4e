@@ -12,9 +12,9 @@ completed: 2026-08-19
 
 ## Problem Description
 
-The existing glugglug renderer expands 2D rectangles and sprites into repeated triangle vertex and texture-coordinate data on the CPU. Most editor rendering consists of textured rectangles, so this sends redundant rectangle geometry to GPU memory every frame.
+The existing glugglugglug renderer expands 2D rectangles and sprites into repeated triangle vertex and texture-coordinate data on the CPU. Most editor rendering consists of textured rectangles, so this sends redundant rectangle geometry to GPU memory every frame.
 
-Create a new `glugglug2` package next to glugglug. It should keep glugglug's convenient immediate-mode render cycle, but it does not need API or implementation compatibility. The MVP is deliberately limited to drawing sprites from one atlas; caching, lines, and other primitives are out of scope.
+Create a new `glugglug2` package next to glugglugglug. It should keep glugglugglug's convenient immediate-mode render cycle, but it does not need API or implementation compatibility. The MVP is deliberately limited to drawing sprites from one atlas; caching, lines, and other primitives are out of scope.
 
 ## Proposed Solution
 
@@ -33,7 +33,7 @@ engine.render(() => {
 });
 ```
 
-The public API should retain glugglug's sprite argument order:
+The public API should retain glugglugglug's sprite argument order:
 
 ```ts
 drawSprite(x: number, y: number, sprite: string | number, width?: number, height?: number): void;
@@ -51,7 +51,7 @@ When width or height is omitted, resolve it from that sprite's source dimensions
 - Replace them only through another explicit atlas call, such as when changing fonts.
 - Use nearest-neighbor texture filtering for pixelated rendering.
 
-The public lookup should retain glugglug's existing shape:
+The public lookup should retain glugglugglug's existing shape:
 
 ```ts
 type SpriteCoordinates = {
@@ -114,7 +114,7 @@ Expose an idempotent `destroy()` that cancels the engine's active animation-fram
 - Do not upload the atlas or sprite lookup table every frame.
 - Do not generate six rectangle vertices and repeated texture coordinates for every sprite.
 - Do not issue one draw call per sprite.
-- Do not add caching, line drawing, general primitive drawing, or glugglug compatibility to the MVP.
+- Do not add caching, line drawing, general primitive drawing, or glugglugglug compatibility to the MVP.
 - Do not reorder sprites for texture batching; the single-atlas design already permits one draw call.
 - Do not add identifier, lifecycle, or numeric-value validation to the per-sprite hot path.
 - Do not automatically infer CSS or device-pixel-ratio canvas sizing.
@@ -124,9 +124,9 @@ Expose an idempotent `destroy()` that cancels the engine's active animation-fram
 
 ### Step 1: Create the package and public API
 
-- Add the `glugglug2` package next to `packages/editor/packages/glugglug` and register its Nx build, test, typecheck, and lint targets consistently with neighboring packages.
+- Add the `glugglug2` package next to `packages/editor/packages/glugglugglug` and register its Nx build, test, typecheck, and lint targets consistently with neighboring packages.
 - Expose engine creation, atomic atlas replacement, `render()`, `renderFrame()`, `resize()`, `destroy()`, and `drawSprite(x, y, sprite, width?, height?)`.
-- Keep the package independent from glugglug internals unless a small generic utility is clearly reusable.
+- Keep the package independent from glugglugglug internals unless a small generic utility is clearly reusable.
 
 ### Step 2: Implement persistent atlas resources
 
@@ -148,7 +148,7 @@ Expose an idempotent `destroy()` that cancels the engine's active animation-fram
 - Expand each instance into a rectangle in the vertex shader or from a shared static unit quad.
 - Resolve public sprite identifiers to internal ids and atlas texture coordinates.
 - Draw the ordered instance list with one instanced draw call and standard alpha blending.
-- Match glugglug's top-left, Y-down pixel coordinate system, opaque black clearing, and premultiplied-alpha blending.
+- Match glugglugglug's top-left, Y-down pixel coordinate system, opaque black clearing, and premultiplied-alpha blending.
 - Handle explicit canvas dimensions and resize-related uniforms without replacing the atlas.
 - Keep atlas and lifecycle validation on cold operations rather than the per-sprite hot path.
 
@@ -208,18 +208,18 @@ Expose an idempotent `destroy()` that cancels the engine's active animation-fram
 - **Public identifier lookup**: String identifiers add a CPU lookup to `drawSprite()`; keep the GPU instance compact by resolving them to dense numeric ids before writing.
 - **Unchecked hot path**: Invalid sprite identifiers or rectangle values are programmer errors with unspecified results; validate inputs before entering the render loop when needed.
 - **Context loss**: Automatic restoration is explicitly outside the MVP. A lost context requires the caller to recreate the engine and explicitly set its atlas again.
-- **Breaking changes**: None for glugglug because this is a separate, intentionally incompatible package.
+- **Breaking changes**: None for glugglugglug because this is a separate, intentionally incompatible package.
 
 ## Related Items
 
-- **Related**: `packages/editor/packages/glugglug/`
+- **Related**: `packages/editor/packages/glugglugglug/`
 - **Related**: TODO 048 (Add 2D Engine Visual Regression Tests)
 - **Related**: TODO 052 (Simplify Cache Rendering Order)
 
 ## Notes
 
 - The package is named `glugglug2`; its immediate-mode data flow and documented public API are explicit design decisions.
-- The public draw signature intentionally follows glugglug's `x, y, sprite, width?, height?` order even though the package is otherwise free to break compatibility.
+- The public draw signature intentionally follows glugglugglug's `x, y, sprite, width?, height?` order even though the package is otherwise free to break compatibility.
 - Per-frame instance upload is expected because the caller rebuilds the ordered draw list every render cycle. The optimization is to upload only position, size, and the resolved numeric sprite id instead of expanded triangle geometry.
 - Per-sprite lifecycle, identifier, and finite-number validation was removed from `drawSprite()` after the initial implementation to keep the hot path minimal.
 - A future line renderer may use a separate buffer and render after the sprite layer, but it is not part of this TODO's MVP.

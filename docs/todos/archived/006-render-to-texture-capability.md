@@ -127,9 +127,9 @@ Implement a texture caching system that works as a drop-in replacement for `star
 
 ## Affected Components
 
-- `packages/editor/packages/glugglug/src/index.ts` - Main Engine class with all new caching methods
-- `packages/editor/packages/glugglug/src/utils/createTexture.ts` - May need updates for offscreen canvas support
-- `packages/editor/packages/glugglug/src/utils/buffer.ts` - Buffer utilities used by cache drawing methods
+- `packages/editor/packages/glugglugglug/src/index.ts` - Main Engine class with all new caching methods
+- `packages/editor/packages/glugglugglug/src/utils/createTexture.ts` - May need updates for offscreen canvas support
+- `packages/editor/packages/glugglugglug/src/utils/buffer.ts` - Buffer utilities used by cache drawing methods
 
 ## Risks & Considerations
 

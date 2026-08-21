@@ -59,7 +59,7 @@ Each package now has a complete TypeScript configuration:
 Different packages have different `lib` settings based on their runtime environment:
 
 - **Pure logic packages** (e.g., `@8f4e/compiler`): `["es2023"]`
-- **DOM packages** (e.g., `glugglug`, `@8f4e/web-ui`): `["es2023", "dom"]`
+- **DOM packages** (e.g., `glugglugglug`, `@8f4e/web-ui`): `["es2023", "dom"]`
 - **WebWorker packages** (e.g., `@8f4e/compiler-worker`, `@8f4e/runtime-web-worker-*`): `["es2023", "webworker"]`
 
 ### No Shared Base Configuration
@@ -145,7 +145,7 @@ All package `tsconfig.json` files were updated to:
 - `packages/runtime-web-worker-midi/tsconfig.json`
 - `packages/editor/tsconfig.json`
 - `packages/editor/packages/editor-state/tsconfig.json`
-- `packages/editor/packages/glugglug/tsconfig.json`
+- `packages/editor/packages/glugglugglug/tsconfig.json`
 - `packages/editor/packages/sprite-generator/tsconfig.json`
 - `packages/editor/packages/state-manager/tsconfig.json`
 - `packages/editor/packages/web-ui/tsconfig.json`
@@ -176,7 +176,7 @@ All packages received these common options:
 ### Package-Specific Options
 
 Some packages retained their specific options:
-- **glugglug**: `"strict": false`, `"strictNullChecks": false` (legacy code)
+- **glugglugglug**: `"strict": false`, `"strictNullChecks": false` (legacy code)
 - **state-manager**: Custom configuration (different target/module)
 
 ## Alternatives Considered

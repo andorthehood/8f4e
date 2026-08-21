@@ -1,10 +1,10 @@
 import type { SpriteFont, SpriteId } from '@8f4e/sprite-generator';
-import { DrawContext as SpriteDrawContext, type SpriteTarget } from 'glugglug/utils';
+import { DrawContext as SpriteDrawContext, type SpriteTarget } from 'glugglugglug/utils';
 
 const SPACE_CHARACTER_CODE = 32;
 
 /**
- * Adds editor-specific fixed-cell text drawing to the numeric glugglug drawing context.
+ * Adds editor-specific fixed-cell text drawing to the numeric glugglugglug drawing context.
  *
  * Semantic sprite roles are resolved before rendering. This context therefore accepts only
  * numeric sprite identifiers and numeric glyph tables in its per-frame methods.
@@ -16,7 +16,7 @@ export class DrawContext {
 	/**
 	 * Creates a reusable editor drawing context.
 	 *
-	 * @param target - Numeric sprite destination, normally the glugglug engine.
+	 * @param target - Numeric sprite destination, normally the glugglugglug engine.
 	 * @param characterWidth - Initial fixed horizontal glyph advance in pixels.
 	 */
 	constructor(target: SpriteTarget, characterWidth: number) {

@@ -8,7 +8,7 @@ import {
 	RgbaTextureLayer,
 	ShaderUnderlay,
 	type ShaderUnderlayEffect,
-} from 'glugglug';
+} from 'glugglugglug';
 import { DrawContext } from './drawContext';
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';

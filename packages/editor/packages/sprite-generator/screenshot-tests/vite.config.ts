@@ -20,7 +20,7 @@ export default defineConfig({
 		alias: {
 			// Point to the parent package's built output (within package boundary)
 			'@8f4e/sprite-generator': resolve(__dirname, '../dist'),
-			glugglug: resolve(__dirname, '../../glugglug/dist'),
+			glugglugglug: resolve(__dirname, '../../glugglugglug/dist'),
 			// Other packages will be resolved through npm workspaces
 		},
 	},

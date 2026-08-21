@@ -132,7 +132,7 @@ All of this made the fix obvious and confident, without needing to re-investigat
 
 When creating a new target that runs TypeScript (`tsc`, `vite build`, etc.):
 
-- [ ] Does it import workspace packages (like `@8f4e/*` or `glugglug`)?
+- [ ] Does it import workspace packages (like `@8f4e/*` or `glugglugglug`)?
 - [ ] If yes, does the target's `dependsOn` include `"^build"`?
 - [ ] Test with a clean build: `rm -rf packages/**/dist && npm run build`
 - [ ] Verify in CI before merging

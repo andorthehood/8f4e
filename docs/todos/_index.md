@@ -25,9 +25,9 @@ Active todo files are listed below.
 | 052 | Simplify Cache Rendering Order | 🟡 | 2–3 days | 2025-09-03 | The 2D engine supports caching of complex draw blocks via `cacheGroup`. The current implementation in `CachedRenderer` preserves draw order across different textures (sprite she... |
 | 058 | Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support | 🟡 | 4-6 days | 2025-09-11 | The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the proj... |
 | 064 | Research WebAssembly Runtimes for ARM Microcontroller Support | 🟡 | 3-5 days | 2025-09-10 | The 8f4e project currently supports browser-based WebAssembly runtimes (WebWorker and AudioWorklet) but lacks native runtimes for embedded ARM microcontrollers. To implement the... |
-| 155 | Add Framebuffer Memory Accounting in glugglug | 🟡 | 2-4h | 2025-12-30 | glugglug allocates render-to-texture and cache framebuffers, but there is no structured accounting for their estimated memory impact. This makes it difficult to reason about GPU... |
+| 155 | Add Framebuffer Memory Accounting in glugglugglug | 🟡 | 2-4h | 2025-12-30 | glugglugglug allocates render-to-texture and cache framebuffers, but there is no structured accounting for their estimated memory impact. This makes it difficult to reason about GPU... |
 | 170 | Toggle post-process effects via function key | 🟡 | 1-2h | 2026-01-13 | Post-process effects can take over the entire editor surface. If a fragment shader goes wrong, it can make the editor unreadable. We need a fast toggle to disable effects withou... |
-| 179 | Add glugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Fragment shader compile failures in glugglug currently throw or log without a structured path back to the editor. |
+| 179 | Add glugglugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Fragment shader compile failures in glugglugglug currently throw or log without a structured path back to the editor. |
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
 | 261 | Update instruction test helpers for float64 and refactor call test | 🟡 | 2-4h | 2026-02-20 | `packages/compiler/tests/instructions/testUtils.ts` currently reads/writes all non-integer memory as float32 in shared helpers like `moduleTesterWithFunctions`. |
 | 274 | Consolidate defaultFeatureFlags into a single source of truth | 🟡 | 2-4h | 2026-02-21 | There are currently two `defaultFeatureFlags` definitions: |
@@ -70,7 +70,7 @@ Active todo files are listed below.
 | 459 | Extract compiler diagnostics package | 🟡 | 2-4h | 2026-06-15 | Move compiler diagnostic construction into a small shared package so compiler-adjacent packages can emit consistent diagnostics without importing compiler internals. |
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
-| 468 | Add shader-batched raster caches to glugglug | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
+| 468 | Add shader-batched raster caches to glugglugglug | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
 
 ### 🟢 Low Priority
 

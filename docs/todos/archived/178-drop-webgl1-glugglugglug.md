@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Drop WebGL1 and move glugglug to WebGL2-only'
+title: 'TODO: Drop WebGL1 and move glugglugglug to WebGL2-only'
 priority: Medium
 effort: 2-4d
 created: 2026-01-15
@@ -7,11 +7,11 @@ status: Completed
 completed: 2026-01-16
 ---
 
-# TODO: Drop WebGL1 and move glugglug to WebGL2-only
+# TODO: Drop WebGL1 and move glugglugglug to WebGL2-only
 
 ## Problem Description
 
-glugglug currently targets WebGL1, which blocks modern rendering features (MRT, WebGL2 texture formats) and adds compatibility overhead. The project no longer needs legacy browser support, so keeping WebGL1 slows down new rendering capabilities like generic auxiliary buffers and feedback effects.
+glugglugglug currently targets WebGL1, which blocks modern rendering features (MRT, WebGL2 texture formats) and adds compatibility overhead. The project no longer needs legacy browser support, so keeping WebGL1 slows down new rendering capabilities like generic auxiliary buffers and feedback effects.
 
 ## Proposed Solution
 
@@ -54,9 +54,9 @@ Move the renderer to WebGL2-only by:
 
 ## Affected Components
 
-- `packages/editor/packages/glugglug/src/renderer.ts` - context creation, buffers, FBOs
-- `packages/editor/packages/glugglug/src/postProcess/PostProcessManager.ts` - shader usage, uniforms
-- `packages/editor/packages/glugglug/src/shaders/*` - shader sources
+- `packages/editor/packages/glugglugglug/src/renderer.ts` - context creation, buffers, FBOs
+- `packages/editor/packages/glugglugglug/src/postProcess/PostProcessManager.ts` - shader usage, uniforms
+- `packages/editor/packages/glugglugglug/src/shaders/*` - shader sources
 - `docs/` - update compatibility notes
 
 ## Risks & Considerations

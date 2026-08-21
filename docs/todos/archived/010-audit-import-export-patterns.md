@@ -29,7 +29,7 @@ export * from './types';  // This can cause issues with Vite
 // packages/editor/src/index.ts - good pattern
 export default async function init(...) { ... }
 
-// packages/editor/packages/glugglug/src/index.ts - good pattern
+// packages/editor/packages/glugglugglug/src/index.ts - good pattern
 export type SpriteCoordinates = { ... };
 export class Engine { ... }
 ```

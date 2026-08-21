@@ -11,7 +11,7 @@ const outputDir = path.resolve(workspaceRoot, 'logs/test-coverage');
 const suiteName = 'test-coverage';
 
 const ignoredDirectories = new Set(['.tmp', 'coverage', 'dist', 'node_modules']);
-const ignoredPackages = new Set(['glugglug']);
+const ignoredPackages = new Set(['glugglugglug']);
 const excludedSourceFilePatterns = [/\.d\.ts$/, /\.test\.ts$/, /\.spec\.ts$/];
 const coverageMetrics = ['statements', 'branches', 'functions', 'lines'];
 

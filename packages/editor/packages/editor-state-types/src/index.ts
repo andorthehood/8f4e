@@ -6,7 +6,7 @@
 
 import type { CompileInput, CompileOptions, MemoryAction as CompilerMemoryAction } from '@8f4e/language-spec';
 import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
-import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug';
+import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {

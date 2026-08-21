@@ -93,7 +93,7 @@ const mocks = vi.hoisted(() => {
 	};
 });
 
-vi.mock('glugglug', () => ({
+vi.mock('glugglugglug', () => ({
 	Engine: mocks.Engine,
 	ShaderUnderlay: mocks.ShaderUnderlay,
 	RgbaTextureLayer: mocks.RgbaTextureLayer,

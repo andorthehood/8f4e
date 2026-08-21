@@ -12,7 +12,7 @@ completed: 2026-08-19
 
 ## Problem Description
 
-Old `glugglug` can pass the completed scene through one fullscreen shader using `u_renderTexture`, `u_time`, and
+Old `glugglugglug` can pass the completed scene through one fullscreen shader using `u_renderTexture`, `u_time`, and
 `u_resolution`. A normal `postDraw` hook can draw above the scene, but it cannot sample the already rendered canvas
 unless the scene is first made available as a texture.
 

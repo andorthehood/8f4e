@@ -6,7 +6,7 @@ This note captures the current plan for adding an ASCII/text renderer without re
 
 ## Goal
 
-Reuse the existing `web-ui` rendering logic by passing in a renderer instance that follows the same API shape as `glugglug`.
+Reuse the existing `web-ui` rendering logic by passing in a renderer instance that follows the same API shape as `glugglugglug`.
 
 The ASCII renderer is intended for:
 
@@ -16,9 +16,9 @@ The ASCII renderer is intended for:
 
 ## Constraints
 
-- Leave `glugglug` unchanged.
-- Do not turn `glugglug` into a multi-backend package.
-- Do not duplicate a handwritten engine interface if it can be derived from `glugglug`.
+- Leave `glugglugglug` unchanged.
+- Do not turn `glugglugglug` into a multi-backend package.
+- Do not duplicate a handwritten engine interface if it can be derived from `glugglugglug`.
 - Keep the current `web-ui` drawer logic as intact as possible.
 
 ## Current state
@@ -27,19 +27,19 @@ The ASCII renderer is intended for:
 
 The main coupling today is:
 
-- drawers import the `Engine` type directly from `glugglug`
+- drawers import the `Engine` type directly from `glugglugglug`
 - `packages/editor/packages/web-ui/src/index.ts` constructs `new Engine(...)` directly
 
-There are currently many `glugglug` imports in `web-ui`, but they are concentrated in drawer type annotations and the top-level init path rather than being deeply scattered through unrelated logic.
+There are currently many `glugglugglug` imports in `web-ui`, but they are concentrated in drawer type annotations and the top-level init path rather than being deeply scattered through unrelated logic.
 
 ## Proposed direction
 
-Introduce a local `Engine` type inside `@8f4e/web-ui`, but derive it from `glugglug.Engine` instead of rewriting it by hand.
+Introduce a local `Engine` type inside `@8f4e/web-ui`, but derive it from `glugglugglug.Engine` instead of rewriting it by hand.
 
 Example shape:
 
 ```ts
-import type { Engine as GlugglugEngine } from 'glugglug';
+import type { Engine as GlugglugEngine } from 'glugglugglug';
 
 export type Engine = Pick<
 	GlugglugEngine,
@@ -56,43 +56,43 @@ export type Engine = Pick<
 
 Then:
 
-- `web-ui` drawer files import this local `Engine` type instead of importing `Engine` from `glugglug`
+- `web-ui` drawer files import this local `Engine` type instead of importing `Engine` from `glugglugglug`
 - `web-ui` init accepts an injected engine instance or engine factory
-- the browser path passes a real `glugglug.Engine`
+- the browser path passes a real `glugglugglug.Engine`
 - the ASCII path passes a separate engine implementation with the same public API surface
 
-## Why not use `glugglug.Engine` directly as the type?
+## Why not use `glugglugglug.Engine` directly as the type?
 
-Because `glugglug.Engine` is a class with private members such as:
+Because `glugglugglug.Engine` is a class with private members such as:
 
 - `renderer`
 - `cachingEnabled`
 - `savedOffsetX`
 - `savedOffsetY`
 
-That means a separate class with the same public methods is not assignable to the raw `glugglug.Engine` type.
+That means a separate class with the same public methods is not assignable to the raw `glugglugglug.Engine` type.
 
-Using `Pick<glugglug.Engine, ...>` avoids duplicating the contract while still allowing structural compatibility for a separate ASCII engine implementation.
+Using `Pick<glugglugglug.Engine, ...>` avoids duplicating the contract while still allowing structural compatibility for a separate ASCII engine implementation.
 
 ## Resulting architecture
 
 ```text
 editor-state
 -> web-ui drawers
--> local web-ui Engine type (derived from glugglug.Engine via Pick)
-   -> real glugglug engine instance
+-> local web-ui Engine type (derived from glugglugglug.Engine via Pick)
+   -> real glugglugglug engine instance
    -> separate ASCII engine instance
 ```
 
 This keeps:
 
-- `glugglug` as the source of truth for the method signatures
+- `glugglugglug` as the source of truth for the method signatures
 - `web-ui` as the owner of the renderer contract it actually needs
 - the ASCII renderer as a separate package
 
 ## ASCII engine direction
 
-The ASCII engine should expose the same method names and argument shapes as the picked `glugglug` surface, but render into a fixed-size mutable 2D text canvas.
+The ASCII engine should expose the same method names and argument shapes as the picked `glugglugglug` surface, but render into a fixed-size mutable 2D text canvas.
 
 Core idea:
 

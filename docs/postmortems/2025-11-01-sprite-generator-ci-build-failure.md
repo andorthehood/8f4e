@@ -6,12 +6,12 @@
 
 ## Summary
 
-The `sprite-generator` package was failing to build in CI with TypeScript errors indicating it couldn't find the `glugglug` module, despite the dependency being correctly declared and the build working locally.
+The `sprite-generator` package was failing to build in CI with TypeScript errors indicating it couldn't find the `glugglugglug` module, despite the dependency being correctly declared and the build working locally.
 
 ## Timeline
 
 - **Initial Report:** Build failures in GitHub Actions when building sprite-generator
-- **Error:** `TS2307: Cannot find module 'glugglug' or its corresponding type declarations`
+- **Error:** `TS2307: Cannot find module 'glugglugglug' or its corresponding type declarations`
 - **Investigation:** Suspected git submodule issues, workspace configuration problems
 - **Root Cause Identified:** Missing `^build` dependency in sprite-generator's Nx configuration
 - **Fix Applied:** Added `^build` to `dependsOn` arrays in sprite-generator's project.json
@@ -31,7 +31,7 @@ The sprite-generator package's `project.json` had custom `dependsOn` configurati
 
 The global `nx.json` specifies that all `build` targets should depend on `["^build"]`, meaning "build all my dependencies first." However, when a project defines its own `dependsOn`, it **replaces** rather than merges with the global defaults.
 
-This meant that when Nx orchestrated parallel builds in CI, it didn't know that `sprite-generator` needed to wait for `glugglug` to be built first.
+This meant that when Nx orchestrated parallel builds in CI, it didn't know that `sprite-generator` needed to wait for `glugglugglug` to be built first.
 
 ## Why It Failed in CI But Not Locally
 
@@ -43,30 +43,30 @@ The issue was a **race condition** that manifested differently in CI vs local en
 1. Fresh checkout with no `dist/` directories
 2. `npm ci` installs dependencies and creates workspace symlinks
 3. `npx nx run-many --target=build --all` parallelizes builds across all packages
-4. Without `^build` dependency, Nx schedules `sprite-generator:build` and `glugglug:build` in parallel
+4. Without `^build` dependency, Nx schedules `sprite-generator:build` and `glugglugglug:build` in parallel
 5. `sprite-generator:build` starts immediately (only waits for `generate-fonts`)
-6. TypeScript tries to resolve `import { SpriteCoordinates } from 'glugglug'`
-7. Looks in `node_modules/glugglug/dist/index.d.ts` (via symlink)
-8. **File doesn't exist yet** because `glugglug:build` is still running → ❌ **FAIL**
+6. TypeScript tries to resolve `import { SpriteCoordinates } from 'glugglugglug'`
+7. Looks in `node_modules/glugglugglug/dist/index.d.ts` (via symlink)
+8. **File doesn't exist yet** because `glugglugglug:build` is still running → ❌ **FAIL**
 
 #### Local Development (Stateful):
-1. Previous builds have already created `glugglug/dist/`
-2. Nx cache may restore `glugglug` build artifacts
+1. Previous builds have already created `glugglugglug/dist/`
+2. Nx cache may restore `glugglugglug` build artifacts
 3. Manual builds (`npm run build`) often happen sequentially
 4. When running `npm run dev`, dependencies are built first due to dev target's `^build` dependency
-5. `glugglug/dist/index.d.ts` already exists → ✅ **SUCCESS**
+5. `glugglugglug/dist/index.d.ts` already exists → ✅ **SUCCESS**
 
 ### Why TypeScript Needs the dist/ Directory
 
-TypeScript's module resolution for the `glugglug` import:
+TypeScript's module resolution for the `glugglugglug` import:
 ```typescript
-import { SpriteCoordinates } from 'glugglug';
+import { SpriteCoordinates } from 'glugglugglug';
 ```
 
 Resolution path:
-1. Looks up the dependency tree for `node_modules/glugglug/`
-2. Reads `glugglug/package.json` which has `"types": "./dist/index.d.ts"`
-3. Resolves to symlink: `node_modules/glugglug/dist/index.d.ts` → `packages/editor/packages/glugglug/dist/index.d.ts`
+1. Looks up the dependency tree for `node_modules/glugglugglug/`
+2. Reads `glugglugglug/package.json` which has `"types": "./dist/index.d.ts"`
+3. Resolves to symlink: `node_modules/glugglugglug/dist/index.d.ts` → `packages/editor/packages/glugglugglug/dist/index.d.ts`
 4. **Must exist at build time** or TypeScript fails
 
 ## The Fix
@@ -90,16 +90,16 @@ Added `"^build"` to the `dependsOn` array for all targets that run TypeScript:
 ```
 
 This ensures:
-1. Nx builds `glugglug` first (because sprite-generator depends on it)
+1. Nx builds `glugglugglug` first (because sprite-generator depends on it)
 2. Then generates fonts for sprite-generator
-3. Finally builds sprite-generator with glugglug's types available
+3. Finally builds sprite-generator with glugglugglug's types available
 
 ## Verification
 
 After the fix, running `npx nx run @8f4e/sprite-generator:build` shows:
 ```
 Running target build for project @8f4e/sprite-generator and 2 tasks it depends on:
-> nx run glugglug:build
+> nx run glugglugglug:build
 > nx run @8f4e/sprite-generator:generate-fonts
 > nx run @8f4e/sprite-generator:build
 ✓ Successfully ran target build
@@ -137,8 +137,8 @@ Initial investigation focused on submodule checkout, but that wasn't the issue. 
 Key files involved:
 - `nx.json` - Global targetDefaults with `"build": { "dependsOn": ["^build"] }`
 - `packages/editor/packages/sprite-generator/project.json` - Was missing `^build`
-- `packages/editor/packages/sprite-generator/package.json` - Declares `glugglug` dependency
-- `packages/editor/packages/glugglug/package.json` - Exports types via `"types": "./dist/index.d.ts"`
+- `packages/editor/packages/sprite-generator/package.json` - Declares `glugglugglug` dependency
+- `packages/editor/packages/glugglugglug/package.json` - Exports types via `"types": "./dist/index.d.ts"`
 
 ## Prevention
 

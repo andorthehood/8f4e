@@ -12,7 +12,7 @@ completed: 2026-08-19
 
 ## Problem Description
 
-Old `glugglug` can compile one custom background effect and draw it behind the sprite scene. `glugglug2` now exposes
+Old `glugglugglug` can compile one custom background effect and draw it behind the sprite scene. `glugglug2` now exposes
 the raw WebGL2 context and ordered `preDraw` hooks, but consumers would still need to repeat shader compilation,
 fullscreen geometry, standard uniforms, replacement, and cleanup to use that capability safely.
 

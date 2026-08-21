@@ -98,7 +98,7 @@ export interface State {
 
 ### Step 5: Create Console Overlay Drawer
 - Create `packages/editor/packages/web-ui/src/drawers/consoleOverlay.ts`
-- Implement rendering logic using glugglug engine
+- Implement rendering logic using glugglugglug engine
 - Position overlay on right side of viewport
 - Calculate visible logs based on screen height
 - Truncate long messages to fit screen width

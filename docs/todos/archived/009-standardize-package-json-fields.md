@@ -75,7 +75,7 @@ Standardize all package.json files with consistent, Vite-compatible configuratio
 - Expected outcome: Template for all packages to follow
 
 ### Step 3: Update core packages first
-- Update `compiler`, `glugglug`, `sprite-generator` packages
+- Update `compiler`, `glugglugglug`, `sprite-generator` packages
 - Add `"type": "module"`, `"exports"`, `"sideEffects": false"`
 - Standardize scripts and dependencies
 - Expected outcome: Core packages have consistent configuration
@@ -111,7 +111,7 @@ Standardize all package.json files with consistent, Vite-compatible configuratio
 ## Affected Components
 
 - `packages/compiler/package.json` - Standardize fields and scripts
-- `packages/editor/packages/glugglug/package.json` - Add missing fields
+- `packages/editor/packages/glugglugglug/package.json` - Add missing fields
 - `packages/editor/packages/sprite-generator/package.json` - Remove Parcel-specific config
 - `packages/audio-worklet-runtime/package.json` - Add main/types/exports
 - `packages/web-worker-*/*/package.json` - Add missing fields

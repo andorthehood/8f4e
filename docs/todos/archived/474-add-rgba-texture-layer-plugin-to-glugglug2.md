@@ -12,7 +12,7 @@ completed: 2026-08-19
 
 ## Problem Description
 
-Old `glugglug` can upload or update caller-owned RGBA8 pixels, choose nearest or linear filtering, draw that texture,
+Old `glugglugglug` can upload or update caller-owned RGBA8 pixels, choose nearest or linear filtering, draw that texture,
 and delete it. The editor uses this for a WebAssembly-produced framebuffer. `glugglug2` only samples its persistent
 sprite atlas, so consumers cannot currently display dynamic pixel buffers without writing raw texture lifecycle and
 fullscreen rectangle code themselves.

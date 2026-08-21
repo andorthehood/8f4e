@@ -97,7 +97,7 @@ Refactor the post-process shader system to be project-scoped with a future-proof
 - `packages/editor/src/shaders/` - Move shader files to example project.json
 - `src/examples/projects/` - Add new CRT effect project or update existing project with full shader configuration
 - Project loading system - Add shader configuration parsing from project.json
-- `glugglug` - May need updates to support dynamic shader loading and uniform mapping
+- `glugglugglug` - May need updates to support dynamic shader loading and uniform mapping
 
 ## Future Extensibility Features
 
