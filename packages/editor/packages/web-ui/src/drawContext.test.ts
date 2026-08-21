@@ -35,7 +35,7 @@ describe('DrawContext', () => {
 		]);
 	});
 
-	it('owns space skipping and unsupported-character fallback outside glugglug2', () => {
+	it('owns space skipping and unsupported-character fallback outside glugglug', () => {
 		const target = { drawSprite: vi.fn() };
 		const draw = new DrawContext(target, 8);
 		const font = { 63: spriteId(9), 65: spriteId(1) } as SpriteFont;

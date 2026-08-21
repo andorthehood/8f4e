@@ -8,7 +8,7 @@ import type {
 } from '@8f4e/editor-state-types';
 import generateSprite from '@8f4e/sprite-generator';
 import initView, { type MemoryViews, type RenderStats, type WebUiOptions } from '@8f4e/web-ui';
-import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug2';
+import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug';
 import {
 	BIN_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
 	binaryAssetsEditorConfigSchemaContribution,

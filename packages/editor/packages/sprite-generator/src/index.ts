@@ -1,4 +1,4 @@
-import type { SpriteCoordinates } from 'glugglug2';
+import type { SpriteCoordinates } from 'glugglug';
 import { createAtlasLayout } from './atlasLayout.ts';
 import generateBackground, { generateLookup as generateLookupForBackground } from './background.ts';
 import defaultColorScheme from './defaultColorScheme.ts';

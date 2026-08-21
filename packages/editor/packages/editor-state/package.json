@@ -30,7 +30,7 @@
     "@8f4e/sprite-generator": "*",
     "@8f4e/state-manager": "*",
     "@8f4e/tokenizer": "*",
-    "glugglug2": "*"
+    "glugglug": "*"
   },
   "devDependencies": {
     "@8f4e/editor-state-testing": "*",

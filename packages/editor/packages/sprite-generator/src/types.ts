@@ -1,4 +1,4 @@
-import type { SpriteCoordinates } from 'glugglug2';
+import type { SpriteCoordinates } from 'glugglug';
 
 export const Command = {
 	FILL_COLOR: 0,

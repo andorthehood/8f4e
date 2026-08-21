@@ -1,4 +1,4 @@
-import type { SpriteCoordinates, SpriteLookup } from 'glugglug2';
+import type { SpriteCoordinates, SpriteLookup } from 'glugglug';
 
 type SpriteLookupGroup = Record<string | number, SpriteCoordinates>;
 

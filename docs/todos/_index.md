@@ -70,7 +70,7 @@ Active todo files are listed below.
 | 459 | Extract compiler diagnostics package | 🟡 | 2-4h | 2026-06-15 | Move compiler diagnostic construction into a small shared package so compiler-adjacent packages can emit consistent diagnostics without importing compiler internals. |
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
-| 468 | Add shader-batched raster caches to glugglug2 | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
+| 468 | Add shader-batched raster caches to glugglug | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
 
 ### 🟢 Low Priority
 

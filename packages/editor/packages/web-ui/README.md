@@ -4,7 +4,7 @@ This package provides a web-based UI renderer for the editor. It renders the UI 
 the editor state and memory views, treating state as immutable input, and is designed to be
 replaceable by renderers for other platforms.
 
-Rendering is backed by `glugglug2`. Sprite names are resolved to dense numeric IDs when the atlas is generated, so
+Rendering is backed by `glugglug`. Sprite names are resolved to dense numeric IDs when the atlas is generated, so
 per-frame drawers submit only positions, sizes, and numeric IDs. Shader backgrounds and WebAssembly RGBA frames are
 drawn below the sprites, while connections are drawn as a line overlay above them.
 

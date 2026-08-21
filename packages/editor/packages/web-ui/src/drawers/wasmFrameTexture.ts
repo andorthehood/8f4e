@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { RgbaTexture, RgbaTextureFilter, RgbaTextureLayer } from 'glugglug2';
+import type { RgbaTexture, RgbaTextureFilter, RgbaTextureLayer } from 'glugglug';
 import type { MemoryViews } from '../types';
 
 export type WasmFrameTextureObjectFit = 'fill' | 'cover' | 'contain' | 'none';

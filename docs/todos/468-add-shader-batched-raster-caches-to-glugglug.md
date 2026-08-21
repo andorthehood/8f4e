@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Add shader-batched raster caches to glugglug2'
+title: 'TODO: Add shader-batched raster caches to glugglug'
 priority: Medium
 effort: 3-5d
 created: 2026-08-19
@@ -8,11 +8,11 @@ status: Open
 completed: null
 ---
 
-# TODO: Add shader-batched raster caches to glugglug2
+# TODO: Add shader-batched raster caches to glugglug
 
 ## Problem Description
 
-`glugglug2` rebuilds an ordered sprite-instance list every frame. This is appropriate for moving sprites, but static,
+`glugglug` rebuilds an ordered sprite-instance list every frame. This is appropriate for moving sprites, but static,
 dense content such as a long text block may submit hundreds of identical glyph sprites on every render cycle. A
 500-glyph label currently requires 500 `drawSprite()` calls, 500 instance records, and 500 instanced quads each frame
 even when only the label's outer position changes.
@@ -75,7 +75,7 @@ engine.renderFrame(() => {
 ```
 
 The cache builder's `drawSprite(x, y, spriteId, width?, height?)` surface should be structurally compatible with the
-`SpriteTarget` contract implemented by TODO 469. This allows `glugglug2/utils` consumers to wrap a cache builder in a
+`SpriteTarget` contract implemented by TODO 469. This allows `glugglug/utils` consumers to wrap a cache builder in a
 `DrawContext` for offsets and fixed-cell text without making the core cache implementation import the optional utility
 entry point.
 
@@ -166,11 +166,11 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 
 ## Validation Checkpoints
 
-- `npx nx run glugglug2:build`
-- `npx nx run glugglug2:typecheck`
-- `npx nx run glugglug2:test`
-- `npx nx run glugglug2:lint`
-- `npx nx run glugglug2:test:screenshot`
+- `npx nx run glugglug:build`
+- `npx nx run glugglug:typecheck`
+- `npx nx run glugglug:test`
+- `npx nx run glugglug:lint`
+- `npx nx run glugglug:test:screenshot`
 - Inspect one cached frame with browser GPU tooling and confirm one main instance-buffer upload and one main instanced draw.
 - Confirm cache creation performs its framebuffer render once and later frames only append the single cached-image
   instance.
@@ -223,11 +223,11 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 
 ## Related Items
 
-- **Depends on**: TODO 467 (Add instanced sprite-only glugglug2 renderer; completed)
+- **Depends on**: TODO 467 (Add instanced sprite-only glugglug renderer; completed)
 - **Related**: TODO 052 (Simplify Cache Rendering Order in glugglug)
 - **Related**: TODO 155 (Add Framebuffer Memory Accounting in glugglug)
-- **Related**: TODO 469 (Add optional drawing utilities to glugglug2; completed)
-- **Related**: TODO 470 (Add no-op cacheGroup compatibility helper to glugglug2 utilities)
+- **Related**: TODO 469 (Add optional drawing utilities to glugglug; completed)
+- **Related**: TODO 470 (Add no-op cacheGroup compatibility helper to glugglug utilities)
 - **Related**: `packages/editor/packages/glugglug/docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md`
 
 ## Notes

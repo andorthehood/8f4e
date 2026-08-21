@@ -27,7 +27,7 @@
     "@8f4e/editor-state-types": "*",
     "@8f4e/language-spec": "*",
     "@8f4e/sprite-generator": "*",
-    "glugglug2": "*"
+    "glugglug": "*"
   },
   "devDependencies": {
     "@8f4e/editor-state-testing": "*",

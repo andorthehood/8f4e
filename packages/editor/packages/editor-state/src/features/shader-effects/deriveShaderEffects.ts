@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, CodeError } from '@8f4e/editor-state-types';
-import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug2';
+import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglug';
 import extractShaderSource from './extractShaderSource';
 import getShaderNoteMetadata from './getShaderNoteMetadata';
 
