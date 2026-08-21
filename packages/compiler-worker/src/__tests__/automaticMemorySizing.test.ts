@@ -1,9 +1,9 @@
-import type { CompileInput, Module } from '@8f4e/language-spec';
+import type { Module, SubProgramSource } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
-function createInput(modules: Module[]): CompileInput {
+function createInput(modules: Module[]): SubProgramSource {
 	return {
 		entries: { main: modules },
 		constants: [],

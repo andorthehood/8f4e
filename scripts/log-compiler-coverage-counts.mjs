@@ -26,42 +26,42 @@ const coverageComponents = [
 	{
 		id: 'tokenizer',
 		label: 'tokenizer',
-		pathFragment: '/packages/compiler/packages/tokenizer/dist/',
+		pathFragment: '/packages/compiler/packages/sub-program/packages/tokenizer/dist/',
 	},
 	{
 		id: 'constantResolver',
 		label: 'constant resolver',
-		pathFragment: '/packages/compiler/packages/constant-resolver/dist/',
+		pathFragment: '/packages/compiler/packages/sub-program/packages/constant-resolver/dist/',
 	},
 	{
 		id: 'memoryPlanner',
 		label: 'memory planner',
-		pathFragment: '/packages/compiler/packages/memory-planner/dist/',
+		pathFragment: '/packages/compiler/packages/sub-program/packages/memory-planner/dist/',
 	},
 	{
 		id: 'memoryReferenceResolver',
 		label: 'memory reference resolver',
-		pathFragment: '/packages/compiler/packages/memory-reference-resolver/dist/',
+		pathFragment: '/packages/compiler/packages/sub-program/packages/memory-reference-resolver/dist/',
 	},
 	{
 		id: 'memoryDefaultResolver',
 		label: 'memory default resolver',
-		pathFragment: '/packages/compiler/packages/memory-default-resolver/dist/',
+		pathFragment: '/packages/compiler/packages/sub-program/packages/memory-default-resolver/dist/',
 	},
 	{
 		id: 'semanticReferenceResolver',
 		label: 'semantic reference resolver',
-		pathFragment: '/packages/compiler/packages/semantic-reference-resolver/dist/',
+		pathFragment: '/packages/compiler/packages/sub-program/packages/semantic-reference-resolver/dist/',
 	},
 	{
 		id: 'semanticUtils',
 		label: 'semantic utils',
-		pathFragment: '/packages/compiler/packages/semantic-utils/dist/',
+		pathFragment: '/packages/compiler/packages/sub-program/packages/semantic-utils/dist/',
 	},
 	{
 		id: 'stackAnalyzer',
 		label: 'stack analyzer',
-		pathFragment: '/packages/compiler/packages/stack-analyzer/dist/',
+		pathFragment: '/packages/compiler/packages/sub-program/packages/stack-analyzer/dist/',
 	},
 	{
 		id: 'wasmCodegen',

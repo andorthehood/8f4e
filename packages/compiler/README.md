@@ -1,12 +1,31 @@
 # @8f4e/compiler
 
-Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata. It exposes the main compiler API along with a `syntax` export used by editor tooling.
+Core compiler that transforms one closed 8f4e sub-program into WebAssembly plus runtime metadata.
+
+## Compilation boundaries
+
+```text
+project document
+  -> project-preparser
+  -> SubProgramSource
+  -> sub-program compiler
+  -> CompiledSubProgram
+  -> WebAssembly emission
+  -> CompileResult
+```
+
+A `SubProgramSource` is an atomic compilation unit containing entries, modules, functions, constants, and prototypes.
+All names and memory references resolve within that boundary. `ProgramSource` provides a source-level container that can
+assign identities to multiple sub-programs, but cross-unit linking and relocation are intentionally not implemented yet.
+
+`CompiledSubProgram` is the emission handoff, not yet a generally relocatable object format: its function indexes and
+memory addresses have already been assigned within one unit.
 
 ## Compiler Passes
 
 ```text
-                         8f4e Compiler Pipeline
-                         ======================
+                       8f4e Sub-program Pipeline
+                       =========================
 
   source modules       source functions       constants/prototypes
        |                     |                       |
@@ -66,7 +85,7 @@ Core compiler that transforms 8f4e source into WebAssembly plus runtime metadata
                   |  resolveSemanticReferences()|
                   |                             |
                   |  resolve value refs once    |
-                  |  for the whole project      |
+                  |  for the whole sub-program  |
                   +-----------------------------+
                                 |
                                 v
@@ -131,5 +150,6 @@ source
   -> semantic reference resolution
   -> stack validation
   -> instruction codegen from AST + pass reports
+  -> CompiledSubProgram
   -> WASM module + runtime metadata
 ```

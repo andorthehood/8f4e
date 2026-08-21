@@ -82,8 +82,8 @@ That helper should:
 ## Affected Components
 
 - `packages/compiler/src/index.ts` - module parse orchestration
-- `packages/compiler/packages/tokenizer/` or compiler-side parse wrapper - batch parse helper location
-- `packages/compiler/src/semantic/buildNamespace.ts` - remove standalone duplicate-module assertion if superseded
+- `packages/compiler/packages/sub-program/packages/tokenizer/` or compiler-side parse wrapper - batch parse helper location
+- `packages/compiler/packages/sub-program/src/semantic/buildNamespace.ts` - remove standalone duplicate-module assertion if superseded
 - `packages/compiler/src/graphOptimizer.ts` - should remain ordering-only
 
 ## Risks & Considerations

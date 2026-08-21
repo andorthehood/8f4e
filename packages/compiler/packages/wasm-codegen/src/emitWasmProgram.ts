@@ -21,35 +21,13 @@ import {
 	WASM_MEMORY_PAGE_SIZE,
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
-import type {
-	CompiledFunction,
-	CompiledModule,
-	CompileOptions,
-	CompileResult,
-	CompilerCache,
-	FunctionTypeRegistry,
-	MemoryDefaults,
-	MemoryLayoutPlan,
-	MemoryPointerMetadataMap,
-} from '@8f4e/language-spec';
+import type { CompiledSubProgram, CompileOptions, CompileResult, MemoryLayoutPlan } from '@8f4e/language-spec';
 import {
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	getCustomMemoryRegionName,
 } from '@8f4e/language-spec';
 import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
-
-/** Linkable compiler output consumed by the WebAssembly emitter. */
-export type WasmProgramInput = {
-	entryNames: string[];
-	compiledModules: CompiledModule[];
-	compiledFunctions: CompiledFunction[];
-	functionTypeRegistry: FunctionTypeRegistry;
-	memoryPlan: MemoryLayoutPlan;
-	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
-	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
-	cache: CompilerCache;
-};
 
 /** Calculates required byte size for each WebAssembly memory index. */
 function getRequiredMemoryBytesByIndex(memoryPlan: MemoryLayoutPlan) {
@@ -88,7 +66,7 @@ function getRequiredMemoryBytesByRegion(
  * @returns Compiled WebAssembly program and related metadata.
  */
 export function emitWasmProgram(
-	program: WasmProgramInput,
+	program: CompiledSubProgram,
 	options: Pick<CompileOptions, 'disableSharedMemory' | 'memoryRegions'>
 ): CompileResult {
 	const {

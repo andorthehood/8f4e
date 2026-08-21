@@ -90,12 +90,12 @@ This change is intentionally breaking at the parser/diagnostic contract level:
 
 ## Affected Components
 
-- `packages/compiler/packages/tokenizer/src/parser.ts` - parser state, block pairing, and top-level ownership tracking
-- `packages/compiler/packages/tokenizer/src/types.ts` - parser-owned linkage metadata for structural blocks
-- `packages/compiler/packages/tokenizer/src/syntax/syntaxError.ts` - syntax diagnostics carrying parser-known context
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/parser.ts` - parser state, block pairing, and top-level ownership tracking
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/types.ts` - parser-owned linkage metadata for structural blocks
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/syntaxError.ts` - syntax diagnostics carrying parser-known context
 - `packages/compiler/src/diagnostic.ts` - preserve parser-supplied line/context in serialized diagnostics
 - `packages/editor/packages/editor-state/src/features/program-compiler/effect.ts` - consume syntax diagnostics with parser-known block ownership
-- `packages/compiler/tests/` and `packages/compiler/packages/tokenizer/src/` - parser and integration coverage
+- `packages/compiler/tests/` and `packages/compiler/packages/sub-program/packages/tokenizer/src/` - parser and integration coverage
 
 ## Risks & Considerations
 

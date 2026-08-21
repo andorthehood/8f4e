@@ -6,9 +6,11 @@
 - Compiles custom assembly language into WebAssembly bytecode.
 - Supports modules (stateful, with memory) and pure functions (stateless, stack-only).
 - Shared language contracts live in the nested standalone subpackage `@8f4e/language-spec` (`packages/compiler/packages/language-spec`).
+- Closed-unit compilation lives in `@8f4e/sub-program` (`packages/compiler/packages/sub-program`); its exclusively owned passes live under that package's `packages/` directory.
 - Include-only source resolution lives in the nested standalone subpackage `@8f4e/include-resolver` (`packages/compiler/packages/include-resolver`).
-- Syntax parsing now lives in the nested subpackage `@8f4e/tokenizer` (`packages/compiler/packages/tokenizer`).
+- Syntax parsing lives in the sub-program-owned package `@8f4e/tokenizer` (`packages/compiler/packages/sub-program/packages/tokenizer`).
 - Project preparsing lives in the nested standalone subpackage `@8f4e/project-preparser` (`packages/compiler/packages/project-preparser`).
+- WebAssembly body generation and final binary emission live in `@8f4e/wasm-codegen` (`packages/compiler/packages/wasm-codegen`).
 - Standard library sources live in the nested source package `@8f4e/stdlib` (`packages/compiler/packages/stdlib`).
 
 ## Build, Test, Dev

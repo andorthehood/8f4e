@@ -33,7 +33,7 @@ Potential directions:
 
 ## Affected Components
 
-- `packages/compiler/src/semantic/buildNamespace.ts`
+- `packages/compiler/packages/sub-program/src/semantic/buildNamespace.ts`
 - `packages/compiler/src/compiler.ts`
 - `packages/compiler/src/index.ts`
 

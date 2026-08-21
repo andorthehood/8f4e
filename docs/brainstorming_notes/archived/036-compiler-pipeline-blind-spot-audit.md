@@ -60,7 +60,7 @@ This blind spot is important enough to have its own todo:
 
 Files:
 
-- `packages/compiler/src/semantic/buildNamespace.ts`
+- `packages/compiler/packages/sub-program/src/semantic/buildNamespace.ts`
 - `packages/compiler/src/instructionCompilers/load.ts`
 
 These still contain `UNRECOGNISED_INSTRUCTION`-style guards.

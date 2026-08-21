@@ -78,9 +78,9 @@ to later compiler passes beside the original AST. Do not cache transformed/inlin
 
 ## Affected Components
 
-- `packages/compiler/packages/tokenizer/src/index.ts` - current source-block AST cache lookup and storage.
-- `packages/compiler/src/compileSubProgram.ts` - per-compile AST preparation and constant resolution integration.
-- `packages/compiler/packages/constant-resolver` - should stay simple and avoid cache-specific responsibilities.
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/index.ts` - current source-block AST cache lookup and storage.
+- `packages/compiler/packages/sub-program/src/compileSubProgram.ts` - per-compile AST preparation and constant resolution integration.
+- `packages/compiler/packages/sub-program/packages/constant-resolver` - should stay simple and avoid cache-specific responsibilities.
 - `packages/compiler/tests/compilerOptionsAndCache.test.ts` - likely home for future practical cache dependency coverage.
 
 ## Risks & Considerations

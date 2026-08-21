@@ -91,8 +91,8 @@ assembly in the compiler or the package that owns the phase.
 
 - `packages/compiler/src/compilerError.ts` - likely deleted, reduced to a re-export, or moved.
 - `packages/compiler/packages/language-spec/src/errors.ts` - remains the source of error codes and diagnostic types.
-- `packages/compiler/packages/constant-resolver` - candidate consumer for shared diagnostics.
-- `packages/compiler/src/compileSubProgram.ts` - current `ConstantResolverError` wrapper may become thinner.
+- `packages/compiler/packages/sub-program/packages/constant-resolver` - candidate consumer for shared diagnostics.
+- `packages/compiler/packages/sub-program/src/compileSubProgram.ts` - current `ConstantResolverError` wrapper may become thinner.
 
 ## Risks & Considerations
 

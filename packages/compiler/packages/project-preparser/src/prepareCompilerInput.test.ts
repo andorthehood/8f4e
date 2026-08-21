@@ -25,7 +25,7 @@ const includeSources: Record<string, string> = {
 };
 
 describe('prepareCompilerInputFromProjectBlocksAsync', () => {
-	it('classifies plain project blocks into CompileInput collections', async () => {
+	it('classifies plain project blocks into SubProgramSource collections', async () => {
 		await expect(
 			prepareCompilerInputFromProjectBlocksAsync([
 				{ id: 1, code: validModuleBlock, entry: 'main' },
@@ -144,7 +144,7 @@ describe('prepareCompilerInputAsync', () => {
 });
 
 describe('prepareCompilerInputFromProjectSourceAsync', () => {
-	it('parses source and prepares CompileInput', async () => {
+	it('parses source and prepares SubProgramSource', async () => {
 		const source = [
 			'8f4e/v1',
 			'',
