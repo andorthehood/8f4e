@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document captures brainstorming and planning notes for migrating glugglug from WebGL to WebGPU for learning purposes.
+This document captures brainstorming and planning notes for migrating glugglugglug from WebGL to WebGPU for learning purposes.
 
 ## Current Architecture
 
@@ -91,7 +91,7 @@ Glugglug is a **minimal WebGL-based 2D sprite rendering engine** with:
 
 ### WebGL: Implicit State Machine
 
-In the current glugglug code, we're manipulating a **state machine**:
+In the current glugglugglug code, we're manipulating a **state machine**:
 
 ```javascript
 // You set states one at a time

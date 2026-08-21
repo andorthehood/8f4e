@@ -59,7 +59,7 @@ Shader notes use `note ... noteEnd` with a typed subtype:
 
 ## Default Shaders
 
-A default vertex shader is provided by `glugglug` for fragment-only effects:
+A default vertex shader is provided by `glugglugglug` for fragment-only effects:
 - Pass-through fullscreen-quad shader for simple post-processing/background effects
 - `deriveShaderEffects` leaves `vertexShader` undefined when no vertex shader note is present
 
@@ -67,7 +67,7 @@ A default vertex shader is provided by `glugglug` for fragment-only effects:
 
 - Shader extraction: `extractShaderSource.ts`
 - Effect derivation: `deriveShaderEffects.ts` (first-block selection per target)
-- Runtime defaults: `glugglug` effect plugins
+- Runtime defaults: `glugglugglug` effect plugins
 
 ## Notes & Limitations
 

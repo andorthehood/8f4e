@@ -1,5 +1,5 @@
 import { type ColorSchemeOverrides, resolveColorScheme } from '@8f4e/sprite-generator';
-import type { LineColor } from 'glugglug';
+import type { LineColor } from 'glugglugglug';
 
 /** Resolved RGBA colors used by the wire line drawer. */
 export type WireColors = {

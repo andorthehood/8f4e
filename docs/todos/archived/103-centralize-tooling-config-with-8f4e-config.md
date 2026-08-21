@@ -32,7 +32,7 @@ Introduce a single `@8f4e/config` package that centralizes the workspace's tooli
 
 Important constraints:
 - Use a single `@8f4e/config` package with internal entrypoints instead of multiple `@8f4e/config-*` packages to avoid juggling multiple versions.
-- Jest usage (e.g. in glugglug) is considered deprecated and will be migrated to Vitest; no dedicated Jest config will be added to `@8f4e/config`.
+- Jest usage (e.g. in glugglugglug) is considered deprecated and will be migrated to Vitest; no dedicated Jest config will be added to `@8f4e/config`.
 
 Packages remain self-contained by keeping thin local config entrypoints (e.g. `tsconfig.json`, `vitest.config.ts`, `vite.config.ts`, ESLint config) that import from `@8f4e/config` via `node_modules` instead of repo-relative paths. Only **shared/common defaults** should live in `@8f4e/config`; any package-specific behavior (custom aliases, environment tweaks, include/exclude patterns, etc.) should continue to reside in each package's own config wrapper.
 

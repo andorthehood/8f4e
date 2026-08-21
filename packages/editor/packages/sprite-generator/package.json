@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
-    "glugglug": "*"
+    "glugglugglug": "*"
   },
   "devDependencies": {
     "vite": "7.3.5"

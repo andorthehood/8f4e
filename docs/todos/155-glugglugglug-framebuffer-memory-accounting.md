@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Add Framebuffer Memory Accounting in glugglug'
+title: 'TODO: Add Framebuffer Memory Accounting in glugglugglug'
 priority: Medium
 effort: 2-4h
 created: 2025-12-30
@@ -8,11 +8,11 @@ status: Open
 completed: null
 ---
 
-# TODO: Add Framebuffer Memory Accounting in glugglug
+# TODO: Add Framebuffer Memory Accounting in glugglugglug
 
 ## Problem Description
 
-glugglug allocates render-to-texture and cache framebuffers, but there is no structured accounting for their estimated memory impact. This makes it difficult to reason about GPU memory usage when cache sizes grow or when the canvas is resized.
+glugglugglug allocates render-to-texture and cache framebuffers, but there is no structured accounting for their estimated memory impact. This makes it difficult to reason about GPU memory usage when cache sizes grow or when the canvas is resized.
 
 ## Proposed Solution
 
@@ -39,9 +39,9 @@ Add a lightweight accounting layer that estimates bytes for framebuffer-backed t
 
 ## Affected Components
 
-- `packages/editor/packages/glugglug/src/renderer.ts` - render target accounting
-- `packages/editor/packages/glugglug/src/CachedRenderer.ts` - cache accounting
-- `packages/editor/packages/glugglug/src/types.ts` - optional stats types
+- `packages/editor/packages/glugglugglug/src/renderer.ts` - render target accounting
+- `packages/editor/packages/glugglugglug/src/CachedRenderer.ts` - cache accounting
+- `packages/editor/packages/glugglugglug/src/types.ts` - optional stats types
 
 ## Risks & Considerations
 

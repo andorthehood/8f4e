@@ -2,11 +2,11 @@
 
 Date: 2026-04-11
 
-This note captures the main rendering architecture problem in `glugglug` and the simplest direction for fixing it.
+This note captures the main rendering architecture problem in `glugglugglug` and the simplest direction for fixing it.
 
 ## Short version
 
-Right now `glugglug` does not really render things in the order the draw functions are called.
+Right now `glugglugglug` does not really render things in the order the draw functions are called.
 
 Instead, it groups work by implementation details:
 
@@ -176,6 +176,6 @@ At that point shader-driven plots and future GPU widgets become much easier to s
 
 The biggest problem is not that the new plot experiment used shaders.
 
-The biggest problem is that `glugglug` currently batches by implementation type instead of rendering by ordered commands.
+The biggest problem is that `glugglugglug` currently batches by implementation type instead of rendering by ordered commands.
 
 If we want everything to appear in the order the API is called, that needs to become the first-class rule of the engine.

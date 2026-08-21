@@ -12,7 +12,7 @@ completed: 2026-02-03
 ## Context
 
 Todo 158 added `BackgroundEffectManager` and the `setBackgroundEffect`/`clearBackgroundEffect` API
-to glugglug (Engine + Renderer). Todo 185 established the single-effect, first-block-selection pattern
+to glugglugglug (Engine + Renderer). Todo 185 established the single-effect, first-block-selection pattern
 for post-process shaders using bare `fragmentShader` / `vertexShader` markers.
 
 This todo extends the shader block syntax with a **target** suffix so that a single project can drive
@@ -68,7 +68,7 @@ first line and the second argument.
 
 Full rewrite of function + tests. Key points:
 
-- Import `BackgroundEffect` from glugglug alongside `PostProcessEffect`.
+- Import `BackgroundEffect` from glugglugglug alongside `PostProcessEffect`.
 - Function name: `deriveShaderEffects`. Return type: `{ postProcessEffects, backgroundEffects, errors }`.
 - Four state variables: `postProcessFragment`, `postProcessVertex`, `backgroundFragment`, `backgroundVertex` (all `string | null`).
 - Loop: `getBlockType` still returns `'fragmentShader'`/`'vertexShader'`. Extract target from
@@ -92,8 +92,8 @@ Full rewrite of function + tests. Key points:
 
 ### 4. `packages/editor-state/src/features/code-blocks/types.ts`
 
-- Add `BackgroundEffect` to the existing glugglug import:
-  `import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglug';`
+- Add `BackgroundEffect` to the existing glugglugglug import:
+  `import type { SpriteLookup, PostProcessEffect, BackgroundEffect } from 'glugglugglug';`
 - Add field to `GraphicHelper`:
   `backgroundEffects: BackgroundEffect[];`
 
@@ -126,8 +126,8 @@ Full rewrite of function + tests. Key points:
 
 ### 8. `packages/web-ui/src/index.ts`
 
-- Add `BackgroundEffect` to the glugglug import:
-  `import { Engine, PostProcessEffect, BackgroundEffect } from 'glugglug';`
+- Add `BackgroundEffect` to the glugglugglug import:
+  `import { Engine, PostProcessEffect, BackgroundEffect } from 'glugglugglug';`
 - Add to the return-type object and the returned object:
   ```typescript
   loadBackgroundEffect: (effect: BackgroundEffect | null) => void;
@@ -145,8 +145,8 @@ Full rewrite of function + tests. Key points:
 
 ### 9. `packages/editor/src/index.ts`
 
-- Add `BackgroundEffect` to the existing type import from glugglug:
-  `import type { PostProcessEffect, BackgroundEffect } from 'glugglug';`
+- Add `BackgroundEffect` to the existing type import from glugglugglug:
+  `import type { PostProcessEffect, BackgroundEffect } from 'glugglugglug';`
 - Add event wiring (right after the existing `loadPostProcessEffect` listener):
   ```typescript
   events.on<BackgroundEffect | null>('loadBackgroundEffect', effect => {
@@ -167,5 +167,5 @@ Full rewrite of function + tests. Key points:
 
 ## Related
 
-- Todo 158 — background effect pipeline (glugglug, already implemented and pushed)
+- Todo 158 — background effect pipeline (glugglugglug, already implemented and pushed)
 - Todo 185 — single-effect post-process simplification

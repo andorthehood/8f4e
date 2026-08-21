@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { LineDrawer } from 'glugglug';
+import type { LineDrawer } from 'glugglugglug';
 import type { MemoryViews } from '../../../types';
 import type { WireColors } from '../../../wire-colors';
 

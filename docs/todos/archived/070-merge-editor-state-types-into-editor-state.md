@@ -74,7 +74,7 @@ Consolidate `@8f4e/editor-state-types` back into `@8f4e/editor-state`:
 
 ## Notes
 
-- Ensure the merged package lists dependencies (`@8f4e/compiler`, `@8f4e/sprite-generator`, `glugglug`) formerly declared by the types package.
+- Ensure the merged package lists dependencies (`@8f4e/compiler`, `@8f4e/sprite-generator`, `glugglugglug`) formerly declared by the types package.
 - Consider keeping a thin compatibility wrapper if downstream tooling still references the old package name.
 
 ## Archive Instructions

@@ -193,11 +193,11 @@ export { CachedRenderer } from './CachedRenderer'
 
 ```typescript
 // Option 1: Lightweight (no caching)
-import { Engine } from 'glugglug'
+import { Engine } from 'glugglugglug'
 const engine = new Engine(canvas)
 
 // Option 2: Full caching capabilities
-import { CachedEngine } from 'glugglug'
+import { CachedEngine } from 'glugglugglug'
 const engine = new CachedEngine(canvas, maxCacheItems)
 
 engine.startCacheGroup('ui-panel', 200, 100)
@@ -206,7 +206,7 @@ engine.drawText(20, 50, 'Menu')
 engine.endCacheGroup() // Cached for future frames
 
 // Option 3: Custom renderer integration
-import { CachedRenderer } from 'glugglug'
+import { CachedRenderer } from 'glugglugglug'
 const renderer = new CachedRenderer(canvas)
 // Build custom engine using cached renderer
 ```

@@ -32,7 +32,7 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       ├── <a href="./packages/editor/packages/editor-state/README.md">editor-state</a> (Editor state management)
     │       ├── editor-state-types (Shared public editor-state model types)
     │       ├── <a href="./packages/editor/packages/editor-state-testing/README.md">editor-state-testing</a> (Framework-agnostic editor-state test helpers)
-    │       ├── <a href="./packages/editor/packages/glugglug/README.md">glugglug</a> (2D WebGL graphics utilities)
+    │       ├── <a href="./packages/editor/packages/glugglugglug/README.md">glugglugglug</a> (2D WebGL graphics utilities)
     │       ├── <a href="./packages/editor/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
     │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
     │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)

@@ -1,5 +1,5 @@
 import generateSprite from '@8f4e/sprite-generator';
-import { Engine } from 'glugglug';
+import { Engine } from 'glugglugglug';
 
 const output = document.querySelector<HTMLCanvasElement>('#test-canvas');
 if (!output) {

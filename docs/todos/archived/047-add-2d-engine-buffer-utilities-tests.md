@@ -25,7 +25,7 @@ Without tests, there's a risk of:
 
 ## Proposed Solution
 
-Implement comprehensive unit tests for all buffer utility functions in `packages/editor/packages/glugglug/src/utils/buffer.ts`:
+Implement comprehensive unit tests for all buffer utility functions in `packages/editor/packages/glugglugglug/src/utils/buffer.ts`:
 
 - **`fillBufferWithRectangleVertices`**: Test vertex coordinate calculations and triangle formation
 - **`fillBufferWithSpriteCoordinates`**: Test UV coordinate normalization and mapping
@@ -36,8 +36,8 @@ Use Jest as the testing framework (already configured in package.json) and creat
 ## Implementation Plan
 
 ### Step 1: Set up test infrastructure
-- Create `packages/editor/packages/glugglug/tests/` directory
-- Set up Jest configuration for the glugglug package
+- Create `packages/editor/packages/glugglugglug/tests/` directory
+- Set up Jest configuration for the glugglugglug package
 - Create test utilities for buffer validation
 
 ### Step 2: Test rectangle vertex generation
@@ -67,10 +67,10 @@ Use Jest as the testing framework (already configured in package.json) and creat
 
 ## Affected Components
 
-- `packages/editor/packages/glugglug/src/utils/buffer.ts` - Main functions to be tested
-- `packages/editor/packages/glugglug/tests/` - New test directory and files
-- `packages/editor/packages/glugglug/jest.config.js` - Jest configuration (may need creation)
-- `packages/editor/packages/glugglug/package.json` - Test script verification
+- `packages/editor/packages/glugglugglug/src/utils/buffer.ts` - Main functions to be tested
+- `packages/editor/packages/glugglugglug/tests/` - New test directory and files
+- `packages/editor/packages/glugglugglug/jest.config.js` - Jest configuration (may need creation)
+- `packages/editor/packages/glugglugglug/package.json` - Test script verification
 
 ## Risks & Considerations
 
@@ -84,7 +84,7 @@ Use Jest as the testing framework (already configured in package.json) and creat
 ## Related Items
 
 - **Blocks**: None
-- **Depends on**: Jest configuration for glugglug package
+- **Depends on**: Jest configuration for glugglugglug package
 
 ## References
 

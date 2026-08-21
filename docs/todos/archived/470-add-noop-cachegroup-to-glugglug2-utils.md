@@ -12,7 +12,7 @@ completed: 2026-08-19
 
 ## Problem Description
 
-The existing `web-ui` renderer calls the old `glugglug` `cacheGroup()` method around code-block drawing. `glugglug2`
+The existing `web-ui` renderer calls the old `glugglugglug` `cacheGroup()` method around code-block drawing. `glugglug2`
 does not yet implement raster caching, so migrating those call sites would require removing or conditionally rewriting
 the cache callbacks before the rest of the renderer migration can proceed.
 
@@ -39,8 +39,8 @@ cacheGroup(
 }
 ```
 
-The signature should remain source-compatible with the old `glugglug` method for existing call sites. The compatibility
-behavior is intentionally equivalent to old `glugglug` running with caching disabled:
+The signature should remain source-compatible with the old `glugglugglug` method for existing call sites. The compatibility
+behavior is intentionally equivalent to old `glugglugglug` running with caching disabled:
 
 - Execute `draw()` exactly once on every call, including repeated calls with the same `cacheId`.
 - Execute `draw()` whether `enabled` is `true` or `false`.
@@ -101,7 +101,7 @@ sprite submission, and the core renderer should not advertise caching until it o
 
 ## Success Criteria
 
-- [x] `DrawContext.cacheGroup()` accepts the old `glugglug` parameter order and defaults.
+- [x] `DrawContext.cacheGroup()` accepts the old `glugglugglug` parameter order and defaults.
 - [x] The callback executes exactly once per invocation regardless of id reuse or `enabled`.
 - [x] The method always returns `false` and creates no retained CPU or GPU cache state.
 - [x] Active coordinate offsets remain in effect inside the callback and remain unchanged afterward.
@@ -138,7 +138,7 @@ sprite submission, and the core renderer should not advertise caching until it o
 ## Notes
 
 - This is source-level compatibility for the single `cacheGroup()` call shape, not general compatibility with the old
-  `glugglug` engine.
+  `glugglugglug` engine.
 - Returning `false` matches the old caching-disabled branch and makes the absence of cache creation explicit.
 - Real caching remains an explicit GPU-resource feature owned by the core renderer, as described in TODO 468.
 - Completed on 2026-08-19 with the planned signature on `DrawContext`. Focused tests cover repeated ids, enabled and

@@ -37,19 +37,19 @@ Alternative approaches considered:
 ## Implementation Plan
 
 ### Step 1: Baseline snapshot and tests
-- Create a working branch; confirm current HEAD (segment-based) passes typecheck and tests for `glugglug`.
+- Create a working branch; confirm current HEAD (segment-based) passes typecheck and tests for `glugglugglug`.
 - Add/extend unit tests covering: cached reuse path, creation path, interleaving spritesheet and cached draws, and post-process interaction.
 
 ### Step 2: Bind off-screen FBO for entire frame
-- In `packages/editor/packages/glugglug/src/engine.ts`, move “start render to texture” from `Renderer.renderWithPostProcessing` to wrap the user callback: bind FBO and set viewport before invoking the callback; unbind after draws are scheduled.
+- In `packages/editor/packages/glugglugglug/src/engine.ts`, move “start render to texture” from `Renderer.renderWithPostProcessing` to wrap the user callback: bind FBO and set viewport before invoking the callback; unbind after draws are scheduled.
 - Ensure `Renderer.updateTime`, `clearScreen`, and other per-frame setup still run in the correct order.
 
 ### Step 3: Adjust renderWithPostProcessing
-- In `packages/editor/packages/glugglug/src/renderer.ts`, change `renderWithPostProcessing` to assume the FBO already contains the final scene; it should only end the FBO pass if still bound, then run post-processing to the canvas.
+- In `packages/editor/packages/glugglugglug/src/renderer.ts`, change `renderWithPostProcessing` to assume the FBO already contains the final scene; it should only end the FBO pass if still bound, then run post-processing to the canvas.
 - Verify no mid-function rebinding to the default framebuffer occurs before post-processing completes.
 
 ### Step 4: Make cached draws immediate and remove segments
-- In `packages/editor/packages/glugglug/src/CachedRenderer.ts`:
+- In `packages/editor/packages/glugglugglug/src/CachedRenderer.ts`:
   - Update `drawCachedTexture` to flush pending spritesheet data, bind cached texture, draw the cached quad immediately to the FBO, and resume batching.
   - Remove segment tracking code (`segments`, `ensureSegment`, segment replay in `renderWithPostProcessing`).
   - Keep cache management (maps, FBO creation, LRU) unchanged.
@@ -60,7 +60,7 @@ Alternative approaches considered:
 - Confirm post-process effects still apply uniformly to both sprites and cached content.
 
 ### Step 6: Documentation and cleanup
-- Update `packages/editor/packages/glugglug/examples/cache-usage.md` to note that `cacheGroup` both creates and draws at the call site; no special ordering considerations are necessary.
+- Update `packages/editor/packages/glugglugglug/examples/cache-usage.md` to note that `cacheGroup` both creates and draws at the call site; no special ordering considerations are necessary.
 - Remove obsolete comments referencing segment logic.
 
 ## Success Criteria
@@ -68,16 +68,16 @@ Alternative approaches considered:
 - [ ] Cached quads render with correct textures (never black) and correct ordering without segment tracking.
 - [ ] Post-processing applies to both spritesheet and cached content consistently.
 - [ ] No frame-to-frame ordering regressions when interleaving cached and non-cached draws.
-- [ ] Typecheck and tests pass for `glugglug` and the editor.
+- [ ] Typecheck and tests pass for `glugglugglug` and the editor.
 - [ ] Examples render identically (or with intended improvements) compared to baseline.
 
 ## Affected Components
 
-- `packages/editor/packages/glugglug/src/engine.ts` — Move FBO binding around user callback in `render`.
-- `packages/editor/packages/glugglug/src/renderer.ts` — Adjust `renderWithPostProcessing` lifecycle (end FBO + post-process only).
-- `packages/editor/packages/glugglug/src/CachedRenderer.ts` — Simplify cached draw path; remove segment tracking; immediate draws to FBO.
+- `packages/editor/packages/glugglugglug/src/engine.ts` — Move FBO binding around user callback in `render`.
+- `packages/editor/packages/glugglugglug/src/renderer.ts` — Adjust `renderWithPostProcessing` lifecycle (end FBO + post-process only).
+- `packages/editor/packages/glugglugglug/src/CachedRenderer.ts` — Simplify cached draw path; remove segment tracking; immediate draws to FBO.
 - `packages/editor/src/view/drawers/...` — No code changes expected; validate behavior with `cacheGroup` sites.
-- `packages/editor/packages/glugglug/tests/*` — Update tests to align with immediate cached draws and FBO-wrapped frame.
+- `packages/editor/packages/glugglugglug/tests/*` — Update tests to align with immediate cached draws and FBO-wrapped frame.
 
 ## Risks & Considerations
 
@@ -89,15 +89,15 @@ Alternative approaches considered:
 
 ## Related Items
 
-- Related/History: `todo/archived/050-glugglug-cache-groups-renderer-approach.md` (original cache design discussion)
+- Related/History: `todo/archived/050-glugglugglug-cache-groups-renderer-approach.md` (original cache design discussion)
 - This TODO replaces attempts tracked in conversation where segment removal caused black quads.
 
 ## References
 
 - Files:
-  - `packages/editor/packages/glugglug/src/engine.ts`
-  - `packages/editor/packages/glugglug/src/renderer.ts`
-  - `packages/editor/packages/glugglug/src/CachedRenderer.ts`
+  - `packages/editor/packages/glugglugglug/src/engine.ts`
+  - `packages/editor/packages/glugglugglug/src/renderer.ts`
+  - `packages/editor/packages/glugglugglug/src/CachedRenderer.ts`
   - `packages/editor/src/view/drawers/codeBlocks/index.ts`
 - Concepts: WebGL FBO rendering, post-processing pipelines, batching and texture binding.
 

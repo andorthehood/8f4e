@@ -36,7 +36,7 @@ High-level approach:
   - Keep `types: ["vitest/globals"]` in `tsconfig.test.json` only as long as needed during the migration; remove or trim once explicit imports are ubiquitous.
 - For `packages/compiler`:
   - Migrate all tests from Jest to Vitest, updating each file to use explicit imports from `vitest`, aligning with archived TODO `070-migrate-testing-system-to-vitest` and `102-vitest-typecheck-tests`.
-  - After migration, ensure Jest is no longer used in the compiler package; Jest should be reserved for the `glugglug` submodule only.
+  - After migration, ensure Jest is no longer used in the compiler package; Jest should be reserved for the `glugglugglug` submodule only.
 - Ensure that the tsconfigs used by IDEs and by Nx/Vitest typechecking include the correct `types` for the chosen runner, but do not rely on them for providing globals (they only provide typings for imported APIs).
 - Clean up any remaining tests where `expect` (or other globals) are reported as missing by TypeScript by:
   - adding explicit imports from `vitest` / `@jest/globals`, and
@@ -61,7 +61,7 @@ High-level approach:
 - For `packages/compiler`:
   - Migrate all tests to Vitest, updating them to import from `vitest` explicitly and switching the test runner away from Jest.
   - Remove Jest-specific configuration and dependencies from the compiler package once tests are running under Vitest.
-  - Keep Jest usage confined to the `glugglug` submodule, which maintains its own Jest configuration.
+  - Keep Jest usage confined to the `glugglugglug` submodule, which maintains its own Jest configuration.
 
 ### Step 3: Fix individual test files and tighten CI/IDE behavior
 
@@ -84,7 +84,7 @@ High-level approach:
 - `packages/compiler` - Tests rely on Jest-style globals but are currently typed via `vitest/globals`; need a consistent runner + typings combination and potentially explicit imports.
 - `packages/editor` - Vitest-based tests rely on globals and `vitest/globals`; may need explicit imports or better tsconfig coverage to avoid IDE errors.
 - `packages/*` with tests - Any package whose tests are not covered by `tsconfig.test.json` or still rely on implicit globals will need updates.
-- `packages/editor/packages/glugglug` - Remains on Jest with its own configuration; explicitly excluded from the Vitest migration except for ensuring explicit imports from `@jest/globals` where needed.
+- `packages/editor/packages/glugglugglug` - Remains on Jest with its own configuration; explicitly excluded from the Vitest migration except for ensuring explicit imports from `@jest/globals` where needed.
 - `packages/editor` - Vitest-based tests rely on globals and `vitest/globals`; may need explicit imports or better tsconfig coverage to avoid IDE errors.
 - `packages/*` with tests - Any package whose tests are not covered by `tsconfig.test.json` or still rely on implicit globals will need updates.
 

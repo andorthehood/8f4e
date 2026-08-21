@@ -27,7 +27,7 @@ Detailed description of the proposed solution:
 
 ### Step 1: Scaffold web-ui package
 - Create `packages/editor/packages/web-ui` mirroring existing library structure (package.json, project.json, tsconfig, jest config).
-- Ensure runtime dependencies on `glugglug` and `@8f4e/sprite-generator` are declared and Nx recognizes the project.
+- Ensure runtime dependencies on `glugglugglug` and `@8f4e/sprite-generator` are declared and Nx recognizes the project.
 - Dependencies or prerequisites: Nx configuration knowledge, existing package conventions.
 
 ### Step 2: Extract shared state contracts

@@ -11,11 +11,11 @@ completed: 2026-02-03
 
 ## Problem Description
 
-The glugglug engine supports a post-process effect but has no background pipeline for procedural shaders. This blocks adding a procedural background visual (e.g., plasma) while keeping sprite rendering and post-process behavior intact.
+The glugglugglug engine supports a post-process effect but has no background pipeline for procedural shaders. This blocks adding a procedural background visual (e.g., plasma) while keeping sprite rendering and post-process behavior intact.
 
 ## Proposed Solution
 
-Add a single background effect inside glugglug that renders one full-screen quad before sprites, with a procedural shader and alpha blending enabled. The background effect mirrors the post-process conventions (uniform buffer mapping, standard uniforms) while using its own shared buffer. The fallback when no background effect is set renders a fully transparent quad.
+Add a single background effect inside glugglugglug that renders one full-screen quad before sprites, with a procedural shader and alpha blending enabled. The background effect mirrors the post-process conventions (uniform buffer mapping, standard uniforms) while using its own shared buffer. The fallback when no background effect is set renders a fully transparent quad.
 
 ## Implementation Plan
 
@@ -31,7 +31,7 @@ Add a single background effect inside glugglug that renders one full-screen quad
 
 ### Step 3: Public API surface
 - Add engine/renderer methods: `setBackgroundEffect`, `clearBackgroundEffect`.
-- Export `BackgroundEffect` type from glugglug index.
+- Export `BackgroundEffect` type from glugglugglug index.
 
 ## Success Criteria
 
@@ -41,12 +41,12 @@ Add a single background effect inside glugglug that renders one full-screen quad
 
 ## Affected Components
 
-- `packages/editor/packages/glugglug/src/background/BackgroundEffectManager.ts` - New background effect manager (single effect).
-- `packages/editor/packages/glugglug/src/types/background.ts` - `BackgroundEffect` type.
-- `packages/editor/packages/glugglug/src/renderer.ts` - Background render pass integration.
-- `packages/editor/packages/glugglug/src/CachedRenderer.ts` - Background render pass integration for cached rendering.
-- `packages/editor/packages/glugglug/src/engine.ts` - Public API methods for the background effect.
-- `packages/editor/packages/glugglug/src/index.ts` - Export background effect type.
+- `packages/editor/packages/glugglugglug/src/background/BackgroundEffectManager.ts` - New background effect manager (single effect).
+- `packages/editor/packages/glugglugglug/src/types/background.ts` - `BackgroundEffect` type.
+- `packages/editor/packages/glugglugglug/src/renderer.ts` - Background render pass integration.
+- `packages/editor/packages/glugglugglug/src/CachedRenderer.ts` - Background render pass integration for cached rendering.
+- `packages/editor/packages/glugglugglug/src/engine.ts` - Public API methods for the background effect.
+- `packages/editor/packages/glugglugglug/src/index.ts` - Export background effect type.
 
 ## Risks & Considerations
 
@@ -55,7 +55,7 @@ Add a single background effect inside glugglug that renders one full-screen quad
 
 ## Related Items
 
-- **Related**: `docs/todos/155-glugglug-framebuffer-memory-accounting.md`
+- **Related**: `docs/todos/155-glugglugglug-framebuffer-memory-accounting.md`
 - **Related**: `docs/todos/185-simplify-post-process-single-effect.md`
 
 ## Notes

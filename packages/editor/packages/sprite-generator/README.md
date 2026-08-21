@@ -10,7 +10,7 @@ included in the public result:
 
 ```ts
 import generateSprite from '@8f4e/sprite-generator';
-import { Engine } from 'glugglug';
+import { Engine } from 'glugglugglug';
 
 const { spriteAtlas } = await generateSprite({ font: 'ibmvga8x16' });
 const engine = new Engine(canvas);

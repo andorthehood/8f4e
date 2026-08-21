@@ -1,4 +1,4 @@
-import type { SpriteCoordinates } from 'glugglug';
+import type { SpriteCoordinates } from 'glugglugglug';
 
 import { createAtlasLayout } from './atlasLayout.ts';
 import { drawCharacter } from './font.ts';

@@ -85,7 +85,7 @@ Shader blocks become the sole source of `postProcessEffects`. The editor derives
 ## References
 
 - `src/examples/projects/crtEffect.ts`
-- `packages/editor/packages/glugglug/README.md`
+- `packages/editor/packages/glugglugglug/README.md`
 
 ## Notes
 

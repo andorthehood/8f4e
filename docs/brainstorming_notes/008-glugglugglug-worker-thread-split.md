@@ -2,11 +2,11 @@
 
 **Date:** 2025-11-10  
 **Status:** Brainstorming  
-**Context:** Exploring architecture to split glugglug package into WebGL-free buffer preparation (worker-capable) and WebGL rendering (main thread)
+**Context:** Exploring architecture to split glugglugglug package into WebGL-free buffer preparation (worker-capable) and WebGL rendering (main thread)
 
 ## Idea Summary
 
-Split the glugglug package into two parts:
+Split the glugglugglug package into two parts:
 1. **Core Package** - Buffer preparation logic (vertex buffers, texture coordinates) + Engine API - completely free of direct WebGL calls
 2. **WebGL Package** - GPU-specific operations (context, shaders, uploads, rendering)
 
@@ -330,7 +330,7 @@ Cross-Origin-Embedder-Policy: require-corp
 
 ```
 packages/editor/packages/
-├── glugglug-core/          # Worker-safe buffer building (NEW)
+├── glugglugglug-core/          # Worker-safe buffer building (NEW)
 │   ├── src/
 │   │   ├── buffers/
 │   │   │   ├── vertex-builder.ts      # High-level vertex generation
@@ -347,7 +347,7 @@ packages/editor/packages/
 │   ├── package.json
 │   └── tsconfig.json
 │
-├── glugglug-webgl/         # WebGL rendering (REFACTORED)
+├── glugglugglug-webgl/         # WebGL rendering (REFACTORED)
 │   ├── src/
 │   │   ├── context/
 │   │   │   └── webgl-context.ts       # Context creation
@@ -360,7 +360,7 @@ packages/editor/packages/
 │   ├── package.json
 │   └── tsconfig.json
 │
-└── glugglug/               # Integration layer (MODIFIED)
+└── glugglugglug/               # Integration layer (MODIFIED)
     ├── src/
     │   ├── engine.ts                   # High-level API (modified)
     │   ├── worker-bridge.ts            # Main thread <-> worker bridge (NEW)
@@ -374,7 +374,7 @@ packages/editor/packages/
 ## Migration Path
 
 ### Phase 1: Extract Pure Functions ✅ (Mostly Done)
-- Move buffer utility functions to `glugglug-core`
+- Move buffer utility functions to `glugglugglug-core`
 - Ensure zero WebGL/DOM dependencies
 - Add comprehensive tests
 
@@ -390,7 +390,7 @@ renderer.render();
 ```
 
 ### Phase 3: Create Worker Wrapper
-- Implement `render-worker.ts` calling `glugglug-core`
+- Implement `render-worker.ts` calling `glugglugglug-core`
 - Implement `worker-bridge.ts` for main thread
 - Keep synchronous fallback for debugging
 
@@ -496,7 +496,7 @@ layerWorker.postMessage({ canvas: offscreen }, [offscreen]);
 
 ### Immediate Next Steps
 1. **Profile current performance** - Identify actual bottlenecks
-2. **Prototype pure function extraction** - Validate `glugglug-core` is viable
+2. **Prototype pure function extraction** - Validate `glugglugglug-core` is viable
 3. **Benchmark simple alternatives** - Try instanced rendering first
 
 ### Decision Tree

@@ -13,7 +13,7 @@ completed: 2025-10-17
 
 When users change the color theme in the editor, cached content is not cleared, causing some UI elements to retain their old colors. This happens because:
 
-- The editor uses glugglug's caching system to cache code blocks for performance
+- The editor uses glugglugglug's caching system to cache code blocks for performance
 - Code blocks are cached with IDs like `codeBlock${codeBlock.id}${codeBlock.lastUpdated}`
 - When color schemes change, the cached textures still contain the old color information
 - The `setColorScheme` event handler only updates the state but doesn't clear the cache
@@ -75,8 +75,8 @@ Clear all cached content when the color scheme changes by calling `engine.clearA
 
 ## References
 
-- [Glugglug caching documentation](packages/editor/packages/glugglug/README.md#caching)
-- [Cache clearing API](packages/editor/packages/glugglug/src/engine.ts#clearAllCache)
+- [Glugglug caching documentation](packages/editor/packages/glugglugglug/README.md#caching)
+- [Cache clearing API](packages/editor/packages/glugglugglug/src/engine.ts#clearAllCache)
 - [Color theme effect](packages/editor/src/state/effects/colorTheme.ts)
 
 ## Notes

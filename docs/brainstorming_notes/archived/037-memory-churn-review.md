@@ -11,7 +11,7 @@ This note captures a static code-review pass for likely memory churners. These a
 
 ### 1. Post-process uniform uploads in the render loop
 
-Resolved: the custom uniform-buffer feature was removed from glugglug, so this allocation path no longer exists.
+Resolved: the custom uniform-buffer feature was removed from glugglugglug, so this allocation path no longer exists.
 
 ## Strong edit-path churners
 
@@ -100,7 +100,7 @@ Why it matters:
 
 ## Notes on classification
 
-- `glugglug` and `web-ui` code was treated as render-path code.
+- `glugglugglug` and `web-ui` code was treated as render-path code.
 - `editor-state` code was treated as edit/update-path code.
 - One-off setup code, tests, and example generation were intentionally not ranked even when allocative.
 

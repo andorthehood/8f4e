@@ -85,7 +85,7 @@ In this case, the correct fix was to update `packages/editor/packages/editor-sta
 - `@8f4e/compiler`
 - `@8f4e/sprite-generator`
 - `@8f4e/state-manager`
-- `glugglug`
+- `glugglugglug`
 
 The correct style is the ordinary Vite config:
 
@@ -96,7 +96,7 @@ const baseConfig = createLibConfig({
 	formats: ['es'],
 	fileName: () => 'index.js',
 	emptyOutDir: false,
-	external: ['@8f4e/compiler', '@8f4e/sprite-generator', '@8f4e/state-manager', 'glugglug'],
+	external: ['@8f4e/compiler', '@8f4e/sprite-generator', '@8f4e/state-manager', 'glugglugglug'],
 });
 ```
 

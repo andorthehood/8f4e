@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 - Root app: `index.html`, `src/` (entry `src/editor.ts`, examples under `src/examples/`).
-- Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`, `editor/packages/glugglug`, `editor/packages/sprite-generator`). Each builds to its own `dist/` directory under the package root.
+- Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`, `editor/packages/glugglugglug`, `editor/packages/sprite-generator`). Each builds to its own `dist/` directory under the package root.
 - Builds: Vite outputs to `dist/` (root). Package bundles are consumed via aliases like `@8f4e/editor`.
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
 - Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
@@ -37,7 +37,7 @@
 - Configuration: Shared Vitest helpers live in `@8f4e/config/vitest`; per-package configs live in `vitest.config.ts`.
 - Globals: Vitest globals enabled (`describe`, `it`, `expect`, `vi` for mocks/spies).
 - Aim for meaningful unit tests around compiler/editor logic; snapshot tests OK for view models. Keep tests fast; no browser required.
-- Note: The `glugglug` submodule still uses Jest and maintains its own test configuration.
+- Note: The `glugglugglug` submodule maintains its own independent Vitest configuration.
 
 ## Commit & Pull Request Guidelines
 - Commit messages: Use Conventional Commits.

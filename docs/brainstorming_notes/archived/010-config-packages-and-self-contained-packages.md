@@ -20,7 +20,7 @@ Introduce a single `@8f4e/config` package that holds our shared build/test/tooli
 - `@8f4e/config/ts` for base/app/lib/test `tsconfig` templates or helpers.
 - `@8f4e/config/eslint` for shared rule sets and config composition helpers.
 - `@8f4e/config/vite` and `@8f4e/config/vitest` for shared Vite/Vitest setup.
-  - Jest is considered deprecated in this codebase (e.g. in `glugglug`) and will be migrated to Vitest, so we do not plan a dedicated Jest config entry.
+  - Jest is considered deprecated in this codebase (e.g. in `glugglugglug`) and will be migrated to Vitest, so we do not plan a dedicated Jest config entry.
 
 Each feature/package would keep tiny local config entrypoints (for tool discovery and editor support) that import from this package:
 

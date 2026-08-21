@@ -15,8 +15,8 @@ Track editor-level settings we discussed as candidates for the editor config (no
 - Viewport animation duration (`viewport.animationDurationMs`).
 - History stack length (max entries for undo/redo; currently hardcoded to 10).
 - Compilation debounce duration (currently 500ms).
-- Vertex buffer size (max sprites; currently `growBuffer(20000)` in glugglug renderer).
-- Texture cache size (max cache items; `maxCacheItems`, default 50 in glugglug).
+- Vertex buffer size (max sprites; currently `growBuffer(20000)` in glugglugglug renderer).
+- Texture cache size (max cache items; `maxCacheItems`, default 50 in glugglugglug).
 - Position offsetter toggle key (currently hardcoded to `F10`).
 - Info overlay toggle (show FPS/triangles/etc. in web UI).
 - Info overlay toggle keybinding (function key, configurable).
@@ -30,5 +30,5 @@ Track editor-level settings we discussed as candidates for the editor config (no
 
 ## Notes
 - These should live in editor settings (editor config blocks / compiled editor config), not project config.
-- Vertex buffer size and texture cache size likely flow through `glugglug` Engine options.
+- Vertex buffer size and texture cache size likely flow through `glugglugglug` Engine options.
 - Toggle key should become a configurable key binding instead of a fixed key.

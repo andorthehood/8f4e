@@ -55,7 +55,7 @@ Suggested `memoryId` formats:
 - Resolve to memory metadata plus effective word-aligned start and span size.
 - Enforce float-compatible sources for v1 and produce actionable errors for invalid bindings.
 
-### Step 3: Bridge resolved bindings into glugglug effect uniforms
+### Step 3: Bridge resolved bindings into glugglugglug effect uniforms
 - Build uniform mapping objects for active postprocess/background effects from parsed bindings.
 - Mirror WASM memory float values into the engine shared buffers each frame (or on render tick) before effect draw.
 - Validate uniform arity (float/vec2/vec3/vec4) against parsed span size.
@@ -81,9 +81,9 @@ Suggested `memoryId` formats:
 - `packages/editor/packages/editor-state/src/features/project-config/defaults.ts` - defaults for new config section
 - `packages/editor/packages/editor-state/src/features/shader-effects/*` - derive/apply bindings into effect descriptors
 - `packages/editor/packages/web-ui/src/index.ts` - hook binding updates into render lifecycle
-- `packages/editor/packages/glugglug/src/types/postProcess.ts` - mapping compatibility checks (if needed)
-- `packages/editor/packages/glugglug/src/postProcess/PostProcessManager.ts` - runtime uniform upload path
-- `packages/editor/packages/glugglug/src/background/BackgroundEffectManager.ts` - runtime uniform upload path
+- `packages/editor/packages/glugglugglug/src/types/postProcess.ts` - mapping compatibility checks (if needed)
+- `packages/editor/packages/glugglugglug/src/postProcess/PostProcessManager.ts` - runtime uniform upload path
+- `packages/editor/packages/glugglugglug/src/background/BackgroundEffectManager.ts` - runtime uniform upload path
 
 ## Risks & Considerations
 
@@ -97,7 +97,7 @@ Suggested `memoryId` formats:
 - **Related**: `docs/todos/archived/156-add-glsl-shader-code-blocks.md`
 - **Related**: `docs/todos/archived/158-add-background-effects.md`
 - **Related**: `docs/todos/archived/166-default-post-process-vertex-shader.md`
-- **Related**: `docs/todos/179-glugglug-shader-error-callback.md`
+- **Related**: `docs/todos/179-glugglugglug-shader-error-callback.md`
 - **Related**: `docs/todos/archived/185-simplify-post-process-single-effect.md`
 - **Related**: `docs/todos/archived/194-unsigned-int8-int16-buffers.md`
 
