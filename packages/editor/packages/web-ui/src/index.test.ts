@@ -1,10 +1,10 @@
-import type { EditorRenderDataSource } from '@8f4e/editor-render-projection';
 import { createMockState } from '@8f4e/editor-state-testing';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const renderDataSnapshot = { codeBlocks: new Map() };
-const renderData: EditorRenderDataSource = { getSnapshot: () => renderDataSnapshot };
+const renderData: WebUiRenderDataSource = { getSnapshot: () => renderDataSnapshot };
 
 const mocks = vi.hoisted(() => {
 	let frameTextureDrawCallback: ((layer: unknown) => void) | undefined;

@@ -72,7 +72,7 @@ Active todo files are listed below.
 | 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
 | 468 | Add shader-batched raster caches to glugglugglug | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
 | 475 | Remove dead compiler block-state caches | 🟡 | 2-4h | 2026-08-21 | Remove unused block-depth counts and legacy inside-block booleans while preserving the live loop, map, and ordered block-stack state. |
-| 476 | Extract editor render projection | 🟡 | 3-5d | 2026-08-21 | Project render-ready sprite and pixel data from editor state while retaining logical gaps for caret behavior. |
+| 476 | Extract web UI render projection | 🟡 | 3-5d | 2026-08-21 | Project web-specific sprite and pixel data from editor state while retaining logical gaps for caret behavior. |
 
 ### 🟢 Low Priority
 

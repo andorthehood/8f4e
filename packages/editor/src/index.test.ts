@@ -43,8 +43,8 @@ const renderProjection = {
 	dispose: vi.fn(),
 };
 
-vi.mock('@8f4e/editor-render-projection', () => ({
-	createEditorRenderProjection: vi.fn(() => renderProjection),
+vi.mock('@8f4e/web-ui-render-projection', () => ({
+	createWebUiRenderProjection: vi.fn(() => renderProjection),
 }));
 
 vi.mock('@8f4e/editor-state', () => ({

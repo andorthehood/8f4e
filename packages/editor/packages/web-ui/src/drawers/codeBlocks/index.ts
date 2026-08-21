@@ -1,5 +1,5 @@
-import type { EditorRenderData } from '@8f4e/editor-render-projection';
 import type { State } from '@8f4e/editor-state-types';
+import type { WebUiRenderData } from '@8f4e/web-ui-render-projection';
 import type { DrawContext } from '../../drawContext';
 import type { MemoryViews } from '../../types';
 import drawArrow from './drawArrow';
@@ -28,7 +28,7 @@ export default function drawModules(
 	engine: DrawContext,
 	state: State,
 	memoryViews: MemoryViews,
-	renderData: EditorRenderData
+	renderData: WebUiRenderData
 ): void {
 	const spriteLookups = state.spriteLookups;
 

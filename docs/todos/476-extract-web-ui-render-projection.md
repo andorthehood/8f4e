@@ -1,5 +1,5 @@
 ---
-title: 'TODO: Extract editor render projection'
+title: 'TODO: Extract web UI render projection'
 priority: Medium
 effort: 3-5d
 created: 2026-08-21
@@ -8,7 +8,7 @@ status: Open
 completed: null
 ---
 
-# TODO: Extract Editor Render Projection
+# TODO: Extract Web UI Render Projection
 
 ## Problem Description
 
@@ -26,14 +26,14 @@ must not become their source of truth.
 
 ## Proposed Solution
 
-Create an `@8f4e/editor-render-projection` package that derives immutable render data from editor state and rendering
-resources. The package should expose pure derivation functions and a projection controller that updates render
-snapshots outside the render loop. `web-ui` should eventually render from this projection plus explicit frame-time
-inputs such as WebAssembly memory views.
+Create an `@8f4e/web-ui-render-projection` package under web-ui that derives immutable, web-specific render data from
+editor state and rendering resources. The package should expose pure derivation functions and a projection controller
+that updates render snapshots outside the render loop. `web-ui` should eventually render from this projection plus
+explicit frame-time inputs such as WebAssembly memory views.
 
-The editor application is the composition root and must initialize editor-state and editor-render-projection as sibling
-layers. `editor-render-projection` may consume the public editor-state contract, but editor-state must not import,
-initialize, or read editor-render-projection.
+The editor application is the composition root and must initialize editor-state and web-ui-render-projection as sibling
+layers. `web-ui-render-projection` may consume the public editor-state contract, but editor-state must not import,
+initialize, or read web-ui-render-projection.
 
 Use stable code-block IDs to connect editor entities to render records. Do not copy the complete editor state into a
 parallel object. Keep source and behavioral state authoritative in editor-state, keep semantic derivations there when
@@ -43,7 +43,7 @@ data.
 ## Anti-Patterns
 
 - Do not create a second full copy of `State` with ambiguous ownership and synchronization rules.
-- Do not add an editor-state dependency on editor-render-projection, including as a temporary migration shortcut.
+- Do not add an editor-state dependency on web-ui-render-projection, including as a temporary migration shortcut.
 - Do not move logical gaps, display/source row mappings, raw cursor coordinates, or semantic directive results merely
   because rendering also consumes them.
 - Do not make editor-state read projected render data to perform caret movement or other source-level behavior.
@@ -55,22 +55,23 @@ data.
 
 ### Step 1: Extract Pure Code-Glyph Resolution
 
-- Create the `@8f4e/editor-render-projection` package.
+- Create the `@8f4e/web-ui-render-projection` package under web-ui.
 - Add render-ready code-cell resolution as a pure, independently tested graphics function.
 - Preserve the legacy editor-state resolver and current `codeToRender` ownership temporarily; remove both only after an
   application-composed render projection owns the production call path.
 - Continue treating logical gaps and display-row mappings as editor-state inputs.
 
-### Step 2: Introduce Stable Code-Block IDs
+### Step 2: Use Existing Runtime Code-Block Identity
 
-- Add an explicit runtime `CodeBlockId` that is separate from compiler ordering through `creationIndex`.
-- Replace selection and dragging object-identity joins with block IDs incrementally.
-- Preserve project serialization unless persistent IDs are proven necessary.
+- Use `creationIndex`, the existing monotonic and non-reused runtime identifier, to join editor blocks to render data.
+- Keep project serialization unchanged; runtime identity resets when a project is loaded and does not need persistence.
+- Guard future asynchronous projection work against stale results across project reloads rather than adding a parallel
+  block identifier.
 
 ### Step 3: Add A Narrow Render Projection
 
-- Introduce `EditorRenderData` with sprite resources and code cells keyed by `CodeBlockId`.
-- Build an editor-render-projection controller that subscribes to committed editor changes and recalculates only affected
+- Introduce `WebUiRenderData` with sprite resources and code cells keyed by the runtime code-block identifier.
+- Build a web-ui-render-projection controller that subscribes to committed editor changes and recalculates only affected
   blocks.
 - Invalidate all code glyphs when font, color scheme, cell metrics, or the sprite atlas changes.
 - Publish coherent snapshots with structural sharing for unchanged records.
@@ -97,10 +98,10 @@ data.
 
 ## Validation Checkpoints
 
-- `! rg -n "@8f4e/editor-render-projection" packages/editor/packages/editor-state --glob '!dist/**'`
-- `npx nx run @8f4e/editor-render-projection:test`
-- `npx nx run @8f4e/editor-render-projection:typecheck`
-- `npx nx run @8f4e/editor-render-projection:build`
+- `! rg -n "@8f4e/web-ui-render-projection" packages/editor/packages/editor-state --glob '!dist/**'`
+- `npx nx run @8f4e/web-ui-render-projection:test`
+- `npx nx run @8f4e/web-ui-render-projection:typecheck`
+- `npx nx run @8f4e/web-ui-render-projection:build`
 - `npx nx run @8f4e/editor-state:test`
 - `npx nx run @8f4e/editor-state:typecheck`
 - `npx nx run @8f4e/web-ui:test`
@@ -111,18 +112,18 @@ data.
 ## Success Criteria
 
 - [ ] `web-ui` renders from an explicit render projection rather than the complete mixed editor state.
-- [x] Editor-state has no source, manifest, or build dependency on editor-render-projection.
+- [x] Editor-state has no source, manifest, or build dependency on web-ui-render-projection.
 - [ ] Render-ready sprite IDs and sprite resources are absent from editor-state.
 - [x] Logical gaps and display/source row mappings remain editor-owned and retain caret behavior coverage.
-- [ ] Stable IDs connect code-block editor entities, render records, selection, dragging, and hit-testing.
+- [x] Runtime-stable `creationIndex` values connect code-block editor entities to projected render records.
 - [x] Render-data derivations are pure and covered independently from canvas rendering.
 - [ ] Render projection updates are granular, batched, and cannot publish stale async resources.
 - [ ] Renderer draw functions do not mutate editor-state or projected render data.
-- [x] Editor, editor-state, editor-render-projection, and web-ui tests and typechecks pass.
+- [x] Editor, editor-state, web-ui-render-projection, and web-ui tests and typechecks pass.
 
 ## Affected Components
 
-- `packages/editor/packages/editor-render-projection` - new render-data derivation and projection package.
+- `packages/editor/packages/web-ui/packages/render-projection` - independently built web UI render-data projection package.
 - `packages/editor/packages/editor-state` - retain editor/semantic state and remove render-only calculations incrementally.
 - `packages/editor/packages/editor-state-types` - split editor-owned and graphics-owned public contracts.
 - `packages/editor/packages/web-ui` - consume the render projection and remain a drawing layer.
@@ -153,18 +154,19 @@ data.
 
 - 2026-08-21: Agreed to keep logical gaps in editor state because caret movement consumes them.
 - 2026-08-21: Completed the first part of Step 1 by adding pure render-ready code-cell resolution to the new
-  `@8f4e/editor-render-projection` package with focused tests. The legacy editor-state resolver remains until the
+  `@8f4e/web-ui-render-projection` package with focused tests. The legacy editor-state resolver remains until the
   application composition layer can switch production ownership without introducing an editor-state dependency on the
   render projection.
-- 2026-08-21: Composed editor-state and editor-render-projection as sibling layers in `@8f4e/editor`. The render
+- 2026-08-21: Composed editor-state and web-ui-render-projection as sibling layers in `@8f4e/editor`. The render
   projection subscribes to relevant editor-state changes, owns code syntax highlighting and sprite-ID resolution, and
   is passed explicitly to `web-ui`. Removed `codeToRender` and the legacy syntax-highlighting implementation from
   editor-state;
-  logical display rows and gaps remain editor-owned. The first projection uses `creationIndex` as its runtime join key
-  and currently recalculates all code blocks, so a dedicated `CodeBlockId`, granular invalidation, batching, and the
-  remaining render-only fields are still follow-up work.
+  logical display rows and gaps remain editor-owned. The projection uses the runtime-stable `creationIndex` as its join
+  key and currently recalculates all code blocks, so granular invalidation, batching, and the remaining render-only
+  fields are still follow-up work.
 - 2026-08-21: Renamed `editor-graphics` to `editor-render-projection` to describe its role as a subscriber-maintained,
-  render-ready projection of editor state rather than a graphics owner or renderer.
+  render-ready projection of editor state rather than a graphics owner or renderer. It was then moved into a dedicated
+  `@8f4e/web-ui-render-projection` package under web-ui because its sprite-ID output is specific to that renderer.
 
 ## Archive Instructions
 

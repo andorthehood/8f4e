@@ -1,7 +1,7 @@
 # Web UI Package
 
-This package provides a web-based UI renderer for the editor. It renders the UI purely from
-the editor state and memory views, treating state as immutable input, and is designed to be
+This package provides a web-based UI renderer for the editor. It renders from the editor state,
+web UI render data, and memory views, treating them as immutable inputs. It is designed to be
 replaceable by renderers for other platforms.
 
 Rendering is backed by `glugglugglug`. Sprite names are resolved to dense numeric IDs when the atlas is generated, so
@@ -10,13 +10,14 @@ drawn below the sprites, while connections are drawn as a line overlay above the
 
 ## API
 
-### `init(state, canvas, memoryViews, spriteData, options?)`
+### `init(state, renderData, canvas, memoryViews, spriteData, options?)`
 
 Initializes the web UI renderer.
 
 **Parameters:**
 
 - `state: State` - The editor state (read-only)
+- `renderData: WebUiRenderDataSource` - Precalculated, web-specific graphic data
 - `canvas: HTMLCanvasElement` - The canvas element to render to
 - `memoryViews: MemoryViews` - Memory view interfaces for rendering code blocks
 - `spriteData: SpriteData` - Pre-generated numeric atlas data from `@8f4e/sprite-generator`
@@ -60,9 +61,10 @@ interface SpriteData {
 
 ## State Usage
 
-The web-ui package reads from the editor state but does **not** mutate it. Numeric sprite IDs and grid sizes are
-installed by the editor when sprite data is generated. Atlas and font changes are explicit and are applied through
-`loadSpriteAtlas()`. Wire colors are resolved from the current editor color scheme when the atlas is loaded.
+The web-ui package reads from the editor state and render projection but does **not** mutate either. The nested
+`@8f4e/web-ui-render-projection` package subscribes to editor state changes and precalculates code-cell sprite IDs.
+Atlas and font changes are explicit and are applied through `loadSpriteAtlas()`. Wire colors are resolved from the
+current editor color scheme when the atlas is loaded.
 
 ## Docs
 

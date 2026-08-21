@@ -1,5 +1,5 @@
 {
-  "name": "@8f4e/editor-render-projection",
+  "name": "@8f4e/web-ui-render-projection",
   "sourceRoot": "src",
   "projectType": "library",
   "targets": {
@@ -13,11 +13,11 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/@8f4e/editor-render-projection"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/web-ui-render-projection"],
       "dependsOn": ["^build"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/editor-render-projection"
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/web-ui-render-projection"
       }
     },
     "typecheck": {
@@ -29,5 +29,5 @@
       "dependsOn": ["^build"]
     }
   },
-  "tags": ["type:library", "scope:editor"]
+  "tags": ["type:library", "scope:ui"]
 }

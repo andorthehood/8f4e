@@ -7,24 +7,24 @@ export interface CodeBlockRenderData {
 	codeCells: Array<Array<SpriteId | null>>;
 }
 
-export interface EditorRenderData {
+export interface WebUiRenderData {
 	codeBlocks: ReadonlyMap<number, CodeBlockRenderData>;
 }
 
-export interface EditorRenderDataSource {
-	getSnapshot: () => EditorRenderData;
+export interface WebUiRenderDataSource {
+	getSnapshot: () => WebUiRenderData;
 }
 
-export interface EditorRenderProjection extends EditorRenderDataSource {
+export interface WebUiRenderProjection extends WebUiRenderDataSource {
 	refresh: () => void;
 	dispose: () => void;
 }
 
-export default function createEditorRenderProjection(
+export default function createWebUiRenderProjection(
 	store: StateManager<State>,
 	events: Pick<EventDispatcher, 'on' | 'off'>
-): EditorRenderProjection {
-	let snapshot: EditorRenderData = { codeBlocks: new Map() };
+): WebUiRenderProjection {
+	let snapshot: WebUiRenderData = { codeBlocks: new Map() };
 	const refresh = () => {
 		const state = store.getState();
 		const spriteLookups = state.spriteLookups;

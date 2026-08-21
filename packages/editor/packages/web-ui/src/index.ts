@@ -1,6 +1,6 @@
-import type { EditorRenderDataSource } from '@8f4e/editor-render-projection';
 import type { State } from '@8f4e/editor-state-types';
 import type { SpriteAtlas, SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import {
 	Engine,
 	LineDrawer,
@@ -55,7 +55,7 @@ export interface WebUiOptions {
 
 export default async function init(
 	state: State,
-	renderData: EditorRenderDataSource,
+	renderData: WebUiRenderDataSource,
 	canvas: HTMLCanvasElement,
 	memoryViews: MemoryViews,
 	spriteData: SpriteData,

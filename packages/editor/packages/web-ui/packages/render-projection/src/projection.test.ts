@@ -2,9 +2,9 @@ import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { SpriteIdLookups } from '@8f4e/sprite-generator';
 import type { StateManager } from '@8f4e/state-manager';
 import { describe, expect, it, vi } from 'vitest';
-import createEditorRenderProjection from './projection';
+import createWebUiRenderProjection from './projection';
 
-describe('createEditorRenderProjection', () => {
+describe('createWebUiRenderProjection', () => {
 	it('subscribes beside editor-state and publishes render data by runtime id', () => {
 		const block = {
 			creationIndex: 7,
@@ -43,7 +43,7 @@ describe('createEditorRenderProjection', () => {
 		} as unknown as StateManager<State>;
 		const events = { on: vi.fn(), off: vi.fn() } as unknown as Pick<EventDispatcher, 'on' | 'off'>;
 
-		const projection = createEditorRenderProjection(store, events);
+		const projection = createWebUiRenderProjection(store, events);
 
 		expect(projection.getSnapshot().codeBlocks.get(7)?.codeCells[0]?.at(-1)).toBe(120);
 		expect(store.subscribe).toHaveBeenCalledWith('codeBlockRendering', expect.any(Function));

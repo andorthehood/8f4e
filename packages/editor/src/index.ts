@@ -1,4 +1,3 @@
-import { createEditorRenderProjection } from '@8f4e/editor-render-projection';
 import initState from '@8f4e/editor-state';
 import type {
 	Callbacks,
@@ -9,6 +8,7 @@ import type {
 } from '@8f4e/editor-state-types';
 import generateSprite from '@8f4e/sprite-generator';
 import initView, { type MemoryViews, type RenderStats, type WebUiOptions } from '@8f4e/web-ui';
+import { createWebUiRenderProjection } from '@8f4e/web-ui-render-projection';
 import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglugglug';
 import {
 	BIN_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
@@ -196,7 +196,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	});
 
 	updateStateWithSpriteData(state, spriteData);
-	const renderProjection = createEditorRenderProjection(store, events);
+	const renderProjection = createWebUiRenderProjection(store, events);
 
 	view = await initView(state, renderProjection, canvas, memoryViews, spriteData, {
 		renderStatsIntervalFrames: options.renderStatsIntervalFrames,

@@ -1,20 +1,21 @@
-# Editor Render Projection
+# Web UI Render Projection
 
-`@8f4e/editor-render-projection` derives render-ready data from editor state before the renderer needs it. It moves
-repeatable preparation work out of the frame hot path while keeping editor-state independent from rendering concerns.
+`@8f4e/web-ui-render-projection` derives web-ui-specific render data from editor state before the renderer needs it. It
+moves repeatable preparation work out of the frame hot path while keeping editor-state independent from rendering
+concerns.
 
 The projection is a disposable read model, not a second source of truth. Its data can always be rebuilt from the
 current editor state and rendering resources.
 
 ```text
-editor-state ──changes──▶ editor-render-projection ──snapshot──▶ web-ui
-                                  ▲
-                                  │
-                        sprite and lifecycle events
+editor-state ──changes──▶ web-ui-render-projection ──snapshot──▶ web-ui
+                                   ▲
+                                   │
+                         sprite and lifecycle events
 ```
 
-The editor application is the composition root. It creates editor-state and the render projection as sibling layers,
-then passes both to the renderer. Editor-state does not import or initialize the render projection.
+The editor application is the composition root. It creates editor-state and the web UI render projection as sibling
+layers, then passes both to the renderer. Editor-state does not import or initialize the render projection.
 
 ## Why This Package Exists
 
@@ -41,7 +42,7 @@ when their ownership boundary is clear.
 - logical gaps used by caret movement and hit-testing; and
 - display-row/source-row mappings used by navigation.
 
-### The render projection owns
+### The web UI render projection owns
 
 - replaceable, render-ready data derived from editor state;
 - syntax font transitions and resolved glyph sprite IDs; and
@@ -59,11 +60,11 @@ candidate for the render projection.
 
 ## Update Flow
 
-`createEditorRenderProjection(store, events)` creates a projection controller that:
+`createWebUiRenderProjection(store, events)` creates a projection controller that:
 
 1. reads the current editor state and sprite lookups;
 2. subscribes to relevant state changes and lifecycle events;
-3. derives a new `EditorRenderData` snapshot outside the renderer;
+3. derives a new `WebUiRenderData` snapshot outside the renderer;
 4. exposes the current snapshot through `getSnapshot()`; and
 5. removes its subscriptions through `dispose()`.
 
@@ -71,9 +72,9 @@ The web UI reads the latest snapshot while drawing code blocks. It does not calc
 glyph sprite IDs during that draw.
 
 ```typescript
-import { createEditorRenderProjection } from '@8f4e/editor-render-projection';
+import { createWebUiRenderProjection } from '@8f4e/web-ui-render-projection';
 
-const renderProjection = createEditorRenderProjection(store, events);
+const renderProjection = createWebUiRenderProjection(store, events);
 
 const renderData = renderProjection.getSnapshot();
 const codeCells = renderData.codeBlocks.get(codeBlockId)?.codeCells;
@@ -84,7 +85,7 @@ renderProjection.dispose();
 ## Data Model
 
 ```typescript
-interface EditorRenderData {
+interface WebUiRenderData {
   codeBlocks: ReadonlyMap<number, CodeBlockRenderData>;
 }
 
@@ -105,14 +106,14 @@ syntax highlighters remain internal implementation modules.
 - Frame-time runtime values deliberately remain live renderer inputs rather than projected data.
 
 These constraints are tracked in
-[TODO 476](../../../../docs/todos/476-extract-editor-render-projection.md).
+[TODO 476](../../../../../../docs/todos/476-extract-web-ui-render-projection.md).
 
 ## Development
 
 From the repository root:
 
 ```bash
-npx nx run @8f4e/editor-render-projection:test
-npx nx run @8f4e/editor-render-projection:typecheck
-npx nx run @8f4e/editor-render-projection:build
+npx nx run @8f4e/web-ui-render-projection:test
+npx nx run @8f4e/web-ui-render-projection:typecheck
+npx nx run @8f4e/web-ui-render-projection:build
 ```

@@ -1,13 +1,13 @@
-import type { EditorRenderData } from '@8f4e/editor-render-projection';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { WebUiRenderData } from '@8f4e/web-ui-render-projection';
 import { describe, expect, it, vi } from 'vitest';
 import { createSpriteIdLookupMock } from '../../__tests__/rendering';
 import type { DrawContext as Engine } from '../../drawContext';
 import type { MemoryViews } from '../../types';
 import drawModules from './index';
 
-const emptyRenderData: EditorRenderData = { codeBlocks: new Map() };
+const emptyRenderData: WebUiRenderData = { codeBlocks: new Map() };
 
 function createMemoryViews({ int32 = [] }: { int32?: number[] } = {}): MemoryViews {
 	return {
