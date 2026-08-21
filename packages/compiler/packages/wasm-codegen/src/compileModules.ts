@@ -9,7 +9,7 @@ import type {
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
 import type { SemanticReferenceReport } from '@8f4e/semantic-reference-resolver';
-import type { StackAnalysisProjectReport } from '@8f4e/stack-analyzer';
+import type { StackAnalysisSubProgramReport } from '@8f4e/stack-analyzer';
 import { compileModule } from './compileModule';
 
 /**
@@ -21,7 +21,7 @@ import { compileModule } from './compileModule';
  * @param compiledFunctions - Function registry available to module compilation.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param prototypeShapes - Prototype shape ASTs available during semantic layout.
- * @param stackReport - Project stack-analysis report.
+ * @param stackReport - Sub-program stack-analysis report.
  * @returns The compiled module artifact.
  */
 export function compileModules(
@@ -30,7 +30,7 @@ export function compileModules(
 	namespaces: Namespaces,
 	memoryPlan: MemoryLayoutPlan,
 	semanticReferences: SemanticReferenceReport,
-	stackReport: StackAnalysisProjectReport,
+	stackReport: StackAnalysisSubProgramReport,
 	compiledFunctions?: FunctionRegistry,
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>

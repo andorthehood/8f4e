@@ -172,7 +172,7 @@ export function assertUniqueModuleIds(asts: readonly ValidatedModuleAST[]): void
  * Discovers planned namespaces for modules.
  *
  * @param asts - Validated ASTs being processed.
- * @param memoryPlan - Completed memory layout plan for the project.
+ * @param memoryPlan - Completed memory layout plan for the sub-program.
  * @param defaultResolution - Resolved defaults and pointer metadata keyed by module id.
  * @returns The computed result.
  */

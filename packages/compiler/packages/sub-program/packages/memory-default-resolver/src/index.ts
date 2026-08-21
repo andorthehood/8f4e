@@ -371,12 +371,12 @@ function resolveModuleMemoryDefaults(
 }
 
 /**
- * Resolves memory defaults and pointer target metadata for a whole planned project.
+ * Resolves memory defaults and pointer target metadata for a whole planned sub-program.
  *
  * The memory plan is the source of truth for declaration order, layout, and
  * effective declaration source lines after shape expansion.
  *
- * @param input - Completed memory plan and memory-reference facts for the project.
+ * @param input - Completed memory plan and memory-reference facts for the sub-program.
  * @returns Defaults and pointer metadata keyed by module id.
  */
 export function resolveMemoryDefaults(input: ResolveMemoryDefaultsInput): ResolveMemoryDefaultsResult {

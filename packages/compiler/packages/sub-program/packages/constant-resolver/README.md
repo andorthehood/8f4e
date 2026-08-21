@@ -1,6 +1,6 @@
 # @8f4e/constant-resolver
 
-`@8f4e/constant-resolver` resolves `const` declarations and constant namespace imports for a whole compiler project.
+`@8f4e/constant-resolver` resolves `const` declarations and constant namespace imports for a whole sub-program.
 
 The sub-program-level entry point receives the original AST grouping:
 

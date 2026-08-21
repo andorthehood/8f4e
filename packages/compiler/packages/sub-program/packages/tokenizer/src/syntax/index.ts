@@ -34,7 +34,7 @@ export { default as isIntermodularElementWordSizeReference } from './isIntermodu
 export { default as isIntermodularModuleReference } from './isIntermodularModuleReference';
 export { default as isIntermodularReference } from './isIntermodularReference';
 export { default as isIntermodularReferencePattern } from './isIntermodularReferencePattern';
-export { default as isMemoryPointerIdentifier, default as isMemoryPointerSyntax } from './isMemoryPointerIdentifier';
+export { default as isMemoryPointerIdentifier } from './isMemoryPointerIdentifier';
 export { default as isSkipExecutionDirective } from './isSkipExecutionDirective';
 export {
 	type MemoryArgumentShape,

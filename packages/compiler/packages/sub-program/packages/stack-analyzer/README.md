@@ -1,6 +1,6 @@
 # @8f4e/stack-analyzer
 
-`@8f4e/stack-analyzer` owns semantic stack validation and stack-effect analysis for a compiled project.
+`@8f4e/stack-analyzer` owns semantic stack validation and stack-effect analysis for a compiled sub-program.
 
 ```ts
 const stackReport = analyzeStack({

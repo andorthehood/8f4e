@@ -71,7 +71,7 @@ export interface ResolveMemoryReferencesResult {
 	references: MemoryReferenceResolutionReport;
 }
 
-function createProjectResolutionContext(
+function createSubProgramResolutionContext(
 	memoryPlan: MemoryLayoutPlan,
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId
 ): MemoryReferenceResolutionContext {
@@ -266,7 +266,7 @@ function resolveMemoryReferencesInAst(
 	const context =
 		ast.type === 'module'
 			? createModuleResolutionContext(memoryPlan, pointerMetadata, memoryPlan.modules[ast.id])
-			: createProjectResolutionContext(memoryPlan, pointerMetadata);
+			: createSubProgramResolutionContext(memoryPlan, pointerMetadata);
 	let nextLocalIndex = 0;
 	const lineFacts = ast.lines.map((line, lineIndex) => {
 		const constantResolvedLine = applyConstantFacts(line, constantReferences?.lineFacts[lineIndex]);
@@ -301,7 +301,7 @@ function resolveDeclarationSourceReferences(
 }
 
 /**
- * Resolves memory-layout value references once for the full compiler project.
+ * Resolves memory-layout value references once for the full sub-program.
  *
  * @param input - Sub-program AST, completed memory layout plan, and constant-resolution facts.
  * @returns Memory-reference facts aligned with the input AST and planned memory declaration sources.

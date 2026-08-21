@@ -6,7 +6,7 @@ import type { InitialMemoryDataSegment } from './types';
 /**
  * Creates passive data segments for non-zero and explicitly initialized compiled module memory.
  *
- * @param memoryPlan - Completed memory layout plan for the project.
+ * @param memoryPlan - Completed memory layout plan for the sub-program.
  * @param memoryDefaultsByModuleId - Resolved defaults keyed by module id.
  * @returns The materialized initial memory data segment data.
  */

@@ -499,7 +499,7 @@ function resolveFunctionReferences(
 }
 
 /**
- * Resolves semantic references once for the full compiler project.
+ * Resolves semantic references once for the full sub-program.
  *
  * @param input - Sub-program AST and semantic facts produced by earlier compiler passes.
  * @returns Semantic reference facts keyed back to the original sub-program AST.

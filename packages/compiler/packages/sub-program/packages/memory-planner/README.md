@@ -1,6 +1,6 @@
 # @8f4e/memory-planner
 
-`@8f4e/memory-planner` decides module addresses and memory declaration addresses for a project.
+`@8f4e/memory-planner` decides module addresses and memory declaration addresses for a sub-program.
 
 The sub-program-level entry point receives validated module and prototype ASTs plus constant-resolution facts:
 

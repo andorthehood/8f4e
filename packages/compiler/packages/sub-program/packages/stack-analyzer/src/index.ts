@@ -1,6 +1,6 @@
 export type {
-	AnalyzeStackProjectInput,
-	StackAnalysisProjectReport,
+	AnalyzeStackSubProgramInput,
+	StackAnalysisSubProgramReport,
 	StackAnalyzedFunction,
 	StackAnalyzedModule,
 } from './analyzeStack';

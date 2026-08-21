@@ -53,7 +53,7 @@ import { validateMapValueKind } from './mapValueKind';
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
 
-export interface AnalyzeStackProjectInput<
+export interface AnalyzeStackSubProgramInput<
 	TModule extends ModuleAST = ValidatedModuleAST,
 	TFunction extends FunctionAST = ValidatedFunctionAST,
 	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
@@ -92,7 +92,7 @@ export interface StackAnalyzedFunction {
 	used?: boolean;
 }
 
-export interface StackAnalysisProjectReport {
+export interface StackAnalysisSubProgramReport {
 	modules: Record<string, StackAnalyzedModule>;
 	functions: Record<string, StackAnalyzedFunction>;
 }
@@ -455,7 +455,7 @@ function analyzeSemanticReferenceLine(
 }
 
 function createModuleContext(
-	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
 	ast: ModuleAST
 ): ModuleCompilationContext {
 	const plannedModule = input.memoryPlan.modules[ast.id];
@@ -489,7 +489,7 @@ function createModuleContext(
 }
 
 function analyzeModule(
-	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
 	ast: ModuleAST
 ): StackAnalyzedModule {
 	const context = createModuleContext(input, ast);
@@ -519,7 +519,7 @@ function analyzeModule(
 }
 
 function getFunctionMetadata(
-	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
 	ast: FunctionAST
 ): FunctionMetadata {
 	const signatureMetadata = getEffectiveFunctionMetadata(ast, input.prototypeShapes);
@@ -536,7 +536,7 @@ function getFunctionMetadata(
 }
 
 function createFunctionContext(
-	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
 	ast: FunctionAST,
 	functionMetadata: FunctionMetadata
 ): FunctionCompilationContext {
@@ -573,7 +573,7 @@ function createFunctionContext(
 }
 
 function analyzeFunction(
-	input: AnalyzeStackProjectInput<ModuleAST, FunctionAST, PrototypeAST>,
+	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
 	ast: FunctionAST
 ): StackAnalyzedFunction {
 	const functionMetadata = getFunctionMetadata(input, ast);
@@ -624,7 +624,7 @@ export function analyzeStack<
 	TModule extends ModuleAST = ValidatedModuleAST,
 	TFunction extends FunctionAST = ValidatedFunctionAST,
 	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
->(input: AnalyzeStackProjectInput<TModule, TFunction, TPrototype>): StackAnalysisProjectReport {
+>(input: AnalyzeStackSubProgramInput<TModule, TFunction, TPrototype>): StackAnalysisSubProgramReport {
 	const functionReports = Object.fromEntries(
 		input.ast.functions.map(ast => {
 			const report = analyzeFunction(input, ast);

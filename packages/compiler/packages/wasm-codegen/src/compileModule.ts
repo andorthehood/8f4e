@@ -28,7 +28,7 @@ import { compileCodegenLine } from './compileLine';
  *
  * @param ast - Validated AST being processed.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
- * @param memoryPlan - Completed memory layout plan for the project.
+ * @param memoryPlan - Completed memory layout plan for the sub-program.
  * @param index - WASM index or source index assigned to the compiled item.
  * @param functions - Function registry available to compilation.
  * @param options - Compiler options for this compilation pass.
