@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/editor",
-  "version": "2.7.18",
+  "version": "3.0.0",
   "private": true,
   "description": "8f4e editor package",
   "type": "module",
@@ -26,7 +26,7 @@
   "dependencies": {
     "@8f4e/editor-state": "*",
     "@8f4e/editor-state-types": "*",
-		"glugglugglug": "*",
+    "glugglugglug": "*",
     "@8f4e/sprite-generator": "*",
     "@8f4e/state-manager": "*",
     "@8f4e/web-ui": "*"
