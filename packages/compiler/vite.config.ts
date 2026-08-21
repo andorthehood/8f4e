@@ -8,18 +8,7 @@ export default defineConfig({
 		emptyOutDir: false,
 		rollupOptions: {
 			...createEsLibConfig('./src/index.ts', 'dist').build?.rollupOptions,
-			external: [
-				'@8f4e/tokenizer',
-				'@8f4e/constant-resolver',
-				'@8f4e/language-spec',
-				'@8f4e/memory-default-resolver',
-				'@8f4e/memory-reference-resolver',
-				'@8f4e/memory-planner',
-				'@8f4e/semantic-reference-resolver',
-				'@8f4e/semantic-utils',
-				'@8f4e/stack-analyzer',
-				'@8f4e/wasm-codegen',
-			],
+			external: ['@8f4e/language-spec', '@8f4e/sub-program', '@8f4e/wasm-codegen'],
 		},
 	},
 });

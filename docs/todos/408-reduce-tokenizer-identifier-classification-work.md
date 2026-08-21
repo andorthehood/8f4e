@@ -34,7 +34,7 @@ Keep the existing precedence rules intact.
 
 ## Affected Components
 
-- `packages/compiler/packages/tokenizer/src/syntax/parseArgument.ts`
-- `packages/compiler/packages/tokenizer/src/syntax/*Reference*.ts`
-- `packages/compiler/packages/tokenizer/src/syntax/has*Prefix*.ts`
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/parseArgument.ts`
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/*Reference*.ts`
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/has*Prefix*.ts`
 

@@ -1,6 +1,6 @@
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 import type { CompilationResult, Editor } from '@8f4e/editor';
-import type { CompileInput, CompileOptions, CompilerDiagnostic } from '@8f4e/language-spec';
+import type { CompileOptions, CompilerDiagnostic, SubProgramSource } from '@8f4e/language-spec';
 
 // Create worker once at module scope
 // it will live for the entire application lifecycle
@@ -10,7 +10,7 @@ let memoryRef: WebAssembly.Memory | null = null;
 let codeBuffer: Uint8Array = new Uint8Array();
 
 export async function compileCode(
-	input: CompileInput,
+	input: SubProgramSource,
 	compilerOptions: CompileOptions,
 	editor: Editor
 ): Promise<CompilationResult> {

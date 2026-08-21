@@ -81,7 +81,7 @@ shape instead of preserving compatibility.
 
 - Change `@8f4e/wasm-codegen` to receive stack-analysis facts instead of enriched analyzed lines.
 - Build any per-line codegen view locally from AST, semantic-reference facts, and stack facts.
-- Update `packages/compiler/src/compileSubProgram.ts` and any package public APIs in the same refactor so the new
+- Update `packages/compiler/packages/sub-program/src/compileSubProgram.ts` and any package public APIs in the same refactor so the new
   report contract is the only path between producer and consumer.
 - Keep codegen mutation limited to backend emission context and bytecode output.
 
@@ -94,7 +94,7 @@ shape instead of preserving compatibility.
 
 ## Validation Checkpoints
 
-- `rg -n "targetFunction|\\.used\\s*=|analyzedLines|stackAnalysis:" packages/compiler/packages/stack-analyzer packages/compiler/packages/wasm-codegen packages/compiler/src`
+- `rg -n "targetFunction|\\.used\\s*=|analyzedLines|stackAnalysis:" packages/compiler/packages/sub-program/packages/stack-analyzer packages/compiler/packages/wasm-codegen packages/compiler/src`
 - `npx nx run @8f4e/stack-analyzer:test`
 - `npx nx run @8f4e/stack-analyzer:typecheck`
 - `npx nx run @8f4e/wasm-codegen:test`
@@ -113,10 +113,10 @@ shape instead of preserving compatibility.
 
 ## Affected Components
 
-- `packages/compiler/packages/stack-analyzer` - owns the new stack-analysis report and removes enriched line output.
+- `packages/compiler/packages/sub-program/packages/stack-analyzer` - owns the new stack-analysis report and removes enriched line output.
 - `packages/compiler/packages/wasm-codegen` - consumes stack facts and semantic-reference facts directly.
 - `packages/compiler/packages/language-spec` - may lose or rename AST-shaped analysis types.
-- `packages/compiler/src/compileSubProgram.ts` - remains the orchestrator wiring reports between passes.
+- `packages/compiler/packages/sub-program/src/compileSubProgram.ts` - remains the orchestrator wiring reports between passes.
 
 ## Risks & Considerations
 

@@ -1,12 +1,12 @@
 import compile, { deriveEffectiveMemorySize } from '@8f4e/compiler';
 import type {
 	CompileAndUpdateMemoryResult,
-	CompileInput,
 	CompileOptions,
 	CompilerCache,
 	GetOrCreateWasmInstanceResult,
 	MemoryDefaults,
 	MemoryLayoutPlan,
+	SubProgramSource,
 } from '@8f4e/language-spec';
 import getMemoryValueChanges from './getMemoryValueChanges';
 import getOrCreateMemory from './getOrCreateMemory';
@@ -44,7 +44,7 @@ async function getOrCreateWasmInstanceRef(
 }
 
 export default async function compileAndUpdateMemory(
-	input: CompileInput,
+	input: SubProgramSource,
 	compilerOptions: CompileOptions
 ): Promise<CompileAndUpdateMemoryResult> {
 	const {

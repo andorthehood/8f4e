@@ -1,11 +1,11 @@
 import compile, { deriveEffectiveMemorySize, serializeDiagnostic } from '@8f4e/compiler';
 import type { CompilationResult, Editor } from '@8f4e/editor';
 import type {
-	CompileInput,
 	CompileOptions,
 	CompilerCache,
 	CompilerDiagnostic,
 	MemoryAction,
+	SubProgramSource,
 } from '@8f4e/language-spec';
 
 let compilerCache: CompilerCache | undefined;
@@ -22,7 +22,7 @@ export function getCodeBuffer(): Uint8Array {
 }
 
 export async function compileCode(
-	input: CompileInput,
+	input: SubProgramSource,
 	compilerOptions: CompileOptions,
 	editor: Editor
 ): Promise<CompilationResult> {

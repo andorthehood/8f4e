@@ -13,7 +13,7 @@ completed: 2026-06-19
 ## Problem Description
 
 Standard-library include files currently expand into every function block they contain. The project preparser splits the
-resolved include source into function blocks and appends all of them to `CompileInput.functions`.
+resolved include source into function blocks and appends all of them to `SubProgramSource.functions`.
 
 That works while each include file is effectively one public function family, but it blocks a useful stdlib shape:
 

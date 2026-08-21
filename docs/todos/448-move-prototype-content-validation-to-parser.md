@@ -34,7 +34,7 @@ When prototype body expansion is implemented, this rule should be updated delibe
 
 ### Step 1: Add Parser-Owned Validation
 
-- Update `packages/compiler/packages/tokenizer/src/parser.ts`.
+- Update `packages/compiler/packages/sub-program/packages/tokenizer/src/parser.ts`.
 - While applying prototype AST lines, reject non-memory, non-boundary instructions according to the current rule.
 - Keep accepted memory declaration lines source ordered in `PrototypeAST.lines`.
 
@@ -63,8 +63,8 @@ When prototype body expansion is implemented, this rule should be updated delibe
 
 ## Affected Components
 
-- `packages/compiler/packages/tokenizer/src/parser.ts`
-- `packages/compiler/packages/tokenizer/src/parser.test.ts`
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/parser.ts`
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/parser.test.ts`
 - `packages/compiler/src/index.ts`
 - `packages/compiler/tests/errors/prototypes/`
 - `docs/todos/443-add-prototype-body-expansion.md`

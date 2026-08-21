@@ -88,10 +88,10 @@ stack analysis, and code generation and are not part of this cleanup.
 ## Affected Components
 
 - `packages/compiler/packages/language-spec/src/semantic.ts` - narrow `CompilationContext`.
-- `packages/compiler/packages/semantic-utils/src/createCompilationContext.ts` - remove dead cache construction.
-- `packages/compiler/packages/semantic-utils/src/blockStack.ts` - remove dead cache synchronization.
-- `packages/compiler/packages/semantic-utils/src/blockStack.test.ts` - remove obsolete assertions and retain live-cache coverage.
-- `packages/compiler/packages/stack-analyzer/src/analyzeInstruction.test.ts` - update manually constructed context fixtures.
+- `packages/compiler/packages/sub-program/packages/semantic-utils/src/createCompilationContext.ts` - remove dead cache construction.
+- `packages/compiler/packages/sub-program/packages/semantic-utils/src/blockStack.ts` - remove dead cache synchronization.
+- `packages/compiler/packages/sub-program/packages/semantic-utils/src/blockStack.test.ts` - remove obsolete assertions and retain live-cache coverage.
+- `packages/compiler/packages/sub-program/packages/stack-analyzer/src/analyzeInstruction.test.ts` - update manually constructed context fixtures.
 
 ## Risks & Considerations
 

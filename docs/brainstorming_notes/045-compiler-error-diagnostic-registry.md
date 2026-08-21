@@ -28,7 +28,7 @@ Semantic compiler codes live in `packages/compiler/packages/language-spec/src/er
 
 Semantic error objects are currently constructed in `packages/compiler/src/compilerError.ts` by a large `getError(...)` switch. Most cases only differ by a static message, with a few dynamic cases using details such as an identifier or the current stack.
 
-Syntax errors are separate and still tokenizer-owned in `packages/compiler/packages/tokenizer/src/syntax/syntaxError.ts`.
+Syntax errors are separate and still tokenizer-owned in `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/syntaxError.ts`.
 
 ## Proposed shape
 

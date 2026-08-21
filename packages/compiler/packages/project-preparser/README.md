@@ -11,7 +11,7 @@ const input = await prepareCompilerInputAsync(project, {
 });
 ```
 
-It understands project-level structure such as entries, groups, includes blocks, and document block delimiters. `prepareCompilerInputAsync` reduces that project document into the `CompileInput` shape consumed by the compiler: entries/modules, constants, functions, and prototypes.
+It understands project-level structure such as entries, groups, includes blocks, and document block delimiters. `prepareCompilerInputAsync` reduces that project document into the `SubProgramSource` shape consumed by the compiler: entries/modules, constants, functions, and prototypes.
 
 This package owns:
 

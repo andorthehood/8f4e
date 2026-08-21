@@ -87,7 +87,7 @@ Expected semantics:
 ## Affected Components
 
 - `packages/compiler/packages/language-spec/src/arguments.ts` - argument metadata shape for pointee queries.
-- `packages/compiler/packages/tokenizer/src/syntax/parseArgument.ts` - parsing/classification of pointer metadata queries.
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/parseArgument.ts` - parsing/classification of pointer metadata queries.
 - `packages/compiler/src/semantic/resolveCompileTimeArgument.ts` - compile-time metadata resolution.
 - `packages/compiler/src/utils/memoryData.ts` - depth-aware pointer metadata helpers.
 - `packages/compiler/tests/instructions/` - public behavior coverage.

@@ -1,4 +1,4 @@
-import type { CompileInput, Module } from '@8f4e/language-spec';
+import type { Module, SubProgramSource } from '@8f4e/language-spec';
 import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import { getDocumentProjectBlockType, getProjectBlockType } from './blockClassification';
 import type { ProjectIncludeResolverAsync } from './functionIncludes';
@@ -43,8 +43,8 @@ async function resolveIncludesBlock(
 export async function prepareCompilerInputFromProjectBlocksAsync(
 	blocks: readonly ProjectBlock[],
 	options: PrepareCompilerInputOptions = {}
-): Promise<CompileInput> {
-	const entries: CompileInput['entries'] = { main: [] };
+): Promise<SubProgramSource> {
+	const entries: SubProgramSource['entries'] = { main: [] };
 	const constants: Module[] = [];
 	const functions: Module[] = [];
 	const prototypes: Module[] = [];
@@ -88,13 +88,13 @@ export async function prepareCompilerInputFromProjectBlocksAsync(
 export async function prepareCompilerInputAsync(
 	project: ProjectDocument,
 	options: PrepareCompilerInputOptions = {}
-): Promise<CompileInput> {
+): Promise<SubProgramSource> {
 	return prepareCompilerInputFromProjectBlocksAsync(project.codeBlocks, options);
 }
 
 export async function prepareCompilerInputFromProjectSourceAsync(
 	source: string,
 	options: PrepareCompilerInputOptions = {}
-): Promise<CompileInput> {
+): Promise<SubProgramSource> {
 	return prepareCompilerInputAsync(parseProjectSource(source), options);
 }

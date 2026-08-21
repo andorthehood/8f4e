@@ -1,8 +1,8 @@
 import { serializeDiagnostic } from '@8f4e/compiler';
-import type { CompileInput, CompileOptions } from '@8f4e/language-spec';
+import type { CompileOptions, SubProgramSource } from '@8f4e/language-spec';
 import compileAndUpdateMemory from './compileAndUpdateMemory';
 
-async function compile(input: CompileInput, compilerOptions: CompileOptions) {
+async function compile(input: SubProgramSource, compilerOptions: CompileOptions) {
 	try {
 		const {
 			codeBuffer,

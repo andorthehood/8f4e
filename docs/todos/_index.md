@@ -109,7 +109,7 @@ Active todo files are listed below.
 | 203 | Use CodeBlock name instead of recomputing from code | 2026-06-14 | Code block names are now treated as stable stored data instead of being recomputed from code during normal update paths. |
 | 062 | Editor Command Queue Refactor | 2026-06-14 | Cancelled; no command-queue refactor is planned for this editor host-callback cleanup. |
 | 054 | Benchmark Unrolled vs Normal Loop in Audio Buffer Filler | 2026-06-14 | Cancelled; no benchmark work is planned for this old audio-buffer loop strategy investigation. |
-| 446 | Store project block type during project parse | 2026-06-11 | Superseded by the project-preparser pipeline refactor, which prepares the exact `CompileInput` shape directly from project blocks. |
+| 446 | Store project block type during project parse | 2026-06-11 | Superseded by the project-preparser pipeline refactor, which prepares the exact `SubProgramSource` shape directly from project blocks. |
 | 449 | Add function paramShape instruction | 2026-06-14 | Archived with the exact completion date unknown; `paramShape <prototypeId>` now expands prototype memory declarations into function pointer params while prototypes remain memory-shape-only. |
 | 451 | Add pushShape instruction | 2026-06-14 | Archived with the exact completion date unknown; `pushShape <prototypeId>` now pushes effective module memory addresses in prototype order for `paramShape` call sites. |
 | 456 | Improve function overload mismatch diagnostics | 2026-06-13 | Failed overload resolution now reports inferred call signatures while listing available overload signatures, without changing true missing-function diagnostics. |
@@ -195,7 +195,7 @@ Active todo files are listed below.
 | 301 | Refactor constant namespace collection and remove duplicated const parsing | 2026-03-30 | Superseded by the current semantic const pipeline; the remaining work is tracked in `352`. |
 | 310 | Simplify compiler project flattening and compilable block checks | 2026-03-30 | Archived by user request as already completed. |
 | 309 | Extract shared module memory identifier parser | 2026-03-30 | Superseded by later tokenizer/compiler metadata work; the remaining issue is editor-side obsolete source-syntax renaming, tracked separately in `351`. |
-| 353 | Nest tokenizer package under compiler | 2026-03-31 | Tokenizer now lives at `packages/compiler/packages/tokenizer`; Nx and TypeScript path resolution updated to the nested layout. |
+| 353 | Nest tokenizer package under compiler | 2026-03-31 | Tokenizer now lives at `packages/compiler/packages/sub-program/packages/tokenizer`; Nx and TypeScript path resolution updated to the nested layout. |
 | 254 | Fix max/min helpers for float64 memory | 2026-04-02 | `getElementMaxValue`/`getElementMinValue` now branch on `elementWordSize === 8` and return correct float64 bounds. |
 | 257 | Fix collectConstants identifier RHS resolution | 2026-04-02 | Superseded by semantic normalization refactor; constant RHS now resolved via the normalization pipeline without force-casting. |
 | 292 | Refactor error systems and document syntax vs compiler error boundaries | 2026-04-02 | `errors.ts` renamed to `compilerError.ts`; `SyntaxRulesError` centralized; policy comments added to both modules. |

@@ -3,7 +3,7 @@ import { SyntaxErrorCode } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 import compile, { serializeDiagnostic } from '.';
 
-const emptyCompileInput = {
+const emptySubProgramSource = {
 	constants: [],
 	functions: [],
 	prototypes: [],
@@ -16,7 +16,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: {
 						main: [
 							{
@@ -43,7 +43,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: { main: [] },
 					prototypes: [{ code: ['prototype', 'prototypeEnd'] }],
 				},
@@ -66,7 +66,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: {
 						main: [
 							{
@@ -93,7 +93,7 @@ describe('compile prototype validation', () => {
 	it('expands shapes after prototype parsing reaches the tokenizer', () => {
 		const result = compile(
 			{
-				...emptyCompileInput,
+				...emptySubProgramSource,
 				entries: {
 					main: [{ code: ['module main', 'shape state', 'moduleEnd'] }],
 				},
@@ -108,7 +108,7 @@ describe('compile prototype validation', () => {
 	it('marks shape-expanded declarations as inherited at the shape line', () => {
 		const result = compile(
 			{
-				...emptyCompileInput,
+				...emptySubProgramSource,
 				entries: {
 					main: [{ code: ['module filterA', 'shape filterState', 'float cutoff 1200', 'moduleEnd'] }],
 				},
@@ -146,7 +146,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [{ code: ['function main', 'functionEnd'] }],
 				},
@@ -165,7 +165,7 @@ describe('compile prototype validation', () => {
 	it('exposes function source names separately from compiler ids', () => {
 		const result = compile(
 			{
-				...emptyCompileInput,
+				...emptySubProgramSource,
 				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 				functions: [
 					{ code: ['function double', 'param int value', 'push value', 'push value', 'add', 'functionEnd int'] },
@@ -187,7 +187,7 @@ describe('compile prototype validation', () => {
 	it('allows function namespace imports before parameter declarations', () => {
 		const result = compile(
 			{
-				...emptyCompileInput,
+				...emptySubProgramSource,
 				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 				constants: [{ code: ['constants math', 'const OFFSET 2', 'constantsEnd'] }],
 				functions: [
@@ -219,7 +219,7 @@ describe('compile prototype validation', () => {
 	it('collects same-name functions as overloads when parameter signatures differ', () => {
 		const result = compile(
 			{
-				...emptyCompileInput,
+				...emptySubProgramSource,
 				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 				functions: [
 					{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
@@ -251,7 +251,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [
 						{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
@@ -276,7 +276,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [
 						{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
@@ -311,7 +311,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [
 						{ code: ['function tick', 'functionEnd'] },
@@ -333,7 +333,7 @@ describe('compile prototype validation', () => {
 	it('resolves overloaded calls by exact stack operand types', () => {
 		const result = compile(
 			{
-				...emptyCompileInput,
+				...emptySubProgramSource,
 				entries: {
 					main: [{ code: ['module main', 'push 1', 'call consume', 'push 1.5', 'call consume', 'moduleEnd'] }],
 				},
@@ -358,7 +358,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: { main: [{ code: ['module main', 'moduleEnd'], projectBlockId: 10 }] },
 					functions: [
 						{ code: ['function first', '#export shared', 'functionEnd'], projectBlockId: 20 },
@@ -384,7 +384,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: { main: [{ code: ['module main', 'moduleEnd'], projectBlockId: 10 }] },
 					functions: [
 						{ code: ['function convert', '#export convertInt', 'param int value', 'functionEnd'], projectBlockId: 20 },
@@ -410,7 +410,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptyCompileInput,
+					...emptySubProgramSource,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [{ code: ['function entryAlias', '#export main', 'functionEnd'] }],
 				},
@@ -429,7 +429,7 @@ describe('compile prototype validation', () => {
 	it('marks exported functions as used roots during metadata collection', () => {
 		const result = compile(
 			{
-				...emptyCompileInput,
+				...emptySubProgramSource,
 				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 				functions: [{ code: ['function externallyCallable', '#export externallyCallable', 'functionEnd'] }],
 			},

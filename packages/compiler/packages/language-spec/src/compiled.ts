@@ -88,6 +88,32 @@ export interface CompilerCache {
 	ast: ASTCache<ValidatedAST>;
 }
 
+/**
+ * Emission-ready output produced by compiling one closed source sub-program.
+ *
+ * Function indexes and memory addresses are assigned within this unit. A future
+ * binary composer will need relocation metadata before multiple values of this
+ * type can be linked into one WebAssembly module without recompilation.
+ */
+export interface CompiledSubProgram {
+	/** Public execution entries owned by this sub-program. */
+	entryNames: string[];
+	/** Compiled module bodies in source order. */
+	compiledModules: CompiledModule[];
+	/** Compiled user functions in source order. */
+	compiledFunctions: CompiledFunction[];
+	/** Function type table accumulated while compiling calls and definitions. */
+	functionTypeRegistry: FunctionTypeRegistry;
+	/** Memory layout assigned within this sub-program. */
+	memoryPlan: MemoryLayoutPlan;
+	/** Resolved memory defaults keyed by module id. */
+	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
+	/** Resolved pointer metadata keyed by module id. */
+	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	/** Cache carrying validated AST entries for this compilation. */
+	cache: CompilerCache;
+}
+
 export type CompileResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
@@ -139,14 +165,17 @@ export interface Module {
 export type ModuleEntries = Record<string, Module[]>;
 
 /**
- * Complete source payload consumed by the compiler.
+ * Atomic, closed source unit consumed by the compiler.
  *
  * These four collections are the compiler's basic building blocks:
  * executable modules grouped by entry, shared functions, constants, and
  * prototypes. Includes are not a basic compiler block type; callers should
- * resolve them into function blocks before creating this input.
+ * resolve them into function blocks before creating this source unit.
+ *
+ * References resolve within this boundary. A larger program can assign an
+ * identity to each sub-program by placing it in a {@link ProgramSource}.
  */
-export interface CompileInput {
+export interface SubProgramSource {
 	/** Executable module blocks grouped by host-callable entry name. */
 	entries: ModuleEntries;
 	/** Shared function blocks, including functions expanded from includes. */
@@ -155,4 +184,10 @@ export interface CompileInput {
 	constants: Module[];
 	/** Prototype blocks used by shape/state layouts. */
 	prototypes: Module[];
+}
+
+/** Source-level program composed from independently identifiable sub-programs. */
+export interface ProgramSource {
+	/** Closed source units keyed by their identity within this program. */
+	subPrograms: Record<string, SubProgramSource>;
 }

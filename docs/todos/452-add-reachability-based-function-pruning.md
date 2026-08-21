@@ -55,7 +55,7 @@ The pass should:
 
 ## Affected Components
 
-- `packages/compiler/src/compileSubProgram.ts` - current conservative pruning and future reachability orchestration.
+- `packages/compiler/packages/sub-program/src/compileSubProgram.ts` - current conservative pruning and future reachability orchestration.
 - `packages/compiler/src/compileFunction.ts` - likely source for a reusable analysis-only function-body walk.
 - `packages/compiler/src/stackAnalysis/` - call resolution and stack effects that should be reused.
 

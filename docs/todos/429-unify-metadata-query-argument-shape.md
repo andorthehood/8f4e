@@ -91,7 +91,7 @@ The exact field names can change, but the important part is that the query kind,
 ## Affected Components
 
 - `packages/compiler/packages/language-spec/src/arguments.ts`
-- `packages/compiler/packages/tokenizer/src/syntax/parseArgument.ts`
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/parseArgument.ts`
 - `packages/compiler/src/semantic/resolveCompileTimeArgument.ts`
 - `packages/compiler/src/semantic/normalizeCompileTimeArguments.ts`
 - `packages/compiler/tests/instructions/`

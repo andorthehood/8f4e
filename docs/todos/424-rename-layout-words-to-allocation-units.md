@@ -79,7 +79,7 @@ Because the project is not released yet, update callers directly and do not keep
 
 ## Validation Checkpoints
 
-- `rg -n "GLOBAL_ALIGNMENT_BOUNDARY|wordAlignedAddress|wordAlignedSize|currentModuleNextWordOffset|currentModuleWordAlignedSize" packages/compiler/packages/language-spec/src packages/compiler/src packages/compiler/packages/tokenizer/src -g '*.ts'`
+- `rg -n "GLOBAL_ALIGNMENT_BOUNDARY|wordAlignedAddress|wordAlignedSize|currentModuleNextWordOffset|currentModuleWordAlignedSize" packages/compiler/packages/language-spec/src packages/compiler/src packages/compiler/packages/sub-program/packages/tokenizer/src -g '*.ts'`
 - `npx nx run @8f4e/language-spec:typecheck`
 - `npx nx run compiler:typecheck`
 - `npx nx run compiler:test`

@@ -8,14 +8,14 @@ This plan is the reference for the project-preparser pipeline implementation and
 
 ## Short version
 
-The compiler should consume one normalized source object, `CompileInput`, made of the compiler's basic building blocks:
+The compiler should consume one normalized source object, `SubProgramSource`, made of the compiler's basic building blocks:
 
 - executable module blocks grouped by entry name
 - shared function blocks
 - top-level constants blocks
 - prototype blocks
 
-Project-level conveniences such as includes are not basic compiler blocks. They should be reduced into function blocks before `CompileInput` reaches semantic analysis and code generation.
+Project-level conveniences such as includes are not basic compiler blocks. They should be reduced into function blocks before `SubProgramSource` reaches semantic analysis and code generation.
 
 The project pipeline should have explicit layers:
 
@@ -24,7 +24,7 @@ raw .8f4e project source
   -> project preparser
   -> project document / project blocks
   -> compiler input preparer
-  -> CompileInput
+  -> SubProgramSource
   -> compiler semantic analysis and code generation
 ```
 
@@ -50,7 +50,7 @@ and:
 const input = await prepareCompilerInputFromProjectBlocksAsync(blocks, { resolveInclude });
 ```
 
-Both paths should produce the same `CompileInput` shape.
+Both paths should produce the same `SubProgramSource` shape.
 
 ## Layer ownership
 
@@ -71,7 +71,7 @@ Parsing should be environment-independent and synchronous unless another syntax 
 
 Parsed project output should represent the project document. It should not contain include-expanded function blocks. Include blocks stay in the parsed project as normal project blocks; expanded include functions are produced later during compiler input preparation.
 
-Groups are reserved for future project organization. They are intentionally not supported by the editor or compiler today. If the project preparser preserves group syntax, groups should remain part of the project document layer only and should not appear in `CompileInput`.
+Groups are reserved for future project organization. They are intentionally not supported by the editor or compiler today. If the project preparser preserves group syntax, groups should remain part of the project document layer only and should not appear in `SubProgramSource`.
 
 ### Include resolver
 
@@ -94,7 +94,7 @@ It should not know where include source text comes from.
 
 ### Compiler input preparer
 
-The compiler input preparer owns reduction from project blocks to `CompileInput`:
+The compiler input preparer owns reduction from project blocks to `SubProgramSource`:
 
 - classify plain project blocks into compiler block categories and project-only categories
 - collect include declarations from includes blocks
@@ -116,7 +116,7 @@ Compiler diagnostics should use block-relative line numbers. Project-file or edi
 
 ### Compiler
 
-The compiler owns `CompileInput` and below:
+The compiler owns `SubProgramSource` and below:
 
 - tokenizing individual compiler source blocks
 - syntax validation within compiler blocks
@@ -137,12 +137,12 @@ parseProjectSource(source: string): ProjectDocument;
 prepareCompilerInputAsync(
   project: ProjectDocument,
   options?: { resolveInclude?: IncludeResolver }
-): Promise<CompileInput>;
+): Promise<SubProgramSource>;
 
 prepareCompilerInputFromProjectSourceAsync(
   source: string,
   options?: { resolveInclude?: IncludeResolver }
-): Promise<CompileInput>;
+): Promise<SubProgramSource>;
 ```
 
 Editor-state can enter at the plain project-block layer after doing its own editor-specific ordering:
@@ -151,7 +151,7 @@ Editor-state can enter at the plain project-block layer after doing its own edit
 prepareCompilerInputFromProjectBlocksAsync(
   blocks: ProjectBlock[],
   options?: { resolveInclude?: IncludeResolver }
-): Promise<CompileInput>;
+): Promise<SubProgramSource>;
 ```
 
 Lower-level helpers should stay available for callers that intentionally assemble their own compiler input:
@@ -164,7 +164,7 @@ resolveProjectIncludesAsync(includeBlocks, resolveInclude);
 Direct compiler usage should also remain possible:
 
 ```ts
-compile(input: CompileInput, options);
+compile(input: SubProgramSource, options);
 ```
 
 ## Naming direction
@@ -176,16 +176,16 @@ Potential renames:
 - `ProjectInput` -> `ProjectDocument`
 - `ProjectCodeBlock` -> `ProjectBlock`
 - `ProjectCodeGroup` -> `ProjectGroup`
-- `ProjectCompilerBlocks` -> remove, or replace with `CompileInput`
+- `ProjectCompilerBlocks` -> remove, or replace with `SubProgramSource`
 - editor-state `flattenProjectForCompiler` -> replace with shared preparer
 - `@8f4e/tokenizer` project parsing surface -> move toward `@8f4e/project-preparser`
 
-`CompileInput` is a good name and should stay. It already represents the compiler's basic source payload.
+`SubProgramSource` is a good name and should stay. It already represents the compiler's basic source payload.
 
 ## Migration path
 
 1. Add a shared compiler input preparer in `@8f4e/project-preparser`.
-2. Make that preparer return the exact `CompileInput` type from `@8f4e/language-spec`.
+2. Make that preparer return the exact `SubProgramSource` type from `@8f4e/language-spec`.
 3. Move include expansion out of `parse8f4eProject` and into the preparer.
 4. Migrate CLI compilation to use the preparer instead of manually mapping `ProjectCompilerBlocks`.
 5. Migrate editor-state compilation to map editor blocks into ordered plain project blocks, then use the same preparer instead of maintaining `flattenProjectForCompiler`.

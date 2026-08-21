@@ -56,7 +56,7 @@ The desired shape is:
 ```ts
 const ast = parseProject(...);
 const constants = resolveConstants({ ast });
-const memoryPlan = planProjectMemoryLayout({ ast, constants });
+const memoryPlan = planSubProgramMemoryLayout({ ast, constants });
 const memoryDefaults = resolveMemoryDefaults({ ast, memoryPlan, constants });
 const semanticReferences = resolveSemanticReferences({ ast, constants, memoryPlan, memoryDefaults, functions });
 const stackAnalysis = analyzeStack({ ast, semanticReferences, memoryPlan });

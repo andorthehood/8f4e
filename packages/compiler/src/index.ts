@@ -1,6 +1,6 @@
-import type { CompileInput, CompileOptions, CompileResult } from '@8f4e/language-spec';
+import type { CompileOptions, CompileResult, SubProgramSource } from '@8f4e/language-spec';
+import { compileSubProgram, createCompilerCache } from '@8f4e/sub-program';
 import { deriveEffectiveMemorySize, emitWasmProgram } from '@8f4e/wasm-codegen';
-import { compileSubProgram, createCompilerCache } from './compileSubProgram';
 
 export { serializeDiagnostic } from './diagnostic';
 export { deriveEffectiveMemorySize };
@@ -14,7 +14,7 @@ export { deriveEffectiveMemorySize };
  * @returns Compiled WebAssembly program and related metadata.
  */
 export default function compile(
-	input: CompileInput,
+	input: SubProgramSource,
 	options: CompileOptions,
 	cache = createCompilerCache()
 ): CompileResult {

@@ -132,8 +132,8 @@ Avoid encoding behavior in instruction names. The tokenizer should consume decla
 ## Affected Components
 
 - `packages/compiler/packages/language-spec/src/instructionSpecs.ts` - add generic placement metadata for source-order rules.
-- `packages/compiler/packages/tokenizer/src/mainTokenizerLoop.ts` - enforce generic prologue placement.
-- `packages/compiler/packages/tokenizer/src/index.test.ts` - add parser placement coverage.
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/mainTokenizerLoop.ts` - enforce generic prologue placement.
+- `packages/compiler/packages/sub-program/packages/tokenizer/src/index.test.ts` - add parser placement coverage.
 - `packages/compiler/src/instructionCompilers/param.ts` - remove stale placement check.
 - `packages/compiler/tests/errors/` - update public diagnostic coverage if the error domain changes.
 
