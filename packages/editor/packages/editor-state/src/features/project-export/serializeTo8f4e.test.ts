@@ -1,3 +1,4 @@
+import { parseProjectSource } from '@8f4e/compiler';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { serializeProjectTo8f4e } from './serializeTo8f4e';
@@ -85,6 +86,20 @@ describe('serializeProjectTo8f4e', () => {
 
 	it('handles an empty project', () => {
 		expect(serializeProjectTo8f4e(createProject())).toBe('8f4e/v1\n\n');
+	});
+
+	it('round-trips canonical block collections through project text', () => {
+		const project = createProject({
+			modules: [{ id: 1, code: validBlock, entry: 'main' }],
+			functions: [{ id: 2, code: validFunctionBlock }],
+			notes: [{ id: 3, code: validNoteBlock }],
+		});
+
+		const parsed = parseProjectSource(serializeProjectTo8f4e(project));
+
+		expect(parsed.modules[0].code).toEqual(validBlock);
+		expect(parsed.functions[0].code).toEqual(validFunctionBlock);
+		expect(parsed.notes[0].code).toEqual(validNoteBlock);
 	});
 
 	it('accepts functionEnd with type suffix', () => {

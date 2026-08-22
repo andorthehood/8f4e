@@ -13,7 +13,6 @@ editor state ---------------------/         |
                                              |
                                              v
   private compiler stages
-  -> CompiledSubProgram
   -> WebAssembly emission
   -> CompileResult
 ```
@@ -26,10 +25,6 @@ the text representation without invoking a second block-classification or whole-
 `includes`, `notes`, and `unknown` collections define block type through membership. Only modules have semantic ordering;
 filtering `modules` by `entry` preserves the execution order for that entry. Hoisted declarations do not share a global
 order with modules or with each other.
-
-`CompiledSubProgram` is the emission handoff, not yet a generally relocatable object format: its function indexes and
-memory addresses have already been assigned within one unit. It is an internal compiler-stage concept, not a public
-project input contract.
 
 ## Compiler Passes
 
@@ -160,6 +155,6 @@ source
   -> semantic reference resolution
   -> stack validation
   -> instruction codegen from AST + pass reports
-  -> CompiledSubProgram
+  -> private emission artifacts
   -> WASM module + runtime metadata
 ```

@@ -88,32 +88,6 @@ export interface CompilerCache {
 	ast: ASTCache<ValidatedAST>;
 }
 
-/**
- * Emission-ready output produced by compiling one closed source sub-program.
- *
- * Function indexes and memory addresses are assigned within this unit. A future
- * binary composer will need relocation metadata before multiple values of this
- * type can be linked into one WebAssembly module without recompilation.
- */
-export interface CompiledSubProgram {
-	/** Public execution entries owned by this sub-program. */
-	entryNames: string[];
-	/** Compiled module bodies in source order. */
-	compiledModules: CompiledModule[];
-	/** Compiled user functions in source order. */
-	compiledFunctions: CompiledFunction[];
-	/** Function type table accumulated while compiling calls and definitions. */
-	functionTypeRegistry: FunctionTypeRegistry;
-	/** Memory layout assigned within this sub-program. */
-	memoryPlan: MemoryLayoutPlan;
-	/** Resolved memory defaults keyed by module id. */
-	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
-	/** Resolved pointer metadata keyed by module id. */
-	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
-	/** Cache carrying validated AST entries for this compilation. */
-	cache: CompilerCache;
-}
-
 export type CompileResult = {
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
@@ -143,13 +117,3 @@ export interface IncludedSourceMetadata {
 
 /** Source origin metadata carried with source blocks. */
 export type SourceMetadata = IncludedSourceMetadata;
-
-/** Compiler-derived source payload used between private compiler stages. */
-export interface Module {
-	/** Raw source lines for a compiler-derived block such as an included function. */
-	code: string[];
-	/** Optional project block id used to map diagnostics back to editor/project source. */
-	projectBlockId?: number;
-	/** Optional origin metadata for blocks expanded before compilation. */
-	source?: SourceMetadata;
-}

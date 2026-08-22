@@ -1,5 +1,5 @@
+import { parseProjectSource } from '@8f4e/compiler';
 import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor';
-import { parse8f4eToProject } from '@8f4e/editor-state';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { getCodeBuffer } from './compiler-callback';
 import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
@@ -21,7 +21,7 @@ export async function loadSession(): Promise<ProjectObjectModel | null> {
 			window.history.replaceState({}, '', cleanUrl);
 
 			console.log('Loading project from query param:', projectUrlFromQuery);
-			return parse8f4eToProject(await getProject(projectUrlFromQuery));
+			return parseProjectSource(await getProject(projectUrlFromQuery));
 		}
 
 		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
@@ -33,7 +33,7 @@ export async function loadSession(): Promise<ProjectObjectModel | null> {
 		const defaultProjectUrl = await getDefaultProjectUrl();
 		if (defaultProjectUrl) {
 			console.log(`Loading default project: ${defaultProjectUrl}`);
-			return parse8f4eToProject(await getProject(defaultProjectUrl));
+			return parseProjectSource(await getProject(defaultProjectUrl));
 		}
 
 		return null;
@@ -87,7 +87,7 @@ export async function importProject(): Promise<ProjectObjectModel> {
 			reader.onload = async event => {
 				try {
 					const content = event.target?.result as string;
-					const project = parse8f4eToProject(content);
+					const project = parseProjectSource(content);
 					resolve(project);
 				} catch (error) {
 					reject(new Error('Failed to parse project file: ' + error));

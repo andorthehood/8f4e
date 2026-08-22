@@ -1,6 +1,6 @@
 import type { CompileProjectOptions, CompileResult, ProjectObjectModel } from '@8f4e/language-spec';
 import { parseProjectSource, resolveProjectIncludesAsync } from '@8f4e/project-preparser';
-import { createCompilerCache } from '@8f4e/sub-program';
+import { createCompilerCache } from '@8f4e/sub-program/internal';
 import { deriveEffectiveMemorySize } from '@8f4e/wasm-codegen';
 import { compileProjectObjectModel } from './compileProjectObjectModel';
 

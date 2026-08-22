@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { describe, expect, it } from 'vitest';
 
-import parseProjectSource, {
+import {
 	BLOCK_DELIMITERS,
 	FORMAT_HEADER,
 	getDocumentProjectBlockType,
@@ -11,6 +11,7 @@ import parseProjectSource, {
 	getProjectBlockType,
 	getProjectCloserKeyword,
 	getProjectOpenerKeyword,
+	parseProjectSource,
 } from './index';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

@@ -1,9 +1,9 @@
+import { parseProjectSource } from '@8f4e/compiler';
 import type { ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/language-spec';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { compileProject } from '../compile/compileProject';
-import parse8f4eToProject from '../shared/parse8f4e';
 
 const WASM_MEMORY_PAGE_SIZE = 65536;
 
@@ -233,7 +233,7 @@ export function getTestUsage(): string {
 
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
-	const project = parse8f4eToProject(inputRaw);
+	const project = parseProjectSource(inputRaw);
 	if (!hasTestEntry(project)) {
 		return { assertions: 0, skipped: true };
 	}

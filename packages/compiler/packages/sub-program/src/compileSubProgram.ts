@@ -1,15 +1,19 @@
 import { ConstantResolverError, type ResolveConstantsSubProgramAST, resolveConstants } from '@8f4e/constant-resolver';
 import type {
-	CompiledSubProgram,
+	CompiledFunction,
+	CompiledModule,
 	CompileOptions,
 	CompilerCache,
 	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionRegistry,
 	FunctionTypeRegistry,
-	Module,
+	MemoryDefaults,
+	MemoryLayoutPlan,
+	MemoryPointerMetadataMap,
 	ProjectBlock,
 	ProjectObjectModel,
+	SourceMetadata,
 	ValidatedAST,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
@@ -30,6 +34,23 @@ import {
 	collectNamespacesFromASTs,
 } from './semantic/buildNamespace';
 
+type CompilerDerivedSource = {
+	code: string[];
+	projectBlockId?: number;
+	source?: SourceMetadata;
+};
+
+interface CompiledSubProgram {
+	entryNames: string[];
+	compiledModules: CompiledModule[];
+	compiledFunctions: CompiledFunction[];
+	functionTypeRegistry: FunctionTypeRegistry;
+	memoryPlan: MemoryLayoutPlan;
+	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
+	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	cache: CompilerCache;
+}
+
 /** Module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
 	/** Source lines to parse. */
@@ -41,14 +62,14 @@ type ModuleCompilerSource = {
 	/** Project code block creation index that produced this source, when compiling a project. */
 	projectBlockId?: number;
 	/** Source origin metadata for blocks expanded before compilation. */
-	source?: Module['source'];
+	source?: SourceMetadata;
 };
 
 type CompilerSource = {
 	code: string[];
 	cacheKey: string;
 	projectBlockId?: number;
-	source?: Module['source'];
+	source?: SourceMetadata;
 };
 
 /**
@@ -202,7 +223,7 @@ function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSource, c
 	}
 }
 
-function createCompilerSource(module: Module | ProjectBlock, cacheKey: string): CompilerSource {
+function createCompilerSource(module: CompilerDerivedSource | ProjectBlock, cacheKey: string): CompilerSource {
 	return {
 		code: module.code,
 		cacheKey,
@@ -244,7 +265,7 @@ export function compileSubProgram(
 	project: ProjectObjectModel,
 	options: CompileOptions,
 	cache = createCompilerCache(),
-	includedFunctions: readonly Module[] = []
+	includedFunctions: readonly CompilerDerivedSource[] = []
 ): CompiledSubProgram {
 	assertUniqueProjectBlockIds(project);
 	const modules = project.modules.filter(block => !block.disabled);

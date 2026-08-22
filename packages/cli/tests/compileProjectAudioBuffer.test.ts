@@ -1,10 +1,9 @@
+import { parseProjectSource } from '@8f4e/compiler';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 import { describe, expect, it } from 'vitest';
-
-import parse8f4eToProject from '../src/shared/parse8f4e';
 
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDir, '..');
@@ -13,7 +12,7 @@ const fixturePath = path.join(repoRoot, 'packages/examples/src/projects/audio/au
 
 async function loadAudioBufferProject() {
 	const raw = await fs.readFile(fixturePath, 'utf8');
-	return parse8f4eToProject(raw);
+	return parseProjectSource(raw);
 }
 
 describe('compileProject (audioBuffer example)', () => {

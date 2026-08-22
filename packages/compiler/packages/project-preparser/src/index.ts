@@ -8,5 +8,5 @@ export {
 	resolveProjectIncludes,
 	resolveProjectIncludesAsync,
 } from './functionIncludes';
-export { parseProjectSource as default, parseProjectSource } from './parseProjectSource';
+export { parseProjectSource } from './parseProjectSource';
 export { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';

@@ -1,5 +1,6 @@
+import { parseProjectSource } from '@8f4e/compiler';
 import initEditor, { type BrowserLocalNoteStorageBlock, type Editor, type RuntimeRegistry } from '@8f4e/editor';
-import { parse8f4eToProject, serializeProjectTo8f4e } from '@8f4e/editor-state';
+import { serializeProjectTo8f4e } from '@8f4e/editor-state';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { createMainThreadRuntimeDef } from '@8f4e/runtime-main-thread/runtime-def';
 import { compileCode, getCodeBuffer, getMemory } from './compile';
@@ -116,7 +117,7 @@ async function loadSession(): Promise<ProjectObjectModel | null> {
 		return null;
 	}
 
-	return parse8f4eToProject(loadedProjectSource);
+	return parseProjectSource(loadedProjectSource);
 }
 
 async function saveSession(project: ProjectObjectModel): Promise<void> {
@@ -135,7 +136,7 @@ async function importProject(): Promise<ProjectObjectModel> {
 		throw new Error('No 8f4e project was selected.');
 	}
 
-	return parse8f4eToProject(source);
+	return parseProjectSource(source);
 }
 
 async function exportProject(data: string, fileName: string): Promise<void> {
