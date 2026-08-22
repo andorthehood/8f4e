@@ -103,20 +103,14 @@ async function main() {
 			detailed: true,
 		});
 
-		const [{ default: compile }, { prepareCompilerInputFromProjectSourceAsync }] = await Promise.all([
-			import('@8f4e/compiler'),
-			import('@8f4e/project-preparser'),
-		]);
+		const { compileProject, parseProjectSource } = await import('@8f4e/compiler');
 
 		const parsedCases = [];
 		for (const benchmarkCase of benchmarkCases) {
 			const rawProject = await fs.readFile(benchmarkCase.filePath, 'utf8');
-			const compilerInput = await prepareCompilerInputFromProjectSourceAsync(rawProject, {
-				resolveInclude: resolveStdlibInclude,
-			});
 			parsedCases.push({
 				...benchmarkCase,
-				compilerInput,
+				project: parseProjectSource(rawProject),
 			});
 		}
 
@@ -142,7 +136,10 @@ async function main() {
 				continue;
 			}
 
-			compile(benchmarkCase.compilerInput, compilerOptions);
+			await compileProject(benchmarkCase.project, {
+				...compilerOptions,
+				resolveInclude: resolveStdlibInclude,
+			});
 			const { result: coverageResult } = await session.post('Profiler.takePreciseCoverage');
 			const coverage = summarizeCoverage(coverageResult);
 			assertCoverageMatched(coverage, benchmarkCase);
