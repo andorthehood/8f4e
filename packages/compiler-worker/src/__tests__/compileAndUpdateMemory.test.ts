@@ -1,4 +1,4 @@
-import type { CompileAndUpdateMemoryResult, Module, SubProgramSource } from '@8f4e/language-spec';
+import type { CompileAndUpdateMemoryResult, ProjectObjectModel } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
@@ -6,7 +6,7 @@ describe('compileAndUpdateMemory execution entries', () => {
 	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
 
-	const createModules = (baseDefault: number): Module[] => [
+	const createModules = (baseDefault: number): Array<{ code: string[] }> => [
 		{
 			code: `
 module setup
@@ -24,11 +24,15 @@ moduleEnd
 				.split('\n'),
 		},
 	];
-	const createInput = (modules: Module[]): SubProgramSource => ({
-		entries: { init: modules },
+	const createInput = (modules: Array<{ code: string[] }>): ProjectObjectModel => ({
+		modules: modules.map((module, id) => ({ ...module, id, entry: 'init' })),
 		constants: [],
 		functions: [],
 		prototypes: [],
+		includes: [],
+		notes: [],
+		unknown: [],
+		groups: [],
 	});
 
 	const getAddresses = (result: CompileAndUpdateMemoryResult) => ({
@@ -94,11 +98,15 @@ moduleEnd
 describe('compileAndUpdateMemory float64 incremental patching', () => {
 	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
-	const createInput = (modules: Module[]): SubProgramSource => ({
-		entries: { main: modules },
+	const createInput = (modules: Array<{ code: string[] }>): ProjectObjectModel => ({
+		modules: modules.map((module, id) => ({ ...module, id, entry: 'main' })),
 		constants: [],
 		functions: [],
 		prototypes: [],
+		includes: [],
+		notes: [],
+		unknown: [],
+		groups: [],
 	});
 
 	beforeEach(async () => {
@@ -107,7 +115,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 	});
 
 	it('patches float64 scalar default correctly on incremental recompile', async () => {
-		const createModules = (val: number): Module[] => [
+		const createModules = (val: number): Array<{ code: string[] }> => [
 			{ code: `module mymod\nfloat64 value ${val}\nmoduleEnd`.split('\n') },
 		];
 
@@ -125,7 +133,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 	});
 
 	it('does not overwrite float64 memory when default is unchanged on incremental recompile', async () => {
-		const createModules = (val: number): Module[] => [
+		const createModules = (val: number): Array<{ code: string[] }> => [
 			{ code: `module mymod\nfloat64 value ${val}\nmoduleEnd`.split('\n') },
 		];
 

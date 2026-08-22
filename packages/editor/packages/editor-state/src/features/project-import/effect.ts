@@ -1,4 +1,5 @@
-import type { EventDispatcher, Project, State } from '@8f4e/editor-state-types';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { error, warn } from '../logger/logger';
@@ -42,7 +43,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		}
 	}
 
-	function loadProject({ project: newProject }: { project: Project }) {
+	function loadProject({ project: newProject }: { project: ProjectObjectModel }) {
 		store.set('initialProjectState', newProject);
 	}
 

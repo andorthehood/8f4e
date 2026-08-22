@@ -29,10 +29,7 @@ async function loadExampleProject(relativePath: string) {
 }
 
 function getProjectModuleBlocks(project: Awaited<ReturnType<typeof loadExampleProject>>) {
-	return project.codeBlocks.filter(block => {
-		const firstLine = block.code[0]?.trim() ?? '';
-		return firstLine.startsWith('module ') || firstLine.startsWith('constants ');
-	});
+	return [...project.modules, ...project.constants];
 }
 
 function getBlockId(block: { code: string[] }): string {

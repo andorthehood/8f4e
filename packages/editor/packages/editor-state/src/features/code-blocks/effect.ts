@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
-import { getDocumentProjectBlockType } from '@8f4e/project-preparser';
+import type { ProjectBlock } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import gapCalculator from '../code-editing/gapCalculator';
 import { moveCaret } from '../code-editing/moveCaret';
@@ -198,14 +198,21 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 
 		state.codeBlockRendering.outputsByWordAddress.clear();
 		state.codeBlockRendering.draggedCodeBlock = undefined;
-		state.codeBlockRendering.nextCodeBlockCreationIndex = 0;
+		const project = state.initialProjectState;
+		const classifiedBlocks: Array<ProjectBlock & { blockType: CodeBlockGraphicData['blockType']; entry?: string }> = [
+			...project.modules.map(block => ({ ...block, blockType: 'module' as const })),
+			...project.functions.map(block => ({ ...block, blockType: 'function' as const })),
+			...project.constants.map(block => ({ ...block, blockType: 'constants' as const })),
+			...project.prototypes.map(block => ({ ...block, blockType: 'prototype' as const })),
+			...project.includes.map(block => ({ ...block, blockType: 'includes' as const })),
+			...project.notes.map(block => ({ ...block, blockType: 'note' as const })),
+			...project.unknown.map(block => ({ ...block, blockType: 'unknown' as const })),
+		];
+		state.codeBlockRendering.nextCodeBlockCreationIndex = Math.max(-1, ...classifiedBlocks.map(block => block.id)) + 1;
 		store.set('codeBlockRendering.selectedCodeBlock', undefined);
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', undefined);
 
-		const codeBlocks = state.initialProjectState.codeBlocks.map(codeBlock => {
-			const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
-			state.codeBlockRendering.nextCodeBlockCreationIndex++;
-
+		const codeBlocks = classifiedBlocks.map(codeBlock => {
 			// Parse @pos directive from code, default to (0,0) if missing or invalid
 			const blockParsedDirectives = parseBlockDirectives(codeBlock.code);
 			const posResult = parsePos(blockParsedDirectives);
@@ -219,11 +226,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 			const pixelX = isAnchored ? 0 : gridX * state.viewport.vGrid;
 			const pixelY = isAnchored ? 0 : gridY * state.viewport.hGrid;
 
-			const blockType = getDocumentProjectBlockType(codeBlock.code) as CodeBlockGraphicData['blockType'];
-			if (blockType === 'module' && !codeBlock.entry) {
-				throw new Error(`Project module block "${getCodeBlockNameFromSource(codeBlock.code)}" is missing an entry`);
-			}
-
 			return createCodeBlockGraphicData({
 				width: 0,
 				height: 0,
@@ -235,10 +237,10 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				x: pixelX,
 				y: pixelY,
 				lineNumberColumnWidth: 1,
-				creationIndex,
-				blockType,
+				creationIndex: codeBlock.id,
+				blockType: codeBlock.blockType,
 				entry: codeBlock.entry,
-				disabled: directiveState.blockState.disabled,
+				disabled: codeBlock.disabled ?? directiveState.blockState.disabled,
 				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,
 				homeAlignment: directiveState.blockState.homeAlignment,

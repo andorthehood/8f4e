@@ -12,8 +12,8 @@ completed: 2026-06-19
 
 ## Problem Description
 
-Standard-library include files currently expand into every function block they contain. The project preparser splits the
-resolved include source into function blocks and appends all of them to `SubProgramSource.functions`.
+Standard-library include files currently expand into every function block they contain. Include resolution derives
+private function sources that the compiler combines with the canonical project's function collection.
 
 That works while each include file is effectively one public function family, but it blocks a useful stdlib shape:
 
@@ -206,8 +206,7 @@ functionEnd float
   rewriting, and include diagnostics.
 - `packages/compiler/packages/project-preparser/src/functionIncludes.test.ts` - unit coverage for include-local export
   behavior.
-- `packages/compiler/packages/project-preparser/src/prepareCompilerInput.test.ts` - compiler-input behavior around include
-  expansion.
+- `packages/compiler/packages/project-preparser/src/functionIncludes.test.ts` - project include expansion behavior.
 - `packages/compiler/packages/stdlib/std/**/*.8f4e` - explicit `#export` markers for public stdlib functions.
 - `packages/compiler/docs/standard-library.md` - user-facing include and stdlib docs.
 - `packages/compiler/packages/stdlib/README.md` - stdlib authoring docs.

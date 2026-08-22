@@ -1,3 +1,4 @@
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { serializeProjectTo8f4e } from './serializeTo8f4e';
 
@@ -5,47 +6,63 @@ const validBlock = ['module counter', '', 'int count', '', 'moduleEnd'];
 const validFunctionBlock = ['function sine', 'param float x', 'functionEnd float'];
 const validNoteBlock = ['note', '; @pos 1 2', 'compiler should ignore this', 'noteEnd'];
 
+function createProject(partial: Partial<ProjectObjectModel> = {}): ProjectObjectModel {
+	return {
+		modules: [],
+		functions: [],
+		constants: [],
+		prototypes: [],
+		includes: [],
+		notes: [],
+		unknown: [],
+		groups: [],
+		...partial,
+	};
+}
+
 describe('serializeProjectTo8f4e', () => {
 	it('produces 8f4e/v1 header', () => {
-		const project = { codeBlocks: [{ code: validBlock, entry: 'main' }] };
-		const result = serializeProjectTo8f4e(project);
+		const result = serializeProjectTo8f4e(createProject({ modules: [{ id: 1, code: validBlock, entry: 'main' }] }));
 		expect(result.startsWith('8f4e/v1\n')).toBe(true);
 	});
 
-	it('serializes multiple code blocks separated by blank lines', () => {
-		const project = {
-			codeBlocks: [{ code: validBlock, entry: 'main' }, { code: validFunctionBlock }, { code: validNoteBlock }],
-		};
+	it('serializes multiple block collections separated by blank lines', () => {
+		const project = createProject({
+			modules: [{ id: 1, code: validBlock, entry: 'main' }],
+			functions: [{ id: 2, code: validFunctionBlock }],
+			notes: [{ id: 3, code: validNoteBlock }],
+		});
 		const result = serializeProjectTo8f4e(project);
 		expect(result).toContain('\n\n');
 		expect(result).toContain('entry main\nmodule counter');
 		expect(result).toContain('moduleEnd\nentryEnd');
 	});
 
-	it('serializes the visible includes block from code blocks', () => {
+	it('serializes the visible includes collection', () => {
 		const visibleIncludesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];
-		const project = {
-			codeBlocks: [{ code: visibleIncludesBlock }, { code: validBlock, entry: 'main' }],
-		};
-
+		const project = createProject({
+			includes: [{ id: 1, code: visibleIncludesBlock }],
+			modules: [{ id: 2, code: validBlock, entry: 'main' }],
+		});
 		expect(serializeProjectTo8f4e(project)).toBe(
 			['8f4e/v1', '', ...visibleIncludesBlock, '', 'entry main', ...validBlock, 'entryEnd'].join('\n')
 		);
 	});
 
-	it('serializes execution entries by first module position', () => {
-		const project = {
-			codeBlocks: [
-				{ code: ['module a', 'moduleEnd'], entry: 'main' },
-				{ code: validFunctionBlock },
-				{ code: ['module b', 'moduleEnd'], entry: 'test' },
-				{ code: ['module c', 'moduleEnd'], entry: 'main' },
+	it('preserves module order within each entry', () => {
+		const project = createProject({
+			modules: [
+				{ id: 1, code: ['module a', 'moduleEnd'], entry: 'main' },
+				{ id: 3, code: ['module b', 'moduleEnd'], entry: 'test' },
+				{ id: 4, code: ['module c', 'moduleEnd'], entry: 'main' },
 			],
-		};
-
+			functions: [{ id: 2, code: validFunctionBlock }],
+		});
 		expect(serializeProjectTo8f4e(project)).toBe(
 			[
 				'8f4e/v1',
+				'',
+				...validFunctionBlock,
 				'',
 				'entry main',
 				'module a',
@@ -53,8 +70,6 @@ describe('serializeProjectTo8f4e', () => {
 				'module c',
 				'moduleEnd',
 				'entryEnd',
-				'',
-				...validFunctionBlock,
 				'',
 				'entry test',
 				'module b',
@@ -65,53 +80,58 @@ describe('serializeProjectTo8f4e', () => {
 	});
 
 	it('accepts note blocks', () => {
-		const project = { codeBlocks: [{ code: validNoteBlock }] };
-		expect(() => serializeProjectTo8f4e(project)).not.toThrow();
+		expect(() => serializeProjectTo8f4e(createProject({ notes: [{ id: 1, code: validNoteBlock }] }))).not.toThrow();
 	});
 
-	it('handles empty codeBlocks array', () => {
-		const project = { codeBlocks: [] };
-		const result = serializeProjectTo8f4e(project);
-		expect(result).toBe('8f4e/v1\n\n');
+	it('handles an empty project', () => {
+		expect(serializeProjectTo8f4e(createProject())).toBe('8f4e/v1\n\n');
 	});
 
 	it('accepts functionEnd with type suffix', () => {
-		const project = { codeBlocks: [{ code: validFunctionBlock }] };
-		expect(() => serializeProjectTo8f4e(project)).not.toThrow();
+		expect(() =>
+			serializeProjectTo8f4e(createProject({ functions: [{ id: 1, code: validFunctionBlock }] }))
+		).not.toThrow();
 	});
 
 	it('throws on missing opener', () => {
-		const project = { codeBlocks: [{ code: ['unknownToken', 'moduleEnd'] }] };
-		expect(() => serializeProjectTo8f4e(project)).toThrow('unknown or missing opener');
+		expect(() =>
+			serializeProjectTo8f4e(createProject({ unknown: [{ id: 1, code: ['unknownToken', 'moduleEnd'] }] }))
+		).toThrow('unknown or missing opener');
 	});
 
 	it('throws on missing closer', () => {
-		const project = { codeBlocks: [{ code: ['module foo', 'some code'] }] };
-		expect(() => serializeProjectTo8f4e(project)).toThrow('unknown or missing closer');
+		expect(() =>
+			serializeProjectTo8f4e(createProject({ unknown: [{ id: 1, code: ['module foo', 'some code'] }] }))
+		).toThrow('unknown or missing closer');
 	});
 
 	it('throws on opener/closer mismatch', () => {
-		const project = { codeBlocks: [{ code: ['module foo', 'functionEnd'] }] };
-		expect(() => serializeProjectTo8f4e(project)).toThrow('opener/closer mismatch');
+		expect(() =>
+			serializeProjectTo8f4e(createProject({ unknown: [{ id: 1, code: ['module foo', 'functionEnd'] }] }))
+		).toThrow('opener/closer mismatch');
 	});
 
 	it('throws on mixed block type markers', () => {
-		const project = { codeBlocks: [{ code: ['module foo', 'function bar', 'functionEnd', 'moduleEnd'] }] };
-		expect(() => serializeProjectTo8f4e(project)).toThrow('mixed block type markers');
+		expect(() =>
+			serializeProjectTo8f4e(
+				createProject({ unknown: [{ id: 1, code: ['module foo', 'function bar', 'functionEnd', 'moduleEnd'] }] })
+			)
+		).toThrow('mixed block type markers');
 	});
 
 	it('throws on closer not at end of block', () => {
-		const project = { codeBlocks: [{ code: ['module foo', 'moduleEnd', 'extra line', 'moduleEnd'] }] };
-		expect(() => serializeProjectTo8f4e(project)).toThrow('not at the end of the block');
+		expect(() =>
+			serializeProjectTo8f4e(
+				createProject({ unknown: [{ id: 1, code: ['module foo', 'moduleEnd', 'extra line', 'moduleEnd'] }] })
+			)
+		).toThrow('not at the end of the block');
 	});
 
 	it('ignores trailing empty lines when finding closer', () => {
-		const project = { codeBlocks: [{ code: ['module foo', 'moduleEnd', '', ''], entry: 'main' }] };
-		expect(() => serializeProjectTo8f4e(project)).not.toThrow();
-	});
-
-	it('throws on module blocks without an entry', () => {
-		const project = { codeBlocks: [{ code: validBlock }] };
-		expect(() => serializeProjectTo8f4e(project)).toThrow('module block is missing entry');
+		expect(() =>
+			serializeProjectTo8f4e(
+				createProject({ modules: [{ id: 1, code: ['module foo', 'moduleEnd', '', ''], entry: 'main' }] })
+			)
+		).not.toThrow();
 	});
 });

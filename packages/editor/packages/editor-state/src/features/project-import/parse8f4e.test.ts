@@ -9,21 +9,22 @@ describe('parse8f4eToProject', () => {
 	it('parses a valid .8f4e text with one block', () => {
 		const text = '8f4e/v1\n\nentry main\n' + validBlock.join('\n') + '\nentryEnd';
 		const project = parse8f4eToProject(text);
-		expect(project.codeBlocks).toHaveLength(1);
-		expect(project.codeBlocks[0]).toEqual({ id: 4, code: validBlock, entry: 'main' });
+		expect(project.modules).toHaveLength(1);
+		expect(project.modules[0]).toEqual({ id: 4, code: validBlock, entry: 'main' });
 	});
 
 	it('parses multiple blocks', () => {
 		const text = '8f4e/v1\n\nentry main\n' + validBlock.join('\n') + '\nentryEnd\n\n' + validFunctionBlock.join('\n');
 		const project = parse8f4eToProject(text);
-		expect(project.codeBlocks).toHaveLength(2);
+		expect(project.modules).toHaveLength(1);
+		expect(project.functions).toHaveLength(1);
 	});
 
 	it('parses note blocks', () => {
 		const text = '8f4e/v1\n\n' + validNoteBlock.join('\n');
 		const project = parse8f4eToProject(text);
-		expect(project.codeBlocks).toHaveLength(1);
-		expect(project.codeBlocks[0]).toEqual({ id: 3, code: validNoteBlock });
+		expect(project.notes).toHaveLength(1);
+		expect(project.notes[0]).toEqual({ id: 3, code: validNoteBlock });
 	});
 
 	it('parses top-level includes as a project code block', () => {
@@ -32,16 +33,23 @@ describe('parse8f4eToProject', () => {
 			['8f4e/v1', '', ...includesBlock, '', 'entry main', ...validBlock, 'entryEnd'].join('\n')
 		);
 
-		expect(project.codeBlocks).toEqual([
-			{ id: 3, code: includesBlock },
-			{ id: 8, code: validBlock, entry: 'main' },
-		]);
+		expect(project.includes).toEqual([{ id: 3, code: includesBlock }]);
+		expect(project.modules).toEqual([{ id: 8, code: validBlock, entry: 'main' }]);
 		expect(project).not.toHaveProperty('includedFunctionBlocks');
 	});
 
 	it('parses empty file (header only)', () => {
 		const project = parse8f4eToProject('8f4e/v1\n');
-		expect(project).toEqual({ codeBlocks: [], groups: [] });
+		expect(project).toEqual({
+			modules: [],
+			functions: [],
+			constants: [],
+			prototypes: [],
+			includes: [],
+			notes: [],
+			unknown: [],
+			groups: [],
+		});
 	});
 
 	it('throws on invalid header', () => {
@@ -69,12 +77,19 @@ describe('parse8f4eToProject', () => {
 	it('round-trips through serialize then parse', async () => {
 		const { serializeProjectTo8f4e } = await import('../project-export/serializeTo8f4e');
 		const project = {
-			codeBlocks: [{ code: validBlock, entry: 'main' }, { code: validFunctionBlock }, { code: validNoteBlock }],
+			modules: [{ id: 1, code: validBlock, entry: 'main' }],
+			functions: [{ id: 2, code: validFunctionBlock }],
+			constants: [],
+			prototypes: [],
+			includes: [],
+			notes: [{ id: 3, code: validNoteBlock }],
+			unknown: [],
+			groups: [],
 		};
 		const text = serializeProjectTo8f4e(project);
 		const parsed = parse8f4eToProject(text);
-		expect(parsed.codeBlocks[0]).toEqual({ id: 4, code: validBlock, entry: 'main' });
-		expect(parsed.codeBlocks[1].code).toEqual(validFunctionBlock);
-		expect(parsed.codeBlocks[2].code).toEqual(validNoteBlock);
+		expect(parsed.modules[0].code).toEqual(validBlock);
+		expect(parsed.functions[0].code).toEqual(validFunctionBlock);
+		expect(parsed.notes[0].code).toEqual(validNoteBlock);
 	});
 });

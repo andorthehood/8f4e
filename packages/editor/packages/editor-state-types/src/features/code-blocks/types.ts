@@ -8,17 +8,6 @@ import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 import type { CodeBlockDisplayModel } from './buildDisplayModel';
 
 /**
- * Project-level code block structure for persistent storage.
- * Module blocks must store their execution entry explicitly.
- * Position is stored within code via @pos directive.
- * Disabled state is stored within code via @disabled directive.
- */
-export interface CodeBlock {
-	code: string[];
-	entry?: string;
-}
-
-/**
  * The type of a code block, determined by its content markers.
  * - 'module': Contains module/moduleEnd markers (compiled to WASM)
  * - 'function': Contains function/functionEnd markers (compiled to WASM as reusable helper)

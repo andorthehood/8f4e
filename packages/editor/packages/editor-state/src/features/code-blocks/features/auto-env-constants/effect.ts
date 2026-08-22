@@ -1,4 +1,5 @@
-import type { CodeBlock, CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import type { ProjectBlock } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { getSelectedRuntimeEntry } from '../../../runtime/editorConfig';
 import parsePos from '../directives/pos/data';
@@ -65,7 +66,7 @@ function generateEnvConstantsBlock(state: State, existingPos?: { x: number; y: n
  *
  * This effect automatically maintains a constants block named 'env' that contains
  * environment values like contributed runtime values and binary asset sizes.
- * The env block is added to the project's codeBlocks array when the project is loaded,
+ * The env block is added to the project's constants collection when the project is loaded,
  * and its content is updated in codeBlockRendering.codeBlocks when contributed environment constants or binary assets change.
  *
  * @param store - State manager instance
@@ -121,19 +122,29 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		}
 
 		// Check if env block already exists
-		const hasEnvBlock = state.initialProjectState.codeBlocks.some(
+		const hasEnvBlock = state.initialProjectState.constants.some(
 			block => block.code.length > 0 && block.code[0].includes(`constants ${AUTO_ENV_CONSTANTS_BLOCK_NAME}`)
 		);
 
 		if (!hasEnvBlock) {
-			// Add env block at the beginning of codeBlocks array
-			const envBlock: CodeBlock = {
+			// Add the generated block at the beginning of the hoisted constants collection.
+			const allIds = [
+				...state.initialProjectState.modules,
+				...state.initialProjectState.functions,
+				...state.initialProjectState.constants,
+				...state.initialProjectState.prototypes,
+				...state.initialProjectState.includes,
+				...state.initialProjectState.notes,
+				...state.initialProjectState.unknown,
+			].map(block => block.id);
+			const envBlock: ProjectBlock = {
+				id: Math.max(-1, ...allIds) + 1,
 				code: generateEnvConstantsBlock(state),
 			};
 
 			store.set('initialProjectState', {
 				...state.initialProjectState,
-				codeBlocks: [envBlock, ...state.initialProjectState.codeBlocks],
+				constants: [envBlock, ...state.initialProjectState.constants],
 			});
 		}
 	}

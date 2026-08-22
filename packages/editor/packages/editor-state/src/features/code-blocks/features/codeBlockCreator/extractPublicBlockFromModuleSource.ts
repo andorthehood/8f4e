@@ -1,4 +1,5 @@
-import { type ProjectBlock, parseProjectSource } from '@8f4e/project-preparser';
+import { parseProjectSource } from '@8f4e/compiler';
+import type { ProjectBlock } from '@8f4e/language-spec';
 import { FORMAT_HEADER } from '~/features/project-format';
 import { parseBlockDirectives } from '../../utils/parseBlockDirectives';
 import removeDirective from '../../utils/removeDirective';
@@ -18,7 +19,12 @@ export default function extractPublicBlockFromModuleSource(source: string): stri
 	}
 
 	const project = parseProjectSource(source);
-	const [publicBlock] = project.codeBlocks.filter(block => block.entry !== 'test' && hasPublicDirective(block));
+	const [publicBlock] = [
+		...project.modules.filter(block => block.entry !== 'test'),
+		...project.functions,
+		...project.constants,
+		...project.prototypes,
+	].filter(hasPublicDirective);
 
 	return publicBlock ? removeDirective(publicBlock.code, PUBLIC_BLOCK_DIRECTIVE) : [];
 }

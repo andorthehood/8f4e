@@ -8,7 +8,8 @@ import type {
 	FunctionRegistry,
 	FunctionTypeRegistry,
 	Module,
-	SubProgramSource,
+	ProjectBlock,
+	ProjectObjectModel,
 	ValidatedAST,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
@@ -201,13 +202,34 @@ function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSource, c
 	}
 }
 
-function createCompilerSource(module: Module, cacheKey: string): CompilerSource {
+function createCompilerSource(module: Module | ProjectBlock, cacheKey: string): CompilerSource {
 	return {
 		code: module.code,
 		cacheKey,
-		projectBlockId: module.projectBlockId,
-		source: module.source,
+		...('id' in module ? { projectBlockId: module.id } : { projectBlockId: module.projectBlockId }),
+		...('source' in module ? { source: module.source } : {}),
 	};
+}
+
+function getAllProjectBlocks(project: ProjectObjectModel): ProjectBlock[] {
+	return [
+		...project.modules,
+		...project.functions,
+		...project.constants,
+		...project.prototypes,
+		...project.includes,
+		...project.notes,
+		...project.unknown,
+	];
+}
+
+function assertUniqueProjectBlockIds(project: ProjectObjectModel): void {
+	const ids = new Set<number>();
+	for (const block of getAllProjectBlocks(project)) {
+		if (!Number.isInteger(block.id)) throw new Error('Project block is missing numeric id');
+		if (ids.has(block.id)) throw new Error(`Project contains duplicate block id ${block.id}`);
+		ids.add(block.id);
+	}
 }
 
 /**
@@ -219,15 +241,17 @@ function createCompilerSource(module: Module, cacheKey: string): CompilerSource 
  * @returns The compiled sub-program artifacts.
  */
 export function compileSubProgram(
-	input: SubProgramSource,
+	project: ProjectObjectModel,
 	options: CompileOptions,
-	cache = createCompilerCache()
+	cache = createCompilerCache(),
+	includedFunctions: readonly Module[] = []
 ): CompiledSubProgram {
-	const inputEntryNames = Object.keys(input.entries);
-	const entryModules = Object.entries(input.entries).flatMap(([entryName, modules]) =>
-		modules.map((module, index) => ({ entryName, module, index }))
-	);
-	const { constants, functions, prototypes } = input;
+	assertUniqueProjectBlockIds(project);
+	const modules = project.modules.filter(block => !block.disabled);
+	const constants = project.constants.filter(block => !block.disabled);
+	const functions = project.functions.filter(block => !block.disabled);
+	const prototypes = project.prototypes.filter(block => !block.disabled);
+	const inputEntryNames = [...new Set(['main', ...modules.map(module => module.entry)])];
 
 	const prototypeSources = prototypes.map((prototype, index) => {
 		return createCompilerSource(prototype, `prototype:${index}`);
@@ -235,13 +259,15 @@ export function compileSubProgram(
 
 	const astPrototypes = prototypeSources.map(source => compileSourceToAST<ValidatedPrototypeAST>(source, cache));
 
-	const moduleSources = entryModules.map(({ entryName, module, index }) => {
+	const moduleIndexByEntry = new Map<string, number>();
+	const moduleSources = modules.map(module => {
+		const index = moduleIndexByEntry.get(module.entry) ?? 0;
+		moduleIndexByEntry.set(module.entry, index + 1);
 		return {
 			code: module.code,
-			cacheKey: `entry:${entryName}:module:${index}`,
-			entryName,
-			projectBlockId: module.projectBlockId,
-			source: module.source,
+			cacheKey: `entry:${module.entry}:module:${index}`,
+			entryName: module.entry,
+			projectBlockId: module.id,
 		};
 	}) satisfies ModuleCompilerSource[];
 
@@ -249,9 +275,10 @@ export function compileSubProgram(
 		return createCompilerSource(constantsBlock, `constants:${index}`);
 	});
 
-	const functionSources = functions.map((func, index) => {
-		return createCompilerSource(func, `function:${index}`);
-	});
+	const functionSources = [
+		...functions.map((func, index) => createCompilerSource(func, `function:${index}`)),
+		...includedFunctions.map((func, index) => createCompilerSource(func, `include:function:${index}`)),
+	];
 
 	const astModuleEntries = moduleSources.map(source => {
 		const ast = compileSourceToAST<ValidatedModuleAST>(source, cache);

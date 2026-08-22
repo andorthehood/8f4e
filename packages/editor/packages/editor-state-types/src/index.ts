@@ -4,7 +4,11 @@
  * and re-exporting them for backward compatibility and public API stability.
  */
 
-import type { CompileOptions, MemoryAction as CompilerMemoryAction, SubProgramSource } from '@8f4e/language-spec';
+import type {
+	CompileProjectOptions,
+	MemoryAction as CompilerMemoryAction,
+	ProjectObjectModel,
+} from '@8f4e/language-spec';
 import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
 import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
@@ -14,7 +18,6 @@ import type {
 	ArrayMeter,
 	ArrayPlotter,
 	ArrayWave,
-	CodeBlock,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
 	CodeBlockRendering,
@@ -49,7 +52,6 @@ import type { ConsoleState, LogMessage } from './features/logger/types';
 import type { ContextMenu, ContextMenuItem, MenuGenerator, MenuStackEntry } from './features/menu/types';
 import type { PresentationState } from './features/presentation/types';
 import type { CompilationResult, Compiler } from './features/program-compiler/types';
-import type { Project } from './features/project-import/types';
 import type {
 	RuntimeEnvConstantsContributor,
 	RuntimeFactory,
@@ -89,7 +91,6 @@ export type {
 	ArrayWave,
 	BinaryAsset,
 	BrowserLocalNoteStorageBlock,
-	CodeBlock,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
 	CodeBlockRendering,
@@ -129,7 +130,6 @@ export type {
 	PianoKeySprite,
 	PianoPressedOverlayFont,
 	Position,
-	Project,
 	ProjectViewport,
 	ResolvedGlobalEditorDirectives,
 	RuntimeEnvConstantsContributor,
@@ -286,17 +286,17 @@ export interface Callbacks {
 	getProject?: (url: string) => Promise<string>;
 
 	// Compilation callback
-	compileCode?: (input: SubProgramSource, compilerOptions: CompileOptions) => Promise<CompilationResult>;
+	compileCode?: (project: ProjectObjectModel, compilerOptions: CompileProjectOptions) => Promise<CompilationResult>;
 	resolveInclude?: (includeId: string) => Promise<string | undefined>;
 
 	// Session storage callbacks
-	loadSession: () => Promise<Project | null>;
-	saveSession?: (project: Project) => Promise<void>;
+	loadSession: () => Promise<ProjectObjectModel | null>;
+	saveSession?: (project: ProjectObjectModel) => Promise<void>;
 	loadBrowserLocalNotes?: () => Promise<BrowserLocalNoteStorageBlock[] | null>;
 	saveBrowserLocalNotes?: (blocks: BrowserLocalNoteStorageBlock[]) => Promise<void>;
 
 	// File handling callbacks
-	importProject?: () => Promise<Project>;
+	importProject?: () => Promise<ProjectObjectModel>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
 	exportBinaryCode?: (fileName: string) => Promise<void>;
 	exportCanvasScreenshot?: (fileName: string) => Promise<void>;
@@ -370,9 +370,9 @@ export interface State {
 	editorConfig: EditorConfig;
 	editorConfigValidators: EditorConfigValidatorRegistry;
 	editorConfigSchemaContributions: EditorConfigSchemaContributionRegistry;
-	historyStack: Project[];
-	initialProjectState?: Project;
-	redoStack: Project[];
+	historyStack: ProjectObjectModel[];
+	initialProjectState?: ProjectObjectModel;
+	redoStack: ProjectObjectModel[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
 	/** Console state for internal logging */
@@ -415,7 +415,6 @@ export type * from './features/logger/types';
 export type * from './features/menu/types';
 export type * from './features/presentation/types';
 export type * from './features/program-compiler/types';
-export type * from './features/project-import/types';
 export type * from './features/runtime/types';
 export type * from './features/viewport/blockAlignment';
 export type * from './features/viewport/types';

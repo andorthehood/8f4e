@@ -1,8 +1,12 @@
 import { serializeDiagnostic } from '@8f4e/compiler';
-import type { CompileOptions, SubProgramSource } from '@8f4e/language-spec';
+import type { CompileOptions, ProjectObjectModel } from '@8f4e/language-spec';
 import compileAndUpdateMemory from './compileAndUpdateMemory';
 
-async function compile(input: SubProgramSource, compilerOptions: CompileOptions) {
+async function compile(
+	project: ProjectObjectModel,
+	compilerOptions: CompileOptions,
+	includeSources: Record<string, string | undefined>
+) {
 	try {
 		const {
 			codeBuffer,
@@ -18,7 +22,7 @@ async function compile(input: SubProgramSource, compilerOptions: CompileOptions)
 			hasWasmInstanceBeenReset,
 			memoryAction,
 			initOnlyReran,
-		} = await compileAndUpdateMemory(input, compilerOptions);
+		} = await compileAndUpdateMemory(project, compilerOptions, includeSources);
 		self.postMessage({
 			type: 'success',
 			payload: {
@@ -48,7 +52,7 @@ async function compile(input: SubProgramSource, compilerOptions: CompileOptions)
 self.onmessage = event => {
 	switch (event.data.type) {
 		case 'compile':
-			compile(event.data.payload.input, event.data.payload.compilerOptions);
+			compile(event.data.payload.project, event.data.payload.compilerOptions, event.data.payload.includeSources);
 			break;
 	}
 };

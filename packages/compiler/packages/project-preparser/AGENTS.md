@@ -6,10 +6,11 @@ This file extends the root and compiler package guidance for `packages/compiler/
 
 - Package name: `@8f4e/project-preparser`.
 - Source lives in `src/`; output lives in `dist/`.
-- Owns parsing raw `.8f4e` project source into project blocks, classifying project blocks, reducing project conveniences such as includes, and preparing `SubProgramSource`.
+- Owns parsing raw `.8f4e` project source into the compiler-owned `ProjectObjectModel` and resolving project includes
+  for the compiler facade.
 - Does not know about editor state, grid positioning, rendering, browser storage, or VS Code/webview state.
 - Does not load include files itself. Callers provide an async `resolveInclude` function so node, browser, editor, and test environments can load includes however they need.
-- Groups are reserved project organization metadata. They are parsed only as project structure and are ignored when preparing compiler input.
+- Groups are project organization metadata referencing canonical block ids and are ignored by compilation.
 
 ## Commands
 
@@ -21,7 +22,9 @@ This file extends the root and compiler package guidance for `packages/compiler/
 
 ## Architecture
 
-- Pipeline: raw project source -> project blocks -> classified blocks -> reduced compiler blocks -> `SubProgramSource`.
-- The compiler input consists only of basic blocks: entries/modules, constants, functions, and prototypes.
-- Includes are not basic compiler blocks; reduce them into function blocks before calling the compiler.
+- Pipeline: raw project source -> classified `ProjectObjectModel` collections.
+- `@8f4e/language-spec` is the sole owner of project object-model types; do not define parallel project contracts here.
+- Do not lower a project into a second whole-project compiler input. Private compiler stages consume the canonical
+  collections directly.
+- Include source is resolved behind `compileProject` and passed to private compiler stages as derived functions.
 - Keep compiler diagnostics block-relative. If project-level preparation reports an error from inside a block, attach the project block id and use the line number within that block.

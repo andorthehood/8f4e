@@ -1,11 +1,11 @@
-import compile, { deriveEffectiveMemorySize, serializeDiagnostic } from '@8f4e/compiler';
+import { compileProject, deriveEffectiveMemorySize, serializeDiagnostic } from '@8f4e/compiler';
 import type { CompilationResult, Editor } from '@8f4e/editor';
 import type {
-	CompileOptions,
+	CompileProjectOptions,
 	CompilerCache,
 	CompilerDiagnostic,
 	MemoryAction,
-	SubProgramSource,
+	ProjectObjectModel,
 } from '@8f4e/language-spec';
 
 let compilerCache: CompilerCache | undefined;
@@ -22,19 +22,16 @@ export function getCodeBuffer(): Uint8Array {
 }
 
 export async function compileCode(
-	input: SubProgramSource,
-	compilerOptions: CompileOptions,
+	project: ProjectObjectModel,
+	compilerOptions: CompileProjectOptions,
 	editor: Editor
 ): Promise<CompilationResult> {
 	try {
-		const result = compile(
-			input,
-			{
-				...compilerOptions,
-				disableSharedMemory: true,
-			},
-			compilerCache
-		);
+		const result = await compileProject(project, {
+			...compilerOptions,
+			disableSharedMemory: true,
+			cache: compilerCache,
+		});
 		compilerCache = result.cache;
 
 		const nextCodeBuffer = new Uint8Array(result.codeBuffer);

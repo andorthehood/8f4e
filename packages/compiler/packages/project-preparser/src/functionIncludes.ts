@@ -1,10 +1,8 @@
-import type { Module } from '@8f4e/language-spec';
+import type { Module, ProjectBlock, ProjectIncludeResolver } from '@8f4e/language-spec';
 import { INCLUDES_BLOCK_DELIMITER } from './delimiters';
 import { isProjectGapLine } from './projectLines';
-import type { ProjectBlock } from './types';
 
-export type ProjectIncludeResolver = (includeId: string) => string | undefined;
-export type ProjectIncludeResolverAsync = (includeId: string) => string | Promise<string | undefined> | undefined;
+type SyncProjectIncludeResolver = (includeId: string) => string | undefined;
 
 export class ProjectIncludeError extends Error {
 	constructor(
@@ -284,7 +282,7 @@ export function collectProjectIncludeIdsFromText(text: string): string[] {
 
 export function resolveProjectIncludes(
 	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
-	resolveInclude: ProjectIncludeResolver
+	resolveInclude: SyncProjectIncludeResolver
 ): Module[] {
 	const includedFunctionBlocks: Module[] = [];
 	const expandedIncludeIds = new Set<string>();
@@ -312,7 +310,7 @@ export function resolveProjectIncludes(
 
 export async function resolveProjectIncludesAsync(
 	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
-	resolveInclude: ProjectIncludeResolverAsync
+	resolveInclude: ProjectIncludeResolver
 ): Promise<Module[]> {
 	const includeSources = new Map<string, string | undefined>();
 

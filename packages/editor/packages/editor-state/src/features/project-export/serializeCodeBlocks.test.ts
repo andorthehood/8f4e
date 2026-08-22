@@ -13,7 +13,7 @@ describe('convertGraphicDataToProjectStructure', () => {
 
 		const result = convertGraphicDataToProjectStructure(blocks);
 
-		expect(result.codeBlocks.map(block => block.code[0])).toEqual(['line 3', 'line 2', 'line 1']);
+		expect(result.unknown.map(block => block.code[0])).toEqual(['line 3', 'line 2', 'line 1']);
 	});
 
 	it('exports code without gridCoordinates field', () => {
@@ -21,18 +21,18 @@ describe('convertGraphicDataToProjectStructure', () => {
 
 		const result = convertGraphicDataToProjectStructure(blocks);
 
-		expect(result.codeBlocks[0]).not.toHaveProperty('gridCoordinates');
-		expect(result.codeBlocks[0]).not.toHaveProperty('disabled');
-		expect(result.codeBlocks[0].code).toEqual(['code']);
+		expect(result.unknown[0]).not.toHaveProperty('gridCoordinates');
+		expect(result.unknown[0]).not.toHaveProperty('disabled');
+		expect(result.unknown[0].code).toEqual(['code']);
 	});
 
-	it('does not include disabled field even when block is disabled', () => {
+	it('stores explicit disabled state when a block is disabled', () => {
 		const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ name: 'disabled', code: ['code'], disabled: true })];
 
 		const result = convertGraphicDataToProjectStructure(blocks);
 
-		expect(result.codeBlocks[0]).not.toHaveProperty('disabled');
-		expect(result.codeBlocks[0].code).toEqual(['code']);
+		expect(result.unknown[0].disabled).toBe(true);
+		expect(result.unknown[0].code).toEqual(['code']);
 	});
 
 	it('does not include disabled field when block is not disabled', () => {
@@ -40,8 +40,8 @@ describe('convertGraphicDataToProjectStructure', () => {
 
 		const result = convertGraphicDataToProjectStructure(blocks);
 
-		expect(result.codeBlocks[0]).not.toHaveProperty('disabled');
-		expect(result.codeBlocks[0].code).toEqual(['code']);
+		expect(result.unknown[0]).not.toHaveProperty('disabled');
+		expect(result.unknown[0].code).toEqual(['code']);
 	});
 
 	it('excludes browser-local notes from the exported project', () => {
@@ -68,19 +68,21 @@ describe('convertGraphicDataToProjectStructure', () => {
 
 		const result = convertGraphicDataToProjectStructure(blocks);
 
-		expect(result.codeBlocks.map(block => block.code[0])).toEqual(['note', 'note fragmentShaderPostprocess']);
+		expect(result.notes.map(block => block.code[0])).toEqual(['note', 'note fragmentShaderPostprocess']);
 	});
 
 	it('stores module entries on module blocks', () => {
 		const blocks: CodeBlockGraphicData[] = [
 			createMockCodeBlock({
 				name: 'main',
+				creationIndex: 1,
 				blockType: 'module',
 				entry: 'main',
 				code: ['module main', 'moduleEnd'],
 			}),
 			createMockCodeBlock({
 				name: 'entry',
+				creationIndex: 2,
 				blockType: 'module',
 				entry: 'entry1',
 				code: ['module entry', 'moduleEnd'],
@@ -89,9 +91,9 @@ describe('convertGraphicDataToProjectStructure', () => {
 
 		const result = convertGraphicDataToProjectStructure(blocks);
 
-		expect(result.codeBlocks).toEqual([
-			{ code: ['module main', 'moduleEnd'], entry: 'main' },
-			{ code: ['module entry', 'moduleEnd'], entry: 'entry1' },
+		expect(result.modules).toEqual([
+			{ id: 1, code: ['module main', 'moduleEnd'], entry: 'main' },
+			{ id: 2, code: ['module entry', 'moduleEnd'], entry: 'entry1' },
 		]);
 	});
 

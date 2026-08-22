@@ -1,10 +1,6 @@
-import initEditor, {
-	type BrowserLocalNoteStorageBlock,
-	type Editor,
-	type Project,
-	type RuntimeRegistry,
-} from '@8f4e/editor';
+import initEditor, { type BrowserLocalNoteStorageBlock, type Editor, type RuntimeRegistry } from '@8f4e/editor';
 import { parse8f4eToProject, serializeProjectTo8f4e } from '@8f4e/editor-state';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { createMainThreadRuntimeDef } from '@8f4e/runtime-main-thread/runtime-def';
 import { compileCode, getCodeBuffer, getMemory } from './compile';
 import { createMainLoopRuntimeDef } from './mainLoopRuntime';
@@ -115,7 +111,7 @@ function applyCanvasSize(canvas: HTMLCanvasElement): void {
 	canvas.style.height = `${height}px`;
 }
 
-async function loadSession(): Promise<Project | null> {
+async function loadSession(): Promise<ProjectObjectModel | null> {
 	if (!loadedProjectSource.trim()) {
 		return null;
 	}
@@ -123,7 +119,7 @@ async function loadSession(): Promise<Project | null> {
 	return parse8f4eToProject(loadedProjectSource);
 }
 
-async function saveSession(project: Project): Promise<void> {
+async function saveSession(project: ProjectObjectModel): Promise<void> {
 	window.clearTimeout(saveTimer);
 	saveTimer = window.setTimeout(() => {
 		vscode.postMessage({
@@ -133,7 +129,7 @@ async function saveSession(project: Project): Promise<void> {
 	}, 150);
 }
 
-async function importProject(): Promise<Project> {
+async function importProject(): Promise<ProjectObjectModel> {
 	const source = await bridge.request<string | null>('importProject');
 	if (!source) {
 		throw new Error('No 8f4e project was selected.');

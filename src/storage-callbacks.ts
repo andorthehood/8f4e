@@ -1,5 +1,6 @@
-import type { BrowserLocalNoteStorageBlock, Project } from '@8f4e/editor';
+import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor';
 import { parse8f4eToProject } from '@8f4e/editor-state';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { getCodeBuffer } from './compiler-callback';
 import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
 
@@ -10,7 +11,7 @@ const STORAGE_KEYS = {
 } as const;
 
 // Implementation of storage callbacks using localStorage
-export async function loadSession(): Promise<Project | null> {
+export async function loadSession(): Promise<ProjectObjectModel | null> {
 	try {
 		const projectUrlFromQuery = new URLSearchParams(location.search).get('projectUrl') || '';
 		if (projectUrlFromQuery) {
@@ -42,7 +43,7 @@ export async function loadSession(): Promise<Project | null> {
 	}
 }
 
-export async function saveSession(project: Project): Promise<void> {
+export async function saveSession(project: ProjectObjectModel): Promise<void> {
 	try {
 		localStorage.setItem(STORAGE_KEYS.PROJECT, JSON.stringify(project));
 	} catch (error) {
@@ -70,7 +71,7 @@ export async function saveBrowserLocalNotes(blocks: BrowserLocalNoteStorageBlock
 	}
 }
 
-export async function importProject(): Promise<Project> {
+export async function importProject(): Promise<ProjectObjectModel> {
 	const input = document.createElement('input');
 	input.type = 'file';
 	input.accept = '.8f4e';

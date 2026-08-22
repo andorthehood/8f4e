@@ -35,6 +35,7 @@ describe('serializeToProject', () => {
 				codeBlocks: [
 					createMockCodeBlock({
 						name: 'includes',
+						blockType: 'includes',
 						code: ['includes', 'include std/current', 'includesEnd'],
 						x: 0,
 						y: 0,
@@ -44,11 +45,18 @@ describe('serializeToProject', () => {
 		});
 
 		expect(serializeToProject(state)).toEqual({
-			codeBlocks: [
+			modules: [],
+			functions: [],
+			constants: [],
+			prototypes: [],
+			includes: [
 				expect.objectContaining({
 					code: ['includes', 'include std/current', 'includesEnd'],
 				}),
 			],
+			notes: [],
+			unknown: [],
+			groups: [],
 		});
 	});
 });

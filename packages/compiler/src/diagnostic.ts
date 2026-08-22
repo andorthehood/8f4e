@@ -7,6 +7,7 @@
  */
 
 import type { CompilerDiagnostic, CompilerStageError } from '@8f4e/language-spec';
+import { ProjectIncludeError } from '@8f4e/project-preparser';
 import { SyntaxRulesError } from '@8f4e/tokenizer';
 
 const FALLBACK_LINE = {
@@ -46,6 +47,15 @@ function isCompilerStageError(value: unknown): value is CompilerStageError {
  * @returns The computed result.
  */
 export function serializeDiagnostic(error: unknown): CompilerDiagnostic {
+	if (error instanceof ProjectIncludeError) {
+		return {
+			code: -1,
+			message: error.message,
+			line: { lineNumber: error.lineNumber },
+			context: error.projectBlockId === undefined ? FALLBACK_CONTEXT : { projectBlockId: error.projectBlockId },
+		};
+	}
+
 	if (error instanceof SyntaxRulesError) {
 		return {
 			code: error.code,

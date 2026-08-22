@@ -10,6 +10,9 @@
 - Include-only source resolution lives in the nested standalone subpackage `@8f4e/include-resolver` (`packages/compiler/packages/include-resolver`).
 - Syntax parsing lives in the sub-program-owned package `@8f4e/tokenizer` (`packages/compiler/packages/sub-program/packages/tokenizer`).
 - Project preparsing lives in the nested standalone subpackage `@8f4e/project-preparser` (`packages/compiler/packages/project-preparser`).
+- `@8f4e/language-spec` solely owns `ProjectObjectModel`. The public compiler project API is
+  `parseProjectSource(text)` plus asynchronous `compileProject(project, options)`; internal stages must not require
+  callers to prepare a parallel whole-project input.
 - WebAssembly body generation and final binary emission live in `@8f4e/wasm-codegen` (`packages/compiler/packages/wasm-codegen`).
 - Standard library sources live in the nested source package `@8f4e/stdlib` (`packages/compiler/packages/stdlib`).
 

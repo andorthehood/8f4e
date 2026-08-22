@@ -1,3 +1,6 @@
+import type { CompilerCache } from './compiled';
+import type { ProjectIncludeResolver } from './project';
+
 /** Optional settings that control compiler layout and emitted metadata. */
 export interface CompileOptions {
 	startingMemoryWordAddress?: number;
@@ -11,4 +14,10 @@ export interface CompileOptions {
 	includeStackAnalysis?: boolean;
 	/** Disable shared memory for tests (wabt doesn't support shared memory). Default is false (shared enabled). */
 	disableSharedMemory?: boolean;
+}
+
+/** Public options for compiling a complete {@link ProjectObjectModel}. */
+export interface CompileProjectOptions extends CompileOptions {
+	resolveInclude?: ProjectIncludeResolver;
+	cache?: CompilerCache;
 }

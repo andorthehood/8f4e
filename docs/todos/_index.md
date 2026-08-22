@@ -91,6 +91,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 477 | Establish compiler-owned ProjectObjectModel | 2026-08-22 | Added compiler-owned typed block collections, direct object-model compilation, text parsing, and repository-wide consumer migration. |
 | 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 2026-08-19 | Added a temporary migration shim; removed it on 2026-08-20 after web-ui switched to direct drawing. |
 | 474 | Add RGBA texture layer plugin to glugglug2 | 2026-08-19 | Added fixed-phase RGBA8 texture uploads, same-storage updates, nearest/linear filtering, top-left rectangle draws, and independent texture/plugin ownership. |
 | 473 | Add post-process plugin to glugglug2 | 2026-08-19 | Added an inactive-zero-cost postDraw effect using a resize-aware RGB8 GPU framebuffer copy, ordered overlay inclusion, atomic replacement, and whole-scene visual coverage. |
@@ -109,7 +110,7 @@ Active todo files are listed below.
 | 203 | Use CodeBlock name instead of recomputing from code | 2026-06-14 | Code block names are now treated as stable stored data instead of being recomputed from code during normal update paths. |
 | 062 | Editor Command Queue Refactor | 2026-06-14 | Cancelled; no command-queue refactor is planned for this editor host-callback cleanup. |
 | 054 | Benchmark Unrolled vs Normal Loop in Audio Buffer Filler | 2026-06-14 | Cancelled; no benchmark work is planned for this old audio-buffer loop strategy investigation. |
-| 446 | Store project block type during project parse | 2026-06-11 | Superseded by the project-preparser pipeline refactor, which prepares the exact `SubProgramSource` shape directly from project blocks. |
+| 446 | Store project block type during project parse | 2026-06-11 | Superseded first by project-preparser classification and later by the compiler-owned typed collections in `ProjectObjectModel`. |
 | 449 | Add function paramShape instruction | 2026-06-14 | Archived with the exact completion date unknown; `paramShape <prototypeId>` now expands prototype memory declarations into function pointer params while prototypes remain memory-shape-only. |
 | 451 | Add pushShape instruction | 2026-06-14 | Archived with the exact completion date unknown; `pushShape <prototypeId>` now pushes effective module memory addresses in prototype order for `paramShape` call sites. |
 | 456 | Improve function overload mismatch diagnostics | 2026-06-13 | Failed overload resolution now reports inferred call signatures while listing available overload signatures, without changing true missing-function diagnostics. |

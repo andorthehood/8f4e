@@ -2,9 +2,7 @@
  * Integration tests that verify all example projects compile without errors.
  */
 
-import compile from '@8f4e/compiler';
-import { parse8f4eToProject } from '@8f4e/editor-state';
-import { prepareCompilerInputAsync } from '@8f4e/project-preparser';
+import { compileProject, parseProjectSource } from '@8f4e/compiler';
 import { readdirSync, readFileSync } from 'fs';
 import { basename, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -39,7 +37,7 @@ async function loadProject(name: string) {
 		throw new Error(`Project fixture not found: ${name}`);
 	}
 
-	return parse8f4eToProject(readFileSync(projectPath, 'utf-8'));
+	return parseProjectSource(readFileSync(projectPath, 'utf-8'));
 }
 
 const projectNames = Array.from(projectPaths.keys()).sort();
@@ -53,12 +51,12 @@ describe('Example Projects Compilation', () => {
 		projectNames.forEach((projectName, index) => {
 			it(`should compile module blocks in project ${index}`, async () => {
 				const project = await loadProject(projectName);
-				const compilerInput = await prepareCompilerInputAsync(project, {
+				const moduleCount = project.modules.filter(module => !module.disabled).length;
+
+				const result = await compileProject(project, {
+					...COMPILER_OPTIONS,
 					resolveInclude: resolveStdlibInclude,
 				});
-				const moduleCount = Object.values(compilerInput.entries).reduce((sum, group) => sum + group.length, 0);
-
-				const result = compile(compilerInput, COMPILER_OPTIONS);
 
 				expect(result.codeBuffer).toBeInstanceOf(Uint8Array);
 				expect(result.codeBuffer.length).toBeGreaterThan(0);

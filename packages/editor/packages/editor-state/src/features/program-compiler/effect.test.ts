@@ -110,7 +110,7 @@ describe('program compiler effect', () => {
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
-				entries: { main: expect.any(Array) },
+				modules: expect.any(Array),
 				constants: expect.any(Array),
 				functions: expect.any(Array),
 				prototypes: expect.any(Array),
@@ -153,7 +153,7 @@ describe('program compiler effect', () => {
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
-				entries: { main: expect.any(Array) },
+				modules: expect.any(Array),
 				constants: expect.any(Array),
 				functions: expect.any(Array),
 				prototypes: expect.any(Array),
@@ -188,7 +188,7 @@ describe('program compiler effect', () => {
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
-				entries: { main: expect.any(Array) },
+				modules: expect.any(Array),
 				constants: expect.any(Array),
 				functions: expect.any(Array),
 				prototypes: expect.any(Array),
@@ -205,7 +205,7 @@ describe('program compiler effect', () => {
 
 		expect(mockCompileCode).toHaveBeenLastCalledWith(
 			expect.objectContaining({
-				entries: { main: expect.any(Array) },
+				modules: expect.any(Array),
 				constants: expect.any(Array),
 				functions: expect.any(Array),
 				prototypes: expect.any(Array),
@@ -223,7 +223,7 @@ describe('program compiler effect', () => {
 		expect(mockState.editorConfigValidators.recompileDebounceDelay).toBe(recompileDebounceDelayEditorConfigValidator);
 	});
 
-	it('resolves functions from the current includes block before compiling', async () => {
+	it('passes the includes collection and resolver to the compiler callback', async () => {
 		mockCompileCode.mockResolvedValue({
 			codeBuffer: new Uint8Array([0x00]),
 			compiledModules: {},
@@ -272,25 +272,9 @@ describe('program compiler effect', () => {
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
-				functions: expect.arrayContaining([
-					expect.objectContaining({
-						code: ['function risingEdge', '', 'functionEnd int'],
-						source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
-					}),
-					expect.objectContaining({
-						code: ['function wrapPointer', '', 'functionEnd int*'],
-						source: { kind: 'include', includeId: 'std/memory/wrapPointer', symbolName: 'wrapPointer' },
-					}),
-					expect.objectContaining({
-						code: ['function wrapPointer', '', 'functionEnd float*'],
-						source: { kind: 'include', includeId: 'std/memory/wrapPointer', symbolName: 'wrapPointer' },
-					}),
-				]),
+				includes: [expect.objectContaining({ id: 10, code: includesBlock.code })],
 			}),
-			expect.any(Object)
-		);
-		expect(mockCompileCode.mock.calls[0][0].functions).not.toContainEqual(
-			expect.objectContaining({ code: ['function staleInclude', 'functionEnd'] })
+			expect.objectContaining({ resolveInclude: mockState.callbacks.resolveInclude })
 		);
 	});
 

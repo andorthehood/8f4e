@@ -3,7 +3,6 @@ import { compilableBlockTypes, documentBlockInstructionByType } from '@8f4e/lang
 import { BLOCK_DELIMITERS } from './delimiters';
 import { getProjectCloserKeyword, getProjectOpenerKeyword, startsWithInstruction } from './projectKeywords';
 import { isProjectGapLine } from './projectLines';
-import type { ProjectBlockType } from './types';
 
 const blockDelimiters = compilableBlockTypes.map(type => documentBlockInstructionByType[type]);
 
@@ -13,7 +12,7 @@ const blockDelimiters = compilableBlockTypes.map(type => documentBlockInstructio
  * @param code - Source lines to process.
  * @returns Resolved project block type.
  */
-export function getProjectBlockType(code: string[]): ProjectBlockType {
+export function getProjectBlockType(code: string[]): DocumentBlockType | 'unknown' {
 	for (const line of code) {
 		const trimmed = line.trim();
 		if (isProjectGapLine(trimmed)) {

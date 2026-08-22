@@ -1,4 +1,5 @@
-import type { Project, State } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state-types';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import createStateManager from '@8f4e/state-manager';
 import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
@@ -64,7 +65,7 @@ describe('projectImport', () => {
 		});
 
 		it('should load session from callback when provided', async () => {
-			const mockProject: Project = {
+			const mockProject: ProjectObjectModel = {
 				...EMPTY_DEFAULT_PROJECT,
 			};
 			mockState.callbacks.loadSession = vi.fn().mockResolvedValue(mockProject);
@@ -109,7 +110,7 @@ describe('projectImport', () => {
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 			const loadProjectCallback = loadProjectCall![1];
 
-			const project: Project = {
+			const project: ProjectObjectModel = {
 				...EMPTY_DEFAULT_PROJECT,
 			};
 
@@ -126,7 +127,7 @@ describe('projectImport', () => {
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 			const loadProjectCallback = loadProjectCall![1];
 
-			const project: Project = {
+			const project: ProjectObjectModel = {
 				...EMPTY_DEFAULT_PROJECT,
 			};
 
@@ -150,7 +151,7 @@ describe('projectImport', () => {
 
 	describe('importProject', () => {
 		it('should trigger importProject callback when event is fired', async () => {
-			const mockProject: Project = {
+			const mockProject: ProjectObjectModel = {
 				...EMPTY_DEFAULT_PROJECT,
 			};
 
@@ -223,7 +224,7 @@ describe('projectImport', () => {
 				'https://static.8f4e.com/example-projects/audioBuffer.8f4e'
 			);
 
-			expect(mockState.initialProjectState.codeBlocks).toHaveLength(1);
+			expect(mockState.initialProjectState.modules).toHaveLength(1);
 		});
 
 		it('should warn when no getProject callback is provided', async () => {
