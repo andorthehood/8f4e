@@ -1,12 +1,9 @@
+import type { ProjectIncludeResolver } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
-import {
-	type ProjectIncludeResolverAsync,
-	parseProjectSource,
-	prepareCompilerInputFromProjectSourceAsync,
-} from '../src';
+import { parseProjectSource, resolveProjectIncludesAsync } from '../src';
 
 describe('project-preparser integration', () => {
-	it('parses project source and prepares compiler input from source-shaped fixtures', async () => {
+	it('parses project source into typed collections and resolves its include collection', async () => {
 		const source = [
 			'8f4e/v1',
 			'',
@@ -46,7 +43,7 @@ describe('project-preparser integration', () => {
 			'groupEnd',
 			'entryEnd',
 		].join('\n');
-		const resolveInclude: ProjectIncludeResolverAsync = includeId =>
+		const resolveInclude: ProjectIncludeResolver = includeId =>
 			({
 				'std/events/risingEdge': ['function risingEdge', '#export', 'functionEnd int'].join('\n'),
 				'std/memory/wrapPointer': [
@@ -60,11 +57,10 @@ describe('project-preparser integration', () => {
 				].join('\n'),
 			})[includeId];
 
+		const project = parseProjectSource(source);
 		expect({
-			project: parseProjectSource(source),
-			compilerInput: await prepareCompilerInputFromProjectSourceAsync(source, {
-				resolveInclude,
-			}),
+			project,
+			includedFunctions: await resolveProjectIncludesAsync(project.includes, resolveInclude),
 		}).toMatchSnapshot();
 	});
 });

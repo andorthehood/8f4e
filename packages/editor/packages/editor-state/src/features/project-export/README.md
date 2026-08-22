@@ -6,7 +6,7 @@ Serializes editor state for session persistence and project file export.
 
 ## Key Behaviors
 
-- **Session JSON Serialization**: `serializeToProject` converts editor code blocks to the JSON-safe session structure
+- **Session Object Serialization**: `serializeToProject` converts editor code blocks to `ProjectObjectModel`
 - **Session Saving**: Saves current session state through the local/session storage callbacks
 - **`.8f4e` Export**: Converts the session project structure to the `.8f4e` file format for project downloads
 - **WASM Export**: Exports compiled WASM modules through the separate WASM export path
@@ -15,11 +15,12 @@ Serializes editor state for session persistence and project file export.
 
 ### Session JSON Serialization (`serializeToProject`)
 
-`serializeToProject` creates the JSON representation used for session saving and persistence. It is not the exported `.8f4e` file format.
+`serializeToProject` creates the compiler-owned `ProjectObjectModel` used for session saving, history, and live
+compilation. It is not a separate editor schema and it is not the exported `.8f4e` file format.
 
-Includes:
-- Code blocks
-- Asset directives remain embedded in code blocks
+Each known editor block is placed directly into the model's `modules`, `functions`, `constants`, `prototypes`,
+`includes`, or `notes` collection. Incomplete blocks go to `unknown`; modules carry their required `entry`. Asset
+directives remain embedded in block source.
 
 ### `.8f4e` Project Export
 
@@ -39,15 +40,25 @@ Serializes from:
 - **Edit History**: Uses basic serialization for undo/redo snapshots
 - **Project Import**: Exported projects are loaded through project import feature
 
-## Project Schema
+## Project Object Model
 
-The project structure is defined by the serialization functions:
+The canonical structure is defined by `@8f4e/language-spec`:
 
 ```typescript
-{
-  codeBlocks: Array<CodeBlock>,
+interface ProjectObjectModel {
+	modules: ProjectModuleBlock[];
+	functions: ProjectBlock[];
+	constants: ProjectBlock[];
+	prototypes: ProjectBlock[];
+	includes: ProjectBlock[];
+	notes: ProjectBlock[];
+	unknown: ProjectBlock[];
+	groups: ProjectGroup[];
 }
 ```
+
+Collection membership defines block type. The adapter uses the editor's already-known block type and does not make the
+compiler rediscover it from source text.
 
 ## References
 

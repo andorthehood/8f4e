@@ -1,8 +1,8 @@
-import type { Project, State } from '@8f4e/editor-state-types';
-import { prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
+import type { State } from '@8f4e/editor-state-types';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import createStateManager from '@8f4e/state-manager';
 import { beforeEach, describe, expect, it, type MockInstance } from 'vitest';
-import { toOrderedProjectBlocksForCompiler } from '~/features/program-compiler/effect';
+import { toProjectObjectModelForCompiler } from '~/features/program-compiler/effect';
 import projectImport from '~/features/project-import/effect';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
@@ -21,8 +21,8 @@ describe('creationIndex', () => {
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
-	async function prepareCodeBlocksForCompiler(codeBlocks: State['codeBlockRendering']['codeBlocks']) {
-		return prepareCompilerInputFromProjectBlocksAsync(toOrderedProjectBlocksForCompiler(codeBlocks));
+	function prepareCodeBlocksForCompiler(codeBlocks: State['codeBlockRendering']['codeBlocks']) {
+		return toProjectObjectModelForCompiler(codeBlocks);
 	}
 
 	describe('codeBlockCreator', () => {
@@ -110,12 +110,12 @@ describe('creationIndex', () => {
 			const loadProjectCall = onCalls.find(call => call[0] === 'loadProject');
 			const loadProjectCallback = loadProjectCall![1];
 
-			const projectWithBlocks: Project = {
+			const projectWithBlocks: ProjectObjectModel = {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [
-					{ code: ['module a', 'moduleEnd'], entry: 'main' },
-					{ code: ['module b', 'moduleEnd'], entry: 'main' },
-					{ code: ['module c', 'moduleEnd'], entry: 'main' },
+				modules: [
+					{ id: 0, code: ['module a', 'moduleEnd'], entry: 'main' },
+					{ id: 1, code: ['module b', 'moduleEnd'], entry: 'main' },
+					{ id: 2, code: ['module c', 'moduleEnd'], entry: 'main' },
 				],
 			};
 
@@ -141,9 +141,9 @@ describe('creationIndex', () => {
 			// Set a high nextCodeBlockCreationIndex
 			mockState.codeBlockRendering.nextCodeBlockCreationIndex = 100;
 
-			const project: Project = {
+			const project: ProjectObjectModel = {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [{ code: ['module a', 'moduleEnd'], entry: 'main' }],
+				modules: [{ id: 0, code: ['module a', 'moduleEnd'], entry: 'main' }],
 			};
 
 			loadProjectCallback({ project });
@@ -185,9 +185,7 @@ describe('creationIndex', () => {
 
 			const codeBlocksArray = [block1, block2, block3];
 
-			const {
-				entries: { main: modules },
-			} = await prepareCodeBlocksForCompiler(codeBlocksArray);
+			const { modules } = prepareCodeBlocksForCompiler(codeBlocksArray);
 
 			expect(modules[0].code).toEqual(['module c', 'moduleEnd']); // left, top
 			expect(modules[1].code).toEqual(['module b', 'moduleEnd']); // left, lower
@@ -223,9 +221,7 @@ describe('creationIndex', () => {
 				gridY: 0,
 			});
 
-			const {
-				entries: { main: modules },
-			} = await prepareCodeBlocksForCompiler([block1, block2, block3]);
+			const { modules } = prepareCodeBlocksForCompiler([block1, block2, block3]);
 
 			expect(modules[0].code).toEqual(['module b', 'moduleEnd']);
 			expect(modules[1].code).toEqual(['module c', 'moduleEnd']);
@@ -252,9 +248,7 @@ describe('creationIndex', () => {
 				gridY: 0,
 			});
 
-			const {
-				entries: { main: modules },
-			} = await prepareCodeBlocksForCompiler([dependentBlock, sourceBlock]);
+			const { modules } = prepareCodeBlocksForCompiler([dependentBlock, sourceBlock]);
 
 			expect(modules[0].code).toEqual(['module dependent', 'int* ptr &source:0', 'moduleEnd']);
 			expect(modules[1].code).toEqual(['module source', 'int value 0', 'moduleEnd']);
@@ -284,10 +278,7 @@ describe('creationIndex', () => {
 
 			const codeBlocksArray = [moduleBlock, functionBlock, secondModuleBlock];
 
-			const {
-				entries: { main: modules },
-				functions,
-			} = await prepareCodeBlocksForCompiler(codeBlocksArray);
+			const { modules, functions } = prepareCodeBlocksForCompiler(codeBlocksArray);
 
 			expect(modules.length).toBe(2);
 			expect(modules[0].code).toEqual(['module testModule', 'moduleEnd']);

@@ -1,5 +1,6 @@
 import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ErrorCode, getError } from '@8f4e/language-spec';
+import { ProjectIncludeError } from '@8f4e/project-preparser';
 import { SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 import { serializeDiagnostic } from './diagnostic';
@@ -11,6 +12,19 @@ const stubLine = {
 } as CompilerASTLine;
 
 describe('serializeDiagnostic', () => {
+	describe('project include errors', () => {
+		it('preserves the include block id and block-relative line', () => {
+			const result = serializeDiagnostic(new ProjectIncludeError('unresolved include "missing"', 2, 41));
+
+			expect(result).toEqual({
+				code: -1,
+				message: 'Parse error at line 2: unresolved include "missing"',
+				line: { lineNumber: 2 },
+				context: { projectBlockId: 41 },
+			});
+		});
+	});
+
 	describe('syntax errors', () => {
 		it('serializes a SyntaxRulesError with line into CompilerDiagnostic', () => {
 			const err = new SyntaxRulesError(

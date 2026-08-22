@@ -22,7 +22,7 @@ moduleEnd
 entryEnd
 `,
 			{
-				extraCodeBlocks: [{ id: -10, code: ['prototype injectedState', 'int value', 'prototypeEnd'] }],
+				extraPrototypes: [{ id: -10, code: ['prototype injectedState', 'int value', 'prototypeEnd'] }],
 			}
 		);
 		const memory = new DataView((fixture.host.memory as WebAssembly.Memory).buffer);

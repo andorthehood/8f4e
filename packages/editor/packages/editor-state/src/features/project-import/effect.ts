@@ -1,8 +1,9 @@
-import type { EventDispatcher, Project, State } from '@8f4e/editor-state-types';
+import { parseProjectSource } from '@8f4e/compiler';
+import type { EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { error, warn } from '../logger/logger';
-import { parse8f4eToProject } from './parse8f4e';
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
@@ -33,7 +34,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		}
 		try {
 			const projectText = await state.callbacks.getProject(projectUrl);
-			const project = parse8f4eToProject(projectText);
+			const project = parseProjectSource(projectText);
 			loadProject({ project });
 		} catch (err) {
 			console.error('Failed to load project by url:', err);
@@ -42,7 +43,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		}
 	}
 
-	function loadProject({ project: newProject }: { project: Project }) {
+	function loadProject({ project: newProject }: { project: ProjectObjectModel }) {
 		store.set('initialProjectState', newProject);
 	}
 

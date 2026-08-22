@@ -1,5 +1,4 @@
-import type { CodeBlock, Project } from '@8f4e/editor-state-types';
-import { getDocumentProjectBlockType } from '@8f4e/project-preparser';
+import type { ProjectModuleBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
@@ -56,56 +55,41 @@ function validateCodeBlock(code: string[], blockIndex: number): void {
 	}
 }
 
-function getModuleEntryName(block: CodeBlock, blockIndex: number): string {
-	if (!block.entry) {
-		throw new Error(`Block ${blockIndex}: module block is missing entry`);
-	}
-	return block.entry;
-}
-
 /**
- * Serializes a Project to .8f4e text format.
+ * Serializes a ProjectObjectModel to .8f4e text format.
  * Throws if any code block fails export-gate validation.
  */
-export function serializeProjectTo8f4e(project: Project): string {
-	const { codeBlocks } = project;
+export function serializeProjectTo8f4e(project: ProjectObjectModel): string {
+	const documentBlocks = [
+		...project.includes,
+		...project.functions,
+		...project.constants,
+		...project.prototypes,
+		...project.notes,
+		...project.unknown,
+	];
+	const allBlocks = [...documentBlocks, ...project.modules];
 
-	for (let i = 0; i < codeBlocks.length; i++) {
-		validateCodeBlock(codeBlocks[i].code, i);
+	for (let i = 0; i < allBlocks.length; i++) {
+		validateCodeBlock(allBlocks[i].code, i);
 	}
 
-	const blockStrings: string[] = [];
+	const blockStrings = documentBlocks.map(block => block.code.join('\n'));
 	const emittedEntries = new Set<string>();
-	const modulesByEntry = new Map<string, Project['codeBlocks']>();
+	const modulesByEntry = new Map<string, ProjectModuleBlock[]>();
 
-	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex += 1) {
-		const block = codeBlocks[blockIndex];
-		if (getDocumentProjectBlockType(block.code) !== 'module') {
-			continue;
-		}
-
-		const entryName = getModuleEntryName(block, blockIndex);
-		const entryModules = modulesByEntry.get(entryName) ?? [];
-		entryModules.push(block);
-		modulesByEntry.set(entryName, entryModules);
+	for (const module of project.modules) {
+		const entryModules = modulesByEntry.get(module.entry) ?? [];
+		entryModules.push(module);
+		modulesByEntry.set(module.entry, entryModules);
 	}
 
-	for (let blockIndex = 0; blockIndex < codeBlocks.length; blockIndex += 1) {
-		const block = codeBlocks[blockIndex];
-		if (getDocumentProjectBlockType(block.code) !== 'module') {
-			blockStrings.push(block.code.join('\n'));
-			continue;
-		}
-
-		const entryName = getModuleEntryName(block, blockIndex);
-		if (emittedEntries.has(entryName)) {
-			continue;
-		}
-
-		emittedEntries.add(entryName);
-		const modules = modulesByEntry.get(entryName) ?? [];
+	for (const module of project.modules) {
+		if (emittedEntries.has(module.entry)) continue;
+		emittedEntries.add(module.entry);
+		const entryModules = modulesByEntry.get(module.entry) ?? [];
 		blockStrings.push(
-			['entry ' + entryName, ...modules.flatMap(moduleBlock => moduleBlock.code), 'entryEnd'].join('\n')
+			['entry ' + module.entry, ...entryModules.flatMap(moduleBlock => moduleBlock.code), 'entryEnd'].join('\n')
 		);
 	}
 

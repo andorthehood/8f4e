@@ -8,18 +8,14 @@ import type {
 	MemoryPointerMetadata,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
+	ProjectBlock,
+	ProjectObjectModel,
 } from '@8f4e/language-spec';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
-import {
-	type ProjectBlock,
-	type ProjectDocument,
-	parseProjectSource,
-	prepareCompilerInputAsync,
-} from '@8f4e/project-preparser';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import compile, { serializeDiagnostic } from '../src';
+import { compileProject, parseProjectSource, serializeDiagnostic } from '../src';
 import { resolveStdlibInclude } from './stdlibResolver';
 
 interface AssertionFailure {
@@ -40,7 +36,7 @@ export interface FixtureCompileSnapshots {
 export interface CompiledFixtureProgram {
 	compileResult: CompileResult;
 	source: string;
-	project: ProjectDocument;
+	project: ProjectObjectModel;
 }
 
 export interface InstantiatedFixtureProgram extends CompiledFixtureProgram {
@@ -49,7 +45,7 @@ export interface InstantiatedFixtureProgram extends CompiledFixtureProgram {
 }
 
 export interface FixtureProgramCompileOptions {
-	extraCodeBlocks?: ProjectBlock[];
+	extraPrototypes?: ProjectBlock[];
 	includeAssertions?: boolean;
 	includeStackAnalysis?: boolean;
 	cache?: CompileResult['cache'];
@@ -96,15 +92,12 @@ export function getTestMemoryRegions(source: string): string[] {
 		.flatMap(regions => regions.split(/[\s,]+/).filter(Boolean));
 }
 
-export function hasTestExportDeclaration(project: ProjectDocument): boolean {
-	return project.codeBlocks.some(block => {
+export function hasTestExportDeclaration(project: ProjectObjectModel): boolean {
+	if (project.modules.some(block => !block.disabled && block.entry === 'test')) return true;
+	return project.functions.some(block => {
 		if (block.disabled) {
 			return false;
 		}
-		if (block.entry === 'test') {
-			return true;
-		}
-
 		const [openingLine, ...body] = block.code.map(line => line.trim());
 		return openingLine === 'function test' && body.some(line => line === '#export' || line === '#export test');
 	});
@@ -349,33 +342,22 @@ export async function compileFixtureProgramSource(
 	const normalizedSource = source.trimStart();
 	const project = parseProjectSource(normalizedSource);
 	const memoryRegions = getTestMemoryRegions(normalizedSource);
-	const codeBlocks = [
-		...project.codeBlocks,
-		...(options.extraCodeBlocks ?? []),
-		...(options.includeAssertions ? assertFunctionBlocks : []),
-	];
-	const compilerInput = await prepareCompilerInputAsync(
-		{
-			...project,
-			codeBlocks,
-		},
-		{
-			resolveInclude: resolveStdlibInclude,
-		}
-	);
+	const compileProjectModel: ProjectObjectModel = {
+		...project,
+		functions: [...project.functions, ...(options.includeAssertions ? assertFunctionBlocks : [])],
+		prototypes: [...project.prototypes, ...(options.extraPrototypes ?? [])],
+	};
 
 	return {
 		source: normalizedSource,
 		project,
-		compileResult: compile(
-			compilerInput,
-			{
-				disableSharedMemory: true,
-				includeStackAnalysis: options.includeStackAnalysis,
-				memoryRegions,
-			},
-			options.cache
-		),
+		compileResult: await compileProject(compileProjectModel, {
+			disableSharedMemory: true,
+			includeStackAnalysis: options.includeStackAnalysis,
+			memoryRegions,
+			resolveInclude: resolveStdlibInclude,
+			cache: options.cache,
+		}),
 	};
 }
 

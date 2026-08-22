@@ -2,7 +2,8 @@
 
 ## Purpose
 
-Handles loading projects into the editor from persistent storage, `.8f4e` file uploads, direct project URLs, and default templates. Manages the initial project state and coordinates with import callbacks.
+Handles loading compiler-owned `ProjectObjectModel` values into the editor from persistent storage, `.8f4e` file
+uploads, direct project URLs, and default templates.
 
 ## Key Behaviors
 
@@ -52,7 +53,7 @@ Handles loading projects into the editor from persistent storage, `.8f4e` file u
 
 ## Integration Points
 
-- **Project Export**: Imported projects match exported project schema
+- **Project Export**: Imported projects use the same `ProjectObjectModel` exported by editor persistence
 - **Program Compiler**: Loaded code blocks trigger program compilation if enabled
 - **Edit History**: Project loads reset history stacks
 
@@ -65,7 +66,7 @@ Handles loading projects into the editor from persistent storage, `.8f4e` file u
 
 ## References
 
-- Project schema: See `project-export` feature for structure
+- Object model: `ProjectObjectModel` in `@8f4e/language-spec`
 - Counterpart: `project-export` feature for saving
 
 ## Notes & Limitations

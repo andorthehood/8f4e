@@ -1,4 +1,4 @@
-import compile, { deriveEffectiveMemorySize } from '@8f4e/compiler';
+import { compileProject, deriveEffectiveMemorySize } from '@8f4e/compiler';
 import type {
 	CompileAndUpdateMemoryResult,
 	CompileOptions,
@@ -6,7 +6,7 @@ import type {
 	GetOrCreateWasmInstanceResult,
 	MemoryDefaults,
 	MemoryLayoutPlan,
-	SubProgramSource,
+	ProjectObjectModel,
 } from '@8f4e/language-spec';
 import getMemoryValueChanges from './getMemoryValueChanges';
 import getOrCreateMemory from './getOrCreateMemory';
@@ -44,8 +44,9 @@ async function getOrCreateWasmInstanceRef(
 }
 
 export default async function compileAndUpdateMemory(
-	input: SubProgramSource,
-	compilerOptions: CompileOptions
+	project: ProjectObjectModel,
+	compilerOptions: CompileOptions,
+	includeSources: Record<string, string | undefined> = {}
 ): Promise<CompileAndUpdateMemoryResult> {
 	const {
 		codeBuffer,
@@ -56,7 +57,11 @@ export default async function compileAndUpdateMemory(
 		memoryDefaultsByModuleId,
 		pointerMetadataByModuleId,
 		cache,
-	} = compile(input, compilerOptions, compilerCache);
+	} = await compileProject(project, {
+		...compilerOptions,
+		cache: compilerCache,
+		resolveInclude: includeId => includeSources[includeId],
+	});
 	compilerCache = cache;
 	const allocatedMemoryBytes = deriveEffectiveMemorySize(requiredMemoryBytes);
 	// We must recreate when size changes (even when shrinking) because the WASM module's

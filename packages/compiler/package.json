@@ -25,11 +25,11 @@
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
     "@8f4e/language-spec": "*",
+    "@8f4e/project-preparser": "*",
     "@8f4e/sub-program": "*",
     "@8f4e/wasm-codegen": "*"
   },
   "devDependencies": {
-    "@8f4e/project-preparser": "*",
     "@8f4e/stdlib": "*",
     "@types/node": "24.13.2"
   }

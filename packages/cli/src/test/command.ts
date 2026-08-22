@@ -1,10 +1,9 @@
+import { parseProjectSource } from '@8f4e/compiler';
+import type { ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/language-spec';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { compileProject } from '../compile/compileProject';
-import parse8f4eToProject from '../shared/parse8f4e';
-
-import type { ProjectBlock, ProjectDocument } from '../shared/types';
 
 const WASM_MEMORY_PAGE_SIZE = 65536;
 
@@ -214,8 +213,8 @@ function formatFailure(failure: AssertionFailure): string {
 	return `assert #${failure.assertIndex} expected ${failure.expected}, received ${failure.received}`;
 }
 
-function hasTestEntry(project: ProjectDocument): boolean {
-	return project.codeBlocks.some(block => !block.disabled && block.entry === 'test');
+function hasTestEntry(project: ProjectObjectModel): boolean {
+	return project.modules.some(block => !block.disabled && block.entry === 'test');
 }
 
 function getErrorMessage(error: unknown): string {
@@ -234,7 +233,7 @@ export function getTestUsage(): string {
 
 async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const inputRaw = await fs.readFile(inputPath, 'utf8');
-	const project = parse8f4eToProject(inputRaw);
+	const project = parseProjectSource(inputRaw);
 	if (!hasTestEntry(project)) {
 		return { assertions: 0, skipped: true };
 	}
@@ -242,7 +241,7 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	const compileResult = await compileProject(
 		{
 			...project,
-			codeBlocks: [...project.codeBlocks, ...assertFunctionBlocks],
+			functions: [...project.functions, ...assertFunctionBlocks],
 		},
 		{
 			compilerOptions: {

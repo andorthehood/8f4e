@@ -1,25 +1,23 @@
 # @8f4e/project-preparser
 
-`@8f4e/project-preparser` parses `.8f4e` project documents and prepares compiler input blocks.
+`@8f4e/project-preparser` parses `.8f4e` project documents into the canonical compiler-owned object model.
 
 The package-level flow is:
 
 ```ts
-const project = parseProjectSource(sourceText);
-const input = await prepareCompilerInputAsync(project, {
-	resolveInclude,
-});
+const project: ProjectObjectModel = parseProjectSource(sourceText);
 ```
 
-It understands project-level structure such as entries, groups, includes blocks, and document block delimiters. `prepareCompilerInputAsync` reduces that project document into the `SubProgramSource` shape consumed by the compiler: entries/modules, constants, functions, and prototypes.
+It understands document delimiters, entries, groups, disabled blocks, and block markers. Parsing classifies every block
+once into the corresponding `ProjectObjectModel` collection. The model itself is defined only by
+`@8f4e/language-spec`.
 
 This package owns:
 
-- Parsing raw project source into `ProjectDocument` blocks and groups.
+- Parsing raw project source into `ProjectObjectModel` collections and groups.
 - Classifying project document blocks.
 - Preserving entry membership for module blocks.
-- Resolving includes through a caller-provided `resolveInclude` callback.
-- Converting enabled project blocks into compiler input arrays.
+- Parsing and resolving include declarations for the public compiler facade.
 
 This package does not own:
 
@@ -28,4 +26,5 @@ This package does not own:
 - Constant resolution, memory planning, stack analysis, or code generation.
 - Editor layout, rendering, storage, or VS Code/webview state.
 
-Groups are project organization metadata. They are parsed as project structure, but compiler input preparation only emits basic compiler blocks.
+Groups are project organization metadata that reference canonical block ids. They do not own a second copy of block
+source and do not affect compilation.

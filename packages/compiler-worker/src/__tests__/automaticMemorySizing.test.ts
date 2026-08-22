@@ -1,14 +1,18 @@
-import type { Module, SubProgramSource } from '@8f4e/language-spec';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
-function createInput(modules: Module[]): SubProgramSource {
+function createInput(modules: Array<{ code: string[] }>): ProjectObjectModel {
 	return {
-		entries: { main: modules },
+		modules: modules.map((module, id) => ({ ...module, id, entry: 'main' })),
 		constants: [],
 		functions: [],
 		prototypes: [],
+		includes: [],
+		notes: [],
+		unknown: [],
+		groups: [],
 	};
 }
 

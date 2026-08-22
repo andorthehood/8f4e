@@ -143,9 +143,10 @@ describe('code block rendering home directive', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [
-					{ code: includesBlock },
+				includes: [{ id: 0, code: includesBlock }],
+				modules: [
 					{
+						id: 1,
 						code: ['module main', 'moduleEnd'],
 						entry: 'main',
 					},
@@ -160,16 +161,17 @@ describe('code block rendering home directive', () => {
 		store.set('initialProjectState', state.initialProjectState);
 
 		expect(state.codeBlockRendering.codeBlocks).toHaveLength(2);
-		expect(state.codeBlockRendering.codeBlocks[0].code).toEqual(includesBlock);
-		expect(state.codeBlockRendering.codeBlocks[0].blockType).toBe('includes');
+		const renderedIncludes = state.codeBlockRendering.codeBlocks.find(block => block.blockType === 'includes');
+		expect(renderedIncludes?.code).toEqual(includesBlock);
 	});
 
 	it('centers the initial viewport using the home alignment hint', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [
+				modules: [
 					{
+						id: 0,
 						code: ['module home', '; @home top', '; @pos 10 20', 'moduleEnd'],
 						entry: 'main',
 					},
@@ -208,8 +210,9 @@ describe('code block rendering home directive', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
-				codeBlocks: [
+				modules: [
 					{
+						id: 0,
 						code: ['module home', '; @home', '; @pos 10 20', 'moduleEnd'],
 						entry: 'main',
 					},

@@ -1,10 +1,9 @@
-import { prepareCompilerInputFromProjectSourceAsync } from '@8f4e/project-preparser';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { describe, expect, test } from 'vitest';
 
-import compile, { serializeDiagnostic } from '../src';
+import { compileProject, parseProjectSource, serializeDiagnostic } from '../src';
 import { resolveStdlibInclude } from './stdlibResolver';
 
 const errorRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), 'errors');
@@ -40,13 +39,10 @@ async function collectErrorFiles(directory: string): Promise<string[]> {
 
 async function compileErrorFixture(filePath: string) {
 	const source = await fs.readFile(filePath, 'utf8');
-	const compilerInput = await prepareCompilerInputFromProjectSourceAsync(source, {
-		resolveInclude: resolveStdlibInclude,
-	});
-
-	return compile(compilerInput, {
+	return compileProject(parseProjectSource(source), {
 		disableSharedMemory: true,
 		memoryRegions: getTestMemoryRegions(source),
+		resolveInclude: resolveStdlibInclude,
 	});
 }
 

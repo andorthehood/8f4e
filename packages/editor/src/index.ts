@@ -59,7 +59,6 @@ export type {
 	JSONSchemaLike,
 	Options,
 	ParsedDirectiveRecord,
-	Project,
 	RuntimeFactory,
 	RuntimeRegistry,
 	RuntimeRegistryEntry,

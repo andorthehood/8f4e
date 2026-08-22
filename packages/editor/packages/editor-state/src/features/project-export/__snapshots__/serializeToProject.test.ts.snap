@@ -2,11 +2,19 @@
 
 exports[`serializeToProject > serializes basic project state without compiled data 1`] = `
 {
-  "codeBlocks": [
+  "constants": [],
+  "functions": [],
+  "groups": [],
+  "includes": [],
+  "modules": [],
+  "notes": [],
+  "prototypes": [],
+  "unknown": [
     {
       "code": [
         "10 example",
       ],
+      "id": 0,
     },
   ],
 }

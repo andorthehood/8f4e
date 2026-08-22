@@ -1,14 +1,5 @@
 {
-  "codeBlocks": [
-    {
-      "code": [
-        "module counter",
-        "int count",
-        "moduleEnd",
-      ],
-      "entry": "main",
-      "id": 4,
-    },
+  "constants": [
     {
       "code": [
         "constants env",
@@ -17,6 +8,8 @@
       ],
       "id": 9,
     },
+  ],
+  "functions": [
     {
       "code": [
         "function increment",
@@ -28,15 +21,21 @@
       ],
       "id": 13,
     },
+  ],
+  "groups": [],
+  "includes": [],
+  "modules": [
     {
       "code": [
-        "prototype oscillatorState",
-        "float phase",
-        "float frequency 440",
-        "prototypeEnd",
+        "module counter",
+        "int count",
+        "moduleEnd",
       ],
-      "id": 20,
+      "entry": "main",
+      "id": 4,
     },
+  ],
+  "notes": [
     {
       "code": [
         "note",
@@ -47,5 +46,16 @@
       "id": 25,
     },
   ],
-  "groups": [],
+  "prototypes": [
+    {
+      "code": [
+        "prototype oscillatorState",
+        "float phase",
+        "float frequency 440",
+        "prototypeEnd",
+      ],
+      "id": 20,
+    },
+  ],
+  "unknown": [],
 }
