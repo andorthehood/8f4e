@@ -2,7 +2,7 @@ import type { State } from '@8f4e/editor-state-types';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
 import createStateManager from '@8f4e/state-manager';
 import { beforeEach, describe, expect, it, type MockInstance } from 'vitest';
-import { toProjectObjectModelForCompiler } from '~/features/program-compiler/effect';
+import convertGraphicDataToProjectStructure from '~/features/project-export/serializeCodeBlocks';
 import projectImport from '~/features/project-import/effect';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
@@ -20,10 +20,6 @@ describe('creationIndex', () => {
 		store = createStateManager(mockState);
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
-
-	function prepareCodeBlocksForCompiler(codeBlocks: State['codeBlockRendering']['codeBlocks']) {
-		return toProjectObjectModelForCompiler(codeBlocks);
-	}
 
 	describe('codeBlockCreator', () => {
 		it('should assign creationIndex to new code blocks', () => {
@@ -185,7 +181,7 @@ describe('creationIndex', () => {
 
 			const codeBlocksArray = [block1, block2, block3];
 
-			const { modules } = prepareCodeBlocksForCompiler(codeBlocksArray);
+			const { modules } = convertGraphicDataToProjectStructure(codeBlocksArray);
 
 			expect(modules[0].code).toEqual(['module c', 'moduleEnd']); // left, top
 			expect(modules[1].code).toEqual(['module b', 'moduleEnd']); // left, lower
@@ -221,7 +217,7 @@ describe('creationIndex', () => {
 				gridY: 0,
 			});
 
-			const { modules } = prepareCodeBlocksForCompiler([block1, block2, block3]);
+			const { modules } = convertGraphicDataToProjectStructure([block1, block2, block3]);
 
 			expect(modules[0].code).toEqual(['module b', 'moduleEnd']);
 			expect(modules[1].code).toEqual(['module c', 'moduleEnd']);
@@ -248,7 +244,7 @@ describe('creationIndex', () => {
 				gridY: 0,
 			});
 
-			const { modules } = prepareCodeBlocksForCompiler([dependentBlock, sourceBlock]);
+			const { modules } = convertGraphicDataToProjectStructure([dependentBlock, sourceBlock]);
 
 			expect(modules[0].code).toEqual(['module dependent', 'int* ptr &source:0', 'moduleEnd']);
 			expect(modules[1].code).toEqual(['module source', 'int value 0', 'moduleEnd']);
@@ -278,7 +274,7 @@ describe('creationIndex', () => {
 
 			const codeBlocksArray = [moduleBlock, functionBlock, secondModuleBlock];
 
-			const { modules, functions } = prepareCodeBlocksForCompiler(codeBlocksArray);
+			const { modules, functions } = convertGraphicDataToProjectStructure(codeBlocksArray);
 
 			expect(modules.length).toBe(2);
 			expect(modules[0].code).toEqual(['module testModule', 'moduleEnd']);

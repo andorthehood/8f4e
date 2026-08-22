@@ -1,5 +1,5 @@
-import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
-import type { CompilerDiagnostic, ProjectObjectModel } from '@8f4e/language-spec';
+import type { InfoRecord, State } from '@8f4e/editor-state-types';
+import type { CompilerDiagnostic } from '@8f4e/language-spec';
 import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
@@ -9,11 +9,6 @@ import convertGraphicDataToProjectStructure from '../project-export/serializeCod
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
 const includesBlockType = documentBlockInstructionByType.includes.type;
-
-/** Converts editor-owned blocks into the canonical model without a source-text round trip. */
-export function toProjectObjectModelForCompiler(codeBlocks: CodeBlockGraphicData[]): ProjectObjectModel {
-	return convertGraphicDataToProjectStructure(codeBlocks);
-}
 
 export default function compiler(store: StateManager<State>) {
 	const state = store.getState();
@@ -49,7 +44,7 @@ export default function compiler(store: StateManager<State>) {
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
-			const project = toProjectObjectModelForCompiler(state.codeBlockRendering.codeBlocks);
+			const project = convertGraphicDataToProjectStructure(state.codeBlockRendering.codeBlocks);
 			const result = await state.callbacks.compileCode(project, {
 				...compilerOptions,
 				...(state.callbacks.resolveInclude ? { resolveInclude: state.callbacks.resolveInclude } : {}),
