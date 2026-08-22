@@ -1,9 +1,9 @@
-import type { CompileOptions } from '@8f4e/language-spec';
-import type { CompileProjectOptions, CompileProjectResult, ProjectDocument } from '../shared/types';
+import type { CompileOptions, ProjectObjectModel } from '@8f4e/language-spec';
+import type { CompileProjectOptions, CompileProjectResult } from '../shared/types';
 import compileProjectModules from './compileProjectModules';
 
 export async function compileProject(
-	project: ProjectDocument,
+	project: ProjectObjectModel,
 	options: CompileProjectOptions = {}
 ): Promise<CompileProjectResult> {
 	const includeModules = options.includeModules ?? true;
@@ -14,7 +14,7 @@ export async function compileProject(
 		disableSharedMemory: options.compilerOptions?.disableSharedMemory,
 	};
 
-	const moduleResult = await compileProjectModules(project.codeBlocks, {
+	const moduleResult = await compileProjectModules(project, {
 		compilerOptions,
 		resolveInclude: options.resolveInclude,
 	});
@@ -37,7 +37,7 @@ export async function compileProject(
 		memoryPlan: moduleResult.memoryPlan,
 		memoryDefaultsByModuleId: moduleResult.memoryDefaultsByModuleId,
 		pointerMetadataByModuleId: moduleResult.pointerMetadataByModuleId,
-		compiledFunctions: undefined,
+		compiledFunctions: moduleResult.compiledFunctions,
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,
 		requiredMemoryBytesByRegion: moduleResult.requiredMemoryBytesByRegion,

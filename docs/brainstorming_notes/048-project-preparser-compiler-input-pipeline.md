@@ -2,6 +2,9 @@
 
 Date: 2026-06-11
 
+> Superseded on 2026-08-22 by the compiler-owned `ProjectObjectModel` design in TODO 477. This note is retained as
+> historical context; `SubProgramSource` and the public preparation layer described below have been removed.
+
 This note captures the intended architecture for turning 8f4e project source into the compiler's basic input blocks.
 
 This plan is the reference for the project-preparser pipeline implementation and future cleanup around compiler input boundaries.

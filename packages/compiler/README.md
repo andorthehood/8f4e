@@ -1,25 +1,30 @@
 # @8f4e/compiler
 
-Core compiler that transforms one closed 8f4e sub-program into WebAssembly plus runtime metadata.
+Core compiler that transforms an 8f4e project into WebAssembly plus runtime metadata.
 
 ## Compilation boundaries
 
 ```text
-project document
-  -> project-preparser
-  -> SubProgramSource
-  -> sub-program compiler
-  -> CompiledSubProgram
+.8f4e text -> parseProjectSource --\
+                                    ProjectObjectModel
+editor state ---------------------/         |
+                                             v
+                                      compileProject
+                                             |
+                                             v
+  private compiler stages
   -> WebAssembly emission
   -> CompileResult
 ```
 
-A `SubProgramSource` is an atomic compilation unit containing entries, modules, functions, constants, and prototypes.
-All names and memory references resolve within that boundary. `ProgramSource` provides a source-level container that can
-assign identities to multiple sub-programs, but cross-unit linking and relocation are intentionally not implemented yet.
+`parseProjectSource(source)` converts the textual `.8f4e` representation to the compiler-owned `ProjectObjectModel`.
+`compileProject(project, options)` compiles that object model directly. Editors that already hold typed blocks can skip
+the text representation without invoking a second block-classification or whole-project preparation step.
 
-`CompiledSubProgram` is the emission handoff, not yet a generally relocatable object format: its function indexes and
-memory addresses have already been assigned within one unit.
+`ProjectObjectModel` is defined by `@8f4e/language-spec`. Its separate `modules`, `functions`, `constants`, `prototypes`,
+`includes`, `notes`, and `unknown` collections define block type through membership. Only modules have semantic ordering;
+filtering `modules` by `entry` preserves the execution order for that entry. Hoisted declarations do not share a global
+order with modules or with each other.
 
 ## Compiler Passes
 
@@ -150,6 +155,6 @@ source
   -> semantic reference resolution
   -> stack validation
   -> instruction codegen from AST + pass reports
-  -> CompiledSubProgram
+  -> private emission artifacts
   -> WASM module + runtime metadata
 ```

@@ -1,4 +1,5 @@
-import type { Project, State } from '@8f4e/editor-state-types';
+import type { State } from '@8f4e/editor-state-types';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import createStateManager from '@8f4e/state-manager';
 import { beforeEach, describe, expect, it, type MockInstance } from 'vitest';
 import compiler from '../src/features/program-compiler/effect';
@@ -29,7 +30,7 @@ describe('Loader - Project loading', () => {
 
 		const loadProjectCallback = loadProjectCall![1];
 
-		const project: Project = {
+		const project: ProjectObjectModel = {
 			...EMPTY_DEFAULT_PROJECT,
 		};
 
@@ -48,7 +49,7 @@ describe('Loader - Project loading', () => {
 
 		const loadProjectCallback = loadProjectCall![1];
 
-		const project: Project = {
+		const project: ProjectObjectModel = {
 			...EMPTY_DEFAULT_PROJECT,
 		};
 

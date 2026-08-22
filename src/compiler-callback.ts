@@ -1,6 +1,8 @@
+import { serializeDiagnostic } from '@8f4e/compiler';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 import type { CompilationResult, Editor } from '@8f4e/editor';
-import type { CompileOptions, CompilerDiagnostic, SubProgramSource } from '@8f4e/language-spec';
+import type { CompileProjectOptions, CompilerDiagnostic, ProjectObjectModel } from '@8f4e/language-spec';
+import { collectProjectIncludeIdsFromBlock } from '@8f4e/project-preparser';
 
 // Create worker once at module scope
 // it will live for the entire application lifecycle
@@ -10,10 +12,25 @@ let memoryRef: WebAssembly.Memory | null = null;
 let codeBuffer: Uint8Array = new Uint8Array();
 
 export async function compileCode(
-	input: SubProgramSource,
-	compilerOptions: CompileOptions,
+	project: ProjectObjectModel,
+	compilerOptions: CompileProjectOptions,
 	editor: Editor
 ): Promise<CompilationResult> {
+	const { resolveInclude, ...serializableCompilerOptions } = compilerOptions;
+	let includeSources: Record<string, string | undefined>;
+	try {
+		const includeIds = new Set(
+			project.includes
+				.filter(block => !block.disabled)
+				.flatMap(block => collectProjectIncludeIdsFromBlock(block).map(({ includeId }) => includeId))
+		);
+		includeSources = Object.fromEntries(
+			await Promise.all([...includeIds].map(async includeId => [includeId, await resolveInclude?.(includeId)] as const))
+		);
+	} catch (error) {
+		throw serializeDiagnostic(error);
+	}
+
 	return new Promise((resolve, reject) => {
 		const handleMessage = ({ data }: MessageEvent) => {
 			switch (data.type) {
@@ -47,21 +64,12 @@ export async function compileCode(
 
 		compilerWorker.addEventListener('message', handleMessage, { once: true });
 
-		console.log(
-			'[Compiler] Functions sent to compiler:',
-			input.functions.map((func, index) => ({
-				index,
-				projectBlockId: func.projectBlockId,
-				firstLine: func.code[0],
-			})),
-			input.functions
-		);
-
 		compilerWorker.postMessage({
 			type: 'compile',
 			payload: {
-				input,
-				compilerOptions,
+				project,
+				compilerOptions: serializableCompilerOptions,
+				includeSources,
 			},
 		});
 	});

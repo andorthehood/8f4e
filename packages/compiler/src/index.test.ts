@@ -1,13 +1,44 @@
+import type { CompileOptions, ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import { createFunctionId, ErrorCode } from '@8f4e/language-spec';
 import { SyntaxErrorCode } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
-import compile, { serializeDiagnostic } from '.';
+import { serializeDiagnostic } from '.';
+import { compileProjectObjectModel } from './compileProjectObjectModel';
 
-const emptySubProgramSource = {
+type SourceFixture = { code: string[]; projectBlockId?: number };
+type ProjectFixture = {
+	entries: Record<string, SourceFixture[]>;
+	constants: SourceFixture[];
+	functions: SourceFixture[];
+	prototypes: SourceFixture[];
+};
+
+const emptyProjectFixture = {
 	constants: [],
 	functions: [],
 	prototypes: [],
 };
+
+function compile(fixture: ProjectFixture, options: CompileOptions) {
+	let generatedId = -1;
+	const toBlock = (source: SourceFixture): ProjectBlock => ({
+		id: source.projectBlockId ?? generatedId--,
+		code: source.code,
+	});
+	const project: ProjectObjectModel = {
+		modules: Object.entries(fixture.entries).flatMap(([entry, modules]) =>
+			modules.map(module => ({ ...toBlock(module), entry }))
+		),
+		functions: fixture.functions.map(toBlock),
+		constants: fixture.constants.map(toBlock),
+		prototypes: fixture.prototypes.map(toBlock),
+		includes: [],
+		notes: [],
+		unknown: [],
+		groups: [],
+	};
+	return compileProjectObjectModel(project, options);
+}
 
 describe('compile prototype validation', () => {
 	it('rejects prototype block markers inside module source', () => {
@@ -16,7 +47,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: {
 						main: [
 							{
@@ -43,7 +74,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: { main: [] },
 					prototypes: [{ code: ['prototype', 'prototypeEnd'] }],
 				},
@@ -66,7 +97,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: {
 						main: [
 							{
@@ -93,7 +124,7 @@ describe('compile prototype validation', () => {
 	it('expands shapes after prototype parsing reaches the tokenizer', () => {
 		const result = compile(
 			{
-				...emptySubProgramSource,
+				...emptyProjectFixture,
 				entries: {
 					main: [{ code: ['module main', 'shape state', 'moduleEnd'] }],
 				},
@@ -108,7 +139,7 @@ describe('compile prototype validation', () => {
 	it('marks shape-expanded declarations as inherited at the shape line', () => {
 		const result = compile(
 			{
-				...emptySubProgramSource,
+				...emptyProjectFixture,
 				entries: {
 					main: [{ code: ['module filterA', 'shape filterState', 'float cutoff 1200', 'moduleEnd'] }],
 				},
@@ -146,7 +177,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [{ code: ['function main', 'functionEnd'] }],
 				},
@@ -165,7 +196,7 @@ describe('compile prototype validation', () => {
 	it('exposes function source names separately from compiler ids', () => {
 		const result = compile(
 			{
-				...emptySubProgramSource,
+				...emptyProjectFixture,
 				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 				functions: [
 					{ code: ['function double', 'param int value', 'push value', 'push value', 'add', 'functionEnd int'] },
@@ -187,7 +218,7 @@ describe('compile prototype validation', () => {
 	it('allows function namespace imports before parameter declarations', () => {
 		const result = compile(
 			{
-				...emptySubProgramSource,
+				...emptyProjectFixture,
 				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 				constants: [{ code: ['constants math', 'const OFFSET 2', 'constantsEnd'] }],
 				functions: [
@@ -219,7 +250,7 @@ describe('compile prototype validation', () => {
 	it('collects same-name functions as overloads when parameter signatures differ', () => {
 		const result = compile(
 			{
-				...emptySubProgramSource,
+				...emptyProjectFixture,
 				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 				functions: [
 					{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
@@ -251,7 +282,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [
 						{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
@@ -276,7 +307,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [
 						{ code: ['function convert', 'param int value', 'push value', 'functionEnd int'] },
@@ -311,7 +342,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [
 						{ code: ['function tick', 'functionEnd'] },
@@ -333,7 +364,7 @@ describe('compile prototype validation', () => {
 	it('resolves overloaded calls by exact stack operand types', () => {
 		const result = compile(
 			{
-				...emptySubProgramSource,
+				...emptyProjectFixture,
 				entries: {
 					main: [{ code: ['module main', 'push 1', 'call consume', 'push 1.5', 'call consume', 'moduleEnd'] }],
 				},
@@ -358,7 +389,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: { main: [{ code: ['module main', 'moduleEnd'], projectBlockId: 10 }] },
 					functions: [
 						{ code: ['function first', '#export shared', 'functionEnd'], projectBlockId: 20 },
@@ -384,7 +415,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: { main: [{ code: ['module main', 'moduleEnd'], projectBlockId: 10 }] },
 					functions: [
 						{ code: ['function convert', '#export convertInt', 'param int value', 'functionEnd'], projectBlockId: 20 },
@@ -410,7 +441,7 @@ describe('compile prototype validation', () => {
 		try {
 			compile(
 				{
-					...emptySubProgramSource,
+					...emptyProjectFixture,
 					entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 					functions: [{ code: ['function entryAlias', '#export main', 'functionEnd'] }],
 				},
@@ -429,7 +460,7 @@ describe('compile prototype validation', () => {
 	it('marks exported functions as used roots during metadata collection', () => {
 		const result = compile(
 			{
-				...emptySubProgramSource,
+				...emptyProjectFixture,
 				entries: { main: [{ code: ['module main', 'moduleEnd'] }] },
 				functions: [{ code: ['function externallyCallable', '#export externallyCallable', 'functionEnd'] }],
 			},

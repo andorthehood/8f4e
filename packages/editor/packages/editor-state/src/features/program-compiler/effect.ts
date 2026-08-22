@@ -1,45 +1,18 @@
 import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
-import type { CompilerDiagnostic } from '@8f4e/language-spec';
-import { documentBlockInstructionByType, ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
-import type { ProjectBlock } from '@8f4e/project-preparser';
-import { ProjectIncludeError, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
+import type { CompilerDiagnostic, ProjectObjectModel } from '@8f4e/language-spec';
+import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
-import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 import { log } from '../logger/logger';
+import convertGraphicDataToProjectStructure from '../project-export/serializeCodeBlocks';
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
 const includesBlockType = documentBlockInstructionByType.includes.type;
 
-function toProjectBlock(block: CodeBlockGraphicData): ProjectBlock {
-	return {
-		id: block.creationIndex,
-		code: block.code,
-		disabled: block.disabled,
-		entry: block.entry,
-	};
-}
-
-/**
- * Converts editor code blocks into plain project blocks in editor execution order.
- *
- * Compiler-facing classification belongs to @8f4e/project-preparser; the editor
- * only supplies source blocks in the order it wants the preparer to preserve.
- */
-export function toOrderedProjectBlocksForCompiler(codeBlocks: CodeBlockGraphicData[]): ProjectBlock[] {
-	return sortCodeBlocksByGridPosition(codeBlocks).map(toProjectBlock);
-}
-
-function createIncludesDiagnostic(error: ProjectIncludeError): CompilerDiagnostic {
-	return {
-		code: ErrorCode.UNKNOWN_ERROR,
-		message: error.message,
-		line: { lineNumber: error.lineNumber },
-		context: {
-			projectBlockId: error.projectBlockId,
-		},
-	};
+/** Converts editor-owned blocks into the canonical model without a source-text round trip. */
+export function toProjectObjectModelForCompiler(codeBlocks: CodeBlockGraphicData[]): ProjectObjectModel {
+	return convertGraphicDataToProjectStructure(codeBlocks);
 }
 
 export default function compiler(store: StateManager<State>) {
@@ -76,12 +49,11 @@ export default function compiler(store: StateManager<State>) {
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
-			const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(
-				toOrderedProjectBlocksForCompiler(state.codeBlockRendering.codeBlocks),
-				{ resolveInclude: state.callbacks.resolveInclude }
-			);
-
-			const result = await state.callbacks.compileCode(compilerInput, compilerOptions);
+			const project = toProjectObjectModelForCompiler(state.codeBlockRendering.codeBlocks);
+			const result = await state.callbacks.compileCode(project, {
+				...compilerOptions,
+				...(state.callbacks.resolveInclude ? { resolveInclude: state.callbacks.resolveInclude } : {}),
+			});
 			const compilationTimeMs = performance.now() - compilationStart;
 			const memoryUsagePercent =
 				result.allocatedMemoryBytes === 0
@@ -121,8 +93,7 @@ export default function compiler(store: StateManager<State>) {
 
 			store.set('compiler.isCompiling', false);
 			setCompilerInfo({ isCompiling: false });
-			const diagnostic =
-				error instanceof ProjectIncludeError ? createIncludesDiagnostic(error) : (error as CompilerDiagnostic);
+			const diagnostic = error as CompilerDiagnostic;
 
 			store.set('codeErrors.compilationErrors', [
 				{

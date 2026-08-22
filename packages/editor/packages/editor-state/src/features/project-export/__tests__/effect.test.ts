@@ -216,7 +216,14 @@ describe('projectExport', () => {
 
 			expect(mockSaveSession).toHaveBeenCalled();
 			expect(mockSaveSession).toHaveBeenCalledWith({
-				codeBlocks: [{ code: ['module other', 'moduleEnd'], entry: 'entry1' }],
+				modules: [{ id: 0, code: ['module other', 'moduleEnd'], entry: 'entry1' }],
+				functions: [],
+				constants: [],
+				prototypes: [],
+				includes: [],
+				notes: [],
+				unknown: [],
+				groups: [],
 			});
 			expect(mockGetStorageQuota).toHaveBeenCalled();
 			expect(mockState.storageQuota.usedBytes).toBe(1024);

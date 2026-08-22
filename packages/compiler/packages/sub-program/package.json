@@ -4,10 +4,8 @@
   "private": true,
   "description": "Compilation pipeline for one closed 8f4e sub-program",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "exports": {
-    ".": {
+    "./internal": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     }

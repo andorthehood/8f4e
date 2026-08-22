@@ -1,99 +1,47 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`project-preparser integration > parses project source and prepares compiler input from source-shaped fixtures 1`] = `
+exports[`project-preparser integration > parses project source into typed collections and resolves its include collection 1`] = `
 {
-  "compilerInput": {
-    "constants": [
-      {
-        "code": [
-          "constants shared",
-          "const int tableSize 16",
-          "constantsEnd",
-        ],
-        "projectBlockId": 8,
-      },
-    ],
-    "entries": {
-      "main": [
-        {
-          "code": [
-            "module main",
-            "shape state",
-            "int counter",
-            "moduleEnd",
-          ],
-          "projectBlockId": 26,
-        },
+  "includedFunctions": [
+    {
+      "code": [
+        "function risingEdge",
+        "",
+        "functionEnd int",
       ],
+      "source": {
+        "includeId": "std/events/risingEdge",
+        "kind": "include",
+        "symbolName": "risingEdge",
+      },
     },
-    "functions": [
-      {
-        "code": [
-          "function risingEdge",
-          "",
-          "functionEnd int",
-        ],
-        "source": {
-          "includeId": "std/events/risingEdge",
-          "kind": "include",
-          "symbolName": "risingEdge",
-        },
+    {
+      "code": [
+        "function wrapPointer",
+        "",
+        "functionEnd int*",
+      ],
+      "source": {
+        "includeId": "std/memory/wrapPointer",
+        "kind": "include",
+        "symbolName": "wrapPointer",
       },
-      {
-        "code": [
-          "function wrapPointer",
-          "",
-          "functionEnd int*",
-        ],
-        "source": {
-          "includeId": "std/memory/wrapPointer",
-          "kind": "include",
-          "symbolName": "wrapPointer",
-        },
+    },
+    {
+      "code": [
+        "function wrapPointer",
+        "",
+        "functionEnd float*",
+      ],
+      "source": {
+        "includeId": "std/memory/wrapPointer",
+        "kind": "include",
+        "symbolName": "wrapPointer",
       },
-      {
-        "code": [
-          "function wrapPointer",
-          "",
-          "functionEnd float*",
-        ],
-        "source": {
-          "includeId": "std/memory/wrapPointer",
-          "kind": "include",
-          "symbolName": "wrapPointer",
-        },
-      },
-      {
-        "code": [
-          "function helper",
-          "functionEnd int",
-        ],
-        "projectBlockId": 12,
-      },
-    ],
-    "prototypes": [
-      {
-        "code": [
-          "prototype state",
-          "float phase",
-          "int[] buffer 8",
-          "prototypeEnd",
-        ],
-        "projectBlockId": 15,
-      },
-    ],
-  },
+    },
+  ],
   "project": {
-    "codeBlocks": [
-      {
-        "code": [
-          "includes",
-          "include std/events/risingEdge",
-          "include std/memory/wrapPointer",
-          "includesEnd",
-        ],
-        "id": 3,
-      },
+    "constants": [
       {
         "code": [
           "constants shared",
@@ -102,6 +50,8 @@ exports[`project-preparser integration > parses project source and prepares comp
         ],
         "id": 8,
       },
+    ],
+    "functions": [
       {
         "code": [
           "function helper",
@@ -111,22 +61,35 @@ exports[`project-preparser integration > parses project source and prepares comp
       },
       {
         "code": [
-          "prototype state",
-          "float phase",
-          "int[] buffer 8",
-          "prototypeEnd",
+          "function groupedHelper",
+          "functionEnd int",
         ],
-        "id": 15,
+        "id": 34,
       },
+    ],
+    "groups": [
+      {
+        "blockIds": [
+          31,
+          34,
+        ],
+        "entry": "main",
+        "groups": [],
+        "name": "audio",
+      },
+    ],
+    "includes": [
       {
         "code": [
-          "note",
-          "; @pos 2 3",
-          "Document-only project note.",
-          "noteEnd",
+          "includes",
+          "include std/events/risingEdge",
+          "include std/memory/wrapPointer",
+          "includesEnd",
         ],
-        "id": 20,
+        "id": 3,
       },
+    ],
+    "modules": [
       {
         "code": [
           "module main",
@@ -137,33 +100,39 @@ exports[`project-preparser integration > parses project source and prepares comp
         "entry": "main",
         "id": 26,
       },
-    ],
-    "groups": [
       {
-        "codeBlocks": [
-          {
-            "code": [
-              "module grouped",
-              "int ignoredByCompilerInput",
-              "moduleEnd",
-            ],
-            "entry": "main",
-            "id": 31,
-          },
-          {
-            "code": [
-              "function groupedHelper",
-              "functionEnd int",
-            ],
-            "entry": "main",
-            "id": 34,
-          },
+        "code": [
+          "module grouped",
+          "int ignoredByCompilerInput",
+          "moduleEnd",
         ],
         "entry": "main",
-        "groups": [],
-        "name": "audio",
+        "id": 31,
       },
     ],
+    "notes": [
+      {
+        "code": [
+          "note",
+          "; @pos 2 3",
+          "Document-only project note.",
+          "noteEnd",
+        ],
+        "id": 20,
+      },
+    ],
+    "prototypes": [
+      {
+        "code": [
+          "prototype state",
+          "float phase",
+          "int[] buffer 8",
+          "prototypeEnd",
+        ],
+        "id": 15,
+      },
+    ],
+    "unknown": [],
   },
 }
 `;

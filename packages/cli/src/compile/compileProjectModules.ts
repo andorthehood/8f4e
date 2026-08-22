@@ -1,22 +1,24 @@
-import compile from '@8f4e/compiler';
+import { compileProject } from '@8f4e/compiler';
 import type {
+	CompiledFunctionLookup,
 	CompiledModuleLookup,
 	CompileOptions,
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
+	ProjectIncludeResolver,
+	ProjectObjectModel,
 } from '@8f4e/language-spec';
-import { type ProjectIncludeResolverAsync, prepareCompilerInputFromProjectBlocksAsync } from '@8f4e/project-preparser';
 import { resolveStdlibInclude } from '../shared/stdlibResolver';
-import type { ProjectBlock } from '../shared/types';
 
 interface CompileProjectModulesOptions {
 	compilerOptions: CompileOptions;
-	resolveInclude?: ProjectIncludeResolverAsync;
+	resolveInclude?: ProjectIncludeResolver;
 }
 
 interface CompileProjectModulesResult {
 	compiledModules: CompiledModuleLookup;
+	compiledFunctions?: CompiledFunctionLookup;
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
@@ -25,19 +27,11 @@ interface CompileProjectModulesResult {
 	requiredMemoryBytesByRegion?: Record<string, number>;
 }
 
-function hasModuleBlocks(entries: Record<string, unknown[]>): boolean {
-	return Object.values(entries).some(entry => entry.length > 0);
-}
-
 export default async function compileProjectModules(
-	blocks: ProjectBlock[],
+	project: ProjectObjectModel,
 	options: CompileProjectModulesOptions
 ): Promise<CompileProjectModulesResult> {
-	const compilerInput = await prepareCompilerInputFromProjectBlocksAsync(blocks, {
-		resolveInclude: options.resolveInclude ?? resolveStdlibInclude,
-	});
-
-	if (!hasModuleBlocks(compilerInput.entries) && compilerInput.constants.length === 0) {
+	if (!project.modules.some(block => !block.disabled) && !project.constants.some(block => !block.disabled)) {
 		return {
 			compiledModules: {},
 			memoryPlan: { modules: {}, moduleList: [], nextByteAddressByMemoryIndex: {} },
@@ -48,10 +42,14 @@ export default async function compileProjectModules(
 		};
 	}
 
-	const result = compile(compilerInput, options.compilerOptions);
+	const result = await compileProject(project, {
+		...options.compilerOptions,
+		resolveInclude: options.resolveInclude ?? resolveStdlibInclude,
+	});
 
 	return {
 		compiledModules: result.compiledModules,
+		compiledFunctions: result.compiledFunctions,
 		memoryPlan: result.memoryPlan,
 		memoryDefaultsByModuleId: result.memoryDefaultsByModuleId,
 		pointerMetadataByModuleId: result.pointerMetadataByModuleId,

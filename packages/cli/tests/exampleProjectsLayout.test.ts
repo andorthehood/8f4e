@@ -1,10 +1,9 @@
+import { parseProjectSource } from '@8f4e/compiler';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 import { describe, expect, it } from 'vitest';
-
-import parse8f4eToProject from '../src/shared/parse8f4e';
 
 const testDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(testDir, '..');
@@ -25,14 +24,11 @@ function getSnapshotPath(relativePath: string): string {
 
 async function loadExampleProject(relativePath: string) {
 	const raw = await fs.readFile(path.join(repoRoot, relativePath), 'utf8');
-	return parse8f4eToProject(raw);
+	return parseProjectSource(raw);
 }
 
 function getProjectModuleBlocks(project: Awaited<ReturnType<typeof loadExampleProject>>) {
-	return project.codeBlocks.filter(block => {
-		const firstLine = block.code[0]?.trim() ?? '';
-		return firstLine.startsWith('module ') || firstLine.startsWith('constants ');
-	});
+	return [...project.modules, ...project.constants];
 }
 
 function getBlockId(block: { code: string[] }): string {

@@ -2,25 +2,19 @@ import type {
 	CompiledFunctionLookup,
 	CompiledModuleLookup,
 	CompileOptions,
+	DocumentBlockType,
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
+	ProjectIncludeResolver,
 } from '@8f4e/language-spec';
-import type {
-	ProjectBlock,
-	ProjectBlockType,
-	ProjectDocument,
-	ProjectIncludeResolverAsync,
-} from '@8f4e/project-preparser';
-
-export type { ProjectBlock, ProjectDocument };
 
 export interface CompileProjectOptions {
 	compilerOptions?: Partial<CompileOptions>;
 	includeModules?: boolean;
 	includeWasm?: boolean;
 	includeFunctions?: boolean;
-	resolveInclude?: ProjectIncludeResolverAsync;
+	resolveInclude?: ProjectIncludeResolver;
 }
 
 export interface CompileProjectResult {
@@ -36,4 +30,4 @@ export interface CompileProjectResult {
 	requiredMemoryBytesByRegion?: Record<string, number>;
 }
 
-export type BlockTypeValue = ProjectBlockType;
+export type BlockTypeValue = DocumentBlockType | 'unknown';

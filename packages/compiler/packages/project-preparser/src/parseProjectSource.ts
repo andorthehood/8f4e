@@ -1,40 +1,64 @@
-import { documentBlockInstructionByType } from '@8f4e/language-spec';
-import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER, INCLUDES_BLOCK_DELIMITER } from './delimiters';
+import type { DocumentBlockType, ProjectBlock, ProjectGroup, ProjectObjectModel } from '@8f4e/language-spec';
+import { documentBlockInstructionByType, documentBlockInstructionPairs } from '@8f4e/language-spec';
+import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER } from './delimiters';
 import { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
 import { getProjectBlockName, isProjectGapLine } from './projectLines';
-import type { ProjectBlock, ProjectDocument, ProjectGroup } from './types';
 
-type ProjectContainerDelimiter = {
-	opener: string;
-	closer: string;
-};
-
+type ProjectContainerDelimiter = { opener: string; closer: string };
 type ProjectContainerContentOptions = {
 	entry: string;
 	container: ProjectContainerDelimiter;
-	codeBlocks: ProjectBlock[];
+	blockIds?: ProjectGroup['blockIds'];
 	groups: ProjectGroup[];
 	validateDocumentOpener: (opener: string, line: string, lineNumber: number) => void;
 };
+type ParsedProjectBlock = { block: ProjectBlock; type: DocumentBlockType; nextIndex: number };
 
-/**
- * Parses 8f4e project source into a project document.
- *
- * @param text - Project source text to parse.
- * @returns Parsed 8f4e project document.
- */
-export function parseProjectSource(text: string): ProjectDocument {
+function createEmptyProject(): ProjectObjectModel {
+	return {
+		modules: [],
+		functions: [],
+		constants: [],
+		prototypes: [],
+		includes: [],
+		notes: [],
+		unknown: [],
+		groups: [],
+	};
+}
+
+function hasDisabledDirective(code: readonly string[]): boolean {
+	return code.some(line => /^\s*;\s*@disabled(?:\s|$)/.test(line));
+}
+
+/** Parses `.8f4e` text into the canonical compiler-owned project object model. */
+export function parseProjectSource(text: string): ProjectObjectModel {
 	const lines = text.split('\n');
-
 	if (lines[0]?.trim() !== FORMAT_HEADER) {
 		throw new Error(`Invalid .8f4e file: expected header "${FORMAT_HEADER}", got "${lines[0]?.trim() ?? ''}"`);
 	}
 
-	const codeBlocks: ProjectBlock[] = [];
-	const groups: ProjectGroup[] = [];
+	const project = createEmptyProject();
 	const seenEntryNames = new Set<string>();
 
-	function readProjectBlock(startIndex: number, targetCodeBlocks: ProjectBlock[], entry?: string): number {
+	function addParsedBlock(parsed: ParsedProjectBlock, entry?: string): void {
+		const { block, type } = parsed;
+		if (type === 'module') {
+			if (!entry) throw new Error(`Project module block ${block.id} is missing an entry`);
+			project.modules.push({ ...block, entry });
+			return;
+		}
+		const collectionByType = {
+			function: project.functions,
+			constants: project.constants,
+			prototype: project.prototypes,
+			includes: project.includes,
+			note: project.notes,
+		};
+		collectionByType[type].push(block);
+	}
+
+	function readProjectBlock(startIndex: number): ParsedProjectBlock {
 		const openerLine = lines[startIndex];
 		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
 		if (
@@ -44,99 +68,50 @@ export function parseProjectSource(text: string): ProjectDocument {
 		) {
 			throw new Error(`Parse error at line ${startIndex + 1}: expected document block opener`);
 		}
+		const blockType = documentBlockInstructionPairs.find(({ start }) => start === openerKeyword)?.type;
+		if (!blockType) {
+			throw new Error(`Parse error at line ${startIndex + 1}: unknown document block opener "${openerKeyword}"`);
+		}
 
 		const expectedCloser = getExpectedProjectCloserPrefix(openerKeyword);
 		const currentBlockLines = [openerLine];
-
 		for (let i = startIndex + 1; i < lines.length; i += 1) {
 			const line = lines[i];
 			const trimmed = line.trim();
 			currentBlockLines.push(line);
-
 			const closer = getProjectCloserKeyword(trimmed);
 			if (closer) {
 				if (closer !== expectedCloser) {
 					throw new Error(`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${openerKeyword}"`);
 				}
-
-				targetCodeBlocks.push({
-					id: startIndex + 1,
-					code: currentBlockLines,
-					...(entry ? { entry } : {}),
-				});
-				return i + 1;
+				return {
+					block: {
+						id: startIndex + 1,
+						code: currentBlockLines,
+						...(hasDisabledDirective(currentBlockLines) ? { disabled: true } : {}),
+					},
+					type: blockType,
+					nextIndex: i + 1,
+				};
 			}
-
-			if (trimmed !== '') {
-				const innerOpener = getProjectOpenerKeyword(trimmed);
-				if (innerOpener) {
-					throw new Error(
-						`Parse error at line ${i + 1}: mixed block type markers (found opener "${trimmed}" inside "${openerKeyword}" block)`
-					);
-				}
+			if (trimmed !== '' && getProjectOpenerKeyword(trimmed)) {
+				throw new Error(
+					`Parse error at line ${i + 1}: mixed block type markers (found opener "${trimmed}" inside "${openerKeyword}" block)`
+				);
 			}
 		}
-
 		throw new Error(`Parse error: unclosed block with opener "${openerKeyword}"`);
 	}
 
-	function readIncludesBlock(startIndex: number): number {
-		const openerLine = lines[startIndex];
-		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
-		if (openerKeyword !== INCLUDES_BLOCK_DELIMITER.opener) {
-			throw new Error(`Parse error at line ${startIndex + 1}: expected includes opener`);
-		}
-
-		const currentBlockLines = [openerLine];
-
-		for (let i = startIndex + 1; i < lines.length; i += 1) {
-			const line = lines[i];
-			const trimmed = line.trim();
-			currentBlockLines.push(line);
-
-			if (isProjectGapLine(trimmed)) {
-				continue;
-			}
-
-			const closer = getProjectCloserKeyword(trimmed);
-			if (closer === INCLUDES_BLOCK_DELIMITER.closer) {
-				const block = {
-					id: startIndex + 1,
-					code: currentBlockLines,
-				};
-				codeBlocks.push(block);
-				return i + 1;
-			}
-			if (closer) {
-				throw new Error(
-					`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${INCLUDES_BLOCK_DELIMITER.opener}"`
-				);
-			}
-
-			// Include line syntax and source resolution are applied during compiler input preparation.
-		}
-
-		throw new Error(`Parse error: unclosed block with opener "${INCLUDES_BLOCK_DELIMITER.opener}"`);
-	}
-
 	function readProjectContainerContents(startIndex: number, options: ProjectContainerContentOptions): number {
-		// Entries and groups have the same recursive container grammar: skip gaps,
-		// accept nested groups, read document blocks, and stop at the matching closer.
-		// The caller supplies the containment policy because entries still expose only
-		// direct modules to the flat compiler path, while groups preserve all block types.
 		for (let i = startIndex; i < lines.length; ) {
-			const line = lines[i];
-			const trimmed = line.trim();
-
+			const trimmed = lines[i].trim();
 			if (isProjectGapLine(trimmed)) {
 				i += 1;
 				continue;
 			}
-
 			const closer = getProjectCloserKeyword(trimmed);
-			if (closer === options.container.closer) {
-				return i + 1;
-			}
+			if (closer === options.container.closer) return i + 1;
 			if (closer) {
 				throw new Error(
 					`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${options.container.opener}"`
@@ -144,9 +119,7 @@ export function parseProjectSource(text: string): ProjectDocument {
 			}
 
 			const opener = getProjectOpenerKeyword(trimmed);
-			if (!opener) {
-				throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
-			}
+			if (!opener) throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
 			if (opener === GROUP_BLOCK_DELIMITER.opener) {
 				const nested = readProjectGroup(i, options.entry);
 				options.groups.push(nested.group);
@@ -155,41 +128,36 @@ export function parseProjectSource(text: string): ProjectDocument {
 			}
 
 			options.validateDocumentOpener(opener, trimmed, i + 1);
-			i = readProjectBlock(i, options.codeBlocks, options.entry);
+			const parsed = readProjectBlock(i);
+			addParsedBlock(parsed, options.entry);
+			options.blockIds?.push(parsed.block.id);
+			i = parsed.nextIndex;
 		}
-
 		throw new Error(`Parse error: unclosed block with opener "${options.container.opener}"`);
-	}
-
-	function validateGroupDocumentOpener(opener: string, _line: string, lineNumber: number): void {
-		// Groups can recursively hold any document block, but entries remain the
-		// project root container and are never valid inside another project container.
-		if (opener === ENTRY_BLOCK_DELIMITER.opener) {
-			throw new Error(`Parse error at line ${lineNumber}: entry blocks cannot be nested inside groups`);
-		}
 	}
 
 	function readProjectGroup(startIndex: number, entry: string): { nextIndex: number; group: ProjectGroup } {
 		const openerLine = lines[startIndex];
-		const openerKeyword = getProjectOpenerKeyword(openerLine.trim());
-		if (openerKeyword !== GROUP_BLOCK_DELIMITER.opener) {
+		if (getProjectOpenerKeyword(openerLine.trim()) !== GROUP_BLOCK_DELIMITER.opener) {
 			throw new Error(`Parse error at line ${startIndex + 1}: expected group opener`);
 		}
-
 		const group: ProjectGroup = {
 			name: getProjectBlockName(openerLine, startIndex + 1, 'group'),
 			entry,
-			codeBlocks: [],
+			blockIds: [],
 			groups: [],
 		};
-
 		return {
 			nextIndex: readProjectContainerContents(startIndex + 1, {
 				entry,
 				container: GROUP_BLOCK_DELIMITER,
-				codeBlocks: group.codeBlocks,
+				blockIds: group.blockIds,
 				groups: group.groups,
-				validateDocumentOpener: validateGroupDocumentOpener,
+				validateDocumentOpener: (opener, _line, lineNumber) => {
+					if (opener === ENTRY_BLOCK_DELIMITER.opener) {
+						throw new Error(`Parse error at line ${lineNumber}: entry blocks cannot be nested inside groups`);
+					}
+				},
 			}),
 			group,
 		};
@@ -197,29 +165,23 @@ export function parseProjectSource(text: string): ProjectDocument {
 
 	for (let i = 1; i < lines.length; ) {
 		const trimmed = lines[i].trim();
-
 		if (isProjectGapLine(trimmed)) {
 			i += 1;
 			continue;
 		}
-
 		const opener = getProjectOpenerKeyword(trimmed);
-		if (!opener) {
-			throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
-		}
+		if (!opener) throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
 
 		if (opener !== ENTRY_BLOCK_DELIMITER.opener) {
-			if (opener === INCLUDES_BLOCK_DELIMITER.opener) {
-				i = readIncludesBlock(i);
-				continue;
-			}
 			if (opener === documentBlockInstructionByType.module.start) {
 				throw new Error(`Parse error at line ${i + 1}: module blocks must be inside an entry block`);
 			}
 			if (opener === GROUP_BLOCK_DELIMITER.opener) {
 				throw new Error(`Parse error at line ${i + 1}: group blocks must be inside an entry block`);
 			}
-			i = readProjectBlock(i, codeBlocks);
+			const parsed = readProjectBlock(i);
+			addParsedBlock(parsed);
+			i = parsed.nextIndex;
 			continue;
 		}
 
@@ -228,12 +190,10 @@ export function parseProjectSource(text: string): ProjectDocument {
 			throw new Error(`Parse error at line ${i + 1}: duplicate entry "${entryName}"`);
 		}
 		seenEntryNames.add(entryName);
-
 		i = readProjectContainerContents(i + 1, {
 			entry: entryName,
 			container: ENTRY_BLOCK_DELIMITER,
-			codeBlocks,
-			groups,
+			groups: project.groups,
 			validateDocumentOpener: (innerOpener, line, lineNumber) => {
 				if (innerOpener !== documentBlockInstructionByType.module.start) {
 					throw new Error(
@@ -244,10 +204,5 @@ export function parseProjectSource(text: string): ProjectDocument {
 		});
 	}
 
-	return {
-		codeBlocks,
-		groups,
-	};
+	return project;
 }
-
-export default parseProjectSource;

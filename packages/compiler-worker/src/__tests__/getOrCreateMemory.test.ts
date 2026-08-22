@@ -1,20 +1,24 @@
-import compile from '@8f4e/compiler';
+import { compileProject } from '@8f4e/compiler';
 import { describe, expect, it } from 'vitest';
 import type { ProgramMemoryStructure } from '../didProgramOrMemoryStructureChange';
 import getOrCreateMemory from '../getOrCreateMemory';
 
 describe('getOrCreateMemory', () => {
-	function createProgramMemoryStructure(moduleIds = ['module1']): ProgramMemoryStructure {
-		const result = compile(
+	async function createProgramMemoryStructure(moduleIds = ['module1']): Promise<ProgramMemoryStructure> {
+		const result = await compileProject(
 			{
-				entries: {
-					main: moduleIds.map(id => ({
-						code: [`module ${id}`, 'int value 0', 'moduleEnd'],
-					})),
-				},
+				modules: moduleIds.map((id, projectBlockId) => ({
+					id: projectBlockId,
+					entry: 'main',
+					code: [`module ${id}`, 'int value 0', 'moduleEnd'],
+				})),
 				functions: [],
 				constants: [],
 				prototypes: [],
+				includes: [],
+				notes: [],
+				unknown: [],
+				groups: [],
 			},
 			{ startingMemoryWordAddress: 0 }
 		);
@@ -26,8 +30,8 @@ describe('getOrCreateMemory', () => {
 	}
 
 	describe('memory action reporting', () => {
-		it('should report "no-instance" reason when memory is created for the first time', () => {
-			const current = createProgramMemoryStructure();
+		it('should report "no-instance" reason when memory is created for the first time', async () => {
+			const current = await createProgramMemoryStructure();
 			const result = getOrCreateMemory(65536, current);
 
 			expect(result.memoryAction).toEqual({
@@ -37,13 +41,13 @@ describe('getOrCreateMemory', () => {
 			expect(result.memoryRef).toBeInstanceOf(WebAssembly.Memory);
 		});
 
-		it('should report "memory-size-changed" reason when memory size changes', () => {
+		it('should report "memory-size-changed" reason when memory size changes', async () => {
 			// First call creates initial memory
-			const previous = createProgramMemoryStructure();
+			const previous = await createProgramMemoryStructure();
 			getOrCreateMemory(65536, previous);
 
 			// Second call with different size
-			const current = createProgramMemoryStructure();
+			const current = await createProgramMemoryStructure();
 			const result = getOrCreateMemory(131072, current, previous);
 
 			expect(result.memoryAction).toEqual({
@@ -56,13 +60,13 @@ describe('getOrCreateMemory', () => {
 			});
 		});
 
-		it('should report "memory-structure-changed" reason when structure changes', () => {
+		it('should report "memory-structure-changed" reason when structure changes', async () => {
 			// First call creates initial memory
-			const previous = createProgramMemoryStructure();
+			const previous = await createProgramMemoryStructure();
 			getOrCreateMemory(65536, previous);
 
 			// Second call with same size but structure changed (different module count)
-			const current = createProgramMemoryStructure(['module1', 'module2']);
+			const current = await createProgramMemoryStructure(['module1', 'module2']);
 			const result = getOrCreateMemory(65536, current, previous);
 
 			expect(result.memoryAction).toEqual({
@@ -71,13 +75,13 @@ describe('getOrCreateMemory', () => {
 			});
 		});
 
-		it('should report "reused" action when memory is reused', () => {
+		it('should report "reused" action when memory is reused', async () => {
 			// First call creates initial memory
-			const previous = createProgramMemoryStructure();
+			const previous = await createProgramMemoryStructure();
 			getOrCreateMemory(65536, previous);
 
 			// Second call with same size and no structure change
-			const current = createProgramMemoryStructure();
+			const current = await createProgramMemoryStructure();
 			const result = getOrCreateMemory(65536, current, previous);
 
 			expect(result.memoryAction).toEqual({
@@ -85,13 +89,13 @@ describe('getOrCreateMemory', () => {
 			});
 		});
 
-		it('should prioritize memory-size-changed over memory-structure-changed when both occur', () => {
+		it('should prioritize memory-size-changed over memory-structure-changed when both occur', async () => {
 			// First call creates initial memory
-			const previous = createProgramMemoryStructure();
+			const previous = await createProgramMemoryStructure();
 			getOrCreateMemory(65536, previous);
 
 			// Second call with both size and structure changed
-			const current = createProgramMemoryStructure(['module1', 'module2']);
+			const current = await createProgramMemoryStructure(['module1', 'module2']);
 			const result = getOrCreateMemory(131072, current, previous);
 
 			expect(result.memoryAction).toEqual({
@@ -106,19 +110,19 @@ describe('getOrCreateMemory', () => {
 	});
 
 	describe('memory creation behavior', () => {
-		it('should create shared memory with correct page count', () => {
+		it('should create shared memory with correct page count', async () => {
 			const memorySizeBytes = 65536 * 2; // 2 pages
-			const current = createProgramMemoryStructure();
+			const current = await createProgramMemoryStructure();
 			const result = getOrCreateMemory(memorySizeBytes, current);
 
 			expect(result.memoryRef).toBeInstanceOf(WebAssembly.Memory);
 			expect(result.memoryRef.buffer.byteLength).toBe(memorySizeBytes);
 		});
 
-		it('should round up memory size to page boundary', () => {
+		it('should round up memory size to page boundary', async () => {
 			// Request slightly more than 1 page
 			const memorySizeBytes = 65536 + 1;
-			const current = createProgramMemoryStructure();
+			const current = await createProgramMemoryStructure();
 			const result = getOrCreateMemory(memorySizeBytes, current);
 
 			// Should allocate 2 full pages
