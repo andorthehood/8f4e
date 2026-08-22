@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/web-ui-render-projection",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "description": "Web UI render data projected from 8f4e editor state",
   "type": "module",
