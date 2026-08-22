@@ -2,7 +2,7 @@
   "name": "@8f4e/project-preparser",
   "version": "2.0.0",
   "private": true,
-  "description": "8f4e project source preparser and compiler input preparation package",
+  "description": "Parses 8f4e project source into the canonical project object model",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

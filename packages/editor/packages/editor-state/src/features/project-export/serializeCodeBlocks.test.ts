@@ -4,6 +4,29 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
 
 describe('convertGraphicDataToProjectStructure', () => {
+	it('places editor blocks in their canonical collections', () => {
+		const result = convertGraphicDataToProjectStructure([
+			createMockCodeBlock({
+				code: ['module second', 'moduleEnd'],
+				blockType: 'module',
+				creationIndex: 2,
+				entry: 'main',
+				gridX: 10,
+				gridY: 0,
+			}),
+			createMockCodeBlock({
+				code: ['function first', 'functionEnd'],
+				blockType: 'function',
+				creationIndex: 1,
+				gridX: 0,
+				gridY: 0,
+			}),
+		]);
+
+		expect(result.functions).toEqual([{ id: 1, code: ['function first', 'functionEnd'] }]);
+		expect(result.modules).toEqual([{ id: 2, code: ['module second', 'moduleEnd'], entry: 'main' }]);
+	});
+
 	it('sorts code blocks by grid position before mapping', () => {
 		const blocks: CodeBlockGraphicData[] = [
 			createMockCodeBlock({ name: 'a', code: ['line 1'], gridX: 20, gridY: 0 }),
