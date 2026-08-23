@@ -3,6 +3,7 @@ import type { ProjectIncludeResolver } from './project';
 
 /** Optional settings that control compiler layout and emitted metadata. */
 export interface CompileOptions {
+	/** Word address where the first module memory allocation begins. Defaults to 1. */
 	startingMemoryWordAddress?: number;
 	/**
 	 * Ordered custom memory region names. WebAssembly memory index 0 is always the
