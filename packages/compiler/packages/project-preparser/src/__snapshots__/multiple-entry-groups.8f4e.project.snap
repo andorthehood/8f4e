@@ -1,83 +1,102 @@
 {
   "constants": [],
-  "functions": [
-    {
-      "code": [
-        "function clamp01",
-        "param float value",
-        "push value",
-        "functionEnd float",
-      ],
-      "id": 16,
-    },
-    {
-      "code": [
-        "function assertEqual",
-        "param int left",
-        "param int right",
-        "push left",
-        "push right",
-        "equal",
-        "functionEnd int",
-      ],
-      "id": 30,
-    },
-  ],
+  "functions": [],
   "groups": [
     {
-      "blockIds": [
-        5,
-      ],
+      "constants": [],
       "entry": "main",
+      "functions": [],
       "groups": [],
-      "name": "audio",
-    },
-    {
-      "blockIds": [
-        11,
-      ],
-      "entry": "main",
-      "groups": [
+      "includes": [],
+      "modules": [
         {
-          "blockIds": [
-            16,
+          "code": [
+            "module kick",
+            "int trigger",
+            "moduleEnd",
           ],
           "entry": "main",
+          "id": 5,
+        },
+      ],
+      "name": "audio",
+      "notes": [],
+      "prototypes": [],
+      "unknown": [],
+    },
+    {
+      "constants": [],
+      "entry": "main",
+      "functions": [],
+      "groups": [
+        {
+          "constants": [],
+          "entry": "main",
+          "functions": [
+            {
+              "code": [
+                "function clamp01",
+                "param float value",
+                "push value",
+                "functionEnd float",
+              ],
+              "id": 16,
+            },
+          ],
           "groups": [],
+          "includes": [],
+          "modules": [],
           "name": "shaderHelpers",
+          "notes": [],
+          "prototypes": [],
+          "unknown": [],
+        },
+      ],
+      "includes": [],
+      "modules": [
+        {
+          "code": [
+            "module scope",
+            "int brightness",
+            "moduleEnd",
+          ],
+          "entry": "main",
+          "id": 11,
         },
       ],
       "name": "visuals",
+      "notes": [],
+      "prototypes": [],
+      "unknown": [],
     },
     {
-      "blockIds": [
-        30,
-      ],
+      "constants": [],
       "entry": "test",
+      "functions": [
+        {
+          "code": [
+            "function assertEqual",
+            "param int left",
+            "param int right",
+            "push left",
+            "push right",
+            "equal",
+            "functionEnd int",
+          ],
+          "id": 30,
+        },
+      ],
       "groups": [],
+      "includes": [],
+      "modules": [],
       "name": "assertions",
+      "notes": [],
+      "prototypes": [],
+      "unknown": [],
     },
   ],
   "includes": [],
   "modules": [
-    {
-      "code": [
-        "module kick",
-        "int trigger",
-        "moduleEnd",
-      ],
-      "entry": "main",
-      "id": 5,
-    },
-    {
-      "code": [
-        "module scope",
-        "int brightness",
-        "moduleEnd",
-      ],
-      "entry": "main",
-      "id": 11,
-    },
     {
       "code": [
         "module harness",

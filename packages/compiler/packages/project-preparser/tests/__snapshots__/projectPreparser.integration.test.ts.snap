@@ -59,23 +59,37 @@ exports[`project-preparser integration > parses project source into typed collec
         ],
         "id": 12,
       },
-      {
-        "code": [
-          "function groupedHelper",
-          "functionEnd int",
-        ],
-        "id": 34,
-      },
     ],
     "groups": [
       {
-        "blockIds": [
-          31,
-          34,
-        ],
+        "constants": [],
         "entry": "main",
+        "functions": [
+          {
+            "code": [
+              "function groupedHelper",
+              "functionEnd int",
+            ],
+            "id": 34,
+          },
+        ],
         "groups": [],
+        "includes": [],
+        "modules": [
+          {
+            "code": [
+              "module grouped",
+              "int ignoredByCompilerInput",
+              "moduleEnd",
+            ],
+            "entry": "main",
+            "id": 31,
+          },
+        ],
         "name": "audio",
+        "notes": [],
+        "prototypes": [],
+        "unknown": [],
       },
     ],
     "includes": [
@@ -99,15 +113,6 @@ exports[`project-preparser integration > parses project source into typed collec
         ],
         "entry": "main",
         "id": 26,
-      },
-      {
-        "code": [
-          "module grouped",
-          "int ignoredByCompilerInput",
-          "moduleEnd",
-        ],
-        "entry": "main",
-        "id": 31,
       },
     ],
     "notes": [

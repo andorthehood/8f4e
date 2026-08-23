@@ -120,6 +120,64 @@ describe('convertGraphicDataToProjectStructure', () => {
 		]);
 	});
 
+	it('reconstructs recursively owned projects from runtime sub-program paths', () => {
+		const result = convertGraphicDataToProjectStructure([
+			createMockCodeBlock({
+				creationIndex: 1,
+				blockType: 'module',
+				entry: 'main',
+				code: ['module voice', 'moduleEnd'],
+				subProgramPath: [
+					{ id: 'audio', name: 'Audio', entry: 'main' },
+					{ id: 'oscillator', name: 'Oscillator', entry: 'main' },
+				],
+			}),
+		]);
+
+		expect(result.groups[0]).toMatchObject({
+			id: 'audio',
+			name: 'Audio',
+			entry: 'main',
+			groups: [
+				{
+					id: 'oscillator',
+					name: 'Oscillator',
+					entry: 'main',
+					modules: [{ id: 1, entry: 'main', code: ['module voice', 'moduleEnd'] }],
+				},
+			],
+		});
+	});
+
+	it('preserves empty nested projects from the loaded project structure', () => {
+		const projectStructure = {
+			modules: [],
+			functions: [],
+			constants: [],
+			prototypes: [],
+			includes: [],
+			notes: [],
+			unknown: [],
+			groups: [
+				{
+					id: 'empty',
+					name: 'Empty',
+					entry: 'main',
+					modules: [],
+					functions: [],
+					constants: [],
+					prototypes: [],
+					includes: [],
+					notes: [],
+					unknown: [],
+					groups: [],
+				},
+			],
+		};
+
+		expect(convertGraphicDataToProjectStructure([], projectStructure).groups).toEqual(projectStructure.groups);
+	});
+
 	it('rejects module blocks without an entry', () => {
 		const blocks: CodeBlockGraphicData[] = [
 			createMockCodeBlock({

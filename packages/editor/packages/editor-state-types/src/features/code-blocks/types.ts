@@ -355,6 +355,12 @@ export interface CodeBlockGraphicData {
 	 * This is separate from the visual `; @group` directive.
 	 */
 	entry?: string;
+	/** Nested project ownership retained while editing recursively structured projects. */
+	subProgramPath?: Array<{
+		id?: string;
+		name?: string;
+		entry?: string;
+	}>;
 	/**
 	 * When true, the block is excluded from compilation and rendered with a transparent background.
 	 * Defaults to false.

@@ -13,6 +13,9 @@
 - `@8f4e/language-spec` solely owns `ProjectObjectModel`. The public compiler project API is
   `parseProjectSource(text)` plus asynchronous `compileProject(project, options)`; internal stages must not require
   callers to prepare a parallel whole-project input.
+- `ProjectObjectModel.groups` recursively owns nested `ProjectObjectModel` values. `compileProject` currently compiles
+  only the root model; keep recursive sub-program composition and linking deferred until that work is implemented
+  explicitly.
 - WebAssembly body generation and final binary emission live in `@8f4e/wasm-codegen` (`packages/compiler/packages/wasm-codegen`).
 - Standard library sources live in the nested source package `@8f4e/stdlib` (`packages/compiler/packages/stdlib`).
 

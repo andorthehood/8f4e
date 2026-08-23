@@ -1,4 +1,4 @@
-import type { DocumentBlockType, ProjectBlock, ProjectGroup, ProjectObjectModel } from '@8f4e/language-spec';
+import type { DocumentBlockType, ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import { documentBlockInstructionByType, documentBlockInstructionPairs } from '@8f4e/language-spec';
 import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER } from './delimiters';
 import { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
@@ -6,16 +6,16 @@ import { getProjectBlockName, isProjectGapLine } from './projectLines';
 
 type ProjectContainerDelimiter = { opener: string; closer: string };
 type ProjectContainerContentOptions = {
+	project: ProjectObjectModel;
 	entry: string;
 	container: ProjectContainerDelimiter;
-	blockIds?: ProjectGroup['blockIds'];
-	groups: ProjectGroup[];
 	validateDocumentOpener: (opener: string, line: string, lineNumber: number) => void;
 };
 type ParsedProjectBlock = { block: ProjectBlock; type: DocumentBlockType; nextIndex: number };
 
-function createEmptyProject(): ProjectObjectModel {
+function createEmptyProject(metadata: Pick<ProjectObjectModel, 'name' | 'entry'> = {}): ProjectObjectModel {
 	return {
+		...metadata,
 		modules: [],
 		functions: [],
 		constants: [],
@@ -41,19 +41,19 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 	const project = createEmptyProject();
 	const seenEntryNames = new Set<string>();
 
-	function addParsedBlock(parsed: ParsedProjectBlock, entry?: string): void {
+	function addParsedBlock(targetProject: ProjectObjectModel, parsed: ParsedProjectBlock, entry?: string): void {
 		const { block, type } = parsed;
 		if (type === 'module') {
 			if (!entry) throw new Error(`Project module block ${block.id} is missing an entry`);
-			project.modules.push({ ...block, entry });
+			targetProject.modules.push({ ...block, entry });
 			return;
 		}
 		const collectionByType = {
-			function: project.functions,
-			constants: project.constants,
-			prototype: project.prototypes,
-			includes: project.includes,
-			note: project.notes,
+			function: targetProject.functions,
+			constants: targetProject.constants,
+			prototype: targetProject.prototypes,
+			includes: targetProject.includes,
+			note: targetProject.notes,
 		};
 		collectionByType[type].push(block);
 	}
@@ -122,37 +122,33 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 			if (!opener) throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
 			if (opener === GROUP_BLOCK_DELIMITER.opener) {
 				const nested = readProjectGroup(i, options.entry);
-				options.groups.push(nested.group);
+				options.project.groups.push(nested.group);
 				i = nested.nextIndex;
 				continue;
 			}
 
 			options.validateDocumentOpener(opener, trimmed, i + 1);
 			const parsed = readProjectBlock(i);
-			addParsedBlock(parsed, options.entry);
-			options.blockIds?.push(parsed.block.id);
+			addParsedBlock(options.project, parsed, options.entry);
 			i = parsed.nextIndex;
 		}
 		throw new Error(`Parse error: unclosed block with opener "${options.container.opener}"`);
 	}
 
-	function readProjectGroup(startIndex: number, entry: string): { nextIndex: number; group: ProjectGroup } {
+	function readProjectGroup(startIndex: number, entry: string): { nextIndex: number; group: ProjectObjectModel } {
 		const openerLine = lines[startIndex];
 		if (getProjectOpenerKeyword(openerLine.trim()) !== GROUP_BLOCK_DELIMITER.opener) {
 			throw new Error(`Parse error at line ${startIndex + 1}: expected group opener`);
 		}
-		const group: ProjectGroup = {
+		const group = createEmptyProject({
 			name: getProjectBlockName(openerLine, startIndex + 1, 'group'),
 			entry,
-			blockIds: [],
-			groups: [],
-		};
+		});
 		return {
 			nextIndex: readProjectContainerContents(startIndex + 1, {
+				project: group,
 				entry,
 				container: GROUP_BLOCK_DELIMITER,
-				blockIds: group.blockIds,
-				groups: group.groups,
 				validateDocumentOpener: (opener, _line, lineNumber) => {
 					if (opener === ENTRY_BLOCK_DELIMITER.opener) {
 						throw new Error(`Parse error at line ${lineNumber}: entry blocks cannot be nested inside groups`);
@@ -180,7 +176,7 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 				throw new Error(`Parse error at line ${i + 1}: group blocks must be inside an entry block`);
 			}
 			const parsed = readProjectBlock(i);
-			addParsedBlock(parsed);
+			addParsedBlock(project, parsed);
 			i = parsed.nextIndex;
 			continue;
 		}
@@ -191,9 +187,9 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 		}
 		seenEntryNames.add(entryName);
 		i = readProjectContainerContents(i + 1, {
+			project,
 			entry: entryName,
 			container: ENTRY_BLOCK_DELIMITER,
-			groups: project.groups,
 			validateDocumentOpener: (innerOpener, line, lineNumber) => {
 				if (innerOpener !== documentBlockInstructionByType.module.start) {
 					throw new Error(

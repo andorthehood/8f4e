@@ -136,20 +136,32 @@ describe('parseProjectSource', () => {
 			].join('\n')
 		);
 
-		expect(project.modules).toEqual([{ id: 5, code: validModuleBlock, entry: 'main' }]);
-		expect(project.functions).toEqual([{ id: 10, code: validFunctionBlock }]);
-		expect(project.prototypes).toEqual([{ id: 14, code: validPrototypeBlock }]);
-		expect(project.notes).toEqual([{ id: 18, code: validNoteBlock }]);
+		expect(project.modules).toEqual([]);
+		expect(project.functions).toEqual([]);
+		expect(project.prototypes).toEqual([]);
+		expect(project.notes).toEqual([]);
 		expect(project.groups).toEqual([
 			{
 				name: 'audio',
 				entry: 'main',
-				blockIds: [5, 10],
+				modules: [{ id: 5, code: validModuleBlock, entry: 'main' }],
+				functions: [{ id: 10, code: validFunctionBlock }],
+				constants: [],
+				prototypes: [],
+				includes: [],
+				notes: [],
+				unknown: [],
 				groups: [
 					{
 						name: 'oscillator',
 						entry: 'main',
-						blockIds: [14, 18],
+						modules: [],
+						functions: [],
+						constants: [],
+						prototypes: [{ id: 14, code: validPrototypeBlock }],
+						includes: [],
+						notes: [{ id: 18, code: validNoteBlock }],
+						unknown: [],
 						groups: [],
 					},
 				],

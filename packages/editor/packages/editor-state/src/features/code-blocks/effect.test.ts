@@ -165,6 +165,34 @@ describe('code block rendering home directive', () => {
 		expect(renderedIncludes?.code).toEqual(includesBlock);
 	});
 
+	it('renders blocks from recursively owned sub-programs with their ownership path', () => {
+		const state = createMockState({
+			initialProjectState: {
+				...EMPTY_DEFAULT_PROJECT,
+				groups: [
+					{
+						...EMPTY_DEFAULT_PROJECT,
+						id: 'audio',
+						name: 'Audio',
+						entry: 'main',
+						modules: [{ id: 1, entry: 'main', code: ['module voice', 'moduleEnd'] }],
+					},
+				],
+			},
+			spriteLookups: createSpriteLookups(),
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		codeBlockRenderingEffect(store, events);
+		store.set('initialProjectState', state.initialProjectState);
+
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(1);
+		expect(state.codeBlockRendering.codeBlocks[0].subProgramPath).toEqual([
+			{ id: 'audio', name: 'Audio', entry: 'main' },
+		]);
+	});
+
 	it('centers the initial viewport using the home alignment hint', () => {
 		const state = createMockState({
 			initialProjectState: {
