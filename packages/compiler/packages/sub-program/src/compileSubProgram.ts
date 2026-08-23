@@ -20,7 +20,13 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { createFunctionId, ErrorCode, getEffectiveFunctionMetadata, getError } from '@8f4e/language-spec';
+import {
+	createFunctionId,
+	ErrorCode,
+	GLOBAL_ALIGNMENT_BOUNDARY,
+	getEffectiveFunctionMetadata,
+	getError,
+} from '@8f4e/language-spec';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
 import { MemoryPlannerError, planSubProgramMemoryLayout } from '@8f4e/memory-planner';
 import { resolveMemoryReferences } from '@8f4e/memory-reference-resolver';
@@ -71,6 +77,8 @@ type CompilerSource = {
 	projectBlockId?: number;
 	source?: SourceMetadata;
 };
+
+const DEFAULT_STARTING_MEMORY_WORD_ADDRESS = 1;
 
 /**
  * Creates the default compiler cache used for validated AST reuse.
@@ -338,6 +346,8 @@ export function compileSubProgram(
 			prototypes: subProgramAst.prototypes,
 			modules: subProgramAst.modules,
 			constantReferences: constantResolution.references,
+			startingByteAddress:
+				(options.startingMemoryWordAddress ?? DEFAULT_STARTING_MEMORY_WORD_ADDRESS) * GLOBAL_ALIGNMENT_BOUNDARY,
 			memoryRegions: options.memoryRegions,
 		});
 	} catch (error) {
@@ -425,10 +435,7 @@ export function compileSubProgram(
 	});
 	const compiledModules = compileModules(
 		subProgramAst.modules,
-		{
-			...options,
-			startingMemoryWordAddress: 1,
-		},
+		options,
 		namespaces,
 		memoryPlan,
 		semanticReferences,

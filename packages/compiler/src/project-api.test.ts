@@ -1,4 +1,5 @@
 import type { ProjectObjectModel } from '@8f4e/language-spec';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { compileProject, parseProjectSource } from '.';
 
@@ -37,6 +38,18 @@ const directProject: ProjectObjectModel = {
 	groups: [],
 };
 
+const relocatedProject: ProjectObjectModel = {
+	...directProject,
+	functions: [],
+	modules: [
+		{
+			id: 1,
+			entry: 'main',
+			code: ['module relocated', 'int input 7', 'int output', 'push &output', 'push input', 'store', 'moduleEnd'],
+		},
+	],
+};
+
 describe('project compiler API', () => {
 	it('parses text into the canonical project collections', () => {
 		expect(parseProjectSource(source)).toEqual(directProject);
@@ -55,6 +68,31 @@ describe('project compiler API', () => {
 		]);
 		expect(new Uint8Array(parsedResult.codeBuffer)).toEqual(new Uint8Array(directResult.codeBuffer));
 		expect(parsedResult.memoryPlan).toEqual(directResult.memoryPlan);
+	});
+
+	it('applies the configured starting memory word address to planned and emitted module memory', async () => {
+		const [defaultResult, zeroResult, relocatedResult] = await Promise.all([
+			compileProject(relocatedProject, { disableSharedMemory: true }),
+			compileProject(relocatedProject, { disableSharedMemory: true, startingMemoryWordAddress: 0 }),
+			compileProject(relocatedProject, { disableSharedMemory: true, startingMemoryWordAddress: 8 }),
+		]);
+
+		expect(defaultResult.memoryPlan.modules.relocated.byteAddress).toBe(4);
+		expect(zeroResult.memoryPlan.modules.relocated.byteAddress).toBe(0);
+		expect(relocatedResult.memoryPlan.modules.relocated.byteAddress).toBe(32);
+		expect(relocatedResult.memoryPlan.modules.relocated.memory.input.byteAddress).toBe(32);
+		expect(relocatedResult.memoryPlan.modules.relocated.memory.output.byteAddress).toBe(36);
+		expect(relocatedResult.requiredMemoryBytes).toBe(40);
+
+		const memory = new WebAssembly.Memory({
+			initial: Math.ceil(relocatedResult.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE),
+			maximum: Math.ceil(relocatedResult.requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE),
+		});
+		const { instance } = await WebAssembly.instantiate(relocatedResult.codeBuffer, { host: { memory } });
+		(instance.exports.initDefaults as CallableFunction)();
+		(instance.exports.main as CallableFunction)();
+
+		expect(new Int32Array(memory.buffer)[9]).toBe(7);
 	});
 
 	it('compiles grouped modules owned by the canonical module collection', async () => {
