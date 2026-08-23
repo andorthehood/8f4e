@@ -1,5 +1,5 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
-import type { ProjectBlock } from '@8f4e/language-spec';
+import type { ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import gapCalculator from '../code-editing/gapCalculator';
 import { moveCaret } from '../code-editing/moveCaret';
@@ -199,15 +199,30 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		state.codeBlockRendering.outputsByWordAddress.clear();
 		state.codeBlockRendering.draggedCodeBlock = undefined;
 		const project = state.initialProjectState;
-		const classifiedBlocks: Array<ProjectBlock & { blockType: CodeBlockGraphicData['blockType']; entry?: string }> = [
-			...project.modules.map(block => ({ ...block, blockType: 'module' as const })),
-			...project.functions.map(block => ({ ...block, blockType: 'function' as const })),
-			...project.constants.map(block => ({ ...block, blockType: 'constants' as const })),
-			...project.prototypes.map(block => ({ ...block, blockType: 'prototype' as const })),
-			...project.includes.map(block => ({ ...block, blockType: 'includes' as const })),
-			...project.notes.map(block => ({ ...block, blockType: 'note' as const })),
-			...project.unknown.map(block => ({ ...block, blockType: 'unknown' as const })),
-		];
+		type ClassifiedProjectBlock = ProjectBlock & {
+			blockType: CodeBlockGraphicData['blockType'];
+			entry?: string;
+			subProgramPath?: CodeBlockGraphicData['subProgramPath'];
+		};
+		const collectClassifiedBlocks = (
+			currentProject: ProjectObjectModel,
+			subProgramPath: NonNullable<CodeBlockGraphicData['subProgramPath']> = []
+		): ClassifiedProjectBlock[] => {
+			const pathFields = subProgramPath.length > 0 ? { subProgramPath } : {};
+			return [
+				...currentProject.modules.map(block => ({ ...block, ...pathFields, blockType: 'module' as const })),
+				...currentProject.functions.map(block => ({ ...block, ...pathFields, blockType: 'function' as const })),
+				...currentProject.constants.map(block => ({ ...block, ...pathFields, blockType: 'constants' as const })),
+				...currentProject.prototypes.map(block => ({ ...block, ...pathFields, blockType: 'prototype' as const })),
+				...currentProject.includes.map(block => ({ ...block, ...pathFields, blockType: 'includes' as const })),
+				...currentProject.notes.map(block => ({ ...block, ...pathFields, blockType: 'note' as const })),
+				...currentProject.unknown.map(block => ({ ...block, ...pathFields, blockType: 'unknown' as const })),
+				...currentProject.groups.flatMap(group =>
+					collectClassifiedBlocks(group, [...subProgramPath, { id: group.id, name: group.name, entry: group.entry }])
+				),
+			];
+		};
+		const classifiedBlocks = collectClassifiedBlocks(project);
 		state.codeBlockRendering.nextCodeBlockCreationIndex = Math.max(-1, ...classifiedBlocks.map(block => block.id)) + 1;
 		store.set('codeBlockRendering.selectedCodeBlock', undefined);
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', undefined);
@@ -240,6 +255,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				creationIndex: codeBlock.id,
 				blockType: codeBlock.blockType,
 				entry: codeBlock.entry,
+				subProgramPath: codeBlock.subProgramPath,
 				disabled: codeBlock.disabled ?? directiveState.blockState.disabled,
 				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,

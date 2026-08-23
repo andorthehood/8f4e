@@ -102,6 +102,37 @@ describe('serializeProjectTo8f4e', () => {
 		expect(parsed.notes[0].code).toEqual(validNoteBlock);
 	});
 
+	it('round-trips recursively owned groups', () => {
+		const project = createProject({
+			groups: [
+				createProject({
+					id: 'audio-id',
+					name: 'audio',
+					entry: 'main',
+					modules: [{ id: 1, code: validBlock, entry: 'main' }],
+					functions: [{ id: 2, code: validFunctionBlock }],
+					groups: [
+						createProject({
+							name: 'notes',
+							entry: 'main',
+							notes: [{ id: 3, code: validNoteBlock }],
+						}),
+					],
+				}),
+			],
+		});
+
+		const parsed = parseProjectSource(serializeProjectTo8f4e(project));
+
+		expect(parsed.groups[0]).toMatchObject({
+			name: 'audio',
+			entry: 'main',
+			modules: [{ code: validBlock, entry: 'main' }],
+			functions: [{ code: validFunctionBlock }],
+			groups: [{ name: 'notes', entry: 'main', notes: [{ code: validNoteBlock }] }],
+		});
+	});
+
 	it('accepts functionEnd with type suffix', () => {
 		expect(() =>
 			serializeProjectTo8f4e(createProject({ functions: [{ id: 1, code: validFunctionBlock }] }))

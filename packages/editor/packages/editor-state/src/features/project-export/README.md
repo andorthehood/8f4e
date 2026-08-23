@@ -46,6 +46,9 @@ The canonical structure is defined by `@8f4e/language-spec`:
 
 ```typescript
 interface ProjectObjectModel {
+	id?: string;
+	name?: string;
+	entry?: ProjectEntryName;
 	modules: ProjectModuleBlock[];
 	functions: ProjectBlock[];
 	constants: ProjectBlock[];
@@ -53,12 +56,14 @@ interface ProjectObjectModel {
 	includes: ProjectBlock[];
 	notes: ProjectBlock[];
 	unknown: ProjectBlock[];
-	groups: ProjectGroup[];
+	groups: ProjectObjectModel[];
 }
 ```
 
 Collection membership defines block type. The adapter uses the editor's already-known block type and does not make the
-compiler rediscover it from source text.
+compiler rediscover it from source text. Nested group blocks retain a runtime sub-program path so editor state can be
+converted back into the same recursively owned project structure. Compilation currently consumes only the root
+project; recursive sub-program composition is intentionally deferred.
 
 ## References
 

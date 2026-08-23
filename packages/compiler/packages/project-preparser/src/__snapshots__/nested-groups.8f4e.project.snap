@@ -1,44 +1,70 @@
 {
-  "constants": [
-    {
-      "code": [
-        "constants audioConstants",
-        "const int sampleRate 48000",
-        "constantsEnd",
-      ],
-      "id": 18,
-    },
-  ],
-  "functions": [
-    {
-      "code": [
-        "function sineApprox",
-        "param float x",
-        "push x",
-        "functionEnd float",
-      ],
-      "id": 13,
-    },
-  ],
+  "constants": [],
+  "functions": [],
   "groups": [
     {
-      "blockIds": [
-        9,
-        13,
-        18,
+      "constants": [
+        {
+          "code": [
+            "constants audioConstants",
+            "const int sampleRate 48000",
+            "constantsEnd",
+          ],
+          "id": 18,
+        },
       ],
       "entry": "main",
+      "functions": [
+        {
+          "code": [
+            "function sineApprox",
+            "param float x",
+            "push x",
+            "functionEnd float",
+          ],
+          "id": 13,
+        },
+      ],
       "groups": [
         {
-          "blockIds": [
-            23,
+          "constants": [],
+          "entry": "main",
+          "functions": [],
+          "groups": [],
+          "includes": [],
+          "modules": [],
+          "name": "oscillator",
+          "notes": [],
+          "prototypes": [
+            {
+              "code": [
+                "prototype oscillatorState",
+                "float phase",
+                "float frequency 440",
+                "prototypeEnd",
+              ],
+              "id": 23,
+            },
+          ],
+          "unknown": [],
+        },
+      ],
+      "includes": [],
+      "modules": [
+        {
+          "code": [
+            "module voice",
+            "float phase",
+            "moduleEnd",
           ],
           "entry": "main",
-          "groups": [],
-          "name": "oscillator",
+          "id": 9,
         },
       ],
       "name": "audio",
+      "notes": [],
+      "prototypes": [],
+      "unknown": [],
     },
   ],
   "includes": [],
@@ -52,27 +78,8 @@
       "entry": "main",
       "id": 4,
     },
-    {
-      "code": [
-        "module voice",
-        "float phase",
-        "moduleEnd",
-      ],
-      "entry": "main",
-      "id": 9,
-    },
   ],
   "notes": [],
-  "prototypes": [
-    {
-      "code": [
-        "prototype oscillatorState",
-        "float phase",
-        "float frequency 440",
-        "prototypeEnd",
-      ],
-      "id": 23,
-    },
-  ],
+  "prototypes": [],
   "unknown": [],
 }

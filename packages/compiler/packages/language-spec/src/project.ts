@@ -16,16 +16,14 @@ export interface ProjectModuleBlock extends ProjectBlock {
 	entry: ProjectEntryName;
 }
 
-/** Recursive project organization metadata referencing canonically owned blocks. */
-export interface ProjectGroup {
-	name: string;
-	entry: ProjectEntryName;
-	blockIds: ProjectBlockId[];
-	groups: ProjectGroup[];
-}
-
 /** Canonical in-memory representation shared by all 8f4e project actors. */
 export interface ProjectObjectModel {
+	/** Stable identity used to distinguish this project from sibling sub-programs. */
+	id?: string;
+	/** Human-readable project or group name. */
+	name?: string;
+	/** Entry containing this nested project when it originated from textual project syntax. */
+	entry?: ProjectEntryName;
 	/** Ordered executable modules; filtering by entry preserves execution order within that entry. */
 	modules: ProjectModuleBlock[];
 	/** Hoisted function blocks. */
@@ -40,8 +38,8 @@ export interface ProjectObjectModel {
 	notes: ProjectBlock[];
 	/** Incomplete or unclassified blocks retained by live editors. */
 	unknown: ProjectBlock[];
-	/** Project organization metadata; blocks remain owned by the collections above. */
-	groups: ProjectGroup[];
+	/** Recursively owned sub-programs. */
+	groups: ProjectObjectModel[];
 }
 
 /** Host callback used to load a function include referenced by a project. */

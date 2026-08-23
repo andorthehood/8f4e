@@ -95,11 +95,13 @@ describe('project compiler API', () => {
 		expect(new Int32Array(memory.buffer)[9]).toBe(7);
 	});
 
-	it('compiles grouped modules owned by the canonical module collection', async () => {
+	it('keeps recursively owned group blocks outside root compilation', async () => {
 		const grouped = parseProjectSource(
 			[
 				'8f4e/v1',
 				'entry main',
+				'module root',
+				'moduleEnd',
 				'group audio',
 				'module grouped',
 				'int value 1',
@@ -108,8 +110,23 @@ describe('project compiler API', () => {
 				'entryEnd',
 			].join('\n')
 		);
-		expect(grouped.groups).toEqual([{ name: 'audio', entry: 'main', blockIds: [4], groups: [] }]);
-		expect((await compileProject(grouped, { disableSharedMemory: true })).compiledModules.grouped).toBeDefined();
+		expect(grouped.groups).toEqual([
+			{
+				name: 'audio',
+				entry: 'main',
+				modules: [{ id: 6, entry: 'main', code: ['module grouped', 'int value 1', 'moduleEnd'] }],
+				functions: [],
+				constants: [],
+				prototypes: [],
+				includes: [],
+				notes: [],
+				unknown: [],
+				groups: [],
+			},
+		]);
+		const result = await compileProject(grouped, { disableSharedMemory: true });
+		expect(result.compiledModules.root).toBeDefined();
+		expect(result.compiledModules.grouped).toBeUndefined();
 	});
 
 	it('preserves module array order while grouping execution by entry', async () => {

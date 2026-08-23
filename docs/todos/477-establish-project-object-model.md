@@ -5,7 +5,7 @@ effort: 1-2d
 created: 2026-08-22
 issue: null
 status: Completed
-completed: 2026-08-22
+completed: 2026-08-24
 ---
 
 # TODO: Establish Compiler-Owned ProjectObjectModel
@@ -38,6 +38,9 @@ block:
 
 ```ts
 interface ProjectObjectModel {
+	id?: string;
+	name?: string;
+	entry?: ProjectEntryName;
 	modules: ProjectModuleBlock[];
 	functions: ProjectBlock[];
 	constants: ProjectBlock[];
@@ -45,7 +48,7 @@ interface ProjectObjectModel {
 	includes: ProjectBlock[];
 	notes: ProjectBlock[];
 	unknown: ProjectBlock[];
-	groups: ProjectGroup[];
+	groups: ProjectObjectModel[];
 }
 
 interface ProjectBlock {
@@ -64,6 +67,12 @@ the field and collection could disagree. `modules` preserves module order; filte
 execution order for each entry. Functions, constants, and prototypes are hoisted, so their array order is deterministic
 but not semantically significant. Includes retain array order for deterministic expansion. Notes and unknown/incomplete
 blocks remain available to editors without entering compilation.
+
+Groups use the same object model recursively rather than referencing root-owned blocks by id. A nested model owns its
+modules, functions, constants, prototypes, includes, notes, unknown blocks, and further groups. Optional `id` and
+`name` fields provide stable and display identity, while optional `entry` retains the textual entry containing a group.
+The initial group refactor does not recursively compile these models: `compileProject` continues to compile only the
+root model until whole-program sub-program composition is implemented separately.
 
 Make both project input paths converge on that contract:
 
@@ -91,6 +100,7 @@ object model.
 - Do not add an overloaded compiler API accepting `string | ProjectObjectModel | ProjectBlock[]`.
 - Do not expose bare project-block arrays as an alternative public project representation.
 - Do not add a per-block `type` discriminator when collection membership already defines the block type.
+- Do not flatten recursively owned group blocks back into the root collections.
 - Do not make the compiler classify object-model blocks by inspecting their source markers.
 - Do not convert `ProjectObjectModel` into `SubProgramSource` or another parallel whole-project decomposition before
   compilation; compiler stages should consume the canonical collections directly.
@@ -108,8 +118,10 @@ object model.
   collection membership defines block type.
 - Require `entry` on module blocks and do not permit it on the shared base block type.
 - Preserve module order in the `modules` array and document that functions, constants, and prototypes are hoisted.
-- Represent groups as organization metadata referencing stable block ids so every block is owned by exactly one
-  top-level typed collection.
+- Represent groups as recursively owned `ProjectObjectModel` values so every block is owned by exactly one project
+  model and each nested model can later become a closed sub-program.
+- Keep recursive compilation out of the group-model refactor; compile only the root project until a dedicated
+  composition step merges independently compiled sub-programs.
 - Define project block ids as persistent project identities and use the same type for editor identity and compiler
   diagnostic mapping.
 - Treat project collections as caller-owned input; compiler stages must not mutate them.
@@ -188,6 +200,8 @@ object model.
 - [x] Block type is represented solely by top-level collection membership; object-model blocks do not carry a redundant
   type field.
 - [x] Module order is preserved per entry, while functions, constants, and prototypes are compiled as hoisted blocks.
+- [x] Groups recursively own complete `ProjectObjectModel` values instead of referencing root blocks by id.
+- [x] Root compilation remains unchanged and does not yet compile recursively owned groups.
 - [x] Compiler stages consume the canonical typed collections directly; `SubProgramSource` and whole-project
   preparation are removed.
 - [x] Bare project-block arrays and duplicate editor/preparser project contracts are removed from public APIs.
@@ -215,8 +229,8 @@ object model.
   its stable id and module entry where applicable.
 - **Module order**: Only module order is semantically significant. The implementation must preserve order within each
   entry without inventing global ordering requirements for hoisted blocks.
-- **Group behavior**: Current group data and compiler flattening behavior must be made explicit so nested blocks are not
-  silently dropped or compiled twice.
+- **Group behavior**: Nested projects own their blocks structurally. The compiler intentionally ignores nested groups
+  for now so future recursive compilation cannot accidentally compile them twice.
 - **Editor metadata ownership**: Grid position, selection, cursor, rendering caches, and transient creation state must
   not leak into the compiler-owned model merely because the editor currently stores them beside source blocks.
 - **Diagnostic mapping**: Changes to block identity must preserve reliable mapping from compiler diagnostics back to
