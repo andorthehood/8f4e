@@ -57,6 +57,12 @@ interface CompiledSubProgram {
 	cache: CompilerCache;
 }
 
+/** Internal layout settings for compiling one linkable sub-program. */
+export interface CompileSubProgramOptions extends CompileOptions {
+	/** Global WebAssembly index assigned to the first function defined by this sub-program. */
+	startingFunctionIndex?: number;
+}
+
 /** Module source paired with cache and execution-entry metadata. */
 type ModuleCompilerSource = {
 	/** Source lines to parse. */
@@ -271,7 +277,7 @@ function assertUniqueProjectBlockIds(project: ProjectObjectModel): void {
  */
 export function compileSubProgram(
 	project: ProjectObjectModel,
-	options: CompileOptions,
+	options: CompileSubProgramOptions,
 	cache = createCompilerCache(),
 	includedFunctions: readonly CompilerDerivedSource[] = []
 ): CompiledSubProgram {
@@ -374,7 +380,7 @@ export function compileSubProgram(
 	const importedUserFunctionCount = subProgramAst.functions.filter(ast => ast.importLine).length;
 	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;
-	const userDefinedFunctionBaseIndex = importedFunctionCount + builtInFunctionCount;
+	const userDefinedFunctionBaseIndex = options.startingFunctionIndex ?? importedFunctionCount + builtInFunctionCount;
 
 	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
 	const userFunctionMetadata = collectFunctionMetadataFromAsts(subProgramAst.functions, {

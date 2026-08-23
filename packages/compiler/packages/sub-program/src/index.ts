@@ -1,1 +1,1 @@
-export { compileSubProgram, createCompilerCache } from './compileSubProgram';
+export { type CompileSubProgramOptions, compileSubProgram, createCompilerCache } from './compileSubProgram';
