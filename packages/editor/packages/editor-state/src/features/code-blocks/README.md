@@ -66,6 +66,9 @@ Project-group blocks use the same `CodeBlockGraphicData` representation as other
 `nestedProjectCodeBlocks` field points to the child project slice. Project-owned arrays keep stable identity; add,
 delete, paste, and reorder operations replace their contents in place so the root tree and rendered-slice pointer do
 not diverge. Loading a project rebuilds the recursive tree and resets `codeBlocks` to `rootCodeBlocks`.
+Project-group blocks expose an **Open group** context-menu action that points `codeBlocks` directly at their child
+slice. Nested-slice context menus expose **Go back**, which finds the immediate parent through those stable array
+references.
 
 ## Integration Points
 

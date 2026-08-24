@@ -25,6 +25,7 @@ import groupSkipExecutionToggler from './features/code-blocks/features/group/ski
 import groupUngroupper from './features/code-blocks/features/group/ungroupper/effect';
 import memoryConnectionRemover from './features/code-blocks/features/memoryConnectionRemover/effect';
 import parsedDirectivesUpdater from './features/code-blocks/features/parsedDirectivesUpdater/effect';
+import projectGroupNavigation from './features/code-blocks/features/projectGroupNavigation/effect';
 import skipExecutionToggler from './features/code-blocks/features/skipExecutionToggler/effect';
 import sliderDefaultSaver from './features/code-blocks/features/sliderDefaultSaver/effect';
 import codeEditing from './features/code-editing/effect';
@@ -105,6 +106,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	groupRemover(store, events);
 	groupUngroupper(store, events);
 	groupDeleter(store, events);
+	projectGroupNavigation(store, events);
 	parsedDirectivesUpdater(store);
 	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
 	blockTypeUpdater(store); // Must run before compiler to classify blocks first

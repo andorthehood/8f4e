@@ -8,15 +8,15 @@ const functionBlockType = documentBlockInstructionByType.function.type;
 const moduleBlockType = documentBlockInstructionByType.module.type;
 const noteBlockType = documentBlockInstructionByType.note.type;
 
-export interface OpenGroupEvent {
-	codeBlock: CodeBlockGraphicData;
-}
-
 export const moduleMenu: MenuGenerator = state => {
-	const blockType = state.codeBlockRendering.selectedCodeBlock?.blockType;
+	const selectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
+	const blockType = selectedCodeBlock?.blockType;
+	const isProjectGroup = selectedCodeBlock?.nestedProjectCodeBlocks !== undefined;
 	let blockLabel = 'module';
 
-	if (blockType === functionBlockType) {
+	if (isProjectGroup) {
+		blockLabel = 'group';
+	} else if (blockType === functionBlockType) {
 		blockLabel = 'function';
 	} else if (blockType === noteBlockType) {
 		blockLabel = 'note';
@@ -59,6 +59,19 @@ export const moduleMenu: MenuGenerator = state => {
 	}
 
 	return [
+		...(state.codeBlockRendering.codeBlocks !== state.codeBlockRendering.rootCodeBlocks
+			? [{ title: 'Go back', action: 'goToParentProjectGroup', close: true }]
+			: []),
+		...(isProjectGroup
+			? [
+					{
+						title: 'Open group',
+						action: 'openProjectGroup',
+						payload: { codeBlock: selectedCodeBlock },
+						close: true,
+					},
+				]
+			: []),
 		...(state.featureFlags.editing
 			? [
 					{

@@ -208,8 +208,8 @@ object model.
 - [x] Module order is preserved per entry, while functions, constants, and prototypes are compiled as hoisted blocks.
 - [x] Groups recursively own complete `ProjectObjectModel` values instead of referencing root blocks by id.
 - [x] Root compilation remains unchanged and does not yet compile recursively owned groups.
-- [x] The editor mirrors group ownership with recursively nested code-block arrays and renders only the root slice until
-  group navigation is implemented.
+- [x] The editor mirrors group ownership with recursively nested code-block arrays, initially renders the root slice,
+  and can move into child slices or back to their parent from context menus.
 - [x] Compiler stages consume the canonical typed collections directly; `SubProgramSource` and whole-project
   preparation are removed.
 - [x] Bare project-block arrays and duplicate editor/preparser project contracts are removed from public APIs.

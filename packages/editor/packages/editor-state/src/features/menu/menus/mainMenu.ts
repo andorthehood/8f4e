@@ -1,6 +1,9 @@
 import type { MenuGenerator } from '@8f4e/editor-state-types';
 
 export const mainMenu: MenuGenerator = state => [
+	...(state.codeBlockRendering.codeBlocks !== state.codeBlockRendering.rootCodeBlocks
+		? [{ title: 'Go back', action: 'goToParentProjectGroup', close: true }, { divider: true }]
+		: []),
 	...(state.featureFlags.editing
 		? [
 				{
