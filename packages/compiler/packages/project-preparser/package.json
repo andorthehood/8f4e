@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/project-preparser",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "Parses 8f4e project source into the canonical project object model",
   "type": "module",
