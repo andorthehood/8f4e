@@ -45,7 +45,7 @@ exports[`project-preparser integration > parses project source into typed collec
       {
         "code": [
           "constants shared",
-          "const int tableSize 16",
+          "const TABLE_SIZE 16",
           "constantsEnd",
         ],
         "id": 8,

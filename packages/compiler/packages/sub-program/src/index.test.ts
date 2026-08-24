@@ -1,4 +1,5 @@
 import { createFunctionId, type ProjectObjectModel } from '@8f4e/language-spec';
+import { composeProgram } from '@8f4e/program-composer/internal';
 import { describe, expect, it } from 'vitest';
 import { compileSubProgram } from '.';
 
@@ -15,7 +16,7 @@ const emptyProject: ProjectObjectModel = {
 
 describe('compileSubProgram', () => {
 	it('compiles one closed source unit into emission-ready artifacts', () => {
-		const compiled = compileSubProgram(emptyProject, { disableSharedMemory: true });
+		const compiled = compileSubProgram(composeProgram(emptyProject), { disableSharedMemory: true });
 
 		expect(compiled.entryNames).toEqual(['main']);
 		expect(compiled.compiledModules).toEqual([]);
@@ -33,7 +34,7 @@ describe('compileSubProgram', () => {
 			modules: [{ id: 3, entry: 'main', code: ['module caller', 'call two', 'drop', 'moduleEnd'] }],
 		};
 
-		const compiled = compileSubProgram(project, {
+		const compiled = compileSubProgram(composeProgram(project), {
 			disableSharedMemory: true,
 			startingFunctionIndex: 20,
 		});

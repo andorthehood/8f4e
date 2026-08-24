@@ -1,0 +1,13 @@
+8f4e/v1
+
+entry main
+group helpers
+function hidden
+#export publicName
+push 1
+if
+push 2
+ifEnd
+functionEnd
+groupEnd
+entryEnd

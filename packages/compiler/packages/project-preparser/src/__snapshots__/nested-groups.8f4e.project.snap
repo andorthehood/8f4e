@@ -7,7 +7,7 @@
         {
           "code": [
             "constants audioConstants",
-            "const int sampleRate 48000",
+            "const SAMPLE_RATE 48000",
             "constantsEnd",
           ],
           "id": 18,

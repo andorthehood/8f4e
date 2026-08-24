@@ -12,7 +12,10 @@ editor state ---------------------/         |
                                       compileProject
                                              |
                                              v
-  private compiler stages
+  program-composer (recursive traversal, parsing, symbol isolation, child-first module order)
+                                             |
+                                             v
+  private global compiler stages
   -> WebAssembly emission
   -> CompileResult
 ```
@@ -26,11 +29,16 @@ the text representation without invoking a second block-classification or whole-
 filtering `modules` by `entry` preserves the execution order for that entry. Hoisted declarations do not share a global
 order with modules or with each other.
 
+Nested `groups` are composed before semantic allocation and code generation. The composer qualifies nested module,
+function, constant-namespace, and prototype names so sibling groups may reuse source-level names safely. It then hands
+one flattened validated-AST program to the compiler, allowing memory addresses, function indexes, type indexes, and
+entries to be planned once. Child modules execute before parent modules for the same entry.
+
 ## Compiler Passes
 
 ```text
-                       8f4e Sub-program Pipeline
-                       =========================
+                       8f4e Composed Program Pipeline
+                       ==============================
 
   source modules       source functions       constants/prototypes
        |                     |                       |
@@ -54,7 +62,7 @@ order with modules or with each other.
                                 v
                   +-----------------------------+
                   |  3. Input-order contract    |
-                  |  caller-provided order      |
+                  |  composer-provided order    |
                   |                             |
                   |  module execution and       |
                   |  memory layout preserve     |
@@ -90,7 +98,7 @@ order with modules or with each other.
                   |  resolveSemanticReferences()|
                   |                             |
                   |  resolve value refs once    |
-                  |  for the whole sub-program  |
+                  |  for the composed program   |
                   +-----------------------------+
                                 |
                                 v

@@ -1,0 +1,25 @@
+8f4e/v1
+
+entry main
+group left
+function helper
+push 1
+functionEnd int
+
+module shared
+call helper
+drop
+moduleEnd
+groupEnd
+
+group right
+function helper
+push 2
+functionEnd int
+
+module shared
+call helper
+drop
+moduleEnd
+groupEnd
+entryEnd

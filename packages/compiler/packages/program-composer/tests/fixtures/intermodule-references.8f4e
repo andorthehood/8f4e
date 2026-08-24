@@ -1,0 +1,14 @@
+8f4e/v1
+
+entry main
+group audio
+module source
+int value
+moduleEnd
+
+module consumer
+push &source:value
+drop
+moduleEnd
+groupEnd
+entryEnd

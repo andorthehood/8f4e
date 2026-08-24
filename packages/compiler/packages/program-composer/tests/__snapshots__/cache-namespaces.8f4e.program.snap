@@ -1,0 +1,98 @@
+{
+  "ast": {
+    "constants": [],
+    "functions": [],
+    "modules": [
+      {
+        "id": "__8f4e$group$$0__same",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "__8f4e$group$$0__same",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 1,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "__8f4e$group$$0__same",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "projectBlockId": 8,
+        "type": "module",
+      },
+      {
+        "id": "same",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "same",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 1,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "same",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "projectBlockId": 4,
+        "type": "module",
+      },
+    ],
+    "prototypes": [],
+  },
+  "cache": {
+    "keys": [
+      "root/groups/0:entry:main:module:0",
+      "root:entry:main:module:0",
+    ],
+    "stats": {
+      "hits": 2,
+      "misses": 2,
+    },
+  },
+  "entryNames": [
+    "main",
+  ],
+  "moduleEntryNames": [
+    "main",
+    "main",
+  ],
+}
