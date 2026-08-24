@@ -2,7 +2,7 @@
  * Types for code-blocks feature - manages code block entities, rendering, and interactions.
  */
 
-import type { DocumentBlockType, PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import type { DocumentBlockType, PlannedMemoryDeclaration, ProjectGroupPath } from '@8f4e/language-spec';
 import type { FillSpriteColorName } from '@8f4e/sprite-generator';
 import type { ViewportBlockAlignment } from '../viewport/blockAlignment';
 import type { CodeBlockDisplayModel } from './buildDisplayModel';
@@ -355,8 +355,8 @@ export interface CodeBlockGraphicData {
 	 * This is separate from the visual `; @group` directive.
 	 */
 	entry?: string;
-	/** Stable project-model identity retained by a project-group block. */
-	projectGroupId?: string;
+	/** Canonical path of the project group that owns this block. */
+	projectPath: ProjectGroupPath;
 	/** Child project slice owned by a project-group block. Its array identity remains stable while editing. */
 	nestedProjectCodeBlocks?: CodeBlockGraphicData[];
 	/**

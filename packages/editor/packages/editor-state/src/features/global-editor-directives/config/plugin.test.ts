@@ -3,10 +3,11 @@ import { describe, expect, it } from 'vitest';
 import { parseBlockDirectives } from '../../code-blocks/utils/parseBlockDirectives';
 import { resolveGlobalEditorDirectives } from '../registry';
 
-function createParsedBlock(code: string[], name?: string) {
+function createParsedBlock(code: string[], name?: string, projectPath = '') {
 	return {
+		projectPath,
 		parsedDirectives: parseBlockDirectives(code),
-		...(name ? { name } : {}),
+		...(name ? { name, blockType: 'module' as const } : {}),
 	};
 }
 
@@ -45,7 +46,8 @@ describe('@config directive', () => {
 		const result = resolveGlobalEditorDirectives([
 			createParsedBlock(
 				['module audioout', '; @config audioRuntime.audioOutBufferLAddress buffer', 'moduleEnd'],
-				'audioout'
+				'audioout',
+				'audio'
 			),
 		]);
 
@@ -55,7 +57,7 @@ describe('@config directive', () => {
 				value: 'buffer',
 				rawRow: 1,
 				codeBlockId: 0,
-				moduleId: 'audioout',
+				moduleId: 'audio/audioout',
 			},
 		]);
 		expect(result.errors).toEqual([]);
@@ -100,6 +102,7 @@ describe('@config directive', () => {
 	it('does not resolve removed top-level color directive', () => {
 		const result = resolveGlobalEditorDirectives([
 			{
+				projectPath: '',
 				parsedDirectives: [
 					{
 						prefix: '@',

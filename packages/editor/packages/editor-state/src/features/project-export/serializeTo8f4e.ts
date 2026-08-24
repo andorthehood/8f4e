@@ -1,4 +1,4 @@
-import type { ProjectModuleBlock, ProjectObjectModel } from '@8f4e/language-spec';
+import type { ProjectGroupObjectModel, ProjectModuleBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
@@ -70,22 +70,12 @@ function getAllBlocks(project: ProjectObjectModel): Array<{ code: string[] }> {
 	return [...getDocumentBlocks(project), ...project.modules, ...project.groups.flatMap(getAllBlocks)];
 }
 
-function serializeGroup(group: ProjectObjectModel, entry: string): string[] {
-	if (!group.name) throw new Error('Nested project is missing a group name');
-	if (group.entry !== entry) {
-		throw new Error(`Group "${group.name}" belongs to entry "${group.entry ?? ''}", expected "${entry}"`);
-	}
-	for (const module of group.modules) {
-		if (module.entry !== entry) {
-			throw new Error(`Module block ${module.id} in group "${group.name}" belongs to entry "${module.entry}"`);
-		}
-	}
-
+function serializeGroup(group: ProjectGroupObjectModel): string[] {
 	return [
 		`group ${group.name}`,
 		...getDocumentBlocks(group).flatMap(block => block.code),
 		...group.modules.flatMap(module => module.code),
-		...group.groups.flatMap(nestedGroup => serializeGroup(nestedGroup, entry)),
+		...group.groups.flatMap(serializeGroup),
 		'groupEnd',
 	];
 }
@@ -105,7 +95,7 @@ export function serializeProjectTo8f4e(project: ProjectObjectModel): string {
 	const blockStrings = documentBlocks.map(block => block.code.join('\n'));
 	const emittedEntries = new Set<string>();
 	const modulesByEntry = new Map<string, ProjectModuleBlock[]>();
-	const groupsByEntry = new Map<string, ProjectObjectModel[]>();
+	const groupsByEntry = new Map<string, ProjectGroupObjectModel[]>();
 
 	for (const module of project.modules) {
 		const entryModules = modulesByEntry.get(module.entry) ?? [];
@@ -113,13 +103,12 @@ export function serializeProjectTo8f4e(project: ProjectObjectModel): string {
 		modulesByEntry.set(module.entry, entryModules);
 	}
 	for (const group of project.groups) {
-		if (!group.entry) throw new Error(`Group "${group.name ?? ''}" is missing an entry`);
 		const entryGroups = groupsByEntry.get(group.entry) ?? [];
 		entryGroups.push(group);
 		groupsByEntry.set(group.entry, entryGroups);
 	}
 
-	for (const entry of [...project.modules.map(module => module.entry), ...project.groups.map(group => group.entry!)]) {
+	for (const entry of [...project.modules.map(module => module.entry), ...project.groups.map(group => group.entry)]) {
 		if (emittedEntries.has(entry)) continue;
 		emittedEntries.add(entry);
 		const entryModules = modulesByEntry.get(entry) ?? [];
@@ -128,7 +117,7 @@ export function serializeProjectTo8f4e(project: ProjectObjectModel): string {
 			[
 				`entry ${entry}`,
 				...entryModules.flatMap(moduleBlock => moduleBlock.code),
-				...entryGroups.flatMap(group => serializeGroup(group, entry)),
+				...entryGroups.flatMap(serializeGroup),
 				'entryEnd',
 			].join('\n')
 		);

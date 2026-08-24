@@ -2,7 +2,7 @@ import type { CompileOptions, CompileResult, CompilerCache, ProjectObjectModel }
 import {
 	composeProgram,
 	createCompilerCache,
-	type IncludedFunctionsByProjectUnit,
+	type IncludedFunctionsByProjectGroupPath,
 } from '@8f4e/program-composer/internal';
 import { compileSubProgram } from '@8f4e/sub-program/internal';
 import { emitWasmProgram } from '@8f4e/wasm-codegen';
@@ -12,8 +12,8 @@ export function compileProjectObjectModel(
 	project: ProjectObjectModel,
 	options: CompileOptions,
 	cache: CompilerCache = createCompilerCache(),
-	includedFunctionsByUnit: IncludedFunctionsByProjectUnit = new Map()
+	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath = new Map()
 ): CompileResult {
-	const program = composeProgram(project, cache, includedFunctionsByUnit);
+	const program = composeProgram(project, cache, includedFunctionsByProjectPath);
 	return emitWasmProgram(compileSubProgram(program, options), options);
 }

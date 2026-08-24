@@ -6,6 +6,7 @@ import type {
 	State,
 	Viewport,
 } from '@8f4e/editor-state-types';
+import { ROOT_PROJECT_GROUP_PATH } from '@8f4e/language-spec';
 import { deriveDirectiveState } from '~/features/code-blocks/features/directives/registry';
 import getCodeBlockNameFromSource from '~/features/code-blocks/utils/getCodeBlockNameFromSource';
 import { parseBlockDirectives } from '~/features/code-blocks/utils/parseBlockDirectives';
@@ -75,6 +76,7 @@ export function createMockCodeBlock(
 	const offsetY = overrides.offsetY ?? 0;
 	const code = overrides.code ?? [];
 	const name = (overrides.name ?? getCodeBlockNameFromSource(code)) || 'test-block';
+	const projectPath = overrides.projectPath ?? ROOT_PROJECT_GROUP_PATH;
 
 	// Default grid size for testing (matches common font sizes)
 	const defaultVGrid = 8;
@@ -117,6 +119,7 @@ export function createMockCodeBlock(
 		isCollapsed: false,
 		creationIndex: 0,
 		blockType: 'unknown',
+		projectPath,
 		disabled: false,
 		hidden: false,
 		isHome: false,

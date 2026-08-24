@@ -9,5 +9,5 @@ import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
  */
 export default function serializeToProject(state: State): ProjectObjectModel {
 	const { codeBlockRendering } = state;
-	return convertGraphicDataToProjectStructure(codeBlockRendering.rootCodeBlocks, state.initialProjectState);
+	return convertGraphicDataToProjectStructure(codeBlockRendering.rootCodeBlocks);
 }

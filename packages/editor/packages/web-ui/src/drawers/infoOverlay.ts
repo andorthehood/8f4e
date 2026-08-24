@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import { GLOBAL_ALIGNMENT_BOUNDARY, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
+import { createProjectModuleId, GLOBAL_ALIGNMENT_BOUNDARY, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import type { DrawContext } from '../drawContext';
 
 function formatBytes(bytes: number): string {
@@ -40,14 +40,12 @@ export default function drawInfoOverlay(
 
 	const debugText: string[] = [];
 
-	const selectedModule =
-		state.codeBlockRendering.selectedCodeBlock && state.codeBlockRendering.selectedCodeBlock.name
-			? state.compiler.compiledModules[state.codeBlockRendering.selectedCodeBlock.name]
-			: undefined;
-	const selectedPlannedModule =
-		state.codeBlockRendering.selectedCodeBlock && state.codeBlockRendering.selectedCodeBlock.name
-			? state.compiler.memoryPlan.modules[state.codeBlockRendering.selectedCodeBlock.name]
-			: undefined;
+	const selectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
+	const selectedModuleId = selectedCodeBlock
+		? createProjectModuleId(selectedCodeBlock.projectPath, selectedCodeBlock.name)
+		: undefined;
+	const selectedModule = selectedModuleId ? state.compiler.compiledModules[selectedModuleId] : undefined;
+	const selectedPlannedModule = selectedModuleId ? state.compiler.memoryPlan.modules[selectedModuleId] : undefined;
 
 	if (selectedModule) {
 		const plannedModule = selectedPlannedModule!;

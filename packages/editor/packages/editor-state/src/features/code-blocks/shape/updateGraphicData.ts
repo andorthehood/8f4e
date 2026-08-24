@@ -1,5 +1,6 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { MemoryDefaults, PlannedMemoryModule } from '@8f4e/language-spec';
+import getCodeBlockModuleId from '../../../pureHelpers/getCodeBlockModuleId';
 import gapCalculator from '../../code-editing/gapCalculator';
 import type { DirectiveDerivedState } from '../features/directives/registry';
 
@@ -29,13 +30,14 @@ export default function shape(
 		return;
 	}
 
-	const compiledModule = graphicData.name ? state.compiler.compiledModules[graphicData.name] : undefined;
-	const plannedModule = graphicData.name ? state.compiler.memoryPlan.modules[graphicData.name] : undefined;
+	const moduleId = getCodeBlockModuleId(graphicData);
+	const compiledModule = state.compiler.compiledModules[moduleId];
+	const plannedModule = state.compiler.memoryPlan.modules[moduleId];
 	if (!compiledModule || compiledModule.ast.type !== 'module') {
 		return;
 	}
 
-	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[graphicData.name!]!;
+	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[moduleId]!;
 	const inheritedDeclarationCountByLineNumber = Object.values(plannedModule!.memory).reduce<Map<number, number>>(
 		(result, memory) => {
 			if (memoryDefaults[memory.id]!.isInherited === true) {
@@ -73,14 +75,15 @@ export function updateShapeDeclarations(
 		return;
 	}
 
-	const compiledModule = graphicData.name ? state.compiler.compiledModules[graphicData.name] : undefined;
-	const plannedModule = graphicData.name ? state.compiler.memoryPlan.modules[graphicData.name] : undefined;
+	const moduleId = getCodeBlockModuleId(graphicData);
+	const compiledModule = state.compiler.compiledModules[moduleId];
+	const plannedModule = state.compiler.memoryPlan.modules[moduleId];
 	if (!compiledModule || compiledModule.ast.type !== 'module') {
 		return;
 	}
 
 	const textX = (graphicData.lineNumberColumnWidth + 2) * state.viewport.vGrid;
-	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[graphicData.name!]!;
+	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[moduleId]!;
 	for (const { memory, rowOffset } of getInheritedDeclarationRowOffsets(plannedModule!, memoryDefaults)) {
 		const displayRow = directiveState.displayModel.rawRowToDisplayRow[memory.lineNumber];
 		if (displayRow === undefined) {

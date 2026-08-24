@@ -1,5 +1,6 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import type { ButtonDirectiveData } from './data';
 
@@ -15,7 +16,7 @@ function resolveButtonDirectiveWidget(
 		return;
 	}
 
-	const memory = resolveMemoryIdentifier(state, graphicData.name, button.id)?.memory;
+	const memory = resolveMemoryIdentifier(state, getCodeBlockModuleId(graphicData), button.id)?.memory;
 
 	if (!memory) {
 		return;

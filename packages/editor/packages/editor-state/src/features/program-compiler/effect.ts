@@ -44,10 +44,7 @@ export default function compiler(store: StateManager<State>) {
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: state.featureFlags.codeLineSelection,
 			};
-			const project = convertGraphicDataToProjectStructure(
-				state.codeBlockRendering.rootCodeBlocks,
-				state.initialProjectState
-			);
+			const project = convertGraphicDataToProjectStructure(state.codeBlockRendering.rootCodeBlocks);
 			const result = await state.callbacks.compileCode(project, {
 				...compilerOptions,
 				...(state.callbacks.resolveInclude ? { resolveInclude: state.callbacks.resolveInclude } : {}),

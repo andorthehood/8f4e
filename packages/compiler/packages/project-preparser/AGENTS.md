@@ -10,7 +10,7 @@ This file extends the root and compiler package guidance for `packages/compiler/
   for the compiler facade.
 - Does not know about editor state, grid positioning, rendering, browser storage, or VS Code/webview state.
 - Does not load include files itself. Callers provide an async `resolveInclude` function so node, browser, editor, and test environments can load includes however they need.
-- Groups are project organization metadata referencing canonical block ids and are ignored by compilation.
+- Groups recursively own project blocks. Sibling group names are unique because names form canonical compiler paths.
 
 ## Commands
 

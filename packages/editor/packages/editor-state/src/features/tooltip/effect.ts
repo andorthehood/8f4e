@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { CompiledStackAnalysisLine } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
+import getCodeBlockModuleId from '../../pureHelpers/getCodeBlockModuleId';
 import { getCompiledFunctionForCodeBlock } from '../code-blocks/utils/getCompiledFunctionForCodeBlock';
 import { TOOLTIP_WRAP_WIDTH } from './constants';
 import { getSelectedLineTooltipContent } from './content';
@@ -35,7 +36,7 @@ function getSelectedCodeBlockStackAnalysisLine(
 		return compiledFunction?.stackAnalysis?.find(line => line.lineNumber === selectedCodeBlock.cursor.row);
 	}
 
-	return state.compiler.compiledModules[selectedCodeBlock.name]?.stackAnalysis?.find(
+	return state.compiler.compiledModules[getCodeBlockModuleId(selectedCodeBlock)]?.stackAnalysis?.find(
 		line => line.lineNumber === selectedCodeBlock.cursor.row
 	);
 }
@@ -60,7 +61,7 @@ function getSelectedModuleExecutionOrder(
 		return undefined;
 	}
 
-	const moduleIndex = Object.keys(state.compiler.compiledModules).indexOf(selectedCodeBlock.name);
+	const moduleIndex = Object.keys(state.compiler.compiledModules).indexOf(getCodeBlockModuleId(selectedCodeBlock));
 	return moduleIndex === -1 ? undefined : moduleIndex + 1;
 }
 
@@ -86,7 +87,7 @@ export default function tooltip(store: StateManager<State>): void {
 			getSelectedCodeBlockStackAnalysisLine(state, selectedCodeBlock),
 			state.spriteLookups,
 			selectedCodeBlock.name,
-			getSelectedMemoryDeclaration(state, selectedCodeBlock.name, memoryId),
+			getSelectedMemoryDeclaration(state, getCodeBlockModuleId(selectedCodeBlock), memoryId),
 			getSelectedModuleExecutionOrder(state, selectedCodeBlock, line)
 		);
 		store.set('tooltip', getTooltipState(content, state, selectedCodeBlock));

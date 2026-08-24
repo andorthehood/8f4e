@@ -173,7 +173,6 @@ describe('code block rendering home directive', () => {
 				groups: [
 					{
 						...EMPTY_DEFAULT_PROJECT,
-						id: 'audio',
 						name: 'Audio',
 						entry: 'main',
 						modules: [{ id: 1, entry: 'main', code: ['module voice', 'moduleEnd'] }],
@@ -192,11 +191,12 @@ describe('code block rendering home directive', () => {
 		expect(state.codeBlockRendering.codeBlocks).toHaveLength(2);
 		expect(state.codeBlockRendering.codeBlocks.map(block => block.name)).toEqual(['root', 'Audio']);
 		const groupBlock = state.codeBlockRendering.codeBlocks[1];
-		expect(groupBlock.projectGroupId).toBe('audio');
+		expect(groupBlock.projectPath).toBe('');
 		expect(groupBlock.nestedProjectCodeBlocks).toHaveLength(1);
 		expect(groupBlock.nestedProjectCodeBlocks?.[0]).toMatchObject({
 			name: 'voice',
 			entry: 'main',
+			projectPath: 'Audio',
 			code: ['module voice', 'moduleEnd'],
 		});
 		expect(state.codeBlockRendering.codeBlocks.some(block => block.name === 'voice')).toBe(false);

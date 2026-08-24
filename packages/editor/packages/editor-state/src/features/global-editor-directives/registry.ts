@@ -8,6 +8,7 @@ import type {
 	ParsedGlobalEditorDirective,
 	ResolvedGlobalEditorDirectives,
 } from '@8f4e/editor-state-types';
+import { createProjectModuleId, type ProjectGroupPath } from '@8f4e/language-spec';
 import configDirective from './config/plugin';
 import { parseGlobalEditorDirectives } from './utils';
 
@@ -16,6 +17,7 @@ export const globalEditorDirectivePlugins: GlobalEditorDirectivePlugin[] = [conf
 export function resolveGlobalEditorDirectives(
 	codeBlocks: {
 		parsedDirectives: ParsedDirectiveRecord[];
+		projectPath: ProjectGroupPath;
 		creationIndex?: number;
 		name?: string;
 		blockType?: CodeBlockType;
@@ -37,7 +39,8 @@ export function resolveGlobalEditorDirectives(
 		const codeBlockId = block.creationIndex ?? blockIndex;
 		const context: GlobalEditorDirectiveContext = {
 			codeBlockId,
-			codeBlockName: block.name,
+			moduleId:
+				block.blockType === 'module' && block.name ? createProjectModuleId(block.projectPath, block.name) : undefined,
 			blockType: block.blockType,
 		};
 

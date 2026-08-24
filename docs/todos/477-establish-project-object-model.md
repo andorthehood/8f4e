@@ -38,9 +38,6 @@ block:
 
 ```ts
 interface ProjectObjectModel {
-	id?: string;
-	name?: string;
-	entry?: ProjectEntryName;
 	modules: ProjectModuleBlock[];
 	functions: ProjectBlock[];
 	constants: ProjectBlock[];
@@ -48,7 +45,12 @@ interface ProjectObjectModel {
 	includes: ProjectBlock[];
 	notes: ProjectBlock[];
 	unknown: ProjectBlock[];
-	groups: ProjectObjectModel[];
+	groups: ProjectGroupObjectModel[];
+}
+
+interface ProjectGroupObjectModel extends ProjectObjectModel {
+	name: ProjectGroupName;
+	entry: ProjectEntryName;
 }
 
 interface ProjectBlock {
@@ -69,17 +71,22 @@ but not semantically significant. Includes retain array order for deterministic 
 blocks remain available to editors without entering compilation.
 
 Groups use the same object model recursively rather than referencing root-owned blocks by id. A nested model owns its
-modules, functions, constants, prototypes, includes, notes, unknown blocks, and further groups. Optional `id` and
-`name` fields provide stable and display identity, while optional `entry` retains the textual entry containing a group.
-The initial group refactor compiled only the root model. The follow-up compiler composition work now recursively parses
-and isolates these models before flattening them into one globally planned program; it does not merge independently
-compiled WebAssembly artifacts.
+modules, functions, constants, prototypes, includes, notes, unknown blocks, and further groups. Identity fields are not
+part of the root project model: child groups require a sibling-unique `name` and an `entry` through
+`ProjectGroupObjectModel`. A group's canonical path is formed from its ancestors' encoded names. The root path is empty,
+so module identities are readable and deterministic: `counter`, `audio/counter`, and
+`audio/voices/counter`. The same identity keys `compiledModules`, `memoryPlan.modules`,
+`memoryDefaultsByModuleId`, and `pointerMetadataByModuleId` without a transformed result map. The compiler recursively
+parses and isolates these models before flattening them into one globally planned program; it does not merge
+independently compiled WebAssembly artifacts.
 
 The editor mirrors this recursive ownership without introducing another project schema. A project group is represented
 by the same `CodeBlockGraphicData` used for other visible blocks, with `nestedProjectCodeBlocks` pointing to the child
 project's code-block array. `rootCodeBlocks` owns the recursive editor tree, while the existing `codeBlocks` field points
 directly to the one project slice currently rendered. Project-owned arrays keep stable identity and editor operations
 replace their contents in place; loading a project rebuilds the tree and resets the rendered pointer to the root.
+Every generic code block stores only its owning `projectPath`. Module-specific consumers derive a module id from that
+path and the block name at the compiler lookup boundary; `CodeBlockGraphicData` does not carry a module-only identity.
 
 Make both project input paths converge on that contract:
 
@@ -107,6 +114,7 @@ object model.
 - Do not add an overloaded compiler API accepting `string | ProjectObjectModel | ProjectBlock[]`.
 - Do not expose bare project-block arrays as an alternative public project representation.
 - Do not add a per-block `type` discriminator when collection membership already defines the block type.
+- Do not add entity-specific fields such as `moduleId` to the editor's generic code-block representation.
 - Do not flatten recursively owned group blocks back into the root collections.
 - Do not make the compiler classify object-model blocks by inspecting their source markers.
 - Do not convert `ProjectObjectModel` into `SubProgramSource` or another parallel whole-project decomposition before
@@ -125,8 +133,8 @@ object model.
   collection membership defines block type.
 - Require `entry` on module blocks and do not permit it on the shared base block type.
 - Preserve module order in the `modules` array and document that functions, constants, and prototypes are hoisted.
-- Represent groups as recursively owned `ProjectObjectModel` values so every block is owned by exactly one project
-  model and each nested model can later become a closed sub-program.
+- Represent groups as recursively owned `ProjectGroupObjectModel` values so every block is owned by exactly one
+  project model and every child has a required name and entry.
 - Keep recursive compilation out of the group-model refactor; compile only the root project until a dedicated
   composition step merges independently compiled sub-programs.
 - Define project block ids as persistent project identities and use the same type for editor identity and compiler
@@ -167,6 +175,7 @@ object model.
 - Send `ProjectObjectModel` across the compiler-worker boundary; do not make the editor lower projects for the worker.
 - Preserve editor-only runtime and rendering state outside the compiler-owned project model unless it is part of the
   actual 8f4e project representation.
+- Store the generic owning project path on editor code blocks and derive module ids only in module-specific consumers.
 - Ensure `.8f4e` imports and direct editor-created projects reach the same project preparation path.
 
 ### Step 5: Consolidate Tests And Documentation
@@ -208,6 +217,7 @@ object model.
   type field.
 - [x] Module order is preserved per entry, while functions, constants, and prototypes are compiled as hoisted blocks.
 - [x] Groups recursively own complete `ProjectObjectModel` values instead of referencing root blocks by id.
+- [x] Canonical group paths derive from sibling-unique group names and key every module-addressed compiler result map.
 - [x] The initial object-model refactor left recursive compilation out of scope; follow-up composition now compiles all
   recursively owned groups before one global allocation and code-generation pass.
 - [x] The editor mirrors group ownership with recursively nested code-block arrays, initially renders the root slice,
@@ -240,9 +250,9 @@ object model.
 - **Module order**: Only module order is semantically significant. The implementation must preserve order within each
   entry without inventing global ordering requirements for hoisted blocks.
 - **Group behavior**: Nested projects own their blocks structurally. The compiler composer visits every owned project
-  exactly once, isolates nested symbols, and places child modules before parent modules. Editor project-slice arrays
-  retain stable identity so direct root/current pointers cannot be invalidated by add, delete, paste, or reorder
-  operations.
+  exactly once, isolates nested symbols with their canonical group path, and places child modules before parent
+  modules. Editor project-slice arrays retain stable identity so direct root/current pointers cannot be invalidated by
+  add, delete, paste, or reorder operations.
 - **Editor metadata ownership**: Grid position, selection, cursor, rendering caches, and transient creation state must
   not leak into the compiler-owned model merely because the editor currently stores them beside source blocks.
 - **Diagnostic mapping**: Changes to block identity must preserve reliable mapping from compiler diagnostics back to

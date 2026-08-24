@@ -1,41 +1,43 @@
-import type {
-	CompilerCache,
-	ProjectObjectModel,
-	ValidatedAST,
-	ValidatedConstantsAST,
-	ValidatedFunctionAST,
-	ValidatedModuleAST,
-	ValidatedPrototypeAST,
+import {
+	type CompilerCache,
+	createChildProjectGroupPath,
+	type ProjectGroupPath,
+	type ProjectObjectModel,
+	ROOT_PROJECT_GROUP_PATH,
+	type ValidatedAST,
+	type ValidatedConstantsAST,
+	type ValidatedFunctionAST,
+	type ValidatedModuleAST,
+	type ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
 import { createCompilerCache } from './createCompilerCache';
-import { createUnitSymbolPrefix, getChildProjectUnitKey, ROOT_PROJECT_UNIT_KEY } from './projectUnitKey';
 import { qualifyAst } from './qualifyAst';
-import type { ComposedProgram, IncludedFunctionsByProjectUnit, ProjectUnitKey } from './types';
+import type { ComposedProgram, IncludedFunctionsByProjectGroupPath } from './types';
 
 function appendUnit(
 	project: ProjectObjectModel,
-	unitKey: ProjectUnitKey,
+	projectPath: ProjectGroupPath,
 	program: ComposedProgram,
-	includedFunctionsByUnit: IncludedFunctionsByProjectUnit
+	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath
 ): void {
-	project.groups.forEach((group, index) => {
-		appendUnit(group, getChildProjectUnitKey(unitKey, group, index), program, includedFunctionsByUnit);
+	project.groups.forEach(group => {
+		appendUnit(group, createChildProjectGroupPath(projectPath, group.name), program, includedFunctionsByProjectPath);
 	});
 
-	const prefix = unitKey === ROOT_PROJECT_UNIT_KEY ? undefined : createUnitSymbolPrefix(unitKey);
+	const prefix = projectPath === ROOT_PROJECT_GROUP_PATH ? undefined : `${projectPath}/`;
 	const qualify = <TAst extends ValidatedAST>(ast: TAst): TAst => (prefix ? qualifyAst(ast, prefix) : ast);
 	const prototypes = project.prototypes.filter(block => !block.disabled);
 	const modules = project.modules.filter(block => !block.disabled);
 	const constants = project.constants.filter(block => !block.disabled);
 	const functions = project.functions.filter(block => !block.disabled);
-	const includedFunctions = includedFunctionsByUnit.get(unitKey) ?? [];
+	const includedFunctions = includedFunctionsByProjectPath.get(projectPath) ?? [];
 
 	program.ast.prototypes.push(
 		...prototypes.map((prototype, index) =>
 			qualify(
 				compileSourceToAST<ValidatedPrototypeAST>(
-					createCompilerSource(prototype, unitKey, `prototype:${index}`),
+					createCompilerSource(prototype, projectPath, `prototype:${index}`),
 					program.cache
 				)
 			)
@@ -45,7 +47,7 @@ function appendUnit(
 		...constants.map((constantsBlock, index) =>
 			qualify(
 				compileSourceToAST<ValidatedConstantsAST>(
-					createCompilerSource(constantsBlock, unitKey, `constants:${index}`),
+					createCompilerSource(constantsBlock, projectPath, `constants:${index}`),
 					program.cache
 				)
 			)
@@ -55,7 +57,7 @@ function appendUnit(
 		...functions.map((func, index) =>
 			qualify(
 				compileSourceToAST<ValidatedFunctionAST>(
-					createCompilerSource(func, unitKey, `function:${index}`),
+					createCompilerSource(func, projectPath, `function:${index}`),
 					program.cache
 				)
 			)
@@ -63,7 +65,7 @@ function appendUnit(
 		...includedFunctions.map((func, index) =>
 			qualify(
 				compileSourceToAST<ValidatedFunctionAST>(
-					createCompilerSource(func, unitKey, `include:function:${index}`),
+					createCompilerSource(func, projectPath, `include:function:${index}`),
 					program.cache
 				)
 			)
@@ -77,7 +79,7 @@ function appendUnit(
 		program.ast.modules.push(
 			qualify(
 				compileSourceToAST<ValidatedModuleAST>(
-					createCompilerSource(module, unitKey, `entry:${module.entry}:module:${index}`),
+					createCompilerSource(module, projectPath, `entry:${module.entry}:module:${index}`),
 					program.cache
 				)
 			)
@@ -96,7 +98,7 @@ function appendUnit(
 export function composeProgram(
 	project: ProjectObjectModel,
 	cache: CompilerCache = createCompilerCache(),
-	includedFunctionsByUnit: IncludedFunctionsByProjectUnit = new Map()
+	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath = new Map()
 ): ComposedProgram {
 	const program: ComposedProgram = {
 		entryNames: ['main'],
@@ -110,6 +112,6 @@ export function composeProgram(
 		cache,
 	};
 
-	appendUnit(project, ROOT_PROJECT_UNIT_KEY, program, includedFunctionsByUnit);
+	appendUnit(project, ROOT_PROJECT_GROUP_PATH, program, includedFunctionsByProjectPath);
 	return program;
 }

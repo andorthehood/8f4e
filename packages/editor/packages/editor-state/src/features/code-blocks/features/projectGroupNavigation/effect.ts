@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
+import { createChildProjectGroupPath, type ProjectGroupPath, ROOT_PROJECT_GROUP_PATH } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import centerViewportOnCodeBlock from '../../../viewport/centerViewportOnCodeBlock';
 import updateViewport from '../../../viewport/updateViewport';
@@ -24,6 +25,30 @@ export function findParentProjectSlice(
 		const parentCodeBlocks = findParentProjectSlice(nestedProjectCodeBlocks, currentCodeBlocks);
 		if (parentCodeBlocks) {
 			return parentCodeBlocks;
+		}
+	}
+}
+
+/** Returns the canonical path owned by a slice in the recursive editor project tree. */
+export function findProjectSlicePath(
+	rootCodeBlocks: CodeBlockGraphicData[],
+	targetCodeBlocks: CodeBlockGraphicData[],
+	projectPath: ProjectGroupPath = ROOT_PROJECT_GROUP_PATH
+): ProjectGroupPath | undefined {
+	if (rootCodeBlocks === targetCodeBlocks) {
+		return projectPath;
+	}
+
+	for (const codeBlock of rootCodeBlocks) {
+		const nestedProjectCodeBlocks = codeBlock.nestedProjectCodeBlocks;
+		if (nestedProjectCodeBlocks === undefined) {
+			continue;
+		}
+
+		const nestedPath = createChildProjectGroupPath(projectPath, codeBlock.name);
+		const match = findProjectSlicePath(nestedProjectCodeBlocks, targetCodeBlocks, nestedPath);
+		if (match !== undefined) {
+			return match;
 		}
 	}
 }

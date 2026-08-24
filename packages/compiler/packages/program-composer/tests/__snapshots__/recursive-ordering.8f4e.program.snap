@@ -4,7 +4,7 @@
     "functions": [],
     "modules": [
       {
-        "id": "__8f4e$group$$0$0__descendant",
+        "id": "child/descendant/descendant",
         "lines": [
           {
             "arguments": [
@@ -12,7 +12,7 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "__8f4e$group$$0$0__descendant",
+                "value": "child/descendant/descendant",
               },
             ],
             "instruction": "module",
@@ -30,7 +30,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e$group$$0$0__descendant",
+              "value": "child/descendant/descendant",
             },
           ],
           "instruction": "module",
@@ -40,7 +40,7 @@
         "type": "module",
       },
       {
-        "id": "__8f4e$group$$0__child",
+        "id": "child/child",
         "lines": [
           {
             "arguments": [
@@ -48,7 +48,7 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "__8f4e$group$$0__child",
+                "value": "child/child",
               },
             ],
             "instruction": "module",
@@ -66,7 +66,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e$group$$0__child",
+              "value": "child/child",
             },
           ],
           "instruction": "module",
@@ -116,8 +116,8 @@
   },
   "cache": {
     "keys": [
-      "root/groups/0/groups/0:entry:main:module:0",
-      "root/groups/0:entry:main:module:0",
+      "child/descendant:entry:main:module:0",
+      "child:entry:main:module:0",
       "root:entry:main:module:0",
     ],
     "stats": {

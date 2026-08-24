@@ -3,9 +3,19 @@ import createStateManager from '@8f4e/state-manager';
 import { describe, expect, it, type MockInstance } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
-import projectGroupNavigation from './effect';
+import projectGroupNavigation, { findProjectSlicePath } from './effect';
 
 describe('projectGroupNavigation', () => {
+	it('derives the canonical path of a nested project slice', () => {
+		const voices = [createMockCodeBlock({ name: 'voice' })];
+		const audio = [createMockCodeBlock({ name: 'Voices', nestedProjectCodeBlocks: voices })];
+		const root = [createMockCodeBlock({ name: 'Audio', nestedProjectCodeBlocks: audio })];
+
+		expect(findProjectSlicePath(root, root)).toBe('');
+		expect(findProjectSlicePath(root, audio)).toBe('Audio');
+		expect(findProjectSlicePath(root, voices)).toBe('Audio/Voices');
+	});
+
 	it('opens a project group by pointing the rendered slice at its nested blocks', () => {
 		const nestedProjectCodeBlocks = [createMockCodeBlock({ name: 'nested' })];
 		const groupBlock = createMockCodeBlock({ nestedProjectCodeBlocks });

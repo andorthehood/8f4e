@@ -1,5 +1,16 @@
-import { describe, expectTypeOf, it } from 'vitest';
-import type { ProjectBlock, ProjectBlockId, ProjectEntryName, ProjectModuleBlock, ProjectObjectModel } from './project';
+import { describe, expect, expectTypeOf, it } from 'vitest';
+import {
+	createChildProjectGroupPath,
+	createProjectModuleId,
+	getProjectGroupPathFromModuleId,
+	type ProjectBlock,
+	type ProjectBlockId,
+	type ProjectEntryName,
+	type ProjectGroupObjectModel,
+	type ProjectModuleBlock,
+	type ProjectObjectModel,
+	ROOT_PROJECT_GROUP_PATH,
+} from './project';
 
 describe('ProjectObjectModel', () => {
 	it('encodes block kinds through top-level collection membership', () => {
@@ -7,9 +18,24 @@ describe('ProjectObjectModel', () => {
 		expectTypeOf<ProjectModuleBlock['entry']>().toEqualTypeOf<ProjectEntryName>();
 		expectTypeOf<ProjectObjectModel['modules']>().toEqualTypeOf<ProjectModuleBlock[]>();
 		expectTypeOf<ProjectObjectModel['functions']>().toEqualTypeOf<ProjectBlock[]>();
-		expectTypeOf<ProjectObjectModel['groups']>().toEqualTypeOf<ProjectObjectModel[]>();
-		expectTypeOf<ProjectObjectModel['entry']>().toEqualTypeOf<ProjectEntryName | undefined>();
+		expectTypeOf<ProjectObjectModel['groups']>().toEqualTypeOf<ProjectGroupObjectModel[]>();
+		expectTypeOf<ProjectGroupObjectModel['entry']>().toEqualTypeOf<ProjectEntryName>();
+		expectTypeOf<ProjectObjectModel>().not.toHaveProperty('id');
+		expectTypeOf<ProjectObjectModel>().not.toHaveProperty('name');
+		expectTypeOf<ProjectObjectModel>().not.toHaveProperty('entry');
 		expectTypeOf<ProjectBlock>().not.toHaveProperty('type');
 		expectTypeOf<ProjectBlock>().not.toHaveProperty('entry');
+	});
+
+	it('creates canonical group paths and module ids', () => {
+		const audioPath = createChildProjectGroupPath(ROOT_PROJECT_GROUP_PATH, 'audio');
+		const voicesPath = createChildProjectGroupPath(audioPath, 'voices/lead');
+
+		expect(audioPath).toBe('audio');
+		expect(voicesPath).toBe('audio/voices%2Flead');
+		expect(createProjectModuleId(ROOT_PROJECT_GROUP_PATH, 'counter')).toBe('counter');
+		expect(createProjectModuleId(voicesPath, 'counter/left')).toBe('audio/voices%2Flead/counter%2Fleft');
+		expect(getProjectGroupPathFromModuleId('counter')).toBe(ROOT_PROJECT_GROUP_PATH);
+		expect(getProjectGroupPathFromModuleId('audio/voices/counter')).toBe('audio/voices');
 	});
 });

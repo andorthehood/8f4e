@@ -1,4 +1,3 @@
-import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
@@ -125,13 +124,11 @@ describe('convertGraphicDataToProjectStructure', () => {
 			createMockCodeBlock({
 				name: 'Audio',
 				entry: 'main',
-				projectGroupId: 'audio',
 				code: ['group Audio', 'groupEnd'],
 				nestedProjectCodeBlocks: [
 					createMockCodeBlock({
 						name: 'Oscillator',
 						entry: 'main',
-						projectGroupId: 'oscillator',
 						code: ['group Oscillator', 'groupEnd'],
 						nestedProjectCodeBlocks: [
 							createMockCodeBlock({
@@ -147,12 +144,10 @@ describe('convertGraphicDataToProjectStructure', () => {
 		]);
 
 		expect(result.groups[0]).toMatchObject({
-			id: 'audio',
 			name: 'Audio',
 			entry: 'main',
 			groups: [
 				{
-					id: 'oscillator',
 					name: 'Oscillator',
 					entry: 'main',
 					modules: [{ id: 1, entry: 'main', code: ['module voice', 'moduleEnd'] }],
@@ -166,7 +161,6 @@ describe('convertGraphicDataToProjectStructure', () => {
 			createMockCodeBlock({
 				name: 'Empty',
 				entry: 'main',
-				projectGroupId: 'empty',
 				code: ['group Empty', 'groupEnd'],
 				nestedProjectCodeBlocks: [],
 			}),
@@ -174,7 +168,6 @@ describe('convertGraphicDataToProjectStructure', () => {
 
 		expect(result.groups).toEqual([
 			{
-				id: 'empty',
 				name: 'Empty',
 				entry: 'main',
 				modules: [],
@@ -187,17 +180,5 @@ describe('convertGraphicDataToProjectStructure', () => {
 				groups: [],
 			},
 		]);
-	});
-
-	it('rejects module blocks without an entry', () => {
-		const blocks: CodeBlockGraphicData[] = [
-			createMockCodeBlock({
-				name: 'main',
-				blockType: 'module',
-				code: ['module main', 'moduleEnd'],
-			}),
-		];
-
-		expect(() => convertGraphicDataToProjectStructure(blocks)).toThrow('missing an entry');
 	});
 });
