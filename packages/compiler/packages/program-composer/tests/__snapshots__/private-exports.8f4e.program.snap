@@ -1,0 +1,105 @@
+{
+  "ast": {
+    "constants": [],
+    "functions": [
+      {
+        "exportLine": undefined,
+        "functionEndLine": {
+          "arguments": [],
+          "instruction": "functionEnd",
+          "lineNumber": 6,
+        },
+        "functionLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "__8f4e$group$$0__hidden",
+            },
+          ],
+          "instruction": "function",
+          "lineNumber": 0,
+        },
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "__8f4e$group$$0__hidden",
+              },
+            ],
+            "instruction": "function",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 1,
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 2,
+          },
+          {
+            "arguments": [],
+            "ifBlock": {
+              "hasElse": false,
+              "matchingIfEndIndex": 4,
+              "resultTypes": [],
+            },
+            "instruction": "if",
+            "lineNumber": 3,
+          },
+          {
+            "arguments": [
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 2,
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 4,
+          },
+          {
+            "arguments": [],
+            "ifEndBlock": {
+              "matchingIfIndex": 2,
+              "resultTypes": [],
+            },
+            "instruction": "ifEnd",
+            "lineNumber": 5,
+          },
+          {
+            "arguments": [],
+            "instruction": "functionEnd",
+            "lineNumber": 6,
+          },
+        ],
+        "name": "__8f4e$group$$0__hidden",
+        "projectBlockId": 5,
+        "type": "function",
+      },
+    ],
+    "modules": [],
+    "prototypes": [],
+  },
+  "cache": {
+    "keys": [
+      "root/groups/0:function:0",
+    ],
+    "stats": {
+      "hits": 1,
+      "misses": 1,
+    },
+  },
+  "entryNames": [
+    "main",
+  ],
+  "moduleEntryNames": [],
+}

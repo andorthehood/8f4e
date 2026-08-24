@@ -1,0 +1,16 @@
+8f4e/v1
+
+entry main
+module root
+moduleEnd
+
+group child
+module child
+moduleEnd
+
+group descendant
+module descendant
+moduleEnd
+groupEnd
+groupEnd
+entryEnd

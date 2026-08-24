@@ -7,7 +7,7 @@ moduleEnd
 entryEnd
 
 constants env
-const int tableSize 16
+const TABLE_SIZE 16
 constantsEnd
 
 function increment

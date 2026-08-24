@@ -67,15 +67,15 @@ push 1
 functionEnd int
 `;
 		const first = await compileFixtureProgramSource(source);
-		const cachedModuleAst = first.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast;
-		const cachedFunctionAst = first.compileResult.cache.ast.entries.get('function:0')?.ast;
+		const cachedModuleAst = first.compileResult.cache.ast.entries.get('root:entry:main:module:0')?.ast;
+		const cachedFunctionAst = first.compileResult.cache.ast.entries.get('root:function:0')?.ast;
 		const second = await compileFixtureProgramSource(source, {
 			cache: first.compileResult.cache,
 		});
 
 		expect(second.compileResult.cache).toBe(first.compileResult.cache);
-		expect(second.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast).toBe(cachedModuleAst);
-		expect(second.compileResult.cache.ast.entries.get('function:0')?.ast).toBe(cachedFunctionAst);
+		expect(second.compileResult.cache.ast.entries.get('root:entry:main:module:0')?.ast).toBe(cachedModuleAst);
+		expect(second.compileResult.cache.ast.entries.get('root:function:0')?.ast).toBe(cachedFunctionAst);
 		expect(second.compileResult.cache.ast.stats.hits).toBeGreaterThanOrEqual(2);
 	});
 
@@ -95,12 +95,12 @@ const SIZE ${size}
 constantsEnd
 `;
 		const first = await compileFixtureProgramSource(createSource(2));
-		const cachedModuleAst = first.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast;
+		const cachedModuleAst = first.compileResult.cache.ast.entries.get('root:entry:main:module:0')?.ast;
 		const second = await compileFixtureProgramSource(createSource(4), {
 			cache: first.compileResult.cache,
 		});
 
-		expect(second.compileResult.cache.ast.entries.get('entry:main:module:0')?.ast).toBe(cachedModuleAst);
+		expect(second.compileResult.cache.ast.entries.get('root:entry:main:module:0')?.ast).toBe(cachedModuleAst);
 		expect(second.compileResult.memoryPlan.modules.cachedConstants!.memory.buffer!.numberOfElements).toBe(4);
 		const cachedMemoryDeclaration = cachedModuleAst?.lines.find(isMemoryDeclarationLine);
 		expect(cachedMemoryDeclaration?.arguments[1]).toEqual(expect.objectContaining({ value: 'SIZE' }));

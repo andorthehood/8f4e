@@ -1,5 +1,5 @@
 import type { ProjectObjectModel } from '@8f4e/language-spec';
-import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
+import { ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { compileProject, parseProjectSource } from '.';
 
@@ -95,7 +95,7 @@ describe('project compiler API', () => {
 		expect(new Int32Array(memory.buffer)[9]).toBe(7);
 	});
 
-	it('keeps recursively owned group blocks outside root compilation', async () => {
+	it('composes recursively owned group blocks before root blocks', async () => {
 		const grouped = parseProjectSource(
 			[
 				'8f4e/v1',
@@ -125,8 +125,107 @@ describe('project compiler API', () => {
 			},
 		]);
 		const result = await compileProject(grouped, { disableSharedMemory: true });
-		expect(result.compiledModules.root).toBeDefined();
-		expect(result.compiledModules.grouped).toBeUndefined();
+		const compiledModules = Object.values(result.compiledModules).sort((left, right) => left.index - right.index);
+		expect(compiledModules).toMatchObject([
+			{ ast: { projectBlockId: 6 }, executionEntryName: 'main' },
+			{ id: 'root', executionEntryName: 'main' },
+		]);
+		expect(compiledModules[0]?.id).toContain('grouped');
+		expect(result.memoryPlan.modules[compiledModules[0]!.id]).toBeDefined();
+	});
+
+	it('isolates same-named functions in sibling groups and executes both groups', async () => {
+		const createGroup = (firstId: number, value: number): ProjectObjectModel => ({
+			...directProject,
+			modules: [
+				{
+					id: firstId + 1,
+					entry: 'main',
+					code: ['module shared', 'int output', 'push &output', 'call value', 'store', 'moduleEnd'],
+				},
+			],
+			functions: [{ id: firstId, code: ['function value', `push ${value}`, 'functionEnd int'] }],
+			groups: [],
+		});
+		const result = await compileProject(
+			{
+				...directProject,
+				modules: [],
+				functions: [],
+				groups: [createGroup(10, 7), createGroup(20, 11)],
+			},
+			{ disableSharedMemory: true }
+		);
+		const modules = Object.values(result.compiledModules).sort((left, right) => left.index - right.index);
+		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
+		const { instance } = await WebAssembly.instantiate(result.codeBuffer, { host: { memory } });
+		(instance.exports.initDefaults as CallableFunction)();
+		(instance.exports.main as CallableFunction)();
+
+		expect(modules).toHaveLength(2);
+		expect(modules[0]?.id).not.toBe(modules[1]?.id);
+		expect(new Int32Array(memory.buffer)[result.memoryPlan.modules[modules[0]!.id]!.byteAddress / 4]).toBe(7);
+		expect(new Int32Array(memory.buffer)[result.memoryPlan.modules[modules[1]!.id]!.byteAddress / 4]).toBe(11);
+	});
+
+	it('resolves and scopes includes owned by nested groups', async () => {
+		const result = await compileProject(
+			{
+				...directProject,
+				modules: [],
+				functions: [],
+				groups: [
+					{
+						...directProject,
+						modules: [
+							{
+								id: 11,
+								entry: 'main',
+								code: ['module included', 'int output', 'push &output', 'call includedValue', 'store', 'moduleEnd'],
+							},
+						],
+						functions: [],
+						includes: [{ id: 12, code: ['includes', 'include nested-helper', 'includesEnd'] }],
+						groups: [],
+					},
+				],
+			},
+			{
+				disableSharedMemory: true,
+				resolveInclude: includeId =>
+					includeId === 'nested-helper'
+						? ['function helper', '#export includedValue', 'push 13', 'functionEnd int'].join('\n')
+						: undefined,
+			}
+		);
+		const module = Object.values(result.compiledModules)[0]!;
+		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
+		const { instance } = await WebAssembly.instantiate(result.codeBuffer, { host: { memory } });
+		(instance.exports.initDefaults as CallableFunction)();
+		(instance.exports.main as CallableFunction)();
+
+		expect(new Int32Array(memory.buffer)[result.memoryPlan.modules[module.id]!.byteAddress / 4]).toBe(13);
+	});
+
+	it('does not expose nested functions to the root project namespace', async () => {
+		const compilation = compileProject(
+			{
+				...directProject,
+				modules: [{ id: 1, entry: 'main', code: ['module root', 'call hidden', 'moduleEnd'] }],
+				functions: [],
+				groups: [
+					{
+						...directProject,
+						modules: [],
+						functions: [{ id: 2, code: ['function hidden', 'functionEnd'] }],
+						groups: [],
+					},
+				],
+			},
+			{ disableSharedMemory: true }
+		);
+
+		await expect(compilation).rejects.toMatchObject({ code: ErrorCode.UNDEFINED_FUNCTION });
 	});
 
 	it('preserves module array order while grouping execution by entry', async () => {

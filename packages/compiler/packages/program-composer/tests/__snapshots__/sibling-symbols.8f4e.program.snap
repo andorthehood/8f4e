@@ -1,0 +1,269 @@
+{
+  "ast": {
+    "constants": [],
+    "functions": [
+      {
+        "exportLine": undefined,
+        "functionEndLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+          "lineNumber": 2,
+        },
+        "functionLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "__8f4e$group$$0__helper",
+            },
+          ],
+          "instruction": "function",
+          "lineNumber": 0,
+        },
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "__8f4e$group$$0__helper",
+              },
+            ],
+            "instruction": "function",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 1,
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 1,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "int",
+              },
+            ],
+            "instruction": "functionEnd",
+            "lineNumber": 2,
+          },
+        ],
+        "name": "__8f4e$group$$0__helper",
+        "projectBlockId": 5,
+        "type": "function",
+      },
+      {
+        "exportLine": undefined,
+        "functionEndLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+          "lineNumber": 2,
+        },
+        "functionLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "__8f4e$group$$1__helper",
+            },
+          ],
+          "instruction": "function",
+          "lineNumber": 0,
+        },
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "__8f4e$group$$1__helper",
+              },
+            ],
+            "instruction": "function",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 2,
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 1,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "int",
+              },
+            ],
+            "instruction": "functionEnd",
+            "lineNumber": 2,
+          },
+        ],
+        "name": "__8f4e$group$$1__helper",
+        "projectBlockId": 16,
+        "type": "function",
+      },
+    ],
+    "modules": [
+      {
+        "id": "__8f4e$group$$0__shared",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "__8f4e$group$$0__shared",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "__8f4e$group$$0__helper",
+              },
+            ],
+            "instruction": "call",
+            "lineNumber": 1,
+          },
+          {
+            "arguments": [],
+            "instruction": "drop",
+            "lineNumber": 2,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 3,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "__8f4e$group$$0__shared",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "projectBlockId": 9,
+        "type": "module",
+      },
+      {
+        "id": "__8f4e$group$$1__shared",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "__8f4e$group$$1__shared",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "__8f4e$group$$1__helper",
+              },
+            ],
+            "instruction": "call",
+            "lineNumber": 1,
+          },
+          {
+            "arguments": [],
+            "instruction": "drop",
+            "lineNumber": 2,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 3,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "__8f4e$group$$1__shared",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "projectBlockId": 20,
+        "type": "module",
+      },
+    ],
+    "prototypes": [],
+  },
+  "cache": {
+    "keys": [
+      "root/groups/0:entry:main:module:0",
+      "root/groups/0:function:0",
+      "root/groups/1:entry:main:module:0",
+      "root/groups/1:function:0",
+    ],
+    "stats": {
+      "hits": 4,
+      "misses": 4,
+    },
+  },
+  "entryNames": [
+    "main",
+  ],
+  "moduleEntryNames": [
+    "main",
+    "main",
+  ],
+}

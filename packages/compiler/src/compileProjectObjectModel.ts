@@ -1,25 +1,19 @@
-import type {
-	CompileOptions,
-	CompileResult,
-	CompilerCache,
-	ProjectObjectModel,
-	SourceMetadata,
-} from '@8f4e/language-spec';
-import { compileSubProgram, createCompilerCache } from '@8f4e/sub-program/internal';
+import type { CompileOptions, CompileResult, CompilerCache, ProjectObjectModel } from '@8f4e/language-spec';
+import {
+	composeProgram,
+	createCompilerCache,
+	type IncludedFunctionsByProjectUnit,
+} from '@8f4e/program-composer/internal';
+import { compileSubProgram } from '@8f4e/sub-program/internal';
 import { emitWasmProgram } from '@8f4e/wasm-codegen';
-
-type CompilerDerivedSource = {
-	code: string[];
-	projectBlockId?: number;
-	source?: SourceMetadata;
-};
 
 /** Synchronous compiler stage used after asynchronous project dependencies have been resolved. */
 export function compileProjectObjectModel(
 	project: ProjectObjectModel,
 	options: CompileOptions,
 	cache: CompilerCache = createCompilerCache(),
-	includedFunctions: readonly CompilerDerivedSource[] = []
+	includedFunctionsByUnit: IncludedFunctionsByProjectUnit = new Map()
 ): CompileResult {
-	return emitWasmProgram(compileSubProgram(project, options, cache, includedFunctions), options);
+	const program = composeProgram(project, cache, includedFunctionsByUnit);
+	return emitWasmProgram(compileSubProgram(program, options), options);
 }

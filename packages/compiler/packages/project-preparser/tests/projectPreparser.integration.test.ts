@@ -13,7 +13,7 @@ describe('project-preparser integration', () => {
 			'includesEnd',
 			'',
 			'constants shared',
-			'const int tableSize 16',
+			'const TABLE_SIZE 16',
 			'constantsEnd',
 			'',
 			'function helper',

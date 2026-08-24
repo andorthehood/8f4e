@@ -3,7 +3,7 @@
     {
       "code": [
         "constants env",
-        "const int tableSize 16",
+        "const TABLE_SIZE 16",
         "constantsEnd",
       ],
       "id": 9,

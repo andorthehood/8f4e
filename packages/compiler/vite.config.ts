@@ -8,7 +8,13 @@ export default defineConfig({
 		emptyOutDir: false,
 		rollupOptions: {
 			...createEsLibConfig('./src/index.ts', 'dist').build?.rollupOptions,
-			external: ['@8f4e/language-spec', '@8f4e/project-preparser', '@8f4e/sub-program/internal', '@8f4e/wasm-codegen'],
+			external: [
+				'@8f4e/language-spec',
+				'@8f4e/program-composer/internal',
+				'@8f4e/project-preparser',
+				'@8f4e/sub-program/internal',
+				'@8f4e/wasm-codegen',
+			],
 		},
 	},
 });
