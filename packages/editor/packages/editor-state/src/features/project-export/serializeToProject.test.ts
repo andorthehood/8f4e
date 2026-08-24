@@ -4,16 +4,18 @@ import serializeToProject from './serializeToProject';
 
 describe('serializeToProject', () => {
 	it('serializes basic project state without compiled data', () => {
+		const rootCodeBlocks = [
+			createMockCodeBlock({
+				name: 'block-1',
+				code: ['10 example'],
+				x: 20,
+				y: 30,
+			}),
+		];
 		const state = createMockState({
 			codeBlockRendering: {
-				codeBlocks: [
-					createMockCodeBlock({
-						name: 'block-1',
-						code: ['10 example'],
-						x: 20,
-						y: 30,
-					}),
-				],
+				rootCodeBlocks,
+				codeBlocks: rootCodeBlocks,
 			},
 			binaryAssets: [],
 			viewport: {
@@ -30,17 +32,19 @@ describe('serializeToProject', () => {
 	});
 
 	it('derives serialized project data from current code blocks', () => {
+		const rootCodeBlocks = [
+			createMockCodeBlock({
+				name: 'includes',
+				blockType: 'includes',
+				code: ['includes', 'include std/current', 'includesEnd'],
+				x: 0,
+				y: 0,
+			}),
+		];
 		const state = createMockState({
 			codeBlockRendering: {
-				codeBlocks: [
-					createMockCodeBlock({
-						name: 'includes',
-						blockType: 'includes',
-						code: ['includes', 'include std/current', 'includesEnd'],
-						x: 0,
-						y: 0,
-					}),
-				],
+				rootCodeBlocks,
+				codeBlocks: rootCodeBlocks,
 			},
 		});
 
@@ -58,5 +62,43 @@ describe('serializeToProject', () => {
 			unknown: [],
 			groups: [],
 		});
+	});
+
+	it('serializes the recursive root tree instead of only the rendered nested slice', () => {
+		const nestedProjectCodeBlocks = [
+			createMockCodeBlock({
+				name: 'voice',
+				blockType: 'module',
+				entry: 'main',
+				creationIndex: 2,
+				code: ['module voice', 'moduleEnd'],
+			}),
+		];
+		const rootCodeBlocks = [
+			createMockCodeBlock({
+				name: 'root',
+				blockType: 'module',
+				entry: 'main',
+				creationIndex: 1,
+				code: ['module root', 'moduleEnd'],
+			}),
+			createMockCodeBlock({
+				name: 'Audio',
+				entry: 'main',
+				code: ['group Audio', 'groupEnd'],
+				nestedProjectCodeBlocks,
+			}),
+		];
+		const state = createMockState({
+			codeBlockRendering: {
+				rootCodeBlocks,
+				codeBlocks: nestedProjectCodeBlocks,
+			},
+		});
+
+		const project = serializeToProject(state);
+
+		expect(project.modules.map(block => block.code[0])).toEqual(['module root']);
+		expect(project.groups[0].modules.map(block => block.code[0])).toEqual(['module voice']);
 	});
 });

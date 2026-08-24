@@ -120,16 +120,28 @@ describe('convertGraphicDataToProjectStructure', () => {
 		]);
 	});
 
-	it('reconstructs recursively owned projects from runtime sub-program paths', () => {
+	it('reconstructs recursively owned projects from nested project code-block slices', () => {
 		const result = convertGraphicDataToProjectStructure([
 			createMockCodeBlock({
-				creationIndex: 1,
-				blockType: 'module',
+				name: 'Audio',
 				entry: 'main',
-				code: ['module voice', 'moduleEnd'],
-				subProgramPath: [
-					{ id: 'audio', name: 'Audio', entry: 'main' },
-					{ id: 'oscillator', name: 'Oscillator', entry: 'main' },
+				projectGroupId: 'audio',
+				code: ['group Audio', 'groupEnd'],
+				nestedProjectCodeBlocks: [
+					createMockCodeBlock({
+						name: 'Oscillator',
+						entry: 'main',
+						projectGroupId: 'oscillator',
+						code: ['group Oscillator', 'groupEnd'],
+						nestedProjectCodeBlocks: [
+							createMockCodeBlock({
+								creationIndex: 1,
+								blockType: 'module',
+								entry: 'main',
+								code: ['module voice', 'moduleEnd'],
+							}),
+						],
+					}),
 				],
 			}),
 		]);
@@ -149,33 +161,32 @@ describe('convertGraphicDataToProjectStructure', () => {
 		});
 	});
 
-	it('preserves empty nested projects from the loaded project structure', () => {
-		const projectStructure = {
-			modules: [],
-			functions: [],
-			constants: [],
-			prototypes: [],
-			includes: [],
-			notes: [],
-			unknown: [],
-			groups: [
-				{
-					id: 'empty',
-					name: 'Empty',
-					entry: 'main',
-					modules: [],
-					functions: [],
-					constants: [],
-					prototypes: [],
-					includes: [],
-					notes: [],
-					unknown: [],
-					groups: [],
-				},
-			],
-		};
+	it('preserves empty nested projects represented by project-group blocks', () => {
+		const result = convertGraphicDataToProjectStructure([
+			createMockCodeBlock({
+				name: 'Empty',
+				entry: 'main',
+				projectGroupId: 'empty',
+				code: ['group Empty', 'groupEnd'],
+				nestedProjectCodeBlocks: [],
+			}),
+		]);
 
-		expect(convertGraphicDataToProjectStructure([], projectStructure).groups).toEqual(projectStructure.groups);
+		expect(result.groups).toEqual([
+			{
+				id: 'empty',
+				name: 'Empty',
+				entry: 'main',
+				modules: [],
+				functions: [],
+				constants: [],
+				prototypes: [],
+				includes: [],
+				notes: [],
+				unknown: [],
+				groups: [],
+			},
+		]);
 	});
 
 	it('rejects module blocks without an entry', () => {

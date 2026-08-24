@@ -33,7 +33,7 @@ WASM export is separate from project serialization and writes compiled binary mo
 ## State Sources
 
 Serializes from:
-- `state.codeBlockRendering.codeBlocks` - Code block data
+- `state.codeBlockRendering.rootCodeBlocks` - Recursive root code-block tree
 
 ## Integration Points
 
@@ -61,9 +61,10 @@ interface ProjectObjectModel {
 ```
 
 Collection membership defines block type. The adapter uses the editor's already-known block type and does not make the
-compiler rediscover it from source text. Nested group blocks retain a runtime sub-program path so editor state can be
-converted back into the same recursively owned project structure. Compilation currently consumes only the root
-project; recursive sub-program composition is intentionally deferred.
+compiler rediscover it from source text. Project groups are rendered as ordinary `CodeBlockGraphicData` values whose
+optional `nestedProjectCodeBlocks` field owns the child project slice. Export recursively traverses that tree from
+`rootCodeBlocks`, regardless of which slice `codeBlocks` currently points to. Compilation currently consumes only the
+root project; recursive sub-program composition is intentionally deferred.
 
 ## References
 

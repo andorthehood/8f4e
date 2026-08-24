@@ -165,10 +165,11 @@ describe('code block rendering home directive', () => {
 		expect(renderedIncludes?.code).toEqual(includesBlock);
 	});
 
-	it('renders blocks from recursively owned sub-programs with their ownership path', () => {
+	it('renders root blocks and project-group blocks while retaining nested slices', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
+				modules: [{ id: 0, entry: 'main', code: ['module root', 'moduleEnd'] }],
 				groups: [
 					{
 						...EMPTY_DEFAULT_PROJECT,
@@ -187,10 +188,53 @@ describe('code block rendering home directive', () => {
 		codeBlockRenderingEffect(store, events);
 		store.set('initialProjectState', state.initialProjectState);
 
-		expect(state.codeBlockRendering.codeBlocks).toHaveLength(1);
-		expect(state.codeBlockRendering.codeBlocks[0].subProgramPath).toEqual([
-			{ id: 'audio', name: 'Audio', entry: 'main' },
-		]);
+		expect(state.codeBlockRendering.codeBlocks).toBe(state.codeBlockRendering.rootCodeBlocks);
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(2);
+		expect(state.codeBlockRendering.codeBlocks.map(block => block.name)).toEqual(['root', 'Audio']);
+		const groupBlock = state.codeBlockRendering.codeBlocks[1];
+		expect(groupBlock.projectGroupId).toBe('audio');
+		expect(groupBlock.nestedProjectCodeBlocks).toHaveLength(1);
+		expect(groupBlock.nestedProjectCodeBlocks?.[0]).toMatchObject({
+			name: 'voice',
+			entry: 'main',
+			code: ['module voice', 'moduleEnd'],
+		});
+		expect(state.codeBlockRendering.codeBlocks.some(block => block.name === 'voice')).toBe(false);
+	});
+
+	it('resets the rendered slice pointer to the new root when a project reloads', () => {
+		const state = createMockState({
+			initialProjectState: {
+				...EMPTY_DEFAULT_PROJECT,
+				groups: [
+					{
+						...EMPTY_DEFAULT_PROJECT,
+						name: 'Audio',
+						entry: 'main',
+						modules: [{ id: 1, entry: 'main', code: ['module voice', 'moduleEnd'] }],
+					},
+				],
+			},
+			spriteLookups: createSpriteLookups(),
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		codeBlockRenderingEffect(store, events);
+		store.set('initialProjectState', state.initialProjectState);
+		const firstRoot = state.codeBlockRendering.rootCodeBlocks;
+		const nestedSlice = firstRoot[0].nestedProjectCodeBlocks;
+		expect(nestedSlice).toBeDefined();
+		store.set('codeBlockRendering.codeBlocks', nestedSlice!);
+
+		store.set('initialProjectState', {
+			...EMPTY_DEFAULT_PROJECT,
+			modules: [{ id: 2, entry: 'main', code: ['module replacement', 'moduleEnd'] }],
+		});
+
+		expect(state.codeBlockRendering.rootCodeBlocks).not.toBe(firstRoot);
+		expect(state.codeBlockRendering.codeBlocks).toBe(state.codeBlockRendering.rootCodeBlocks);
+		expect(state.codeBlockRendering.codeBlocks.map(block => block.name)).toEqual(['replacement']);
 	});
 
 	it('centers the initial viewport using the home alignment hint', () => {

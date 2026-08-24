@@ -198,13 +198,15 @@ describe('projectExport', () => {
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });
 			mockState.callbacks.saveSession = mockSaveSession;
 			mockState.callbacks.getStorageQuota = mockGetStorageQuota;
-			mockState.codeBlockRendering.codeBlocks = [
+			const rootCodeBlocks = [
 				createMockCodeBlock({
 					blockType: 'module',
 					code: ['module other', 'moduleEnd'],
 					entry: 'entry1',
 				}),
 			];
+			mockState.codeBlockRendering.rootCodeBlocks = rootCodeBlocks;
+			mockState.codeBlockRendering.codeBlocks = rootCodeBlocks;
 
 			projectExport(store, mockEvents);
 

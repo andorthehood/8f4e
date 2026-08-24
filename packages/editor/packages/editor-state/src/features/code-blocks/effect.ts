@@ -202,32 +202,32 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		type ClassifiedProjectBlock = ProjectBlock & {
 			blockType: CodeBlockGraphicData['blockType'];
 			entry?: string;
-			subProgramPath?: CodeBlockGraphicData['subProgramPath'];
 		};
-		const collectClassifiedBlocks = (
-			currentProject: ProjectObjectModel,
-			subProgramPath: NonNullable<CodeBlockGraphicData['subProgramPath']> = []
-		): ClassifiedProjectBlock[] => {
-			const pathFields = subProgramPath.length > 0 ? { subProgramPath } : {};
+		const collectProjectBlocks = (currentProject: ProjectObjectModel): ClassifiedProjectBlock[] => {
 			return [
-				...currentProject.modules.map(block => ({ ...block, ...pathFields, blockType: 'module' as const })),
-				...currentProject.functions.map(block => ({ ...block, ...pathFields, blockType: 'function' as const })),
-				...currentProject.constants.map(block => ({ ...block, ...pathFields, blockType: 'constants' as const })),
-				...currentProject.prototypes.map(block => ({ ...block, ...pathFields, blockType: 'prototype' as const })),
-				...currentProject.includes.map(block => ({ ...block, ...pathFields, blockType: 'includes' as const })),
-				...currentProject.notes.map(block => ({ ...block, ...pathFields, blockType: 'note' as const })),
-				...currentProject.unknown.map(block => ({ ...block, ...pathFields, blockType: 'unknown' as const })),
-				...currentProject.groups.flatMap(group =>
-					collectClassifiedBlocks(group, [...subProgramPath, { id: group.id, name: group.name, entry: group.entry }])
-				),
+				...currentProject.modules.map(block => ({ ...block, blockType: 'module' as const })),
+				...currentProject.functions.map(block => ({ ...block, blockType: 'function' as const })),
+				...currentProject.constants.map(block => ({ ...block, blockType: 'constants' as const })),
+				...currentProject.prototypes.map(block => ({ ...block, blockType: 'prototype' as const })),
+				...currentProject.includes.map(block => ({ ...block, blockType: 'includes' as const })),
+				...currentProject.notes.map(block => ({ ...block, blockType: 'note' as const })),
+				...currentProject.unknown.map(block => ({ ...block, blockType: 'unknown' as const })),
 			];
 		};
-		const classifiedBlocks = collectClassifiedBlocks(project);
-		state.codeBlockRendering.nextCodeBlockCreationIndex = Math.max(-1, ...classifiedBlocks.map(block => block.id)) + 1;
+		const getHighestProjectBlockId = (currentProject: ProjectObjectModel): number =>
+			Math.max(
+				-1,
+				...collectProjectBlocks(currentProject).map(block => block.id),
+				...currentProject.groups.map(getHighestProjectBlockId)
+			);
+		let nextCodeBlockCreationIndex = getHighestProjectBlockId(project) + 1;
 		store.set('codeBlockRendering.selectedCodeBlock', undefined);
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', undefined);
 
-		const codeBlocks = classifiedBlocks.map(codeBlock => {
+		const createGraphicCodeBlock = (
+			codeBlock: ClassifiedProjectBlock,
+			overrides: Partial<CodeBlockGraphicData> = {}
+		): CodeBlockGraphicData => {
 			// Parse @pos directive from code, default to (0,0) if missing or invalid
 			const blockParsedDirectives = parseBlockDirectives(codeBlock.code);
 			const posResult = parsePos(blockParsedDirectives);
@@ -255,7 +255,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				creationIndex: codeBlock.id,
 				blockType: codeBlock.blockType,
 				entry: codeBlock.entry,
-				subProgramPath: codeBlock.subProgramPath,
 				disabled: codeBlock.disabled ?? directiveState.blockState.disabled,
 				hidden: directiveState.blockState.hidden,
 				isHome: directiveState.blockState.isHome,
@@ -264,16 +263,47 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				alwaysOnTop: directiveState.blockState.alwaysOnTop ?? false,
 				viewportAnchor: directiveState.blockState.viewportAnchor,
 				parsedDirectives: blockParsedDirectives,
+				...overrides,
 			});
-		});
+		};
+		const createProjectCodeBlockSlice = (currentProject: ProjectObjectModel): CodeBlockGraphicData[] => {
+			const codeBlocks = collectProjectBlocks(currentProject).map(codeBlock => createGraphicCodeBlock(codeBlock));
+			const groupBlocks = currentProject.groups.map((group, groupIndex) => {
+				const groupName = group.name ?? `group${groupIndex + 1}`;
+				const gridX = groupIndex * 24;
+				const gridY = -6;
+				const creationIndex = nextCodeBlockCreationIndex;
+				nextCodeBlockCreationIndex += 1;
+				return createGraphicCodeBlock(
+					{
+						id: creationIndex,
+						code: [`group ${groupName}`, `; @pos ${gridX} ${gridY}`, 'groupEnd'],
+						blockType: 'unknown',
+						entry: group.entry,
+					},
+					{
+						name: groupName,
+						...(group.id ? { projectGroupId: group.id } : {}),
+						nestedProjectCodeBlocks: createProjectCodeBlockSlice(group),
+					}
+				);
+			});
+			const projectCodeBlocks = [...codeBlocks, ...groupBlocks];
 
-		// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
-		const partitionedCodeBlocks = [...codeBlocks.filter(b => !b.alwaysOnTop), ...codeBlocks.filter(b => b.alwaysOnTop)];
+			// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
+			return [
+				...projectCodeBlocks.filter(block => !block.alwaysOnTop),
+				...projectCodeBlocks.filter(block => block.alwaysOnTop),
+			];
+		};
+		const rootCodeBlocks = createProjectCodeBlockSlice(project);
+		state.codeBlockRendering.nextCodeBlockCreationIndex = nextCodeBlockCreationIndex;
 
-		store.set('codeBlockRendering.codeBlocks', partitionedCodeBlocks);
+		store.set('codeBlockRendering.rootCodeBlocks', rootCodeBlocks);
+		store.set('codeBlockRendering.codeBlocks', rootCodeBlocks);
 
 		// Center viewport on first @home block, or default to (0,0)
-		const homeBlock = codeBlocks.find(block => block.isHome);
+		const homeBlock = rootCodeBlocks.find(block => block.isHome);
 		if (homeBlock) {
 			store.set('codeBlockRendering.selectedCodeBlock', homeBlock);
 			const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock, {

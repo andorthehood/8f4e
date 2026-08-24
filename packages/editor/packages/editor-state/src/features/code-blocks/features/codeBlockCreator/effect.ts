@@ -3,6 +3,7 @@ import type { CompilerSourceBlockType, DocumentBlockType } from '@8f4e/language-
 import { documentBlockInstructionByType } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { instructionParser } from '@8f4e/tokenizer';
+import replaceCodeBlocksInPlace from '../../replaceCodeBlocksInPlace';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import getCodeBlockNameFromSource from '../../utils/getCodeBlockNameFromSource';
@@ -246,7 +247,8 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		const existingBlocks = state.codeBlockRendering.codeBlocks;
 		const normalBlocks = existingBlocks.filter(b => !b.alwaysOnTop);
 		const topBlocks = existingBlocks.filter(b => b.alwaysOnTop);
-		store.set('codeBlockRendering.codeBlocks', [...normalBlocks, codeBlock, ...topBlocks]);
+		replaceCodeBlocksInPlace(existingBlocks, [...normalBlocks, codeBlock, ...topBlocks]);
+		store.set('codeBlockRendering.codeBlocks', existingBlocks);
 	}
 
 	function onDeleteCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
@@ -254,10 +256,12 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			return;
 		}
 
-		store.set(
-			'codeBlockRendering.codeBlocks',
-			state.codeBlockRendering.codeBlocks.filter(block => block !== codeBlock)
+		const codeBlocks = state.codeBlockRendering.codeBlocks;
+		replaceCodeBlocksInPlace(
+			codeBlocks,
+			codeBlocks.filter(block => block !== codeBlock)
 		);
+		store.set('codeBlockRendering.codeBlocks', codeBlocks);
 	}
 
 	function onCopyCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {

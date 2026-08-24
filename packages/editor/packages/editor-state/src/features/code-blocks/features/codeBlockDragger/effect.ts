@@ -1,5 +1,6 @@
 import type { CodeBlockGraphicData, EventDispatcher, InternalMouseEvent, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import replaceCodeBlocksInPlace from '../../replaceCodeBlocksInPlace';
 import findCodeBlockAtViewportCoordinates from '../../utils/finders/findCodeBlockAtViewportCoordinates';
 import upsertPos from '../directives/pos/upsert';
 import { worldPositionToAnchoredPos } from '../directives/viewport/resolve';
@@ -81,11 +82,11 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 		// Always-on-top blocks move to the end of the always-on-top segment (end of array).
 		const allOthers = state.codeBlockRendering.codeBlocks.filter(block => block !== draggedCodeBlock);
 		if (draggedCodeBlock.alwaysOnTop) {
-			state.codeBlockRendering.codeBlocks = [...allOthers, draggedCodeBlock];
+			replaceCodeBlocksInPlace(state.codeBlockRendering.codeBlocks, [...allOthers, draggedCodeBlock]);
 		} else {
 			const normalOthers = allOthers.filter(block => !block.alwaysOnTop);
 			const topBlocks = allOthers.filter(block => block.alwaysOnTop);
-			state.codeBlockRendering.codeBlocks = [...normalOthers, draggedCodeBlock, ...topBlocks];
+			replaceCodeBlocksInPlace(state.codeBlockRendering.codeBlocks, [...normalOthers, draggedCodeBlock, ...topBlocks]);
 		}
 	}
 

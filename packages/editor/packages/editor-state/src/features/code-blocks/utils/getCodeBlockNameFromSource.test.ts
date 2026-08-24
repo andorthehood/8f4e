@@ -18,6 +18,10 @@ describe('getCodeBlockNameFromSource', () => {
 		expect(getCodeBlockNameFromSource(['prototype oscillatorState', '', 'prototypeEnd'])).toBe('oscillatorState');
 	});
 
+	it('returns raw project-group names for group blocks', () => {
+		expect(getCodeBlockNameFromSource(['group audio', '', 'groupEnd'])).toBe('audio');
+	});
+
 	it('returns empty string for note blocks', () => {
 		expect(getCodeBlockNameFromSource(['note', '', 'noteEnd'])).toBe('');
 		expect(getCodeBlockNameFromSource(['note fragmentShaderPostprocess', '', 'noteEnd'])).toBe('');

@@ -1,5 +1,6 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import replaceCodeBlocksInPlace from '../../replaceCodeBlocksInPlace';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import getCodeBlockNameFromSource from '../../utils/getCodeBlockNameFromSource';
@@ -222,5 +223,6 @@ export function pasteMultipleBlocks(
 	];
 
 	// Trigger single store update with all new blocks
-	store.set('codeBlockRendering.codeBlocks', sorted);
+	replaceCodeBlocksInPlace(state.codeBlockRendering.codeBlocks, sorted);
+	store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
 }

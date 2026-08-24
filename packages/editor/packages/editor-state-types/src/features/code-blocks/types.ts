@@ -355,12 +355,10 @@ export interface CodeBlockGraphicData {
 	 * This is separate from the visual `; @group` directive.
 	 */
 	entry?: string;
-	/** Nested project ownership retained while editing recursively structured projects. */
-	subProgramPath?: Array<{
-		id?: string;
-		name?: string;
-		entry?: string;
-	}>;
+	/** Stable project-model identity retained by a project-group block. */
+	projectGroupId?: string;
+	/** Child project slice owned by a project-group block. Its array identity remains stable while editing. */
+	nestedProjectCodeBlocks?: CodeBlockGraphicData[];
 	/**
 	 * When true, the block is excluded from compilation and rendered with a transparent background.
 	 * Defaults to false.
@@ -435,6 +433,9 @@ export interface CodeBlockEntryOutline {
  */
 export type CodeBlockRendering = {
 	outputsByWordAddress: Map<number, Output>;
+	/** Recursive project-tree root. Project-owned array identities remain stable while editing. */
+	rootCodeBlocks: CodeBlockGraphicData[];
+	/** Direct pointer to the project slice currently rendered by the editor. */
 	codeBlocks: CodeBlockGraphicData[];
 	/**
 	 * Derived outline corners for execution entries that contain multiple module blocks.

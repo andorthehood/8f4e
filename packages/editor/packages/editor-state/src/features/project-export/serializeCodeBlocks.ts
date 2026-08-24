@@ -17,48 +17,36 @@ function createEmptyProject(metadata: Pick<ProjectObjectModel, 'id' | 'name' | '
 	};
 }
 
-function cloneProjectStructure(project: ProjectObjectModel): ProjectObjectModel {
-	return {
-		...createEmptyProject({
-			...(project.id ? { id: project.id } : {}),
-			...(project.name ? { name: project.name } : {}),
-			...(project.entry ? { entry: project.entry } : {}),
-		}),
-		groups: project.groups.map(cloneProjectStructure),
-	};
-}
-
-function getProjectForPath(
-	rootProject: ProjectObjectModel,
-	subProgramPath: CodeBlockGraphicData['subProgramPath']
-): ProjectObjectModel {
-	let project = rootProject;
-	for (const segment of subProgramPath ?? []) {
-		let group = project.groups.find(candidate =>
-			segment.id ? candidate.id === segment.id : candidate.name === segment.name && candidate.entry === segment.entry
-		);
-		if (!group) {
-			group = createEmptyProject({
-				...(segment.id ? { id: segment.id } : {}),
-				...(segment.name ? { name: segment.name } : {}),
-				...(segment.entry ? { entry: segment.entry } : {}),
-			});
-			project.groups.push(group);
-		}
-		project = group;
-	}
-	return project;
-}
-
 /** Converts editor-owned live blocks directly into the canonical project collections. */
 export default function convertGraphicDataToProjectStructure(
 	codeBlocks: CodeBlockGraphicData[],
 	projectStructure?: ProjectObjectModel
 ): ProjectObjectModel {
-	const project = projectStructure ? cloneProjectStructure(projectStructure) : createEmptyProject();
+	const project = createEmptyProject(
+		projectStructure
+			? {
+					...(projectStructure.id ? { id: projectStructure.id } : {}),
+					...(projectStructure.name ? { name: projectStructure.name } : {}),
+					...(projectStructure.entry ? { entry: projectStructure.entry } : {}),
+				}
+			: {}
+	);
 
 	for (const codeBlock of sortCodeBlocksByGridPosition(codeBlocks.filter(block => !isBrowserLocalNoteBlock(block)))) {
-		const owningProject = getProjectForPath(project, codeBlock.subProgramPath);
+		if (codeBlock.nestedProjectCodeBlocks !== undefined) {
+			project.groups.push(
+				convertGraphicDataToProjectStructure(
+					codeBlock.nestedProjectCodeBlocks,
+					createEmptyProject({
+						...(codeBlock.projectGroupId ? { id: codeBlock.projectGroupId } : {}),
+						name: codeBlock.name,
+						...(codeBlock.entry ? { entry: codeBlock.entry } : {}),
+					})
+				)
+			);
+			continue;
+		}
+
 		const block: ProjectBlock = {
 			id: codeBlock.creationIndex,
 			code: codeBlock.code,
@@ -67,19 +55,19 @@ export default function convertGraphicDataToProjectStructure(
 
 		if (codeBlock.blockType === 'module') {
 			if (!codeBlock.entry) throw new Error(`Module code block "${codeBlock.name}" is missing an entry`);
-			owningProject.modules.push({ ...block, entry: codeBlock.entry });
+			project.modules.push({ ...block, entry: codeBlock.entry });
 		} else if (codeBlock.blockType === 'function') {
-			owningProject.functions.push(block);
+			project.functions.push(block);
 		} else if (codeBlock.blockType === 'constants') {
-			owningProject.constants.push(block);
+			project.constants.push(block);
 		} else if (codeBlock.blockType === 'prototype') {
-			owningProject.prototypes.push(block);
+			project.prototypes.push(block);
 		} else if (codeBlock.blockType === 'includes') {
-			owningProject.includes.push(block);
+			project.includes.push(block);
 		} else if (codeBlock.blockType === 'note') {
-			owningProject.notes.push(block);
+			project.notes.push(block);
 		} else {
-			owningProject.unknown.push(block);
+			project.unknown.push(block);
 		}
 	}
 

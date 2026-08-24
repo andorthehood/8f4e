@@ -125,6 +125,7 @@ export function createMockEventDispatcher(): EventDispatcher {
 export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const mockRuntimeFactory = () => () => {};
 	const workerRuntimeDefaults = { sampleRate: 50 } as const;
+	const rootCodeBlocks: CodeBlockGraphicData[] = [];
 
 	const defaults: State = {
 		compiler: {
@@ -153,7 +154,8 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			},
 		},
 		codeBlockRendering: {
-			codeBlocks: [],
+			rootCodeBlocks,
+			codeBlocks: rootCodeBlocks,
 			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
