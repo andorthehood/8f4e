@@ -1,4 +1,4 @@
-import type { CodeError, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, CodeError, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import deepEqual from '../../shared/utils/deepEqual';
 import { resolveEditorConfigEntries, validateEditorConfigEntries } from '../editor-config/validators';
@@ -13,18 +13,27 @@ function withOwnerId(errors: CodeError[]): CodeError[] {
 	}));
 }
 
+function collectProjectCodeBlocks(codeBlocks: CodeBlockGraphicData[]): CodeBlockGraphicData[] {
+	return codeBlocks.flatMap(codeBlock => [
+		codeBlock,
+		...(codeBlock.nestedProjectCodeBlocks ? collectProjectCodeBlocks(codeBlock.nestedProjectCodeBlocks) : []),
+	]);
+}
+
 /**
  * Global-editor-directives effect.
  *
- * Scans all code blocks in `codeBlockRendering.codeBlocks` for global `; @<name>`
- * editor directives and updates `state.globalEditorDirectives` with the resolved values.
+ * Scans the complete recursive project tree for global `; @<name>` editor directives and
+ * updates `state.globalEditorDirectives` with the resolved values. The rendered project slice
+ * is intentionally ignored so navigating into a project group cannot change global state.
  *
  * Conflicting directive values are written to `state.codeErrors.editorDirectiveErrors`.
  */
 export default function globalEditorDirectivesEffect(store: StateManager<State>): void {
 	function resolve(): void {
 		const state = store.getState();
-		const { resolved, errors } = resolveGlobalEditorDirectives(state.codeBlockRendering.codeBlocks);
+		const projectCodeBlocks = collectProjectCodeBlocks(state.codeBlockRendering.rootCodeBlocks);
+		const { resolved, errors } = resolveGlobalEditorDirectives(projectCodeBlocks);
 		const { configEntries, ...globalEditorDirectives } = resolved;
 		const nextEditorConfig = resolveEditorConfigEntries(configEntries ?? [], state.editorConfigValidators);
 		const nextErrors = [...errors, ...validateEditorConfigEntries(configEntries ?? [], state.editorConfigValidators)];
