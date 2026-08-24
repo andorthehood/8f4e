@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 
 import type { StateManager } from '@8f4e/state-manager';
+import replaceCodeBlocksInPlace from '../../../replaceCodeBlocksInPlace';
 import { getGroupBlocks } from '../getGroupBlocks';
 
 /**
@@ -57,7 +58,8 @@ export default function groupDeleter(store: StateManager<State>, events: EventDi
 		}
 
 		// Update the code blocks array
-		store.set('codeBlockRendering.codeBlocks', remainingBlocks);
+		replaceCodeBlocksInPlace(state.codeBlockRendering.codeBlocks, remainingBlocks);
+		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
 	}
 
 	events.on('deleteGroup', onDeleteGroup);

@@ -4,6 +4,33 @@ import { mainMenu } from '../../src/features/menu/menus';
 import { createMockState } from '../../src/pureHelpers/testingUtils/testUtils';
 
 describe('menus - go home entry', () => {
+	it('adds a go-back action when rendering a nested project slice', () => {
+		const rootCodeBlocks = [];
+		const nestedProjectCodeBlocks = [];
+		const mockState = createMockState({
+			codeBlockRendering: {
+				rootCodeBlocks,
+				codeBlocks: nestedProjectCodeBlocks,
+			},
+		});
+
+		const menu = mainMenu(mockState as State);
+
+		expect(menu.find(item => item.action === 'goToParentProjectGroup')).toEqual({
+			title: 'Go back',
+			action: 'goToParentProjectGroup',
+			close: true,
+		});
+	});
+
+	it('does not add a go-back action at the project root', () => {
+		const mockState = createMockState();
+
+		const menu = mainMenu(mockState as State);
+
+		expect(menu.some(item => item.action === 'goToParentProjectGroup')).toBe(false);
+	});
+
 	it('places "Go @home" directly above "Jump to..."', () => {
 		const mockState = createMockState({
 			editorMode: 'edit',

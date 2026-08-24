@@ -74,6 +74,12 @@ modules, functions, constants, prototypes, includes, notes, unknown blocks, and 
 The initial group refactor does not recursively compile these models: `compileProject` continues to compile only the
 root model until whole-program sub-program composition is implemented separately.
 
+The editor mirrors this recursive ownership without introducing another project schema. A project group is represented
+by the same `CodeBlockGraphicData` used for other visible blocks, with `nestedProjectCodeBlocks` pointing to the child
+project's code-block array. `rootCodeBlocks` owns the recursive editor tree, while the existing `codeBlocks` field points
+directly to the one project slice currently rendered. Project-owned arrays keep stable identity and editor operations
+replace their contents in place; loading a project rebuilds the tree and resets the rendered pointer to the root.
+
 Make both project input paths converge on that contract:
 
 ```text
@@ -202,6 +208,8 @@ object model.
 - [x] Module order is preserved per entry, while functions, constants, and prototypes are compiled as hoisted blocks.
 - [x] Groups recursively own complete `ProjectObjectModel` values instead of referencing root blocks by id.
 - [x] Root compilation remains unchanged and does not yet compile recursively owned groups.
+- [x] The editor mirrors group ownership with recursively nested code-block arrays, initially renders the root slice,
+  and can move into child slices or back to their parent from context menus.
 - [x] Compiler stages consume the canonical typed collections directly; `SubProgramSource` and whole-project
   preparation are removed.
 - [x] Bare project-block arrays and duplicate editor/preparser project contracts are removed from public APIs.
@@ -230,7 +238,8 @@ object model.
 - **Module order**: Only module order is semantically significant. The implementation must preserve order within each
   entry without inventing global ordering requirements for hoisted blocks.
 - **Group behavior**: Nested projects own their blocks structurally. The compiler intentionally ignores nested groups
-  for now so future recursive compilation cannot accidentally compile them twice.
+  for now so future recursive compilation cannot accidentally compile them twice. Editor project-slice arrays retain
+  stable identity so direct root/current pointers cannot be invalidated by add, delete, paste, or reorder operations.
 - **Editor metadata ownership**: Grid position, selection, cursor, rendering caches, and transient creation state must
   not leak into the compiler-owned model merely because the editor currently stores them beside source blocks.
 - **Diagnostic mapping**: Changes to block identity must preserve reliable mapping from compiler diagnostics back to

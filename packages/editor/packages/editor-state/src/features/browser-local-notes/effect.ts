@@ -2,6 +2,7 @@ import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-
 import type { StateManager } from '@8f4e/state-manager';
 import upsertPos from '../code-blocks/features/directives/pos/upsert';
 import { deriveDirectiveState } from '../code-blocks/features/directives/registry';
+import replaceCodeBlocksInPlace from '../code-blocks/replaceCodeBlocksInPlace';
 import getBlockType from '../code-blocks/utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../code-blocks/utils/createCodeBlockGraphicData';
 import {
@@ -98,7 +99,8 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 
 			state.codeBlockRendering.nextCodeBlockCreationIndex = creationIndex;
 			browserLocalNotesLoaded = true;
-			store.set('codeBlockRendering.codeBlocks', nextCodeBlocks);
+			replaceCodeBlocksInPlace(state.codeBlockRendering.codeBlocks, nextCodeBlocks);
+			store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
 			saveBrowserLocalNotes();
 		} catch (err) {
 			console.warn('Failed to load browser-local notes from storage:', err);

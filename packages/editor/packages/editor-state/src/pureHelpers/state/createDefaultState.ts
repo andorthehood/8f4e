@@ -1,6 +1,9 @@
+import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 import { defaultFeatureFlags } from './featureFlags';
 
 export default function createDefaultState() {
+	const rootCodeBlocks: CodeBlockGraphicData[] = [];
+
 	return {
 		compiler: {
 			isCompiling: false,
@@ -14,7 +17,8 @@ export default function createDefaultState() {
 			pointerMetadataByModuleId: {},
 		},
 		codeBlockRendering: {
-			codeBlocks: [],
+			rootCodeBlocks,
+			codeBlocks: rootCodeBlocks,
 			entryOutlines: [],
 			viewportAnchoredCodeBlocks: [],
 			nextCodeBlockCreationIndex: 0,
