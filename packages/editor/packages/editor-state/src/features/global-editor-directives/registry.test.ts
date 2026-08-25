@@ -5,6 +5,7 @@ describe('global editor directive registry', () => {
 	it('ignores unregistered directives', () => {
 		const result = resolveGlobalEditorDirectives([
 			{
+				projectPath: '',
 				parsedDirectives: [
 					{
 						prefix: '@',

@@ -1,14 +1,12 @@
 import type {
 	CompilerCache,
+	ProjectGroupPath,
 	SourceMetadata,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-
-/** Stable traversal key for one project in a recursive object-model tree. */
-export type ProjectUnitKey = string;
 
 /** Function source produced by resolving a project's include blocks. */
 export type CompilerDerivedSource = {
@@ -17,8 +15,8 @@ export type CompilerDerivedSource = {
 	source?: SourceMetadata;
 };
 
-/** Include expansions keyed by the recursive project unit that owns them. */
-export type IncludedFunctionsByProjectUnit = ReadonlyMap<ProjectUnitKey, readonly CompilerDerivedSource[]>;
+/** Include expansions keyed by the canonical path of the project group that owns them. */
+export type IncludedFunctionsByProjectGroupPath = ReadonlyMap<ProjectGroupPath, readonly CompilerDerivedSource[]>;
 
 /** One globally planned AST assembled from a recursive project tree. */
 export interface ComposedProgram {

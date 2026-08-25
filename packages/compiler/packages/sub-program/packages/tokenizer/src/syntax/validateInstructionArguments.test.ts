@@ -38,6 +38,25 @@ describe('validateInstructionArguments', () => {
 		expect(() => validateInstructionArguments('add', [classifyIdentifier('extra')])).toThrowError(SyntaxRulesError);
 	});
 
+	it.each(['audioOut', 'XORShift', 'voice_1', 'low-pass', '_internal'])('accepts the module name %s', moduleName => {
+		expect(() => validateInstructionArguments('module', [classifyIdentifier(moduleName)])).not.toThrow();
+	});
+
+	it.each([
+		'1voice',
+		'voice/left',
+		'voice%left',
+		'voice?left',
+		'voice#left',
+		'voice@left',
+		'voice:left',
+		'voice.left',
+	])('rejects the module name %s as an invalid identifier', moduleName => {
+		expect(() => validateInstructionArguments('module', [classifyIdentifier(moduleName)])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.INVALID_IDENTIFIER })
+		);
+	});
+
 	it('accepts compile-time values for default', () => {
 		expect(() =>
 			validateInstructionArguments('default', [

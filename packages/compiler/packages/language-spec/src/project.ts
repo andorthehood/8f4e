@@ -4,6 +4,42 @@ export type ProjectBlockId = number;
 /** Host-callable entry that owns an ordered module block. */
 export type ProjectEntryName = string;
 
+/** Human-readable name of one project group within its parent project. */
+export type ProjectGroupName = string;
+
+/** Canonical encoded path of a project group. The root project uses the empty path. */
+export type ProjectGroupPath = string;
+
+/** Canonical module identity shared by compiler results and project actors. */
+export type ProjectModuleId = string;
+
+/** Canonical path of the root project. */
+export const ROOT_PROJECT_GROUP_PATH: ProjectGroupPath = '';
+
+function encodeProjectPathSegment(segment: string): string {
+	return encodeURIComponent(segment);
+}
+
+/** Returns the canonical path of a named child group. */
+export function createChildProjectGroupPath(
+	parentPath: ProjectGroupPath,
+	groupName: ProjectGroupName
+): ProjectGroupPath {
+	const segment = encodeProjectPathSegment(groupName);
+	return parentPath ? `${parentPath}/${segment}` : segment;
+}
+
+/** Returns the canonical identity of a module owned by the given group path. */
+export function createProjectModuleId(groupPath: ProjectGroupPath, moduleName: string): ProjectModuleId {
+	return groupPath ? `${groupPath}/${moduleName}` : moduleName;
+}
+
+/** Returns the canonical owning group path encoded in a module id. */
+export function getProjectGroupPathFromModuleId(moduleId: ProjectModuleId): ProjectGroupPath {
+	const separatorIndex = moduleId.lastIndexOf('/');
+	return separatorIndex === -1 ? ROOT_PROJECT_GROUP_PATH : moduleId.slice(0, separatorIndex);
+}
+
 /** Source block fields shared by the canonical project collections. */
 export interface ProjectBlock {
 	id: ProjectBlockId;
@@ -18,12 +54,6 @@ export interface ProjectModuleBlock extends ProjectBlock {
 
 /** Canonical in-memory representation shared by all 8f4e project actors. */
 export interface ProjectObjectModel {
-	/** Stable identity used to distinguish this project from sibling sub-programs. */
-	id?: string;
-	/** Human-readable project or group name. */
-	name?: string;
-	/** Entry containing this nested project when it originated from textual project syntax. */
-	entry?: ProjectEntryName;
 	/** Ordered executable modules; filtering by entry preserves execution order within that entry. */
 	modules: ProjectModuleBlock[];
 	/** Hoisted function blocks. */
@@ -38,8 +68,14 @@ export interface ProjectObjectModel {
 	notes: ProjectBlock[];
 	/** Incomplete or unclassified blocks retained by live editors. */
 	unknown: ProjectBlock[];
-	/** Recursively owned sub-programs. */
-	groups: ProjectObjectModel[];
+	/** Recursively owned named project groups. */
+	groups: ProjectGroupObjectModel[];
+}
+
+/** Named child project owned by another project object model. */
+export interface ProjectGroupObjectModel extends ProjectObjectModel {
+	name: ProjectGroupName;
+	entry: ProjectEntryName;
 }
 
 /** Host callback used to load a function include referenced by a project. */

@@ -33,6 +33,21 @@ describe('compileToAST', () => {
 		]);
 	});
 
+	it.each([
+		{ moduleName: '1voice', errorCode: SyntaxErrorCode.INVALID_NUMERIC_LITERAL },
+		{ moduleName: 'voice/left', errorCode: SyntaxErrorCode.INVALID_IDENTIFIER },
+		{ moduleName: 'voice%left', errorCode: SyntaxErrorCode.INVALID_IDENTIFIER },
+		{ moduleName: 'voice?left', errorCode: SyntaxErrorCode.INVALID_IDENTIFIER },
+		{ moduleName: 'voice#left', errorCode: SyntaxErrorCode.INVALID_IDENTIFIER },
+		{ moduleName: 'voice@left', errorCode: SyntaxErrorCode.INVALID_IDENTIFIER },
+		{ moduleName: 'voice:left', errorCode: SyntaxErrorCode.INVALID_IDENTIFIER },
+		{ moduleName: 'voice.left', errorCode: SyntaxErrorCode.INVALID_IDENTIFIER },
+	])('rejects the invalid module name $moduleName through the production AST path', ({ moduleName, errorCode }) => {
+		expect(() => compileToAST([`module ${moduleName}`, 'moduleEnd'])).toThrow(
+			expect.objectContaining({ code: errorCode })
+		);
+	});
+
 	it('keeps shape instructions in module lines without adding module metadata', () => {
 		const ast = compileToAST(['module oscillator', 'shape oscillatorState', 'shape envelopeState', 'moduleEnd']);
 

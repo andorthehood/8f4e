@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData, EventDispatcher, State, Viewport } from '@8f4e/editor-state-types';
+import { ROOT_PROJECT_GROUP_PATH } from '@8f4e/language-spec';
 
 type DeepPartial<T> = T extends object
 	? {
@@ -27,6 +28,7 @@ export function createMockCodeBlock(
 	const offsetY = overrides.offsetY ?? 0;
 	const code = overrides.code ?? [];
 	const name = overrides.name ?? code[0]?.trim().split(/\s+/)[1] ?? 'test-block';
+	const projectPath = overrides.projectPath ?? ROOT_PROJECT_GROUP_PATH;
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
@@ -65,6 +67,7 @@ export function createMockCodeBlock(
 		isCollapsed: false,
 		creationIndex: 0,
 		blockType: 'unknown',
+		projectPath,
 		disabled: false,
 		hidden: false,
 		isHome: false,

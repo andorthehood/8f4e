@@ -7,6 +7,8 @@ import {
 	isBlockResultTypeIdentifier,
 	isKnownInstructionName,
 	isMemoryDeclarationInstructionName,
+	isValidModuleName,
+	MODULE_NAME_PATTERN,
 	SCALAR_TYPE_IDENTIFIERS,
 } from '@8f4e/language-spec';
 import isConstantName from './isConstantName';
@@ -47,6 +49,14 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
 		case 'identifier':
 			if (argument.type !== ArgumentType.IDENTIFIER) {
 				invalid(`Invalid argument for ${instruction}: expected identifier.`);
+			}
+			return;
+		case 'moduleName':
+			if (argument.type !== ArgumentType.IDENTIFIER || !isValidModuleName(argument.value)) {
+				throw new SyntaxRulesError(
+					SyntaxErrorCode.INVALID_IDENTIFIER,
+					`Invalid module name. Module names must match ${MODULE_NAME_PATTERN}.`
+				);
 			}
 			return;
 		case 'identifierOrStringLiteral':

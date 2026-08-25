@@ -4,7 +4,7 @@
     "functions": [],
     "modules": [
       {
-        "id": "__8f4e$group$$0__source",
+        "id": "audio/source",
         "lines": [
           {
             "arguments": [
@@ -12,7 +12,7 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "__8f4e$group$$0__source",
+                "value": "audio/source",
               },
             ],
             "instruction": "module",
@@ -42,7 +42,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e$group$$0__source",
+              "value": "audio/source",
             },
           ],
           "instruction": "module",
@@ -52,7 +52,7 @@
         "type": "module",
       },
       {
-        "id": "__8f4e$group$$0__consumer",
+        "id": "audio/consumer",
         "lines": [
           {
             "arguments": [
@@ -60,7 +60,7 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "__8f4e$group$$0__consumer",
+                "value": "audio/consumer",
               },
             ],
             "instruction": "module",
@@ -73,9 +73,9 @@
                 "referenceKind": "intermodular-reference",
                 "scope": "intermodule",
                 "targetMemoryId": "value",
-                "targetModuleId": "__8f4e$group$$0__source",
+                "targetModuleId": "audio/source",
                 "type": "identifier",
-                "value": "&__8f4e$group$0__source:value",
+                "value": "&audio/source:value",
               },
             ],
             "instruction": "push",
@@ -98,7 +98,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e$group$$0__consumer",
+              "value": "audio/consumer",
             },
           ],
           "instruction": "module",
@@ -112,8 +112,8 @@
   },
   "cache": {
     "keys": [
-      "root/groups/0:entry:main:module:0",
-      "root/groups/0:entry:main:module:1",
+      "audio:entry:main:module:0",
+      "audio:entry:main:module:1",
     ],
     "stats": {
       "hits": 2,

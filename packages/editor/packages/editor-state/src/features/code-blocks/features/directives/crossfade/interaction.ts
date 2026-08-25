@@ -7,6 +7,7 @@ import type {
 } from '@8f4e/editor-state-types';
 import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
+import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
 import findCrossfadeWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
 interface ActiveCrossfade {
@@ -47,7 +48,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 			return;
 		}
 
-		const module = state.compiler.memoryPlan.modules[codeBlock.name];
+		const module = state.compiler.memoryPlan.modules[getCodeBlockModuleId(codeBlock)];
 		const leftMemory = module?.memory[crossfade.leftId];
 		const rightMemory = module?.memory[crossfade.rightId];
 

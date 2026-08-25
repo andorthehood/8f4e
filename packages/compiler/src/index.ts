@@ -1,11 +1,12 @@
-import type { CompileProjectOptions, CompileResult, ProjectObjectModel } from '@8f4e/language-spec';
 import {
-	createCompilerCache,
-	getChildProjectUnitKey,
-	type IncludedFunctionsByProjectUnit,
-	type ProjectUnitKey,
-	ROOT_PROJECT_UNIT_KEY,
-} from '@8f4e/program-composer/internal';
+	type CompileProjectOptions,
+	type CompileResult,
+	createChildProjectGroupPath,
+	type ProjectGroupPath,
+	type ProjectObjectModel,
+	ROOT_PROJECT_GROUP_PATH,
+} from '@8f4e/language-spec';
+import { createCompilerCache, type IncludedFunctionsByProjectGroupPath } from '@8f4e/program-composer/internal';
 import { parseProjectSource, resolveProjectIncludesAsync } from '@8f4e/project-preparser';
 import { deriveEffectiveMemorySize } from '@8f4e/wasm-codegen';
 import { compileProjectObjectModel } from './compileProjectObjectModel';
@@ -21,16 +22,21 @@ export { deriveEffectiveMemorySize, parseProjectSource };
 async function resolveRecursiveProjectIncludes(
 	project: ProjectObjectModel,
 	resolveInclude: NonNullable<CompileProjectOptions['resolveInclude']>,
-	unitKey: ProjectUnitKey = ROOT_PROJECT_UNIT_KEY,
-	result: Map<ProjectUnitKey, Awaited<ReturnType<typeof resolveProjectIncludesAsync>>> = new Map()
-): Promise<IncludedFunctionsByProjectUnit> {
+	projectPath: ProjectGroupPath = ROOT_PROJECT_GROUP_PATH,
+	result: Map<ProjectGroupPath, Awaited<ReturnType<typeof resolveProjectIncludesAsync>>> = new Map()
+): Promise<IncludedFunctionsByProjectGroupPath> {
 	const includedFunctions = await resolveProjectIncludesAsync(project.includes, resolveInclude);
 	if (includedFunctions.length > 0) {
-		result.set(unitKey, includedFunctions);
+		result.set(projectPath, includedFunctions);
 	}
 	await Promise.all(
-		project.groups.map((group, index) =>
-			resolveRecursiveProjectIncludes(group, resolveInclude, getChildProjectUnitKey(unitKey, group, index), result)
+		project.groups.map(group =>
+			resolveRecursiveProjectIncludes(
+				group,
+				resolveInclude,
+				createChildProjectGroupPath(projectPath, group.name),
+				result
+			)
 		)
 	);
 	return result;
@@ -61,6 +67,6 @@ export async function compileProject(
 ): Promise<CompileResult> {
 	const { resolveInclude, cache = createCompilerCache(), ...compilerOptions } = options;
 	const memoizedResolveInclude = createMemoizedIncludeResolver(resolveInclude);
-	const includedFunctionsByUnit = await resolveRecursiveProjectIncludes(project, memoizedResolveInclude);
-	return compileProjectObjectModel(project, compilerOptions, cache, includedFunctionsByUnit);
+	const includedFunctionsByProjectPath = await resolveRecursiveProjectIncludes(project, memoizedResolveInclude);
+	return compileProjectObjectModel(project, compilerOptions, cache, includedFunctionsByProjectPath);
 }

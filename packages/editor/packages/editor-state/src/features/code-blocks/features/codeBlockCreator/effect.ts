@@ -11,6 +11,7 @@ import { parseClipboardData } from '../clipboard/clipboardUtils';
 import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
 import findEntryNameAtPosition from '../entryOutlines/findEntryNameAtPosition';
+import { findProjectSlicePath } from '../projectGroupNavigation/effect';
 import extractPublicBlockFromModuleSource from './extractPublicBlockFromModuleSource';
 import { insertDependencies } from './insertDependencies';
 import { pasteMultipleBlocks } from './pasteMultipleBlocks';
@@ -205,6 +206,10 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			);
 		}
 		const updatedBlockName = getCodeBlockNameFromSource(code);
+		const projectPath = findProjectSlicePath(
+			state.codeBlockRendering.rootCodeBlocks,
+			state.codeBlockRendering.codeBlocks
+		)!;
 
 		const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
 		state.codeBlockRendering.nextCodeBlockCreationIndex++;
@@ -239,6 +244,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			creationIndex,
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
 			entry,
+			projectPath,
 			disabled: false,
 			isHome: false,
 		});

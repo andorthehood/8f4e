@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
+import { ROOT_PROJECT_GROUP_PATH } from '@8f4e/language-spec';
 import buildDisplayModel from '../buildDisplayModel';
 import getCodeBlockNameFromSource from './getCodeBlockNameFromSource';
 import { parseBlockDirectives } from './parseBlockDirectives';
@@ -16,6 +17,7 @@ export function createCodeBlockGraphicData(
 	const offsetY = overrides.offsetY ?? 0;
 	const code = overrides.code ?? [];
 	const name = (overrides.name ?? getCodeBlockNameFromSource(code)) || 'code-block';
+	const projectPath = overrides.projectPath ?? ROOT_PROJECT_GROUP_PATH;
 
 	const defaultVGrid = 8;
 	const defaultHGrid = 16;
@@ -51,6 +53,7 @@ export function createCodeBlockGraphicData(
 		isCollapsed: false,
 		creationIndex: 0,
 		blockType: 'unknown',
+		projectPath,
 		disabled: false,
 		hidden: false,
 		isHome: false,

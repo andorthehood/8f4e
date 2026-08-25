@@ -1,5 +1,9 @@
 import type { MemoryIdentifier, State } from '@8f4e/editor-state-types';
-import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
+import {
+	createProjectModuleId,
+	getProjectGroupPathFromModuleId,
+	type PlannedMemoryDeclaration,
+} from '@8f4e/language-spec';
 
 export default function resolveMemoryIdentifier(
 	state: State,
@@ -43,7 +47,12 @@ export default function resolveMemoryIdentifier(
 	}
 
 	if (/(\S+):(\S+)/.test(memoryIdentifier)) {
-		[moduleId, memoryIdentifier] = memoryIdentifier.split(':');
+		const [referencedModuleName, referencedMemoryIdentifier] = memoryIdentifier.split(':');
+		const projectPath = getProjectGroupPathFromModuleId(moduleId);
+		moduleId = referencedModuleName.includes('/')
+			? referencedModuleName
+			: createProjectModuleId(projectPath, referencedModuleName);
+		memoryIdentifier = referencedMemoryIdentifier;
 	}
 
 	if (/.+\[(\d+)\]/.test(memoryIdentifier)) {

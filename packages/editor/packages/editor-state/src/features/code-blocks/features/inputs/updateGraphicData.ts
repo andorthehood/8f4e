@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import getCodeBlockModuleId from '../../../../pureHelpers/getCodeBlockModuleId';
 import {
 	getConnectorMemoryDeclarations,
 	getConnectorRow,
@@ -13,8 +14,9 @@ export default function updateInputsGraphicData(graphicData: CodeBlockGraphicDat
 		return;
 	}
 
-	const plannedModule = state.compiler.memoryPlan.modules[graphicData.name];
-	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[graphicData.name];
+	const moduleId = getCodeBlockModuleId(graphicData);
+	const plannedModule = state.compiler.memoryPlan.modules[moduleId];
+	const memoryDefaults = state.compiler.memoryDefaultsByModuleId[moduleId];
 	getConnectorMemoryDeclarations(plannedModule, memoryDefaults).forEach(declaration => {
 		const { memory } = declaration;
 		if (!isInputMemoryDeclaration(memory)) return;

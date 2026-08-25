@@ -1,6 +1,6 @@
-import type { CompilerCache, ProjectBlock, SourceMetadata, ValidatedAST } from '@8f4e/language-spec';
+import type { CompilerCache, ProjectBlock, ProjectGroupPath, SourceMetadata, ValidatedAST } from '@8f4e/language-spec';
 import { compileToAST, SyntaxRulesError } from '@8f4e/tokenizer';
-import type { CompilerDerivedSource, ProjectUnitKey } from './types';
+import type { CompilerDerivedSource } from './types';
 
 type CompilerSource = {
 	code: string[];
@@ -44,15 +44,15 @@ export function compileSourceToAST<TAst extends ValidatedAST>(source: CompilerSo
 	}
 }
 
-/** Creates a source block with a cache key scoped to its owning recursive project unit. */
+/** Creates a source block with a cache key scoped to its owning canonical project-group path. */
 export function createCompilerSource(
 	source: CompilerDerivedSource | ProjectBlock,
-	unitKey: ProjectUnitKey,
+	projectPath: ProjectGroupPath,
 	blockKey: string
 ): CompilerSource {
 	return {
 		code: source.code,
-		cacheKey: `${unitKey}:${blockKey}`,
+		cacheKey: `${projectPath || 'root'}:${blockKey}`,
 		...('id' in source ? { projectBlockId: source.id } : { projectBlockId: source.projectBlockId }),
 		...('source' in source ? { source: source.source } : {}),
 	};

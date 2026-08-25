@@ -186,6 +186,9 @@ describe('parseProjectSource', () => {
 		expect(() => parseProjectSource('8f4e/v1\n\nentry main\nentryEnd\n\nentry main\nentryEnd')).toThrow(
 			'duplicate entry'
 		);
+		expect(() =>
+			parseProjectSource('8f4e/v1\n\nentry main\ngroup audio\ngroupEnd\ngroup audio\ngroupEnd\nentryEnd')
+		).toThrow('duplicate sibling group "audio"');
 		expect(() => parseProjectSource('8f4e/v1\n\ngroup audio\ngroupEnd')).toThrow(
 			'group blocks must be inside an entry block'
 		);

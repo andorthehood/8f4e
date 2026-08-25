@@ -1,4 +1,4 @@
-import type { ProjectObjectModel } from '@8f4e/language-spec';
+import type { ProjectGroupObjectModel, ProjectObjectModel } from '@8f4e/language-spec';
 import { ErrorCode, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { compileProject, parseProjectSource } from '.';
@@ -130,13 +130,18 @@ describe('project compiler API', () => {
 			{ ast: { projectBlockId: 6 }, executionEntryName: 'main' },
 			{ id: 'root', executionEntryName: 'main' },
 		]);
-		expect(compiledModules[0]?.id).toContain('grouped');
-		expect(result.memoryPlan.modules[compiledModules[0]!.id]).toBeDefined();
+		expect(compiledModules[0]?.id).toBe('audio/grouped');
+		expect(result.compiledModules['audio/grouped']).toBe(compiledModules[0]);
+		expect(result.memoryPlan.modules['audio/grouped']).toBeDefined();
+		expect(result.memoryDefaultsByModuleId['audio/grouped']).toBeDefined();
+		expect(result.pointerMetadataByModuleId['audio/grouped']).toBeDefined();
 	});
 
 	it('isolates same-named functions in sibling groups and executes both groups', async () => {
-		const createGroup = (firstId: number, value: number): ProjectObjectModel => ({
+		const createGroup = (name: string, firstId: number, value: number): ProjectGroupObjectModel => ({
 			...directProject,
+			name,
+			entry: 'main',
 			modules: [
 				{
 					id: firstId + 1,
@@ -152,7 +157,7 @@ describe('project compiler API', () => {
 				...directProject,
 				modules: [],
 				functions: [],
-				groups: [createGroup(10, 7), createGroup(20, 11)],
+				groups: [createGroup('left', 10, 7), createGroup('right', 20, 11)],
 			},
 			{ disableSharedMemory: true }
 		);
@@ -163,7 +168,7 @@ describe('project compiler API', () => {
 		(instance.exports.main as CallableFunction)();
 
 		expect(modules).toHaveLength(2);
-		expect(modules[0]?.id).not.toBe(modules[1]?.id);
+		expect(modules.map(module => module.id)).toEqual(['left/shared', 'right/shared']);
 		expect(new Int32Array(memory.buffer)[result.memoryPlan.modules[modules[0]!.id]!.byteAddress / 4]).toBe(7);
 		expect(new Int32Array(memory.buffer)[result.memoryPlan.modules[modules[1]!.id]!.byteAddress / 4]).toBe(11);
 	});
@@ -177,6 +182,8 @@ describe('project compiler API', () => {
 				groups: [
 					{
 						...directProject,
+						name: 'included',
+						entry: 'main',
 						modules: [
 							{
 								id: 11,
@@ -216,6 +223,8 @@ describe('project compiler API', () => {
 				groups: [
 					{
 						...directProject,
+						name: 'hidden',
+						entry: 'main',
 						modules: [],
 						functions: [{ id: 2, code: ['function hidden', 'functionEnd'] }],
 						groups: [],

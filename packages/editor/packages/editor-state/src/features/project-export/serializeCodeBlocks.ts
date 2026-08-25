@@ -3,9 +3,8 @@ import type { ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import { isBrowserLocalNoteBlock } from '../browser-local-notes/browserLocalNotes';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 
-function createEmptyProject(metadata: Pick<ProjectObjectModel, 'id' | 'name' | 'entry'> = {}): ProjectObjectModel {
+function createEmptyProject(): ProjectObjectModel {
 	return {
-		...metadata,
 		modules: [],
 		functions: [],
 		constants: [],
@@ -18,32 +17,16 @@ function createEmptyProject(metadata: Pick<ProjectObjectModel, 'id' | 'name' | '
 }
 
 /** Converts editor-owned live blocks directly into the canonical project collections. */
-export default function convertGraphicDataToProjectStructure(
-	codeBlocks: CodeBlockGraphicData[],
-	projectStructure?: ProjectObjectModel
-): ProjectObjectModel {
-	const project = createEmptyProject(
-		projectStructure
-			? {
-					...(projectStructure.id ? { id: projectStructure.id } : {}),
-					...(projectStructure.name ? { name: projectStructure.name } : {}),
-					...(projectStructure.entry ? { entry: projectStructure.entry } : {}),
-				}
-			: {}
-	);
+export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): ProjectObjectModel {
+	const project = createEmptyProject();
 
 	for (const codeBlock of sortCodeBlocksByGridPosition(codeBlocks.filter(block => !isBrowserLocalNoteBlock(block)))) {
 		if (codeBlock.nestedProjectCodeBlocks !== undefined) {
-			project.groups.push(
-				convertGraphicDataToProjectStructure(
-					codeBlock.nestedProjectCodeBlocks,
-					createEmptyProject({
-						...(codeBlock.projectGroupId ? { id: codeBlock.projectGroupId } : {}),
-						name: codeBlock.name,
-						...(codeBlock.entry ? { entry: codeBlock.entry } : {}),
-					})
-				)
-			);
+			project.groups.push({
+				...convertGraphicDataToProjectStructure(codeBlock.nestedProjectCodeBlocks),
+				name: codeBlock.name,
+				entry: codeBlock.entry!,
+			});
 			continue;
 		}
 
@@ -54,8 +37,7 @@ export default function convertGraphicDataToProjectStructure(
 		};
 
 		if (codeBlock.blockType === 'module') {
-			if (!codeBlock.entry) throw new Error(`Module code block "${codeBlock.name}" is missing an entry`);
-			project.modules.push({ ...block, entry: codeBlock.entry });
+			project.modules.push({ ...block, entry: codeBlock.entry! });
 		} else if (codeBlock.blockType === 'function') {
 			project.functions.push(block);
 		} else if (codeBlock.blockType === 'constants') {

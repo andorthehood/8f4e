@@ -1,5 +1,11 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
-import type { ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
+import {
+	createChildProjectGroupPath,
+	type ProjectBlock,
+	type ProjectGroupPath,
+	type ProjectObjectModel,
+	ROOT_PROJECT_GROUP_PATH,
+} from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import gapCalculator from '../code-editing/gapCalculator';
 import { moveCaret } from '../code-editing/moveCaret';
@@ -29,6 +35,17 @@ import wrapText from './utils/wrapText';
 
 export default function codeBlockRendering(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
+	const updateProjectSliceIdentity = (codeBlocks: CodeBlockGraphicData[], projectPath: ProjectGroupPath): void => {
+		for (const codeBlock of codeBlocks) {
+			codeBlock.projectPath = projectPath;
+			if (codeBlock.nestedProjectCodeBlocks !== undefined) {
+				updateProjectSliceIdentity(
+					codeBlock.nestedProjectCodeBlocks,
+					createChildProjectGroupPath(projectPath, codeBlock.name)
+				);
+			}
+		}
+	};
 	const shouldExpandCodeBlockForEditing = (codeBlock: CodeBlockGraphicData): boolean =>
 		codeBlock === state.codeBlockRendering.selectedCodeBlock;
 
@@ -79,7 +96,14 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 
 		graphicData.lineNumberColumnWidth = graphicData.code.length.toString().length;
 
+		const previousName = graphicData.name;
 		graphicData.name = getCodeBlockNameFromSource(graphicData.code);
+		if (graphicData.nestedProjectCodeBlocks !== undefined && graphicData.name !== previousName) {
+			updateProjectSliceIdentity(
+				graphicData.nestedProjectCodeBlocks,
+				createChildProjectGroupPath(graphicData.projectPath, graphicData.name)
+			);
+		}
 		graphicData.isCollapsed = displayModel.isCollapsed;
 
 		shape(graphicData, state, directiveState);
@@ -266,10 +290,15 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				...overrides,
 			});
 		};
-		const createProjectCodeBlockSlice = (currentProject: ProjectObjectModel): CodeBlockGraphicData[] => {
-			const codeBlocks = collectProjectBlocks(currentProject).map(codeBlock => createGraphicCodeBlock(codeBlock));
+		const createProjectCodeBlockSlice = (
+			currentProject: ProjectObjectModel,
+			projectPath: ProjectGroupPath
+		): CodeBlockGraphicData[] => {
+			const codeBlocks = collectProjectBlocks(currentProject).map(codeBlock =>
+				createGraphicCodeBlock(codeBlock, { projectPath })
+			);
 			const groupBlocks = currentProject.groups.map((group, groupIndex) => {
-				const groupName = group.name ?? `group${groupIndex + 1}`;
+				const groupName = group.name;
 				const gridX = groupIndex * 24;
 				const gridY = -6;
 				const creationIndex = nextCodeBlockCreationIndex;
@@ -283,8 +312,11 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 					},
 					{
 						name: groupName,
-						...(group.id ? { projectGroupId: group.id } : {}),
-						nestedProjectCodeBlocks: createProjectCodeBlockSlice(group),
+						projectPath,
+						nestedProjectCodeBlocks: createProjectCodeBlockSlice(
+							group,
+							createChildProjectGroupPath(projectPath, groupName)
+						),
 					}
 				);
 			});
@@ -296,7 +328,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				...projectCodeBlocks.filter(block => block.alwaysOnTop),
 			];
 		};
-		const rootCodeBlocks = createProjectCodeBlockSlice(project);
+		const rootCodeBlocks = createProjectCodeBlockSlice(project, ROOT_PROJECT_GROUP_PATH);
 		state.codeBlockRendering.nextCodeBlockCreationIndex = nextCodeBlockCreationIndex;
 
 		store.set('codeBlockRendering.rootCodeBlocks', rootCodeBlocks);

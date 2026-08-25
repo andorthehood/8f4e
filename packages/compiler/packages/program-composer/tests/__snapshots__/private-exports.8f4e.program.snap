@@ -15,7 +15,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e$group$$0__hidden",
+              "value": "helpers/hidden",
             },
           ],
           "instruction": "function",
@@ -28,7 +28,7 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "__8f4e$group$$0__hidden",
+                "value": "helpers/hidden",
               },
             ],
             "instruction": "function",
@@ -81,7 +81,7 @@
             "lineNumber": 6,
           },
         ],
-        "name": "__8f4e$group$$0__hidden",
+        "name": "helpers/hidden",
         "projectBlockId": 5,
         "type": "function",
       },
@@ -91,7 +91,7 @@
   },
   "cache": {
     "keys": [
-      "root/groups/0:function:0",
+      "helpers:function:0",
     ],
     "stats": {
       "hits": 1,

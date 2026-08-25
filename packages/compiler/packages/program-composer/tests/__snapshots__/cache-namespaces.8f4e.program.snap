@@ -4,7 +4,7 @@
     "functions": [],
     "modules": [
       {
-        "id": "__8f4e$group$$0__same",
+        "id": "child/same",
         "lines": [
           {
             "arguments": [
@@ -12,7 +12,7 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "__8f4e$group$$0__same",
+                "value": "child/same",
               },
             ],
             "instruction": "module",
@@ -30,7 +30,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e$group$$0__same",
+              "value": "child/same",
             },
           ],
           "instruction": "module",
@@ -80,7 +80,7 @@
   },
   "cache": {
     "keys": [
-      "root/groups/0:entry:main:module:0",
+      "child:entry:main:module:0",
       "root:entry:main:module:0",
     ],
     "stats": {

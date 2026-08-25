@@ -1,5 +1,6 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import { resolveDirectOrPointerTypedValueSpec } from '../shared/typedValueSpec';
 import type { MeterDirectiveData } from './data';
@@ -19,7 +20,7 @@ function resolveMeterDirectiveWidget(
 		return;
 	}
 
-	const memory = resolveMemoryIdentifier(state, graphicData.name, meter.memoryId);
+	const memory = resolveMemoryIdentifier(state, getCodeBlockModuleId(graphicData), meter.memoryId);
 	const valueSpec = memory ? resolveDirectOrPointerTypedValueSpec(memory) : undefined;
 
 	if (!memory || !valueSpec) {

@@ -1,6 +1,6 @@
 import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
-
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
+import getCodeBlockModuleId from '../../pureHelpers/getCodeBlockModuleId';
 
 export function parsePositionOffsetters(parsedDirectives: ParsedDirectiveRecord[]) {
 	return parsedDirectives
@@ -23,7 +23,7 @@ export default function (graphicData: CodeBlockGraphicData, state: State) {
 			return;
 		}
 
-		const memory = resolveMemoryIdentifier(state, graphicData.name, offsetter.memory);
+		const memory = resolveMemoryIdentifier(state, getCodeBlockModuleId(graphicData), offsetter.memory);
 
 		if (!memory || !memory.memory.isInteger) {
 			return;

@@ -3,6 +3,7 @@
  */
 
 import { compileProject, parseProjectSource } from '@8f4e/compiler';
+import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { readdirSync, readFileSync } from 'fs';
 import { basename, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -46,12 +47,19 @@ const COMPILER_OPTIONS = {
 	startingMemoryWordAddress: 0,
 };
 
+function countEnabledModules(project: ProjectObjectModel): number {
+	return (
+		project.modules.filter(module => !module.disabled).length +
+		project.groups.reduce((count, group) => count + countEnabledModules(group), 0)
+	);
+}
+
 describe('Example Projects Compilation', () => {
 	describe('Module Compilation', () => {
 		projectNames.forEach((projectName, index) => {
 			it(`should compile module blocks in project ${index}`, async () => {
 				const project = await loadProject(projectName);
-				const moduleCount = project.modules.filter(module => !module.disabled).length;
+				const moduleCount = countEnabledModules(project);
 
 				const result = await compileProject(project, {
 					...COMPILER_OPTIONS,

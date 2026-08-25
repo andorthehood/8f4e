@@ -11,6 +11,7 @@ import { hasDirective } from '../directives/utils';
 import { extractGroupName } from '../group/extractGroupName';
 import { createGroupNameMapping } from '../group/getUniqueGroupName';
 import { replaceGroupName } from '../group/replaceGroupName';
+import { findProjectSlicePath } from '../projectGroupNavigation/effect';
 
 /**
  * Updates inter-module references in code when pasting multiple blocks.
@@ -83,6 +84,10 @@ export function pasteMultipleBlocks(
 	if (!state.featureFlags.editing) {
 		return;
 	}
+	const projectPath = findProjectSlicePath(
+		state.codeBlockRendering.rootCodeBlocks,
+		state.codeBlockRendering.codeBlocks
+	)!;
 
 	// Calculate paste anchor grid position
 	const anchorGridX = Math.round((state.viewport.x + x) / state.viewport.vGrid);
@@ -202,6 +207,7 @@ export function pasteMultipleBlocks(
 		const codeBlock = createCodeBlockGraphicData({
 			code,
 			name: getCodeBlockNameFromSource(code),
+			projectPath,
 			gridX,
 			gridY,
 			x: gridX * state.viewport.vGrid,

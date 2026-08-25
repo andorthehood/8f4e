@@ -1,5 +1,6 @@
 import type { DirectiveDerivedState, DirectiveWidgetContribution } from '@8f4e/editor-state-types';
 import gapCalculator from '~/features/code-editing/gapCalculator';
+import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
 import { resolveElementCount, resolveTypedValueSpec } from '../shared/typedValueSpec';
 import type { PlotDirectiveData } from './data';
@@ -16,8 +17,9 @@ function resolvePlotDirectiveWidget(
 		return;
 	}
 
-	const startAddress = resolveMemoryIdentifier(state, graphicData.name, plotter.startAddressMemoryId);
-	const length = resolveElementCount(plotter.length, graphicData.name, state);
+	const moduleId = getCodeBlockModuleId(graphicData);
+	const startAddress = resolveMemoryIdentifier(state, moduleId, plotter.startAddressMemoryId);
+	const length = resolveElementCount(plotter.length, moduleId, state);
 	const valueSpec = startAddress ? resolveTypedValueSpec(startAddress) : undefined;
 
 	if (!startAddress || !valueSpec || !length) {
