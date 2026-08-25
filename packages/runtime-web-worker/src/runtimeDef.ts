@@ -74,7 +74,6 @@ export function webWorkerRuntimeFactory(
 				memoryRef: memory,
 				sampleRate: getSampleRate(state.editorConfig),
 				codeBuffer: getCodeBuffer(),
-				compiledModules: state.compiler.compiledModules,
 			},
 		});
 	}
