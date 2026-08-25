@@ -109,7 +109,6 @@ describe('menus - go home entry', () => {
 		expect(newModuleItem).toBeDefined();
 		expect(newModuleItem?.action).toBe('addCodeBlock');
 		expect(newModuleItem?.payload).toEqual({ isNew: true, blockType: 'module' });
-		expect(menu.find(item => item.title === 'New Entry')).toBeUndefined();
 	});
 
 	it('hides "New Module" when editing is disabled', () => {

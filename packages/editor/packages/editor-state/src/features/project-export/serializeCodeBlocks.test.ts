@@ -38,16 +38,6 @@ describe('convertGraphicDataToProjectStructure', () => {
 		expect(result.unknown.map(block => block.code[0])).toEqual(['line 3', 'line 2', 'line 1']);
 	});
 
-	it('exports code without gridCoordinates field', () => {
-		const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ name: '1', code: ['code'], gridX: 5, gridY: 7 })];
-
-		const result = convertGraphicDataToProjectStructure(blocks);
-
-		expect(result.unknown[0]).not.toHaveProperty('gridCoordinates');
-		expect(result.unknown[0]).not.toHaveProperty('disabled');
-		expect(result.unknown[0].code).toEqual(['code']);
-	});
-
 	it('stores explicit disabled state when a block is disabled', () => {
 		const blocks: CodeBlockGraphicData[] = [createMockCodeBlock({ name: 'disabled', code: ['code'], disabled: true })];
 

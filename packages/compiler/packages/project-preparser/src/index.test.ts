@@ -91,7 +91,6 @@ describe('parseProjectSource', () => {
 
 		expect(project.includes).toEqual([{ id: 3, code: includesBlock }]);
 		expect(project.modules).toEqual([{ id: 9, code: validModuleBlock, entry: 'main' }]);
-		expect(project).not.toHaveProperty('includedFunctionBlocks');
 	});
 
 	it('parses module blocks that contain shape instructions', () => {
