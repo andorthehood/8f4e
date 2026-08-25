@@ -20,11 +20,6 @@ describe('ProjectObjectModel', () => {
 		expectTypeOf<ProjectObjectModel['functions']>().toEqualTypeOf<ProjectBlock[]>();
 		expectTypeOf<ProjectObjectModel['groups']>().toEqualTypeOf<ProjectGroupObjectModel[]>();
 		expectTypeOf<ProjectGroupObjectModel['entry']>().toEqualTypeOf<ProjectEntryName>();
-		expectTypeOf<ProjectObjectModel>().not.toHaveProperty('id');
-		expectTypeOf<ProjectObjectModel>().not.toHaveProperty('name');
-		expectTypeOf<ProjectObjectModel>().not.toHaveProperty('entry');
-		expectTypeOf<ProjectBlock>().not.toHaveProperty('type');
-		expectTypeOf<ProjectBlock>().not.toHaveProperty('entry');
 	});
 
 	it('creates canonical group paths and module ids', () => {

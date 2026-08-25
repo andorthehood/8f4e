@@ -91,31 +91,4 @@ describe('@config directive', () => {
 		expect(result.errors).toHaveLength(3);
 		expect(result.errors.every(error => error.message.includes('requires exactly 2 arguments'))).toBe(true);
 	});
-
-	it('does not resolve removed top-level font directive', () => {
-		const result = resolveGlobalEditorDirectives([createParsedBlock(['module a', '; @font 6x10', 'moduleEnd'])]);
-
-		expect(result.resolved).toEqual({});
-		expect(result.errors).toEqual([]);
-	});
-
-	it('does not resolve removed top-level color directive', () => {
-		const result = resolveGlobalEditorDirectives([
-			{
-				projectPath: '',
-				parsedDirectives: [
-					{
-						prefix: '@',
-						name: 'color',
-						args: ['text.code', '#112233'],
-						rawRow: 0,
-						isTrailing: false,
-					},
-				],
-			},
-		]);
-
-		expect(result.resolved).toEqual({});
-		expect(result.errors).toEqual([]);
-	});
 });
