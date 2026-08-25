@@ -80,6 +80,9 @@ so module identities are readable and deterministic: `counter`, `audio/counter`,
 parses and isolates these models before flattening them into one globally planned program; it does not merge
 independently compiled WebAssembly artifacts.
 
+Source-level module names match `[A-Za-z_][A-Za-z0-9_-]*`. This keeps the module-name leaf safe to use verbatim in a
+canonical module id; only group-name path segments require encoding.
+
 The editor mirrors this recursive ownership without introducing another project schema. A project group is represented
 by the same `CodeBlockGraphicData` used for other visible blocks, with `nestedProjectCodeBlocks` pointing to the child
 project's code-block array. `rootCodeBlocks` owns the recursive editor tree, while the existing `codeBlocks` field points

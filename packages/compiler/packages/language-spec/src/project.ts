@@ -31,8 +31,7 @@ export function createChildProjectGroupPath(
 
 /** Returns the canonical identity of a module owned by the given group path. */
 export function createProjectModuleId(groupPath: ProjectGroupPath, moduleName: string): ProjectModuleId {
-	const segment = encodeProjectPathSegment(moduleName);
-	return groupPath ? `${groupPath}/${segment}` : segment;
+	return groupPath ? `${groupPath}/${moduleName}` : moduleName;
 }
 
 /** Returns the canonical owning group path encoded in a module id. */

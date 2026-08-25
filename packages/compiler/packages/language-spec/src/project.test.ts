@@ -34,7 +34,7 @@ describe('ProjectObjectModel', () => {
 		expect(audioPath).toBe('audio');
 		expect(voicesPath).toBe('audio/voices%2Flead');
 		expect(createProjectModuleId(ROOT_PROJECT_GROUP_PATH, 'counter')).toBe('counter');
-		expect(createProjectModuleId(voicesPath, 'counter/left')).toBe('audio/voices%2Flead/counter%2Fleft');
+		expect(createProjectModuleId(voicesPath, 'counter-left')).toBe('audio/voices%2Flead/counter-left');
 		expect(getProjectGroupPathFromModuleId('counter')).toBe(ROOT_PROJECT_GROUP_PATH);
 		expect(getProjectGroupPathFromModuleId('audio/voices/counter')).toBe('audio/voices');
 	});

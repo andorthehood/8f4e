@@ -12,6 +12,7 @@ export type OperandRule = 'int' | 'float' | 'matching';
 /** Source argument shapes that the tokenizer can validate before semantic resolution. */
 export type SourceArgumentShapeRule =
 	| 'identifier'
+	| 'moduleName'
 	| 'identifierOrStringLiteral'
 	| 'constantIdentifier'
 	| 'literal'
@@ -787,7 +788,7 @@ export const instructionSpecs = {
 	}),
 	module: {
 		codegen: false,
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
+		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'moduleName' },
 		placement: {
 			block: {
 				kind: 'module',
