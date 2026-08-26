@@ -31,7 +31,7 @@ export const mainMenu: MenuGenerator = state => [
 					close: true,
 				},
 				{
-					title: 'Paste Module',
+					title: 'Paste Code Block',
 					action: 'addCodeBlock',
 					payload: { isPaste: true },
 					close: true,

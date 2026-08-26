@@ -16,7 +16,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 		mockEvents = createMockEventDispatcherWithVitest();
 	});
 
-	describe('Paste Module (readClipboardText callback)', () => {
+	describe('Paste Code Block (readClipboardText callback)', () => {
 		it('should read from clipboard callback when pasting a module', async () => {
 			const mockReadClipboard = vi.fn().mockResolvedValue('module test\n\nmoduleEnd');
 			mockState.callbacks.readClipboardText = mockReadClipboard;
@@ -30,7 +30,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 
 			const addCodeBlockCallback = addCodeBlockCall![1];
 
-			// Trigger paste module (code.length < 2 triggers clipboard read)
+			// Trigger paste code block (code.length < 2 triggers clipboard read)
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Verify clipboard was read
@@ -53,7 +53,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
 			const addCodeBlockCallback = addCodeBlockCall![1];
 
-			// Trigger paste module (code.length < 2 triggers clipboard read)
+			// Trigger paste code block (code.length < 2 triggers clipboard read)
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Verify no code block was added
@@ -70,7 +70,7 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 			const addCodeBlockCall = onCalls.find(call => call[0] === 'addCodeBlock');
 			const addCodeBlockCallback = addCodeBlockCall![1];
 
-			// Trigger paste module (code.length < 2 triggers clipboard read)
+			// Trigger paste code block (code.length < 2 triggers clipboard read)
 			await addCodeBlockCallback({ x: 100, y: 100, isNew: false, code: [''] });
 
 			// Verify clipboard was attempted

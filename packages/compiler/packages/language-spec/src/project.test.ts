@@ -10,6 +10,8 @@ import {
 	type ProjectMemoryExposure,
 	type ProjectModuleBlock,
 	type ProjectObjectModel,
+	projectInstructionNames,
+	projectInstructions,
 	ROOT_PROJECT_GROUP_PATH,
 } from './project';
 
@@ -35,5 +37,14 @@ describe('ProjectObjectModel', () => {
 		expect(createProjectModuleId(voicesPath, 'counter-left')).toBe('audio/voices%2Flead/counter-left');
 		expect(getProjectGroupPathFromModuleId('counter')).toBe(ROOT_PROJECT_GROUP_PATH);
 		expect(getProjectGroupPathFromModuleId('audio/voices/counter')).toBe('audio/voices');
+	});
+
+	it('defines project-level source instructions', () => {
+		expect(projectInstructions).toEqual({
+			entry: { opener: 'entry', closer: 'entryEnd' },
+			group: { opener: 'group', closer: 'groupEnd' },
+			expose: 'expose',
+		});
+		expect(projectInstructionNames).toEqual(['entry', 'entryEnd', 'group', 'groupEnd', 'expose']);
 	});
 });

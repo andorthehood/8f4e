@@ -5,8 +5,8 @@ import {
 	getInstructionSpec,
 	isArrayMemoryDeclarationInstructionName,
 	isBlockResultTypeIdentifier,
-	isKnownInstructionName,
 	isMemoryDeclarationInstructionName,
+	isSubProgramInstructionName,
 	isValidModuleName,
 	MODULE_NAME_PATTERN,
 	SCALAR_TYPE_IDENTIFIERS,
@@ -149,7 +149,7 @@ function validateArgumentShape(argument: Argument, rule: SourceArgumentShapeRule
  * @returns Nothing.
  */
 export default function validateInstructionArguments(instruction: string, args: Argument[]): void {
-	if (!isKnownInstructionName(instruction)) {
+	if (!isSubProgramInstructionName(instruction)) {
 		throw new SyntaxRulesError(SyntaxErrorCode.UNRECOGNISED_INSTRUCTION);
 	}
 

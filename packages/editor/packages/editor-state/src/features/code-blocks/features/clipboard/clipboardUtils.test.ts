@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 
 import { extractGroupName } from '../group/extractGroupName';
-import { parseClipboardData, serializeGroupToClipboard } from './clipboardUtils';
+import { parseClipboardData, serializeCodeBlocksToClipboard } from './clipboardUtils';
 
-describe('serializeGroupToClipboard', () => {
+describe('serializeCodeBlocksToClipboard', () => {
 	it('should serialize group blocks with relative coordinates', () => {
 		const anchor = createMockCodeBlock({
 			code: ['module foo', 'moduleEnd'],
@@ -18,7 +18,7 @@ describe('serializeGroupToClipboard', () => {
 			gridY: 24,
 		});
 
-		const result = serializeGroupToClipboard([anchor, block2], anchor);
+		const result = serializeCodeBlocksToClipboard([anchor, block2], anchor);
 		const parsed = JSON.parse(result);
 
 		expect(parsed).toHaveLength(2);
@@ -40,7 +40,7 @@ describe('serializeGroupToClipboard', () => {
 			disabled: true,
 		});
 
-		const result = serializeGroupToClipboard([anchor], anchor);
+		const result = serializeCodeBlocksToClipboard([anchor], anchor);
 		const parsed = JSON.parse(result);
 
 		expect(parsed[0].code).toContain('; @disabled');
@@ -55,7 +55,7 @@ describe('serializeGroupToClipboard', () => {
 			disabled: false,
 		});
 
-		const result = serializeGroupToClipboard([anchor], anchor);
+		const result = serializeCodeBlocksToClipboard([anchor], anchor);
 		const parsed = JSON.parse(result);
 
 		expect(parsed[0].code).not.toContain('; @disabled');
@@ -75,7 +75,7 @@ describe('serializeGroupToClipboard', () => {
 			gridY: 8,
 		});
 
-		const result = serializeGroupToClipboard([anchor, block2], anchor);
+		const result = serializeCodeBlocksToClipboard([anchor, block2], anchor);
 		const parsed = JSON.parse(result);
 
 		expect(parsed[1].gridCoordinates).toEqual({ x: -5, y: -2 });
@@ -88,15 +88,79 @@ describe('serializeGroupToClipboard', () => {
 			gridY: 0,
 		});
 
-		const result = serializeGroupToClipboard([anchor], anchor);
+		const result = serializeCodeBlocksToClipboard([anchor], anchor);
 		const parsed = JSON.parse(result);
 
 		expect(parsed[0].code).toEqual(['module test', '', '; comment', '', 'moduleEnd']);
+	});
+
+	it('serializes project-group contents recursively', () => {
+		const nestedModule = createMockCodeBlock({
+			code: ['module voice', 'moduleEnd'],
+			gridX: 4,
+			gridY: 6,
+			entry: 'main',
+		});
+		const nestedGroup = createMockCodeBlock({
+			code: ['group modulation', 'groupEnd'],
+			gridX: -3,
+			gridY: 8,
+			entry: 'main',
+			nestedProjectCodeBlocks: [nestedModule],
+		});
+		const group = createMockCodeBlock({
+			code: ['group audio', '; keep me', 'groupEnd'],
+			gridX: 10,
+			gridY: 20,
+			entry: 'main',
+			nestedProjectCodeBlocks: [nestedGroup],
+		});
+
+		const parsed = JSON.parse(serializeCodeBlocksToClipboard([group], group));
+
+		expect(parsed).toEqual([
+			{
+				code: ['group audio', '; keep me', 'groupEnd'],
+				gridCoordinates: { x: 0, y: 0 },
+				entry: 'main',
+				nestedProjectCodeBlocks: [
+					{
+						code: ['group modulation', 'groupEnd'],
+						gridCoordinates: { x: -3, y: 8 },
+						entry: 'main',
+						nestedProjectCodeBlocks: [
+							{
+								code: ['module voice', 'moduleEnd'],
+								gridCoordinates: { x: 4, y: 6 },
+								entry: 'main',
+							},
+						],
+					},
+				],
+			},
+		]);
 	});
 });
 
 describe('parseClipboardData', () => {
 	describe('multi-block detection', () => {
+		it('parses a single project group with recursively owned blocks', () => {
+			const clipboardText = JSON.stringify([
+				{
+					code: ['group audio', 'groupEnd'],
+					gridCoordinates: { x: 0, y: 0 },
+					nestedProjectCodeBlocks: [{ code: ['module voice', 'moduleEnd'], gridCoordinates: { x: 4, y: 6 } }],
+				},
+			]);
+
+			const result = parseClipboardData(clipboardText);
+
+			expect(result.type).toBe('multi');
+			if (result.type === 'multi') {
+				expect(result.blocks[0].nestedProjectCodeBlocks?.[0].code).toEqual(['module voice', 'moduleEnd']);
+			}
+		});
+
 		it('should parse valid multi-block JSON array', () => {
 			const clipboardText = JSON.stringify([
 				{ code: ['module foo', 'moduleEnd'], gridCoordinates: { x: 0, y: 0 } },

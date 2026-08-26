@@ -19,6 +19,14 @@ describe('validateInstructionArguments', () => {
 		);
 	});
 
+	it('rejects project-level instructions', () => {
+		for (const instruction of ['group', 'groupEnd', 'expose']) {
+			expect(() => validateInstructionArguments(instruction, [])).toThrow(
+				expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
+			);
+		}
+	});
+
 	it('accepts one-argument map rows', () => {
 		expect(() =>
 			validateInstructionArguments('map', [{ type: ArgumentType.LITERAL, value: 1, isInteger: true }])

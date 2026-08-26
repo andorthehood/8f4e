@@ -3,6 +3,7 @@ import createStateManager from '@8f4e/state-manager';
 import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
+import convertGraphicDataToProjectStructure from '../../../project-export/serializeCodeBlocks';
 import groupCopier from '../group/copier/effect';
 import codeBlockCreator from './effect';
 
@@ -161,6 +162,140 @@ describe('codeBlockCreator - group copy/paste', () => {
 			expect(parsed[0].code[0]).toBe('module bar');
 			expect(parsed[1].code[0]).toBe('module foo');
 			expect(parsed[2].code[0]).toBe('module baz');
+		});
+	});
+
+	describe('Copy project group', () => {
+		it('copies and pastes the complete recursive project-group tree', async () => {
+			let clipboardText = '';
+			mockState.callbacks.writeClipboardText = vi.fn(async text => {
+				clipboardText = text;
+			});
+			mockState.callbacks.readClipboardText = vi.fn(async () => clipboardText);
+			mockState.codeBlockRendering.nextCodeBlockCreationIndex = 20;
+
+			const nestedModule = createMockCodeBlock({
+				name: 'voice',
+				code: ['module voice', 'moduleEnd'],
+				blockType: 'module',
+				entry: 'main',
+				projectPath: 'audio/modulation',
+				gridX: 4,
+				gridY: 6,
+				creationIndex: 4,
+			});
+			const nestedGroup = createMockCodeBlock({
+				name: 'modulation',
+				code: ['group modulation', '; nested comment', 'groupEnd'],
+				entry: 'main',
+				projectPath: 'audio',
+				gridX: -3,
+				gridY: 8,
+				creationIndex: 3,
+				nestedProjectCodeBlocks: [nestedModule],
+			});
+			const module = createMockCodeBlock({
+				name: 'output',
+				code: ['module output', 'moduleEnd'],
+				blockType: 'module',
+				entry: 'main',
+				projectPath: 'audio',
+				gridX: 2,
+				gridY: 3,
+				creationIndex: 2,
+			});
+			const functionBlock = createMockCodeBlock({
+				name: 'process',
+				code: ['function process', 'functionEnd'],
+				blockType: 'function',
+				projectPath: 'audio',
+				gridX: 12,
+				gridY: 5,
+				creationIndex: 1,
+			});
+			const group = createMockCodeBlock({
+				name: 'audio',
+				code: ['group audio', '; root comment', 'groupEnd'],
+				entry: 'main',
+				gridX: 10,
+				gridY: 20,
+				creationIndex: 0,
+				nestedProjectCodeBlocks: [module, functionBlock, nestedGroup],
+			});
+			const rootCodeBlocks = [group];
+			mockState.codeBlockRendering.rootCodeBlocks = rootCodeBlocks;
+			mockState.codeBlockRendering.codeBlocks = rootCodeBlocks;
+
+			codeBlockCreator(store, mockEvents);
+			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
+			const copyCodeBlock = onCalls.find(call => call[0] === 'copyCodeBlock')![1];
+			const addCodeBlock = onCalls.find(call => call[0] === 'addCodeBlock')![1];
+
+			copyCodeBlock({ codeBlock: group });
+			await new Promise(resolve => setTimeout(resolve, 0));
+			expect(JSON.parse(clipboardText)[0].nestedProjectCodeBlocks).toHaveLength(3);
+
+			await addCodeBlock({ x: 100, y: 100, isNew: false, code: [''] });
+
+			expect(rootCodeBlocks).toHaveLength(2);
+			const pastedGroup = rootCodeBlocks[1];
+			expect(pastedGroup).toMatchObject({
+				name: 'audio1',
+				entry: 'main',
+				projectPath: '',
+			});
+			expect(pastedGroup.code).toContain('; root comment');
+			expect(pastedGroup.nestedProjectCodeBlocks).toHaveLength(3);
+			expect(pastedGroup.nestedProjectCodeBlocks?.[0]).toMatchObject({
+				name: 'output',
+				blockType: 'module',
+				entry: 'main',
+				projectPath: 'audio1',
+				gridX: 2,
+				gridY: 3,
+			});
+			expect(pastedGroup.nestedProjectCodeBlocks?.[1]).toMatchObject({
+				name: 'process',
+				blockType: 'function',
+				projectPath: 'audio1',
+			});
+			const pastedNestedGroup = pastedGroup.nestedProjectCodeBlocks?.[2];
+			expect(pastedNestedGroup).toMatchObject({
+				name: 'modulation',
+				projectPath: 'audio1',
+			});
+			expect(pastedNestedGroup?.code).toContain('; nested comment');
+			expect(pastedNestedGroup?.nestedProjectCodeBlocks?.[0]).toMatchObject({
+				name: 'voice',
+				blockType: 'module',
+				entry: 'main',
+				projectPath: 'audio1/modulation',
+				gridX: 4,
+				gridY: 6,
+			});
+			const pastedCreationIndexes = [
+				pastedGroup.creationIndex,
+				...pastedGroup.nestedProjectCodeBlocks!.flatMap(block => [
+					block.creationIndex,
+					...(block.nestedProjectCodeBlocks?.map(child => child.creationIndex) ?? []),
+				]),
+			];
+			expect(new Set(pastedCreationIndexes).size).toBe(pastedCreationIndexes.length);
+			expect(Math.min(...pastedCreationIndexes)).toBe(20);
+
+			const pastedProjectGroup = convertGraphicDataToProjectStructure(rootCodeBlocks).groups[1];
+			expect(pastedProjectGroup).toMatchObject({
+				name: 'audio1',
+				entry: 'main',
+				modules: [{ entry: 'main', code: expect.arrayContaining(['module output']) }],
+				functions: [{ code: expect.arrayContaining(['function process']) }],
+				groups: [
+					{
+						name: 'modulation',
+						modules: [{ entry: 'main', code: expect.arrayContaining(['module voice']) }],
+					},
+				],
+			});
 		});
 	});
 

@@ -23,4 +23,10 @@ describe('highlightSyntax8f4e', () => {
 		expect(colors[0]).toBe('comment');
 		expect(colors.slice(1)).toEqual(new Array(colors.length - 1).fill(undefined));
 	});
+
+	it('highlights project group instructions', () => {
+		const colors = highlightSyntax8f4e(['group audio', 'expose int level &voice:level', 'groupEnd'], syntaxFonts);
+
+		expect(colors.map(line => line[0])).toEqual(['instruction', 'instruction', 'instruction']);
+	});
 });

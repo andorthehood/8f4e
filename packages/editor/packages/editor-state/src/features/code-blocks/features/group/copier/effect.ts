@@ -1,7 +1,7 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 
 import type { StateManager } from '@8f4e/state-manager';
-import { serializeGroupToClipboard } from '../../clipboard/clipboardUtils';
+import { serializeCodeBlocksToClipboard } from '../../clipboard/clipboardUtils';
 
 export default function groupCopier(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
@@ -26,7 +26,7 @@ export default function groupCopier(store: StateManager<State>, events: EventDis
 		const sortedBlocks = [...groupBlocks].sort((a, b) => a.creationIndex - b.creationIndex);
 
 		// Serialize to clipboard using the selected block as anchor
-		const clipboardData = serializeGroupToClipboard(sortedBlocks, codeBlock);
+		const clipboardData = serializeCodeBlocksToClipboard(sortedBlocks, codeBlock);
 
 		state.callbacks.writeClipboardText(clipboardData).catch(() => {
 			// Fail silently if clipboard write fails

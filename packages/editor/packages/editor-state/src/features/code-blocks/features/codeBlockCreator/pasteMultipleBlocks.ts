@@ -1,4 +1,5 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
+import { createChildProjectGroupPath, type ProjectGroupPath, ROOT_PROJECT_GROUP_PATH } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import replaceCodeBlocksInPlace from '../../replaceCodeBlocksInPlace';
 import getBlockType from '../../utils/codeParsers/getBlockType';
@@ -9,7 +10,7 @@ import type { ClipboardCodeBlock } from '../clipboard/clipboardUtils';
 import upsertPos from '../directives/pos/upsert';
 import { hasDirective } from '../directives/utils';
 import { extractGroupName } from '../group/extractGroupName';
-import { createGroupNameMapping } from '../group/getUniqueGroupName';
+import { createGroupNameMapping, getUniqueGroupName } from '../group/getUniqueGroupName';
 import { replaceGroupName } from '../group/replaceGroupName';
 import { findProjectSlicePath } from '../projectGroupNavigation/effect';
 
@@ -59,6 +60,45 @@ function changeCodeBlockNameInCode(code: string[], instruction: string, name: st
 	});
 }
 
+function createPastedCodeBlock(
+	state: State,
+	clipboardBlock: ClipboardCodeBlock,
+	code: string[],
+	gridX: number,
+	gridY: number,
+	projectPath: ProjectGroupPath
+): CodeBlockGraphicData {
+	const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
+	state.codeBlockRendering.nextCodeBlockCreationIndex += 1;
+	const name = getCodeBlockNameFromSource(code);
+	const codeBlock = createCodeBlockGraphicData({
+		code,
+		name,
+		projectPath,
+		gridX,
+		gridY,
+		x: gridX * state.viewport.vGrid,
+		y: gridY * state.viewport.hGrid,
+		creationIndex,
+		blockType: getBlockType(code),
+		entry: clipboardBlock.entry,
+		disabled: hasDirective(code, 'disabled'),
+		alwaysOnTop: hasDirective(code, 'alwaysOnTop'),
+	});
+
+	if (clipboardBlock.nestedProjectCodeBlocks !== undefined) {
+		const childProjectPath = createChildProjectGroupPath(projectPath, name);
+		codeBlock.nestedProjectCodeBlocks = clipboardBlock.nestedProjectCodeBlocks.map(child => {
+			const childGridX = child.gridCoordinates.x;
+			const childGridY = child.gridCoordinates.y;
+			const childCode = upsertPos([...child.code], childGridX, childGridY);
+			return createPastedCodeBlock(state, child, childCode, childGridX, childGridY, childProjectPath);
+		});
+	}
+
+	return codeBlock;
+}
+
 /**
  * Handles pasting multiple blocks from clipboard with collision resolution and reference updating.
  * This function:
@@ -84,10 +124,9 @@ export function pasteMultipleBlocks(
 	if (!state.featureFlags.editing) {
 		return;
 	}
-	const projectPath = findProjectSlicePath(
-		state.codeBlockRendering.rootCodeBlocks,
-		state.codeBlockRendering.codeBlocks
-	)!;
+	const projectPath =
+		findProjectSlicePath(state.codeBlockRendering.rootCodeBlocks, state.codeBlockRendering.codeBlocks) ??
+		ROOT_PROJECT_GROUP_PATH;
 
 	// Calculate paste anchor grid position
 	const anchorGridX = Math.round((state.viewport.x + x) / state.viewport.vGrid);
@@ -104,6 +143,19 @@ export function pasteMultipleBlocks(
 
 	// Create group name mapping to avoid collisions
 	const groupNameMapping = createGroupNameMapping(pastedGroupNames, state.codeBlockRendering.codeBlocks);
+	const existingProjectGroupNames = new Set(
+		state.codeBlockRendering.codeBlocks
+			.filter(block => block.nestedProjectCodeBlocks !== undefined)
+			.map(block => block.name)
+	);
+	const projectGroupNameMapping = new Map<string, string>();
+	for (const block of blocks) {
+		if (block.nestedProjectCodeBlocks === undefined) continue;
+		const originalName = getCodeBlockNameFromSource(block.code);
+		const newName = getUniqueGroupName(originalName, existingProjectGroupNames);
+		projectGroupNameMapping.set(originalName, newName);
+		existingProjectGroupNames.add(newName);
+	}
 
 	// First pass: determine name mappings for all pasted blocks.
 	const nameMapping = new Map<string, string[]>(); // Maps `<type>:<originalName>` to array of new names.
@@ -143,6 +195,13 @@ export function pasteMultipleBlocks(
 		nameMapping.get(key)!.push(newName);
 		processedNames.add(`${type}:${newName}`);
 	}
+	const simpleNameMapping = new Map<string, string>();
+	for (const [mappingKey, newNameArray] of nameMapping.entries()) {
+		const [, originalMappedName] = mappingKey.split(':');
+		if (newNameArray.length > 0) {
+			simpleNameMapping.set(originalMappedName, newNameArray[0]);
+		}
+	}
 
 	// Second pass: create blocks with updated names and inter-module references.
 	const newBlocks: CodeBlockGraphicData[] = [];
@@ -155,6 +214,12 @@ export function pasteMultipleBlocks(
 
 		// Process code: update names, inter-module references, and rename groups.
 		let code = [...clipboardBlock.code];
+		const isProjectGroup = clipboardBlock.nestedProjectCodeBlocks !== undefined;
+		const originalProjectGroupName = isProjectGroup ? getCodeBlockNameFromSource(code) : undefined;
+		if (originalProjectGroupName) {
+			const newProjectGroupName = projectGroupNameMapping.get(originalProjectGroupName)!;
+			code = changeCodeBlockNameInCode(code, 'group', newProjectGroupName);
+		}
 
 		// Update module/function names to ensure uniqueness.
 		const blockType = getBlockType(code);
@@ -176,16 +241,10 @@ export function pasteMultipleBlocks(
 			}
 		}
 
-		// Update inter-module references in the code
-		// Build a simple name mapping from first occurrence of each original name to its new name.
-		const simpleNameMapping = new Map<string, string>();
-		for (const [mappingKey, newNameArray] of nameMapping.entries()) {
-			const [, originalMappedName] = mappingKey.split(':');
-			if (newNameArray.length > 0) {
-				simpleNameMapping.set(originalMappedName, newNameArray[0]);
-			}
+		if (!isProjectGroup) {
+			code = updateInterModuleReferences(code, simpleNameMapping);
+			code = updateInterModuleReferences(code, projectGroupNameMapping);
 		}
-		code = updateInterModuleReferences(code, simpleNameMapping);
 
 		// Rename group if needed
 		const originalGroupName = extractGroupName(code);
@@ -198,24 +257,7 @@ export function pasteMultipleBlocks(
 		// Add canonical @pos directive to code
 		code = upsertPos(code, gridX, gridY);
 
-		// Parse disabled state from @disabled directive in code
-		const disabled = hasDirective(code, 'disabled');
-
-		const creationIndex = state.codeBlockRendering.nextCodeBlockCreationIndex;
-		state.codeBlockRendering.nextCodeBlockCreationIndex++;
-
-		const codeBlock = createCodeBlockGraphicData({
-			code,
-			name: getCodeBlockNameFromSource(code),
-			projectPath,
-			gridX,
-			gridY,
-			x: gridX * state.viewport.vGrid,
-			y: gridY * state.viewport.hGrid,
-			creationIndex,
-			disabled,
-			alwaysOnTop: hasDirective(code, 'alwaysOnTop'),
-		});
+		const codeBlock = createPastedCodeBlock(state, clipboardBlock, code, gridX, gridY, projectPath);
 
 		// Add block immediately so next iteration's ID uniqueness check sees it
 		state.codeBlockRendering.codeBlocks.push(codeBlock);

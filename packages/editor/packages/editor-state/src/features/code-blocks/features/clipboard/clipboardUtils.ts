@@ -8,27 +8,43 @@ import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 export interface ClipboardCodeBlock {
 	code: string[];
 	gridCoordinates: { x: number; y: number };
+	entry?: string;
+	nestedProjectCodeBlocks?: ClipboardCodeBlock[];
+}
+
+function createClipboardCodeBlock(block: CodeBlockGraphicData, origin: { x: number; y: number }): ClipboardCodeBlock {
+	return {
+		code: block.code,
+		gridCoordinates: {
+			x: block.gridX - origin.x,
+			y: block.gridY - origin.y,
+		},
+		...(block.entry === undefined ? {} : { entry: block.entry }),
+		...(block.nestedProjectCodeBlocks === undefined
+			? {}
+			: {
+					nestedProjectCodeBlocks: block.nestedProjectCodeBlocks.map(child =>
+						createClipboardCodeBlock(child, { x: 0, y: 0 })
+					),
+				}),
+	};
 }
 
 /**
- * Serializes a group of code blocks into a clipboard payload.
+ * Serializes code blocks and recursively owned project-group slices into a clipboard payload.
  * The payload is a JSON array where gridCoordinates are relative to the anchor block.
  *
- * @param groupBlocks - Array of code blocks to copy (must all be from the same group)
+ * @param codeBlocks - Array of code blocks to copy from the same rendered project slice
  * @param anchorBlock - The block to use as the reference point (0,0)
  * @returns JSON string representation of the code blocks
  */
-export function serializeGroupToClipboard(
-	groupBlocks: CodeBlockGraphicData[],
+export function serializeCodeBlocksToClipboard(
+	codeBlocks: CodeBlockGraphicData[],
 	anchorBlock: CodeBlockGraphicData
 ): string {
-	const clipboardBlocks: ClipboardCodeBlock[] = groupBlocks.map(block => ({
-		code: block.code,
-		gridCoordinates: {
-			x: block.gridX - anchorBlock.gridX,
-			y: block.gridY - anchorBlock.gridY,
-		},
-	}));
+	const clipboardBlocks = codeBlocks.map(block =>
+		createClipboardCodeBlock(block, { x: anchorBlock.gridX, y: anchorBlock.gridY })
+	);
 
 	return JSON.stringify(clipboardBlocks);
 }
@@ -60,6 +76,15 @@ function isValidClipboardCodeBlock(obj: unknown): obj is ClipboardCodeBlock {
 	if (typeof coords.x !== 'number' || typeof coords.y !== 'number') {
 		return false;
 	}
+	if (block.entry !== undefined && typeof block.entry !== 'string') {
+		return false;
+	}
+	if (
+		block.nestedProjectCodeBlocks !== undefined &&
+		(!Array.isArray(block.nestedProjectCodeBlocks) || !block.nestedProjectCodeBlocks.every(isValidClipboardCodeBlock))
+	) {
+		return false;
+	}
 
 	return true;
 }
@@ -82,13 +107,15 @@ export function parseClipboardData(
 		return { type: 'single', text: clipboardText };
 	}
 
-	// Check if it's an array with at least 2 elements
-	if (!Array.isArray(parsed) || parsed.length < 2) {
+	if (!Array.isArray(parsed) || parsed.length === 0) {
 		return { type: 'single', text: clipboardText };
 	}
 
 	// Check if every element matches the expected code block shape
 	if (!parsed.every(isValidClipboardCodeBlock)) {
+		return { type: 'single', text: clipboardText };
+	}
+	if (parsed.length === 1 && parsed[0].nestedProjectCodeBlocks === undefined) {
 		return { type: 'single', text: clipboardText };
 	}
 
