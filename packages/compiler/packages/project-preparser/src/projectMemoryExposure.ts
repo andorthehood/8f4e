@@ -3,10 +3,11 @@ import {
 	isValidModuleName,
 	type MemoryDeclarationInstruction,
 	type ProjectMemoryExposure,
+	projectInstructions,
 } from '@8f4e/language-spec';
 import { startsWithInstruction } from './projectKeywords';
 
-const EXPOSURE_INSTRUCTION = 'expose';
+const EXPOSURE_INSTRUCTION = projectInstructions.expose;
 
 function isValidNamedMemoryReference(value: string): boolean {
 	return value.length > 0 && !/[&:.\s]/.test(value) && !/^\d+$/.test(value);

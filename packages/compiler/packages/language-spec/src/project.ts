@@ -1,5 +1,25 @@
 import type { MemoryDeclarationInstruction, PlannedMemoryDeclaration } from './memory';
 
+/** Project-level source instructions consumed before individual code blocks are tokenized. */
+export const projectInstructions = {
+	entry: { opener: 'entry', closer: 'entryEnd' },
+	group: { opener: 'group', closer: 'groupEnd' },
+	expose: 'expose',
+} as const;
+
+export const projectInstructionNames = [
+	projectInstructions.entry.opener,
+	projectInstructions.entry.closer,
+	projectInstructions.group.opener,
+	projectInstructions.group.closer,
+	projectInstructions.expose,
+] as const;
+
+export type ProjectInstructionName = (typeof projectInstructionNames)[number];
+
+/** Project-level instruction lookup shared by compiler tooling and editor syntax highlighting. */
+export const projectInstructionNameSet: ReadonlySet<string> = new Set(projectInstructionNames);
+
 /** Stable identity shared by project actors and compiler diagnostics. */
 export type ProjectBlockId = number;
 
