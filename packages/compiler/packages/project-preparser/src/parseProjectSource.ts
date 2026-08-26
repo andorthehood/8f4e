@@ -23,6 +23,7 @@ type ProjectContainerContentOptions = {
 	container: ProjectContainerDelimiter;
 	validateDocumentOpener: (opener: string, line: string, lineNumber: number) => void;
 	exposures?: ProjectMemoryExposure[];
+	rootCode?: string[];
 };
 type ParsedProjectBlock = { block: ProjectBlock; type: DocumentBlockType; nextIndex: number };
 
@@ -39,11 +40,12 @@ function createEmptyProject(): ProjectObjectModel {
 	};
 }
 
-function createEmptyProjectGroup(name: string, entry: string): ProjectGroupObjectModel {
+function createEmptyProjectGroup(name: string, entry: string, openerLine: string): ProjectGroupObjectModel {
 	return {
 		...createEmptyProject(),
 		name,
 		entry,
+		code: [openerLine],
 		exposures: [],
 	};
 }
@@ -126,17 +128,22 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 
 	function readProjectContainerContents(startIndex: number, options: ProjectContainerContentOptions): number {
 		for (let i = startIndex; i < lines.length; ) {
-			const trimmed = lines[i].trim();
-			if (isProjectGapLine(trimmed)) {
-				i += 1;
-				continue;
-			}
+			const line = lines[i];
+			const trimmed = line.trim();
 			const closer = getProjectCloserKeyword(trimmed);
-			if (closer === options.container.closer) return i + 1;
+			if (closer === options.container.closer) {
+				options.rootCode?.push(line);
+				return i + 1;
+			}
 			if (closer) {
 				throw new Error(
 					`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${options.container.opener}"`
 				);
+			}
+			if (isProjectGapLine(trimmed)) {
+				options.rootCode?.push(line);
+				i += 1;
+				continue;
 			}
 			if (options.exposures && startsWithInstruction(trimmed, 'expose')) {
 				const exposure = parseProjectMemoryExposureLine(trimmed, i + 1);
@@ -144,11 +151,17 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 					throw new Error(`Parse error at line ${i + 1}: duplicate exposure "${exposure.name}"`);
 				}
 				options.exposures.push(exposure);
+				options.rootCode?.push(line);
 				i += 1;
 				continue;
 			}
 
 			const opener = getProjectOpenerKeyword(trimmed);
+			if (!opener && options.rootCode) {
+				options.rootCode.push(line);
+				i += 1;
+				continue;
+			}
 			if (!opener) throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
 			if (opener === GROUP_BLOCK_DELIMITER.opener) {
 				const nested = readProjectGroup(i, options.entry);
@@ -173,13 +186,14 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 		if (getProjectOpenerKeyword(openerLine.trim()) !== GROUP_BLOCK_DELIMITER.opener) {
 			throw new Error(`Parse error at line ${startIndex + 1}: expected group opener`);
 		}
-		const group = createEmptyProjectGroup(getProjectBlockName(openerLine, startIndex + 1, 'group'), entry);
+		const group = createEmptyProjectGroup(getProjectBlockName(openerLine, startIndex + 1, 'group'), entry, openerLine);
 		return {
 			nextIndex: readProjectContainerContents(startIndex + 1, {
 				project: group,
 				entry,
 				container: GROUP_BLOCK_DELIMITER,
 				exposures: group.exposures,
+				rootCode: group.code,
 				validateDocumentOpener: (opener, _line, lineNumber) => {
 					if (opener === ENTRY_BLOCK_DELIMITER.opener) {
 						throw new Error(`Parse error at line ${lineNumber}: entry blocks cannot be nested inside groups`);

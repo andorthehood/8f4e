@@ -187,6 +187,7 @@ describe('code block rendering home directive', () => {
 						...EMPTY_DEFAULT_PROJECT,
 						name: 'Audio',
 						entry: 'main',
+						code: ['group Audio', '; keep this comment', 'expose int level &voice:level', 'groupEnd'],
 						exposures: [
 							{
 								type: 'int',
@@ -212,7 +213,13 @@ describe('code block rendering home directive', () => {
 		expect(state.codeBlockRendering.codeBlocks.map(block => block.name)).toEqual(['root', 'Audio']);
 		const groupBlock = state.codeBlockRendering.codeBlocks[1];
 		expect(groupBlock.projectPath).toBe('');
-		expect(groupBlock.code).toContain('expose int level &voice:level');
+		expect(groupBlock.code).toEqual([
+			'group Audio',
+			'; keep this comment',
+			'expose int level &voice:level',
+			'; @pos 0 -6',
+			'groupEnd',
+		]);
 		expect(groupBlock.nestedProjectCodeBlocks).toHaveLength(1);
 		expect(groupBlock.nestedProjectCodeBlocks?.[0]).toMatchObject({
 			name: 'voice',
@@ -232,6 +239,7 @@ describe('code block rendering home directive', () => {
 						...EMPTY_DEFAULT_PROJECT,
 						name: 'Audio',
 						entry: 'main',
+						code: ['group Audio', 'groupEnd'],
 						exposures: [],
 						modules: [{ id: 1, entry: 'main', code: ['module voice', 'moduleEnd'] }],
 					},

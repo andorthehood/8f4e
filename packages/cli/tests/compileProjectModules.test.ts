@@ -124,6 +124,7 @@ describe('compileProjectModules', () => {
 						]),
 						id: 1,
 						name: 'nested',
+						code: ['group nested', 'groupEnd'],
 						exposures: [],
 					},
 				],

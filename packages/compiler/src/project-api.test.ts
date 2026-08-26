@@ -114,6 +114,7 @@ describe('project compiler API', () => {
 			{
 				name: 'audio',
 				entry: 'main',
+				code: ['group audio', 'groupEnd'],
 				exposures: [],
 				modules: [{ id: 6, entry: 'main', code: ['module grouped', 'int value 1', 'moduleEnd'] }],
 				functions: [],
@@ -143,6 +144,7 @@ describe('project compiler API', () => {
 			...directProject,
 			name,
 			entry: 'main',
+			code: [`group ${name}`, 'groupEnd'],
 			exposures: [],
 			modules: [
 				{
@@ -186,6 +188,7 @@ describe('project compiler API', () => {
 						...directProject,
 						name: 'included',
 						entry: 'main',
+						code: ['group included', 'groupEnd'],
 						exposures: [],
 						modules: [
 							{
@@ -228,6 +231,7 @@ describe('project compiler API', () => {
 						...directProject,
 						name: 'hidden',
 						entry: 'main',
+						code: ['group hidden', 'groupEnd'],
 						exposures: [],
 						modules: [],
 						functions: [{ id: 2, code: ['function hidden', 'functionEnd'] }],

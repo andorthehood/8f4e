@@ -3,6 +3,14 @@
   "functions": [],
   "groups": [
     {
+      "code": [
+        "group audio",
+        "expose int exposedValue &source:value",
+        "expose int* exposedInput &consumer:input",
+        "",
+        "",
+        "groupEnd",
+      ],
       "constants": [],
       "entry": "main",
       "exposures": [

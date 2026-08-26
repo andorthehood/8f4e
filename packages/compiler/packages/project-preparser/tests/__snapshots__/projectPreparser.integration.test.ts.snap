@@ -62,6 +62,10 @@ exports[`project-preparser integration > parses project source into typed collec
     ],
     "groups": [
       {
+        "code": [
+          "group audio",
+          "groupEnd",
+        ],
         "constants": [],
         "entry": "main",
         "exposures": [],

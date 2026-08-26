@@ -6,7 +6,6 @@ import {
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
 } from '@8f4e/language-spec';
-import { serializeProjectMemoryExposure } from '@8f4e/project-preparser';
 import type { StateManager } from '@8f4e/state-manager';
 import gapCalculator from '../code-editing/gapCalculator';
 import { moveCaret } from '../code-editing/moveCaret';
@@ -303,17 +302,18 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				const groupName = group.name;
 				const gridX = groupIndex * 24;
 				const gridY = -6;
+				const groupCode = [...group.code];
+				if (!parsePos(parseBlockDirectives(groupCode))) {
+					let closerIndex = groupCode.length - 1;
+					while (closerIndex >= 0 && groupCode[closerIndex].trim() === '') closerIndex -= 1;
+					groupCode.splice(closerIndex, 0, `; @pos ${gridX} ${gridY}`);
+				}
 				const creationIndex = nextCodeBlockCreationIndex;
 				nextCodeBlockCreationIndex += 1;
 				return createGraphicCodeBlock(
 					{
 						id: creationIndex,
-						code: [
-							`group ${groupName}`,
-							...group.exposures.map(serializeProjectMemoryExposure),
-							`; @pos ${gridX} ${gridY}`,
-							'groupEnd',
-						],
+						code: groupCode,
 						blockType: 'unknown',
 						entry: group.entry,
 					},

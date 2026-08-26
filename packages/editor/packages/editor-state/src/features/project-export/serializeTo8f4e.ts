@@ -1,5 +1,4 @@
 import type { ProjectGroupObjectModel, ProjectModuleBlock, ProjectObjectModel } from '@8f4e/language-spec';
-import { serializeProjectMemoryExposure } from '@8f4e/project-preparser';
 import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
@@ -68,17 +67,23 @@ function getDocumentBlocks(project: ProjectObjectModel) {
 }
 
 function getAllBlocks(project: ProjectObjectModel): Array<{ code: string[] }> {
-	return [...getDocumentBlocks(project), ...project.modules, ...project.groups.flatMap(getAllBlocks)];
+	return [
+		...getDocumentBlocks(project),
+		...project.modules,
+		...project.groups.flatMap(group => [group, ...getAllBlocks(group)]),
+	];
 }
 
 function serializeGroup(group: ProjectGroupObjectModel): string[] {
+	let closerIndex = group.code.length - 1;
+	while (closerIndex >= 0 && group.code[closerIndex].trim() === '') closerIndex -= 1;
+
 	return [
-		`group ${group.name}`,
-		...group.exposures.map(serializeProjectMemoryExposure),
+		...group.code.slice(0, closerIndex),
 		...getDocumentBlocks(group).flatMap(block => block.code),
 		...group.modules.flatMap(module => module.code),
 		...group.groups.flatMap(serializeGroup),
-		'groupEnd',
+		...group.code.slice(closerIndex),
 	];
 }
 

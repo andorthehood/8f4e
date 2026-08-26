@@ -51,6 +51,7 @@ interface ProjectObjectModel {
 interface ProjectGroupObjectModel extends ProjectObjectModel {
 	name: ProjectGroupName;
 	entry: ProjectEntryName;
+	code: string[];
 	exposures: ProjectMemoryExposure[];
 }
 
@@ -81,8 +82,9 @@ blocks remain available to editors without entering compilation.
 Groups use the same object model recursively rather than referencing root-owned blocks by id. A nested model owns its
 modules, functions, constants, prototypes, includes, notes, unknown blocks, and further groups. Identity fields are not
 part of the root project model: child groups require a sibling-unique `name` and an `entry` through
-`ProjectGroupObjectModel`. A group's canonical path is formed from its ancestors' encoded names. The root path is empty,
-so module identities are readable and deterministic: `counter`, `audio/counter`, and
+`ProjectGroupObjectModel`. Its `code` retains every source line owned by the group wrapper, while nested project blocks
+remain in their typed collections. A group's canonical path is formed from its ancestors' encoded names. The root path
+is empty, so module identities are readable and deterministic: `counter`, `audio/counter`, and
 `audio/voices/counter`. The same identity keys `compiledModules`, `memoryPlan.modules`,
 `memoryDefaultsByModuleId`, and `pointerMetadataByModuleId` without a transformed result map. The compiler recursively
 parses and isolates these models before flattening them into one globally planned program; it does not merge
