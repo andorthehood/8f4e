@@ -10,6 +10,8 @@ import {
 	isFunctionBodyInstructionName,
 	isFunctionPreBodyInstructionName,
 	isImportedFunctionDeclarationInstructionName,
+	isKnownInstructionName,
+	isSubProgramInstructionName,
 	stackBlockInstructionPairs,
 } from './instructions';
 
@@ -60,5 +62,16 @@ describe('function instruction classification', () => {
 				])
 			),
 		}).toMatchSnapshot();
+	});
+});
+
+describe('instruction name classification', () => {
+	it('includes project instructions in the complete set but excludes them from subprograms', () => {
+		expect(isKnownInstructionName('group')).toBe(true);
+		expect(isKnownInstructionName('groupEnd')).toBe(true);
+		expect(isKnownInstructionName('expose')).toBe(true);
+		expect(isSubProgramInstructionName('group')).toBe(false);
+		expect(isSubProgramInstructionName('expose')).toBe(false);
+		expect(isSubProgramInstructionName('push')).toBe(true);
 	});
 });

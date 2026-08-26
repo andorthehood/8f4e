@@ -13,6 +13,8 @@ import type {
 } from './instructionSpecTypes';
 import type { MemoryDeclarationInstruction } from './memory';
 import { memoryDeclarationInstructions } from './memory';
+import type { ProjectInstructionName } from './project';
+import { projectInstructionNames } from './project';
 
 type InstructionSpecEntry = readonly [InstructionSpecName, InstructionSpec];
 
@@ -234,24 +236,38 @@ export function isImportedFunctionDeclarationInstructionName(
 	return importedFunctionDeclarationInstructionNameSet.has(instruction);
 }
 
-export type Instruction =
+export type SubProgramInstruction =
 	| CodegenInstructionName
 	| MemoryDeclarationInstruction
 	| SemanticInstructionName
 	| DocumentOnlyInstructionName;
 
-export const knownInstructionNameSet: ReadonlySet<string> = new Set([
+/** Instructions accepted by the tokenizer after project-level source has been extracted. */
+export const subProgramInstructionNameSet: ReadonlySet<string> = new Set([
 	...codegenInstructionNames,
 	...memoryDeclarationInstructions,
 	...semanticInstructionNames,
 	...documentOnlyInstructionNames,
 ]);
 
+export type Instruction = SubProgramInstruction | ProjectInstructionName;
+
+/** Every instruction name accepted anywhere in an 8f4e project source. */
+export const knownInstructionNameSet: ReadonlySet<string> = new Set([
+	...subProgramInstructionNameSet,
+	...projectInstructionNames,
+]);
+
+/** Checks whether an instruction is accepted by the subprogram tokenizer. */
+export function isSubProgramInstructionName(instruction: string): instruction is SubProgramInstruction {
+	return subProgramInstructionNameSet.has(instruction);
+}
+
 /**
- * Checks whether a string is one of the compiler's registered instruction names.
+ * Checks whether a string is an instruction accepted anywhere in project source.
  *
  * @param instruction - Instruction keyword to inspect.
- * @returns True when the keyword belongs to a known compiler instruction.
+ * @returns True when the keyword belongs to a known project or subprogram instruction.
  */
 export function isKnownInstructionName(instruction: string): instruction is Instruction {
 	return knownInstructionNameSet.has(instruction);

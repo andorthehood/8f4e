@@ -1,12 +1,10 @@
-import { knownInstructionNameSet, projectInstructionNameSet } from '@8f4e/language-spec';
+import { knownInstructionNameSet } from '@8f4e/language-spec';
 import highlightEditorDirective from './highlightEditorDirective';
 import type { SyntaxFonts, SyntaxHighlighting } from './types';
 
-const highlightedInstructionNameSet = new Set([...knownInstructionNameSet, ...projectInstructionNameSet]);
-
 const instructionRegExp = new RegExp(
 	'(?<=^|\\s)(?:' +
-		[...highlightedInstructionNameSet]
+		[...knownInstructionNameSet]
 			.sort((a, b) => b.length - a.length)
 			.join('|')
 			.replaceAll(/\*/g, '\\*')

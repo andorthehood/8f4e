@@ -17,9 +17,6 @@ export const projectInstructionNames = [
 
 export type ProjectInstructionName = (typeof projectInstructionNames)[number];
 
-/** Project-level instruction lookup shared by compiler tooling and editor syntax highlighting. */
-export const projectInstructionNameSet: ReadonlySet<string> = new Set(projectInstructionNames);
-
 /** Stable identity shared by project actors and compiler diagnostics. */
 export type ProjectBlockId = number;
 
