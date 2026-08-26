@@ -131,10 +131,10 @@
                 "isEndAddress": false,
                 "referenceKind": "intermodular-reference",
                 "scope": "intermodule",
-                "targetMemoryId": "value",
-                "targetModuleId": "audio/source",
+                "targetMemoryId": "exposedValue",
+                "targetModuleId": "audio",
                 "type": "identifier",
-                "value": "&audio/source:value",
+                "value": "&audio:exposedValue",
               },
             ],
             "instruction": "int*",
@@ -178,6 +178,18 @@
   "entryNames": [
     "main",
   ],
+  "memoryAliases": {
+    "audio": {
+      "exposedInput": {
+        "targetMemoryId": "input",
+        "targetModuleId": "audio/consumer",
+      },
+      "exposedValue": {
+        "targetMemoryId": "value",
+        "targetModuleId": "audio/source",
+      },
+    },
+  },
   "memoryExposures": [
     {
       "groupPath": "audio",

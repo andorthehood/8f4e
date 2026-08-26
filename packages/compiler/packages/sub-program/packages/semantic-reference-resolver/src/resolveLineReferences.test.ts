@@ -218,6 +218,7 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
 			memoryPlan: createEmptyMemoryPlan(),
+			memoryAliases: new Map(),
 			locals: {},
 			startingByteAddress: 16,
 			currentModuleWordAlignedSize: 3,
@@ -252,6 +253,7 @@ describe('resolveLineReferences', () => {
 				namespaces: { otherModule: { kind: 'module' } },
 			},
 			memoryPlan: createEmptyMemoryPlan(),
+			memoryAliases: new Map(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -270,6 +272,7 @@ describe('resolveLineReferences', () => {
 				namespaces: { source: { kind: 'module' } },
 			},
 			memoryPlan: createSourceMemoryPlan(),
+			memoryAliases: new Map(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -293,6 +296,7 @@ describe('resolveLineReferences', () => {
 				},
 			},
 			memoryPlan: createSourceMemoryPlan(),
+			memoryAliases: new Map(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -307,6 +311,24 @@ describe('resolveLineReferences', () => {
 		expect(result.arguments[1]).toEqual(classifyIdentifier('&source:buffer'));
 	});
 
+	it('validates unresolved intermodule references through group aliases', () => {
+		const context = {
+			namespace: { moduleName: 'test', namespaces: {} },
+			memoryPlan: createSourceMemoryPlan(),
+			memoryAliases: new Map([['audio', new Map([['level', { targetModuleId: 'source', targetMemoryId: 'buffer' }]])]]),
+			locals: {},
+		} as unknown as CompilationContext;
+		const line: CompilerASTLine = {
+			lineNumber: 1,
+			instruction: 'int*',
+			arguments: [classifyIdentifier('ptr'), classifyIdentifier('&audio:level')],
+		};
+
+		const result = resolveLineReferences(line, context);
+
+		expect(result.arguments[1]).toEqual(classifyIdentifier('&audio:level'));
+	});
+
 	it('does not strip array declaration element count arguments', () => {
 		const context = {
 			namespace: {
@@ -318,6 +340,7 @@ describe('resolveLineReferences', () => {
 				},
 			},
 			memoryPlan: createSourceMemoryPlan(),
+			memoryAliases: new Map(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -354,6 +377,7 @@ describe('resolveLineReferences', () => {
 				},
 			},
 			memoryPlan: createSourceMemoryPlan(),
+			memoryAliases: new Map(),
 			locals: {},
 		} as unknown as CompilationContext;
 		const line: CompilerASTLine = {
@@ -383,6 +407,7 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
 			memoryPlan: createEmptyMemoryPlan(),
+			memoryAliases: new Map(),
 			locals: {
 				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', pointerDepth: 1, index: 0 },
 			},
@@ -558,6 +583,7 @@ describe('resolveSemanticReferences', () => {
 			ast: { prototypes: [], modules: [], constants: [], functions: [ast] },
 			namespaces: {},
 			memoryPlan: createEmptyMemoryPlan(),
+			memoryAliases: new Map(),
 			memoryDefaultsByModuleId: {},
 			pointerMetadataByModuleId: {},
 			constantReferences: { prototypes: [], modules: [], constants: [], functions: [{ lineFacts: [] }] },

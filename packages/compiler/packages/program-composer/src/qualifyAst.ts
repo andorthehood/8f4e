@@ -13,7 +13,6 @@ function qualifyIntermoduleIdentifier(argument: ArgumentIdentifier, prefix: stri
 	const targetModuleId = qualifySymbol(prefix, argument.targetModuleId);
 	return {
 		...argument,
-		value: argument.value.replace(argument.targetModuleId, targetModuleId),
 		targetModuleId,
 	};
 }

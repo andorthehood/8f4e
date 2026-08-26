@@ -26,6 +26,12 @@ function serializeContext(context: CompilerStageError['context']): CompilerDiagn
 		...(context.codeBlockType !== undefined ? { codeBlockType: context.codeBlockType } : {}),
 		...(context.projectBlockId !== undefined ? { projectBlockId: context.projectBlockId } : {}),
 		...(context.source !== undefined ? { source: context.source } : {}),
+		...('projectGroupPath' in context && context.projectGroupPath !== undefined
+			? { projectGroupPath: context.projectGroupPath }
+			: {}),
+		...('projectMemoryExposureName' in context && context.projectMemoryExposureName !== undefined
+			? { projectMemoryExposureName: context.projectMemoryExposureName }
+			: {}),
 	};
 }
 

@@ -332,6 +332,7 @@ describe('resolveSemanticReferences integration', () => {
 				ast,
 				namespaces,
 				memoryPlan,
+				memoryAliases: new Map(),
 				memoryDefaultsByModuleId,
 				pointerMetadataByModuleId,
 				constantReferences,

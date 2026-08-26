@@ -90,6 +90,7 @@ function createTestContext(
 ): MemoryReferenceResolutionContext {
 	return {
 		memoryPlan: createMemoryPlan([currentModule]),
+		memoryAliases: new Map(),
 		currentModule,
 		pointerMetadata: {},
 		startingByteAddress: currentModule.byteAddress,
@@ -160,6 +161,7 @@ describe('resolveMemoryReferences', () => {
 				functions: [],
 			},
 			memoryPlan,
+			memoryAliases: new Map(),
 			constantReferences: noConstantReferences(),
 		});
 
@@ -239,6 +241,7 @@ describe('resolveMemoryReferences', () => {
 				functions: [],
 			},
 			memoryPlan,
+			memoryAliases: new Map(),
 			constantReferences: noConstantReferences(),
 		});
 
@@ -287,6 +290,7 @@ describe('resolveMemoryReferences', () => {
 				functions: [],
 			},
 			memoryPlan,
+			memoryAliases: new Map(),
 			constantReferences: {
 				prototypes: [],
 				modules: [
@@ -308,6 +312,94 @@ describe('resolveMemoryReferences', () => {
 		expect(result.references.modules[0].lineFacts[1]?.arguments?.[0]).toMatchObject({
 			type: ArgumentType.LITERAL,
 			value: 20,
+		});
+	});
+
+	it('resolves group aliases without changing source identifiers', () => {
+		const moduleLine = {
+			lineNumber: 1,
+			instruction: 'module',
+			arguments: [classifyIdentifier('consumer')],
+		};
+		const pointerLine = {
+			lineNumber: 2,
+			instruction: 'int*',
+			arguments: [classifyIdentifier('pointer'), classifyIdentifier('&audio:level')],
+		};
+		const endAddressLine = {
+			lineNumber: 3,
+			instruction: 'push',
+			arguments: [classifyIdentifier('audio:level&')],
+		};
+		const countLine = {
+			lineNumber: 4,
+			instruction: 'push',
+			arguments: [classifyIdentifier('count(audio:level)')],
+		};
+		const expressionLine = {
+			lineNumber: 5,
+			instruction: 'push',
+			arguments: [parseArgument('sizeof(audio:level)+1')],
+		};
+		const ast = {
+			type: 'module',
+			id: 'consumer',
+			lines: [moduleLine, pointerLine, endAddressLine, countLine, expressionLine],
+			moduleLine,
+		} as unknown as ValidatedModuleAST;
+		const pointer = createMemoryDeclaration('pointer', {
+			type: 'int*',
+			byteAddress: 16,
+			pointeeBaseType: 'int',
+			pointerDepth: 1,
+		});
+		const value = createMemoryDeclaration('value', {
+			byteAddress: 64,
+			numberOfElements: 8,
+			elementWordSize: 4,
+			wordAlignedSize: 8,
+		});
+		const memoryPlan = createMemoryPlan([
+			createPlannedModule('consumer', { pointer }, { byteAddress: 16, wordAlignedSize: 1 }),
+			createPlannedModule('audio/source', { value }, { byteAddress: 64, wordAlignedSize: 8 }),
+		]);
+		const memoryAliases = new Map([
+			['audio', new Map([['level', { targetModuleId: 'audio/source', targetMemoryId: 'value' }]])],
+		]);
+
+		const result = resolveMemoryReferences({
+			ast: { prototypes: [], modules: [ast], constants: [], functions: [] },
+			memoryPlan,
+			memoryAliases,
+			constantReferences: noConstantReferences(),
+		});
+
+		expect(pointerLine.arguments[1]).toMatchObject({
+			value: '&audio:level',
+			targetModuleId: 'audio',
+			targetMemoryId: 'level',
+		});
+		expect(result.references.modules[0].lineFacts[1]?.arguments?.[1]).toMatchObject({
+			type: ArgumentType.LITERAL,
+			value: 64,
+			address: { safeRange: { moduleId: 'audio/source', memoryId: 'value' } },
+		});
+		expect(result.references.modules[0].lineFacts[2]?.arguments?.[0]).toMatchObject({
+			type: ArgumentType.LITERAL,
+			value: value.endByteAddress,
+			address: { safeRange: { moduleId: 'audio/source', memoryId: 'value' } },
+		});
+		expect(result.references.modules[0].lineFacts[3]?.arguments?.[0]).toMatchObject({
+			type: ArgumentType.LITERAL,
+			value: 8,
+		});
+		expect(result.references.modules[0].lineFacts[4]?.arguments?.[0]).toMatchObject({
+			type: ArgumentType.LITERAL,
+			value: 5,
+		});
+		expect(result.references.pointerMetadataByModuleId.consumer.pointer).toEqual({
+			pointeeMemoryIndex: 0,
+			pointeeElementCount: 8,
 		});
 	});
 });

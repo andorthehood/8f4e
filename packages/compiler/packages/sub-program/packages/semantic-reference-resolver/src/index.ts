@@ -17,6 +17,7 @@ import type {
 	ModuleAST,
 	ModuleCompilationContext,
 	Namespaces,
+	ProjectMemoryAliasLookup,
 	PrototypeAST,
 	ResolvedMapLine,
 	SemanticReferenceLine,
@@ -66,6 +67,7 @@ export interface ResolveSemanticReferencesInput<
 	ast: SemanticReferenceResolverSubProgramAST<TPrototype, TModule, TConstants, TFunction>;
 	namespaces: Namespaces;
 	memoryPlan: MemoryLayoutPlan;
+	memoryAliases: ProjectMemoryAliasLookup;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	constantReferences: {
@@ -381,6 +383,7 @@ function createModuleContext(
 		currentMemoryIndex: plannedModule.memoryIndex,
 		...(plannedModule.memoryRegionName ? { currentMemoryRegionName: plannedModule.memoryRegionName } : {}),
 		memoryPlan: input.memoryPlan,
+		memoryAliases: input.memoryAliases,
 		currentPlannedModule: plannedModule,
 		memoryDefaults: input.memoryDefaultsByModuleId[ast.id],
 		pointerMetadata: input.pointerMetadataByModuleId[ast.id],
@@ -431,6 +434,7 @@ function createFunctionContext(
 		currentModuleWordAlignedSize: 0,
 		currentMemoryIndex: 0,
 		memoryPlan: input.memoryPlan,
+		memoryAliases: input.memoryAliases,
 		memoryDefaults: {},
 		pointerMetadata: {},
 		memoryRegions: [],

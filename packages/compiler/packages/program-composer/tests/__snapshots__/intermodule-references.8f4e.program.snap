@@ -75,7 +75,7 @@
                 "targetMemoryId": "value",
                 "targetModuleId": "audio/source",
                 "type": "identifier",
-                "value": "&audio/source:value",
+                "value": "&source:value",
               },
             ],
             "instruction": "push",

@@ -22,6 +22,7 @@ import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from './constants';
 import type { CompilerDiagnosticContext, CompilerStageError } from './diagnostics';
 import { ErrorCode, type ErrorCodeValue } from './errors';
 import { MAX_FUNCTION_PARAMETERS, MAX_FUNCTION_RETURN_VALUES } from './functionTypes';
+import type { ProjectGroupPath, ProjectModuleId } from './project';
 import type { CodegenContext, CompilationContext } from './semantic';
 
 export { ErrorCode };
@@ -31,6 +32,40 @@ interface ErrorDetails {
 	inferredCallSignature?: string;
 	availableOverloadSignatures?: string[];
 	reason?: string;
+	projectGroupPath?: ProjectGroupPath;
+	projectMemoryExposureName?: string;
+	targetModuleId?: ProjectModuleId;
+	targetMemoryId?: string;
+}
+
+function getProjectMemoryExposureTargetMessage(details: ErrorDetails = {}): string {
+	const code = ErrorCode.INVALID_PROJECT_MEMORY_EXPOSURE_TARGET;
+	const publicReference =
+		details.projectGroupPath && details.projectMemoryExposureName
+			? ` "${details.projectGroupPath}:${details.projectMemoryExposureName}"`
+			: '';
+	const targetReference =
+		details.targetModuleId && details.targetMemoryId ? ` "${details.targetModuleId}:${details.targetMemoryId}"` : '';
+	return `Project memory exposure${publicReference} targets undeclared memory${targetReference}. (${code})`;
+}
+
+/** Creates a semantic diagnostic for a group exposure whose canonical backing memory does not exist. */
+export function getProjectMemoryExposureTargetError(
+	groupPath: ProjectGroupPath,
+	exposureName: string,
+	targetModuleId: ProjectModuleId,
+	targetMemoryId: string
+): CompilerStageError {
+	return {
+		code: ErrorCode.INVALID_PROJECT_MEMORY_EXPOSURE_TARGET,
+		message: getProjectMemoryExposureTargetMessage({
+			projectGroupPath: groupPath,
+			projectMemoryExposureName: exposureName,
+			targetModuleId,
+			targetMemoryId,
+		}),
+		context: { projectGroupPath: groupPath, projectMemoryExposureName: exposureName },
+	};
 }
 
 /**
@@ -102,6 +137,13 @@ export function getError(
 			return {
 				code,
 				message: 'Undeclared identifier' + (details?.identifier ? `: ${details.identifier}` : '') + '. (' + code + ')',
+				line,
+				context,
+			};
+		case ErrorCode.INVALID_PROJECT_MEMORY_EXPOSURE_TARGET:
+			return {
+				code,
+				message: getProjectMemoryExposureTargetMessage(details),
 				line,
 				context,
 			};

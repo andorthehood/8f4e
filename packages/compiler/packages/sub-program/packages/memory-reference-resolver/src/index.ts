@@ -17,6 +17,7 @@ import type {
 	ModuleAST,
 	ParamLine,
 	PointerLocalBinding,
+	ProjectMemoryAliasLookup,
 	PrototypeAST,
 	ResolvedArgumentLiteral,
 	ValidatedConstantsAST,
@@ -59,6 +60,7 @@ export interface ResolveMemoryReferencesInput<
 > {
 	ast: MemoryReferenceSubProgramAST<TPrototype, TModule, TConstants, TFunction>;
 	memoryPlan: MemoryLayoutPlan;
+	memoryAliases: ProjectMemoryAliasLookup;
 	constantReferences: {
 		prototypes: readonly ConstantResolutionBlockFacts[];
 		modules: readonly ConstantResolutionBlockFacts[];
@@ -73,10 +75,12 @@ export interface ResolveMemoryReferencesResult {
 
 function createSubProgramResolutionContext(
 	memoryPlan: MemoryLayoutPlan,
-	pointerMetadata: MemoryReferencePointerMetadataByModuleId
+	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
+	memoryAliases: ProjectMemoryAliasLookup
 ): MemoryReferenceResolutionContext {
 	return {
 		memoryPlan,
+		memoryAliases,
 		pointerMetadata,
 		locals: {},
 		startingByteAddress: 0,
@@ -88,10 +92,12 @@ function createSubProgramResolutionContext(
 function createModuleResolutionContext(
 	memoryPlan: MemoryLayoutPlan,
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
+	memoryAliases: ProjectMemoryAliasLookup,
 	module: PlannedMemoryModule
 ): MemoryReferenceResolutionContext {
 	return {
 		memoryPlan,
+		memoryAliases,
 		currentModule: module,
 		pointerMetadata,
 		moduleName: module.id,
@@ -261,12 +267,13 @@ function resolveMemoryReferencesInAst(
 	ast: PrototypeAST | ModuleAST | ConstantsAST | FunctionAST,
 	memoryPlan: MemoryLayoutPlan,
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
+	memoryAliases: ProjectMemoryAliasLookup,
 	constantReferences: ConstantResolutionBlockFacts | undefined
 ): MemoryReferenceResolutionBlockFacts {
 	const context =
 		ast.type === 'module'
-			? createModuleResolutionContext(memoryPlan, pointerMetadata, memoryPlan.modules[ast.id])
-			: createSubProgramResolutionContext(memoryPlan, pointerMetadata);
+			? createModuleResolutionContext(memoryPlan, pointerMetadata, memoryAliases, memoryPlan.modules[ast.id])
+			: createSubProgramResolutionContext(memoryPlan, pointerMetadata, memoryAliases);
 	let nextLocalIndex = 0;
 	const lineFacts = ast.lines.map((line, lineIndex) => {
 		const constantResolvedLine = applyConstantFacts(line, constantReferences?.lineFacts[lineIndex]);
@@ -287,10 +294,11 @@ function resolveMemoryReferencesInAst(
 function resolveDeclarationSourceReferences(
 	module: PlannedMemoryModule,
 	memoryPlan: MemoryLayoutPlan,
-	pointerMetadata: MemoryReferencePointerMetadataByModuleId
+	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
+	memoryAliases: ProjectMemoryAliasLookup
 ): MemoryReferenceResolutionBlockFacts {
 	pointerMetadata[module.id] = pointerMetadata[module.id] ?? {};
-	const context = createModuleResolutionContext(memoryPlan, pointerMetadata, module);
+	const context = createModuleResolutionContext(memoryPlan, pointerMetadata, memoryAliases, module);
 	const lineFacts = module.declarationSources.map(({ line }) => {
 		const memoryReferenceFacts = resolveMemoryReferenceLineFacts(line, context);
 		updatePointerMemoryMetadata(applyMemoryReferenceFacts(line, memoryReferenceFacts), context);
@@ -319,23 +327,48 @@ export function resolveMemoryReferences<
 		declarationSourcesByModuleId[plannedModule.id] = resolveDeclarationSourceReferences(
 			plannedModule,
 			input.memoryPlan,
-			pointerMetadata
+			pointerMetadata,
+			input.memoryAliases
 		);
 	}
 
 	return {
 		references: {
 			prototypes: input.ast.prototypes.map((ast, index) =>
-				resolveMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.prototypes[index])
+				resolveMemoryReferencesInAst(
+					ast,
+					input.memoryPlan,
+					pointerMetadata,
+					input.memoryAliases,
+					input.constantReferences.prototypes[index]
+				)
 			),
 			modules: input.ast.modules.map((ast, index) =>
-				resolveMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.modules[index])
+				resolveMemoryReferencesInAst(
+					ast,
+					input.memoryPlan,
+					pointerMetadata,
+					input.memoryAliases,
+					input.constantReferences.modules[index]
+				)
 			),
 			constants: input.ast.constants.map((ast, index) =>
-				resolveMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.constants[index])
+				resolveMemoryReferencesInAst(
+					ast,
+					input.memoryPlan,
+					pointerMetadata,
+					input.memoryAliases,
+					input.constantReferences.constants[index]
+				)
 			),
 			functions: input.ast.functions.map((ast, index) =>
-				resolveMemoryReferencesInAst(ast, input.memoryPlan, pointerMetadata, input.constantReferences.functions[index])
+				resolveMemoryReferencesInAst(
+					ast,
+					input.memoryPlan,
+					pointerMetadata,
+					input.memoryAliases,
+					input.constantReferences.functions[index]
+				)
 			),
 			declarationSourcesByModuleId,
 			pointerMetadataByModuleId: pointerMetadata,

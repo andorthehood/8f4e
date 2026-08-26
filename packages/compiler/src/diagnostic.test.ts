@@ -1,5 +1,5 @@
 import type { CompilerASTLine } from '@8f4e/language-spec';
-import { ErrorCode, getError } from '@8f4e/language-spec';
+import { ErrorCode, getError, getProjectMemoryExposureTargetError } from '@8f4e/language-spec';
 import { ProjectIncludeError } from '@8f4e/project-preparser';
 import { SyntaxErrorCode, SyntaxRulesError } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
@@ -96,6 +96,19 @@ describe('serializeDiagnostic', () => {
 			expect(result.context).toEqual({
 				codeBlockId: 'my_module',
 				codeBlockType: 'module',
+			});
+		});
+
+		it('serializes project-level exposure errors without fabricating an AST line', () => {
+			const result = serializeDiagnostic(
+				getProjectMemoryExposureTargetError('audio', 'level', 'audio/source', 'missing')
+			);
+
+			expect(result).toEqual({
+				code: ErrorCode.INVALID_PROJECT_MEMORY_EXPOSURE_TARGET,
+				message: expect.stringContaining('audio:level'),
+				line: { lineNumber: 0 },
+				context: { projectGroupPath: 'audio', projectMemoryExposureName: 'level' },
 			});
 		});
 	});
