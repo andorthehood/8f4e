@@ -7,7 +7,7 @@ import replaceCodeBlocksInPlace from '../../replaceCodeBlocksInPlace';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
 import getCodeBlockNameFromSource from '../../utils/getCodeBlockNameFromSource';
-import { parseClipboardData } from '../clipboard/clipboardUtils';
+import { parseClipboardData, serializeCodeBlocksToClipboard } from '../clipboard/clipboardUtils';
 import upsertDisabled from '../directives/disabled/upsert';
 import upsertPos from '../directives/pos/upsert';
 import findEntryNameAtPosition from '../entryOutlines/findEntryNameAtPosition';
@@ -273,7 +273,11 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 	function onCopyCodeBlock({ codeBlock }: { codeBlock: CodeBlockGraphicData }): void {
 		// Use callback if available, otherwise fail silently
 		if (state.callbacks.writeClipboardText) {
-			state.callbacks.writeClipboardText(codeBlock.code.join('\n')).catch(() => {
+			const clipboardText =
+				codeBlock.nestedProjectCodeBlocks === undefined
+					? codeBlock.code.join('\n')
+					: serializeCodeBlocksToClipboard([codeBlock], codeBlock);
+			state.callbacks.writeClipboardText(clipboardText).catch(() => {
 				// Fail silently if clipboard write fails
 				return undefined;
 			});
