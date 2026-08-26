@@ -90,6 +90,8 @@ export interface ProjectMemoryExposure {
 export interface ProjectGroupObjectModel extends ProjectObjectModel {
 	name: ProjectGroupName;
 	entry: ProjectEntryName;
+	/** Source lines owned by the group wrapper, excluding recursively owned child blocks. */
+	code: string[];
 	/** Ordered public memory aliases exposed to the enclosing project. */
 	exposures: ProjectMemoryExposure[];
 }

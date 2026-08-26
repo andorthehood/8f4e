@@ -3,6 +3,10 @@
   "functions": [],
   "groups": [
     {
+      "code": [
+        "group audio",
+        "groupEnd",
+      ],
       "constants": [],
       "entry": "main",
       "exposures": [],
@@ -26,12 +30,21 @@
       "unknown": [],
     },
     {
+      "code": [
+        "group visuals",
+        "",
+        "groupEnd",
+      ],
       "constants": [],
       "entry": "main",
       "exposures": [],
       "functions": [],
       "groups": [
         {
+          "code": [
+            "group shaderHelpers",
+            "groupEnd",
+          ],
           "constants": [],
           "entry": "main",
           "exposures": [],
@@ -73,6 +86,10 @@
       "unknown": [],
     },
     {
+      "code": [
+        "group assertions",
+        "groupEnd",
+      ],
       "constants": [],
       "entry": "test",
       "exposures": [],

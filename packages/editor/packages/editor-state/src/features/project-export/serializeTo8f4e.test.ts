@@ -109,6 +109,13 @@ describe('serializeProjectTo8f4e', () => {
 					id: 'audio-id',
 					name: 'audio',
 					entry: 'main',
+					code: [
+						'group audio',
+						'; retain this group comment',
+						'futureInstruction anything',
+						'expose int count &counter:count',
+						'groupEnd',
+					],
 					exposures: [
 						{
 							type: 'int',
@@ -123,6 +130,7 @@ describe('serializeProjectTo8f4e', () => {
 						createProject({
 							name: 'notes',
 							entry: 'main',
+							code: ['group notes', 'groupEnd'],
 							exposures: [],
 							notes: [{ id: 3, code: validNoteBlock }],
 						}),
@@ -136,6 +144,13 @@ describe('serializeProjectTo8f4e', () => {
 		expect(parsed.groups[0]).toMatchObject({
 			name: 'audio',
 			entry: 'main',
+			code: [
+				'group audio',
+				'; retain this group comment',
+				'futureInstruction anything',
+				'expose int count &counter:count',
+				'groupEnd',
+			],
 			exposures: [
 				{
 					type: 'int',

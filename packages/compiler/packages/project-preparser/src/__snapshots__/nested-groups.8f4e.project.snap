@@ -3,6 +3,13 @@
   "functions": [],
   "groups": [
     {
+      "code": [
+        "group audio",
+        "",
+        "",
+        "",
+        "groupEnd",
+      ],
       "constants": [
         {
           "code": [
@@ -28,6 +35,11 @@
       ],
       "groups": [
         {
+          "code": [
+            "group oscillator",
+            "",
+            "groupEnd",
+          ],
           "constants": [],
           "entry": "main",
           "exposures": [],

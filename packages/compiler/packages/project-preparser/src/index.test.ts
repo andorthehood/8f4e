@@ -143,6 +143,7 @@ describe('parseProjectSource', () => {
 			{
 				name: 'audio',
 				entry: 'main',
+				code: ['group audio', 'groupEnd'],
 				exposures: [],
 				modules: [{ id: 5, code: validModuleBlock, entry: 'main' }],
 				functions: [{ id: 10, code: validFunctionBlock }],
@@ -155,6 +156,7 @@ describe('parseProjectSource', () => {
 					{
 						name: 'oscillator',
 						entry: 'main',
+						code: ['group oscillator', 'groupEnd'],
 						exposures: [],
 						modules: [],
 						functions: [],
@@ -166,6 +168,33 @@ describe('parseProjectSource', () => {
 						groups: [],
 					},
 				],
+			},
+		]);
+	});
+
+	it('preserves every group-root source line while extracting nested blocks', () => {
+		const groupCode = [
+			'group audio',
+			'; this comment belongs to the group block',
+			'futureInstruction anything',
+			'expose int level &voice:level',
+			'',
+			'groupEnd',
+		];
+		const project = parseProjectSource(
+			['8f4e/v1', 'entry main', ...groupCode.slice(0, -1), ...validModuleBlock, groupCode.at(-1)!, 'entryEnd'].join(
+				'\n'
+			)
+		);
+
+		expect(project.groups[0].code).toEqual(groupCode);
+		expect(project.groups[0].modules).toEqual([{ id: 8, code: validModuleBlock, entry: 'main' }]);
+		expect(project.groups[0].exposures).toEqual([
+			{
+				type: 'int',
+				name: 'level',
+				targetModuleName: 'voice',
+				targetMemoryName: 'level',
 			},
 		]);
 	});

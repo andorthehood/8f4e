@@ -27,6 +27,7 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 				...convertGraphicDataToProjectStructure(codeBlock.nestedProjectCodeBlocks),
 				name: codeBlock.name,
 				entry: codeBlock.entry!,
+				code: codeBlock.code,
 				exposures: codeBlock.code.flatMap(line => {
 					const exposure = tryParseProjectMemoryExposureLine(line);
 					return exposure ? [exposure] : [];

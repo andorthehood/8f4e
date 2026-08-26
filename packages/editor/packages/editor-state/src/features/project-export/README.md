@@ -46,9 +46,6 @@ The canonical structure is defined by `@8f4e/language-spec`:
 
 ```typescript
 interface ProjectObjectModel {
-	id?: string;
-	name?: string;
-	entry?: ProjectEntryName;
 	modules: ProjectModuleBlock[];
 	functions: ProjectBlock[];
 	constants: ProjectBlock[];
@@ -56,15 +53,23 @@ interface ProjectObjectModel {
 	includes: ProjectBlock[];
 	notes: ProjectBlock[];
 	unknown: ProjectBlock[];
-	groups: ProjectObjectModel[];
+	groups: ProjectGroupObjectModel[];
+}
+
+interface ProjectGroupObjectModel extends ProjectObjectModel {
+	name: ProjectGroupName;
+	entry: ProjectEntryName;
+	code: string[];
+	exposures: ProjectMemoryExposure[];
 }
 ```
 
 Collection membership defines block type. The adapter uses the editor's already-known block type and does not make the
 compiler rediscover it from source text. Project groups are rendered as ordinary `CodeBlockGraphicData` values whose
 optional `nestedProjectCodeBlocks` field owns the child project slice. Export recursively traverses that tree from
-`rootCodeBlocks`, regardless of which slice `codeBlocks` currently points to. Compilation currently consumes only the
-root project; recursive sub-program composition is intentionally deferred.
+`rootCodeBlocks`, regardless of which slice `codeBlocks` currently points to. A group's `code` retains all source lines
+owned by its visible wrapper, including comments and editor directives, while its nested blocks stay in the recursive
+collections. Compilation recursively composes those collections into one program.
 
 ## References
 
