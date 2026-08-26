@@ -15,6 +15,7 @@ export default function createDefaultState() {
 			},
 			memoryDefaultsByModuleId: {},
 			pointerMetadataByModuleId: {},
+			projectMemoryExposuresByGroupPath: {},
 		},
 		codeBlockRendering: {
 			rootCodeBlocks,

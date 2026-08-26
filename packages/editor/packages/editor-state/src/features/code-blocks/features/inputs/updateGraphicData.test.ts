@@ -68,6 +68,36 @@ describe('updateInputsGraphicData', () => {
 		expect(findWidgetById(mockGraphicData.widgets.inputs, 'input1')).toBeDefined();
 	});
 
+	it('renders a pointer exposure as a group input backed by the target pointer slot', () => {
+		const targetMemory = createMemory({ id: 'input', byteAddress: 36, wordAlignedAddress: 9 });
+		mockGraphicData = createMockCodeBlock({
+			name: 'audio',
+			code: ['group audio', 'expose int* publicInput &consumer:input', 'groupEnd'],
+			gaps: new Map(),
+			nestedProjectCodeBlocks: [],
+		});
+		mockState.compiler.projectMemoryExposuresByGroupPath.audio = [
+			{
+				type: 'int*',
+				name: 'publicInput',
+				targetModuleName: 'consumer',
+				targetMemoryName: 'input',
+				groupPath: 'audio',
+				targetModuleId: 'audio/consumer',
+				targetMemory,
+			},
+		];
+
+		updateInputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.inputs).toHaveLength(1);
+		expect(mockGraphicData.widgets.inputs[0]).toMatchObject({
+			id: 'publicInput',
+			y: 16,
+			wordAlignedAddress: 9,
+		});
+	});
+
 	it('ignores non-pointer memory metadata', () => {
 		mockState.compiler.memoryPlan.modules['test-block']!.memory['input1'] = createMemory({
 			type: MemoryTypes.int,

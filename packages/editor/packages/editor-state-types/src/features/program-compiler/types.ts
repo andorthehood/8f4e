@@ -9,6 +9,7 @@ import type {
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
+	ProjectMemoryExposuresByGroupPath,
 } from '@8f4e/language-spec';
 
 /**
@@ -21,6 +22,7 @@ export interface Compiler {
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 }
 
 /**

@@ -109,12 +109,21 @@ describe('serializeProjectTo8f4e', () => {
 					id: 'audio-id',
 					name: 'audio',
 					entry: 'main',
+					exposures: [
+						{
+							type: 'int',
+							name: 'count',
+							targetModuleName: 'counter',
+							targetMemoryName: 'count',
+						},
+					],
 					modules: [{ id: 1, code: validBlock, entry: 'main' }],
 					functions: [{ id: 2, code: validFunctionBlock }],
 					groups: [
 						createProject({
 							name: 'notes',
 							entry: 'main',
+							exposures: [],
 							notes: [{ id: 3, code: validNoteBlock }],
 						}),
 					],
@@ -127,6 +136,14 @@ describe('serializeProjectTo8f4e', () => {
 		expect(parsed.groups[0]).toMatchObject({
 			name: 'audio',
 			entry: 'main',
+			exposures: [
+				{
+					type: 'int',
+					name: 'count',
+					targetModuleName: 'counter',
+					targetMemoryName: 'count',
+				},
+			],
 			modules: [{ code: validBlock, entry: 'main' }],
 			functions: [{ code: validFunctionBlock }],
 			groups: [{ name: 'notes', entry: 'main', notes: [{ code: validNoteBlock }] }],

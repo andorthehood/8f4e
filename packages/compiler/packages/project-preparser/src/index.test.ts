@@ -143,6 +143,7 @@ describe('parseProjectSource', () => {
 			{
 				name: 'audio',
 				entry: 'main',
+				exposures: [],
 				modules: [{ id: 5, code: validModuleBlock, entry: 'main' }],
 				functions: [{ id: 10, code: validFunctionBlock }],
 				constants: [],
@@ -154,6 +155,7 @@ describe('parseProjectSource', () => {
 					{
 						name: 'oscillator',
 						entry: 'main',
+						exposures: [],
 						modules: [],
 						functions: [],
 						constants: [],
@@ -194,6 +196,9 @@ describe('parseProjectSource', () => {
 		expect(() => parseProjectSource('8f4e/v1\n\nentry main\ngroup\ngroupEnd\nentryEnd')).toThrow(
 			'group requires exactly one name'
 		);
+		expect(() => parseProjectSource('8f4e/v1\n\nentry main\ngroup invalid/name\ngroupEnd\nentryEnd')).toThrow(
+			'invalid group name'
+		);
 		expect(() =>
 			parseProjectSource('8f4e/v1\n\nentry main\ngroup audio\nentry nested\nentryEnd\ngroupEnd\nentryEnd')
 		).toThrow('entry blocks cannot be nested inside groups');
@@ -203,6 +208,22 @@ describe('parseProjectSource', () => {
 		expect(() => parseProjectSource('8f4e/v1\n\nentry main\nincludes\nincludesEnd\nentryEnd')).toThrow(
 			'can only contain module or group blocks'
 		);
+	});
+
+	it('rejects duplicate exposure names within a group', () => {
+		expect(() =>
+			parseProjectSource(
+				[
+					'8f4e/v1',
+					'entry main',
+					'group audio',
+					'expose int value &source:first',
+					'expose float value &source:second',
+					'groupEnd',
+					'entryEnd',
+				].join('\n')
+			)
+		).toThrow('duplicate exposure "value"');
 	});
 });
 

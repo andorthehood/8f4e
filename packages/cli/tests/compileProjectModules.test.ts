@@ -109,6 +109,33 @@ describe('compileProjectModules', () => {
 		expect(result.compiledModules.dependency.executionEntryName).toBe('main');
 	});
 
+	it('compiles projects whose program blocks are contained by groups', async () => {
+		const result = await compileProjectModules(
+			{
+				...projectWithModules([]),
+				groups: [
+					{
+						...projectWithModules([
+							{
+								id: 2,
+								code: ['module source', 'int value 42', 'moduleEnd'],
+								entry: 'main',
+							},
+						]),
+						id: 1,
+						name: 'nested',
+						exposures: [],
+					},
+				],
+			},
+			{
+				compilerOptions: { startingMemoryWordAddress: 0 },
+			}
+		);
+
+		expect(result.compiledModules['nested/source']).toBeDefined();
+	});
+
 	it('compiles included functions resolved from includes blocks with parsed project modules', async () => {
 		const result = await compileProjectModules(
 			{

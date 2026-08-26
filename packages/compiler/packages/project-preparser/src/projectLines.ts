@@ -1,3 +1,5 @@
+import { isValidModuleName, MODULE_NAME_PATTERN } from '@8f4e/language-spec';
+
 type NamedProjectBlockKeyword = 'entry' | 'group';
 
 /**
@@ -13,6 +15,9 @@ export function getProjectBlockName(line: string, lineNumber: number, keyword: N
 	const [blockName] = args;
 	if (!blockName || args.length !== 1) {
 		throw new Error(`Parse error at line ${lineNumber}: ${keyword} requires exactly one name`);
+	}
+	if (keyword === 'group' && !isValidModuleName(blockName)) {
+		throw new Error(`Parse error at line ${lineNumber}: invalid group name; names must match ${MODULE_NAME_PATTERN}`);
 	}
 	return blockName;
 }

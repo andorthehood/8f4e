@@ -62,6 +62,7 @@ export async function compileCode(
 			memoryDefaultsByModuleId: result.memoryDefaultsByModuleId,
 			memoryPlan: result.memoryPlan,
 			pointerMetadataByModuleId: result.pointerMetadataByModuleId,
+			projectMemoryExposuresByGroupPath: result.projectMemoryExposuresByGroupPath,
 			requiredMemoryBytes: result.requiredMemoryBytes,
 		};
 	} catch (error) {

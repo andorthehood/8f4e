@@ -91,6 +91,7 @@
   "entryNames": [
     "main",
   ],
+  "memoryExposures": [],
   "moduleEntryNames": [
     "main",
     "main",

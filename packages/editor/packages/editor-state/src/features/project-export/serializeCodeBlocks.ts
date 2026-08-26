@@ -1,5 +1,6 @@
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 import type { ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
+import { tryParseProjectMemoryExposureLine } from '@8f4e/project-preparser';
 import { isBrowserLocalNoteBlock } from '../browser-local-notes/browserLocalNotes';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 
@@ -26,6 +27,10 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 				...convertGraphicDataToProjectStructure(codeBlock.nestedProjectCodeBlocks),
 				name: codeBlock.name,
 				entry: codeBlock.entry!,
+				exposures: codeBlock.code.flatMap(line => {
+					const exposure = tryParseProjectMemoryExposureLine(line);
+					return exposure ? [exposure] : [];
+				}),
 			});
 			continue;
 		}

@@ -51,6 +51,14 @@ interface ProjectObjectModel {
 interface ProjectGroupObjectModel extends ProjectObjectModel {
 	name: ProjectGroupName;
 	entry: ProjectEntryName;
+	exposures: ProjectMemoryExposure[];
+}
+
+interface ProjectMemoryExposure {
+	type: MemoryDeclarationInstruction;
+	name: string;
+	targetModuleName: string;
+	targetMemoryName: string;
 }
 
 interface ProjectBlock {
@@ -79,6 +87,14 @@ so module identities are readable and deterministic: `counter`, `audio/counter`,
 `memoryDefaultsByModuleId`, and `pointerMetadataByModuleId` without a transformed result map. The compiler recursively
 parses and isolates these models before flattening them into one globally planned program; it does not merge
 independently compiled WebAssembly artifacts.
+
+Each group may expose memory from one of its direct modules to its enclosing project. The object model stores these
+ordered aliases in `ProjectGroupObjectModel.exposures`; `.8f4e` text writes them as
+`expose <type> <name> &<module>:<memory>`. An exposure is non-allocating. Composition replaces a reference to the public
+group name with the canonical backing module and memory name before the global memory plan runs. The public declaration
+type controls how an editor presents the connector and is intentionally not checked against the target declaration.
+The compiled result indexes resolved exposures by canonical group path and points directly to each backing
+`PlannedMemoryDeclaration`.
 
 Source-level module names match `[A-Za-z_][A-Za-z0-9_-]*`. This keeps the module-name leaf safe to use verbatim in a
 canonical module id; only group-name path segments require encoding.
@@ -220,6 +236,7 @@ object model.
   type field.
 - [x] Module order is preserved per entry, while functions, constants, and prototypes are compiled as hoisted blocks.
 - [x] Groups recursively own complete `ProjectObjectModel` values instead of referencing root blocks by id.
+- [x] Groups expose direct-module memory through non-allocating symbolic aliases and compiled address metadata.
 - [x] Canonical group paths derive from sibling-unique group names and key every module-addressed compiler result map.
 - [x] The initial object-model refactor left recursive compilation out of scope; follow-up composition now compiles all
   recursively owned groups before one global allocation and code-generation pass.

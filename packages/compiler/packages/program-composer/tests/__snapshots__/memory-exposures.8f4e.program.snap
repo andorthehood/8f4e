@@ -4,7 +4,7 @@
     "functions": [],
     "modules": [
       {
-        "id": "child/descendant/descendant",
+        "id": "audio/source",
         "lines": [
           {
             "arguments": [
@@ -12,16 +12,33 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "child/descendant/descendant",
+                "value": "audio/source",
               },
             ],
             "instruction": "module",
             "lineNumber": 0,
           },
           {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "value",
+              },
+              {
+                "isInteger": true,
+                "type": "literal",
+                "value": 42,
+              },
+            ],
+            "instruction": "int",
+            "lineNumber": 1,
+          },
+          {
             "arguments": [],
             "instruction": "moduleEnd",
-            "lineNumber": 1,
+            "lineNumber": 2,
           },
         ],
         "moduleLine": {
@@ -30,7 +47,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "child/descendant/descendant",
+              "value": "audio/source",
             },
           ],
           "instruction": "module",
@@ -40,7 +57,7 @@
         "type": "module",
       },
       {
-        "id": "child/child",
+        "id": "audio/consumer",
         "lines": [
           {
             "arguments": [
@@ -48,16 +65,28 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "child/child",
+                "value": "audio/consumer",
               },
             ],
             "instruction": "module",
             "lineNumber": 0,
           },
           {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "input",
+              },
+            ],
+            "instruction": "int*",
+            "lineNumber": 1,
+          },
+          {
             "arguments": [],
             "instruction": "moduleEnd",
-            "lineNumber": 1,
+            "lineNumber": 2,
           },
         ],
         "moduleLine": {
@@ -66,17 +95,17 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "child/child",
+              "value": "audio/consumer",
             },
           ],
           "instruction": "module",
           "lineNumber": 0,
         },
-        "projectBlockId": 8,
+        "projectBlockId": 16,
         "type": "module",
       },
       {
-        "id": "root",
+        "id": "outer",
         "lines": [
           {
             "arguments": [
@@ -84,16 +113,37 @@
                 "referenceKind": "plain",
                 "scope": "local",
                 "type": "identifier",
-                "value": "root",
+                "value": "outer",
               },
             ],
             "instruction": "module",
             "lineNumber": 0,
           },
           {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "input",
+              },
+              {
+                "isEndAddress": false,
+                "referenceKind": "intermodular-reference",
+                "scope": "intermodule",
+                "targetMemoryId": "value",
+                "targetModuleId": "audio/source",
+                "type": "identifier",
+                "value": "&audio/source:value",
+              },
+            ],
+            "instruction": "int*",
+            "lineNumber": 1,
+          },
+          {
             "arguments": [],
             "instruction": "moduleEnd",
-            "lineNumber": 1,
+            "lineNumber": 2,
           },
         ],
         "moduleLine": {
@@ -102,7 +152,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "root",
+              "value": "outer",
             },
           ],
           "instruction": "module",
@@ -116,8 +166,8 @@
   },
   "cache": {
     "keys": [
-      "child/descendant:entry:main:module:0",
-      "child:entry:main:module:0",
+      "audio:entry:main:module:0",
+      "audio:entry:main:module:1",
       "root:entry:main:module:0",
     ],
     "stats": {
@@ -128,7 +178,24 @@
   "entryNames": [
     "main",
   ],
-  "memoryExposures": [],
+  "memoryExposures": [
+    {
+      "groupPath": "audio",
+      "name": "exposedValue",
+      "targetMemoryName": "value",
+      "targetModuleId": "audio/source",
+      "targetModuleName": "source",
+      "type": "int",
+    },
+    {
+      "groupPath": "audio",
+      "name": "exposedInput",
+      "targetMemoryName": "input",
+      "targetModuleId": "audio/consumer",
+      "targetModuleName": "consumer",
+      "type": "int*",
+    },
+  ],
   "moduleEntryNames": [
     "main",
     "main",

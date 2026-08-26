@@ -1,6 +1,7 @@
 import {
 	type CompilerCache,
 	createChildProjectGroupPath,
+	createProjectModuleId,
 	type ProjectGroupPath,
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
@@ -13,6 +14,7 @@ import {
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
 import { createCompilerCache } from './createCompilerCache';
 import { qualifyAst } from './qualifyAst';
+import { rewriteMemoryExposureReferences } from './rewriteMemoryExposureReferences';
 import type { ComposedProgram, IncludedFunctionsByProjectGroupPath } from './types';
 
 function appendUnit(
@@ -22,7 +24,15 @@ function appendUnit(
 	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath
 ): void {
 	project.groups.forEach(group => {
-		appendUnit(group, createChildProjectGroupPath(projectPath, group.name), program, includedFunctionsByProjectPath);
+		const groupPath = createChildProjectGroupPath(projectPath, group.name);
+		program.memoryExposures.push(
+			...group.exposures.map(exposure => ({
+				...exposure,
+				groupPath,
+				targetModuleId: createProjectModuleId(groupPath, exposure.targetModuleName),
+			}))
+		);
+		appendUnit(group, groupPath, program, includedFunctionsByProjectPath);
 	});
 
 	const prefix = projectPath === ROOT_PROJECT_GROUP_PATH ? undefined : `${projectPath}/`;
@@ -109,9 +119,16 @@ export function composeProgram(
 			constants: [],
 			functions: [],
 		},
+		memoryExposures: [],
 		cache,
 	};
 
 	appendUnit(project, ROOT_PROJECT_GROUP_PATH, program, includedFunctionsByProjectPath);
+	program.ast = {
+		prototypes: rewriteMemoryExposureReferences(program.ast.prototypes, program.memoryExposures),
+		modules: rewriteMemoryExposureReferences(program.ast.modules, program.memoryExposures),
+		constants: rewriteMemoryExposureReferences(program.ast.constants, program.memoryExposures),
+		functions: rewriteMemoryExposureReferences(program.ast.functions, program.memoryExposures),
+	};
 	return program;
 }

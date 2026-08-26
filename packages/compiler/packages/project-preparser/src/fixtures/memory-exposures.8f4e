@@ -1,0 +1,20 @@
+8f4e/v1
+
+entry main
+module outer
+int* input &audio:exposedValue
+moduleEnd
+
+group audio
+expose int exposedValue &source:value
+expose int* exposedInput &consumer:input
+
+module source
+int value 42
+moduleEnd
+
+module consumer
+int* input
+moduleEnd
+groupEnd
+entryEnd

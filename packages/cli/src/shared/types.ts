@@ -7,6 +7,7 @@ import type {
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 	ProjectIncludeResolver,
+	ProjectMemoryExposuresByGroupPath,
 } from '@8f4e/language-spec';
 
 export interface CompileProjectOptions {
@@ -24,6 +25,7 @@ export interface CompileProjectResult {
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	compiledFunctions?: CompiledFunctionLookup;
 	compiledWasm: string;
 	requiredMemoryBytes: number;

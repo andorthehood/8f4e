@@ -10,3 +10,8 @@ export {
 } from './functionIncludes';
 export { parseProjectSource } from './parseProjectSource';
 export { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
+export {
+	parseProjectMemoryExposureLine,
+	serializeProjectMemoryExposure,
+	tryParseProjectMemoryExposureLine,
+} from './projectMemoryExposure';
