@@ -61,6 +61,7 @@ export default function compiler(store: StateManager<State>) {
 			store.set('compiler.memoryPlan', result.memoryPlan);
 			store.set('compiler.memoryDefaultsByModuleId', result.memoryDefaultsByModuleId);
 			store.set('compiler.pointerMetadataByModuleId', result.pointerMetadataByModuleId);
+			store.set('compiler.projectMemoryExposuresByGroupPath', result.projectMemoryExposuresByGroupPath);
 			store.set('compiler.isCompiling', false);
 			setCompilerInfo({
 				isCompiling: false,
@@ -117,7 +118,8 @@ export default function compiler(store: StateManager<State>) {
 		}
 
 		const blockType = state.codeBlockRendering.selectedCodeBlock?.blockType;
-		if (!isCompilableBlockType(blockType) && blockType !== includesBlockType) {
+		const isProjectGroup = state.codeBlockRendering.selectedCodeBlock?.nestedProjectCodeBlocks !== undefined;
+		if (!isProjectGroup && !isCompilableBlockType(blockType) && blockType !== includesBlockType) {
 			return;
 		}
 		scheduleRecompile();

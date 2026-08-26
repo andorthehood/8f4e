@@ -25,6 +25,7 @@ export async function compileProject(
 		outputProject.memoryPlan = moduleResult.memoryPlan;
 		outputProject.memoryDefaultsByModuleId = moduleResult.memoryDefaultsByModuleId;
 		outputProject.pointerMetadataByModuleId = moduleResult.pointerMetadataByModuleId;
+		outputProject.projectMemoryExposuresByGroupPath = moduleResult.projectMemoryExposuresByGroupPath;
 	}
 	if (includeWasm) {
 		outputProject.compiledWasm = moduleResult.compiledWasm;
@@ -37,6 +38,7 @@ export async function compileProject(
 		memoryPlan: moduleResult.memoryPlan,
 		memoryDefaultsByModuleId: moduleResult.memoryDefaultsByModuleId,
 		pointerMetadataByModuleId: moduleResult.pointerMetadataByModuleId,
+		projectMemoryExposuresByGroupPath: moduleResult.projectMemoryExposuresByGroupPath,
 		compiledFunctions: moduleResult.compiledFunctions,
 		compiledWasm: moduleResult.compiledWasm,
 		requiredMemoryBytes: moduleResult.requiredMemoryBytes,

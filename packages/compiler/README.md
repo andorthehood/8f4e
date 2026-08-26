@@ -34,6 +34,13 @@ function, constant-namespace, and prototype names so sibling groups may reuse so
 one flattened validated-AST program to the compiler, allowing memory addresses, function indexes, type indexes, and
 entries to be planned once. Child modules execute before parent modules for the same entry.
 
+Groups may publish direct-module memory items to their enclosing project with
+`expose <type> <name> &<module>:<memory>`. Exposures are symbolic aliases: the composer rewrites references such as
+`&audio:level` to the backing canonical module reference before the global memory pass, so aliases allocate no memory.
+Group names and exposure target-module names follow the source module-name rules so canonical paths remain referenceable.
+The declared public type is not checked against the target type. `CompileResult.projectMemoryExposuresByGroupPath`
+retains each resolved exposure together with its backing `PlannedMemoryDeclaration` for editors and other hosts.
+
 ## Compiler Passes
 
 ```text
@@ -149,6 +156,7 @@ entries to be planned once. Child modules execute before parent modules for the 
                   |  compiledModules            |
                   |  compiledFunctions          |
                   |  requiredMemoryBytes        |
+                  |  project memory exposures   |
                   |  cache                      |
                   +-----------------------------+
 ```

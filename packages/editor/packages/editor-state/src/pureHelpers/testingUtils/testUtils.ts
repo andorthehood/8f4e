@@ -262,6 +262,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			},
 			memoryDefaultsByModuleId: {},
 			pointerMetadataByModuleId: {},
+			projectMemoryExposuresByGroupPath: {},
 		},
 		callbacks: {
 			loadSession: createMockAsyncFunction(null),

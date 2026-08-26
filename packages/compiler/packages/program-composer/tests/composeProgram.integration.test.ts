@@ -26,6 +26,7 @@ function createCompositionSnapshot(fixtureName: string) {
 	return {
 		entryNames: program.entryNames,
 		moduleEntryNames: program.moduleEntryNames,
+		memoryExposures: program.memoryExposures,
 		ast: program.ast,
 		cache: {
 			keys: [...cache.ast.entries.keys()].sort(),

@@ -7,6 +7,7 @@ import {
 	type ProjectBlockId,
 	type ProjectEntryName,
 	type ProjectGroupObjectModel,
+	type ProjectMemoryExposure,
 	type ProjectModuleBlock,
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
@@ -20,6 +21,7 @@ describe('ProjectObjectModel', () => {
 		expectTypeOf<ProjectObjectModel['functions']>().toEqualTypeOf<ProjectBlock[]>();
 		expectTypeOf<ProjectObjectModel['groups']>().toEqualTypeOf<ProjectGroupObjectModel[]>();
 		expectTypeOf<ProjectGroupObjectModel['entry']>().toEqualTypeOf<ProjectEntryName>();
+		expectTypeOf<ProjectGroupObjectModel['exposures']>().toEqualTypeOf<ProjectMemoryExposure[]>();
 	});
 
 	it('creates canonical group paths and module ids', () => {

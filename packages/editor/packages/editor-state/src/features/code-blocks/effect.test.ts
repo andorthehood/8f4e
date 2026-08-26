@@ -138,6 +138,18 @@ describe('code block rendering cursor selection', () => {
 });
 
 describe('code block rendering home directive', () => {
+	it('clears output addresses when the rendered project slice changes', () => {
+		const state = createMockState();
+		state.codeBlockRendering.outputsByWordAddress.set(40, {} as never);
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+		codeBlockRenderingEffect(store, events);
+
+		store.set('codeBlockRendering.codeBlocks', []);
+
+		expect(state.codeBlockRendering.outputsByWordAddress.size).toBe(0);
+	});
+
 	it('renders project-level includes blocks from imported project state', () => {
 		const includesBlock = ['includes', 'include std/events/risingEdge', 'includesEnd'];
 		const state = createMockState({
@@ -175,6 +187,14 @@ describe('code block rendering home directive', () => {
 						...EMPTY_DEFAULT_PROJECT,
 						name: 'Audio',
 						entry: 'main',
+						exposures: [
+							{
+								type: 'int',
+								name: 'level',
+								targetModuleName: 'voice',
+								targetMemoryName: 'level',
+							},
+						],
 						modules: [{ id: 1, entry: 'main', code: ['module voice', 'moduleEnd'] }],
 					},
 				],
@@ -192,6 +212,7 @@ describe('code block rendering home directive', () => {
 		expect(state.codeBlockRendering.codeBlocks.map(block => block.name)).toEqual(['root', 'Audio']);
 		const groupBlock = state.codeBlockRendering.codeBlocks[1];
 		expect(groupBlock.projectPath).toBe('');
+		expect(groupBlock.code).toContain('expose int level &voice:level');
 		expect(groupBlock.nestedProjectCodeBlocks).toHaveLength(1);
 		expect(groupBlock.nestedProjectCodeBlocks?.[0]).toMatchObject({
 			name: 'voice',
@@ -211,6 +232,7 @@ describe('code block rendering home directive', () => {
 						...EMPTY_DEFAULT_PROJECT,
 						name: 'Audio',
 						entry: 'main',
+						exposures: [],
 						modules: [{ id: 1, entry: 'main', code: ['module voice', 'moduleEnd'] }],
 					},
 				],

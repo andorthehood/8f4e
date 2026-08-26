@@ -1,8 +1,20 @@
-import type { DocumentBlockType, ProjectBlock, ProjectGroupObjectModel, ProjectObjectModel } from '@8f4e/language-spec';
+import type {
+	DocumentBlockType,
+	ProjectBlock,
+	ProjectGroupObjectModel,
+	ProjectMemoryExposure,
+	ProjectObjectModel,
+} from '@8f4e/language-spec';
 import { documentBlockInstructionByType, documentBlockInstructionPairs } from '@8f4e/language-spec';
 import { ENTRY_BLOCK_DELIMITER, FORMAT_HEADER, GROUP_BLOCK_DELIMITER } from './delimiters';
-import { getExpectedProjectCloserPrefix, getProjectCloserKeyword, getProjectOpenerKeyword } from './projectKeywords';
+import {
+	getExpectedProjectCloserPrefix,
+	getProjectCloserKeyword,
+	getProjectOpenerKeyword,
+	startsWithInstruction,
+} from './projectKeywords';
 import { getProjectBlockName, isProjectGapLine } from './projectLines';
+import { parseProjectMemoryExposureLine } from './projectMemoryExposure';
 
 type ProjectContainerDelimiter = { opener: string; closer: string };
 type ProjectContainerContentOptions = {
@@ -10,6 +22,7 @@ type ProjectContainerContentOptions = {
 	entry: string;
 	container: ProjectContainerDelimiter;
 	validateDocumentOpener: (opener: string, line: string, lineNumber: number) => void;
+	exposures?: ProjectMemoryExposure[];
 };
 type ParsedProjectBlock = { block: ProjectBlock; type: DocumentBlockType; nextIndex: number };
 
@@ -31,6 +44,7 @@ function createEmptyProjectGroup(name: string, entry: string): ProjectGroupObjec
 		...createEmptyProject(),
 		name,
 		entry,
+		exposures: [],
 	};
 }
 
@@ -124,6 +138,15 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 					`Parse error at line ${i + 1}: closer "${closer}" does not match opener "${options.container.opener}"`
 				);
 			}
+			if (options.exposures && startsWithInstruction(trimmed, 'expose')) {
+				const exposure = parseProjectMemoryExposureLine(trimmed, i + 1);
+				if (options.exposures.some(candidate => candidate.name === exposure.name)) {
+					throw new Error(`Parse error at line ${i + 1}: duplicate exposure "${exposure.name}"`);
+				}
+				options.exposures.push(exposure);
+				i += 1;
+				continue;
+			}
 
 			const opener = getProjectOpenerKeyword(trimmed);
 			if (!opener) throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
@@ -156,6 +179,7 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 				project: group,
 				entry,
 				container: GROUP_BLOCK_DELIMITER,
+				exposures: group.exposures,
 				validateDocumentOpener: (opener, _line, lineNumber) => {
 					if (opener === ENTRY_BLOCK_DELIMITER.opener) {
 						throw new Error(`Parse error at line ${lineNumber}: entry blocks cannot be nested inside groups`);

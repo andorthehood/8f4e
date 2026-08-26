@@ -1,0 +1,66 @@
+{
+  "constants": [],
+  "functions": [],
+  "groups": [
+    {
+      "constants": [],
+      "entry": "main",
+      "exposures": [
+        {
+          "name": "exposedValue",
+          "targetMemoryName": "value",
+          "targetModuleName": "source",
+          "type": "int",
+        },
+        {
+          "name": "exposedInput",
+          "targetMemoryName": "input",
+          "targetModuleName": "consumer",
+          "type": "int*",
+        },
+      ],
+      "functions": [],
+      "groups": [],
+      "includes": [],
+      "modules": [
+        {
+          "code": [
+            "module source",
+            "int value 42",
+            "moduleEnd",
+          ],
+          "entry": "main",
+          "id": 12,
+        },
+        {
+          "code": [
+            "module consumer",
+            "int* input",
+            "moduleEnd",
+          ],
+          "entry": "main",
+          "id": 16,
+        },
+      ],
+      "name": "audio",
+      "notes": [],
+      "prototypes": [],
+      "unknown": [],
+    },
+  ],
+  "includes": [],
+  "modules": [
+    {
+      "code": [
+        "module outer",
+        "int* input &audio:exposedValue",
+        "moduleEnd",
+      ],
+      "entry": "main",
+      "id": 4,
+    },
+  ],
+  "notes": [],
+  "prototypes": [],
+  "unknown": [],
+}

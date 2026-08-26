@@ -31,6 +31,7 @@ import type {
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
+	ProjectMemoryExposuresByGroupPath,
 } from '@8f4e/language-spec';
 import {
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
@@ -47,6 +48,7 @@ interface EmissionProgram {
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	cache: CompilerCache;
 }
 
@@ -98,6 +100,7 @@ export function emitWasmProgram(
 		memoryPlan,
 		memoryDefaultsByModuleId,
 		pointerMetadataByModuleId,
+		projectMemoryExposuresByGroupPath,
 		cache,
 	} = program;
 	const requiredMemoryBytesByIndexFromModules = getRequiredMemoryBytesByIndex(memoryPlan);
@@ -202,6 +205,7 @@ export function emitWasmProgram(
 		memoryPlan,
 		memoryDefaultsByModuleId,
 		pointerMetadataByModuleId,
+		projectMemoryExposuresByGroupPath,
 		requiredMemoryBytes,
 		...(Object.keys(requiredMemoryBytesByRegion).length > 0 ? { requiredMemoryBytesByRegion } : {}),
 		cache,

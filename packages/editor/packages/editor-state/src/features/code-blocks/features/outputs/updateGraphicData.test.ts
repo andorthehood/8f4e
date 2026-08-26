@@ -117,6 +117,34 @@ describe('updateOutputsGraphicData', () => {
 		expect(output?.id).toBe('output1');
 	});
 
+	it('renders a group exposure at the backing memory address', () => {
+		const targetMemory = createMemory({ id: 'value', byteAddress: 44, wordAlignedAddress: 11 });
+		mockGraphicData = createMockCodeBlock({
+			name: 'audio',
+			code: ['group audio', 'expose int publicValue &source:value', 'groupEnd'],
+			width: 100,
+			gaps: new Map(),
+			nestedProjectCodeBlocks: [],
+		});
+		mockState.compiler.projectMemoryExposuresByGroupPath.audio = [
+			{
+				type: 'int',
+				name: 'publicValue',
+				targetModuleName: 'source',
+				targetMemoryName: 'value',
+				groupPath: 'audio',
+				targetModuleId: 'audio/source',
+				targetMemory,
+			},
+		];
+
+		updateOutputsGraphicData(mockGraphicData, mockState);
+
+		expect(mockGraphicData.widgets.outputs).toHaveLength(1);
+		expect(mockGraphicData.widgets.outputs[0]).toMatchObject({ id: 'publicValue', y: 16 });
+		expect(mockState.codeBlockRendering.outputsByWordAddress.get(44)?.id).toBe('publicValue');
+	});
+
 	it('does not add outputs when compiled module metadata is missing', () => {
 		mockState.compiler.memoryPlan.modules = {};
 

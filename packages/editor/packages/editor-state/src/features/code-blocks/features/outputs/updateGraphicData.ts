@@ -5,12 +5,40 @@ import {
 	getConnectorRow,
 	isOutputMemoryDeclaration,
 } from '../connectors/memoryDeclarations';
+import { getProjectMemoryExposureConnectors, isProjectMemoryExposureInput } from '../connectors/projectMemoryExposures';
 
 const CONNECTOR_WIDTH_GRID_CELLS = 3;
 
 export default function updateOutputsGraphicData(graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.widgets.outputs = [];
 	if (!graphicData.name) {
+		return;
+	}
+	if (graphicData.nestedProjectCodeBlocks !== undefined) {
+		getProjectMemoryExposureConnectors(graphicData, state).forEach(({ exposure, row }) => {
+			if (isProjectMemoryExposureInput(exposure)) return;
+
+			const width = state.viewport.vGrid * CONNECTOR_WIDTH_GRID_CELLS;
+			const height = state.viewport.hGrid;
+			const x = graphicData.width - 3 * state.viewport.vGrid;
+			const y = row * state.viewport.hGrid;
+			const out: Output = {
+				width,
+				height,
+				x,
+				y,
+				wireX: Math.round(x + width / 2),
+				wireY: Math.round(y + height / 2),
+				id: exposure.name,
+				codeBlock: graphicData,
+				calibratedMax: 0,
+				calibratedMin: 0,
+				memory: { ...exposure.targetMemory, id: exposure.name, lineNumber: row },
+			};
+
+			graphicData.widgets.outputs.push(out);
+			state.codeBlockRendering.outputsByWordAddress.set(exposure.targetMemory.byteAddress, out);
+		});
 		return;
 	}
 

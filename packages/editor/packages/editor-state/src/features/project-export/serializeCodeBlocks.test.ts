@@ -114,7 +114,7 @@ describe('convertGraphicDataToProjectStructure', () => {
 			createMockCodeBlock({
 				name: 'Audio',
 				entry: 'main',
-				code: ['group Audio', 'groupEnd'],
+				code: ['group Audio', 'expose int level &voice:level', 'groupEnd'],
 				nestedProjectCodeBlocks: [
 					createMockCodeBlock({
 						name: 'Oscillator',
@@ -136,6 +136,14 @@ describe('convertGraphicDataToProjectStructure', () => {
 		expect(result.groups[0]).toMatchObject({
 			name: 'Audio',
 			entry: 'main',
+			exposures: [
+				{
+					type: 'int',
+					name: 'level',
+					targetModuleName: 'voice',
+					targetMemoryName: 'level',
+				},
+			],
 			groups: [
 				{
 					name: 'Oscillator',
@@ -160,6 +168,7 @@ describe('convertGraphicDataToProjectStructure', () => {
 			{
 				name: 'Empty',
 				entry: 'main',
+				exposures: [],
 				modules: [],
 				functions: [],
 				constants: [],

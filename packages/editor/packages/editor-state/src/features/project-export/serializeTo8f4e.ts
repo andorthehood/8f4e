@@ -1,4 +1,5 @@
 import type { ProjectGroupObjectModel, ProjectModuleBlock, ProjectObjectModel } from '@8f4e/language-spec';
+import { serializeProjectMemoryExposure } from '@8f4e/project-preparser';
 import { FORMAT_HEADER, getCloserKeyword, getExpectedCloserPrefix, getOpenerKeyword } from '../project-format';
 
 function validateCodeBlock(code: string[], blockIndex: number): void {
@@ -73,6 +74,7 @@ function getAllBlocks(project: ProjectObjectModel): Array<{ code: string[] }> {
 function serializeGroup(group: ProjectGroupObjectModel): string[] {
 	return [
 		`group ${group.name}`,
+		...group.exposures.map(serializeProjectMemoryExposure),
 		...getDocumentBlocks(group).flatMap(block => block.code),
 		...group.modules.flatMap(module => module.code),
 		...group.groups.flatMap(serializeGroup),

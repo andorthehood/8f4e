@@ -3,6 +3,7 @@ import type { ValidatedAST, ValidatedFunctionAST, ValidatedModuleAST } from './a
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature, FunctionValueType } from './functionTypes';
 import type { MemoryDefaults, MemoryLayoutPlan, MemoryPointerMetadataMap } from './memory';
+import type { ProjectMemoryExposuresByGroupPath } from './project';
 import type { StackAnalysisResult } from './semantic';
 
 export type CompiledStackAnalysisLine = {
@@ -95,6 +96,7 @@ export type CompileResult = {
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	requiredMemoryBytes: number;
 	requiredMemoryBytesByRegion?: Record<string, number>;
 	cache: CompilerCache;

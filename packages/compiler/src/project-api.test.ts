@@ -114,6 +114,7 @@ describe('project compiler API', () => {
 			{
 				name: 'audio',
 				entry: 'main',
+				exposures: [],
 				modules: [{ id: 6, entry: 'main', code: ['module grouped', 'int value 1', 'moduleEnd'] }],
 				functions: [],
 				constants: [],
@@ -142,6 +143,7 @@ describe('project compiler API', () => {
 			...directProject,
 			name,
 			entry: 'main',
+			exposures: [],
 			modules: [
 				{
 					id: firstId + 1,
@@ -184,6 +186,7 @@ describe('project compiler API', () => {
 						...directProject,
 						name: 'included',
 						entry: 'main',
+						exposures: [],
 						modules: [
 							{
 								id: 11,
@@ -225,6 +228,7 @@ describe('project compiler API', () => {
 						...directProject,
 						name: 'hidden',
 						entry: 'main',
+						exposures: [],
 						modules: [],
 						functions: [{ id: 2, code: ['function hidden', 'functionEnd'] }],
 						groups: [],
@@ -235,6 +239,49 @@ describe('project compiler API', () => {
 		);
 
 		await expect(compilation).rejects.toMatchObject({ code: ErrorCode.UNDEFINED_FUNCTION });
+	});
+
+	it('resolves group memory exposures without allocating alias memory', async () => {
+		const project = parseProjectSource(
+			[
+				'8f4e/v1',
+				'entry main',
+				'module root',
+				'int* groupedValue &audio:exposedValue',
+				'int observed',
+				'push &observed',
+				'push *groupedValue',
+				'store',
+				'moduleEnd',
+				'group audio',
+				'expose int exposedValue &source:value',
+				'module source',
+				'int value 41',
+				'moduleEnd',
+				'groupEnd',
+				'entryEnd',
+			].join('\n')
+		);
+		const result = await compileProject(project, { disableSharedMemory: true });
+		const exposure = result.projectMemoryExposuresByGroupPath.audio[0]!;
+		const targetMemory = result.memoryPlan.modules['audio/source']!.memory.value!;
+
+		expect(exposure).toMatchObject({
+			name: 'exposedValue',
+			type: 'int',
+			groupPath: 'audio',
+			targetModuleId: 'audio/source',
+			targetMemoryName: 'value',
+		});
+		expect(exposure.targetMemory).toBe(targetMemory);
+		expect(result.memoryPlan.modules.audio).toBeUndefined();
+
+		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
+		const { instance } = await WebAssembly.instantiate(result.codeBuffer, { host: { memory } });
+		(instance.exports.initDefaults as CallableFunction)();
+		(instance.exports.main as CallableFunction)();
+
+		expect(new Int32Array(memory.buffer)[result.memoryPlan.modules.root!.memory.observed!.wordAlignedAddress]).toBe(41);
 	});
 
 	it('preserves module array order while grouping execution by entry', async () => {

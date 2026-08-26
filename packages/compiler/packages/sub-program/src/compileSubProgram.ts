@@ -11,6 +11,7 @@ import type {
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
+	ProjectMemoryExposuresByGroupPath,
 	ValidatedAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
@@ -42,6 +43,7 @@ interface CompiledSubProgram {
 	memoryPlan: MemoryLayoutPlan;
 	memoryDefaultsByModuleId: Record<string, MemoryDefaults>;
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
+	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	cache: CompilerCache;
 }
 
@@ -55,6 +57,20 @@ const DEFAULT_STARTING_MEMORY_WORD_ADDRESS = 1;
 
 /** Built-in WebAssembly export names that user functions are not allowed to reuse. */
 const RESERVED_EXPORT_NAMES = ['initDefaults'];
+
+function resolveProjectMemoryExposures(
+	program: ComposedProgram,
+	memoryPlan: MemoryLayoutPlan
+): ProjectMemoryExposuresByGroupPath {
+	const result: ProjectMemoryExposuresByGroupPath = {};
+	for (const exposure of program.memoryExposures) {
+		(result[exposure.groupPath] ??= []).push({
+			...exposure,
+			targetMemory: memoryPlan.modules[exposure.targetModuleId]!.memory[exposure.targetMemoryName]!,
+		});
+	}
+	return result;
+}
 
 /** Creates synthetic metadata for generated entry dispatcher functions. */
 function createEntryFunctionMetadata(entryNames: readonly string[], importedFunctionCount: number): FunctionRegistry {
@@ -292,6 +308,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		memoryPlan,
 		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
 		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
+		projectMemoryExposuresByGroupPath: resolveProjectMemoryExposures(program, memoryPlan),
 		cache,
 	};
 }

@@ -6,6 +6,7 @@ import type {
 	GetOrCreateWasmInstanceResult,
 	MemoryDefaults,
 	MemoryLayoutPlan,
+	ProjectIncludeResolver,
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
 import getMemoryValueChanges from './getMemoryValueChanges';
@@ -46,7 +47,7 @@ async function getOrCreateWasmInstanceRef(
 export default async function compileAndUpdateMemory(
 	project: ProjectObjectModel,
 	compilerOptions: CompileOptions,
-	includeSources: Record<string, string | undefined> = {}
+	resolveInclude: ProjectIncludeResolver = () => undefined
 ): Promise<CompileAndUpdateMemoryResult> {
 	const {
 		codeBuffer,
@@ -56,11 +57,12 @@ export default async function compileAndUpdateMemory(
 		memoryPlan,
 		memoryDefaultsByModuleId,
 		pointerMetadataByModuleId,
+		projectMemoryExposuresByGroupPath,
 		cache,
 	} = await compileProject(project, {
 		...compilerOptions,
 		cache: compilerCache,
-		resolveInclude: includeId => includeSources[includeId],
+		resolveInclude,
 	});
 	compilerCache = cache;
 	const allocatedMemoryBytes = deriveEffectiveMemorySize(requiredMemoryBytes);
@@ -143,6 +145,7 @@ export default async function compileAndUpdateMemory(
 		memoryPlan,
 		memoryDefaultsByModuleId,
 		pointerMetadataByModuleId,
+		projectMemoryExposuresByGroupPath,
 		requiredMemoryBytes,
 		allocatedMemoryBytes,
 		astCacheStats: { ...cache.ast.stats },

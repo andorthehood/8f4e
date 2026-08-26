@@ -5,6 +5,7 @@
     {
       "constants": [],
       "entry": "main",
+      "exposures": [],
       "functions": [],
       "groups": [],
       "includes": [],
@@ -27,11 +28,13 @@
     {
       "constants": [],
       "entry": "main",
+      "exposures": [],
       "functions": [],
       "groups": [
         {
           "constants": [],
           "entry": "main",
+          "exposures": [],
           "functions": [
             {
               "code": [
@@ -72,6 +75,7 @@
     {
       "constants": [],
       "entry": "test",
+      "exposures": [],
       "functions": [
         {
           "code": [

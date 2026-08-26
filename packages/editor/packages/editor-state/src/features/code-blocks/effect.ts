@@ -6,6 +6,7 @@ import {
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
 } from '@8f4e/language-spec';
+import { serializeProjectMemoryExposure } from '@8f4e/project-preparser';
 import type { StateManager } from '@8f4e/state-manager';
 import gapCalculator from '../code-editing/gapCalculator';
 import { moveCaret } from '../code-editing/moveCaret';
@@ -140,6 +141,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 	};
 
 	const updateAllBlockDerivedState = () => {
+		state.codeBlockRendering.outputsByWordAddress.clear();
 		for (const graphicData of state.codeBlockRendering.codeBlocks) {
 			updateBlockDerivedState(graphicData);
 		}
@@ -306,7 +308,12 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 				return createGraphicCodeBlock(
 					{
 						id: creationIndex,
-						code: [`group ${groupName}`, `; @pos ${gridX} ${gridY}`, 'groupEnd'],
+						code: [
+							`group ${groupName}`,
+							...group.exposures.map(serializeProjectMemoryExposure),
+							`; @pos ${gridX} ${gridY}`,
+							'groupEnd',
+						],
 						blockType: 'unknown',
 						entry: group.entry,
 					},

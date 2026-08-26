@@ -1,3 +1,5 @@
+import type { MemoryDeclarationInstruction, PlannedMemoryDeclaration } from './memory';
+
 /** Stable identity shared by project actors and compiler diagnostics. */
 export type ProjectBlockId = number;
 
@@ -72,11 +74,35 @@ export interface ProjectObjectModel {
 	groups: ProjectGroupObjectModel[];
 }
 
+/** A group-owned public memory name backed by a memory item in one of the group's direct modules. */
+export interface ProjectMemoryExposure {
+	/** Public memory declaration type. It is intentionally not checked against the target's declaration type. */
+	type: MemoryDeclarationInstruction;
+	/** Public name used by the enclosing project. */
+	name: string;
+	/** Source-level name of the direct child module that owns the target memory item. */
+	targetModuleName: string;
+	/** Source-level memory item name in the target module. */
+	targetMemoryName: string;
+}
+
 /** Named child project owned by another project object model. */
 export interface ProjectGroupObjectModel extends ProjectObjectModel {
 	name: ProjectGroupName;
 	entry: ProjectEntryName;
+	/** Ordered public memory aliases exposed to the enclosing project. */
+	exposures: ProjectMemoryExposure[];
 }
+
+/** Compiler-resolved group exposure backed directly by the target's planned memory declaration. */
+export interface ResolvedProjectMemoryExposure extends ProjectMemoryExposure {
+	groupPath: ProjectGroupPath;
+	targetModuleId: ProjectModuleId;
+	targetMemory: PlannedMemoryDeclaration;
+}
+
+/** Resolved exposures indexed by the canonical path of the group that owns them. */
+export type ProjectMemoryExposuresByGroupPath = Record<ProjectGroupPath, ResolvedProjectMemoryExposure[]>;
 
 /** Host callback used to load a function include referenced by a project. */
 export type ProjectIncludeResolver = (includeId: string) => string | Promise<string | undefined> | undefined;
