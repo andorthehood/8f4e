@@ -1,6 +1,6 @@
 {
   "name": "@8f4e/include-resolver",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "description": "8f4e include source resolution pass",
   "type": "module",
