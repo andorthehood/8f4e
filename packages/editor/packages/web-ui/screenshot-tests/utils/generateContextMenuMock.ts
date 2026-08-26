@@ -14,7 +14,7 @@ export default function generateContextMenuMock(): ContextMenu {
 				close: true,
 			},
 			{
-				title: '.................. Paste Module',
+				title: '.............. Paste Code Block',
 				action: 'addCodeBlock',
 				payload: {
 					isPaste: true,

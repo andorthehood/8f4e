@@ -5,7 +5,7 @@ import { createMockCodeBlock, createMockState } from '../../src/pureHelpers/test
 
 describe('menus - clipboard callback disabled state', () => {
 	describe('mainMenu', () => {
-		it('should disable "Paste Module" when readClipboardText is not provided', () => {
+		it('should disable "Paste Code Block" when readClipboardText is not provided', () => {
 			const mockState = createMockState({
 				editorMode: 'edit',
 				callbacks: { readClipboardText: undefined },
@@ -13,12 +13,12 @@ describe('menus - clipboard callback disabled state', () => {
 
 			const menu = mainMenu(mockState as State);
 
-			const pasteModuleItem = menu.find(item => item.title === 'Paste Module');
-			expect(pasteModuleItem).toBeDefined();
-			expect(pasteModuleItem?.disabled).toBe(true);
+			const pasteCodeBlockItem = menu.find(item => item.title === 'Paste Code Block');
+			expect(pasteCodeBlockItem).toBeDefined();
+			expect(pasteCodeBlockItem?.disabled).toBe(true);
 		});
 
-		it('should enable "Paste Module" when readClipboardText is provided', () => {
+		it('should enable "Paste Code Block" when readClipboardText is provided', () => {
 			const mockState = createMockState({
 				editorMode: 'edit',
 				callbacks: { readClipboardText: async () => 'test' },
@@ -26,20 +26,20 @@ describe('menus - clipboard callback disabled state', () => {
 
 			const menu = mainMenu(mockState as State);
 
-			const pasteModuleItem = menu.find(item => item.title === 'Paste Module');
-			expect(pasteModuleItem).toBeDefined();
-			expect(pasteModuleItem?.disabled).toBe(false);
+			const pasteCodeBlockItem = menu.find(item => item.title === 'Paste Code Block');
+			expect(pasteCodeBlockItem).toBeDefined();
+			expect(pasteCodeBlockItem?.disabled).toBe(false);
 		});
 
-		it('should not show "Paste Module" when editing is disabled', () => {
+		it('should not show "Paste Code Block" when editing is disabled', () => {
 			const mockState = createMockState({
 				featureFlags: { editing: false },
 			});
 
 			const menu = mainMenu(mockState as State);
 
-			const pasteModuleItem = menu.find(item => item.title === 'Paste Module');
-			expect(pasteModuleItem).toBeUndefined();
+			const pasteCodeBlockItem = menu.find(item => item.title === 'Paste Code Block');
+			expect(pasteCodeBlockItem).toBeUndefined();
 		});
 	});
 
