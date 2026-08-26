@@ -26,7 +26,7 @@ async function compile(project: ProjectObjectModel, compilerOptions: CompileOpti
 			memoryAction,
 			initOnlyReran,
 		} = await compileAndUpdateMemory(project, compilerOptions, includeId =>
-			includeSourceCache.resolve(includeId, () => includeSourceRequestBroker.request(compilationId, includeId))
+			includeSourceCache.resolve(includeId, () => includeSourceRequestBroker.request(includeId))
 		);
 		self.postMessage({
 			type: 'success',

@@ -7,16 +7,14 @@ describe('createIncludeSourceRequestBroker', () => {
 	it('resolves the matching request with the browser source', async () => {
 		const postMessage = vi.fn<(message: ResolveIncludeRequestMessage) => void>();
 		const broker = createIncludeSourceRequestBroker(postMessage);
-		const sourcePromise = broker.request(7, 'std/math/sine');
+		const sourcePromise = broker.request('std/math/sine');
 
 		expect(postMessage).toHaveBeenCalledWith({
 			type: 'resolveInclude',
-			compilationId: 7,
 			payload: { requestId: 0, includeId: 'std/math/sine' },
 		});
 		broker.finish({
 			type: 'resolveIncludeResult',
-			compilationId: 7,
 			payload: { requestId: 0, source: 'function sine\nfunctionEnd' },
 		});
 
@@ -25,7 +23,7 @@ describe('createIncludeSourceRequestBroker', () => {
 
 	it('rejects the matching request with the browser diagnostic', async () => {
 		const broker = createIncludeSourceRequestBroker(vi.fn());
-		const sourcePromise = broker.request(3, 'std/missing');
+		const sourcePromise = broker.request('std/missing');
 		const error: CompilerDiagnostic = {
 			code: -1,
 			message: 'loading failed',
@@ -35,7 +33,6 @@ describe('createIncludeSourceRequestBroker', () => {
 
 		broker.finish({
 			type: 'resolveIncludeResult',
-			compilationId: 3,
 			payload: { requestId: 0, error },
 		});
 

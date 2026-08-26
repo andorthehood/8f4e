@@ -1,7 +1,7 @@
 import type { ResolveIncludeRequestMessage, ResolveIncludeResultMessage } from './messages';
 
 export interface IncludeSourceRequestBroker {
-	request: (compilationId: number, includeId: string) => Promise<string | undefined>;
+	request: (includeId: string) => Promise<string | undefined>;
 	finish: (message: ResolveIncludeResultMessage) => void;
 }
 
@@ -16,13 +16,12 @@ export function createIncludeSourceRequestBroker(
 	>();
 
 	return {
-		request(compilationId, includeId) {
+		request(includeId) {
 			const requestId = nextRequestId++;
 			return new Promise((resolve, reject) => {
 				pendingRequests.set(requestId, { resolve, reject });
 				postMessage({
 					type: 'resolveInclude',
-					compilationId,
 					payload: { requestId, includeId },
 				});
 			});

@@ -2,7 +2,6 @@ import type { CompilerDiagnostic } from '@8f4e/language-spec';
 
 export interface ResolveIncludeRequestMessage {
 	type: 'resolveInclude';
-	compilationId: number;
 	payload: {
 		requestId: number;
 		includeId: string;
@@ -11,7 +10,6 @@ export interface ResolveIncludeRequestMessage {
 
 export interface ResolveIncludeSuccessMessage {
 	type: 'resolveIncludeResult';
-	compilationId: number;
 	payload: {
 		requestId: number;
 		source: string | undefined;
@@ -20,7 +18,6 @@ export interface ResolveIncludeSuccessMessage {
 
 export interface ResolveIncludeErrorMessage {
 	type: 'resolveIncludeResult';
-	compilationId: number;
 	payload: {
 		requestId: number;
 		error: CompilerDiagnostic;
