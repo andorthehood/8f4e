@@ -103,6 +103,27 @@ export interface ProjectMemoryExposure {
 	targetMemoryName: string;
 }
 
+/** Canonical direct-module target of one public group memory alias. */
+export interface ProjectMemoryAliasTarget {
+	targetModuleId: ProjectModuleId;
+	targetMemoryId: string;
+}
+
+/**
+ * Compiler-internal lookup of public group memory names to canonical direct-module targets.
+ * The outer key is the public group path used as an intermodule id; the inner key is the exposed memory name.
+ */
+export type ProjectMemoryAliasLookup = ReadonlyMap<ProjectGroupPath, ReadonlyMap<string, ProjectMemoryAliasTarget>>;
+
+/** Resolves a structured intermodule reference through the group alias lookup when one exists. */
+export function resolveProjectMemoryAlias(
+	aliases: ProjectMemoryAliasLookup,
+	targetModuleId: ProjectModuleId,
+	targetMemoryId: string
+): ProjectMemoryAliasTarget {
+	return aliases.get(targetModuleId)?.get(targetMemoryId) ?? { targetModuleId, targetMemoryId };
+}
+
 /** Named child project owned by another project object model. */
 export interface ProjectGroupObjectModel extends ProjectObjectModel {
 	name: ProjectGroupName;

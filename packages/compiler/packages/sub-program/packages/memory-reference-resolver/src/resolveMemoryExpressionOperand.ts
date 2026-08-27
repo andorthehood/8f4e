@@ -6,6 +6,7 @@ import type {
 	MemoryPointerMetadataMap,
 	PlannedMemoryDeclaration,
 	PlannedMemoryModule,
+	ProjectMemoryAliasLookup,
 } from '@8f4e/language-spec';
 import {
 	ArgumentType,
@@ -25,6 +26,7 @@ import {
 	memoryStartAddressValue,
 	moduleAddressValue,
 	type PointerMetadata,
+	resolveProjectMemoryAlias,
 } from '@8f4e/language-spec';
 
 export type MemoryReferenceModuleNamespace = PlannedMemoryModule;
@@ -33,6 +35,7 @@ export type MemoryReferencePointerMetadataByModuleId = Record<string, MemoryPoin
 
 export interface MemoryReferenceResolutionContext {
 	memoryPlan: MemoryLayoutPlan;
+	memoryAliases: ProjectMemoryAliasLookup;
 	currentModule?: PlannedMemoryModule;
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId;
 	moduleName?: string;
@@ -69,6 +72,26 @@ function getMemoryDeclaration(
 	moduleId = getCurrentModuleId(context)
 ): PlannedMemoryDeclaration | undefined {
 	return getModule(context, moduleId)?.memory[memoryId];
+}
+
+/** Resolves one structured intermodule reference through project aliases and the completed memory plan. */
+export function resolveIntermoduleMemoryTarget(
+	context: MemoryReferenceResolutionContext,
+	targetModuleId: string,
+	targetMemoryId: string
+): {
+	targetModuleId: string;
+	targetMemoryId: string;
+	targetModule: PlannedMemoryModule | undefined;
+	targetMemory: PlannedMemoryDeclaration | undefined;
+} {
+	const canonicalTarget = resolveProjectMemoryAlias(context.memoryAliases, targetModuleId, targetMemoryId);
+	const targetModule = getModule(context, canonicalTarget.targetModuleId);
+	return {
+		...canonicalTarget,
+		targetModule,
+		targetMemory: targetModule?.memory[canonicalTarget.targetMemoryId],
+	};
 }
 
 function getPointerMetadata(
@@ -118,7 +141,7 @@ export function resolveMemoryExpressionOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-element-word-size') {
-		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, operand.targetModuleId);
+		const { targetMemory } = resolveIntermoduleMemoryTarget(context, operand.targetModuleId, operand.targetMemoryId);
 		if (targetMemory) {
 			return {
 				value: getElementWordSize(targetMemory),
@@ -129,7 +152,7 @@ export function resolveMemoryExpressionOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-element-count') {
-		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, operand.targetModuleId);
+		const { targetMemory } = resolveIntermoduleMemoryTarget(context, operand.targetModuleId, operand.targetMemoryId);
 		if (targetMemory) {
 			return {
 				value: getElementCount(targetMemory),
@@ -140,7 +163,7 @@ export function resolveMemoryExpressionOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-element-max') {
-		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, operand.targetModuleId);
+		const { targetMemory } = resolveIntermoduleMemoryTarget(context, operand.targetModuleId, operand.targetMemoryId);
 		if (targetMemory) {
 			return {
 				value: getElementMaxValue(targetMemory),
@@ -151,7 +174,7 @@ export function resolveMemoryExpressionOperand(
 	}
 
 	if (operand.referenceKind === 'intermodular-element-min') {
-		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, operand.targetModuleId);
+		const { targetMemory } = resolveIntermoduleMemoryTarget(context, operand.targetModuleId, operand.targetMemoryId);
 		if (targetMemory) {
 			return {
 				value: getElementMinValue(targetMemory),
@@ -319,8 +342,11 @@ export function resolveMemoryExpressionOperand(
 	// &module:memory — start byte address of a remote memory item
 	// module:memory& — end-word base byte address of a remote memory item
 	if (operand.referenceKind === 'intermodular-reference') {
-		const targetModuleId = operand.targetModuleId;
-		const targetMemory = getMemoryDeclaration(context, operand.targetMemoryId, targetModuleId);
+		const { targetModuleId, targetMemory } = resolveIntermoduleMemoryTarget(
+			context,
+			operand.targetModuleId,
+			operand.targetMemoryId
+		);
 		if (targetMemory) {
 			return operand.isEndAddress
 				? memoryEndAddressValue(targetMemory, targetModuleId)

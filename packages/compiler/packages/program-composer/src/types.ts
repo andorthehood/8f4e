@@ -1,6 +1,7 @@
 import type {
 	CompilerCache,
 	ProjectGroupPath,
+	ProjectMemoryAliasLookup,
 	ProjectMemoryExposure,
 	ProjectModuleId,
 	SourceMetadata,
@@ -37,5 +38,6 @@ export interface ComposedProgram {
 		functions: ValidatedFunctionAST[];
 	};
 	memoryExposures: ComposedProjectMemoryExposure[];
+	memoryAliases: ProjectMemoryAliasLookup;
 	cache: CompilerCache;
 }

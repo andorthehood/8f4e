@@ -27,6 +27,13 @@ function createCompositionSnapshot(fixtureName: string) {
 		entryNames: program.entryNames,
 		moduleEntryNames: program.moduleEntryNames,
 		memoryExposures: program.memoryExposures,
+		...(program.memoryAliases.size > 0
+			? {
+					memoryAliases: Object.fromEntries(
+						[...program.memoryAliases].map(([groupPath, aliases]) => [groupPath, Object.fromEntries(aliases)])
+					),
+				}
+			: {}),
 		ast: program.ast,
 		cache: {
 			keys: [...cache.ast.entries.keys()].sort(),

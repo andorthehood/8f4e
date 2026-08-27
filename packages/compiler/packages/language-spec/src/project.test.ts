@@ -7,12 +7,14 @@ import {
 	type ProjectBlockId,
 	type ProjectEntryName,
 	type ProjectGroupObjectModel,
+	type ProjectMemoryAliasLookup,
 	type ProjectMemoryExposure,
 	type ProjectModuleBlock,
 	type ProjectObjectModel,
 	projectInstructionNames,
 	projectInstructions,
 	ROOT_PROJECT_GROUP_PATH,
+	resolveProjectMemoryAlias,
 } from './project';
 
 describe('ProjectObjectModel', () => {
@@ -46,5 +48,20 @@ describe('ProjectObjectModel', () => {
 			expose: 'expose',
 		});
 		expect(projectInstructionNames).toEqual(['entry', 'entryEnd', 'group', 'groupEnd', 'expose']);
+	});
+
+	it('resolves structured project memory aliases', () => {
+		const aliases: ProjectMemoryAliasLookup = new Map([
+			['audio', new Map([['level', { targetModuleId: 'audio/source', targetMemoryId: 'value' }]])],
+		]);
+
+		expect(resolveProjectMemoryAlias(aliases, 'audio', 'level')).toEqual({
+			targetModuleId: 'audio/source',
+			targetMemoryId: 'value',
+		});
+		expect(resolveProjectMemoryAlias(aliases, 'other', 'value')).toEqual({
+			targetModuleId: 'other',
+			targetMemoryId: 'value',
+		});
 	});
 });

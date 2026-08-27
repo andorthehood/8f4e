@@ -14,8 +14,29 @@ import {
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
 import { createCompilerCache } from './createCompilerCache';
 import { qualifyAst } from './qualifyAst';
-import { rewriteMemoryExposureReferences } from './rewriteMemoryExposureReferences';
 import type { ComposedProgram, IncludedFunctionsByProjectGroupPath } from './types';
+
+function appendMemoryExposureAliases(
+	program: ComposedProgram,
+	groupPath: ProjectGroupPath,
+	exposures: ProjectObjectModel['groups'][number]['exposures']
+): void {
+	if (exposures.length === 0) {
+		return;
+	}
+
+	const aliases = new Map(program.memoryAliases);
+	const groupAliases = new Map(aliases.get(groupPath));
+
+	for (const exposure of exposures) {
+		const targetModuleId = createProjectModuleId(groupPath, exposure.targetModuleName);
+		program.memoryExposures.push({ ...exposure, groupPath, targetModuleId });
+		groupAliases.set(exposure.name, { targetModuleId, targetMemoryId: exposure.targetMemoryName });
+	}
+
+	aliases.set(groupPath, groupAliases);
+	program.memoryAliases = aliases;
+}
 
 function appendUnit(
 	project: ProjectObjectModel,
@@ -25,13 +46,7 @@ function appendUnit(
 ): void {
 	project.groups.forEach(group => {
 		const groupPath = createChildProjectGroupPath(projectPath, group.name);
-		program.memoryExposures.push(
-			...group.exposures.map(exposure => ({
-				...exposure,
-				groupPath,
-				targetModuleId: createProjectModuleId(groupPath, exposure.targetModuleName),
-			}))
-		);
+		appendMemoryExposureAliases(program, groupPath, group.exposures);
 		appendUnit(group, groupPath, program, includedFunctionsByProjectPath);
 	});
 
@@ -120,15 +135,10 @@ export function composeProgram(
 			functions: [],
 		},
 		memoryExposures: [],
+		memoryAliases: new Map(),
 		cache,
 	};
 
 	appendUnit(project, ROOT_PROJECT_GROUP_PATH, program, includedFunctionsByProjectPath);
-	program.ast = {
-		prototypes: rewriteMemoryExposureReferences(program.ast.prototypes, program.memoryExposures),
-		modules: rewriteMemoryExposureReferences(program.ast.modules, program.memoryExposures),
-		constants: rewriteMemoryExposureReferences(program.ast.constants, program.memoryExposures),
-		functions: rewriteMemoryExposureReferences(program.ast.functions, program.memoryExposures),
-	};
 	return program;
 }

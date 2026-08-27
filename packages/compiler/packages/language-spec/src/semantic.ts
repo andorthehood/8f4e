@@ -32,6 +32,7 @@ import type {
 	PointeeBaseType,
 	ResolvedMemoryDeclaration,
 } from './memory';
+import type { ProjectMemoryAliasLookup } from './project';
 
 /** Proven byte range associated with an address expression or memory boundary. */
 export interface MemoryAddressRange {
@@ -161,6 +162,7 @@ export interface CompilationContext {
 	currentMemoryIndex: number;
 	currentMemoryRegionName?: string;
 	memoryPlan: MemoryLayoutPlan;
+	memoryAliases: ProjectMemoryAliasLookup;
 	currentPlannedModule?: PlannedMemoryModule;
 	memoryDefaults: MemoryDefaults;
 	pointerMetadata: MemoryPointerMetadataMap;

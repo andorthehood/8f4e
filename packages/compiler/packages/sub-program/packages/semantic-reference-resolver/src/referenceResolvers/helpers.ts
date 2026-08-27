@@ -8,6 +8,7 @@ import {
 	ErrorCode,
 	getError,
 	type ResolvedArgumentLiteral,
+	resolveProjectMemoryAlias,
 } from '@8f4e/language-spec';
 
 function getTargetPlannedModule(context: CompilationContext, targetModuleId: string) {
@@ -37,8 +38,11 @@ export function validateIntermoduleAddressReference(
 	}
 
 	if (identifier.referenceKind === 'intermodular-reference') {
-		const targetModuleId = identifier.targetModuleId;
-		const targetMemoryId = identifier.targetMemoryId;
+		const { targetModuleId, targetMemoryId } = resolveProjectMemoryAlias(
+			context.memoryAliases,
+			identifier.targetModuleId,
+			identifier.targetMemoryId
+		);
 
 		const targetModule = getTargetPlannedModule(context, targetModuleId);
 		if (!targetModule) {
@@ -59,8 +63,11 @@ export function validateIntermoduleAddressReference(
 		identifier.referenceKind === 'intermodular-element-max' ||
 		identifier.referenceKind === 'intermodular-element-min'
 	) {
-		const targetModuleId = identifier.targetModuleId;
-		const targetMemoryId = identifier.targetMemoryId;
+		const { targetModuleId, targetMemoryId } = resolveProjectMemoryAlias(
+			context.memoryAliases,
+			identifier.targetModuleId,
+			identifier.targetMemoryId
+		);
 		const targetModule = getTargetPlannedModule(context, targetModuleId);
 		if (!targetModule) {
 			throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: targetModuleId });

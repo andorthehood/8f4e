@@ -250,42 +250,82 @@ describe('project compiler API', () => {
 			[
 				'8f4e/v1',
 				'entry main',
+				'group processing',
 				'module root',
 				'int* groupedValue &audio:exposedValue',
 				'int observed',
+				'int metadata',
 				'push &observed',
 				'push *groupedValue',
 				'store',
+				'push &metadata',
+				'push count(audio:exposedValue)+sizeof(audio:exposedValue)',
+				'store',
 				'moduleEnd',
 				'group audio',
-				'expose int exposedValue &source:value',
+				'expose float exposedValue &source:value',
 				'module source',
 				'int value 41',
 				'moduleEnd',
+				'groupEnd',
 				'groupEnd',
 				'entryEnd',
 			].join('\n')
 		);
 		const result = await compileProject(project, { disableSharedMemory: true });
-		const exposure = result.projectMemoryExposuresByGroupPath.audio[0]!;
-		const targetMemory = result.memoryPlan.modules['audio/source']!.memory.value!;
+		const exposure = result.projectMemoryExposuresByGroupPath['processing/audio'][0]!;
+		const targetMemory = result.memoryPlan.modules['processing/audio/source']!.memory.value!;
 
 		expect(exposure).toMatchObject({
 			name: 'exposedValue',
-			type: 'int',
-			groupPath: 'audio',
-			targetModuleId: 'audio/source',
+			type: 'float',
+			groupPath: 'processing/audio',
+			targetModuleId: 'processing/audio/source',
 			targetMemoryName: 'value',
 		});
 		expect(exposure.targetMemory).toBe(targetMemory);
-		expect(result.memoryPlan.modules.audio).toBeUndefined();
+		expect(result.memoryPlan.modules['processing/audio']).toBeUndefined();
 
 		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
 		const { instance } = await WebAssembly.instantiate(result.codeBuffer, { host: { memory } });
 		(instance.exports.initDefaults as CallableFunction)();
 		(instance.exports.main as CallableFunction)();
 
-		expect(new Int32Array(memory.buffer)[result.memoryPlan.modules.root!.memory.observed!.wordAlignedAddress]).toBe(41);
+		expect(
+			new Int32Array(memory.buffer)[result.memoryPlan.modules['processing/root']!.memory.observed!.wordAlignedAddress]
+		).toBe(41);
+		expect(
+			new Int32Array(memory.buffer)[result.memoryPlan.modules['processing/root']!.memory.metadata!.wordAlignedAddress]
+		).toBe(5);
+	});
+
+	it.each([
+		{ target: 'missing:value', targetModuleId: 'audio/missing', targetMemoryId: 'value' },
+		{ target: 'source:missing', targetModuleId: 'audio/source', targetMemoryId: 'missing' },
+	])('reports invalid unused group exposure target $target without an AST line', async testCase => {
+		const project = parseProjectSource(
+			[
+				'8f4e/v1',
+				'entry main',
+				'module root',
+				'moduleEnd',
+				'group audio',
+				`expose int publicValue &${testCase.target}`,
+				'module source',
+				'int value',
+				'moduleEnd',
+				'groupEnd',
+				'entryEnd',
+			].join('\n')
+		);
+
+		const compilation = compileProject(project, { disableSharedMemory: true });
+		await expect(compilation).rejects.toMatchObject({
+			code: ErrorCode.INVALID_PROJECT_MEMORY_EXPOSURE_TARGET,
+			context: { projectGroupPath: 'audio', projectMemoryExposureName: 'publicValue' },
+			message: expect.stringContaining(`${testCase.targetModuleId}:${testCase.targetMemoryId}`),
+		});
+		await expect(compilation).rejects.not.toHaveProperty('line');
 	});
 
 	it('preserves module array order while grouping execution by entry', async () => {

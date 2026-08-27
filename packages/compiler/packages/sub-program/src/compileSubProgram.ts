@@ -21,6 +21,7 @@ import {
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	getEffectiveFunctionMetadata,
 	getError,
+	getProjectMemoryExposureTargetError,
 } from '@8f4e/language-spec';
 import { MemoryDefaultResolverError, resolveMemoryDefaults } from '@8f4e/memory-default-resolver';
 import { MemoryPlannerError, planSubProgramMemoryLayout } from '@8f4e/memory-planner';
@@ -64,9 +65,18 @@ function resolveProjectMemoryExposures(
 ): ProjectMemoryExposuresByGroupPath {
 	const result: ProjectMemoryExposuresByGroupPath = {};
 	for (const exposure of program.memoryExposures) {
+		const targetMemory = memoryPlan.modules[exposure.targetModuleId]?.memory[exposure.targetMemoryName];
+		if (!targetMemory) {
+			throw getProjectMemoryExposureTargetError(
+				exposure.groupPath,
+				exposure.name,
+				exposure.targetModuleId,
+				exposure.targetMemoryName
+			);
+		}
 		(result[exposure.groupPath] ??= []).push({
 			...exposure,
-			targetMemory: memoryPlan.modules[exposure.targetModuleId]!.memory[exposure.targetMemoryName]!,
+			targetMemory,
 		});
 	}
 	return result;
@@ -205,9 +215,11 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	} catch (error) {
 		throw wrapMemoryPlannerError(error, subProgramAst);
 	}
+	const projectMemoryExposuresByGroupPath = resolveProjectMemoryExposures(program, memoryPlan);
 	const memoryReferenceResolution = resolveMemoryReferences({
 		ast: subProgramAst,
 		memoryPlan,
+		memoryAliases: program.memoryAliases,
 		constantReferences: constantResolution.references,
 	});
 	const prototypeShapesById = indexPrototypeShapes(subProgramAst.prototypes);
@@ -247,6 +259,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		ast: subProgramAst,
 		namespaces,
 		memoryPlan,
+		memoryAliases: program.memoryAliases,
 		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
 		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
 		constantReferences: constantResolution.references,
@@ -308,7 +321,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		memoryPlan,
 		memoryDefaultsByModuleId: memoryDefaultResolution.memoryDefaultsByModuleId,
 		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
-		projectMemoryExposuresByGroupPath: resolveProjectMemoryExposures(program, memoryPlan),
+		projectMemoryExposuresByGroupPath,
 		cache,
 	};
 }

@@ -61,6 +61,7 @@ export const ErrorCode = {
 	FUNCTION_OVERLOAD_NO_MATCH: 68,
 	CONSTANT_RESOLUTION_FAILED: 69,
 	OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED: 72,
+	INVALID_PROJECT_MEMORY_EXPOSURE_TARGET: 73,
 } as const;
 
 export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];

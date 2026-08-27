@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-08-26
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-08-26
 ---
 
 # TODO: Resolve Group Memory Exposures Through an Alias Table
@@ -112,14 +112,14 @@ the exposure's declared public type must remain intentionally unchecked against 
 
 ## Success Criteria
 
-- [ ] Composed AST arguments retain their original public group-exposure references.
-- [ ] One structured alias lookup resolves exposure references to canonical backing memory.
-- [ ] Pointer defaults, address references, metadata queries, and compile-time expressions resolve through aliases.
-- [ ] Memory-reference facts and pointer provenance identify the canonical backing memory.
-- [ ] Semantic validation reports missing alias targets without returning undefined resolved metadata.
-- [ ] No compiler stage reparses or rewrites raw identifier source strings for exposure resolution.
-- [ ] The composer AST rewrite and all compatibility remnants are removed.
-- [ ] Exposure public types remain independent of backing declaration types.
+- [x] Composed AST arguments retain their original public group-exposure references.
+- [x] One structured alias lookup resolves exposure references to canonical backing memory.
+- [x] Pointer defaults, address references, metadata queries, and compile-time expressions resolve through aliases.
+- [x] Memory-reference facts and pointer provenance identify the canonical backing memory.
+- [x] Semantic validation reports missing alias targets without returning undefined resolved metadata.
+- [x] No compiler stage reparses or rewrites raw identifier source strings for exposure resolution.
+- [x] The composer AST rewrite and all compatibility remnants are removed.
+- [x] Exposure public types remain independent of backing declaration types.
 
 ## Affected Components
 

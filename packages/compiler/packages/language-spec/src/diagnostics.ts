@@ -1,6 +1,7 @@
 import type { CompilerASTLine } from './ast';
 import type { SourceMetadata } from './compiled';
 import type { CompilerSourceBlockType } from './instructions';
+import type { ProjectGroupPath } from './project';
 import type { CodegenContext, CompilationContext } from './semantic';
 
 /** Source block context attached to a serialized compiler diagnostic. */
@@ -9,6 +10,8 @@ export interface CompilerDiagnosticContext {
 	codeBlockType?: CompilerSourceBlockType;
 	projectBlockId?: number;
 	source?: SourceMetadata;
+	projectGroupPath?: ProjectGroupPath;
+	projectMemoryExposureName?: string;
 }
 
 /**
@@ -17,7 +20,7 @@ export interface CompilerDiagnosticContext {
  */
 export interface CompilerStageError {
 	message: string;
-	line: CompilerASTLine;
+	line?: CompilerASTLine;
 	context?: CodegenContext | CompilationContext | CompilerDiagnosticContext;
 	code: number;
 }
