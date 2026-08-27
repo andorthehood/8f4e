@@ -47,7 +47,6 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     ├── <a href="./packages/runtime-web-worker/README.md">runtime-web-worker</a>  ┘ for different execution contexts)
     ├── <a href="./packages/cli/README.md">cli</a> (CLI for compiling 8f4e project files)
     ├── <a href="./packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
-    ├── <a href="./packages/vscode-extension/README.md">vscode-extension</a> (Local VS Code custom editor for .8f4e files)
     ├── metrics-dashboard (Local dashboard for release metrics)
     └── <a href="./packages/config/README.md">config</a> (Shared tooling and configuration helpers for the workspace)
 </pre>

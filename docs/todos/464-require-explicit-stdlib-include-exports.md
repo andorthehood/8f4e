@@ -224,7 +224,7 @@ functionEnd float
 - **Call rewriting**: rewrite only call targets, not arbitrary identifiers, comments, locals, params, constants, or memory
   names.
 - **Generated name stability**: derive prefixes from include ids so generated helper names are deterministic across CLI,
-  browser, editor, and VS Code include resolvers.
+  browser, and editor include resolvers.
 
 ## Related Items
 

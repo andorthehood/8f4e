@@ -26,7 +26,7 @@ This package does not own:
 - Loading include files from disk, the network, editor state, or any other environment.
 - Tokenizing compiler source blocks into ASTs.
 - Constant resolution, memory planning, stack analysis, or code generation.
-- Editor layout, rendering, storage, or VS Code/webview state.
+- Editor layout, rendering, storage, or host webview state.
 
 Groups recursively own their project blocks. Their memory exposure declarations remain symbolic project metadata;
 the program composer resolves those aliases before the compiler's single global memory-planning pass.

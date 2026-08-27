@@ -8,7 +8,7 @@ This file extends the root and compiler package guidance for `packages/compiler/
 - Source lives in `src/`; output lives in `dist/`.
 - Owns parsing raw `.8f4e` project source into the compiler-owned `ProjectObjectModel` and resolving project includes
   for the compiler facade.
-- Does not know about editor state, grid positioning, rendering, browser storage, or VS Code/webview state.
+- Does not know about editor state, grid positioning, rendering, browser storage, or host webview state.
 - Does not load include files itself. Callers provide an async `resolveInclude` function so node, browser, editor, and test environments can load includes however they need.
 - Groups recursively own project blocks. Sibling group names are unique because names form canonical compiler paths.
 
