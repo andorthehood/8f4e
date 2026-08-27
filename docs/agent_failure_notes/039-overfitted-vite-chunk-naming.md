@@ -31,7 +31,8 @@ The intended fix was to keep the bundle-size logger simple and make generated ou
 ## Anti-Patterns
 
 - Adding custom Rollup functions that inspect `facadeModuleId` and `moduleIds` to decide per-package output names.
-- Encoding package path knowledge such as `packages/compiler-worker` or `packages/runtime-audio-worklet` into the root Vite config.
+- Encoding package path knowledge such as `packages/compiler/packages/compiler-worker` or
+  `packages/editor/packages/runtime-audio-worklet` into the root Vite config.
 - Trying to produce semantically perfect filenames for every worker and worklet when the actual requirement was only to avoid app-entry ambiguity.
 - Moving Vite/Rollup internals into project config after explicitly deciding the logger should stay a simple regex matcher.
 
@@ -40,7 +41,7 @@ The intended fix was to keep the bundle-size logger simple and make generated ou
 function getOutputFileName(chunkInfo, fallbackPattern) {
 	const sourceIds = [chunkInfo.facadeModuleId, ...chunkInfo.moduleIds].map(normalizeRollupId);
 
-	if (sourceIds.some(id => id.includes('packages/compiler-worker/'))) {
+	if (sourceIds.some(id => id.includes('packages/compiler/packages/compiler-worker/'))) {
 		return 'assets/workers/compiler-worker-[hash].js';
 	}
 

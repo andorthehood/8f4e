@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Package Scope & Layout
-- Path: `packages/runtime-web-worker`; source in `src/`, output in `dist/`.
+- Path: `packages/editor/packages/runtime-web-worker`; source in `src/`, output in `dist/`.
 - Alias: `@8f4e/runtime-web-worker`.
 
 ## Build, Test, Dev

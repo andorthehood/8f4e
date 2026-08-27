@@ -1,5 +1,5 @@
 {
-  "name": "@8f4e/runtime-main-thread",
+  "name": "@8f4e/runtime-audio-worklet",
   "sourceRoot": "src",
   "projectType": "library",
   "targets": {
@@ -7,32 +7,36 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "tsc",
-        "cwd": "{projectRoot}"
+        "commands": [
+          "vite build -c vite.config.worklet.ts",
+          "tsc"
+        ],
+        "cwd": "{projectRoot}",
+        "parallel": false
       },
       "dependsOn": ["^build"]
     },
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "biome check --write packages/runtime-main-thread/src",
+        "command": "biome check --write packages/editor/packages/runtime-audio-worklet/src",
         "cwd": "{workspaceRoot}"
       }
     },
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc --watch",
+        "command": "vite build -c vite.config.worklet.ts --watch",
         "cwd": "{projectRoot}"
       }
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/@8f4e/runtime-main-thread"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/runtime-audio-worklet"],
       "dependsOn": ["^build"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/runtime-main-thread"
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/runtime-audio-worklet"
       }
     },
     "typecheck": {
@@ -44,5 +48,5 @@
       "dependsOn": ["^build"]
     }
   },
-  "tags": ["type:runtime", "scope:logic"]
+  "tags": ["type:runtime", "scope:audio"]
 }

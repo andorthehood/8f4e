@@ -42,7 +42,7 @@ const entries = (opfsRoot as unknown as {
 **Browser Support**: Chrome 66+, Firefox 76+, Safari 14.1+
 
 **Usage Locations**:
-- `packages/runtime-audio-worklet/src/index.ts`: Core AudioWorklet implementation
+- `packages/editor/packages/runtime-audio-worklet/src/index.ts`: Core AudioWorklet implementation
 - `src/runtime-audio-worklet-factory.ts`: AudioWorklet factory and management
 
 **Context**: Used for low-latency audio processing in separate thread

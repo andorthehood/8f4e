@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Package Scope & Layout
-- Path: `packages/runtime-main-thread`; source in `src/`, output in `dist/`.
+- Path: `packages/editor/packages/runtime-main-thread`; source in `src/`, output in `dist/`.
 - Alias: `@8f4e/runtime-main-thread`.
 
 ## Build, Test, Dev

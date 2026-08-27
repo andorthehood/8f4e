@@ -14,6 +14,7 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
 └── packages/
     ├── <a href="./packages/compiler/README.md">compiler</a> (The core compiler that transforms 8f4e code into WebAssembly)
     │   └── packages/
+    │       ├── <a href="./packages/compiler/packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
     │       ├── <a href="./packages/compiler/packages/language-spec/README.md">language-spec</a> (Shared language contracts and target-independent compiler facts)
     │       ├── <a href="./packages/compiler/packages/project-preparser/README.md">project-preparser</a> (Parses .8f4e project documents into sub-program source)
     │       ├── <a href="./packages/compiler/packages/sub-program/README.md">sub-program</a> (Compiles one closed, independently identifiable program unit)
@@ -35,6 +36,9 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       ├── <a href="./packages/editor/packages/editor-state/README.md">editor-state</a> (Editor state management)
     │       ├── editor-state-types (Shared public editor-state model types)
     │       ├── <a href="./packages/editor/packages/editor-state-testing/README.md">editor-state-testing</a> (Framework-agnostic editor-state test helpers)
+    │       ├── <a href="./packages/editor/packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a> (AudioWorklet editor runtime)
+    │       ├── <a href="./packages/editor/packages/runtime-main-thread/README.md">runtime-main-thread</a> (Main-thread editor runtime)
+    │       ├── <a href="./packages/editor/packages/runtime-web-worker/README.md">runtime-web-worker</a> (Web Worker editor runtime)
     │       ├── <a href="./packages/editor/packages/state-manager/README.md">state-manager</a> (State manager with subscriptions)
     │       └── <a href="./packages/editor/packages/web-ui/README.md">web-ui</a> (WebGL rendering for the editor interface)
     │           └── packages/
@@ -42,11 +46,7 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │               ├── <a href="./packages/editor/packages/web-ui/packages/render-projection/README.md">render-projection</a> (Precalculates web UI-specific render data from editor state)
     │               └── <a href="./packages/editor/packages/web-ui/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
     ├── <a href="./packages/examples/README.md">examples</a> (Example modules and projects)
-    ├── <a href="./packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a>     ┐ 
-    ├── <a href="./packages/runtime-main-thread/README.md">runtime-main-thread</a> │ (Various runtime environments 
-    ├── <a href="./packages/runtime-web-worker/README.md">runtime-web-worker</a>  ┘ for different execution contexts)
     ├── <a href="./packages/cli/README.md">cli</a> (CLI for compiling 8f4e project files)
-    ├── <a href="./packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
     ├── metrics-dashboard (Local dashboard for release metrics)
     └── <a href="./packages/config/README.md">config</a> (Shared tooling and configuration helpers for the workspace)
 </pre>
