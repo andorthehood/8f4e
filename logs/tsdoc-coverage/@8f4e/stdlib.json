@@ -178,5 +178,15 @@
 			"percentage": 100,
 			"byKind": {}
 		}
+	},
+	{
+		"commit": "8b66a20145928c84d8f3a0b894da43865e92adfb",
+		"recordedAt": "2026-08-27T06:35:17.307Z",
+		"coverage": {
+			"documented": 0,
+			"total": 0,
+			"percentage": 100,
+			"byKind": {}
+		}
 	}
 ]
