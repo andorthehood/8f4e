@@ -20,7 +20,7 @@ describe('validateInstructionArguments', () => {
 	});
 
 	it('rejects project-level instructions', () => {
-		for (const instruction of ['group', 'groupEnd', 'expose']) {
+		for (const instruction of ['group', 'groupEnd', 'expose', 'pass']) {
 			expect(() => validateInstructionArguments(instruction, [])).toThrow(
 				expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
 			);

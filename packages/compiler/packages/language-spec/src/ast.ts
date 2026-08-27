@@ -110,7 +110,6 @@ export type ExitIfTrueLine = ASTLineBase<'exitIfTrue', []>;
 export type StoreBytesLine = ASTLineBase<'storeBytes', [ArgumentLiteral]>;
 export type MemoryCopyLine = ASTLineBase<'memoryCopy', [CompileTimeValueArgument]>;
 export type ConstLine = ASTLineBase<'const', [ArgumentIdentifier, CompileTimeValueArgument]>;
-export type PassLine = ASTLineBase<'pass', [ArgumentIdentifier]>;
 export type EnsureNonZeroLine = ASTLineBase<'ensureNonZero', [] | [ArgumentLiteral]>;
 
 export type MapValueArgument =
@@ -163,7 +162,6 @@ export type MemoryDeclarationLine = ScalarMemoryDeclarationLine | ArrayMemoryDec
 
 export type SemanticInstructionLine =
 	| ConstLine
-	| PassLine
 	| UseLine
 	| ModuleLine
 	| RegionLine
@@ -204,7 +202,6 @@ type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| StoreBytesLine
 	| MemoryCopyLine
 	| ConstLine
-	| PassLine
 	| EnsureNonZeroLine
 	| MapLine
 	| DefaultLine

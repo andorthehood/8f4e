@@ -17,9 +17,8 @@
  *  before any semantic context is built → use SyntaxRulesError in syntaxError.ts.
  */
 
-import type { CompilerASTLine } from './ast';
 import { SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from './constants';
-import type { CompilerDiagnosticContext, CompilerStageError } from './diagnostics';
+import type { CompilerDiagnosticContext, CompilerDiagnosticLine, CompilerStageError } from './diagnostics';
 import { ErrorCode, type ErrorCodeValue } from './errors';
 import { MAX_FUNCTION_PARAMETERS, MAX_FUNCTION_RETURN_VALUES } from './functionTypes';
 import type { ProjectGroupPath, ProjectModuleId } from './project';
@@ -72,14 +71,14 @@ export function getProjectMemoryExposureTargetError(
  * Creates a compiler-stage diagnostic for a semantic or code-generation error.
  *
  * @param code - Compiler error code to materialize.
- * @param line - AST line being processed.
+ * @param line - Source line being processed.
  * @param context - Compilation context used by the operation.
  * @param details - Optional dynamic details to include in the diagnostic.
  * @returns The compiler error instance.
  */
 export function getError(
 	code: ErrorCodeValue,
-	line: CompilerASTLine,
+	line: CompilerDiagnosticLine,
 	context?: CodegenContext | CompilationContext | CompilerDiagnosticContext,
 	details?: ErrorDetails
 ): CompilerStageError {

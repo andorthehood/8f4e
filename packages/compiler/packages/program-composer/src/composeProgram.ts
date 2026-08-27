@@ -12,7 +12,7 @@ import {
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { parseLine, SyntaxRulesError } from '@8f4e/tokenizer';
+import { parseProjectConstantScopeLine, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
 import { createCompilerCache } from './createCompilerCache';
 import { qualifyAst } from './qualifyAst';
@@ -29,7 +29,7 @@ function collectProjectConstantScopeLines(
 		}
 
 		try {
-			lines.push(parseLine(sourceLine, index) as ProjectConstantScopeLine);
+			lines.push(parseProjectConstantScopeLine(sourceLine, index));
 		} catch (error) {
 			if (error instanceof SyntaxRulesError) {
 				error.context = { ...error.context, projectGroupPath: projectPath };

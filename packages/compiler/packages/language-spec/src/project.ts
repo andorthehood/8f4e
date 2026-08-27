@@ -1,4 +1,5 @@
-import type { ConstLine, PassLine } from './ast';
+import type { ArgumentIdentifier } from './arguments';
+import type { ConstLine } from './ast';
 import type { MemoryDeclarationInstruction, PlannedMemoryDeclaration } from './memory';
 
 /** Project-level source instructions consumed before individual code blocks are tokenized. */
@@ -6,6 +7,7 @@ export const projectInstructions = {
 	entry: { opener: 'entry', closer: 'entryEnd' },
 	group: { opener: 'group', closer: 'groupEnd' },
 	expose: 'expose',
+	pass: 'pass',
 } as const;
 
 export const projectInstructionNames = [
@@ -14,6 +16,7 @@ export const projectInstructionNames = [
 	projectInstructions.group.opener,
 	projectInstructions.group.closer,
 	projectInstructions.expose,
+	projectInstructions.pass,
 ] as const;
 
 export type ProjectInstructionName = (typeof projectInstructionNames)[number];
@@ -34,7 +37,14 @@ export type ProjectGroupPath = string;
 export type ProjectModuleId = string;
 
 /** Project-scope constant declaration consumed before directly owned source blocks are resolved. */
-export type ProjectConstantScopeLine = ConstLine | PassLine;
+export type ProjectConstantScopeLine = ConstLine | ProjectPassLine;
+
+/** Explicit same-name constant forwarding from an immediate parent project scope. */
+export interface ProjectPassLine {
+	lineNumber: number;
+	instruction: 'pass';
+	arguments: [ArgumentIdentifier];
+}
 
 /** Ordered project-scope declarations and their canonical parent relationship. */
 export interface ProjectConstantScope {

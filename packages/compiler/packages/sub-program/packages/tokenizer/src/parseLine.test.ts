@@ -47,7 +47,6 @@ describe('parseLine', () => {
 
 	it('narrows semantic instructions in generated AST lines', () => {
 		expect(isSemanticInstructionLine(parseLine('const SIZE 16', 0))).toBe(true);
-		expect(isSemanticInstructionLine(parseLine('pass SIZE', 0))).toBe(true);
 		expect(isSemanticInstructionLine(parseLine('use math', 0))).toBe(true);
 		expect(isSemanticInstructionLine(parseLine('module demo', 0))).toBe(true);
 	});
@@ -62,12 +61,13 @@ describe('parseLine', () => {
 		expect(() => parseLine('mapBegin bool', 0)).toThrowError(SyntaxRulesError);
 		expect(() => parseLine('storeBytes -1', 0)).toThrowError(SyntaxRulesError);
 		expect(() => parseLine('map "AB" 1', 0)).toThrowError(SyntaxRulesError);
-		expect(() => parseLine('pass', 0)).toThrowError(SyntaxRulesError);
-		expect(() => parseLine('pass SIZE RENAMED_SIZE', 0)).toThrowError(SyntaxRulesError);
 	});
 
 	it('rejects unknown instruction names in tokenizer', () => {
 		expect(() => parseLine('constructor', 0)).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
+		);
+		expect(() => parseLine('pass SIZE', 0)).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
 		);
 	});

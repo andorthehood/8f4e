@@ -166,7 +166,7 @@ function wrapConstantResolverError(
 		return error;
 	}
 
-	const ast = findAstContainingLine(subProgramAst, line);
+	const ast = line.instruction === 'pass' ? undefined : findAstContainingLine(subProgramAst, line);
 	const projectConstantScope = program.projectConstantScopes.find(scope =>
 		scope.lines.some(scopeLine => scopeLine === line)
 	);

@@ -7,8 +7,8 @@ import type {
 	ConstLine,
 	ModuleEndLine,
 	ModuleLine,
-	PassLine,
 	ProjectConstantScope,
+	ProjectPassLine,
 	PushLine,
 	UseLine,
 	ValidatedConstantsAST,
@@ -99,7 +99,7 @@ function constLine(lineNumber: number, name: string, value: ConstLine['arguments
 	};
 }
 
-function passLine(lineNumber: number, name: string): PassLine {
+function passLine(lineNumber: number, name: string): ProjectPassLine {
 	return {
 		lineNumber,
 		instruction: 'pass',

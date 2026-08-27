@@ -10,6 +10,7 @@ import type {
 	ConstLine,
 	ProjectConstantScope,
 	ProjectGroupPath,
+	ProjectPassLine,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
@@ -68,9 +69,9 @@ export type ConstantResolverErrorCodeValue = (typeof ConstantResolverErrorCode)[
 export class ConstantResolverError extends Error {
 	readonly code: ConstantResolverErrorCodeValue;
 	readonly detail: string;
-	readonly line?: CompilerASTLine;
+	readonly line?: CompilerASTLine | ProjectPassLine;
 
-	constructor(code: ConstantResolverErrorCodeValue, message: string, line?: CompilerASTLine) {
+	constructor(code: ConstantResolverErrorCodeValue, message: string, line?: CompilerASTLine | ProjectPassLine) {
 		super(`${message} (${code})`);
 		this.name = 'ConstantResolverError';
 		this.code = code;

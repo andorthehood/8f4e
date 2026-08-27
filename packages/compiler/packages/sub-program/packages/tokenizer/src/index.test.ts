@@ -11,7 +11,7 @@ function compileLinesFromAST(code: string[]) {
 describe('compileToAST', () => {
 	it('rejects project-scope pass declarations inside compiler source blocks', () => {
 		expect(() => compileToAST(['module synth', 'pass SAMPLE_RATE', 'moduleEnd'])).toThrow(
-			expect.objectContaining({ code: SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK })
+			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
 		);
 	});
 

@@ -873,12 +873,6 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Expands a prototype memory shape into pointer parameters for the current function.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
-	pass: {
-		codegen: false,
-		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'constantIdentifier' },
-		placement: { topLevel: true, sourceBlocks: [] },
-		docs: { shortDescription: 'Passes one same-named compile-time constant from a parent project scope.' },
-	},
 	push: {
 		sourceArguments: { minArguments: 1, maxArguments: 1 },
 		placement: moduleOrFunctionPlacement,
