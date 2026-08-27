@@ -24,7 +24,7 @@ module setButton
 int out
                ; Push this button
                ; to set the state
-; @button out 0 1 ; of the SR latch -->
+; @button &out 0 1 ; of the SR latch -->
 
 moduleEnd
 module resetButton
@@ -33,7 +33,7 @@ module resetButton
 int out
                ; Push this button
                ; to reset the state
-; @button out 0 1 ; of the SR latch -->
+; @button &out 0 1 ; of the SR latch -->
 
 moduleEnd
 module norGate2
@@ -122,10 +122,10 @@ int set
 int reset
                ; Push this button
                ; to set the state
-; @button set 0 1 ; of the latch  -->
+; @button &set 0 1 ; of the latch  -->
 
                  ; Push this button
-; @button reset 0 1 ; to reset   --->
+; @button &reset 0 1 ; to reset   --->
 
 moduleEnd
 module negate

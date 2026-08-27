@@ -29,7 +29,7 @@ function resolveButtonDirectiveWidget(
 		height: state.viewport.hGrid,
 		x: graphicData.width - 4 * state.viewport.vGrid,
 		y: gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid,
-		id: button.id,
+		id: memory.id,
 		wordAlignedAddress: memory.wordAlignedAddress,
 		isInteger: memory.isInteger ?? true,
 		offValue: button.offValue,

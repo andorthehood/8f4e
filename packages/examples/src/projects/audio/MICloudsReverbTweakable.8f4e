@@ -128,49 +128,49 @@ module controlValues
 ; @pos 46 -27
 
 float tank1Decay 0.1
-; @slider tank1Decay
+; @slider &tank1Decay
 float tank2Decay 0.1
-; @slider tank2Decay
+; @slider &tank2Decay
 float amount 0.5
-; @slider amount
+; @slider &amount
 float smear1Diffusion 0.625
-; @slider smear1Diffusion
+; @slider &smear1Diffusion
 float smear2Diffusion 0.625
-; @slider smear2Diffusion
+; @slider &smear2Diffusion
 float smear3Diffusion 0.625
-; @slider smear3Diffusion
+; @slider &smear3Diffusion
 float smear4Diffusion 0.625
-; @slider smear4Diffusion
+; @slider &smear4Diffusion
 float tank1AllpassADiffusion 0.625
-; @slider tank1AllpassADiffusion
+; @slider &tank1AllpassADiffusion
 float tank1AllpassBDiffusion 0.625
-; @slider tank1AllpassBDiffusion
+; @slider &tank1AllpassBDiffusion
 float tank2AllpassADiffusion 0.625
-; @slider tank2AllpassADiffusion
+; @slider &tank2AllpassADiffusion
 float tank2AllpassBDiffusion 0.625
-; @slider tank2AllpassBDiffusion
+; @slider &tank2AllpassBDiffusion
 float tank1Damping 0.7
-; @slider tank1Damping
+; @slider &tank1Damping
 float tank2Damping 0.7
-; @slider tank2Damping
+; @slider &tank2Damping
 float smearLfoFrequency 0.5
-; @slider smearLfoFrequency 0.01 5.0 0.01
+; @slider &smearLfoFrequency 0.01 5.0 0.01
 float tank1LfoFrequency 0.3
-; @slider tank1LfoFrequency 0.01 5.0 0.01
+; @slider &tank1LfoFrequency 0.01 5.0 0.01
 int smearTapBase 10
-; @slider smearTapBase 0 200 1
+; @slider &smearTapBase 0 200 1
 int smearTapDepth 60
-; @slider smearTapDepth 0 200 1
+; @slider &smearTapDepth 0 200 1
 int smearWriteOffset 100
-; @slider smearWriteOffset 0 300 1
+; @slider &smearWriteOffset 0 300 1
 int tank1TapBase 4680
-; @slider tank1TapBase 0 6000 1
+; @slider &tank1TapBase 0 6000 1
 int tank1TapDepth 100
-; @slider tank1TapDepth 0 1000 1
+; @slider &tank1TapDepth 0 1000 1
 int tank1DelayReadOffset 0
-; @slider tank1DelayReadOffset 0 4781 1
+; @slider &tank1DelayReadOffset 0 4781 1
 int tank2DelayReadOffset 0
-; @slider tank2DelayReadOffset 0 3410 1
+; @slider &tank2DelayReadOffset 0 3410 1
 
 moduleEnd
 module lfo1

@@ -1,4 +1,4 @@
-import { isMemoryTarget, parseFiniteNumber } from '~/shared/editorDirectiveArgumentTypes';
+import { isMemoryAddress, parseFiniteNumber } from '~/shared/editorDirectiveArgumentTypes';
 
 export interface SliderDirectiveData {
 	memoryId: string;
@@ -9,7 +9,7 @@ export interface SliderDirectiveData {
 }
 
 export function createSliderDirectiveData(args: string[], lineNumber: number): SliderDirectiveData | undefined {
-	if (args.length < 1 || args.length > 4 || !isMemoryTarget(args[0])) {
+	if (args.length < 1 || args.length > 4 || !isMemoryAddress(args[0])) {
 		return undefined;
 	}
 

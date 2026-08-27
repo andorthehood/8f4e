@@ -53,7 +53,7 @@ describe('slider default saver', () => {
 		const saveSliderValuesToCodeCallback = onCallbacks.get('saveSliderValuesToCode');
 		const codeBlock = createMockCodeBlock({
 			name: 'test-block',
-			code: ['module test-block', 'float testSlider 0.25', '; @slider testSlider 0 1 0.01', 'moduleEnd'],
+			code: ['module test-block', 'float testSlider 0.25', '; @slider &testSlider 0 1 0.01', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{
@@ -76,7 +76,7 @@ describe('slider default saver', () => {
 		expect(codeBlock.code).toEqual([
 			'module test-block',
 			'float testSlider 0.75',
-			'; @slider testSlider 0 1 0.01',
+			'; @slider &testSlider 0 1 0.01',
 			'moduleEnd',
 		]);
 		expect(mockStore.set).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);

@@ -25,7 +25,7 @@ function createRawMemoryReader(values: Record<number, { type: 'int32' | 'float32
 describe('save slider default values to code', () => {
 	it('updates scalar memory defaults from runtime slider values', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module synth', 'float foo 1.3', 'int bar 1', '; @slider foo', '; @slider bar', 'moduleEnd'],
+			code: ['module synth', 'float foo 1.3', 'int bar 1', '; @slider &foo', '; @slider &bar', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{
@@ -66,15 +66,15 @@ describe('save slider default values to code', () => {
 			'module synth',
 			'float foo 0.75',
 			'int bar 7',
-			'; @slider foo',
-			'; @slider bar',
+			'; @slider &foo',
+			'; @slider &bar',
 			'moduleEnd',
 		]);
 	});
 
 	it('adds missing scalar defaults and preserves inline comments', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module synth', 'float gain ; @slider gain 0 1 0.01', 'moduleEnd'],
+			code: ['module synth', 'float gain ; @slider &gain 0 1 0.01', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{
@@ -99,12 +99,12 @@ describe('save slider default values to code', () => {
 			})
 		);
 
-		expect(result).toEqual(['module synth', 'float gain 1.0 ; @slider gain 0 1 0.01', 'moduleEnd']);
+		expect(result).toEqual(['module synth', 'float gain 1.0 ; @slider &gain 0 1 0.01', 'moduleEnd']);
 	});
 
 	it('rounds float32 values according to the slider step', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module synth', 'float gain 0.0', '; @slider gain 0 1 0.01', 'moduleEnd'],
+			code: ['module synth', 'float gain 0.0', '; @slider &gain 0 1 0.01', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{
@@ -129,12 +129,12 @@ describe('save slider default values to code', () => {
 			})
 		);
 
-		expect(result).toEqual(['module synth', 'float gain 0.7', '; @slider gain 0 1 0.01', 'moduleEnd']);
+		expect(result).toEqual(['module synth', 'float gain 0.7', '; @slider &gain 0 1 0.01', 'moduleEnd']);
 	});
 
 	it('decodes float64 slider values from paired raw words', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module synth', 'float64 phase 0.0', '; @slider phase 0 4 0.001', 'moduleEnd'],
+			code: ['module synth', 'float64 phase 0.0', '; @slider &phase 0 4 0.001', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{
@@ -160,12 +160,12 @@ describe('save slider default values to code', () => {
 			})
 		);
 
-		expect(result).toEqual(['module synth', 'float64 phase 3.142', '; @slider phase 0 4 0.001', 'moduleEnd']);
+		expect(result).toEqual(['module synth', 'float64 phase 3.142', '; @slider &phase 0 4 0.001', 'moduleEnd']);
 	});
 
 	it('skips sliders when runtime memory cannot be read', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module synth', 'float foo 1.3', '; @slider foo', 'moduleEnd'],
+			code: ['module synth', 'float foo 1.3', '; @slider &foo', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{
@@ -187,7 +187,7 @@ describe('save slider default values to code', () => {
 
 	it('skips sliders without a matching named scalar declaration', () => {
 		const codeBlock = createMockCodeBlock({
-			code: ['module synth', 'float other 1.3', '; @slider foo', 'moduleEnd'],
+			code: ['module synth', 'float other 1.3', '; @slider &foo', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{

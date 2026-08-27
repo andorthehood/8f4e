@@ -199,8 +199,8 @@ Directives should not re-parse their own comment syntax.
 
 Use the shared argument validators in
 `packages/editor/packages/editor-state/src/shared/editorDirectiveArgumentTypes.ts` for the
-canonical memory-target, pointer-source, numeric, and element-count forms. This keeps argument contracts consistent
-across directives instead of accepting ad hoc string variants in individual `data.ts` files.
+canonical memory-id, memory-address, pointer-source, numeric, and element-count forms. This keeps argument contracts
+consistent across directives instead of accepting ad hoc string variants in individual `data.ts` files.
 
 Directive folders should only:
 

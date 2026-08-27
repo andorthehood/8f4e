@@ -1,6 +1,6 @@
 const DECIMAL_NUMBER_PATTERN = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i;
 
-export function isMemoryTarget(value: string | undefined): value is string {
+export function isMemoryId(value: string | undefined): value is string {
 	if (!value || /[\s&*[\]()]/.test(value)) {
 		return false;
 	}
@@ -9,12 +9,16 @@ export function isMemoryTarget(value: string | undefined): value is string {
 	return segments.length <= 2 && segments.every(segment => segment.length > 0);
 }
 
+export function isMemoryAddress(value: string | undefined): value is string {
+	return Boolean(value?.startsWith('&') && isMemoryId(value.slice(1)));
+}
+
 export function isPointerSource(value: string | undefined): value is string {
 	if (!value) {
 		return false;
 	}
 
-	return value.startsWith('&') ? isMemoryTarget(value.slice(1)) : isMemoryTarget(value);
+	return isMemoryAddress(value) || isMemoryId(value);
 }
 
 export function parseFiniteNumber(value: string | undefined): number | undefined {
@@ -43,8 +47,8 @@ export function parseElementCount(value: string | undefined): string | number | 
 
 	const countedMemoryMatch = value?.match(/^count\(([^()]+)\)$/);
 	if (countedMemoryMatch) {
-		return isMemoryTarget(countedMemoryMatch[1]) ? value : undefined;
+		return isMemoryId(countedMemoryMatch[1]) ? value : undefined;
 	}
 
-	return isMemoryTarget(value) ? value : undefined;
+	return isMemoryId(value) ? value : undefined;
 }

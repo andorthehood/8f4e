@@ -128,13 +128,13 @@ module controlValues
 ; @pos 46 -27
 
 float decay 0.1
-; @slider decay
+; @slider &decay
 float amount 0.5
-; @slider amount
+; @slider &amount
 float diffusion 0.625
-; @slider diffusion
+; @slider &diffusion
 float damping 0.7
-; @slider damping
+; @slider &damping
 
 moduleEnd
 module lfo1

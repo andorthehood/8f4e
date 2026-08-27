@@ -23,21 +23,22 @@ Examples:
 ```txt
 ; @watch counter
 ; @plot &audioBuffer lengthMemory
-; @button gate0 0 1
+; @button &gate0 0 1
 ; @config font ibmvga8x16
 ```
 
 Memory-related arguments use distinct forms:
 
-- `memoryTarget` - a memory item to read or mutate, written as `name` or `module:name`. Operators and indexes are not
-  allowed.
+- `memoryId` - a named memory item used as a value or identifier, written as `name` or `module:name`. Operators and
+  indexes are not allowed.
+- `memoryAddress` - writable or directly addressed storage, written as `&name` or `&module:name`.
 - `pointerSource` - either a pointer memory such as `bufferPointer` or the start address of direct memory such as
   `&buffer`.
 - `typedValueSource` - a plain scalar or pointer memory, or an address-of form such as `&buffer` when the directive reads
   from direct memory.
 - `memoryExpression` - the extended debugger syntax supported only by `@watch`, including `&`, `*`, `[]`, `0b`, and
   `0x` modifiers.
-- `elementCount` - a positive integer, an integer `memoryTarget`, or `count(memoryTarget)`.
+- `elementCount` - a positive integer, an integer `memoryId`, or `count(memoryId)`.
 
 These directives are editor metadata only. They are not compiler instructions and should be ignored by the compiler.
 
@@ -213,37 +214,37 @@ Same as `@wave`, but rendered at quadruple height.
 
 ### `@slider`
 
-Render a slider bound to a memory target.
+Render a slider that writes to a memory address.
 
 ```txt
-; @slider <memoryTarget> [min] [max] [step]
-; @slider gain 0 1 0.01
+; @slider <memoryAddress> [min] [max] [step]
+; @slider &gain 0 1 0.01
 ```
 
 If provided, `min`, `max`, and `step` must be finite decimal numbers, and `step` must be greater than zero.
 
 ### `@crossfade`
 
-Render a center-origin crossfade control bound to two float memory targets. The left target is driven when the knob moves
-left, and the right target is driven when the knob moves right.
+Render a center-origin crossfade control that writes to two float memory addresses. The left address is driven when the
+knob moves left, and the right address is driven when the knob moves right.
 
 ```txt
-; @crossfade <leftFloatTarget> <rightFloatTarget>
-; @crossfade dry wet
+; @crossfade <leftFloatAddress> <rightFloatAddress>
+; @crossfade &dry &wet
 ```
 
 Notes:
 
-- both arguments must be plain memory targets such as `dry` and `wet`
+- both arguments must be memory addresses such as `&dry` and `&wet`
 - both bound memories must resolve to float32 scalars
 - the written range is fixed to `0..1` on each side
 
 ### `@button`
 
-Render a momentary button bound to a memory target.
+Render a momentary button that writes to a memory address.
 
 ```txt
-; @button <memoryTarget> [offValue] [onValue]
+; @button <memoryAddress> [offValue] [onValue]
 ```
 
 Defaults:
@@ -253,10 +254,10 @@ Defaults:
 
 ### `@switch`
 
-Render a toggle switch bound to a memory target.
+Render a toggle switch that reads and writes a memory address.
 
 ```txt
-; @switch <memoryTarget> [offValue] [onValue]
+; @switch <memoryAddress> [offValue] [onValue]
 ```
 
 Defaults:
@@ -269,12 +270,14 @@ Defaults:
 Render a piano keyboard control.
 
 ```txt
-; @piano <pressedKeysListTarget> <pressedKeyCountTarget> [startingMidiNote]
+; @piano <pressedKeysListAddress> <pressedKeyCountAddress> [startingMidiNote]
 ```
 
 Notes:
 
-- `pressedKeysListTarget` is used as both keyboard id and pressed-key array memory target.
+- Both memory arguments are addresses because the piano edits the corresponding declarations and observes their runtime
+  storage.
+- `pressedKeysListAddress` is used as both keyboard id and pressed-key array address.
 - `startingMidiNote` defaults to `0`.
 - `startingMidiNote` must be a non-negative integer.
 
@@ -333,7 +336,7 @@ Example:
 Apply code-block visual position offset from an integer memory value.
 
 ```txt
-; @offset <axis> <memoryTarget>
+; @offset <axis> <memoryId>
 ```
 
 Where:

@@ -21,7 +21,7 @@ constants editorDirectives
 ;
 ; Code block directives
 ; @ alwaysOnTop	Keep the block rendered above normal blocks.
-; @ button <memoryTarget> [offValue] [onValue]	Add a momentary button widget.
+; @ button <memoryAddress> [offValue] [onValue]	Add a momentary button widget.
 ; @ bars <pointerSource> <elementCount> [minValue maxValue]	Draw vertical bars over a typed pointer range.
 ; @ disabled	Mark the block as disabled.
 ; @ favorite	Mark the block as a favorite.
@@ -31,22 +31,23 @@ constants editorDirectives
 ; @ meter <typedValueSource> [minValue maxValue]	Render a horizontal level meter.
 ; @ nth	Show the module's compile order number.
 ; @ opacity <0..1>	Set the block opacity.
-; @ piano <pressedKeysListTarget> <pressedKeyCountTarget> [startingMidiNote]	Render a piano keyboard widget.
+; @ piano <pressedKeysListAddress> <pressedKeyCountAddress> [startingMidiNote]	Render a piano keyboard widget.
 ; @ plot <pointerSource> <elementCount> [minValue maxValue]	Plot a typed pointer range.
 ; @ public	Mark the block exported by a module file.
 ; @ wave <pointerSource> <elementCount> [absolutePointerSource]	Draw a waveform over a typed absolute pointer range.
 ; @ wave2 <pointerSource> <elementCount> [absolutePointerSource]	Draw a waveform at double height.
 ; @ wave4 <pointerSource> <elementCount> [absolutePointerSource]	Draw a waveform at quadruple height.
-; @ slider <memoryTarget> [min] [max] [step]	Add a slider widget.
-; @ switch <memoryTarget> [offValue] [onValue]	Add a toggle switch widget.
+; @ slider <memoryAddress> [min] [max] [step]	Add a slider widget.
+; @ switch <memoryAddress> [offValue] [onValue]	Add a toggle switch widget.
 ; @ tab <position1> <position2> ...	Define visual tab stops for literal tab characters.
 ; @ viewport <top-left|top-right|bottom-left|bottom-right>	Anchor the block to a viewport corner.
 ; @ watch <memoryExpression>	Show a runtime watch value.
 ; alias: @ w <memoryExpression>	Short alias for @ watch.
 ;
 ; Notes
-; memoryTarget is name or module:name; pointerSource is a pointer memory or &buffer.
-; elementCount is a positive integer, an integer memory target, or count(memoryTarget).
+; memoryId is name or module:name; memoryAddress is &name or &module:name.
+; pointerSource is a pointer memory or memoryAddress.
+; elementCount is a positive integer, an integer memoryId, or count(memoryId).
 ; @ watch can also be written as a trailing comment on a code line.
 ; @ config memory values may be local in module blocks or module-qualified from any block.
 

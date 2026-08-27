@@ -38,7 +38,7 @@ float position
 int8* playhead &buffer
 float out
 
-; @slider defSpeed 0.25 4 0.01
+; @slider &defSpeed 0.25 4 0.01
 ; @wave2 &buffer count(buffer) playhead
 
 ; Calculate read address

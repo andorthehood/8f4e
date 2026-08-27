@@ -1,4 +1,4 @@
-import { isMemoryTarget } from '~/shared/editorDirectiveArgumentTypes';
+import { isMemoryAddress } from '~/shared/editorDirectiveArgumentTypes';
 
 export interface CrossfadeDirectiveData {
 	leftMemoryId: string;
@@ -11,7 +11,7 @@ export function createCrossfadeDirectiveData(args: string[], lineNumber: number)
 		return undefined;
 	}
 
-	if (!isMemoryTarget(args[0]) || !isMemoryTarget(args[1])) {
+	if (!isMemoryAddress(args[0]) || !isMemoryAddress(args[1])) {
 		return undefined;
 	}
 

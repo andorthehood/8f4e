@@ -11,8 +11,8 @@ describe('directive registry', () => {
 				'module foo',
 				'; @plot &buffer count(buffer)',
 				'; @bars &bins count(bins)',
-				'; @slider gain 0 1 0.01',
-				'; @crossfade dry wet',
+				'; @slider &gain 0 1 0.01',
+				'; @crossfade &dry &wet',
 				'; @info foo',
 				'; note',
 				'moduleEnd',
@@ -36,14 +36,14 @@ describe('directive registry', () => {
 			{
 				name: 'slider',
 				rawRow: 3,
-				args: ['gain', '0', '1', '0.01'],
-				sourceLine: '; @slider gain 0 1 0.01',
+				args: ['&gain', '0', '1', '0.01'],
+				sourceLine: '; @slider &gain 0 1 0.01',
 			},
 			{
 				name: 'crossfade',
 				rawRow: 4,
-				args: ['dry', 'wet'],
-				sourceLine: '; @crossfade dry wet',
+				args: ['&dry', '&wet'],
+				sourceLine: '; @crossfade &dry &wet',
 			},
 			{
 				name: 'info',
@@ -90,7 +90,7 @@ describe('directive registry', () => {
 			'; @meter level 0 1',
 			'; @plot &buffer count(buffer)',
 			'; @bars &bins count(bins)',
-			'; @crossfade dry wet',
+			'; @crossfade &dry &wet',
 			'; @wave &buffer 16 pointer',
 			'moduleEnd',
 		];

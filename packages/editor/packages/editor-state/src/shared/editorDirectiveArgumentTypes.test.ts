@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-	isMemoryTarget,
+	isMemoryAddress,
+	isMemoryId,
 	isPointerSource,
 	parseElementCount,
 	parseFiniteNumber,
@@ -9,11 +10,15 @@ import {
 
 describe('editor directive argument types', () => {
 	it('distinguishes plain memory targets from pointer sources', () => {
-		expect(isMemoryTarget('gain')).toBe(true);
-		expect(isMemoryTarget('group/module:gain')).toBe(true);
-		expect(isMemoryTarget('&gain')).toBe(false);
-		expect(isMemoryTarget('*gain')).toBe(false);
-		expect(isMemoryTarget('gain[1]')).toBe(false);
+		expect(isMemoryId('gain')).toBe(true);
+		expect(isMemoryId('group/module:gain')).toBe(true);
+		expect(isMemoryId('&gain')).toBe(false);
+		expect(isMemoryId('*gain')).toBe(false);
+		expect(isMemoryId('gain[1]')).toBe(false);
+		expect(isMemoryAddress('&gain')).toBe(true);
+		expect(isMemoryAddress('&group/module:gain')).toBe(true);
+		expect(isMemoryAddress('gain')).toBe(false);
+		expect(isMemoryAddress('&&gain')).toBe(false);
 		expect(isPointerSource('bufferPointer')).toBe(true);
 		expect(isPointerSource('&buffer')).toBe(true);
 		expect(isPointerSource('&buffer[1]')).toBe(false);

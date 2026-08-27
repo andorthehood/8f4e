@@ -717,9 +717,9 @@ float volSmoothed 1.0; @w
 ; You can change the playback speed
 ; by dragging this slider below.
 
-; @slider increment
+; @slider &increment
 
-; @crossfade volOriginal volSmoothed
+; @crossfade &volOriginal &volSmoothed
 
 moduleEnd
 module pcmPlayer

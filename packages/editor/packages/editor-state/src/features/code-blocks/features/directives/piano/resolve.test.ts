@@ -16,7 +16,7 @@ describe('piano directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			name: 'test-block',
-			code: ['; @piano keys1 numKeys 60'],
+			code: ['; @piano &keys1 &numKeys 60'],
 			gaps: new Map(),
 		});
 
@@ -124,7 +124,7 @@ describe('piano directive widget resolution', () => {
 	});
 
 	it('does not add a piano keyboard when memory cannot be resolved', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @piano missing numKeys 60']);
+		setMockCodeBlockCode(mockGraphicData, ['; @piano &missing &numKeys 60']);
 
 		runDirectiveResolution();
 

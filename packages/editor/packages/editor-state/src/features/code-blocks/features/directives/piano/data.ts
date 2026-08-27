@@ -1,4 +1,4 @@
-import { isMemoryTarget, parseInteger } from '~/shared/editorDirectiveArgumentTypes';
+import { isMemoryAddress, parseInteger } from '~/shared/editorDirectiveArgumentTypes';
 
 export interface PianoDirectiveData {
 	id: string;
@@ -9,7 +9,7 @@ export interface PianoDirectiveData {
 }
 
 export function createPianoDirectiveData(args: string[], lineNumber: number): PianoDirectiveData | undefined {
-	if ((args.length !== 2 && args.length !== 3) || !isMemoryTarget(args[0]) || !isMemoryTarget(args[1])) {
+	if ((args.length !== 2 && args.length !== 3) || !isMemoryAddress(args[0]) || !isMemoryAddress(args[1])) {
 		return undefined;
 	}
 
