@@ -67,7 +67,6 @@
         ],
         "name": "left/helper",
         "projectBlockId": 5,
-        "projectGroupPath": "left",
         "type": "function",
       },
       {
@@ -135,7 +134,6 @@
         ],
         "name": "right/helper",
         "projectBlockId": 16,
-        "projectGroupPath": "right",
         "type": "function",
       },
     ],
@@ -191,7 +189,6 @@
           "lineNumber": 0,
         },
         "projectBlockId": 9,
-        "projectGroupPath": "left",
         "type": "module",
       },
       {
@@ -245,7 +242,6 @@
           "lineNumber": 0,
         },
         "projectBlockId": 20,
-        "projectGroupPath": "right",
         "type": "module",
       },
     ],
@@ -270,21 +266,5 @@
   "moduleEntryNames": [
     "main",
     "main",
-  ],
-  "projectConstantScopes": [
-    {
-      "groupPath": "",
-      "lines": [],
-    },
-    {
-      "groupPath": "left",
-      "lines": [],
-      "parentGroupPath": "",
-    },
-    {
-      "groupPath": "right",
-      "lines": [],
-      "parentGroupPath": "",
-    },
   ],
 }

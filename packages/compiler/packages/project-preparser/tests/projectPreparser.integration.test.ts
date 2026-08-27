@@ -3,25 +3,31 @@ import { describe, expect, it } from 'vitest';
 import { parseProjectSource, resolveProjectIncludesAsync } from '../src';
 
 describe('project-preparser integration', () => {
-	it('preserves root and nested project-scope constant declarations', () => {
+	it('preserves root and nested project-scope namespace passes', () => {
 		const project = parseProjectSource(
 			[
 				'8f4e/v1',
 				'',
 				'; root contract',
-				'const SAMPLE_RATE 48000',
+				'pass env',
 				'',
 				'entry main',
 				'group audio',
 				'; child contract',
-				'pass SAMPLE_RATE',
+				'pass env',
 				'groupEnd',
 				'entryEnd',
 			].join('\n')
 		);
 
-		expect(project.code).toEqual(['; root contract', 'const SAMPLE_RATE 48000']);
-		expect(project.groups[0].code).toEqual(['group audio', '; child contract', 'pass SAMPLE_RATE', 'groupEnd']);
+		expect(project.code).toEqual(['; root contract', 'pass env']);
+		expect(project.groups[0].code).toEqual(['group audio', '; child contract', 'pass env', 'groupEnd']);
+	});
+
+	it('requires constants to be declared in a named constants block', () => {
+		expect(() => parseProjectSource('8f4e/v1\nconst SAMPLE_RATE 48000')).toThrow(
+			'Parse error at line 2: expected opener keyword, got "const SAMPLE_RATE 48000"'
+		);
 	});
 
 	it('parses project source into typed collections and resolves its include collection', async () => {

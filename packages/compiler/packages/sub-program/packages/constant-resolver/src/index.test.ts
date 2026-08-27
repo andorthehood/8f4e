@@ -7,8 +7,8 @@ import type {
 	ConstLine,
 	ModuleEndLine,
 	ModuleLine,
-	ProjectConstantScope,
-	ProjectPassLine,
+	ProjectConstantNamespacePassLine,
+	ProjectConstantNamespaceScope,
 	PushLine,
 	UseLine,
 	ValidatedConstantsAST,
@@ -99,7 +99,7 @@ function constLine(lineNumber: number, name: string, value: ConstLine['arguments
 	};
 }
 
-function passLine(lineNumber: number, name: string): ProjectPassLine {
+function passLine(lineNumber: number, name: string): ProjectConstantNamespacePassLine {
 	return {
 		lineNumber,
 		instruction: 'pass',
@@ -124,119 +124,165 @@ function constantsAst(id: string, lines: CompilerASTLine[], constantsLineRef: Co
 	} as unknown as ValidatedConstantsAST;
 }
 
-function moduleAst(
-	id: string,
-	lines: CompilerASTLine[],
-	moduleLineRef: ModuleLine,
-	projectGroupPath?: string
-): ValidatedModuleAST {
+function moduleAst(id: string, lines: CompilerASTLine[], moduleLineRef: ModuleLine): ValidatedModuleAST {
 	return {
 		type: 'module',
 		id,
 		lines,
 		moduleLine: moduleLineRef,
-		...(projectGroupPath !== undefined ? { projectGroupPath } : {}),
 	} as unknown as ValidatedModuleAST;
 }
 
 describe('constant resolver', () => {
-	it('passes only named constants through each explicit project boundary', () => {
+	it('passes named constant namespaces through each explicit project boundary', () => {
+		const envLine = constantsLine(1, 'env');
+		const env = constantsAst(
+			'env',
+			[
+				envLine,
+				constLine(2, 'SAMPLE_RATE', literal(48_000)),
+				{ lineNumber: 3, instruction: 'constantsEnd', arguments: [] },
+			],
+			envLine
+		);
 		const childModuleLine = moduleLine(1, 'child/module');
-		const childPushLine = pushLine(2, id('HALF_RATE', 'constant'));
+		const childUseLine = useLine(2, 'child/env');
+		const childPushLine = pushLine(3, id('SAMPLE_RATE', 'constant'));
 		const childModule = moduleAst(
 			'child/module',
-			[childModuleLine, childPushLine, moduleEndLine(3)],
-			childModuleLine,
-			'child'
+			[childModuleLine, childUseLine, childPushLine, moduleEndLine(4)],
+			childModuleLine
 		);
 		const grandchildModuleLine = moduleLine(1, 'child/grandchild/module');
-		const grandchildPushLine = pushLine(2, id('SAMPLE_RATE', 'constant'));
+		const grandchildUseLine = useLine(2, 'child/grandchild/env');
+		const grandchildPushLine = pushLine(3, id('SAMPLE_RATE', 'constant'));
 		const grandchildModule = moduleAst(
 			'child/grandchild/module',
-			[grandchildModuleLine, grandchildPushLine, moduleEndLine(3)],
-			grandchildModuleLine,
-			'child/grandchild'
+			[grandchildModuleLine, grandchildUseLine, grandchildPushLine, moduleEndLine(4)],
+			grandchildModuleLine
 		);
-		const projectConstantScopes: ProjectConstantScope[] = [
-			{ groupPath: '', lines: [constLine(1, 'SAMPLE_RATE', literal(48_000))] },
+		const projectConstantNamespaceScopes: ProjectConstantNamespaceScope[] = [
+			{ groupPath: '', passes: [] },
 			{
 				groupPath: 'child',
 				parentGroupPath: '',
-				lines: [
-					passLine(2, 'SAMPLE_RATE'),
-					constLine(3, 'HALF_RATE', expression(id('SAMPLE_RATE', 'constant'), '/', literal(2))),
-				],
+				passes: [passLine(2, 'env')],
 			},
-			{ groupPath: 'child/grandchild', parentGroupPath: 'child', lines: [] },
+			{ groupPath: 'child/grandchild', parentGroupPath: 'child', passes: [passLine(2, 'env')] },
 		];
 
 		const result = resolveConstants({
 			ast: {
 				prototypes: [],
 				modules: [childModule, grandchildModule],
-				constants: [],
+				constants: [env],
 				functions: [],
 			},
-			projectConstantScopes,
+			projectConstantNamespaceScopes,
 		});
 
-		expect(result.references.modules[0].lineFacts[1]).toEqual({ arguments: [literal(24_000)] });
-		expect(result.references.modules[1].lineFacts[1]).toBeUndefined();
+		expect(result.references.modules[0].lineFacts[2]).toEqual({ arguments: [literal(48_000)] });
+		expect(result.references.modules[1].lineFacts[2]).toEqual({ arguments: [literal(48_000)] });
+		expect(result.namespaces['child/env']).toBe(result.namespaces.env);
+		expect(result.namespaces['child/grandchild/env']).toBe(result.namespaces.env);
 	});
 
-	it('reports a root pass as an unresolved parent constant', () => {
-		expect(() =>
-			resolveConstants({
-				ast: { prototypes: [], modules: [], constants: [], functions: [] },
-				projectConstantScopes: [{ groupPath: '', lines: [passLine(1, 'SAMPLE_RATE')] }],
-			})
-		).toThrowError(ConstantResolverErrorCode.UNRESOLVED_PASSED_CONSTANT);
-	});
-
-	it('rejects block-local declarations that replace a project-scope constant', () => {
-		const mainLine = moduleLine(1, 'main');
-		const ast = moduleAst(
-			'main',
-			[mainLine, constLine(2, 'SAMPLE_RATE', literal(44_100)), moduleEndLine(3)],
-			mainLine,
-			''
+	it('does not import a passed namespace into child blocks automatically', () => {
+		const envLine = constantsLine(1, 'env');
+		const env = constantsAst(
+			'env',
+			[envLine, constLine(2, 'RATE', literal(48_000)), { lineNumber: 3, instruction: 'constantsEnd', arguments: [] }],
+			envLine
+		);
+		const childModuleLine = moduleLine(1, 'child/module');
+		const childModule = moduleAst(
+			'child/module',
+			[childModuleLine, pushLine(2, id('RATE', 'constant')), moduleEndLine(3)],
+			childModuleLine
 		);
 
+		const result = resolveConstants({
+			ast: { prototypes: [], modules: [childModule], constants: [env], functions: [] },
+			projectConstantNamespaceScopes: [
+				{ groupPath: '', passes: [] },
+				{ groupPath: 'child', parentGroupPath: '', passes: [passLine(1, 'env')] },
+			],
+		});
+
+		expect(result.namespaces['child/env']).toBe(result.namespaces.env);
+		expect(result.references.modules[0].lineFacts[1]).toBeUndefined();
+	});
+
+	it('requires a namespace pass at every nested project boundary', () => {
+		const envLine = constantsLine(1, 'env');
+		const env = constantsAst('env', [envLine, { lineNumber: 2, instruction: 'constantsEnd', arguments: [] }], envLine);
+
 		expect(() =>
 			resolveConstants({
-				ast: { prototypes: [], modules: [ast], constants: [], functions: [] },
-				projectConstantScopes: [{ groupPath: '', lines: [constLine(1, 'SAMPLE_RATE', literal(48_000))] }],
+				ast: { prototypes: [], modules: [], constants: [env], functions: [] },
+				projectConstantNamespaceScopes: [
+					{ groupPath: '', passes: [] },
+					{ groupPath: 'child', parentGroupPath: '', passes: [] },
+					{ groupPath: 'child/nested', parentGroupPath: 'child', passes: [passLine(1, 'env')] },
+				],
 			})
-		).toThrowError(ConstantResolverErrorCode.DUPLICATE_CONSTANT);
+		).toThrowError(ConstantResolverErrorCode.UNRESOLVED_PASSED_NAMESPACE);
 	});
 
-	it('rejects namespace imports that replace a project-scope constant', () => {
-		const mainLine = moduleLine(1, 'main');
-		const ast = moduleAst('main', [mainLine, useLine(2, 'external'), moduleEndLine(3)], mainLine, '');
+	it('rejects a passed namespace that collides with a child namespace', () => {
+		const envLine = constantsLine(1, 'env');
+		const env = constantsAst('env', [envLine, { lineNumber: 2, instruction: 'constantsEnd', arguments: [] }], envLine);
+		const childEnvLine = moduleLine(1, 'child/env');
+		const childEnv = moduleAst('child/env', [childEnvLine, moduleEndLine(2)], childEnvLine);
 
 		expect(() =>
-			resolveConstants(
-				{
-					ast: { prototypes: [], modules: [ast], constants: [], functions: [] },
-					projectConstantScopes: [{ groupPath: '', lines: [constLine(1, 'SAMPLE_RATE', literal(48_000))] }],
-				},
-				{ namespaces: { external: { SAMPLE_RATE: { value: 44_100, isInteger: true } } } }
-			)
-		).toThrowError(ConstantResolverErrorCode.DUPLICATE_CONSTANT);
+			resolveConstants({
+				ast: { prototypes: [], modules: [childEnv], constants: [env], functions: [] },
+				projectConstantNamespaceScopes: [
+					{ groupPath: '', passes: [] },
+					{ groupPath: 'child', parentGroupPath: '', passes: [passLine(1, 'env')] },
+				],
+			})
+		).toThrowError(ConstantResolverErrorCode.DUPLICATE_NAMESPACE);
 	});
 
-	it('rejects duplicate declarations within one project scope', () => {
+	it('reports a root pass as an unresolved parent namespace', () => {
 		expect(() =>
 			resolveConstants({
 				ast: { prototypes: [], modules: [], constants: [], functions: [] },
-				projectConstantScopes: [
-					{
-						groupPath: '',
-						lines: [constLine(1, 'RATE', literal(10)), constLine(2, 'RATE', literal(20))],
-					},
+				projectConstantNamespaceScopes: [{ groupPath: '', passes: [passLine(1, 'env')] }],
+			})
+		).toThrowError(ConstantResolverErrorCode.UNRESOLVED_PASSED_NAMESPACE);
+	});
+
+	it('reports a child pass whose parent has no matching constants block', () => {
+		expect(() =>
+			resolveConstants({
+				ast: { prototypes: [], modules: [], constants: [], functions: [] },
+				projectConstantNamespaceScopes: [
+					{ groupPath: '', passes: [] },
+					{ groupPath: 'child', parentGroupPath: '', passes: [passLine(1, 'env')] },
 				],
 			})
-		).toThrowError(ConstantResolverErrorCode.DUPLICATE_CONSTANT);
+		).toThrowError(ConstantResolverErrorCode.UNRESOLVED_PASSED_NAMESPACE);
+	});
+
+	it('does not pass module constant namespaces', () => {
+		const rootModuleLine = moduleLine(1, 'env');
+		const rootModule = moduleAst(
+			'env',
+			[rootModuleLine, constLine(2, 'RATE', literal(48_000)), moduleEndLine(3)],
+			rootModuleLine
+		);
+		expect(() =>
+			resolveConstants({
+				ast: { prototypes: [], modules: [rootModule], constants: [], functions: [] },
+				projectConstantNamespaceScopes: [
+					{ groupPath: '', passes: [] },
+					{ groupPath: 'child', parentGroupPath: '', passes: [passLine(1, 'env')] },
+				],
+			})
+		).toThrowError(ConstantResolverErrorCode.UNRESOLVED_PASSED_NAMESPACE);
 	});
 
 	it('keeps AST lines immutable while reporting resolved constant arguments', () => {

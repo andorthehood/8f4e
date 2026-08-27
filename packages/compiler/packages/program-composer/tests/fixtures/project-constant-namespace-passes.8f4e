@@ -1,25 +1,28 @@
 8f4e/v1
 
+constants env
 const SAMPLE_RATE 48000
+constantsEnd
 
 entry main
 module root
+use env
 int rate SAMPLE_RATE
 moduleEnd
 
 group child
-pass SAMPLE_RATE
-const BLOCK_SIZE SAMPLE_RATE/1000
+pass env
 
 module voice
+use env
 int rate SAMPLE_RATE
-int blockSize BLOCK_SIZE
 moduleEnd
 
 group nested
-pass SAMPLE_RATE
+pass env
 
 module nestedVoice
+use env
 int rate SAMPLE_RATE
 moduleEnd
 groupEnd

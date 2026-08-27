@@ -5,19 +5,17 @@ import type { CompilerDerivedSource } from './types';
 type CompilerSource = {
 	code: string[];
 	cacheKey: string;
-	projectGroupPath: ProjectGroupPath;
 	projectBlockId?: number;
 	source?: SourceMetadata;
 };
 
 function attachSourceMetadataToSyntaxError(source: CompilerSource, error: unknown): unknown {
-	if (!(error instanceof SyntaxRulesError)) {
+	if (!(error instanceof SyntaxRulesError) || (source.projectBlockId === undefined && source.source === undefined)) {
 		return error;
 	}
 
 	error.context = {
 		...error.context,
-		...(source.projectGroupPath ? { projectGroupPath: source.projectGroupPath } : {}),
 		...(source.projectBlockId !== undefined ? { projectBlockId: source.projectBlockId } : {}),
 		...(source.source !== undefined ? { source: source.source } : {}),
 	};
@@ -25,9 +23,12 @@ function attachSourceMetadataToSyntaxError(source: CompilerSource, error: unknow
 }
 
 function attachSourceMetadataToAst<TAst extends ValidatedAST>(ast: TAst, source: CompilerSource): TAst {
+	if (source.projectBlockId === undefined && source.source === undefined) {
+		return ast;
+	}
+
 	return {
 		...ast,
-		...(source.projectGroupPath ? { projectGroupPath: source.projectGroupPath } : {}),
 		...(source.projectBlockId !== undefined ? { projectBlockId: source.projectBlockId } : {}),
 		...(source.source !== undefined ? { source: source.source } : {}),
 	} as TAst;
@@ -52,7 +53,6 @@ export function createCompilerSource(
 	return {
 		code: source.code,
 		cacheKey: `${projectPath || 'root'}:${blockKey}`,
-		projectGroupPath: projectPath,
 		...('id' in source ? { projectBlockId: source.id } : { projectBlockId: source.projectBlockId }),
 		...('source' in source ? { source: source.source } : {}),
 	};

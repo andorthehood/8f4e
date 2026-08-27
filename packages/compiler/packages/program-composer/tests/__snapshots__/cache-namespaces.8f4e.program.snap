@@ -37,7 +37,6 @@
           "lineNumber": 0,
         },
         "projectBlockId": 8,
-        "projectGroupPath": "child",
         "type": "module",
       },
       {
@@ -96,16 +95,5 @@
   "moduleEntryNames": [
     "main",
     "main",
-  ],
-  "projectConstantScopes": [
-    {
-      "groupPath": "",
-      "lines": [],
-    },
-    {
-      "groupPath": "child",
-      "lines": [],
-      "parentGroupPath": "",
-    },
   ],
 }

@@ -52,28 +52,35 @@ const relocatedProject: ProjectObjectModel = {
 };
 
 describe('project compiler API', () => {
-	it('resolves explicitly passed constants through nested project scopes', async () => {
+	it('resolves explicitly passed constant namespaces through nested project scopes', async () => {
 		const project = parseProjectSource(
 			[
 				'8f4e/v1',
+				'constants env',
 				'const SAMPLE_RATE 48000',
+				'const BLOCK_SIZE SAMPLE_RATE/1000',
+				'constantsEnd',
 				'entry main',
 				'module root',
+				'use env',
 				'int rate SAMPLE_RATE',
 				'moduleEnd',
 				'group audio',
-				'pass SAMPLE_RATE',
-				'const BLOCK_SIZE SAMPLE_RATE/1000',
+				'pass env',
 				'constants derived',
+				'use env',
 				'const DOUBLE_BLOCK BLOCK_SIZE*2',
 				'constantsEnd',
 				'function getBlockSize',
+				'use env',
 				'push BLOCK_SIZE',
 				'functionEnd int',
 				'prototype state',
+				'use env',
 				'int[] samples BLOCK_SIZE',
 				'prototypeEnd',
 				'module voice',
+				'use env',
 				'use derived',
 				'shape state',
 				'int rate SAMPLE_RATE',
@@ -83,9 +90,13 @@ describe('project compiler API', () => {
 				'drop',
 				'moduleEnd',
 				'group nested',
-				'pass BLOCK_SIZE',
+				'pass env',
+				'pass derived',
 				'module nestedVoice',
+				'use env',
 				'int blockSize BLOCK_SIZE',
+				'use derived',
+				'int doubleBlock DOUBLE_BLOCK',
 				'moduleEnd',
 				'groupEnd',
 				'groupEnd',
@@ -105,23 +116,26 @@ describe('project compiler API', () => {
 		expect(view[result.memoryPlan.modules['audio/voice']!.memory.doubleBlock!.wordAlignedAddress]).toBe(96);
 		expect(result.memoryPlan.modules['audio/voice']!.memory.samples!.numberOfElements).toBe(48);
 		expect(view[result.memoryPlan.modules['audio/nested/nestedVoice']!.memory.blockSize!.wordAlignedAddress]).toBe(48);
+		expect(view[result.memoryPlan.modules['audio/nested/nestedVoice']!.memory.doubleBlock!.wordAlignedAddress]).toBe(
+			96
+		);
 	});
 
-	it('reports a root pass as an undefined constant from the empty parent scope', async () => {
-		const compilation = compileProject(parseProjectSource('8f4e/v1\npass SAMPLE_RATE'), {
+	it('reports a root pass as an undefined namespace from the empty parent scope', async () => {
+		const compilation = compileProject(parseProjectSource('8f4e/v1\npass env'), {
 			disableSharedMemory: true,
 		});
 
 		await expect(compilation).rejects.toMatchObject({
 			code: ErrorCode.CONSTANT_RESOLUTION_FAILED,
 			context: { projectGroupPath: '' },
-			message: expect.stringContaining('Passed constant SAMPLE_RATE is undefined'),
+			message: expect.stringContaining('Passed constant namespace env is undefined'),
 		});
 	});
 
-	it('reports a missing immediate-parent constant at the child pass declaration', async () => {
+	it('reports a missing immediate-parent namespace at the child pass declaration', async () => {
 		const project = parseProjectSource(
-			['8f4e/v1', 'entry main', 'group audio', 'pass SAMPLE_RATE', 'groupEnd', 'entryEnd'].join('\n')
+			['8f4e/v1', 'entry main', 'group audio', 'pass env', 'groupEnd', 'entryEnd'].join('\n')
 		);
 
 		await expect(compileProject(project, { disableSharedMemory: true })).rejects.toMatchObject({
@@ -131,15 +145,18 @@ describe('project compiler API', () => {
 		});
 	});
 
-	it('re-resolves passed constants when cached child ASTs are unchanged', async () => {
+	it('re-resolves passed namespaces when cached child ASTs are unchanged', async () => {
 		const project = parseProjectSource(
 			[
 				'8f4e/v1',
+				'constants env',
 				'const RATE 10',
+				'constantsEnd',
 				'entry main',
 				'group child',
-				'pass RATE',
+				'pass env',
 				'module value',
+				'use env',
 				'int rate RATE',
 				'moduleEnd',
 				'groupEnd',
@@ -148,7 +165,7 @@ describe('project compiler API', () => {
 		);
 		const first = await compileProject(project, { disableSharedMemory: true });
 		const previousHits = first.cache.ast.stats.hits;
-		project.code = ['const RATE 20'];
+		project.constants[0]!.code = ['constants env', 'const RATE 20', 'constantsEnd'];
 
 		const second = await compileProject(project, { disableSharedMemory: true, cache: first.cache });
 

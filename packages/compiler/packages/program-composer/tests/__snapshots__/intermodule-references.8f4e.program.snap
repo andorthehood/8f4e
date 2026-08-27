@@ -49,7 +49,6 @@
           "lineNumber": 0,
         },
         "projectBlockId": 5,
-        "projectGroupPath": "audio",
         "type": "module",
       },
       {
@@ -106,7 +105,6 @@
           "lineNumber": 0,
         },
         "projectBlockId": 9,
-        "projectGroupPath": "audio",
         "type": "module",
       },
     ],
@@ -129,16 +127,5 @@
   "moduleEntryNames": [
     "main",
     "main",
-  ],
-  "projectConstantScopes": [
-    {
-      "groupPath": "",
-      "lines": [],
-    },
-    {
-      "groupPath": "audio",
-      "lines": [],
-      "parentGroupPath": "",
-    },
   ],
 }

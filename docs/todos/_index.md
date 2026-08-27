@@ -92,7 +92,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
-| 479 | Add explicit group constant passing | 2026-08-27 | Added project-scope constants and explicit same-name `pass` declarations, immediate-parent resolution, source-contextual diagnostics, editor round trips, and cache-safe semantic recomputation. |
+| 479 | Pass constant namespaces into groups | 2026-08-27 | Added explicit same-name namespace forwarding with `pass`, ordinary per-block `use` imports, immediate-parent aliases, source-contextual diagnostics, editor round trips, and cache-safe semantic recomputation. |
 | 477 | Establish compiler-owned ProjectObjectModel | 2026-08-22 | Added compiler-owned typed block collections, recursively owned groups, direct root compilation, text parsing, and repository-wide consumer migration. |
 | 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 2026-08-19 | Added a temporary migration shim; removed it on 2026-08-20 after web-ui switched to direct drawing. |
 | 474 | Add RGBA texture layer plugin to glugglug2 | 2026-08-19 | Added fixed-phase RGBA8 texture uploads, same-storage updates, nearest/linear filtering, top-left rectangle draws, and independent texture/plugin ownership. |

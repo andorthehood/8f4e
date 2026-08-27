@@ -6,7 +6,7 @@ import { hashSource } from './cache';
 import { mainTokenizerLoop } from './mainTokenizerLoop';
 
 export { parseLine } from './parseLine';
-export { parseProjectConstantScopeLine } from './parseProjectConstantScopeLine';
+export { parseProjectConstantNamespacePassLine } from './parseProjectConstantNamespacePassLine';
 
 import { createASTFromBuilder } from './sourceBlockASTBuilder';
 import instructionParser from './syntax/instructionParser';

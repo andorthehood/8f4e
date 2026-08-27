@@ -12,6 +12,7 @@ const result = resolveConstants({
 		constants,
 		functions,
 	},
+	projectConstantNamespaceScopes,
 });
 ```
 
@@ -25,6 +26,7 @@ Downstream passes consume the original AST plus these facts. A line fact may pro
 This package owns:
 
 - Building constant namespaces from `constants` blocks and module ASTs.
+- Resolving explicit parent-to-child constants-namespace aliases declared with project-level `pass` instructions.
 - Resolving `use` dependencies between constant namespaces.
 - Resolving constant declarations in source order.
 - Extracting constant-resolved argument facts for prototypes, modules, constants blocks, and functions.

@@ -4,9 +4,9 @@ import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils
 import blockTypeUpdater from './effect';
 
 describe('block type updater project scope', () => {
-	it('recognizes a newly written unwrapped root constant contract', () => {
+	it('recognizes a newly written root namespace pass', () => {
 		const block = createMockCodeBlock({
-			code: ['; project contract', 'const SAMPLE_RATE 48000', 'pass BLOCK_SIZE'],
+			code: ['; project contract', 'pass env'],
 			projectPath: '',
 			blockType: 'unknown',
 		});

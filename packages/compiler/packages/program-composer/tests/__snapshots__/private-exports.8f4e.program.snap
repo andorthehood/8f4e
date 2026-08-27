@@ -83,7 +83,6 @@
         ],
         "name": "helpers/hidden",
         "projectBlockId": 5,
-        "projectGroupPath": "helpers",
         "type": "function",
       },
     ],
@@ -104,15 +103,4 @@
   ],
   "memoryExposures": [],
   "moduleEntryNames": [],
-  "projectConstantScopes": [
-    {
-      "groupPath": "",
-      "lines": [],
-    },
-    {
-      "groupPath": "helpers",
-      "lines": [],
-      "parentGroupPath": "",
-    },
-  ],
 }

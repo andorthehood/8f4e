@@ -2,7 +2,7 @@ import {
 	type CompilerCache,
 	createChildProjectGroupPath,
 	createProjectModuleId,
-	type ProjectConstantScopeLine,
+	type ProjectConstantNamespacePassLine,
 	type ProjectGroupPath,
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
@@ -12,24 +12,24 @@ import {
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { parseProjectConstantScopeLine, SyntaxRulesError } from '@8f4e/tokenizer';
+import { parseProjectConstantNamespacePassLine, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
 import { createCompilerCache } from './createCompilerCache';
 import { qualifyAst } from './qualifyAst';
 import type { ComposedProgram, IncludedFunctionsByProjectGroupPath } from './types';
 
-function collectProjectConstantScopeLines(
+function collectProjectConstantNamespacePasses(
 	code: readonly string[],
 	projectPath: ProjectGroupPath
-): ProjectConstantScopeLine[] {
-	const lines: ProjectConstantScopeLine[] = [];
+): ProjectConstantNamespacePassLine[] {
+	const passes: ProjectConstantNamespacePassLine[] = [];
 	for (const [index, sourceLine] of code.entries()) {
-		if (!/^\s*(?:const|pass)(?:\s|$)/.test(sourceLine)) {
+		if (!/^\s*pass(?:\s|$)/.test(sourceLine)) {
 			continue;
 		}
 
 		try {
-			lines.push(parseProjectConstantScopeLine(sourceLine, index));
+			passes.push(parseProjectConstantNamespacePassLine(sourceLine, index));
 		} catch (error) {
 			if (error instanceof SyntaxRulesError) {
 				error.context = { ...error.context, projectGroupPath: projectPath };
@@ -37,7 +37,7 @@ function collectProjectConstantScopeLines(
 			throw error;
 		}
 	}
-	return lines;
+	return passes;
 }
 
 function appendMemoryExposureAliases(
@@ -69,11 +69,14 @@ function appendUnit(
 	program: ComposedProgram,
 	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath
 ): void {
-	program.projectConstantScopes.push({
-		groupPath: projectPath,
-		...(parentProjectPath !== undefined ? { parentGroupPath: parentProjectPath } : {}),
-		lines: collectProjectConstantScopeLines(project.code, projectPath),
-	});
+	const constantNamespacePasses = collectProjectConstantNamespacePasses(project.code, projectPath);
+	if (constantNamespacePasses.length > 0) {
+		program.projectConstantNamespaceScopes.push({
+			groupPath: projectPath,
+			...(parentProjectPath !== undefined ? { parentGroupPath: parentProjectPath } : {}),
+			passes: constantNamespacePasses,
+		});
+	}
 
 	project.groups.forEach(group => {
 		const groupPath = createChildProjectGroupPath(projectPath, group.name);
@@ -167,7 +170,7 @@ export function composeProgram(
 		},
 		memoryExposures: [],
 		memoryAliases: new Map(),
-		projectConstantScopes: [],
+		projectConstantNamespaceScopes: [],
 		cache,
 	};
 

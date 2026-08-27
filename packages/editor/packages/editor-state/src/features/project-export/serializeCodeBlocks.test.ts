@@ -6,13 +6,13 @@ describe('convertGraphicDataToProjectStructure', () => {
 	it('stores the editable root project-scope block as project code', () => {
 		const result = convertGraphicDataToProjectStructure([
 			createMockCodeBlock({
-				code: ['const SAMPLE_RATE 48000'],
+				code: ['pass env'],
 				isProjectScope: true,
 				creationIndex: 1,
 			}),
 		]);
 
-		expect(result.code).toEqual(['const SAMPLE_RATE 48000']);
+		expect(result.code).toEqual(['pass env']);
 		expect(result.unknown).toEqual([]);
 	});
 

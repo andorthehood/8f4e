@@ -32,14 +32,14 @@ function createSpriteLookups() {
 describe('code block rendering error mapping', () => {
 	it('maps project-scope compiler errors by canonical group path', () => {
 		const rootScope = createMockCodeBlock({
-			code: ['pass SAMPLE_RATE'],
+			code: ['pass env'],
 			isProjectScope: true,
 			projectPath: '',
 			creationIndex: 7,
 		});
 		const group = createMockCodeBlock({
 			name: 'audio',
-			code: ['group audio', 'pass SAMPLE_RATE', 'groupEnd'],
+			code: ['group audio', 'pass env', 'groupEnd'],
 			projectPath: '',
 			nestedProjectCodeBlocks: [],
 			creationIndex: 8,
@@ -174,7 +174,7 @@ describe('code block rendering home directive', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
-				code: ['const SAMPLE_RATE 48000'],
+				code: ['pass env'],
 			},
 			spriteLookups: createSpriteLookups(),
 		});
@@ -186,7 +186,7 @@ describe('code block rendering home directive', () => {
 
 		expect(state.codeBlockRendering.codeBlocks).toHaveLength(1);
 		expect(state.codeBlockRendering.codeBlocks[0]).toMatchObject({
-			code: ['const SAMPLE_RATE 48000'],
+			code: ['pass env'],
 			isProjectScope: true,
 			projectPath: '',
 		});

@@ -1,5 +1,4 @@
 import type { ArgumentIdentifier } from './arguments';
-import type { ConstLine } from './ast';
 import type { MemoryDeclarationInstruction, PlannedMemoryDeclaration } from './memory';
 
 /** Project-level source instructions consumed before individual code blocks are tokenized. */
@@ -36,21 +35,18 @@ export type ProjectGroupPath = string;
 /** Canonical module identity shared by compiler results and project actors. */
 export type ProjectModuleId = string;
 
-/** Project-scope constant declaration consumed before directly owned source blocks are resolved. */
-export type ProjectConstantScopeLine = ConstLine | ProjectPassLine;
-
-/** Explicit same-name constant forwarding from an immediate parent project scope. */
-export interface ProjectPassLine {
+/** Explicit same-name namespace forwarding from an immediate parent project scope. */
+export interface ProjectConstantNamespacePassLine {
 	lineNumber: number;
 	instruction: 'pass';
 	arguments: [ArgumentIdentifier];
 }
 
-/** Ordered project-scope declarations and their canonical parent relationship. */
-export interface ProjectConstantScope {
+/** Ordered namespace passes and their canonical parent relationship. */
+export interface ProjectConstantNamespaceScope {
 	groupPath: ProjectGroupPath;
 	parentGroupPath?: ProjectGroupPath;
-	lines: ProjectConstantScopeLine[];
+	passes: ProjectConstantNamespacePassLine[];
 }
 
 /** Canonical path of the root project. */

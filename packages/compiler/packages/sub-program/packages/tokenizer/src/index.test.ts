@@ -250,6 +250,12 @@ describe('compileToAST', () => {
 		]);
 	});
 
+	it('allows constants namespace imports in prototype blocks', () => {
+		const ast = compileToAST(['prototype oscillatorState', 'use env', 'float[] samples SAMPLE_COUNT', 'prototypeEnd']);
+
+		expect(ast.lines[1]).toMatchObject({ instruction: 'use', arguments: [{ value: 'env' }] });
+	});
+
 	it('constructs imported function metadata from the source-block parse path', () => {
 		const ast = compileToAST(['function hostLog', '#import "log.value"', 'param int value', 'functionEnd']);
 

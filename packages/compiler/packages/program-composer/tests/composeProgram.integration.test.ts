@@ -26,7 +26,9 @@ function createCompositionSnapshot(fixtureName: string) {
 	return {
 		entryNames: program.entryNames,
 		moduleEntryNames: program.moduleEntryNames,
-		projectConstantScopes: program.projectConstantScopes,
+		...(program.projectConstantNamespaceScopes.length > 0
+			? { projectConstantNamespaceScopes: program.projectConstantNamespaceScopes }
+			: {}),
 		memoryExposures: program.memoryExposures,
 		...(program.memoryAliases.size > 0
 			? {

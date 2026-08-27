@@ -219,7 +219,7 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 			if (closer) {
 				throw new Error(`Parse error at line ${i + 1}: unexpected closer "${closer}"`);
 			}
-			if (!startsWithInstruction(trimmed, 'const') && !startsWithInstruction(trimmed, 'pass')) {
+			if (!startsWithInstruction(trimmed, 'pass')) {
 				throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
 			}
 			if (project.code.length === 0) {

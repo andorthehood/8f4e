@@ -9,7 +9,7 @@ function isProjectScopeSourceLine(line: string): boolean {
 		trimmed.startsWith(';') ||
 		trimmed.startsWith('#') ||
 		trimmed.startsWith('//') ||
-		/^(?:const|pass)(?:\s|$)/.test(trimmed)
+		/^pass(?:\s|$)/.test(trimmed)
 	);
 }
 
@@ -25,7 +25,7 @@ export default function blockTypeUpdater(store: StateManager<State>): void {
 	 */
 	function updateBlockType(codeBlock: CodeBlockGraphicData): void {
 		codeBlock.blockType = getBlockType(codeBlock.code);
-		const hasProjectScopeInstruction = codeBlock.code.some(line => /^\s*(?:const|pass)(?:\s|$)/.test(line));
+		const hasProjectScopeInstruction = codeBlock.code.some(line => /^\s*pass(?:\s|$)/.test(line));
 		codeBlock.isProjectScope =
 			codeBlock.projectPath === '' &&
 			codeBlock.nestedProjectCodeBlocks === undefined &&

@@ -90,13 +90,13 @@ describe('serializeProjectTo8f4e', () => {
 	});
 
 	it('round-trips editable root project-scope source', () => {
-		const project = createProject({ code: ['; compile-time contract', 'const SAMPLE_RATE 48000'] });
+		const project = createProject({ code: ['; namespace contract', 'pass env'] });
 
 		const text = serializeProjectTo8f4e(project);
 		const parsed = parseProjectSource(text);
 
-		expect(text).toBe(['8f4e/v1', '', '; compile-time contract', 'const SAMPLE_RATE 48000'].join('\n'));
-		expect(parsed.code).toEqual(['; compile-time contract', 'const SAMPLE_RATE 48000']);
+		expect(text).toBe(['8f4e/v1', '', '; namespace contract', 'pass env'].join('\n'));
+		expect(parsed.code).toEqual(['; namespace contract', 'pass env']);
 		expect(serializeProjectTo8f4e(parsed)).toBe(text);
 	});
 

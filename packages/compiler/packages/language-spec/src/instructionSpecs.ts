@@ -96,6 +96,12 @@ const constantsPlacement = {
 	sourceBlocks: ['module', 'function', 'constants'],
 } as const satisfies InstructionPlacement;
 
+/** Placement shortcut for namespace imports consumed by compile-time declarations in any source block. */
+const constantNamespaceImportPlacement = {
+	topLevel: true,
+	sourceBlocks: ['module', 'function', 'constants', 'prototype'],
+} as const satisfies InstructionPlacement;
+
 /** Placement shortcut for instructions that require an active loop block. */
 const loopPlacement = { requiredNestedBlock: 'loop' } as const satisfies InstructionPlacement;
 
@@ -985,7 +991,7 @@ export const instructionSpecs = {
 	use: {
 		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
-		placement: constantsPlacement,
+		placement: constantNamespaceImportPlacement,
 		functionDeclaration: { preBody: true },
 		docs: { shortDescription: 'Imports declarations from another module or constants block.' },
 	},

@@ -34,6 +34,11 @@ function, constant-namespace, and prototype names so sibling groups may reuse so
 one flattened validated-AST program to the compiler, allowing memory addresses, function indexes, type indexes, and
 entries to be planned once. Child modules execute before parent modules for the same entry.
 
+Groups can make a parent constants-block namespace available locally with `pass <namespace>`. The pass is explicit at
+every parent-to-child boundary and preserves the local namespace name; each consuming block still imports it with the
+ordinary `use <namespace>` instruction. The compiler resolves passes as qualified namespace aliases, so it does not
+copy constants or inject declarations into block ASTs.
+
 Groups may publish direct-module memory items to their enclosing project with
 `expose <type> <name> &<module>:<memory>`. Exposures are symbolic aliases: the composer rewrites references such as
 `&audio:level` to the backing canonical module reference before the global memory pass, so aliases allocate no memory.
