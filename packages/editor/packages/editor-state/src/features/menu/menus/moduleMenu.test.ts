@@ -60,7 +60,7 @@ describe('module menu', () => {
 	it('adds an action for saving slider values to code when a selected block has sliders', async () => {
 		const codeBlock = createMockCodeBlock({
 			blockType: 'module',
-			code: ['module synth', 'float gain 0.5', '; @slider &gain', 'moduleEnd'],
+			code: ['module synth', 'float gain 0.5', '; @slider gain', 'moduleEnd'],
 		});
 		codeBlock.widgets.sliders = [
 			{

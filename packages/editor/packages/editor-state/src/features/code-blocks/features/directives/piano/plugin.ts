@@ -5,7 +5,7 @@ import { createPianoDirectiveWidgetContribution } from './resolve';
 export default createDirectivePlugin(
 	'piano',
 	(directive, draft) => {
-		const piano = createPianoDirectiveData(draft.sourceCode, directive.args, directive.rawRow);
+		const piano = createPianoDirectiveData(directive.args, directive.rawRow);
 		if (!piano) {
 			return;
 		}

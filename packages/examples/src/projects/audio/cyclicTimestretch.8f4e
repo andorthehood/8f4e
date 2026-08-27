@@ -48,11 +48,11 @@ int8* playhead &buffer
 local int fadeLength
 local int fadeStart
 
-; @slider &stretch 1 10
+; @slider stretch 1 10
 ; @watch stretch
-; @slider &cycleLength 1 4048
+; @slider cycleLength 1 4048
 ; @watch cycleLength
-; @slider &crossfadeLength 0 1024
+; @slider crossfadeLength 0 1024
 ; @watch crossfadeLength
 ; @wave2 &buffer count(buffer) playhead
 

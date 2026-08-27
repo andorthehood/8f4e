@@ -27,6 +27,18 @@ Examples:
 ; @config font ibmvga8x16
 ```
 
+Memory-related arguments use distinct forms:
+
+- `memoryTarget` - a memory item to read or mutate, written as `name` or `module:name`. Operators and indexes are not
+  allowed.
+- `pointerSource` - either a pointer memory such as `bufferPointer` or the start address of direct memory such as
+  `&buffer`.
+- `typedValueSource` - a plain scalar or pointer memory, or an address-of form such as `&buffer` when the directive reads
+  from direct memory.
+- `memoryExpression` - the extended debugger syntax supported only by `@watch`, including `&`, `*`, `[]`, `0b`, and
+  `0x` modifiers.
+- `elementCount` - a positive integer, an integer `memoryTarget`, or `count(memoryTarget)`.
+
 These directives are editor metadata only. They are not compiler instructions and should be ignored by the compiler.
 
 ## Supported Directives
@@ -132,33 +144,47 @@ These modifiers can be combined when they make sense. For example:
 
 ### `@plot`
 
-Draw a plot over a typed absolute pointer range or direct buffer memory. The first argument provides the start pointer and element type metadata. The second argument is always the element count. You can optionally provide an explicit min/max range override.
+Draw a plot over a typed pointer range. The first argument provides the start pointer and element type metadata. Use a
+plain pointer memory or `&buffer` for direct buffer memory. The second argument is always the element count. You can
+optionally provide an explicit min/max range override.
 
 ```txt
-; @plot <startPointer|&buffer|buffer> <elementCount|elementCountMemoryId>
-; @plot <startPointer|&buffer|buffer> <elementCount|elementCountMemoryId> <minValue> <maxValue>
+; @plot <pointerSource> <elementCount>
+; @plot <pointerSource> <elementCount> <minValue> <maxValue>
 ```
 
 Range detection:
 
 - float arrays use `-1..1`
 - integer arrays use type-derived bounds, matching `@wave`
-- lengths can be literal counts, memory ids, or `count(buffer)`
+- lengths can be positive literal counts, integer memory targets, or `count(buffer)`
 - if `minValue` and `maxValue` are specified, they override the type-derived defaults
+
+### `@bars`
+
+Draw vertical bars over a typed pointer range. It uses the same pointer, element-count, and optional range arguments as
+`@plot`.
+
+```txt
+; @bars <pointerSource> <elementCount>
+; @bars <pointerSource> <elementCount> <minValue> <maxValue>
+```
 
 ### `@meter`
 
-Render a horizontal level meter from a typed scalar memory value. The first argument is the memory id to read. You can optionally provide an explicit min/max range override.
+Render a horizontal level meter from a typed scalar value. The first argument is the typed value source to read. You can
+optionally provide an explicit min/max range override.
 
 ```txt
-; @meter <memoryId>
-; @meter <memoryId> <minValue> <maxValue>
+; @meter <typedValueSource>
+; @meter <typedValueSource> <minValue> <maxValue>
 ```
 
 Notes:
 
 - plain scalar memories are supported directly
-- pointer-based values and dereferenced ids still work when they resolve to a typed value
+- plain typed pointer memories read from their current pointee address
+- `&memory` reads directly from the addressed memory item
 - red still starts at a fixed 90% of the configured range
 
 ### `@wave`
@@ -166,7 +192,7 @@ Notes:
 Draw a waveform over a typed absolute pointer range. The first argument provides the start pointer and element size metadata, the second argument is the element count, and the optional third argument is an absolute pointer in the same address space.
 
 ```txt
-; @wave <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
+; @wave <pointerSource> <elementCount> [absolutePointerSource]
 ```
 
 ### `@wave2`
@@ -174,7 +200,7 @@ Draw a waveform over a typed absolute pointer range. The first argument provides
 Same as `@wave`, but rendered at double height.
 
 ```txt
-; @wave2 <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
+; @wave2 <pointerSource> <elementCount> [absolutePointerSource]
 ```
 
 ### `@wave4`
@@ -182,37 +208,42 @@ Same as `@wave`, but rendered at double height.
 Same as `@wave`, but rendered at quadruple height.
 
 ```txt
-; @wave4 <startPointer|&buffer> <elementCount|elementCountMemoryId> <absolutePointerMemoryId>
+; @wave4 <pointerSource> <elementCount> [absolutePointerSource]
 ```
 
 ### `@slider`
 
-Render a slider bound to a memory address.
+Render a slider bound to a memory target.
 
 ```txt
-; @slider <memoryAddress> [min] [max] [step]
+; @slider <memoryTarget> [min] [max] [step]
+; @slider gain 0 1 0.01
 ```
+
+If provided, `min`, `max`, and `step` must be finite decimal numbers, and `step` must be greater than zero.
 
 ### `@crossfade`
 
-Render a center-origin crossfade control bound to two float addresses. The left address is driven when the knob moves left, and the right address is driven when the knob moves right.
+Render a center-origin crossfade control bound to two float memory targets. The left target is driven when the knob moves
+left, and the right target is driven when the knob moves right.
 
 ```txt
-; @crossfade <leftFloatAddress> <rightFloatAddress>
+; @crossfade <leftFloatTarget> <rightFloatTarget>
+; @crossfade dry wet
 ```
 
 Notes:
 
-- both arguments must be addresses such as `&dry` and `&wet`
+- both arguments must be plain memory targets such as `dry` and `wet`
 - both bound memories must resolve to float32 scalars
 - the written range is fixed to `0..1` on each side
 
 ### `@button`
 
-Render a momentary button bound to a memory id.
+Render a momentary button bound to a memory target.
 
 ```txt
-; @button <memoryId> [offValue] [onValue]
+; @button <memoryTarget> [offValue] [onValue]
 ```
 
 Defaults:
@@ -222,10 +253,10 @@ Defaults:
 
 ### `@switch`
 
-Render a toggle switch bound to a memory id.
+Render a toggle switch bound to a memory target.
 
 ```txt
-; @switch <memoryId> [offValue] [onValue]
+; @switch <memoryTarget> [offValue] [onValue]
 ```
 
 Defaults:
@@ -238,13 +269,14 @@ Defaults:
 Render a piano keyboard control.
 
 ```txt
-; @piano <pressedKeysListMemoryId> <pressedKeyCountMemoryId> [startingMidiNote]
+; @piano <pressedKeysListTarget> <pressedKeyCountTarget> [startingMidiNote]
 ```
 
 Notes:
 
-- `pressedKeysListMemoryId` is used as both keyboard id and pressed-key array memory id.
+- `pressedKeysListTarget` is used as both keyboard id and pressed-key array memory target.
 - `startingMidiNote` defaults to `0`.
+- `startingMidiNote` must be a non-negative integer.
 
 ### Keyboard Memory Config
 
@@ -301,7 +333,7 @@ Example:
 Apply code-block visual position offset from an integer memory value.
 
 ```txt
-; @offset <axis> <memoryId>
+; @offset <axis> <memoryTarget>
 ```
 
 Where:

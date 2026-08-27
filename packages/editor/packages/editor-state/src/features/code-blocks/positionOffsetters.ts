@@ -1,10 +1,18 @@
 import type { CodeBlockGraphicData, ParsedDirectiveRecord, State } from '@8f4e/editor-state-types';
 import resolveMemoryIdentifier from '~/pureHelpers/resolveMemoryIdentifier';
+import { isMemoryTarget } from '~/shared/editorDirectiveArgumentTypes';
 import getCodeBlockModuleId from '../../pureHelpers/getCodeBlockModuleId';
 
 export function parsePositionOffsetters(parsedDirectives: ParsedDirectiveRecord[]) {
 	return parsedDirectives
-		.filter(d => d.prefix === '@' && d.name === 'offset' && d.args.length >= 2)
+		.filter(
+			d =>
+				d.prefix === '@' &&
+				d.name === 'offset' &&
+				d.args.length === 2 &&
+				(d.args[0] === 'x' || d.args[0] === 'y') &&
+				isMemoryTarget(d.args[1])
+		)
 		.map(d => ({ axis: d.args[0], memory: d.args[1] }));
 }
 

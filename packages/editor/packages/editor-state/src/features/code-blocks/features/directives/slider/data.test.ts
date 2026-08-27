@@ -11,12 +11,12 @@ function parseSliderDirectiveData(code: string[]) {
 
 describe('slider directive data', () => {
 	it('should parse slider instruction with memory id only', () => {
-		const code = ['; @slider &mySlider'];
+		const code = ['; @slider mySlider'];
 		const result = parseSliderDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				memoryId: '&mySlider',
+				memoryId: 'mySlider',
 				lineNumber: 0,
 				min: undefined,
 				max: undefined,
@@ -26,12 +26,12 @@ describe('slider directive data', () => {
 	});
 
 	it('should parse slider instruction with min and max', () => {
-		const code = ['; @slider &mySlider 0 100'];
+		const code = ['; @slider mySlider 0 100'];
 		const result = parseSliderDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				memoryId: '&mySlider',
+				memoryId: 'mySlider',
 				lineNumber: 0,
 				min: 0,
 				max: 100,
@@ -41,12 +41,12 @@ describe('slider directive data', () => {
 	});
 
 	it('should parse slider instruction with min, max, and step', () => {
-		const code = ['; @slider &mySlider 0 100 10'];
+		const code = ['; @slider mySlider 0 100 10'];
 		const result = parseSliderDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				memoryId: '&mySlider',
+				memoryId: 'mySlider',
 				lineNumber: 0,
 				min: 0,
 				max: 100,
@@ -56,12 +56,12 @@ describe('slider directive data', () => {
 	});
 
 	it('should parse slider instruction with float values', () => {
-		const code = ['; @slider &mySlider 0.0 1.0 0.01'];
+		const code = ['; @slider mySlider 0.0 1.0 0.01'];
 		const result = parseSliderDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				memoryId: '&mySlider',
+				memoryId: 'mySlider',
 				lineNumber: 0,
 				min: 0.0,
 				max: 1.0,
@@ -71,19 +71,19 @@ describe('slider directive data', () => {
 	});
 
 	it('should handle multiple slider instructions', () => {
-		const code = ['; @slider &slider1 0 100', 'mov a b', '; @slider &slider2 0.0 1.0'];
+		const code = ['; @slider slider1 0 100', 'mov a b', '; @slider slider2 0.0 1.0'];
 		const result = parseSliderDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				memoryId: '&slider1',
+				memoryId: 'slider1',
 				lineNumber: 0,
 				min: 0,
 				max: 100,
 				step: undefined,
 			},
 			{
-				memoryId: '&slider2',
+				memoryId: 'slider2',
 				lineNumber: 2,
 				min: 0.0,
 				max: 1.0,
@@ -107,19 +107,19 @@ describe('slider directive data', () => {
 	});
 
 	it('should preserve correct line numbers', () => {
-		const code = ['nop', 'nop', '; @slider &slider1 0 100', 'nop', 'nop', '; @slider &slider2 0.0 1.0'];
+		const code = ['nop', 'nop', '; @slider slider1 0 100', 'nop', 'nop', '; @slider slider2 0.0 1.0'];
 		const result = parseSliderDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				memoryId: '&slider1',
+				memoryId: 'slider1',
 				lineNumber: 2,
 				min: 0,
 				max: 100,
 				step: undefined,
 			},
 			{
-				memoryId: '&slider2',
+				memoryId: 'slider2',
 				lineNumber: 5,
 				min: 0.0,
 				max: 1.0,
@@ -129,17 +129,24 @@ describe('slider directive data', () => {
 	});
 
 	it('should handle negative values', () => {
-		const code = ['; @slider &mySlider -100 100 5'];
+		const code = ['; @slider mySlider -100 100 5'];
 		const result = parseSliderDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				memoryId: '&mySlider',
+				memoryId: 'mySlider',
 				lineNumber: 0,
 				min: -100,
 				max: 100,
 				step: 5,
 			},
 		]);
+	});
+
+	it('rejects address expressions, invalid numbers, and extra arguments', () => {
+		expect(parseSliderDirectiveData(['; @slider &mySlider'])).toEqual([undefined]);
+		expect(parseSliderDirectiveData(['; @slider mySlider nope'])).toEqual([undefined]);
+		expect(parseSliderDirectiveData(['; @slider mySlider 0 1 0'])).toEqual([undefined]);
+		expect(parseSliderDirectiveData(['; @slider mySlider 0 1 0.1 extra'])).toEqual([undefined]);
 	});
 });

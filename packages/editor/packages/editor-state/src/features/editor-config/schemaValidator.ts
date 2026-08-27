@@ -9,6 +9,7 @@ import type {
 	State,
 } from '@8f4e/editor-state-types';
 import resolveMemoryIdentifier from '../../pureHelpers/resolveMemoryIdentifier';
+import { isMemoryTarget } from '../../shared/editorDirectiveArgumentTypes';
 
 export interface SchemaEditorConfigValidatorOptions {
 	root: string;
@@ -255,7 +256,7 @@ export function parseSchemaConfigValue(
 }
 
 function validateModuleMemoryIdentifier(entry: EditorConfigEntry): string | undefined {
-	if (!/^[^:\s]+(?::[^:\s]+)?$/.test(entry.value)) {
+	if (!isMemoryTarget(entry.value)) {
 		return `@config ${entry.path}: invalid string value '${entry.value}'`;
 	}
 

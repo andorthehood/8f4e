@@ -5,7 +5,7 @@ import pianoDirective from './plugin';
 
 function parsePianoDirectiveData(code: string[]) {
 	return parseEditorDirectives(code, [pianoDirective]).map(directive =>
-		createPianoDirectiveData(code, directive.args, directive.rawRow)
+		createPianoDirectiveData(directive.args, directive.rawRow)
 	);
 }
 
@@ -67,18 +67,23 @@ describe('piano directive data', () => {
 		expect(result).toEqual([]);
 	});
 
-	it('should parse starting number as integer', () => {
+	it('rejects address expressions for its memory targets', () => {
+		expect(parsePianoDirectiveData(['; @piano &keys numKeys'])).toEqual([undefined]);
+		expect(parsePianoDirectiveData(['; @piano keys &numKeys'])).toEqual([undefined]);
+	});
+
+	it('rejects a fractional starting number', () => {
 		const code = ['; @piano keys1 numKeys 60.5'];
 		const result = parsePianoDirectiveData(code);
 
-		expect(result[0].startingNumber).toBe(60); // parseInt should truncate
+		expect(result).toEqual([undefined]);
 	});
 
-	it('should return NaN for invalid starting number', () => {
+	it('rejects an invalid starting number', () => {
 		const code = ['; @piano keys1 numKeys invalid'];
 		const result = parsePianoDirectiveData(code);
 
-		expect(result[0].startingNumber).toBe(NaN);
+		expect(result).toEqual([undefined]);
 	});
 
 	it('should preserve correct line numbers', () => {

@@ -1,3 +1,5 @@
+import { isPointerSource, parseElementCount, parseFiniteNumber } from '~/shared/editorDirectiveArgumentTypes';
+
 export interface BarsDirectiveData {
 	startAddressMemoryId: string;
 	lineNumber: number;
@@ -7,23 +9,21 @@ export interface BarsDirectiveData {
 }
 
 export function createBarsDirectiveData(args: string[], lineNumber: number): BarsDirectiveData | undefined {
-	if (!args[0] || !args[1]) {
+	if ((args.length !== 2 && args.length !== 4) || !isPointerSource(args[0])) {
 		return undefined;
 	}
 
-	const parsedArgs = args.slice(1);
-	const hasRangeOverride =
-		parsedArgs.length >= 3 &&
-		/^-?\d*\.?\d+$/.test(parsedArgs[parsedArgs.length - 2]) &&
-		/^-?\d*\.?\d+$/.test(parsedArgs[parsedArgs.length - 1]);
-	const lengthArg = parsedArgs[0];
-	const minValueOverride = hasRangeOverride ? Number.parseFloat(parsedArgs[parsedArgs.length - 2]) : undefined;
-	const maxValueOverride = hasRangeOverride ? Number.parseFloat(parsedArgs[parsedArgs.length - 1]) : undefined;
+	const length = parseElementCount(args[1]);
+	const minValueOverride = args.length === 4 ? parseFiniteNumber(args[2]) : undefined;
+	const maxValueOverride = args.length === 4 ? parseFiniteNumber(args[3]) : undefined;
+	if (!length || (args.length === 4 && (minValueOverride === undefined || maxValueOverride === undefined))) {
+		return undefined;
+	}
 
 	return {
 		startAddressMemoryId: args[0],
 		lineNumber,
-		length: /^-?\d+$/.test(lengthArg) ? Number.parseInt(lengthArg, 10) : lengthArg,
+		length,
 		minValueOverride,
 		maxValueOverride,
 	};

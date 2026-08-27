@@ -86,21 +86,21 @@ describe('button directive data', () => {
 		expect(result).toEqual([]);
 	});
 
-	it('should use default values when off/on are invalid numbers', () => {
+	it('rejects invalid off/on values', () => {
 		const code = ['; @button myButton invalid invalid'];
 		const result = parseButtonDirectiveData(code);
 
-		expect(result).toEqual([
-			{
-				id: 'myButton',
-				lineNumber: 0,
-				offValue: 0,
-				onValue: 1,
-			},
+		expect(result).toEqual([]);
+	});
+
+	it('preserves explicit zero and fractional values', () => {
+		expect(parseButtonDirectiveData(['; @button myButton 0.5 0'])).toEqual([
+			{ id: 'myButton', lineNumber: 0, offValue: 0.5, onValue: 0 },
 		]);
 	});
 
 	it('should ignore malformed button directives without an id', () => {
 		expect(parseButtonDirectiveData(['; @button'])).toEqual([]);
+		expect(parseButtonDirectiveData(['; @button &gate'])).toEqual([]);
 	});
 });

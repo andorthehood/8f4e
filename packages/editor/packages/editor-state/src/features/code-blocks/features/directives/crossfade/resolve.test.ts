@@ -16,7 +16,7 @@ describe('crossfade directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			name: 'test-block',
-			code: ['float dry 0', 'float wet 0', '; @crossfade &dry &wet'],
+			code: ['float dry 0', 'float wet 0', '; @crossfade dry wet'],
 			width: 200,
 			gaps: new Map(),
 		});
@@ -127,7 +127,7 @@ describe('crossfade directive widget resolution', () => {
 	});
 
 	it('ignores directives with unresolved memory ids', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @crossfade &dry &missing']);
+		setMockCodeBlockCode(mockGraphicData, ['; @crossfade dry missing']);
 
 		runDirectiveResolution();
 

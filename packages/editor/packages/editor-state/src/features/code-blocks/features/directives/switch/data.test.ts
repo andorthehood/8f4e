@@ -4,9 +4,9 @@ import { createSwitchDirectiveData } from './data';
 import switchDirective from './plugin';
 
 function parseSwitchDirectiveData(code: string[]) {
-	return parseEditorDirectives(code, [switchDirective]).map(directive =>
-		createSwitchDirectiveData(directive.args, directive.rawRow)
-	);
+	return parseEditorDirectives(code, [switchDirective])
+		.map(directive => createSwitchDirectiveData(directive.args, directive.rawRow))
+		.filter(result => result !== undefined);
 }
 
 describe('switch directive data', () => {
@@ -86,17 +86,20 @@ describe('switch directive data', () => {
 		expect(result).toEqual([]);
 	});
 
-	it('should use default values when off/on are invalid numbers', () => {
+	it('rejects address expressions for its memory target', () => {
+		expect(parseSwitchDirectiveData(['; @switch &mySwitch'])).toEqual([]);
+	});
+
+	it('rejects invalid off/on values', () => {
 		const code = ['; @switch mySwitch invalid invalid'];
 		const result = parseSwitchDirectiveData(code);
 
-		expect(result).toEqual([
-			{
-				id: 'mySwitch',
-				lineNumber: 0,
-				offValue: 0,
-				onValue: 1,
-			},
+		expect(result).toEqual([]);
+	});
+
+	it('preserves explicit zero and fractional values', () => {
+		expect(parseSwitchDirectiveData(['; @switch mySwitch 0.5 0'])).toEqual([
+			{ id: 'mySwitch', lineNumber: 0, offValue: 0.5, onValue: 0 },
 		]);
 	});
 
