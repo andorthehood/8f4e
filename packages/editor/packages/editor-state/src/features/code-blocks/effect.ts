@@ -295,6 +295,19 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 			currentProject: ProjectObjectModel,
 			projectPath: ProjectGroupPath
 		): CodeBlockGraphicData[] => {
+			const projectScopeBlocks =
+				projectPath === ROOT_PROJECT_GROUP_PATH && currentProject.code.length > 0
+					? [
+							createGraphicCodeBlock(
+								{
+									id: nextCodeBlockCreationIndex++,
+									code: currentProject.code,
+									blockType: 'unknown',
+								},
+								{ projectPath, isProjectScope: true }
+							),
+						]
+					: [];
 			const codeBlocks = collectProjectBlocks(currentProject).map(codeBlock =>
 				createGraphicCodeBlock(codeBlock, { projectPath })
 			);
@@ -327,7 +340,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 					}
 				);
 			});
-			const projectCodeBlocks = [...codeBlocks, ...groupBlocks];
+			const projectCodeBlocks = [...projectScopeBlocks, ...codeBlocks, ...groupBlocks];
 
 			// Stable-sort to maintain the partition: normal blocks first, always-on-top last.
 			return [
@@ -365,7 +378,14 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		state.codeBlockRendering.codeBlocks.forEach(codeBlock => {
 			codeBlock.widgets.errorMessages = [];
 			codeErrors.forEach(codeError => {
-				const matchesCodeBlock = codeBlock.creationIndex === codeError.codeBlockId;
+				const projectScopePath = codeBlock.isProjectScope
+					? codeBlock.projectPath
+					: codeBlock.nestedProjectCodeBlocks !== undefined
+						? createChildProjectGroupPath(codeBlock.projectPath, codeBlock.name)
+						: undefined;
+				const matchesCodeBlock =
+					codeBlock.creationIndex === codeError.codeBlockId ||
+					(projectScopePath !== undefined && projectScopePath === codeError.projectGroupPath);
 
 				if (matchesCodeBlock) {
 					const message = wrapText(codeError.message, codeBlock.width / state.viewport.vGrid - 1).map(

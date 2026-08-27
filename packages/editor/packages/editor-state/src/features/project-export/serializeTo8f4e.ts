@@ -99,7 +99,10 @@ export function serializeProjectTo8f4e(project: ProjectObjectModel): string {
 		validateCodeBlock(allBlocks[i].code, i);
 	}
 
-	const blockStrings = documentBlocks.map(block => block.code.join('\n'));
+	const blockStrings = [
+		...(project.code.length > 0 ? [project.code.join('\n')] : []),
+		...documentBlocks.map(block => block.code.join('\n')),
+	];
 	const emittedEntries = new Set<string>();
 	const modulesByEntry = new Map<string, ProjectModuleBlock[]>();
 	const groupsByEntry = new Map<string, ProjectGroupObjectModel[]>();

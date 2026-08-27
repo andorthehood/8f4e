@@ -22,6 +22,7 @@ const source = [
 ].join('\n');
 
 const directProject: ProjectObjectModel = {
+	code: [],
 	modules: [
 		{
 			id: 8,
@@ -51,6 +52,127 @@ const relocatedProject: ProjectObjectModel = {
 };
 
 describe('project compiler API', () => {
+	it('resolves explicitly passed constant namespaces through nested project scopes', async () => {
+		const project = parseProjectSource(
+			[
+				'8f4e/v1',
+				'constants env',
+				'const SAMPLE_RATE 48000',
+				'const BLOCK_SIZE SAMPLE_RATE/1000',
+				'constantsEnd',
+				'entry main',
+				'module root',
+				'use env',
+				'int rate SAMPLE_RATE',
+				'moduleEnd',
+				'group audio',
+				'pass env',
+				'constants derived',
+				'use env',
+				'const DOUBLE_BLOCK BLOCK_SIZE*2',
+				'constantsEnd',
+				'function getBlockSize',
+				'use env',
+				'push BLOCK_SIZE',
+				'functionEnd int',
+				'prototype state',
+				'use env',
+				'int[] samples BLOCK_SIZE',
+				'prototypeEnd',
+				'module voice',
+				'use env',
+				'use derived',
+				'shape state',
+				'int rate SAMPLE_RATE',
+				'int blockSize BLOCK_SIZE',
+				'int doubleBlock DOUBLE_BLOCK',
+				'call getBlockSize',
+				'drop',
+				'moduleEnd',
+				'group nested',
+				'pass env',
+				'pass derived',
+				'module nestedVoice',
+				'use env',
+				'int blockSize BLOCK_SIZE',
+				'use derived',
+				'int doubleBlock DOUBLE_BLOCK',
+				'moduleEnd',
+				'groupEnd',
+				'groupEnd',
+				'entryEnd',
+			].join('\n')
+		);
+
+		const result = await compileProject(project, { disableSharedMemory: true });
+		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1 });
+		const { instance } = await WebAssembly.instantiate(result.codeBuffer, { host: { memory } });
+		(instance.exports.initDefaults as CallableFunction)();
+		const view = new Int32Array(memory.buffer);
+
+		expect(view[result.memoryPlan.modules.root!.memory.rate!.wordAlignedAddress]).toBe(48_000);
+		expect(view[result.memoryPlan.modules['audio/voice']!.memory.rate!.wordAlignedAddress]).toBe(48_000);
+		expect(view[result.memoryPlan.modules['audio/voice']!.memory.blockSize!.wordAlignedAddress]).toBe(48);
+		expect(view[result.memoryPlan.modules['audio/voice']!.memory.doubleBlock!.wordAlignedAddress]).toBe(96);
+		expect(result.memoryPlan.modules['audio/voice']!.memory.samples!.numberOfElements).toBe(48);
+		expect(view[result.memoryPlan.modules['audio/nested/nestedVoice']!.memory.blockSize!.wordAlignedAddress]).toBe(48);
+		expect(view[result.memoryPlan.modules['audio/nested/nestedVoice']!.memory.doubleBlock!.wordAlignedAddress]).toBe(
+			96
+		);
+	});
+
+	it('reports a root pass as an undefined namespace from the empty parent scope', async () => {
+		const compilation = compileProject(parseProjectSource('8f4e/v1\npass env'), {
+			disableSharedMemory: true,
+		});
+
+		await expect(compilation).rejects.toMatchObject({
+			code: ErrorCode.CONSTANT_RESOLUTION_FAILED,
+			context: { projectGroupPath: '' },
+			message: expect.stringContaining('Passed constant namespace env is undefined'),
+		});
+	});
+
+	it('reports a missing immediate-parent namespace at the child pass declaration', async () => {
+		const project = parseProjectSource(
+			['8f4e/v1', 'entry main', 'group audio', 'pass env', 'groupEnd', 'entryEnd'].join('\n')
+		);
+
+		await expect(compileProject(project, { disableSharedMemory: true })).rejects.toMatchObject({
+			code: ErrorCode.CONSTANT_RESOLUTION_FAILED,
+			context: { projectGroupPath: 'audio' },
+			line: { instruction: 'pass' },
+		});
+	});
+
+	it('re-resolves passed namespaces when cached child ASTs are unchanged', async () => {
+		const project = parseProjectSource(
+			[
+				'8f4e/v1',
+				'constants env',
+				'const RATE 10',
+				'constantsEnd',
+				'entry main',
+				'group child',
+				'pass env',
+				'module value',
+				'use env',
+				'int rate RATE',
+				'moduleEnd',
+				'groupEnd',
+				'entryEnd',
+			].join('\n')
+		);
+		const first = await compileProject(project, { disableSharedMemory: true });
+		const previousHits = first.cache.ast.stats.hits;
+		project.constants[0]!.code = ['constants env', 'const RATE 20', 'constantsEnd'];
+
+		const second = await compileProject(project, { disableSharedMemory: true, cache: first.cache });
+
+		expect(second.cache.ast.stats.hits).toBeGreaterThan(previousHits);
+		expect(second.memoryDefaultsByModuleId['child/value']!.rate!.value).toBe(20);
+	});
+
 	it('parses text into the canonical project collections', () => {
 		expect(parseProjectSource(source)).toEqual(directProject);
 	});

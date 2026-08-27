@@ -5,6 +5,7 @@ import type compileAndUpdateMemoryType from '../compileAndUpdateMemory';
 
 function createInput(modules: Array<{ code: string[] }>): ProjectObjectModel {
 	return {
+		code: [],
 		modules: modules.map((module, id) => ({ ...module, id, entry: 'main' })),
 		constants: [],
 		functions: [],

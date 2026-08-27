@@ -5,6 +5,7 @@ import compileProjectModules from '../src/compile/compileProjectModules';
 
 function projectWithModules(modules: ProjectObjectModel['modules']): ProjectObjectModel {
 	return {
+		code: [],
 		modules,
 		functions: [],
 		constants: [],

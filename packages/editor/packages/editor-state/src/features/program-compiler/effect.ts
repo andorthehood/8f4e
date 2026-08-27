@@ -96,6 +96,9 @@ export default function compiler(store: StateManager<State>) {
 					lineNumber: diagnostic.line.lineNumber,
 					codeBlockId: diagnostic.context.projectBlockId ?? -1,
 					codeBlockType: diagnostic.context.codeBlockType,
+					...(diagnostic.context.projectGroupPath !== undefined
+						? { projectGroupPath: diagnostic.context.projectGroupPath }
+						: {}),
 					message: diagnostic?.message || String(error) || 'Compilation failed',
 				},
 			]);

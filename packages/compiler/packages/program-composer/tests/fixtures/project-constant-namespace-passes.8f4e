@@ -1,0 +1,30 @@
+8f4e/v1
+
+constants env
+const SAMPLE_RATE 48000
+constantsEnd
+
+entry main
+module root
+use env
+int rate SAMPLE_RATE
+moduleEnd
+
+group child
+pass env
+
+module voice
+use env
+int rate SAMPLE_RATE
+moduleEnd
+
+group nested
+pass env
+
+module nestedVoice
+use env
+int rate SAMPLE_RATE
+moduleEnd
+groupEnd
+groupEnd
+entryEnd

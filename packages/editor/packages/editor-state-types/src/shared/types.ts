@@ -3,7 +3,7 @@
  * These types do not belong to any single feature and are used by multiple subsystems.
  */
 
-import type { CompilerSourceBlockType } from '@8f4e/language-spec';
+import type { CompilerSourceBlockType, ProjectGroupPath } from '@8f4e/language-spec';
 
 /**
  * Generic size dimensions used across features.
@@ -73,6 +73,8 @@ export interface CodeError {
 	/** Creation index of the code block that owns the error. */
 	codeBlockId: number;
 	codeBlockType?: CompilerSourceBlockType;
+	/** Project scope that owns an error not associated with a document block id. */
+	projectGroupPath?: ProjectGroupPath;
 	/** Optional producer id for shared error buckets that contain errors from multiple owners. */
 	ownerId?: string;
 }

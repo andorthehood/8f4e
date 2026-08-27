@@ -26,6 +26,7 @@ function compile(fixture: ProjectFixture, options: CompileOptions) {
 		code: source.code,
 	});
 	const project: ProjectObjectModel = {
+		code: [],
 		modules: Object.entries(fixture.entries).flatMap(([entry, modules]) =>
 			modules.map(module => ({ ...toBlock(module), entry }))
 		),

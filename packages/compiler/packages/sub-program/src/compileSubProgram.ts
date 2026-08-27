@@ -151,7 +151,11 @@ function findAstContainingLine(
 	return undefined;
 }
 
-function wrapConstantResolverError(error: unknown, subProgramAst: ResolveConstantsSubProgramAST): unknown {
+function wrapConstantResolverError(
+	error: unknown,
+	program: ComposedProgram,
+	subProgramAst: ResolveConstantsSubProgramAST
+): unknown {
 	if (!(error instanceof ConstantResolverError)) {
 		return error;
 	}
@@ -161,8 +165,16 @@ function wrapConstantResolverError(error: unknown, subProgramAst: ResolveConstan
 		return error;
 	}
 
-	const ast = findAstContainingLine(subProgramAst, line);
-	return getError(ErrorCode.CONSTANT_RESOLUTION_FAILED, line, ast ? getAstDiagnosticContext(ast) : undefined, {
+	const ast = line.instruction === 'pass' ? undefined : findAstContainingLine(subProgramAst, line);
+	const projectConstantNamespaceScope = program.projectConstantNamespaceScopes.find(scope =>
+		scope.passes.some(scopeLine => scopeLine === line)
+	);
+	const context = ast
+		? getAstDiagnosticContext(ast)
+		: projectConstantNamespaceScope
+			? { projectGroupPath: projectConstantNamespaceScope.groupPath }
+			: undefined;
+	return getError(ErrorCode.CONSTANT_RESOLUTION_FAILED, line, context, {
 		reason: `${error.detail} (${error.code})`,
 	});
 }
@@ -197,9 +209,12 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	assertUniqueModuleIds(subProgramAst.modules);
 	let constantResolution: ReturnType<typeof resolveConstants>;
 	try {
-		constantResolution = resolveConstants({ ast: subProgramAst });
+		constantResolution = resolveConstants({
+			ast: subProgramAst,
+			projectConstantNamespaceScopes: program.projectConstantNamespaceScopes,
+		});
 	} catch (error) {
-		throw wrapConstantResolverError(error, subProgramAst);
+		throw wrapConstantResolverError(error, program, subProgramAst);
 	}
 
 	let memoryPlan: ReturnType<typeof planSubProgramMemoryLayout>;

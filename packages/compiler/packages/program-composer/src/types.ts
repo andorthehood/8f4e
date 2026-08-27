@@ -1,5 +1,6 @@
 import type {
 	CompilerCache,
+	ProjectConstantNamespaceScope,
 	ProjectGroupPath,
 	ProjectMemoryAliasLookup,
 	ProjectMemoryExposure,
@@ -39,5 +40,6 @@ export interface ComposedProgram {
 	};
 	memoryExposures: ComposedProjectMemoryExposure[];
 	memoryAliases: ProjectMemoryAliasLookup;
+	projectConstantNamespaceScopes: ProjectConstantNamespaceScope[];
 	cache: CompilerCache;
 }

@@ -25,6 +25,7 @@ moduleEnd
 		},
 	];
 	const createInput = (modules: Array<{ code: string[] }>): ProjectObjectModel => ({
+		code: [],
 		modules: modules.map((module, id) => ({ ...module, id, entry: 'init' })),
 		constants: [],
 		functions: [],
@@ -99,6 +100,7 @@ describe('compileAndUpdateMemory float64 incremental patching', () => {
 	const compilerOptions = { startingMemoryWordAddress: 1 };
 	let compileAndUpdateMemory: typeof compileAndUpdateMemoryType;
 	const createInput = (modules: Array<{ code: string[] }>): ProjectObjectModel => ({
+		code: [],
 		modules: modules.map((module, id) => ({ ...module, id, entry: 'main' })),
 		constants: [],
 		functions: [],

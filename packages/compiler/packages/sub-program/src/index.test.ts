@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { compileSubProgram } from '.';
 
 const emptyProject: ProjectObjectModel = {
+	code: [],
 	modules: [],
 	functions: [],
 	constants: [],

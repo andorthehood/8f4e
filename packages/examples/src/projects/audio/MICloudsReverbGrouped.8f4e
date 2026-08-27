@@ -107,7 +107,7 @@ ifEnd
 
 moduleEnd
 module audiooutL
-; @pos 143 -33
+; @pos 140 -34
 use env
 
 float* in &reverb:outL
@@ -123,11 +123,11 @@ push pointer
 push *in
 store
 
-; Increment the buffer
+; Increment the buffer 
 ; pointer by the word size
 push &pointer
 push pointer
-push sizeof(buffer)
+push sizeof(buffer) 
 add
 store
 
@@ -135,8 +135,8 @@ store
 ; when it reaches the end
 ; of the buffer
 push pointer
-push buffer&
-greaterThan
+push buffer& 
+greaterThan 
 if
 push &pointer
 push &buffer
@@ -145,7 +145,7 @@ ifEnd
 
 moduleEnd
 module audiooutR
-; @pos 185 -33
+; @pos 183 -34
 use env
 
 float* in &reverb:outR
@@ -161,11 +161,11 @@ push pointer
 push *in
 store
 
-; Increment the buffer
+; Increment the buffer 
 ; pointer by the word size
 push &pointer
 push pointer
-push sizeof(buffer)
+push sizeof(buffer) 
 add
 store
 
@@ -173,8 +173,8 @@ store
 ; when it reaches the end
 ; of the buffer
 push pointer
-push buffer&
-greaterThan
+push buffer& 
+greaterThan 
 if
 push &pointer
 push &buffer
@@ -183,10 +183,15 @@ ifEnd
 
 moduleEnd
 group reverb
+; @pos 89 -34
 expose float* in &reverbInput:in
 expose float outL &tank1OutputMix:out
 expose float outR &tank2OutputMix:out
+
+pass env
+
 includes
+; @pos 0 12
 include std/events/risingEdge
 include std/memory/wrapPointer
 include std/math/fract
@@ -199,30 +204,15 @@ include std/memory/advancePointer
 include std/math/trig/advancePhase
 
 includesEnd
-constants env
-; @pos 0 0
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 48000
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
 constants cloudsReverb
+; @pos 47 12
+
 use env
 
 const CLOUDS_SAMPLE_RATE 32000
 const CLOUDS_RATIO SAMPLE_RATE/CLOUDS_SAMPLE_RATE
 
 constantsEnd
-module reverbInput
-; Provides silence until the root player binds this pointer.
-
-float silence
-float* in &silence
-
-moduleEnd
 module controlValues
 ; @pos 46 -27
 
@@ -239,6 +229,7 @@ moduleEnd
 module lfo1
 ; @pos 90 -27
 ; @group smearStage1
+
 use env
 
 float frequency 0.5
@@ -265,25 +256,25 @@ moduleEnd
 module modulatedDelayTap
 ; @pos 127 -27
 ; @group smearStage1
-; Reads a modulated,
-; interpolated tap
+; Reads a modulated, 
+; interpolated tap 
 ; from a delay buffer
 use cloudsReverb
 
-float* buffer
+float* buffer 
 - &allpassDiffuser:buffer
-float** pointer
+float** pointer 
 - &allpassDiffuser:pointer
 float* mod &lfo1:out
 float out
 
-const MOD_BASE_OFFSET
+const MOD_BASE_OFFSET 
 - 10.0*CLOUDS_RATIO
-const MOD_DEPTH
+const MOD_DEPTH 
 - 60.0*CLOUDS_RATIO
 
 push &out
-; pointer +
+; pointer + 
 ; int((10 + mod * 60) * ratio) * sizeof(*buffer)
 push *pointer
 push MOD_BASE_OFFSET
@@ -312,6 +303,12 @@ call readInterpolated
 store
 
 moduleEnd
+module reverbInput
+; @pos 160 -41
+
+float in 
+
+moduleEnd
 module delayOffsetWriter
 ; @pos 173 -27
 ; @group smearStage1
@@ -321,13 +318,13 @@ module delayOffsetWriter
 ; circular pointer.
 use cloudsReverb
 
-float* buffer
+float* buffer 
 - &allpassDiffuser:buffer
-float** pointer
+float** pointer 
 - &allpassDiffuser:pointer
 float* in &modulatedDelayTap:out
 
-const WRITE_OFFSET_SAMPLES
+const WRITE_OFFSET_SAMPLES 
 - 100.0*CLOUDS_RATIO
 
 push *pointer
@@ -353,13 +350,13 @@ const DELAY_SIZE 113*CLOUDS_RATIO
 float** in &reverbInput:in
 float out
 float[] buffer DELAY_SIZE
-float* pointer &buffer
-float* diffusion
+float* pointer &buffer 
+float* diffusion 
 - &controlValues:diffusion
 
 ; @wave2 &buffer count(buffer) pointer
 
-local float writeValue
+local float writeValue 
 
 push **in
 push *pointer
@@ -380,7 +377,7 @@ store
 ; write value
 push pointer
 push writeValue
-store
+store 
 
 ; Advance and wrap
 ; circular buffer pointer
@@ -400,13 +397,13 @@ const DELAY_SIZE 162*CLOUDS_RATIO
 float* in &allpassDiffuser:out
 float out
 float[] buffer DELAY_SIZE
-float* pointer &buffer
-float* diffusion
+float* pointer &buffer 
+float* diffusion 
 - &controlValues:diffusion
 
 ; @wave2 &buffer count(buffer) pointer
 
-local float writeValue
+local float writeValue 
 
 ; input + delayed * gain
 push *in
@@ -428,7 +425,7 @@ store
 ; Store allpass write value
 push pointer
 push writeValue
-store
+store 
 
 ; Advance circular buffer pointer
 push &pointer
@@ -447,13 +444,13 @@ const DELAY_SIZE 241*CLOUDS_RATIO
 float* in &allpassDiffuser2:out
 float out
 float[] buffer DELAY_SIZE
-float* pointer &buffer
+float* pointer &buffer 
 float* diffusion
 - &controlValues:diffusion
 
 ; @wave2 &buffer count(buffer) pointer
 
-local float writeValue
+local float writeValue 
 
 ; input + delayed * gain
 push *in
@@ -475,7 +472,7 @@ store
 ; Store allpass write value
 push pointer
 push writeValue
-store
+store 
 
 ; Advance circular buffer pointer
 push &pointer
@@ -494,13 +491,13 @@ const DELAY_SIZE 399*CLOUDS_RATIO
 float* in &allpassDiffuser3:out
 float out
 float[] buffer DELAY_SIZE
-float* pointer &buffer
+float* pointer &buffer 
 float* diffusion
 - &controlValues:diffusion
 
 ; @wave2 &buffer count(buffer) pointer
 
-local float writeValue
+local float writeValue 
 
 ; input + delayed * gain
 push *in
@@ -522,7 +519,7 @@ store
 ; Store allpass write value
 push pointer
 push writeValue
-store
+store 
 
 ; Advance circular buffer pointer
 push &pointer
@@ -581,13 +578,13 @@ moduleEnd
 module tank1ModulatedTap
 ; @pos 496 -60
 ; @group tank1
-; Reads a modulated,
-; interpolated tap
+; Reads a modulated, 
+; interpolated tap 
 ; from a delay buffer
 use cloudsReverb
 
 float* buffer &tank1DelayRead:buffer
-float** pointer
+float** pointer 
 - &tank1DelayRead:pointer
 float* mod &tank1DelayLfo:out
 float out
@@ -596,7 +593,7 @@ const MOD_BASE_OFFSET 4680.0*CLOUDS_RATIO
 const MOD_DEPTH 100.0*CLOUDS_RATIO
 
 push &out
-; pointer +
+; pointer + 
 ; int((4680 + mod * 100) * ratio) * sizeof(*buffer)
 push *pointer
 push MOD_BASE_OFFSET
@@ -633,7 +630,7 @@ use cloudsReverb
 
 const DELAY_SIZE 3411*CLOUDS_RATIO
 
-float[] buffer DELAY_SIZE
+float[] buffer DELAY_SIZE 
 float out
 float* pointer &buffer
 
@@ -667,7 +664,7 @@ module tank2Mixer
 ; @group tank2
 float* in1 &allpassDiffuser4:out
 float* in2 &tank2DelayRead:out
-float* decay
+float* decay 
 - &controlValues:decay
 float out
 
@@ -728,12 +725,12 @@ const DELAY_SIZE 1653*CLOUDS_RATIO
 float* in &tank1Damping:out
 float out
 float[] buffer DELAY_SIZE
-float* pointer &buffer
+float* pointer &buffer 
 float* diffusion
 - &controlValues:diffusion
 
 ; @wave &buffer count(buffer) pointer
-local float writeValue
+local float writeValue 
 
 ; input - delayed * gain
 push *in
@@ -759,7 +756,7 @@ store
 ; Store allpass write value
 push pointer
 push writeValue
-store
+store 
 
 ; Advance circular buffer pointer
 push &pointer
@@ -778,12 +775,12 @@ const DELAY_SIZE 1913*CLOUDS_RATIO
 float* in &tank2Damping:out
 float out
 float[] buffer DELAY_SIZE
-float* pointer &buffer
+float* pointer &buffer 
 float* diffusion
 - &controlValues:diffusion
 
 ; @wave &buffer count(buffer) pointer
-local float writeValue
+local float writeValue 
 
 ; input + delayed * gain
 push *in
@@ -805,7 +802,7 @@ store
 ; Store allpass write value
 push pointer
 push writeValue
-store
+store 
 
 ; Advance circular buffer pointer
 push &pointer
@@ -824,12 +821,12 @@ const DELAY_SIZE 2038*CLOUDS_RATIO
 float* in &tank1AllpassA:out
 float out
 float[] buffer DELAY_SIZE
-float* pointer &buffer
-float* diffusion
+float* pointer &buffer 
+float* diffusion 
 - &controlValues:diffusion
 
 ; @wave &buffer count(buffer) pointer
-local float writeValue
+local float writeValue 
 
 ; input + delayed * gain
 push *in
@@ -851,7 +848,7 @@ store
 ; Store allpass write value
 push pointer
 push writeValue
-store
+store 
 
 ; Advance circular buffer pointer
 push &pointer
@@ -872,10 +869,10 @@ float out
 float[] buffer DELAY_SIZE
 float* pointer &buffer
 float* diffusion
-- &controlValues:diffusion
+- &controlValues:diffusion 
 
 ; @wave2 &buffer count(buffer) pointer
-local float writeValue
+local float writeValue 
 
 ; input - delayed * gain
 push *in
@@ -901,7 +898,7 @@ store
 ; Store allpass write value
 push pointer
 push writeValue
-store
+store 
 
 ; Advance circular buffer pointer
 push &pointer

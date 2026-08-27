@@ -17,6 +17,7 @@ This package owns:
 - Parsing raw project source into `ProjectObjectModel` collections and groups.
 - Classifying project document blocks.
 - Preserving entry membership for module blocks.
+- Preserving project/group-level `pass <namespace>` declarations for the program composer.
 - Parsing `expose <type> <name> &<module>:<memory>` declarations owned by groups.
 - Parsing and resolving include declarations for the public compiler facade.
 

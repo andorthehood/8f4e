@@ -1,4 +1,4 @@
-import type { SourceMetadata } from '@8f4e/language-spec';
+import type { ProjectGroupPath, SourceMetadata } from '@8f4e/language-spec';
 
 /**
  * Syntax errors — raised when source structure is invalid before semantic analysis.
@@ -68,6 +68,7 @@ export interface SyntaxErrorLine {
 
 export interface SyntaxErrorContext {
 	projectBlockId?: number;
+	projectGroupPath?: ProjectGroupPath;
 	source?: SourceMetadata;
 }
 

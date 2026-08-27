@@ -29,6 +29,7 @@ type ParsedProjectBlock = { block: ProjectBlock; type: DocumentBlockType; nextIn
 
 function createEmptyProject(): ProjectObjectModel {
 	return {
+		code: [],
 		modules: [],
 		functions: [],
 		constants: [],
@@ -204,14 +205,34 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 		};
 	}
 
+	let pendingRootGapLines: string[] = [];
 	for (let i = 1; i < lines.length; ) {
 		const trimmed = lines[i].trim();
 		if (isProjectGapLine(trimmed)) {
+			pendingRootGapLines.push(lines[i]);
 			i += 1;
 			continue;
 		}
 		const opener = getProjectOpenerKeyword(trimmed);
-		if (!opener) throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
+		if (!opener) {
+			const closer = getProjectCloserKeyword(trimmed);
+			if (closer) {
+				throw new Error(`Parse error at line ${i + 1}: unexpected closer "${closer}"`);
+			}
+			if (!startsWithInstruction(trimmed, 'pass')) {
+				throw new Error(`Parse error at line ${i + 1}: expected opener keyword, got "${trimmed}"`);
+			}
+			if (project.code.length === 0) {
+				while (pendingRootGapLines[0]?.trim() === '') {
+					pendingRootGapLines.shift();
+				}
+			}
+			project.code.push(...pendingRootGapLines, lines[i]);
+			pendingRootGapLines = [];
+			i += 1;
+			continue;
+		}
+		pendingRootGapLines = [];
 
 		if (opener !== ENTRY_BLOCK_DELIMITER.opener) {
 			if (opener === documentBlockInstructionByType.module.start) {
@@ -243,6 +264,9 @@ export function parseProjectSource(text: string): ProjectObjectModel {
 				}
 			},
 		});
+	}
+	if (project.code.length > 0) {
+		project.code.push(...pendingRootGapLines);
 	}
 
 	return project;

@@ -30,6 +30,38 @@ function createSpriteLookups() {
 }
 
 describe('code block rendering error mapping', () => {
+	it('maps project-scope compiler errors by canonical group path', () => {
+		const rootScope = createMockCodeBlock({
+			code: ['pass env'],
+			isProjectScope: true,
+			projectPath: '',
+			creationIndex: 7,
+		});
+		const group = createMockCodeBlock({
+			name: 'audio',
+			code: ['group audio', 'pass env', 'groupEnd'],
+			projectPath: '',
+			nestedProjectCodeBlocks: [],
+			creationIndex: 8,
+		});
+		const state = createMockState({
+			codeBlockRendering: { codeBlocks: [rootScope, group] },
+			codeErrors: {
+				compilationErrors: [
+					{ lineNumber: 0, codeBlockId: -1, projectGroupPath: '', message: 'Undefined root constant' },
+					{ lineNumber: 1, codeBlockId: -1, projectGroupPath: 'audio', message: 'Undefined child constant' },
+				],
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		codeBlockRenderingEffect(store, events);
+
+		expect(rootScope.widgets.errorMessages[0]?.message.join('')).toContain('Undefined root constant');
+		expect(group.widgets.errorMessages[0]?.message.join('')).toContain('Undefined child constant');
+	});
+
 	it('maps compiler errors by creationIndex', () => {
 		const functionBlock = createMockCodeBlock({
 			name: 'helper',
@@ -138,6 +170,28 @@ describe('code block rendering cursor selection', () => {
 });
 
 describe('code block rendering home directive', () => {
+	it('renders root project-scope source as an editable code block', () => {
+		const state = createMockState({
+			initialProjectState: {
+				...EMPTY_DEFAULT_PROJECT,
+				code: ['pass env'],
+			},
+			spriteLookups: createSpriteLookups(),
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		codeBlockRenderingEffect(store, events);
+		store.set('initialProjectState', state.initialProjectState);
+
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(1);
+		expect(state.codeBlockRendering.codeBlocks[0]).toMatchObject({
+			code: ['pass env'],
+			isProjectScope: true,
+			projectPath: '',
+		});
+	});
+
 	it('clears output addresses when the rendered project slice changes', () => {
 		const state = createMockState();
 		state.codeBlockRendering.outputsByWordAddress.set(40, {} as never);

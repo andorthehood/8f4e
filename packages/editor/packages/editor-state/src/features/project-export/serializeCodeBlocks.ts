@@ -6,6 +6,7 @@ import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPos
 
 function createEmptyProject(): ProjectObjectModel {
 	return {
+		code: [],
 		modules: [],
 		functions: [],
 		constants: [],
@@ -22,6 +23,10 @@ export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlo
 	const project = createEmptyProject();
 
 	for (const codeBlock of sortCodeBlocksByGridPosition(codeBlocks.filter(block => !isBrowserLocalNoteBlock(block)))) {
+		if (codeBlock.isProjectScope) {
+			project.code.push(...codeBlock.code);
+			continue;
+		}
 		if (codeBlock.nestedProjectCodeBlocks !== undefined) {
 			project.groups.push({
 				...convertGraphicDataToProjectStructure(codeBlock.nestedProjectCodeBlocks),

@@ -2,6 +2,7 @@ import {
 	type CompilerCache,
 	createChildProjectGroupPath,
 	createProjectModuleId,
+	type ProjectConstantNamespacePassLine,
 	type ProjectGroupPath,
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
@@ -11,10 +12,33 @@ import {
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
+import { parseProjectConstantNamespacePassLine, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
 import { createCompilerCache } from './createCompilerCache';
 import { qualifyAst } from './qualifyAst';
 import type { ComposedProgram, IncludedFunctionsByProjectGroupPath } from './types';
+
+function collectProjectConstantNamespacePasses(
+	code: readonly string[],
+	projectPath: ProjectGroupPath
+): ProjectConstantNamespacePassLine[] {
+	const passes: ProjectConstantNamespacePassLine[] = [];
+	for (const [index, sourceLine] of code.entries()) {
+		if (!/^\s*pass(?:\s|$)/.test(sourceLine)) {
+			continue;
+		}
+
+		try {
+			passes.push(parseProjectConstantNamespacePassLine(sourceLine, index));
+		} catch (error) {
+			if (error instanceof SyntaxRulesError) {
+				error.context = { ...error.context, projectGroupPath: projectPath };
+			}
+			throw error;
+		}
+	}
+	return passes;
+}
 
 function appendMemoryExposureAliases(
 	program: ComposedProgram,
@@ -41,13 +65,23 @@ function appendMemoryExposureAliases(
 function appendUnit(
 	project: ProjectObjectModel,
 	projectPath: ProjectGroupPath,
+	parentProjectPath: ProjectGroupPath | undefined,
 	program: ComposedProgram,
 	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath
 ): void {
+	const constantNamespacePasses = collectProjectConstantNamespacePasses(project.code, projectPath);
+	if (constantNamespacePasses.length > 0) {
+		program.projectConstantNamespaceScopes.push({
+			groupPath: projectPath,
+			...(parentProjectPath !== undefined ? { parentGroupPath: parentProjectPath } : {}),
+			passes: constantNamespacePasses,
+		});
+	}
+
 	project.groups.forEach(group => {
 		const groupPath = createChildProjectGroupPath(projectPath, group.name);
 		appendMemoryExposureAliases(program, groupPath, group.exposures);
-		appendUnit(group, groupPath, program, includedFunctionsByProjectPath);
+		appendUnit(group, groupPath, projectPath, program, includedFunctionsByProjectPath);
 	});
 
 	const prefix = projectPath === ROOT_PROJECT_GROUP_PATH ? undefined : `${projectPath}/`;
@@ -136,9 +170,10 @@ export function composeProgram(
 		},
 		memoryExposures: [],
 		memoryAliases: new Map(),
+		projectConstantNamespaceScopes: [],
 		cache,
 	};
 
-	appendUnit(project, ROOT_PROJECT_GROUP_PATH, program, includedFunctionsByProjectPath);
+	appendUnit(project, ROOT_PROJECT_GROUP_PATH, undefined, program, includedFunctionsByProjectPath);
 	return program;
 }

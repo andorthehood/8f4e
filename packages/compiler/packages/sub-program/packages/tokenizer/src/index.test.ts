@@ -9,6 +9,12 @@ function compileLinesFromAST(code: string[]) {
 }
 
 describe('compileToAST', () => {
+	it('rejects project-scope pass declarations inside compiler source blocks', () => {
+		expect(() => compileToAST(['module synth', 'pass SAMPLE_RATE', 'moduleEnd'])).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
+		);
+	});
+
 	it('constructs module metadata from the source-block parse path', () => {
 		const ast = compileToAST([
 			'module target',
@@ -242,6 +248,12 @@ describe('compileToAST', () => {
 			'phase',
 			'frequency',
 		]);
+	});
+
+	it('allows constants namespace imports in prototype blocks', () => {
+		const ast = compileToAST(['prototype oscillatorState', 'use env', 'float[] samples SAMPLE_COUNT', 'prototypeEnd']);
+
+		expect(ast.lines[1]).toMatchObject({ instruction: 'use', arguments: [{ value: 'env' }] });
 	});
 
 	it('constructs imported function metadata from the source-block parse path', () => {

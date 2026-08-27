@@ -1,3 +1,4 @@
+import type { ArgumentIdentifier } from './arguments';
 import type { MemoryDeclarationInstruction, PlannedMemoryDeclaration } from './memory';
 
 /** Project-level source instructions consumed before individual code blocks are tokenized. */
@@ -5,6 +6,7 @@ export const projectInstructions = {
 	entry: { opener: 'entry', closer: 'entryEnd' },
 	group: { opener: 'group', closer: 'groupEnd' },
 	expose: 'expose',
+	pass: 'pass',
 } as const;
 
 export const projectInstructionNames = [
@@ -13,6 +15,7 @@ export const projectInstructionNames = [
 	projectInstructions.group.opener,
 	projectInstructions.group.closer,
 	projectInstructions.expose,
+	projectInstructions.pass,
 ] as const;
 
 export type ProjectInstructionName = (typeof projectInstructionNames)[number];
@@ -31,6 +34,20 @@ export type ProjectGroupPath = string;
 
 /** Canonical module identity shared by compiler results and project actors. */
 export type ProjectModuleId = string;
+
+/** Explicit same-name namespace forwarding from an immediate parent project scope. */
+export interface ProjectConstantNamespacePassLine {
+	lineNumber: number;
+	instruction: 'pass';
+	arguments: [ArgumentIdentifier];
+}
+
+/** Ordered namespace passes and their canonical parent relationship. */
+export interface ProjectConstantNamespaceScope {
+	groupPath: ProjectGroupPath;
+	parentGroupPath?: ProjectGroupPath;
+	passes: ProjectConstantNamespacePassLine[];
+}
 
 /** Canonical path of the root project. */
 export const ROOT_PROJECT_GROUP_PATH: ProjectGroupPath = '';
@@ -73,6 +90,8 @@ export interface ProjectModuleBlock extends ProjectBlock {
 
 /** Canonical in-memory representation shared by all 8f4e project actors. */
 export interface ProjectObjectModel {
+	/** Source lines owned directly by this project scope, excluding recursively owned document and group blocks. */
+	code: string[];
 	/** Ordered executable modules; filtering by entry preserves execution order within that entry. */
 	modules: ProjectModuleBlock[];
 	/** Hoisted function blocks. */
@@ -128,8 +147,6 @@ export function resolveProjectMemoryAlias(
 export interface ProjectGroupObjectModel extends ProjectObjectModel {
 	name: ProjectGroupName;
 	entry: ProjectEntryName;
-	/** Source lines owned by the group wrapper, excluding recursively owned child blocks. */
-	code: string[];
 	/** Ordered public memory aliases exposed to the enclosing project. */
 	exposures: ProjectMemoryExposure[];
 }

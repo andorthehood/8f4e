@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from './ast';
 import type { SourceMetadata } from './compiled';
 import type { CompilerSourceBlockType } from './instructions';
 import type { ProjectGroupPath } from './project';
@@ -20,7 +19,7 @@ export interface CompilerDiagnosticContext {
  */
 export interface CompilerStageError {
 	message: string;
-	line?: CompilerASTLine;
+	line?: CompilerDiagnosticLine;
 	context?: CodegenContext | CompilationContext | CompilerDiagnosticContext;
 	code: number;
 }

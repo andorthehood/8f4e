@@ -8,12 +8,14 @@ import type {
 	ConstantResolutionBlockFacts,
 	ConstantResolutionLineFacts,
 	ConstLine,
+	ProjectConstantNamespacePassLine,
+	ProjectConstantNamespaceScope,
 	ValidatedConstantsAST,
 	ValidatedFunctionAST,
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType } from '@8f4e/language-spec';
+import { ArgumentType, createProjectModuleId } from '@8f4e/language-spec';
 
 type ConstantResolvableAST = ValidatedModuleAST | ValidatedConstantsAST | ValidatedFunctionAST | ValidatedPrototypeAST;
 export type ConstantEnvironment = Readonly<Record<string, Const>>;
@@ -38,6 +40,7 @@ export interface ResolveConstantsInput<
 	TFunction extends ValidatedFunctionAST = ValidatedFunctionAST,
 > {
 	ast: ResolveConstantsSubProgramAST<TPrototype, TModule, TConstants, TFunction>;
+	projectConstantNamespaceScopes?: readonly ProjectConstantNamespaceScope[];
 }
 
 export interface ConstantResolutionReport {
@@ -54,6 +57,7 @@ export interface ResolveConstantsResult {
 
 export const ConstantResolverErrorCode = {
 	DUPLICATE_NAMESPACE: 'DUPLICATE_NAMESPACE',
+	UNRESOLVED_PASSED_NAMESPACE: 'UNRESOLVED_PASSED_NAMESPACE',
 	UNRESOLVED_CONSTANT_VALUE: 'UNRESOLVED_CONSTANT_VALUE',
 	UNRESOLVED_NAMESPACE: 'UNRESOLVED_NAMESPACE',
 } as const;
@@ -63,9 +67,13 @@ export type ConstantResolverErrorCodeValue = (typeof ConstantResolverErrorCode)[
 export class ConstantResolverError extends Error {
 	readonly code: ConstantResolverErrorCodeValue;
 	readonly detail: string;
-	readonly line?: CompilerASTLine;
+	readonly line?: CompilerASTLine | ProjectConstantNamespacePassLine;
 
-	constructor(code: ConstantResolverErrorCodeValue, message: string, line?: CompilerASTLine) {
+	constructor(
+		code: ConstantResolverErrorCodeValue,
+		message: string,
+		line?: CompilerASTLine | ProjectConstantNamespacePassLine
+	) {
 		super(`${message} (${code})`);
 		this.name = 'ConstantResolverError';
 		this.code = code;
@@ -198,14 +206,15 @@ function resolveConstLine(line: ConstLine, constants: Record<string, Const>): Co
 function importConstants(
 	line: CompilerASTLine,
 	constants: Record<string, Const>,
-	namespaces: ConstantNamespaceMap
+	namespaces: ConstantNamespaceMap,
+	namespaceAliases: ConstantNamespaceAliases
 ): boolean {
 	if (line.instruction !== 'use') {
 		return true;
 	}
 
 	const namespaceId = line.arguments[0].value;
-	const namespace = namespaces[namespaceId];
+	const namespace = resolveNamespace(namespaceId, namespaces, namespaceAliases);
 	if (!namespace) {
 		return false;
 	}
@@ -214,11 +223,15 @@ function importConstants(
 	return true;
 }
 
-function tryCollectConstants(ast: ValidatedModuleAST | ValidatedConstantsAST, namespaces: ConstantNamespaceMap) {
+function tryCollectConstants(
+	ast: ValidatedModuleAST | ValidatedConstantsAST,
+	namespaces: ConstantNamespaceMap,
+	namespaceAliases: ConstantNamespaceAliases
+) {
 	const constants: Record<string, Const> = {};
 
 	for (const line of ast.lines) {
-		if (!importConstants(line, constants, namespaces)) {
+		if (!importConstants(line, constants, namespaces, namespaceAliases)) {
 			return undefined;
 		}
 		if (line.instruction === 'const') {
@@ -231,11 +244,12 @@ function tryCollectConstants(ast: ValidatedModuleAST | ValidatedConstantsAST, na
 
 function findUnresolvedUseLine(
 	asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[],
-	namespaces: ConstantNamespaceMap
+	namespaces: ConstantNamespaceMap,
+	namespaceAliases: ConstantNamespaceAliases
 ): CompilerASTLine | undefined {
 	for (const ast of asts) {
 		for (const line of ast.lines) {
-			if (line.instruction === 'use' && !namespaces[line.arguments[0].value]) {
+			if (line.instruction === 'use' && !resolveNamespace(line.arguments[0].value, namespaces, namespaceAliases)) {
 				return line;
 			}
 		}
@@ -250,12 +264,14 @@ function flattenSubProgramAST(input: ResolveConstantsSubProgramAST): ConstantRes
 
 function collectConstantNamespacesFromAsts(
 	asts: readonly ConstantResolvableAST[],
+	projectConstantNamespaceScopes: readonly ProjectConstantNamespaceScope[] = [],
 	options: ResolveConstantsOptions = {}
 ): ConstantNamespaceMap {
 	const namespaces: Record<string, ConstantEnvironment> = { ...(options.namespaces ?? {}) };
 	const pending = asts.filter((ast): ast is ValidatedModuleAST | ValidatedConstantsAST => {
 		return ast.type === 'module' || ast.type === 'constants';
 	});
+	const namespaceAliases = buildProjectNamespaceAliases(projectConstantNamespaceScopes, pending, namespaces);
 
 	while (pending.length > 0) {
 		let madeProgress = false;
@@ -270,7 +286,7 @@ function collectConstantNamespacesFromAsts(
 				);
 			}
 
-			const constants = tryCollectConstants(ast, namespaces);
+			const constants = tryCollectConstants(ast, namespaces, namespaceAliases);
 			if (!constants) {
 				continue;
 			}
@@ -284,9 +300,17 @@ function collectConstantNamespacesFromAsts(
 			throw new ConstantResolverError(
 				ConstantResolverErrorCode.UNRESOLVED_NAMESPACE,
 				'Unable to resolve constant namespace dependencies',
-				findUnresolvedUseLine(pending, namespaces) ?? pending[0].lines[0]
+				findUnresolvedUseLine(pending, namespaces, namespaceAliases) ?? pending[0].lines[0]
 			);
 		}
+	}
+
+	for (const [alias, target] of namespaceAliases) {
+		const namespace = resolveNamespace(target, namespaces, namespaceAliases);
+		if (!namespace) {
+			throw new Error(`Resolved project namespace alias ${alias} has no target namespace`);
+		}
+		namespaces[alias] = namespace;
 	}
 
 	return namespaces;
@@ -296,7 +320,77 @@ function collectConstantNamespaces(
 	input: ResolveConstantsInput,
 	options: ResolveConstantsOptions = {}
 ): ConstantNamespaceMap {
-	return collectConstantNamespacesFromAsts(flattenSubProgramAST(input.ast), options);
+	return collectConstantNamespacesFromAsts(
+		flattenSubProgramAST(input.ast),
+		input.projectConstantNamespaceScopes,
+		options
+	);
+}
+
+type ConstantNamespaceAliases = ReadonlyMap<string, string>;
+const EMPTY_CONSTANT_NAMESPACE_ALIASES: ConstantNamespaceAliases = new Map();
+
+function resolveNamespace(
+	namespaceId: string,
+	namespaces: ConstantNamespaceMap,
+	namespaceAliases: ConstantNamespaceAliases
+): ConstantEnvironment | undefined {
+	let resolvedId = namespaceId;
+	while (namespaceAliases.has(resolvedId)) {
+		resolvedId = namespaceAliases.get(resolvedId)!;
+	}
+	return namespaces[resolvedId];
+}
+
+function buildProjectNamespaceAliases(
+	scopes: readonly ProjectConstantNamespaceScope[],
+	asts: readonly (ValidatedModuleAST | ValidatedConstantsAST)[],
+	externalNamespaces: ConstantNamespaceMap
+): ConstantNamespaceAliases {
+	const aliases = new Map<string, string>();
+	const passLinesByAlias = new Map<string, ProjectConstantNamespacePassLine>();
+	const astNamespaceIds = new Set(asts.map(ast => ast.id));
+	const constantNamespaceIds = new Set(asts.filter(ast => ast.type === 'constants').map(ast => ast.id));
+
+	for (const scope of scopes) {
+		for (const line of scope.passes) {
+			const name = line.arguments[0].value;
+			const alias = createProjectModuleId(scope.groupPath, name);
+			if (aliases.has(alias) || astNamespaceIds.has(alias) || Object.hasOwn(externalNamespaces, alias)) {
+				throw new ConstantResolverError(
+					ConstantResolverErrorCode.DUPLICATE_NAMESPACE,
+					`Duplicate constant namespace ${alias}`,
+					line
+				);
+			}
+
+			if (scope.parentGroupPath === undefined) {
+				throw new ConstantResolverError(
+					ConstantResolverErrorCode.UNRESOLVED_PASSED_NAMESPACE,
+					`Passed constant namespace ${name} is undefined in the parent project scope`,
+					line
+				);
+			}
+
+			const target = createProjectModuleId(scope.parentGroupPath, name);
+			aliases.set(alias, target);
+			passLinesByAlias.set(alias, line);
+		}
+	}
+
+	const availableTargets = new Set([...constantNamespaceIds, ...Object.keys(externalNamespaces), ...aliases.keys()]);
+	for (const [alias, target] of aliases) {
+		if (!availableTargets.has(target)) {
+			const line = passLinesByAlias.get(alias)!;
+			throw new ConstantResolverError(
+				ConstantResolverErrorCode.UNRESOLVED_PASSED_NAMESPACE,
+				`Passed constant namespace ${line.arguments[0].value} is undefined in the parent project scope`,
+				line
+			);
+		}
+	}
+
+	return aliases;
 }
 
 function haveSameArguments(left: CompilerASTLine['arguments'], right: CompilerASTLine['arguments']): boolean {
@@ -320,7 +414,7 @@ function resolveConstantsInASTWithNamespaces(
 ): ConstantResolutionBlockFacts {
 	const constants: Record<string, Const> = {};
 	const lineFacts = ast.lines.map(line => {
-		if (!importConstants(line, constants, namespaces)) {
+		if (!importConstants(line, constants, namespaces, EMPTY_CONSTANT_NAMESPACE_ALIASES)) {
 			throw new ConstantResolverError(
 				ConstantResolverErrorCode.UNRESOLVED_NAMESPACE,
 				'Unable to resolve constant namespace',

@@ -51,11 +51,35 @@ function tokenizeInstruction(line: string): string[] {
 }
 
 /** Recreates a syntax error with source line metadata from the parser context. */
-function withSyntaxLine(error: SyntaxRulesError, lineNumber: number, instruction?: string): SyntaxRulesError {
+export function withSyntaxLine(error: SyntaxRulesError, lineNumber: number, instruction?: string): SyntaxRulesError {
 	return new SyntaxRulesError(error.code, error.message, {
 		lineNumber,
 		instruction,
 	});
+}
+
+export interface ParsedInstructionSourceLine {
+	instruction: string;
+	arguments: Argument[];
+}
+
+/** Parses instruction tokens and arguments without classifying the instruction's source domain. */
+export function parseInstructionSourceLine(line: string, lineNumber: number): ParsedInstructionSourceLine {
+	let instruction: string | undefined;
+	try {
+		const tokens = tokenizeInstruction(line);
+		const [first = '', ...args] = tokens;
+		instruction = first;
+		return {
+			instruction,
+			arguments: args.map(parseArgument),
+		};
+	} catch (error) {
+		if (error instanceof SyntaxRulesError) {
+			throw withSyntaxLine(error, lineNumber, instruction);
+		}
+		throw error;
+	}
 }
 
 /**
@@ -84,32 +108,18 @@ export function parseInstructionTokens(line: string, lineNumber: number): string
  * @returns Parsed compiler AST line.
  */
 export function parseLine(line: string, lineNumber: number): CompilerASTLine {
-	let instruction: string | undefined;
+	const parsed = parseInstructionSourceLine(line, lineNumber);
 	try {
-		const tokens = tokenizeInstruction(line);
-		const [first = '', ...args] = tokens;
-		instruction = first;
-		const parsedArguments: Argument[] = [];
-		for (const arg of args) {
-			const parsedArgument = parseArgument(arg);
-			parsedArguments.push(parsedArgument);
-		}
-		validateInstructionArguments(instruction, parsedArguments);
+		validateInstructionArguments(parsed.instruction, parsed.arguments);
 		const parsedLine = {
 			lineNumber,
-			instruction,
-			arguments: parsedArguments,
+			...parsed,
 		} as CompilerASTLine;
 
 		return parsedLine;
 	} catch (error) {
 		if (error instanceof SyntaxRulesError) {
-			throw withSyntaxLine(
-				error,
-				lineNumber,
-				// instruction is undefined only if tokenizeInstruction threw before assignment
-				instruction ?? undefined
-			);
+			throw withSyntaxLine(error, lineNumber, parsed.instruction);
 		}
 		throw error;
 	}

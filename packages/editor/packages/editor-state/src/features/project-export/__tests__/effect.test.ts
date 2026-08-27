@@ -218,6 +218,7 @@ describe('projectExport', () => {
 
 			expect(mockSaveSession).toHaveBeenCalled();
 			expect(mockSaveSession).toHaveBeenCalledWith({
+				code: [],
 				modules: [{ id: 0, code: ['module other', 'moduleEnd'], entry: 'entry1' }],
 				functions: [],
 				constants: [],

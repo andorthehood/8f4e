@@ -67,6 +67,9 @@ describe('parseLine', () => {
 		expect(() => parseLine('constructor', 0)).toThrow(
 			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
 		);
+		expect(() => parseLine('pass SIZE', 0)).toThrow(
+			expect.objectContaining({ code: SyntaxErrorCode.UNRECOGNISED_INSTRUCTION })
+		);
 	});
 
 	it('parses a quoted string argument as STRING_LITERAL', () => {
