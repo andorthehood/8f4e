@@ -47,7 +47,7 @@ describe('pianoKeyboard interaction', () => {
 			x: 100,
 			y: 50,
 			offsetX: 5,
-			code: ['module test-block', 'int[] notes 10', 'int noteCount 0', '; @piano notes noteCount 48', 'moduleEnd'],
+			code: ['module test-block', 'int[] notes 10', 'int noteCount 0', '; @piano &notes &noteCount 48', 'moduleEnd'],
 		});
 		codeBlock.widgets.pianoKeyboards = [
 			{
@@ -132,7 +132,7 @@ describe('pianoKeyboard interaction', () => {
 			'module test-block',
 			'int[] notes 10 50',
 			'int noteCount 1',
-			'; @piano notes noteCount 48',
+			'; @piano &notes &noteCount 48',
 			'moduleEnd',
 		]);
 
@@ -145,7 +145,7 @@ describe('pianoKeyboard interaction', () => {
 			'module test-block',
 			'int[] notes 10 50',
 			'int noteCount 1',
-			'; @piano notes noteCount 48',
+			'; @piano &notes &noteCount 48',
 			'moduleEnd',
 		];
 		memoryStore.set(20, 1);
@@ -158,7 +158,7 @@ describe('pianoKeyboard interaction', () => {
 			'module test-block',
 			'int[] notes 10',
 			'int noteCount 0',
-			'; @piano notes noteCount 48',
+			'; @piano &notes &noteCount 48',
 			'moduleEnd',
 		]);
 

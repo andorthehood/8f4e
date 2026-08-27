@@ -142,4 +142,11 @@ describe('slider directive data', () => {
 			},
 		]);
 	});
+
+	it('rejects plain targets, invalid numbers, and extra arguments', () => {
+		expect(parseSliderDirectiveData(['; @slider mySlider'])).toEqual([undefined]);
+		expect(parseSliderDirectiveData(['; @slider &mySlider nope'])).toEqual([undefined]);
+		expect(parseSliderDirectiveData(['; @slider &mySlider 0 1 0'])).toEqual([undefined]);
+		expect(parseSliderDirectiveData(['; @slider &mySlider 0 1 0.1 extra'])).toEqual([undefined]);
+	});
 });

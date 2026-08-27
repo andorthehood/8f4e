@@ -119,6 +119,15 @@ describe('editor config schema contributions', () => {
 				codeBlockId: 0,
 			})
 		).toBe("@config audioRuntime.audioOutBufferLAddress: invalid value 'audioout'");
+		expect(
+			validator.validate({
+				path: 'audioRuntime.audioOutBufferLAddress',
+				value: '&buffer',
+				rawRow: 1,
+				codeBlockId: 0,
+				moduleId: 'audioout',
+			})
+		).toBe("@config audioRuntime.audioOutBufferLAddress: invalid value '&buffer'");
 
 		expect(
 			validator.validate({
@@ -262,5 +271,14 @@ describe('editor config schema contributions', () => {
 				codeBlockId: 0,
 			})
 		).toBe("@config keyboard.keyCodeMemory: memory value 'keyCode' must include a module id outside module blocks");
+		expect(
+			validator.validate({
+				path: 'keyboard.keyCodeMemory',
+				value: '&keyCode',
+				rawRow: 1,
+				codeBlockId: 0,
+				moduleId: 'keyboard',
+			})
+		).toBe("@config keyboard.keyCodeMemory: invalid string value '&keyCode'");
 	});
 });

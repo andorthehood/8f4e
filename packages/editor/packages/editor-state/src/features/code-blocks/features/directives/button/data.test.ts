@@ -11,12 +11,12 @@ function parseButtonDirectiveData(code: string[]) {
 
 describe('button directive data', () => {
 	it('should parse button instruction with all arguments', () => {
-		const code = ['; @button myButton 0 1'];
+		const code = ['; @button &myButton 0 1'];
 		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				id: 'myButton',
+				id: '&myButton',
 				lineNumber: 0,
 				offValue: 0,
 				onValue: 1,
@@ -25,12 +25,12 @@ describe('button directive data', () => {
 	});
 
 	it('should parse button instruction with default off/on values', () => {
-		const code = ['; @button myButton'];
+		const code = ['; @button &myButton'];
 		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				id: 'myButton',
+				id: '&myButton',
 				lineNumber: 0,
 				offValue: 0,
 				onValue: 1,
@@ -39,12 +39,12 @@ describe('button directive data', () => {
 	});
 
 	it('should parse button instruction with custom values', () => {
-		const code = ['; @button myButton 10 100'];
+		const code = ['; @button &myButton 10 100'];
 		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				id: 'myButton',
+				id: '&myButton',
 				lineNumber: 0,
 				offValue: 10,
 				onValue: 100,
@@ -53,18 +53,18 @@ describe('button directive data', () => {
 	});
 
 	it('should handle multiple button instructions', () => {
-		const code = ['; @button btn1 0 1', 'mov a b', '; @button btn2 5 15'];
+		const code = ['; @button &btn1 0 1', 'mov a b', '; @button &btn2 5 15'];
 		const result = parseButtonDirectiveData(code);
 
 		expect(result).toEqual([
 			{
-				id: 'btn1',
+				id: '&btn1',
 				lineNumber: 0,
 				offValue: 0,
 				onValue: 1,
 			},
 			{
-				id: 'btn2',
+				id: '&btn2',
 				lineNumber: 2,
 				offValue: 5,
 				onValue: 15,
@@ -86,21 +86,21 @@ describe('button directive data', () => {
 		expect(result).toEqual([]);
 	});
 
-	it('should use default values when off/on are invalid numbers', () => {
-		const code = ['; @button myButton invalid invalid'];
+	it('rejects invalid off/on values', () => {
+		const code = ['; @button &myButton invalid invalid'];
 		const result = parseButtonDirectiveData(code);
 
-		expect(result).toEqual([
-			{
-				id: 'myButton',
-				lineNumber: 0,
-				offValue: 0,
-				onValue: 1,
-			},
+		expect(result).toEqual([]);
+	});
+
+	it('preserves explicit zero and fractional values', () => {
+		expect(parseButtonDirectiveData(['; @button &myButton 0.5 0'])).toEqual([
+			{ id: '&myButton', lineNumber: 0, offValue: 0.5, onValue: 0 },
 		]);
 	});
 
 	it('should ignore malformed button directives without an id', () => {
 		expect(parseButtonDirectiveData(['; @button'])).toEqual([]);
+		expect(parseButtonDirectiveData(['; @button gate'])).toEqual([]);
 	});
 });

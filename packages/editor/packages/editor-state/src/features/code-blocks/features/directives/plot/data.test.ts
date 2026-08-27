@@ -43,19 +43,11 @@ describe('plot directive data', () => {
 		]);
 	});
 
-	it('should treat two numeric args as length when range override is incomplete', () => {
+	it('rejects an incomplete range override', () => {
 		const code = ['; @plot myArray -1 1'];
 		const result = parsePlotDirectiveData(code);
 
-		expect(result).toEqual([
-			{
-				startAddressMemoryId: 'myArray',
-				lineNumber: 0,
-				length: -1,
-				minValueOverride: undefined,
-				maxValueOverride: undefined,
-			},
-		]);
+		expect(result).toEqual([undefined]);
 	});
 
 	it('should parse plot instruction with both length and range override', () => {

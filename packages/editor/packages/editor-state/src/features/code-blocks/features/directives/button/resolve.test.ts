@@ -16,7 +16,7 @@ describe('button directive widget resolution', () => {
 	beforeEach(() => {
 		mockGraphicData = createMockCodeBlock({
 			name: 'test-block',
-			code: ['; @button btn1 0 1'],
+			code: ['; @button &btn1 0 1'],
 			width: 100,
 			gaps: new Map(),
 		});
@@ -102,7 +102,7 @@ describe('button directive widget resolution', () => {
 	});
 
 	it('should handle multiple buttons', () => {
-		setMockCodeBlockCode(mockGraphicData, ['; @button btn1 0 1', '; @button btn2 5 10']);
+		setMockCodeBlockCode(mockGraphicData, ['; @button &btn1 0 1', '; @button &btn2 5 10']);
 
 		runDirectiveResolution();
 
@@ -111,7 +111,7 @@ describe('button directive widget resolution', () => {
 	});
 
 	it('should position buttons at correct y coordinate based on line number', () => {
-		setMockCodeBlockCode(mockGraphicData, ['nop', 'nop', '; @button btn1 0 1']);
+		setMockCodeBlockCode(mockGraphicData, ['nop', 'nop', '; @button &btn1 0 1']);
 
 		runDirectiveResolution();
 

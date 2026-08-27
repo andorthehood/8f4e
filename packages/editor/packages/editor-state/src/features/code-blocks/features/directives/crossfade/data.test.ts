@@ -10,7 +10,7 @@ function parseCrossfadeDirectiveData(code: string[]) {
 }
 
 describe('crossfade directive data', () => {
-	it('parses a crossfade instruction with two addresses', () => {
+	it('parses a crossfade instruction with two memory addresses', () => {
 		expect(parseCrossfadeDirectiveData(['; @crossfade &dry &wet'])).toEqual([
 			{
 				leftMemoryId: '&dry',
@@ -20,7 +20,7 @@ describe('crossfade directive data', () => {
 		]);
 	});
 
-	it('rejects crossfade instructions without two addresses', () => {
+	it('rejects crossfade instructions without two memory addresses', () => {
 		expect(parseCrossfadeDirectiveData(['; @crossfade &dry'])).toEqual([undefined]);
 		expect(parseCrossfadeDirectiveData(['; @crossfade dry wet'])).toEqual([undefined]);
 	});

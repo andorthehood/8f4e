@@ -379,7 +379,7 @@ float* offsetX &dancer1:offset
 int offsetY
 
 ; @offset y offsetY
-; @offset x *offsetX
+; @offset x dancer1:offset
 
 push &sin
 push sin

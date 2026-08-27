@@ -1,3 +1,5 @@
+import { isMemoryAddress, parseFiniteNumber } from '~/shared/editorDirectiveArgumentTypes';
+
 export interface SliderDirectiveData {
 	memoryId: string;
 	lineNumber: number;
@@ -7,19 +9,26 @@ export interface SliderDirectiveData {
 }
 
 export function createSliderDirectiveData(args: string[], lineNumber: number): SliderDirectiveData | undefined {
-	if (!args[0]) {
+	if (args.length < 1 || args.length > 4 || !isMemoryAddress(args[0])) {
 		return undefined;
 	}
 
-	const parsedMin = args[1] !== undefined ? parseFloat(args[1]) : undefined;
-	const parsedMax = args[2] !== undefined ? parseFloat(args[2]) : undefined;
-	const parsedStep = args[3] !== undefined ? parseFloat(args[3]) : undefined;
+	const min = args[1] !== undefined ? parseFiniteNumber(args[1]) : undefined;
+	const max = args[2] !== undefined ? parseFiniteNumber(args[2]) : undefined;
+	const step = args[3] !== undefined ? parseFiniteNumber(args[3]) : undefined;
+	if (
+		(args[1] !== undefined && min === undefined) ||
+		(args[2] !== undefined && max === undefined) ||
+		(args[3] !== undefined && (step === undefined || step <= 0))
+	) {
+		return undefined;
+	}
 
 	return {
 		memoryId: args[0],
 		lineNumber,
-		min: parsedMin !== undefined && !isNaN(parsedMin) ? parsedMin : undefined,
-		max: parsedMax !== undefined && !isNaN(parsedMax) ? parsedMax : undefined,
-		step: parsedStep !== undefined && !isNaN(parsedStep) ? parsedStep : undefined,
+		min,
+		max,
+		step,
 	};
 }

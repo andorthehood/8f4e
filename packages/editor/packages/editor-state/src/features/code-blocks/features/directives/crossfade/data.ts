@@ -1,3 +1,5 @@
+import { isMemoryAddress } from '~/shared/editorDirectiveArgumentTypes';
+
 export interface CrossfadeDirectiveData {
 	leftMemoryId: string;
 	rightMemoryId: string;
@@ -9,7 +11,7 @@ export function createCrossfadeDirectiveData(args: string[], lineNumber: number)
 		return undefined;
 	}
 
-	if (!args[0]?.startsWith('&') || !args[1]?.startsWith('&')) {
+	if (!isMemoryAddress(args[0]) || !isMemoryAddress(args[1])) {
 		return undefined;
 	}
 

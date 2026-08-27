@@ -1,3 +1,5 @@
+import { isMemoryAddress, parseInteger } from '~/shared/editorDirectiveArgumentTypes';
+
 export interface PianoDirectiveData {
 	id: string;
 	lineNumber: number;
@@ -6,16 +8,15 @@ export interface PianoDirectiveData {
 	startingNumber: number;
 }
 
-export function createPianoDirectiveData(
-	code: string[],
-	args: string[],
-	lineNumber: number
-): PianoDirectiveData | undefined {
-	if (!args[0] || !args[1]) {
+export function createPianoDirectiveData(args: string[], lineNumber: number): PianoDirectiveData | undefined {
+	if ((args.length !== 2 && args.length !== 3) || !isMemoryAddress(args[0]) || !isMemoryAddress(args[1])) {
 		return undefined;
 	}
 
-	const startingNumber = parseInt(args[2] || '0', 10);
+	const startingNumber = args[2] === undefined ? 0 : parseInteger(args[2]);
+	if (startingNumber === undefined || startingNumber < 0) {
+		return undefined;
+	}
 
 	return {
 		id: args[0],

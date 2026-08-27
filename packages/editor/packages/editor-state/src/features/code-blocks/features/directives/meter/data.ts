@@ -1,5 +1,6 @@
 import { ArgumentType, isMemoryDeclarationLine } from '@8f4e/language-spec';
 import { parseLine } from '@8f4e/tokenizer';
+import { isPointerSource, parseFiniteNumber } from '~/shared/editorDirectiveArgumentTypes';
 
 export interface MeterDirectiveData {
 	memoryId: string;
@@ -51,7 +52,7 @@ export function createMeterDirectiveData(
 	const inferredId = sourceLine ? inferMeterIdFromSourceLine(sourceLine, lineNumber) : undefined;
 	const memoryId = args[0] ?? inferredId;
 
-	if (!memoryId) {
+	if (!memoryId || !isPointerSource(memoryId)) {
 		return undefined;
 	}
 
@@ -66,14 +67,16 @@ export function createMeterDirectiveData(
 		return undefined;
 	}
 
-	if (!/^-?\d*\.?\d+$/.test(args[1]) || !/^-?\d*\.?\d+$/.test(args[2])) {
+	const minValueOverride = parseFiniteNumber(args[1]);
+	const maxValueOverride = parseFiniteNumber(args[2]);
+	if (minValueOverride === undefined || maxValueOverride === undefined) {
 		return undefined;
 	}
 
 	return {
 		memoryId,
 		lineNumber,
-		minValueOverride: Number.parseFloat(args[1]),
-		maxValueOverride: Number.parseFloat(args[2]),
+		minValueOverride,
+		maxValueOverride,
 	};
 }

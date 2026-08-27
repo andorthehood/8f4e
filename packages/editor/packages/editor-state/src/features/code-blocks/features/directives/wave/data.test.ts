@@ -160,4 +160,10 @@ describe('wave directive data', () => {
 		expect(parseWaveDirectiveData(['; @wave startPtr 0 pointer'])).toEqual([]);
 		expect(parseWaveDirectiveData(['; @wave startPtr -1 pointer'])).toEqual([]);
 	});
+
+	it('rejects debugger expressions and extra arguments', () => {
+		expect(parseWaveDirectiveData(['; @wave *startPtr 16 pointer'])).toEqual([]);
+		expect(parseWaveDirectiveData(['; @wave startPtr 16 *pointer'])).toEqual([]);
+		expect(parseWaveDirectiveData(['; @wave startPtr 16 pointer extra'])).toEqual([]);
+	});
 });

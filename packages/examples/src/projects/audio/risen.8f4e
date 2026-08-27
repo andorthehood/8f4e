@@ -644,7 +644,7 @@ module piano
 int* note &sequencer:note
 int[] notes 1
 int noteCount 1
-; @piano notes noteCount 0
+; @piano &notes &noteCount 0
 ; @watch notes[0]
 push &noteCount
 push 1

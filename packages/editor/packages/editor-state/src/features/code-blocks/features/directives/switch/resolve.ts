@@ -29,7 +29,7 @@ function resolveSwitchDirectiveWidget(
 		height: state.viewport.hGrid,
 		x: graphicData.width - 4 * state.viewport.vGrid,
 		y: gapCalculator(displayRow, graphicData.gaps) * state.viewport.hGrid,
-		id: _switch.id,
+		id: memory.id,
 		wordAlignedAddress: memory.wordAlignedAddress,
 		isInteger: memory.isInteger ?? true,
 		offValue: _switch.offValue,

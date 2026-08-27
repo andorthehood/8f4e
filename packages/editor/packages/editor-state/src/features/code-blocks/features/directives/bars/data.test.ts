@@ -31,4 +31,10 @@ describe('bars directive data', () => {
 			{ startAddressMemoryId: 'bins', lineNumber: 0, length: 64, minValueOverride: 0, maxValueOverride: 1 },
 		]);
 	});
+
+	it('rejects debugger expressions, incomplete ranges, and extra arguments', () => {
+		expect(parseBarsDirectiveData(['; @bars *bins 64'])).toEqual([undefined]);
+		expect(parseBarsDirectiveData(['; @bars bins 64 0'])).toEqual([undefined]);
+		expect(parseBarsDirectiveData(['; @bars bins 64 0 1 extra'])).toEqual([undefined]);
+	});
 });
