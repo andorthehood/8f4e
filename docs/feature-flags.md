@@ -18,7 +18,7 @@ The feature flags system allows you to enable/disable specific editor functional
 ### Basic Usage - All Features Enabled (Default)
 
 ```typescript
-import init from '@8f4e/editor';
+import init from '@8f4e/editor-core';
 
 const state = init(events, project, {});
 // All features are enabled by default
@@ -27,7 +27,7 @@ const state = init(events, project, {});
 ### Disable Specific Features
 
 ```typescript
-import init from '@8f4e/editor';
+import init from '@8f4e/editor-core';
 
 const state = init(events, project, {
   featureFlags: {
@@ -41,7 +41,7 @@ const state = init(events, project, {
 ### Disable All Editing
 
 ```typescript
-import init from '@8f4e/editor';
+import init from '@8f4e/editor-core';
 
 const state = init(events, project, {
   featureFlags: {
@@ -54,7 +54,7 @@ const state = init(events, project, {
 ### View-Only Mode
 
 ```typescript
-import init from '@8f4e/editor';
+import init from '@8f4e/editor-core';
 
 const state = init(events, project, {
   featureFlags: {
@@ -69,7 +69,7 @@ const state = init(events, project, {
 ### Complete View-Only Mode (No Interaction)
 
 ```typescript
-import init from '@8f4e/editor';
+import init from '@8f4e/editor-core';
 
 const state = init(events, project, {
   featureFlags: {
@@ -85,7 +85,7 @@ const state = init(events, project, {
 ### Presentation Mode
 
 ```typescript
-import init from '@8f4e/editor';
+import init from '@8f4e/editor-core';
 
 const state = init(events, project, {
   featureFlags: {
@@ -100,7 +100,7 @@ const state = init(events, project, {
 ### Debug Mode (With Console Overlay)
 
 ```typescript
-import init from '@8f4e/editor';
+import init from '@8f4e/editor-core';
 
 const state = init(events, project, {
   featureFlags: {
@@ -127,7 +127,7 @@ Console overlay features:
 ### Completely Locked Editor
 
 ```typescript
-import init from '@8f4e/editor';
+import init from '@8f4e/editor-core';
 
 const state = init(events, project, {
   featureFlags: {
@@ -150,7 +150,7 @@ const state = init(events, project, {
 The feature flags system is fully type-safe with TypeScript:
 
 ```typescript
-import { FeatureFlagsConfig } from '@8f4e/editor';
+import { FeatureFlagsConfig } from '@8f4e/editor-core';
 
 const config: FeatureFlagsConfig = {
   contextMenu: false,

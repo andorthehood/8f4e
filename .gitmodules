@@ -1,3 +1,3 @@
 [submodule "packages/editor/packages/glugglugglug"]
-	path = packages/editor/packages/web-ui/packages/glugglugglug
+	path = packages/editor/packages/editor-core/packages/web-ui/packages/glugglugglug
 	url = https://github.com/andorthehood/glugglugglug.git

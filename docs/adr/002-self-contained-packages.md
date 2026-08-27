@@ -138,17 +138,17 @@ All package `tsconfig.json` files were updated to:
 
 **Packages updated**:
 - `packages/compiler/tsconfig.json`
-- `packages/compiler/packages/compiler-worker/tsconfig.json`
+- `packages/editor/packages/compiler-worker/tsconfig.json`
 - `packages/editor/packages/runtime-audio-worklet/tsconfig.json`
 - `packages/editor/packages/runtime-main-thread/tsconfig.json`
 - `packages/editor/packages/runtime-web-worker/tsconfig.json`
 - `packages/runtime-web-worker-midi/tsconfig.json`
 - `packages/editor/tsconfig.json`
-- `packages/editor/packages/editor-state/tsconfig.json`
-- `packages/editor/packages/web-ui/packages/glugglugglug/tsconfig.json`
-- `packages/editor/packages/web-ui/packages/sprite-generator/tsconfig.json`
-- `packages/editor/packages/state-manager/tsconfig.json`
-- `packages/editor/packages/web-ui/tsconfig.json`
+- `packages/editor/packages/editor-core/packages/editor-state/tsconfig.json`
+- `packages/editor/packages/editor-core/packages/web-ui/packages/glugglugglug/tsconfig.json`
+- `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/tsconfig.json`
+- `packages/editor/packages/editor-core/packages/state-manager/tsconfig.json`
+- `packages/editor/packages/editor-core/packages/web-ui/tsconfig.json`
 
 ### Files Removed
 

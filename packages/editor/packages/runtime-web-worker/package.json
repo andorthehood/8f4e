@@ -32,7 +32,7 @@
     "@types/node": "24.13.2"
   },
   "peerDependencies": {
-    "@8f4e/editor": "*",
+    "@8f4e/editor-core": "*",
     "@8f4e/state-manager": "*"
   }
 }

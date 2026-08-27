@@ -13,8 +13,8 @@ completed: null
 ## Problem Description
 
 There are currently two `defaultFeatureFlags` definitions:
-- `packages/editor/src/config/featureFlags.ts`
-- `packages/editor/packages/editor-state/src/pureHelpers/state/featureFlags.ts`
+- `packages/editor/packages/editor-core/src/config/featureFlags.ts`
+- `packages/editor/packages/editor-core/packages/editor-state/src/pureHelpers/state/featureFlags.ts`
 
 This duplication creates drift risk and makes feature-flag changes easy to miss in one location.
 
@@ -44,10 +44,10 @@ Keep one canonical `defaultFeatureFlags` definition and make the other package c
 
 ## Affected Components
 
-- `packages/editor/src/config/featureFlags.ts`
-- `packages/editor/packages/editor-state/src/pureHelpers/state/featureFlags.ts`
-- `packages/editor/src/config/featureFlags.test.ts`
-- `packages/editor/src/integration/featureFlags.test.ts`
+- `packages/editor/packages/editor-core/src/config/featureFlags.ts`
+- `packages/editor/packages/editor-core/packages/editor-state/src/pureHelpers/state/featureFlags.ts`
+- `packages/editor/packages/editor-core/src/config/featureFlags.test.ts`
+- `packages/editor/packages/editor-core/src/integration/featureFlags.test.ts`
 
 ## Notes
 

@@ -26,7 +26,7 @@ function collectProjectPaths(directory: string): string[] {
 }
 
 const projectPaths = new Map(
-	collectProjectPaths(resolve(__dirname, '../../packages/examples/src/projects')).map(
+	collectProjectPaths(resolve(__dirname, '../../../../packages/examples/src/projects')).map(
 		path => [basename(path, '.8f4e'), path] as const
 	)
 );

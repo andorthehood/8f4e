@@ -7,8 +7,8 @@ import type {
 	EventDispatcher,
 	RuntimeRegistryEntry,
 	State,
-} from '@8f4e/editor';
-import { resolveSchemaConfigRoot } from '@8f4e/editor';
+} from '@8f4e/editor-core';
+import { resolveSchemaConfigRoot } from '@8f4e/editor-core';
 import type { StateManager } from '@8f4e/state-manager';
 
 const WEB_WORKER_EDITOR_CONFIG: EditorConfigSchemaContribution = {

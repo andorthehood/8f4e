@@ -3,11 +3,14 @@
   "sourceRoot": "src",
   "projectType": "application",
   "targets": {
-    "build": {
+    "dev": {
       "executor": "nx:run-commands",
-      "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "rm -rf dist && tsc --emitDeclarationOnly && vite build",
+        "commands": [
+          "nx run-many --target=build --all && nx watch --all -- nx run-many --target=build --all",
+          "vite"
+        ],
+        "parallel": true,
         "cwd": "{projectRoot}"
       }
     },
@@ -18,30 +21,46 @@
         "cwd": "{workspaceRoot}"
       }
     },
-    "dev": {
+    "build": {
       "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
       "options": {
-        "command": "concurrently -k -n types,bundle \"tsc --emitDeclarationOnly --watch\" \"vite build --watch\"",
+        "command": "vite build",
         "cwd": "{projectRoot}"
-      }
+      },
+      "dependsOn": ["typecheck", "^build"]
     },
-    "test": {
+    "serve": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "dependsOn": ["^build"],
       "options": {
-        "command": "vitest run --config vitest.config.ts",
+        "command": "vite preview",
         "cwd": "{projectRoot}"
-      }
+      },
+      "dependsOn": ["build"]
     },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc --noEmit",
+        "command": "tsc --noEmit --project tsconfig.json",
         "cwd": "{projectRoot}"
       },
       "dependsOn": ["^build"]
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest run --config vitest.config.ts",
+        "cwd": "{projectRoot}"
+      },
+      "dependsOn": ["^build"]
+    },
+    "kill-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "lsof -ti tcp:3000 | xargs -r kill",
+        "cwd": "{workspaceRoot}"
+      }
     }
   },
-  "tags": ["type:application", "scope:ui"]
+  "tags": ["type:application", "scope:editor"]
 }

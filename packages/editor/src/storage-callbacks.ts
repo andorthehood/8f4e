@@ -1,5 +1,5 @@
 import { parseProjectSource } from '@8f4e/compiler';
-import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor';
+import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor-core';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { getCodeBuffer } from './compiler-callback';
 import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';

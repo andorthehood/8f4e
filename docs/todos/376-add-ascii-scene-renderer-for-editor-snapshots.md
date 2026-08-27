@@ -76,8 +76,8 @@ The main snapshot coverage should live in `editor-state`, while the ASCII render
 ## Affected Components
 
 - `packages/editor/packages/` - new ASCII renderer package
-- `packages/editor/packages/editor-state/` - scene snapshot tests using the new renderer
-- `packages/editor/src/` or shared render-order helpers - any production ordering logic that should be centralized and reused
+- `packages/editor/packages/editor-core/packages/editor-state/` - scene snapshot tests using the new renderer
+- `packages/editor/packages/editor-core/src/` or shared render-order helpers - any production ordering logic that should be centralized and reused
 - `docs/todos/` - tracking and follow-up documentation
 
 ## Risks & Considerations

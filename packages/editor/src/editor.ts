@@ -1,4 +1,4 @@
-import initEditor from '@8f4e/editor';
+import initEditor from '@8f4e/editor-core';
 import { compileCode } from './compiler-callback';
 import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
 import { getListOfProjects, getProject } from './examples/projectRegistry';

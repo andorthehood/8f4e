@@ -223,7 +223,7 @@ object model.
 - `npx nx run @8f4e/editor-state:typecheck`
 - `npx nx run @8f4e/compiler:test`
 - `npx nx run @8f4e/compiler:typecheck`
-- `npx nx run app:build`
+- `npx nx run @8f4e/editor:build`
 
 ## Success Criteria
 
@@ -258,9 +258,9 @@ object model.
 - `packages/compiler/packages/project-preparser` - classify text blocks into the canonical model collections.
 - `packages/compiler/packages/sub-program` - compile canonical project collections directly.
 - `packages/compiler` - expose only project parsing and compilation to project-facing consumers.
-- `packages/editor/packages/editor-state-types` - remove duplicate persistent project contracts and distinguish runtime
+- `packages/editor/packages/editor-core/packages/editor-state-types` - remove duplicate persistent project contracts and distinguish runtime
   editor state from the canonical model.
-- `packages/editor/packages/editor-state` - use the canonical model for import, export, history, persistence, and live
+- `packages/editor/packages/editor-core/packages/editor-state` - use the canonical model for import, export, history, persistence, and live
   compilation.
 - `src/compiler-callback.ts` and `src/storage-callbacks.ts` - update root application boundaries to the unified types.
 - `src/__tests__/exampleProjects.test.ts` - verify text and object paths converge before compilation.

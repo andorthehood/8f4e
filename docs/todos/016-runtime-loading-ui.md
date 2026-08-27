@@ -87,10 +87,10 @@ After implementing lazy loading for runtimes (TODO: 015), users will experience 
 
 ## Affected Components
 
-- `packages/editor/src/state/effects/runtime.ts` - Loading state management
-- `packages/editor/src/view/drawers/` - Loading UI components
-- `packages/editor/src/state/types.ts` - Loading state type definitions
-- `packages/editor/src/events/` - Loading event handling
+- `packages/editor/packages/editor-core/src/state/effects/runtime.ts` - Loading state management
+- `packages/editor/packages/editor-core/src/view/drawers/` - Loading UI components
+- `packages/editor/packages/editor-core/src/state/types.ts` - Loading state type definitions
+- `packages/editor/packages/editor-core/src/events/` - Loading event handling
 
 ## Risks & Considerations
 

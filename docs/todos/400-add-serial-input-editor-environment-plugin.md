@@ -82,7 +82,7 @@ Incomplete trailing bytes remain buffered until more serial data arrives. Queues
 ## Proposed File Organization
 
 ```text
-packages/editor/src/editorEnvironmentPlugins/serial/
+packages/editor/packages/editor-core/src/editorEnvironmentPlugins/serial/
   plugin.ts
   devices.ts
   directives.ts
@@ -165,7 +165,7 @@ Responsibilities:
 
 - `npx nx run editor:test -- src/editorEnvironmentPlugins/serial`
 - `npx nx run editor:typecheck`
-- `npx nx run app:build`
+- `npx nx run @8f4e/editor:build`
 
 ## Success Criteria
 
@@ -182,10 +182,10 @@ Responsibilities:
 
 ## Affected Components
 
-- `packages/editor/src/editorEnvironmentPlugins/registry.ts` - add the `serial` plugin registry entry.
-- `packages/editor/src/editorEnvironmentPlugins/serial` - new serial plugin implementation and tests.
-- `packages/editor/src/editorEnvironmentPlugins/services.ts` - reuse current Wasm export access.
-- `packages/editor/src/index.ts` - ensure serial plugin receives navigator and current Wasm services through the existing context.
+- `packages/editor/packages/editor-core/src/editorEnvironmentPlugins/registry.ts` - add the `serial` plugin registry entry.
+- `packages/editor/packages/editor-core/src/editorEnvironmentPlugins/serial` - new serial plugin implementation and tests.
+- `packages/editor/packages/editor-core/src/editorEnvironmentPlugins/services.ts` - reuse current Wasm export access.
+- `packages/editor/packages/editor-core/src/index.ts` - ensure serial plugin receives navigator and current Wasm services through the existing context.
 - `packages/editor/docs/editor-directives.md` - document `@serialIn`, `@serialInCallback`, and `@info serial`.
 
 ## Risks & Considerations

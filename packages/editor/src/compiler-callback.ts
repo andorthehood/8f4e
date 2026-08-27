@@ -1,7 +1,7 @@
 import { serializeDiagnostic } from '@8f4e/compiler';
 import type { ResolveIncludeRequestMessage, ResolveIncludeResultMessage } from '@8f4e/compiler-worker';
 import CompilerWorker from '@8f4e/compiler-worker?worker';
-import type { CompilationResult, Editor } from '@8f4e/editor';
+import type { CompilationResult, Editor } from '@8f4e/editor-core';
 import type {
 	CompileProjectOptions,
 	CompilerDiagnostic,

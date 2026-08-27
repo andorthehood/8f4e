@@ -98,7 +98,7 @@ data.
 
 ## Validation Checkpoints
 
-- `! rg -n "@8f4e/web-ui-render-projection" packages/editor/packages/editor-state --glob '!dist/**'`
+- `! rg -n "@8f4e/web-ui-render-projection" packages/editor/packages/editor-core/packages/editor-state --glob '!dist/**'`
 - `npx nx run @8f4e/web-ui-render-projection:test`
 - `npx nx run @8f4e/web-ui-render-projection:typecheck`
 - `npx nx run @8f4e/web-ui-render-projection:build`
@@ -106,8 +106,8 @@ data.
 - `npx nx run @8f4e/editor-state:typecheck`
 - `npx nx run @8f4e/web-ui:test`
 - `npx nx run @8f4e/web-ui:typecheck`
-- `npx nx run @8f4e/editor:test`
-- `npx nx run @8f4e/editor:typecheck`
+- `npx nx run @8f4e/editor-core:test`
+- `npx nx run @8f4e/editor-core:typecheck`
 
 ## Success Criteria
 
@@ -123,12 +123,12 @@ data.
 
 ## Affected Components
 
-- `packages/editor/packages/web-ui/packages/render-projection` - independently built web UI render-data projection package.
-- `packages/editor/packages/editor-state` - retain editor/semantic state and remove render-only calculations incrementally.
-- `packages/editor/packages/editor-state-types` - split editor-owned and graphics-owned public contracts.
-- `packages/editor/packages/web-ui` - consume the render projection and remain a drawing layer.
-- `packages/editor/src/index.ts` - compose editor state, render projection, sprite resources, and the renderer.
-- `packages/editor/packages/state-manager` - potentially add batching or committed change notifications.
+- `packages/editor/packages/editor-core/packages/web-ui/packages/render-projection` - independently built web UI render-data projection package.
+- `packages/editor/packages/editor-core/packages/editor-state` - retain editor/semantic state and remove render-only calculations incrementally.
+- `packages/editor/packages/editor-core/packages/editor-state-types` - split editor-owned and graphics-owned public contracts.
+- `packages/editor/packages/editor-core/packages/web-ui` - consume the render projection and remain a drawing layer.
+- `packages/editor/packages/editor-core/src/index.ts` - compose editor state, render projection, sprite resources, and the renderer.
+- `packages/editor/packages/editor-core/packages/state-manager` - potentially add batching or committed change notifications.
 
 ## Risks & Considerations
 
@@ -157,7 +157,7 @@ data.
   `@8f4e/web-ui-render-projection` package with focused tests. The legacy editor-state resolver remains until the
   application composition layer can switch production ownership without introducing an editor-state dependency on the
   render projection.
-- 2026-08-21: Composed editor-state and web-ui-render-projection as sibling layers in `@8f4e/editor`. The render
+- 2026-08-21: Composed editor-state and web-ui-render-projection as sibling layers in `@8f4e/editor-core`. The render
   projection subscribes to relevant editor-state changes, owns code syntax highlighting and sprite-ID resolution, and
   is passed explicitly to `web-ui`. Removed `codeToRender` and the legacy syntax-highlighting implementation from
   editor-state;

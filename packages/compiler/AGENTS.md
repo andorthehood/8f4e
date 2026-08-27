@@ -3,8 +3,6 @@
 ## Package Scope & Layout
 - Path: `packages/compiler`; source in `src/`, output in `dist/` (ESM).
 - Consumed via alias `@8f4e/compiler`.
-- Compiler worker integration lives in the nested `@8f4e/compiler-worker` package
-  (`packages/compiler/packages/compiler-worker`).
 - Compiles custom assembly language into WebAssembly bytecode.
 - Supports modules (stateful, with memory) and pure functions (stateless, stack-only).
 - Shared language contracts live in the nested standalone subpackage `@8f4e/language-spec` (`packages/compiler/packages/language-spec`).

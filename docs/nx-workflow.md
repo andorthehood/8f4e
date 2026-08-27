@@ -66,8 +66,9 @@ npx nx run @8f4e/compiler:dev
 All packages in `packages/` (including nested directories) are automatically detected as Nx projects with their original names:
 
 - `@8f4e/editor`
-- `glugglugglug` (`packages/editor/packages/web-ui/packages/glugglugglug`)
-- `@8f4e/sprite-generator` (`packages/editor/packages/web-ui/packages/sprite-generator`)
+- `@8f4e/editor-core`
+- `glugglugglug` (`packages/editor/packages/editor-core/packages/web-ui/packages/glugglugglug`)
+- `@8f4e/sprite-generator` (`packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator`)
 - `@8f4e/compiler`
 - `@8f4e/compiler-worker`
 - `@8f4e/runtime-audio-worklet`

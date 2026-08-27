@@ -1,4 +1,4 @@
-import type { State } from '@8f4e/editor';
+import type { State } from '@8f4e/editor-core';
 import createStateManager from '@8f4e/state-manager';
 import { describe, expect, it } from 'vitest';
 import { createAudioWorkletRuntimeDef, getAudioInputBuffers, getAudioOutputBuffers } from './runtimeDef';

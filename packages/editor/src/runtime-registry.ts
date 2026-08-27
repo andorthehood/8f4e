@@ -3,7 +3,7 @@ import type {
 	JSONSchemaLike,
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
-} from '@8f4e/editor';
+} from '@8f4e/editor-core';
 import { getCodeBuffer, getMemory } from './compiler-callback';
 
 /**

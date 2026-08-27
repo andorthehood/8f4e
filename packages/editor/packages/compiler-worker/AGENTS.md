@@ -1,12 +1,12 @@
 # Repository Guidelines
 
 ## Package Scope & Layout
-- Path: `packages/compiler/packages/compiler-worker`; source in `src/`, output in `dist/`.
+- Path: `packages/editor/packages/compiler-worker`; source in `src/`, output in `dist/`.
 - Consumed via alias `@8f4e/compiler-worker` or by the editor package.
 
 ## Build, Test, Dev
-- From root: `npx nx run compiler-worker:build|test|typecheck`.
-- From package directory: use `npx nx run compiler-worker:<target>` (e.g., `npx nx run compiler-worker:dev`).
+- From root: `npx nx run @8f4e/compiler-worker:build|test|typecheck`.
+- From package directory: use `npx nx run @8f4e/compiler-worker:<target>` (e.g., `npx nx run @8f4e/compiler-worker:dev`).
 
 ## Coding Style
 - TypeScript; use Biome as the fixer (`npx biome check --write <files>`) with repo rules.

@@ -1,0 +1,22 @@
+# Repository Guidelines
+
+## Package Scope & Layout
+- Path: `packages/editor/packages/editor-core`; source in `src/`, output in `dist/`.
+- Alias: `@8f4e/editor-core`. Consumed by the composed editor and runtime definitions.
+
+## Build, Bundle, Dev
+- From root: `npx nx run @8f4e/editor-core:build|test|typecheck`.
+- From package directory: use `npx nx run @8f4e/editor-core:<target>` (e.g., `npx nx run @8f4e/editor-core:dev`).
+- Ensure `dist/` exists before building the composed editor after API changes.
+
+## Coding Style
+- TypeScript (ESM). Use Biome as the fixer (`npx biome check --write <files>`); it owns formatting and import organization.
+- Prefer alias imports for internal packages.
+
+## Testing
+- Vitest (via Nx). Tests under `__tests__` or `*.test.ts`.
+- Favor unit tests for view-models and utilities; snapshot tests acceptable.
+
+## Commits & PRs
+- Commits: `editor: <change>` (e.g., `editor: fix drag selection`).
+- PRs: add screenshots/gifs for UI changes, include test notes, link issues.

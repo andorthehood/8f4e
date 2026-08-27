@@ -44,11 +44,11 @@ Toggle post-process effects at runtime by updating a feature flag via `store.set
 
 ## Affected Components
 
-- `packages/editor/packages/editor-state/src/types.ts` - add feature flag
-- `packages/editor/packages/editor-state/src/pureHelpers/state/createDefaultState.ts` - default flag
-- `packages/editor/packages/editor-state/src/pureHelpers/state/featureFlags.ts` - default flag wiring
-- `packages/editor/packages/editor-state/src/effects/shaders/shaderEffectsDeriver.ts` - subscribe to feature flag and respect toggle
-- `packages/editor/src/index.ts` - toggle handling and load gating
+- `packages/editor/packages/editor-core/packages/editor-state/src/types.ts` - add feature flag
+- `packages/editor/packages/editor-core/packages/editor-state/src/pureHelpers/state/createDefaultState.ts` - default flag
+- `packages/editor/packages/editor-core/packages/editor-state/src/pureHelpers/state/featureFlags.ts` - default flag wiring
+- `packages/editor/packages/editor-core/packages/editor-state/src/effects/shaders/shaderEffectsDeriver.ts` - subscribe to feature flag and respect toggle
+- `packages/editor/packages/editor-core/src/index.ts` - toggle handling and load gating
 - `src/editor.ts` - host key binding
 
 ## Risks & Considerations

@@ -14,7 +14,7 @@
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "biome check --write packages/compiler/packages/compiler-worker/src",
+        "command": "biome check --write packages/editor/packages/compiler-worker/src",
         "cwd": "{workspaceRoot}"
       }
     },
@@ -42,5 +42,5 @@
     "dependsOn": ["^build"]
   }
   },
-  "tags": ["type:runtime", "scope:compiler"]
+  "tags": ["type:runtime", "scope:editor"]
 }

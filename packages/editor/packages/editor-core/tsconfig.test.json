@@ -2,11 +2,13 @@
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
 		"noEmit": true,
-		"types": ["node", "vitest/globals"]
+		"rootDir": "."
 	},
 	"include": [
 		"src/**/*.ts",
-		"src/__tests__/**/*.test.ts"
+		"src/**/*.test.ts",
+		"src/**/*.spec.ts",
+		"src/types/**/*.d.ts"
 	],
 	"exclude": [
 		"node_modules",

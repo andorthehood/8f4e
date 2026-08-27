@@ -132,7 +132,7 @@ The key rule: use `kind: 'address'` when the compiler knows the stack value is a
 - `packages/compiler/src/instructionCompilers/` - codegen consumers of analyzed stack operands.
 - `packages/compiler/src/utils/memoryData.ts` - pointer and dereference metadata helpers.
 - `packages/compiler/src/utils/functionValueType.ts` - function parameter/return stack metadata.
-- `packages/editor/packages/editor-state/` - any tooltip or analysis display code that reads stack item facts.
+- `packages/editor/packages/editor-core/packages/editor-state/` - any tooltip or analysis display code that reads stack item facts.
 
 ## Risks & Considerations
 
