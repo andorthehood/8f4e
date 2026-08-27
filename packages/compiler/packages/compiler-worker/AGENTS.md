@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Package Scope & Layout
-- Path: `packages/compiler-worker`; source in `src/`, output in `dist/`.
+- Path: `packages/compiler/packages/compiler-worker`; source in `src/`, output in `dist/`.
 - Consumed via alias `@8f4e/compiler-worker` or by the editor package.
 
 ## Build, Test, Dev

@@ -1,5 +1,5 @@
 {
-  "name": "@8f4e/compiler-worker",
+  "name": "@8f4e/runtime-main-thread",
   "sourceRoot": "src",
   "projectType": "library",
   "targets": {
@@ -9,12 +9,13 @@
       "options": {
         "command": "tsc",
         "cwd": "{projectRoot}"
-      }
+      },
+      "dependsOn": ["^build"]
     },
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "biome check --write packages/compiler-worker/src",
+        "command": "biome check --write packages/editor/packages/runtime-main-thread/src",
         "cwd": "{workspaceRoot}"
       }
     },
@@ -27,20 +28,21 @@
     },
     "test": {
       "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/@8f4e/compiler-worker"],
+      "outputs": ["{workspaceRoot}/coverage/@8f4e/runtime-main-thread"],
+      "dependsOn": ["^build"],
       "options": {
         "config": "{projectRoot}/vitest.config.ts",
-        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/compiler-worker"
+        "reportsDirectory": "{workspaceRoot}/coverage/@8f4e/runtime-main-thread"
       }
     },
-  "typecheck": {
-    "executor": "nx:run-commands",
-    "options": {
-      "command": "tsc --noEmit",
-      "cwd": "{projectRoot}"
-    },
-    "dependsOn": ["^build"]
-  }
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit",
+        "cwd": "{projectRoot}"
+      },
+      "dependsOn": ["^build"]
+    }
   },
-  "tags": ["type:runtime", "scope:compiler"]
+  "tags": ["type:runtime", "scope:logic"]
 }

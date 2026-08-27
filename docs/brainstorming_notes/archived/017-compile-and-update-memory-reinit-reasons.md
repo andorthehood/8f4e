@@ -47,12 +47,12 @@ Motivation: `didProgramOrMemoryStructureChange` currently mixes “program chang
 - cheaper to compute (no deep diffs at runtime), and
 - easier to explain/debug via reason payloads.
 
-## Current implementation context (`packages/compiler-worker`)
+## Current implementation context (`packages/compiler/packages/compiler-worker`)
 
 Today the “recreate or not” decision is primarily driven by a boolean helper:
 
-- `didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules)` in `packages/compiler-worker/src/didProgramOrMemoryStructureChange.ts`
-- Used as `memoryStructureChange` in `packages/compiler-worker/src/compileAndUpdateMemory.ts`
+- `didProgramOrMemoryStructureChange(compiledModules, previousCompiledModules)` in `packages/compiler/packages/compiler-worker/src/didProgramOrMemoryStructureChange.ts`
+- Used as `memoryStructureChange` in `packages/compiler/packages/compiler-worker/src/compileAndUpdateMemory.ts`
 
 What it currently treats as a “program or memory structure change”:
 
@@ -120,7 +120,7 @@ Instance reuse needs a “code unchanged” signal. The current helper only comp
 Proposed approach:
 
 - Compute a `codeChecksum` as `FNV-1a 64-bit` over `codeBuffer` bytes.
-- Store `previousCodeChecksum` in `packages/compiler-worker` and recreate the instance when it changes.
+- Store `previousCodeChecksum` in `packages/compiler/packages/compiler-worker` and recreate the instance when it changes.
 - Emit as a versioned string: `wasmcode-v1-<16-hex>`.
 
 ## Runtime decision policy

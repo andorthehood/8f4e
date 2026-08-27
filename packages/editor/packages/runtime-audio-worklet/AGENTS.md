@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Package Scope & Layout
-- Path: `packages/runtime-audio-worklet`; source in `src/`, output in `dist/`.
+- Path: `packages/editor/packages/runtime-audio-worklet`; source in `src/`, output in `dist/`.
 - Alias: `@8f4e/runtime-audio-worklet` for the app/editor.
 
 ## Build, Test, Dev

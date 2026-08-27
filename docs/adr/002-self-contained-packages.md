@@ -138,10 +138,10 @@ All package `tsconfig.json` files were updated to:
 
 **Packages updated**:
 - `packages/compiler/tsconfig.json`
-- `packages/compiler-worker/tsconfig.json`
-- `packages/runtime-audio-worklet/tsconfig.json`
-- `packages/runtime-main-thread/tsconfig.json`
-- `packages/runtime-web-worker/tsconfig.json`
+- `packages/compiler/packages/compiler-worker/tsconfig.json`
+- `packages/editor/packages/runtime-audio-worklet/tsconfig.json`
+- `packages/editor/packages/runtime-main-thread/tsconfig.json`
+- `packages/editor/packages/runtime-web-worker/tsconfig.json`
 - `packages/runtime-web-worker-midi/tsconfig.json`
 - `packages/editor/tsconfig.json`
 - `packages/editor/packages/editor-state/tsconfig.json`
@@ -212,4 +212,3 @@ See [ADR-001: Source-Based Development Mode](001-source-based-development.md) fo
 - TypeScript configuration documentation: https://www.typescriptlang.org/tsconfig
 - TypeScript extends behavior: https://www.typescriptlang.org/tsconfig#extends
 - Nx TypeScript configuration: https://nx.dev/recipes/tips-n-tricks/advanced-typescript-support
-

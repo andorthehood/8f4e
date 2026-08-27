@@ -15,8 +15,8 @@ completed: null
 The browser runtime packages cross several platform-specific API boundaries, especially Web Audio, AudioWorklet, MediaStream, Worker, and WebAssembly runtime messaging. Some of these boundaries currently rely on broad `any` casts and `@ts-expect-error` comments because the package TypeScript environments do not expose every browser type in every build context.
 
 Examples:
-- `packages/runtime-audio-worklet/src/runtimeDef.ts` stores `AudioContext`, `AudioWorkletNode`, `MediaStream`, and `MediaStreamAudioSourceNode` values as `any`.
-- `packages/runtime-audio-worklet/src/runtimeDef.ts` suppresses type errors around `AudioContext`, `AudioWorkletNode`, and `navigator.mediaDevices`.
+- `packages/editor/packages/runtime-audio-worklet/src/runtimeDef.ts` stores `AudioContext`, `AudioWorkletNode`, `MediaStream`, and `MediaStreamAudioSourceNode` values as `any`.
+- `packages/editor/packages/runtime-audio-worklet/src/runtimeDef.ts` suppresses type errors around `AudioContext`, `AudioWorkletNode`, and `navigator.mediaDevices`.
 - runtime message handlers accept loosely typed payloads and narrow them ad hoc.
 
 This is understandable at browser/worker/worklet boundaries, but it weakens the signal from TypeScript in code that controls live runtime startup, teardown, microphone access, and runtime-value propagation.
@@ -74,8 +74,8 @@ High-level approach:
 
 ## Affected Components
 
-- `packages/runtime-audio-worklet` - Primary cleanup target for Web Audio and microphone API typing.
-- `packages/runtime-web-worker` - Runtime message protocol typing and worker payload validation.
+- `packages/editor/packages/runtime-audio-worklet` - Primary cleanup target for Web Audio and microphone API typing.
+- `packages/editor/packages/runtime-web-worker` - Runtime message protocol typing and worker payload validation.
 - `packages/editor` - May need small adjustments if runtime factory injection types become stricter.
 
 ## Risks & Considerations
@@ -87,8 +87,8 @@ High-level approach:
 ## Related Items
 
 - **Related**: `docs/todos/380-remove-hardcoded-audio-buffer-size-from-audioworklet-runtime.md`
-- **Related**: `packages/runtime-audio-worklet/src/runtimeDef.ts`
-- **Related**: `packages/runtime-web-worker/src/runtimeDef.ts`
+- **Related**: `packages/editor/packages/runtime-audio-worklet/src/runtimeDef.ts`
+- **Related**: `packages/editor/packages/runtime-web-worker/src/runtimeDef.ts`
 
 ## Notes
 
