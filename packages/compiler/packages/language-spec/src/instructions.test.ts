@@ -72,6 +72,7 @@ describe('instruction name classification', () => {
 		expect(isKnownInstructionName('expose')).toBe(true);
 		expect(isSubProgramInstructionName('group')).toBe(false);
 		expect(isSubProgramInstructionName('expose')).toBe(false);
+		expect(isSubProgramInstructionName('pass')).toBe(true);
 		expect(isSubProgramInstructionName('push')).toBe(true);
 	});
 });

@@ -7,6 +7,8 @@ import type {
 	ConstLine,
 	ModuleEndLine,
 	ModuleLine,
+	PassLine,
+	ProjectConstantScope,
 	PushLine,
 	UseLine,
 	ValidatedConstantsAST,
@@ -97,6 +99,14 @@ function constLine(lineNumber: number, name: string, value: ConstLine['arguments
 	};
 }
 
+function passLine(lineNumber: number, name: string): PassLine {
+	return {
+		lineNumber,
+		instruction: 'pass',
+		arguments: [id(name, 'constant')],
+	};
+}
+
 function pushLine(lineNumber: number, value: PushLine['arguments'][0]): PushLine {
 	return {
 		lineNumber,
@@ -114,16 +124,121 @@ function constantsAst(id: string, lines: CompilerASTLine[], constantsLineRef: Co
 	} as unknown as ValidatedConstantsAST;
 }
 
-function moduleAst(id: string, lines: CompilerASTLine[], moduleLineRef: ModuleLine): ValidatedModuleAST {
+function moduleAst(
+	id: string,
+	lines: CompilerASTLine[],
+	moduleLineRef: ModuleLine,
+	projectGroupPath?: string
+): ValidatedModuleAST {
 	return {
 		type: 'module',
 		id,
 		lines,
 		moduleLine: moduleLineRef,
+		...(projectGroupPath !== undefined ? { projectGroupPath } : {}),
 	} as unknown as ValidatedModuleAST;
 }
 
 describe('constant resolver', () => {
+	it('passes only named constants through each explicit project boundary', () => {
+		const childModuleLine = moduleLine(1, 'child/module');
+		const childPushLine = pushLine(2, id('HALF_RATE', 'constant'));
+		const childModule = moduleAst(
+			'child/module',
+			[childModuleLine, childPushLine, moduleEndLine(3)],
+			childModuleLine,
+			'child'
+		);
+		const grandchildModuleLine = moduleLine(1, 'child/grandchild/module');
+		const grandchildPushLine = pushLine(2, id('SAMPLE_RATE', 'constant'));
+		const grandchildModule = moduleAst(
+			'child/grandchild/module',
+			[grandchildModuleLine, grandchildPushLine, moduleEndLine(3)],
+			grandchildModuleLine,
+			'child/grandchild'
+		);
+		const projectConstantScopes: ProjectConstantScope[] = [
+			{ groupPath: '', lines: [constLine(1, 'SAMPLE_RATE', literal(48_000))] },
+			{
+				groupPath: 'child',
+				parentGroupPath: '',
+				lines: [
+					passLine(2, 'SAMPLE_RATE'),
+					constLine(3, 'HALF_RATE', expression(id('SAMPLE_RATE', 'constant'), '/', literal(2))),
+				],
+			},
+			{ groupPath: 'child/grandchild', parentGroupPath: 'child', lines: [] },
+		];
+
+		const result = resolveConstants({
+			ast: {
+				prototypes: [],
+				modules: [childModule, grandchildModule],
+				constants: [],
+				functions: [],
+			},
+			projectConstantScopes,
+		});
+
+		expect(result.references.modules[0].lineFacts[1]).toEqual({ arguments: [literal(24_000)] });
+		expect(result.references.modules[1].lineFacts[1]).toBeUndefined();
+	});
+
+	it('reports a root pass as an unresolved parent constant', () => {
+		expect(() =>
+			resolveConstants({
+				ast: { prototypes: [], modules: [], constants: [], functions: [] },
+				projectConstantScopes: [{ groupPath: '', lines: [passLine(1, 'SAMPLE_RATE')] }],
+			})
+		).toThrowError(ConstantResolverErrorCode.UNRESOLVED_PASSED_CONSTANT);
+	});
+
+	it('rejects block-local declarations that replace a project-scope constant', () => {
+		const mainLine = moduleLine(1, 'main');
+		const ast = moduleAst(
+			'main',
+			[mainLine, constLine(2, 'SAMPLE_RATE', literal(44_100)), moduleEndLine(3)],
+			mainLine,
+			''
+		);
+
+		expect(() =>
+			resolveConstants({
+				ast: { prototypes: [], modules: [ast], constants: [], functions: [] },
+				projectConstantScopes: [{ groupPath: '', lines: [constLine(1, 'SAMPLE_RATE', literal(48_000))] }],
+			})
+		).toThrowError(ConstantResolverErrorCode.DUPLICATE_CONSTANT);
+	});
+
+	it('rejects namespace imports that replace a project-scope constant', () => {
+		const mainLine = moduleLine(1, 'main');
+		const ast = moduleAst('main', [mainLine, useLine(2, 'external'), moduleEndLine(3)], mainLine, '');
+
+		expect(() =>
+			resolveConstants(
+				{
+					ast: { prototypes: [], modules: [ast], constants: [], functions: [] },
+					projectConstantScopes: [{ groupPath: '', lines: [constLine(1, 'SAMPLE_RATE', literal(48_000))] }],
+				},
+				{ namespaces: { external: { SAMPLE_RATE: { value: 44_100, isInteger: true } } } }
+			)
+		).toThrowError(ConstantResolverErrorCode.DUPLICATE_CONSTANT);
+	});
+
+	it('rejects duplicate declarations within one project scope', () => {
+		expect(() =>
+			resolveConstants({
+				ast: { prototypes: [], modules: [], constants: [], functions: [] },
+				projectConstantScopes: [
+					{
+						groupPath: '',
+						lines: [constLine(1, 'RATE', literal(10)), constLine(2, 'RATE', literal(20))],
+					},
+				],
+			})
+		).toThrowError(ConstantResolverErrorCode.DUPLICATE_CONSTANT);
+	});
+
 	it('keeps AST lines immutable while reporting resolved constant arguments', () => {
 		const sharedLine = constantsLine(10, 'SHARED');
 		const sharedConstLine = constLine(11, 'SIZE', literal(8));

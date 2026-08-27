@@ -1,0 +1,27 @@
+8f4e/v1
+
+const SAMPLE_RATE 48000
+
+entry main
+module root
+int rate SAMPLE_RATE
+moduleEnd
+
+group child
+pass SAMPLE_RATE
+const BLOCK_SIZE SAMPLE_RATE/1000
+
+module voice
+int rate SAMPLE_RATE
+int blockSize BLOCK_SIZE
+moduleEnd
+
+group nested
+pass SAMPLE_RATE
+
+module nestedVoice
+int rate SAMPLE_RATE
+moduleEnd
+groupEnd
+groupEnd
+entryEnd

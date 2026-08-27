@@ -17,6 +17,7 @@ import {
 	isScalarMemoryDeclarationInstructionName,
 	type ScalarMemoryDeclarationInstruction,
 } from './memory';
+import type { ProjectGroupPath } from './project';
 
 type ClampAddressInstructionName = 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress';
 
@@ -109,6 +110,7 @@ export type ExitIfTrueLine = ASTLineBase<'exitIfTrue', []>;
 export type StoreBytesLine = ASTLineBase<'storeBytes', [ArgumentLiteral]>;
 export type MemoryCopyLine = ASTLineBase<'memoryCopy', [CompileTimeValueArgument]>;
 export type ConstLine = ASTLineBase<'const', [ArgumentIdentifier, CompileTimeValueArgument]>;
+export type PassLine = ASTLineBase<'pass', [ArgumentIdentifier]>;
 export type EnsureNonZeroLine = ASTLineBase<'ensureNonZero', [] | [ArgumentLiteral]>;
 
 export type MapValueArgument =
@@ -161,6 +163,7 @@ export type MemoryDeclarationLine = ScalarMemoryDeclarationLine | ArrayMemoryDec
 
 export type SemanticInstructionLine =
 	| ConstLine
+	| PassLine
 	| UseLine
 	| ModuleLine
 	| RegionLine
@@ -201,6 +204,7 @@ type ExplicitCompilerASTLineWithoutGenericNoSource =
 	| StoreBytesLine
 	| MemoryCopyLine
 	| ConstLine
+	| PassLine
 	| EnsureNonZeroLine
 	| MapLine
 	| DefaultLine
@@ -234,6 +238,7 @@ export type CompilerASTLines = CompilerASTLine[];
 /** Compiler project/source metadata carried with a parsed source block. */
 export interface SourceBlockMetadata {
 	projectBlockId?: number;
+	projectGroupPath?: ProjectGroupPath;
 	source?: SourceMetadata;
 }
 

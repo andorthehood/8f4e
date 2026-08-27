@@ -274,6 +274,8 @@ export interface CodeBlockGraphicData {
 	width: number;
 	height: number;
 	code: string[];
+	/** True for the root project's directly owned project-scope source. */
+	isProjectScope?: boolean;
 	lineNumberColumnWidth: number;
 	/** Logical rows currently presented by the editor, before render-only glyph resolution. */
 	displayModel: CodeBlockDisplayModel;

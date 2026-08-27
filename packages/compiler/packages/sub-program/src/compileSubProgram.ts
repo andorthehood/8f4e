@@ -132,6 +132,7 @@ function getAstDiagnosticContext(ast: ValidatedAST) {
 		codeBlockId: getAstDiagnosticId(ast),
 		codeBlockType: ast.type,
 		...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
+		...(ast.projectGroupPath !== undefined ? { projectGroupPath: ast.projectGroupPath } : {}),
 		...(ast.source !== undefined ? { source: ast.source } : {}),
 	};
 }
@@ -151,7 +152,11 @@ function findAstContainingLine(
 	return undefined;
 }
 
-function wrapConstantResolverError(error: unknown, subProgramAst: ResolveConstantsSubProgramAST): unknown {
+function wrapConstantResolverError(
+	error: unknown,
+	program: ComposedProgram,
+	subProgramAst: ResolveConstantsSubProgramAST
+): unknown {
 	if (!(error instanceof ConstantResolverError)) {
 		return error;
 	}
@@ -162,7 +167,15 @@ function wrapConstantResolverError(error: unknown, subProgramAst: ResolveConstan
 	}
 
 	const ast = findAstContainingLine(subProgramAst, line);
-	return getError(ErrorCode.CONSTANT_RESOLUTION_FAILED, line, ast ? getAstDiagnosticContext(ast) : undefined, {
+	const projectConstantScope = program.projectConstantScopes.find(scope =>
+		scope.lines.some(scopeLine => scopeLine === line)
+	);
+	const context = ast
+		? getAstDiagnosticContext(ast)
+		: projectConstantScope
+			? { projectGroupPath: projectConstantScope.groupPath }
+			: undefined;
+	return getError(ErrorCode.CONSTANT_RESOLUTION_FAILED, line, context, {
 		reason: `${error.detail} (${error.code})`,
 	});
 }
@@ -197,9 +210,9 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	assertUniqueModuleIds(subProgramAst.modules);
 	let constantResolution: ReturnType<typeof resolveConstants>;
 	try {
-		constantResolution = resolveConstants({ ast: subProgramAst });
+		constantResolution = resolveConstants({ ast: subProgramAst, projectConstantScopes: program.projectConstantScopes });
 	} catch (error) {
-		throw wrapConstantResolverError(error, subProgramAst);
+		throw wrapConstantResolverError(error, program, subProgramAst);
 	}
 
 	let memoryPlan: ReturnType<typeof planSubProgramMemoryLayout>;

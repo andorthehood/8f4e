@@ -92,6 +92,26 @@ describe('program compiler effect', () => {
 		]);
 	});
 
+	it('stores the owning project path for project-scope compiler errors', async () => {
+		mockCompileCode.mockRejectedValue({
+			message: 'Passed constant SAMPLE_RATE is undefined in the parent project scope.',
+			line: { lineNumber: 1, instruction: 'pass' },
+			context: { projectGroupPath: 'audio' },
+		});
+
+		await triggerProgrammaticCompile();
+
+		expect(mockState.codeErrors.compilationErrors).toEqual([
+			{
+				lineNumber: 1,
+				codeBlockId: -1,
+				codeBlockType: undefined,
+				projectGroupPath: 'audio',
+				message: 'Passed constant SAMPLE_RATE is undefined in the parent project scope.',
+			},
+		]);
+	});
+
 	it('stores compilation stats in state.info.compiler from successful compilation results', async () => {
 		mockCompileCode.mockResolvedValue({
 			codeBuffer: new Uint8Array([0x00]),

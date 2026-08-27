@@ -1,3 +1,4 @@
+import type { ConstLine, PassLine } from './ast';
 import type { MemoryDeclarationInstruction, PlannedMemoryDeclaration } from './memory';
 
 /** Project-level source instructions consumed before individual code blocks are tokenized. */
@@ -31,6 +32,16 @@ export type ProjectGroupPath = string;
 
 /** Canonical module identity shared by compiler results and project actors. */
 export type ProjectModuleId = string;
+
+/** Project-scope constant declaration consumed before directly owned source blocks are resolved. */
+export type ProjectConstantScopeLine = ConstLine | PassLine;
+
+/** Ordered project-scope declarations and their canonical parent relationship. */
+export interface ProjectConstantScope {
+	groupPath: ProjectGroupPath;
+	parentGroupPath?: ProjectGroupPath;
+	lines: ProjectConstantScopeLine[];
+}
 
 /** Canonical path of the root project. */
 export const ROOT_PROJECT_GROUP_PATH: ProjectGroupPath = '';
@@ -73,6 +84,8 @@ export interface ProjectModuleBlock extends ProjectBlock {
 
 /** Canonical in-memory representation shared by all 8f4e project actors. */
 export interface ProjectObjectModel {
+	/** Source lines owned directly by this project scope, excluding recursively owned document and group blocks. */
+	code: string[];
 	/** Ordered executable modules; filtering by entry preserves execution order within that entry. */
 	modules: ProjectModuleBlock[];
 	/** Hoisted function blocks. */
@@ -128,8 +141,6 @@ export function resolveProjectMemoryAlias(
 export interface ProjectGroupObjectModel extends ProjectObjectModel {
 	name: ProjectGroupName;
 	entry: ProjectEntryName;
-	/** Source lines owned by the group wrapper, excluding recursively owned child blocks. */
-	code: string[];
 	/** Ordered public memory aliases exposed to the enclosing project. */
 	exposures: ProjectMemoryExposure[];
 }

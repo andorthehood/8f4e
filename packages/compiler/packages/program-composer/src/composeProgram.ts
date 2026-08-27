@@ -2,6 +2,7 @@ import {
 	type CompilerCache,
 	createChildProjectGroupPath,
 	createProjectModuleId,
+	type ProjectConstantScopeLine,
 	type ProjectGroupPath,
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
@@ -11,10 +12,33 @@ import {
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
+import { parseLine, SyntaxRulesError } from '@8f4e/tokenizer';
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
 import { createCompilerCache } from './createCompilerCache';
 import { qualifyAst } from './qualifyAst';
 import type { ComposedProgram, IncludedFunctionsByProjectGroupPath } from './types';
+
+function collectProjectConstantScopeLines(
+	code: readonly string[],
+	projectPath: ProjectGroupPath
+): ProjectConstantScopeLine[] {
+	const lines: ProjectConstantScopeLine[] = [];
+	for (const [index, sourceLine] of code.entries()) {
+		if (!/^\s*(?:const|pass)(?:\s|$)/.test(sourceLine)) {
+			continue;
+		}
+
+		try {
+			lines.push(parseLine(sourceLine, index) as ProjectConstantScopeLine);
+		} catch (error) {
+			if (error instanceof SyntaxRulesError) {
+				error.context = { ...error.context, projectGroupPath: projectPath };
+			}
+			throw error;
+		}
+	}
+	return lines;
+}
 
 function appendMemoryExposureAliases(
 	program: ComposedProgram,
@@ -41,13 +65,20 @@ function appendMemoryExposureAliases(
 function appendUnit(
 	project: ProjectObjectModel,
 	projectPath: ProjectGroupPath,
+	parentProjectPath: ProjectGroupPath | undefined,
 	program: ComposedProgram,
 	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath
 ): void {
+	program.projectConstantScopes.push({
+		groupPath: projectPath,
+		...(parentProjectPath !== undefined ? { parentGroupPath: parentProjectPath } : {}),
+		lines: collectProjectConstantScopeLines(project.code, projectPath),
+	});
+
 	project.groups.forEach(group => {
 		const groupPath = createChildProjectGroupPath(projectPath, group.name);
 		appendMemoryExposureAliases(program, groupPath, group.exposures);
-		appendUnit(group, groupPath, program, includedFunctionsByProjectPath);
+		appendUnit(group, groupPath, projectPath, program, includedFunctionsByProjectPath);
 	});
 
 	const prefix = projectPath === ROOT_PROJECT_GROUP_PATH ? undefined : `${projectPath}/`;
@@ -136,9 +167,10 @@ export function composeProgram(
 		},
 		memoryExposures: [],
 		memoryAliases: new Map(),
+		projectConstantScopes: [],
 		cache,
 	};
 
-	appendUnit(project, ROOT_PROJECT_GROUP_PATH, program, includedFunctionsByProjectPath);
+	appendUnit(project, ROOT_PROJECT_GROUP_PATH, undefined, program, includedFunctionsByProjectPath);
 	return program;
 }

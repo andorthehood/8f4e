@@ -3,6 +3,27 @@ import { describe, expect, it } from 'vitest';
 import { parseProjectSource, resolveProjectIncludesAsync } from '../src';
 
 describe('project-preparser integration', () => {
+	it('preserves root and nested project-scope constant declarations', () => {
+		const project = parseProjectSource(
+			[
+				'8f4e/v1',
+				'',
+				'; root contract',
+				'const SAMPLE_RATE 48000',
+				'',
+				'entry main',
+				'group audio',
+				'; child contract',
+				'pass SAMPLE_RATE',
+				'groupEnd',
+				'entryEnd',
+			].join('\n')
+		);
+
+		expect(project.code).toEqual(['; root contract', 'const SAMPLE_RATE 48000']);
+		expect(project.groups[0].code).toEqual(['group audio', '; child contract', 'pass SAMPLE_RATE', 'groupEnd']);
+	});
+
 	it('parses project source into typed collections and resolves its include collection', async () => {
 		const source = [
 			'8f4e/v1',

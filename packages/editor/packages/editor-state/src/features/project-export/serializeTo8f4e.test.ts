@@ -9,6 +9,7 @@ const validNoteBlock = ['note', '; @pos 1 2', 'compiler should ignore this', 'no
 
 function createProject(partial: Partial<ProjectObjectModel> = {}): ProjectObjectModel {
 	return {
+		code: [],
 		modules: [],
 		functions: [],
 		constants: [],
@@ -86,6 +87,17 @@ describe('serializeProjectTo8f4e', () => {
 
 	it('handles an empty project', () => {
 		expect(serializeProjectTo8f4e(createProject())).toBe('8f4e/v1\n\n');
+	});
+
+	it('round-trips editable root project-scope source', () => {
+		const project = createProject({ code: ['; compile-time contract', 'const SAMPLE_RATE 48000'] });
+
+		const text = serializeProjectTo8f4e(project);
+		const parsed = parseProjectSource(text);
+
+		expect(text).toBe(['8f4e/v1', '', '; compile-time contract', 'const SAMPLE_RATE 48000'].join('\n'));
+		expect(parsed.code).toEqual(['; compile-time contract', 'const SAMPLE_RATE 48000']);
+		expect(serializeProjectTo8f4e(parsed)).toBe(text);
 	});
 
 	it('round-trips canonical block collections through project text', () => {

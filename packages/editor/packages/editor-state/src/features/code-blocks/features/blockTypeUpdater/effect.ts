@@ -2,6 +2,17 @@ import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 
+function isProjectScopeSourceLine(line: string): boolean {
+	const trimmed = line.trim();
+	return (
+		trimmed === '' ||
+		trimmed.startsWith(';') ||
+		trimmed.startsWith('#') ||
+		trimmed.startsWith('//') ||
+		/^(?:const|pass)(?:\s|$)/.test(trimmed)
+	);
+}
+
 /**
  * Effect that keeps the blockType field in sync with code block contents.
  * Updates blockType when the selected code block's code changes.
@@ -14,6 +25,13 @@ export default function blockTypeUpdater(store: StateManager<State>): void {
 	 */
 	function updateBlockType(codeBlock: CodeBlockGraphicData): void {
 		codeBlock.blockType = getBlockType(codeBlock.code);
+		const hasProjectScopeInstruction = codeBlock.code.some(line => /^\s*(?:const|pass)(?:\s|$)/.test(line));
+		codeBlock.isProjectScope =
+			codeBlock.projectPath === '' &&
+			codeBlock.nestedProjectCodeBlocks === undefined &&
+			codeBlock.blockType === 'unknown' &&
+			codeBlock.code.every(isProjectScopeSourceLine) &&
+			(hasProjectScopeInstruction || codeBlock.isProjectScope === true);
 	}
 
 	/**

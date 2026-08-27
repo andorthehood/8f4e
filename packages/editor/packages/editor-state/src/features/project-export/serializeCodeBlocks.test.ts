@@ -3,6 +3,19 @@ import { createMockCodeBlock } from '~/pureHelpers/testingUtils/testUtils';
 import convertGraphicDataToProjectStructure from './serializeCodeBlocks';
 
 describe('convertGraphicDataToProjectStructure', () => {
+	it('stores the editable root project-scope block as project code', () => {
+		const result = convertGraphicDataToProjectStructure([
+			createMockCodeBlock({
+				code: ['const SAMPLE_RATE 48000'],
+				isProjectScope: true,
+				creationIndex: 1,
+			}),
+		]);
+
+		expect(result.code).toEqual(['const SAMPLE_RATE 48000']);
+		expect(result.unknown).toEqual([]);
+	});
+
 	it('places editor blocks in their canonical collections', () => {
 		const result = convertGraphicDataToProjectStructure([
 			createMockCodeBlock({
@@ -171,6 +184,7 @@ describe('convertGraphicDataToProjectStructure', () => {
 				entry: 'main',
 				code: ['group Empty', 'groupEnd'],
 				exposures: [],
+				// Nested project code is represented by its group wrapper rather than a second scope block.
 				modules: [],
 				functions: [],
 				constants: [],

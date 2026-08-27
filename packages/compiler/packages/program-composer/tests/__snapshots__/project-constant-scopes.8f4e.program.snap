@@ -1,0 +1,298 @@
+{
+  "ast": {
+    "constants": [],
+    "functions": [],
+    "modules": [
+      {
+        "id": "child/nested/nestedVoice",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "child/nested/nestedVoice",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "rate",
+              },
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SAMPLE_RATE",
+              },
+            ],
+            "instruction": "int",
+            "lineNumber": 1,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 2,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "child/nested/nestedVoice",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "projectBlockId": 22,
+        "projectGroupPath": "child/nested",
+        "type": "module",
+      },
+      {
+        "id": "child/voice",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "child/voice",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "rate",
+              },
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SAMPLE_RATE",
+              },
+            ],
+            "instruction": "int",
+            "lineNumber": 1,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "blockSize",
+              },
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "BLOCK_SIZE",
+              },
+            ],
+            "instruction": "int",
+            "lineNumber": 2,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 3,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "child/voice",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "projectBlockId": 14,
+        "projectGroupPath": "child",
+        "type": "module",
+      },
+      {
+        "id": "root",
+        "lines": [
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "root",
+              },
+            ],
+            "instruction": "module",
+            "lineNumber": 0,
+          },
+          {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "rate",
+              },
+              {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SAMPLE_RATE",
+              },
+            ],
+            "instruction": "int",
+            "lineNumber": 1,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 2,
+          },
+        ],
+        "moduleLine": {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "root",
+            },
+          ],
+          "instruction": "module",
+          "lineNumber": 0,
+        },
+        "projectBlockId": 6,
+        "type": "module",
+      },
+    ],
+    "prototypes": [],
+  },
+  "cache": {
+    "keys": [
+      "child/nested:entry:main:module:0",
+      "child:entry:main:module:0",
+      "root:entry:main:module:0",
+    ],
+    "stats": {
+      "hits": 3,
+      "misses": 3,
+    },
+  },
+  "entryNames": [
+    "main",
+  ],
+  "memoryExposures": [],
+  "moduleEntryNames": [
+    "main",
+    "main",
+    "main",
+  ],
+  "projectConstantScopes": [
+    {
+      "groupPath": "",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "SAMPLE_RATE",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 48000,
+            },
+          ],
+          "instruction": "const",
+          "lineNumber": 0,
+        },
+      ],
+    },
+    {
+      "groupPath": "child",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "SAMPLE_RATE",
+            },
+          ],
+          "instruction": "pass",
+          "lineNumber": 1,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "BLOCK_SIZE",
+            },
+            {
+              "left": {
+                "referenceKind": "constant",
+                "scope": "local",
+                "type": "identifier",
+                "value": "SAMPLE_RATE",
+              },
+              "operator": "/",
+              "right": {
+                "isInteger": true,
+                "type": "literal",
+                "value": 1000,
+              },
+              "type": "compile_time_expression",
+            },
+          ],
+          "instruction": "const",
+          "lineNumber": 2,
+        },
+      ],
+      "parentGroupPath": "",
+    },
+    {
+      "groupPath": "child/nested",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "constant",
+              "scope": "local",
+              "type": "identifier",
+              "value": "SAMPLE_RATE",
+            },
+          ],
+          "instruction": "pass",
+          "lineNumber": 1,
+        },
+      ],
+      "parentGroupPath": "child",
+    },
+  ],
+}
