@@ -2,6 +2,7 @@
 
 exports[`compileProject (audioBuffer example) > compiles build artifacts without config packaging 1`] = `
 {
+  "code": [],
   "compiledModules": {
     "audioout": {
       "ast": {
