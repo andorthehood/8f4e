@@ -8,7 +8,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	contextMenu: true,
 	infoOverlay: false,
 	moduleDragging: true,
-	codeLineSelection: false,
+	codeLineSelection: true,
 	viewportDragging: true,
 	editing: false,
 	modeToggling: true,

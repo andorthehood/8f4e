@@ -27,11 +27,11 @@ describe('Feature Flags Configuration', () => {
 		});
 	});
 
-	test('defaultFeatureFlags should default editing to inactive', () => {
+	test('defaultFeatureFlags should allow line selection while editing is inactive', () => {
 		expect(defaultFeatureFlags.contextMenu).toBe(true);
 		expect(defaultFeatureFlags.infoOverlay).toBe(false);
 		expect(defaultFeatureFlags.moduleDragging).toBe(true);
-		expect(defaultFeatureFlags.codeLineSelection).toBe(false);
+		expect(defaultFeatureFlags.codeLineSelection).toBe(true);
 		expect(defaultFeatureFlags.viewportDragging).toBe(true);
 		expect(defaultFeatureFlags.editing).toBe(false);
 		expect(defaultFeatureFlags.modeToggling).toBe(true);
@@ -48,7 +48,7 @@ describe('Feature Flags Configuration', () => {
 		expect(result.contextMenu).toBe(false);
 		expect(result.infoOverlay).toBe(false);
 		expect(result.moduleDragging).toBe(true);
-		expect(result.codeLineSelection).toBe(false);
+		expect(result.codeLineSelection).toBe(true);
 		expect(result.viewportDragging).toBe(true);
 		expect(result.editing).toBe(false);
 		expect(result.modeToggling).toBe(true);

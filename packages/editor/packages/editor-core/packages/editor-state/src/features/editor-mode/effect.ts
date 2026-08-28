@@ -31,7 +31,7 @@ export default function editorMode(store: StateManager<State>, events: EventDisp
 
 		store.set('editorMode', 'view');
 		store.set('featureFlags.editing', false);
-		store.set('featureFlags.codeLineSelection', false);
+		store.set('featureFlags.codeLineSelection', true);
 	}
 
 	events.on('enterEditMode', enterEditMode);

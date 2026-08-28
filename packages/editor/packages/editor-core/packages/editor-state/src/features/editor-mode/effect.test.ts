@@ -75,7 +75,7 @@ describe('editorMode', () => {
 
 		expect(state.editorMode).toBe('view');
 		expect(state.featureFlags.editing).toBe(false);
-		expect(state.featureFlags.codeLineSelection).toBe(false);
+		expect(state.featureFlags.codeLineSelection).toBe(true);
 	});
 
 	it('returns to view mode from edit mode', () => {
@@ -85,6 +85,6 @@ describe('editorMode', () => {
 
 		expect(state.editorMode).toBe('view');
 		expect(state.featureFlags.editing).toBe(false);
-		expect(state.featureFlags.codeLineSelection).toBe(false);
+		expect(state.featureFlags.codeLineSelection).toBe(true);
 	});
 });

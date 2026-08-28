@@ -18,6 +18,7 @@ describe('codeBlockDragger', () => {
 		state = {
 			featureFlags: {
 				moduleDragging: true,
+				editing: true,
 			},
 			codeBlockRendering: {
 				codeBlocks: [],
@@ -685,6 +686,54 @@ describe('codeBlockDragger', () => {
 			});
 
 			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
+		});
+
+		it('should dispatch clicks without dragging when editing is disabled', () => {
+			state.featureFlags.editing = false;
+
+			const block1 = createCodeBlockGraphicData({
+				code: ['module test1', 'moduleEnd'],
+				gridX: 5,
+				gridY: 5,
+				x: 50,
+				y: 100,
+				creationIndex: 0,
+				blockType: 'module',
+			});
+
+			state.codeBlockRendering.codeBlocks = [block1];
+
+			codeBlockDragger(store, events);
+
+			mousedownHandlers[0]({
+				x: 50,
+				y: 100,
+				movementX: 0,
+				movementY: 0,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+
+			mousemoveHandlers[0]({
+				x: 60,
+				y: 110,
+				movementX: 10,
+				movementY: 10,
+				buttons: 1,
+				stopPropagation: false,
+				canvasWidth: 800,
+				canvasHeight: 600,
+				altKey: false,
+			});
+			mouseupHandlers[0]();
+
+			expect(events.dispatch).toHaveBeenCalledWith('codeBlockClick', expect.objectContaining({ codeBlock: block1 }));
+			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
+			expect(block1.x).toBe(50);
+			expect(block1.y).toBe(100);
 		});
 	});
 
