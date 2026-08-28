@@ -4,11 +4,13 @@ import type {
 	RuntimeRegistry,
 	RuntimeRegistryEntry,
 } from '@8f4e/editor-core';
-import { getCodeBuffer, getMemory } from './compiler-callback';
+import type { CompilerService } from './compiler-callback';
+
+type CompilerArtifacts = Pick<CompilerService, 'getCodeBuffer' | 'getMemory'>;
 
 /**
  * Creates a lazy runtime registry entry that defers loading the runtime implementation and schema
- * until the runtime is first selected. Uses a cached Promise singleton for idempotent, race-safe
+ * until the runtime is first selected. Uses a cached Promise per registry entry for idempotent, race-safe
  * loading. Once loaded, the full schema replaces the stub and config is revalidated.
  */
 function createLazyRuntimeEntry(
@@ -60,42 +62,44 @@ function createLazyRuntimeEntry(
 }
 
 /**
- * Runtime registry for the application.
+ * Creates a runtime registry for one editor instance.
  * Maps runtime IDs to their editor-config schema contributions and factory functions.
  * Runtimes are lazy-loaded on first selection. Each runtime starts with a minimal stub schema
  * and replaces it with the full schema after loading.
  */
-export const runtimeRegistry: RuntimeRegistry = {
-	WebWorkerRuntime: createLazyRuntimeEntry(
-		'WebWorkerRuntime',
-		{ root: 'workerRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
-		async () => {
-			const [{ createWebWorkerRuntimeDef }, { default: WebWorkerRuntime }] = await Promise.all([
-				import('@8f4e/runtime-web-worker/runtime-def'),
-				import('@8f4e/runtime-web-worker?worker'),
-			]);
-			return createWebWorkerRuntimeDef(getCodeBuffer, getMemory, WebWorkerRuntime);
-		}
-	),
+export function createRuntimeRegistry({ getCodeBuffer, getMemory }: CompilerArtifacts): RuntimeRegistry {
+	return {
+		WebWorkerRuntime: createLazyRuntimeEntry(
+			'WebWorkerRuntime',
+			{ root: 'workerRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
+			async () => {
+				const [{ createWebWorkerRuntimeDef }, { default: WebWorkerRuntime }] = await Promise.all([
+					import('@8f4e/runtime-web-worker/runtime-def'),
+					import('@8f4e/runtime-web-worker?worker'),
+				]);
+				return createWebWorkerRuntimeDef(getCodeBuffer, getMemory, WebWorkerRuntime);
+			}
+		),
 
-	MainThreadRuntime: createLazyRuntimeEntry(
-		'MainThreadRuntime',
-		{ root: 'mainThreadRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
-		async () => {
-			const { createMainThreadRuntimeDef } = await import('@8f4e/runtime-main-thread/runtime-def');
-			return createMainThreadRuntimeDef(getCodeBuffer, getMemory);
-		}
-	),
+		MainThreadRuntime: createLazyRuntimeEntry(
+			'MainThreadRuntime',
+			{ root: 'mainThreadRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
+			async () => {
+				const { createMainThreadRuntimeDef } = await import('@8f4e/runtime-main-thread/runtime-def');
+				return createMainThreadRuntimeDef(getCodeBuffer, getMemory);
+			}
+		),
 
-	AudioWorkletRuntime: createLazyRuntimeEntry(
-		'AudioWorkletRuntime',
-		{ root: 'audioRuntime', defaults: { sampleRate: 48000 }, schema: { type: 'object' } },
-		async () => {
-			const [{ createAudioWorkletRuntimeDef }, { default: audioWorkletUrl }] = await Promise.all([
-				import('@8f4e/runtime-audio-worklet/runtime-def'),
-				import('@8f4e/runtime-audio-worklet/worklet?url'),
-			]);
-			return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
-		}
-	),
-};
+		AudioWorkletRuntime: createLazyRuntimeEntry(
+			'AudioWorkletRuntime',
+			{ root: 'audioRuntime', defaults: { sampleRate: 48000 }, schema: { type: 'object' } },
+			async () => {
+				const [{ createAudioWorkletRuntimeDef }, { default: audioWorkletUrl }] = await Promise.all([
+					import('@8f4e/runtime-audio-worklet/runtime-def'),
+					import('@8f4e/runtime-audio-worklet/worklet?url'),
+				]);
+				return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
+			}
+		),
+	};
+}

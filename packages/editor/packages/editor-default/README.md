@@ -15,6 +15,8 @@ await mountDefaultEditor(canvas);
 The host controls the canvas's layout dimensions with CSS. The editor observes that rendered size and adapts its
 drawing buffer and UI automatically.
 
+Each mounted editor owns its compiler worker, compiled memory and code-buffer state, and lazy runtime registry.
+
 Build, test, and type-check it from the workspace root:
 
 ```bash
