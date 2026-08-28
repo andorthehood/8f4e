@@ -106,7 +106,7 @@ describe('editor init', () => {
 
 	it('sizes the viewport before loading the session', async () => {
 		const { default: init } = await import('./index');
-		const canvas = { width: 640, height: 480 } as HTMLCanvasElement;
+		const canvas = { width: 300, height: 150, clientWidth: 640, clientHeight: 480 } as HTMLCanvasElement;
 
 		await init(canvas, {
 			runtimeRegistry: {
@@ -126,6 +126,60 @@ describe('editor init', () => {
 			['loadSession'],
 		]);
 		expect(view.resize).toHaveBeenCalledWith(640, 480);
+	});
+
+	it('adapts to the canvas display size and stops observing when disposed', async () => {
+		const { default: init } = await import('./index');
+		let resizeCallback: ResizeObserverCallback = () => {};
+		const observe = vi.fn();
+		const disconnect = vi.fn();
+		class ResizeObserverMock {
+			constructor(callback: ResizeObserverCallback) {
+				resizeCallback = callback;
+			}
+
+			observe = observe;
+			disconnect = disconnect;
+		}
+		const canvas = {
+			width: 640,
+			height: 480,
+			clientWidth: 640,
+			clientHeight: 480,
+			ownerDocument: {
+				defaultView: {
+					ResizeObserver: ResizeObserverMock,
+					navigator: {},
+				},
+			},
+		} as unknown as HTMLCanvasElement;
+
+		const editor = await init(canvas, {
+			runtimeRegistry: {
+				WebWorkerRuntime: {
+					id: 'WebWorkerRuntime',
+					factory: () => () => {},
+				},
+			},
+			callbacks: {
+				loadSession: async () => null,
+			},
+		});
+
+		expect(observe).toHaveBeenCalledWith(canvas);
+
+		Object.assign(canvas, { clientWidth: 800, clientHeight: 600 });
+		resizeCallback([], {} as ResizeObserver);
+
+		expect(events.dispatch).toHaveBeenCalledWith('resize', { canvasWidth: 800, canvasHeight: 600 });
+		expect(view.resize).toHaveBeenLastCalledWith(800, 600);
+
+		view.resize.mockClear();
+		resizeCallback([], {} as ResizeObserver);
+		expect(view.resize).not.toHaveBeenCalled();
+
+		editor.dispose();
+		expect(disconnect).toHaveBeenCalledWith();
 	});
 
 	it('renders one fresh frame before exporting a canvas screenshot', async () => {
