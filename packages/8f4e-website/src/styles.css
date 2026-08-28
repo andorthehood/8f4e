@@ -1,5 +1,14 @@
-body {
+body,
+html {
 	margin: 0;
+	background: #000;
+	color: #fff;
+}
+
+.logo {
+	image-rendering: pixelated;
+	width: 800%;
+	display: block;
 }
 
 main {
@@ -9,6 +18,12 @@ main {
 
 main > p {
 	width: min(1200px, calc(100% - 2rem));
+	margin-right: auto;
+	margin-left: auto;
+}
+
+main > img {
+	display: block;
 	margin-right: auto;
 	margin-left: auto;
 }
