@@ -46,6 +46,28 @@
 					</p>
 				</div>
 			</section>
+
+			<section class="editor-row editor-row--reversed">
+				<canvas
+					id="editor-reversed"
+					tabindex="0"
+					aria-label="Second 8f4e editor"
+					data-project-url="https://static.8f4e.com/example-projects/misc/randomGenerators.8f4e"
+				></canvas>
+				<div>
+					<p>
+						Stack-oriented programming means that instead of using registers, instructions take their operands from a
+						stack and push their results back onto the same stack for the next instruction to consume.
+					</p>
+					<p>
+						I chose this programming paradigm because the WebAssembly virtual machine is itself a stack machine.
+					</p>
+					<p>
+						Staying native to this execution model avoids costly abstractions and makes it possible to write faster
+						programs compared to typical WebAssembly-targeting languages.
+					</p>
+				</div>
+			</section>
 		</main>
 
 		<script src="./main.ts" type="module"></script>

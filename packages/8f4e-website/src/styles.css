@@ -17,19 +17,22 @@ main > p {
 	display: grid;
 	width: 100%;
 	grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+	grid-template-areas: "editor copy";
 	gap: 2rem;
 	align-items: center;
 }
 
-.editor-row > div {
-	container-type: inline-size;
+.editor-row + .editor-row {
+	margin-top: 2rem;
 }
 
-.editor-row > div p {
-	font-size: clamp(1rem, 1rem + 1cqi, 2rem);
+.editor-row--reversed {
+	grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
+	grid-template-areas: "copy editor";
 }
 
-canvas {
+.editor-row > canvas {
+	grid-area: editor;
 	display: block;
 	width: 100%;
 	height: min(70vh, 700px);
@@ -37,8 +40,20 @@ canvas {
 	image-rendering: pixelated;
 }
 
+.editor-row > div {
+	grid-area: copy;
+	container-type: inline-size;
+}
+
+.editor-row > div p {
+	font-size: clamp(1rem, 1rem + 1cqi, 2rem);
+}
+
 @media (max-width: 800px) {
 	.editor-row {
 		grid-template-columns: 1fr;
+		grid-template-areas:
+			"editor"
+			"copy";
 	}
 }
