@@ -231,7 +231,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 	});
 
-	createSpriteSheetManager(store, view, events);
+	const cleanupSpriteSheet = createSpriteSheetManager(store, view, events);
 
 	events.on<PostProcessEffect | null>('loadPostProcessEffect', effect => {
 		view.loadPostProcessEffect(effect);
@@ -265,6 +265,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	resize(initialCanvasSize.width, initialCanvasSize.height);
 	resizeObserver?.observe(canvas);
 	events.dispatch('loadSession');
+	let disposed = false;
 
 	return {
 		resize,
@@ -275,12 +276,29 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 		getMemoryViews: () => memoryViews,
 		dispose: () => {
-			resizeObserver?.disconnect();
-			view.destroy();
-			renderProjection.dispose();
-			cleanupPointer();
-			cleanupKeyboard();
-			cleanupEditorEnvironmentPlugins();
+			if (disposed) {
+				return;
+			}
+
+			disposed = true;
+			const cleanups = [
+				() => resizeObserver?.disconnect(),
+				cleanupPointer,
+				cleanupKeyboard,
+				cleanupEditorEnvironmentPlugins,
+				cleanupSpriteSheet,
+				() => renderProjection.dispose(),
+				() => store.dispose(),
+				() => events.dispose(),
+				() => view.destroy(),
+			];
+			for (const cleanup of cleanups) {
+				try {
+					cleanup();
+				} catch (error) {
+					console.error('Failed to dispose editor resource:', error);
+				}
+			}
 			if (addedTabIndex && canvas.tabIndex === 0) {
 				canvas.removeAttribute('tabindex');
 			}

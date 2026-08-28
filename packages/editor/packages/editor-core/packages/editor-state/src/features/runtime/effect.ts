@@ -8,7 +8,7 @@ import {
 	resolveSelectedRuntimeId,
 } from './editorConfig';
 
-export default async function runtime(store: StateManager<State>, events: EventDispatcher) {
+export default function runtime(store: StateManager<State>, events: EventDispatcher): () => void {
 	registerRuntimeSelectionEditorConfigValidator(store);
 
 	const state = store.getState();
@@ -16,9 +16,10 @@ export default async function runtime(store: StateManager<State>, events: EventD
 	let runtimeDestroyer: null | (() => void) = null;
 	let onlineRuntime: null | string = null;
 	let isInitializing = false;
+	let disposed = false;
 
 	async function initOrDestroyOrUpdateRuntime() {
-		if (isInitializing) {
+		if (disposed || isInitializing) {
 			log(state, 'Runtime is already initializing, skipping...', 'Runtime');
 			return;
 		}
@@ -81,6 +82,10 @@ export default async function runtime(store: StateManager<State>, events: EventD
 	}
 
 	function onRuntimeSelectionChanged() {
+		if (disposed) {
+			return;
+		}
+
 		syncRuntimeEditorConfigSchemaContributions();
 
 		if (state.compiler.isCompiling) {
@@ -94,4 +99,18 @@ export default async function runtime(store: StateManager<State>, events: EventD
 	store.subscribeToValue('compiler.isCompiling', false, initOrDestroyOrUpdateRuntime);
 	store.subscribe('editorConfig.runtime', onRuntimeSelectionChanged);
 	store.subscribe('runtimeRegistry', onRuntimeSelectionChanged);
+
+	return () => {
+		if (disposed) {
+			return;
+		}
+
+		disposed = true;
+		store.unsubscribe('compiler.isCompiling', initOrDestroyOrUpdateRuntime);
+		store.unsubscribe('editorConfig.runtime', onRuntimeSelectionChanged);
+		store.unsubscribe('runtimeRegistry', onRuntimeSelectionChanged);
+		runtimeDestroyer?.();
+		runtimeDestroyer = null;
+		onlineRuntime = null;
+	};
 }

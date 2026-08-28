@@ -243,6 +243,20 @@ describe('program compiler effect', () => {
 		expect(mockState.editorConfigValidators.recompileDebounceDelay).toBe(recompileDebounceDelayEditorConfigValidator);
 	});
 
+	it('cancels a scheduled compilation when disposed', async () => {
+		const dispose = compilerEffect(store);
+		const programmaticChangeCall = subscribeSpy.mock.calls.find(
+			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
+		);
+		expect(programmaticChangeCall).toBeDefined();
+
+		programmaticChangeCall![1]();
+		dispose();
+		await vi.advanceTimersByTimeAsync(500);
+
+		expect(mockCompileCode).not.toHaveBeenCalled();
+	});
+
 	it('passes the includes collection and resolver to the compiler callback', async () => {
 		mockCompileCode.mockResolvedValue({
 			codeBuffer: new Uint8Array([0x00]),

@@ -3,7 +3,7 @@ import type { StateManager } from '@8f4e/state-manager';
 
 import serializeToProject from '../project-export/serializeToProject';
 
-export default function historyTracking(store: StateManager<State>, events: EventDispatcher): void {
+export default function historyTracking(store: StateManager<State>, events: EventDispatcher): void | (() => void) {
 	const state = store.getState();
 	if (!state.featureFlags.historyTracking) {
 		return;
@@ -67,4 +67,14 @@ export default function historyTracking(store: StateManager<State>, events: Even
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onCodeChange);
 	events.on('undo', undo);
 	events.on('redo', redo);
+
+	return () => {
+		if (saveTimeout) {
+			clearTimeout(saveTimeout);
+			saveTimeout = null;
+		}
+		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', onCodeChange);
+		events.off('undo', undo);
+		events.off('redo', redo);
+	};
 }
