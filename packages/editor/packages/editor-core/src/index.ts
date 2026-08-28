@@ -134,6 +134,12 @@ function toGraphicsInfoRecord(stats: RenderStats): InfoRecord {
 }
 
 export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
+	const initialTabIndex = canvas.tabIndex;
+	const addedTabIndex = initialTabIndex < 0 && !canvas.hasAttribute('tabindex');
+	if (addedTabIndex) {
+		canvas.tabIndex = 0;
+	}
+
 	const { memoryViews, updateMemoryViews } = createMemoryViewManager(new ArrayBuffer(0));
 	const events = initEvents();
 	let currentMemoryRef: WebAssembly.Memory | null = null;
@@ -195,11 +201,12 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 	});
 	const state = store.getState();
 	const cleanupPointer = pointerEvents(canvas, events, state);
-	const cleanupKeyboard = keyboardEvents(events, store);
+	const cleanupKeyboard = keyboardEvents(canvas, events, store);
 	const browserWindow = canvas.ownerDocument?.defaultView ?? globalThis.window;
 	const cleanupEditorEnvironmentPlugins = createEditorEnvironmentPluginManager(store, events, {
 		window: browserWindow as Window,
 		navigator: browserWindow?.navigator ?? globalThis.navigator,
+		inputTarget: canvas,
 		memoryViews,
 		services: pluginServices.services,
 	});
@@ -274,6 +281,9 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 			cleanupPointer();
 			cleanupKeyboard();
 			cleanupEditorEnvironmentPlugins();
+			if (addedTabIndex && canvas.tabIndex === 0) {
+				canvas.removeAttribute('tabindex');
+			}
 		},
 		state,
 	};

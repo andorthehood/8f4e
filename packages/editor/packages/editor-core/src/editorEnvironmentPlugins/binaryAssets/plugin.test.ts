@@ -122,6 +122,7 @@ describe('binary assets plugin', () => {
 			memoryViews,
 			window: {} as Window,
 			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
 			setErrors: vi.fn(),
 			services,
 		});
@@ -163,6 +164,7 @@ describe('binary assets plugin', () => {
 			memoryViews,
 			window: {} as Window,
 			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
 			setErrors: vi.fn(),
 			services,
 		});
@@ -191,6 +193,7 @@ describe('binary assets plugin', () => {
 			memoryViews,
 			window: {} as Window,
 			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
 			setErrors: vi.fn(),
 			services,
 		});
@@ -246,6 +249,7 @@ describe('binary assets plugin', () => {
 			memoryViews,
 			window: {} as Window,
 			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
 			setErrors: vi.fn(),
 			services,
 		});
@@ -303,6 +307,7 @@ describe('binary assets plugin', () => {
 			memoryViews,
 			window: {} as Window,
 			navigator: {} as Navigator,
+			inputTarget: {} as HTMLElement,
 			setErrors: vi.fn(),
 			services,
 		});

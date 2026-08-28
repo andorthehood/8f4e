@@ -8,6 +8,7 @@ export interface EditorEnvironmentPluginContext {
 	events: EventDispatcher;
 	window: Window;
 	navigator: Navigator;
+	inputTarget: HTMLElement;
 	memoryViews: MemoryViews;
 	services: EditorEnvironmentPluginServices;
 	setErrors: (errors: CodeError[]) => void;

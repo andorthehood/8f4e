@@ -19,6 +19,7 @@ function createContext(): EditorEnvironmentPluginContext {
 		events: {} as never,
 		window: {} as Window,
 		navigator: {} as Navigator,
+		inputTarget: {} as HTMLElement,
 		memoryViews: {} as never,
 		services: {
 			getWasmExports: vi.fn(),

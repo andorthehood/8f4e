@@ -1,6 +1,6 @@
 import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import keyboardMemoryPlugin from './plugin';
 
 type WindowListener = (event: KeyboardEvent) => void;
@@ -86,16 +86,10 @@ function createMemoryPlan(memories: Record<string, { wordAlignedAddress: number 
 }
 
 describe('keyboardMemoryPlugin', () => {
-	const originalWindow = globalThis.window;
 	let mockWindow: MockWindow;
 
 	beforeEach(() => {
 		mockWindow = createMockWindow();
-		Object.assign(globalThis, { window: mockWindow });
-	});
-
-	afterEach(() => {
-		Object.assign(globalThis, { window: originalWindow });
 	});
 
 	it('writes keyCode and keyPressed values and tracks latest still-pressed key', () => {
@@ -127,6 +121,7 @@ describe('keyboardMemoryPlugin', () => {
 			events: {} as never,
 			window: mockWindow as unknown as Window,
 			navigator: {} as Navigator,
+			inputTarget: mockWindow as unknown as HTMLElement,
 			memoryViews: {} as never,
 			services: {} as never,
 			setErrors: () => {},
@@ -174,6 +169,7 @@ describe('keyboardMemoryPlugin', () => {
 			events: {} as never,
 			window: mockWindow as unknown as Window,
 			navigator: {} as Navigator,
+			inputTarget: mockWindow as unknown as HTMLElement,
 			memoryViews: {} as never,
 			services: {} as never,
 			setErrors: () => {},

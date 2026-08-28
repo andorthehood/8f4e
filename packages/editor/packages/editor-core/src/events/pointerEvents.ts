@@ -20,6 +20,10 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 	};
 
 	function onMouseEvents(event: MouseEvent) {
+		if (event.type === 'mousedown') {
+			element.focus({ preventScroll: true });
+		}
+
 		const movementX = event.offsetX - prevEvent.offsetX;
 		const movementY = event.offsetY - prevEvent.offsetY;
 		prevEvent = event;
@@ -72,7 +76,7 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 	}
 
 	if (state.featureFlags.viewportDragging) {
-		window.addEventListener('wheel', onWheelEvents, { passive: false });
+		element.addEventListener('wheel', onWheelEvents, { passive: false });
 	}
 	element.addEventListener('mouseup', onMouseEvents);
 	element.addEventListener('mousedown', onMouseEvents);
@@ -85,7 +89,7 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 		}
 
 		if (state.featureFlags.viewportDragging) {
-			window.removeEventListener('wheel', onWheelEvents);
+			element.removeEventListener('wheel', onWheelEvents);
 		}
 		element.removeEventListener('mouseup', onMouseEvents);
 		element.removeEventListener('mousedown', onMouseEvents);

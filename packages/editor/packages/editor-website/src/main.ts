@@ -6,4 +6,5 @@ if (!canvas) {
 	throw new Error('Editor canvas not found');
 }
 
+canvas.focus({ preventScroll: true });
 void mountDefaultEditor(canvas);

@@ -14,6 +14,7 @@ interface ActivePlugin {
 interface EditorEnvironmentPluginManagerOptions {
 	window: Window;
 	navigator: Navigator;
+	inputTarget: HTMLElement;
 	memoryViews: MemoryViews;
 	services: EditorEnvironmentPluginServices;
 	registry?: EditorEnvironmentPluginRegistryEntry[];
@@ -143,6 +144,7 @@ export function createEditorEnvironmentPluginManager(
 					events,
 					window: options.window,
 					navigator: options.navigator,
+					inputTarget: options.inputTarget,
 					memoryViews: options.memoryViews,
 					services: options.services,
 					setErrors: errors => setPluginErrors(entry.id, errors),

@@ -182,6 +182,46 @@ describe('editor init', () => {
 		expect(disconnect).toHaveBeenCalledWith();
 	});
 
+	it('makes its canvas focusable and restores its previous tab index when disposed', async () => {
+		const { default: init } = await import('./index');
+		const { default: keyboardEvents } = await import('./events/keyboardEvents');
+		const { createEditorEnvironmentPluginManager } = await import('./editorEnvironmentPlugins/manager');
+		const canvas = {
+			width: 640,
+			height: 480,
+			clientWidth: 640,
+			clientHeight: 480,
+			tabIndex: -1,
+			hasAttribute: vi.fn(() => false),
+			removeAttribute: vi.fn(() => {
+				canvas.tabIndex = -1;
+			}),
+		} as unknown as HTMLCanvasElement;
+
+		const editor = await init(canvas, {
+			runtimeRegistry: {
+				WebWorkerRuntime: {
+					id: 'WebWorkerRuntime',
+					factory: () => () => {},
+				},
+			},
+			callbacks: {
+				loadSession: async () => null,
+			},
+		});
+
+		expect(canvas.tabIndex).toBe(0);
+		expect(keyboardEvents).toHaveBeenLastCalledWith(canvas, events, store);
+		expect(createEditorEnvironmentPluginManager).toHaveBeenLastCalledWith(
+			store,
+			events,
+			expect.objectContaining({ inputTarget: canvas })
+		);
+
+		editor.dispose();
+		expect(canvas.tabIndex).toBe(-1);
+	});
+
 	it('renders one fresh frame before exporting a canvas screenshot', async () => {
 		const { default: init } = await import('./index');
 		const { default: initState } = await import('@8f4e/editor-state');

@@ -29,7 +29,7 @@ function getDirectionFromArrowKey(key: string): Direction | null {
 }
 
 /**
- * Sets up global keyboard event handling for the editor and dispatches high-level
+ * Sets up keyboard event handling for the editor and dispatches high-level
  * editor actions via the provided EventDispatcher.
  *
  * This listener interprets key presses and may dispatch the following events:
@@ -46,11 +46,22 @@ function getDirectionFromArrowKey(key: string): Direction | null {
  * - holding F9 reveals blocks hidden by `; @hidden`
  * - F10 toggles position offsetters directly via store mutation
  *
+ * @param element - Focusable editor element that owns the keyboard input.
  * @param events - Dispatcher used to emit editor actions in response to keyboard input.
  * @param store - State manager for direct feature flag toggling.
- * @returns A cleanup function that removes the keydown event listener from window.
+ * @returns A cleanup function that removes the keyboard event listeners.
  */
-export default function keyboardEvents(events: EventDispatcher, store: StateManager<State>): () => void {
+export default function keyboardEvents(
+	element: HTMLElement,
+	events: EventDispatcher,
+	store: StateManager<State>
+): () => void {
+	function hideTemporarilyRevealedCodeBlocks(): void {
+		if (store.getState().codeBlockRendering.showHiddenCodeBlocks) {
+			store.set('codeBlockRendering.showHiddenCodeBlocks', false);
+		}
+	}
+
 	function onKeydown(event: KeyboardEvent) {
 		const { key, metaKey, ctrlKey } = event;
 		const state = store.getState();
@@ -176,6 +187,9 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 
 		// Tab
 		if (key === 'Tab') {
+			if (state.editorMode !== 'edit') {
+				return;
+			}
 			event.preventDefault();
 			events.dispatch<InsertTextEvent>('insertText', { text: '\t' });
 			return;
@@ -203,17 +217,16 @@ export default function keyboardEvents(events: EventDispatcher, store: StateMana
 
 		event.preventDefault();
 
-		if (store.getState().codeBlockRendering.showHiddenCodeBlocks) {
-			store.set('codeBlockRendering.showHiddenCodeBlocks', false);
-		}
+		hideTemporarilyRevealedCodeBlocks();
 	}
 
-	window.addEventListener('keydown', onKeydown);
-	window.addEventListener('keyup', onKeyup);
+	element.addEventListener('keydown', onKeydown);
+	element.addEventListener('keyup', onKeyup);
+	element.addEventListener('blur', hideTemporarilyRevealedCodeBlocks);
 
-	// Return cleanup function
 	return () => {
-		window.removeEventListener('keydown', onKeydown);
-		window.removeEventListener('keyup', onKeyup);
+		element.removeEventListener('keydown', onKeydown);
+		element.removeEventListener('keyup', onKeyup);
+		element.removeEventListener('blur', hideTemporarilyRevealedCodeBlocks);
 	};
 }

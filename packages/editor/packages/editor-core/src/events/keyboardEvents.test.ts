@@ -1,27 +1,27 @@
 import type { State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { EventDispatcher } from '.';
 import keyboardEvents from './keyboardEvents';
 
-type WindowListener = (event: KeyboardEvent) => void;
+type KeyboardListener = (event: KeyboardEvent) => void;
 
-interface MockWindow {
-	addEventListener: (type: string, listener: WindowListener) => void;
-	removeEventListener: (type: string, listener: WindowListener) => void;
+interface MockInputTarget {
+	addEventListener: (type: string, listener: KeyboardListener) => void;
+	removeEventListener: (type: string, listener: KeyboardListener) => void;
 	emit: (type: string, event: KeyboardEvent) => void;
 }
 
-function createMockWindow(): MockWindow {
-	const listeners = new Map<string, Set<WindowListener>>();
+function createMockInputTarget(): MockInputTarget {
+	const listeners = new Map<string, Set<KeyboardListener>>();
 
 	return {
-		addEventListener: (type: string, listener: WindowListener) => {
-			const group = listeners.get(type) ?? new Set<WindowListener>();
+		addEventListener: (type: string, listener: KeyboardListener) => {
+			const group = listeners.get(type) ?? new Set<KeyboardListener>();
 			group.add(listener);
 			listeners.set(type, group);
 		},
-		removeEventListener: (type: string, listener: WindowListener) => {
+		removeEventListener: (type: string, listener: KeyboardListener) => {
 			listeners.get(type)?.delete(listener);
 		},
 		emit: (type: string, event: KeyboardEvent) => {
@@ -48,8 +48,7 @@ function createKeyboardEventLike(key: string): KeyboardEvent {
 }
 
 describe('keyboardEvents mode switching', () => {
-	const originalWindow = globalThis.window;
-	let mockWindow: MockWindow;
+	let inputTarget: MockInputTarget;
 	let featureFlags: State['featureFlags'];
 	let editorMode: State['editorMode'];
 	let codeBlockRendering: Pick<State['codeBlockRendering'], 'showHiddenCodeBlocks'>;
@@ -58,8 +57,7 @@ describe('keyboardEvents mode switching', () => {
 	let store: StateManager<State>;
 
 	beforeEach(() => {
-		mockWindow = createMockWindow();
-		Object.assign(globalThis, { window: mockWindow });
+		inputTarget = createMockInputTarget();
 
 		featureFlags = {
 			contextMenu: true,
@@ -97,15 +95,11 @@ describe('keyboardEvents mode switching', () => {
 		} as unknown as StateManager<State>;
 	});
 
-	afterEach(() => {
-		Object.assign(globalThis, { window: originalWindow });
-	});
-
 	it('enters edit mode when e is pressed in view mode', () => {
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('e');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('enterEditMode');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
@@ -113,10 +107,10 @@ describe('keyboardEvents mode switching', () => {
 	});
 
 	it('enters presentation mode when p is pressed in view mode', () => {
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('p');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('enterPresentationMode');
 		cleanup();
@@ -124,10 +118,10 @@ describe('keyboardEvents mode switching', () => {
 
 	it('returns to view mode when Escape is pressed in edit mode', () => {
 		editorMode = 'edit';
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('Escape');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('exitToViewMode');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
@@ -136,10 +130,10 @@ describe('keyboardEvents mode switching', () => {
 
 	it('returns to view mode when Escape is pressed in presentation mode', () => {
 		editorMode = 'presentation';
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('Escape');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('exitToViewMode');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
@@ -148,10 +142,10 @@ describe('keyboardEvents mode switching', () => {
 
 	it('keeps i as text insertion while already in edit mode', () => {
 		editorMode = 'edit';
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('i');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('insertText', { text: 'i' });
 		cleanup();
@@ -159,10 +153,10 @@ describe('keyboardEvents mode switching', () => {
 
 	it('ignores text insertion while in presentation mode', () => {
 		editorMode = 'presentation';
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('i');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).not.toHaveBeenCalled();
 		cleanup();
@@ -170,10 +164,10 @@ describe('keyboardEvents mode switching', () => {
 
 	it('jumps to the previous presentation stop when ArrowLeft is pressed in presentation mode', () => {
 		editorMode = 'presentation';
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('ArrowLeft');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('previousPresentationStop');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
@@ -182,10 +176,10 @@ describe('keyboardEvents mode switching', () => {
 
 	it('jumps to the next presentation stop when ArrowRight is pressed in presentation mode', () => {
 		editorMode = 'presentation';
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('ArrowRight');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('nextPresentationStop');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
@@ -194,10 +188,10 @@ describe('keyboardEvents mode switching', () => {
 
 	it('does not enter alternate modes when modeToggling is disabled', () => {
 		featureFlags.modeToggling = false;
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const enterEditEvent = createKeyboardEventLike('e');
 
-		mockWindow.emit('keydown', enterEditEvent);
+		inputTarget.emit('keydown', enterEditEvent);
 
 		expect(events.dispatch).not.toHaveBeenCalledWith('enterEditMode');
 		cleanup();
@@ -206,10 +200,10 @@ describe('keyboardEvents mode switching', () => {
 	it('still exits presentation mode with Escape when modeToggling is disabled', () => {
 		featureFlags.modeToggling = false;
 		editorMode = 'presentation';
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('Escape');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('exitToViewMode');
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
@@ -218,32 +212,76 @@ describe('keyboardEvents mode switching', () => {
 
 	it('dispatches literal tab insertion when Tab is pressed', () => {
 		editorMode = 'edit';
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const event = createKeyboardEventLike('Tab');
 
-		mockWindow.emit('keydown', event);
+		inputTarget.emit('keydown', event);
 
 		expect(events.dispatch).toHaveBeenCalledWith('insertText', { text: '\t' });
 		expect(event.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
 		cleanup();
 	});
 
+	it('leaves Tab unhandled in view mode so focus can move to another editor', () => {
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
+		const event = createKeyboardEventLike('Tab');
+
+		inputTarget.emit('keydown', event);
+
+		expect(events.dispatch).not.toHaveBeenCalledWith('insertText', expect.anything());
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).not.toHaveBeenCalled();
+		cleanup();
+	});
+
 	it('reveals hidden code blocks while F9 is held', () => {
-		const cleanup = keyboardEvents(events, store);
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
 		const keydownEvent = createKeyboardEventLike('F9');
 		const keyupEvent = createKeyboardEventLike('F9');
 
-		mockWindow.emit('keydown', keydownEvent);
+		inputTarget.emit('keydown', keydownEvent);
 
 		expect(set).toHaveBeenCalledWith('codeBlockRendering.showHiddenCodeBlocks', true);
 		expect(codeBlockRendering.showHiddenCodeBlocks).toBe(true);
 		expect(keydownEvent.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
 
-		mockWindow.emit('keyup', keyupEvent);
+		inputTarget.emit('keyup', keyupEvent);
 
 		expect(set).toHaveBeenCalledWith('codeBlockRendering.showHiddenCodeBlocks', false);
 		expect(codeBlockRendering.showHiddenCodeBlocks).toBe(false);
 		expect(keyupEvent.preventDefault as ReturnType<typeof vi.fn>).toHaveBeenCalled();
+		cleanup();
+	});
+
+	it('routes a key event only to the editor that owns its target', () => {
+		editorMode = 'edit';
+		const secondInputTarget = createMockInputTarget();
+		const secondEvents = {
+			on: vi.fn(),
+			off: vi.fn(),
+			dispatch: vi.fn(),
+		};
+		const cleanupFirst = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
+		const cleanupSecond = keyboardEvents(secondInputTarget as unknown as HTMLElement, secondEvents, store);
+
+		inputTarget.emit('keydown', createKeyboardEventLike('a'));
+
+		expect(events.dispatch).toHaveBeenCalledWith('insertText', { text: 'a' });
+		expect(secondEvents.dispatch).not.toHaveBeenCalled();
+
+		secondInputTarget.emit('keydown', createKeyboardEventLike('b'));
+
+		expect(secondEvents.dispatch).toHaveBeenCalledWith('insertText', { text: 'b' });
+		cleanupFirst();
+		cleanupSecond();
+	});
+
+	it('stops temporarily revealing hidden blocks when the canvas loses focus', () => {
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
+
+		inputTarget.emit('keydown', createKeyboardEventLike('F9'));
+		inputTarget.emit('blur', createKeyboardEventLike(''));
+
+		expect(codeBlockRendering.showHiddenCodeBlocks).toBe(false);
 		cleanup();
 	});
 });
