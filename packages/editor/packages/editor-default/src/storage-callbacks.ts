@@ -1,7 +1,6 @@
 import { parseProjectSource } from '@8f4e/compiler';
 import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor-core';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
-import { getCodeBuffer } from './compiler-callback';
 import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
 
 // Storage key constants
@@ -109,8 +108,8 @@ export async function exportProject(data: string, fileName: string): Promise<voi
 	});
 }
 
-export async function exportBinaryCode(fileName: string): Promise<void> {
-	const blob = new Blob([new Uint8Array(getCodeBuffer())], { type: 'application/wasm' });
+export async function exportBinaryCode(fileName: string, codeBuffer: Uint8Array): Promise<void> {
+	const blob = new Blob([new Uint8Array(codeBuffer)], { type: 'application/wasm' });
 
 	await saveBlobWithPickerFallback(blob, fileName, {
 		description: 'WebAssembly Binary',
