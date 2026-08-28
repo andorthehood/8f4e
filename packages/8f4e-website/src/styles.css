@@ -7,7 +7,8 @@ html {
 
 .logo {
 	image-rendering: pixelated;
-	width: 800%;
+	width: 216px;
+	height: auto;
 	display: block;
 }
 
@@ -20,6 +21,11 @@ main > p {
 	width: min(1200px, calc(100% - 2rem));
 	margin-right: auto;
 	margin-left: auto;
+}
+
+main > p:first-of-type {
+	width: 30%;
+	max-width: 300px;
 }
 
 main > img {
@@ -54,15 +60,11 @@ main > img {
 	background: #000;
 	image-rendering: pixelated;
 	outline: none;
+	cursor: pointer;
 }
 
 .editor-row > div {
 	grid-area: copy;
-	container-type: inline-size;
-}
-
-.editor-row > div p {
-	font-size: clamp(1rem, 1rem + 1cqi, 2rem);
 }
 
 @media (max-width: 800px) {
