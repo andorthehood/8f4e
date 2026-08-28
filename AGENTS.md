@@ -3,8 +3,7 @@
 ## Project Structure & Module Organization
 - Editor product: the reusable default composition lives in `packages/editor/packages/editor-default/`; the thin
   Vite website lives in `packages/editor/packages/editor-website/`.
-- Product website: `packages/8f4e-website/` is a root-level Vite landing page that embeds multiple independent
-  default editor instances.
+- Product website: `packages/8f4e-website/` is a root-level Vite page that embeds the default editor.
 - Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`,
   `editor/packages/editor-core/packages/web-ui/packages/glugglugglug`). Each builds to its own `dist/` directory
   under the package root.

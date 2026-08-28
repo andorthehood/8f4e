@@ -3,123 +3,30 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta
-			name="description"
-			content="8f4e is a visual programming environment for building small, fast WebAssembly programs in the browser."
-		/>
-		<title>8f4e — code you can see</title>
+		<title>8f4e</title>
 		<link rel="stylesheet" href="./styles.css" />
 	</head>
 	<body>
-		<header class="site-header">
-			<a class="wordmark" href="#top" aria-label="8f4e home">
-				<span class="wordmark-mark" aria-hidden="true">8f</span>
-				<span>8f4e</span>
-			</a>
-			<nav aria-label="Primary navigation">
-				<a href="#try">Try it</a>
-				<a href="https://github.com/andorthehood/8f4e">Source</a>
-			</nav>
-		</header>
+		<main>
+			<p>
+				8f4e is a
+				<a href="https://en.wikipedia.org/wiki/Stack-oriented_programming">stack-oriented</a>
+				programming language designed for real-time audio synthesis, with a visual code editor built for live coding and
+				experimentation.
+			</p>
+			<p>
+				I started it as a recreational programming project during the COVID-19 lockdown to perform generative music at
+				<a href="https://en.wikipedia.org/wiki/Algorave">algorave</a>
+				events.
+			</p>
+			<p>
+				Its primary target is the
+				<a href="https://en.wikipedia.org/wiki/WebAssembly">WebAssembly</a>
+				virtual machine, as I wanted an efficient yet portable tool for real-time audio signal generation and processing.
+			</p>
 
-		<main id="top">
-			<section class="hero" aria-labelledby="hero-title">
-				<div class="hero-copy">
-					<p class="eyebrow">Visual programming / WebAssembly</p>
-					<h1 id="hero-title">Code you can <em>see.</em></h1>
-					<p class="lede">
-						8f4e is a tiny creative system for shaping programs spatially, watching memory move, and compiling the result
-						straight to WebAssembly.
-					</p>
-					<div class="hero-actions">
-						<a class="button button-primary" href="#try">Open the editors <span aria-hidden="true">↓</span></a>
-						<a class="button button-secondary" href="https://github.com/andorthehood/8f4e">View on GitHub ↗</a>
-					</div>
-				</div>
-
-				<div class="hero-graphic" aria-hidden="true">
-					<div class="graphic-grid"></div>
-					<div class="code-card code-card-a">
-						<span>function pulse</span>
-						<span class="code-line">i32 phase 0</span>
-						<span class="code-line accent">phase 1 + set</span>
-					</div>
-					<div class="code-card code-card-b">
-						<span>memory color</span>
-						<span class="code-line">u8 red 248</span>
-						<span class="code-line">u8 green 78</span>
-					</div>
-					<div class="graphic-node node-a"></div>
-					<div class="graphic-node node-b"></div>
-					<div class="graphic-route"></div>
-				</div>
-			</section>
-
-			<section class="principles" aria-label="Product principles">
-				<article>
-					<span class="principle-number">01</span>
-					<h2>Spatial source</h2>
-					<p>Arrange code as a system, not a stack of files.</p>
-				</article>
-				<article>
-					<span class="principle-number">02</span>
-					<h2>Visible memory</h2>
-					<p>Inspect data and execution without leaving the canvas.</p>
-				</article>
-				<article>
-					<span class="principle-number">03</span>
-					<h2>Native output</h2>
-					<p>Compile the same visual program directly to WebAssembly.</p>
-				</article>
-			</section>
-
-			<section class="editor-lab" id="try" aria-labelledby="editor-lab-title">
-				<div class="section-heading">
-					<div>
-						<p class="eyebrow">Live playground</p>
-						<h2 id="editor-lab-title">Two canvases.<br />Two editors.</h2>
-					</div>
-					<p>
-						Each canvas owns an independent editor, compiler, runtime, input context, and saved session. Click inside one
-						to work with it; the page remains a normal scrolling website.
-					</p>
-				</div>
-
-				<article class="editor-example">
-					<header class="editor-example-header">
-						<div>
-							<span class="instance-index">Instance 01</span>
-							<h3>Sketch space</h3>
-						</div>
-						<span class="instance-status"><i></i> Independent session</span>
-					</header>
-					<div class="editor-shell">
-						<canvas id="editor-one" class="editor-canvas" tabindex="0" aria-label="First 8f4e editor instance"></canvas>
-						<div class="editor-loading" data-loading-for="editor-one">Starting editor 01…</div>
-					</div>
-				</article>
-
-				<article class="editor-example editor-example-second">
-					<header class="editor-example-header">
-						<div>
-							<span class="instance-index">Instance 02</span>
-							<h3>Parallel workspace</h3>
-						</div>
-						<span class="instance-status"><i></i> Isolated input</span>
-					</header>
-					<div class="editor-shell editor-shell-wide">
-						<canvas id="editor-two" class="editor-canvas" tabindex="0" aria-label="Second 8f4e editor instance"></canvas>
-						<div class="editor-loading" data-loading-for="editor-two">Starting editor 02…</div>
-					</div>
-				</article>
-			</section>
+			<canvas id="editor" tabindex="0" aria-label="8f4e editor"></canvas>
 		</main>
-
-		<footer>
-			<a class="wordmark footer-wordmark" href="#top"><span class="wordmark-mark" aria-hidden="true">8f</span>8f4e</a>
-			<p class="footer-tagline">Small programs, clearly seen.</p>
-			<a href="https://github.com/andorthehood/8f4e">GitHub ↗</a>
-		</footer>
 
 		<script src="./main.ts" type="module"></script>
 	</body>

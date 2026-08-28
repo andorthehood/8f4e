@@ -1,7 +1,7 @@
 # 8f4e Website
 
-`@8f4e/8f4e-website` is an example product landing page with two independently mounted default editors. It tests
-embedding multiple editor canvases in a normal scrolling document, with the website controlling each canvas's size.
+`@8f4e/8f4e-website` is a minimal product page with an embedded default editor. The website controls the canvas size
+and leaves wheel scrolling to the surrounding document.
 
 From the workspace root:
 
