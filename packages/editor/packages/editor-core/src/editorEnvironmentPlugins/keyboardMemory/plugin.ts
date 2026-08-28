@@ -25,10 +25,7 @@ function writeIntegerToMemory(state: State, wordAlignedAddress: number | undefin
 	state.callbacks.setWordInMemory?.(wordAlignedAddress, value, true);
 }
 
-export default function keyboardMemoryPlugin({
-	store,
-	window: targetWindow,
-}: EditorEnvironmentPluginContext): () => void {
+export default function keyboardMemoryPlugin({ store, inputTarget }: EditorEnvironmentPluginContext): () => void {
 	const pressOrder: number[] = [];
 
 	function upsertPressedKeyCode(keyCode: number): void {
@@ -93,13 +90,13 @@ export default function keyboardMemoryPlugin({
 		writeIntegerToMemory(state, keyPressedWordAlignedAddress, 0);
 	}
 
-	targetWindow.addEventListener('keydown', onKeydown);
-	targetWindow.addEventListener('keyup', onKeyup);
-	targetWindow.addEventListener('blur', onBlur);
+	inputTarget.addEventListener('keydown', onKeydown);
+	inputTarget.addEventListener('keyup', onKeyup);
+	inputTarget.addEventListener('blur', onBlur);
 
 	return () => {
-		targetWindow.removeEventListener('keydown', onKeydown);
-		targetWindow.removeEventListener('keyup', onKeyup);
-		targetWindow.removeEventListener('blur', onBlur);
+		inputTarget.removeEventListener('keydown', onKeydown);
+		inputTarget.removeEventListener('keyup', onKeyup);
+		inputTarget.removeEventListener('blur', onBlur);
 	};
 }

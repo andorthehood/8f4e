@@ -10,7 +10,8 @@ renderers can replace it.
 ## Responsibilities
 
 - Initialize the editor-state store and event dispatcher for the web runtime.
-- Wire browser input events into internal events: window `keydown`/`keyup`; canvas `mousedown`/`mouseup`/`mousemove`/`contextmenu`; window `wheel` when viewport dragging is enabled.
+- Make the canvas focusable and wire its keyboard, mouse, and wheel input into internal events, so each editor only
+  handles input directed at its own canvas.
 - Translate DOM input data into internal event payloads (coordinates, movement deltas, button state, canvas size).
 - Initialize the UI renderer with state and memory views, and forward resize and post-process events.
 - Observe the canvas's CSS dimensions and adapt the drawing buffer and editor viewport when its host resizes it.

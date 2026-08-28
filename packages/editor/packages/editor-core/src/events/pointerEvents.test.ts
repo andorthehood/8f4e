@@ -48,19 +48,16 @@ function createWheelEventLike(overrides: Partial<WheelEvent> = {}): WheelEvent {
 }
 
 describe('pointerEvents', () => {
-	const originalWindow = globalThis.window;
-	let mockWindow: MockEventTarget;
-	let mockElement: MockEventTarget & Pick<HTMLElement, 'clientWidth' | 'clientHeight'>;
+	let mockElement: MockEventTarget & Pick<HTMLElement, 'clientWidth' | 'clientHeight' | 'focus'>;
 	let events: EventDispatcher;
 	let state: State;
 
 	beforeEach(() => {
 		vi.useFakeTimers();
-		mockWindow = createMockEventTarget();
-		Object.assign(globalThis, { window: mockWindow });
 		mockElement = Object.assign(createMockEventTarget(), {
 			clientWidth: 640,
 			clientHeight: 480,
+			focus: vi.fn(),
 		});
 		events = {
 			on: vi.fn(),
@@ -76,14 +73,13 @@ describe('pointerEvents', () => {
 
 	afterEach(() => {
 		vi.useRealTimers();
-		Object.assign(globalThis, { window: originalWindow });
 	});
 
 	it('dispatches mouseup after wheel scrolling has paused', () => {
 		const cleanup = pointerEvents(mockElement as HTMLElement, events, state);
 		const wheelEvent = createWheelEventLike();
 
-		mockWindow.emit('wheel', wheelEvent);
+		mockElement.emit('wheel', wheelEvent);
 
 		expect(events.dispatch).toHaveBeenCalledWith('mousemove', {
 			x: 20,
@@ -113,9 +109,9 @@ describe('pointerEvents', () => {
 	it('resets the scroll-end timer on subsequent wheel events', () => {
 		const cleanup = pointerEvents(mockElement as HTMLElement, events, state);
 
-		mockWindow.emit('wheel', createWheelEventLike());
+		mockElement.emit('wheel', createWheelEventLike());
 		vi.advanceTimersByTime(100);
-		mockWindow.emit('wheel', createWheelEventLike({ deltaY: 7 }));
+		mockElement.emit('wheel', createWheelEventLike({ deltaY: 7 }));
 
 		vi.advanceTimersByTime(119);
 		expect(events.dispatch).not.toHaveBeenCalledWith('viewportscrollend', expect.anything());
@@ -133,13 +129,30 @@ describe('pointerEvents', () => {
 	it('removes listeners and clears the pending timer during cleanup', () => {
 		const cleanup = pointerEvents(mockElement as HTMLElement, events, state);
 
-		mockWindow.emit('wheel', createWheelEventLike());
+		mockElement.emit('wheel', createWheelEventLike());
 		cleanup();
 		vi.runAllTimers();
 
 		expect(events.dispatch).toHaveBeenCalledTimes(1);
 
-		mockWindow.emit('wheel', createWheelEventLike());
+		mockElement.emit('wheel', createWheelEventLike());
 		expect(events.dispatch).toHaveBeenCalledTimes(1);
+	});
+
+	it('focuses the owning canvas when it is pressed', () => {
+		const cleanup = pointerEvents(mockElement as HTMLElement, events, state);
+		const mouseEvent = {
+			type: 'mousedown',
+			offsetX: 10,
+			offsetY: 20,
+			buttons: 1,
+			altKey: false,
+			preventDefault: vi.fn(),
+		} as unknown as MouseEvent;
+
+		mockElement.emit('mousedown', mouseEvent);
+
+		expect(mockElement.focus).toHaveBeenCalledWith({ preventScroll: true });
+		cleanup();
 	});
 });

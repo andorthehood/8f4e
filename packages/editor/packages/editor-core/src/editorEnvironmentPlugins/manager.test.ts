@@ -48,6 +48,7 @@ describe('editor environment plugin manager', () => {
 	} as EventDispatcher;
 	const windowMock = {} as Window;
 	const navigatorMock = {} as Navigator;
+	const inputTargetMock = {} as HTMLElement;
 	const memoryViewsMock = {} as EditorEnvironmentPluginContext['memoryViews'];
 	const services = {
 		getWasmExports: vi.fn(),
@@ -69,6 +70,7 @@ describe('editor environment plugin manager', () => {
 		const cleanup = createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			inputTarget: inputTargetMock,
 			memoryViews: memoryViewsMock,
 			services,
 			registry,
@@ -87,6 +89,7 @@ describe('editor environment plugin manager', () => {
 				events,
 				window: windowMock,
 				navigator: navigatorMock,
+				inputTarget: inputTargetMock,
 				memoryViews: memoryViewsMock,
 				services,
 			})
@@ -112,6 +115,7 @@ describe('editor environment plugin manager', () => {
 		const cleanup = createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			inputTarget: inputTargetMock,
 			memoryViews: memoryViewsMock,
 			services,
 			registry,
@@ -141,6 +145,7 @@ describe('editor environment plugin manager', () => {
 		createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			inputTarget: inputTargetMock,
 			memoryViews: memoryViewsMock,
 			services,
 			registry,
@@ -174,6 +179,7 @@ describe('editor environment plugin manager', () => {
 		createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			inputTarget: inputTargetMock,
 			memoryViews: memoryViewsMock,
 			services,
 			registry,
@@ -208,6 +214,7 @@ describe('editor environment plugin manager', () => {
 		createEditorEnvironmentPluginManager(store, events, {
 			window: windowMock,
 			navigator: navigatorMock,
+			inputTarget: inputTargetMock,
 			memoryViews: memoryViewsMock,
 			services,
 			registry,
