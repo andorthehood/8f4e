@@ -247,6 +247,7 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 		events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
 		view.resize(width, height);
 		currentCanvasSize = { width, height };
+		view.renderFrame();
 	};
 	const initialCanvasSize = getCanvasDisplaySize(canvas) ?? {
 		width: canvas.width,

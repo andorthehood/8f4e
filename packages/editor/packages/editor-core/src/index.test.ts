@@ -135,6 +135,8 @@ describe('editor init', () => {
 			['loadSession'],
 		]);
 		expect(view.resize).toHaveBeenCalledWith(640, 480);
+		expect(view.renderFrame).toHaveBeenCalledOnce();
+		expect(view.resize.mock.invocationCallOrder[0]).toBeLessThan(view.renderFrame.mock.invocationCallOrder[0]);
 	});
 
 	it('adapts to the canvas display size and stops observing when disposed', async () => {
@@ -177,15 +179,20 @@ describe('editor init', () => {
 
 		expect(observe).toHaveBeenCalledWith(canvas);
 
+		view.renderFrame.mockClear();
 		Object.assign(canvas, { clientWidth: 800, clientHeight: 600 });
 		resizeCallback([], {} as ResizeObserver);
 
 		expect(events.dispatch).toHaveBeenCalledWith('resize', { canvasWidth: 800, canvasHeight: 600 });
 		expect(view.resize).toHaveBeenLastCalledWith(800, 600);
+		expect(view.renderFrame).toHaveBeenCalledOnce();
+		expect(view.resize.mock.invocationCallOrder.at(-1)).toBeLessThan(view.renderFrame.mock.invocationCallOrder[0]);
 
 		view.resize.mockClear();
+		view.renderFrame.mockClear();
 		resizeCallback([], {} as ResizeObserver);
 		expect(view.resize).not.toHaveBeenCalled();
+		expect(view.renderFrame).not.toHaveBeenCalled();
 
 		editor.dispose();
 		expect(disconnect).toHaveBeenCalledWith();
