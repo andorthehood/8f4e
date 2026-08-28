@@ -9,13 +9,22 @@ other browser hosts control when and where the editor starts.
 ```ts
 import { mountDefaultEditor } from '@8f4e/editor-default';
 
-await mountDefaultEditor(canvas);
+const editor = await mountDefaultEditor(canvas, {
+	storageNamespace: 'editor-a',
+});
+
+editor.state;
+editor.dispose();
 ```
 
 The host controls the canvas's layout dimensions with CSS. The editor observes that rendered size and adapts its
 drawing buffer and UI automatically.
 
 Each mounted editor owns its compiler worker, compiled memory and code-buffer state, and lazy runtime registry.
+It also owns persistence callbacks for its storage namespace. The default namespace is `editor`, which preserves the
+existing `project_editor` and `browserLocalNotes_editor` keys. Hosts mounting multiple editors should pass a stable,
+unique namespace for each editor. Hosts may also provide a custom `Storage` implementation or an
+`initialProjectUrl`; interpreting page URLs remains the host's responsibility.
 
 Build, test, and type-check it from the workspace root:
 

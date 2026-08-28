@@ -5,18 +5,33 @@ import { getListOfProjects, getProject } from './examples/projectRegistry';
 import { createRuntimeRegistry } from './runtime-registry';
 import { resolveStdlibInclude } from './stdlib-resolver';
 import {
+	createStorageCallbacks,
 	exportBinaryCode,
 	exportCanvasScreenshot,
 	exportProject,
 	importProject,
-	loadBrowserLocalNotes,
-	loadSession,
-	saveBrowserLocalNotes,
-	saveSession,
 } from './storage-callbacks';
 
-export async function mountDefaultEditor(canvas: HTMLCanvasElement): Promise<Editor> {
+const DEFAULT_STORAGE_NAMESPACE = 'editor';
+
+export type DefaultEditorInstance = Editor;
+
+export interface DefaultEditorMountOptions {
+	initialProjectUrl?: string;
+	storage?: Storage;
+	storageNamespace?: string;
+}
+
+export async function mountDefaultEditor(
+	canvas: HTMLCanvasElement,
+	{
+		initialProjectUrl,
+		storage = localStorage,
+		storageNamespace = DEFAULT_STORAGE_NAMESPACE,
+	}: DefaultEditorMountOptions = {}
+): Promise<DefaultEditorInstance> {
 	const compilerService = createCompilerService();
+	const storageCallbacks = createStorageCallbacks({ storage, storageNamespace, initialProjectUrl });
 	let editor: Editor;
 	try {
 		editor = await initEditor(canvas, {
@@ -29,10 +44,7 @@ export async function mountDefaultEditor(canvas: HTMLCanvasElement): Promise<Edi
 				getProject,
 				resolveInclude: resolveStdlibInclude,
 				compileCode: (input, compilerOptions) => compilerService.compileCode(input, compilerOptions, editor),
-				loadSession,
-				saveSession,
-				loadBrowserLocalNotes,
-				saveBrowserLocalNotes,
+				...storageCallbacks,
 				importProject,
 				exportProject,
 				exportBinaryCode: fileName => exportBinaryCode(fileName, compilerService.getCodeBuffer()),
@@ -43,9 +55,6 @@ export async function mountDefaultEditor(canvas: HTMLCanvasElement): Promise<Edi
 		compilerService.dispose();
 		throw error;
 	}
-
-	// @ts-expect-error - Expose state for debugging purposes
-	window.state = editor.state;
 
 	return {
 		...editor,
