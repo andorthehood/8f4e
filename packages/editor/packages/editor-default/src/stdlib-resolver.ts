@@ -7,7 +7,7 @@ type StdlibManifest = {
 	}>;
 };
 
-const stdlibSourceLoaders = import.meta.glob('../../../node_modules/@8f4e/stdlib/std/**/*.8f4e', {
+const stdlibSourceLoaders = import.meta.glob('../../../../../node_modules/@8f4e/stdlib/std/**/*.8f4e', {
 	import: 'default',
 	query: '?raw',
 }) as Record<string, () => Promise<string>>;

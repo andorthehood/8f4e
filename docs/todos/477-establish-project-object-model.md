@@ -223,7 +223,7 @@ object model.
 - `npx nx run @8f4e/editor-state:typecheck`
 - `npx nx run @8f4e/compiler:test`
 - `npx nx run @8f4e/compiler:typecheck`
-- `npx nx run @8f4e/editor:build`
+- `npx nx run @8f4e/editor-website:build`
 
 ## Success Criteria
 

@@ -1,13 +1,13 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- Composed editor app: `packages/editor/src/` (entry `packages/editor/src/editor.ts`, examples under
-  `packages/editor/src/examples/`).
+- Editor product: the reusable default composition lives in `packages/editor/packages/editor-default/`; the thin
+  Vite website lives in `packages/editor/packages/editor-website/`.
 - Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`,
   `editor/packages/editor-core/packages/web-ui/packages/glugglugglug`). Each builds to its own `dist/` directory
   under the package root.
-- Builds: the composed editor outputs to `packages/editor/dist/`. Package bundles are consumed via aliases like
-  `@8f4e/editor-core`.
+- Builds: the website outputs to `packages/editor/packages/editor-website/dist/`. Package bundles are consumed via
+  aliases like `@8f4e/editor-default` and `@8f4e/editor-core`.
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
 - Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
 
@@ -17,16 +17,17 @@
 - When prepending or inserting document text, use `docs/agent_skills/context-aware-document-inserts.md` to preserve reading order and avoid unexplained forward references.
 
 ## Build, Test, and Development Commands (Nx-first)
-- `npx nx run @8f4e/editor:dev`: Builds packages (watch) and starts Vite dev server on `http://localhost:3000`.
-- `npx nx run @8f4e/editor:serve`: Serves the production build via `vite preview`.
-- `npx nx run @8f4e/editor:build`: Vite production build to `packages/editor/dist/`.
+- `npx nx run @8f4e/editor-website:dev`: Builds packages (watch) and starts Vite on `http://localhost:3000`.
+- `npx nx run @8f4e/editor-website:serve`: Serves the production build via `vite preview`.
+- `npx nx run @8f4e/editor-website:build`: Builds the default composition and website production bundle.
 - `npx nx run-many --target=build --all`: Build all packages/libs.
 - `npx nx run-many --target=test --all`: Run Vitest across all packages.
 - `npx nx run @8f4e/examples:test`: Run embedded `#test` modules in example `.8f4em` files through the CLI test runner.
 - `npx nx run-many --target=typecheck --all`: Type-check all packages; also run on pre-commit via Husky/lint-staged.
-- `npx nx run @8f4e/editor:lint`: Biome check/fix for the composed editor. Use `run-many --target=lint --all` to lint all projects if needed.
+- `npx nx run-many --target=lint --projects=@8f4e/editor-default,@8f4e/editor-website`: Biome check/fix for the
+  composition and website. Use `run-many --target=lint --all` to lint every project if needed.
 - `npx nx graph`: Open Nx project dependency graph.
-- `npx nx run @8f4e/editor:kill-dev`: Kill any dev server on port 3000.
+- `npx nx run @8f4e/editor-website:kill-dev`: Kill any dev server on port 3000.
 
 ## Coding Style & Naming Conventions
 - Language: TypeScript (ES modules). Target: modern browsers/node.

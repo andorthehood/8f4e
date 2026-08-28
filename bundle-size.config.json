@@ -1,9 +1,9 @@
 {
   "outDir": "logs/bundle-sizes",
   "packages": {
-    "@8f4e/editor": {
-      "label": "Editor App",
-      "distDir": "packages/editor/dist",
+    "@8f4e/editor-website": {
+      "label": "Editor Website",
+      "distDir": "packages/editor/packages/editor-website/dist",
       "entries": [
         {
           "name": "index.js",

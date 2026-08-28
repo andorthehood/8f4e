@@ -1,9 +1,18 @@
 {
-  "name": "@8f4e/editor",
+  "name": "@8f4e/editor-default",
   "version": "4.2.2",
   "private": true,
-  "description": "8f4e composed editor application",
+  "description": "8f4e default editor composition",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andorthehood/8f4e.git"
@@ -30,7 +39,6 @@
     "@types/node": "24.13.2",
     "vite": "7.3.5",
     "vite-plugin-glsl": "1.6.0",
-    "vite-plugin-static-copy": "4.1.1",
     "vitest": "4.1.7"
   }
 }

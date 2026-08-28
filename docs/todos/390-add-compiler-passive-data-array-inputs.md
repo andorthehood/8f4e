@@ -70,7 +70,7 @@ High-level behavior:
 
 - `npx nx run @8f4e/compiler:test`
 - `npx nx run @8f4e/compiler:typecheck`
-- `npx nx run @8f4e/editor:typecheck`
+- `npx nx run @8f4e/editor-default:typecheck`
 
 ## Success Criteria
 

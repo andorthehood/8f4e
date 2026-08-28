@@ -14,7 +14,7 @@ editor-state ──changes──▶ web-ui-render-projection ──snapshot─�
                          sprite and lifecycle events
 ```
 
-The editor application is the composition root. It creates editor-state and the web UI render projection as sibling
+The default editor package is the composition root. It creates editor-state and the web UI render projection as sibling
 layers, then passes both to the renderer. Editor-state does not import or initialize the render projection.
 
 ## Why This Package Exists

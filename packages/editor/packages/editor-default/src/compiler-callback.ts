@@ -9,9 +9,7 @@ import type {
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
 
-// Create worker once at module scope
-// it will live for the entire application lifecycle
-const compilerWorker = new CompilerWorker();
+let compilerWorker: Worker | null = null;
 
 let memoryRef: WebAssembly.Memory | null = null;
 let codeBuffer: Uint8Array = new Uint8Array();
@@ -39,10 +37,17 @@ async function handleIncludeRequest({ data }: MessageEvent): Promise<void> {
 			},
 		};
 	}
-	compilerWorker.postMessage(response);
+	compilerWorker?.postMessage(response);
 }
 
-compilerWorker.addEventListener('message', handleIncludeRequest);
+function getCompilerWorker(): Worker {
+	if (!compilerWorker) {
+		compilerWorker = new CompilerWorker();
+		compilerWorker.addEventListener('message', handleIncludeRequest);
+	}
+
+	return compilerWorker;
+}
 
 export async function compileCode(
 	project: ProjectObjectModel,
@@ -52,13 +57,14 @@ export async function compileCode(
 	const { resolveInclude, ...serializableCompilerOptions } = compilerOptions;
 	includeResolver = resolveInclude;
 	const compilationId = nextCompilationId++;
+	const worker = getCompilerWorker();
 
 	return new Promise((resolve, reject) => {
 		const handleMessage = async ({ data }: MessageEvent) => {
 			if (data.compilationId !== compilationId) return;
 			switch (data.type) {
 				case 'success':
-					compilerWorker.removeEventListener('message', handleMessage);
+					worker.removeEventListener('message', handleMessage);
 					memoryRef = data.payload.wasmMemory;
 					codeBuffer = data.payload.codeBuffer;
 
@@ -82,15 +88,15 @@ export async function compileCode(
 					});
 					break;
 				case 'compilationError':
-					compilerWorker.removeEventListener('message', handleMessage);
+					worker.removeEventListener('message', handleMessage);
 					reject(data.payload as CompilerDiagnostic);
 					break;
 			}
 		};
 
-		compilerWorker.addEventListener('message', handleMessage);
+		worker.addEventListener('message', handleMessage);
 
-		compilerWorker.postMessage({
+		worker.postMessage({
 			type: 'compile',
 			compilationId,
 			payload: {

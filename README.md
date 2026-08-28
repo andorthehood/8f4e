@@ -30,9 +30,10 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       │   └── packages/
     │       │       └── <a href="./packages/compiler/packages/wasm-codegen/packages/wasm-utils/README.md">wasm-utils</a> (Low-level WebAssembly byte construction helpers)
     │       └── <a href="./packages/compiler/packages/stdlib/README.md">stdlib</a> (Standard-library include source files)
-    ├── <a href="./packages/editor/README.md">editor</a> (The composed browser editor application)
+    ├── <a href="./packages/editor/README.md">editor</a> (Editor product packages)
     │   └── packages/
     │       ├── <a href="./packages/editor/packages/compiler-worker/README.md">compiler-worker</a> (Web Worker wrapper around the compiler for live coding)
+    │       ├── <a href="./packages/editor/packages/editor-default/README.md">editor-default</a> (Default compiler, runtime, storage, and example composition)
     │       ├── <a href="./packages/editor/packages/editor-core/README.md">editor-core</a> (Minimal reusable editor)
     │       │   └── packages/
     │       │       ├── <a href="./packages/editor/packages/editor-core/packages/editor-state/README.md">editor-state</a> (Editor state management)
@@ -44,6 +45,7 @@ The 8f4e project is organized as an Nx monorepo with the following package hiera
     │       │               ├── <a href="./packages/editor/packages/editor-core/packages/web-ui/packages/glugglugglug/README.md">glugglugglug</a> (2D WebGL graphics utilities)
     │       │               ├── <a href="./packages/editor/packages/editor-core/packages/web-ui/packages/render-projection/README.md">render-projection</a> (Precalculates web UI-specific render data from editor state)
     │       │               └── <a href="./packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/README.md">sprite-generator</a> (All UI graphics are generative)
+    │       ├── <a href="./packages/editor/packages/editor-website/README.md">editor-website</a> (Thin deployable website for the default editor)
     │       ├── <a href="./packages/editor/packages/runtime-audio-worklet/README.md">runtime-audio-worklet</a> (AudioWorklet editor runtime)
     │       ├── <a href="./packages/editor/packages/runtime-main-thread/README.md">runtime-main-thread</a> (Main-thread editor runtime)
     │       └── <a href="./packages/editor/packages/runtime-web-worker/README.md">runtime-web-worker</a> (Web Worker editor runtime)
@@ -66,11 +68,11 @@ You can use `npx nx graph` to explore the relationship between the packages.
 
 2. **Build all packages:**
    ```bash
-   npx nx run @8f4e/editor:build
+   npx nx run @8f4e/editor-website:build
    ```
 
 3. **Start the development server:**
    ```bash
-   npx nx run @8f4e/editor:dev
+   npx nx run @8f4e/editor-website:dev
    ```
    The app will be available at http://localhost:3000

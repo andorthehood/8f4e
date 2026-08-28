@@ -1,0 +1,9 @@
+{
+	"extends": "@8f4e/config/tsconfig.dom.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"types": ["vite/client"]
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

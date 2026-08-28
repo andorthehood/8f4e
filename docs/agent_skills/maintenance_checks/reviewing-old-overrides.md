@@ -54,7 +54,7 @@ Old overrides can:
 
    ```sh
    npm install
-   npx nx run @8f4e/editor:build
+   npx nx run @8f4e/editor-website:build
    ```
 
 ## Keep Or Delete
