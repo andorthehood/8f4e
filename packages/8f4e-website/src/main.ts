@@ -7,6 +7,7 @@ if (!canvas) {
 
 const editor = await mountDefaultEditor(canvas, {
 	captureWheel: false,
+	initialProjectUrl: canvas.dataset.projectUrl || undefined,
 	storage: window.localStorage,
 	storageNamespace: '8f4e-website',
 });

@@ -12,3 +12,5 @@ npx nx run @8f4e/8f4e-website:serve
 ```
 
 The development server runs at `http://localhost:3001` so it can run alongside `@8f4e/editor-website`.
+
+Set the canvas's `data-project-url` attribute in `src/index.html` to choose the project loaded when the editor mounts.
