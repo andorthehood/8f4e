@@ -15,39 +15,7 @@ import {
 	saveSession,
 } from './storage-callbacks';
 
-export interface CanvasSize {
-	width: number;
-	height: number;
-}
-
-export interface MountDefaultEditorOptions {
-	fixedCanvasSize?: CanvasSize;
-}
-
-function applyCanvasSize(canvas: HTMLCanvasElement, size: CanvasSize): void {
-	canvas.width = size.width;
-	canvas.height = size.height;
-	canvas.style.width = '';
-	canvas.style.height = '';
-}
-
-function getCanvasSize({ fixedCanvasSize }: MountDefaultEditorOptions = {}): CanvasSize {
-	if (fixedCanvasSize) {
-		return fixedCanvasSize;
-	}
-
-	return {
-		width: window.innerWidth,
-		height: window.innerHeight,
-	};
-}
-
-export async function mountDefaultEditor(
-	canvas: HTMLCanvasElement,
-	options: MountDefaultEditorOptions = {}
-): Promise<Editor> {
-	const initialCanvasSize = getCanvasSize(options);
-	applyCanvasSize(canvas, initialCanvasSize);
+export async function mountDefaultEditor(canvas: HTMLCanvasElement): Promise<Editor> {
 	const editor = await initEditor(canvas, {
 		runtimeRegistry,
 		callbacks: {
@@ -71,19 +39,6 @@ export async function mountDefaultEditor(
 
 	// @ts-expect-error - Expose state for debugging purposes
 	window.state = editor.state;
-
-	const resizeEditor = () => {
-		if (options.fixedCanvasSize) {
-			return;
-		}
-		const nextCanvasSize = getCanvasSize(options);
-		applyCanvasSize(canvas, nextCanvasSize);
-		editor.resize(nextCanvasSize.width, nextCanvasSize.height);
-	};
-
-	resizeEditor();
-
-	window.addEventListener('resize', resizeEditor);
 
 	return editor;
 }

@@ -12,6 +12,9 @@ import { mountDefaultEditor } from '@8f4e/editor-default';
 await mountDefaultEditor(canvas);
 ```
 
+The host controls the canvas's layout dimensions with CSS. The editor observes that rendered size and adapts its
+drawing buffer and UI automatically.
+
 Build, test, and type-check it from the workspace root:
 
 ```bash

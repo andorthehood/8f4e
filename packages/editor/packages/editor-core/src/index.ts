@@ -92,6 +92,22 @@ interface Options {
 	frameTexture?: WebUiOptions['frameTexture'];
 }
 
+interface CanvasSize {
+	width: number;
+	height: number;
+}
+
+function getCanvasDisplaySize(canvas: HTMLCanvasElement): CanvasSize | null {
+	const width = Math.floor(canvas.clientWidth);
+	const height = Math.floor(canvas.clientHeight);
+
+	if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+		return null;
+	}
+
+	return { width, height };
+}
+
 async function getCanvasPngBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 	return new Promise<Blob>((resolve, reject) => {
 		canvas.toBlob(result => {
@@ -217,19 +233,34 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		view.loadBackgroundEffect(effect);
 	});
 
+	let currentCanvasSize: CanvasSize | null = null;
+	const resize = (width: number, height: number) => {
+		events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
+		view.resize(width, height);
+		currentCanvasSize = { width, height };
+	};
+	const initialCanvasSize = getCanvasDisplaySize(canvas) ?? {
+		width: canvas.width,
+		height: canvas.height,
+	};
+	const resizeObserver = browserWindow?.ResizeObserver
+		? new browserWindow.ResizeObserver(() => {
+				const size = getCanvasDisplaySize(canvas);
+				if (!size || (size.width === currentCanvasSize?.width && size.height === currentCanvasSize.height)) {
+					return;
+				}
+
+				resize(size.width, size.height);
+			})
+		: null;
+
 	events.dispatch('init');
-	events.dispatch('resize', {
-		canvasWidth: canvas.width,
-		canvasHeight: canvas.height,
-	});
-	view.resize(canvas.width, canvas.height);
+	resize(initialCanvasSize.width, initialCanvasSize.height);
+	resizeObserver?.observe(canvas);
 	events.dispatch('loadSession');
 
 	return {
-		resize: (width: number, height: number) => {
-			events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
-			view.resize(width, height);
-		},
+		resize,
 		updateMemoryViews: (memoryRef: MemoryRef) => {
 			currentMemoryRef = memoryRef instanceof WebAssembly.Memory ? memoryRef : null;
 			pluginServices.invalidateWasmExports();
@@ -237,6 +268,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 		getMemoryViews: () => memoryViews,
 		dispose: () => {
+			resizeObserver?.disconnect();
 			view.destroy();
 			renderProjection.dispose();
 			cleanupPointer();

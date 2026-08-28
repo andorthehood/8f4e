@@ -13,6 +13,7 @@ renderers can replace it.
 - Wire browser input events into internal events: window `keydown`/`keyup`; canvas `mousedown`/`mouseup`/`mousemove`/`contextmenu`; window `wheel` when viewport dragging is enabled.
 - Translate DOM input data into internal event payloads (coordinates, movement deltas, button state, canvas size).
 - Initialize the UI renderer with state and memory views, and forward resize and post-process events.
+- Observe the canvas's CSS dimensions and adapt the drawing buffer and editor viewport when its host resizes it.
 - Expose state access, memory view updates, and state machine callbacks as extension points.
 
 ## Docs
