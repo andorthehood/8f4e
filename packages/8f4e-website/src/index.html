@@ -56,15 +56,12 @@
 				></canvas>
 				<div>
 					<p>
-						Stack-oriented programming means that instead of using registers, instructions take their operands from a
-						stack and push their results back onto the same stack for the next instruction to consume.
+						All memory items are laid out sequentially in memory, so variables declared one after another occupy adjacent
+						memory locations.
 					</p>
 					<p>
-						I chose this programming paradigm because the WebAssembly virtual machine is itself a stack machine.
-					</p>
-					<p>
-						Staying native to this execution model avoids costly abstractions and makes it possible to write faster
-						programs compared to typical WebAssembly-targeting languages.
+						They are aligned on a 32-bit grid, which means every memory item starts at an address that is a multiple of 4
+						bytes.
 					</p>
 				</div>
 			</section>
