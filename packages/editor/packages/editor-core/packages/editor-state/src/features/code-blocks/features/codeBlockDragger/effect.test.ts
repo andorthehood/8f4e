@@ -691,6 +691,15 @@ describe('codeBlockDragger', () => {
 		it('should dispatch clicks without dragging when editing is disabled', () => {
 			state.featureFlags.editing = false;
 
+			const blockBehind = createCodeBlockGraphicData({
+				code: ['module behind', 'moduleEnd'],
+				gridX: 20,
+				gridY: 20,
+				x: 200,
+				y: 200,
+				creationIndex: 1,
+				blockType: 'module',
+			});
 			const block1 = createCodeBlockGraphicData({
 				code: ['module test1', 'moduleEnd'],
 				gridX: 5,
@@ -701,7 +710,7 @@ describe('codeBlockDragger', () => {
 				blockType: 'module',
 			});
 
-			state.codeBlockRendering.codeBlocks = [block1];
+			state.codeBlockRendering.codeBlocks = [block1, blockBehind];
 
 			codeBlockDragger(store, events);
 
@@ -734,6 +743,7 @@ describe('codeBlockDragger', () => {
 			expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 			expect(block1.x).toBe(50);
 			expect(block1.y).toBe(100);
+			expect(state.codeBlockRendering.codeBlocks).toEqual([blockBehind, block1]);
 		});
 	});
 
