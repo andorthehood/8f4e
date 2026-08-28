@@ -77,6 +77,13 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			codeBlock: draggedCodeBlock,
 		});
 
+		if (!state.featureFlags.editing) {
+			state.codeBlockRendering.draggedCodeBlock = undefined;
+			dragSet = [];
+			didDrag = false;
+			return;
+		}
+
 		// Bring dragged module forward within its z-order partition.
 		// Normal blocks move to the end of the normal segment (before always-on-top blocks).
 		// Always-on-top blocks move to the end of the always-on-top segment (end of array).

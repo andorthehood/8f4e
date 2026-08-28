@@ -17,7 +17,7 @@ export const defaultFeatureFlags = {
 	contextMenu: true,
 	infoOverlay: false, // Hidden by default unless enabled explicitly
 	moduleDragging: true,
-	codeLineSelection: false,
+	codeLineSelection: true,
 	viewportDragging: true,
 	editing: false,
 	modeToggling: true,

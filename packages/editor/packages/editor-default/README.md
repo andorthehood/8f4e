@@ -10,6 +10,7 @@ other browser hosts control when and where the editor starts.
 import { mountDefaultEditor } from '@8f4e/editor-default';
 
 const editor = await mountDefaultEditor(canvas, {
+	captureWheel: false,
 	storageNamespace: 'editor-a',
 });
 
@@ -18,7 +19,8 @@ editor.dispose();
 ```
 
 The host controls the canvas's layout dimensions with CSS. The editor observes that rendered size and adapts its
-drawing buffer and UI automatically.
+drawing buffer and UI automatically. Wheel input pans the editor and prevents page scrolling by default; embedded
+hosts can pass `captureWheel: false` to leave scrolling to the page.
 
 Each mounted editor owns its compiler worker, compiled memory and code-buffer state, and lazy runtime registry.
 It also owns persistence callbacks for its storage namespace. The default namespace is `editor`, which preserves the

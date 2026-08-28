@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>8f4e</title>
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body>
+		<main>
+			<img
+				src="data:image/gif;base64,R0lGODlhGwANAPAAAP//AP///yH5BAkIAAAALAAAAAAbAA0AAAhZAAEIHDgwgEGCCBMCMHhQ4MGGChE2nBjAYcGKDhlm3LgQ40WMFDtuZOiRZEaTHSGqrBiSYMuXID1yhEmSpUyROCFe5JgyJs+dJx/6tCjxZlGdCpFGXFqQaUAAOw=="
+				width="27"
+				height="13"
+				alt="8f4e"
+				class="logo"
+			/>
+			<p>
+				8f4e is a
+				<a href="https://en.wikipedia.org/wiki/Stack-oriented_programming">stack-oriented</a>
+				programming language designed for real-time audio synthesis, with a visual code editor built for live coding and
+				experimentation.
+			</p>
+
+			<section class="editor-row">
+				<canvas
+					id="editor"
+					tabindex="0"
+					aria-label="8f4e editor"
+					data-project-url="https://static.8f4e.com/example-projects/misc/landingPageDemo1.8f4e"
+				></canvas>
+				<div>
+					<p>
+						Stack-oriented programming means that instead of using registers, instructions take their operands from a
+						stack and push their results back onto the same stack for the next instruction to consume.
+					</p>
+					<p>
+						I chose this programming paradigm because the WebAssembly virtual machine is itself a stack machine.
+					</p>
+					<p>
+						Staying native to this execution model avoids costly abstractions and makes it possible to write faster
+						programs compared to typical WebAssembly-targeting languages.
+					</p>
+				</div>
+			</section>
+
+			<section class="editor-row editor-row--reversed">
+				<canvas
+					id="editor-reversed"
+					tabindex="0"
+					aria-label="Second 8f4e editor"
+					data-project-url="https://static.8f4e.com/example-projects/misc/landingPageDemo2.8f4e"
+				></canvas>
+				<div>
+					<p>
+						All memory items are laid out sequentially in memory, so variables declared one after another occupy adjacent
+						memory locations.
+					</p>
+					<p>
+						They are aligned on a 32-bit grid, which means every memory item starts at an address that is a multiple of 4
+						bytes.
+					</p>
+				</div>
+			</section>
+		</main>
+
+		<script src="./main.ts" type="module"></script>
+	</body>
+</html>
