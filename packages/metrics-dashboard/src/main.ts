@@ -901,12 +901,16 @@ function render() {
 }
 
 function renderSummary(latestPoints: Point[]) {
-	const appPoint = latestPoints.find(point => point.packageName === '8f4e') ?? null;
+	const websitePoint = latestPoints.find(point => point.packageName === '@8f4e/editor-website') ?? null;
 	const totalTrackedBytes = latestPoints.reduce((sum, point) => sum + point.bytes, 0);
 	const snapshotCount = new Set(state.points.map(point => point.releaseKey)).size;
 
 	summaryGrid.innerHTML = [
-		renderSummaryItem('App', appPoint ? formatBytes(appPoint.bytes) : 'n/a', appPoint ? formatPointMeta(appPoint) : ''),
+		renderSummaryItem(
+			'Website',
+			websitePoint ? formatBytes(websitePoint.bytes) : 'n/a',
+			websitePoint ? formatPointMeta(websitePoint) : ''
+		),
 		renderSummaryItem('Tracked Total', formatBytes(totalTrackedBytes), `${latestPoints.length} packages`),
 		renderSummaryItem('Snapshots', String(snapshotCount), 'release commits'),
 	].join('');
