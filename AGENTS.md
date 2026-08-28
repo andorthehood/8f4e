@@ -3,6 +3,8 @@
 ## Project Structure & Module Organization
 - Editor product: the reusable default composition lives in `packages/editor/packages/editor-default/`; the thin
   Vite website lives in `packages/editor/packages/editor-website/`.
+- Product website: `packages/8f4e-website/` is a root-level Vite landing page that embeds multiple independent
+  default editor instances.
 - Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`,
   `editor/packages/editor-core/packages/web-ui/packages/glugglugglug`). Each builds to its own `dist/` directory
   under the package root.
@@ -20,6 +22,8 @@
 - `npx nx run @8f4e/editor-website:dev`: Builds packages (watch) and starts Vite on `http://localhost:3000`.
 - `npx nx run @8f4e/editor-website:serve`: Serves the production build via `vite preview`.
 - `npx nx run @8f4e/editor-website:build`: Builds the default composition and website production bundle.
+- `npx nx run @8f4e/8f4e-website:dev`: Starts the example product website on `http://localhost:3001`.
+- `npx nx run @8f4e/8f4e-website:build`: Builds the example product website and its editor dependencies.
 - `npx nx run-many --target=build --all`: Build all packages/libs.
 - `npx nx run-many --target=test --all`: Run Vitest across all packages.
 - `npx nx run @8f4e/examples:test`: Run embedded `#test` modules in example `.8f4em` files through the CLI test runner.
