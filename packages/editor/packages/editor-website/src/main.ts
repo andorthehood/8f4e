@@ -14,5 +14,11 @@ if (initialProjectUrl) {
 }
 
 canvas.focus({ preventScroll: true });
-const editor = await mountDefaultEditor(canvas, { initialProjectUrl });
+const editor = await mountDefaultEditor(canvas, {
+	initialProjectUrl,
+	storage: window.localStorage,
+	storageNamespace: 'editor',
+});
 Object.assign(window, { state: editor.state });
+
+import.meta.hot?.dispose(() => editor.dispose());
