@@ -2,12 +2,12 @@
 
 ## Package Scope & Layout
 - Path: `packages/editor/packages/editor-core`; source in `src/`, output in `dist/`.
-- Alias: `@8f4e/editor-core`. Consumed by the composed editor and runtime definitions.
+- Alias: `@8f4e/editor-core`. Consumed by the default editor composition and runtime definitions.
 
 ## Build, Bundle, Dev
 - From root: `npx nx run @8f4e/editor-core:build|test|typecheck`.
 - From package directory: use `npx nx run @8f4e/editor-core:<target>` (e.g., `npx nx run @8f4e/editor-core:dev`).
-- Ensure `dist/` exists before building the composed editor after API changes.
+- Ensure `dist/` exists before building the default editor composition after API changes.
 
 ## Coding Style
 - TypeScript (ESM). Use Biome as the fixer (`npx biome check --write <files>`); it owns formatting and import organization.

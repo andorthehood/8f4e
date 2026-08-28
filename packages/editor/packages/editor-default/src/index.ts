@@ -1,4 +1,4 @@
-import initEditor from '@8f4e/editor-core';
+import initEditor, { type Editor } from '@8f4e/editor-core';
 import { compileCode } from './compiler-callback';
 import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
 import { getListOfProjects, getProject } from './examples/projectRegistry';
@@ -15,12 +15,12 @@ import {
 	saveSession,
 } from './storage-callbacks';
 
-interface CanvasSize {
+export interface CanvasSize {
 	width: number;
 	height: number;
 }
 
-interface InitOptions {
+export interface MountDefaultEditorOptions {
 	fixedCanvasSize?: CanvasSize;
 }
 
@@ -31,7 +31,7 @@ function applyCanvasSize(canvas: HTMLCanvasElement, size: CanvasSize): void {
 	canvas.style.height = '';
 }
 
-function getCanvasSize({ fixedCanvasSize }: InitOptions = {}): CanvasSize {
+function getCanvasSize({ fixedCanvasSize }: MountDefaultEditorOptions = {}): CanvasSize {
 	if (fixedCanvasSize) {
 		return fixedCanvasSize;
 	}
@@ -42,8 +42,10 @@ function getCanvasSize({ fixedCanvasSize }: InitOptions = {}): CanvasSize {
 	};
 }
 
-async function init(options: InitOptions = {}) {
-	const canvas = <HTMLCanvasElement>document.getElementById('glcanvas');
+export async function mountDefaultEditor(
+	canvas: HTMLCanvasElement,
+	options: MountDefaultEditorOptions = {}
+): Promise<Editor> {
 	const initialCanvasSize = getCanvasSize(options);
 	applyCanvasSize(canvas, initialCanvasSize);
 	const editor = await initEditor(canvas, {
@@ -82,10 +84,6 @@ async function init(options: InitOptions = {}) {
 	resizeEditor();
 
 	window.addEventListener('resize', resizeEditor);
-}
 
-if (document.readyState === 'complete') {
-	init();
-} else {
-	window.addEventListener('DOMContentLoaded', () => init());
+	return editor;
 }

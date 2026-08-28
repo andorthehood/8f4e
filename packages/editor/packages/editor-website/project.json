@@ -1,5 +1,5 @@
 {
-  "name": "@8f4e/editor",
+  "name": "@8f4e/editor-website",
   "sourceRoot": "src",
   "projectType": "application",
   "targets": {
@@ -17,7 +17,7 @@
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "biome check --write packages/editor/src",
+        "command": "biome check --write packages/editor/packages/editor-website/src",
         "cwd": "{workspaceRoot}"
       }
     },
@@ -42,14 +42,6 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "tsc --noEmit --project tsconfig.json",
-        "cwd": "{projectRoot}"
-      },
-      "dependsOn": ["^build"]
-    },
-    "test": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "vitest run --config vitest.config.ts",
         "cwd": "{projectRoot}"
       },
       "dependsOn": ["^build"]

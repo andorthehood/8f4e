@@ -2,29 +2,28 @@
 
 ## Package Scope & Layout
 
-- Path: `packages/editor`; application source in `src/`, production output in `dist/`.
-- Nx project: `@8f4e/editor`.
-- This package composes `@8f4e/editor-core`, the compiler worker, runtime implementations, standard library,
-  examples, and browser persistence into the deployable editor.
-- Reusable minimal-editor behavior belongs in `packages/editor/packages/editor-core` rather than this composition layer.
+- Path: `packages/editor`; this is an organizational parent for editor-owned packages.
+- `@8f4e/editor-core` is the minimal reusable editor.
+- `@8f4e/editor-default` composes the core with compiler, worker, runtimes, standard library, examples, and storage.
+- `@8f4e/editor-website` is the thin deployable Vite host for the default composition.
 
 ## Build, Test, Dev
 
-- From root: `npx nx run @8f4e/editor:build|test|typecheck`.
-- Start the development server with `npx nx run @8f4e/editor:dev`.
-- Preview the production build with `npx nx run @8f4e/editor:serve`.
-- Ensure dependency packages are built before relying on workspace aliases in the Vite application.
+- Build or test the composition with `npx nx run @8f4e/editor-default:build|test|typecheck`.
+- Start the website with `npx nx run @8f4e/editor-website:dev`.
+- Build or preview it with `npx nx run @8f4e/editor-website:build|serve`.
+- Ensure dependency packages are built before relying on workspace aliases in the website.
 
 ## Coding Style
 
 - TypeScript (ES modules). Use Biome as the fixer (`npx biome check --write <files>`).
-- Keep `src/` focused on application composition and browser/deployment integration.
+- Keep composition behavior in `editor-default`; keep hosting and deployment concerns in `editor-website`.
 - Prefer workspace aliases for inter-package references.
 
 ## Testing
 
 - Vitest tests live under `src/__tests__` or alongside source as `*.test.ts`.
-- Test composition behavior here; test reusable editor behavior in `@8f4e/editor-core`.
+- Test composition behavior in `@8f4e/editor-default`; test reusable editor behavior in `@8f4e/editor-core`.
 
 ## Pull Requests
 

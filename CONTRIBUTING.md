@@ -17,8 +17,8 @@ Welcome. If you want to contribute but are not sure where to begin, the todo not
 ```bash
 nvm use
 npm install
-npx nx run @8f4e/editor:build
-npx nx run @8f4e/editor:dev
+npx nx run @8f4e/editor-website:build
+npx nx run @8f4e/editor-website:dev
 ```
 
 The development server runs at <http://localhost:3000>.
@@ -26,12 +26,13 @@ The development server runs at <http://localhost:3000>.
 If another dev server is already using port `3000`, stop it with:
 
 ```bash
-npx nx run @8f4e/editor:kill-dev
+npx nx run @8f4e/editor-website:kill-dev
 ```
 
 ## Repository Layout
 
-- `packages/editor/src/`: composed browser editor entry points.
+- `packages/editor/packages/editor-default/src/`: default editor composition.
+- `packages/editor/packages/editor-website/src/`: thin browser website entry point.
 - `packages/compiler`: core compiler from 8f4e source to WebAssembly.
 - `packages/editor`: composed editor, minimal editor core, compiler worker, and runtime packages.
 - `packages/examples`: example modules and projects.
@@ -46,18 +47,18 @@ Use package README files for package-specific context. Some package directories 
 Prefer Nx commands over direct tool invocations so dependencies, caching, and target defaults are respected.
 
 ```bash
-npx nx run @8f4e/editor:dev         # build packages in watch mode and start Vite
-npx nx run @8f4e/editor:build       # type-check and build the composed editor
-npx nx run @8f4e/editor:serve       # preview the production build
+npx nx run @8f4e/editor-website:dev    # build packages in watch mode and start Vite
+npx nx run @8f4e/editor-website:build  # type-check and build the default editor website
+npx nx run @8f4e/editor-website:serve  # preview the production build
 npx nx run-many --target=build --all
 npx nx run-many --target=test --all
 npx nx run-many --target=typecheck --all
-npx nx run @8f4e/editor:lint
+npx nx run-many --target=lint --projects=@8f4e/editor-default,@8f4e/editor-website
 npx nx graph
 ```
 
 When changing package APIs, build the affected package dependencies before relying on aliases such as
-`@8f4e/editor-core` from the composed editor.
+`@8f4e/editor-core` from the default composition and `@8f4e/editor-default` from the website.
 
 ## Documentation
 

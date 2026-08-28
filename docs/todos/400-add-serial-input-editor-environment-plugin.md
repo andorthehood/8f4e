@@ -163,9 +163,9 @@ Responsibilities:
 
 ## Validation Checkpoints
 
-- `npx nx run editor:test -- src/editorEnvironmentPlugins/serial`
-- `npx nx run editor:typecheck`
-- `npx nx run @8f4e/editor:build`
+- `npx nx run @8f4e/editor-core:test -- --run src/editorEnvironmentPlugins/serial`
+- `npx nx run @8f4e/editor-core:typecheck`
+- `npx nx run @8f4e/editor-website:build`
 
 ## Success Criteria
 
