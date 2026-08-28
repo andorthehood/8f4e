@@ -38,9 +38,6 @@ main > p {
 	height: min(70vh, 700px);
 	background: #000;
 	image-rendering: pixelated;
-}
-
-.editor-row > canvas:focus {
 	outline: none;
 }
 
