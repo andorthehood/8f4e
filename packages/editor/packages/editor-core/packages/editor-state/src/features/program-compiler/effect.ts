@@ -10,9 +10,10 @@ import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorC
 
 const includesBlockType = documentBlockInstructionByType.includes.type;
 
-export default function compiler(store: StateManager<State>) {
+export default function compiler(store: StateManager<State>): () => void {
 	const state = store.getState();
 	registerRecompileDebounceDelayEditorConfigValidator(store);
+	let disposed = false;
 
 	const scheduleRecompile = debounceTrailing(
 		onRecompile,
@@ -27,6 +28,10 @@ export default function compiler(store: StateManager<State>) {
 	}
 
 	async function onForceCompile() {
+		if (disposed) {
+			return;
+		}
+
 		scheduleRecompile.cancel();
 		const compilationStart = performance.now();
 
@@ -49,6 +54,9 @@ export default function compiler(store: StateManager<State>) {
 				...compilerOptions,
 				...(state.callbacks.resolveInclude ? { resolveInclude: state.callbacks.resolveInclude } : {}),
 			});
+			if (disposed) {
+				return;
+			}
 			const compilationTimeMs = performance.now() - compilationStart;
 			const memoryUsagePercent =
 				result.allocatedMemoryBytes === 0
@@ -85,6 +93,10 @@ export default function compiler(store: StateManager<State>) {
 			log(state, 'Compilation succeeded in ' + compilationTimeMs.toFixed(2) + 'ms', 'Compiler');
 			console.log('[Compiler] Compilation succeeded with config:', compilerOptions);
 		} catch (error) {
+			if (disposed) {
+				return;
+			}
+
 			log(state, 'Compilation failed', 'Compiler');
 
 			store.set('compiler.isCompiling', false);
@@ -106,6 +118,10 @@ export default function compiler(store: StateManager<State>) {
 	}
 
 	function onRecompile() {
+		if (disposed) {
+			return;
+		}
+
 		store.set('codeErrors.compilationErrors', []);
 
 		if (!state.callbacks.compileCode) {
@@ -115,7 +131,7 @@ export default function compiler(store: StateManager<State>) {
 		onForceCompile();
 	}
 
-	store.subscribe('codeBlockRendering.selectedCodeBlock.code', () => {
+	const onSelectedCodeChanged = () => {
 		if (state.codeBlockRendering.selectedCodeBlock?.disabled) {
 			return;
 		}
@@ -126,13 +142,24 @@ export default function compiler(store: StateManager<State>) {
 			return;
 		}
 		scheduleRecompile();
-	});
-	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', () => {
+	};
+	const onProgrammaticCodeChanged = () => {
 		const blockType = state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit?.blockType;
 		if (!isCompilableBlockType(blockType) && blockType !== includesBlockType) {
 			return;
 		}
 		scheduleRecompile();
-	});
+	};
+
+	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeChanged);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticCodeChanged);
 	store.subscribe('featureFlags.codeLineSelection', scheduleRecompile);
+
+	return () => {
+		disposed = true;
+		scheduleRecompile.cancel();
+		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeChanged);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticCodeChanged);
+		store.unsubscribe('featureFlags.codeLineSelection', scheduleRecompile);
+	};
 }

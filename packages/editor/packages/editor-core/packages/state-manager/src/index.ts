@@ -17,6 +17,7 @@ export interface StateManager<State> {
 		callback: (value: PathValue<State, P>) => void
 	) => Subscription<State, P>;
 	unsubscribe: <P extends Path<State>>(selector: P, callback: (value: PathValue<State, P>) => void) => void;
+	dispose: () => void;
 }
 
 function createStateManager<State>(state: State): StateManager<State> {
@@ -33,6 +34,7 @@ function createStateManager<State>(state: State): StateManager<State> {
 		subscribe,
 		subscribeToValue,
 		unsubscribe,
+		dispose: () => subscriptions.clear(),
 	};
 }
 

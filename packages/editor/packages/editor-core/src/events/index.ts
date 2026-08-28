@@ -10,10 +10,14 @@ export interface EventDispatcher {
 	dispatch: <T>(eventName: string, eventObject?: T) => void;
 }
 
+interface DisposableEventDispatcher extends EventDispatcher {
+	dispose: () => void;
+}
+
 // Re-export event types from shared package
 export type { InternalKeyboardEvent, InternalMouseEvent } from '@8f4e/editor-state-types';
 
-export default function events(): EventDispatcher {
+export default function events(): DisposableEventDispatcher {
 	const subscriptions: Record<string, EventHandler<unknown>[]> = {};
 
 	function on<T>(eventName: string, callback: EventHandler<T>): void {
@@ -42,5 +46,11 @@ export default function events(): EventDispatcher {
 		}
 	}
 
-	return { on, off, dispatch };
+	function dispose(): void {
+		for (const handlers of Object.values(subscriptions)) {
+			handlers.length = 0;
+		}
+	}
+
+	return { on, off, dispatch, dispose };
 }

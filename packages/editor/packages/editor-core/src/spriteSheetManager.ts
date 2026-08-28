@@ -16,13 +16,19 @@ export function createSpriteSheetManager(
 	store: StateManager<State>,
 	view: SpriteSheetView,
 	events: EventDispatcher
-): void {
+): () => void {
 	const state = store.getState();
+	let disposed = false;
+	let generation = 0;
 	const rerenderSpriteSheet = async () => {
+		const currentGeneration = ++generation;
 		const spriteData = await generateSprite({
 			font: state.editorConfig.font,
 			colorScheme: state.editorConfig.color,
 		});
+		if (disposed || currentGeneration !== generation) {
+			return;
+		}
 
 		view.loadSpriteAtlas(spriteData);
 
@@ -34,4 +40,15 @@ export function createSpriteSheetManager(
 
 	store.subscribe('editorConfig.font', rerenderSpriteSheet);
 	store.subscribe('editorConfig.color', rerenderSpriteSheet);
+
+	return () => {
+		if (disposed) {
+			return;
+		}
+
+		disposed = true;
+		generation++;
+		store.unsubscribe('editorConfig.font', rerenderSpriteSheet);
+		store.unsubscribe('editorConfig.color', rerenderSpriteSheet);
+	};
 }

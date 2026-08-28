@@ -4,6 +4,7 @@ const events = {
 	dispatch: vi.fn(),
 	on: vi.fn(),
 	off: vi.fn(),
+	dispose: vi.fn(),
 };
 
 const storeState: {
@@ -26,6 +27,7 @@ const store = {
 			};
 		}
 	}),
+	dispose: vi.fn(),
 };
 
 const view = {
@@ -42,6 +44,8 @@ const renderProjection = {
 	refresh: vi.fn(),
 	dispose: vi.fn(),
 };
+
+const cleanupSpriteSheet = vi.fn();
 
 vi.mock('@8f4e/web-ui-render-projection', () => ({
 	createWebUiRenderProjection: vi.fn(() => renderProjection),
@@ -84,7 +88,7 @@ vi.mock('./editorEnvironmentPlugins/manager', () => ({
 }));
 
 vi.mock('./spriteSheetManager', () => ({
-	createSpriteSheetManager: vi.fn(),
+	createSpriteSheetManager: vi.fn(() => cleanupSpriteSheet),
 }));
 
 vi.mock('./updateStateWithSpriteData', () => ({
@@ -96,10 +100,15 @@ describe('editor init', () => {
 		events.dispatch.mockClear();
 		events.on.mockClear();
 		events.off.mockClear();
+		events.dispose.mockClear();
 		store.getState.mockClear();
 		store.set.mockClear();
+		store.dispose.mockClear();
 		view.resize.mockClear();
 		view.renderFrame.mockClear();
+		view.destroy.mockClear();
+		renderProjection.dispose.mockClear();
+		cleanupSpriteSheet.mockClear();
 		storeState.editorConfig = {};
 		storeState.info = {};
 	});
@@ -220,6 +229,24 @@ describe('editor init', () => {
 
 		editor.dispose();
 		expect(canvas.tabIndex).toBe(-1);
+	});
+
+	it('disposes state, events, sprite subscriptions, projection, and view exactly once', async () => {
+		const { default: init } = await import('./index');
+		const canvas = { width: 640, height: 480 } as HTMLCanvasElement;
+		const editor = await init(canvas, {
+			runtimeRegistry: {},
+			callbacks: { loadSession: async () => null },
+		});
+
+		editor.dispose();
+		editor.dispose();
+
+		expect(cleanupSpriteSheet).toHaveBeenCalledOnce();
+		expect(renderProjection.dispose).toHaveBeenCalledOnce();
+		expect(store.dispose).toHaveBeenCalledOnce();
+		expect(events.dispose).toHaveBeenCalledOnce();
+		expect(view.destroy).toHaveBeenCalledOnce();
 	});
 
 	it('renders one fresh frame before exporting a canvas screenshot', async () => {

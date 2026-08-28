@@ -157,5 +157,36 @@ describe('Runtime System', () => {
 
 			expect(webWorkerRuntimeFactory).not.toHaveBeenCalled();
 		});
+
+		it('destroys the active runtime and stops reacting after disposal', async () => {
+			const audioDestroyer = vi.fn();
+			const webWorkerRuntimeFactory = vi.fn(() => () => {});
+			const state = createMockState({
+				editorConfig: { runtime: 'AudioWorkletRuntime' },
+				runtimeRegistry: {
+					AudioWorkletRuntime: {
+						id: 'AudioWorkletRuntime',
+						factory: vi.fn(() => audioDestroyer),
+					},
+					WebWorkerRuntime: {
+						id: 'WebWorkerRuntime',
+						factory: webWorkerRuntimeFactory,
+					},
+				},
+			});
+			const store = createStateManager(state);
+			const events = createMockEventDispatcherWithVitest();
+			const dispose = runtimeEffect(store, events);
+
+			store.set('compiler.isCompiling', true);
+			store.set('compiler.isCompiling', false);
+			await new Promise(resolve => setTimeout(resolve, 10));
+			dispose();
+			store.set('editorConfig.runtime', 'WebWorkerRuntime');
+			await new Promise(resolve => setTimeout(resolve, 10));
+
+			expect(audioDestroyer).toHaveBeenCalledOnce();
+			expect(webWorkerRuntimeFactory).not.toHaveBeenCalled();
+		});
 	});
 });

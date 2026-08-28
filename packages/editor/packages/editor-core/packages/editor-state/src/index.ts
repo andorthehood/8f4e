@@ -60,6 +60,13 @@ export {
 // Function to create default state
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
 	const featureFlags = validateFeatureFlags(options.featureFlags);
+	type EffectCleanup = () => void;
+	const effectCleanups: EffectCleanup[] = [];
+	const registerEffect = (cleanup: void | EffectCleanup): void => {
+		if (cleanup) {
+			effectCleanups.push(cleanup);
+		}
+	};
 
 	// Create base state
 	const baseState = {
@@ -74,58 +81,80 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 
 	const state = store.getState();
 
-	font(store);
-	color(store);
-	registerEditorConfigSchemaContributionsValidator(store);
-	projectExport(store, events);
-	canvasScreenshot(store, events);
-	dialog(store, events);
-	binaryAssetLoadingDialog(store, events);
+	registerEffect(font(store));
+	registerEffect(color(store));
+	registerEffect(registerEditorConfigSchemaContributionsValidator(store));
+	registerEffect(projectExport(store, events));
+	registerEffect(canvasScreenshot(store, events));
+	registerEffect(dialog(store, events));
+	registerEffect(binaryAssetLoadingDialog(store, events));
 
-	runtime(store, events);
-	editorMode(store, events);
-	presentation(store, events);
-	projectImport(store, events);
-	codeBlockDragger(store, events);
-	codeBlockNavigation(store, events);
-	_switch(state, events);
-	button(state, events);
-	slider(store, events);
-	sliderDefaultSaver(store, events);
-	memoryConnectionRemover(store, events);
-	crossfade(store, events);
-	pianoKeyboard(store, events);
-	viewport(store, events);
-	contextMenu(store, events);
-	codeBlockCreator(store, events);
-	skipExecutionToggler(store, events);
-	groupSkipExecutionToggler(store, events);
-	groupNonstickToggler(store, events);
-	groupCopier(store, events);
-	favoriteToggler(store, events);
-	groupRemover(store, events);
-	groupUngroupper(store, events);
-	groupDeleter(store, events);
-	projectGroupNavigation(store, events);
-	parsedDirectivesUpdater(store);
-	autoEnvConstants(store); // Must run after codeBlockCreator to ensure env block is created
-	blockTypeUpdater(store); // Must run before compiler to classify blocks first
-	shaderEffectsDeriver(store, events); // Must run after blockTypeUpdater to derive shader effects
-	globalEditorDirectivesEffect(store);
-	compiler(store);
-	codeBlockRendering(store, events);
-	viewportDirectiveEffect(store, events);
-	entryOutlines(store);
-	browserLocalNotes(store, events);
-	codeEditing(store, events);
-	tooltip(store);
-	historyTracking(store, events);
+	registerEffect(runtime(store, events));
+	registerEffect(editorMode(store, events));
+	registerEffect(presentation(store, events));
+	registerEffect(projectImport(store, events));
+	registerEffect(codeBlockDragger(store, events));
+	registerEffect(codeBlockNavigation(store, events));
+	registerEffect(_switch(state, events));
+	registerEffect(button(state, events));
+	registerEffect(slider(store, events));
+	registerEffect(sliderDefaultSaver(store, events));
+	registerEffect(memoryConnectionRemover(store, events));
+	registerEffect(crossfade(store, events));
+	registerEffect(pianoKeyboard(store, events));
+	registerEffect(viewport(store, events));
+	registerEffect(contextMenu(store, events));
+	registerEffect(codeBlockCreator(store, events));
+	registerEffect(skipExecutionToggler(store, events));
+	registerEffect(groupSkipExecutionToggler(store, events));
+	registerEffect(groupNonstickToggler(store, events));
+	registerEffect(groupCopier(store, events));
+	registerEffect(favoriteToggler(store, events));
+	registerEffect(groupRemover(store, events));
+	registerEffect(groupUngroupper(store, events));
+	registerEffect(groupDeleter(store, events));
+	registerEffect(projectGroupNavigation(store, events));
+	registerEffect(parsedDirectivesUpdater(store));
+	registerEffect(autoEnvConstants(store)); // Must run after codeBlockCreator to ensure env block is created
+	registerEffect(blockTypeUpdater(store)); // Must run before compiler to classify blocks first
+	registerEffect(shaderEffectsDeriver(store, events)); // Must run after blockTypeUpdater to derive shader effects
+	registerEffect(globalEditorDirectivesEffect(store));
+	registerEffect(compiler(store));
+	registerEffect(codeBlockRendering(store, events));
+	registerEffect(viewportDirectiveEffect(store, events));
+	registerEffect(entryOutlines(store));
+	registerEffect(browserLocalNotes(store, events));
+	registerEffect(codeEditing(store, events));
+	registerEffect(tooltip(store));
+	registerEffect(historyTracking(store, events));
 
-	events.on('consoleLog', event => {
+	const onConsoleLog = (event: unknown) => {
 		console.log(event);
-	});
+	};
+	events.on('consoleLog', onConsoleLog);
+	registerEffect(() => events.off('consoleLog', onConsoleLog));
 
-	return store;
+	const disposeSubscriptions = store.dispose;
+	let disposed = false;
+	return {
+		...store,
+		dispose: () => {
+			if (disposed) {
+				return;
+			}
+
+			disposed = true;
+			for (let index = effectCleanups.length - 1; index >= 0; index--) {
+				try {
+					effectCleanups[index]();
+				} catch (error) {
+					console.error('Failed to dispose editor state effect:', error);
+				}
+			}
+			effectCleanups.length = 0;
+			disposeSubscriptions();
+		},
+	};
 }
 
 export { navigateToCodeBlockInDirection } from './features/code-blocks/features/codeBlockNavigation/effect';

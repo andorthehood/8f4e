@@ -354,6 +354,23 @@ describe('StateManager', () => {
 		});
 	});
 
+	describe('dispose', () => {
+		it('removes every subscription and is idempotent', () => {
+			const nameCallback = vi.fn();
+			const ageCallback = vi.fn();
+			stateManager.subscribe('name', nameCallback);
+			stateManager.subscribeToValue('age', 31, ageCallback);
+
+			stateManager.dispose();
+			stateManager.dispose();
+			stateManager.set('name', 'Jane Doe');
+			stateManager.set('age', 31);
+
+			expect(nameCallback).not.toHaveBeenCalled();
+			expect(ageCallback).not.toHaveBeenCalled();
+		});
+	});
+
 	describe('integration', () => {
 		it('should handle complex state updates with multiple subscriptions', () => {
 			const nameCallback = vi.fn();
