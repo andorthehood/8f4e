@@ -4,14 +4,25 @@
   "projectType": "application",
   "targets": {
     "dev": {
+      "continuous": true,
       "executor": "nx:run-commands",
+      "dependsOn": ["watch-deps"],
       "options": {
-        "commands": [
-          "nx run-many --target=build --all && nx watch --all -- nx run-many --target=build --all",
-          "vite"
-        ],
-        "parallel": true,
+        "command": "vite",
         "cwd": "{projectRoot}"
+      }
+    },
+    "build-deps": {
+      "executor": "nx:noop",
+      "dependsOn": ["^build"]
+    },
+    "watch-deps": {
+      "continuous": true,
+      "executor": "nx:run-commands",
+      "dependsOn": ["build-deps"],
+      "options": {
+        "command": "nx watch --projects=@8f4e/editor-website --includeDependencies -- nx run @8f4e/editor-website:build-deps",
+        "cwd": "{workspaceRoot}"
       }
     },
     "lint": {
