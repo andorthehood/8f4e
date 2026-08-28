@@ -21,6 +21,14 @@ main > p {
 	align-items: start;
 }
 
+.editor-row > div {
+	container-type: inline-size;
+}
+
+.editor-row > div p {
+	font-size: clamp(1rem, 1rem + 1cqi, 2rem);
+}
+
 canvas {
 	display: block;
 	width: 100%;
