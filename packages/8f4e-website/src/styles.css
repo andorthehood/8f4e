@@ -3,13 +3,20 @@ body {
 }
 
 main {
+	width: 100%;
+	margin: 2rem 0;
+}
+
+main > p {
 	width: min(1200px, calc(100% - 2rem));
-	margin: 2rem auto;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .editor-row {
 	display: grid;
-	grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+	width: 100%;
+	grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
 	gap: 2rem;
 	align-items: start;
 }
