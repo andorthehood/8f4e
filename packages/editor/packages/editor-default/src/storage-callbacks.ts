@@ -3,71 +3,77 @@ import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor-core';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
 
-// Storage key constants
-const STORAGE_KEYS = {
-	PROJECT: 'project_editor',
-	BROWSER_LOCAL_NOTES: 'browserLocalNotes_editor',
-} as const;
-
-// Implementation of storage callbacks using localStorage
-export async function loadSession(): Promise<ProjectObjectModel | null> {
-	try {
-		const projectUrlFromQuery = new URLSearchParams(location.search).get('projectUrl') || '';
-		if (projectUrlFromQuery) {
-			const url = new URL(window.location.href);
-			url.searchParams.delete('projectUrl');
-			const cleanUrl = `${url.pathname}${url.search}${url.hash}`;
-			window.history.replaceState({}, '', cleanUrl);
-
-			console.log('Loading project from query param:', projectUrlFromQuery);
-			return parseProjectSource(await getProject(projectUrlFromQuery));
-		}
-
-		const stored = localStorage.getItem(STORAGE_KEYS.PROJECT);
-		if (stored) {
-			console.log('Loading project from localStorage');
-			return JSON.parse(stored);
-		}
-
-		const defaultProjectUrl = await getDefaultProjectUrl();
-		if (defaultProjectUrl) {
-			console.log(`Loading default project: ${defaultProjectUrl}`);
-			return parseProjectSource(await getProject(defaultProjectUrl));
-		}
-
-		return null;
-	} catch (error) {
-		console.error('Failed to load project from localStorage:', error);
-		return null;
-	}
+interface StorageCallbacksOptions {
+	storage: Storage;
+	storageNamespace: string;
+	initialProjectUrl?: string;
 }
 
-export async function saveSession(project: ProjectObjectModel): Promise<void> {
-	try {
-		localStorage.setItem(STORAGE_KEYS.PROJECT, JSON.stringify(project));
-	} catch (error) {
-		console.error('Failed to save project to localStorage:', error);
-		throw error;
-	}
+function createStorageKeys(namespace: string) {
+	return {
+		project: `project_${namespace}`,
+		browserLocalNotes: `browserLocalNotes_${namespace}`,
+	};
 }
 
-export async function loadBrowserLocalNotes(): Promise<BrowserLocalNoteStorageBlock[] | null> {
-	try {
-		const stored = localStorage.getItem(STORAGE_KEYS.BROWSER_LOCAL_NOTES);
-		return stored ? JSON.parse(stored) : null;
-	} catch (error) {
-		console.error('Failed to load browser-local notes from localStorage:', error);
-		return null;
-	}
-}
+export function createStorageCallbacks({ storage, storageNamespace, initialProjectUrl }: StorageCallbacksOptions) {
+	const storageKeys = createStorageKeys(storageNamespace);
+	let pendingInitialProjectUrl = initialProjectUrl;
 
-export async function saveBrowserLocalNotes(blocks: BrowserLocalNoteStorageBlock[]): Promise<void> {
-	try {
-		localStorage.setItem(STORAGE_KEYS.BROWSER_LOCAL_NOTES, JSON.stringify(blocks));
-	} catch (error) {
-		console.error('Failed to save browser-local notes to localStorage:', error);
-		throw error;
-	}
+	return {
+		async loadSession(): Promise<ProjectObjectModel | null> {
+			try {
+				const projectUrl = pendingInitialProjectUrl;
+				pendingInitialProjectUrl = undefined;
+				if (projectUrl) {
+					console.log('Loading initial project:', projectUrl);
+					return parseProjectSource(await getProject(projectUrl));
+				}
+
+				const stored = storage.getItem(storageKeys.project);
+				if (stored) {
+					console.log(`Loading project from storage namespace "${storageNamespace}"`);
+					return JSON.parse(stored);
+				}
+
+				const defaultProjectUrl = await getDefaultProjectUrl();
+				if (defaultProjectUrl) {
+					console.log(`Loading default project: ${defaultProjectUrl}`);
+					return parseProjectSource(await getProject(defaultProjectUrl));
+				}
+
+				return null;
+			} catch (error) {
+				console.error('Failed to load editor session:', error);
+				return null;
+			}
+		},
+		async saveSession(project: ProjectObjectModel): Promise<void> {
+			try {
+				storage.setItem(storageKeys.project, JSON.stringify(project));
+			} catch (error) {
+				console.error('Failed to save project to storage:', error);
+				throw error;
+			}
+		},
+		async loadBrowserLocalNotes(): Promise<BrowserLocalNoteStorageBlock[] | null> {
+			try {
+				const stored = storage.getItem(storageKeys.browserLocalNotes);
+				return stored ? JSON.parse(stored) : null;
+			} catch (error) {
+				console.error('Failed to load browser-local notes from storage:', error);
+				return null;
+			}
+		},
+		async saveBrowserLocalNotes(blocks: BrowserLocalNoteStorageBlock[]): Promise<void> {
+			try {
+				storage.setItem(storageKeys.browserLocalNotes, JSON.stringify(blocks));
+			} catch (error) {
+				console.error('Failed to save browser-local notes to storage:', error);
+				throw error;
+			}
+		},
+	};
 }
 
 export async function importProject(): Promise<ProjectObjectModel> {
