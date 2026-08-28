@@ -126,6 +126,17 @@ describe('pointerEvents', () => {
 		cleanup();
 	});
 
+	it('leaves wheel events to the host when wheel capture is disabled', () => {
+		const cleanup = pointerEvents(mockElement as HTMLElement, events, state, false);
+		const wheelEvent = createWheelEventLike();
+
+		mockElement.emit('wheel', wheelEvent);
+
+		expect(wheelEvent.preventDefault).not.toHaveBeenCalled();
+		expect(events.dispatch).not.toHaveBeenCalled();
+		cleanup();
+	});
+
 	it('removes listeners and clears the pending timer during cleanup', () => {
 		const cleanup = pointerEvents(mockElement as HTMLElement, events, state);
 

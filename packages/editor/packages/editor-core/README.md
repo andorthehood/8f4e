@@ -17,6 +17,9 @@ renderers can replace it.
 - Observe the canvas's CSS dimensions and adapt the drawing buffer and editor viewport when its host resizes it.
 - Expose state access, memory view updates, and state machine callbacks as extension points.
 
+Wheel input pans the editor viewport and prevents page scrolling by default. Embedded hosts can set
+`captureWheel: false` when initializing the editor to leave wheel input and scrolling to the surrounding page.
+
 ## Docs
 
 - `docs/editor-directives.md` - Editor-only code-block directive syntax (`; @...`) and supported directives.

@@ -17,6 +17,8 @@ const DEFAULT_STORAGE_NAMESPACE = 'editor';
 export type DefaultEditorInstance = Editor;
 
 export interface DefaultEditorMountOptions {
+	/** Capture wheel gestures for viewport panning. Disable this for editors embedded in scrolling pages. */
+	captureWheel?: boolean;
 	initialProjectUrl?: string;
 	storage?: Storage;
 	storageNamespace?: string;
@@ -25,6 +27,7 @@ export interface DefaultEditorMountOptions {
 export async function mountDefaultEditor(
 	canvas: HTMLCanvasElement,
 	{
+		captureWheel,
 		initialProjectUrl,
 		storage = localStorage,
 		storageNamespace = DEFAULT_STORAGE_NAMESPACE,
@@ -35,6 +38,7 @@ export async function mountDefaultEditor(
 	let editor: Editor;
 	try {
 		editor = await initEditor(canvas, {
+			captureWheel,
 			runtimeRegistry: createRuntimeRegistry(compilerService),
 			callbacks: {
 				getListOfModules,

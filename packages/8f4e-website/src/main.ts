@@ -19,6 +19,7 @@ async function mountEditor({ canvasId, storageNamespace }: EditorMount): Promise
 	}
 
 	const editor = await mountDefaultEditor(canvas, {
+		captureWheel: false,
 		storage: window.localStorage,
 		storageNamespace,
 	});

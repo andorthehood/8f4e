@@ -8,7 +8,12 @@ interface ViewportScrollEndEvent {
 	movementY: number;
 }
 
-export default function pointerEvents(element: HTMLElement, events: EventDispatcher, state: State): () => void {
+export default function pointerEvents(
+	element: HTMLElement,
+	events: EventDispatcher,
+	state: State,
+	captureWheel = true
+): () => void {
 	let prevEvent = {
 		offsetX: 0,
 		offsetY: 0,
@@ -75,7 +80,7 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 		}, WHEEL_SCROLL_END_DELAY_MS);
 	}
 
-	if (state.featureFlags.viewportDragging) {
+	if (state.featureFlags.viewportDragging && captureWheel) {
 		element.addEventListener('wheel', onWheelEvents, { passive: false });
 	}
 	element.addEventListener('mouseup', onMouseEvents);
@@ -88,7 +93,7 @@ export default function pointerEvents(element: HTMLElement, events: EventDispatc
 			clearTimeout(wheelScrollEndTimeout);
 		}
 
-		if (state.featureFlags.viewportDragging) {
+		if (state.featureFlags.viewportDragging && captureWheel) {
 			element.removeEventListener('wheel', onWheelEvents);
 		}
 		element.removeEventListener('mouseup', onMouseEvents);

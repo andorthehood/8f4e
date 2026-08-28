@@ -78,7 +78,9 @@ export interface Editor {
 	state: State;
 }
 
-interface Options {
+export interface EditorOptions {
+	/** Capture wheel gestures for viewport panning. Disable this for editors embedded in scrolling pages. */
+	captureWheel?: boolean;
 	featureFlags?: Partial<State['featureFlags']>;
 	callbacks: Omit<
 		Callbacks,
@@ -133,7 +135,7 @@ function toGraphicsInfoRecord(stats: RenderStats): InfoRecord {
 	};
 }
 
-export default async function init(canvas: HTMLCanvasElement, options: Options): Promise<Editor> {
+export default async function init(canvas: HTMLCanvasElement, options: EditorOptions): Promise<Editor> {
 	const initialTabIndex = canvas.tabIndex;
 	const addedTabIndex = initialTabIndex < 0 && !canvas.hasAttribute('tabindex');
 	if (addedTabIndex) {
@@ -200,7 +202,7 @@ export default async function init(canvas: HTMLCanvasElement, options: Options):
 		},
 	});
 	const state = store.getState();
-	const cleanupPointer = pointerEvents(canvas, events, state);
+	const cleanupPointer = pointerEvents(canvas, events, state, options.captureWheel);
 	const cleanupKeyboard = keyboardEvents(canvas, events, store);
 	const browserWindow = canvas.ownerDocument?.defaultView ?? globalThis.window;
 	const cleanupEditorEnvironmentPlugins = createEditorEnvironmentPluginManager(store, events, {
