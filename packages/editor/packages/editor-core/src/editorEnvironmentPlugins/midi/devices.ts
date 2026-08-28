@@ -102,7 +102,6 @@ export default function createMidiDeviceManager({
 	};
 	let disposed = false;
 	let midiAccess: MIDIAccess | undefined;
-	let previousStateChangeHandler: MIDIAccess['onstatechange'] = null;
 
 	function setMidiInfo(info: InfoRecord | undefined): void {
 		store.set('info.midi', info);
@@ -115,6 +114,10 @@ export default function createMidiDeviceManager({
 
 		setMidiInfo(createMidiInfo(midiAccess, portRegistry));
 		onPortsChanged?.();
+	}
+
+	function onStateChange(): void {
+		updateMidiInfo();
 	}
 
 	if (typeof requestMIDIAccess !== 'function') {
@@ -139,11 +142,7 @@ export default function createMidiDeviceManager({
 			}
 
 			midiAccess = access;
-			previousStateChangeHandler = access.onstatechange;
-			access.onstatechange = event => {
-				previousStateChangeHandler?.call(access, event);
-				updateMidiInfo();
-			};
+			access.addEventListener('statechange', onStateChange);
 			updateMidiInfo();
 		})
 		.catch(() => {
@@ -157,9 +156,7 @@ export default function createMidiDeviceManager({
 		getInputPort: port => portRegistry.inputsByIndex.get(port),
 		dispose: () => {
 			disposed = true;
-			if (midiAccess) {
-				midiAccess.onstatechange = previousStateChangeHandler;
-			}
+			midiAccess?.removeEventListener('statechange', onStateChange);
 			portRegistry.inputsByIndex.clear();
 			portRegistry.indexesByKey.clear();
 			setMidiInfo(undefined);
