@@ -3,8 +3,15 @@ body {
 }
 
 main {
-	width: min(960px, calc(100% - 2rem));
+	width: min(1200px, calc(100% - 2rem));
 	margin: 2rem auto;
+}
+
+.editor-row {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+	gap: 2rem;
+	align-items: start;
 }
 
 canvas {
@@ -13,4 +20,10 @@ canvas {
 	height: min(70vh, 700px);
 	background: #000;
 	image-rendering: pixelated;
+}
+
+@media (max-width: 800px) {
+	.editor-row {
+		grid-template-columns: 1fr;
+	}
 }
