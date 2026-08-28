@@ -5,12 +5,18 @@ import getExportBaseName from './getExportBaseName';
 import { serializeProjectTo8f4e } from './serializeTo8f4e';
 import serializeToProject from './serializeToProject';
 
-export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
+export default function projectExport(store: StateManager<State>, events: EventDispatcher): () => void {
 	registerExportFileNameEditorConfigValidator(store);
 
 	const state = store.getState();
+	let disposed = false;
+	let saveGeneration = 0;
 
 	function onExportProject() {
+		if (disposed) {
+			return;
+		}
+
 		if (!state.callbacks.exportProject) {
 			console.warn('No exportProject callback provided');
 			return;
@@ -33,27 +39,35 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	}
 
 	async function onSaveSession() {
-		if (!state.callbacks.saveSession) {
+		if (disposed || !state.callbacks.saveSession) {
 			return;
 		}
 
+		const generation = ++saveGeneration;
 		// Serialize current state to Project format
 		const projectToSave = serializeToProject(state);
 
 		// Use callbacks instead of localStorage
 		await state.callbacks.saveSession(projectToSave);
+		if (disposed || generation !== saveGeneration) {
+			return;
+		}
 
 		if (state.callbacks.getStorageQuota) {
 			const storageQuota = await state.callbacks.getStorageQuota();
-			if (storageQuota) {
+			if (!disposed && generation === saveGeneration && storageQuota) {
 				store.set('storageQuota', storageQuota);
 			}
 		}
 	}
 
 	function onExportWasm() {
+		if (disposed) {
+			return;
+		}
+
 		if (!state.callbacks.exportBinaryCode) {
-			console.warn('No exportProject callback provided');
+			console.warn('No exportBinaryCode callback provided');
 			return;
 		}
 
@@ -71,4 +85,19 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	events.on('saveSession', onSaveSession);
 	events.on('exportProject', onExportProject);
 	events.on('exportWasm', onExportWasm);
+
+	return () => {
+		disposed = true;
+		saveGeneration++;
+		store.unsubscribe('codeBlockRendering.codeBlocks', onSaveSession);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', onSaveSession);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onSaveSession);
+		store.unsubscribe(
+			'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+			onSaveSession
+		);
+		events.off('saveSession', onSaveSession);
+		events.off('exportProject', onExportProject);
+		events.off('exportWasm', onExportWasm);
+	};
 }

@@ -20,18 +20,25 @@ import {
 	serializeBrowserLocalNotes,
 } from './browserLocalNotes';
 
-export default function browserLocalNotes(store: StateManager<State>, events: EventDispatcher): void {
+export default function browserLocalNotes(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 	let lastSavedBrowserLocalNotes = '';
 	let browserLocalNotesLoaded = false;
+	let disposed = false;
+	let loadGeneration = 0;
 
 	async function populateBrowserLocalNotes() {
-		if (!state.initialProjectState || !state.callbacks.loadBrowserLocalNotes) {
+		if (disposed || !state.initialProjectState || !state.callbacks.loadBrowserLocalNotes) {
 			return;
 		}
 
+		const generation = ++loadGeneration;
 		try {
 			const loadedBlocks = (await state.callbacks.loadBrowserLocalNotes()) ?? [];
+			if (disposed || generation !== loadGeneration) {
+				return;
+			}
+
 			const validBlocks = loadedBlocks.filter(block => isBrowserLocalNoteCode(block.code));
 			const browserLocalNotes = validBlocks.length > 0 ? validBlocks : [DEFAULT_BROWSER_LOCAL_NOTE];
 
@@ -103,12 +110,14 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 			store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
 			saveBrowserLocalNotes();
 		} catch (err) {
-			console.warn('Failed to load browser-local notes from storage:', err);
+			if (!disposed && generation === loadGeneration) {
+				console.warn('Failed to load browser-local notes from storage:', err);
+			}
 		}
 	}
 
 	function saveBrowserLocalNotes() {
-		if (!browserLocalNotesLoaded || !state.callbacks.saveBrowserLocalNotes) {
+		if (disposed || !browserLocalNotesLoaded || !state.callbacks.saveBrowserLocalNotes) {
 			return;
 		}
 
@@ -170,4 +179,21 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
 		saveProgrammaticallyEditedBrowserLocalNoteWithoutCompilerTrigger
 	);
+
+	return () => {
+		disposed = true;
+		loadGeneration++;
+		events.off('projectCodeBlocksPopulated', populateBrowserLocalNotes);
+		events.off('deleteCodeBlock', saveAfterLocalNoteDelete);
+		events.off('deleteGroup', saveAfterGroupDelete);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', saveSelectedBrowserLocalNote);
+		store.unsubscribe(
+			'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code',
+			saveProgrammaticallyEditedBrowserLocalNote
+		);
+		store.unsubscribe(
+			'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+			saveProgrammaticallyEditedBrowserLocalNoteWithoutCompilerTrigger
+		);
+	};
 }

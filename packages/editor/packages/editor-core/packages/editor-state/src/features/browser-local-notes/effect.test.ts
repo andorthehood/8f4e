@@ -18,6 +18,30 @@ function getEventHandler(events: ReturnType<typeof createMockEventDispatcherWith
 }
 
 describe('browser-local note placement', () => {
+	it('ignores local notes that finish loading after disposal', async () => {
+		let resolveNotes!: (notes: Array<{ code: string[] }>) => void;
+		const loadBrowserLocalNotes = vi.fn(
+			() =>
+				new Promise<Array<{ code: string[] }>>(resolve => {
+					resolveNotes = resolve;
+				})
+		);
+		const state = createMockState({
+			initialProjectState: { ...EMPTY_DEFAULT_PROJECT },
+			callbacks: { loadBrowserLocalNotes },
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+		const dispose = browserLocalNotes(store, events);
+
+		const populatePromise = getPopulateHandler(events)();
+		dispose();
+		resolveNotes([{ code: ['note local.scratchpad', 'noteEnd'] }]);
+		await populatePromise;
+
+		expect(state.codeBlockRendering.codeBlocks).toEqual([]);
+	});
+
 	it('moves colliding browser-local notes to the first free y positions for their x span', async () => {
 		const existingTopBlock = createMockCodeBlock({
 			name: 'top',

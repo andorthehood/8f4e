@@ -1,12 +1,39 @@
 import type { State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
-import { describe, expect, it, type MockInstance } from 'vitest';
+import { describe, expect, it, type MockInstance, vi } from 'vitest';
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 
 import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 import contextMenu from './effect';
 
 describe('contextMenu effect', () => {
+	it('ignores submenu data that finishes loading after disposal', async () => {
+		let resolveProjects!: (projects: Array<{ title: string; url: string; category: string }>) => void;
+		const state = createMockState({
+			callbacks: {
+				getListOfProjects: vi.fn(
+					() =>
+						new Promise(resolve => {
+							resolveProjects = resolve;
+						})
+				),
+				getProject: vi.fn(),
+			},
+		});
+		state.contextMenu.items = [{ title: 'Existing item' }];
+		const store = createStateManager(state as State);
+		const events = createMockEventDispatcherWithVitest();
+		const dispose = contextMenu(store, events);
+		const openSubMenu = (events.on as unknown as MockInstance).mock.calls.find(call => call[0] === 'openSubMenu')![1];
+
+		const openPromise = openSubMenu({ menu: 'projectMenu' });
+		dispose();
+		resolveProjects([{ title: 'Loaded project', url: 'loaded', category: 'Tests' }]);
+		await openPromise;
+
+		expect(state.contextMenu.items).toEqual([{ title: 'Existing item' }]);
+	});
+
 	it('anchors the menu in world coordinates and hit-tests it after viewport movement', async () => {
 		const state = createMockState({
 			viewport: {

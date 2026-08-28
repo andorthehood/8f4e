@@ -6,6 +6,36 @@ import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/
 import canvasScreenshot from './effect';
 
 describe('canvasScreenshot', () => {
+	it('does not restore screenshot flags after disposal while export is pending', async () => {
+		let finishExport!: () => void;
+		const exportCanvasScreenshot = vi.fn(
+			() =>
+				new Promise<void>(resolve => {
+					finishExport = resolve;
+				})
+		);
+		const state = createMockState({
+			callbacks: { exportCanvasScreenshot },
+			featureFlags: { modeOverlay: false, offscreenBlockArrows: true },
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+		const dispose = canvasScreenshot(store, events);
+		const exportCallback = (events.on as unknown as MockInstance).mock.calls.find(
+			call => call[0] === 'exportCanvasScreenshot'
+		)![1];
+
+		const exportPromise = exportCallback();
+		dispose();
+		state.featureFlags.modeOverlay = true;
+		state.featureFlags.offscreenBlockArrows = false;
+		finishExport();
+		await exportPromise;
+
+		expect(state.featureFlags.modeOverlay).toBe(true);
+		expect(state.featureFlags.offscreenBlockArrows).toBe(false);
+	});
+
 	it('registers the screenshot export event handler', () => {
 		const state = createMockState();
 		const store = createStateManager(state);

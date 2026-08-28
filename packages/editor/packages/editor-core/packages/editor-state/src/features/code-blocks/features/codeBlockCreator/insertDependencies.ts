@@ -11,7 +11,8 @@ interface InsertDependenciesParams {
 	clickX: number;
 	clickY: number;
 	state: State;
-	onAddCodeBlock: (params: { code: string[]; x: number; y: number; isNew: boolean }) => void;
+	onAddCodeBlock: (params: { code: string[]; x: number; y: number; isNew: boolean }) => void | Promise<void>;
+	isCancelled?: () => boolean;
 }
 
 /**
@@ -28,6 +29,7 @@ export async function insertDependencies({
 	clickY,
 	state,
 	onAddCodeBlock,
+	isCancelled = () => false,
 }: InsertDependenciesParams): Promise<void> {
 	const vGrid = state.viewport.vGrid;
 	const gridGap = 4; // Fixed gap between modules in grid units
@@ -39,8 +41,15 @@ export async function insertDependencies({
 
 	// Insert dependencies from left to right
 	for (const dependencySlug of dependencies) {
+		if (isCancelled()) {
+			return;
+		}
+
 		try {
 			const dependencyCode = extractPublicBlockFromModuleSource(await getModule(dependencySlug));
+			if (isCancelled()) {
+				return;
+			}
 
 			// Get the module name and type from the dependency code
 			const dependencyModuleName = getCodeBlockNameFromSource(dependencyCode);
@@ -66,12 +75,19 @@ export async function insertDependencies({
 			const dependencyY = clickY;
 
 			// Add the dependency
-			onAddCodeBlock({ code: dependencyCode, x: dependencyX, y: dependencyY, isNew: false });
+			await onAddCodeBlock({ code: dependencyCode, x: dependencyX, y: dependencyY, isNew: false });
+			if (isCancelled()) {
+				return;
+			}
 
 			// Move position to the right for the next dependency
 			const dependencyGridWidth = getCodeBlockGridWidth(dependencyCode);
 			currentGridX += dependencyGridWidth + gridGap;
 		} catch (error) {
+			if (isCancelled()) {
+				return;
+			}
+
 			console.warn(`Failed to load dependency: ${dependencySlug}`, error);
 		}
 	}

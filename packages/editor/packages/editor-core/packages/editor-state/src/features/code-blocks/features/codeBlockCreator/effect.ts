@@ -126,8 +126,9 @@ function getEntryNameForNewModule(state: State, x: number, y: number, newEntry?:
 		: (findEntryNameAtPosition(state.codeBlockRendering.entryOutlines, x, y) ?? getUniqueEntryName(state));
 }
 
-export default function codeBlockCreator(store: StateManager<State>, events: EventDispatcher): void {
+export default function codeBlockCreator(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
+	let disposed = false;
 	async function onAddCodeBlock({
 		x,
 		y,
@@ -143,7 +144,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		newEntry?: boolean;
 		code?: string[];
 	}) {
-		if (!state.featureFlags.editing) {
+		if (disposed || !state.featureFlags.editing) {
 			return;
 		}
 
@@ -167,6 +168,10 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 
 			try {
 				const clipboardText = await state.callbacks.readClipboardText();
+				if (disposed) {
+					return;
+				}
+
 				const parsedData = parseClipboardData(clipboardText);
 
 				if (parsedData.type === 'multi') {
@@ -308,6 +313,10 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 		x: number;
 		y: number;
 	}): Promise<void> {
+		if (disposed) {
+			return;
+		}
+
 		if (!state.callbacks.getModule) {
 			console.warn('No getCodeBlock callback provided');
 			return;
@@ -315,15 +324,25 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 
 		// Load the requested module
 		const requestedModuleCodeText = await state.callbacks.getModule(codeBlockSlug);
+		if (disposed) {
+			return;
+		}
 
 		// Add the requested module at the clicked position
 		const requestedCode = extractPublicBlockFromModuleSource(requestedModuleCodeText);
-		onAddCodeBlock({ code: requestedCode, x, y, isNew: false });
+		await onAddCodeBlock({ code: requestedCode, x, y, isNew: false });
+		if (disposed) {
+			return;
+		}
 
 		// If the module has dependencies, insert them to the right
 		const dependencies = state.callbacks.getModuleDependencies
 			? await state.callbacks.getModuleDependencies(codeBlockSlug)
 			: [];
+		if (disposed) {
+			return;
+		}
+
 		if (dependencies.length > 0) {
 			await insertDependencies({
 				dependencies,
@@ -333,6 +352,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 				clickY: y,
 				state,
 				onAddCodeBlock,
+				isCancelled: () => disposed,
 			});
 		}
 	}
@@ -342,4 +362,13 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 	events.on('copyCodeBlock', onCopyCodeBlock);
 	events.on('deleteCodeBlock', onDeleteCodeBlock);
 	events.on('toggleCodeBlockDisabled', onToggleCodeBlockDisabled);
+
+	return () => {
+		disposed = true;
+		events.off('addCodeBlockBySlug', onAddCodeBlockBySlug);
+		events.off('addCodeBlock', onAddCodeBlock);
+		events.off('copyCodeBlock', onCopyCodeBlock);
+		events.off('deleteCodeBlock', onDeleteCodeBlock);
+		events.off('toggleCodeBlockDisabled', onToggleCodeBlockDisabled);
+	};
 }

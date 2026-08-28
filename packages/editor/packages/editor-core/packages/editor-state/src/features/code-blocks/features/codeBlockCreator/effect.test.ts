@@ -282,6 +282,29 @@ describe('codeBlockCreator - clipboard callbacks', () => {
 	});
 
 	describe('addCodeBlockBySlug with dependencies', () => {
+		it('ignores a module that finishes loading after disposal', async () => {
+			let resolveModule!: (source: string) => void;
+			mockState.callbacks.getModule = vi.fn(
+				() =>
+					new Promise(resolve => {
+						resolveModule = resolve;
+					})
+			);
+			mockState.callbacks.getModuleDependencies = vi.fn().mockResolvedValue(['dependency']);
+			const dispose = codeBlockCreator(store, mockEvents);
+			const addCodeBlockBySlug = (mockEvents.on as unknown as MockInstance).mock.calls.find(
+				call => call[0] === 'addCodeBlockBySlug'
+			)![1];
+
+			const addPromise = addCodeBlockBySlug({ codeBlockSlug: 'main', x: 100, y: 100 });
+			dispose();
+			resolveModule('module main\n\nmoduleEnd');
+			await addPromise;
+
+			expect(mockState.codeBlockRendering.codeBlocks).toEqual([]);
+			expect(mockState.callbacks.getModuleDependencies).not.toHaveBeenCalled();
+		});
+
 		it('should insert dependencies to the right of the requested module', async () => {
 			const mockGetModule = vi.fn();
 			mockGetModule.mockImplementation(async (slug: string) => {

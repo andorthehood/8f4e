@@ -193,6 +193,28 @@ describe('projectExport', () => {
 	});
 
 	describe('saveSession', () => {
+		it('does not continue to quota loading when disposal happens during session save', async () => {
+			let finishSave!: () => void;
+			mockState.callbacks.saveSession = vi.fn(
+				() =>
+					new Promise<void>(resolve => {
+						finishSave = resolve;
+					})
+			);
+			mockState.callbacks.getStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });
+			const dispose = projectExport(store, mockEvents);
+			const saveSessionCallback = (mockEvents.on as unknown as MockInstance).mock.calls.find(
+				call => call[0] === 'saveSession'
+			)![1];
+
+			const savePromise = saveSessionCallback();
+			dispose();
+			finishSave();
+			await savePromise;
+
+			expect(mockState.callbacks.getStorageQuota).not.toHaveBeenCalled();
+		});
+
 		it('should save session when saveSession callback is provided', async () => {
 			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });

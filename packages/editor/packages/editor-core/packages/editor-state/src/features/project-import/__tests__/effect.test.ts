@@ -54,6 +54,28 @@ describe('projectImport', () => {
 	});
 
 	describe('Initial session loading', () => {
+		it('ignores a session that finishes loading after disposal', async () => {
+			let resolveSession!: (project: ProjectObjectModel) => void;
+			const loadedProject = { ...EMPTY_DEFAULT_PROJECT, code: ['loaded'] };
+			mockState.callbacks.loadSession = vi.fn(
+				() =>
+					new Promise(resolve => {
+						resolveSession = resolve;
+					})
+			);
+			const dispose = projectImport(store, mockEvents);
+			const loadSessionCallback = (mockEvents.on as unknown as MockInstance).mock.calls.find(
+				call => call[0] === 'loadSession'
+			)![1];
+
+			loadSessionCallback();
+			dispose();
+			resolveSession(loadedProject);
+			await Promise.resolve();
+
+			expect(mockState.initialProjectState).toBeUndefined();
+		});
+
 		it('should load empty project when loadSession callback is absent', async () => {
 			projectImport(store, mockEvents);
 			const onCalls = (mockEvents.on as unknown as MockInstance).mock.calls;
