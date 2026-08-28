@@ -1896,5 +1896,31 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "9ebdb998c882a3ac6775f8d4af935c91888812e8",
+		"recordedAt": "2026-08-28T12:42:21.446Z",
+		"coverage": {
+			"documented": 180,
+			"total": 180,
+			"percentage": 100,
+			"byKind": {
+				"function": {
+					"documented": 51,
+					"total": 51,
+					"percentage": 100
+				},
+				"variable": {
+					"documented": 114,
+					"total": 114,
+					"percentage": 100
+				},
+				"type": {
+					"documented": 15,
+					"total": 15,
+					"percentage": 100
+				}
+			}
+		}
 	}
 ]
