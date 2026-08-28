@@ -40,6 +40,10 @@ main > p {
 	image-rendering: pixelated;
 }
 
+.editor-row > canvas:focus {
+	outline: none;
+}
+
 .editor-row > div {
 	grid-area: copy;
 	container-type: inline-size;
