@@ -58,7 +58,7 @@ The goal is for width to be computed from the exact same rendered row model that
 
 - `npx nx run @8f4e/editor-state:test`
 - `npx nx run @8f4e/editor-state:typecheck`
-- `rg -n "codeToRender|getCodeBlockGridWidth|tabLayout" packages/editor/packages/editor-state/src`
+- `rg -n "codeToRender|getCodeBlockGridWidth|tabLayout" packages/editor/packages/editor-core/packages/editor-state/src`
 
 ## Success Criteria
 
@@ -69,9 +69,9 @@ The goal is for width to be computed from the exact same rendered row model that
 
 ## Affected Components
 
-- `packages/editor/packages/editor-state/src/features/code-blocks/features/graphicHelper/effect.ts`
-- `packages/editor/packages/editor-state/src/features/code-blocks/features/graphicHelper/getCodeBlockGridWidth.ts`
-- `packages/editor/packages/editor-state/src/features/code-editing/tabLayout.ts`
+- `packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/graphicHelper/effect.ts`
+- `packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/graphicHelper/getCodeBlockGridWidth.ts`
+- `packages/editor/packages/editor-core/packages/editor-state/src/features/code-editing/tabLayout.ts`
 
 ## Risks & Considerations
 
@@ -81,8 +81,8 @@ The goal is for width to be computed from the exact same rendered row model that
 ## Related Items
 
 - **Depends on**: `docs/todos/294-add-editor-tab-stop-directive.md`
-- **Related**: `packages/editor/packages/editor-state/src/features/code-blocks/features/graphicHelper/effect.ts`
-- **Related**: `packages/editor/packages/editor-state/src/features/code-blocks/features/graphicHelper/getCodeBlockGridWidth.ts`
+- **Related**: `packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/graphicHelper/effect.ts`
+- **Related**: `packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/graphicHelper/getCodeBlockGridWidth.ts`
 
 ## Notes
 

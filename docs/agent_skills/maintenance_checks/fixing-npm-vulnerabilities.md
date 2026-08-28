@@ -43,7 +43,7 @@ Remove reported vulnerabilities with the smallest dependency change that keeps t
    ```sh
    npm audit --json
    npm ls <package-name> --depth=8
-   npx nx run app:build
+   npx nx run @8f4e/editor:build
    ```
 
 ## Review Notes

@@ -103,8 +103,8 @@ For each option, evaluate:
 
 - `packages/compiler/tests/instructions/testUtils.ts` - Current wabt usage analysis
 - `packages/runtime-*` - All runtime packages for integration assessment
-- `packages/editor/src/state/effects/codeBlocks/codeBlockDecorators/debuggers/` - Debugging infrastructure
-- `packages/editor/src/state/effects/runtime.ts` - Runtime initialization and management
+- `packages/editor/packages/editor-core/src/state/effects/codeBlocks/codeBlockDecorators/debuggers/` - Debugging infrastructure
+- `packages/editor/packages/editor-core/src/state/effects/runtime.ts` - Runtime initialization and management
 - Future debugging UI components - New components for step-by-step execution interface
 
 ## Risks & Considerations

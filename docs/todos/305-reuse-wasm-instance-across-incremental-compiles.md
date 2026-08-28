@@ -15,7 +15,7 @@ completed: null
 The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed.
 
 Current behavior:
-- [packages/compiler/packages/compiler-worker/src/compileAndUpdateMemory.ts](packages/compiler/packages/compiler-worker/src/compileAndUpdateMemory.ts) has a reuse helper, `getOrCreateWasmInstanceRef(...)`
+- [packages/editor/packages/compiler-worker/src/compileAndUpdateMemory.ts](packages/editor/packages/compiler-worker/src/compileAndUpdateMemory.ts) has a reuse helper, `getOrCreateWasmInstanceRef(...)`
 - the call site passes `memoryWasRecreated || true`
 - that makes the non-reset path unreachable
 - the worker always reinstantiates the module even when only default values or compatible source changes occurred
@@ -52,7 +52,7 @@ Likely implementation shape:
 ## Implementation Plan
 
 ### Step 1: Define the actual reset condition
-- Audit current worker helpers in `packages/compiler/packages/compiler-worker/src/`
+- Audit current worker helpers in `packages/editor/packages/compiler-worker/src/`
 - Decide which changes require a fresh `WebAssembly.instantiate(...)`
 - Capture that in a dedicated helper or well-named boolean
 
@@ -75,7 +75,7 @@ Likely implementation shape:
 
 ## Validation Checkpoints
 
-- `rg -n "memoryWasRecreated \\|\\| true|hasWasmInstanceBeenReset|getOrCreateWasmInstanceRef" packages/compiler/packages/compiler-worker/src`
+- `rg -n "memoryWasRecreated \\|\\| true|hasWasmInstanceBeenReset|getOrCreateWasmInstanceRef" packages/editor/packages/compiler-worker/src`
 - `npx nx run compiler-worker:test`
 - `npx nx run compiler-worker:typecheck`
 
@@ -89,10 +89,10 @@ Likely implementation shape:
 
 ## Affected Components
 
-- `packages/compiler/packages/compiler-worker/src/compileAndUpdateMemory.ts` - current forced reset path
-- `packages/compiler/packages/compiler-worker/src/getOrCreateMemory.ts` - memory recreation logic
-- `packages/compiler/packages/compiler-worker/src/didProgramOrMemoryStructureChange.ts` - existing structure checks
-- `packages/compiler/packages/compiler-worker/src/getMemoryValueChanges.ts` - incremental patch path
+- `packages/editor/packages/compiler-worker/src/compileAndUpdateMemory.ts` - current forced reset path
+- `packages/editor/packages/compiler-worker/src/getOrCreateMemory.ts` - memory recreation logic
+- `packages/editor/packages/compiler-worker/src/didProgramOrMemoryStructureChange.ts` - existing structure checks
+- `packages/editor/packages/compiler-worker/src/getMemoryValueChanges.ts` - incremental patch path
 
 ## Risks & Considerations
 

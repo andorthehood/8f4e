@@ -33,7 +33,7 @@
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {
-    "@8f4e/editor": "*",
+    "@8f4e/editor-core": "*",
     "@8f4e/state-manager": "*"
   }
 }

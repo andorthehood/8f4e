@@ -28,7 +28,7 @@ The ASCII renderer is intended for:
 The main coupling today is:
 
 - drawers import the `Engine` type directly from `glugglugglug`
-- `packages/editor/packages/web-ui/src/index.ts` constructs `new Engine(...)` directly
+- `packages/editor/packages/editor-core/packages/web-ui/src/index.ts` constructs `new Engine(...)` directly
 
 There are currently many `glugglugglug` imports in `web-ui`, but they are concentrated in drawer type annotations and the top-level init path rather than being deeply scattered through unrelated logic.
 

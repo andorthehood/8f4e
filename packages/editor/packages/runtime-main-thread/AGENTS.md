@@ -5,8 +5,8 @@
 - Alias: `@8f4e/runtime-main-thread`.
 
 ## Build, Test, Dev
-- From root: `npx nx run runtime-main-thread:build|test|typecheck`.
-- From package directory: use `npx nx run runtime-main-thread:<target>` (e.g., `npx nx run runtime-main-thread:dev`).
+- From root: `npx nx run @8f4e/runtime-main-thread:build|test|typecheck`.
+- From package directory: use `npx nx run @8f4e/runtime-main-thread:<target>` (e.g., `npx nx run @8f4e/runtime-main-thread:dev`).
 
 ## Coding Style
 - TypeScript strict. Use Biome as the fixer (`npx biome check --write <files>`) per root config.

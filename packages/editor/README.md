@@ -1,58 +1,25 @@
-# Editor Package
+# Editor Application
 
-This package is the glue that connects the platform-agnostic editor state machine from
-`@8f4e/editor-state` with browser APIs and the `@8f4e/web-ui` renderer. It wires browser events
-(keyboard, mouse, and wheel) into the state machine, then hands the resulting state object
-that describes the full application to a UI renderer that treats state as immutable input and
-derives the UI purely from it. The renderer is intended to be pluggable so other platform
-renderers can replace it.
+This package is the composed browser editor. It combines the minimal `@8f4e/editor-core` package with the compiler
+worker, runtime implementations, standard-library resolver, example registries, browser storage, and the Vite
+application entry point.
 
-## Responsibilities
+## Package Layout
 
-- Initialize the editor-state store and event dispatcher for the web runtime.
-- Wire browser input events into internal events: window `keydown`/`keyup`; canvas `mousedown`/`mouseup`/`mousemove`/`contextmenu`; window `wheel` when viewport dragging is enabled.
-- Translate DOM input data into internal event payloads (coordinates, movement deltas, button state, canvas size).
-- Initialize the UI renderer with state and memory views, and forward resize and post-process events.
-- Expose state access, memory view updates, and state machine callbacks as extension points.
+- `src/` contains the application composition and browser entry point.
+- `packages/editor-core/` contains the reusable minimal editor and its state and UI packages.
+- `packages/compiler-worker/` contains the editor-specific Web Worker wrapper around the compiler.
+- `packages/runtime-audio-worklet/`, `packages/runtime-main-thread/`, and `packages/runtime-web-worker/` contain the
+  editor runtime implementations.
 
-## Docs
+## Development
 
-- `docs/editor-directives.md` - Editor-only code-block directive syntax (`; @...`) and supported directives.
+From the workspace root:
 
-## Editor Config
-
-Configure editor settings with `; @config <path> <value>`.
-
-- Global editor directives control editor presentation settings like `font` and color overrides.
-- `; @config runtime <runtimeId>` controls the runtime backend for the project.
-- Extensions can contribute schema-backed config roots; runtime packages use this for paths like `; @config audioRuntime.sampleRate 48000` and `; @config audioRuntime.audioOutBufferLAddress audioout:buffer`.
-- `; @config export.fileName <value>` controls the base file name used by editor export actions.
-- `; @config color.<path> <value>` controls individual color scheme entries.
-- Color values should be valid color strings (for example `#101820` or `rgba(255,255,255,0.65)`).
-- Main groups are `text`, `fill`, and `icons`.
-
-Example color overrides:
-
-```txt
-; @config color.fill.moduleBackground #101820
-; @config color.fill.wire rgba(255,255,255,0.65)
-; @config color.text.instruction #b388ff
-; @config color.icons.feedbackScale0 #ff0000
-; @config color.icons.feedbackScale1 #cc0033
-; @config color.icons.feedbackScale2 #990066
-; @config color.icons.feedbackScale3 #660099
-; @config color.icons.feedbackScale4 #3300cc
-; @config color.icons.feedbackScale5 #0000ff
+```bash
+npx nx run @8f4e/editor:dev
+npx nx run @8f4e/editor:build
+npx nx run @8f4e/editor:test
 ```
 
-- `docs/color-paths.md` - Configurable color paths for `; @config color.<path> <value>`.
-
-## Font
-
-Select the editor font with a global editor directive:
-
-```txt
-; @config font ibmvga8x16
-```
-
-Supported fonts: `6x10`, `ibmvga8x16`, `terminus8x16`, `terminus8x16bold`, `terminus10x18`, `terminus10x18bold`, `kana12x13`, `terminus12x24`, `terminus12x24bold`, `spleen5x8`, `spleen6x12`, `spleen8x16`, `templeos8x8`, `spleen12x24`, `spleen16x32`.
+The development server runs at <http://localhost:3000>.

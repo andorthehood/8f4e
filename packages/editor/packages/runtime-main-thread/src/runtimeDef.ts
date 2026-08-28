@@ -6,8 +6,8 @@ import type {
 	EventDispatcher,
 	RuntimeRegistryEntry,
 	State,
-} from '@8f4e/editor';
-import { resolveSchemaConfigRoot } from '@8f4e/editor';
+} from '@8f4e/editor-core';
+import { resolveSchemaConfigRoot } from '@8f4e/editor-core';
 import createMainThreadRuntime from '@8f4e/runtime-main-thread';
 import type { StateManager } from '@8f4e/state-manager';
 

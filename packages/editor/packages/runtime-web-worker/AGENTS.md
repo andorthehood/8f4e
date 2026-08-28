@@ -5,8 +5,8 @@
 - Alias: `@8f4e/runtime-web-worker`.
 
 ## Build, Test, Dev
-- From root: `npx nx run runtime-web-worker:build|test|typecheck`.
-- From package directory: use `npx nx run runtime-web-worker:<target>` (e.g., `npx nx run runtime-web-worker:dev`).
+- From root: `npx nx run @8f4e/runtime-web-worker:build|test|typecheck`.
+- From package directory: use `npx nx run @8f4e/runtime-web-worker:<target>` (e.g., `npx nx run @8f4e/runtime-web-worker:dev`).
 
 ## Coding Style
 - TypeScript + Biome (`npx biome check --write <files>` for fixes). Avoid DOM APIs in worker code.

@@ -1,18 +1,18 @@
 import { defineWorkspace } from 'vitest/config';
 
 export default defineWorkspace([
-	'vitest.config.ts',
+	'packages/editor/vitest.config.ts',
 	'packages/compiler/vitest.config.ts',
 	'packages/compiler/packages/project-preparser/vitest.config.ts',
 	'packages/compiler/packages/sub-program/vitest.config.ts',
 	'packages/compiler/packages/sub-program/packages/tokenizer/vitest.config.ts',
-	'packages/compiler/packages/compiler-worker/vitest.config.ts',
-	'packages/editor/vitest.config.ts',
-	'packages/editor/packages/editor-state/vitest.config.ts',
+	'packages/editor/packages/compiler-worker/vitest.config.ts',
+	'packages/editor/packages/editor-core/vitest.config.ts',
+	'packages/editor/packages/editor-core/packages/editor-state/vitest.config.ts',
 	'packages/editor/packages/runtime-audio-worklet/vitest.config.ts',
 	'packages/editor/packages/runtime-main-thread/vitest.config.ts',
 	'packages/editor/packages/runtime-web-worker/vitest.config.ts',
-	'packages/editor/packages/web-ui/packages/sprite-generator/vitest.config.ts',
-	'packages/editor/packages/state-manager/vitest.config.ts',
-	'packages/editor/packages/web-ui/vitest.config.ts',
+	'packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/vitest.config.ts',
+	'packages/editor/packages/editor-core/packages/state-manager/vitest.config.ts',
+	'packages/editor/packages/editor-core/packages/web-ui/vitest.config.ts',
 ]);

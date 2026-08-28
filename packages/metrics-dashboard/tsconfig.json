@@ -1,5 +1,5 @@
 {
-	"extends": "../../tsconfig.json",
+	"extends": "@8f4e/config/tsconfig.dom.json",
 	"compilerOptions": {
 		"noEmit": true,
 		"types": ["vite/client"]

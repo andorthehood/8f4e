@@ -1,11 +1,23 @@
 {
-	"extends": "@8f4e/config/tsconfig.dom.json",
 	"compilerOptions": {
-		"outDir": "dist",
-		"rootDir": "src",
-		"noImplicitAny": true,
-		"strictNullChecks": true
+		"target": "es2022",
+		"lib": ["es2023", "dom", "dom.iterable"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"strict": true,
+		"allowImportingTsExtensions": false,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"types": ["vite/client", "vite-plugin-glsl/ext"]
 	},
-	"include": ["src/**/*.ts", "src/types/**/*.d.ts"],
-	"exclude": ["node_modules", "src/**/*.test.ts"]
+	"exclude": ["node_modules", "packages/**/*", "src/**/*.test.ts", "dist"],
+	"include": [
+		"src/editor.ts",
+		"src/examples/**/*.ts"
+	]
 }

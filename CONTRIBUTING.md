@@ -17,8 +17,8 @@ Welcome. If you want to contribute but are not sure where to begin, the todo not
 ```bash
 nvm use
 npm install
-npx nx run app:build
-npx nx run app:dev
+npx nx run @8f4e/editor:build
+npx nx run @8f4e/editor:dev
 ```
 
 The development server runs at <http://localhost:3000>.
@@ -26,15 +26,14 @@ The development server runs at <http://localhost:3000>.
 If another dev server is already using port `3000`, stop it with:
 
 ```bash
-npx nx run app:kill-dev
+npx nx run @8f4e/editor:kill-dev
 ```
 
 ## Repository Layout
 
-- `index.html` and `src/`: root browser app entry points.
+- `packages/editor/src/`: composed browser editor entry points.
 - `packages/compiler`: core compiler from 8f4e source to WebAssembly.
-- `packages/editor`: main editor package and nested editor libraries.
-- `packages/runtime-*`: runtime packages for audio worklets, web workers, and the main thread.
+- `packages/editor`: composed editor, minimal editor core, compiler worker, and runtime packages.
 - `packages/examples`: example modules and projects.
 - `packages/cli`: command-line compiler tooling.
 - `packages/config`: shared workspace configuration.
@@ -47,17 +46,18 @@ Use package README files for package-specific context. Some package directories 
 Prefer Nx commands over direct tool invocations so dependencies, caching, and target defaults are respected.
 
 ```bash
-npx nx run app:dev                  # build packages in watch mode and start Vite
-npx nx run app:build                # type-check and build the root app
-npx nx run app:serve                # preview the production build
+npx nx run @8f4e/editor:dev         # build packages in watch mode and start Vite
+npx nx run @8f4e/editor:build       # type-check and build the composed editor
+npx nx run @8f4e/editor:serve       # preview the production build
 npx nx run-many --target=build --all
 npx nx run-many --target=test --all
 npx nx run-many --target=typecheck --all
-npx nx run app:lint
+npx nx run @8f4e/editor:lint
 npx nx graph
 ```
 
-When changing package APIs, build the affected package dependencies before relying on aliases such as `@8f4e/editor` from the app.
+When changing package APIs, build the affected package dependencies before relying on aliases such as
+`@8f4e/editor-core` from the composed editor.
 
 ## Documentation
 

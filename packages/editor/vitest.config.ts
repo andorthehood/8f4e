@@ -1,23 +1,15 @@
-import { createNodePreset } from '@8f4e/config/vitest';
-import { resolve } from 'path';
+import { getReporters, sharedTestConfig } from '@8f4e/config/vitest';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-	...createNodePreset({
-		root: __dirname,
-		include: ['src/**/*.{test,spec}.{ts,tsx}'],
-		additionalExclude: [
-			'src/**/testUtils.ts',
-			'src/**/testFixtures.ts',
-			'src/**/testHelpers.ts',
-			'src/**/__tests__/**/fixtures/**',
-			'packages/**',
-		],
-		typecheckEnabled: true,
-	}),
-	resolve: {
-		alias: {
-			'@8f4e/editor-state': resolve(__dirname, 'packages/editor-state/src/index.ts'),
+	test: {
+		...sharedTestConfig,
+		reporters: getReporters(),
+		include: ['src/**/*.test.ts', 'src/__tests__/**/*.test.ts'],
+		environment: 'node',
+		typecheck: {
+			enabled: true,
+			tsconfig: './tsconfig.test.json',
 		},
 	},
 });

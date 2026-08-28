@@ -16,7 +16,7 @@ The editor sprite-generator has several bundled bitmap fonts, but it does not in
 
 Adding it should follow the existing sprite-generator font pipeline instead of introducing a browser font dependency:
 
-- committed source glyph data under `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/`
+- committed source glyph data under `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/src/fonts/`
 - generated base64 bitmap metadata under each font's `generated/` directory
 - a `Font` union and `FONT_DEFINITIONS` entry so editor config can select it
 - third-party font attribution and license tracking
@@ -45,14 +45,14 @@ High-level approach:
 
 ### Step 2: Add sprite-generator font sources
 
-- Add `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/pixelcode/ascii.ts`.
-- Add `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/pixelcode/glyphs.ts`, either from compatible PixelCode glyphs or padded/adapted from the current fallback font.
+- Add `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/src/fonts/pixelcode/ascii.ts`.
+- Add `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/src/fonts/pixelcode/glyphs.ts`, either from compatible PixelCode glyphs or padded/adapted from the current fallback font.
 - Run the existing bitmap generation tool so `generated/ascii.ts` and `generated/glyphs.ts` are created.
 
 ### Step 3: Register the font
 
 - Add `pixelcode` to the `Font` type and `FONT_NAMES`.
-- Add a `FONT_DEFINITIONS.pixelcode` entry in `packages/editor/packages/web-ui/packages/sprite-generator/src/index.ts`.
+- Add a `FONT_DEFINITIONS.pixelcode` entry in `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/src/index.ts`.
 - Add test fixture coverage for the new font configuration.
 
 ### Step 4: Document attribution
@@ -85,10 +85,10 @@ High-level approach:
 
 ## Affected Components
 
-- `packages/editor/packages/web-ui/packages/sprite-generator/src/fonts/pixelcode/` - new font source and generated bitmap metadata.
-- `packages/editor/packages/web-ui/packages/sprite-generator/src/types.ts` - font id registration.
-- `packages/editor/packages/web-ui/packages/sprite-generator/src/index.ts` - font definition and lazy metadata loader.
-- `packages/editor/packages/web-ui/packages/sprite-generator/tests/` - fixture and font selection coverage.
+- `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/src/fonts/pixelcode/` - new font source and generated bitmap metadata.
+- `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/src/types.ts` - font id registration.
+- `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/src/index.ts` - font definition and lazy metadata loader.
+- `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/tests/` - fixture and font selection coverage.
 - `packages/editor/THIRD_PARTY_FONTS.md` - upstream attribution.
 - `packages/editor/licenses/` - PixelCode OFL license text.
 
@@ -102,8 +102,8 @@ High-level approach:
 ## Related Items
 
 - **Related**: `packages/editor/THIRD_PARTY_FONTS.md`
-- **Related**: `packages/editor/packages/web-ui/packages/sprite-generator/tools/import-bdf.mjs`
-- **Related**: `packages/editor/packages/web-ui/packages/sprite-generator/tools/generate-font-bitmaps.mjs`
+- **Related**: `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/tools/import-bdf.mjs`
+- **Related**: `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/tools/generate-font-bitmaps.mjs`
 
 ## References
 

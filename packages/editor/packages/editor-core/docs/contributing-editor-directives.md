@@ -39,11 +39,11 @@ There are two distinct concerns that must stay separate:
 
 Directive semantic code lives under:
 
-`packages/editor/packages/editor-state/src/features/code-blocks/features/directives/`
+`packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/directives/`
 
 Shared directive editing primitives live under:
 
-`packages/editor/packages/editor-state/src/features/code-blocks/features/directiveEditing/`
+`packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/directiveEditing/`
 
 Typical structure:
 
@@ -134,8 +134,8 @@ code = updateDirectiveArgs(code, 'group', ([groupName]) =>
 
 The main shared types are in:
 
-- `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/types.ts`
-- `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/registry.ts`
+- `packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/directives/types.ts`
+- `packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/directives/registry.ts`
 
 The derived directive state currently includes:
 
@@ -163,7 +163,7 @@ Then:
 
 1. Add a directive plugin in `plugin.ts`
 2. If needed, add argument-to-data helpers in `data.ts`
-3. Register the plugin in `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/registry.ts`
+3. Register the plugin in `packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/directives/registry.ts`
 4. Add tests in the same directive folder
 5. Update the user-facing docs in [editor-directives.md](./editor-directives.md)
 
@@ -182,7 +182,7 @@ Directive syntax parsing is centralized.
 
 The shared parser in:
 
-- `packages/editor/packages/editor-state/src/features/code-blocks/features/directives/utils.ts`
+- `packages/editor/packages/editor-core/packages/editor-state/src/features/code-blocks/features/directives/utils.ts`
 
 handles the common syntax:
 
@@ -198,7 +198,7 @@ unrelated directives on the same line.
 Directives should not re-parse their own comment syntax.
 
 Use the shared argument validators in
-`packages/editor/packages/editor-state/src/shared/editorDirectiveArgumentTypes.ts` for the
+`packages/editor/packages/editor-core/packages/editor-state/src/shared/editorDirectiveArgumentTypes.ts` for the
 canonical memory-id, memory-address, pointer-source, numeric, and element-count forms. This keeps argument contracts
 consistent across directives instead of accepting ad hoc string variants in individual `data.ts` files.
 

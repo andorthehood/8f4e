@@ -62,12 +62,12 @@ jobs:
           fi
           npx nx release --skip-publish
 
-          npx nx run app:build
+          npx nx run @8f4e/editor:build
           node scripts/log-bundle-sizes.mjs
           npx nx run @8f4e/examples:log-bytecode-size
           npx nx run @8f4e/examples:log-compiler-coverage-counts
           npx nx run @8f4e/compiler:docs-coverage
-          npx nx run-many --target=test --all --exclude=app,glugglugglug --parallel=2 --skip-nx-cache -- --coverage
+          npx nx run-many --target=test --all --exclude=@8f4e/editor,glugglugglug --parallel=2 --skip-nx-cache -- --coverage
           node scripts/log-test-coverage.mjs
 
           if [[ -n "$(git status --porcelain -- logs/bundle-sizes logs/bytecode-size logs/compiler-coverage-counts logs/tsdoc-coverage logs/test-coverage)" ]]; then
