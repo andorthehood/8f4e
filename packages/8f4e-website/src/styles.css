@@ -1,7 +1,14 @@
 body,
 html {
 	margin: 0;
-	background: #000;
+	background: #111;
+	color: #fff;
+	font-family: Georgia, serif;
+	font-size: 18px;
+	line-height: 1.25;
+}
+
+a {
 	color: #fff;
 }
 
@@ -25,7 +32,8 @@ main > p {
 
 main > p:first-of-type {
 	width: 30%;
-	max-width: 300px;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
 }
 
 main > img {
@@ -52,11 +60,17 @@ main > img {
 	grid-template-areas: "copy editor";
 }
 
+.editor-row--centered {
+	grid-template-columns: minmax(0, 70%);
+	grid-template-areas: "editor";
+	justify-content: center;
+}
+
 .editor-row > canvas {
 	grid-area: editor;
 	display: block;
 	width: 100%;
-	height: min(70vh, 700px);
+	height: clamp(500px, 70vh, 700px);
 	background: #000;
 	image-rendering: pixelated;
 	outline: none;
@@ -65,13 +79,59 @@ main > img {
 
 .editor-row > div {
 	grid-area: copy;
+	padding-right: 2rem;
+}
+
+.editor-row--reversed > div {
+	padding-right: 0;
+	padding-left: 2rem;
+}
+
+footer {
+	display: grid;
+	box-sizing: border-box;
+	width: 70%;
+	margin-right: auto;
+	margin-left: auto;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 2rem;
+	padding: 2rem;
+}
+
+footer h2 {
+	margin: 0 0 1rem;
+	font-size: inherit;
+	font-weight: normal;
+}
+
+footer ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 @media (max-width: 800px) {
+	main > p:first-of-type {
+		box-sizing: border-box;
+		width: 100%;
+		padding-right: 2rem;
+		padding-left: 2rem;
+	}
+
 	.editor-row {
 		grid-template-columns: 1fr;
 		grid-template-areas:
 			"editor"
 			"copy";
+	}
+
+	.editor-row > div,
+	.editor-row--reversed > div {
+		padding-right: 2rem;
+		padding-left: 2rem;
+	}
+
+	footer {
+		grid-template-columns: 1fr;
 	}
 }
