@@ -252,6 +252,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable arrows that point toward off-screen code blocks */
 	offscreenBlockArrows: boolean;
+
+	/** Enable/disable menu actions that open projects from disk or the project registry */
+	projectOpening: boolean;
 }
 
 /**

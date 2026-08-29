@@ -220,6 +220,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			consoleOverlay: false,
 			positionOffsetters: true,
 			offscreenBlockArrows: true,
+			projectOpening: true,
 		},
 		editorMode: 'edit',
 		editorConfig: {},

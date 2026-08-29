@@ -63,16 +63,26 @@ export const mainMenu: MenuGenerator = state => [
 		close: false,
 	},
 	{ divider: true },
-	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }, { divider: true }] : []),
-	{ title: 'Open From Disk', action: 'importProject', close: true, disabled: !state.callbacks.importProject },
-	{
-		title: 'Open Project',
-		action: 'openSubMenu',
-		payload: { menu: 'projectMenu' },
-		close: false,
-		disabled: !state.callbacks.getListOfProjects,
-	},
-	{ divider: true },
+	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }] : []),
+	...(state.featureFlags.editing && state.featureFlags.projectOpening ? [{ divider: true }] : []),
+	...(state.featureFlags.projectOpening
+		? [
+				{
+					title: 'Open From Disk',
+					action: 'importProject',
+					close: true,
+					disabled: !state.callbacks.importProject,
+				},
+				{
+					title: 'Open Project',
+					action: 'openSubMenu',
+					payload: { menu: 'projectMenu' },
+					close: false,
+					disabled: !state.callbacks.getListOfProjects,
+				},
+			]
+		: []),
+	...(state.featureFlags.editing || state.featureFlags.projectOpening ? [{ divider: true }] : []),
 	{ title: 'Export Project', action: 'exportProject', close: true, disabled: !state.callbacks.exportProject },
 	{
 		title: 'Export WebAssembly',

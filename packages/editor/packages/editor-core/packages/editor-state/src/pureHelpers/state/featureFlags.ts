@@ -17,6 +17,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	consoleOverlay: true,
 	positionOffsetters: true,
 	offscreenBlockArrows: true,
+	projectOpening: true,
 };
 
 /**

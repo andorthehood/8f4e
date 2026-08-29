@@ -10,6 +10,7 @@ const editorEntries = await Promise.all(
 		canvas,
 		editor: await mountDefaultEditor(canvas, {
 			captureWheel: false,
+			featureFlags: { projectOpening: false },
 			initialProjectUrl: canvas.dataset.projectUrl || undefined,
 			storage: window.localStorage,
 			storageNamespace: index === 0 ? '8f4e-website' : `8f4e-website-${index + 1}`,
