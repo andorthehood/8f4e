@@ -72,6 +72,8 @@ export { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 export interface Editor {
 	resize: (width: number, height: number) => void;
+	pauseRendering: () => void;
+	resumeRendering: () => void;
 	updateMemoryViews: (memoryRef: MemoryRef) => void;
 	getMemoryViews: () => MemoryViews;
 	dispose: () => void;
@@ -272,6 +274,8 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 
 	return {
 		resize,
+		pauseRendering: () => view.pauseRendering(),
+		resumeRendering: () => view.resumeRendering(),
 		updateMemoryViews: (memoryRef: MemoryRef) => {
 			currentMemoryRef = memoryRef instanceof WebAssembly.Memory ? memoryRef : null;
 			pluginServices.invalidateWasmExports();

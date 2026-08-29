@@ -65,6 +65,8 @@ export default async function init(
 	loadSpriteAtlas: (spriteData: SpriteData) => void;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
 	loadBackgroundEffect: (effect: ShaderUnderlayEffect | null) => void;
+	pauseRendering: () => void;
+	resumeRendering: () => void;
 	renderFrame: () => void;
 	destroy: () => void;
 }> {
@@ -164,7 +166,48 @@ export default async function init(
 		emitRenderStats(performance.now() - frameStartedAt);
 	});
 
-	engine.render(drawFrame);
+	let rendering = false;
+	let animationFrameRequest: number | null = null;
+	const renderNextFrame = () => {
+		animationFrameRequest = null;
+		if (!rendering) {
+			return;
+		}
+
+		try {
+			engine.renderFrame(drawFrame);
+		} catch (error) {
+			rendering = false;
+			throw error;
+		}
+
+		if (rendering) {
+			animationFrameRequest = requestAnimationFrame(renderNextFrame);
+		}
+	};
+	const pauseRendering = () => {
+		if (!rendering) {
+			return;
+		}
+
+		rendering = false;
+		if (animationFrameRequest !== null) {
+			cancelAnimationFrame(animationFrameRequest);
+			animationFrameRequest = null;
+		}
+	};
+	const resumeRendering = () => {
+		if (rendering) {
+			return;
+		}
+
+		rendering = true;
+		statsSampleStartTime = performance.now();
+		statsSampleStartFrameCount = renderedFrameCount;
+		renderNextFrame();
+	};
+
+	resumeRendering();
 
 	return {
 		resize: (width, height) => {
@@ -191,10 +234,13 @@ export default async function init(
 				background.clearEffect();
 			}
 		},
+		pauseRendering,
+		resumeRendering,
 		renderFrame: () => {
 			engine.renderFrame(drawFrame);
 		},
 		destroy: () => {
+			pauseRendering();
 			postProcess.destroy();
 			lines.destroy();
 			frameTextureLayer.destroy();
