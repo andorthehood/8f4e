@@ -50,6 +50,7 @@ describe('Feature Flags Integration', () => {
 		expect(result).toHaveProperty('modeToggling');
 		expect(result).toHaveProperty('modeOverlay');
 		expect(result).toHaveProperty('offscreenBlockArrows');
+		expect(result).toHaveProperty('projectOpening');
 
 		// Should merge correctly
 		expect(result.contextMenu).toBe(false);
@@ -61,6 +62,7 @@ describe('Feature Flags Integration', () => {
 		expect(result.modeToggling).toBe(true);
 		expect(result.modeOverlay).toBe(true);
 		expect(result.offscreenBlockArrows).toBe(true);
+		expect(result.projectOpening).toBe(true);
 	});
 
 	test('should preserve defaults when no mode is configured through feature flags', () => {

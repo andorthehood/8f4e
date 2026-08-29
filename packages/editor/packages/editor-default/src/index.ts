@@ -1,4 +1,4 @@
-import initEditor, { type Editor } from '@8f4e/editor-core';
+import initEditor, { type Editor, type EditorOptions } from '@8f4e/editor-core';
 import { createCompilerService } from './compiler-callback';
 import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
 import { getListOfProjects, getProject } from './examples/projectRegistry';
@@ -19,6 +19,7 @@ export type DefaultEditorInstance = Editor;
 export interface DefaultEditorMountOptions {
 	/** Capture wheel gestures for viewport panning. Disable this for editors embedded in scrolling pages. */
 	captureWheel?: boolean;
+	featureFlags?: EditorOptions['featureFlags'];
 	initialProjectUrl?: string;
 	storage?: Storage;
 	storageNamespace?: string;
@@ -28,6 +29,7 @@ export async function mountDefaultEditor(
 	canvas: HTMLCanvasElement,
 	{
 		captureWheel,
+		featureFlags,
 		initialProjectUrl,
 		storage = localStorage,
 		storageNamespace = DEFAULT_STORAGE_NAMESPACE,
@@ -39,6 +41,7 @@ export async function mountDefaultEditor(
 	try {
 		editor = await initEditor(canvas, {
 			captureWheel,
+			featureFlags,
 			runtimeRegistry: createRuntimeRegistry(compilerService),
 			callbacks: {
 				getListOfModules,
