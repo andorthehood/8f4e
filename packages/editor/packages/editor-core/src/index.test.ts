@@ -35,6 +35,8 @@ const view = {
 	loadSpriteAtlas: vi.fn(),
 	loadPostProcessEffect: vi.fn(),
 	loadBackgroundEffect: vi.fn(),
+	pauseRendering: vi.fn(),
+	resumeRendering: vi.fn(),
 	renderFrame: vi.fn(),
 	destroy: vi.fn(),
 };
@@ -105,6 +107,8 @@ describe('editor init', () => {
 		store.set.mockClear();
 		store.dispose.mockClear();
 		view.resize.mockClear();
+		view.pauseRendering.mockClear();
+		view.resumeRendering.mockClear();
 		view.renderFrame.mockClear();
 		view.destroy.mockClear();
 		renderProjection.dispose.mockClear();
@@ -137,6 +141,21 @@ describe('editor init', () => {
 		expect(view.resize).toHaveBeenCalledWith(640, 480);
 		expect(view.renderFrame).toHaveBeenCalledOnce();
 		expect(view.resize.mock.invocationCallOrder[0]).toBeLessThan(view.renderFrame.mock.invocationCallOrder[0]);
+	});
+
+	it('exposes rendering lifecycle controls for this editor instance', async () => {
+		const { default: init } = await import('./index');
+		const canvas = { width: 640, height: 480 } as HTMLCanvasElement;
+		const editor = await init(canvas, {
+			runtimeRegistry: {},
+			callbacks: { loadSession: async () => null },
+		});
+
+		editor.pauseRendering();
+		editor.resumeRendering();
+
+		expect(view.pauseRendering).toHaveBeenCalledOnce();
+		expect(view.resumeRendering).toHaveBeenCalledOnce();
 	});
 
 	it('adapts to the canvas display size and stops observing when disposed', async () => {

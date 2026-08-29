@@ -20,6 +20,8 @@ const mocks = vi.hoisted(() => {
 		setSpriteAtlas: vi.fn(),
 		drawSprite: vi.fn(),
 		render: vi.fn(),
+		pauseRendering: vi.fn(),
+		resumeRendering: vi.fn(),
 		renderFrame: vi.fn((drawFrame: () => void) => {
 			for (const hook of engine.hooks.preDraw) hook();
 			drawFrame();
@@ -197,6 +199,27 @@ describe('web-ui init', () => {
 		expect(mocks.resolveWireColors).toHaveBeenCalledWith(state.editorConfig.color);
 		expect(mocks.drawConnections).toHaveBeenCalledWith(mocks.lines, mocks.wireColors, frameState, memoryViews);
 		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(expect.anything(), frameState);
+	});
+
+	it('pauses and resumes the engine render loop', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState();
+		const memoryViews = {
+			int8: new Int8Array(0),
+			int16: new Int16Array(0),
+			int32: new Int32Array(0),
+			uint8: new Uint8Array(0),
+			uint16: new Uint16Array(0),
+			float32: new Float32Array(0),
+			float64: new Float64Array(0),
+		};
+		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+
+		view.pauseRendering();
+		view.resumeRendering();
+
+		expect(mocks.engine.pauseRendering).toHaveBeenCalledOnce();
+		expect(mocks.engine.resumeRendering).toHaveBeenCalledOnce();
 	});
 
 	it('re-resolves wire colors from the current theme when the atlas is loaded', async () => {

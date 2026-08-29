@@ -65,6 +65,8 @@ export default async function init(
 	loadSpriteAtlas: (spriteData: SpriteData) => void;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
 	loadBackgroundEffect: (effect: ShaderUnderlayEffect | null) => void;
+	pauseRendering: () => void;
+	resumeRendering: () => void;
 	renderFrame: () => void;
 	destroy: () => void;
 }> {
@@ -190,6 +192,12 @@ export default async function init(
 			} else {
 				background.clearEffect();
 			}
+		},
+		pauseRendering: () => {
+			engine.pauseRendering();
+		},
+		resumeRendering: () => {
+			engine.resumeRendering();
 		},
 		renderFrame: () => {
 			engine.renderFrame(drawFrame);
