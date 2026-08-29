@@ -162,14 +162,15 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		}
 	};
 
-	const centerViewportOnSelectedCodeBlock = () => {
-		const selectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
-		if (!selectedCodeBlock) {
+	const centerViewportOnSelectedOrHomeCodeBlock = () => {
+		const targetCodeBlock =
+			state.codeBlockRendering.selectedCodeBlock ?? state.codeBlockRendering.codeBlocks.find(block => block.isHome);
+		if (!targetCodeBlock) {
 			return;
 		}
 
-		const { x, y } = centerViewportOnCodeBlock(state.viewport, selectedCodeBlock, {
-			alignment: selectedCodeBlock.homeAlignment,
+		const { x, y } = centerViewportOnCodeBlock(state.viewport, targetCodeBlock, {
+			alignment: targetCodeBlock.homeAlignment,
 		});
 		updateViewport(state, x, y, events);
 	};
@@ -354,10 +355,9 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		store.set('codeBlockRendering.rootCodeBlocks', rootCodeBlocks);
 		store.set('codeBlockRendering.codeBlocks', rootCodeBlocks);
 
-		// Center viewport on first @home block, or default to (0,0)
+		// Center viewport on first @home block without selecting it, or default to (0,0).
 		const homeBlock = rootCodeBlocks.find(block => block.isHome);
 		if (homeBlock) {
-			store.set('codeBlockRendering.selectedCodeBlock', homeBlock);
 			const { x, y } = centerViewportOnCodeBlock(state.viewport, homeBlock, {
 				alignment: homeBlock.homeAlignment,
 			});
@@ -434,7 +434,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 	events.on('runtimeInitialized', updateAllBlockDerivedState);
 	events.on('spriteSheetRerendered', () => {
 		recomputePixelCoordinatesAndBlockDerivedState();
-		centerViewportOnSelectedCodeBlock();
+		centerViewportOnSelectedOrHomeCodeBlock();
 	});
 	store.subscribe('codeErrors', updateErrorMessages);
 	store.subscribe('initialProjectState', populateCodeBlocks);

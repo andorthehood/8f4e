@@ -321,7 +321,7 @@ describe('code block rendering home directive', () => {
 		expect(state.codeBlockRendering.codeBlocks.map(block => block.name)).toEqual(['replacement']);
 	});
 
-	it('centers the initial viewport using the home alignment hint', () => {
+	it('centers the initial viewport using the home alignment hint without selecting the block', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
@@ -355,14 +355,14 @@ describe('code block rendering home directive', () => {
 		const [homeBlock] = state.codeBlockRendering.codeBlocks;
 		expect(homeBlock.isHome).toBe(true);
 		expect(homeBlock.homeAlignment).toBe('top');
-		expect(state.codeBlockRendering.selectedCodeBlock).toBe(homeBlock);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBeUndefined();
 		expect(centerViewportOnCodeBlock(state.viewport, homeBlock, { alignment: 'top' })).toEqual({
 			x: state.viewport.x,
 			y: state.viewport.y,
 		});
 	});
 
-	it('keeps the selected home block centered after a font grid change', () => {
+	it('keeps the unselected home block centered after a font grid change', () => {
 		const state = createMockState({
 			initialProjectState: {
 				...EMPTY_DEFAULT_PROJECT,
@@ -393,7 +393,7 @@ describe('code block rendering home directive', () => {
 		store.set('initialProjectState', state.initialProjectState);
 
 		const [homeBlock] = state.codeBlockRendering.codeBlocks;
-		expect(state.codeBlockRendering.selectedCodeBlock).toBe(homeBlock);
+		expect(state.codeBlockRendering.selectedCodeBlock).toBeUndefined();
 
 		state.viewport.vGrid = 6;
 		state.viewport.hGrid = 12;
