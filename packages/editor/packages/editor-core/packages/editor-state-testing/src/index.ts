@@ -221,6 +221,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			positionOffsetters: true,
 			offscreenBlockArrows: true,
 			projectOpening: true,
+			projectCreation: true,
 		},
 		editorMode: 'edit',
 		editorConfig: {},

@@ -38,6 +38,7 @@ describe('Feature Flags Configuration', () => {
 		expect(defaultFeatureFlags.modeOverlay).toBe(true);
 		expect(defaultFeatureFlags.offscreenBlockArrows).toBe(true);
 		expect(defaultFeatureFlags.projectOpening).toBe(true);
+		expect(defaultFeatureFlags.projectCreation).toBe(true);
 	});
 
 	test('validateFeatureFlags should preserve enabled flags when disabled flags are specified', () => {
@@ -56,6 +57,7 @@ describe('Feature Flags Configuration', () => {
 		expect(result.modeOverlay).toBe(true);
 		expect(result.offscreenBlockArrows).toBe(true);
 		expect(result.projectOpening).toBe(true);
+		expect(result.projectCreation).toBe(true);
 	});
 
 	test('validateFeatureFlags should preserve inactive editing unless explicitly enabled', () => {

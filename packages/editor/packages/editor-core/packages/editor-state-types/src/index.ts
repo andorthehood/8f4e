@@ -255,6 +255,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable menu actions that open projects from disk or the project registry */
 	projectOpening: boolean;
+
+	/** Enable/disable the menu action that creates a new project */
+	projectCreation: boolean;
 }
 
 /**
