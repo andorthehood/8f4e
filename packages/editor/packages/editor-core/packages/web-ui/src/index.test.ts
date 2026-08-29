@@ -1,7 +1,7 @@
 import { createMockState } from '@8f4e/editor-state-testing';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const renderDataSnapshot = { codeBlocks: new Map() };
 const renderData: WebUiRenderDataSource = { getSnapshot: () => renderDataSnapshot };
@@ -19,9 +19,6 @@ const mocks = vi.hoisted(() => {
 		},
 		setSpriteAtlas: vi.fn(),
 		drawSprite: vi.fn(),
-		render: vi.fn(),
-		pauseRendering: vi.fn(),
-		resumeRendering: vi.fn(),
 		renderFrame: vi.fn((drawFrame: () => void) => {
 			for (const hook of engine.hooks.preDraw) hook();
 			drawFrame();
@@ -57,6 +54,8 @@ const mocks = vi.hoisted(() => {
 		wireHighlighted: [0.4, 0.5, 0.6, 1] as const,
 	};
 	const resolveWireColors = vi.fn(() => wireColors);
+	const requestAnimationFrame = vi.fn(() => 23);
+	const cancelAnimationFrame = vi.fn();
 
 	return {
 		engine,
@@ -66,6 +65,8 @@ const mocks = vi.hoisted(() => {
 		postProcess,
 		wireColors,
 		resolveWireColors,
+		requestAnimationFrame,
+		cancelAnimationFrame,
 		// biome-ignore lint/complexity/useArrowFunction: Engine is constructed with new in the code under test.
 		Engine: vi.fn(function () {
 			engine.hooks.preDraw.length = 0;
@@ -172,7 +173,10 @@ function createSpriteData() {
 describe('web-ui init', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		vi.stubGlobal('requestAnimationFrame', mocks.requestAnimationFrame);
+		vi.stubGlobal('cancelAnimationFrame', mocks.cancelAnimationFrame);
 	});
+	afterEach(() => vi.unstubAllGlobals());
 
 	it('renders one frame with the current state on demand', async () => {
 		const { default: init } = await import('./index');
@@ -201,7 +205,7 @@ describe('web-ui init', () => {
 		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(expect.anything(), frameState);
 	});
 
-	it('pauses and resumes the engine render loop', async () => {
+	it('pauses and resumes its animation frame loop idempotently', async () => {
 		const { default: init } = await import('./index');
 		const state = createMockState();
 		const memoryViews = {
@@ -214,12 +218,22 @@ describe('web-ui init', () => {
 			float64: new Float64Array(0),
 		};
 		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+		expect(mocks.engine.renderFrame).toHaveBeenCalledOnce();
+		expect(mocks.requestAnimationFrame).toHaveBeenCalledOnce();
 
 		view.pauseRendering();
-		view.resumeRendering();
+		view.pauseRendering();
+		expect(mocks.cancelAnimationFrame).toHaveBeenCalledOnce();
+		expect(mocks.cancelAnimationFrame).toHaveBeenCalledWith(23);
 
-		expect(mocks.engine.pauseRendering).toHaveBeenCalledOnce();
-		expect(mocks.engine.resumeRendering).toHaveBeenCalledOnce();
+		view.resumeRendering();
+		view.resumeRendering();
+		expect(mocks.engine.renderFrame).toHaveBeenCalledTimes(2);
+		expect(mocks.requestAnimationFrame).toHaveBeenCalledTimes(2);
+
+		view.destroy();
+		expect(mocks.cancelAnimationFrame).toHaveBeenCalledTimes(2);
+		expect(mocks.engine.destroy).toHaveBeenCalledOnce();
 	});
 
 	it('re-resolves wire colors from the current theme when the atlas is loaded', async () => {
@@ -271,8 +285,6 @@ describe('web-ui init', () => {
 			onRenderStats,
 			renderStatsIntervalFrames: 2,
 		});
-
-		view.renderFrame();
 		expect(onRenderStats).not.toHaveBeenCalled();
 
 		view.renderFrame();
@@ -286,6 +298,9 @@ describe('web-ui init', () => {
 			spriteCount: 100,
 			uploadedInstanceBytes: 2000,
 		});
+
+		view.renderFrame();
+		expect(onRenderStats).toHaveBeenCalledTimes(1);
 		performanceNow.mockRestore();
 	});
 
