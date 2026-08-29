@@ -63,8 +63,12 @@ export const mainMenu: MenuGenerator = state => [
 		close: false,
 	},
 	{ divider: true },
-	...(state.featureFlags.editing ? [{ title: 'New Project', action: 'new', close: true }] : []),
-	...(state.featureFlags.editing && state.featureFlags.projectOpening ? [{ divider: true }] : []),
+	...(state.featureFlags.editing && state.featureFlags.projectCreation
+		? [{ title: 'New Project', action: 'new', close: true }]
+		: []),
+	...(state.featureFlags.editing && state.featureFlags.projectCreation && state.featureFlags.projectOpening
+		? [{ divider: true }]
+		: []),
 	...(state.featureFlags.projectOpening
 		? [
 				{
@@ -82,7 +86,9 @@ export const mainMenu: MenuGenerator = state => [
 				},
 			]
 		: []),
-	...(state.featureFlags.editing || state.featureFlags.projectOpening ? [{ divider: true }] : []),
+	...((state.featureFlags.editing && state.featureFlags.projectCreation) || state.featureFlags.projectOpening
+		? [{ divider: true }]
+		: []),
 	{ title: 'Export Project', action: 'exportProject', close: true, disabled: !state.callbacks.exportProject },
 	{
 		title: 'Export WebAssembly',
