@@ -1,4 +1,5 @@
 import type { Position, Viewport, ViewportBlockAlignment } from '@8f4e/editor-state-types';
+import roundToGrid from './roundToGrid';
 
 /**
  * Minimal positional data required for viewport centering
@@ -19,14 +20,14 @@ export interface CenterViewportOnCodeBlockOptions {
 /**
  * Calculates the viewport position needed to center a given code block, with optional viewport anchor hints.
  *
- * For blocks smaller than the viewport, perfect centering is achieved. For blocks
+ * For blocks smaller than the viewport, centering is rounded to the nearest grid lines. For blocks
  * larger than the viewport, the block is aligned near the top with a margin equal
  * to 25% of the viewport height, rounded to whole rows, while the bottom may
  * extend beyond the viewport.
  *
  * @param viewport - The viewport dimensions and grid sizing to center within
  * @param codeBlock - The code block to center on
- * @returns The viewport position that centers the code block
+ * @returns The nearest grid-aligned viewport position that centers the code block
  *
  * @remarks
  * **Centering Behavior:**
@@ -42,6 +43,7 @@ export interface CenterViewportOnCodeBlockOptions {
  * **Implementation Notes:**
  * - This function is pure and does not mutate the viewport parameter
  * - Coordinates use pixels, not grid units (grid conversion happens elsewhere)
+ * - The returned coordinates are rounded to the nearest grid lines
  * - Negative viewport coordinates are allowed (viewport can pan anywhere)
  */
 export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
@@ -74,8 +76,7 @@ export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
 				? oversizedBlockTop
 				: Math.min(blockTop, idealViewportY);
 
-	return {
-		x: Math.round(idealViewportX),
-		y: Math.round(constrainedViewportY),
-	};
+	const [x, y] = roundToGrid(idealViewportX, constrainedViewportY, viewport);
+
+	return { x, y };
 }
