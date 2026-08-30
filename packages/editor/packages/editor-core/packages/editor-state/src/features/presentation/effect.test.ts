@@ -124,8 +124,8 @@ describe('presentation effect', () => {
 		vi.advanceTimersByTime(2000);
 		scheduledFrame?.(2016);
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[0]);
-		expect(state.viewport.x).toBe(10);
-		expect(state.viewport.y).toBe(140);
+		expect(state.viewport.x).toBe(8);
+		expect(state.viewport.y).toBe(144);
 
 		vi.advanceTimersByTime(3000);
 		scheduledFrame?.(5016);
@@ -134,8 +134,8 @@ describe('presentation effect', () => {
 		expect(state.presentation.totalStops).toBe(2);
 		expect(state.presentation.remainingMs).toBe(3000);
 		expect(state.presentation.deadlineAt).toBe(Date.now() + 3000);
-		expect(state.viewportAnimation.targetX).toBe(310);
-		expect(state.viewportAnimation.targetY).toBe(440);
+		expect(state.viewportAnimation.targetX).toBe(312);
+		expect(state.viewportAnimation.targetY).toBe(448);
 		expect(state.viewportAnimation.durationMs).toBe(2000);
 
 		cleanup();
@@ -205,14 +205,14 @@ describe('presentation effect', () => {
 
 		presentation(store, events);
 		store.set('editorMode', 'presentation');
-		expect(state.viewportAnimation.targetX).toBe(85);
+		expect(state.viewportAnimation.targetX).toBe(88);
 		expect(state.presentation.activeStopIndex).toBe(0);
 		expect(state.presentation.totalStops).toBe(2);
 
 		vi.advanceTimersByTime(5000);
 		scheduledFrame?.(5016);
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
-		expect(state.viewportAnimation.targetX).toBe(235);
+		expect(state.viewportAnimation.targetX).toBe(232);
 		expect(state.presentation.activeStopIndex).toBe(1);
 	});
 
@@ -279,14 +279,14 @@ describe('presentation effect', () => {
 
 		presentation(store, events);
 		store.set('editorMode', 'presentation');
-		expect(state.viewportAnimation.targetY).toBe(190);
+		expect(state.viewportAnimation.targetY).toBe(192);
 		expect(state.presentation.activeStopIndex).toBe(0);
 		expect(state.presentation.totalStops).toBe(2);
 
 		vi.advanceTimersByTime(5000);
 		scheduledFrame?.(5016);
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[1]);
-		expect(state.viewportAnimation.targetY).toBe(390);
+		expect(state.viewportAnimation.targetY).toBe(384);
 		expect(state.presentation.activeStopIndex).toBe(1);
 	});
 
@@ -360,15 +360,15 @@ describe('presentation effect', () => {
 		expect(state.presentation.activeStopIndex).toBe(1);
 		expect(state.presentation.totalStops).toBe(2);
 		expect(state.presentation.remainingMs).toBe(3000);
-		expect(state.viewportAnimation.targetX).toBe(310);
-		expect(state.viewportAnimation.targetY).toBe(440);
+		expect(state.viewportAnimation.targetX).toBe(312);
+		expect(state.viewportAnimation.targetY).toBe(448);
 
 		eventHandlers.get('previousPresentationStop')?.();
 		expect(state.codeBlockRendering.selectedCodeBlock).toBe(state.codeBlockRendering.codeBlocks[0]);
 		expect(state.presentation.activeStopIndex).toBe(0);
 		expect(state.presentation.remainingMs).toBe(5000);
-		expect(state.viewportAnimation.targetX).toBe(10);
-		expect(state.viewportAnimation.targetY).toBe(140);
+		expect(state.viewportAnimation.targetX).toBe(8);
+		expect(state.viewportAnimation.targetY).toBe(144);
 	});
 
 	it('restarts the current stop timer after a manual skip', () => {

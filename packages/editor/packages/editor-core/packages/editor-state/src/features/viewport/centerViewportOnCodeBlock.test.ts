@@ -25,21 +25,21 @@ describe('centerViewportOnCodeBlock', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 100, 200, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -200, y: -150 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -200, y: -144 });
 	});
 
 	it('returns the centered position for a block at the origin', () => {
 		const viewport = createMockViewport(0, 0, 400, 300);
 		const codeBlock = createMockCodeBlock(0, 0, 100, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -150, y: -100 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -152, y: -96 });
 	});
 
 	it('returns the centered horizontal position for a wide block', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(0, 0, 1000, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).x).toBe(100);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).x).toBe(104);
 	});
 
 	it('places the code block center on the left quarter of the viewport when aligned left', () => {
@@ -60,28 +60,28 @@ describe('centerViewportOnCodeBlock', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 200, 100, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock, { alignment: 'top' }).y).toBe(100);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock, { alignment: 'top' }).y).toBe(96);
 	});
 
 	it('places the code block center on the bottom quarter of the viewport when aligned bottom', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 200, 100, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock, { alignment: 'bottom' }).y).toBe(-200);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock, { alignment: 'bottom' }).y).toBe(-192);
 	});
 
 	it('centers a small block vertically when it fits in the viewport', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 200, 100, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-50);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-48);
 	});
 
 	it('adds 25% viewport-height top margin for large blocks, rounded to rows', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 100, 100, 800);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-44);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-48);
 	});
 
 	it('keeps a rounded 25% viewport-height margin above a tall block at the origin', () => {
@@ -95,42 +95,42 @@ describe('centerViewportOnCodeBlock', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 200, 200, 100, 30, 40);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -170, y: -10 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -168, y: -16 });
 	});
 
 	it('applies the rounded 25% viewport-height top margin with offsetY for large blocks', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(0, 100, 100, 800, 0, 50);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(6);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(0);
 	});
 
 	it('handles zero-sized blocks', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 100, 0, 0);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -300, y: -200 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -296, y: -192 });
 	});
 
 	it('handles blocks with negative coordinates', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(-200, -100, 100, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -550, y: -350 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -552, y: -352 });
 	});
 
 	it('handles negative offsets', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 100, 100, 100, -20, -30);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -270, y: -180 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -272, y: -176 });
 	});
 
 	it('keeps the rounded 25% viewport-height margin for oversized blocks in a very small viewport', () => {
 		const viewport = createMockViewport(0, 0, 50, 50);
 		const codeBlock = createMockCodeBlock(100, 100, 100, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: 125, y: 84 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: 128, y: 80 });
 	});
 
 	it('does not mutate the provided viewport object', () => {
@@ -143,41 +143,51 @@ describe('centerViewportOnCodeBlock', () => {
 		expect(viewport).toBe(originalViewport);
 		expect(viewport.x).toBe(999);
 		expect(viewport.y).toBe(888);
-		expect(nextViewport).toEqual({ x: -200, y: -150 });
+		expect(nextViewport).toEqual({ x: -200, y: -144 });
 	});
 
 	it('handles square viewport and square block', () => {
 		const viewport = createMockViewport(0, 0, 600, 600);
 		const codeBlock = createMockCodeBlock(400, 400, 200, 200);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: 200, y: 200 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: 200, y: 208 });
 	});
 
 	it('handles wide viewport and narrow block', () => {
 		const viewport = createMockViewport(0, 0, 1200, 400);
 		const codeBlock = createMockCodeBlock(100, 100, 50, 100);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).x).toBe(-475);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).x).toBe(-472);
 	});
 
 	it('handles tall viewport and short block', () => {
 		const viewport = createMockViewport(0, 0, 400, 1000);
 		const codeBlock = createMockCodeBlock(100, 100, 100, 50);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-375);
+		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-368);
 	});
 
 	it('handles a typical desktop viewport', () => {
 		const viewport = createMockViewport(0, 0, 1920, 1080);
 		const codeBlock = createMockCodeBlock(500, 300, 400, 300);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -260, y: -90 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -256, y: -96 });
 	});
 
 	it('handles a mobile-sized viewport', () => {
 		const viewport = createMockViewport(0, 0, 375, 667);
 		const codeBlock = createMockCodeBlock(200, 200, 300, 400);
 
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: 163, y: 67 });
+		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: 160, y: 64 });
+	});
+
+	it('always returns coordinates aligned to the viewport grid', () => {
+		const viewport = createMockViewport(0, 0, 803, 607);
+		const codeBlock = createMockCodeBlock(103, 207, 197, 99, 3, 5);
+
+		const position = centerViewportOnCodeBlock(viewport, codeBlock);
+
+		expect(Math.abs(position.x % viewport.vGrid)).toBe(0);
+		expect(Math.abs(position.y % viewport.hGrid)).toBe(0);
 	});
 });

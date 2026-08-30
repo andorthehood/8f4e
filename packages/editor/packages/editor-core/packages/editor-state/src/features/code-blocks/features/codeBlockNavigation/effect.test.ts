@@ -477,8 +477,8 @@ describe('codeBlockNavigation', () => {
 			goHome(state);
 
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(firstHome);
-			expect(state.viewport.x).toBe(50);
-			expect(state.viewport.y).toBe(50);
+			expect(state.viewport.x).toBe(48);
+			expect(state.viewport.y).toBe(48);
 		});
 
 		it('should honor home alignment hints when centering the viewport', () => {
@@ -506,8 +506,8 @@ describe('codeBlockNavigation', () => {
 			goHome(state);
 
 			expect(state.codeBlockRendering.selectedCodeBlock).toBe(homeBlock);
-			expect(state.viewport.x).toBe(50);
-			expect(state.viewport.y).toBe(100);
+			expect(state.viewport.x).toBe(48);
+			expect(state.viewport.y).toBe(96);
 		});
 
 		it('should dispatch viewportChanged after goHome changes the viewport', () => {
