@@ -13,18 +13,29 @@ html {
 	color: #fff;
 	font-family: "Departure Mono", monospace;
 	font-size: 28px;
-	line-height: 1.25;
+	line-height: 1;
 }
 
 a {
 	color: #fff;
 }
 
+::selection {
+	background: #333;
+}
+
+p {
+	margin-top: 0;
+}
+
 .logo {
+	-webkit-user-drag: none;
+	user-select: none;
 	image-rendering: pixelated;
 	width: 216px;
 	height: auto;
 	display: block;
+	padding-bottom: 1rem;
 }
 
 main {
@@ -40,7 +51,6 @@ main > p {
 
 main > p:first-of-type {
 	width: 50%;
-	margin-top: 1rem;
 	margin-bottom: 2rem;
 }
 
@@ -93,6 +103,21 @@ main > img {
 .editor-row--reversed > div {
 	padding-right: 0;
 	padding-left: 2rem;
+}
+
+.open-in-editor-button {
+	display: block;
+	width: fit-content;
+	margin-top: 1rem;
+	border: 2px solid currentColor;
+	padding: 0.5rem;
+	text-decoration: none;
+}
+
+.open-in-editor-button:hover,
+.open-in-editor-button:focus-visible {
+	background: #fff;
+	color: #111;
 }
 
 footer {
