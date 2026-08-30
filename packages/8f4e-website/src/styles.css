@@ -1,6 +1,6 @@
 @font-face {
 	font-family: "Departure Mono";
-	src: url("https://cdn.polgarand.org/fonts/DepartureMono-Regular.woff") format("woff");
+	src: url("https://cdn.polgarand.org/fonts/DepartureMono14-Regular.woff2") format("woff2");
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
@@ -12,7 +12,7 @@ html {
 	background: #111;
 	color: #fff;
 	font-family: "Departure Mono", monospace;
-	font-size: 16.5px;
+	font-size: 28px;
 	line-height: 1.25;
 }
 
@@ -39,7 +39,7 @@ main > p {
 }
 
 main > p:first-of-type {
-	width: 30%;
+	width: 50%;
 	margin-top: 1rem;
 	margin-bottom: 2rem;
 }
