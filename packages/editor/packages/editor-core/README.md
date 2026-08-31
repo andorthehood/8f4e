@@ -15,10 +15,16 @@ renderers can replace it.
 - Translate DOM input data into internal event payloads (coordinates, movement deltas, button state, canvas size).
 - Initialize the UI renderer with state and memory views, and forward resize and post-process events.
 - Observe the canvas's CSS dimensions and adapt the drawing buffer and editor viewport when its host resizes it.
-- Expose state access, memory view updates, and state machine callbacks as extension points.
+- Expose state access, memory view updates, rendering lifecycle controls, and state machine callbacks as extension
+  points.
 
 Wheel input pans the editor viewport and prevents page scrolling by default. Embedded hosts can set
 `captureWheel: false` when initializing the editor to leave wheel input and scrolling to the surrounding page.
+
+Hosts can pause rendering without releasing memory through `pauseRendering()`. `releaseRenderingResources()` also
+releases reloadable GPU textures and dynamic buffers while preserving the last frame in the canvas drawing buffer;
+`releaseRenderingResourcesAndDrawingBuffer()` additionally discards that drawing buffer. `resumeRendering()` restores
+either release level and applies any canvas resize that happened while resources were released.
 
 ## Docs
 

@@ -73,6 +73,10 @@ export { updateStateWithSpriteData } from './updateStateWithSpriteData';
 export interface Editor {
 	resize: (width: number, height: number) => void;
 	pauseRendering: () => void;
+	/** Releases reloadable GPU resources while preserving the canvas drawing buffer and its last rendered frame. */
+	releaseRenderingResources: () => void;
+	/** Releases reloadable GPU resources and the canvas drawing buffer. */
+	releaseRenderingResourcesAndDrawingBuffer: () => void;
 	resumeRendering: () => void;
 	updateMemoryViews: (memoryRef: MemoryRef) => void;
 	getMemoryViews: () => MemoryViews;
@@ -247,9 +251,11 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 	let currentCanvasSize: CanvasSize | null = null;
 	const resize = (width: number, height: number) => {
 		events.dispatch('resize', { canvasWidth: width, canvasHeight: height });
-		view.resize(width, height);
+		const resized = view.resize(width, height);
 		currentCanvasSize = { width, height };
-		view.renderFrame();
+		if (resized) {
+			view.renderFrame();
+		}
 	};
 	const initialCanvasSize = getCanvasDisplaySize(canvas) ?? {
 		width: canvas.width,
@@ -275,6 +281,8 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 	return {
 		resize,
 		pauseRendering: () => view.pauseRendering(),
+		releaseRenderingResources: () => view.releaseRenderingResources(),
+		releaseRenderingResourcesAndDrawingBuffer: () => view.releaseRenderingResourcesAndDrawingBuffer(),
 		resumeRendering: () => view.resumeRendering(),
 		updateMemoryViews: (memoryRef: MemoryRef) => {
 			currentMemoryRef = memoryRef instanceof WebAssembly.Memory ? memoryRef : null;

@@ -25,6 +25,8 @@ const mocks = vi.hoisted(() => {
 			for (const hook of engine.hooks.postDraw) hook();
 		}),
 		resize: vi.fn(),
+		releaseRenderingMemory: vi.fn(),
+		restoreRenderingMemory: vi.fn(),
 		destroy: vi.fn(),
 	};
 	const background = {
@@ -38,15 +40,18 @@ const mocks = vi.hoisted(() => {
 		}),
 		uploadRgba8Texture: vi.fn(() => ({ texture: {}, width: 128, height: 128, filter: 'nearest' })),
 		drawTexture: vi.fn(),
+		releaseMemory: vi.fn(),
 		destroy: vi.fn(),
 	};
 	const lines = {
 		drawLine: vi.fn(),
+		releaseMemory: vi.fn(),
 		destroy: vi.fn(),
 	};
 	const postProcess = {
 		setEffect: vi.fn(),
 		clearEffect: vi.fn(),
+		releaseMemory: vi.fn(),
 		destroy: vi.fn(),
 	};
 	const wireColors = {
@@ -234,6 +239,69 @@ describe('web-ui init', () => {
 		view.destroy();
 		expect(mocks.cancelAnimationFrame).toHaveBeenCalledTimes(2);
 		expect(mocks.engine.destroy).toHaveBeenCalledOnce();
+	});
+
+	it('releases reloadable rendering resources while preserving the canvas drawing buffer', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState();
+		const memoryViews = {
+			int8: new Int8Array(0),
+			int16: new Int16Array(0),
+			int32: new Int32Array(0),
+			uint8: new Uint8Array(0),
+			uint16: new Uint16Array(0),
+			float32: new Float32Array(0),
+			float64: new Float64Array(0),
+		};
+		const canvas = { width: 640, height: 480 } as HTMLCanvasElement;
+		const view = await init(state, renderData, canvas, memoryViews, createSpriteData());
+
+		view.releaseRenderingResources();
+		view.releaseRenderingResources();
+
+		expect(mocks.cancelAnimationFrame).toHaveBeenCalledOnce();
+		expect(mocks.postProcess.releaseMemory).toHaveBeenCalledOnce();
+		expect(mocks.frameTextureLayer.releaseMemory).toHaveBeenCalledOnce();
+		expect(mocks.lines.releaseMemory).toHaveBeenCalledOnce();
+		expect(mocks.engine.releaseRenderingMemory).toHaveBeenCalledOnce();
+		expect(canvas).toEqual(expect.objectContaining({ width: 640, height: 480 }));
+
+		view.resumeRendering();
+		view.resumeRendering();
+
+		expect(mocks.engine.restoreRenderingMemory).toHaveBeenCalledOnce();
+		expect(mocks.engine.resize).not.toHaveBeenCalled();
+		expect(mocks.engine.renderFrame).toHaveBeenCalledTimes(2);
+	});
+
+	it('can also release the drawing buffer and apply the latest deferred size when resumed', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState();
+		const memoryViews = {
+			int8: new Int8Array(0),
+			int16: new Int16Array(0),
+			int32: new Int32Array(0),
+			uint8: new Uint8Array(0),
+			uint16: new Uint16Array(0),
+			float32: new Float32Array(0),
+			float64: new Float64Array(0),
+		};
+		const canvas = { width: 640, height: 480 } as HTMLCanvasElement;
+		const view = await init(state, renderData, canvas, memoryViews, createSpriteData());
+
+		view.releaseRenderingResourcesAndDrawingBuffer();
+		view.releaseRenderingResourcesAndDrawingBuffer();
+
+		expect(canvas).toEqual(expect.objectContaining({ width: 1, height: 1 }));
+		expect(view.resize(800, 600)).toBe(false);
+		expect(mocks.engine.resize).not.toHaveBeenCalled();
+
+		view.resumeRendering();
+
+		expect(mocks.engine.restoreRenderingMemory).toHaveBeenCalledOnce();
+		expect(mocks.engine.resize).toHaveBeenCalledOnce();
+		expect(mocks.engine.resize).toHaveBeenCalledWith(800, 600);
+		expect(mocks.engine.renderFrame).toHaveBeenCalledTimes(2);
 	});
 
 	it('re-resolves wire colors from the current theme when the atlas is loaded', async () => {

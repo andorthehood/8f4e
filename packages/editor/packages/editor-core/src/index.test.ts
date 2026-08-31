@@ -31,11 +31,13 @@ const store = {
 };
 
 const view = {
-	resize: vi.fn(),
+	resize: vi.fn(() => true),
 	loadSpriteAtlas: vi.fn(),
 	loadPostProcessEffect: vi.fn(),
 	loadBackgroundEffect: vi.fn(),
 	pauseRendering: vi.fn(),
+	releaseRenderingResources: vi.fn(),
+	releaseRenderingResourcesAndDrawingBuffer: vi.fn(),
 	resumeRendering: vi.fn(),
 	renderFrame: vi.fn(),
 	destroy: vi.fn(),
@@ -108,6 +110,8 @@ describe('editor init', () => {
 		store.dispose.mockClear();
 		view.resize.mockClear();
 		view.pauseRendering.mockClear();
+		view.releaseRenderingResources.mockClear();
+		view.releaseRenderingResourcesAndDrawingBuffer.mockClear();
 		view.resumeRendering.mockClear();
 		view.renderFrame.mockClear();
 		view.destroy.mockClear();
@@ -152,10 +156,31 @@ describe('editor init', () => {
 		});
 
 		editor.pauseRendering();
+		editor.releaseRenderingResources();
+		editor.releaseRenderingResourcesAndDrawingBuffer();
 		editor.resumeRendering();
 
 		expect(view.pauseRendering).toHaveBeenCalledOnce();
+		expect(view.releaseRenderingResources).toHaveBeenCalledOnce();
+		expect(view.releaseRenderingResourcesAndDrawingBuffer).toHaveBeenCalledOnce();
 		expect(view.resumeRendering).toHaveBeenCalledOnce();
+	});
+
+	it('defers drawing when the view cannot apply a resize while rendering resources are released', async () => {
+		const { default: init } = await import('./index');
+		const canvas = { width: 640, height: 480 } as HTMLCanvasElement;
+		const editor = await init(canvas, {
+			runtimeRegistry: {},
+			callbacks: { loadSession: async () => null },
+		});
+
+		view.resize.mockReturnValueOnce(false);
+		view.renderFrame.mockClear();
+		editor.resize(800, 600);
+
+		expect(events.dispatch).toHaveBeenCalledWith('resize', { canvasWidth: 800, canvasHeight: 600 });
+		expect(view.resize).toHaveBeenLastCalledWith(800, 600);
+		expect(view.renderFrame).not.toHaveBeenCalled();
 	});
 
 	it('adapts to the canvas display size and stops observing when disposed', async () => {
