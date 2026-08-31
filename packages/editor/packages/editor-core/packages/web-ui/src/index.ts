@@ -61,11 +61,13 @@ export default async function init(
 	spriteData: SpriteData,
 	options: WebUiOptions = {}
 ): Promise<{
-	resize: (width: number, height: number) => void;
+	resize: (width: number, height: number) => boolean;
 	loadSpriteAtlas: (spriteData: SpriteData) => void;
 	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
 	loadBackgroundEffect: (effect: ShaderUnderlayEffect | null) => void;
 	pauseRendering: () => void;
+	releaseRenderingResources: () => void;
+	releaseRenderingResourcesAndDrawingBuffer: () => void;
 	resumeRendering: () => void;
 	renderFrame: () => void;
 	destroy: () => void;
@@ -84,6 +86,8 @@ export default async function init(
 	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
 	let viewportWidth = canvas.width;
 	let viewportHeight = canvas.height;
+	let appliedViewportWidth = canvas.width;
+	let appliedViewportHeight = canvas.height;
 	const getFrameTexture = options.getFrameTexture ?? (() => options.frameTexture);
 	let frameTextureKey = '';
 	let drawWasmFrameTexture: ((layer: RgbaTextureLayer) => void) | undefined;
@@ -167,6 +171,8 @@ export default async function init(
 	});
 
 	let rendering = false;
+	let renderingResourcesReleased = false;
+	let drawingBufferReleased = false;
 	let animationFrameRequest: number | null = null;
 	const renderNextFrame = () => {
 		animationFrameRequest = null;
@@ -196,11 +202,50 @@ export default async function init(
 			animationFrameRequest = null;
 		}
 	};
+	const releaseRenderingResources = () => {
+		pauseRendering();
+		if (renderingResourcesReleased) {
+			return;
+		}
+
+		postProcess.releaseMemory();
+		frameTextureLayer.releaseMemory();
+		lines.releaseMemory();
+		engine.releaseRenderingMemory();
+		renderingResourcesReleased = true;
+	};
+	const releaseRenderingResourcesAndDrawingBuffer = () => {
+		releaseRenderingResources();
+		if (drawingBufferReleased) {
+			return;
+		}
+
+		canvas.width = 1;
+		canvas.height = 1;
+		appliedViewportWidth = 1;
+		appliedViewportHeight = 1;
+		drawingBufferReleased = true;
+	};
+	const restoreRenderingResources = () => {
+		if (!renderingResourcesReleased) {
+			return;
+		}
+
+		engine.restoreRenderingMemory();
+		if (drawingBufferReleased || appliedViewportWidth !== viewportWidth || appliedViewportHeight !== viewportHeight) {
+			engine.resize(viewportWidth, viewportHeight);
+			appliedViewportWidth = viewportWidth;
+			appliedViewportHeight = viewportHeight;
+		}
+		renderingResourcesReleased = false;
+		drawingBufferReleased = false;
+	};
 	const resumeRendering = () => {
 		if (rendering) {
 			return;
 		}
 
+		restoreRenderingResources();
 		rendering = true;
 		statsSampleStartTime = performance.now();
 		statsSampleStartFrameCount = renderedFrameCount;
@@ -213,7 +258,13 @@ export default async function init(
 		resize: (width, height) => {
 			viewportWidth = width;
 			viewportHeight = height;
+			if (renderingResourcesReleased) {
+				return false;
+			}
 			engine.resize(width, height);
+			appliedViewportWidth = width;
+			appliedViewportHeight = height;
+			return true;
 		},
 		loadSpriteAtlas: spriteData => {
 			engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
@@ -235,8 +286,11 @@ export default async function init(
 			}
 		},
 		pauseRendering,
+		releaseRenderingResources,
+		releaseRenderingResourcesAndDrawingBuffer,
 		resumeRendering,
 		renderFrame: () => {
+			restoreRenderingResources();
 			engine.renderFrame(drawFrame);
 		},
 		destroy: () => {
