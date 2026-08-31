@@ -31,8 +31,8 @@ describe('shiftLeft instruction compiler', () => {
 	it('keeps known integer metadata when shifting known integer operands left', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 },
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 2 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 2 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -45,6 +45,6 @@ describe('shiftLeft instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 8 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 8 }]);
 	});
 });

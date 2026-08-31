@@ -21,7 +21,7 @@ export function requireStackAddress(
 				valueType: 'int',
 				address: { memoryIndex: 0 },
 				...(item.isNonZero !== undefined ? { isNonZero: item.isNonZero } : {}),
-				...(item.knownIntegerValue !== undefined ? { knownIntegerValue: item.knownIntegerValue } : {}),
+				...(item.knownValue !== undefined ? { knownValue: item.knownValue } : {}),
 			};
 		}
 		throw getError(ErrorCode.TYPE_MISMATCH, line, context);
@@ -33,6 +33,6 @@ export function requireStackAddress(
 		address: item.address,
 		...(item.pointsTo ? { pointsTo: item.pointsTo } : {}),
 		...(item.isNonZero !== undefined ? { isNonZero: item.isNonZero } : {}),
-		...(item.knownIntegerValue !== undefined ? { knownIntegerValue: item.knownIntegerValue } : {}),
+		...(item.knownValue !== undefined ? { knownValue: item.knownValue } : {}),
 	};
 }

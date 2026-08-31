@@ -9,17 +9,17 @@ describe('stack analysis tooltip text', () => {
 			instruction: 'add',
 			stackAnalysis: {
 				stackBefore: [
-					{ kind: 'value', valueType: 'int', knownIntegerValue: 0 },
-					{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
-					{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
+					{ kind: 'value', valueType: 'int', knownValue: 0 },
+					{ kind: 'value', valueType: 'int', knownValue: 1 },
+					{ kind: 'value', valueType: 'int', knownValue: 2 },
 				],
 				consumedOperands: [
-					{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
-					{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
+					{ kind: 'value', valueType: 'int', knownValue: 1 },
+					{ kind: 'value', valueType: 'int', knownValue: 2 },
 				],
 				producedStackItems: [{ kind: 'value', valueType: 'int' }],
 				stackAfter: [
-					{ kind: 'value', valueType: 'int', knownIntegerValue: 0 },
+					{ kind: 'value', valueType: 'int', knownValue: 0 },
 					{ kind: 'value', valueType: 'int' },
 				],
 			},
@@ -36,6 +36,30 @@ describe('stack analysis tooltip text', () => {
 		]);
 	});
 
+	it('formats known float32 and float64 values', () => {
+		const stackAnalysisLine = {
+			lineNumber: 1,
+			instruction: 'push',
+			stackAnalysis: {
+				stackBefore: [],
+				consumedOperands: [],
+				producedStackItems: [
+					{ kind: 'value', valueType: 'float', knownValue: 3.5 },
+					{ kind: 'value', valueType: 'float64', knownValue: Math.PI },
+				],
+				stackAfter: [
+					{ kind: 'value', valueType: 'float', knownValue: 3.5 },
+					{ kind: 'value', valueType: 'float64', knownValue: Math.PI },
+				],
+			},
+		} as const;
+
+		expect(getStackAnalysisTooltipText(stackAnalysisLine)).toEqual([
+			'before []',
+			`after: [+float=3.5, +float64=${Math.PI}]`,
+		]);
+	});
+
 	it('formats long stack analysis as multiline blocks', () => {
 		const stackAnalysisLine = {
 			lineNumber: 6,
@@ -43,7 +67,7 @@ describe('stack analysis tooltip text', () => {
 			stackAnalysis: {
 				stackBefore: [
 					{ kind: 'value', valueType: 'int' },
-					{ kind: 'value', valueType: 'int', knownIntegerValue: 1234 },
+					{ kind: 'value', valueType: 'int', knownValue: 1234 },
 					{ kind: 'value', valueType: 'float' },
 					{ kind: 'address', valueType: 'int', address: { memoryIndex: 0 } },
 					{ kind: 'value', valueType: 'int' },
@@ -52,7 +76,7 @@ describe('stack analysis tooltip text', () => {
 				consumedOperands: [{ kind: 'value', valueType: 'int' }],
 				producedStackItems: [],
 				stackAfter: [
-					{ kind: 'value', valueType: 'int', knownIntegerValue: 1234 },
+					{ kind: 'value', valueType: 'int', knownValue: 1234 },
 					{ kind: 'value', valueType: 'float' },
 					{ kind: 'address', valueType: 'int', address: { memoryIndex: 0 } },
 					{ kind: 'value', valueType: 'int' },

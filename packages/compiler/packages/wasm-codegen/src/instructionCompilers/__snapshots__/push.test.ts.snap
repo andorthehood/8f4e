@@ -52,7 +52,7 @@ exports[`push instruction compiler > pushes a literal value 1`] = `
     {
       "isNonZero": true,
       "kind": "value",
-      "knownIntegerValue": 5,
+      "knownValue": 5,
       "valueType": "int",
     },
   ],
@@ -92,7 +92,7 @@ exports[`push instruction compiler > pushes a resolved literal value 1`] = `
     {
       "isNonZero": true,
       "kind": "value",
-      "knownIntegerValue": 42,
+      "knownValue": 42,
       "valueType": "int",
     },
   ],

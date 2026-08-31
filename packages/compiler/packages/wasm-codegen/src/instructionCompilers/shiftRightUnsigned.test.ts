@@ -31,8 +31,8 @@ describe('shiftRightUnsigned instruction compiler', () => {
 	it('keeps known integer metadata when shifting known integer operands right as unsigned', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: -8 },
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: -8 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 1 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -45,8 +45,6 @@ describe('shiftRightUnsigned instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2147483644 },
-		]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 2147483644 }]);
 	});
 });

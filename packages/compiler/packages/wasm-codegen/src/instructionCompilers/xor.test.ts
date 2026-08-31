@@ -31,8 +31,8 @@ describe('xor instruction compiler', () => {
 	it('keeps known integer metadata when xor-ing known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 6 },
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 3 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 6 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 3 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -45,6 +45,6 @@ describe('xor instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 5 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 5 }]);
 	});
 });

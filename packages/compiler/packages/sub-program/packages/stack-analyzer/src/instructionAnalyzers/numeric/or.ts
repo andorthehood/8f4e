@@ -15,7 +15,7 @@ export function analyzeOr(_line: CompilerASTLine, context: CompilationContext): 
 	const consumed = consume(context, 2);
 	const integerMetadata = deriveKnownIntegerValue(consumed[0], consumed[1], (value1, value2) => value1 | value2);
 	const produced = [
-		knownIntegerResult(integerMetadata.knownIntegerValue, Boolean(consumed[0].isNonZero || consumed[1].isNonZero)),
+		knownIntegerResult(integerMetadata.knownValue, Boolean(consumed[0].isNonZero || consumed[1].isNonZero)),
 	];
 	produce(context, produced);
 	return { consumed, produced };

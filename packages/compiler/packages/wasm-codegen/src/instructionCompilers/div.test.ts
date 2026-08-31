@@ -97,8 +97,8 @@ describe('div instruction compiler', () => {
 	it('keeps known integer metadata when dividing known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 8 },
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 8 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -111,14 +111,14 @@ describe('div instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 2 }]);
 	});
 
 	it('marks known zero integer division results as zero', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1 },
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 1 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 2 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -131,6 +131,6 @@ describe('div instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: false, knownIntegerValue: 0 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: false, knownValue: 0 }]);
 	});
 });

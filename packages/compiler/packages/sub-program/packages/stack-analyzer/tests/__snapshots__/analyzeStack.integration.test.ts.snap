@@ -67,7 +67,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 1,
+                "knownValue": 1,
                 "valueType": "int",
               },
             ],
@@ -80,7 +80,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 1,
+                "knownValue": 1,
                 "valueType": "int",
               },
             ],
@@ -105,7 +105,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 1,
+                "knownValue": 1,
                 "valueType": "int",
               },
             ],
@@ -132,7 +132,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 1,
+                "knownValue": 1,
                 "valueType": "int",
               },
             ],
@@ -282,7 +282,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 1,
+                "knownValue": 1,
                 "valueType": "int",
               },
             ],
@@ -295,7 +295,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 1,
+                "knownValue": 1,
                 "valueType": "int",
               },
             ],
@@ -321,7 +321,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 1,
+                "knownValue": 1,
                 "valueType": "int",
               },
             ],
@@ -348,7 +348,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 1,
+                "knownValue": 1,
                 "valueType": "int",
               },
             ],
@@ -456,7 +456,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -489,7 +489,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -539,7 +539,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -565,7 +565,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -591,7 +591,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -624,7 +624,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -654,7 +654,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -682,7 +682,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -701,7 +701,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 5,
+                "knownValue": 5,
                 "valueType": "int",
               },
             ],
@@ -709,7 +709,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 5,
+                "knownValue": 5,
                 "valueType": "int",
               },
             ],
@@ -722,7 +722,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 5,
+                "knownValue": 5,
                 "valueType": "int",
               },
             ],
@@ -742,7 +742,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 5,
+                "knownValue": 5,
                 "valueType": "int",
               },
             ],
@@ -798,7 +798,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -831,7 +831,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -871,7 +871,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -897,7 +897,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -923,7 +923,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -956,7 +956,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -988,7 +988,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -1016,7 +1016,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
                 },
                 "isNonZero": true,
                 "kind": "address",
-                "knownIntegerValue": 4,
+                "knownValue": 4,
                 "pointsTo": {
                   "baseType": "int",
                   "elementCount": 4,
@@ -1037,7 +1037,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 5,
+                "knownValue": 5,
                 "valueType": "int",
               },
             ],
@@ -1045,7 +1045,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 5,
+                "knownValue": 5,
                 "valueType": "int",
               },
             ],
@@ -1060,7 +1060,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 5,
+                "knownValue": 5,
                 "valueType": "int",
               },
             ],
@@ -1080,7 +1080,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
               {
                 "isNonZero": true,
                 "kind": "value",
-                "knownIntegerValue": 5,
+                "knownValue": 5,
                 "valueType": "int",
               },
             ],

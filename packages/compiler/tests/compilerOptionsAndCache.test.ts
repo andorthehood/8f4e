@@ -52,6 +52,40 @@ functionEnd int
 		]);
 	});
 
+	test('exposes resolved float constant values in stack analysis', async () => {
+		const source = `
+8f4e/v1
+
+entry main
+module floatConstants
+use values
+push FLOAT32
+drop
+push FLOAT64
+drop
+moduleEnd
+entryEnd
+
+constants values
+const FLOAT32 3.141592653589793
+const FLOAT64 3.141592653589793f64
+constantsEnd
+`;
+		const result = (
+			await compileFixtureProgramSource(source, {
+				includeStackAnalysis: true,
+			})
+		).compileResult;
+		const pushLines = result.compiledModules.floatConstants.stackAnalysis?.filter(line => line.instruction === 'push');
+
+		expect(pushLines?.[0]?.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float', isNonZero: true, knownValue: Math.fround(Math.PI) },
+		]);
+		expect(pushLines?.[1]?.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float64', isNonZero: true, knownValue: Math.PI },
+		]);
+	});
+
 	test('reuses cached AST entries when recompiling unchanged source', async () => {
 		const source = `
 8f4e/v1

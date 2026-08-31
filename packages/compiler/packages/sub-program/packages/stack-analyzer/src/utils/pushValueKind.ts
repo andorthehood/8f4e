@@ -13,7 +13,7 @@ export function resolveArgumentValueKind(argument: { isInteger: boolean; isFloat
 	return argument.isInteger ? 'int32' : 'float32';
 }
 
-type StackItemExtras = Pick<StackItem, 'isNonZero' | 'knownIntegerValue'> &
+type StackItemExtras = Pick<StackItem, 'isNonZero' | 'knownValue'> &
 	Partial<Pick<Extract<StackItem, { kind: 'address' }>, 'address' | 'pointsTo'>>;
 
 export function kindToStackItem(kind: PushValueKind, extras?: StackItemExtras): StackItem {
@@ -24,7 +24,7 @@ export function kindToStackItem(kind: PushValueKind, extras?: StackItemExtras): 
 			address: extras.address,
 			...(extras.pointsTo ? { pointsTo: extras.pointsTo } : {}),
 			...(extras.isNonZero !== undefined ? { isNonZero: extras.isNonZero } : {}),
-			...(extras.knownIntegerValue !== undefined ? { knownIntegerValue: extras.knownIntegerValue } : {}),
+			...(extras.knownValue !== undefined ? { knownValue: extras.knownValue } : {}),
 		};
 	}
 
@@ -32,6 +32,6 @@ export function kindToStackItem(kind: PushValueKind, extras?: StackItemExtras): 
 		kind: 'value',
 		valueType: kind === 'int32' ? 'int' : kind === 'float64' ? 'float64' : 'float',
 		...(extras?.isNonZero !== undefined ? { isNonZero: extras.isNonZero } : {}),
-		...(extras?.knownIntegerValue !== undefined ? { knownIntegerValue: extras.knownIntegerValue } : {}),
+		...(extras?.knownValue !== undefined ? { knownValue: extras.knownValue } : {}),
 	};
 }

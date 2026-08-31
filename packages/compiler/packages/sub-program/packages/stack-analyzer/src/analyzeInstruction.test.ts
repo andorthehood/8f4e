@@ -111,9 +111,33 @@ describe('analyzeInstruction', () => {
 		const facts = analyzeInstruction(line, context);
 
 		expect(facts.stackAnalysis.producedStackItems).toEqual([
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 7 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 7 },
 		]);
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 7 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 7 }]);
+	});
+
+	it('records float32 and float64 push values at their runtime precision', () => {
+		const context = createStackAnalyzerTestContext();
+		const float32Line = {
+			lineNumber: 1,
+			instruction: 'push',
+			arguments: [{ type: ArgumentType.LITERAL, value: Math.PI, isInteger: false }],
+		} as CompilerASTLine;
+		const float64Line = {
+			lineNumber: 2,
+			instruction: 'push',
+			arguments: [{ type: ArgumentType.LITERAL, value: Math.PI, isInteger: false, isFloat64: true }],
+		} as CompilerASTLine;
+
+		const float32Facts = analyzeInstruction(float32Line, context);
+		const float64Facts = analyzeInstruction(float64Line, context);
+
+		expect(float32Facts.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float', isNonZero: true, knownValue: Math.fround(Math.PI) },
+		]);
+		expect(float64Facts.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float64', isNonZero: true, knownValue: Math.PI },
+		]);
 	});
 
 	it('records map input and output kinds', () => {
