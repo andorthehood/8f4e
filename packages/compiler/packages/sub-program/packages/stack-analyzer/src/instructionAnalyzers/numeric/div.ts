@@ -6,7 +6,7 @@ import type { InstructionAnalysisResult } from '../types';
 import { numericResult } from './shared';
 
 /**
- * Analyzes `div` stack effects, known integer propagation, and zero-divisor failures.
+ * Analyzes `div` stack effects, known-value propagation, and zero-divisor failures.
  *
  * @param line - Source AST line being processed.
  * @param context - Compilation context used by the operation.
@@ -21,15 +21,17 @@ export function analyzeDiv(line: CompilerASTLine, context: CompilationContext): 
 	}
 
 	const produced = [
-		numericResult(consumed[0], right, (left, divisor) =>
-			deriveKnownIntegerValue(left, divisor, (dividend, divisorValue) => {
-				if (dividend === BASE_TYPE_METADATA.int.min && divisorValue === -1) {
-					return undefined;
-				}
+		numericResult(consumed[0], right, {
+			calculateKnownValue: (dividend, divisor) => dividend / divisor,
+			deriveIntegerMetadata: (left, divisor) =>
+				deriveKnownIntegerValue(left, divisor, (dividend, divisorValue) => {
+					if (dividend === BASE_TYPE_METADATA.int.min && divisorValue === -1) {
+						return undefined;
+					}
 
-				return Math.trunc(dividend / divisorValue) | 0;
-			})
-		),
+					return Math.trunc(dividend / divisorValue) | 0;
+				}),
+		}),
 	];
 	produce(context, produced);
 	return { consumed, produced };

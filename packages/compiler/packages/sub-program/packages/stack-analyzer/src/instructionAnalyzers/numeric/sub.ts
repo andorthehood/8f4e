@@ -13,7 +13,12 @@ import { numericResult } from './shared';
  */
 export function analyzeSub(_line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 2);
-	const produced = [numericResult(consumed[0], consumed[1], deriveSubStackMetadata)];
+	const produced = [
+		numericResult(consumed[0], consumed[1], {
+			calculateKnownValue: (left, right) => left - right,
+			deriveIntegerMetadata: deriveSubStackMetadata,
+		}),
+	];
 	produce(context, produced);
 	return { consumed, produced };
 }

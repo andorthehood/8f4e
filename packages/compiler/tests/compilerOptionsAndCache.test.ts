@@ -60,8 +60,12 @@ entry main
 module floatConstants
 use values
 push FLOAT32
+push 2.0
+div
 drop
 push FLOAT64
+push 2f64
+div
 drop
 moduleEnd
 entryEnd
@@ -77,12 +81,19 @@ constantsEnd
 			})
 		).compileResult;
 		const pushLines = result.compiledModules.floatConstants.stackAnalysis?.filter(line => line.instruction === 'push');
+		const divLines = result.compiledModules.floatConstants.stackAnalysis?.filter(line => line.instruction === 'div');
 
 		expect(pushLines?.[0]?.stackAnalysis.producedStackItems).toEqual([
 			{ kind: 'value', valueType: 'float', isNonZero: true, knownValue: Math.fround(Math.PI) },
 		]);
-		expect(pushLines?.[1]?.stackAnalysis.producedStackItems).toEqual([
+		expect(pushLines?.[2]?.stackAnalysis.producedStackItems).toEqual([
 			{ kind: 'value', valueType: 'float64', isNonZero: true, knownValue: Math.PI },
+		]);
+		expect(divLines?.[0]?.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float', isNonZero: true, knownValue: Math.fround(Math.fround(Math.PI) / 2) },
+		]);
+		expect(divLines?.[1]?.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float64', isNonZero: true, knownValue: Math.PI / 2 },
 		]);
 	});
 

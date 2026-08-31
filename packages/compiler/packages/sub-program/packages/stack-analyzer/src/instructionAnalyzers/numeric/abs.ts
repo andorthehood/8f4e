@@ -3,7 +3,7 @@ import { consume, createStackValue, produce } from '../stack';
 import type { InstructionAnalysisResult } from '../types';
 
 /**
- * Analyzes `abs` stack effects and known integer propagation.
+ * Analyzes `abs` stack effects and known-value propagation.
  *
  * @param _line - Unused source AST line kept for handler signature consistency.
  * @param context - Compilation context used by the operation.
@@ -15,23 +15,18 @@ export function analyzeAbs(_line: CompilerASTLine, context: CompilationContext):
 	const knownAbsValue =
 		operand.knownValue === undefined
 			? undefined
-			: operand.knownValue < 0
-				? (0 - operand.knownValue) | 0
-				: operand.knownValue;
-	const knownIntegerMetadata =
-		knownAbsValue === undefined
-			? {}
-			: {
-					knownValue: knownAbsValue,
-					isNonZero: knownAbsValue !== 0,
-				};
+			: operand.valueType === 'int'
+				? operand.knownValue < 0
+					? (0 - operand.knownValue) | 0
+					: operand.knownValue
+				: Math.abs(operand.knownValue);
+	const runtimeKnownValue =
+		operand.valueType === 'float' && knownAbsValue !== undefined ? Math.fround(knownAbsValue) : knownAbsValue;
 	const produced: Stack = [
-		operand.valueType === 'int'
-			? createStackValue('int', {
-					isNonZero: operand.isNonZero,
-					knownValue: knownIntegerMetadata.knownValue,
-				})
-			: createStackValue(operand.valueType === 'float64' ? 'float64' : 'float', { isNonZero: operand.isNonZero }),
+		createStackValue(operand.valueType, {
+			isNonZero: runtimeKnownValue !== undefined ? runtimeKnownValue !== 0 : operand.isNonZero,
+			knownValue: runtimeKnownValue,
+		}),
 	];
 	produce(context, produced);
 	return { consumed, produced };

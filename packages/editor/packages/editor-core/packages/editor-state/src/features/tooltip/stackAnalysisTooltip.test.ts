@@ -44,11 +44,11 @@ describe('stack analysis tooltip text', () => {
 				stackBefore: [],
 				consumedOperands: [],
 				producedStackItems: [
-					{ kind: 'value', valueType: 'float', knownValue: 3.5 },
+					{ kind: 'value', valueType: 'float', knownValue: Math.fround(3.2) },
 					{ kind: 'value', valueType: 'float64', knownValue: Math.PI },
 				],
 				stackAfter: [
-					{ kind: 'value', valueType: 'float', knownValue: 3.5 },
+					{ kind: 'value', valueType: 'float', knownValue: Math.fround(3.2) },
 					{ kind: 'value', valueType: 'float64', knownValue: Math.PI },
 				],
 			},
@@ -56,7 +56,7 @@ describe('stack analysis tooltip text', () => {
 
 		expect(getStackAnalysisTooltipText(stackAnalysisLine)).toEqual([
 			'before []',
-			`after: [+float=3.5, +float64=${Math.PI}]`,
+			`after: [+float=3.2, +float64=${Math.PI}]`,
 		]);
 	});
 

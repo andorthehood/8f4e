@@ -1,4 +1,5 @@
 import type { CompiledStackAnalysisLine, Stack, StackItem } from '@8f4e/language-spec';
+import { formatKnownStackValue } from '~/shared/formatKnownStackValue';
 import { maxInlineStackItemCount } from './constants';
 import type { TooltipHighlightRange, TooltipHighlightTarget } from './types';
 
@@ -59,7 +60,8 @@ function getStackItemLabel(item: StackItem, marker?: StackItemMarker): string {
 		label = item.valueType;
 	}
 
-	const valueLabel = item.knownValue === undefined ? label : `${label}=${item.knownValue}`;
+	const knownValue = formatKnownStackValue(item);
+	const valueLabel = knownValue === undefined ? label : `${label}=${knownValue}`;
 
 	if (marker === 'consumed') {
 		return `-${valueLabel}`;

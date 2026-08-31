@@ -2,6 +2,11 @@ import type { StackAnalysisNumericValueKind, StackItem, StackValueType } from '@
 import { areAllOperandsFloat64, areAllOperandsIntegers } from '@8f4e/semantic-utils';
 import { createStackValue } from '../stack';
 
+interface NumericResultOptions {
+	calculateKnownValue: (left: number, right: number) => number;
+	deriveIntegerMetadata?: (left: StackItem, right: StackItem) => Partial<StackItem>;
+}
+
 /**
  * Resolves two numeric operands to the concrete value kind used by downstream codegen.
  *
@@ -22,17 +27,13 @@ export function getNumericOperandKind(left: StackItem, right: StackItem): StackA
  *
  * @param left - Left stack operand.
  * @param right - Right stack operand.
- * @param deriveIntegerMetadata - Callback that derives integer metadata for the result.
+ * @param options - Integer metadata and known floating-point value derivation.
  * @returns The computed result.
  */
-export function numericResult(
-	left: StackItem,
-	right: StackItem,
-	deriveIntegerMetadata?: (left: StackItem, right: StackItem) => Partial<StackItem>
-): StackItem {
+export function numericResult(left: StackItem, right: StackItem, options: NumericResultOptions): StackItem {
 	const numericOperandKind = getNumericOperandKind(left, right);
 	const isInteger = numericOperandKind === 'int32';
-	const integerMetadata = isInteger ? (deriveIntegerMetadata?.(left, right) ?? {}) : {};
+	const integerMetadata = isInteger ? (options.deriveIntegerMetadata?.(left, right) ?? {}) : {};
 	const valueType: StackValueType = isInteger ? 'int' : numericOperandKind === 'float64' ? 'float64' : 'float';
 	if (isInteger && 'kind' in integerMetadata && integerMetadata.kind === 'address' && integerMetadata.address) {
 		return {
@@ -48,10 +49,16 @@ export function numericResult(
 				: {}),
 		};
 	}
+	const knownValue = isInteger
+		? integerMetadata.knownValue
+		: left.knownValue !== undefined && right.knownValue !== undefined
+			? options.calculateKnownValue(left.knownValue, right.knownValue)
+			: undefined;
+	const runtimeKnownValue = valueType === 'float' && knownValue !== undefined ? Math.fround(knownValue) : knownValue;
 
 	return createStackValue(valueType, {
-		isNonZero: integerMetadata.knownValue !== undefined ? integerMetadata.knownValue !== 0 : false,
-		knownValue: integerMetadata.knownValue,
+		isNonZero: runtimeKnownValue !== undefined ? runtimeKnownValue !== 0 : false,
+		knownValue: runtimeKnownValue,
 	});
 }
 
