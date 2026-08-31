@@ -57,6 +57,16 @@ function getMenuViewportPosition(state: State): { x: number; y: number } {
 	};
 }
 
+function keepMenuWithinViewport(state: State): void {
+	const { contextMenu, viewport } = state;
+	const { x, y } = getMenuViewportPosition(state);
+	const maxX = Math.max(viewport.width - contextMenu.itemWidth, 0);
+	const maxY = Math.max(viewport.height - contextMenu.items.length * viewport.hGrid, 0);
+
+	contextMenu.x = viewport.x + Math.min(Math.max(x, 0), maxX);
+	contextMenu.y = viewport.y + Math.min(Math.max(y, 0), maxY);
+}
+
 export default function contextMenu(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 	const onMouseMove = (event: MouseEvent) => {
@@ -126,6 +136,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 		}
 
 		state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
+		keepMenuWithinViewport(state);
 
 		events.on('mousedown', onMouseDown);
 		events.on('mousemove', onMouseMove);
@@ -142,6 +153,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 			)),
 		]);
 		state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
+		keepMenuWithinViewport(state);
 	};
 
 	const onMenuBack = async () => {
@@ -151,6 +163,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 		if (!entry) {
 			state.contextMenu.items = decorateMenu(await menus.mainMenu(state));
 			state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
+			keepMenuWithinViewport(state);
 			return;
 		}
 
@@ -163,6 +176,7 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 			)),
 		]);
 		state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
+		keepMenuWithinViewport(state);
 	};
 
 	events.on('openSubMenu', onOpenSubMenu);

@@ -7,6 +7,32 @@ import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/
 import contextMenu from './effect';
 
 describe('contextMenu effect', () => {
+	it('keeps the menu inside the right and bottom viewport edges', async () => {
+		const state = createMockState({
+			viewport: {
+				x: 24,
+				y: 48,
+				width: 640,
+				height: 480,
+				vGrid: 8,
+				hGrid: 16,
+			},
+		});
+		const store = createStateManager(state as State);
+		const events = createMockEventDispatcherWithVitest();
+
+		contextMenu(store, events);
+
+		const onCalls = (events.on as unknown as MockInstance).mock.calls;
+		const onContextMenu = onCalls.find(call => call[0] === 'contextmenu')![1];
+
+		await onContextMenu({ x: 639, y: 479 });
+
+		const menuHeight = state.contextMenu.items.length * state.viewport.hGrid;
+		expect(state.contextMenu.x - state.viewport.x).toBe(state.viewport.width - state.contextMenu.itemWidth);
+		expect(state.contextMenu.y - state.viewport.y).toBe(state.viewport.height - menuHeight);
+	});
+
 	it('anchors the menu in world coordinates and hit-tests it after viewport movement', async () => {
 		const state = createMockState({
 			viewport: {

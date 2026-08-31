@@ -25,7 +25,7 @@ function createMockLines(): LineDrawer {
 }
 
 describe('drawConnections', () => {
-	it('draws wires from the center of input and output widgets', () => {
+	it.each([0, 80])('draws a wire to output address %i', outputAddress => {
 		const inputBlock = createMockCodeBlock({
 			name: 'inputModule',
 			x: 100,
@@ -63,7 +63,7 @@ describe('drawConnections', () => {
 			calibratedMax: 0,
 			calibratedMin: 0,
 			memory: {
-				byteAddress: 80,
+				byteAddress: outputAddress,
 				wordAlignedAddress: 20,
 				wordAlignedSize: 1,
 			} as never,
@@ -96,7 +96,7 @@ describe('drawConnections', () => {
 			codeBlockRendering: {
 				codeBlocks: [inputBlock, outputBlock],
 				selectedCodeBlock: inputBlock,
-				outputsByWordAddress: new Map([[80, output]]),
+				outputsByWordAddress: new Map([[outputAddress, output]]),
 			},
 		});
 		const lines = createMockLines();
@@ -105,7 +105,7 @@ describe('drawConnections', () => {
 			wireHighlighted: [1, 1, 1, 1],
 		};
 
-		drawConnections(lines, wireColors, state, createMemoryViews({ int32: [0, 0, 80] }));
+		drawConnections(lines, wireColors, state, createMemoryViews({ int32: [0, 0, outputAddress] }));
 
 		expect(lines.drawLine).toHaveBeenCalledWith(117, 247, 463, 471, 1, wireColors.wireHighlighted);
 	});

@@ -25,11 +25,6 @@ export default function drawConnections(
 
 		for (const input of codeBlock.widgets.inputs) {
 			const outputAddress = memoryViews.int32[input.wordAlignedAddress];
-
-			if (outputAddress === 0) {
-				continue;
-			}
-
 			const output = state.codeBlockRendering.outputsByWordAddress.get(outputAddress);
 
 			if (!output) {
