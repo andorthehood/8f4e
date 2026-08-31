@@ -154,7 +154,7 @@ describe('program compiler effect', () => {
 		});
 	});
 
-	it('disables stack analysis when code line selection is disabled', async () => {
+	it('includes stack analysis when code line selection is disabled', async () => {
 		mockState.featureFlags.codeLineSelection = false;
 		mockCompileCode.mockResolvedValue({
 			codeBuffer: new Uint8Array([0x00]),
@@ -172,82 +172,6 @@ describe('program compiler effect', () => {
 		await triggerProgrammaticCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
-			expect.objectContaining({
-				modules: expect.any(Array),
-				constants: expect.any(Array),
-				functions: expect.any(Array),
-				prototypes: expect.any(Array),
-			}),
-			{
-				startingMemoryWordAddress: 0,
-				includeStackAnalysis: false,
-			}
-		);
-	});
-
-	it('includes stack analysis for @debug directives when code line selection is disabled', async () => {
-		mockState.featureFlags.codeLineSelection = false;
-		mockState.codeBlockRendering.rootCodeBlocks[0]!.code = ['function helper', 'push 1', '; @debug', 'functionEnd'];
-		mockCompileCode.mockResolvedValue({
-			codeBuffer: new Uint8Array([0x00]),
-			compiledModules: {},
-			compiledFunctions: {},
-			requiredMemoryBytes: 0,
-			allocatedMemoryBytes: 65536,
-			astCacheStats: { hits: 0, misses: 0 },
-			hasWasmInstanceBeenReset: false,
-			memoryAction: { action: 'reused' },
-			initOnlyReran: false,
-			byteCodeSize: 1,
-		});
-
-		await triggerProgrammaticCompile();
-
-		expect(mockCompileCode).toHaveBeenCalledWith(expect.any(Object), {
-			startingMemoryWordAddress: 0,
-			includeStackAnalysis: true,
-		});
-	});
-
-	it('recompiles when code line selection changes so stack analysis follows the feature flag', async () => {
-		mockCompileCode.mockResolvedValue({
-			codeBuffer: new Uint8Array([0x00]),
-			compiledModules: {},
-			compiledFunctions: {},
-			requiredMemoryBytes: 0,
-			allocatedMemoryBytes: 65536,
-			astCacheStats: { hits: 0, misses: 0 },
-			hasWasmInstanceBeenReset: false,
-			memoryAction: { action: 'reused' },
-			initOnlyReran: false,
-			byteCodeSize: 1,
-		});
-		compilerEffect(store);
-		const featureFlagChangeCall = subscribeSpy.mock.calls.find(call => call[0] === 'featureFlags.codeLineSelection');
-		expect(featureFlagChangeCall).toBeDefined();
-
-		mockState.featureFlags.codeLineSelection = false;
-		featureFlagChangeCall![1]();
-		await vi.advanceTimersByTimeAsync(500);
-
-		expect(mockCompileCode).toHaveBeenCalledWith(
-			expect.objectContaining({
-				modules: expect.any(Array),
-				constants: expect.any(Array),
-				functions: expect.any(Array),
-				prototypes: expect.any(Array),
-			}),
-			{
-				startingMemoryWordAddress: 0,
-				includeStackAnalysis: false,
-			}
-		);
-
-		mockState.featureFlags.codeLineSelection = true;
-		featureFlagChangeCall![1]();
-		await vi.advanceTimersByTimeAsync(500);
-
-		expect(mockCompileCode).toHaveBeenLastCalledWith(
 			expect.objectContaining({
 				modules: expect.any(Array),
 				constants: expect.any(Array),
