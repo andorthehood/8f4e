@@ -9,6 +9,6 @@ function formatStackItem(item: StackItem): string {
 }
 
 /** Formats compiler stack facts for the inside of the debugger widget's brackets. */
-export function formatDebugStack(stack: Stack): string {
+export function formatStack(stack: Stack): string {
 	return stack.map(formatStackItem).join(', ');
 }
