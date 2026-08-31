@@ -13,7 +13,12 @@ import { numericResult } from './shared';
  */
 export function analyzeAdd(_line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 2);
-	const produced = [numericResult(consumed[0], consumed[1], deriveAddStackMetadata)];
+	const produced = [
+		numericResult(consumed[0], consumed[1], {
+			calculateKnownValue: (left, right) => left + right,
+			deriveIntegerMetadata: deriveAddStackMetadata,
+		}),
+	];
 	produce(context, produced);
 	return { consumed, produced };
 }

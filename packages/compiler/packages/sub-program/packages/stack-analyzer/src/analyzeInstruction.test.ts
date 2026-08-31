@@ -140,6 +140,55 @@ describe('analyzeInstruction', () => {
 		]);
 	});
 
+	it.each([
+		['add', 3.2, 1.1, Math.fround(Math.fround(3.2) + Math.fround(1.1))],
+		['sub', 3.2, 1.1, Math.fround(Math.fround(3.2) - Math.fround(1.1))],
+		['mul', 3.2, 2, Math.fround(Math.fround(3.2) * Math.fround(2))],
+		['div', 3.2, 2, Math.fround(Math.fround(3.2) / Math.fround(2))],
+	] as const)('propagates known float32 values through %s', (instruction, left, right, expected) => {
+		const context = createStackAnalyzerTestContext({
+			stack: [
+				{ kind: 'value', valueType: 'float', isNonZero: left !== 0, knownValue: Math.fround(left) },
+				{ kind: 'value', valueType: 'float', isNonZero: right !== 0, knownValue: Math.fround(right) },
+			],
+		});
+		const line = { lineNumber: 1, instruction, arguments: [] } as CompilerASTLine;
+
+		const facts = analyzeInstruction(line, context);
+
+		expect(facts.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float', isNonZero: expected !== 0, knownValue: expected },
+		]);
+	});
+
+	it('propagates known float64 division and absolute values', () => {
+		const divisionContext = createStackAnalyzerTestContext({
+			stack: [
+				{ kind: 'value', valueType: 'float64', isNonZero: true, knownValue: 3.2 },
+				{ kind: 'value', valueType: 'float64', isNonZero: true, knownValue: 2 },
+			],
+		});
+		const absContext = createStackAnalyzerTestContext({
+			stack: [{ kind: 'value', valueType: 'float', isNonZero: true, knownValue: Math.fround(-3.2) }],
+		});
+
+		const divisionFacts = analyzeInstruction(
+			{ lineNumber: 1, instruction: 'div', arguments: [] } as CompilerASTLine,
+			divisionContext
+		);
+		const absFacts = analyzeInstruction(
+			{ lineNumber: 1, instruction: 'abs', arguments: [] } as CompilerASTLine,
+			absContext
+		);
+
+		expect(divisionFacts.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float64', isNonZero: true, knownValue: 1.6 },
+		]);
+		expect(absFacts.stackAnalysis.producedStackItems).toEqual([
+			{ kind: 'value', valueType: 'float', isNonZero: true, knownValue: Math.fround(3.2) },
+		]);
+	});
+
 	it('records map input and output kinds', () => {
 		const mapBlock: MapBlockStackFrame = {
 			blockType: BlockType.MAP,

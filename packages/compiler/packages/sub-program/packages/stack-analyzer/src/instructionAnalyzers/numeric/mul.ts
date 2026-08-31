@@ -5,7 +5,7 @@ import type { InstructionAnalysisResult } from '../types';
 import { numericResult } from './shared';
 
 /**
- * Analyzes `mul` stack effects and known integer propagation.
+ * Analyzes `mul` stack effects and known-value propagation.
  *
  * @param _line - Unused source AST line kept for handler signature consistency.
  * @param context - Compilation context used by the operation.
@@ -14,9 +14,11 @@ import { numericResult } from './shared';
 export function analyzeMul(_line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 2);
 	const produced = [
-		numericResult(consumed[0], consumed[1], (left, right) =>
-			deriveKnownIntegerValue(left, right, (value1, value2) => Math.imul(value1, value2))
-		),
+		numericResult(consumed[0], consumed[1], {
+			calculateKnownValue: (left, right) => left * right,
+			deriveIntegerMetadata: (left, right) =>
+				deriveKnownIntegerValue(left, right, (value1, value2) => Math.imul(value1, value2)),
+		}),
 	];
 	produce(context, produced);
 	return { consumed, produced };

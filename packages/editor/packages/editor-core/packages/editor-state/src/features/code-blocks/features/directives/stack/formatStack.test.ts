@@ -6,11 +6,11 @@ describe('stack directive formatting', () => {
 	it('shows known scalar values without their types', () => {
 		const stack: Stack = [
 			{ kind: 'value', valueType: 'int', knownValue: 2 },
-			{ kind: 'value', valueType: 'float', knownValue: 3.5 },
+			{ kind: 'value', valueType: 'float', knownValue: Math.fround(3.2) },
 			{ kind: 'value', valueType: 'float64', knownValue: Math.PI },
 		];
 
-		expect(formatStack(stack)).toBe(`2, 3.5, ${Math.PI}`);
+		expect(formatStack(stack)).toBe(`2, 3.2, ${Math.PI}`);
 	});
 
 	it('falls back to types for values without a known number', () => {
