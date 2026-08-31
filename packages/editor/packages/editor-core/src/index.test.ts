@@ -37,7 +37,6 @@ const view = {
 	loadBackgroundEffect: vi.fn(),
 	pauseRendering: vi.fn(),
 	releaseRenderingResources: vi.fn(),
-	releaseRenderingResourcesAndDrawingBuffer: vi.fn(),
 	resumeRendering: vi.fn(),
 	renderFrame: vi.fn(),
 	destroy: vi.fn(),
@@ -111,7 +110,6 @@ describe('editor init', () => {
 		view.resize.mockClear();
 		view.pauseRendering.mockClear();
 		view.releaseRenderingResources.mockClear();
-		view.releaseRenderingResourcesAndDrawingBuffer.mockClear();
 		view.resumeRendering.mockClear();
 		view.renderFrame.mockClear();
 		view.destroy.mockClear();
@@ -157,12 +155,10 @@ describe('editor init', () => {
 
 		editor.pauseRendering();
 		editor.releaseRenderingResources();
-		editor.releaseRenderingResourcesAndDrawingBuffer();
 		editor.resumeRendering();
 
 		expect(view.pauseRendering).toHaveBeenCalledOnce();
 		expect(view.releaseRenderingResources).toHaveBeenCalledOnce();
-		expect(view.releaseRenderingResourcesAndDrawingBuffer).toHaveBeenCalledOnce();
 		expect(view.resumeRendering).toHaveBeenCalledOnce();
 	});
 

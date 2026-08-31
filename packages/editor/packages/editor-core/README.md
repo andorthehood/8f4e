@@ -22,9 +22,8 @@ Wheel input pans the editor viewport and prevents page scrolling by default. Emb
 `captureWheel: false` when initializing the editor to leave wheel input and scrolling to the surrounding page.
 
 Hosts can pause rendering without releasing memory through `pauseRendering()`. `releaseRenderingResources()` also
-releases reloadable GPU textures and dynamic buffers while preserving the last frame in the canvas drawing buffer;
-`releaseRenderingResourcesAndDrawingBuffer()` additionally discards that drawing buffer. `resumeRendering()` restores
-either release level and applies any canvas resize that happened while resources were released.
+releases reloadable GPU textures, dynamic buffers, and the canvas drawing buffer. `resumeRendering()` restores the
+resources and applies any canvas resize that happened while they were released.
 
 ## Docs
 

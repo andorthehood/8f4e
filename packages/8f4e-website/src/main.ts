@@ -26,7 +26,7 @@ const renderingObserver = new IntersectionObserver(entries => {
 		if (entry.isIntersecting) {
 			editor?.resumeRendering();
 		} else {
-			editor?.pauseRendering();
+			editor?.releaseRenderingResources();
 		}
 	}
 });
