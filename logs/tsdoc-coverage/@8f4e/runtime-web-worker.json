@@ -1922,5 +1922,31 @@
 				}
 			}
 		}
+	},
+	{
+		"commit": "b6c711d3d8d4e80c70d3acc3be0d9b5f817b7738",
+		"recordedAt": "2026-08-31T18:35:34.239Z",
+		"coverage": {
+			"documented": 1,
+			"total": 19,
+			"percentage": 5.3,
+			"byKind": {
+				"function": {
+					"documented": 1,
+					"total": 7,
+					"percentage": 14.3
+				},
+				"property-signature": {
+					"documented": 0,
+					"total": 6,
+					"percentage": 0
+				},
+				"variable": {
+					"documented": 0,
+					"total": 6,
+					"percentage": 0
+				}
+			}
+		}
 	}
 ]
