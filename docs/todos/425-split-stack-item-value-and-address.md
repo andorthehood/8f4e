@@ -17,7 +17,7 @@ completed: null
 - numeric value type facts (`isInteger`, `isFloat64`)
 - optional address metadata (`address`)
 - optional pointee metadata (`pointeeBaseType`, `isPointingToPointer`, pointee memory fields)
-- optional numeric facts (`isNonZero`, `knownIntegerValue`)
+- optional numeric facts (`isNonZero`, `knownValue`)
 
 That makes the compiler rely on optional chaining in places where a previous phase already knows what kind of stack item it has. For example, memory access code repeatedly falls back with `address.address?.memoryIndex ?? 0` even though memory operations should consume an address-shaped stack item after stack analysis.
 
@@ -39,7 +39,7 @@ export interface StackValue {
 	kind: 'value';
 	valueType: 'int' | 'float' | 'float64';
 	isNonZero?: boolean;
-	knownIntegerValue?: number;
+	knownValue?: number;
 }
 
 export interface StackAddress {
@@ -48,7 +48,7 @@ export interface StackAddress {
 	address: AddressMetadata;
 	pointsTo?: PointeeMetadata;
 	isNonZero?: boolean;
-	knownIntegerValue?: number;
+	knownValue?: number;
 }
 ```
 

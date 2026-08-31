@@ -22,15 +22,15 @@ function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): Memo
  * @returns The computed result.
  */
 export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem): Partial<StackItem> {
-	const knownIntegerValue =
-		operand1.knownIntegerValue !== undefined && operand2.knownIntegerValue !== undefined
-			? operand1.knownIntegerValue + operand2.knownIntegerValue
+	const knownValue =
+		operand1.knownValue !== undefined && operand2.knownValue !== undefined
+			? operand1.knownValue + operand2.knownValue
 			: undefined;
 	const safeRange =
-		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownIntegerValue !== undefined
-			? shiftSafeRange(operand1.address.safeRange, operand2.knownIntegerValue)
-			: operand2.kind === 'address' && operand2.address.safeRange && operand1.knownIntegerValue !== undefined
-				? shiftSafeRange(operand2.address.safeRange, operand1.knownIntegerValue)
+		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownValue !== undefined
+			? shiftSafeRange(operand1.address.safeRange, operand2.knownValue)
+			: operand2.kind === 'address' && operand2.address.safeRange && operand1.knownValue !== undefined
+				? shiftSafeRange(operand2.address.safeRange, operand1.knownValue)
 				: undefined;
 	const clampRange =
 		(operand1.kind === 'address' ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined) ??
@@ -43,7 +43,7 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
 				: undefined;
 
 	return {
-		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
+		...(knownValue !== undefined ? { knownValue } : {}),
 		...(safeRange || clampRange
 			? {
 					kind: 'address',
@@ -70,20 +70,20 @@ export function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem)
  * @returns The computed result.
  */
 export function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem): Partial<StackItem> {
-	const knownIntegerValue =
-		operand1.knownIntegerValue !== undefined && operand2.knownIntegerValue !== undefined
-			? operand1.knownIntegerValue - operand2.knownIntegerValue
+	const knownValue =
+		operand1.knownValue !== undefined && operand2.knownValue !== undefined
+			? operand1.knownValue - operand2.knownValue
 			: undefined;
 	const safeRange =
-		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownIntegerValue !== undefined
-			? shiftSafeRange(operand1.address.safeRange, -operand2.knownIntegerValue)
+		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownValue !== undefined
+			? shiftSafeRange(operand1.address.safeRange, -operand2.knownValue)
 			: undefined;
 	const clampRange =
 		operand1.kind === 'address' ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined;
 	const pointsTo = operand1.kind === 'address' ? operand1.pointsTo : undefined;
 
 	return {
-		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
+		...(knownValue !== undefined ? { knownValue } : {}),
 		...(safeRange || clampRange
 			? {
 					kind: 'address',

@@ -77,8 +77,8 @@ describe('mul instruction compiler', () => {
 	it('keeps known integer metadata when multiplying known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 2 },
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 2 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -91,6 +91,6 @@ describe('mul instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 8 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 8 }]);
 	});
 });

@@ -18,7 +18,7 @@ export function analyzeShiftLeft(_line: CompilerASTLine, context: CompilationCon
 		consumed[1],
 		(value, shift) => (value << (shift & 31)) | 0
 	);
-	const produced = [knownIntegerResult(integerMetadata.knownIntegerValue)];
+	const produced = [knownIntegerResult(integerMetadata.knownValue)];
 	produce(context, produced);
 	return { consumed, produced };
 }

@@ -234,8 +234,8 @@ export interface StackValue {
 	valueType: StackValueType;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
-	/** Exact integer value when the compiler can still prove it at this stack position. */
-	knownIntegerValue?: number;
+	/** Exact scalar value when the compiler can still prove it at this stack position. */
+	knownValue?: number;
 }
 
 /** Type and value facts known about one value that is proven to be a memory address. */
@@ -246,8 +246,8 @@ export interface StackAddress {
 	pointsTo?: PointeeMetadata;
 	/** A flag for the div operation to check if the divisor is zero. */
 	isNonZero?: boolean;
-	/** Exact integer value when the compiler can still prove it at this stack position. */
-	knownIntegerValue?: number;
+	/** Exact integer address when the compiler can still prove it at this stack position. */
+	knownValue?: number;
 }
 
 /** Type and value facts known about one item on the compiler analysis stack. */

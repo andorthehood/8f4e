@@ -15,7 +15,7 @@ completed: null
 The compiler now has compile-time folding and stack-level integer metadata, but runtime arithmetic codegen still emits direct WebAssembly arithmetic operations even when the top stack operands prove a cheaper equivalent.
 
 - Compile-time expressions such as `16*2`, `SIZE/2`, and `sizeof(samples)*4` are already folded during semantic normalization.
-- `StackItem.knownIntegerValue` already tracks exact integer values when the compiler can prove them.
+- `StackItem.knownValue` already tracks exact scalar values when the compiler can prove them.
 - Integer arithmetic compilers preserve known values in stack metadata.
 - The generated runtime bytecode is not reduced: `mul.ts` still emits `I32_MUL`, and `div.ts` still emits `I32_DIV_S`.
 

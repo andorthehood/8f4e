@@ -81,12 +81,12 @@ describe('add instruction compiler', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
-				knownIntegerValue: 0,
+				knownValue: 0,
 				address: {
 					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -104,7 +104,7 @@ describe('add instruction compiler', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: true,
-				knownIntegerValue: 4,
+				knownValue: 4,
 				address: {
 					memoryIndex: 0,
 					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 4, safeByteLength: 124, memoryId: 'arr' },
@@ -121,12 +121,12 @@ describe('add instruction compiler', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: false,
-				knownIntegerValue: 0,
+				knownValue: 0,
 				address: {
 					safeRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },
 				},
 			},
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1024 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 1024 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -144,7 +144,7 @@ describe('add instruction compiler', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: true,
-				knownIntegerValue: 1024,
+				knownValue: 1024,
 				address: {
 					memoryIndex: 0,
 					clampRange: { source: 'memory-start', memoryIndex: 0, byteAddress: 0, safeByteLength: 128, memoryId: 'arr' },

@@ -13,18 +13,18 @@ export function deriveKnownIntegerValue(
 	operand2: StackItem,
 	operation: (operand1: number, operand2: number) => number | undefined
 ): Partial<StackItem> {
-	if (operand1.knownIntegerValue === undefined || operand2.knownIntegerValue === undefined) {
+	if (operand1.knownValue === undefined || operand2.knownValue === undefined) {
 		return {};
 	}
 
-	const knownIntegerValue = operation(operand1.knownIntegerValue, operand2.knownIntegerValue);
+	const knownValue = operation(operand1.knownValue, operand2.knownValue);
 
-	if (knownIntegerValue === undefined) {
+	if (knownValue === undefined) {
 		return {};
 	}
 
 	return {
-		knownIntegerValue,
-		isNonZero: knownIntegerValue !== 0,
+		knownValue,
+		isNonZero: knownValue !== 0,
 	};
 }

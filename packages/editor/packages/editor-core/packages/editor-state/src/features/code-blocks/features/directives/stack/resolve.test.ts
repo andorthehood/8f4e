@@ -42,8 +42,8 @@ describe('stack directive widget resolution', () => {
 					'test-block': {
 						stackAnalysis: [
 							createStackAnalysisLine(2, [
-								{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
-								{ kind: 'value', valueType: 'int', knownIntegerValue: 3 },
+								{ kind: 'value', valueType: 'int', knownValue: 2 },
+								{ kind: 'value', valueType: 'int', knownValue: 3 },
 							]),
 						],
 					},
@@ -67,7 +67,7 @@ describe('stack directive widget resolution', () => {
 	it('uses the same source line for a trailing directive', () => {
 		graphicData.code = ['module test-block', 'push 2 ; @stack', 'moduleEnd'];
 		state.compiler.compiledModules['test-block']!.stackAnalysis = [
-			createStackAnalysisLine(1, [{ kind: 'value', valueType: 'int', knownIntegerValue: 2 }]),
+			createStackAnalysisLine(1, [{ kind: 'value', valueType: 'int', knownValue: 2 }]),
 		];
 
 		runDirectiveResolution();
@@ -78,7 +78,7 @@ describe('stack directive widget resolution', () => {
 	it('supports @s as a shorthand alias', () => {
 		graphicData.code = ['module test-block', 'push 2 ; @s', 'moduleEnd'];
 		state.compiler.compiledModules['test-block']!.stackAnalysis = [
-			createStackAnalysisLine(1, [{ kind: 'value', valueType: 'int', knownIntegerValue: 2 }]),
+			createStackAnalysisLine(1, [{ kind: 'value', valueType: 'int', knownValue: 2 }]),
 		];
 
 		runDirectiveResolution();
@@ -90,7 +90,7 @@ describe('stack directive widget resolution', () => {
 		state.compiler.compiledModules['test-block']!.stackAnalysis = [
 			createStackAnalysisLine(2, [
 				{ kind: 'value', valueType: 'int' },
-				{ kind: 'value', valueType: 'int', knownIntegerValue: 3 },
+				{ kind: 'value', valueType: 'int', knownValue: 3 },
 			]),
 		];
 
@@ -117,7 +117,7 @@ describe('stack directive widget resolution', () => {
 		state.compiler.compiledFunctions = {
 			helper: {
 				ast: { projectBlockId: 42 },
-				stackAnalysis: [createStackAnalysisLine(1, [{ kind: 'value', valueType: 'int', knownIntegerValue: 3 }])],
+				stackAnalysis: [createStackAnalysisLine(1, [{ kind: 'value', valueType: 'int', knownValue: 3 }])],
 			},
 		} as never;
 

@@ -27,7 +27,7 @@ export function analyzeRemainder(line: CompilerASTLine, context: CompilationCont
 
 		return (dividend % divisorValue) | 0;
 	});
-	const produced = [knownIntegerResult(integerMetadata.knownIntegerValue)];
+	const produced = [knownIntegerResult(integerMetadata.knownValue)];
 	produce(context, produced);
 	return { consumed, produced };
 }

@@ -154,9 +154,10 @@ push 2
 push 3 ; @stack
 ```
 
-The example displays `[2, 3]`. Each stack item uses its statically known integer value when one is available; otherwise,
-it displays the analyzed type: `int`, `float`, `float64`, or `ptr`. For example, a stack whose first value is unknown and
-whose second value is known to be `3` displays `[int, 3]`. An empty stack displays `[]`.
+The example displays `[2, 3]`. Each stack item uses its statically known scalar value when one is available; otherwise,
+it displays the analyzed type: `int`, `float`, `float64`, or `ptr`. Float values use their WebAssembly runtime precision.
+For example, a stack whose first value is unknown and whose second value is known to be `3` displays `[int, 3]`. An
+empty stack displays `[]`.
 
 The standalone form is equivalent:
 

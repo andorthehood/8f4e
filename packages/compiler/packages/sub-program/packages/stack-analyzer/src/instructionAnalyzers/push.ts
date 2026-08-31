@@ -63,6 +63,7 @@ function pushLiteralStackItems(line: SemanticPushLine, context: CompilationConte
 	}
 
 	const kind = resolveArgumentValueKind(argument);
+	const knownValue = kind === 'float32' ? Math.fround(argument.value) : argument.value;
 	const address = argument.address
 		? {
 				...argument.address,
@@ -72,8 +73,8 @@ function pushLiteralStackItems(line: SemanticPushLine, context: CompilationConte
 
 	return [
 		kindToStackItem(kind, {
-			isNonZero: argument.value !== 0,
-			...(argument.isInteger && Number.isInteger(argument.value) ? { knownIntegerValue: argument.value } : {}),
+			isNonZero: knownValue !== 0,
+			knownValue,
 			...(address ? { address, pointsTo: getAddressPointeeMetadata(context, address) } : {}),
 		}),
 	];

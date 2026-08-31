@@ -14,7 +14,7 @@ import { knownIntegerResult } from './shared';
 export function analyzeAnd(_line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	const consumed = consume(context, 2);
 	const integerMetadata = deriveKnownIntegerValue(consumed[0], consumed[1], (value1, value2) => value1 & value2);
-	const produced = [knownIntegerResult(integerMetadata.knownIntegerValue)];
+	const produced = [knownIntegerResult(integerMetadata.knownValue)];
 	produce(context, produced);
 	return { consumed, produced };
 }

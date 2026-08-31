@@ -1,8 +1,8 @@
 import type { Stack, StackItem } from '@8f4e/language-spec';
 
 function formatStackItem(item: StackItem): string {
-	if (item.knownIntegerValue !== undefined) {
-		return String(item.knownIntegerValue);
+	if (item.knownValue !== undefined) {
+		return String(item.knownValue);
 	}
 
 	return item.kind === 'address' ? 'ptr' : item.valueType;
