@@ -30,12 +30,12 @@ describe('tooltip effect', () => {
 								instruction: 'add',
 								stackAnalysis: {
 									stackBefore: [
-										{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
-										{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
+										{ kind: 'value', valueType: 'int', knownValue: 1 },
+										{ kind: 'value', valueType: 'int', knownValue: 2 },
 									],
 									consumedOperands: [
-										{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
-										{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
+										{ kind: 'value', valueType: 'int', knownValue: 1 },
+										{ kind: 'value', valueType: 'int', knownValue: 2 },
 									],
 									producedStackItems: [{ kind: 'value', valueType: 'int' }],
 									stackAfter: [{ kind: 'value', valueType: 'int' }],
@@ -121,12 +121,12 @@ describe('tooltip effect', () => {
 								instruction: 'add',
 								stackAnalysis: {
 									stackBefore: [
-										{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
-										{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
+										{ kind: 'value', valueType: 'int', knownValue: 1 },
+										{ kind: 'value', valueType: 'int', knownValue: 2 },
 									],
 									consumedOperands: [
-										{ kind: 'value', valueType: 'int', knownIntegerValue: 1 },
-										{ kind: 'value', valueType: 'int', knownIntegerValue: 2 },
+										{ kind: 'value', valueType: 'int', knownValue: 1 },
+										{ kind: 'value', valueType: 'int', knownValue: 2 },
 									],
 									producedStackItems: [{ kind: 'value', valueType: 'int' }],
 									stackAfter: [{ kind: 'value', valueType: 'int' }],

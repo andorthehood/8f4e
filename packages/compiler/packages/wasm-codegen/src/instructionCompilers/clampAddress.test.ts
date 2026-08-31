@@ -51,7 +51,7 @@ describe('clamp address instruction compilers', () => {
 			kind: 'address',
 			valueType: 'int',
 			isNonZero: true,
-			knownIntegerValue: 1024,
+			knownValue: 1024,
 			address: { clampRange: range },
 		});
 
@@ -62,7 +62,7 @@ describe('clamp address instruction compilers', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: true,
-				knownIntegerValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
+				knownValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
 				address: {
 					memoryIndex: 0,
 					clampRange: range,
@@ -80,7 +80,7 @@ describe('clamp address instruction compilers', () => {
 			kind: 'address',
 			valueType: 'int',
 			isNonZero: true,
-			knownIntegerValue: 1024,
+			knownValue: 1024,
 			address: { clampRange: range },
 		});
 
@@ -91,7 +91,7 @@ describe('clamp address instruction compilers', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: true,
-				knownIntegerValue: 127,
+				knownValue: 127,
 				address: {
 					memoryIndex: 0,
 					clampRange: range,
@@ -114,7 +114,7 @@ describe('clamp address instruction compilers', () => {
 			kind: 'address',
 			valueType: 'int',
 			isNonZero: true,
-			knownIntegerValue: -1,
+			knownValue: -1,
 			address: { clampRange: shiftedRange },
 		});
 
@@ -125,7 +125,7 @@ describe('clamp address instruction compilers', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: true,
-				knownIntegerValue: 64,
+				knownValue: 64,
 				address: {
 					memoryIndex: 0,
 					clampRange: shiftedRange,
@@ -161,7 +161,7 @@ describe('clamp address instruction compilers', () => {
 				moduleName: 'osc',
 			},
 		});
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 999 });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 999 });
 
 		analyzeAndCompileInstruction(clampModuleAddress, createLine('clampModuleAddress'), context);
 
@@ -170,7 +170,7 @@ describe('clamp address instruction compilers', () => {
 				kind: 'address',
 				valueType: 'int',
 				isNonZero: true,
-				knownIntegerValue: 92,
+				knownValue: 92,
 				address: {
 					memoryIndex: 0,
 					clampRange: {
@@ -190,7 +190,7 @@ describe('clamp address instruction compilers', () => {
 
 	it('clamps to the full global memory range', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1024 });
+		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 1024 });
 
 		analyzeAndCompileInstruction(clampGlobalAddress, createLine('clampGlobalAddress'), context);
 

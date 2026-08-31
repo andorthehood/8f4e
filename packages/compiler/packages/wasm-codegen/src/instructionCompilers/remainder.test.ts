@@ -51,8 +51,8 @@ describe('remainder instruction compiler', () => {
 	it('keeps known integer metadata when taking the remainder of known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 9 },
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 9 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 4 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -65,6 +65,6 @@ describe('remainder instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 1 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 1 }]);
 	});
 });

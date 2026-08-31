@@ -59,9 +59,9 @@ export function getClampedAddressStackItem(
 	const memoryIndex = range?.memoryIndex ?? (operand.kind === 'address' ? operand.address.memoryIndex : 0);
 	const memoryRegionName =
 		range?.memoryRegionName ?? (operand.kind === 'address' ? operand.address.memoryRegionName : undefined);
-	const knownIntegerValue = range
+	const knownValue = range
 		? clampKnownIntegerValue(
-				operand.knownIntegerValue,
+				operand.knownValue,
 				range.byteAddress,
 				range.byteAddress + Math.max(0, range.safeByteLength - accessByteWidth)
 			)
@@ -70,8 +70,8 @@ export function getClampedAddressStackItem(
 	return {
 		kind: 'address',
 		valueType: 'int',
-		isNonZero: knownIntegerValue !== undefined ? knownIntegerValue !== 0 : false,
-		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
+		isNonZero: knownValue !== undefined ? knownValue !== 0 : false,
+		...(knownValue !== undefined ? { knownValue } : {}),
 		...(operand.kind === 'address' && operand.pointsTo ? { pointsTo: { ...operand.pointsTo } } : {}),
 		address: {
 			...getMemoryRegionFields(memoryIndex, memoryRegionName),

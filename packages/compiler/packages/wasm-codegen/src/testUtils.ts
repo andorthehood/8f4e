@@ -233,13 +233,13 @@ function produce(context: CompilationContext, items: Stack): void {
 
 function createStackValue(
 	valueType: StackValueType,
-	metadata: Pick<StackItem, 'isNonZero' | 'knownIntegerValue'> = {}
+	metadata: Pick<StackItem, 'isNonZero' | 'knownValue'> = {}
 ): StackItem {
 	return {
 		kind: 'value',
 		valueType,
 		...(metadata.isNonZero !== undefined ? { isNonZero: metadata.isNonZero } : {}),
-		...(metadata.knownIntegerValue !== undefined ? { knownIntegerValue: metadata.knownIntegerValue } : {}),
+		...(metadata.knownValue !== undefined ? { knownValue: metadata.knownValue } : {}),
 	};
 }
 
@@ -334,12 +334,12 @@ function deriveKnownIntegerValue(
 	operand2: StackItem,
 	operation: (operand1: number, operand2: number) => number | undefined
 ): Partial<StackItem> {
-	if (operand1.knownIntegerValue === undefined || operand2.knownIntegerValue === undefined) {
+	if (operand1.knownValue === undefined || operand2.knownValue === undefined) {
 		return {};
 	}
 
-	const knownIntegerValue = operation(operand1.knownIntegerValue, operand2.knownIntegerValue);
-	return knownIntegerValue === undefined ? {} : { knownIntegerValue, isNonZero: knownIntegerValue !== 0 };
+	const knownValue = operation(operand1.knownValue, operand2.knownValue);
+	return knownValue === undefined ? {} : { knownValue, isNonZero: knownValue !== 0 };
 }
 
 function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): MemoryAddressRange | undefined {
@@ -355,15 +355,15 @@ function shiftSafeRange(safeRange: MemoryAddressRange, byteOffset: number): Memo
 }
 
 function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem): Partial<StackItem> {
-	const knownIntegerValue =
-		operand1.knownIntegerValue !== undefined && operand2.knownIntegerValue !== undefined
-			? operand1.knownIntegerValue + operand2.knownIntegerValue
+	const knownValue =
+		operand1.knownValue !== undefined && operand2.knownValue !== undefined
+			? operand1.knownValue + operand2.knownValue
 			: undefined;
 	const safeRange =
-		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownIntegerValue !== undefined
-			? shiftSafeRange(operand1.address.safeRange, operand2.knownIntegerValue)
-			: operand2.kind === 'address' && operand2.address.safeRange && operand1.knownIntegerValue !== undefined
-				? shiftSafeRange(operand2.address.safeRange, operand1.knownIntegerValue)
+		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownValue !== undefined
+			? shiftSafeRange(operand1.address.safeRange, operand2.knownValue)
+			: operand2.kind === 'address' && operand2.address.safeRange && operand1.knownValue !== undefined
+				? shiftSafeRange(operand2.address.safeRange, operand1.knownValue)
 				: undefined;
 	const clampRange =
 		(operand1.kind === 'address' ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined) ??
@@ -376,7 +376,7 @@ function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem): Parti
 				: undefined;
 
 	return {
-		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
+		...(knownValue !== undefined ? { knownValue } : {}),
 		...(safeRange || clampRange
 			? {
 					kind: 'address',
@@ -396,20 +396,20 @@ function deriveAddStackMetadata(operand1: StackItem, operand2: StackItem): Parti
 }
 
 function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem): Partial<StackItem> {
-	const knownIntegerValue =
-		operand1.knownIntegerValue !== undefined && operand2.knownIntegerValue !== undefined
-			? operand1.knownIntegerValue - operand2.knownIntegerValue
+	const knownValue =
+		operand1.knownValue !== undefined && operand2.knownValue !== undefined
+			? operand1.knownValue - operand2.knownValue
 			: undefined;
 	const safeRange =
-		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownIntegerValue !== undefined
-			? shiftSafeRange(operand1.address.safeRange, -operand2.knownIntegerValue)
+		operand1.kind === 'address' && operand1.address.safeRange && operand2.knownValue !== undefined
+			? shiftSafeRange(operand1.address.safeRange, -operand2.knownValue)
 			: undefined;
 	const clampRange =
 		operand1.kind === 'address' ? (operand1.address.clampRange ?? operand1.address.safeRange) : undefined;
 	const pointsTo = operand1.kind === 'address' ? operand1.pointsTo : undefined;
 
 	return {
-		...(knownIntegerValue !== undefined ? { knownIntegerValue } : {}),
+		...(knownValue !== undefined ? { knownValue } : {}),
 		...(safeRange || clampRange
 			? {
 					kind: 'address',
@@ -428,10 +428,10 @@ function deriveSubStackMetadata(operand1: StackItem, operand2: StackItem): Parti
 	} as Partial<StackItem>;
 }
 
-function knownIntegerResult(knownIntegerValue: number | undefined, isNonZero = false): StackItem {
+function knownIntegerResult(knownValue: number | undefined, isNonZero = false): StackItem {
 	return createStackValue('int', {
-		isNonZero: knownIntegerValue !== undefined ? knownIntegerValue !== 0 : isNonZero,
-		knownIntegerValue,
+		isNonZero: knownValue !== undefined ? knownValue !== 0 : isNonZero,
+		knownValue,
 	});
 }
 
@@ -450,18 +450,18 @@ function numericResult(
 			valueType: 'int',
 			address: integerMetadata.address!,
 			...(integerMetadata.pointsTo ? { pointsTo: integerMetadata.pointsTo } : {}),
-			...(integerMetadata.knownIntegerValue !== undefined
+			...(integerMetadata.knownValue !== undefined
 				? {
-						knownIntegerValue: integerMetadata.knownIntegerValue,
-						isNonZero: integerMetadata.knownIntegerValue !== 0,
+						knownValue: integerMetadata.knownValue,
+						isNonZero: integerMetadata.knownValue !== 0,
 					}
 				: {}),
 		};
 	}
 
 	return createStackValue(valueType, {
-		isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
-		knownIntegerValue: integerMetadata.knownIntegerValue,
+		isNonZero: integerMetadata.knownValue !== undefined ? integerMetadata.knownValue !== 0 : false,
+		knownValue: integerMetadata.knownValue,
 	});
 }
 
@@ -536,7 +536,7 @@ function pushLiteralStackItems(line: CompilerASTLine, context: CompilationContex
 	return [
 		kindToStackItem(resolveArgumentValueKind(argument), {
 			isNonZero: argument.value !== 0,
-			...(argument.isInteger && Number.isInteger(argument.value) ? { knownIntegerValue: argument.value } : {}),
+			...(argument.isInteger && Number.isInteger(argument.value) ? { knownValue: argument.value } : {}),
 			...(address ? { address, pointsTo: getAddressPointeeMetadata(context, address) } : {}),
 		}),
 	];
@@ -836,34 +836,30 @@ function analyzeNumericBinaryForTest(line: CompilerASTLine, context: Compilation
 								),
 							]
 						: line.instruction === 'remainder'
-							? [knownIntegerResult(deriveKnownIntegerValue(left, right, (x, y) => (x % y) | 0).knownIntegerValue)]
+							? [knownIntegerResult(deriveKnownIntegerValue(left, right, (x, y) => (x % y) | 0).knownValue)]
 							: line.instruction === 'and'
-								? [knownIntegerResult(deriveKnownIntegerValue(left, right, (x, y) => x & y).knownIntegerValue)]
+								? [knownIntegerResult(deriveKnownIntegerValue(left, right, (x, y) => x & y).knownValue)]
 								: line.instruction === 'or'
 									? [
 											knownIntegerResult(
-												deriveKnownIntegerValue(left, right, (x, y) => x | y).knownIntegerValue,
+												deriveKnownIntegerValue(left, right, (x, y) => x | y).knownValue,
 												Boolean(left.isNonZero || right.isNonZero)
 											),
 										]
 									: line.instruction === 'xor'
-										? [knownIntegerResult(deriveKnownIntegerValue(left, right, (x, y) => x ^ y).knownIntegerValue)]
+										? [knownIntegerResult(deriveKnownIntegerValue(left, right, (x, y) => x ^ y).knownValue)]
 										: line.instruction === 'shiftLeft'
 											? [
 													knownIntegerResult(
-														deriveKnownIntegerValue(left, right, (x, y) => (x << (y & 31)) | 0).knownIntegerValue
+														deriveKnownIntegerValue(left, right, (x, y) => (x << (y & 31)) | 0).knownValue
 													),
 												]
 											: line.instruction === 'shiftRight'
-												? [
-														knownIntegerResult(
-															deriveKnownIntegerValue(left, right, (x, y) => x >> (y & 31)).knownIntegerValue
-														),
-													]
+												? [knownIntegerResult(deriveKnownIntegerValue(left, right, (x, y) => x >> (y & 31)).knownValue)]
 												: line.instruction === 'shiftRightUnsigned'
 													? [
 															knownIntegerResult(
-																deriveKnownIntegerValue(left, right, (x, y) => x >>> (y & 31)).knownIntegerValue
+																deriveKnownIntegerValue(left, right, (x, y) => x >>> (y & 31)).knownValue
 															),
 														]
 													: undefined;
@@ -881,16 +877,16 @@ function analyzeAbsForTest(_line: CompilerASTLine, context: CompilationContext):
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
 	const knownAbsValue =
-		operand.knownIntegerValue === undefined
+		operand.knownValue === undefined
 			? undefined
-			: operand.knownIntegerValue < 0
-				? (0 - operand.knownIntegerValue) | 0
-				: operand.knownIntegerValue;
+			: operand.knownValue < 0
+				? (0 - operand.knownValue) | 0
+				: operand.knownValue;
 	const produced = [
 		operand.valueType === 'int'
 			? createStackValue('int', {
 					isNonZero: operand.isNonZero,
-					knownIntegerValue: knownAbsValue,
+					knownValue: knownAbsValue,
 				})
 			: createStackValue(operand.valueType === 'float64' ? 'float64' : 'float', { isNonZero: operand.isNonZero }),
 	];

@@ -59,7 +59,7 @@ function getStackItemLabel(item: StackItem, marker?: StackItemMarker): string {
 		label = item.valueType;
 	}
 
-	const valueLabel = item.knownIntegerValue === undefined ? label : `${label}=${item.knownIntegerValue}`;
+	const valueLabel = item.knownValue === undefined ? label : `${label}=${item.knownValue}`;
 
 	if (marker === 'consumed') {
 		return `-${valueLabel}`;

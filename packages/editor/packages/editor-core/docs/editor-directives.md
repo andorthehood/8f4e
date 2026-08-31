@@ -22,7 +22,7 @@ Examples:
 
 ```txt
 ; @watch counter
-; @debug
+; @stack
 ; @plot &audioBuffer lengthMemory
 ; @button &gate0 0 1
 ; @config font ibmvga8x16
@@ -144,27 +144,30 @@ These modifiers can be combined when they make sense. For example:
 ; @watch buffer[3]
 ```
 
-### `@debug`
+### `@stack`
 
 Show the compiler's `stackAfter` analysis at a source location. A trailing directive shows the stack after the
 instruction on the same line. A standalone directive shows the stack after the preceding compiled instruction.
 
 ```txt
 push 2
-push 3 ; @debug
+push 3 ; @stack
 ```
 
-The example displays `[2, 3]`. Each stack item uses its statically known integer value when one is available; otherwise,
-it displays the analyzed type: `int`, `float`, `float64`, or `ptr`. For example, a stack whose first value is unknown and
-whose second value is known to be `3` displays `[int, 3]`. An empty stack displays `[]`.
+The example displays `[2, 3]`. Each stack item uses its statically known scalar value when one is available; otherwise,
+it displays the analyzed type: `int`, `float`, `float64`, or `ptr`. Float values use their WebAssembly runtime precision.
+For example, a stack whose first value is unknown and whose second value is known to be `3` displays `[int, 3]`. An
+empty stack displays `[]`.
 
 The standalone form is equivalent:
 
 ```txt
 push 2
 push 3
-; @debug
+; @stack
 ```
+
+Use `@s` as a shorthand alias for `@stack`.
 
 ### `@plot`
 

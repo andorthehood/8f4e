@@ -12,7 +12,6 @@ import alwaysOnTopDirective from './alwaysOnTop/plugin';
 import barsDirective from './bars/plugin';
 import buttonDirective from './button/plugin';
 import crossfadeDirective from './crossfade/plugin';
-import debugDirective from './debug/plugin';
 import disabledDirective from './disabled/plugin';
 import favoriteDirective from './favorite/plugin';
 import groupDirective from './group/plugin';
@@ -24,6 +23,7 @@ import meterDirective from './meter/plugin';
 import pianoDirective from './piano/plugin';
 import plotDirective from './plot/plugin';
 import sliderDirective from './slider/plugin';
+import stackDirective from './stack/plugin';
 import switchDirective from './switch/plugin';
 import { normalizeEditorDirectiveRecords } from './utils';
 import viewportDirective from './viewport/plugin';
@@ -51,7 +51,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	buttonDirective,
 	switchDirective,
 	watchDirective,
-	debugDirective,
+	stackDirective,
 	infoDirective,
 	disabledDirective,
 	homeDirective,

@@ -31,8 +31,8 @@ describe('or instruction compiler', () => {
 	it('keeps known integer metadata when or-ing known integer operands', () => {
 		const context = createInstructionCompilerTestContext();
 		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 4 },
-			{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 3 }
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 4 },
+			{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 3 }
 		);
 
 		analyzeAndCompileInstruction(
@@ -45,6 +45,6 @@ describe('or instruction compiler', () => {
 			context
 		);
 
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownIntegerValue: 7 }]);
+		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 7 }]);
 	});
 });

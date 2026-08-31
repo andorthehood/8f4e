@@ -13,23 +13,23 @@ export function analyzeAbs(_line: CompilerASTLine, context: CompilationContext):
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
 	const knownAbsValue =
-		operand.knownIntegerValue === undefined
+		operand.knownValue === undefined
 			? undefined
-			: operand.knownIntegerValue < 0
-				? (0 - operand.knownIntegerValue) | 0
-				: operand.knownIntegerValue;
+			: operand.knownValue < 0
+				? (0 - operand.knownValue) | 0
+				: operand.knownValue;
 	const knownIntegerMetadata =
 		knownAbsValue === undefined
 			? {}
 			: {
-					knownIntegerValue: knownAbsValue,
+					knownValue: knownAbsValue,
 					isNonZero: knownAbsValue !== 0,
 				};
 	const produced: Stack = [
 		operand.valueType === 'int'
 			? createStackValue('int', {
 					isNonZero: operand.isNonZero,
-					knownIntegerValue: knownIntegerMetadata.knownIntegerValue,
+					knownValue: knownIntegerMetadata.knownValue,
 				})
 			: createStackValue(operand.valueType === 'float64' ? 'float64' : 'float', { isNonZero: operand.isNonZero }),
 	];

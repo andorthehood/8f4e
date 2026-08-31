@@ -9,13 +9,13 @@ import type { CompilationContext, Stack, StackItem, StackValueType } from '@8f4e
  */
 export function createStackValue(
 	valueType: StackValueType,
-	metadata: Pick<StackItem, 'isNonZero' | 'knownIntegerValue'> = {}
+	metadata: Pick<StackItem, 'isNonZero' | 'knownValue'> = {}
 ): StackItem {
 	return {
 		kind: 'value',
 		valueType,
 		...(metadata.isNonZero !== undefined ? { isNonZero: metadata.isNonZero } : {}),
-		...(metadata.knownIntegerValue !== undefined ? { knownIntegerValue: metadata.knownIntegerValue } : {}),
+		...(metadata.knownValue !== undefined ? { knownValue: metadata.knownValue } : {}),
 	};
 }
 

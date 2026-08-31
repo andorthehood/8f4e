@@ -1,19 +1,19 @@
 import { createDirectivePlugin } from '../utils';
-import { createDebugDirectiveWidgetContribution } from './resolve';
+import { createStackDirectiveWidgetContribution } from './resolve';
 
 export default createDirectivePlugin(
-	'debug',
+	'stack',
 	(directive, draft) => {
 		if (directive.args.length > 0) {
 			return;
 		}
 
 		draft.widgets.push(
-			createDebugDirectiveWidgetContribution({
+			createStackDirectiveWidgetContribution({
 				lineNumber: directive.rawRow,
 				isTrailing: !/^\s*;/.test(directive.sourceLine ?? ''),
 			})
 		);
 	},
-	{ allowTrailingComment: true }
+	{ aliases: ['s'], allowTrailingComment: true }
 );

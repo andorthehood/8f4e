@@ -40,31 +40,31 @@ export function numericResult(
 			valueType: 'int',
 			address: integerMetadata.address,
 			...(integerMetadata.pointsTo ? { pointsTo: integerMetadata.pointsTo } : {}),
-			...(integerMetadata.knownIntegerValue !== undefined
+			...(integerMetadata.knownValue !== undefined
 				? {
-						knownIntegerValue: integerMetadata.knownIntegerValue,
-						isNonZero: integerMetadata.knownIntegerValue !== 0,
+						knownValue: integerMetadata.knownValue,
+						isNonZero: integerMetadata.knownValue !== 0,
 					}
 				: {}),
 		};
 	}
 
 	return createStackValue(valueType, {
-		isNonZero: integerMetadata.knownIntegerValue !== undefined ? integerMetadata.knownIntegerValue !== 0 : false,
-		knownIntegerValue: integerMetadata.knownIntegerValue,
+		isNonZero: integerMetadata.knownValue !== undefined ? integerMetadata.knownValue !== 0 : false,
+		knownValue: integerMetadata.knownValue,
 	});
 }
 
 /**
  * Builds an integer stack item from optional known integer metadata.
  *
- * @param knownIntegerValue - Known integer value to attach to the stack item.
+ * @param knownValue - Known integer value to attach to the stack item.
  * @param isNonZero - Whether the known integer value is known to be non-zero.
  * @returns The computed result.
  */
-export function knownIntegerResult(knownIntegerValue: number | undefined, isNonZero = false): StackItem {
+export function knownIntegerResult(knownValue: number | undefined, isNonZero = false): StackItem {
 	return createStackValue('int', {
-		isNonZero: knownIntegerValue !== undefined ? knownIntegerValue !== 0 : isNonZero,
-		knownIntegerValue,
+		isNonZero: knownValue !== undefined ? knownValue !== 0 : isNonZero,
+		knownValue,
 	});
 }
