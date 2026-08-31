@@ -1,27 +1,29 @@
-import { mountDefaultEditor } from '@8f4e/editor-default';
+import { type DefaultEditorInstance, mountDefaultEditor } from '@8f4e/editor-default';
 
-const canvases = document.querySelectorAll<HTMLCanvasElement>('.editor-row canvas');
+const canvases = Array.from(document.querySelectorAll<HTMLCanvasElement>('.editor-row canvas'));
 if (canvases.length === 0) {
 	throw new Error('Editor canvases not found');
 }
 
-const editorEntries = await Promise.all(
-	Array.from(canvases, async (canvas, index) => ({
-		canvas,
-		editor: await mountDefaultEditor(canvas, {
-			captureWheel: false,
-			featureFlags: { projectCreation: false, projectOpening: false },
-			initialProjectUrl: canvas.dataset.projectUrl || undefined,
-			storage: window.localStorage,
-			storageNamespace: index === 0 ? '8f4e-website' : `8f4e-website-${index + 1}`,
-		}),
-	}))
-);
-const editors = editorEntries.map(({ editor }) => editor);
-
-const editorByCanvas = new Map(editorEntries.map(({ canvas, editor }) => [canvas, editor]));
 const renderingReleaseDelayMs = 3_000;
+const editorMountRootMargin = '200px 0px';
+const editorByCanvas = new Map<HTMLCanvasElement, DefaultEditorInstance>();
+const editorMountPromiseByCanvas = new Map<HTMLCanvasElement, Promise<DefaultEditorInstance>>();
 const renderingReleaseTimeoutByCanvas = new Map<HTMLCanvasElement, number>();
+const editors: DefaultEditorInstance[] = [];
+let disposed = false;
+
+function syncEditors(): void {
+	editors.splice(
+		0,
+		editors.length,
+		...canvases.flatMap(canvas => {
+			const editor = editorByCanvas.get(canvas);
+			return editor ? [editor] : [];
+		})
+	);
+}
+
 const renderingObserver = new IntersectionObserver(entries => {
 	for (const entry of entries) {
 		const canvas = entry.target as HTMLCanvasElement;
@@ -42,15 +44,73 @@ const renderingObserver = new IntersectionObserver(entries => {
 		}
 	}
 });
-for (const canvas of canvases) {
-	renderingObserver.observe(canvas);
+
+function mountEditor(canvas: HTMLCanvasElement, index: number): Promise<DefaultEditorInstance> {
+	const pendingMount = editorMountPromiseByCanvas.get(canvas);
+	if (pendingMount) {
+		return pendingMount;
+	}
+
+	const mountPromise = mountDefaultEditor(canvas, {
+		captureWheel: false,
+		featureFlags: { projectCreation: false, projectOpening: false },
+		initialProjectUrl: canvas.dataset.projectUrl || undefined,
+		storage: window.localStorage,
+		storageNamespace: index === 0 ? '8f4e-website' : `8f4e-website-${index + 1}`,
+	})
+		.then(editor => {
+			if (disposed) {
+				editor.dispose();
+				return editor;
+			}
+
+			editorByCanvas.set(canvas, editor);
+			syncEditors();
+			renderingObserver.observe(canvas);
+			if (index === 0) {
+				Object.assign(window, { editor, state: editor.state });
+			}
+			return editor;
+		})
+		.catch(error => {
+			editorMountPromiseByCanvas.delete(canvas);
+			throw error;
+		});
+
+	editorMountPromiseByCanvas.set(canvas, mountPromise);
+	return mountPromise;
 }
 
-const [editor] = editors;
+const canvasIndex = new Map(canvases.map((canvas, index) => [canvas, index]));
+const mountingObserver = new IntersectionObserver(
+	entries => {
+		for (const entry of entries) {
+			if (!entry.isIntersecting) {
+				continue;
+			}
 
-Object.assign(window, { editor, editors, state: editor.state });
+			const canvas = entry.target as HTMLCanvasElement;
+			const index = canvasIndex.get(canvas);
+			if (index === undefined) {
+				continue;
+			}
+
+			void mountEditor(canvas, index)
+				.then(() => mountingObserver.unobserve(canvas))
+				.catch(error => console.error('Failed to mount editor:', error));
+		}
+	},
+	{ rootMargin: editorMountRootMargin }
+);
+for (const canvas of canvases) {
+	mountingObserver.observe(canvas);
+}
+
+Object.assign(window, { editors });
 
 import.meta.hot?.dispose(() => {
+	disposed = true;
+	mountingObserver.disconnect();
 	renderingObserver.disconnect();
 	for (const timeout of renderingReleaseTimeoutByCanvas.values()) {
 		window.clearTimeout(timeout);
@@ -59,4 +119,6 @@ import.meta.hot?.dispose(() => {
 	for (const editor of editors) {
 		editor.dispose();
 	}
+	editors.length = 0;
+	editorByCanvas.clear();
 });
