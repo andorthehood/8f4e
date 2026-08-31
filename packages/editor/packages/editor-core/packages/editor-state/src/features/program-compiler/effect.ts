@@ -47,7 +47,7 @@ export default function compiler(store: StateManager<State>): () => void {
 
 			const compilerOptions = {
 				startingMemoryWordAddress: 0,
-				includeStackAnalysis: state.featureFlags.codeLineSelection,
+				includeStackAnalysis: true,
 			};
 			const project = convertGraphicDataToProjectStructure(state.codeBlockRendering.rootCodeBlocks);
 			const result = await state.callbacks.compileCode(project, {
@@ -153,13 +153,11 @@ export default function compiler(store: StateManager<State>): () => void {
 
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeChanged);
 	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticCodeChanged);
-	store.subscribe('featureFlags.codeLineSelection', scheduleRecompile);
 
 	return () => {
 		disposed = true;
 		scheduleRecompile.cancel();
 		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeChanged);
 		store.unsubscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticCodeChanged);
-		store.unsubscribe('featureFlags.codeLineSelection', scheduleRecompile);
 	};
 }
