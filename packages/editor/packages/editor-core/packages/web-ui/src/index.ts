@@ -67,7 +67,6 @@ export default async function init(
 	loadBackgroundEffect: (effect: ShaderUnderlayEffect | null) => void;
 	pauseRendering: () => void;
 	releaseRenderingResources: () => void;
-	releaseRenderingResourcesAndDrawingBuffer: () => void;
 	resumeRendering: () => void;
 	renderFrame: () => void;
 	destroy: () => void;
@@ -86,8 +85,6 @@ export default async function init(
 	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
 	let viewportWidth = canvas.width;
 	let viewportHeight = canvas.height;
-	let appliedViewportWidth = canvas.width;
-	let appliedViewportHeight = canvas.height;
 	const getFrameTexture = options.getFrameTexture ?? (() => options.frameTexture);
 	let frameTextureKey = '';
 	let drawWasmFrameTexture: ((layer: RgbaTextureLayer) => void) | undefined;
@@ -172,7 +169,6 @@ export default async function init(
 
 	let rendering = false;
 	let renderingResourcesReleased = false;
-	let drawingBufferReleased = false;
 	let animationFrameRequest: number | null = null;
 	const renderNextFrame = () => {
 		animationFrameRequest = null;
@@ -213,18 +209,8 @@ export default async function init(
 		lines.releaseMemory();
 		engine.releaseRenderingMemory();
 		renderingResourcesReleased = true;
-	};
-	const releaseRenderingResourcesAndDrawingBuffer = () => {
-		releaseRenderingResources();
-		if (drawingBufferReleased) {
-			return;
-		}
-
 		canvas.width = 1;
 		canvas.height = 1;
-		appliedViewportWidth = 1;
-		appliedViewportHeight = 1;
-		drawingBufferReleased = true;
 	};
 	const restoreRenderingResources = () => {
 		if (!renderingResourcesReleased) {
@@ -232,13 +218,8 @@ export default async function init(
 		}
 
 		engine.restoreRenderingMemory();
-		if (drawingBufferReleased || appliedViewportWidth !== viewportWidth || appliedViewportHeight !== viewportHeight) {
-			engine.resize(viewportWidth, viewportHeight);
-			appliedViewportWidth = viewportWidth;
-			appliedViewportHeight = viewportHeight;
-		}
+		engine.resize(viewportWidth, viewportHeight);
 		renderingResourcesReleased = false;
-		drawingBufferReleased = false;
 	};
 	const resumeRendering = () => {
 		if (rendering) {
@@ -262,8 +243,6 @@ export default async function init(
 				return false;
 			}
 			engine.resize(width, height);
-			appliedViewportWidth = width;
-			appliedViewportHeight = height;
 			return true;
 		},
 		loadSpriteAtlas: spriteData => {
@@ -287,7 +266,6 @@ export default async function init(
 		},
 		pauseRendering,
 		releaseRenderingResources,
-		releaseRenderingResourcesAndDrawingBuffer,
 		resumeRendering,
 		renderFrame: () => {
 			restoreRenderingResources();

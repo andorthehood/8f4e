@@ -20,10 +20,9 @@ editor.resumeRendering();
 editor.dispose();
 ```
 
-`releaseRenderingResources()` pauses rendering and releases reloadable GPU textures and dynamic buffer storage while
-leaving the canvas drawing buffer—and therefore its last rendered frame—intact. For the lowest offscreen memory use,
-`releaseRenderingResourcesAndDrawingBuffer()` also discards the drawing buffer. `resumeRendering()` restores either
-release level, applies the latest canvas size, and renders immediately.
+`releaseRenderingResources()` pauses rendering and releases reloadable GPU textures, dynamic buffer storage, and the
+canvas drawing buffer. `resumeRendering()` restores the resources, applies the latest canvas size, and renders
+immediately.
 
 The host controls the canvas's layout dimensions with CSS. The editor observes that rendered size and adapts its
 drawing buffer and UI automatically. Wheel input pans the editor and prevents page scrolling by default; embedded
