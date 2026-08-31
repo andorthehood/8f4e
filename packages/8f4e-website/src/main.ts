@@ -6,7 +6,6 @@ if (canvases.length === 0) {
 }
 
 const renderingReleaseDelayMs = 3_000;
-const editorMountRootMargin = '200px 0px';
 const editorByCanvas = new Map<HTMLCanvasElement, DefaultEditorInstance>();
 const editorMountPromiseByCanvas = new Map<HTMLCanvasElement, Promise<DefaultEditorInstance>>();
 const renderingReleaseTimeoutByCanvas = new Map<HTMLCanvasElement, number>();
@@ -82,26 +81,23 @@ function mountEditor(canvas: HTMLCanvasElement, index: number): Promise<DefaultE
 }
 
 const canvasIndex = new Map(canvases.map((canvas, index) => [canvas, index]));
-const mountingObserver = new IntersectionObserver(
-	entries => {
-		for (const entry of entries) {
-			if (!entry.isIntersecting) {
-				continue;
-			}
-
-			const canvas = entry.target as HTMLCanvasElement;
-			const index = canvasIndex.get(canvas);
-			if (index === undefined) {
-				continue;
-			}
-
-			void mountEditor(canvas, index)
-				.then(() => mountingObserver.unobserve(canvas))
-				.catch(error => console.error('Failed to mount editor:', error));
+const mountingObserver = new IntersectionObserver(entries => {
+	for (const entry of entries) {
+		if (!entry.isIntersecting) {
+			continue;
 		}
-	},
-	{ rootMargin: editorMountRootMargin }
-);
+
+		const canvas = entry.target as HTMLCanvasElement;
+		const index = canvasIndex.get(canvas);
+		if (index === undefined) {
+			continue;
+		}
+
+		void mountEditor(canvas, index)
+			.then(() => mountingObserver.unobserve(canvas))
+			.catch(error => console.error('Failed to mount editor:', error));
+	}
+});
 for (const canvas of canvases) {
 	mountingObserver.observe(canvas);
 }
