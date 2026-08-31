@@ -14,6 +14,7 @@ describe('directive registry', () => {
 				'; @slider &gain 0 1 0.01',
 				'; @crossfade &dry &wet',
 				'; @info foo',
+				'; @debug',
 				'; note',
 				'moduleEnd',
 			],
@@ -51,18 +52,25 @@ describe('directive registry', () => {
 				args: ['foo'],
 				sourceLine: '; @info foo',
 			},
+			{
+				name: 'debug',
+				rawRow: 6,
+				args: [],
+				sourceLine: '; @debug',
+			},
 		]);
 	});
 
 	it('parses trailing-comment directives only for plugins that allow them', () => {
 		const result = parseEditorDirectives(
-			['int foo 1 ; @watch', 'float out ; @meter', 'int bar 1 ; @plot buffer'],
+			['int foo 1 ; @watch', 'push 1 ; @debug', 'float out ; @meter', 'int bar 1 ; @plot buffer'],
 			directivePlugins
 		);
 
 		expect(result).toEqual([
 			{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' },
-			{ name: 'meter', rawRow: 1, args: [], sourceLine: 'float out ; @meter' },
+			{ name: 'debug', rawRow: 1, args: [], sourceLine: 'push 1 ; @debug' },
+			{ name: 'meter', rawRow: 2, args: [], sourceLine: 'float out ; @meter' },
 		]);
 	});
 

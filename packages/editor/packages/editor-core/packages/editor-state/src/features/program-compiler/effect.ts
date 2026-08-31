@@ -1,14 +1,23 @@
-import type { InfoRecord, State } from '@8f4e/editor-state-types';
+import type { CodeBlockGraphicData, InfoRecord, State } from '@8f4e/editor-state-types';
 import type { CompilerDiagnostic } from '@8f4e/language-spec';
 import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
+import { parseBlockDirectives } from '../code-blocks/utils/parseBlockDirectives';
 import { log } from '../logger/logger';
 import convertGraphicDataToProjectStructure from '../project-export/serializeCodeBlocks';
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
 const includesBlockType = documentBlockInstructionByType.includes.type;
+
+function hasDebugDirective(codeBlocks: CodeBlockGraphicData[]): boolean {
+	return codeBlocks.some(
+		codeBlock =>
+			parseBlockDirectives(codeBlock.code).some(directive => directive.name === 'debug') ||
+			(codeBlock.nestedProjectCodeBlocks !== undefined && hasDebugDirective(codeBlock.nestedProjectCodeBlocks))
+	);
+}
 
 export default function compiler(store: StateManager<State>): () => void {
 	const state = store.getState();
@@ -47,7 +56,8 @@ export default function compiler(store: StateManager<State>): () => void {
 
 			const compilerOptions = {
 				startingMemoryWordAddress: 0,
-				includeStackAnalysis: state.featureFlags.codeLineSelection,
+				includeStackAnalysis:
+					state.featureFlags.codeLineSelection || hasDebugDirective(state.codeBlockRendering.rootCodeBlocks),
 			};
 			const project = convertGraphicDataToProjectStructure(state.codeBlockRendering.rootCodeBlocks);
 			const result = await state.callbacks.compileCode(project, {

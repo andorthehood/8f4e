@@ -185,6 +185,30 @@ describe('program compiler effect', () => {
 		);
 	});
 
+	it('includes stack analysis for @debug directives when code line selection is disabled', async () => {
+		mockState.featureFlags.codeLineSelection = false;
+		mockState.codeBlockRendering.rootCodeBlocks[0]!.code = ['function helper', 'push 1', '; @debug', 'functionEnd'];
+		mockCompileCode.mockResolvedValue({
+			codeBuffer: new Uint8Array([0x00]),
+			compiledModules: {},
+			compiledFunctions: {},
+			requiredMemoryBytes: 0,
+			allocatedMemoryBytes: 65536,
+			astCacheStats: { hits: 0, misses: 0 },
+			hasWasmInstanceBeenReset: false,
+			memoryAction: { action: 'reused' },
+			initOnlyReran: false,
+			byteCodeSize: 1,
+		});
+
+		await triggerProgrammaticCompile();
+
+		expect(mockCompileCode).toHaveBeenCalledWith(expect.any(Object), {
+			startingMemoryWordAddress: 0,
+			includeStackAnalysis: true,
+		});
+	});
+
 	it('recompiles when code line selection changes so stack analysis follows the feature flag', async () => {
 		mockCompileCode.mockResolvedValue({
 			codeBuffer: new Uint8Array([0x00]),

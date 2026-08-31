@@ -12,6 +12,7 @@ import alwaysOnTopDirective from './alwaysOnTop/plugin';
 import barsDirective from './bars/plugin';
 import buttonDirective from './button/plugin';
 import crossfadeDirective from './crossfade/plugin';
+import debugDirective from './debug/plugin';
 import disabledDirective from './disabled/plugin';
 import favoriteDirective from './favorite/plugin';
 import groupDirective from './group/plugin';
@@ -50,6 +51,7 @@ export const directivePlugins: EditorDirectivePlugin[] = [
 	buttonDirective,
 	switchDirective,
 	watchDirective,
+	debugDirective,
 	infoDirective,
 	disabledDirective,
 	homeDirective,
