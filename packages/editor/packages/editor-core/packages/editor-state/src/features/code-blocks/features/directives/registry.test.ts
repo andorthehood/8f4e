@@ -14,7 +14,7 @@ describe('directive registry', () => {
 				'; @slider &gain 0 1 0.01',
 				'; @crossfade &dry &wet',
 				'; @info foo',
-				'; @debug',
+				'; @stack',
 				'; note',
 				'moduleEnd',
 			],
@@ -53,23 +53,23 @@ describe('directive registry', () => {
 				sourceLine: '; @info foo',
 			},
 			{
-				name: 'debug',
+				name: 'stack',
 				rawRow: 6,
 				args: [],
-				sourceLine: '; @debug',
+				sourceLine: '; @stack',
 			},
 		]);
 	});
 
 	it('parses trailing-comment directives only for plugins that allow them', () => {
 		const result = parseEditorDirectives(
-			['int foo 1 ; @watch', 'push 1 ; @debug', 'float out ; @meter', 'int bar 1 ; @plot buffer'],
+			['int foo 1 ; @watch', 'push 1 ; @stack', 'float out ; @meter', 'int bar 1 ; @plot buffer'],
 			directivePlugins
 		);
 
 		expect(result).toEqual([
 			{ name: 'watch', rawRow: 0, args: [], sourceLine: 'int foo 1 ; @watch' },
-			{ name: 'debug', rawRow: 1, args: [], sourceLine: 'push 1 ; @debug' },
+			{ name: 'stack', rawRow: 1, args: [], sourceLine: 'push 1 ; @stack' },
 			{ name: 'meter', rawRow: 2, args: [], sourceLine: 'float out ; @meter' },
 		]);
 	});
@@ -84,9 +84,12 @@ describe('directive registry', () => {
 	});
 
 	it('normalizes plugin aliases during parsing', () => {
-		const result = parseEditorDirectives(['; @w value'], directivePlugins);
+		const result = parseEditorDirectives(['; @w value', 'push 1 ; @s'], directivePlugins);
 
-		expect(result).toEqual([{ name: 'watch', rawRow: 0, args: ['value'], sourceLine: '; @w value' }]);
+		expect(result).toEqual([
+			{ name: 'watch', rawRow: 0, args: ['value'], sourceLine: '; @w value' },
+			{ name: 'stack', rawRow: 1, args: [], sourceLine: 'push 1 ; @s' },
+		]);
 	});
 
 	it('derives block state and layout in a single pass', () => {
