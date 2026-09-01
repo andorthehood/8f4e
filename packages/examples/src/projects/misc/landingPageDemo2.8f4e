@@ -19,7 +19,7 @@ module projectConfig
 ; @config color.fill.background #006
 ; @config color.fill.wire #fff
 moduleEnd
-module photon
+module source
 ; @pos 0 10
 ; @home left
 
@@ -28,9 +28,9 @@ module photon
 int memory 14
 
 moduleEnd
-module pion
+module relay
 ; @pos 36 2
-int* pointer &photon:memory
+int* pointer &source:memory
 int memory
 
 ; The address stored in
@@ -54,9 +54,9 @@ push *pointer
 store
 
 moduleEnd
-module anyon
+module endpoint
 ; @pos 77 2
-int* pointer &pion:memory
+int* pointer &relay:memory
 
 ; The address stored in
 ; the pointer:

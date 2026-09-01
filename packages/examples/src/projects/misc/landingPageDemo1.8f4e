@@ -27,7 +27,7 @@ module add
 ; First, push the numbers
 ; you want to add
 ; onto the stack:
-push 10
+push 40
 push 2
 
 ; Use the @stack directive
@@ -39,7 +39,7 @@ push 2
 ; instruction:
 add
 
-; The result is on the 
+; The result is on the
 ; @stack
 
 ; Clear the stack:
@@ -54,8 +54,8 @@ module div
 ; First, push the numbers
 ; you want to divide
 ; onto the stack:
-push 3.0
-push 2.0
+push 355.0
+push 113.0
 
 ; Invoke the div
 ; instruction:
@@ -72,14 +72,13 @@ module many
 
 ; You can chain
 ; many instructions:
-push 10
-push 4
+push 12
+push 12
 mul
-push 2
-div
-push 30
-sub
-abs ; Absolute value
+push 12
+mul
+push 1
+add
 
 ; The result is on the
 ; @stack
