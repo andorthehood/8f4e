@@ -68,9 +68,13 @@ export default function resolveMemoryIdentifier(
 	}
 
 	if (operator === '*' && memory.pointeeBaseType) {
-		memory = state.codeBlockRendering.outputsByWordAddress.get(
-			state.callbacks?.getWordFromMemory?.(memory.wordAlignedAddress) || 0
-		)?.memory;
+		const pointerAddress = state.callbacks?.getWordFromMemory?.(memory.wordAlignedAddress) || 0;
+		const pointeeMemoryIndex =
+			state.compiler.pointerMetadataByModuleId[moduleId]?.[memory.id]?.pointeeMemoryIndex ?? memory.memoryIndex;
+		memory = state.compiler.memoryPlan.moduleList
+			.filter(module => module.memoryIndex === pointeeMemoryIndex)
+			.flatMap(module => module.declarations)
+			.find(declaration => declaration.byteAddress === pointerAddress);
 	}
 
 	if (!memory) {
