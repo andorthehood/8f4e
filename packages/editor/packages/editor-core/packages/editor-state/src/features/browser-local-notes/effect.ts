@@ -21,21 +21,45 @@ import {
 } from './browserLocalNotes';
 
 export default function browserLocalNotes(store: StateManager<State>, events: EventDispatcher): void {
+	type ProjectState = NonNullable<State['initialProjectState']>;
+
 	const state = store.getState();
+	if (!state.featureFlags.browserLocalNotes) {
+		return;
+	}
+
 	let lastSavedBrowserLocalNotes = '';
 	let browserLocalNotesLoaded = false;
+	let populatedProject: ProjectState | undefined;
+	let populationInProgress: { project: ProjectState; promise: Promise<void> } | undefined;
 
-	async function populateBrowserLocalNotes() {
-		if (!state.initialProjectState || !state.callbacks.loadBrowserLocalNotes) {
-			return;
+	function populateBrowserLocalNotes(): Promise<void> {
+		const project = state.initialProjectState;
+		if (!project || !state.callbacks.loadBrowserLocalNotes || project === populatedProject) {
+			return Promise.resolve();
 		}
 
+		if (populationInProgress?.project === project) {
+			return populationInProgress.promise;
+		}
+
+		browserLocalNotesLoaded = false;
+		const population = loadBrowserLocalNotesForProject(project);
+		populationInProgress = { project, promise: population };
+		return population;
+	}
+
+	async function loadBrowserLocalNotesForProject(project: ProjectState): Promise<void> {
 		try {
-			const loadedBlocks = (await state.callbacks.loadBrowserLocalNotes()) ?? [];
+			const loadedBlocks = (await state.callbacks.loadBrowserLocalNotes?.()) ?? [];
+			if (state.initialProjectState !== project) {
+				return;
+			}
+
 			const validBlocks = loadedBlocks.filter(block => isBrowserLocalNoteCode(block.code));
 			const browserLocalNotes = validBlocks.length > 0 ? validBlocks : [DEFAULT_BROWSER_LOCAL_NOTE];
 
-			const nextCodeBlocks = [...state.codeBlockRendering.codeBlocks];
+			const nextCodeBlocks = state.codeBlockRendering.codeBlocks.filter(block => !isBrowserLocalNoteBlock(block));
 			const occupiedBounds: GridBounds[] = nextCodeBlocks
 				.filter(existingCodeBlock => existingCodeBlock.viewportAnchor === undefined)
 				.map(existingCodeBlock => getCodeBlockGridBounds(existingCodeBlock, state.viewport));
@@ -101,9 +125,14 @@ export default function browserLocalNotes(store: StateManager<State>, events: Ev
 			browserLocalNotesLoaded = true;
 			replaceCodeBlocksInPlace(state.codeBlockRendering.codeBlocks, nextCodeBlocks);
 			store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
-			saveBrowserLocalNotes();
+			lastSavedBrowserLocalNotes = JSON.stringify(serializeBrowserLocalNotes(state.codeBlockRendering.codeBlocks));
+			populatedProject = project;
 		} catch (err) {
 			console.warn('Failed to load browser-local notes from storage:', err);
+		} finally {
+			if (populationInProgress?.project === project) {
+				populationInProgress = undefined;
+			}
 		}
 	}
 

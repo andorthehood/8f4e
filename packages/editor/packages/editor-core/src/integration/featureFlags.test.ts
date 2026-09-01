@@ -52,6 +52,7 @@ describe('Feature Flags Integration', () => {
 		expect(result).toHaveProperty('offscreenBlockArrows');
 		expect(result).toHaveProperty('projectOpening');
 		expect(result).toHaveProperty('projectCreation');
+		expect(result).toHaveProperty('browserLocalNotes');
 
 		// Should merge correctly
 		expect(result.contextMenu).toBe(false);
@@ -65,6 +66,7 @@ describe('Feature Flags Integration', () => {
 		expect(result.offscreenBlockArrows).toBe(true);
 		expect(result.projectOpening).toBe(true);
 		expect(result.projectCreation).toBe(true);
+		expect(result.browserLocalNotes).toBe(true);
 	});
 
 	test('should preserve defaults when no mode is configured through feature flags', () => {

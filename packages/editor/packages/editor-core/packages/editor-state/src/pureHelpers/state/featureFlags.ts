@@ -19,6 +19,7 @@ export const defaultFeatureFlags: FeatureFlags = {
 	offscreenBlockArrows: true,
 	projectOpening: true,
 	projectCreation: true,
+	browserLocalNotes: true,
 };
 
 /**

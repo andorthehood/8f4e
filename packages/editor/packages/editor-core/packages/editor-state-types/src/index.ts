@@ -258,6 +258,9 @@ export interface FeatureFlags {
 
 	/** Enable/disable the menu action that creates a new project */
 	projectCreation: boolean;
+
+	/** Enable/disable loading and persisting browser-local note blocks */
+	browserLocalNotes: boolean;
 }
 
 /**

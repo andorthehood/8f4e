@@ -343,6 +343,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			offscreenBlockArrows: true,
 			projectOpening: true,
 			projectCreation: true,
+			browserLocalNotes: true,
 		},
 		editorMode: 'edit',
 		editorConfig: {},
