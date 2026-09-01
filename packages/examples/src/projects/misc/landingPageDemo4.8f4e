@@ -1,0 +1,135 @@
+8f4e/v1
+
+function buffer
+; @pos -90 13
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
+constants env
+; @pos -90 24
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+constantsEnd
+
+entry main
+module projectConfig
+; @pos -91 2
+; @config runtime AudioWorkletRuntime
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audioout:buffer
+; @config audioRuntime.audioOutBufferRAddress audioout:buffer
+; @config export.fileName landingPageDemo4
+
+moduleEnd
+module lcg
+; @pos 18 0
+; Linear congruential
+; generator
+; @home left
+
+const MULTIPLIER 1664525
+const INCREMENT 1013904223
+const MODULUS 2^16
+
+int seed 69420
+float out ; @w
+
+push &seed
+push MULTIPLIER
+push seed
+mul
+push INCREMENT
+add
+push MODULUS
+remainder
+store
+
+push &out
+push seed
+castToFloat
+push MODULUS
+castToFloat
+div
+store
+
+moduleEnd
+module lowPassFilter
+; @pos 55 0
+
+float* in &lcg:out
+float out
+
+float alpha 0.03
+
+; You can add UI elements
+; to the modules such as
+; sliders to manipulate
+; values real-time:
+
+; @slider &alpha 0 0.1
+
+push &out
+push alpha
+push *in
+mul
+push 1.0
+push alpha
+sub
+push out
+mul
+add
+store
+
+moduleEnd
+module audioout
+; @pos 91 0
+; @home
+use env
+
+float* in &lowPassFilter:out
+
+; Audio buffer
+float[] buffer AUDIO_BUFFER_SIZE
+int pointer &buffer
+
+; @plot &buffer count(buffer)
+
+; Store the input value
+; in the buffer
+push pointer
+push *in
+store
+
+; Increment the buffer
+; pointer by the
+; buffer word size
+push &pointer
+push pointer
+push sizeof(buffer)
+add
+store
+
+; Reset the buffer pointer
+; when it reaches the end
+; of the buffer
+push pointer
+push buffer&
+greaterThan
+if
+push &pointer
+push &buffer
+store
+ifEnd
+
+moduleEnd
+entryEnd
