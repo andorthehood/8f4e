@@ -44,12 +44,43 @@
 				</div>
 			</section>
 
+			<section class="text-section">
+				<p>
+					Why stack-oriented? Because 8f4e targets
+					<a href="https://en.wikipedia.org/wiki/Stack_machine">stack machines</a>
+					such as WebAssembly and the JVM. Staying close to their execution model makes it possible to write faster
+					programs.
+				</p>
+			</section>
+
 			<section class="editor-row editor-row--reversed">
 				<canvas
-					id="editor-reversed"
+					id="editor-pointers"
 					tabindex="0"
 					aria-label="Second 8f4e editor"
 					data-project-url="https://static.8f4e.com/example-projects/misc/landingPageDemo2.8f4e"
+				></canvas>
+				<div>
+					<p>
+						Pointers are represented as wires in the editor, making it possible to see which memory item each pointer
+						refers to. Because raw pointers can address any location in the program's memory, these visual connections
+						make data flow easier to follow.
+					</p>
+					<a
+						class="open-in-editor-button"
+						href="https://editor.8f4e.com/?projectUrl=https%3A%2F%2Fstatic.8f4e.com%2Fexample-projects%2Fmisc%2FlandingPageDemo3.8f4e"
+					>
+						Open in editor ↗
+					</a>
+				</div>
+			</section>
+
+			<section class="editor-row">
+				<canvas
+					id="editor-reversed"
+					tabindex="0"
+					aria-label="Third 8f4e editor"
+					data-project-url="https://static.8f4e.com/example-projects/misc/landingPageDemo3.8f4e"
 				></canvas>
 				<div>
 					<p>
@@ -73,7 +104,7 @@
 				<canvas
 					id="editor-centered"
 					tabindex="0"
-					aria-label="Third 8f4e editor"
+					aria-label="Fourth 8f4e editor"
 					data-project-url="https://static.8f4e.com/example-projects/misc/randomGenerators.8f4e"
 				></canvas>
 			</section>

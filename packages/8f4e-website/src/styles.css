@@ -76,6 +76,15 @@ main > img {
 	margin-top: 2rem;
 }
 
+.text-section {
+	width: min(50%, 1200px);
+	margin: 2rem auto;
+}
+
+.text-section > p {
+	margin-bottom: 0;
+}
+
 .editor-row--reversed {
 	grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
 	grid-template-areas: "copy editor";
@@ -148,6 +157,13 @@ footer ul {
 
 @media (max-width: 800px) {
 	main > p:first-of-type {
+		box-sizing: border-box;
+		width: 100%;
+		padding-right: 2rem;
+		padding-left: 2rem;
+	}
+
+	.text-section {
 		box-sizing: border-box;
 		width: 100%;
 		padding-right: 2rem;

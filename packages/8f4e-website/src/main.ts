@@ -5,6 +5,17 @@ if (canvases.length === 0) {
 	throw new Error('Editor canvases not found');
 }
 
+if (import.meta.env.DEV) {
+	const cacheBuster = Date.now().toString();
+	for (const canvas of canvases) {
+		if (canvas.dataset.projectUrl) {
+			const projectUrl = new URL(canvas.dataset.projectUrl);
+			projectUrl.searchParams.set('v', cacheBuster);
+			canvas.dataset.projectUrl = projectUrl.toString();
+		}
+	}
+}
+
 const renderingReleaseDelayMs = 3_000;
 const editorByCanvas = new Map<HTMLCanvasElement, DefaultEditorInstance>();
 const editorMountPromiseByCanvas = new Map<HTMLCanvasElement, Promise<DefaultEditorInstance>>();
