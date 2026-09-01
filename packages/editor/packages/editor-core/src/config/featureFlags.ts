@@ -28,6 +28,7 @@ export const defaultFeatureFlags = {
 	offscreenBlockArrows: true,
 	projectOpening: true,
 	projectCreation: true,
+	browserLocalNotes: true,
 };
 
 /**

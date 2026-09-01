@@ -39,6 +39,13 @@ describe('Feature Flags Configuration', () => {
 		expect(defaultFeatureFlags.offscreenBlockArrows).toBe(true);
 		expect(defaultFeatureFlags.projectOpening).toBe(true);
 		expect(defaultFeatureFlags.projectCreation).toBe(true);
+		expect(defaultFeatureFlags.browserLocalNotes).toBe(true);
+	});
+
+	test('validateFeatureFlags should allow disabling browser-local notes', () => {
+		const result = validateFeatureFlags({ browserLocalNotes: false });
+
+		expect(result.browserLocalNotes).toBe(false);
 	});
 
 	test('validateFeatureFlags should preserve enabled flags when disabled flags are specified', () => {

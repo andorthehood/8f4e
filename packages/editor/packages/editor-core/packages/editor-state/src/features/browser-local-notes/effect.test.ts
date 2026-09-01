@@ -1,3 +1,4 @@
+import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
 import { describe, expect, it, vi } from 'vitest';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
@@ -18,6 +19,98 @@ function getEventHandler(events: ReturnType<typeof createMockEventDispatcherWith
 }
 
 describe('browser-local note placement', () => {
+	it('does not load or persist browser-local notes when the feature flag is disabled', () => {
+		const loadBrowserLocalNotes = vi.fn(async () => []);
+		const saveBrowserLocalNotes = vi.fn(async () => undefined);
+		const localNote = createMockCodeBlock({ code: ['note local.editorConfig', '; config', 'noteEnd'] });
+		const state = createMockState({
+			initialProjectState: { ...EMPTY_DEFAULT_PROJECT },
+			featureFlags: { browserLocalNotes: false },
+			callbacks: {
+				loadBrowserLocalNotes,
+				saveBrowserLocalNotes,
+			},
+			codeBlockRendering: {
+				codeBlocks: [localNote],
+				selectedCodeBlock: localNote,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		browserLocalNotes(store, events);
+		localNote.code = ['note local.editorConfig', '; changed', 'noteEnd'];
+		store.set('codeBlockRendering.selectedCodeBlock.code', localNote.code);
+
+		expect(events.on).not.toHaveBeenCalled();
+		expect(loadBrowserLocalNotes).not.toHaveBeenCalled();
+		expect(saveBrowserLocalNotes).not.toHaveBeenCalled();
+	});
+
+	it('coalesces overlapping browser-local note population for the same project', async () => {
+		const storedBlocks: BrowserLocalNoteStorageBlock[] = [
+			{
+				code: ['note local.editorConfig', '; config', 'noteEnd'],
+				gridCoordinates: { x: 0, y: 0 },
+			},
+		];
+		let resolveFirstLoad: ((blocks: BrowserLocalNoteStorageBlock[]) => void) | undefined;
+		const firstLoad = new Promise<BrowserLocalNoteStorageBlock[]>(resolve => {
+			resolveFirstLoad = resolve;
+		});
+		const loadBrowserLocalNotes = vi.fn(() => firstLoad);
+		const state = createMockState({
+			initialProjectState: { ...EMPTY_DEFAULT_PROJECT },
+			callbacks: {
+				loadBrowserLocalNotes,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		browserLocalNotes(store, events);
+		const populateBrowserLocalNotes = getPopulateHandler(events);
+		const firstPopulation = populateBrowserLocalNotes();
+		const secondPopulation = populateBrowserLocalNotes();
+		resolveFirstLoad?.(storedBlocks);
+		await Promise.all([firstPopulation, secondPopulation]);
+
+		expect(loadBrowserLocalNotes).toHaveBeenCalledOnce();
+		expect(state.codeBlockRendering.codeBlocks).toHaveLength(1);
+		expect(state.codeBlockRendering.codeBlocks[0].code[0]).toBe('note local.editorConfig');
+	});
+
+	it('clears rendered browser-local note leftovers before population', async () => {
+		const state = createMockState({
+			initialProjectState: { ...EMPTY_DEFAULT_PROJECT },
+			callbacks: {
+				loadBrowserLocalNotes: vi.fn(async () => [
+					{
+						code: ['note local.scratchpad', '; current', 'noteEnd'],
+						gridCoordinates: { x: 10, y: 10 },
+					},
+				]),
+			},
+			codeBlockRendering: {
+				codeBlocks: [
+					createMockCodeBlock({ code: ['module projectBlock', 'moduleEnd'] }),
+					createMockCodeBlock({ code: ['note local.editorConfig', '; leftover', 'noteEnd'] }),
+					createMockCodeBlock({ code: ['note local.editorConfig', '; duplicate leftover', 'noteEnd'] }),
+				],
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		browserLocalNotes(store, events);
+		await getPopulateHandler(events)();
+
+		expect(state.codeBlockRendering.codeBlocks.map(block => block.code[0])).toEqual([
+			'module projectBlock',
+			'note local.scratchpad',
+		]);
+	});
+
 	it('moves colliding browser-local notes to the first free y positions for their x span', async () => {
 		const existingTopBlock = createMockCodeBlock({
 			name: 'top',
@@ -173,6 +266,29 @@ describe('browser-local note placement', () => {
 });
 
 describe('browser-local note persistence', () => {
+	it('does not write loaded browser-local notes back to storage', async () => {
+		const saveBrowserLocalNotes = vi.fn(async () => undefined);
+		const state = createMockState({
+			initialProjectState: { ...EMPTY_DEFAULT_PROJECT },
+			callbacks: {
+				loadBrowserLocalNotes: vi.fn(async () => [
+					{
+						code: ['note local.editorConfig', '; config', 'noteEnd'],
+						gridCoordinates: { x: 0, y: 0 },
+					},
+				]),
+				saveBrowserLocalNotes,
+			},
+		});
+		const store = createStateManager(state);
+		const events = createMockEventDispatcherWithVitest();
+
+		browserLocalNotes(store, events);
+		await getPopulateHandler(events)();
+
+		expect(saveBrowserLocalNotes).not.toHaveBeenCalled();
+	});
+
 	it('does not save an empty local note list before local notes are populated for a project', () => {
 		const saveBrowserLocalNotes = vi.fn(async () => undefined);
 		const state = createMockState({
@@ -227,6 +343,7 @@ describe('browser-local note persistence', () => {
 				code: ['module projectOnly', 'moduleEnd'],
 			}),
 		]);
+		state.initialProjectState = { ...EMPTY_DEFAULT_PROJECT };
 		expect(saveBrowserLocalNotes).not.toHaveBeenCalled();
 
 		await populateBrowserLocalNotes();

@@ -3,6 +3,28 @@ import initState from './index';
 import { createMockEventDispatcherWithVitest } from './pureHelpers/testingUtils/vitestTestUtils';
 
 describe('editor state lifecycle', () => {
+	it('enables browser-local notes by default and allows disabling them at initialization', () => {
+		const enabledEvents = createMockEventDispatcherWithVitest();
+		const enabledStore = initState(enabledEvents, {
+			callbacks: { loadSession: async () => null },
+			runtimeRegistry: {},
+		});
+		const disabledEvents = createMockEventDispatcherWithVitest();
+		const disabledStore = initState(disabledEvents, {
+			callbacks: { loadSession: async () => null },
+			runtimeRegistry: {},
+			featureFlags: { browserLocalNotes: false },
+		});
+
+		expect(enabledStore.getState().featureFlags.browserLocalNotes).toBe(true);
+		expect(enabledEvents.on).toHaveBeenCalledWith('projectCodeBlocksPopulated', expect.any(Function));
+		expect(disabledStore.getState().featureFlags.browserLocalNotes).toBe(false);
+		expect(disabledEvents.on).not.toHaveBeenCalledWith('projectCodeBlocksPopulated', expect.any(Function));
+
+		enabledStore.dispose();
+		disabledStore.dispose();
+	});
+
 	it('disposes initialized effects and their active runtime exactly once', async () => {
 		const runtimeDestroyer = vi.fn();
 		const runtimeFactory = vi.fn(() => runtimeDestroyer);
