@@ -52,7 +52,7 @@ function mountEditor(canvas: HTMLCanvasElement, index: number): Promise<DefaultE
 
 	const mountPromise = mountDefaultEditor(canvas, {
 		captureWheel: false,
-		featureFlags: { projectCreation: false, projectOpening: false },
+		featureFlags: { browserLocalNotes: false, projectCreation: false, projectOpening: false },
 		initialProjectUrl: canvas.dataset.projectUrl || undefined,
 		storage: window.localStorage,
 		storageNamespace: index === 0 ? '8f4e-website' : `8f4e-website-${index + 1}`,
