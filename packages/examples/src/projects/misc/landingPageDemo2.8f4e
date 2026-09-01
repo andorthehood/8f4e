@@ -1,0 +1,69 @@
+8f4e/v1
+
+constants env
+; @pos -84 11
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 1
+
+constantsEnd
+
+entry main
+module projectConfig
+; @pos -84 2
+; @config runtime WebWorkerRuntime
+; @config workerRuntime.sampleRate 1
+; @config export.fileName landingPageDemo2
+; @config color.fill.background #006
+; @config color.fill.wire #fff
+moduleEnd
+module photon
+; @pos 0 10
+; @home left
+
+; Declare an integer
+; with a default value:
+int memory 14
+
+moduleEnd
+module pion
+; @pos 36 2
+int* pointer &photon:memory
+int memory
+
+; The address stored in
+; the pointer:
+; @watch pointer
+
+; The dereferenced value:
+; @watch *pointer
+
+; Push the address of
+; the memory onto the stack:
+push &memory
+; Dereference the pointer
+; and push the value onto
+; the stack:
+push *pointer
+; The store instruction
+; takes a value and an address
+; from the stack, then stores
+; the value at that address.
+store
+
+moduleEnd
+module anyon
+; @pos 77 2
+int* pointer &pion:memory
+
+; The address stored in
+; the pointer:
+; @watch pointer
+
+; The dereferenced value:
+; @watch *pointer
+
+moduleEnd
+entryEnd

@@ -1,0 +1,69 @@
+8f4e/v1
+
+constants env
+; @pos -84 11
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 1
+
+constantsEnd
+
+entry main
+module projectConfig
+; @pos -84 2
+; @config runtime WebWorkerRuntime
+; @config workerRuntime.sampleRate 1
+; @config export.fileName landingPageDemo3
+; @config color.fill.background #600
+; @config color.fill.wire #fff
+moduleEnd
+module memories
+; @pos 29 2
+; @home left
+
+int foo1 1
+int foo2 2
+int foo3 1
+int foo4 4
+int foo5 3
+
+; Use the @watch directive
+; to inspect the addresses
+; of the memory items:
+
+; @watch &foo1
+; @watch &foo2
+; @watch &foo3
+; @watch &foo4
+; @watch &foo5
+
+moduleEnd
+module pointer
+; @pos 66 2
+
+int* pointer &memories:
+; @watch pointer
+; @watch *pointer
+
+; Increment the pointer by 4:
+push &pointer
+push pointer
+push 4
+add
+store
+
+; Wrap the pointer:
+push pointer
+push memories:&
+greaterThan
+if
+push &pointer
+push &memories:
+store
+ifEnd
+
+
+moduleEnd
+entryEnd

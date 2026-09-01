@@ -1,0 +1,90 @@
+8f4e/v1
+
+constants env
+; @pos -84 26
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 50
+
+constantsEnd
+
+entry main
+module projectConfig
+; @pos -84 2
+; @config runtime WebWorkerRuntime
+; @config workerRuntime.sampleRate 50
+; @config export.fileName landingPageDemo1
+; @config color.fill.background #066
+moduleEnd
+module add
+; @pos 28 -5
+; @home left
+
+; Add two numbers.
+
+; First, push the numbers
+; you want to add
+; onto the stack:
+push 10
+push 2
+
+; Use the @stack directive
+; to inspect the contents
+; of the stack:
+; @stack
+
+; Invoke the add
+; instruction:
+add
+
+; The result is on the 
+; @stack
+
+; Clear the stack:
+drop
+
+moduleEnd
+module div
+; @pos 65 -5
+
+; Divide two numbers.
+
+; First, push the numbers
+; you want to divide
+; onto the stack:
+push 3.0
+push 2.0
+
+; Invoke the div
+; instruction:
+div
+
+; The result is on the
+; @stack
+
+drop ; Clear the stack.
+
+moduleEnd
+module many
+; @pos 101 -5
+
+; You can chain
+; many instructions:
+push 10
+push 4
+mul
+push 2
+div
+push 30
+sub
+abs ; Absolute value
+
+; The result is on the
+; @stack
+
+drop ; Clear the stack.
+
+moduleEnd
+entryEnd
