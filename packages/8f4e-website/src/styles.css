@@ -90,12 +90,6 @@ main > img {
 	grid-template-areas: "copy editor";
 }
 
-.editor-row--centered {
-	grid-template-columns: minmax(0, 70%);
-	grid-template-areas: "editor";
-	justify-content: center;
-}
-
 .editor-row > canvas {
 	grid-area: editor;
 	display: block;

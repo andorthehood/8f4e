@@ -16,7 +16,10 @@ module projectConfig
 ; @config runtime WebWorkerRuntime
 ; @config workerRuntime.sampleRate 50
 ; @config export.fileName landingPageDemo1
-; @config color.fill.background #066
+; @config color.fill.background #069
+; @config color.fill.wire #fff
+; @config color.fill.backgroundDots #035
+; @config color.fill.backgroundDots2 #035
 moduleEnd
 module add
 ; @pos 28 -5
