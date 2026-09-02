@@ -1,4 +1,4 @@
-# Postmortem: Runtime Definitions Refactoring Misinterpretation
+# Agent Failure Note: Runtime Definitions Refactoring Misinterpretation
 
 **Date:** 2026-01-23  
 **TODO Reference:** #205 - Move Runtime Definitions into Runtime Packages  
