@@ -107,6 +107,6 @@ describe('drawConnections', () => {
 
 		drawConnections(lines, wireColors, state, createMemoryViews({ int32: [0, 0, outputAddress] }));
 
-		expect(lines.drawLine).toHaveBeenCalledWith(117, 247, 463, 471, 1, wireColors.wireHighlighted);
+		expect(lines.drawLine).toHaveBeenCalledWith(117, 247, 463, 471, 2, wireColors.wireHighlighted);
 	});
 });

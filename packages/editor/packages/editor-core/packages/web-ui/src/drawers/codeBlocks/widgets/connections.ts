@@ -5,6 +5,8 @@ import type { WireColors } from '../../../wire-colors';
 
 const WIRE_COLOR = 'wire';
 const WIRE_HIGHLIGHTED_COLOR = 'wireHighlighted';
+const WIRE_WIDTH = 1;
+const WIRE_HIGHLIGHTED_WIDTH = 2;
 
 export default function drawConnections(
 	lines: LineDrawer,
@@ -36,7 +38,7 @@ export default function drawConnections(
 				codeBlock.y + codeBlock.offsetY + input.wireY - state.viewport.y,
 				output.codeBlock.x + output.codeBlock.offsetX + output.wireX - state.viewport.x,
 				output.codeBlock.y + output.codeBlock.offsetY + output.wireY - state.viewport.y,
-				1,
+				isSelected ? WIRE_HIGHLIGHTED_WIDTH : WIRE_WIDTH,
 				wireColors[isSelected ? WIRE_HIGHLIGHTED_COLOR : WIRE_COLOR]
 			);
 		}
