@@ -3,7 +3,16 @@
 	src: url("https://cdn.polgarand.org/fonts/DepartureMono14-Regular.woff2") format("woff2");
 	font-style: normal;
 	font-weight: 400;
-	font-display: swap;
+	font-display: block;
+}
+
+@font-face {
+	font-family: "Departure Mono Fallback";
+	src: local("Courier New");
+	size-adjust: 83.3333%;
+	ascent-override: 78.5714%;
+	descent-override: 21.4286%;
+	line-gap-override: 0%;
 }
 
 body,
@@ -11,7 +20,7 @@ html {
 	margin: 0;
 	background: #111;
 	color: #fff;
-	font-family: "Departure Mono", monospace;
+	font-family: "Departure Mono", "Departure Mono Fallback", monospace;
 	font-size: 28px;
 	line-height: 1;
 	text-rendering: optimizeLegibility;
