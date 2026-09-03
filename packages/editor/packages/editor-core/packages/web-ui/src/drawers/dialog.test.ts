@@ -4,7 +4,7 @@ import { createDrawContextMock, createSpriteIdLookupMock } from '../__tests__/re
 import drawDialog from './dialog';
 
 describe('drawDialog', () => {
-	it('draws a highlighted dialog button', () => {
+	it('draws a white dialog button with black text and grid padding', () => {
 		const engine = createDrawContextMock();
 		const state = createMockState({
 			dialogStack: [{ id: 'permission', title: 'Permission', text: 'Allow audio?', buttons: [] }],
@@ -17,13 +17,13 @@ describe('drawDialog', () => {
 					{
 						title: 'Grant',
 						action: 'grantAudioPermission',
-						x: 448,
+						x: 432,
 						y: 80,
-						width: 56,
-						height: 16,
+						width: 72,
+						height: 48,
 					},
 				],
-				highlightedButton: 0,
+				highlightedButton: Infinity,
 				x: 64,
 				y: 320,
 				width: 512,
@@ -48,16 +48,16 @@ describe('drawDialog', () => {
 		drawDialog(engine, state);
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
-			448,
+			432,
 			80,
 			'menuItemBackgroundHighlighted',
-			56,
-			16
+			72,
+			48
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			448,
-			80,
-			'[Grant]',
+			96,
+			'Grant',
 			state.spriteLookups?.fontMenuItemTextHighlighted
 		);
 	});

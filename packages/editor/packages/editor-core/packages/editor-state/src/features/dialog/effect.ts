@@ -44,7 +44,8 @@ export default function dialog(store: StateManager<State>, events: EventDispatch
 			state.viewport.hGrid
 		);
 		const roundedDialogHeight =
-			(wrappedText.length + buttonLayout.rowCount + DIALOG_VERTICAL_GRID_CELLS_WITHOUT_TEXT) * state.viewport.hGrid;
+			(wrappedText.length + buttonLayout.heightInGridRows + DIALOG_VERTICAL_GRID_CELLS_WITHOUT_TEXT) *
+			state.viewport.hGrid;
 
 		state.dialog.id = visibleDialog.id;
 		state.dialog.text = visibleDialog.text;

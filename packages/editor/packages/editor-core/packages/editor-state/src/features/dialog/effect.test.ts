@@ -169,10 +169,10 @@ describe('dialog effect', () => {
 		});
 		const { emit, events } = setup(state);
 
-		expect(state.dialog.height).toBe(112);
+		expect(state.dialog.height).toBe(144);
 		expect(state.dialog.buttons).toEqual([
-			{ title: 'Cancel', x: 504, y: 80, width: 64, height: 16 },
-			{ title: 'Grant', action: 'confirmAction', payload: { id: 42 }, x: 576, y: 80, width: 56, height: 16 },
+			{ title: 'Cancel', x: 472, y: 80, width: 80, height: 48 },
+			{ title: 'Grant', action: 'confirmAction', payload: { id: 42 }, x: 560, y: 80, width: 72, height: 48 },
 		]);
 
 		const pointerEvent: InternalMouseEvent = {

@@ -1,11 +1,12 @@
 import type { DialogButton, DialogButtonState } from '@8f4e/editor-state-types';
 
-const BUTTON_HORIZONTAL_PADDING_GRID_CELLS = 1;
+const BUTTON_HORIZONTAL_PADDING_GRID_CELLS = 2;
+const BUTTON_HEIGHT_GRID_CELLS = 3;
 const BUTTON_GAP_GRID_CELLS = 1;
 
 interface ButtonLayout {
 	buttons: DialogButtonState[];
-	rowCount: number;
+	heightInGridRows: number;
 }
 
 interface MeasuredButton extends DialogButton {
@@ -20,7 +21,7 @@ export default function layoutButtons(
 	hGrid: number
 ): ButtonLayout {
 	if (buttons.length === 0) {
-		return { buttons: [], rowCount: 0 };
+		return { buttons: [], heightInGridRows: 0 };
 	}
 
 	const availableWidth = dialogWidth - 2 * vGrid;
@@ -52,19 +53,19 @@ export default function layoutButtons(
 	const laidOutButtons = rows.flatMap((row, rowIndex) => {
 		const rowWidth = row.reduce((width, button) => width + button.width, 0) + (row.length - 1) * buttonGap;
 		let x = dialogWidth - vGrid - rowWidth;
-		const y = (textLineCount + 4 + rowIndex) * hGrid;
+		const y = (textLineCount + 4 + rowIndex * BUTTON_HEIGHT_GRID_CELLS) * hGrid;
 
 		return row.map(button => {
 			const layout: DialogButtonState = {
 				...button,
 				x,
 				y,
-				height: hGrid,
+				height: BUTTON_HEIGHT_GRID_CELLS * hGrid,
 			};
 			x += button.width + buttonGap;
 			return layout;
 		});
 	});
 
-	return { buttons: laidOutButtons, rowCount: rows.length };
+	return { buttons: laidOutButtons, heightInGridRows: rows.length * BUTTON_HEIGHT_GRID_CELLS };
 }
