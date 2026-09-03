@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@8f4e/config": "*",
-    "@types/node": "24.13.2",
+    "@types/node": "24.13.3",
     "vite": "7.3.5",
     "vite-plugin-glsl": "1.6.0",
     "vitest": "4.1.7"
