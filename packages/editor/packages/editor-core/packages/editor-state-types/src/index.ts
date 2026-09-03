@@ -236,7 +236,7 @@ export interface FeatureFlags {
 	/** Whether the editor is currently in an edit-enabled state. */
 	editing: boolean;
 
-	/** Enable/disable keyboard toggling between view/edit modes (e/Escape) */
+	/** Enable/disable keyboard switching into and out of edit mode, and into presentation mode. */
 	modeToggling: boolean;
 
 	/** Enable/disable the mode hint overlay at the top of the viewport */
@@ -271,6 +271,7 @@ export interface FeatureFlags {
 export type FeatureFlagsConfig = Partial<FeatureFlags>;
 
 export type EditorMode = 'view' | 'edit' | 'presentation';
+export type InitialEditorMode = Exclude<EditorMode, 'presentation'>;
 
 // Callbacks interface contains all callback functions (top-level public API)
 export interface Callbacks {
@@ -352,6 +353,8 @@ export interface Callbacks {
 // Options interface for editor initialization (top-level public API)
 export interface Options {
 	featureFlags?: FeatureFlagsConfig;
+	/** Mode used when the editor is initialized. */
+	initialEditorMode?: InitialEditorMode;
 	callbacks: Callbacks;
 	/**
 	 * Runtime registry mapping runtime IDs to runtime implementations.

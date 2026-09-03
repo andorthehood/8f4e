@@ -1,7 +1,8 @@
 # 8f4e Website
 
 `@8f4e/8f4e-website` is a minimal product page with an embedded default editor. The website controls the canvas size
-and leaves wheel scrolling to the surrounding document.
+and leaves wheel scrolling to the surrounding document. Its embedded editors start in edit mode with mode switching
+disabled.
 
 From the workspace root:
 

@@ -59,7 +59,11 @@ export {
 
 // Function to create default state
 export default function init(events: EventDispatcher, options: Options): StateManager<State> {
-	const featureFlags = validateFeatureFlags(options.featureFlags);
+	const initialEditorMode = options.initialEditorMode ?? (options.featureFlags?.editing ? 'edit' : 'view');
+	const featureFlags = validateFeatureFlags({
+		...options.featureFlags,
+		editing: initialEditorMode === 'edit',
+	});
 	type EffectCleanup = () => void;
 	const effectCleanups: EffectCleanup[] = [];
 	const registerEffect = (cleanup: void | EffectCleanup): void => {
@@ -72,6 +76,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	const baseState = {
 		...createDefaultState(),
 		callbacks: options.callbacks,
+		editorMode: initialEditorMode,
 		featureFlags,
 		runtimeRegistry: options.runtimeRegistry,
 		editorConfigSchemaContributions: options.editorConfigSchemaContributions ?? {},

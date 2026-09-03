@@ -3,6 +3,20 @@ import initState from './index';
 import { createMockEventDispatcherWithVitest } from './pureHelpers/testingUtils/vitestTestUtils';
 
 describe('editor state lifecycle', () => {
+	it('initializes the requested editor mode and synchronizes editing', () => {
+		const events = createMockEventDispatcherWithVitest();
+		const store = initState(events, {
+			callbacks: { loadSession: async () => null },
+			initialEditorMode: 'edit',
+			runtimeRegistry: {},
+		});
+
+		expect(store.getState().editorMode).toBe('edit');
+		expect(store.getState().featureFlags.editing).toBe(true);
+
+		store.dispose();
+	});
+
 	it('enables browser-local notes by default and allows disabling them at initialization', () => {
 		const enabledEvents = createMockEventDispatcherWithVitest();
 		const enabledStore = initState(enabledEvents, {

@@ -11,6 +11,7 @@ import { mountDefaultEditor } from '@8f4e/editor-default';
 
 const editor = await mountDefaultEditor(canvas, {
 	captureWheel: false,
+	initialEditorMode: 'edit',
 	storageNamespace: 'editor-a',
 });
 
@@ -19,6 +20,9 @@ editor.releaseRenderingResources();
 editor.resumeRendering();
 editor.dispose();
 ```
+
+Use `initialEditorMode: 'edit'` to start editing immediately. Set the `modeToggling` feature flag to `false` when the
+host should keep the editor in its initial mode.
 
 `releaseRenderingResources()` pauses rendering and releases reloadable GPU textures, dynamic buffer storage, and the
 canvas drawing buffer. `resumeRendering()` restores the resources, applies the latest canvas size, and renders
