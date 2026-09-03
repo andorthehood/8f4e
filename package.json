@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
   "devDependencies": {
-    "@biomejs/biome": "2.5.10",
+    "@biomejs/biome": "2.5.12",
     "@nx/js": "23.2.0",
     "@nx/vite": "23.2.0",
     "@playwright/test": "1.62.1",
