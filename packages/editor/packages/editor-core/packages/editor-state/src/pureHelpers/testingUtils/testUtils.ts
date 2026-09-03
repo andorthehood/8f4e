@@ -372,6 +372,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			wrappedText: [''],
 			title: '',
 			buttons: [],
+			highlightedButton: Infinity,
 			width: 0,
 			height: 0,
 			x: 0,

@@ -1,4 +1,4 @@
-import type { State } from '@8f4e/editor-state-types';
+import type { InternalMouseEvent, State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
 import { describe, expect, it, type MockInstance } from 'vitest';
 import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
@@ -23,7 +23,7 @@ describe('dialog effect', () => {
 			callback(event);
 		}
 
-		return { emit, onResize };
+		return { emit, events, onResize };
 	}
 
 	it('uses the minimum dialog width when half the viewport is too narrow', () => {
@@ -148,5 +148,104 @@ describe('dialog effect', () => {
 
 		expect(state.dialogStack).toEqual([]);
 		expect(state.dialog.id).toBe('');
+	});
+
+	it('lays out and activates dialog buttons while blocking pointer propagation', () => {
+		const state = createMockState({
+			dialogStack: [
+				{
+					id: 'confirmation',
+					text: 'Continue?',
+					title: 'Confirm',
+					buttons: [{ title: 'Cancel' }, { title: 'Grant', action: 'confirmAction', payload: { id: 42 } }],
+				},
+			],
+			viewport: {
+				width: 1280,
+				height: 768,
+				vGrid: 8,
+				hGrid: 16,
+			},
+		});
+		const { emit, events } = setup(state);
+
+		expect(state.dialog.height).toBe(112);
+		expect(state.dialog.buttons).toEqual([
+			{ title: 'Cancel', x: 504, y: 80, width: 64, height: 16 },
+			{ title: 'Grant', action: 'confirmAction', payload: { id: 42 }, x: 576, y: 80, width: 56, height: 16 },
+		]);
+
+		const pointerEvent: InternalMouseEvent = {
+			x: state.dialog.x + state.dialog.buttons[1].x + 1,
+			y: state.dialog.y + state.dialog.buttons[1].y + 1,
+			movementX: 0,
+			movementY: 0,
+			buttons: 1,
+			stopPropagation: false,
+			canvasWidth: 1280,
+			canvasHeight: 768,
+			altKey: false,
+		};
+
+		emit('mousemove', pointerEvent);
+		expect(state.dialog.highlightedButton).toBe(1);
+		expect(pointerEvent.stopPropagation).toBe(true);
+
+		pointerEvent.stopPropagation = false;
+		emit('mousedown', pointerEvent);
+
+		expect(pointerEvent.stopPropagation).toBe(true);
+		expect(state.dialogStack).toEqual([]);
+		expect(events.dispatch).toHaveBeenCalledWith('confirmAction', { id: 42 });
+	});
+
+	it('blocks clicks outside dialog buttons without closing the dialog', () => {
+		const state = createMockState({
+			dialogStack: [
+				{
+					id: 'loading',
+					text: 'Please wait',
+					title: 'Loading',
+					buttons: [],
+				},
+			],
+		});
+		const { emit, events } = setup(state);
+		const pointerEvent = {
+			x: 0,
+			y: 0,
+			stopPropagation: false,
+		} as InternalMouseEvent;
+
+		emit('mousedown', pointerEvent);
+
+		expect(pointerEvent.stopPropagation).toBe(true);
+		expect(state.dialogStack).toHaveLength(1);
+		expect(events.dispatch).not.toHaveBeenCalled();
+	});
+
+	it('keeps the dialog open when a button opts out of closing it', () => {
+		const state = createMockState({
+			dialogStack: [
+				{
+					id: 'retry-dialog',
+					text: 'Try again?',
+					title: 'Retry',
+					buttons: [{ title: 'Retry', action: 'retryAction', close: false }],
+				},
+			],
+		});
+		const { emit, events } = setup(state);
+		const button = state.dialog.buttons[0];
+		const pointerEvent = {
+			x: state.dialog.x + button.x + 1,
+			y: state.dialog.y + button.y + 1,
+			stopPropagation: false,
+		} as InternalMouseEvent;
+
+		emit('mousedown', pointerEvent);
+
+		expect(state.dialogStack).toHaveLength(1);
+		expect(events.dispatch).toHaveBeenCalledWith('retryAction', undefined);
 	});
 });

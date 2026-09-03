@@ -1,7 +1,8 @@
-import type { DialogContent, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { DialogContent, EventDispatcher, InternalMouseEvent, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import roundToGrid from '~/features/viewport/roundToGrid';
 import wrapText from '../code-blocks/utils/wrapText';
+import layoutButtons from './layoutButtons';
 
 const DIALOG_MIN_WIDTH_GRID_CELLS = 64;
 const DIALOG_MAX_WIDTH_GRID_CELLS = 96;
@@ -9,7 +10,7 @@ const DIALOG_VERTICAL_GRID_CELLS_WITHOUT_TEXT = 5;
 
 type RemoveDialogEvent = string | { id: string };
 
-export default function dialog(store: StateManager<State>, events: EventDispatcher): void {
+export default function dialog(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 
 	function syncVisibleDialog() {
@@ -21,6 +22,7 @@ export default function dialog(store: StateManager<State>, events: EventDispatch
 			state.dialog.wrappedText = [''];
 			state.dialog.title = '';
 			state.dialog.buttons = [];
+			state.dialog.highlightedButton = Infinity;
 			state.dialog.width = 0;
 			state.dialog.height = 0;
 			state.dialog.x = 0;
@@ -34,12 +36,21 @@ export default function dialog(store: StateManager<State>, events: EventDispatch
 		);
 		const [roundedDialogWidth] = roundToGrid(dialogWidth, 0, state.viewport);
 		const wrappedText = wrapText(visibleDialog.text, Math.floor(roundedDialogWidth / state.viewport.vGrid) - 2);
-		const roundedDialogHeight = (wrappedText.length + DIALOG_VERTICAL_GRID_CELLS_WITHOUT_TEXT) * state.viewport.hGrid;
+		const buttonLayout = layoutButtons(
+			visibleDialog.buttons,
+			roundedDialogWidth,
+			wrappedText.length,
+			state.viewport.vGrid,
+			state.viewport.hGrid
+		);
+		const roundedDialogHeight =
+			(wrappedText.length + buttonLayout.rowCount + DIALOG_VERTICAL_GRID_CELLS_WITHOUT_TEXT) * state.viewport.hGrid;
 
 		state.dialog.id = visibleDialog.id;
 		state.dialog.text = visibleDialog.text;
 		state.dialog.title = visibleDialog.title;
-		state.dialog.buttons = visibleDialog.buttons;
+		state.dialog.buttons = buttonLayout.buttons;
+		state.dialog.highlightedButton = Infinity;
 		state.dialog.width = roundedDialogWidth;
 		state.dialog.height = roundedDialogHeight;
 
@@ -67,11 +78,83 @@ export default function dialog(store: StateManager<State>, events: EventDispatch
 		);
 	}
 
+	function findButtonAtCoordinates(x: number, y: number): number {
+		const dialogX = x - state.dialog.x;
+		const dialogY = y - state.dialog.y;
+
+		return state.dialog.buttons.findIndex(
+			button =>
+				dialogX >= button.x &&
+				dialogX < button.x + button.width &&
+				dialogY >= button.y &&
+				dialogY < button.y + button.height
+		);
+	}
+
+	function onMouseMove(event: InternalMouseEvent): void {
+		if (state.dialogStack.length === 0) {
+			return;
+		}
+
+		const buttonIndex = findButtonAtCoordinates(event.x, event.y);
+		state.dialog.highlightedButton = buttonIndex === -1 ? Infinity : buttonIndex;
+		event.stopPropagation = true;
+	}
+
+	function onMouseDown(event: InternalMouseEvent): void {
+		if (state.dialogStack.length === 0) {
+			return;
+		}
+
+		const buttonIndex = findButtonAtCoordinates(event.x, event.y);
+		const button = state.dialog.buttons[buttonIndex];
+		event.stopPropagation = true;
+
+		if (!button) {
+			return;
+		}
+
+		const dialogId = state.dialog.id;
+		if (button.close !== false) {
+			removeDialog({ id: dialogId });
+		}
+
+		if (button.action) {
+			events.dispatch(button.action, button.payload);
+		}
+	}
+
+	function blockPointerEvent(event: InternalMouseEvent): void {
+		if (state.dialogStack.length > 0) {
+			event.stopPropagation = true;
+		}
+	}
+
+	function clearDialogs(): void {
+		store.set('dialogStack', []);
+	}
+
 	store.subscribe('dialogStack', syncVisibleDialog);
 	events.on('resize', syncVisibleDialog);
 	events.on('addDialog', addDialog);
 	events.on('removeDialog', removeDialog);
-	events.on('clearDialogs', () => store.set('dialogStack', []));
+	events.on('clearDialogs', clearDialogs);
+	events.on('mousemove', onMouseMove);
+	events.on('mousedown', onMouseDown);
+	events.on('mouseup', blockPointerEvent);
+	events.on('contextmenu', blockPointerEvent);
 
 	syncVisibleDialog();
+
+	return () => {
+		store.unsubscribe('dialogStack', syncVisibleDialog);
+		events.off('resize', syncVisibleDialog);
+		events.off('addDialog', addDialog);
+		events.off('removeDialog', removeDialog);
+		events.off('clearDialogs', clearDialogs);
+		events.off('mousemove', onMouseMove);
+		events.off('mousedown', onMouseDown);
+		events.off('mouseup', blockPointerEvent);
+		events.off('contextmenu', blockPointerEvent);
+	};
 }

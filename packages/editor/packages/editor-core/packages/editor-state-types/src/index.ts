@@ -40,7 +40,7 @@ import type {
 	TypedValueKind,
 } from './features/code-blocks/types';
 import type { InsertTextEvent, MoveCaretEvent, NavigateCodeBlockEvent } from './features/code-editing/types';
-import type { DialogButton, DialogContent, DialogState } from './features/dialog/types';
+import type { DialogButton, DialogButtonState, DialogContent, DialogState } from './features/dialog/types';
 import type {
 	EditorConfig,
 	EditorConfigSchemaContributionRegistry,
@@ -105,6 +105,7 @@ export type {
 	Crossfade,
 	Debugger,
 	DialogButton,
+	DialogButtonState,
 	DialogContent,
 	DialogState,
 	EventDispatcher,

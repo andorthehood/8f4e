@@ -97,6 +97,7 @@ export default function createDefaultState() {
 			wrappedText: [''],
 			title: '',
 			buttons: [],
+			highlightedButton: Infinity,
 			width: 0,
 			height: 0,
 			x: 0,

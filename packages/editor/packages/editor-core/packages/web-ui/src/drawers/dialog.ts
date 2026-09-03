@@ -33,5 +33,25 @@ export default function drawDialog(engine: DrawContext, state: State): void {
 		engine.drawText(state.viewport.vGrid, textY, state.dialog.wrappedText[i], state.spriteLookups.fontDialogText);
 	}
 
+	for (let i = 0; i < state.dialog.buttons.length; i++) {
+		const button = state.dialog.buttons[i];
+		const isHighlighted = i === state.dialog.highlightedButton;
+		engine.drawSprite(
+			button.x,
+			button.y,
+			isHighlighted
+				? state.spriteLookups.fillColors.menuItemBackgroundHighlighted
+				: state.spriteLookups.fillColors.menuItemBackground,
+			button.width,
+			button.height
+		);
+		engine.drawText(
+			button.x,
+			button.y,
+			`[${button.title}]`,
+			isHighlighted ? state.spriteLookups.fontMenuItemTextHighlighted : state.spriteLookups.fontMenuItemText
+		);
+	}
+
 	engine.endGroup();
 }

@@ -1,7 +1,12 @@
-import type { State } from '@8f4e/editor-core';
+import type { EventDispatcher, State } from '@8f4e/editor-core';
 import createStateManager from '@8f4e/state-manager';
-import { describe, expect, it } from 'vitest';
-import { createAudioWorkletRuntimeDef, getAudioInputBuffers, getAudioOutputBuffers } from './runtimeDef';
+import { describe, expect, it, vi } from 'vitest';
+import {
+	audioWorkletRuntimeFactory,
+	createAudioWorkletRuntimeDef,
+	getAudioInputBuffers,
+	getAudioOutputBuffers,
+} from './runtimeDef';
 import { storeAudioWorkletRuntimeValues } from './runtimeValues';
 
 describe('storeAudioWorkletRuntimeValues', () => {
@@ -137,5 +142,36 @@ describe('AudioWorklet runtime config', () => {
 			{ audioBufferWordAddress: 24, output: 0, channel: 1 },
 		]);
 		expect(getAudioInputBuffers(state)).toEqual([{ audioBufferWordAddress: 16, input: 0, channel: 0 }]);
+	});
+
+	it('requests audio permission through a Grant dialog button', () => {
+		const state = createState();
+		const store = createStateManager(state);
+		const events: EventDispatcher = {
+			on: vi.fn(),
+			off: vi.fn(),
+			dispatch: vi.fn(),
+		};
+
+		const cleanup = audioWorkletRuntimeFactory(
+			store,
+			events,
+			() => new Uint8Array(),
+			() => null,
+			'worklet.js'
+		);
+
+		expect(events.dispatch).toHaveBeenCalledWith('addDialog', {
+			id: 'audio-worklet-permission',
+			title: 'Audio Permission',
+			text: 'This project uses the AudioWorklet runtime. Select Grant to start the program with audio playback.',
+			buttons: [{ title: 'Grant', action: 'grantAudioPermission' }],
+		});
+		expect(events.on).toHaveBeenCalledWith('grantAudioPermission', expect.any(Function));
+		expect(events.on).not.toHaveBeenCalledWith('mousedown', expect.any(Function));
+
+		cleanup();
+
+		expect(events.off).toHaveBeenCalledWith('grantAudioPermission', expect.any(Function));
 	});
 });
