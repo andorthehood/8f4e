@@ -33,9 +33,9 @@
   "devDependencies": {
     "@8f4e/editor-state-testing": "*",
     "@vitest/browser": "4.1.7",
-    "@vitest/browser-playwright": "4.1.7",
+    "@vitest/browser-playwright": "5.0.0",
     "playwright": "1.62.1",
-    "vitest": "4.1.7"
+    "vitest": "5.0.0"
   },
   "scripts": {
     "test:browser": "vitest --config=vitest.browser.config.ts --run"
