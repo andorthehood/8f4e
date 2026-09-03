@@ -20,6 +20,7 @@ const renderingReleaseDelayMs = 2_000;
 const editorByCanvas = new Map<HTMLCanvasElement, DefaultEditorInstance>();
 const editorMountPromiseByCanvas = new Map<HTMLCanvasElement, Promise<DefaultEditorInstance>>();
 const renderingReleaseTimeoutByCanvas = new Map<HTMLCanvasElement, number>();
+const revealAnimationFrameByCanvas = new Map<HTMLCanvasElement, number>();
 const editors: DefaultEditorInstance[] = [];
 let disposed = false;
 
@@ -32,6 +33,31 @@ function syncEditors(): void {
 			return editor ? [editor] : [];
 		})
 	);
+}
+
+function revealEditorAfterFirstProjectFrame(canvas: HTMLCanvasElement, editor: DefaultEditorInstance): void {
+	const waitForProject = () => {
+		if (disposed) {
+			return;
+		}
+
+		if (!editor.state.initialProjectState) {
+			revealAnimationFrameByCanvas.set(canvas, window.requestAnimationFrame(waitForProject));
+			return;
+		}
+
+		revealAnimationFrameByCanvas.set(
+			canvas,
+			window.requestAnimationFrame(() => {
+				revealAnimationFrameByCanvas.delete(canvas);
+				if (!disposed) {
+					canvas.classList.add('editor-ready');
+				}
+			})
+		);
+	};
+
+	waitForProject();
 }
 
 const renderingObserver = new IntersectionObserver(entries => {
@@ -76,7 +102,7 @@ function mountEditor(canvas: HTMLCanvasElement, index: number): Promise<DefaultE
 			}
 
 			editorByCanvas.set(canvas, editor);
-			canvas.classList.add('editor-mounted');
+			revealEditorAfterFirstProjectFrame(canvas, editor);
 			syncEditors();
 			renderingObserver.observe(canvas);
 			if (index === 0) {
@@ -125,6 +151,10 @@ import.meta.hot?.dispose(() => {
 		window.clearTimeout(timeout);
 	}
 	renderingReleaseTimeoutByCanvas.clear();
+	for (const animationFrame of revealAnimationFrameByCanvas.values()) {
+		window.cancelAnimationFrame(animationFrame);
+	}
+	revealAnimationFrameByCanvas.clear();
 	for (const editor of editors) {
 		editor.dispose();
 	}

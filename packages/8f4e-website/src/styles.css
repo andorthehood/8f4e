@@ -109,7 +109,7 @@ main > img {
 	transition: opacity 250ms ease-out;
 }
 
-.editor-frame > canvas.editor-mounted {
+.editor-frame > canvas.editor-ready {
 	opacity: 1;
 }
 
