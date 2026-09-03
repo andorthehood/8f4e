@@ -45,7 +45,7 @@ moduleEnd
 module pointer
 ; @pos 66 2
 
-int* pointer &memories:
+int* pointer &memories:0
 ; @watch pointer
 ; @watch *pointer
 
@@ -58,11 +58,11 @@ store
 
 ; Wrap the pointer:
 push pointer
-push memories:&
+push &memories:4
 greaterThan
 if
 push &pointer
-push &memories:
+push &memories:0
 store
 ifEnd
 
