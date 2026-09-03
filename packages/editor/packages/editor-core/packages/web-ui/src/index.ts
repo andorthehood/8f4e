@@ -158,7 +158,9 @@ export default async function init(
 	const drawFrame = () => {
 		drawBackground(draw, state);
 		drawCodeBlocks(draw, state, memoryViews, renderData.getSnapshot());
-		drawConnections(lines, wireColors, state, memoryViews);
+		if (state.dialogStack.length === 0) {
+			drawConnections(lines, wireColors, state, memoryViews);
+		}
 		drawContextMenu(draw, state);
 		drawModeOverlay(draw, state);
 		drawDialog(draw, state);

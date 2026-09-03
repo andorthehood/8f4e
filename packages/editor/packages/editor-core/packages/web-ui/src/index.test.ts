@@ -210,6 +210,30 @@ describe('web-ui init', () => {
 		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(expect.anything(), frameState);
 	});
 
+	it('hides wires while a dialog is visible and restores them when it closes', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState({
+			dialogStack: [{ id: 'permission', title: 'Permission', text: 'Allow audio?', buttons: [] }],
+		});
+		const memoryViews = {
+			int8: new Int8Array(0),
+			int16: new Int16Array(0),
+			int32: new Int32Array(0),
+			uint8: new Uint8Array(0),
+			uint16: new Uint16Array(0),
+			float32: new Float32Array(0),
+			float64: new Float64Array(0),
+		};
+		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+
+		expect(mocks.drawConnections).not.toHaveBeenCalled();
+
+		state.dialogStack = [];
+		view.renderFrame();
+
+		expect(mocks.drawConnections).toHaveBeenCalledWith(mocks.lines, mocks.wireColors, state, memoryViews);
+	});
+
 	it('pauses and resumes its animation frame loop idempotently', async () => {
 		const { default: init } = await import('./index');
 		const state = createMockState();
