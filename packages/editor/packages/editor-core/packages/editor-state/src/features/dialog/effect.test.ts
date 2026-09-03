@@ -157,7 +157,7 @@ describe('dialog effect', () => {
 					id: 'confirmation',
 					text: 'Continue?',
 					title: 'Confirm',
-					buttons: [{ title: 'Cancel' }, { title: 'Grant', action: 'confirmAction', payload: { id: 42 } }],
+					buttons: [{ title: 'Cancel' }, { title: 'Allow', action: 'confirmAction', payload: { id: 42 } }],
 				},
 			],
 			viewport: {
@@ -172,7 +172,7 @@ describe('dialog effect', () => {
 		expect(state.dialog.height).toBe(144);
 		expect(state.dialog.buttons).toEqual([
 			{ title: 'Cancel', x: 472, y: 80, width: 80, height: 48 },
-			{ title: 'Grant', action: 'confirmAction', payload: { id: 42 }, x: 560, y: 80, width: 72, height: 48 },
+			{ title: 'Allow', action: 'confirmAction', payload: { id: 42 }, x: 560, y: 80, width: 72, height: 48 },
 		]);
 
 		const pointerEvent: InternalMouseEvent = {

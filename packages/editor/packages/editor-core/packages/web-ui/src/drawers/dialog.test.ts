@@ -15,7 +15,7 @@ describe('drawDialog', () => {
 				wrappedText: ['Allow audio?'],
 				buttons: [
 					{
-						title: 'Grant',
+						title: 'Allow',
 						action: 'grantAudioPermission',
 						x: 432,
 						y: 80,
@@ -57,7 +57,7 @@ describe('drawDialog', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			448,
 			96,
-			'Grant',
+			'Allow',
 			state.spriteLookups?.fontMenuItemTextHighlighted
 		);
 	});

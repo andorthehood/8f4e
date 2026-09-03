@@ -144,7 +144,7 @@ describe('AudioWorklet runtime config', () => {
 		expect(getAudioInputBuffers(state)).toEqual([{ audioBufferWordAddress: 16, input: 0, channel: 0 }]);
 	});
 
-	it('requests audio permission through a Grant dialog button', () => {
+	it('requests audio permission through an Allow dialog button', () => {
 		const state = createState();
 		const store = createStateManager(state);
 		const events: EventDispatcher = {
@@ -164,8 +164,8 @@ describe('AudioWorklet runtime config', () => {
 		expect(events.dispatch).toHaveBeenCalledWith('addDialog', {
 			id: 'audio-worklet-permission',
 			title: 'Audio Permission',
-			text: 'This project uses the AudioWorklet runtime. Select Grant to start the program with audio playback.',
-			buttons: [{ title: 'Grant', action: 'grantAudioPermission' }],
+			text: 'This project uses the AudioWorklet runtime. Select Allow to start the program with audio playback.',
+			buttons: [{ title: 'Allow', action: 'grantAudioPermission' }],
 		});
 		expect(events.on).toHaveBeenCalledWith('grantAudioPermission', expect.any(Function));
 		expect(events.on).not.toHaveBeenCalledWith('mousedown', expect.any(Function));

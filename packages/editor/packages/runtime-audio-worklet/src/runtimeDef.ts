@@ -133,7 +133,7 @@ export function audioWorkletRuntimeFactory(
 			id: AUDIO_PERMISSION_DIALOG_ID,
 			text,
 			title: 'Audio Permission',
-			buttons: [{ title: 'Grant', action: GRANT_AUDIO_PERMISSION_ACTION }],
+			buttons: [{ title: 'Allow', action: GRANT_AUDIO_PERMISSION_ACTION }],
 		});
 	}
 
@@ -270,7 +270,7 @@ export function audioWorkletRuntimeFactory(
 		const desiredSampleRate = getSampleRate(state.editorConfig);
 		if (audioContext.sampleRate !== desiredSampleRate) {
 			tearDownAudioContext();
-			showAudioPermissionDialog('Sample rate changed. Select Grant to restart audio playback at the new sample rate.');
+			showAudioPermissionDialog('Sample rate changed. Select Allow to restart audio playback at the new sample rate.');
 			return;
 		}
 
@@ -280,7 +280,7 @@ export function audioWorkletRuntimeFactory(
 
 	if (!audioContext) {
 		showAudioPermissionDialog(
-			'This project uses the AudioWorklet runtime. Select Grant to start the program with audio playback.'
+			'This project uses the AudioWorklet runtime. Select Allow to start the program with audio playback.'
 		);
 	}
 
