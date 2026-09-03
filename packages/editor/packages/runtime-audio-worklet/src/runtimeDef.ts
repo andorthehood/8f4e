@@ -13,6 +13,7 @@ import type { StateManager } from '@8f4e/state-manager';
 import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runtimeValues';
 
 const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
+const GRANT_AUDIO_PERMISSION_ACTION = 'grantAudioPermission';
 const AUDIO_BUFFER_SIZE = 128;
 const AUDIO_BUFFER_ADDRESS_SCHEMA = {
 	format: 'memory-address',
@@ -132,7 +133,7 @@ export function audioWorkletRuntimeFactory(
 			id: AUDIO_PERMISSION_DIALOG_ID,
 			text,
 			title: 'Audio Permission',
-			buttons: [{ title: 'OK', action: 'close' }],
+			buttons: [{ title: 'Allow', action: GRANT_AUDIO_PERMISSION_ACTION }],
 		});
 	}
 
@@ -238,7 +239,7 @@ export function audioWorkletRuntimeFactory(
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
 	store.subscribe('editorConfig.audioRuntime', onEditorConfigChanged);
-	events.on('mousedown', initAudioContext);
+	events.on(GRANT_AUDIO_PERMISSION_ACTION, initAudioContext);
 
 	function tearDownAudioContext() {
 		if (mediaStreamSource) {
@@ -269,9 +270,7 @@ export function audioWorkletRuntimeFactory(
 		const desiredSampleRate = getSampleRate(state.editorConfig);
 		if (audioContext.sampleRate !== desiredSampleRate) {
 			tearDownAudioContext();
-			showAudioPermissionDialog(
-				'Sample rate changed. Click anywhere to restart audio playback at the new sample rate.'
-			);
+			showAudioPermissionDialog('Sample rate changed. Select Allow to restart audio playback at the new sample rate.');
 			return;
 		}
 
@@ -281,14 +280,14 @@ export function audioWorkletRuntimeFactory(
 
 	if (!audioContext) {
 		showAudioPermissionDialog(
-			'This project is using the AudioWorklet runtime, to start the program with audio playback, please click anywhere on the screen to continue.'
+			"This project uses AudioWorklet for audio playback and requires your permission to start. Select Allow to start the program, or choose to do nothing; then the program won't start."
 		);
 	}
 
 	return () => {
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
 		store.unsubscribe('editorConfig.audioRuntime', onEditorConfigChanged);
-		events.off('mousedown', initAudioContext);
+		events.off(GRANT_AUDIO_PERMISSION_ACTION, initAudioContext);
 
 		tearDownAudioContext();
 		hideAudioPermissionDialog();

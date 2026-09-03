@@ -2,6 +2,8 @@ import type { State } from '@8f4e/editor-state-types';
 import type { DrawContext } from '../drawContext';
 
 const DIALOG_CORNER = '+';
+const BUTTON_HORIZONTAL_PADDING_GRID_CELLS = 4;
+const BUTTON_VERTICAL_PADDING_GRID_CELLS = 1;
 
 export default function drawDialog(engine: DrawContext, state: State): void {
 	if (state.dialogStack.length === 0 || !state.spriteLookups) {
@@ -31,6 +33,23 @@ export default function drawDialog(engine: DrawContext, state: State): void {
 	for (let i = 0; i < state.dialog.wrappedText.length; i++) {
 		const textY = state.viewport.hGrid * (3 + i);
 		engine.drawText(state.viewport.vGrid, textY, state.dialog.wrappedText[i], state.spriteLookups.fontDialogText);
+	}
+
+	for (let i = 0; i < state.dialog.buttons.length; i++) {
+		const button = state.dialog.buttons[i];
+		engine.drawSprite(
+			button.x,
+			button.y,
+			state.spriteLookups.fillColors.menuItemBackgroundHighlighted,
+			button.width,
+			button.height
+		);
+		engine.drawText(
+			button.x + BUTTON_HORIZONTAL_PADDING_GRID_CELLS * state.viewport.vGrid,
+			button.y + BUTTON_VERTICAL_PADDING_GRID_CELLS * state.viewport.hGrid,
+			button.title,
+			state.spriteLookups.fontMenuItemTextHighlighted
+		);
 	}
 
 	engine.endGroup();
