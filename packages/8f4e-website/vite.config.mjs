@@ -5,7 +5,10 @@ export default defineConfig(() => ({
 	root: 'src',
 	plugins: [
 		viteStaticCopy({
-			targets: [{ src: '_headers', dest: '' }],
+			targets: [
+				{ src: '_headers', dest: '' },
+				{ src: 'robots.txt', dest: '' },
+			],
 		}),
 	],
 	build: {
