@@ -1,6 +1,6 @@
 import type { DialogButton, DialogButtonState } from '@8f4e/editor-state-types';
 
-const BUTTON_HORIZONTAL_PADDING_GRID_CELLS = 2;
+const BUTTON_HORIZONTAL_PADDING_GRID_CELLS = 4;
 const BUTTON_HEIGHT_GRID_CELLS = 3;
 const BUTTON_GAP_GRID_CELLS = 1;
 

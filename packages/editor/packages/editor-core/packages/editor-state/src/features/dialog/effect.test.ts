@@ -171,8 +171,8 @@ describe('dialog effect', () => {
 
 		expect(state.dialog.height).toBe(144);
 		expect(state.dialog.buttons).toEqual([
-			{ title: 'Cancel', x: 472, y: 80, width: 80, height: 48 },
-			{ title: 'Allow', action: 'confirmAction', payload: { id: 42 }, x: 560, y: 80, width: 72, height: 48 },
+			{ title: 'Cancel', x: 408, y: 80, width: 112, height: 48 },
+			{ title: 'Allow', action: 'confirmAction', payload: { id: 42 }, x: 528, y: 80, width: 104, height: 48 },
 		]);
 
 		const pointerEvent: InternalMouseEvent = {

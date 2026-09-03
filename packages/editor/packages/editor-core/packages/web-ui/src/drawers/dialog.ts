@@ -2,7 +2,7 @@ import type { State } from '@8f4e/editor-state-types';
 import type { DrawContext } from '../drawContext';
 
 const DIALOG_CORNER = '+';
-const BUTTON_HORIZONTAL_PADDING_GRID_CELLS = 2;
+const BUTTON_HORIZONTAL_PADDING_GRID_CELLS = 4;
 const BUTTON_VERTICAL_PADDING_GRID_CELLS = 1;
 
 export default function drawDialog(engine: DrawContext, state: State): void {

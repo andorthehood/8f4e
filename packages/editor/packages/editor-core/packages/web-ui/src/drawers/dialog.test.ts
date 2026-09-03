@@ -17,9 +17,9 @@ describe('drawDialog', () => {
 					{
 						title: 'Allow',
 						action: 'grantAudioPermission',
-						x: 432,
+						x: 400,
 						y: 80,
-						width: 72,
+						width: 104,
 						height: 48,
 					},
 				],
@@ -48,14 +48,14 @@ describe('drawDialog', () => {
 		drawDialog(engine, state);
 
 		expect((engine as unknown as { drawSprite: ReturnType<typeof vi.fn> }).drawSprite).toHaveBeenCalledWith(
-			432,
+			400,
 			80,
 			'menuItemBackgroundHighlighted',
-			72,
+			104,
 			48
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
-			448,
+			432,
 			96,
 			'Allow',
 			state.spriteLookups?.fontMenuItemTextHighlighted
