@@ -76,6 +76,7 @@ function mountEditor(canvas: HTMLCanvasElement, index: number): Promise<DefaultE
 			}
 
 			editorByCanvas.set(canvas, editor);
+			canvas.classList.add('editor-mounted');
 			syncEditors();
 			renderingObserver.observe(canvas);
 			if (index === 0) {

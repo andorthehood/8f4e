@@ -90,23 +90,35 @@ main > img {
 	grid-template-areas: "copy editor";
 }
 
-.editor-row > canvas {
+.editor-frame {
 	grid-area: editor;
-	display: block;
 	width: 100%;
 	height: clamp(500px, 70vh, 700px);
 	background: #000;
-	image-rendering: pixelated;
-	outline: none;
-	cursor: pointer;
 }
 
-.editor-row > div {
+.editor-frame > canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	image-rendering: pixelated;
+	outline: none;
+	opacity: 0;
+	cursor: pointer;
+	transition: opacity 250ms ease-out;
+}
+
+.editor-frame > canvas.editor-mounted {
+	opacity: 1;
+}
+
+.editor-copy {
 	grid-area: copy;
 	padding-right: 2rem;
 }
 
-.editor-row--reversed > div {
+.editor-row--reversed > .editor-copy {
 	padding-right: 0;
 	padding-left: 2rem;
 }
@@ -171,13 +183,19 @@ footer ul {
 			"copy";
 	}
 
-	.editor-row > div,
-	.editor-row--reversed > div {
+	.editor-copy,
+	.editor-row--reversed > .editor-copy {
 		padding-right: 2rem;
 		padding-left: 2rem;
 	}
 
 	footer {
 		grid-template-columns: 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.editor-frame > canvas {
+		transition: none;
 	}
 }
