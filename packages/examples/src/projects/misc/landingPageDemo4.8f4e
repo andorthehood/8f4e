@@ -1,7 +1,7 @@
 8f4e/v1
 
 function buffer
-; @pos -91 16
+; @pos -91 17
 #export buffer
 use env
 
@@ -11,7 +11,7 @@ loopEnd
 functionEnd
 
 constants env
-; @pos -91 26
+; @pos -91 27
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -33,6 +33,7 @@ module projectConfig
 ; @config color.fill.backgroundDots #630
 ; @config color.fill.backgroundDots2 #630
 ; @config color.fill.wire #fff
+; @config color.fill.moduleBackground #000
 
 moduleEnd
 module lcg

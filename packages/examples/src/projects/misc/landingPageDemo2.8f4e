@@ -1,7 +1,7 @@
 8f4e/v1
 
 constants env
-; @pos -84 13
+; @pos -84 14
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -20,9 +20,10 @@ module projectConfig
 ; @config color.fill.backgroundDots #063
 ; @config color.fill.backgroundDots2 #063
 ; @config color.fill.wire #fff
+; @config color.fill.moduleBackground #000
 moduleEnd
 module source
-; @pos 0 10
+; @pos -1 7
 ; @home left
 
 ; Declare an integer

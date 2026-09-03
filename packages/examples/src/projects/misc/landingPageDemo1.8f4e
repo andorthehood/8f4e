@@ -20,6 +20,7 @@ module projectConfig
 ; @config color.fill.wire #fff
 ; @config color.fill.backgroundDots #035
 ; @config color.fill.backgroundDots2 #035
+; @config color.fill.moduleBackground #000
 moduleEnd
 module add
 ; @pos 28 -5
@@ -31,6 +32,8 @@ module add
 ; you want to add
 ; onto the stack:
 push 40
+
+
 push 2
 
 ; Use the @stack directive
