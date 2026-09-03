@@ -3,6 +3,7 @@ import type {
 	Callbacks,
 	EditorConfigSchemaContributionRegistry,
 	InfoRecord,
+	InitialEditorMode,
 	RuntimeRegistry,
 	State,
 } from '@8f4e/editor-state-types';
@@ -56,6 +57,7 @@ export type {
 	EditorMode,
 	FeatureFlags,
 	FeatureFlagsConfig,
+	InitialEditorMode,
 	JSONSchemaLike,
 	Options,
 	ParsedDirectiveRecord,
@@ -86,6 +88,8 @@ export interface EditorOptions {
 	/** Capture wheel gestures for viewport panning. Disable this for editors embedded in scrolling pages. */
 	captureWheel?: boolean;
 	featureFlags?: Partial<State['featureFlags']>;
+	/** Mode used when the editor is initialized. */
+	initialEditorMode?: InitialEditorMode;
 	callbacks: Omit<
 		Callbacks,
 		'getWordFromMemory' | 'setWordInMemory' | 'readClipboardText' | 'writeClipboardText' | 'exportCanvasScreenshot'

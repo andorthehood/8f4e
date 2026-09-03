@@ -20,6 +20,7 @@ export interface DefaultEditorMountOptions {
 	/** Capture wheel gestures for viewport panning. Disable this for editors embedded in scrolling pages. */
 	captureWheel?: boolean;
 	featureFlags?: EditorOptions['featureFlags'];
+	initialEditorMode?: EditorOptions['initialEditorMode'];
 	initialProjectUrl?: string;
 	storage?: Storage;
 	storageNamespace?: string;
@@ -30,6 +31,7 @@ export async function mountDefaultEditor(
 	{
 		captureWheel,
 		featureFlags,
+		initialEditorMode,
 		initialProjectUrl,
 		storage = localStorage,
 		storageNamespace = DEFAULT_STORAGE_NAMESPACE,
@@ -42,6 +44,7 @@ export async function mountDefaultEditor(
 		editor = await initEditor(canvas, {
 			captureWheel,
 			featureFlags,
+			initialEditorMode,
 			runtimeRegistry: createRuntimeRegistry(compilerService),
 			callbacks: {
 				getListOfModules,

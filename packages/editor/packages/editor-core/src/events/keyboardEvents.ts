@@ -66,8 +66,11 @@ export default function keyboardEvents(
 		const { key, metaKey, ctrlKey } = event;
 		const state = store.getState();
 
-		// Escape should always allow leaving non-view modes, even if mode toggling is disabled.
-		if (state.editorMode !== 'view' && key === 'Escape') {
+		// Presentation mode always retains an Escape route. Edit mode only exits when mode toggling is enabled.
+		if (
+			key === 'Escape' &&
+			(state.editorMode === 'presentation' || (state.editorMode === 'edit' && state.featureFlags.modeToggling))
+		) {
 			event.preventDefault();
 			events.dispatch('exitToViewMode');
 			return;

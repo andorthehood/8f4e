@@ -197,6 +197,19 @@ describe('keyboardEvents mode switching', () => {
 		cleanup();
 	});
 
+	it('does not leave edit mode when modeToggling is disabled', () => {
+		featureFlags.modeToggling = false;
+		editorMode = 'edit';
+		const cleanup = keyboardEvents(inputTarget as unknown as HTMLElement, events, store);
+		const event = createKeyboardEventLike('Escape');
+
+		inputTarget.emit('keydown', event);
+
+		expect(events.dispatch).not.toHaveBeenCalledWith('exitToViewMode');
+		expect(event.preventDefault as ReturnType<typeof vi.fn>).not.toHaveBeenCalled();
+		cleanup();
+	});
+
 	it('still exits presentation mode with Escape when modeToggling is disabled', () => {
 		featureFlags.modeToggling = false;
 		editorMode = 'presentation';
