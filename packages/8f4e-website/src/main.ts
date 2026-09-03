@@ -16,7 +16,7 @@ if (import.meta.env.DEV) {
 	}
 }
 
-const renderingReleaseDelayMs = 3_000;
+const renderingReleaseDelayMs = 2_000;
 const editorByCanvas = new Map<HTMLCanvasElement, DefaultEditorInstance>();
 const editorMountPromiseByCanvas = new Map<HTMLCanvasElement, Promise<DefaultEditorInstance>>();
 const renderingReleaseTimeoutByCanvas = new Map<HTMLCanvasElement, number>();
@@ -46,6 +46,7 @@ const renderingObserver = new IntersectionObserver(entries => {
 		if (entry.isIntersecting) {
 			editor?.resumeRendering();
 		} else {
+			editor?.pauseRendering();
 			const timeout = window.setTimeout(() => {
 				renderingReleaseTimeoutByCanvas.delete(canvas);
 				editor?.releaseRenderingResources();
