@@ -43,7 +43,7 @@ int foo5 3
 
 moduleEnd
 module pointer
-; @pos 66 2
+; @pos 73 2
 
 int* pointer &memories:0
 ; @watch pointer
