@@ -279,7 +279,9 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	if (!audioContext) {
-		showAudioPermissionDialog('Audio playback requires your permission. Select Allow to start the program.');
+		showAudioPermissionDialog(
+			'This project uses AudioWorklet for audio playback and requires your permission to start. Select Allow to start the program. If you do nothing, the program will not start.'
+		);
 	}
 
 	return () => {
