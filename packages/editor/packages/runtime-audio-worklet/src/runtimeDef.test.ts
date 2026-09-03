@@ -164,7 +164,7 @@ describe('AudioWorklet runtime config', () => {
 		expect(events.dispatch).toHaveBeenCalledWith('addDialog', {
 			id: 'audio-worklet-permission',
 			title: 'Audio Permission',
-			text: 'This project uses the AudioWorklet runtime. Select Allow to start the program with audio playback.',
+			text: 'Audio playback requires your permission. Select Allow to start the program.',
 			buttons: [{ title: 'Allow', action: 'grantAudioPermission' }],
 		});
 		expect(events.on).toHaveBeenCalledWith('grantAudioPermission', expect.any(Function));
