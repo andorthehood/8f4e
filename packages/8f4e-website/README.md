@@ -1,8 +1,8 @@
 # 8f4e Website
 
-`@8f4e/8f4e-website` is a minimal product page with an embedded default editor. The website controls the canvas size
-and leaves wheel scrolling to the surrounding document. Its embedded editors start in edit mode with mode switching
-disabled.
+`@8f4e/8f4e-website` contains a product homepage and an examples gallery with embedded default editors. The website
+controls the canvas size. Homepage editors leave wheel scrolling to the surrounding document and start in edit mode
+with mode switching disabled.
 
 From the workspace root:
 
@@ -37,8 +37,9 @@ accordion and scroll it into view. Collapsing a mobile example removes the selec
 to the default desktop selection or the collapsed mobile list.
 
 Selecting a different example creates a fresh editor and disposes the previous instance. Mounts are serialized to
-handle rapid selections, and each example uses its own session storage namespace. The gallery leaves wheel scrolling
-to the page and provides a link to the full editor. Loading failures offer a retry.
+handle rapid selections, and each example uses its own session storage namespace. The gallery editor captures wheel
+gestures for panning; scrolling over the example list scrolls the document. A link opens the example in the full editor.
+Loading failures offer a retry.
 
 ## Typography
 

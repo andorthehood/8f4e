@@ -129,7 +129,7 @@ function selectExample(id: string | null, retry = false): void {
 		};
 		try {
 			const editor = await mountDefaultEditor(canvas, {
-				captureWheel: false,
+				captureWheel: true,
 				featureFlags: {
 					browserLocalNotes: false,
 					projectCreation: false,
