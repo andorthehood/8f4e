@@ -163,6 +163,11 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 - Verify reuse across frames, explicit cache updates, top-left coordinates, alpha blending, and framebuffer orientation.
 - Profile a representative 500-sprite text block before and after caching, recording CPU submissions, uploaded instance
   bytes, main-frame draw calls, and cache-atlas memory usage.
+- Measure initial cache construction and explicit updates separately from steady-state reuse. For an unchanged
+  500-glyph group, confirm that per-frame instance traffic falls from 10,000 bytes to 20 bytes; report CPU frame cost and
+  GPU timing separately where available rather than treating this byte reduction as an equivalent runtime speedup.
+- Include moving cached text with an independently drawn cursor or selection overlay so animation does not trigger
+  unnecessary cache rebuilding.
 
 ## Validation Checkpoints
 
@@ -228,10 +233,19 @@ stale or foreign handles are programmer errors with unspecified consequences rat
 - **Related**: TODO 155 (Add Framebuffer Memory Accounting in glugglugglug)
 - **Related**: TODO 469 (Add optional drawing utilities to glugglugglug; completed)
 - **Related**: TODO 470 (Add no-op cacheGroup compatibility helper to glugglugglug utilities)
+- **Related**: [TODO 482: Resolve sprite identifiers before drawing](482-resolve-sprite-identifiers-before-drawing.md) —
+  use its resolved numeric-id contract for ordinary sprite submissions and cache-builder inputs when implemented;
+  preserve the separate high-bit encoding for completed cache instances.
 - **Related**: `packages/editor/packages/editor-core/packages/web-ui/packages/glugglugglug/docs/adr/001-no-programmer-input-validation-in-the-sprite-hot-path.md`
 
 ## Notes
 
+- The 2026-09-06 performance scan confirmed that static sprite groups still rebuild their instances and upload them on
+  every rendered frame. This existing todo tracks that opportunity; no raster-cache runtime gain was measured during
+  the scan. Numeric sprite lookup was benchmarked separately and is tracked by TODO 482.
+- For editor adoption, cache stable text separately from changing cursors, selections, meters, and other live overlays.
+  Explicitly refresh cached text when its content changes and recreate it when dimensions require a new allocation;
+  atlas replacement already invalidates the caches. Translation alone should reuse the cached pixels.
 - This cache is a raster cache, not merely a retained instance buffer. A dense 500-glyph text block should become one
   textured rectangle in subsequent frames rather than 500 GPU quads.
 - The shader does not create or remember the cache. Cache creation rasterizes it once; the main shader only decodes the

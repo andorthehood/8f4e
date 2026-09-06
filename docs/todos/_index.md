@@ -76,6 +76,7 @@ Active todo files are listed below.
 | 478 | Resolve group memory exposures through an alias table | 🟡 | 4-8h | 2026-08-26 | Keep composed AST references source-faithful and resolve structured group-memory aliases in the layout-aware and semantic reference passes. |
 | 480 | Simplify map codegen with reverse row order | 🟡 | 2-4h | 2026-09-06 | Emit map rows in reverse order to preserve first-match-wins behavior while removing matched/condition temporaries and runtime bookkeeping. |
 | 481 | Allocate compiler local indices with a counter | 🟡 | 2-4h | 2026-09-06 | Replace repeated local-map scans with a per-context allocator across semantic resolution, stack analysis, and Wasm codegen. |
+| 482 | Resolve sprite identifiers before drawing | 🟡 | 2-4h | 2026-09-06 | Resolve public atlas keys during setup and use dense numeric metadata lookup for each sprite submission. |
 
 ### 🟢 Low Priority
 
