@@ -300,6 +300,11 @@ export interface Callbacks {
 
 	// File handling callbacks
 	importProject?: () => Promise<ProjectObjectModel>;
+	/**
+	 * Called before awaiting export code, so native save pickers retain user activation.
+	 * Returns a text writer, or undefined when cancelled. Preferred over exportProject when provided.
+	 */
+	prepareProjectExport?: (fileName: string) => Promise<((data: string) => Promise<void>) | undefined>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
 	exportBinaryCode?: (fileName: string) => Promise<void>;
 	exportCanvasScreenshot?: (fileName: string) => Promise<void>;

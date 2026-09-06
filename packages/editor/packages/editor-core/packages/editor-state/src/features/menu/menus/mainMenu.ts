@@ -82,7 +82,12 @@ export const mainMenu: MenuGenerator = state => [
 	...((state.featureFlags.editing && state.featureFlags.projectCreation) || state.featureFlags.projectOpening
 		? [{ divider: true }]
 		: []),
-	{ title: 'Export Project', action: 'exportProject', close: true, disabled: !state.callbacks.exportProject },
+	{
+		title: 'Export Project',
+		action: 'exportProject',
+		close: true,
+		disabled: !state.callbacks.exportProject && !state.callbacks.prepareProjectExport,
+	},
 	{
 		title: 'Export WebAssembly',
 		action: 'exportWasm',

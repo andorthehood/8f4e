@@ -22,6 +22,18 @@ const baseConfig = createLibConfig({
 
 export default defineConfig({
 	...baseConfig,
+	build: {
+		...baseConfig.build,
+		lib: {
+			// Keep the synchronous public export without folding the lazy formatter into index.js.
+			entry: {
+				index: './src/index.ts',
+				serializeTo8f4e: './src/features/project-export/serializeTo8f4e.ts',
+			},
+			formats: ['es'],
+			fileName: (_format, entryName) => `${entryName}.js`,
+		},
+	},
 	resolve: {
 		alias: {
 			'~': resolve(__dirname, './src'),

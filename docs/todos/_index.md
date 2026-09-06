@@ -93,12 +93,12 @@ Active todo files are listed below.
 | 389 | Add EagleSpCGA Alt3 8x8 font to sprite-generator | 🟢 | 4-8h | 2026-05-04 | The editor sprite-generator has several bundled bitmap fonts, including a few compact 8-pixel-high options, but it does not include EagleSpCGA Alt3 8x8. That leaves the editor w... |
 | 465 | Add Sergamon font to the editor | 🟢 | 4-8h | 2026-07-30 | Add Sergamon's 8x16 programming-font glyphs to the sprite-generator pipeline and expose the font through editor configuration. |
 | 466 | Add Scientifica font to the editor | 🟢 | 4-8h | 2026-07-30 | Import Scientifica's regular 11-pixel BDF face into the sprite-generator pipeline and expose the condensed font through editor configuration. |
-| 485 | Lazy-load project export formatting | 🟢 | 4-8h | 2026-09-06 | Defer .8f4e text formatting until export while preserving autosave and browser save-picker activation. |
 
 ## Completed TODOs
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 485 | [Lazy-load project export formatting](archived/485-lazy-load-project-export-formatting.md) | 2026-09-06 | Deferred the formatter, preserved autosave and synchronous API, added save-picker preparation and snapshot guards, and recorded production measurements. |
 | 479 | Pass constant namespaces into groups | 2026-08-27 | Added explicit same-name namespace forwarding with `pass`, ordinary per-block `use` imports, immediate-parent aliases, source-contextual diagnostics, editor round trips, and cache-safe semantic recomputation. |
 | 477 | Establish compiler-owned ProjectObjectModel | 2026-08-22 | Added compiler-owned typed block collections, recursively owned groups, direct root compilation, text parsing, and repository-wide consumer migration. |
 | 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 2026-08-19 | Added a temporary migration shim; removed it on 2026-08-20 after web-ui switched to direct drawing. |

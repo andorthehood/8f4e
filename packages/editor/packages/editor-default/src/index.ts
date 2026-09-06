@@ -10,6 +10,7 @@ import {
 	exportCanvasScreenshot,
 	exportProject,
 	importProject,
+	prepareProjectExport,
 } from './storage-callbacks';
 
 const DEFAULT_STORAGE_NAMESPACE = 'editor';
@@ -56,6 +57,7 @@ export async function mountDefaultEditor(
 				...storageCallbacks,
 				importProject,
 				exportProject,
+				prepareProjectExport,
 				exportBinaryCode: fileName => exportBinaryCode(fileName, compilerService.getCodeBuffer()),
 				exportCanvasScreenshot,
 			},

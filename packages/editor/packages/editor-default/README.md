@@ -43,6 +43,12 @@ the editor starts with an empty project and does not fetch an example project re
 [examples gallery](https://8f4e.com/examples/); its links open projects by URL. The editor's menu supports opening
 projects from disk and adding built-in modules.
 
+Project exports use `prepareProjectExport` to open the native save picker in the input handler before loading the
+`.8f4e` formatter. Cancellation ends the export without loading code; after a destination is selected, the captured
+project is formatted and written. Browsers without a picker download the captured text and filename. Session
+persistence uses the project object model and does not load the text formatter. The existing string-based
+`exportProject(data, fileName)` helper remains supported.
+
 Build, test, and type-check it from the workspace root:
 
 ```bash

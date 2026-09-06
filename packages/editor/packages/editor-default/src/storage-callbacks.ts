@@ -100,12 +100,22 @@ export async function importProject(): Promise<ProjectObjectModel> {
 	});
 }
 
+export async function prepareProjectExport(fileName: string): Promise<((data: string) => Promise<void>) | undefined> {
+	try {
+		const save = await prepareBlobSave(fileName, {
+			description: '8f4e Project',
+			accept: { 'text/plain': ['.8f4e'] },
+		});
+		return data => save(new Blob([data], { type: 'text/plain;charset=utf-8' }));
+	} catch (error) {
+		if (error instanceof Error && error.name === 'AbortError') return undefined;
+		throw error;
+	}
+}
+
 export async function exportProject(data: string, fileName: string): Promise<void> {
-	const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
-	await saveBlobWithPickerFallback(blob, fileName, {
-		description: '8f4e Project',
-		accept: { 'text/plain': ['.8f4e'] },
-	});
+	const save = await prepareProjectExport(fileName);
+	await save?.(data);
 }
 
 export async function exportBinaryCode(fileName: string, codeBuffer: Uint8Array): Promise<void> {
@@ -132,6 +142,14 @@ async function saveBlobWithPickerFallback(
 		accept: Record<string, string[]>;
 	}
 ): Promise<void> {
+	const save = await prepareBlobSave(fileName, fileType);
+	await save(blob);
+}
+
+async function prepareBlobSave(
+	fileName: string,
+	fileType: { description: string; accept: Record<string, string[]> }
+): Promise<(blob: Blob) => Promise<void>> {
 	const showSaveFilePicker = (
 		window as Window & {
 			showSaveFilePicker?: (options: {
@@ -148,20 +166,24 @@ async function saveBlobWithPickerFallback(
 			suggestedName: fileName,
 			types: [fileType],
 		});
-		const writable = await handle.createWritable();
-		await writable.write(blob);
-		await writable.close();
-		return;
+		return async blob => {
+			// Open a writable only once formatting has succeeded.
+			const writable = await handle.createWritable();
+			await writable.write(blob);
+			await writable.close();
+		};
 	}
 
-	const url = URL.createObjectURL(blob);
-	const a = document.createElement('a');
-	document.body.appendChild(a);
-	a.style.display = 'none';
-	a.href = url;
-	a.download = fileName;
-	a.click();
+	return async blob => {
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		document.body.appendChild(a);
+		a.style.display = 'none';
+		a.href = url;
+		a.download = fileName;
+		a.click();
 
-	document.body.removeChild(a);
-	URL.revokeObjectURL(url);
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	};
 }

@@ -2,38 +2,49 @@ import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import { registerExportFileNameEditorConfigValidator } from './editorConfig';
 import getExportBaseName from './getExportBaseName';
-import { serializeProjectTo8f4e } from './serializeTo8f4e';
+import loadProjectFormatter from './loadProjectFormatter';
 import serializeToProject from './serializeToProject';
 
-export default function projectExport(store: StateManager<State>, events: EventDispatcher): void {
+export default function projectExport(
+	store: StateManager<State>,
+	events: EventDispatcher,
+	loadFormatter = loadProjectFormatter
+): () => void {
 	registerExportFileNameEditorConfigValidator(store);
 
 	const state = store.getState();
+	let disposed = false;
 
-	function onExportProject() {
-		if (!state.callbacks.exportProject) {
+	async function onExportProject() {
+		if (disposed) return;
+		const { exportProject, prepareProjectExport } = state.callbacks;
+		if (!exportProject && !prepareProjectExport) {
 			console.warn('No exportProject callback provided');
 			return;
 		}
 
-		const projectToSave = serializeToProject(state);
-		const fileName = `${getExportBaseName(state)}.8f4e`;
-
-		let text: string;
 		try {
-			text = serializeProjectTo8f4e(projectToSave);
-		} catch (error) {
-			console.error('Failed to serialize project:', error);
-			return;
-		}
+			// Session serialization retains live code arrays; export needs an independent snapshot.
+			const projectToSave = structuredClone(serializeToProject(state));
+			const fileName = `${getExportBaseName(state)}.8f4e`;
+			// Invoke preparation in the input handler's turn, before loading any code.
+			const save = prepareProjectExport
+				? await prepareProjectExport(fileName)
+				: (text: string) => exportProject!(text, fileName);
+			if (!save || disposed) return;
 
-		state.callbacks.exportProject(text, fileName).catch(error => {
-			console.error('Failed to save project to file:', error);
-		});
+			const { serializeProjectTo8f4e } = await loadFormatter();
+			if (disposed) return;
+			await save(serializeProjectTo8f4e(projectToSave));
+		} catch (error) {
+			if (!disposed && !(error instanceof Error && error.name === 'AbortError')) {
+				console.error('Failed to save project to file:', error);
+			}
+		}
 	}
 
 	async function onSaveSession() {
-		if (!state.callbacks.saveSession) {
+		if (disposed || !state.callbacks.saveSession) {
 			return;
 		}
 
@@ -52,6 +63,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	}
 
 	function onExportWasm() {
+		if (disposed) return;
 		if (!state.callbacks.exportBinaryCode) {
 			console.warn('No exportProject callback provided');
 			return;
@@ -71,4 +83,18 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	events.on('saveSession', onSaveSession);
 	events.on('exportProject', onExportProject);
 	events.on('exportWasm', onExportWasm);
+
+	return () => {
+		disposed = true;
+		store.unsubscribe('codeBlockRendering.codeBlocks', onSaveSession);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', onSaveSession);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onSaveSession);
+		store.unsubscribe(
+			'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
+			onSaveSession
+		);
+		events.off('saveSession', onSaveSession);
+		events.off('exportProject', onExportProject);
+		events.off('exportWasm', onExportWasm);
+	};
 }

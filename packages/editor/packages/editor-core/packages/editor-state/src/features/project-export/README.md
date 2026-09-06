@@ -24,7 +24,35 @@ directives remain embedded in block source.
 
 ### `.8f4e` Project Export
 
-Project file export first calls `serializeToProject` to collect the current code blocks, then passes that structure to `serializeProjectTo8f4e` to produce the `.8f4e` file content. This path is used for project downloads, while JSON output from `serializeToProject` is intended for session persistence only.
+Project file export captures a deep copy of `serializeToProject(state)` and the export filename in the input
+handler. Live source arrays, nested groups, configuration changes, and callback replacement during an asynchronous
+wait cannot change that export. The formatter is dynamically imported on first export and its import promise is
+shared across exports and editors. Failed imports clear the cached promise so later exports can retry where the
+browser module loader permits recovery. Autosave and configuration registration remain eager.
+
+An optional `prepareProjectExport(fileName)` callback runs before any asynchronous wait, preserving user activation
+for a native save picker. It returns a promise of a text writer, or `undefined` for cancellation:
+
+```ts
+prepareProjectExport?: (fileName: string) => Promise<((data: string) => Promise<void>) | undefined>;
+```
+
+When both callbacks are configured, preparation takes precedence over `exportProject(data, fileName)`. The default
+composition opens the picker immediately, then waits for its file handle before importing the formatter. It creates
+a writable only after formatting succeeds. Browsers without a save picker receive a deferred download writer.
+Cancelling the picker does not load the formatter or trigger a fallback download.
+
+Existing `exportProject(data, fileName)` callbacks retain their string-based signature, but run after the formatter
+loads. Custom hosts using native save pickers should implement `prepareProjectExport` to acquire their destination
+before that wait. Download callbacks and other custom saves can keep the existing API.
+
+The effect catches preparation, snapshot, formatter, and save errors; cancellation is quiet. Disposal removes its
+listeners and subscriptions and stops exports waiting on a picker or formatter from writing afterward. Once a
+writer has started, that writer owns completion of the save.
+
+The synchronous `serializeProjectTo8f4e` export from `@8f4e/editor-state` remains available. The library builds the
+formatter as a second entry so bundlers can remove the unused public re-export and retain the dynamic import.
+Consumers that explicitly use the synchronous API intentionally load the formatter.
 
 ### WASM Export
 
