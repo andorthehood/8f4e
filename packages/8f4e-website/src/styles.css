@@ -24,7 +24,6 @@ html {
 	font-size: 28px;
 	line-height: 1;
 	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: none;
 	font-synthesis: none;
 }
 
