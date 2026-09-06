@@ -1,45 +1,100 @@
 8f4e/v1
 
 includes
+; @pos -29 -21
 include std/events/risingEdge
 include std/events/hasChanged
 includesEnd
 
-note
-; @pos -318 -39
-; @tab 51
-; @config color.fill.moduleBackground	#ffffff
-; @config color.fill.background	rgba(0,0,0,0)
-; @config color.fill.backgroundDots	#99cccc
-; @config color.fill.backgroundDots2	#669999
-; @config color.fill.highlightedCodeLine	#ffff55
-; @config color.fill.moduleBackgroundDragged	#ffffff
-; @config color.text.instruction	#0000aa
-; @config color.text.code	#000000
-; @config color.text.lineNumber	#555555
-; @config color.text.codeComment	#aaaaaa
-; @config color.text.numbers	#aa0000
-; @config color.text.debugInfo	#aaaaaa
-; @config color.fill.debugInfoBackground	#ffff55
-; @config color.fill.wire	rgba(0,0,0,0.6)
-; @config color.fill.wireHighlighted	#000000
-; @config color.fill.menuItemBackground	#0000aa
-; @config color.fill.menuItemBackgroundHighlighted	#ffffff
-; @config color.fill.dialogBackground	#0000aa
-; @config color.fill.dialogDimmer	#000000
-; @config color.fill.codeBlockHighlightLevel1	#eeeeee
-; @config color.fill.codeBlockHighlightLevel2	#dddddd
-; @config color.fill.codeBlockHighlightLevel3	#cccccc
-; @config color.fill.plotterBackground	#000000
-; @config color.fill.trace	#ffffff
-; @config color.fill.scanLine	#55ffff
-; @config color.icons.outputConnectorBackground	#ffffff
-; @config color.icons.outputConnector	#000000
-; @config color.icons.inputConnectorBackground	#ffffff
-; @config color.icons.inputConnector	#000000
-; @config color.fill.pianoKeyWhite	#cccccc
-noteEnd
+function buffer
+; @pos -242 -26
+#export buffer
+use env
 
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
+function hasChanged
+; @pos -242 26
+; @tab 8
+#impure
+param int* currentValue
+param int* previousValue
+
+push currentValue
+push *previousValue
+notEqual
+push previousValue
+push currentValue
+store
+functionEnd int
+
+function sin
+; @pos 119 31
+; Polynomial approximation
+; of the sine function with
+; Taylor series (7th order)
+; Only works in the range of
+; [-PI, PI]
+param float x
+
+use math
+
+; Fold to [-pi/2, pi/2]
+push x
+push HALF_PI
+greaterThan
+if
+push PI
+push x
+sub
+localSet x
+ifEnd
+
+push x
+push HALF_PI
+push -1.0
+mul
+lessThan
+if
+push PI
+push -1.0
+mul
+push x
+sub
+localSet x
+ifEnd
+
+local float x2
+push x
+push x
+mul
+localSet x2
+
+; Taylor coefficients
+const T1 -0.1666666666
+const T2 0.0083333333
+const T3 -0.000198412
+
+push x2
+push T3
+mul
+push T2
+add
+push x2
+mul
+push T1
+add
+push x2
+mul
+push 1.0
+add
+push x
+mul
+
+functionEnd float
 
 constants env
 ; @pos -242 -38
@@ -51,16 +106,6 @@ const SAMPLE_RATE 48000
 const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
-
-function buffer
-; @pos -242 -26
-#export buffer
-use env
-
-loop AUDIO_BUFFER_SIZE
-call main
-loopEnd
-functionEnd
 
 constants math
 ; @pos -242 -26
@@ -83,33 +128,6 @@ const LOG10E	 0.434294481903251
 const E	 2.718281828459045
 
 constantsEnd
-
-note
-; @pos -242 -4
-; Project config
-
-; @config runtime AudioWorkletRuntime
-; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioOutBufferLAddress shofar:buffer
-; @config audioRuntime.audioOutBufferRAddress shofar:buffer
-; @config export.fileName risen
-; @config font templeos8x8
-noteEnd
-
-function hasChanged
-; @pos -242 26
-; @tab 8
-#impure
-param int* currentValue
-param int* previousValue
-
-push currentValue
-push *previousValue
-notEqual
-push previousValue
-push currentValue
-store
-functionEnd int
 
 constants midiCodes
 ; @pos -146 -55
@@ -268,6 +286,53 @@ const GB9	126
 const G9	127
 
 constantsEnd
+
+note
+; @pos -318 -39
+; @tab 51
+; @config color.fill.moduleBackground	#ffffff
+; @config color.fill.background	#55ffff
+; @config color.fill.backgroundDots	#99cccc
+; @config color.fill.backgroundDots2	#669999
+; @config color.fill.highlightedCodeLine	#ffff55
+; @config color.fill.moduleBackgroundDragged	#ffffff
+; @config color.text.instruction	#0000aa
+; @config color.text.code	#000000
+; @config color.text.lineNumber	#555555
+; @config color.text.codeComment	#aaaaaa
+; @config color.text.numbers	#aa0000
+; @config color.text.debugInfo	#aaaaaa
+; @config color.fill.debugInfoBackground	#ffff55
+; @config color.fill.wire	rgba(0,0,0,0.6)
+; @config color.fill.wireHighlighted	#000000
+; @config color.fill.menuItemBackground	#0000aa
+; @config color.fill.menuItemBackgroundHighlighted	#ffffff
+; @config color.fill.dialogBackground	#0000aa
+; @config color.fill.dialogDimmer	#000000
+; @config color.fill.codeBlockHighlightLevel1	#eeeeee
+; @config color.fill.codeBlockHighlightLevel2	#dddddd
+; @config color.fill.codeBlockHighlightLevel3	#cccccc
+; @config color.fill.plotterBackground	#000000
+; @config color.fill.trace	#ffffff
+; @config color.fill.scanLine	#55ffff
+; @config color.icons.outputConnectorBackground	#ffffff
+; @config color.icons.outputConnector	#000000
+; @config color.icons.inputConnectorBackground	#ffffff
+; @config color.icons.inputConnector	#000000
+; @config color.fill.pianoKeyWhite	#cccccc
+noteEnd
+
+note
+; @pos -242 -4
+; Project config
+
+; @config runtime AudioWorkletRuntime
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress shofar:buffer
+; @config audioRuntime.audioOutBufferRAddress shofar:buffer
+; @config export.fileName risen
+; @config font templeos8x8
+noteEnd
 
 entry main
 module godClock
@@ -999,6 +1064,8 @@ int pointer &buffer
 ; in the buffer
 push pointer
 push *in
+push 0.7
+mul
 store
 
 ; Increment the buffer
@@ -1024,68 +1091,3 @@ ifEnd
 
 moduleEnd
 entryEnd
-
-function sin
-; @pos 119 31
-; Polynomial approximation
-; of the sine function with
-; Taylor series (7th order)
-; Only works in the range of
-; [-PI, PI]
-param float x
-
-use math
-
-; Fold to [-pi/2, pi/2]
-push x
-push HALF_PI
-greaterThan
-if
-push PI
-push x
-sub
-localSet x
-ifEnd
-
-push x
-push HALF_PI
-push -1.0
-mul
-lessThan
-if
-push PI
-push -1.0
-mul
-push x
-sub
-localSet x
-ifEnd
-
-local float x2
-push x
-push x
-mul
-localSet x2
-
-; Taylor coefficients
-const T1 -0.1666666666
-const T2 0.0083333333
-const T3 -0.000198412
-
-push x2
-push T3
-mul
-push T2
-add
-push x2
-mul
-push T1
-add
-push x2
-mul
-push 1.0
-add
-push x
-mul
-
-functionEnd float
