@@ -10,8 +10,7 @@ const SAMPLE_RATE 1
 
 constantsEnd
 
-entry main
-module projectConfig
+note
 ; @pos -84 2
 ; @config runtime WebWorkerRuntime
 ; @config workerRuntime.sampleRate 1
@@ -21,7 +20,9 @@ module projectConfig
 ; @config color.fill.backgroundDots2 #306
 ; @config color.fill.wire #fff
 ; @config color.fill.moduleBackground #000
-moduleEnd
+noteEnd
+
+entry main
 module memories
 ; @pos 29 2
 ; @home left

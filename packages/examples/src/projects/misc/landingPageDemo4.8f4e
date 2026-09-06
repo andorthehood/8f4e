@@ -21,8 +21,7 @@ const AUDIO_BUFFER_SIZE 128
 
 constantsEnd
 
-entry main
-module projectConfig
+note
 ; @pos -91 2
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
@@ -34,8 +33,9 @@ module projectConfig
 ; @config color.fill.backgroundDots2 #630
 ; @config color.fill.wire #fff
 ; @config color.fill.moduleBackground #000
+noteEnd
 
-moduleEnd
+entry main
 module lcg
 ; @pos 18 0
 ; Linear congruential
