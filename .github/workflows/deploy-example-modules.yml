@@ -7,7 +7,7 @@ on:
     paths:
       - 'packages/examples/src/modules/**'
       - 'packages/examples/src/module-generators/**'
-      - 'packages/examples/generate-example-registries.mjs'
+      - 'packages/examples/generate-module-registry.mjs'
       - 'packages/examples/project.json'
       - 'packages/examples/package.json'
       - '.github/workflows/deploy-example-modules.yml'

@@ -7,22 +7,16 @@ const outputDirectory = resolve(packageRoot, 'dist/registries');
 
 const examplesBaseUrl = 'https://static.8f4e.com';
 const moduleBaseUrl = `${examplesBaseUrl}/example-modules`;
-const projectBaseUrl = `${examplesBaseUrl}/example-projects`;
 
 const moduleUpperCaseWords = new Set(['lsb', 'msb', 'midi', 'pcm', 'cga', 'crt', 'xor']);
 const modulePreserveCaseWords = new Set(['8bit', '16bit', '32bit']);
-const projectUpperCaseWords = new Set(['lt', 'fm', 'xor']);
 
-function collectPaths(sourceDirectory, extension, { excludedDirectories = new Set() } = {}) {
+function collectPaths(sourceDirectory, extension) {
 	return readdirSync(sourceDirectory, { withFileTypes: true }).flatMap(entry => {
 		const entryPath = resolve(sourceDirectory, entry.name);
 
 		if (entry.isDirectory()) {
-			if (excludedDirectories.has(entry.name)) {
-				return [];
-			}
-
-			return collectPaths(entryPath, extension, { excludedDirectories });
+			return collectPaths(entryPath, extension);
 		}
 
 		return entry.name.endsWith(extension) ? [entryPath] : [];
@@ -112,32 +106,9 @@ function createModuleRegistry() {
 	};
 }
 
-function createProjectRegistry() {
-	const sourceDirectory = resolve(packageRoot, 'src/projects');
-	const paths = collectPaths(sourceDirectory, '.8f4e', { excludedDirectories: new Set(['archived']) })
-		.map(filePath => toRelativePosixPath(sourceDirectory, filePath))
-		.sort();
-
-	return {
-		projects: paths
-			.map(path => {
-				const slug = getSlug(path, '.8f4e');
-
-				return {
-					title: humanizeSlug(slug, { upperCaseWords: projectUpperCaseWords }),
-					category: getCategory(path),
-					path,
-					url: `${projectBaseUrl}/${path}`,
-				};
-			})
-			.sort((left, right) => left.title.localeCompare(right.title)),
-	};
-}
-
 function writeRegistry(fileName, registry) {
 	mkdirSync(outputDirectory, { recursive: true });
 	writeFileSync(resolve(outputDirectory, fileName), `${JSON.stringify(registry, null, '\t')}\n`);
 }
 
 writeRegistry('example-modules.json', createModuleRegistry());
-writeRegistry('example-projects.json', createProjectRegistry());
