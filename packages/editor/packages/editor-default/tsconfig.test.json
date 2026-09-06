@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"noEmit": true,
 		"rootDir": ".",
-		"types": ["node", "vitest/globals", "vite/client", "vite-plugin-glsl/ext"]
+		"types": ["node", "vitest/globals", "vite/client"]
 	},
 	"include": ["src/**/*.ts", "src/**/*.test.ts"],
 	"exclude": ["node_modules", "dist"]

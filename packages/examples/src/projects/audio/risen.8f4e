@@ -40,23 +40,6 @@ note
 ; @config color.fill.pianoKeyWhite	#cccccc
 noteEnd
 
-note fragmentShaderBackground
-; @pos -318 -2
-#version 300 es
-
-precision mediump float;
-
-in vec2 v_screenCoord;
-out vec4 outColor;
-
-void main() {
-  if (v_screenCoord.y > 0.5) {
-    outColor = vec4(0.3, 1.0, 1.0, 1.0);
-  } else {
-    outColor = vec4(1.0, 1.0, 0.3, 1.0);
-  }
-}
-noteEnd
 
 constants env
 ; @pos -242 -38

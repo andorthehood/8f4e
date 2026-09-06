@@ -24,7 +24,7 @@ describe('getCodeBlockNameFromSource', () => {
 
 	it('returns empty string for note blocks', () => {
 		expect(getCodeBlockNameFromSource(['note', '', 'noteEnd'])).toBe('');
-		expect(getCodeBlockNameFromSource(['note fragmentShaderPostprocess', '', 'noteEnd'])).toBe('');
+		expect(getCodeBlockNameFromSource(['note custom', '', 'noteEnd'])).toBe('');
 	});
 
 	it('returns empty string when no block name is found', () => {

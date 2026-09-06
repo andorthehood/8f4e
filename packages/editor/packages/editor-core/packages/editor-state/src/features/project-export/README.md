@@ -79,6 +79,5 @@ collections. Compilation recursively composes those collections into one program
 
 ## Notes & Limitations
 
-- Post-process effects are derived from shader blocks and not persisted
 - Compiled data is excluded from history snapshots to save memory
 - Binary assets are declared in code blocks with `@config bin...` values and loaded by the lazy editor environment plugin; exported projects do not embed binary payloads

@@ -36,8 +36,6 @@ export default function createDefaultState() {
 			y: 0,
 			menuStack: [],
 		},
-		postProcessEffects: [],
-		backgroundEffects: [],
 		info: {
 			compiler: {
 				isCompiling: false,
@@ -81,7 +79,6 @@ export default function createDefaultState() {
 		codeErrors: {
 			compilationErrors: [],
 			editorDirectiveErrors: [],
-			shaderErrors: [],
 		},
 		console: {
 			logs: [],

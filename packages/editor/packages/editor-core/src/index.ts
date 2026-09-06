@@ -10,7 +10,6 @@ import type {
 import generateSprite from '@8f4e/sprite-generator';
 import initView, { type MemoryViews, type RenderStats, type WebUiOptions } from '@8f4e/web-ui';
 import { createWebUiRenderProjection } from '@8f4e/web-ui-render-projection';
-import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglugglug';
 import {
 	BIN_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
 	binaryAssetsEditorConfigSchemaContribution,
@@ -242,13 +241,6 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 	});
 
 	const cleanupSpriteSheet = createSpriteSheetManager(store, view, events);
-
-	events.on<PostProcessEffect | null>('loadPostProcessEffect', effect => {
-		view.loadPostProcessEffect(effect);
-	});
-	events.on<ShaderUnderlayEffect | null>('loadBackgroundEffect', effect => {
-		view.loadBackgroundEffect(effect);
-	});
 
 	let currentCanvasSize: CanvasSize | null = null;
 	const resize = (width: number, height: number) => {

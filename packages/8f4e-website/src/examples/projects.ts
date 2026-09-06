@@ -30,12 +30,6 @@ export const projects = [
 		path: 'audio/keyboardControlledMonoSynth.8f4e',
 	},
 	{
-		id: 'ripple-effect',
-		title: 'Ripple effect',
-		description: 'See a GLSL post-processing shader ripple across the editor.',
-		path: 'visuals/rippleEffect.8f4e',
-	},
-	{
 		id: 'pointers',
 		title: 'Pointers and wires',
 		description: 'Follow memory addresses through pointers and see their connections drawn as wires.',
@@ -172,12 +166,6 @@ export const projects = [
 		title: 'Digit classifier',
 		description: 'Draw a digit on a 3 × 5 grid and follow its classification through a neural network.',
 		path: 'machine-learning/digitClassifier.8f4e',
-	},
-	{
-		id: 'background-plasma',
-		title: 'Plasma background',
-		description: 'Explore an animated plasma background rendered by a GLSL shader.',
-		path: 'visuals/backgroundPlasma.8f4e',
 	},
 	{
 		id: 'dancing-sine',

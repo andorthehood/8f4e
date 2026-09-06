@@ -2119,35 +2119,6 @@ note
 ;                             `:'
 noteEnd
 
-note fragmentShaderBackground
-; @pos 631 -151
-#version 300 es
-
-precision mediump float;
-
-in vec2 v_screenCoord;
-uniform vec2 u_resolution;
-uniform float u_time;
-out vec4 outColor;
-
-#define HORIZON 0.5
-
-void main() {
-  vec2 uv = vec2(v_screenCoord.x, 1.0 - v_screenCoord.y);
-  if (uv.y < HORIZON) {
-    outColor = vec4(0.0, 0.0, 0.0, 1.0);
-    return;
-  }
-
-  float z = 1.0 / max(uv.y - HORIZON, 0.001);
-  float x = (uv.x - 0.5) * (u_resolution.x / u_resolution.y) * z;
-  float y = z + u_time * 3.0;
-  float tile = mod(floor(x) + floor(y), 2.0);
-  float fade = smoothstep(0.0, 0.3, uv.y - HORIZON);
-  vec3 color = mix(vec3(0.0), vec3(0.0, 0.2, 1.0), tile) * fade;
-  outColor = vec4(color, 1.0);
-}
-noteEnd
 
 note
 ; @pos 701 -20

@@ -42,7 +42,6 @@ import compiler from './features/program-compiler/effect';
 import projectExport from './features/project-export/effect';
 import projectImport from './features/project-import/effect';
 import runtime from './features/runtime/effect';
-import shaderEffectsDeriver from './features/shader-effects/effect';
 import tooltip from './features/tooltip/effect';
 import viewport from './features/viewport/effect';
 import createDefaultState from './pureHelpers/state/createDefaultState';
@@ -122,7 +121,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	registerEffect(parsedDirectivesUpdater(store));
 	registerEffect(autoEnvConstants(store)); // Must run after codeBlockCreator to ensure env block is created
 	registerEffect(blockTypeUpdater(store)); // Must run before compiler to classify blocks first
-	registerEffect(shaderEffectsDeriver(store, events)); // Must run after blockTypeUpdater to derive shader effects
 	registerEffect(globalEditorDirectivesEffect(store));
 	registerEffect(compiler(store));
 	registerEffect(codeBlockRendering(store, events));

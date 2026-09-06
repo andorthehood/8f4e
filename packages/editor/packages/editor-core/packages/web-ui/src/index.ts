@@ -1,15 +1,7 @@
 import type { State } from '@8f4e/editor-state-types';
 import type { SpriteAtlas, SpriteIdLookups } from '@8f4e/sprite-generator';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
-import {
-	Engine,
-	LineDrawer,
-	PostProcess,
-	type PostProcessEffect,
-	RgbaTextureLayer,
-	ShaderUnderlay,
-	type ShaderUnderlayEffect,
-} from 'glugglugglug';
+import { Engine, LineDrawer, RgbaTextureLayer } from 'glugglugglug';
 import { DrawContext } from './drawContext';
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';
@@ -63,8 +55,6 @@ export default async function init(
 ): Promise<{
 	resize: (width: number, height: number) => boolean;
 	loadSpriteAtlas: (spriteData: SpriteData) => void;
-	loadPostProcessEffect: (effect: PostProcessEffect | null) => void;
-	loadBackgroundEffect: (effect: ShaderUnderlayEffect | null) => void;
 	pauseRendering: () => void;
 	releaseRenderingResources: () => void;
 	resumeRendering: () => void;
@@ -76,10 +66,8 @@ export default async function init(
 	engine.hooks.preDraw.push(() => {
 		frameStartedAt = performance.now();
 	});
-	const background = new ShaderUnderlay(engine);
 	const frameTextureLayer = new RgbaTextureLayer(engine);
 	const lines = new LineDrawer(engine);
-	const postProcess = new PostProcess(engine);
 	const draw = new DrawContext(engine, spriteData.characterWidth);
 	let wireColors = resolveWireColors(state.editorConfig.color);
 	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
@@ -206,7 +194,6 @@ export default async function init(
 			return;
 		}
 
-		postProcess.releaseMemory();
 		frameTextureLayer.releaseMemory();
 		lines.releaseMemory();
 		engine.releaseRenderingMemory();
@@ -252,20 +239,6 @@ export default async function init(
 			draw.setCharacterWidth(spriteData.characterWidth);
 			wireColors = resolveWireColors(state.editorConfig.color);
 		},
-		loadPostProcessEffect: (effect: PostProcessEffect | null) => {
-			if (effect) {
-				postProcess.setEffect(effect);
-			} else {
-				postProcess.clearEffect();
-			}
-		},
-		loadBackgroundEffect: (effect: ShaderUnderlayEffect | null) => {
-			if (effect) {
-				background.setEffect(effect);
-			} else {
-				background.clearEffect();
-			}
-		},
 		pauseRendering,
 		releaseRenderingResources,
 		resumeRendering,
@@ -275,10 +248,8 @@ export default async function init(
 		},
 		destroy: () => {
 			pauseRendering();
-			postProcess.destroy();
 			lines.destroy();
 			frameTextureLayer.destroy();
-			background.destroy();
 			engine.destroy();
 		},
 	};
