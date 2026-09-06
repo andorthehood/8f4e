@@ -16,6 +16,10 @@ export default defineConfig(() => ({
 		emptyOutDir: true,
 		manifest: true,
 		rollupOptions: {
+			input: {
+				home: 'src/index.html',
+				examples: 'src/examples/index.html',
+			},
 			output: {
 				entryFileNames: 'assets/entries/[name]-[hash].js',
 				chunkFileNames: 'assets/chunks/[name]-[hash].js',
