@@ -24,7 +24,7 @@ Code blocks are categorized by type, which determines compilation and rendering 
 - **`module`** - Top-level code modules compiled as standalone units
 - **`function`** - Function definitions compiled separately
 - **`constants`** - Constant definitions (compiled as modules)
-- **`note`** - Editor-only notes, including typed notes like shader notes
+- **`note`** - Editor-only notes
 - **`unknown`** - Unclassified blocks (fallback)
 
 Block types are automatically detected and updated based on code content.
@@ -73,7 +73,6 @@ references.
 ## Integration Points
 
 - **Compiler**: Blocks are sorted by `creationIndex` and filtered by type for compilation
-- **Shader Effects**: Shader blocks feed into post-process effect generation
 - **Viewport**: Block positions are in viewport coordinates
 - **Edit History**: Block changes trigger history snapshots
 

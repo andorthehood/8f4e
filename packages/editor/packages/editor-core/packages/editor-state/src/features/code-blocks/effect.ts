@@ -370,11 +370,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 	};
 
 	function updateErrorMessages() {
-		const codeErrors = [
-			...state.codeErrors.compilationErrors,
-			...state.codeErrors.editorDirectiveErrors,
-			...state.codeErrors.shaderErrors,
-		];
+		const codeErrors = [...state.codeErrors.compilationErrors, ...state.codeErrors.editorDirectiveErrors];
 		state.codeBlockRendering.codeBlocks.forEach(codeBlock => {
 			codeBlock.widgets.errorMessages = [];
 			codeErrors.forEach(codeError => {

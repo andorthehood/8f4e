@@ -27,7 +27,6 @@
     "@8f4e/web-ui-render-projection": "*",
     "@8f4e/editor-state": "*",
     "@8f4e/editor-state-types": "*",
-    "glugglugglug": "*",
     "@8f4e/sprite-generator": "*",
     "@8f4e/state-manager": "*",
     "@8f4e/web-ui": "*"

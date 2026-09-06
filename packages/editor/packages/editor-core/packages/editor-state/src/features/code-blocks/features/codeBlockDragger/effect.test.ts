@@ -28,8 +28,6 @@ describe('codeBlockDragger', () => {
 				nextCodeBlockCreationIndex: 0,
 				outputsByWordAddress: new Map(),
 			},
-			postProcessEffects: [],
-			backgroundEffects: [],
 			contextMenu: {
 				highlightedItem: 0,
 				itemWidth: 200,

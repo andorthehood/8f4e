@@ -1,6 +1,5 @@
 import { createLibConfig } from '@8f4e/config/vite';
 import { defineConfig } from 'vite';
-import glsl from 'vite-plugin-glsl';
 
 export default defineConfig({
 	base: './',
@@ -11,14 +10,6 @@ export default defineConfig({
 		fileName: () => 'index.js',
 		emptyOutDir: false,
 	}),
-	plugins: [
-		glsl({
-			include: ['**/*.glsl', '**/*.vert', '**/*.frag'],
-			defaultExtension: 'glsl',
-			warnDuplicatedImports: true,
-			watch: true,
-		}),
-	],
 	worker: {
 		rollupOptions: {
 			output: {

@@ -29,11 +29,6 @@ const mocks = vi.hoisted(() => {
 		restoreRenderingMemory: vi.fn(),
 		destroy: vi.fn(),
 	};
-	const background = {
-		setEffect: vi.fn(),
-		clearEffect: vi.fn(),
-		destroy: vi.fn(),
-	};
 	const frameTextureLayer = {
 		setDrawCallback: vi.fn((callback: (layer: unknown) => void) => {
 			frameTextureDrawCallback = callback;
@@ -48,12 +43,6 @@ const mocks = vi.hoisted(() => {
 		releaseMemory: vi.fn(),
 		destroy: vi.fn(),
 	};
-	const postProcess = {
-		setEffect: vi.fn(),
-		clearEffect: vi.fn(),
-		releaseMemory: vi.fn(),
-		destroy: vi.fn(),
-	};
 	const wireColors = {
 		wire: [0.1, 0.2, 0.3, 1] as const,
 		wireHighlighted: [0.4, 0.5, 0.6, 1] as const,
@@ -64,10 +53,8 @@ const mocks = vi.hoisted(() => {
 
 	return {
 		engine,
-		background,
 		frameTextureLayer,
 		lines,
-		postProcess,
 		wireColors,
 		resolveWireColors,
 		requestAnimationFrame,
@@ -80,10 +67,6 @@ const mocks = vi.hoisted(() => {
 			return engine;
 		}),
 		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
-		ShaderUnderlay: vi.fn(function () {
-			return background;
-		}),
-		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
 		RgbaTextureLayer: vi.fn(function () {
 			engine.hooks.preDraw.push(() => frameTextureDrawCallback?.(frameTextureLayer));
 			return frameTextureLayer;
@@ -91,10 +74,6 @@ const mocks = vi.hoisted(() => {
 		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
 		LineDrawer: vi.fn(function () {
 			return lines;
-		}),
-		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
-		PostProcess: vi.fn(function () {
-			return postProcess;
 		}),
 		drawBackground: vi.fn(),
 		drawCodeBlocks: vi.fn(),
@@ -107,10 +86,8 @@ const mocks = vi.hoisted(() => {
 
 vi.mock('glugglugglug', () => ({
 	Engine: mocks.Engine,
-	ShaderUnderlay: mocks.ShaderUnderlay,
 	RgbaTextureLayer: mocks.RgbaTextureLayer,
 	LineDrawer: mocks.LineDrawer,
-	PostProcess: mocks.PostProcess,
 }));
 
 vi.mock('./drawers/drawBackground', () => ({
@@ -284,7 +261,6 @@ describe('web-ui init', () => {
 		view.releaseRenderingResources();
 
 		expect(mocks.cancelAnimationFrame).toHaveBeenCalledOnce();
-		expect(mocks.postProcess.releaseMemory).toHaveBeenCalledOnce();
 		expect(mocks.frameTextureLayer.releaseMemory).toHaveBeenCalledOnce();
 		expect(mocks.lines.releaseMemory).toHaveBeenCalledOnce();
 		expect(mocks.engine.releaseRenderingMemory).toHaveBeenCalledOnce();

@@ -13,7 +13,7 @@ renderers can replace it.
 - Make the canvas focusable and wire its keyboard, mouse, and wheel input into internal events, so each editor only
   handles input directed at its own canvas.
 - Translate DOM input data into internal event payloads (coordinates, movement deltas, button state, canvas size).
-- Initialize the UI renderer with state and memory views, and forward resize and post-process events.
+- Initialize the UI renderer with state and memory views, and forward resize events.
 - Observe the canvas's CSS dimensions and adapt the drawing buffer and editor viewport when its host resizes it.
 - Expose state access, memory view updates, rendering lifecycle controls, and state machine callbacks as extension
   points.

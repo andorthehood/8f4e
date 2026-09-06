@@ -33,8 +33,6 @@ const store = {
 const view = {
 	resize: vi.fn(() => true),
 	loadSpriteAtlas: vi.fn(),
-	loadPostProcessEffect: vi.fn(),
-	loadBackgroundEffect: vi.fn(),
 	pauseRendering: vi.fn(),
 	releaseRenderingResources: vi.fn(),
 	resumeRendering: vi.fn(),

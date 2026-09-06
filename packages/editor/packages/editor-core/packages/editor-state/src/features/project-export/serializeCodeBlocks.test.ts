@@ -84,16 +84,16 @@ describe('convertGraphicDataToProjectStructure', () => {
 				code: ['note', 'project note', 'noteEnd'],
 			}),
 			createMockCodeBlock({
-				name: 'shader-note',
+				name: 'typed-note',
 				creationIndex: 2,
 				blockType: 'note',
-				code: ['note fragmentShaderPostprocess', 'void main() {}', 'noteEnd'],
+				code: ['note custom', 'Some custom note content', 'noteEnd'],
 			}),
 		];
 
 		const result = convertGraphicDataToProjectStructure(blocks);
 
-		expect(result.notes.map(block => block.code[0])).toEqual(['note', 'note fragmentShaderPostprocess']);
+		expect(result.notes.map(block => block.code[0])).toEqual(['note', 'note custom']);
 	});
 
 	it('stores module entries on module blocks', () => {

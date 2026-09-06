@@ -12,7 +12,6 @@ function createState(codeBlocks: CodeBlockGraphicData[] = []): State {
 		codeErrors: {
 			compilationErrors: [],
 			editorDirectiveErrors: [],
-			shaderErrors: [],
 		},
 	} as unknown as State;
 }

@@ -30,8 +30,7 @@
     "@8f4e/project-preparser": "*",
     "@8f4e/sprite-generator": "*",
     "@8f4e/state-manager": "*",
-    "@8f4e/tokenizer": "*",
-    "glugglugglug": "*"
+    "@8f4e/tokenizer": "*"
   },
   "devDependencies": {
     "@8f4e/editor-state-testing": "*",

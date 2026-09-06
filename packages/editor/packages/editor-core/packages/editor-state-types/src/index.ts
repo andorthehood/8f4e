@@ -10,7 +10,6 @@ import type {
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
 import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
-import type { PostProcessEffect, ShaderUnderlayEffect } from 'glugglugglug';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
@@ -363,10 +362,6 @@ export interface State {
 	codeBlockRendering: CodeBlockRendering;
 	contextMenu: ContextMenu;
 	spriteLookups?: SpriteIdLookups;
-	/** Post-process effects configuration for custom visual effects */
-	postProcessEffects: PostProcessEffect[];
-	/** Background effects configuration for custom visual effects */
-	backgroundEffects: ShaderUnderlayEffect[];
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
 	tooltip: TooltipState;
@@ -393,7 +388,6 @@ export interface State {
 	codeErrors: {
 		compilationErrors: CodeError[];
 		editorDirectiveErrors: CodeError[];
-		shaderErrors: CodeError[];
 	};
 	dialog: DialogState;
 	dialogStack: DialogContent[];

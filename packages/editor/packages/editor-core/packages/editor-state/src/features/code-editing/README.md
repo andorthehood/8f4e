@@ -11,7 +11,6 @@ Handles low-level text editing operations within code blocks: caret movement, ch
 - **Deletion**: Backspace operation with line merging
 - **Newline**: Enter key handling with line splitting
 - **Gap Calculations**: Computes cursor position adjustments based on line length and content
-- **Syntax Highlighting Context**: Determines whether to use 8f4e or GLSL syntax highlighting based on block type
 
 ## Events & Callbacks
 
@@ -36,9 +35,7 @@ Handles low-level text editing operations within code blocks: caret movement, ch
 
 - **Code Blocks**: Works on the currently selected code block
 - **Edit History**: Code changes trigger debounced history snapshots
-- **Syntax Highlighting**: Block type determines GLSL vs 8f4e highlighting mode
-  - `note` blocks with recognized shader subtypes use GLSL syntax
-  - All other blocks use 8f4e syntax
+- **Syntax Highlighting**: The web UI render projection uses note highlighting for notes and 8f4e highlighting for other blocks
 
 ## Notes & Limitations
 

@@ -5,7 +5,7 @@ web UI render data, and memory views, treating them as immutable inputs. It is d
 replaceable by renderers for other platforms.
 
 Rendering is backed by `glugglugglug`. Sprite names are resolved to dense numeric IDs when the atlas is generated, so
-per-frame drawers submit only positions, sizes, and numeric IDs. Shader backgrounds and WebAssembly RGBA frames are
+per-frame drawers submit only positions, sizes, and numeric IDs. WebAssembly RGBA frames are
 drawn below the sprites, while connections are drawn as a line overlay above them.
 
 ## API
@@ -28,8 +28,6 @@ Initializes the web UI renderer.
 
 - `resize(width, height)` - Resize the canvas
 - `loadSpriteAtlas(spriteData)` - Replace the atlas and its derived drawing data
-- `loadPostProcessEffect(effect)` - Load a post-process effect
-- `loadBackgroundEffect(effect)` - Load a background effect
 - `renderFrame()` - Draw one frame on demand
 - `destroy()` - Release renderer and plugin resources
 
