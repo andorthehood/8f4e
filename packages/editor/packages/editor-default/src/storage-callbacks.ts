@@ -1,7 +1,7 @@
 import { parseProjectSource } from '@8f4e/compiler';
 import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor-core';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
-import { getDefaultProjectUrl, getProject } from './examples/projectRegistry';
+import { getProject } from './get-project';
 
 interface StorageCallbacksOptions {
 	storage: Storage;
@@ -34,12 +34,6 @@ export function createStorageCallbacks({ storage, storageNamespace, initialProje
 				if (stored) {
 					console.log(`Loading project from storage namespace "${storageNamespace}"`);
 					return JSON.parse(stored);
-				}
-
-				const defaultProjectUrl = await getDefaultProjectUrl();
-				if (defaultProjectUrl) {
-					console.log(`Loading default project: ${defaultProjectUrl}`);
-					return parseProjectSource(await getProject(defaultProjectUrl));
 				}
 
 				return null;

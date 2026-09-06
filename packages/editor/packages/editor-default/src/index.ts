@@ -1,7 +1,7 @@
 import initEditor, { type Editor, type EditorOptions } from '@8f4e/editor-core';
 import { createCompilerService } from './compiler-callback';
 import { getListOfModules, getModule, getModuleDependencies } from './examples/moduleRegistry';
-import { getListOfProjects, getProject } from './examples/projectRegistry';
+import { getProject } from './get-project';
 import { createRuntimeRegistry } from './runtime-registry';
 import { resolveStdlibInclude } from './stdlib-resolver';
 import {
@@ -50,7 +50,6 @@ export async function mountDefaultEditor(
 				getListOfModules,
 				getModule,
 				getModuleDependencies,
-				getListOfProjects,
 				getProject,
 				resolveInclude: resolveStdlibInclude,
 				compileCode: (input, compilerOptions) => compilerService.compileCode(input, compilerOptions, editor),

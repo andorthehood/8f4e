@@ -25,6 +25,13 @@ Hosts can pause rendering without releasing memory through `pauseRendering()`. `
 releases reloadable GPU textures, dynamic buffers, and the canvas drawing buffer. `resumeRendering()` restores the
 resources and applies any canvas resize that happened while they were released.
 
+## Project loading
+
+Hosts can provide `getProject(url)` for loading individual projects by URL and `importProject` for the Open From Disk
+menu action. The `projectOpening` feature flag controls disk import. Example project browsing belongs to the host;
+the editor no longer exposes a `getListOfProjects` callback or an example project submenu. Built-in module browsing
+continues to use `getListOfModules` and `getModule`.
+
 ## Docs
 
 - `docs/editor-directives.md` - Editor-only code-block directive syntax (`; @...`) and supported directives.
