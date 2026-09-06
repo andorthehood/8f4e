@@ -48,15 +48,6 @@ export default function generateContextMenuMock(): ContextMenu {
 				disabled: false,
 			},
 			{
-				title: '................ Open Project >',
-				action: 'openSubMenu',
-				payload: {
-					menu: 'projectMenu',
-				},
-				close: false,
-				disabled: false,
-			},
-			{
 				divider: true,
 			},
 			{

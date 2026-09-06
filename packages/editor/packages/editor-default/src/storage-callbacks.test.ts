@@ -3,14 +3,13 @@ import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createStorageCallbacks } from './storage-callbacks';
 
-const { parseProjectSource, getDefaultProjectUrl, getProject } = vi.hoisted(() => ({
+const { parseProjectSource, getProject } = vi.hoisted(() => ({
 	parseProjectSource: vi.fn(),
-	getDefaultProjectUrl: vi.fn(),
 	getProject: vi.fn(),
 }));
 
 vi.mock('@8f4e/compiler', () => ({ parseProjectSource }));
-vi.mock('./examples/projectRegistry', () => ({ getDefaultProjectUrl, getProject }));
+vi.mock('./get-project', () => ({ getProject }));
 
 function createMemoryStorage(): Storage {
 	const values = new Map<string, string>();
@@ -30,8 +29,30 @@ function createMemoryStorage(): Storage {
 describe('storage callbacks', () => {
 	beforeEach(() => {
 		parseProjectSource.mockReset();
-		getDefaultProjectUrl.mockReset();
 		getProject.mockReset();
+	});
+
+	it('starts an empty session without fetching an example project', async () => {
+		const callbacks = createStorageCallbacks({ storage: createMemoryStorage(), storageNamespace: 'editor' });
+
+		expect(await callbacks.loadSession()).toBeNull();
+		expect(getProject).not.toHaveBeenCalled();
+		expect(parseProjectSource).not.toHaveBeenCalled();
+	});
+
+	it('returns to an empty session after an initial URL when nothing has been saved', async () => {
+		const project = { modules: [] } as unknown as ProjectObjectModel;
+		getProject.mockResolvedValue('project source');
+		parseProjectSource.mockReturnValue(project);
+		const callbacks = createStorageCallbacks({
+			storage: createMemoryStorage(),
+			storageNamespace: 'editor',
+			initialProjectUrl: 'https://example.com/project.8f4e',
+		});
+
+		expect(await callbacks.loadSession()).toBe(project);
+		expect(await callbacks.loadSession()).toBeNull();
+		expect(getProject).toHaveBeenCalledOnce();
 	});
 
 	it('isolates projects and browser-local notes by namespace', async () => {

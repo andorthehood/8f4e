@@ -1,7 +1,7 @@
 # Default Editor
 
 `@8f4e/editor-default` is the standard 8f4e editor composition. It connects `@8f4e/editor-core` to the compiler
-worker, runtime implementations, standard library, example registries, and browser persistence.
+worker, runtime implementations, standard library, the example module registry, and browser persistence.
 
 The package exports `mountDefaultEditor(canvas, options)`. It does not mount itself when imported, so websites and
 other browser hosts control when and where the editor starts.
@@ -37,6 +37,11 @@ It also owns persistence callbacks for its storage namespace. The default namesp
 existing `project_editor` and `browserLocalNotes_editor` keys. Hosts mounting multiple editors should pass a stable,
 unique namespace for each editor. Hosts may also provide a custom `Storage` implementation or an
 `initialProjectUrl`; interpreting page URLs remains the host's responsibility.
+
+An explicit `initialProjectUrl` takes precedence on the first load, followed by the saved session. With neither,
+the editor starts with an empty project and does not fetch an example project registry. Browse examples in the
+[examples gallery](https://8f4e.com/examples/); its links open projects by URL. The editor's menu supports opening
+projects from disk and adding built-in modules.
 
 Build, test, and type-check it from the workspace root:
 

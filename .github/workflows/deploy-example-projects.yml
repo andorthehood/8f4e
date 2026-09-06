@@ -8,7 +8,6 @@ on:
       - 'packages/examples/src/projects/**'
       - 'packages/examples/src/module-generators/**'
       - 'packages/examples/generate-project-wasm.sh'
-      - 'packages/examples/generate-example-registries.mjs'
       - 'packages/examples/project.json'
       - 'packages/examples/package.json'
       - 'packages/cli/**'
@@ -50,8 +49,6 @@ jobs:
           cd packages/examples/src/projects
           find . -type f \( -name '*.8f4e' -o -name '*.wasm' \) \
             -exec cp --parents {} "$GITHUB_WORKSPACE/upload/example-projects/" \;
-          cp "$GITHUB_WORKSPACE/packages/examples/dist/registries/example-projects.json" \
-            "$GITHUB_WORKSPACE/upload/example-projects/registry.json"
           find "$GITHUB_WORKSPACE/upload/example-projects" -type f | sort
 
       - name: Setup Cloudflare Wrangler

@@ -1,6 +1,6 @@
 # Default Editor Package Guidelines
 
-- This package owns the standard editor composition: compiler integration, runtime selection, example registries,
+- This package owns the standard editor composition: compiler integration, runtime selection, the example module registry,
   standard-library resolution, and browser persistence.
 - Export composition APIs without mounting as an import side effect.
 - Keep generic editor behavior in `@8f4e/editor-core` and website/deployment concerns in `@8f4e/editor-website`.

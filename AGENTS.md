@@ -11,6 +11,8 @@
 - Builds: the website outputs to `packages/editor/packages/editor-website/dist/`. Package bundles are consumed via
   aliases like `@8f4e/editor-default` and `@8f4e/editor-core`.
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
+- Example builds generate the module registry with `packages/examples/generate-module-registry.mjs`. Project
+  deployments upload individual `.8f4e` and `.wasm` files; the product website owns the project catalog.
 - Nested `AGENTS.md` files exist in some packages to provide package-specific guidance; they extend (and may override) this root file for their scope.
 
 ## Agent Skills

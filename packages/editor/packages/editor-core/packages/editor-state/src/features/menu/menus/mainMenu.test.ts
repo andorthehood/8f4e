@@ -3,11 +3,12 @@ import { createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { mainMenu } from './mainMenu';
 
 describe('main menu', () => {
-	it('shows project-opening actions by default', async () => {
+	it('offers disk import without an example project submenu', async () => {
 		const items = await mainMenu(createMockState());
 
 		expect(items.some(item => item.action === 'importProject')).toBe(true);
-		expect(items.some(item => item.payload?.menu === 'projectMenu')).toBe(true);
+		expect(items.some(item => item.title === 'Open Project')).toBe(false);
+		expect(items.some(item => item.payload?.menu === 'moduleCategoriesMenu')).toBe(true);
 	});
 
 	it('hides project-opening actions when project opening is disabled', async () => {
@@ -20,7 +21,6 @@ describe('main menu', () => {
 		const items = await mainMenu(state);
 
 		expect(items.some(item => item.action === 'importProject')).toBe(false);
-		expect(items.some(item => item.payload?.menu === 'projectMenu')).toBe(false);
 		expect(items.some(item => item.action === 'new')).toBe(true);
 		expect(items.some(item => item.action === 'exportProject')).toBe(true);
 	});

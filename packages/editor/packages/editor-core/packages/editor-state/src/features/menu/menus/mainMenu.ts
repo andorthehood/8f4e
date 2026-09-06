@@ -77,13 +77,6 @@ export const mainMenu: MenuGenerator = state => [
 					close: true,
 					disabled: !state.callbacks.importProject,
 				},
-				{
-					title: 'Open Project',
-					action: 'openSubMenu',
-					payload: { menu: 'projectMenu' },
-					close: false,
-					disabled: !state.callbacks.getListOfProjects,
-				},
 			]
 		: []),
 	...((state.featureFlags.editing && state.featureFlags.projectCreation) || state.featureFlags.projectOpening

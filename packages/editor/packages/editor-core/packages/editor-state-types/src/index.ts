@@ -254,7 +254,7 @@ export interface FeatureFlags {
 	/** Enable/disable arrows that point toward off-screen code blocks */
 	offscreenBlockArrows: boolean;
 
-	/** Enable/disable menu actions that open projects from disk or the project registry */
+	/** Enable/disable the menu action that opens projects from disk */
 	projectOpening: boolean;
 
 	/** Enable/disable the menu action that creates a new project */
@@ -287,13 +287,6 @@ export interface Callbacks {
 	>;
 	getModule?: (slug: string) => Promise<string>;
 	getModuleDependencies?: (slug: string) => Promise<string[]>;
-	getListOfProjects?: () => Promise<
-		Array<{
-			url: string;
-			title: string;
-			category: string;
-		}>
-	>;
 	getProject?: (url: string) => Promise<string>;
 
 	// Compilation callback
