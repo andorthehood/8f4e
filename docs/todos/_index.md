@@ -77,6 +77,9 @@ Active todo files are listed below.
 | 480 | Simplify map codegen with reverse row order | 🟡 | 2-4h | 2026-09-06 | Emit map rows in reverse order to preserve first-match-wins behavior while removing matched/condition temporaries and runtime bookkeeping. |
 | 481 | Allocate compiler local indices with a counter | 🟡 | 2-4h | 2026-09-06 | Replace repeated local-map scans with a per-context allocator across semantic resolution, stack analysis, and Wasm codegen. |
 | 482 | Resolve sprite identifiers before drawing | 🟡 | 2-4h | 2026-09-06 | Resolve public atlas keys during setup and use dense numeric metadata lookup for each sprite submission. |
+| 483 | Lazy-load WASM background rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer background drawer and RGBA layer only when a project configures a background. |
+| 484 | Lazy-load context-menu builders | 🟡 | 4-8h | 2026-09-06 | Defer menu builders until first use while preserving navigation, dismissal, and asynchronous lifecycle behavior. |
+| 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
 
 ### 🟢 Low Priority
 
@@ -90,6 +93,7 @@ Active todo files are listed below.
 | 389 | Add EagleSpCGA Alt3 8x8 font to sprite-generator | 🟢 | 4-8h | 2026-05-04 | The editor sprite-generator has several bundled bitmap fonts, including a few compact 8-pixel-high options, but it does not include EagleSpCGA Alt3 8x8. That leaves the editor w... |
 | 465 | Add Sergamon font to the editor | 🟢 | 4-8h | 2026-07-30 | Add Sergamon's 8x16 programming-font glyphs to the sprite-generator pipeline and expose the font through editor configuration. |
 | 466 | Add Scientifica font to the editor | 🟢 | 4-8h | 2026-07-30 | Import Scientifica's regular 11-pixel BDF face into the sprite-generator pipeline and expose the condensed font through editor configuration. |
+| 485 | Lazy-load project export formatting | 🟢 | 4-8h | 2026-09-06 | Defer .8f4e text formatting until export while preserving autosave and browser save-picker activation. |
 
 ## Completed TODOs
 
