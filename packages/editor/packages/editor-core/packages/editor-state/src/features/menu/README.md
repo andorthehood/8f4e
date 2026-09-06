@@ -2,46 +2,42 @@
 
 ## Purpose
 
-Manages context menu interactions in the editor: opening menus, highlighting options, and dispatching actions. Provides the event flow for contextual actions on code blocks and editor elements.
+Manages context menu opening, navigation, highlighting, placement, and action dispatch.
 
-## Key Behaviors
+## Loading and Lifecycle
 
-- **Menu Opening**: Displays context menus at specified screen positions
-- **Option Highlighting**: Tracks which menu option is currently highlighted (hover/keyboard navigation)
-- **Action Dispatch**: Executes menu actions when options are selected
-- **State Management**: Maintains menu state (open/closed, position, highlighted option)
+`effect.ts` registers lightweight event handlers at startup. `loadMenuBuilders.ts` imports all builders from `menus/`
+on first menu use and shares the pending/resolved promise across editor instances. A failed import clears that promise
+so a later open can retry where the browser's module loader permits recovery.
 
-## Events & Callbacks
+Each open, submenu, or Back action supersedes earlier requests. Results are checked both after importing builders and
+after awaiting the selected builder. Dismissal, a changed selection, a replaced block collection, changed editing or
+context-menu flags, and disposal invalidate pending work. State subscriptions catch selection changes even if the
+original selection is restored before a request completes; identity checks also catch direct state changes at await
+boundaries.
 
-### Events Listened To
+A root menu stays hidden until its items are ready. Pointer listeners are installed immediately, allowing a click to
+cancel a pending open while retaining event consumption. Existing submenu items remain usable during asynchronous
+navigation; items and navigation history are committed together only after a successful build. Failures close the
+menu and are reported to the console. Disposal removes all pointer/navigation listeners and state subscriptions.
 
-- Menu open events (with position and context data)
-- Menu highlight events (option selection)
-- Menu action events (action execution)
-- Menu close events
+## Events and State
 
-### State Touched
+- `contextmenu`: starts a fresh main or module menu at the pointer position and resets navigation history.
+- `openSubMenu`: builds a named menu with its payload and appends a successful navigation entry.
+- `menuBack`: returns to the previous submenu, or the main menu when history is empty.
+- `mousemove`: updates `state.contextMenu.highlightedItem` and consumes the event while a menu is active.
+- `mousedown`: dispatches the highlighted action or selector, closing first for closeable actions; outside clicks dismiss.
 
-- `state.menu.isOpen` - Boolean indicating if menu is currently displayed
-- `state.menu.position` - Screen coordinates for menu placement
-- `state.menu.highlightedOption` - Currently highlighted menu option
-- `state.menu.context` - Contextual data for menu (e.g., selected block)
-
-## Integration Points
-
-- **Code Blocks**: Context menus for block operations (duplicate, delete, etc.)
-- **Viewport**: Menu positioning relative to viewport coordinates
-- **UI Layer**: Menu rendering and interaction handling
+`state.contextMenu` owns `open`, `items`, `itemWidth`, `highlightedItem`, `menuStack`, and world-coordinate `x`/`y`.
+Placement is snapped to the grid and clamped within the viewport after building each menu. Hit testing translates
+world coordinates back into viewport coordinates so menus track viewport movement.
 
 ## Menu Contents
 
-Menu contents and available actions are built dynamically based on context. This feature provides the infrastructure but does not enumerate specific menu items.
+`menus/` provides main, module, favorites, and module-category builders. Categories can fetch their catalog
+asynchronously. Editing actions respect editing flags, while view-mode navigation remains available. Shared group,
+connection, and tokenizer helpers remain available to the editor features that also consume them.
 
-See `menus/` subdirectory for menu construction logic.
-
-## Notes & Limitations
-
-- Menu state is ephemeral (not persisted)
-- Menu contents depend on context (selected block, viewport state, etc.)
-- Position coordinates are in screen/pixel space
-- Keyboard navigation support depends on UI layer implementation
+See [TODO 484 results](../../../../../../../../../docs/todos/archived/484-lazy-load-context-menu-builders.md)
+for production measurements and validation.

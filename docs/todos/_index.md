@@ -78,7 +78,6 @@ Active todo files are listed below.
 | 481 | Allocate compiler local indices with a counter | 🟡 | 2-4h | 2026-09-06 | Replace repeated local-map scans with a per-context allocator across semantic resolution, stack analysis, and Wasm codegen. |
 | 482 | Resolve sprite identifiers before drawing | 🟡 | 2-4h | 2026-09-06 | Resolve public atlas keys during setup and use dense numeric metadata lookup for each sprite submission. |
 | 483 | Lazy-load WASM background rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer background drawer and RGBA layer only when a project configures a background. |
-| 484 | Lazy-load context-menu builders | 🟡 | 4-8h | 2026-09-06 | Defer menu builders until first use while preserving navigation, dismissal, and asynchronous lifecycle behavior. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
 
 ### 🟢 Low Priority
@@ -99,6 +98,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 484 | [Lazy-load context-menu builders](archived/484-lazy-load-context-menu-builders.md) | 2026-09-06 | Deferred one shared builders chunk; guarded asynchronous menu lifecycle and navigation; reduced initial JavaScript by 5,661 bytes and recorded production latency. |
 | 479 | Pass constant namespaces into groups | 2026-08-27 | Added explicit same-name namespace forwarding with `pass`, ordinary per-block `use` imports, immediate-parent aliases, source-contextual diagnostics, editor round trips, and cache-safe semantic recomputation. |
 | 477 | Establish compiler-owned ProjectObjectModel | 2026-08-22 | Added compiler-owned typed block collections, recursively owned groups, direct root compilation, text parsing, and repository-wide consumer migration. |
 | 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 2026-08-19 | Added a temporary migration shim; removed it on 2026-08-20 after web-ui switched to direct drawing. |

@@ -1,8 +1,8 @@
-import type { ContextMenuItem, EventDispatcher, State } from '@8f4e/editor-state-types';
+import type { ContextMenuItem, EventDispatcher, MenuStackEntry, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 import roundToGrid from '~/features/viewport/roundToGrid';
 import findCodeBlockAtViewportCoordinates from '../code-blocks/utils/finders/findCodeBlockAtViewportCoordinates';
-import * as menus from './menus';
+import loadMenuBuilders from './loadMenuBuilders';
 
 interface MouseEvent {
 	x: number;
@@ -67,8 +67,18 @@ function keepMenuWithinViewport(state: State): void {
 	contextMenu.y = viewport.y + Math.min(Math.max(y, 0), maxY);
 }
 
-export default function contextMenu(store: StateManager<State>, events: EventDispatcher): () => void {
+export default function contextMenu(
+	store: StateManager<State>,
+	events: EventDispatcher,
+	loadBuilders = loadMenuBuilders
+): () => void {
 	const state = store.getState();
+	let disposed = false;
+	let active = false;
+	let requestId = 0;
+	let selectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
+	let codeBlocks = state.codeBlockRendering.codeBlocks;
+	let editing = state.featureFlags.editing;
 	const onMouseMove = (event: MouseEvent) => {
 		const { itemWidth } = state.contextMenu;
 		const { x, y } = getMenuViewportPosition(state);
@@ -82,14 +92,17 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 	};
 
 	const close = () => {
+		++requestId;
+		active = false;
 		events.off('mousedown', onMouseDown);
 		events.off('mousemove', onMouseMove);
 		state.contextMenu.open = false;
+		state.contextMenu.menuStack = [];
 	};
 
 	const onMouseDown = (event: MouseEvent) => {
 		const { highlightedItem, items } = state.contextMenu;
-		const item = items[highlightedItem];
+		const item = state.contextMenu.open ? items[highlightedItem] : undefined;
 
 		if (item) {
 			if (item.close) {
@@ -112,78 +125,124 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 		event.stopPropagation = true;
 	};
 
+	const contextIsCurrent = () =>
+		state.featureFlags.contextMenu &&
+		state.featureFlags.editing === editing &&
+		state.codeBlockRendering.selectedCodeBlock === selectedCodeBlock &&
+		state.codeBlockRendering.codeBlocks === codeBlocks;
+
+	const onContextChanged = () => {
+		if (active && !contextIsCurrent()) {
+			close();
+		}
+	};
+
+	const onOpenChanged = () => {
+		if (!state.contextMenu.open) {
+			close();
+		}
+	};
+
+	const showMenu = async (menu: string, payload: unknown, menuStack: MenuStackEntry[]) => {
+		const currentRequest = ++requestId;
+		const isCurrent = () => {
+			if (disposed || !active || currentRequest !== requestId) {
+				return false;
+			}
+			if (!contextIsCurrent()) {
+				close();
+				return false;
+			}
+			return true;
+		};
+
+		try {
+			const builders = await loadBuilders();
+			if (!isCurrent()) {
+				return;
+			}
+			if (!Object.hasOwn(builders, menu)) {
+				throw new Error(`Unknown context menu: ${menu}`);
+			}
+			const items = await builders[menu as keyof typeof builders](state, payload);
+			if (!isCurrent()) {
+				return;
+			}
+			state.contextMenu.items = decorateMenu([
+				...(menuStack.length ? [{ title: '< Back', action: 'menuBack' }] : []),
+				...items,
+			]);
+			state.contextMenu.menuStack = menuStack;
+			state.contextMenu.highlightedItem = 0;
+			state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
+			keepMenuWithinViewport(state);
+			state.contextMenu.open = true;
+		} catch (error) {
+			if (isCurrent()) {
+				close();
+				console.error('Failed to open context menu:', error);
+			}
+		}
+	};
+
 	const onContextMenu = async (event: MouseEvent) => {
-		if (!state.featureFlags.contextMenu) {
+		if (disposed || !state.featureFlags.contextMenu) {
 			return;
 		}
 
+		close();
+		active = true;
+		selectedCodeBlock = state.codeBlockRendering.selectedCodeBlock;
+		codeBlocks = state.codeBlockRendering.codeBlocks;
+		editing = state.featureFlags.editing;
+
 		const { x, y } = event;
-
-		state.contextMenu.highlightedItem = 0;
-
 		const [roundedX, roundedY] = roundToGrid(x + state.viewport.x, y + state.viewport.y, state.viewport);
 		state.contextMenu.x = roundedX;
 		state.contextMenu.y = roundedY;
 
-		state.contextMenu.open = true;
-
-		const codeBlock = findCodeBlockAtViewportCoordinates(state, x, y);
-
-		if (codeBlock) {
-			state.contextMenu.items = decorateMenu(await menus.moduleMenu(state));
-		} else {
-			state.contextMenu.items = decorateMenu(await menus.mainMenu(state));
-		}
-
-		state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
-		keepMenuWithinViewport(state);
-
+		// Capture dismissal immediately, including while the first import is pending.
 		events.on('mousedown', onMouseDown);
 		events.on('mousemove', onMouseMove);
+
+		const codeBlock = findCodeBlockAtViewportCoordinates(state, x, y);
+		await showMenu(codeBlock ? 'moduleMenu' : 'mainMenu', undefined, []);
 	};
 
 	const onOpenSubMenu = async (event: MenuEvent) => {
+		if (disposed || !active || !state.featureFlags.contextMenu) {
+			return;
+		}
 		const { menu, ...payload } = event;
-		state.contextMenu.menuStack.push({ menu, payload });
-		state.contextMenu.items = decorateMenu([
-			{ title: '< Back', action: 'menuBack' },
-			...(await (menus as Record<string, (state: State, payload?: unknown) => Promise<ContextMenuItem[]>>)[menu](
-				state,
-				payload
-			)),
-		]);
-		state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
-		keepMenuWithinViewport(state);
+		await showMenu(menu, payload, [...state.contextMenu.menuStack, { menu, payload }]);
 	};
 
 	const onMenuBack = async () => {
-		state.contextMenu.menuStack.pop();
-		const entry = state.contextMenu.menuStack.pop();
-
-		if (!entry) {
-			state.contextMenu.items = decorateMenu(await menus.mainMenu(state));
-			state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
-			keepMenuWithinViewport(state);
+		if (disposed || !active || !state.featureFlags.contextMenu) {
 			return;
 		}
-
-		const { menu, payload } = entry;
-		state.contextMenu.items = decorateMenu([
-			{ title: '< Back', action: 'menuBack' },
-			...(await (menus as Record<string, (state: State, payload?: unknown) => Promise<ContextMenuItem[]>>)[menu](
-				state,
-				payload
-			)),
-		]);
-		state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
-		keepMenuWithinViewport(state);
+		const menuStack = state.contextMenu.menuStack.slice(0, -1);
+		const entry = menuStack.at(-1);
+		await showMenu(entry?.menu ?? 'mainMenu', entry?.payload, menuStack);
 	};
 
 	events.on('openSubMenu', onOpenSubMenu);
 	events.on('contextmenu', onContextMenu);
 	events.on('menuBack', onMenuBack);
+	store.subscribe('codeBlockRendering.selectedCodeBlock', onContextChanged);
+	store.subscribe('codeBlockRendering.codeBlocks', onContextChanged);
+	store.subscribe('featureFlags', onContextChanged);
+	store.subscribe('contextMenu.open', onOpenChanged);
 
 	return () => {
+		disposed = true;
+		close();
 		events.off('contextmenu', onContextMenu);
+		events.off('openSubMenu', onOpenSubMenu);
+		events.off('menuBack', onMenuBack);
+		store.unsubscribe('codeBlockRendering.selectedCodeBlock', onContextChanged);
+		store.unsubscribe('codeBlockRendering.codeBlocks', onContextChanged);
+		store.unsubscribe('featureFlags', onContextChanged);
+		store.unsubscribe('contextMenu.open', onOpenChanged);
 	};
 }
