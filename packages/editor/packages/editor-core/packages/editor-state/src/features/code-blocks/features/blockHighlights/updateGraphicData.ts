@@ -6,13 +6,14 @@ const HIGHLIGHT_COLORS = ['codeBlockHighlightLevel1', 'codeBlockHighlightLevel2'
 
 export default function (graphicData: CodeBlockGraphicData, state: State) {
 	graphicData.widgets.blockHighlights = [];
+	const visibleLineCount = graphicData.displayModel.lines.filter(line => !line.isPlaceholder).length;
 	parseCodeBlocks(graphicData.code).forEach(block => {
 		if (block.endLineNumber === undefined) {
 			return;
 		}
 
 		const highlightStartLine = block.startLineNumber + 1;
-		const highlightEndLine = block.endLineNumber - 1;
+		const highlightEndLine = Math.min(block.endLineNumber - 1, visibleLineCount - 1);
 
 		if (highlightStartLine > highlightEndLine) {
 			return;
