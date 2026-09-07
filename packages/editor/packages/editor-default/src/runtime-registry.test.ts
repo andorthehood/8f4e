@@ -15,7 +15,6 @@ describe('runtime registry', () => {
 
 		expect(firstRegistry).not.toBe(secondRegistry);
 		expect(firstRegistry.WebWorkerRuntime).not.toBe(secondRegistry.WebWorkerRuntime);
-		expect(firstRegistry.MainThreadRuntime).not.toBe(secondRegistry.MainThreadRuntime);
 		expect(firstRegistry.AudioWorkletRuntime).not.toBe(secondRegistry.AudioWorkletRuntime);
 	});
 });

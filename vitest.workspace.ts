@@ -10,7 +10,6 @@ export default defineWorkspace([
 	'packages/editor/packages/editor-core/vitest.config.ts',
 	'packages/editor/packages/editor-core/packages/editor-state/vitest.config.ts',
 	'packages/editor/packages/runtime-audio-worklet/vitest.config.ts',
-	'packages/editor/packages/runtime-main-thread/vitest.config.ts',
 	'packages/editor/packages/runtime-web-worker/vitest.config.ts',
 	'packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator/vitest.config.ts',
 	'packages/editor/packages/editor-core/packages/state-manager/vitest.config.ts',
