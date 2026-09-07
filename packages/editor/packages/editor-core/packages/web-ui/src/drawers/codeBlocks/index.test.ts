@@ -105,6 +105,7 @@ describe('drawModules', () => {
 		const state = createMockState({
 			spriteLookups: {
 				fillColors: createSpriteIdLookupMock(),
+				fontEntryName: createSpriteIdLookupMock(),
 			} as never,
 			codeBlockRendering: {
 				codeBlocks: [],
@@ -158,6 +159,12 @@ describe('drawModules', () => {
 			'wire',
 			1,
 			80
+		);
+		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
+			16,
+			32,
+			'main',
+			state.spriteLookups?.fontEntryName
 		);
 	});
 

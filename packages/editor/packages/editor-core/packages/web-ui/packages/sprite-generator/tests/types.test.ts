@@ -96,6 +96,7 @@ describe('Types and Enums', () => {
 		it('should have all required text color properties', () => {
 			const textKeys = Object.keys(minimalColorScheme.text);
 			expect(textKeys).toContain('lineNumber');
+			expect(textKeys).toContain('entryName');
 			expect(textKeys).toContain('debugInfo');
 			expect(textKeys).toContain('instruction');
 			expect(textKeys).toContain('codeComment');

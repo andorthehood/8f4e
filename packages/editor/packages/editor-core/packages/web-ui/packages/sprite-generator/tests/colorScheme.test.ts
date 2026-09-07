@@ -15,11 +15,12 @@ describe('color scheme resolution', () => {
 
 	it('merges partial overrides with sprite-generator defaults', () => {
 		const colorScheme = resolveColorScheme({
-			text: { code: '#112233' },
+			text: { code: '#112233', entryName: '#fedcba' },
 			fill: { wire: 'rgba(1,2,3,0.4)' },
 		});
 
 		expect(colorScheme.text.code).toBe('#112233');
+		expect(colorScheme.text.entryName).toBe('#fedcba');
 		expect(colorScheme.fill.wire).toBe('rgba(1,2,3,0.4)');
 		expect(colorScheme.text.lineNumber).toBe(defaultColorScheme.text.lineNumber);
 		expect(colorScheme.fill.background).toBe(defaultColorScheme.fill.background);

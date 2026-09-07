@@ -187,6 +187,7 @@ describe('font module', () => {
 
 			// Should include all text colors from color scheme
 			expect(colorValues).toContain(minimalColorScheme.text.lineNumber);
+			expect(colorValues).toContain(minimalColorScheme.text.entryName);
 			expect(colorValues).toContain(minimalColorScheme.text.instruction);
 			expect(colorValues).toContain(minimalColorScheme.text.code);
 			expect(colorValues).toContain(minimalColorScheme.text.numbers);
@@ -307,6 +308,7 @@ describe('font module', () => {
 
 			// Should have font lookups for all text color types
 			expect(lookups.fontLineNumber).toBeDefined();
+			expect(lookups.fontEntryName).toBeDefined();
 			expect(lookups.fontArrow).toBeDefined();
 			expect(lookups.fontInstruction).toBeDefined();
 			expect(lookups.fontCode).toBeDefined();

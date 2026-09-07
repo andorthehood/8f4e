@@ -24,6 +24,7 @@ export type DrawingCommand =
 export interface ColorScheme {
 	text: {
 		lineNumber: string;
+		entryName: string;
 		debugInfo: string;
 		arrow: string;
 		instruction: string;

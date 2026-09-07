@@ -6,6 +6,7 @@ import type { ColorScheme } from './types.ts';
 const defaultColorScheme: ColorScheme = {
 	text: {
 		lineNumber: '#999999',
+		entryName: '#999999',
 		debugInfo: '#999999',
 		arrow: '#ffffff',
 		instruction: '#ffffff',

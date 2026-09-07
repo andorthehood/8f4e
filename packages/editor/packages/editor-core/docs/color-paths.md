@@ -15,6 +15,7 @@ Example:
 ## `text.*`
 
 - `text.lineNumber`
+- `text.entryName`
 - `text.arrow`
 - `text.instruction`
 - `text.codeComment`

@@ -16,6 +16,7 @@ function entry(path: string, value: string): EditorConfigEntry {
 describe('color editor config', () => {
 	it('validates known color paths', () => {
 		expect(colorEditorConfigValidator.validate(entry('color.text.code', '#112233'))).toBeUndefined();
+		expect(colorEditorConfigValidator.validate(entry('color.text.entryName', '#abcdef'))).toBeUndefined();
 	});
 
 	it('reports unknown color paths with suggestions', () => {
