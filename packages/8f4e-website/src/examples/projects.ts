@@ -42,12 +42,6 @@ export const projects = [
 		path: 'misc/landingPageDemo3.8f4e',
 	},
 	{
-		id: 'standalone-counter',
-		title: 'Standalone counter',
-		description: 'Start with a minimal program that increments a counter once per second in a worker.',
-		path: 'misc/standaloneProject.8f4e',
-	},
-	{
 		id: 'audio-buffer',
 		title: 'Audio buffer',
 		description: 'Generate a sine wave and write its samples into a circular audio buffer.',
