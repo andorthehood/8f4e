@@ -17,6 +17,8 @@ const DEFAULT_STORAGE_NAMESPACE = 'editor';
 export type DefaultEditorInstance = Editor;
 
 export interface DefaultEditorMountOptions {
+	/** Borrow this context when its sample rate matches the project. The host owns its lifetime. */
+	sharedAudioContext?: AudioContext;
 	/** Capture wheel gestures for viewport panning. Disable this for editors embedded in scrolling pages. */
 	captureWheel?: boolean;
 	featureFlags?: EditorOptions['featureFlags'];
@@ -29,6 +31,7 @@ export interface DefaultEditorMountOptions {
 export async function mountDefaultEditor(
 	canvas: HTMLCanvasElement,
 	{
+		sharedAudioContext,
 		captureWheel,
 		featureFlags,
 		initialEditorMode,
@@ -45,7 +48,7 @@ export async function mountDefaultEditor(
 			captureWheel,
 			featureFlags,
 			initialEditorMode,
-			runtimeRegistry: createRuntimeRegistry(compilerService),
+			runtimeRegistry: createRuntimeRegistry(compilerService, sharedAudioContext),
 			callbacks: {
 				getListOfModules,
 				getModule,
