@@ -468,7 +468,6 @@ note
 ; @config color.fill.menuItemBackgroundHighlighted	#fff
 ; @config color.fill.errorMessageBackground	#900
 ; @config color.fill.dialogBackground	#00c
-; @config color.fill.dialogDimmer	#000
 ; @config color.fill.codeBlockHighlightLevel1	#000a14
 ; @config color.fill.codeBlockHighlightLevel2	#001429
 ; @config color.fill.codeBlockHighlightLevel3	#001f3d
