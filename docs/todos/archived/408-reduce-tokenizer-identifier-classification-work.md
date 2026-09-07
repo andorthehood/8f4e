@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-19
 issue: https://github.com/andorthehood/8f4e/issues/661
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Reduce tokenizer identifier classification work
@@ -37,4 +37,3 @@ Keep the existing precedence rules intact.
 - `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/parseArgument.ts`
 - `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/*Reference*.ts`
 - `packages/compiler/packages/sub-program/packages/tokenizer/src/syntax/has*Prefix*.ts`
-

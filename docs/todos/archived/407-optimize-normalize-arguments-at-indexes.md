@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-3h
 created: 2026-05-19
 issue: https://github.com/andorthehood/8f4e/issues/660
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Optimize normalizeArgumentsAtIndexes
@@ -33,4 +33,3 @@ Avoid repeated `includes` checks over the selected index list. Options:
 
 - `packages/compiler/src/semantic/normalization/helpers.ts`
 - `packages/compiler/src/semantic/normalization/memoryDeclaration.ts`
-

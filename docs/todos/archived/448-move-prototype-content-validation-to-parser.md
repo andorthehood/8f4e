@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-06-01
 issue: https://github.com/andorthehood/8f4e/issues/944
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Move Prototype Content Validation to Parser

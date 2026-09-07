@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-19
 issue: https://github.com/andorthehood/8f4e/issues/659
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Review repeated compiler namespace prepass work
@@ -36,4 +36,3 @@ Potential directions:
 - `packages/compiler/packages/sub-program/src/semantic/buildNamespace.ts`
 - `packages/compiler/src/compiler.ts`
 - `packages/compiler/src/index.ts`
-

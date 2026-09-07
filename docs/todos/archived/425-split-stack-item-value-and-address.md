@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-05-26
 issue: https://github.com/andorthehood/8f4e/issues/713
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Split StackItem into value and address variants

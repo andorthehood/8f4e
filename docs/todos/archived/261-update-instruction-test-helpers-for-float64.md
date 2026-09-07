@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-02-20
 issue: https://github.com/andorthehood/8f4e/issues/644
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Update instruction test helpers for float64 and refactor call test
@@ -70,4 +70,3 @@ Then refactor the float64 call regression test in `tests/instructions/call.test.
 - **Related**: `docs/todos/260-add-float64-support-in-function-signatures.md`
 - **Related**: `docs/todos/258-add-f64-store-support.md`
 - **Related**: `docs/todos/250-add-f64-push-support.md`
-

@@ -11,7 +11,6 @@ Active todo files are listed below.
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
 | 269 | Add float64 support for round instruction | 🔴 | 1-3h | 2026-02-20 | `round` is missing explicit float64 support in the compiler instruction path. |
-| 270 | Add float64 support for castToInt instruction | 🔴 | 1-3h | 2026-02-20 | `castToInt` is missing explicit float64 support in the compiler instruction path. |
 | 271 | Add float64 support for loadFloat instruction | 🔴 | 1-3h | 2026-02-20 | `loadFloat` is missing explicit float64 support in the compiler instruction path. |
 | 272 | Add float32/float64 width checks to localSet instruction | 🔴 | 1-3h | 2026-02-20 | `localSet` is missing explicit float64 support in the compiler instruction path. |
 | 278 | Add storeWords with explicit count and word size | 🔴 | 1-2d | 2026-02-23 | `storeBytes <count>` covers contiguous byte writes, but there is no equivalent explicit instruction for contiguous multi-byte word writes. |
@@ -25,7 +24,6 @@ Active todo files are listed below.
 | 058 | Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support | 🟡 | 4-6 days | 2025-09-11 | The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the proj... |
 | 064 | Research WebAssembly Runtimes for ARM Microcontroller Support | 🟡 | 3-5 days | 2025-09-10 | The 8f4e project currently supports browser-based WebAssembly runtimes (WebWorker and AudioWorklet) but lacks native runtimes for embedded ARM microcontrollers. To implement the... |
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
-| 261 | Update instruction test helpers for float64 and refactor call test | 🟡 | 2-4h | 2026-02-20 | `packages/compiler/tests/instructions/testUtils.ts` currently reads/writes all non-integer memory as float32 in shared helpers like `moduleTesterWithFunctions`. |
 | 274 | Consolidate defaultFeatureFlags into a single source of truth | 🟡 | 2-4h | 2026-02-21 | There are currently two `defaultFeatureFlags` definitions: |
 | 291 | Add int64 support across compiler, runtime, and docs | 🟡 | 2-4d | 2026-03-09 | The language already has dedicated `float64` support, including 64-bit memory allocation and type-aware compiler paths, but there is no equivalent `int64` support. |
 | 297 | Add url editor directive for clickable links | 🟡 | 4-8h | 2026-03-12 | The editor currently has no directive for attaching a clickable external link to a code block. |
@@ -44,11 +42,7 @@ Active todo files are listed below.
 | 398 | Add compiler peephole arithmetic strength reduction | 🟡 | 1-2 days | 2026-05-12 | The compiler now has compile-time folding and stack-level integer metadata, but runtime arithmetic codegen still emits direct WebAssembly arithmetic operations even when the top... |
 | 400 | Add serial input editor environment plugin | 🟡 | 1-2d | 2026-05-13 | Add a Web Serial editor environment plugin with `@info serial`, fixed-size `@serialIn` framing, and `@serialInCallback` fanout to exported 8f4e functions. |
 | 401 | Tighten runtime browser API typing | 🟡 | 2-4h | 2026-05-18 | Browser runtime packages cross platform-specific API boundaries and currently rely on broad `any` casts and `@ts-expect-error` comments in production runtime code. |
-| 406 | Review repeated compiler namespace prepass work | 🟡 | 1-2d | 2026-05-19 | Namespace discovery, layout, scalar default handling, and module compilation currently rerun semantic prepass work that may be reusable or collapsible. |
-| 407 | Optimize normalizeArgumentsAtIndexes | 🟡 | 1-3h | 2026-05-19 | `normalizeArgumentsAtIndexes` maps every argument and checks `indexes.includes(index)`, which can add avoidable work for large memory declarations. |
-| 408 | Reduce tokenizer identifier classification work | 🟡 | 1-2d | 2026-05-19 | `classifyIdentifier` runs many ordered reference-shape checks for every identifier; cheap prefix/suffix dispatch could avoid most checks for plain identifiers. |
 | 424 | Rename layout word fields to allocation-unit terminology | 🟡 | 4-8h | 2026-05-26 | Separate typed word-size metadata from compiler allocation-grid layout by renaming the 4-byte layout constant and word-aligned fields to allocation-unit terminology. |
-| 425 | Split StackItem into value and address variants | 🟡 | 1-2d | 2026-05-26 | Replace the broad optional-field `StackItem` shape with a discriminated `value | address` union so memory codegen can use narrowed address metadata without optional-chain fallbacks. |
 | 426 | Decide compiler broad type splitting strategy | 🟡 | 2-4h | 2026-05-26 | Decide migration boundaries for broad language-spec shapes such as `DataStructure`, `LocalBinding`, `CompilationContext`, `MapBlockState`, `CollectedNamespace`, and address-bearing constants before implementing more type splits. |
 | 427 | Add depth-aware pointer metadata query dereferencing | 🟡 | 2-4h | 2026-05-27 | `sizeof(**ptr)` and `max(**ptr)` should carry explicit dereference depth and resolve against double-pointer metadata instead of targeting a literal `*ptr` identifier. |
 | 429 | Unify metadata query argument shape | 🟡 | 2-4h | 2026-05-27 | Replace per-helper metadata query reference kinds with one structured query shape carrying query kind, target scope, and dereference depth. |
@@ -56,7 +50,6 @@ Active todo files are listed below.
 | 431 | Separate pointer type and provenance facts | 🟡 | 2-4h | 2026-05-27 | Model declared pointer type facts separately from value provenance facts so helpers like `count(*ptr)` only use explicit count provenance. |
 | 432 | Centralize compile-time metadata query resolution | 🟡 | 2-4h | 2026-05-27 | Split metadata query resolution into target lookup and query evaluation so local, intermodule, and pointer helpers share one resolver path. |
 | 434 | Show const values in declaration tooltips | 🟡 | 2-4h | 2026-05-28 | Selected-line tooltips should show resolved value and type rows for highlighted `const` declaration lines when compiler metadata is available. |
-| 448 | Move prototype content validation to parser | 🟡 | 4-8h | 2026-06-01 | Move executable-line rejection for prototypes from compiler-side `parsePrototypeAST()` into parser-owned block validation. |
 | 450 | Generalize instruction placement config | 🟡 | 4-8h | 2026-06-08 | Make instruction placement metadata generic enough to express shared source-placement checks, starting with named prologue rules for directives and function parameters. |
 | 452 | Add Reachability-Based Function Pruning | 🟡 | 1-2d | 2026-06-10 | Replace conservative function pruning with a reachability pass so functions only called by uncalled functions are also omitted. |
 | 453 | Add indirect calls and function reference type | 🟡 | 2-4d | 2026-06-11 | Add typed function references backed by WebAssembly table indices so 8f4e can store, load, and call runtime-selected functions through `call_indirect`. |
@@ -86,6 +79,13 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 448 | Move prototype content validation to parser | 2026-09-07 | Cancelled as stale; parser-owned placement validation already rejects invalid prototype contents. GitHub issue #944 was closed as not planned. |
+| 425 | Split StackItem into value and address variants | 2026-09-07 | Cancelled as stale; the value/address discriminated union is already implemented. GitHub issue #713 was closed as not planned. |
+| 408 | Reduce tokenizer identifier classification work | 2026-09-07 | Cancelled as stale; identifier dispatch is already optimized and GitHub issue #661 was already closed as completed. |
+| 407 | Optimize normalizeArgumentsAtIndexes | 2026-09-07 | Cancelled as stale; the targeted normalization path was removed by later compiler refactoring. GitHub issue #660 was closed as not planned. |
+| 406 | Review repeated compiler namespace prepass work | 2026-09-07 | Cancelled as stale; the targeted prepass architecture was superseded by namespace/layout restructuring. GitHub issue #659 was closed as not planned. |
+| 270 | Add float64 support for castToInt instruction | 2026-09-07 | Cancelled as stale; float64 conversion and tests are already implemented. GitHub issue #414 was closed as not planned. |
+| 261 | Update instruction test helpers for float64 and refactor call test | 2026-09-07 | Cancelled as stale; float64 call coverage landed and the old helper was removed. GitHub issue #644 was closed as not planned. |
 | 179 | Add glugglugglug shader error callback for editor logging | 2026-09-07 | Cancelled; GitHub issue #549 was closed as not planned. |
 | 485 | Lazy-load project export formatting | 2026-09-07 | Cancelled; lazy-loading export formatting is no longer planned. |
 | 484 | Lazy-load context-menu builders | 2026-09-07 | Cancelled; lazy-loading context-menu builders is no longer planned. |
