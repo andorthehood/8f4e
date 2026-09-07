@@ -1,22 +1,48 @@
 8f4e/v1
 
-entry main
-module assets
+function buffer
+; @pos -107 -39
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
+constants env
+; @pos -107 -54
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 44100
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'amen-170bpm-8s.pcm'
+const ASSET_AMEN_SIZE 62258
+
+constantsEnd
+
+note
 ; @pos -107 -70
 ; @config bin.amen.url https://static.8f4e.com/assets/amen-170bpm-8s.pcm
 
-moduleEnd
-module projectConfig
-; @pos -53 -63
+noteEnd
+
+note
+; @pos -107 -64
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 44100
 ; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName samplePlayerVariableSpeed
 
-moduleEnd
-module notes
-; @pos 33 -45
+noteEnd
+
+note
+; @pos 33 -46
 ; Loads an external 8-bit PCM asset into memory,
 ; continuously plays it with a looping playhead,
 ; and routes the normalized output into a single
@@ -24,7 +50,9 @@ module notes
 ; right audio channels. The player accepts a
 ; floating point speed input that advances the
 ; playhead by fractional sample steps.
-moduleEnd
+noteEnd
+
+entry main
 module pcmPlayer8bit
 ; @pos 91 -63
 ; @home
@@ -32,7 +60,7 @@ use env
 
 int8[] buffer ASSET_AMEN_SIZE
 ; @config bin.amen.memory buffer
-float defSpeed 1
+float defSpeed 0.48
 float* speed &defSpeed
 float position
 int8* playhead &buffer
@@ -119,28 +147,3 @@ ifEnd
 
 moduleEnd
 entryEnd
-
-constants env
-; @pos 32 -63
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 44100
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'amen-170bpm-8s.pcm'
-const ASSET_AMEN_SIZE 62258
-
-constantsEnd
-
-function buffer
-; @pos 32 -51
-#export buffer
-use env
-
-loop AUDIO_BUFFER_SIZE
-call main
-loopEnd
-functionEnd

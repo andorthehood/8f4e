@@ -1,13 +1,41 @@
 8f4e/v1
 
-entry main
-module projectConfig
-; @pos -9 -73
+function sigmoid
+; @pos 5 -73
+param float x
+; Polynomial sigmoid
+; func. approximation
+
+push x
+push x
+abs
+push 1.0
+add
+ensureNonZero
+div
+
+functionEnd float
+
+constants env
+; @pos -7 -57
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 10
+
+constantsEnd
+
+note
+; @pos -8 -82
 ; @config runtime WebWorkerRuntime
 ; @config workerRuntime.sampleRate 10
 ; @config export.fileName xorProblem
+; @config color.fill.background #330011
 
-moduleEnd
+noteEnd
+
+entry main
 module result
 ; @pos 50 -53
 
@@ -20,7 +48,7 @@ int* out &activationFn3:out
 
 moduleEnd
 module notes
-; @pos 66 -75
+; @pos 67 -75
 ; This is a compact, pre-trained
 ; neural network that solves the
 ; XOR problem by combining two
@@ -29,7 +57,7 @@ module notes
 ; activations and outputting a
 ; binary classification result.
 moduleEnd
-module switches
+module inputs
 ; @pos 74 -64
 ; @home
 
@@ -43,8 +71,8 @@ module perceptron
 ; @pos 118 -82
 ; Pre-trained perceptron
 
-float* in1 &switches:in1
-float* in2 &switches:in2
+float* in1 &inputs:in1
+float* in2 &inputs:in2
 float out
 
 ; Weights
@@ -68,8 +96,8 @@ module perceptron2
 ; @pos 118 -55
 ; Pre-trained perceptron
 
-float* in1 &switches:in1
-float* in2 &switches:in2
+float* in1 &inputs:in1
+float* in2 &inputs:in2
 float out
 
 ; Weights
@@ -161,31 +189,3 @@ store
 
 moduleEnd
 entryEnd
-
-constants env
-; @pos -9 -50
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-; Last updated: 2/19/2026, 2:34:30 PM
-
-const SAMPLE_RATE 10
-const AUDIO_BUFFER_SIZE 128
-
-constantsEnd
-
-function sigmoid
-; @pos 152 -38
-param float x
-; Polynomial sigmoid
-; func. approximation
-
-push x
-push x
-abs
-push 1.0
-add
-ensureNonZero
-div
-
-functionEnd float

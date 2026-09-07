@@ -1,28 +1,56 @@
 8f4e/v1
 
-entry main
-module assets
-; @pos -107 -70
+function buffer
+; @pos -89 -44
+#export buffer
+use env
+
+loop AUDIO_BUFFER_SIZE
+call main
+loopEnd
+functionEnd
+
+constants env
+; @pos -89 -34
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 44100
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'amen-170bpm-8s.pcm'
+const ASSET_AMEN_SIZE 62258
+
+constantsEnd
+
+note
+; @pos -89 -60
 ; @config bin.amen.url https://static.8f4e.com/assets/amen-170bpm-8s.pcm
 
-moduleEnd
-module projectConfig
-; @pos -53 -63
+noteEnd
+
+note
+; @pos -89 -54
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 44100
 ; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName samplePlayer
 
-moduleEnd
-module notes
-; @pos 33 -45
+noteEnd
+
+note
+; @pos 33 -40
 ; Loads an external 8-bit PCM asset into memory,
 ; continuously plays it with a looping playhead,
 ; and routes the normalized output into a single
 ; audioout buffer that is read by both left and
 ; right audio channels.
-moduleEnd
+noteEnd
+
+entry main
 module pcmPlayer8bit
 ; @pos 91 -63
 ; @home
@@ -103,28 +131,3 @@ ifEnd
 
 moduleEnd
 entryEnd
-
-constants env
-; @pos 32 -63
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 44100
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'amen-170bpm-8s.pcm'
-const ASSET_AMEN_SIZE 62258
-
-constantsEnd
-
-function buffer
-; @pos 32 -51
-#export buffer
-use env
-
-loop AUDIO_BUFFER_SIZE
-call main
-loopEnd
-functionEnd

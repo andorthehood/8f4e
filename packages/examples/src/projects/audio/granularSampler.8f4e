@@ -1,55 +1,7 @@
 8f4e/v1
 
-note assets
-; @pos -291 -41
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo4_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo5_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew1_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew4_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_peaceful_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_1_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_2_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_3_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_4_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_5_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_6_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_1_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_2_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_3_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_4_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_5_48khz_16s.raw
-; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_6_48khz_16s.raw
-noteEnd
-
-note projectConfig
-; @pos -274 -36
-; @config runtime AudioWorkletRuntime
-; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
-; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
-; @config export.fileName granularSampler
-; @config color.fill.waveform #f0a
-; @config color.fill.fill #f0a
-; @config color.text.instruction #0fa
-noteEnd
-
-constants env
-; @pos -261 -24
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 48000
-const AUDIO_BUFFER_SIZE 128
-
-; Binary asset sizes in bytes
-; 'lubadh_aimo4_48khz_16s.raw'
-const ASSET_PIANO_SIZE 1316572
-
-constantsEnd
-
 includes
-; @pos -252 11
+; @pos -288 13
 include std/events/risingEdge
 include std/memory/wrapPointer
 include std/math/fract
@@ -64,7 +16,7 @@ include std/math/trig/advancePhase
 includesEnd
 
 function buffer
-; @pos -251 -8
+; @pos -279 -6
 #export buffer
 use env
 
@@ -74,7 +26,7 @@ loopEnd
 functionEnd
 
 constants cloudsReverb
-; @pos -251 2
+; @pos -301 4
 use env
 
 const CLOUDS_SAMPLE_RATE 32000
@@ -83,7 +35,7 @@ const CLOUDS_RATIO SAMPLE_RATE/CLOUDS_SAMPLE_RATE
 constantsEnd
 
 constants math
-; @pos -251 28
+; @pos -294 29
 
 const PI      3.141592653589793
 const NEG_PI -3.141592653589793
@@ -111,6 +63,54 @@ const LOG10E  0.434294481903251
 const E       2.718281828459045
 
 constantsEnd
+
+constants env
+; @pos -292 -21
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 48000
+const AUDIO_BUFFER_SIZE 128
+
+; Binary asset sizes in bytes
+; 'lubadh_violin_6_48khz_16s.raw'
+const ASSET_PIANO_SIZE 960000
+
+constantsEnd
+
+note
+; @pos -346 -42
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_aimo5_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew1_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_matthew4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_peaceful_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_1_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_2_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_3_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_5_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_guitar_6_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_1_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_2_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_3_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_4_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_5_48khz_16s.raw
+; @config bin.piano.url https://static.8f4e.com/assets/samples/lubadh_violin_6_48khz_16s.raw
+noteEnd
+
+note
+; @pos -316 -54
+; @config runtime AudioWorkletRuntime
+; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
+; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
+; @config export.fileName granularSampler
+; @config color.fill.waveform #f0a
+; @config color.fill.fill #f0a
+; @config color.text.instruction #0fa
+noteEnd
 
 entry main
 module bpmClock
@@ -322,7 +322,7 @@ moduleEnd
 module controlValues
 ; @pos 46 -27
 
-float decay 0.1
+float decay 0.642857
 ; @slider &decay
 float amount 0.5
 ; @slider &amount
@@ -330,11 +330,11 @@ float diffusion 0.625
 ; @slider &diffusion
 float damping 0.7
 ; @slider &damping
-float speed 0.0
+float speed 9.821428
 ; @slider &speed 0 100
-float position 0.0
+float position 0.642857
 ; @slider &position
-float width 0.0
+float width 0.004554
 ; @slider &width 0 0.01
 float spread 0.0
 ; @slider &spread

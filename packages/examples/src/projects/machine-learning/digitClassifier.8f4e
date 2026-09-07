@@ -21,6 +21,22 @@ add
 
 functionEnd float64
 
+constants env
+; @pos 0 0
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 50
+
+constantsEnd
+
+note
+; @pos -438 18
+; @config color.fill.background #330011
+; @config export.fileName digitClassifier
+noteEnd
+
 note
 ; @pos -310 -8
 
@@ -73,7 +89,7 @@ entry main
 module grid
 ; @pos -274 11
 ; @home
-; @config color.text.binaryOne #f00
+; @config color.text.binaryOne #ff0
 ; @config color.text.basePrefix #333
 ; @config color.text.binaryZero #666
 
@@ -4278,13 +4294,3 @@ store
 
 moduleEnd
 entryEnd
-
-constants env
-; @pos 0 0
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 50
-
-constantsEnd
