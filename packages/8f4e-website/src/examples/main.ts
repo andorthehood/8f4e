@@ -60,8 +60,17 @@ const items = projectCategories.flatMap(category => {
 		openLink.className = 'open-in-editor-button';
 		openLink.textContent = 'Open in editor ↗';
 		openLink.href = `https://editor.8f4e.com/?projectUrl=${encodeURIComponent(projectUrl)}`;
+		const githubLink = document.createElement('a');
+		githubLink.className = 'open-in-editor-button';
+		githubLink.textContent = 'GitHub ↗';
+		githubLink.href = `https://github.com/andorthehood/8f4e/blob/main/packages/examples/src/projects/${project.path}`;
+		githubLink.target = '_blank';
+		githubLink.rel = 'noopener noreferrer';
+		const actions = document.createElement('div');
+		actions.className = 'example-actions';
+		actions.append(openLink, githubLink);
 		frame.append(status);
-		panel.append(frame, openLink);
+		panel.append(frame, actions);
 		item.append(heading, panel);
 		section.append(item);
 		toggle.addEventListener('click', () => {

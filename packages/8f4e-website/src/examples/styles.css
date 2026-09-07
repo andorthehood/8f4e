@@ -164,6 +164,13 @@
 	cursor: pointer;
 }
 
+.example-actions {
+	display: flex;
+	flex-wrap: wrap;
+	flex-shrink: 0;
+	gap: 0.5rem;
+}
+
 .example-panel .open-in-editor-button {
 	margin-top: 0;
 	font-size: 14px;
