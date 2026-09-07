@@ -17,6 +17,7 @@
 
 .examples-header .logo {
 	padding-bottom: 0;
+	width: 108px;
 }
 
 .examples-header h1 {
@@ -43,10 +44,9 @@
 
 .example-category-heading {
 	margin: 0 0 0.75rem;
-	color: #ff0;
 	font-size: 1rem;
 	font-weight: normal;
-	line-height: 20px;
+	line-height: 1;
 }
 
 .example-item {
@@ -80,13 +80,13 @@
 
 .example-title {
 	font-size: 14px;
-	line-height: 18px;
+	line-height: 1;
 }
 
 .example-description {
 	grid-column: 1;
 	font-size: 14px;
-	line-height: 20px;
+	line-height: 1;
 	color: #bbb;
 }
 
@@ -95,7 +95,7 @@
 	grid-row: 1;
 	width: 14px;
 	height: 18px;
-	line-height: 18px;
+	line-height: 1;
 	text-align: center;
 	content: "+";
 }
@@ -148,7 +148,7 @@
 	gap: 0.75rem;
 	padding: 1rem;
 	font-size: 14px;
-	line-height: 20px;
+	line-height: 1;
 }
 
 .example-status[hidden] {
@@ -174,7 +174,7 @@
 .example-panel .open-in-editor-button {
 	margin-top: 0;
 	font-size: 14px;
-	line-height: 20px;
+	line-height: 1;
 }
 
 @media (min-width: 801px) {
