@@ -15,6 +15,37 @@ import { AUDIO_WORKLET_RUNTIME_ID, storeAudioWorkletRuntimeValues } from './runt
 const AUDIO_PERMISSION_DIALOG_ID = 'audio-worklet-permission';
 const GRANT_AUDIO_PERMISSION_ACTION = 'grantAudioPermission';
 const AUDIO_BUFFER_SIZE = 128;
+const AUDIO_PERMISSION_TEXT =
+	"This project uses AudioWorklet for audio playback and requires your permission to start. Select Allow to start the program, or choose to do nothing; then the program won't start.";
+
+/** Host-side context operations used for sharing, without requiring DOM types in the worklet build. */
+export interface SharedAudioContext {
+	readonly sampleRate: number;
+	readonly state: string;
+	resume(): Promise<void>;
+	audioWorklet: { addModule(url: string): Promise<void> };
+	addEventListener(type: 'statechange', listener: () => void): void;
+	removeEventListener(type: 'statechange', listener: () => void): void;
+}
+
+const workletModules = new WeakMap<SharedAudioContext, Map<string, Promise<void>>>();
+
+function loadWorklet(context: SharedAudioContext, url: string): Promise<void> {
+	let modules = workletModules.get(context);
+	if (!modules) {
+		modules = new Map();
+		workletModules.set(context, modules);
+	}
+	let loading = modules.get(url);
+	if (!loading) {
+		loading = context.audioWorklet.addModule(url).catch(error => {
+			modules.delete(url);
+			throw error;
+		});
+		modules.set(url, loading);
+	}
+	return loading;
+}
 const AUDIO_BUFFER_ADDRESS_SCHEMA = {
 	format: 'memory-address',
 	anyOf: [
@@ -119,7 +150,8 @@ export function audioWorkletRuntimeFactory(
 	events: EventDispatcher,
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null,
-	audioWorkletUrl: string
+	audioWorkletUrl: string,
+	sharedAudioContext?: SharedAudioContext
 ) {
 	const state = store.getState();
 	// Using any types for Web Audio API types that aren't available in worker context during build
@@ -127,6 +159,16 @@ export function audioWorkletRuntimeFactory(
 	let audioWorklet: any | null = null;
 	let mediaStream: any | null = null;
 	let mediaStreamSource: any | null = null;
+	let disposed = false;
+	let generation = 0;
+	let inputRevision = 0;
+
+	function getSharedAudioContext() {
+		return sharedAudioContext?.state !== 'closed' &&
+			sharedAudioContext?.sampleRate === getSampleRate(state.editorConfig)
+			? sharedAudioContext
+			: undefined;
+	}
 
 	function showAudioPermissionDialog(text: string) {
 		events.dispatch('addDialog', {
@@ -164,6 +206,7 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	async function syncAudioInputSource() {
+		const revision = ++inputRevision;
 		if (!audioContext || !audioWorklet) {
 			return;
 		}
@@ -187,7 +230,12 @@ export function audioWorkletRuntimeFactory(
 
 		try {
 			// @ts-expect-error - navigator.mediaDevices not available in worker context during build
-			mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+			const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+			if (disposed || revision !== inputRevision) {
+				stream.getTracks().forEach((track: any) => track.stop());
+				return;
+			}
+			mediaStream = stream;
 			mediaStreamSource = audioContext.createMediaStreamSource(mediaStream);
 			mediaStreamSource.connect(audioWorklet);
 		} catch (error) {
@@ -196,52 +244,78 @@ export function audioWorkletRuntimeFactory(
 	}
 
 	async function initAudioContext() {
-		if (audioContext) {
+		if (disposed || audioContext) {
 			return;
 		}
 		hideAudioPermissionDialog();
+		const currentGeneration = ++generation;
 
-		// @ts-expect-error - AudioContext not available in worker context during build
-		audioContext = new AudioContext({
-			sampleRate: getSampleRate(state.editorConfig),
-			latencyHint: 'interactive',
-		});
-
-		await audioContext.audioWorklet.addModule(audioWorkletUrl);
-		// @ts-expect-error - AudioWorkletNode not available in worker context during build
-		audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
-			outputChannelCount: [2],
-			numberOfOutputs: 1,
-			numberOfInputs: 1, // Specify the number of inputs
-			channelCount: 1,
-			channelCountMode: 'explicit',
-		});
-
-		audioWorklet.port.onmessage = (event: { data: unknown }) => {
-			const { data } = event;
-			const typedData = data as any;
-			switch (typedData.type) {
-				case 'initialized':
-					events.dispatch('runtimeInitialized', typedData.payload);
-					break;
-				case 'runtimeValues':
-					storeAudioWorkletRuntimeValues(store, state, typedData.payload);
-					break;
+		try {
+			audioContext = getSharedAudioContext();
+			if (!audioContext) {
+				// @ts-expect-error - AudioContext not available in worker context during build
+				audioContext = new AudioContext({
+					sampleRate: getSampleRate(state.editorConfig),
+					latencyHint: 'interactive',
+				});
 			}
-		};
 
-		await syncAudioInputSource();
+			// Resume synchronously in the Allow handler, before loading the worklet can consume the user gesture.
+			await Promise.all([
+				audioContext.state === 'running' ? Promise.resolve() : audioContext.resume(),
+				loadWorklet(audioContext, audioWorkletUrl),
+			]);
+			if (disposed || currentGeneration !== generation) {
+				return;
+			}
+			// @ts-expect-error - AudioWorkletNode not available in worker context during build
+			audioWorklet = new AudioWorkletNode(audioContext, 'worklet', {
+				outputChannelCount: [2],
+				numberOfOutputs: 1,
+				numberOfInputs: 1, // Specify the number of inputs
+				channelCount: 1,
+				channelCountMode: 'explicit',
+			});
 
-		audioWorklet.connect(audioContext.destination);
+			audioWorklet.port.onmessage = (event: { data: unknown }) => {
+				const { data } = event;
+				const typedData = data as any;
+				switch (typedData.type) {
+					case 'initialized':
+						events.dispatch('runtimeInitialized', typedData.payload);
+						break;
+					case 'runtimeValues':
+						storeAudioWorkletRuntimeValues(store, state, typedData.payload);
+						break;
+				}
+			};
 
-		syncCodeAndSettingsWithRuntime();
+			await syncAudioInputSource();
+			if (disposed || currentGeneration !== generation) {
+				return;
+			}
+
+			audioWorklet.connect(audioContext.destination);
+
+			syncCodeAndSettingsWithRuntime();
+		} catch (error) {
+			if (disposed || currentGeneration !== generation) {
+				return;
+			}
+			tearDownAudioContext();
+			console.error('Error starting audio:', error);
+			showAudioPermissionDialog('Audio could not start. Select Allow to try again.');
+		}
 	}
 
 	store.subscribeToValue('compiler.isCompiling', false, syncCodeAndSettingsWithRuntime);
 	store.subscribe('editorConfig.audioRuntime', onEditorConfigChanged);
 	events.on(GRANT_AUDIO_PERMISSION_ACTION, initAudioContext);
+	sharedAudioContext?.addEventListener('statechange', onSharedContextStateChanged);
 
 	function tearDownAudioContext() {
+		++generation;
+		++inputRevision;
 		if (mediaStreamSource) {
 			mediaStreamSource.disconnect();
 			mediaStreamSource = null;
@@ -253,24 +327,30 @@ export function audioWorkletRuntimeFactory(
 		}
 
 		if (audioWorklet) {
+			audioWorklet.port.postMessage({ type: 'dispose' });
+			audioWorklet.port.onmessage = null;
+			audioWorklet.port.close();
 			audioWorklet.disconnect();
 			audioWorklet = null;
 		}
 
 		if (audioContext) {
-			audioContext.close();
+			if (audioContext !== sharedAudioContext) {
+				void audioContext.close();
+			}
 			audioContext = null;
 		}
 	}
 
 	function onEditorConfigChanged() {
 		if (!audioContext) {
+			startOrRequestAudio();
 			return;
 		}
 		const desiredSampleRate = getSampleRate(state.editorConfig);
 		if (audioContext.sampleRate !== desiredSampleRate) {
 			tearDownAudioContext();
-			showAudioPermissionDialog('Sample rate changed. Select Allow to restart audio playback at the new sample rate.');
+			startOrRequestAudio('Sample rate changed. Select Allow to restart audio playback at the new sample rate.');
 			return;
 		}
 
@@ -278,16 +358,28 @@ export function audioWorkletRuntimeFactory(
 		syncCodeAndSettingsWithRuntime();
 	}
 
-	if (!audioContext) {
-		showAudioPermissionDialog(
-			"This project uses AudioWorklet for audio playback and requires your permission to start. Select Allow to start the program, or choose to do nothing; then the program won't start."
-		);
+	function onSharedContextStateChanged() {
+		if (!disposed && !audioContext && getSharedAudioContext()?.state === 'running') {
+			void initAudioContext();
+		}
 	}
 
+	function startOrRequestAudio(text = AUDIO_PERMISSION_TEXT) {
+		if (getSharedAudioContext()?.state === 'running') {
+			void initAudioContext();
+		} else {
+			showAudioPermissionDialog(text);
+		}
+	}
+
+	startOrRequestAudio();
+
 	return () => {
+		disposed = true;
 		store.unsubscribe('compiler.isCompiling', syncCodeAndSettingsWithRuntime);
 		store.unsubscribe('editorConfig.audioRuntime', onEditorConfigChanged);
 		events.off(GRANT_AUDIO_PERMISSION_ACTION, initAudioContext);
+		sharedAudioContext?.removeEventListener('statechange', onSharedContextStateChanged);
 
 		tearDownAudioContext();
 		hideAudioPermissionDialog();
@@ -301,7 +393,8 @@ export function audioWorkletRuntimeFactory(
 export function createAudioWorkletRuntimeDef(
 	getCodeBuffer: () => Uint8Array,
 	getMemory: () => WebAssembly.Memory | null,
-	audioWorkletUrl: string
+	audioWorkletUrl: string,
+	sharedAudioContext?: SharedAudioContext
 ): RuntimeRegistryEntry {
 	return {
 		id: AUDIO_WORKLET_RUNTIME_ID,
@@ -311,7 +404,7 @@ export function createAudioWorkletRuntimeDef(
 			`const AUDIO_BUFFER_SIZE ${AUDIO_BUFFER_SIZE}`,
 		],
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
-			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl);
+			return audioWorkletRuntimeFactory(store, events, getCodeBuffer, getMemory, audioWorkletUrl, sharedAudioContext);
 		},
 	};
 }

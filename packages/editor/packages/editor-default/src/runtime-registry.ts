@@ -67,7 +67,10 @@ function createLazyRuntimeEntry(
  * Runtimes are lazy-loaded on first selection. Each runtime starts with a minimal stub schema
  * and replaces it with the full schema after loading.
  */
-export function createRuntimeRegistry({ getCodeBuffer, getMemory }: CompilerArtifacts): RuntimeRegistry {
+export function createRuntimeRegistry(
+	{ getCodeBuffer, getMemory }: CompilerArtifacts,
+	sharedAudioContext?: AudioContext
+): RuntimeRegistry {
 	return {
 		WebWorkerRuntime: createLazyRuntimeEntry(
 			'WebWorkerRuntime',
@@ -98,7 +101,7 @@ export function createRuntimeRegistry({ getCodeBuffer, getMemory }: CompilerArti
 					import('@8f4e/runtime-audio-worklet/runtime-def'),
 					import('@8f4e/runtime-audio-worklet/worklet?url'),
 				]);
-				return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl);
+				return createAudioWorkletRuntimeDef(getCodeBuffer, getMemory, audioWorkletUrl, sharedAudioContext);
 			}
 		),
 	};

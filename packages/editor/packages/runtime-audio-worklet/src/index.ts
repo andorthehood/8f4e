@@ -5,6 +5,13 @@ class Main extends AudioWorkletProcessor {
 		super(...args);
 
 		this.port.onmessage = async event => {
+			if (event.data.type === 'dispose') {
+				this.disposed = true;
+				this.buffer = () => {};
+				this.memoryBuffer = new Float32Array(0);
+				this.port.close();
+				return;
+			}
 			if (event.data.type === 'init') {
 				this.init(
 					event.data.memoryRef,
@@ -23,6 +30,9 @@ class Main extends AudioWorkletProcessor {
 		audioInputBuffers: { channel: number; input: number; audioBufferWordAddress: number }[]
 	) {
 		const { memoryBuffer, buffer } = await createModule(memoryRef, codeBuffer);
+		if (this.disposed) {
+			return;
+		}
 
 		this.audioOutputBuffers = audioOutputBuffers;
 		this.audioInputBuffers = audioInputBuffers;
@@ -41,6 +51,7 @@ class Main extends AudioWorkletProcessor {
 	buffer: CallableFunction = () => {
 		return;
 	};
+	private disposed = false;
 
 	memoryBuffer: Float32Array = new Float32Array(128).fill(0);
 	audioOutputBuffers = [] as { channel: number; output: number; audioBufferWordAddress: number }[];
@@ -68,6 +79,9 @@ class Main extends AudioWorkletProcessor {
 	}
 
 	process(inputs: Float32Array[][], outputs: Float32Array[][]) {
+		if (this.disposed) {
+			return false;
+		}
 		this.reportAudioBufferSize(inputs, outputs);
 
 		for (let i = 0; i < this.audioInputBuffers.length; i++) {
