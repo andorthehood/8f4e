@@ -20,20 +20,19 @@ The repository already contains multiple specialized execution targets:
 - web worker runtime
 - audio worklet runtime
 - web worker MIDI runtime
-- main-thread runtime as an available but non-default option
 
 The application default runtime is `WebWorkerRuntime`.
 
 ## Decision
 
-We **prefer off-main-thread runtime execution by default** and treat the main thread as a fallback or specialized integration point.
+We **prefer off-main-thread runtime execution**. The bundled editor runtimes execute programs in workers or audio worklets.
 
 In practice this means:
 
 1. General program logic defaults to a web worker runtime.
 2. Audio execution uses an audio worklet runtime when audio-thread execution is required.
 3. MIDI-oriented runtime execution uses dedicated worker-based isolation.
-4. Main-thread execution remains available where browser integration or debugging needs justify it, but it is not the default architecture.
+4. The timer-driven main-thread runtime has been removed: it duplicated worker execution without providing dedicated debugging or browser integration capabilities.
 
 This decision aligns runtime placement with responsiveness requirements: UI work stays on the main thread, while executable program logic is isolated whenever practical.
 
@@ -42,7 +41,7 @@ This decision aligns runtime placement with responsiveness requirements: UI work
 ### Positive
 
 1. **Better editor responsiveness**: Runtime execution is less likely to interfere with rendering and input handling.
-2. **Clear runtime specialization**: Worker, worklet, and main-thread runtimes each have a defined role.
+2. **Clear runtime specialization**: Worker and worklet runtimes each have a defined role.
 3. **Improved scalability for browser workloads**: Heavy or continuous execution can be isolated from the UI loop.
 4. **Architecture matches browser execution models**: Audio and worker use cases rely on the browser primitives intended for those workloads.
 

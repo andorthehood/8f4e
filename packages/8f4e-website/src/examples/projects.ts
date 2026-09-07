@@ -48,12 +48,6 @@ export const projects = [
 		path: 'misc/standaloneProject.8f4e',
 	},
 	{
-		id: 'main-thread-counter',
-		title: 'Main thread counter',
-		description: 'Watch a counter update ten times per second on the browser main thread.',
-		path: 'misc/simpleCounterMainThread.8f4e',
-	},
-	{
 		id: 'audio-buffer',
 		title: 'Audio buffer',
 		description: 'Generate a sine wave and write its samples into a circular audio buffer.',

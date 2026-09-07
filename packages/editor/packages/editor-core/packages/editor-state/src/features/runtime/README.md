@@ -21,7 +21,6 @@ The runtime registry is located at the project root level (not in editor-state):
 state.runtimeRegistry = {
 	AudioWorkletRuntime: { factory: audioWorkletRuntimeFactory },
 	WebWorkerRuntime: { factory: webWorkerRuntimeFactory },
-	MainThreadRuntime: { factory: mainThreadRuntimeFactory },
 };
 ```
 

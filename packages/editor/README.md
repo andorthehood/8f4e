@@ -10,7 +10,7 @@ and deployable website are separate boundaries.
 - `packages/editor-website/` contains the HTML page and thin Vite entry point that mounts the default composition.
 - `packages/editor-core/` contains the reusable minimal editor and its state and UI packages.
 - `packages/compiler-worker/` contains the editor-specific Web Worker wrapper around the compiler.
-- `packages/runtime-audio-worklet/`, `packages/runtime-main-thread/`, and `packages/runtime-web-worker/` contain the
+- `packages/runtime-audio-worklet/` and `packages/runtime-web-worker/` contain the
   editor runtime implementations.
 
 ## Development
