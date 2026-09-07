@@ -1,11 +1,13 @@
+import { divide, exp, fixed, log, multiply, PI, SCALE, sinCos, toDecimal } from './fixedPoint.ts';
+
 type MinBLEPApproximationOptions = {
 	totalZeroCrossings: number;
 	oversampling: number;
-	cutoffRatio: number;
+	cutoffRatio: bigint;
 	fftSize: number;
-	fractionalShift: number;
-	outputGain: number;
-	outputBias: number;
+	fractionalShift: bigint;
+	outputGain: bigint;
+	outputBias: bigint;
 	includeInterpolationGuard: boolean;
 };
 
@@ -22,11 +24,11 @@ type MinBLEPApproximationOptions = {
 const DEFAULT_OPTIONS: MinBLEPApproximationOptions = {
 	totalZeroCrossings: 16,
 	oversampling: 16,
-	cutoffRatio: 0.9325,
+	cutoffRatio: fixed('0.9325'),
 	fftSize: 4096,
-	fractionalShift: -0.525,
-	outputGain: 0.9857184887433783,
-	outputBias: 0.00181097096978212,
+	fractionalShift: fixed('-0.525'),
+	outputGain: fixed('0.9857184887433783'),
+	outputBias: fixed('0.00181097096978212'),
 	includeInterpolationGuard: true,
 };
 
@@ -36,22 +38,16 @@ function assertPowerOfTwo(value: number): void {
 	}
 }
 
-function sinc(value: number): number {
-	if (Math.abs(value) < 1e-12) {
-		return 1.0;
-	}
-
-	const radians = Math.PI * value;
-	return Math.sin(radians) / radians;
+function sinc(value: bigint): bigint {
+	if (value === 0n) return SCALE;
+	const radians = multiply(PI, value);
+	return divide(sinCos(radians).sin, radians);
 }
 
-function blackmanWindow(index: number, size: number): number {
-	if (size === 1) {
-		return 1.0;
-	}
-
-	const phase = (2 * Math.PI * index) / (size - 1);
-	return 0.42 - 0.5 * Math.cos(phase) + 0.08 * Math.cos(phase * 2);
+function blackmanWindow(index: number, size: number): bigint {
+	if (size === 1) return SCALE;
+	const phase = (2n * PI * BigInt(index)) / BigInt(size - 1);
+	return fixed('0.42') - sinCos(phase).cos / 2n + multiply(fixed('0.08'), sinCos(2n * phase).cos);
 }
 
 function reverseBits(value: number, bitCount: number): number {
@@ -65,10 +61,10 @@ function reverseBits(value: number, bitCount: number): number {
 	return reversed;
 }
 
-function fftInPlace(real: Float64Array, imag: Float64Array, inverse: boolean): void {
+function fftInPlace(real: bigint[], imag: bigint[], inverse: boolean, twiddles: ReturnType<typeof sinCos>[]): void {
 	const size = real.length;
-	const bitCount = Math.log2(size);
-	const direction = inverse ? 1 : -1;
+	const bitCount = size.toString(2).length - 1;
+	const direction = inverse ? 1n : -1n;
 
 	for (let index = 0; index < size; index++) {
 		const swappedIndex = reverseBits(index, bitCount);
@@ -87,18 +83,17 @@ function fftInPlace(real: Float64Array, imag: Float64Array, inverse: boolean): v
 
 	for (let span = 2; span <= size; span <<= 1) {
 		const halfSpan = span >> 1;
-		const baseAngle = (direction * 2 * Math.PI) / span;
 
 		for (let start = 0; start < size; start += span) {
 			for (let offset = 0; offset < halfSpan; offset++) {
-				const angle = baseAngle * offset;
-				const twiddleReal = Math.cos(angle);
-				const twiddleImag = Math.sin(angle);
+				const twiddle = twiddles[(offset * size) / span];
+				const twiddleReal = twiddle.cos;
+				const twiddleImag = direction * twiddle.sin;
 				const leftIndex = start + offset;
 				const rightIndex = leftIndex + halfSpan;
 
-				const rightReal = twiddleReal * real[rightIndex] - twiddleImag * imag[rightIndex];
-				const rightImag = twiddleReal * imag[rightIndex] + twiddleImag * real[rightIndex];
+				const rightReal = multiply(twiddleReal, real[rightIndex]) - multiply(twiddleImag, imag[rightIndex]);
+				const rightImag = multiply(twiddleReal, imag[rightIndex]) + multiply(twiddleImag, real[rightIndex]);
 
 				real[rightIndex] = real[leftIndex] - rightReal;
 				imag[rightIndex] = imag[leftIndex] - rightImag;
@@ -113,84 +108,89 @@ function fftInPlace(real: Float64Array, imag: Float64Array, inverse: boolean): v
 	}
 
 	for (let index = 0; index < size; index++) {
-		real[index] /= size;
-		imag[index] /= size;
+		real[index] /= BigInt(size);
+		imag[index] /= BigInt(size);
 	}
 }
 
-function interpolateSignal(signal: readonly number[], position: number): number {
-	if (position <= 0) {
+function interpolateSignal(signal: readonly bigint[], position: bigint): bigint {
+	if (position <= 0n) {
 		return signal[0];
 	}
 
 	const lastIndex = signal.length - 1;
-	if (position >= lastIndex) {
+	if (position >= BigInt(lastIndex) * SCALE) {
 		return signal[lastIndex];
 	}
 
-	const baseIndex = Math.floor(position);
-	const fraction = position - baseIndex;
+	const baseIndex = Number(position / SCALE);
+	const fraction = position % SCALE;
 	const start = signal[baseIndex];
 	const end = signal[baseIndex + 1];
 
-	return start + (end - start) * fraction;
+	return start + multiply(end - start, fraction);
 }
 
-function buildWindowedSinc(sampleCount: number, oversampling: number, cutoffRatio: number): Float64Array {
-	const center = (sampleCount - 1) / 2;
-	const normalizedCutoff = (0.5 * cutoffRatio) / oversampling;
-	const impulse = new Float64Array(sampleCount);
+function buildWindowedSinc(sampleCount: number, oversampling: number, cutoffRatio: bigint): bigint[] {
+	const center = (BigInt(sampleCount - 1) * SCALE) / 2n;
+	const normalizedCutoff = cutoffRatio / BigInt(2 * oversampling);
+	const impulse = new Array<bigint>(sampleCount).fill(0n);
 
 	for (let index = 0; index < sampleCount; index++) {
-		const phase = index - center;
+		const phase = BigInt(index) * SCALE - center;
 		const window = blackmanWindow(index, sampleCount);
-		impulse[index] = 2 * normalizedCutoff * sinc(2 * normalizedCutoff * phase) * window;
+		impulse[index] = multiply(2n * normalizedCutoff, multiply(sinc(multiply(2n * normalizedCutoff, phase)), window));
 	}
 
 	return impulse;
 }
 
-function minimumPhaseImpulse(linearPhaseImpulse: Float64Array, fftSize: number): Float64Array {
-	const epsilon = 1e-15;
-	const real = new Float64Array(fftSize);
-	const imag = new Float64Array(fftSize);
+function minimumPhaseImpulse(linearPhaseImpulse: bigint[], fftSize: number): bigint[] {
+	const epsilonSquared = fixed('0.000000000000000000000000000001');
+	const twiddles = Array.from({ length: fftSize / 2 }, (_, index) =>
+		sinCos((2n * PI * BigInt(index)) / BigInt(fftSize))
+	);
+	const real = new Array<bigint>(fftSize).fill(0n);
+	const imag = new Array<bigint>(fftSize).fill(0n);
 
-	real.set(linearPhaseImpulse);
-	fftInPlace(real, imag, false);
+	real.splice(0, linearPhaseImpulse.length, ...linearPhaseImpulse);
+	fftInPlace(real, imag, false, twiddles);
 
 	for (let index = 0; index < fftSize; index++) {
-		real[index] = Math.log(Math.max(Math.hypot(real[index], imag[index]), epsilon));
-		imag[index] = 0.0;
+		const magnitudeSquared = multiply(real[index], real[index]) + multiply(imag[index], imag[index]);
+		// log(hypot(re, im)) = log(re^2 + im^2) / 2; no square root is needed.
+		real[index] = log(magnitudeSquared > epsilonSquared ? magnitudeSquared : epsilonSquared) / 2n;
+		imag[index] = 0n;
 	}
 
-	fftInPlace(real, imag, true);
+	fftInPlace(real, imag, true, twiddles);
 
-	const foldedReal = new Float64Array(fftSize);
-	const foldedImag = new Float64Array(fftSize);
+	const foldedReal = new Array<bigint>(fftSize).fill(0n);
+	const foldedImag = new Array<bigint>(fftSize).fill(0n);
 	const midpoint = fftSize >> 1;
 
 	foldedReal[0] = real[0];
 	for (let index = 1; index < midpoint; index++) {
-		foldedReal[index] = real[index] * 2;
+		foldedReal[index] = real[index] * 2n;
 	}
 	foldedReal[midpoint] = real[midpoint];
 
-	fftInPlace(foldedReal, foldedImag, false);
+	fftInPlace(foldedReal, foldedImag, false, twiddles);
 
 	for (let index = 0; index < fftSize; index++) {
-		const magnitude = Math.exp(foldedReal[index]);
-		const phase = foldedImag[index];
+		const magnitude = exp(foldedReal[index]);
+		const phase = sinCos(foldedImag[index]);
 
-		real[index] = magnitude * Math.cos(phase);
-		imag[index] = magnitude * Math.sin(phase);
+		real[index] = multiply(magnitude, phase.cos);
+		imag[index] = multiply(magnitude, phase.sin);
 	}
 
-	fftInPlace(real, imag, true);
+	fftInPlace(real, imag, true, twiddles);
 
 	return real;
 }
 
-function generateApproximatePt2MinBlepData(options: Partial<MinBLEPApproximationOptions> = {}): number[] {
+function generateApproximatePt2MinBlepData(options: Partial<MinBLEPApproximationOptions> = {}): bigint[] {
 	const resolved = { ...DEFAULT_OPTIONS, ...options };
 	assertPowerOfTwo(resolved.fftSize);
 
@@ -198,29 +198,29 @@ function generateApproximatePt2MinBlepData(options: Partial<MinBLEPApproximation
 	const linearPhaseImpulse = buildWindowedSinc(sampleCount, resolved.oversampling, resolved.cutoffRatio);
 	const minPhaseImpulse = minimumPhaseImpulse(linearPhaseImpulse, resolved.fftSize);
 
-	const step = new Array<number>(sampleCount);
-	let accumulator = 0.0;
+	const step = new Array<bigint>(sampleCount);
+	let accumulator = 0n;
 	for (let index = 0; index < sampleCount; index++) {
 		accumulator += minPhaseImpulse[index];
 		step[index] = accumulator;
 	}
 
 	const normalization = step[sampleCount - 1];
-	const residual = step.map(value => 1 - value / normalization);
-	const output = new Array<number>(sampleCount);
+	const residual = step.map(value => SCALE - divide(value, normalization));
+	const output = new Array<bigint>(sampleCount);
 
 	for (let index = 0; index < sampleCount; index++) {
-		const shifted = interpolateSignal(residual, index + resolved.fractionalShift);
-		output[index] = shifted * resolved.outputGain + resolved.outputBias;
+		const shifted = interpolateSignal(residual, BigInt(index) * SCALE + resolved.fractionalShift);
+		output[index] = multiply(shifted, resolved.outputGain) + resolved.outputBias;
 	}
 
-	output[sampleCount - 1] = 0.0;
+	output[sampleCount - 1] = 0n;
 
 	if (!resolved.includeInterpolationGuard) {
 		return output;
 	}
 
-	return [...output, 0.0];
+	return [...output, 0n];
 }
 
 const minBLEPData = generateApproximatePt2MinBlepData();
@@ -230,8 +230,8 @@ module minBLEPLUT
 ; @public
 ; @tab 7
 ; PT2-style minBLEP correction table
-; generated from the approximate JS minBLEP pipeline
-${minBLEPData.map(value => `float\t${value.toFixed(18)}`).join('\n')}
+; generated with integer fixed-point minBLEP arithmetic
+${minBLEPData.map(value => `float\t${toDecimal(value)}`).join('\n')}
 
 moduleEnd
 entryEnd`;
