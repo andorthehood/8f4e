@@ -1,7 +1,7 @@
 8f4e/v1
 
 function buffer
-; @pos -107 -39
+; @pos -107 -35
 #export buffer
 use env
 
@@ -11,7 +11,7 @@ loopEnd
 functionEnd
 
 constants env
-; @pos -107 -54
+; @pos -107 -50
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -38,6 +38,10 @@ note
 ; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config audioRuntime.audioOutBufferRAddress audioout:buffer
 ; @config export.fileName samplePlayerVariableSpeed
+; @config color.text.instruction orange
+; @config color.fill.trace orange
+; @config color.fill.background #111
+; @config color.fill.waveform orange
 
 noteEnd
 
