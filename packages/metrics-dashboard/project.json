@@ -24,14 +24,14 @@
 		"serve": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "vite --host 0.0.0.0 --port 3001",
+				"command": "vite --host 0.0.0.0 --port 3002",
 				"cwd": "{projectRoot}"
 			}
 		},
 		"preview": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "vite preview --host 0.0.0.0 --port 3001",
+				"command": "vite preview --host 0.0.0.0 --port 3002",
 				"cwd": "{projectRoot}"
 			},
 			"dependsOn": ["build"]
