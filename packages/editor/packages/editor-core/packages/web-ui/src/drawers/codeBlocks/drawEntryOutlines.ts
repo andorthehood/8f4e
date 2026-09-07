@@ -27,7 +27,7 @@ export default function drawEntryOutlines(engine: DrawContext, state: State): vo
 		drawOutline(engine, outline, thickness, state.spriteLookups.fillColors.wire);
 		engine.drawText(
 			outline.topLeft.x + state.viewport.vGrid,
-			outline.topLeft.y + state.viewport.hGrid,
+			outline.topLeft.y,
 			outline.entryName,
 			state.spriteLookups.fontEntryName
 		);

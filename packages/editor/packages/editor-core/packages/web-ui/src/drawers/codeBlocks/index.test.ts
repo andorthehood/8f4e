@@ -162,7 +162,7 @@ describe('drawModules', () => {
 		);
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			16,
-			32,
+			16,
 			'main',
 			state.spriteLookups?.fontEntryName
 		);
