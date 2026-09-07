@@ -848,9 +848,14 @@ paths such as:
 
 ```txt
 ; @config audioRuntime.sampleRate 48000
+; @config audioRuntime.entry buffer
 ; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config workerRuntime.sampleRate 50
+; @config workerRuntime.entry main
 ```
+
+`audioRuntime.entry` selects the exported entry called for each audio processing block and defaults to `buffer`.
+`workerRuntime.entry` selects the exported entry called at the configured worker sample rate and defaults to `main`.
 
 These roots are owned by their contributing package, not by the editor config type.
 

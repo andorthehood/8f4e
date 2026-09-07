@@ -7,7 +7,7 @@ class Main extends AudioWorkletProcessor {
 		this.port.onmessage = async event => {
 			if (event.data.type === 'dispose') {
 				this.disposed = true;
-				this.buffer = () => {};
+				this.entry = () => {};
 				this.memoryBuffer = new Float32Array(0);
 				this.port.close();
 				return;
@@ -16,6 +16,7 @@ class Main extends AudioWorkletProcessor {
 				this.init(
 					event.data.memoryRef,
 					event.data.codeBuffer,
+					event.data.entry,
 					event.data.audioOutputBuffers,
 					event.data.audioInputBuffers
 				);
@@ -26,10 +27,11 @@ class Main extends AudioWorkletProcessor {
 	async init(
 		memoryRef: WebAssembly.Memory,
 		codeBuffer: Uint8Array,
+		entryName: string,
 		audioOutputBuffers: { channel: number; output: number; audioBufferWordAddress: number }[],
 		audioInputBuffers: { channel: number; input: number; audioBufferWordAddress: number }[]
 	) {
-		const { memoryBuffer, buffer } = await createModule(memoryRef, codeBuffer);
+		const { memoryBuffer, entry } = await createModule(memoryRef, codeBuffer, entryName);
 		if (this.disposed) {
 			return;
 		}
@@ -37,7 +39,7 @@ class Main extends AudioWorkletProcessor {
 		this.audioOutputBuffers = audioOutputBuffers;
 		this.audioInputBuffers = audioInputBuffers;
 
-		this.buffer = buffer;
+		this.entry = entry;
 		this.memoryBuffer = memoryBuffer;
 
 		this.port.postMessage({
@@ -48,7 +50,7 @@ class Main extends AudioWorkletProcessor {
 		});
 	}
 
-	buffer: CallableFunction = () => {
+	entry: CallableFunction = () => {
 		return;
 	};
 	private disposed = false;
@@ -100,7 +102,7 @@ class Main extends AudioWorkletProcessor {
 			}
 		}
 
-		this.buffer();
+		this.entry();
 
 		for (let i = 0; i < this.audioOutputBuffers.length; i++) {
 			const output = outputs[this.audioOutputBuffers[i].output];

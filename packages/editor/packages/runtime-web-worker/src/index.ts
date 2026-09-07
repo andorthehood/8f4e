@@ -6,9 +6,9 @@ let timeToExecuteLoopMs: number;
 let lastIntervalTime: number;
 let timerDriftMs: number;
 
-async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array) {
+async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffer: Uint8Array, entryName: string) {
 	try {
-		const wasmApp = await createModule(memoryRef, codeBuffer);
+		const wasmApp = await createModule(memoryRef, codeBuffer, entryName);
 
 		const intervalTime = Math.floor(1000 / sampleRate);
 
@@ -20,7 +20,7 @@ async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffe
 			const startTime = performance.now();
 			timerDriftMs = startTime - lastIntervalTime - intervalTime;
 			lastIntervalTime = startTime;
-			wasmApp.main();
+			wasmApp.entry();
 			const endTime = performance.now();
 			timeToExecuteLoopMs = endTime - startTime;
 		}, intervalTime);
@@ -55,7 +55,12 @@ async function init(memoryRef: WebAssembly.Memory, sampleRate: number, codeBuffe
 self.onmessage = event => {
 	switch (event.data.type) {
 		case 'init':
-			init(event.data.payload.memoryRef, event.data.payload.sampleRate, event.data.payload.codeBuffer);
+			init(
+				event.data.payload.memoryRef,
+				event.data.payload.sampleRate,
+				event.data.payload.codeBuffer,
+				event.data.payload.entry
+			);
 			break;
 	}
 };

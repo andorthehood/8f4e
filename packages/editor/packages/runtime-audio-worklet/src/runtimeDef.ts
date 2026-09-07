@@ -57,11 +57,13 @@ const AUDIO_BUFFER_ADDRESS_SCHEMA = {
 const AUDIO_WORKLET_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 	root: 'audioRuntime',
 	defaults: {
+		entry: 'buffer',
 		sampleRate: 48000,
 	},
 	schema: {
 		type: 'object',
 		properties: {
+			entry: { type: 'string' },
 			sampleRate: { type: 'number', minimum: 1 },
 			audioOutBufferLAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
 			audioOutBufferRAddress: AUDIO_BUFFER_ADDRESS_SCHEMA,
@@ -72,6 +74,7 @@ const AUDIO_WORKLET_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 };
 
 interface AudioWorkletRuntimeConfig {
+	entry: string;
 	sampleRate: number;
 	audioOutBufferLAddress?: number;
 	audioOutBufferRAddress?: number;
@@ -99,6 +102,7 @@ function getAudioWorkletRuntimeConfig(state: State): AudioWorkletRuntimeConfig {
 	>;
 
 	return {
+		entry: typeof config.entry === 'string' && config.entry ? config.entry : 'buffer',
 		sampleRate: typeof config.sampleRate === 'number' ? config.sampleRate : 48000,
 		audioOutBufferLAddress: getAudioBufferConfigValue(config, 'audioOutBufferLAddress'),
 		audioOutBufferRAddress: getAudioBufferConfigValue(config, 'audioOutBufferRAddress'),
@@ -208,10 +212,12 @@ export function audioWorkletRuntimeFactory(
 		}
 
 		if (audioWorklet) {
+			const config = getAudioWorkletRuntimeConfig(state);
 			audioWorklet.port.postMessage({
 				type: 'init',
 				memoryRef: memory,
 				codeBuffer: getCodeBuffer(),
+				entry: config.entry,
 				audioOutputBuffers: getAudioOutputBuffers(state),
 				audioInputBuffers: getAudioInputBuffers(state),
 			});

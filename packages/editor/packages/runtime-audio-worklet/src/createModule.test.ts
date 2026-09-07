@@ -14,7 +14,7 @@ describe('createModule', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('returns the exported buffer function when present', async () => {
+	it('returns the exported buffer function by default', async () => {
 		const buffer = vi.fn();
 		mockInstantiation({
 			main: vi.fn(),
@@ -24,10 +24,24 @@ describe('createModule', () => {
 
 		const result = await createModule(new WebAssembly.Memory({ initial: 1 }), new Uint8Array());
 
-		expect(result.buffer).toBe(buffer);
+		expect(result.entry).toBe(buffer);
 	});
 
-	it('returns an empty buffer function when the export is missing', async () => {
+	it('returns the configured entry function', async () => {
+		const alternate = vi.fn();
+		mockInstantiation({
+			main: vi.fn(),
+			initDefaults: vi.fn(),
+			buffer: vi.fn(),
+			alternate,
+		});
+
+		const result = await createModule(new WebAssembly.Memory({ initial: 1 }), new Uint8Array(), 'alternate');
+
+		expect(result.entry).toBe(alternate);
+	});
+
+	it('returns an empty entry function when the export is missing', async () => {
 		mockInstantiation({
 			main: vi.fn(),
 			initDefaults: vi.fn(),
@@ -35,7 +49,7 @@ describe('createModule', () => {
 
 		const result = await createModule(new WebAssembly.Memory({ initial: 1 }), new Uint8Array());
 
-		expect(result.buffer).toBeTypeOf('function');
-		expect(() => result.buffer()).not.toThrow();
+		expect(result.entry).toBeTypeOf('function');
+		expect(() => result.entry()).not.toThrow();
 	});
 });

@@ -97,9 +97,11 @@ describe('AudioWorklet context lifetime', () => {
 		vi.restoreAllMocks();
 	});
 
-	function mount(sharedAudioContext?: MockContext, sampleRate = 48000, input = false) {
+	function mount(sharedAudioContext?: MockContext, sampleRate = 48000, input = false, entry?: string) {
 		const state = {
-			editorConfig: { audioRuntime: { sampleRate, ...(input ? { audioInBufferLAddress: 0 } : {}) } },
+			editorConfig: {
+				audioRuntime: { sampleRate, ...(input ? { audioInBufferLAddress: 0 } : {}), ...(entry ? { entry } : {}) },
+			},
 			compiler: { isCompiling: false },
 		} as unknown as State;
 		const store = createStateManager(state);
@@ -255,6 +257,23 @@ describe('AudioWorklet context lifetime', () => {
 		expect(shared.audioWorklet.addModule).toHaveBeenCalledTimes(2);
 		expect(shared.close).not.toHaveBeenCalled();
 	});
+
+	it.each([
+		[undefined, 'buffer'],
+		['alternate', 'alternate'],
+	])('initializes the worklet with configured entry %s', async (configuredEntry, expectedEntry) => {
+		const shared = new MockContext();
+		const editor = mount(shared, 48000, false, configuredEntry);
+
+		await editor.allow();
+
+		expect(worklets[0].port.postMessage).toHaveBeenCalledWith(
+			expect.objectContaining({
+				type: 'init',
+				entry: expectedEntry,
+			})
+		);
+	});
 });
 
 describe('AudioWorklet runtime config', () => {
@@ -330,14 +349,16 @@ describe('AudioWorklet runtime config', () => {
 		} as State;
 	}
 
-	it('contributes audio buffer address config fields', () => {
+	it('contributes the default entry and audio buffer address config fields', () => {
 		const runtimeDef = createAudioWorkletRuntimeDef(
 			() => new Uint8Array(),
 			() => null,
 			'worklet.js'
 		);
 
+		expect(runtimeDef.editorConfigSchema?.defaults).toMatchObject({ entry: 'buffer' });
 		expect(runtimeDef.editorConfigSchema?.schema.properties).toMatchObject({
+			entry: { type: 'string' },
 			sampleRate: { type: 'number', minimum: 1 },
 			audioOutBufferLAddress: {
 				format: 'memory-address',
