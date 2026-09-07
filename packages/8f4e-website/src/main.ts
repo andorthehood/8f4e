@@ -1,4 +1,5 @@
 import { type DefaultEditorInstance, mountDefaultEditor } from '@8f4e/editor-default';
+import { sharedAudioContext } from './shared-audio-context';
 
 const canvases = Array.from(document.querySelectorAll<HTMLCanvasElement>('.editor-row canvas'));
 if (canvases.length === 0) {
@@ -89,6 +90,7 @@ function mountEditor(canvas: HTMLCanvasElement, index: number): Promise<DefaultE
 	}
 
 	const mountPromise = mountDefaultEditor(canvas, {
+		sharedAudioContext,
 		captureWheel: false,
 		featureFlags: {
 			browserLocalNotes: false,

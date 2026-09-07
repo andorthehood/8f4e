@@ -1,4 +1,5 @@
 import { type DefaultEditorInstance, mountDefaultEditor } from '@8f4e/editor-default';
+import { sharedAudioContext } from '../shared-audio-context';
 import { getExampleId, withExampleId } from './example-url';
 import { projectCategories } from './projects';
 
@@ -129,6 +130,7 @@ function selectExample(id: string | null, retry = false): void {
 		};
 		try {
 			const editor = await mountDefaultEditor(canvas, {
+				sharedAudioContext,
 				captureWheel: true,
 				featureFlags: {
 					browserLocalNotes: false,
