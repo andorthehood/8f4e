@@ -1,13 +1,29 @@
 8f4e/v1
 
-entry main
-module projectConfig
-; @pos -84 2
+constants env
+; @pos -84 26
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 50
+
+constantsEnd
+
+note
+; @pos -84 0
 ; @config runtime WebWorkerRuntime
 ; @config workerRuntime.sampleRate 50
 ; @config export.fileName randomGenerators
+; @config color.fill.background #ffcc00
+; @config color.text.instruction #ffcc00
+; @config color.fill.trace #99ffff
+; @config color.fill.wire #ffffff
+; @config color.text.lineNumber #996600
+; @config color.fill.moduleBackground #000
+noteEnd
 
-moduleEnd
+entry main
 module lcg
 ; @pos -11 1
 ; Linear congruential
@@ -40,7 +56,7 @@ store
 
 moduleEnd
 module scope
-; @pos 27 1
+; @pos 26 1
 
 float* in &lcg:out
 float[] buffer 64
@@ -69,7 +85,7 @@ store
 
 moduleEnd
 module notes
-; @pos 66 17
+; @pos 66 16
 ; @home
 ; Two different approaches
 ; for pseudorandom generation:
@@ -142,13 +158,3 @@ store
 
 moduleEnd
 entryEnd
-
-constants env
-; @pos -84 26
-; @favorite
-; Auto-generated environment constants
-; Changes will be overwritten
-
-const SAMPLE_RATE 50
-
-constantsEnd

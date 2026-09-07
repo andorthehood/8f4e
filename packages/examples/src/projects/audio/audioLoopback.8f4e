@@ -22,13 +22,21 @@ const AUDIO_BUFFER_SIZE 128
 constantsEnd
 
 note
-; @pos -126 12
+; @pos -126 6
 ; @config runtime AudioWorkletRuntime
 ; @config audioRuntime.sampleRate 48000
-; @config audioRuntime.audioInBufferLAddress audioin:buffer
+; @config audioRuntime.audioInBufferLAddress aeudioin:buffer
 ; @config audioRuntime.audioOutBufferLAddress audiooutL:buffer
 ; @config audioRuntime.audioOutBufferRAddress audiooutR:buffer
 ; @config export.fileName audioLoopback
+; @config color.fill.background #660000
+; @config color.fill.moduleBackground #330000
+; @config color.text.lineNumber #660000
+; @config color.text.instruction #ff9999
+; @config color.text.codeComment #993333
+; @config color.text.code #cc3333
+; @config color.fill.backgroundDots #990000
+; @config color.fill.backgroundDots2 #330000
 
 noteEnd
 

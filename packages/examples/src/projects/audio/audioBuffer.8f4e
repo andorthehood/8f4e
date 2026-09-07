@@ -191,6 +191,8 @@ int pointer &buffer
 ; in the buffer
 push pointer
 push *in
+push 0.5
+mul
 store
 
 ; Increment the buffer
