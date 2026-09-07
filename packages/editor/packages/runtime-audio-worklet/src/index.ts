@@ -16,6 +16,7 @@ class Main extends AudioWorkletProcessor {
 				this.init(
 					event.data.memoryRef,
 					event.data.codeBuffer,
+					event.data.bufferExportName,
 					event.data.audioOutputBuffers,
 					event.data.audioInputBuffers
 				);
@@ -26,10 +27,11 @@ class Main extends AudioWorkletProcessor {
 	async init(
 		memoryRef: WebAssembly.Memory,
 		codeBuffer: Uint8Array,
+		bufferExportName: string,
 		audioOutputBuffers: { channel: number; output: number; audioBufferWordAddress: number }[],
 		audioInputBuffers: { channel: number; input: number; audioBufferWordAddress: number }[]
 	) {
-		const { memoryBuffer, buffer } = await createModule(memoryRef, codeBuffer);
+		const { memoryBuffer, buffer } = await createModule(memoryRef, codeBuffer, bufferExportName);
 		if (this.disposed) {
 			return;
 		}

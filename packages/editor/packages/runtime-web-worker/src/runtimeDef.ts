@@ -14,21 +14,31 @@ import type { StateManager } from '@8f4e/state-manager';
 const WEB_WORKER_EDITOR_CONFIG: EditorConfigSchemaContribution = {
 	root: 'workerRuntime',
 	defaults: {
+		entry: 'main',
 		sampleRate: 50,
 	},
 	schema: {
 		type: 'object',
 		properties: {
+			entry: { type: 'string' },
 			sampleRate: { type: 'number', minimum: 1 },
 		},
 		additionalProperties: false,
 	},
 };
 
-function getSampleRate(editorConfig: EditorConfig): number {
+interface WebWorkerRuntimeConfig {
+	entry: string;
+	sampleRate: number;
+}
+
+function getWebWorkerRuntimeConfig(editorConfig: EditorConfig): WebWorkerRuntimeConfig {
 	const config = resolveSchemaConfigRoot(WEB_WORKER_EDITOR_CONFIG, editorConfig);
 
-	return typeof config.sampleRate === 'number' ? config.sampleRate : 50;
+	return {
+		entry: typeof config.entry === 'string' && config.entry ? config.entry : 'main',
+		sampleRate: typeof config.sampleRate === 'number' ? config.sampleRate : 50,
+	};
 }
 
 // WebWorker Runtime Factory
@@ -68,11 +78,13 @@ export function webWorkerRuntimeFactory(
 			console.warn('[Runtime] Memory not yet created, skipping runtime init');
 			return;
 		}
+		const config = getWebWorkerRuntimeConfig(state.editorConfig);
 		worker.postMessage({
 			type: 'init',
 			payload: {
 				memoryRef: memory,
-				sampleRate: getSampleRate(state.editorConfig),
+				entry: config.entry,
+				sampleRate: config.sampleRate,
 				codeBuffer: getCodeBuffer(),
 			},
 		});
@@ -109,7 +121,7 @@ export function createWebWorkerRuntimeDef(
 	return {
 		id: 'WebWorkerRuntime',
 		editorConfigSchema: WEB_WORKER_EDITOR_CONFIG,
-		getEnvConstants: editorConfig => [`const SAMPLE_RATE ${getSampleRate(editorConfig)}`],
+		getEnvConstants: editorConfig => [`const SAMPLE_RATE ${getWebWorkerRuntimeConfig(editorConfig).sampleRate}`],
 		factory: (store: StateManager<State>, events: EventDispatcher) => {
 			return webWorkerRuntimeFactory(store, events, getCodeBuffer, getMemory, WorkerConstructor);
 		},
