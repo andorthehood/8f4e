@@ -849,7 +849,7 @@ note
 ; @config color.text.dialogText #000
 ; @config color.text.dialogTitle #000
 ; @config color.text.menuItemText #000
-; @config color.fill.background #336699
+; @config color.fill.background #3399cc
 ; @config color.fill.moduleBackground rgba(255,255,255,0.2)
 ; @config color.fill.wire rgba(255,255,255,0.5)
 ; @config color.fill.highlightedCodeLine rgba(255,255,255,0.4)

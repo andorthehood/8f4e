@@ -616,7 +616,7 @@ noteEnd
 
 entry main
 module amigaTick
-; @pos -157 -28
+; @pos -155 -28
 use mod
 
 int tempo 125
@@ -690,7 +690,7 @@ int	0x0f
 
 moduleEnd
 module modRowCounter
-; @pos -84 -28
+; @pos -83 -28
 use env
 int* trigger &amigaTick:out
 int previousTrigger
@@ -747,7 +747,7 @@ ifEnd
 
 moduleEnd
 module rowCount1
-; @pos 2 20
+; @pos -20 20
 int* in &modRowCounter:out
 int out
 ; We can afford some reading
@@ -828,7 +828,7 @@ loopEnd
 
 moduleEnd
 module scope2
-; @pos 64 -17
+; @pos 65 -17
 float* in &amp2:out
 float[] buffer 64
 ; @plot &buffer 64 @home
@@ -856,7 +856,7 @@ store
 
 moduleEnd
 module rowBuffer2
-; @pos 64 -1
+; @pos 65 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -899,7 +899,7 @@ loopEnd
 
 moduleEnd
 module scope3
-; @pos 100 -17
+; @pos 102 -17
 float* in &amp3:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -927,7 +927,7 @@ store
 
 moduleEnd
 module rowBuffer3
-; @pos 100 -1
+; @pos 102 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -970,7 +970,7 @@ loopEnd
 
 moduleEnd
 module scope4
-; @pos 136 -17
+; @pos 139 -17
 float* in &amp4:out
 float[] buffer 64
 ; @plot &buffer 64
@@ -998,7 +998,7 @@ store
 
 moduleEnd
 module rowBuffer4
-; @pos 136 -1
+; @pos 139 -1
 int ; @w 0x
 int ; @w 0x
 int ; @w 0x
@@ -1453,7 +1453,7 @@ ifEnd
 
 moduleEnd
 module samplePack
-; @pos 370 -6
+; @pos 370 -7
 use env
 int8[] sample0 1
 int8[] sample1 ASSET_SAMPLE1_SIZE
