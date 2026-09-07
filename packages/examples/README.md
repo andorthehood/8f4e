@@ -17,12 +17,18 @@ Example modules and projects used by the editor and tooling. Exports example mod
 
 ## Generated Modules
 
-Builds regenerate the lookup tables in `src/modules/` from `src/module-generators/`, leaving matching files
-untouched. The minBLEP generator
-serializes values to eight decimal places to suppress low-bit floating-point drift, with a maximum rounding
-error of `5e-9`. Its table includes the final zero and the extra zero used as an interpolation guard.
+Builds regenerate a module in `src/modules/` only when its generator source changes or its output is missing.
+The tracked `src/module-generators/generatedModules.json` manifest records each generator's source fingerprint
+and its output fingerprint. Source fingerprints cover the self-contained generator and the shared
+`generateModules.ts` writer; a writer change therefore invalidates every generated module.
 
-`npx nx run @8f4e/examples:test` checks that every generated module matches its saved source before running
-the embedded module tests. The generator's `--check` mode compares files without rewriting them.
-After changing a generator, run `npx nx run @8f4e/examples:build --skip-nx-cache` and commit both the generator
-and its regenerated modules.
+Unchanged generators are not evaluated, so fresh checkouts retain the committed values even when JavaScript
+math differs between environments. The minBLEP generator keeps its original eighteen decimal places.
+The output fingerprint detects manual edits to generated files instead of silently accepting them.
+
+`npx nx run @8f4e/examples:test` tests regeneration behavior and checks the saved fingerprints before running
+the embedded module tests. The generator's `--check` mode verifies fingerprints and file presence without
+running generators or rewriting files. After changing a generator, run
+`npx nx run @8f4e/examples:build --skip-nx-cache` and commit the generator, regenerated module, and manifest
+together. If a generated file was accidentally edited, restore it from Git; if it is missing, the next build
+recreates it. A missing manifest causes a normal build to regenerate all modules and record their fingerprints.

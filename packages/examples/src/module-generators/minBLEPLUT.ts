@@ -223,9 +223,6 @@ function generateApproximatePt2MinBlepData(options: Partial<MinBLEPApproximation
 	return [...output, 0.0];
 }
 
-// FFT and transcendental math can vary in their low bits across JavaScript environments.
-// Keep the serialized precision above the observed drift (about 2e-11), with at most 5e-9 rounding error.
-const OUTPUT_DECIMAL_PLACES = 8;
 const minBLEPData = generateApproximatePt2MinBlepData();
 
 const minBLEPLUT = `entry main
@@ -234,7 +231,7 @@ module minBLEPLUT
 ; @tab 7
 ; PT2-style minBLEP correction table
 ; generated from the approximate JS minBLEP pipeline
-${minBLEPData.map(value => `float\t${value.toFixed(OUTPUT_DECIMAL_PLACES)}`).join('\n')}
+${minBLEPData.map(value => `float\t${value.toFixed(18)}`).join('\n')}
 
 moduleEnd
 entryEnd`;

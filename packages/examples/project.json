@@ -32,6 +32,10 @@
 				"parallel": false,
 				"commands": [
 					{
+						"command": "vitest run --config vitest.config.ts",
+						"forwardAllArgs": false
+					},
+					{
 						"command": "node ./src/module-generators/generateModules.ts --check",
 						"forwardAllArgs": false
 					},

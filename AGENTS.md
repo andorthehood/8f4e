@@ -28,7 +28,7 @@
 - `npx nx run @8f4e/8f4e-website:build`: Builds the example product website and its editor dependencies.
 - `npx nx run-many --target=build --all`: Build all packages/libs.
 - `npx nx run-many --target=test --all`: Run Vitest across all packages.
-- `npx nx run @8f4e/examples:test`: Verify generated modules match saved sources, then run embedded `#test` modules in example `.8f4em` files through the CLI test runner.
+- `npx nx run @8f4e/examples:test`: Test source-based module regeneration and verify saved source/output fingerprints, then run embedded `#test` modules in example `.8f4em` files through the CLI test runner.
 - `npx nx run-many --target=typecheck --all`: Type-check all packages; also run on pre-commit via Husky/lint-staged.
 - `npx nx run-many --target=lint --projects=@8f4e/editor-default,@8f4e/editor-website`: Biome check/fix for the
   composition and website. Use `run-many --target=lint --all` to lint every project if needed.

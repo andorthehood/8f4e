@@ -22,5 +22,9 @@
   "dependencies": {
     "@8f4e/cli": "*",
     "@8f4e/editor-state-types": "*"
+  },
+  "devDependencies": {
+    "@8f4e/config": "*",
+    "vitest": "4.1.7"
   }
 }
