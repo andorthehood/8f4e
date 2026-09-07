@@ -84,15 +84,6 @@ export function createRuntimeRegistry(
 			}
 		),
 
-		MainThreadRuntime: createLazyRuntimeEntry(
-			'MainThreadRuntime',
-			{ root: 'mainThreadRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },
-			async () => {
-				const { createMainThreadRuntimeDef } = await import('@8f4e/runtime-main-thread/runtime-def');
-				return createMainThreadRuntimeDef(getCodeBuffer, getMemory);
-			}
-		),
-
 		AudioWorkletRuntime: createLazyRuntimeEntry(
 			'AudioWorkletRuntime',
 			{ root: 'audioRuntime', defaults: { sampleRate: 48000 }, schema: { type: 'object' } },

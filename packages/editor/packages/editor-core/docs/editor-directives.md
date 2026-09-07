@@ -832,7 +832,7 @@ Select the runtime host the editor should load for the project.
 ; @config runtime <runtimeId>
 ```
 
-- `runtimeId` must be a known runtime id such as `WebWorkerRuntime`, `MainThreadRuntime`, or `AudioWorkletRuntime`
+- `runtimeId` must be a known runtime id such as `WebWorkerRuntime` or `AudioWorkletRuntime`
 - Duplicate declarations use normal config last-write-wins behavior
 - If no runtime is configured, the editor does not load a runtime
 - Unknown runtime ids produce an editor error and no runtime is loaded
@@ -850,7 +850,10 @@ paths such as:
 ; @config audioRuntime.sampleRate 48000
 ; @config audioRuntime.audioOutBufferLAddress audioout:buffer
 ; @config workerRuntime.sampleRate 50
-; @config mainThreadRuntime.sampleRate 50
 ```
 
 These roots are owned by their contributing package, not by the editor config type.
+
+The main-thread runtime has been removed. For existing projects, replace `; @config runtime MainThreadRuntime`
+with `; @config runtime WebWorkerRuntime` and rename `mainThreadRuntime.sampleRate` to `workerRuntime.sampleRate`,
+keeping the same rate. Projects using the removed runtime id produce an editor error until updated.

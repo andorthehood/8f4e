@@ -8,9 +8,9 @@ describe('Runtime System', () => {
 	describe('Runtime lifecycle integration', () => {
 		it('should destroy previous runtime when runtime type changes without changeRuntime event', async () => {
 			const audioDestroyer = vi.fn();
-			const mainThreadDestroyer = vi.fn();
+			const webWorkerDestroyer = vi.fn();
 			const audioRuntimeFactory = vi.fn(() => audioDestroyer);
-			const mainThreadRuntimeFactory = vi.fn(() => mainThreadDestroyer);
+			const webWorkerRuntimeFactory = vi.fn(() => webWorkerDestroyer);
 
 			const state = createMockState({
 				editorConfig: { runtime: 'AudioWorkletRuntime' },
@@ -19,9 +19,9 @@ describe('Runtime System', () => {
 						id: 'AudioWorkletRuntime',
 						factory: audioRuntimeFactory,
 					},
-					MainThreadRuntime: {
-						id: 'MainThreadRuntime',
-						factory: mainThreadRuntimeFactory,
+					WebWorkerRuntime: {
+						id: 'WebWorkerRuntime',
+						factory: webWorkerRuntimeFactory,
 					},
 				},
 			});
@@ -40,18 +40,18 @@ describe('Runtime System', () => {
 			expect(audioRuntimeFactory).toHaveBeenCalledTimes(1);
 			expect(audioDestroyer).not.toHaveBeenCalled();
 
-			store.set('editorConfig.runtime', 'MainThreadRuntime');
+			store.set('editorConfig.runtime', 'WebWorkerRuntime');
 
 			// Give the subscription callback time to execute
 			await new Promise(resolve => setTimeout(resolve, 10));
 
 			expect(audioDestroyer).toHaveBeenCalledTimes(1);
-			expect(mainThreadRuntimeFactory).toHaveBeenCalledTimes(1);
+			expect(webWorkerRuntimeFactory).toHaveBeenCalledTimes(1);
 
 			const destroyOrder = audioDestroyer.mock.invocationCallOrder[0];
-			const mainThreadFactoryOrder = mainThreadRuntimeFactory.mock.invocationCallOrder[0];
+			const webWorkerFactoryOrder = webWorkerRuntimeFactory.mock.invocationCallOrder[0];
 
-			expect(destroyOrder).toBeLessThan(mainThreadFactoryOrder);
+			expect(destroyOrder).toBeLessThan(webWorkerFactoryOrder);
 		});
 
 		it('should switch runtime immediately when runtime selection changes while compiler is idle', async () => {
