@@ -3,7 +3,7 @@ title: 'TODO: Lazy-load WASM background rendering'
 priority: Medium
 effort: 1-2d
 created: 2026-09-06
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/958
 status: Open
 completed: null
 ---
@@ -62,7 +62,7 @@ Background projects may incur an extra request before their first background fra
 
 ## Related Items
 
-- [TODO 484: Lazy-load context-menu builders](484-lazy-load-context-menu-builders.md) — another isolated initial-bundle reduction.
+- [TODO 484: Lazy-load context-menu builders](archived/484-lazy-load-context-menu-builders.md) — another isolated initial-bundle reduction.
 
 ## References
 

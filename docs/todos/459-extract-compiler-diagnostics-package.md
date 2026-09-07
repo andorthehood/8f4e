@@ -3,7 +3,7 @@ title: 'TODO: Extract compiler diagnostics package'
 priority: Medium
 effort: 2-4h
 created: 2026-06-15
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/950
 status: Open
 completed: null
 ---

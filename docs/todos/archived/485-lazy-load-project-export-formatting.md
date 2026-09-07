@@ -4,8 +4,8 @@ priority: Low
 effort: 4-8h
 created: 2026-09-06
 issue: null
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Lazy-load Project Export Formatting

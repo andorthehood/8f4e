@@ -95,7 +95,7 @@ mutated objects:
 - called functions are marked through `FunctionMetadata.used = true`;
 - pointer metadata can be enriched through mutable local binding objects.
 
-That work is tracked separately in `docs/todos/463-refactor-stack-analyzer-to-return-fact-report.md`.
+That work is tracked separately in `docs/todos/archived/463-refactor-stack-analyzer-to-return-fact-report.md`.
 
 ## Non-Goals
 

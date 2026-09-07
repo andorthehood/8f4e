@@ -3,7 +3,7 @@ title: 'TODO: Resolve sprite identifiers before drawing'
 priority: Medium
 effort: 2-4h
 created: 2026-09-06
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/957
 status: Open
 completed: null
 ---
@@ -91,5 +91,5 @@ coverage during implementation; the initial scripts were temporary.
 
 ## Related Items
 
-- [TODO 468: Add shader-batched raster caches to glugglugglug](468-add-shader-batched-raster-caches-to-glugglugglug.md) —
+- [TODO 468: Add shader-batched raster caches to glugglugglug](archived/468-add-shader-batched-raster-caches-to-glugglugglug.md) —
   coordinate ordinary sprite ids and cache-builder inputs with its encoded cache-id design.

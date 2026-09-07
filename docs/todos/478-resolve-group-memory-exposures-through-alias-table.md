@@ -146,7 +146,7 @@ the exposure's declared public type must remain intentionally unchecked against 
 
 ## Related Items
 
-- **Related**: `docs/todos/477-establish-project-object-model.md`
+- **Related**: `docs/todos/archived/477-establish-project-object-model.md`
 - **Related**: `docs/todos/432-centralize-compile-time-metadata-query-resolution.md`
 - **Related**: `docs/todos/429-unify-metadata-query-argument-shape.md`
 

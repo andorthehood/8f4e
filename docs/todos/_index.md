@@ -22,12 +22,8 @@ Active todo files are listed below.
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
 | 048 | Add 2D Engine Visual Regression Tests | 🟡 | 6-8 hours | 2025-08-28 | The 2D engine package currently lacks visual regression testing, which means: |
-| 052 | Simplify Cache Rendering Order | 🟡 | 2–3 days | 2025-09-03 | The 2D engine supports caching of complex draw blocks via `cacheGroup`. The current implementation in `CachedRenderer` preserves draw order across different textures (sprite she... |
 | 058 | Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support | 🟡 | 4-6 days | 2025-09-11 | The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the proj... |
 | 064 | Research WebAssembly Runtimes for ARM Microcontroller Support | 🟡 | 3-5 days | 2025-09-10 | The 8f4e project currently supports browser-based WebAssembly runtimes (WebWorker and AudioWorklet) but lacks native runtimes for embedded ARM microcontrollers. To implement the... |
-| 155 | Add Framebuffer Memory Accounting in glugglugglug | 🟡 | 2-4h | 2025-12-30 | glugglugglug allocates render-to-texture and cache framebuffers, but there is no structured accounting for their estimated memory impact. This makes it difficult to reason about GPU... |
-| 170 | Toggle post-process effects via function key | 🟡 | 1-2h | 2026-01-13 | Post-process effects can take over the entire editor surface. If a fragment shader goes wrong, it can make the editor unreadable. We need a fast toggle to disable effects withou... |
-| 179 | Add glugglugglug shader error callback for editor logging | 🟡 | 2-4h | 2026-01-16 | Fragment shader compile failures in glugglugglug currently throw or log without a structured path back to the editor. |
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
 | 261 | Update instruction test helpers for float64 and refactor call test | 🟡 | 2-4h | 2026-02-20 | `packages/compiler/tests/instructions/testUtils.ts` currently reads/writes all non-integer memory as float32 in shared helpers like `moduleTesterWithFunctions`. |
 | 274 | Consolidate defaultFeatureFlags into a single source of truth | 🟡 | 2-4h | 2026-02-21 | There are currently two `defaultFeatureFlags` definitions: |
@@ -39,7 +35,6 @@ Active todo files are listed below.
 | 320 | Add `&*name` pointee start address prefix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e already supports `&name` to push the start byte address of a memory item and `*name` to dereference a pointer. However, there is no compile-time identifier form for "start... |
 | 321 | Add `*name&` pointee end address suffix for pointers | 🟡 | 2-4h | 2026-03-26 | 8f4e supports `name&` to push the start byte address of the last word-aligned chunk covering a memory item. That gives users an address-oriented way to reference the end of an a... |
 | 376 | Add ASCII scene renderer for editor snapshot tests | 🟡 | 1-2d | 2026-04-08 | The editor currently has strong unit coverage for directive parsing, layout derivation, and individual widget geometry, but it does not have a cheap whole-scene regression layer... |
-| 377 | Batch-parse modules and validate shared ids | 🟡 | 4-8h | 2026-04-08 | The compiler currently parses each module independently by mapping `compileToAST(...)` over the module list in `packages/compiler/src/index.ts`. |
 | 378 | Make parser stateful for block pairing and owning block context | 🟡 | 4-8h | 2026-04-08 | The tokenizer/parser already owns some cross-line structural syntax concerns such as `if` pairing and block-closure validation, but that statefulness is still too narrow in two... |
 | 380 | Remove hardcoded AudioWorklet buffer size from runtime contract | 🟡 | 1-2 days | 2026-04-21 | The AudioWorklet runtime currently injects `const AUDIO_BUFFER_SIZE 128` as an auto-managed environment constant in `packages/editor/packages/runtime-audio-worklet/src/runtimeDirectives.ts`. |
 | 383 | Extend CLI run with tracing and derived debug signals | 🟡 | 1-2d | 2026-04-23 | The new `cli run` command is already useful for inspecting final state after a fixed |
@@ -69,38 +64,42 @@ Active todo files are listed below.
 | 457 | Make load infer narrow width from pointer metadata | 🟡 | 4-8h | 2026-06-12 | Let plain `load` choose narrow signed or unsigned integer loads when address metadata proves the pointee width, while keeping raw integer addresses 32-bit. |
 | 459 | Extract compiler diagnostics package | 🟡 | 2-4h | 2026-06-15 | Move compiler diagnostic construction into a small shared package so compiler-adjacent packages can emit consistent diagnostics without importing compiler internals. |
 | 461 | Decouple language-spec from WASM output contracts | 🟡 | 1-2d | 2026-06-16 | Move WASM-only output and runtime contracts out of language-spec while keeping target-neutral language facts there. |
-| 463 | Refactor stack analyzer to return fact report | 🟡 | 1-2d | 2026-06-17 | Replace enriched analyzed line output with explicit stack-analysis facts and update compiler/codegen consumers directly, without compatibility shims. |
-| 468 | Add shader-batched raster caches to glugglugglug | 🟡 | 3-5d | 2026-08-19 | Rasterize static sprite groups into a GPU cache atlas and reuse them as high-bit-tagged instances without losing one-buffer ordering or one-draw batching. |
 | 475 | Remove dead compiler block-state caches | 🟡 | 2-4h | 2026-08-21 | Remove unused block-depth counts and legacy inside-block booleans while preserving the live loop, map, and ordered block-stack state. |
-| 476 | Extract web UI render projection | 🟡 | 3-5d | 2026-08-21 | Project web-specific sprite and pixel data from editor state while retaining logical gaps for caret behavior. |
 | 478 | Resolve group memory exposures through an alias table | 🟡 | 4-8h | 2026-08-26 | Keep composed AST references source-faithful and resolve structured group-memory aliases in the layout-aware and semantic reference passes. |
 | 480 | Simplify map codegen with reverse row order | 🟡 | 2-4h | 2026-09-06 | Emit map rows in reverse order to preserve first-match-wins behavior while removing matched/condition temporaries and runtime bookkeeping. |
 | 481 | Allocate compiler local indices with a counter | 🟡 | 2-4h | 2026-09-06 | Replace repeated local-map scans with a per-context allocator across semantic resolution, stack analysis, and Wasm codegen. |
 | 482 | Resolve sprite identifiers before drawing | 🟡 | 2-4h | 2026-09-06 | Resolve public atlas keys during setup and use dense numeric metadata lookup for each sprite submission. |
 | 483 | Lazy-load WASM background rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer background drawer and RGBA layer only when a project configures a background. |
-| 484 | Lazy-load context-menu builders | 🟡 | 4-8h | 2026-09-06 | Defer menu builders until first use while preserving navigation, dismissal, and asynchronous lifecycle behavior. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
 
 ### 🟢 Low Priority
 
 | ID | Title | Priority | Effort | Created | Summary |
 | ---- | ----- | -------- | ------ | ------- | ------- |
-| 016 | Runtime Loading UI Improvements | 🟢 | 2-3 days | 2025-08-26 | After implementing lazy loading for runtimes (TODO: 015), users will experience a delay when switching between runtime types. Currently, there's no visual feedback during this l... |
-| 057 | Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution | 🟢 | 8-12 hours | 2025-09-09 | The 8f4e project currently uses WebAssembly for executing compiled code with basic debugging capabilities (debug instruction parser exists). To enhance the development experienc... |
-| 295 | Unify code render rows and width derivation | 🟢 | 2-4h | 2026-03-09 | The editor currently derives rendered code rows and code-block width through separate code paths: |
 | 364 | Centralize alwaysOnTop code block partition logic | 🟢 | 1-2 hours | 2026-04-03 | The `@alwaysOnTop` behavior is implemented through repeated ad hoc array partitioning of `graphicHelper.codeBlocks`. The same "normal blocks first, always-on-top blocks last" ru... |
 | 388 | Add PixelCode font to sprite-generator | 🟢 | 4-8h | 2026-05-02 | The editor sprite-generator has several bundled bitmap fonts, but it does not include PixelCode/Pixel Code. PixelCode is an upstream pixel font aimed at programming, which makes... |
 | 389 | Add EagleSpCGA Alt3 8x8 font to sprite-generator | 🟢 | 4-8h | 2026-05-04 | The editor sprite-generator has several bundled bitmap fonts, including a few compact 8-pixel-high options, but it does not include EagleSpCGA Alt3 8x8. That leaves the editor w... |
 | 465 | Add Sergamon font to the editor | 🟢 | 4-8h | 2026-07-30 | Add Sergamon's 8x16 programming-font glyphs to the sprite-generator pipeline and expose the font through editor configuration. |
 | 466 | Add Scientifica font to the editor | 🟢 | 4-8h | 2026-07-30 | Import Scientifica's regular 11-pixel BDF face into the sprite-generator pipeline and expose the condensed font through editor configuration. |
-| 485 | Lazy-load project export formatting | 🟢 | 4-8h | 2026-09-06 | Defer .8f4e text formatting until export while preserving autosave and browser save-picker activation. |
 
 ## Completed TODOs
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 179 | Add glugglugglug shader error callback for editor logging | 2026-09-07 | Cancelled; GitHub issue #549 was closed as not planned. |
+| 485 | Lazy-load project export formatting | 2026-09-07 | Cancelled; lazy-loading export formatting is no longer planned. |
+| 484 | Lazy-load context-menu builders | 2026-09-07 | Cancelled; lazy-loading context-menu builders is no longer planned. |
+| 468 | Add shader-batched raster caches to glugglugglug | 2026-09-07 | Cancelled; the shader-batched raster-cache design is no longer planned. |
+| 377 | Batch-parse modules and validate shared ids | 2026-09-07 | Cancelled; GitHub issue #559 was closed as not planned. |
+| 295 | Unify code render rows and width derivation | 2026-09-07 | Cancelled; GitHub issue #554 was closed as not planned. |
+| 170 | Toggle post-process effects via function key | 2026-09-07 | Cancelled; GitHub issue #402 was closed as not planned. |
+| 155 | Add Framebuffer Memory Accounting in glugglugglug | 2026-09-07 | Cancelled; GitHub issue #548 was closed as not planned. |
+| 057 | Research JavaScript/WebAssembly Runtimes for Step-by-Step Execution | 2026-09-07 | Cancelled; GitHub issue #543 was closed as not planned. |
+| 052 | Simplify Cache Rendering Order | 2026-09-07 | Cancelled; GitHub issue #540 was closed as not planned. |
+| 016 | Runtime Loading UI Improvements | 2026-09-07 | Cancelled; GitHub issue #538 was closed as not planned. |
 | 479 | Pass constant namespaces into groups | 2026-08-27 | Added explicit same-name namespace forwarding with `pass`, ordinary per-block `use` imports, immediate-parent aliases, source-contextual diagnostics, editor round trips, and cache-safe semantic recomputation. |
-| 477 | Establish compiler-owned ProjectObjectModel | 2026-08-22 | Added compiler-owned typed block collections, recursively owned groups, direct root compilation, text parsing, and repository-wide consumer migration. |
+| 477 | Establish compiler-owned ProjectObjectModel | 2026-08-24 | Added compiler-owned typed block collections, recursively owned groups, direct root compilation, text parsing, and repository-wide consumer migration. |
+| 476 | Extract web UI render projection | 2026-08-21 | Extracted renderer-specific sprite projection into a dedicated package while retaining logical layout and caret data in editor state. |
 | 470 | Add no-op cacheGroup compatibility helper to glugglug2 utilities | 2026-08-19 | Added a temporary migration shim; removed it on 2026-08-20 after web-ui switched to direct drawing. |
 | 474 | Add RGBA texture layer plugin to glugglug2 | 2026-08-19 | Added fixed-phase RGBA8 texture uploads, same-storage updates, nearest/linear filtering, top-left rectangle draws, and independent texture/plugin ownership. |
 | 473 | Add post-process plugin to glugglug2 | 2026-08-19 | Added an inactive-zero-cost postDraw effect using a resize-aware RGB8 GPU framebuffer copy, ordered overlay inclusion, atomic replacement, and whole-scene visual coverage. |
@@ -111,6 +110,7 @@ Active todo files are listed below.
 | 464 | Require explicit stdlib include exports | 2026-06-19 | Include-local `#export` now marks public stdlib functions, private helpers are prefixed, and `readInterpolated` exercises the private-helper path. |
 | 458 | Decouple module execution order from memory layout | 2026-06-18 | Memory layout now allocates modules alphabetically by id while execution order remains driven by entry/module source order. |
 | 460 | Fix cross-block constant cache dependencies | 2026-06-17 | Constant resolution now returns per-line facts beside source-shaped cached ASTs, and recompiling with a changed constants block re-resolves unchanged cached module ASTs correctly. |
+| 463 | Refactor stack analyzer to return fact report | 2026-06-17 | Stack analysis now returns explicit keyed facts consumed by compiler orchestration and code generation without mutating AST lines. |
 | 462 | Extract semantic reference resolver | 2026-06-17 | Semantic reference resolution now runs once in compileSubProgram and returns a report consumed by stack analysis and WASM codegen alongside unchanged ASTs. |
 | 384 | Add compiler algorithmic regression metrics | 2026-06-14 | Archived with the exact completion date unknown; compiler complexity metrics now provide release-level regression signals. |
 | 381 | Add #follow module layout directive | 2026-06-14 | Cancelled; no strict `#follow` module layout adjacency directive is planned. |

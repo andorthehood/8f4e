@@ -3,7 +3,7 @@ title: 'TODO: Remove dead compiler block-state caches'
 priority: Medium
 effort: 2-4h
 created: 2026-08-21
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/954
 status: Open
 completed: null
 ---
@@ -106,5 +106,4 @@ stack analysis, and code generation and are not part of this cleanup.
 ## Related Items
 
 - **Related**: `docs/todos/archived/409-track-block-context-flags-during-stack-analysis.md`
-- **Related**: `docs/todos/463-refactor-stack-analyzer-to-return-fact-report.md`
-
+- **Related**: `docs/todos/archived/463-refactor-stack-analyzer-to-return-fact-report.md`

@@ -145,7 +145,7 @@ Useful metadata candidates:
 
 - **Related**: `docs/todos/406-review-compiler-namespace-prepass-repetition.md`
 - **Related**: `docs/todos/378-make-parser-stateful-for-block-pairing-and-owning-block-context.md`
-- **Related**: `docs/todos/377-batch-parse-modules-and-validate-shared-ids.md`
+- **Related**: `docs/todos/archived/377-batch-parse-modules-and-validate-shared-ids.md`
 - **Related**: `docs/todos/archived/417-tighten-compiler-ast-union-and-source-block-types.md`
 
 ## Notes

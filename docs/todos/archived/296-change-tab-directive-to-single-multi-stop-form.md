@@ -102,7 +102,7 @@ This keeps the visible feature set small and makes the saved source easier to re
 ## Related Items
 
 - **Follows**: `docs/todos/archived/294-add-editor-tab-stop-directive.md`
-- **Related**: `docs/todos/295-unify-code-render-rows-and-width-derivation.md`
+- **Related**: `docs/todos/archived/295-unify-code-render-rows-and-width-derivation.md`
 
 ## Notes
 

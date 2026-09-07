@@ -3,7 +3,7 @@ title: 'TODO: Lazy-load editing features on entering edit mode'
 priority: Medium
 effort: 2-4d
 created: 2026-09-06
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/959
 status: Open
 completed: null
 ---
@@ -69,8 +69,8 @@ testing helpers. Changing the product website's initial mode is a separate produ
 ## Related Items
 
 - [TODO 274: Consolidate default feature flags](274-consolidate-default-feature-flags-source.md).
-- [TODO 484: Lazy-load context-menu builders](484-lazy-load-context-menu-builders.md).
-- [TODO 485: Lazy-load project export formatting](485-lazy-load-project-export-formatting.md).
+- [TODO 484: Lazy-load context-menu builders](archived/484-lazy-load-context-menu-builders.md).
+- [TODO 485: Lazy-load project export formatting](archived/485-lazy-load-project-export-formatting.md).
 
 ## References
 

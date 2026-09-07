@@ -97,7 +97,7 @@ Suggested `memoryId` formats:
 - **Related**: `docs/todos/archived/156-add-glsl-shader-code-blocks.md`
 - **Related**: `docs/todos/archived/158-add-background-effects.md`
 - **Related**: `docs/todos/archived/166-default-post-process-vertex-shader.md`
-- **Related**: `docs/todos/179-glugglugglug-shader-error-callback.md`
+- **Related**: `docs/todos/archived/179-glugglugglug-shader-error-callback.md`
 - **Related**: `docs/todos/archived/185-simplify-post-process-single-effect.md`
 - **Related**: `docs/todos/archived/194-unsigned-int8-int16-buffers.md`
 

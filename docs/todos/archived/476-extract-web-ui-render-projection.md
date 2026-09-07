@@ -4,8 +4,8 @@ priority: Medium
 effort: 3-5d
 created: 2026-08-21
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-08-21
 ---
 
 # TODO: Extract Web UI Render Projection
@@ -146,7 +146,7 @@ data.
 
 ## Related Items
 
-- **Related**: `docs/todos/295-unify-code-render-rows-and-width-derivation.md`
+- **Related**: `docs/todos/archived/295-unify-code-render-rows-and-width-derivation.md`
 - **Related**: `docs/todos/307-optimize-state-manager-selector-tokenization-and-subscription-lookup.md`
 - **Related**: `docs/todos/376-add-ascii-scene-renderer-for-editor-snapshots.md`
 

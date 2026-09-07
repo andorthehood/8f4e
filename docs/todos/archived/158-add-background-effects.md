@@ -55,7 +55,7 @@ Add a single background effect inside glugglugglug that renders one full-screen 
 
 ## Related Items
 
-- **Related**: `docs/todos/155-glugglugglug-framebuffer-memory-accounting.md`
+- **Related**: `docs/todos/archived/155-glugglugglug-framebuffer-memory-accounting.md`
 - **Related**: `docs/todos/185-simplify-post-process-single-effect.md`
 
 ## Notes

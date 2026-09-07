@@ -3,7 +3,7 @@ title: 'TODO: Add compile-time int cast helper'
 priority: Medium
 effort: 4-8h
 created: 2026-06-11
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/948
 status: Open
 completed: null
 ---
@@ -132,4 +132,3 @@ loop int(SAMPLE_RATE/60)
 - **Related**: `docs/todos/379-add-exponentiation-support-to-compile-time-expressions.md`
 - **Related**: `docs/todos/432-centralize-compile-time-metadata-query-resolution.md`
 - **Related**: `docs/todos/434-show-const-values-in-tooltips.md`
-

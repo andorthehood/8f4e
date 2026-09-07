@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2h
 created: 2026-01-13
 issue: https://github.com/andorthehood/8f4e/issues/402
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Toggle post-process effects via function key

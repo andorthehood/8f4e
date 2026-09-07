@@ -156,7 +156,7 @@ Alternative approaches considered:
 ## Related Items
 
 - **Related**: `057-webassembly-runtimes-arm-microcontroller-research.md` - Complementary research for embedded systems
-- **Related**: `057-research-js-webassembly-runtimes-step-execution.md` - Browser runtime debugging research
+- **Related**: `archived/057-research-js-webassembly-runtimes-step-execution.md` - Browser runtime debugging research
 - **Blocks**: Future LinuxALSA runtime implementation
 - **Depends on**: None
 

@@ -4,8 +4,8 @@ priority: Low
 effort: 2-4h
 created: 2026-03-09
 issue: https://github.com/andorthehood/8f4e/issues/554
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Unify code render rows and width derivation

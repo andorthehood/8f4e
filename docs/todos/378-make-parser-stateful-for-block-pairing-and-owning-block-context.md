@@ -108,7 +108,7 @@ This change is intentionally breaking at the parser/diagnostic contract level:
 
 - **Related**: `docs/todos/archived/371-move-block-result-type-to-blockend-and-drop-explicit-void.md`
 - **Related**: `375-unify-syntax-and-compiler-error-shapes.md`
-- **Related**: `377-batch-parse-modules-and-validate-shared-ids.md`
+- **Related**: `archived/377-batch-parse-modules-and-validate-shared-ids.md`
 
 ## Notes
 

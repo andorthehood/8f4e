@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2025-12-30
 issue: https://github.com/andorthehood/8f4e/issues/548
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Add Framebuffer Memory Accounting in glugglugglug

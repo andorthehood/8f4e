@@ -93,6 +93,6 @@ AST blocks.
 
 ## Related Items
 
-- **Related**: `docs/todos/477-establish-project-object-model.md`
+- **Related**: `docs/todos/archived/477-establish-project-object-model.md`
 - **Related**: `docs/todos/478-resolve-group-memory-exposures-through-alias-table.md`
-- **Related**: `docs/todos/460-fix-cross-block-constant-cache-dependencies.md`
+- **Related**: `docs/todos/archived/460-fix-cross-block-constant-cache-dependencies.md`

@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-01-16
 issue: https://github.com/andorthehood/8f4e/issues/549
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Add glugglugglug shader error callback for editor logging

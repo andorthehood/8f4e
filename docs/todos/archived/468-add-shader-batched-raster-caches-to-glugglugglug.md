@@ -4,8 +4,8 @@ priority: Medium
 effort: 3-5d
 created: 2026-08-19
 issue: null
-status: Open
-completed: null
+status: Cancelled
+completed: 2026-09-07
 ---
 
 # TODO: Add shader-batched raster caches to glugglugglug

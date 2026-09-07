@@ -3,7 +3,7 @@ title: 'TODO: Add Scientifica font to the editor'
 priority: Low
 effort: 4-8h
 created: 2026-07-30
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/953
 status: Open
 completed: null
 ---

@@ -3,7 +3,7 @@ title: 'TODO: Allocate compiler local indices with a counter'
 priority: Medium
 effort: 2-4h
 created: 2026-09-06
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/956
 status: Open
 completed: null
 ---
