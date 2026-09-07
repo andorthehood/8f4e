@@ -11,6 +11,7 @@ import sineLookupTable from './sineLookupTable.ts';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const modulesDir = path.resolve(__dirname, '../modules');
 const FORMAT_HEADER = '8f4e/v1';
+const checkOnly = process.argv.includes('--check');
 
 const generatedModules = [
 	{
@@ -38,9 +39,22 @@ const generatedModules = [
 await Promise.all(
 	generatedModules.map(async ({ fileName, code }) => {
 		const outputPath = path.join(modulesDir, fileName);
+		const content = `${FORMAT_HEADER}\n\n${code}\n`;
+		const existing = await fs.readFile(outputPath, 'utf8').catch(error => {
+			if (error.code === 'ENOENT') {
+				return undefined;
+			}
+			throw error;
+		});
+		if (existing === content) {
+			return;
+		}
+		if (checkOnly) {
+			throw new Error(`Generated module does not match saved source: ${fileName}`);
+		}
 		await fs.mkdir(path.dirname(outputPath), { recursive: true });
-		return fs.writeFile(outputPath, `${FORMAT_HEADER}\n\n${code}\n`, 'utf8');
+		return fs.writeFile(outputPath, content, 'utf8');
 	})
 );
 
-console.log(`Generated ${generatedModules.length} module files in ${modulesDir}`);
+console.log(`${checkOnly ? 'Verified' : 'Generated'} ${generatedModules.length} module files in ${modulesDir}`);
