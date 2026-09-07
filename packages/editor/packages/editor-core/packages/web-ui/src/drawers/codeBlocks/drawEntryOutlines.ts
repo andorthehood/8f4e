@@ -25,5 +25,11 @@ export default function drawEntryOutlines(engine: DrawContext, state: State): vo
 
 	for (const outline of state.codeBlockRendering.entryOutlines) {
 		drawOutline(engine, outline, thickness, state.spriteLookups.fillColors.wire);
+		engine.drawText(
+			outline.topLeft.x + state.viewport.vGrid,
+			outline.topLeft.y,
+			outline.entryName,
+			state.spriteLookups.fontEntryName
+		);
 	}
 }
