@@ -5,10 +5,10 @@ const noop = () => {
 export default async function createModule(
 	memoryRef: WebAssembly.Memory,
 	codeBuffer: Uint8Array,
-	entryName = 'buffer'
+	bufferExportName = 'buffer'
 ): Promise<{
 	memoryBuffer: Float32Array;
-	entry: CallableFunction;
+	buffer: CallableFunction;
 	initDefaults: CallableFunction;
 }> {
 	const memoryBuffer = new Float32Array(memoryRef.buffer);
@@ -19,9 +19,9 @@ export default async function createModule(
 		},
 	})) as unknown as { instance: WebAssembly.Instance; module: WebAssembly.Module };
 
-	const exportedEntry = instance.exports[entryName];
-	const entry = typeof exportedEntry === 'function' ? exportedEntry : noop;
+	const exportedBuffer = instance.exports[bufferExportName];
+	const buffer = typeof exportedBuffer === 'function' ? exportedBuffer : noop;
 	const initDefaults = instance.exports.initDefaults as CallableFunction;
 
-	return { memoryBuffer, entry, initDefaults };
+	return { memoryBuffer, buffer, initDefaults };
 }

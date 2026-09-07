@@ -217,7 +217,7 @@ export function audioWorkletRuntimeFactory(
 				type: 'init',
 				memoryRef: memory,
 				codeBuffer: getCodeBuffer(),
-				entry: config.entry,
+				bufferExportName: config.entry,
 				audioOutputBuffers: getAudioOutputBuffers(state),
 				audioInputBuffers: getAudioInputBuffers(state),
 			});

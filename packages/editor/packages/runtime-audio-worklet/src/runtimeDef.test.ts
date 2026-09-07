@@ -270,7 +270,7 @@ describe('AudioWorklet context lifetime', () => {
 		expect(worklets[0].port.postMessage).toHaveBeenCalledWith(
 			expect.objectContaining({
 				type: 'init',
-				entry: expectedEntry,
+				bufferExportName: expectedEntry,
 			})
 		);
 	});

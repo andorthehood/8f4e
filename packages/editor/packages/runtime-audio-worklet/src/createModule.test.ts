@@ -24,10 +24,10 @@ describe('createModule', () => {
 
 		const result = await createModule(new WebAssembly.Memory({ initial: 1 }), new Uint8Array());
 
-		expect(result.entry).toBe(buffer);
+		expect(result.buffer).toBe(buffer);
 	});
 
-	it('returns the configured entry function', async () => {
+	it('returns the configured export as the buffer function', async () => {
 		const alternate = vi.fn();
 		mockInstantiation({
 			main: vi.fn(),
@@ -38,10 +38,10 @@ describe('createModule', () => {
 
 		const result = await createModule(new WebAssembly.Memory({ initial: 1 }), new Uint8Array(), 'alternate');
 
-		expect(result.entry).toBe(alternate);
+		expect(result.buffer).toBe(alternate);
 	});
 
-	it('returns an empty entry function when the export is missing', async () => {
+	it('returns an empty buffer function when the export is missing', async () => {
 		mockInstantiation({
 			main: vi.fn(),
 			initDefaults: vi.fn(),
@@ -49,7 +49,7 @@ describe('createModule', () => {
 
 		const result = await createModule(new WebAssembly.Memory({ initial: 1 }), new Uint8Array());
 
-		expect(result.entry).toBeTypeOf('function');
-		expect(() => result.entry()).not.toThrow();
+		expect(result.buffer).toBeTypeOf('function');
+		expect(() => result.buffer()).not.toThrow();
 	});
 });
