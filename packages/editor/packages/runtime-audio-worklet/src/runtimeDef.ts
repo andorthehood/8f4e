@@ -160,7 +160,20 @@ export function audioWorkletRuntimeFactory(
 	let mediaStream: any | null = null;
 	let mediaStreamSource: any | null = null;
 	let disposed = false;
+	/**
+	 * Identifies the current audio initialization attempt. Incremented when initialization
+	 * starts and when the audio setup is torn down. After each await, initialization checks
+	 * its captured value so an old attempt cannot attach nodes or tear down a newer setup.
+	 * This also handles sample-rate changes while the editor itself remains alive.
+	 */
 	let generation = 0;
+	/**
+	 * Identifies the latest microphone synchronization request. Incremented on every input
+	 * sync and audio teardown. If getUserMedia resolves with an older revision, its tracks
+	 * are stopped instead of connected. This is separate from generation because input
+	 * settings can change without restarting the audio context. The pending browser request
+	 * is not cancelled; only its outdated result is discarded.
+	 */
 	let inputRevision = 0;
 
 	function getSharedAudioContext() {
