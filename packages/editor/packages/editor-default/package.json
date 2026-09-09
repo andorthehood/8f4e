@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@8f4e/config": "*",
-    "@types/node": "24.13.2",
+    "@types/node": "24.13.4",
     "vite": "7.3.5",
     "vitest": "4.1.7"
   }
