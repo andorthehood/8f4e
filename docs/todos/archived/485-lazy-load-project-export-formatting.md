@@ -68,7 +68,7 @@ Browser user activation can expire during an asynchronous load, making the file-
 
 ## Notes
 
-Identified through source inspection on 2026-09-06. Prioritize background rendering and menu builders before this smaller split.
+Identified through source inspection on 2026-09-06. Prioritize overlay rendering and menu builders before this smaller split.
 
 ## Archive Instructions
 

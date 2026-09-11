@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getObjectFitDrawRect } from './wasmFrameTexture';
+import { getObjectFitDrawRect } from './wasmOverlayTexture';
 
 describe('getObjectFitDrawRect', () => {
 	it('stretches to the viewport for fill', () => {

@@ -1,14 +1,14 @@
 import type { State } from '@8f4e/editor-state-types';
 import { describe, expect, it } from 'vitest';
-import { resolveWebUiBackgroundConfig, webUiEditorConfigSchemaContribution } from './webUiConfig';
+import { resolveWebUiOverlayConfig, webUiEditorConfigSchemaContribution } from './webUiConfig';
 
 describe('web-ui editor config', () => {
-	it('contributes frame texture config schema paths', () => {
+	it('contributes overlay texture config schema paths', () => {
 		expect(webUiEditorConfigSchemaContribution.root).toBe('webUI');
 		expect(webUiEditorConfigSchemaContribution.schema).toMatchObject({
 			type: 'object',
 			properties: {
-				background: {
+				overlay: {
 					type: 'object',
 					properties: {
 						entry: { type: 'string' },
@@ -28,11 +28,11 @@ describe('web-ui editor config', () => {
 		});
 	});
 
-	it('resolves structured frame texture config', () => {
+	it('resolves structured overlay texture config', () => {
 		const state = {
 			editorConfig: {
 				webUI: {
-					background: {
+					overlay: {
 						entry: 'renderFrame',
 						target: 'screen:rgba',
 						width: 64,
@@ -45,7 +45,7 @@ describe('web-ui editor config', () => {
 			},
 		} as State;
 
-		expect(resolveWebUiBackgroundConfig(state)).toEqual({
+		expect(resolveWebUiOverlayConfig(state)).toEqual({
 			entry: 'renderFrame',
 			target: 'screen:rgba',
 			width: 64,
@@ -56,11 +56,11 @@ describe('web-ui editor config', () => {
 		});
 	});
 
-	it('ignores incomplete frame texture config', () => {
+	it('ignores incomplete overlay texture config', () => {
 		const state = {
 			editorConfig: {
 				webUI: {
-					background: {
+					overlay: {
 						entry: 'renderFrame',
 						target: 'screen',
 						width: 64,
@@ -70,6 +70,6 @@ describe('web-ui editor config', () => {
 			},
 		} as State;
 
-		expect(resolveWebUiBackgroundConfig(state)).toBeUndefined();
+		expect(resolveWebUiOverlayConfig(state)).toBeUndefined();
 	});
 });

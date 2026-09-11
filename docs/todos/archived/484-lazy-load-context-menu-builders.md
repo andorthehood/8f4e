@@ -57,7 +57,7 @@ the measured delay and respect disabled feature flags.
 
 ## Related Items
 
-- [TODO 483: Lazy-load WASM background rendering](483-lazy-load-wasm-background-rendering.md).
+- [TODO 483: Lazy-load WASM overlay rendering](../483-lazy-load-wasm-overlay-rendering.md).
 - [TODO 486: Lazy-load editing features on entering edit mode](486-lazy-load-editing-features-on-edit-mode.md) — keep menus usable in view mode where currently allowed.
 
 ## References

@@ -8,7 +8,7 @@ export const webUiEditorConfigSchemaContribution: EditorConfigSchemaContribution
 	schema: {
 		type: 'object',
 		properties: {
-			background: {
+			overlay: {
 				type: 'object',
 				properties: {
 					entry: { type: 'string' },
@@ -65,19 +65,19 @@ function isQualifiedMemoryId(value: string): boolean {
 	return Boolean(moduleId) && Boolean(memoryId) && extra === undefined;
 }
 
-export function resolveWebUiBackgroundConfig(state: State): WebUiOptions['frameTexture'] | undefined {
+export function resolveWebUiOverlayConfig(state: State): WebUiOptions['overlayTexture'] | undefined {
 	const webUiConfig = state.editorConfig.webUI;
-	const background = isRecord(webUiConfig) ? webUiConfig.background : undefined;
+	const overlay = isRecord(webUiConfig) ? webUiConfig.overlay : undefined;
 
-	if (!isRecord(background)) {
+	if (!isRecord(overlay)) {
 		return undefined;
 	}
 
-	const target = background.target;
-	const entry = background.entry;
-	const width = getPositiveInteger(background, 'width');
-	const height = getPositiveInteger(background, 'height');
-	const size = getSize(background, 'size');
+	const target = overlay.target;
+	const entry = overlay.entry;
+	const width = getPositiveInteger(overlay, 'width');
+	const height = getPositiveInteger(overlay, 'height');
+	const size = getSize(overlay, 'size');
 
 	if (
 		typeof entry !== 'string' ||
@@ -90,13 +90,13 @@ export function resolveWebUiBackgroundConfig(state: State): WebUiOptions['frameT
 		return undefined;
 	}
 
-	const filter = background.filter === 'linear' || background.filter === 'nearest' ? background.filter : undefined;
+	const filter = overlay.filter === 'linear' || overlay.filter === 'nearest' ? overlay.filter : undefined;
 	const objectFit =
-		background.objectFit === 'fill' ||
-		background.objectFit === 'cover' ||
-		background.objectFit === 'contain' ||
-		background.objectFit === 'none'
-			? background.objectFit
+		overlay.objectFit === 'fill' ||
+		overlay.objectFit === 'cover' ||
+		overlay.objectFit === 'contain' ||
+		overlay.objectFit === 'none'
+			? overlay.objectFit
 			: undefined;
 
 	return {

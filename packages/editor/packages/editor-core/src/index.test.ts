@@ -341,7 +341,7 @@ describe('editor init', () => {
 				},
 			},
 			renderStatsIntervalFrames: 12,
-			frameTexture: {
+			overlayTexture: {
 				entry: 'renderFrame',
 				target: 'screen:rgba',
 				width: 1,
@@ -367,13 +367,13 @@ describe('editor init', () => {
 		});
 
 		expect(viewOptions.renderStatsIntervalFrames).toBe(12);
-		expect(viewOptions.frameTexture).toEqual({
+		expect(viewOptions.overlayTexture).toEqual({
 			entry: 'renderFrame',
 			target: 'screen:rgba',
 			width: 1,
 			height: 1,
 		});
-		expect(viewOptions.getFrameTexture?.()).toEqual({
+		expect(viewOptions.getOverlayTexture?.()).toEqual({
 			entry: 'renderFrame',
 			target: 'screen:rgba',
 			width: 1,
@@ -381,7 +381,7 @@ describe('editor init', () => {
 		});
 		storeState.editorConfig = {
 			webUI: {
-				background: {
+				overlay: {
 					entry: 'draw',
 					target: 'screen:pixels',
 					width: 64,
@@ -392,7 +392,7 @@ describe('editor init', () => {
 				},
 			},
 		};
-		expect(viewOptions.getFrameTexture?.()).toEqual({
+		expect(viewOptions.getOverlayTexture?.()).toEqual({
 			entry: 'draw',
 			target: 'screen:pixels',
 			width: 64,

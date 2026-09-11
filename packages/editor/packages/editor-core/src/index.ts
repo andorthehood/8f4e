@@ -31,7 +31,7 @@ import { createMemoryViewManager, type MemoryRef } from './memoryViewManager';
 import { createSpriteSheetManager } from './spriteSheetManager';
 import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 import {
-	resolveWebUiBackgroundConfig,
+	resolveWebUiOverlayConfig,
 	WEB_UI_EDITOR_CONFIG_SCHEMA_CONTRIBUTION_ID,
 	webUiEditorConfigSchemaContribution,
 } from './webUiConfig';
@@ -98,7 +98,7 @@ export interface EditorOptions {
 	runtimeRegistry: RuntimeRegistry;
 	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 	renderStatsIntervalFrames?: number;
-	frameTexture?: WebUiOptions['frameTexture'];
+	overlayTexture?: WebUiOptions['overlayTexture'];
 }
 
 interface CanvasSize {
@@ -231,8 +231,8 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 
 	view = await initView(state, renderProjection, canvas, memoryViews, spriteData, {
 		renderStatsIntervalFrames: options.renderStatsIntervalFrames,
-		frameTexture: options.frameTexture,
-		getFrameTexture: () => resolveWebUiBackgroundConfig(state) ?? options.frameTexture,
+		overlayTexture: options.overlayTexture,
+		getOverlayTexture: () => resolveWebUiOverlayConfig(state) ?? options.overlayTexture,
 		getCodeBuffer: () => currentCodeBuffer,
 		getMemory: () => currentMemoryRef,
 		onRenderStats: stats => {

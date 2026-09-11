@@ -14,7 +14,7 @@ For example, a helper like this may look harmless:
 
 ```ts
 createMockCodeBlock({
-	code: ['module synth', '; @config webUI.background.target frame:buffer', 'moduleEnd'],
+	code: ['module synth', '; @config webUI.overlay.target frame:buffer', 'moduleEnd'],
 });
 ```
 
@@ -88,15 +88,15 @@ For example:
 
 ```ts
 createMockCodeBlock({
-	code: ['module synth', '; @config webUI.background.target frame:buffer', 'moduleEnd'],
+	code: ['module synth', '; @config webUI.overlay.target frame:buffer', 'moduleEnd'],
 	moduleId: 'synth',
 	parsedDirectives: [
 		{
 			prefix: '@',
 			name: 'config',
-			args: ['webUI.background.target', 'frame:buffer'],
+			args: ['webUI.overlay.target', 'frame:buffer'],
 			rawRow: 1,
-			sourceLine: '; @config webUI.background.target frame:buffer',
+			sourceLine: '; @config webUI.overlay.target frame:buffer',
 			isTrailing: false,
 		},
 	],

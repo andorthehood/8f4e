@@ -9,7 +9,7 @@ import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
 import drawBackground from './drawers/drawBackground';
 import drawModeOverlay from './drawers/modeOverlay';
-import { createWasmFrameTextureDrawer, type WasmFrameTextureOptions } from './drawers/wasmFrameTexture';
+import { createWasmOverlayTextureDrawer, type WasmOverlayTextureOptions } from './drawers/wasmOverlayTexture';
 import type { MemoryViews } from './types';
 import { resolveWireColors } from './wire-colors';
 
@@ -35,11 +35,11 @@ export interface RenderStats {
 export interface WebUiOptions {
 	onRenderStats?: (stats: RenderStats) => void;
 	renderStatsIntervalFrames?: number;
-	frameTexture?: WasmFrameTextureOptions;
-	getFrameTexture?: () => WasmFrameTextureOptions | undefined;
+	overlayTexture?: WasmOverlayTextureOptions;
+	getOverlayTexture?: () => WasmOverlayTextureOptions | undefined;
 	getCodeBuffer?: () => Uint8Array;
 	getMemory?: () => WebAssembly.Memory | null;
-	instantiateFrameTextureWasm?: (
+	instantiateOverlayTextureWasm?: (
 		memory: WebAssembly.Memory,
 		codeBuffer: Uint8Array
 	) => Promise<WebAssembly.Exports> | WebAssembly.Exports;
@@ -66,47 +66,47 @@ export default async function init(
 	engine.hooks.preDraw.push(() => {
 		frameStartedAt = performance.now();
 	});
-	const frameTextureLayer = new RgbaTextureLayer(engine);
 	const lines = new LineDrawer(engine);
+	const overlayTextureLayer = new RgbaTextureLayer(engine, { phase: 'postDraw' });
 	const draw = new DrawContext(engine, spriteData.characterWidth);
 	let wireColors = resolveWireColors(state.editorConfig.color);
 	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
 	let viewportWidth = canvas.width;
 	let viewportHeight = canvas.height;
-	const getFrameTexture = options.getFrameTexture ?? (() => options.frameTexture);
-	let frameTextureKey = '';
-	let drawWasmFrameTexture: ((layer: RgbaTextureLayer) => void) | undefined;
-	function syncWasmFrameTextureDrawer(): ((layer: RgbaTextureLayer) => void) | undefined {
-		const frameTexture = getFrameTexture();
-		const nextFrameTextureKey = frameTexture ? JSON.stringify(frameTexture) : '';
+	const getOverlayTexture = options.getOverlayTexture ?? (() => options.overlayTexture);
+	let overlayTextureKey = '';
+	let drawWasmOverlayTexture: ((layer: RgbaTextureLayer) => void) | undefined;
+	function syncWasmOverlayTextureDrawer(): ((layer: RgbaTextureLayer) => void) | undefined {
+		const overlayTexture = getOverlayTexture();
+		const nextOverlayTextureKey = overlayTexture ? JSON.stringify(overlayTexture) : '';
 
-		if (nextFrameTextureKey === frameTextureKey) {
-			return drawWasmFrameTexture;
+		if (nextOverlayTextureKey === overlayTextureKey) {
+			return drawWasmOverlayTexture;
 		}
 
-		frameTextureKey = nextFrameTextureKey;
-		drawWasmFrameTexture =
-			frameTexture && options.getCodeBuffer && options.getMemory
-				? createWasmFrameTextureDrawer({
+		overlayTextureKey = nextOverlayTextureKey;
+		drawWasmOverlayTexture =
+			overlayTexture && options.getCodeBuffer && options.getMemory
+				? createWasmOverlayTextureDrawer({
 						state,
 						memoryViews,
-						frameTexture,
+						overlayTexture,
 						getCodeBuffer: options.getCodeBuffer,
 						getMemory: options.getMemory,
 						getViewportSize: () => ({ width: viewportWidth, height: viewportHeight }),
-						instantiate: options.instantiateFrameTextureWasm,
+						instantiate: options.instantiateOverlayTextureWasm,
 					})
 				: undefined;
 
-		return drawWasmFrameTexture;
+		return drawWasmOverlayTexture;
 	}
 	let renderedFrameCount = 0;
 	let statsSampleStartFrameCount = 0;
 	let statsSampleStartTime = performance.now();
 
 	engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
-	frameTextureLayer.setDrawCallback(layer => {
-		syncWasmFrameTextureDrawer()?.(layer);
+	overlayTextureLayer.setDrawCallback(layer => {
+		syncWasmOverlayTextureDrawer()?.(layer);
 	});
 
 	function getSampledFps(): number {
@@ -194,7 +194,7 @@ export default async function init(
 			return;
 		}
 
-		frameTextureLayer.releaseMemory();
+		overlayTextureLayer.releaseMemory();
 		lines.releaseMemory();
 		engine.releaseRenderingMemory();
 		renderingResourcesReleased = true;
@@ -249,7 +249,7 @@ export default async function init(
 		destroy: () => {
 			pauseRendering();
 			lines.destroy();
-			frameTextureLayer.destroy();
+			overlayTextureLayer.destroy();
 			engine.destroy();
 		},
 	};

@@ -7,7 +7,7 @@ const renderDataSnapshot = { codeBlocks: new Map() };
 const renderData: WebUiRenderDataSource = { getSnapshot: () => renderDataSnapshot };
 
 const mocks = vi.hoisted(() => {
-	let frameTextureDrawCallback: ((layer: unknown) => void) | undefined;
+	let overlayTextureDrawCallback: ((layer: unknown) => void) | undefined;
 	const engine = {
 		hooks: {
 			preDraw: [] as Array<() => void>,
@@ -29,9 +29,9 @@ const mocks = vi.hoisted(() => {
 		restoreRenderingMemory: vi.fn(),
 		destroy: vi.fn(),
 	};
-	const frameTextureLayer = {
+	const overlayTextureLayer = {
 		setDrawCallback: vi.fn((callback: (layer: unknown) => void) => {
-			frameTextureDrawCallback = callback;
+			overlayTextureDrawCallback = callback;
 		}),
 		uploadRgba8Texture: vi.fn(() => ({ texture: {}, width: 128, height: 128, filter: 'nearest' })),
 		drawTexture: vi.fn(),
@@ -53,7 +53,7 @@ const mocks = vi.hoisted(() => {
 
 	return {
 		engine,
-		frameTextureLayer,
+		overlayTextureLayer,
 		lines,
 		wireColors,
 		resolveWireColors,
@@ -63,13 +63,13 @@ const mocks = vi.hoisted(() => {
 		Engine: vi.fn(function () {
 			engine.hooks.preDraw.length = 0;
 			engine.hooks.postDraw.length = 0;
-			frameTextureDrawCallback = undefined;
+			overlayTextureDrawCallback = undefined;
 			return engine;
 		}),
 		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
-		RgbaTextureLayer: vi.fn(function () {
-			engine.hooks.preDraw.push(() => frameTextureDrawCallback?.(frameTextureLayer));
-			return frameTextureLayer;
+		RgbaTextureLayer: vi.fn(function (_host: unknown, options: { phase?: 'preDraw' | 'postDraw' } = {}) {
+			engine.hooks[options.phase ?? 'preDraw'].push(() => overlayTextureDrawCallback?.(overlayTextureLayer));
+			return overlayTextureLayer;
 		}),
 		// biome-ignore lint/complexity/useArrowFunction: Plugins are constructed with new in the code under test.
 		LineDrawer: vi.fn(function () {
@@ -187,6 +187,27 @@ describe('web-ui init', () => {
 		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(expect.anything(), frameState);
 	});
 
+	it('registers the overlay texture after the line renderer in the post-draw phase', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState();
+		const memoryViews = {
+			int8: new Int8Array(0),
+			int16: new Int16Array(0),
+			int32: new Int32Array(0),
+			uint8: new Uint8Array(0),
+			uint16: new Uint16Array(0),
+			float32: new Float32Array(0),
+			float64: new Float64Array(0),
+		};
+
+		await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+
+		expect(mocks.RgbaTextureLayer).toHaveBeenCalledWith(mocks.engine, { phase: 'postDraw' });
+		expect(mocks.LineDrawer.mock.invocationCallOrder[0]).toBeLessThan(
+			mocks.RgbaTextureLayer.mock.invocationCallOrder[0]
+		);
+	});
+
 	it('hides wires while a dialog is visible and restores them when it closes', async () => {
 		const { default: init } = await import('./index');
 		const state = createMockState({
@@ -261,7 +282,7 @@ describe('web-ui init', () => {
 		view.releaseRenderingResources();
 
 		expect(mocks.cancelAnimationFrame).toHaveBeenCalledOnce();
-		expect(mocks.frameTextureLayer.releaseMemory).toHaveBeenCalledOnce();
+		expect(mocks.overlayTextureLayer.releaseMemory).toHaveBeenCalledOnce();
 		expect(mocks.lines.releaseMemory).toHaveBeenCalledOnce();
 		expect(mocks.engine.releaseRenderingMemory).toHaveBeenCalledOnce();
 		expect(canvas).toEqual(expect.objectContaining({ width: 1, height: 1 }));
@@ -344,7 +365,7 @@ describe('web-ui init', () => {
 		performanceNow.mockRestore();
 	});
 
-	it('can draw a WebAssembly-generated RGBA8 frame texture', async () => {
+	it('can draw a WebAssembly-generated RGBA8 overlay texture', async () => {
 		const { default: init } = await import('./index');
 		const state = createMockState();
 		const rgba = createMemory({
@@ -389,8 +410,8 @@ describe('web-ui init', () => {
 		const renderFrameExport = vi.fn(() => {
 			memoryViews.uint8.set([10, 20, 30, 255], 4);
 		});
-		const instantiateFrameTextureWasm = vi.fn(async () => ({ renderFrame: renderFrameExport }));
-		let frameTexture:
+		const instantiateOverlayTextureWasm = vi.fn(async () => ({ renderFrame: renderFrameExport }));
+		let overlayTexture:
 			| {
 					entry: string;
 					target: string;
@@ -401,16 +422,16 @@ describe('web-ui init', () => {
 		const canvas = { width: 160, height: 90 } as HTMLCanvasElement;
 
 		const view = await init(state, renderData, canvas, memoryViews, createSpriteData(), {
-			getFrameTexture: () => frameTexture,
+			getOverlayTexture: () => overlayTexture,
 			getCodeBuffer: () => codeBuffer,
 			getMemory: () => memory,
-			instantiateFrameTextureWasm,
+			instantiateOverlayTextureWasm,
 		});
 
 		view.renderFrame();
-		expect(instantiateFrameTextureWasm).not.toHaveBeenCalled();
+		expect(instantiateOverlayTextureWasm).not.toHaveBeenCalled();
 
-		frameTexture = {
+		overlayTexture = {
 			entry: 'renderFrame',
 			target: 'screen:rgba',
 			width: 1,
@@ -418,7 +439,7 @@ describe('web-ui init', () => {
 		};
 
 		view.renderFrame();
-		expect(instantiateFrameTextureWasm).toHaveBeenCalledWith(memory, codeBuffer);
+		expect(instantiateOverlayTextureWasm).toHaveBeenCalledWith(memory, codeBuffer);
 		expect(renderFrameExport).not.toHaveBeenCalled();
 
 		await Promise.resolve();
@@ -426,13 +447,13 @@ describe('web-ui init', () => {
 		view.renderFrame();
 
 		expect(renderFrameExport).toHaveBeenCalledTimes(1);
-		expect(mocks.frameTextureLayer.uploadRgba8Texture).toHaveBeenCalledWith(expect.any(Uint8Array), 1, 1, {
+		expect(mocks.overlayTextureLayer.uploadRgba8Texture).toHaveBeenCalledWith(expect.any(Uint8Array), 1, 1, {
 			texture: undefined,
 			filter: 'nearest',
 		});
-		const data = mocks.frameTextureLayer.uploadRgba8Texture.mock.calls.at(-1)?.[0] as Uint8Array;
+		const data = mocks.overlayTextureLayer.uploadRgba8Texture.mock.calls.at(-1)?.[0] as Uint8Array;
 		expect([...data]).toEqual([10, 20, 30, 255]);
-		expect(mocks.frameTextureLayer.drawTexture).toHaveBeenCalledWith(
+		expect(mocks.overlayTextureLayer.drawTexture).toHaveBeenCalledWith(
 			{ texture: {}, width: 128, height: 128, filter: 'nearest' },
 			0,
 			0,
