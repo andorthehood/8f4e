@@ -1,7 +1,7 @@
 import type { State } from '@8f4e/editor-state-types';
 import type { SpriteAtlas, SpriteIdLookups } from '@8f4e/sprite-generator';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
-import { Engine, LineDrawer, RgbaTextureLayer } from 'glugglugglug';
+import { Engine, LineDrawer, type RgbaTextureLayer } from 'glugglugglug';
 import { DrawContext } from './drawContext';
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';
@@ -9,9 +9,24 @@ import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
 import drawBackground from './drawers/drawBackground';
 import drawModeOverlay from './drawers/modeOverlay';
-import { createWasmOverlayTextureDrawer, type WasmOverlayTextureOptions } from './drawers/wasmOverlayTexture';
+import type { WasmOverlayTextureOptions } from './drawers/wasmOverlayTexture';
 import type { MemoryViews } from './types';
 import { resolveWireColors } from './wire-colors';
+
+type WasmOverlayTextureModule = typeof import('./drawers/wasmOverlayTexture');
+
+let wasmOverlayTextureModulePromise: Promise<WasmOverlayTextureModule> | undefined;
+
+function loadWasmOverlayTextureModule(): Promise<WasmOverlayTextureModule> {
+	const pendingModule = wasmOverlayTextureModulePromise ?? import('./drawers/wasmOverlayTexture');
+	wasmOverlayTextureModulePromise = pendingModule;
+	return pendingModule.catch(error => {
+		if (wasmOverlayTextureModulePromise === pendingModule) {
+			wasmOverlayTextureModulePromise = undefined;
+		}
+		throw error;
+	});
+}
 
 // Re-export types
 export type { MemoryViews } from './types';
@@ -67,47 +82,16 @@ export default async function init(
 		frameStartedAt = performance.now();
 	});
 	const lines = new LineDrawer(engine);
-	const overlayTextureLayer = new RgbaTextureLayer(engine, { phase: 'postDraw' });
 	const draw = new DrawContext(engine, spriteData.characterWidth);
 	let wireColors = resolveWireColors(state.editorConfig.color);
 	const renderStatsIntervalFrames = Math.max(1, Math.floor(options.renderStatsIntervalFrames ?? 60));
 	let viewportWidth = canvas.width;
 	let viewportHeight = canvas.height;
-	const getOverlayTexture = options.getOverlayTexture ?? (() => options.overlayTexture);
-	let overlayTextureKey = '';
-	let drawWasmOverlayTexture: ((layer: RgbaTextureLayer) => void) | undefined;
-	function syncWasmOverlayTextureDrawer(): ((layer: RgbaTextureLayer) => void) | undefined {
-		const overlayTexture = getOverlayTexture();
-		const nextOverlayTextureKey = overlayTexture ? JSON.stringify(overlayTexture) : '';
-
-		if (nextOverlayTextureKey === overlayTextureKey) {
-			return drawWasmOverlayTexture;
-		}
-
-		overlayTextureKey = nextOverlayTextureKey;
-		drawWasmOverlayTexture =
-			overlayTexture && options.getCodeBuffer && options.getMemory
-				? createWasmOverlayTextureDrawer({
-						state,
-						memoryViews,
-						overlayTexture,
-						getCodeBuffer: options.getCodeBuffer,
-						getMemory: options.getMemory,
-						getViewportSize: () => ({ width: viewportWidth, height: viewportHeight }),
-						instantiate: options.instantiateOverlayTextureWasm,
-					})
-				: undefined;
-
-		return drawWasmOverlayTexture;
-	}
 	let renderedFrameCount = 0;
 	let statsSampleStartFrameCount = 0;
 	let statsSampleStartTime = performance.now();
 
 	engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
-	overlayTextureLayer.setDrawCallback(layer => {
-		syncWasmOverlayTextureDrawer()?.(layer);
-	});
 
 	function getSampledFps(): number {
 		const now = performance.now();
@@ -143,7 +127,95 @@ export default async function init(
 		});
 	}
 
+	const renderStatsHook = () => {
+		emitRenderStats(performance.now() - frameStartedAt);
+	};
+	engine.hooks.postDraw.push(renderStatsHook);
+
+	const getOverlayTexture = options.getOverlayTexture ?? (() => options.overlayTexture);
+	let overlayTextureModule: WasmOverlayTextureModule | undefined;
+	let overlayTextureLayer: RgbaTextureLayer | undefined;
+	let overlayTextureKey = '';
+	let loadingOverlayTextureModule = false;
+	let failedOverlayTextureKey = '';
+	let destroyed = false;
+
+	function destroyOverlayTextureLayer(): void {
+		overlayTextureLayer?.destroy();
+		overlayTextureLayer = undefined;
+		overlayTextureKey = '';
+	}
+
+	function keepRenderStatsHookLast(): void {
+		const hookIndex = engine.hooks.postDraw.indexOf(renderStatsHook);
+		if (hookIndex !== -1) {
+			engine.hooks.postDraw.splice(hookIndex, 1);
+			engine.hooks.postDraw.push(renderStatsHook);
+		}
+	}
+
+	function syncWasmOverlayTexture(): void {
+		if (destroyed) {
+			return;
+		}
+
+		const overlayTexture = getOverlayTexture();
+		const nextOverlayTextureKey = overlayTexture ? JSON.stringify(overlayTexture) : '';
+		if (!overlayTexture || !options.getCodeBuffer || !options.getMemory) {
+			failedOverlayTextureKey = '';
+			destroyOverlayTextureLayer();
+			return;
+		}
+
+		if (!overlayTextureModule) {
+			if (loadingOverlayTextureModule || failedOverlayTextureKey === nextOverlayTextureKey) {
+				return;
+			}
+
+			loadingOverlayTextureModule = true;
+			const requestedOverlayTextureKey = nextOverlayTextureKey;
+			void loadWasmOverlayTextureModule()
+				.then(module => {
+					loadingOverlayTextureModule = false;
+					if (!destroyed) {
+						overlayTextureModule = module;
+						failedOverlayTextureKey = '';
+					}
+				})
+				.catch(error => {
+					loadingOverlayTextureModule = false;
+					if (!destroyed) {
+						failedOverlayTextureKey = requestedOverlayTextureKey;
+						console.error('Failed to load overlay texture renderer:', error);
+					}
+				});
+			return;
+		}
+
+		if (overlayTextureLayer && overlayTextureKey === nextOverlayTextureKey) {
+			return;
+		}
+
+		destroyOverlayTextureLayer();
+		const drawWasmOverlayTexture = overlayTextureModule.createWasmOverlayTextureDrawer({
+			state,
+			memoryViews,
+			overlayTexture,
+			getCodeBuffer: options.getCodeBuffer,
+			getMemory: options.getMemory,
+			getViewportSize: () => ({ width: viewportWidth, height: viewportHeight }),
+			instantiate: options.instantiateOverlayTextureWasm,
+		});
+		overlayTextureLayer = new overlayTextureModule.RgbaTextureLayer(engine, { phase: 'postDraw' });
+		overlayTextureLayer.setDrawCallback(layer => {
+			drawWasmOverlayTexture(layer);
+		});
+		overlayTextureKey = nextOverlayTextureKey;
+		keepRenderStatsHookLast();
+	}
+
 	const drawFrame = () => {
+		syncWasmOverlayTexture();
 		drawBackground(draw, state);
 		drawCodeBlocks(draw, state, memoryViews, renderData.getSnapshot());
 		if (state.dialogStack.length === 0) {
@@ -153,9 +225,6 @@ export default async function init(
 		drawModeOverlay(draw, state);
 		drawDialog(draw, state);
 	};
-	engine.hooks.postDraw.push(() => {
-		emitRenderStats(performance.now() - frameStartedAt);
-	});
 
 	let rendering = false;
 	let renderingResourcesReleased = false;
@@ -194,7 +263,7 @@ export default async function init(
 			return;
 		}
 
-		overlayTextureLayer.releaseMemory();
+		overlayTextureLayer?.releaseMemory();
 		lines.releaseMemory();
 		engine.releaseRenderingMemory();
 		renderingResourcesReleased = true;
@@ -247,9 +316,10 @@ export default async function init(
 			engine.renderFrame(drawFrame);
 		},
 		destroy: () => {
+			destroyed = true;
 			pauseRendering();
 			lines.destroy();
-			overlayTextureLayer.destroy();
+			destroyOverlayTextureLayer();
 			engine.destroy();
 		},
 	};

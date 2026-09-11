@@ -30,13 +30,15 @@ const mocks = vi.hoisted(() => {
 		destroy: vi.fn(),
 	};
 	const overlayTextureLayer = {
-		setDrawCallback: vi.fn((callback: (layer: unknown) => void) => {
-			overlayTextureDrawCallback = callback;
+		setDrawCallback: vi.fn((callback: ((layer: unknown) => void) | null) => {
+			overlayTextureDrawCallback = callback ?? undefined;
 		}),
 		uploadRgba8Texture: vi.fn(() => ({ texture: {}, width: 128, height: 128, filter: 'nearest' })),
 		drawTexture: vi.fn(),
 		releaseMemory: vi.fn(),
-		destroy: vi.fn(),
+		destroy: vi.fn(() => {
+			overlayTextureDrawCallback = undefined;
+		}),
 	};
 	const lines = {
 		drawLine: vi.fn(),
@@ -152,6 +154,11 @@ function createSpriteData() {
 	};
 }
 
+async function settleOverlayModuleLoad(): Promise<void> {
+	await import('./drawers/wasmOverlayTexture');
+	await Promise.resolve();
+}
+
 describe('web-ui init', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
@@ -187,7 +194,7 @@ describe('web-ui init', () => {
 		expect(mocks.drawModeOverlay).toHaveBeenCalledWith(expect.anything(), frameState);
 	});
 
-	it('registers the overlay texture after the line renderer in the post-draw phase', async () => {
+	it('does not construct overlay rendering resources when no overlay is configured', async () => {
 		const { default: init } = await import('./index');
 		const state = createMockState();
 		const memoryViews = {
@@ -200,7 +207,38 @@ describe('web-ui init', () => {
 			float64: new Float64Array(0),
 		};
 
-		await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData());
+		view.renderFrame();
+
+		expect(mocks.RgbaTextureLayer).not.toHaveBeenCalled();
+	});
+
+	it('loads and registers a configured overlay after the line renderer', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState();
+		const memoryViews = {
+			int8: new Int8Array(0),
+			int16: new Int16Array(0),
+			int32: new Int32Array(0),
+			uint8: new Uint8Array(0),
+			uint16: new Uint16Array(0),
+			float32: new Float32Array(0),
+			float64: new Float64Array(0),
+		};
+		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData(), {
+			overlayTexture: {
+				entry: 'renderFrame',
+				target: 'screen:rgba',
+				width: 1,
+				height: 1,
+			},
+			getCodeBuffer: () => new Uint8Array(0),
+			getMemory: () => null,
+		});
+
+		expect(mocks.RgbaTextureLayer).not.toHaveBeenCalled();
+		await settleOverlayModuleLoad();
+		view.renderFrame();
 
 		expect(mocks.RgbaTextureLayer).toHaveBeenCalledWith(mocks.engine, { phase: 'postDraw' });
 		expect(mocks.LineDrawer.mock.invocationCallOrder[0]).toBeLessThan(
@@ -282,7 +320,7 @@ describe('web-ui init', () => {
 		view.releaseRenderingResources();
 
 		expect(mocks.cancelAnimationFrame).toHaveBeenCalledOnce();
-		expect(mocks.overlayTextureLayer.releaseMemory).toHaveBeenCalledOnce();
+		expect(mocks.overlayTextureLayer.releaseMemory).not.toHaveBeenCalled();
 		expect(mocks.lines.releaseMemory).toHaveBeenCalledOnce();
 		expect(mocks.engine.releaseRenderingMemory).toHaveBeenCalledOnce();
 		expect(canvas).toEqual(expect.objectContaining({ width: 1, height: 1 }));
@@ -439,9 +477,13 @@ describe('web-ui init', () => {
 		};
 
 		view.renderFrame();
+		expect(instantiateOverlayTextureWasm).not.toHaveBeenCalled();
+
+		await settleOverlayModuleLoad();
+		view.renderFrame();
+
 		expect(instantiateOverlayTextureWasm).toHaveBeenCalledWith(memory, codeBuffer);
 		expect(renderFrameExport).not.toHaveBeenCalled();
-
 		await Promise.resolve();
 		view.resize(320, 180);
 		view.renderFrame();
@@ -460,5 +502,13 @@ describe('web-ui init', () => {
 			320,
 			180
 		);
+
+		view.releaseRenderingResources();
+		expect(mocks.overlayTextureLayer.releaseMemory).toHaveBeenCalledOnce();
+		view.resumeRendering();
+
+		overlayTexture = undefined;
+		view.renderFrame();
+		expect(mocks.overlayTextureLayer.destroy).toHaveBeenCalledOnce();
 	});
 });

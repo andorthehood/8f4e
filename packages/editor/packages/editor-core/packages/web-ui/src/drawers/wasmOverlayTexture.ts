@@ -1,6 +1,8 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { RgbaTexture, RgbaTextureFilter, RgbaTextureLayer } from 'glugglugglug';
+import { type RgbaTexture, type RgbaTextureFilter, RgbaTextureLayer } from 'glugglugglug';
 import type { MemoryViews } from '../types';
+
+export { RgbaTextureLayer };
 
 export type WasmOverlayTextureObjectFit = 'fill' | 'cover' | 'contain' | 'none';
 export type WasmOverlayTextureSize = number | string;

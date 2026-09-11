@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-09-06
 issue: https://github.com/andorthehood/8f4e/issues/958
-status: Open
-completed: null
+status: Completed
+completed: 2026-09-11
 ---
 
 # TODO: Lazy-load WASM Overlay Rendering
@@ -33,12 +33,12 @@ rendering resources owned by each editor instance.
 
 ## Success Criteria
 
-- [ ] Editors without a configured framebuffer overlay neither fetch the optional implementation nor create its layer.
-- [ ] Initial configuration and later configuration changes activate the correct overlay.
-- [ ] Concurrent editors share module loading but retain independent resources.
-- [ ] Late or failed loads cannot resurrect disposed resources or leave unhandled rejections.
-- [ ] Rendering order, memory/code updates, and resource release/resume retain their behavior.
-- [ ] Before/after production measurements demonstrate the initial-download savings.
+- [x] Editors without a configured framebuffer overlay neither fetch the optional implementation nor create its layer.
+- [x] Initial configuration and later configuration changes activate the correct overlay.
+- [x] Concurrent editors share module loading but retain independent resources.
+- [x] Late or failed loads cannot resurrect disposed resources or leave unhandled rejections.
+- [x] Rendering order, memory/code updates, and resource release/resume retain their behavior.
+- [x] Before/after production measurements demonstrate the initial-download savings.
 
 ## Affected Components
 
@@ -62,15 +62,21 @@ Overlay projects may incur an extra request before their first overlay frame; me
 
 ## Related Items
 
-- [TODO 484: Lazy-load context-menu builders](archived/484-lazy-load-context-menu-builders.md) — another isolated initial-bundle reduction.
+- [TODO 484: Lazy-load context-menu builders](484-lazy-load-context-menu-builders.md) — another isolated initial-bundle reduction.
 
 ## References
 
-- [Web UI initialization](../../packages/editor/packages/editor-core/packages/web-ui/src/index.ts)
+- [Web UI initialization](../../../packages/editor/packages/editor-core/packages/web-ui/src/index.ts)
 
 ## Notes
 
-Identified through source inspection on 2026-09-06. Savings are unmeasured; establish a fresh baseline during implementation.
+Completed on 2026-09-11. The overlay drawer and RGBA layer now share one cached dynamic module load while each editor
+creates and owns its own layer only when a complete overlay configuration is present. Removing or replacing the
+configuration destroys the old layer and its GPU resources; disposal during loading cannot create a late layer.
+
+In the `@8f4e/editor-default` production build, the initial shared editor chunk changed from 388.76 kB raw / 93.89 kB
+gzip to 378.38 kB raw / 91.51 kB gzip. The deferred overlay chunk is 11.61 kB raw / 4.31 kB gzip. Overlay-free editors
+therefore save about 10.38 kB raw / 2.38 kB gzip and avoid the overlay shader and fullscreen-geometry allocations.
 
 ## Archive Instructions
 
