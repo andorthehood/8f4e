@@ -10,13 +10,13 @@ note
 ; @config webUI.overlay.target screen:rgba
 ; @config webUI.overlay.width 32
 ; @config webUI.overlay.height 18
+; @config webUI.overlay.magnification 16
 ; @config webUI.overlay.filter nearest
-; @config webUI.overlay.objectFit fill
 
 ; The main entry runs once per editor
 ; frame and fills a 32 x 18 RGBA8
 ; image. Its translucent pixels are
-; drawn over the complete editor.
+; magnified and centered over the editor.
 
 noteEnd
 

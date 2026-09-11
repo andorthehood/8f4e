@@ -76,8 +76,8 @@ configuration pushes an update to the view, which destroys the old layer and its
 frame. Disposal during loading cannot create a late layer.
 
 In the `@8f4e/editor-default` production build, the initial shared editor chunk changed from 388.76 kB raw / 93.89 kB
-gzip to 378.27 kB raw / 91.48 kB gzip. The deferred overlay chunk is 11.61 kB raw / 4.31 kB gzip. Overlay-free editors
-therefore save about 10.49 kB raw / 2.41 kB gzip and avoid the overlay shader and fullscreen-geometry allocations.
+gzip to 377.65 kB raw / 91.30 kB gzip. The deferred overlay chunk is 11.02 kB raw / 4.10 kB gzip. Overlay-free editors
+therefore save about 11.11 kB raw / 2.59 kB gzip and avoid the overlay shader and fullscreen-geometry allocations.
 
 ## Archive Instructions
 

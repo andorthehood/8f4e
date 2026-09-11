@@ -164,7 +164,7 @@ export const projects = [
 	{
 		id: 'overlay-texture',
 		title: 'WASM texture overlay',
-		description: 'Watch a WebAssembly-generated RGBA image animate over the complete editor.',
+		description: 'Watch a WebAssembly-generated RGBA image animate in the center of the editor.',
 		path: 'visuals/overlayTexture.8f4e',
 	},
 ];

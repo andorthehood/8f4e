@@ -464,6 +464,7 @@ describe('web-ui init', () => {
 			target: 'screen:rgba',
 			width: 1,
 			height: 1,
+			magnification: 32,
 		});
 		expect(instantiateOverlayTextureWasm).not.toHaveBeenCalled();
 
@@ -485,10 +486,10 @@ describe('web-ui init', () => {
 		expect([...data]).toEqual([10, 20, 30, 255]);
 		expect(mocks.overlayTextureLayer.drawTexture).toHaveBeenCalledWith(
 			{ texture: {}, width: 128, height: 128, filter: 'nearest' },
-			0,
-			0,
-			320,
-			180
+			144,
+			74,
+			32,
+			32
 		);
 
 		view.releaseRenderingResources();

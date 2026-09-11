@@ -397,9 +397,8 @@ describe('editor init', () => {
 					target: 'screen:pixels',
 					width: 64,
 					height: 32,
-					size: '150%',
+					magnification: 3,
 					filter: 'linear',
-					objectFit: 'contain',
 				},
 			},
 		};
@@ -409,9 +408,8 @@ describe('editor init', () => {
 			target: 'screen:pixels',
 			width: 64,
 			height: 32,
-			size: '150%',
+			magnification: 3,
 			filter: 'linear',
-			objectFit: 'contain',
 		});
 		expect(viewOptions.getCodeBuffer?.()).toBeInstanceOf(Uint8Array);
 		expect(viewOptions.getMemory?.()).toBeNull();
