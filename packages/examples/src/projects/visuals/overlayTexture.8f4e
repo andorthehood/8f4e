@@ -1,0 +1,98 @@
+8f4e/v1
+
+note
+; @pos -62 -22
+; @home left
+; @config runtime WebWorkerRuntime
+; @config workerRuntime.sampleRate 1
+; @config export.fileName overlayTexture
+; @config webUI.overlay.entry main
+; @config webUI.overlay.target screen:rgba
+; @config webUI.overlay.width 32
+; @config webUI.overlay.height 32
+; @config webUI.overlay.magnification 8
+; @config webUI.overlay.filter nearest
+
+; The main entry runs once per editor
+; frame and fills a 32 x 32 RGBA8
+; image. Its pixels are magnified and
+; centered over the editor.
+noteEnd
+
+entry main
+module screen
+; @pos 44 -22
+; @home left
+
+const WIDTH 32
+const HEIGHT 32
+const PIXEL_COUNT WIDTH*HEIGHT
+
+int frame
+int8u[] rgba PIXEL_COUNT*4
+
+; Advance the animation.
+push &frame
+push frame
+push 1
+add
+store
+
+loop PIXEL_COUNT
+; Push channels in reverse order because
+; storeBytes writes them in pop order.
+
+push 255 ; Alpha
+
+; Blue: diagonal gradient.
+loopIndex
+push WIDTH-1
+and
+loopIndex
+push WIDTH
+div
+add
+push 8
+mul
+push frame
+push 3
+mul
+add
+push 255
+and
+
+; Green: vertical gradient.
+loopIndex
+push WIDTH
+div
+push 14
+mul
+push frame
+push 2
+mul
+add
+push 255
+and
+
+; Red: horizontal gradient.
+loopIndex
+push WIDTH-1
+and
+push 8
+mul
+push frame
+add
+push 255
+and
+
+; Store one RGBA pixel.
+push &rgba
+loopIndex
+push 4
+mul
+add
+storeBytes 4
+loopEnd
+
+moduleEnd
+entryEnd

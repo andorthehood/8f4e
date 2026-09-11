@@ -1,18 +1,16 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { RgbaTexture, RgbaTextureFilter, RgbaTextureLayer } from 'glugglugglug';
+import { type RgbaTexture, type RgbaTextureFilter, RgbaTextureLayer } from 'glugglugglug';
 import type { MemoryViews } from '../types';
 
-export type WasmOverlayTextureObjectFit = 'fill' | 'cover' | 'contain' | 'none';
-export type WasmOverlayTextureSize = number | string;
+export { RgbaTextureLayer };
 
 export interface WasmOverlayTextureOptions {
 	entry: string;
 	target: string;
 	width: number;
 	height: number;
-	size?: WasmOverlayTextureSize;
+	magnification?: number;
 	filter?: RgbaTextureFilter;
-	objectFit?: WasmOverlayTextureObjectFit;
 }
 
 export interface WasmOverlayTextureDrawerOptions {
@@ -45,6 +43,10 @@ function normalizePositiveInteger(value: number): number {
 	return Number.isFinite(value) ? Math.max(1, Math.floor(value)) : 1;
 }
 
+function normalizeMagnification(value: number | undefined): number {
+	return value !== undefined && Number.isFinite(value) ? Math.max(1, value) : 1;
+}
+
 function getOverlayBufferByteAddress(state: State, target: string): number | undefined {
 	const [moduleId, memoryId] = target.split(':');
 	if (!moduleId || !memoryId) {
@@ -55,65 +57,21 @@ function getOverlayBufferByteAddress(state: State, target: string): number | und
 	return typeof memory?.byteAddress === 'number' ? memory.byteAddress : undefined;
 }
 
-function resolveSize(value: WasmOverlayTextureSize | undefined, sourceWidth: number): number | undefined {
-	if (typeof value === 'number') {
-		return Number.isFinite(value) && value > 0 ? value : undefined;
-	}
-
-	const match = typeof value === 'string' ? value.trim().match(/^(\d+(?:\.\d+)?)%$/) : undefined;
-	if (!match) {
-		return undefined;
-	}
-
-	const percentage = Number(match[1]);
-	return Number.isFinite(percentage) && percentage > 0 ? (sourceWidth * percentage) / 100 : undefined;
-}
-
-function centerDrawRect(
-	width: number,
-	height: number,
+export function getCenteredDrawRect(
+	sourceWidth: number,
+	sourceHeight: number,
 	viewportWidth: number,
-	viewportHeight: number
+	viewportHeight: number,
+	magnification = 1
 ): { x: number; y: number; width: number; height: number } {
+	const width = sourceWidth * magnification;
+	const height = sourceHeight * magnification;
 	return {
 		x: (viewportWidth - width) / 2,
 		y: (viewportHeight - height) / 2,
 		width,
 		height,
 	};
-}
-
-export function getObjectFitDrawRect(
-	objectFit: WasmOverlayTextureObjectFit,
-	sourceWidth: number,
-	sourceHeight: number,
-	viewportWidth: number,
-	viewportHeight: number,
-	size?: WasmOverlayTextureSize
-): { x: number; y: number; width: number; height: number } {
-	const resolvedSize = resolveSize(size, sourceWidth);
-	if (resolvedSize) {
-		const width = resolvedSize;
-		const height = (resolvedSize * sourceHeight) / sourceWidth;
-		return centerDrawRect(width, height, viewportWidth, viewportHeight);
-	}
-
-	if (objectFit === 'fill') {
-		return { x: 0, y: 0, width: viewportWidth, height: viewportHeight };
-	}
-
-	if (objectFit === 'none') {
-		return centerDrawRect(sourceWidth, sourceHeight, viewportWidth, viewportHeight);
-	}
-
-	const scale =
-		objectFit === 'cover'
-			? Math.max(viewportWidth / sourceWidth, viewportHeight / sourceHeight)
-			: Math.min(viewportWidth / sourceWidth, viewportHeight / sourceHeight);
-	const width = sourceWidth * scale;
-	const height = sourceHeight * scale;
-
-	return centerDrawRect(width, height, viewportWidth, viewportHeight);
 }
 
 export function createWasmOverlayTextureDrawer({
@@ -129,7 +87,7 @@ export function createWasmOverlayTextureDrawer({
 	const sourceHeight = normalizePositiveInteger(overlayTexture.height);
 	const byteLength = sourceWidth * sourceHeight * 4;
 	const filter = overlayTexture.filter ?? 'nearest';
-	const objectFit = overlayTexture.objectFit ?? 'fill';
+	const magnification = normalizeMagnification(overlayTexture.magnification);
 	let texture: RgbaTexture | undefined;
 	let cachedMemory: WebAssembly.Memory | null = null;
 	let cachedCodeBuffer: Uint8Array | undefined;
@@ -223,14 +181,7 @@ export function createWasmOverlayTextureDrawer({
 			filter,
 		});
 		const viewport = getViewportSize();
-		const drawRect = getObjectFitDrawRect(
-			objectFit,
-			sourceWidth,
-			sourceHeight,
-			viewport.width,
-			viewport.height,
-			overlayTexture.size
-		);
+		const drawRect = getCenteredDrawRect(sourceWidth, sourceHeight, viewport.width, viewport.height, magnification);
 		layer.drawTexture(texture, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
 	};
 }

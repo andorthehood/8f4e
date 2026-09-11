@@ -161,6 +161,12 @@ export const projects = [
 		description: 'Follow four moving pointers as they step through a sine lookup table.',
 		path: 'visuals/dancingWithTheSineLT.8f4e',
 	},
+	{
+		id: 'overlay-texture',
+		title: 'WASM texture overlay',
+		description: 'Watch a WebAssembly-generated RGBA image animate in the center of the editor.',
+		path: 'visuals/overlayTexture.8f4e',
+	},
 ];
 
 export const projectCategories = [
