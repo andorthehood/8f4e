@@ -27,6 +27,8 @@ const store = {
 			};
 		}
 	}),
+	subscribe: vi.fn(),
+	unsubscribe: vi.fn(),
 	dispose: vi.fn(),
 };
 
@@ -37,6 +39,7 @@ const view = {
 	releaseRenderingResources: vi.fn(),
 	resumeRendering: vi.fn(),
 	renderFrame: vi.fn(),
+	setOverlayTexture: vi.fn(),
 	destroy: vi.fn(),
 };
 
@@ -104,12 +107,15 @@ describe('editor init', () => {
 		events.dispose.mockClear();
 		store.getState.mockClear();
 		store.set.mockClear();
+		store.subscribe.mockClear();
+		store.unsubscribe.mockClear();
 		store.dispose.mockClear();
 		view.resize.mockClear();
 		view.pauseRendering.mockClear();
 		view.releaseRenderingResources.mockClear();
 		view.resumeRendering.mockClear();
 		view.renderFrame.mockClear();
+		view.setOverlayTexture.mockClear();
 		view.destroy.mockClear();
 		renderProjection.dispose.mockClear();
 		cleanupSpriteSheet.mockClear();
@@ -283,12 +289,15 @@ describe('editor init', () => {
 			runtimeRegistry: {},
 			callbacks: { loadSession: async () => null },
 		});
+		const overlaySubscription = store.subscribe.mock.calls.find(([path]) => path === 'editorConfig.webUI')?.[1];
 
 		editor.dispose();
 		editor.dispose();
 
 		expect(cleanupSpriteSheet).toHaveBeenCalledOnce();
 		expect(renderProjection.dispose).toHaveBeenCalledOnce();
+		expect(store.unsubscribe).toHaveBeenCalledOnce();
+		expect(store.unsubscribe).toHaveBeenCalledWith('editorConfig.webUI', overlaySubscription);
 		expect(store.dispose).toHaveBeenCalledOnce();
 		expect(events.dispose).toHaveBeenCalledOnce();
 		expect(view.destroy).toHaveBeenCalledOnce();
@@ -373,12 +382,14 @@ describe('editor init', () => {
 			width: 1,
 			height: 1,
 		});
-		expect(viewOptions.getOverlayTexture?.()).toEqual({
+		expect(view.setOverlayTexture).toHaveBeenCalledWith({
 			entry: 'renderFrame',
 			target: 'screen:rgba',
 			width: 1,
 			height: 1,
 		});
+		const overlaySubscription = store.subscribe.mock.calls.find(([path]) => path === 'editorConfig.webUI')?.[1];
+		expect(overlaySubscription).toBeTypeOf('function');
 		storeState.editorConfig = {
 			webUI: {
 				overlay: {
@@ -392,7 +403,8 @@ describe('editor init', () => {
 				},
 			},
 		};
-		expect(viewOptions.getOverlayTexture?.()).toEqual({
+		overlaySubscription?.();
+		expect(view.setOverlayTexture).toHaveBeenLastCalledWith({
 			entry: 'draw',
 			target: 'screen:pixels',
 			width: 64,

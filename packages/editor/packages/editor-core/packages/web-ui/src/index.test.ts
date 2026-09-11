@@ -225,7 +225,7 @@ describe('web-ui init', () => {
 			float32: new Float32Array(0),
 			float64: new Float64Array(0),
 		};
-		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData(), {
+		await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData(), {
 			overlayTexture: {
 				entry: 'renderFrame',
 				target: 'screen:rgba',
@@ -238,7 +238,6 @@ describe('web-ui init', () => {
 
 		expect(mocks.RgbaTextureLayer).not.toHaveBeenCalled();
 		await settleOverlayModuleLoad();
-		view.renderFrame();
 
 		expect(mocks.RgbaTextureLayer).toHaveBeenCalledWith(mocks.engine, { phase: 'postDraw' });
 		expect(mocks.LineDrawer.mock.invocationCallOrder[0]).toBeLessThan(
@@ -449,18 +448,9 @@ describe('web-ui init', () => {
 			memoryViews.uint8.set([10, 20, 30, 255], 4);
 		});
 		const instantiateOverlayTextureWasm = vi.fn(async () => ({ renderFrame: renderFrameExport }));
-		let overlayTexture:
-			| {
-					entry: string;
-					target: string;
-					width: number;
-					height: number;
-			  }
-			| undefined;
 		const canvas = { width: 160, height: 90 } as HTMLCanvasElement;
 
 		const view = await init(state, renderData, canvas, memoryViews, createSpriteData(), {
-			getOverlayTexture: () => overlayTexture,
 			getCodeBuffer: () => codeBuffer,
 			getMemory: () => memory,
 			instantiateOverlayTextureWasm,
@@ -469,14 +459,12 @@ describe('web-ui init', () => {
 		view.renderFrame();
 		expect(instantiateOverlayTextureWasm).not.toHaveBeenCalled();
 
-		overlayTexture = {
+		view.setOverlayTexture({
 			entry: 'renderFrame',
 			target: 'screen:rgba',
 			width: 1,
 			height: 1,
-		};
-
-		view.renderFrame();
+		});
 		expect(instantiateOverlayTextureWasm).not.toHaveBeenCalled();
 
 		await settleOverlayModuleLoad();
@@ -507,8 +495,7 @@ describe('web-ui init', () => {
 		expect(mocks.overlayTextureLayer.releaseMemory).toHaveBeenCalledOnce();
 		view.resumeRendering();
 
-		overlayTexture = undefined;
-		view.renderFrame();
+		view.setOverlayTexture(undefined);
 		expect(mocks.overlayTextureLayer.destroy).toHaveBeenCalledOnce();
 	});
 });

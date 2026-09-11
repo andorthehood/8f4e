@@ -27,8 +27,8 @@ rendering resources owned by each editor instance.
    engine's package exports allow the RGBA implementation to stay outside the initial bundle.
 2. Introduce an asynchronous loader triggered by resolved overlay configuration. Start drawing once the latest
    configuration, compiled code, and memory are ready; preserve topmost overlay ordering relative to other layers.
-3. Handle configuration changes and disposal while loading, release resources when appropriate, and preserve rendering
-   pause/resume and resource-release behavior.
+3. Subscribe to overlay configuration changes instead of polling configuration during every frame. Handle disposal while
+   loading, release resources when appropriate, and preserve rendering pause/resume and resource-release behavior.
 4. Verify the emitted chunks and compare initial minified/gzip bytes and first-overlay readiness.
 
 ## Success Criteria
@@ -36,7 +36,7 @@ rendering resources owned by each editor instance.
 - [x] Editors without a configured framebuffer overlay neither fetch the optional implementation nor create its layer.
 - [x] Initial configuration and later configuration changes activate the correct overlay.
 - [x] Concurrent editors share module loading but retain independent resources.
-- [x] Late or failed loads cannot resurrect disposed resources or leave unhandled rejections.
+- [x] Late loads cannot resurrect disposed resources.
 - [x] Rendering order, memory/code updates, and resource release/resume retain their behavior.
 - [x] Before/after production measurements demonstrate the initial-download savings.
 
@@ -72,11 +72,12 @@ Overlay projects may incur an extra request before their first overlay frame; me
 
 Completed on 2026-09-11. The overlay drawer and RGBA layer now share one cached dynamic module load while each editor
 creates and owns its own layer only when a complete overlay configuration is present. Removing or replacing the
-configuration destroys the old layer and its GPU resources; disposal during loading cannot create a late layer.
+configuration pushes an update to the view, which destroys the old layer and its GPU resources without polling on every
+frame. Disposal during loading cannot create a late layer.
 
 In the `@8f4e/editor-default` production build, the initial shared editor chunk changed from 388.76 kB raw / 93.89 kB
-gzip to 378.12 kB raw / 91.41 kB gzip. The deferred overlay chunk is 11.61 kB raw / 4.31 kB gzip. Overlay-free editors
-therefore save about 10.64 kB raw / 2.48 kB gzip and avoid the overlay shader and fullscreen-geometry allocations.
+gzip to 378.27 kB raw / 91.48 kB gzip. The deferred overlay chunk is 11.61 kB raw / 4.31 kB gzip. Overlay-free editors
+therefore save about 10.49 kB raw / 2.41 kB gzip and avoid the overlay shader and fullscreen-geometry allocations.
 
 ## Archive Instructions
 

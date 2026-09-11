@@ -45,7 +45,6 @@ export interface WebUiOptions {
 	onRenderStats?: (stats: RenderStats) => void;
 	renderStatsIntervalFrames?: number;
 	overlayTexture?: WasmOverlayTextureOptions;
-	getOverlayTexture?: () => WasmOverlayTextureOptions | undefined;
 	getCodeBuffer?: () => Uint8Array;
 	getMemory?: () => WebAssembly.Memory | null;
 	instantiateOverlayTextureWasm?: (
@@ -68,6 +67,7 @@ export default async function init(
 	releaseRenderingResources: () => void;
 	resumeRendering: () => void;
 	renderFrame: () => void;
+	setOverlayTexture: (overlayTexture: WasmOverlayTextureOptions | undefined) => void;
 	destroy: () => void;
 }> {
 	const engine = new Engine(canvas);
@@ -126,7 +126,7 @@ export default async function init(
 	};
 	engine.hooks.postDraw.push(renderStatsHook);
 
-	const getOverlayTexture = options.getOverlayTexture ?? (() => options.overlayTexture);
+	let overlayTexture = options.overlayTexture;
 	let overlayTextureModule: WasmOverlayTextureModule | undefined;
 	let overlayTextureLayer: RgbaTextureLayer | undefined;
 	let overlayTextureKey = '';
@@ -152,7 +152,6 @@ export default async function init(
 			return;
 		}
 
-		const overlayTexture = getOverlayTexture();
 		const nextOverlayTextureKey = overlayTexture ? JSON.stringify(overlayTexture) : '';
 		if (!overlayTexture || !options.getCodeBuffer || !options.getMemory) {
 			destroyOverlayTextureLayer();
@@ -169,6 +168,7 @@ export default async function init(
 				loadingOverlayTextureModule = false;
 				if (!destroyed) {
 					overlayTextureModule = module;
+					syncWasmOverlayTexture();
 				}
 			});
 			return;
@@ -196,8 +196,12 @@ export default async function init(
 		keepRenderStatsHookLast();
 	}
 
-	const drawFrame = () => {
+	function setOverlayTexture(nextOverlayTexture: WasmOverlayTextureOptions | undefined): void {
+		overlayTexture = nextOverlayTexture;
 		syncWasmOverlayTexture();
+	}
+
+	const drawFrame = () => {
 		drawBackground(draw, state);
 		drawCodeBlocks(draw, state, memoryViews, renderData.getSnapshot());
 		if (state.dialogStack.length === 0) {
@@ -273,6 +277,7 @@ export default async function init(
 		renderNextFrame();
 	};
 
+	syncWasmOverlayTexture();
 	resumeRendering();
 
 	return {
@@ -293,6 +298,7 @@ export default async function init(
 		pauseRendering,
 		releaseRenderingResources,
 		resumeRendering,
+		setOverlayTexture,
 		renderFrame: () => {
 			restoreRenderingResources();
 			engine.renderFrame(drawFrame);
