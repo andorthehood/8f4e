@@ -1,7 +1,7 @@
 ---
 title: Agent Failure Note - Polling overlay configuration in the render hot path
-agent: Codex
-model: GPT-5
+agent: Codex Version 26.903.71938
+model: GPT-5.6 Sol (High)
 date: 2026-09-11
 ---
 
