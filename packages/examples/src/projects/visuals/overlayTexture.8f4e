@@ -1,30 +1,29 @@
 8f4e/v1
 
 note
-; @pos -69 -13
+; @pos -62 -22
 ; @home left
 ; @config export.fileName overlayTexture
 ; @config webUI.overlay.entry main
 ; @config webUI.overlay.target screen:rgba
 ; @config webUI.overlay.width 32
-; @config webUI.overlay.height 18
-; @config webUI.overlay.magnification 16
+; @config webUI.overlay.height 32
+; @config webUI.overlay.magnification 8
 ; @config webUI.overlay.filter nearest
 
 ; The main entry runs once per editor
-; frame and fills a 32 x 18 RGBA8
-; image. Its translucent pixels are
-; magnified and centered over the editor.
-
+; frame and fills a 32 x 32 RGBA8
+; image. Its pixels are magnified and
+; centered over the editor.
 noteEnd
 
 entry main
 module screen
-; @pos -20 -10
-; @home
+; @pos 44 -22
+; @home left
 
 const WIDTH 32
-const HEIGHT 18
+const HEIGHT 32
 const PIXEL_COUNT WIDTH*HEIGHT
 
 int frame
@@ -41,8 +40,7 @@ loop PIXEL_COUNT
 ; Push channels in reverse order because
 ; storeBytes writes them in pop order.
 
-; Alpha keeps the editor visible.
-push 112
+push 255 ; Alpha
 
 ; Blue: diagonal gradient.
 loopIndex
