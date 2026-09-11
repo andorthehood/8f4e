@@ -2,23 +2,23 @@ import type { State } from '@8f4e/editor-state-types';
 import type { RgbaTexture, RgbaTextureFilter, RgbaTextureLayer } from 'glugglugglug';
 import type { MemoryViews } from '../types';
 
-export type WasmFrameTextureObjectFit = 'fill' | 'cover' | 'contain' | 'none';
-export type WasmFrameTextureSize = number | string;
+export type WasmOverlayTextureObjectFit = 'fill' | 'cover' | 'contain' | 'none';
+export type WasmOverlayTextureSize = number | string;
 
-export interface WasmFrameTextureOptions {
+export interface WasmOverlayTextureOptions {
 	entry: string;
 	target: string;
 	width: number;
 	height: number;
-	size?: WasmFrameTextureSize;
+	size?: WasmOverlayTextureSize;
 	filter?: RgbaTextureFilter;
-	objectFit?: WasmFrameTextureObjectFit;
+	objectFit?: WasmOverlayTextureObjectFit;
 }
 
-export interface WasmFrameTextureDrawerOptions {
+export interface WasmOverlayTextureDrawerOptions {
 	state: State;
 	memoryViews: MemoryViews;
-	frameTexture: WasmFrameTextureOptions;
+	overlayTexture: WasmOverlayTextureOptions;
 	getCodeBuffer: () => Uint8Array;
 	getMemory: () => WebAssembly.Memory | null;
 	getViewportSize: () => { width: number; height: number };
@@ -28,7 +28,7 @@ export interface WasmFrameTextureDrawerOptions {
 	) => Promise<WebAssembly.Exports> | WebAssembly.Exports;
 }
 
-async function instantiateWasmFrameTexture(
+async function instantiateWasmOverlayTexture(
 	memory: WebAssembly.Memory,
 	codeBuffer: Uint8Array
 ): Promise<WebAssembly.Exports> {
@@ -45,7 +45,7 @@ function normalizePositiveInteger(value: number): number {
 	return Number.isFinite(value) ? Math.max(1, Math.floor(value)) : 1;
 }
 
-function getFrameBufferByteAddress(state: State, target: string): number | undefined {
+function getOverlayBufferByteAddress(state: State, target: string): number | undefined {
 	const [moduleId, memoryId] = target.split(':');
 	if (!moduleId || !memoryId) {
 		return undefined;
@@ -55,7 +55,7 @@ function getFrameBufferByteAddress(state: State, target: string): number | undef
 	return typeof memory?.byteAddress === 'number' ? memory.byteAddress : undefined;
 }
 
-function resolveSize(value: WasmFrameTextureSize | undefined, sourceWidth: number): number | undefined {
+function resolveSize(value: WasmOverlayTextureSize | undefined, sourceWidth: number): number | undefined {
 	if (typeof value === 'number') {
 		return Number.isFinite(value) && value > 0 ? value : undefined;
 	}
@@ -84,12 +84,12 @@ function centerDrawRect(
 }
 
 export function getObjectFitDrawRect(
-	objectFit: WasmFrameTextureObjectFit,
+	objectFit: WasmOverlayTextureObjectFit,
 	sourceWidth: number,
 	sourceHeight: number,
 	viewportWidth: number,
 	viewportHeight: number,
-	size?: WasmFrameTextureSize
+	size?: WasmOverlayTextureSize
 ): { x: number; y: number; width: number; height: number } {
 	const resolvedSize = resolveSize(size, sourceWidth);
 	if (resolvedSize) {
@@ -116,20 +116,20 @@ export function getObjectFitDrawRect(
 	return centerDrawRect(width, height, viewportWidth, viewportHeight);
 }
 
-export function createWasmFrameTextureDrawer({
+export function createWasmOverlayTextureDrawer({
 	state,
 	memoryViews,
-	frameTexture,
+	overlayTexture,
 	getCodeBuffer,
 	getMemory,
 	getViewportSize,
-	instantiate = instantiateWasmFrameTexture,
-}: WasmFrameTextureDrawerOptions): (layer: RgbaTextureLayer) => void {
-	const sourceWidth = normalizePositiveInteger(frameTexture.width);
-	const sourceHeight = normalizePositiveInteger(frameTexture.height);
+	instantiate = instantiateWasmOverlayTexture,
+}: WasmOverlayTextureDrawerOptions): (layer: RgbaTextureLayer) => void {
+	const sourceWidth = normalizePositiveInteger(overlayTexture.width);
+	const sourceHeight = normalizePositiveInteger(overlayTexture.height);
 	const byteLength = sourceWidth * sourceHeight * 4;
-	const filter = frameTexture.filter ?? 'nearest';
-	const objectFit = frameTexture.objectFit ?? 'fill';
+	const filter = overlayTexture.filter ?? 'nearest';
+	const objectFit = overlayTexture.objectFit ?? 'fill';
 	let texture: RgbaTexture | undefined;
 	let cachedMemory: WebAssembly.Memory | null = null;
 	let cachedCodeBuffer: Uint8Array | undefined;
@@ -191,7 +191,7 @@ export function createWasmFrameTextureDrawer({
 					pendingExports = undefined;
 				}
 
-				console.error('Failed to instantiate frame texture WebAssembly module:', error);
+				console.error('Failed to instantiate overlay texture WebAssembly module:', error);
 				return undefined;
 			});
 		pendingExports = instantiatePromise;
@@ -205,14 +205,14 @@ export function createWasmFrameTextureDrawer({
 			return;
 		}
 
-		const entry = exports[frameTexture.entry];
+		const entry = exports[overlayTexture.entry];
 		if (typeof entry !== 'function') {
 			return;
 		}
 
 		entry();
 
-		const byteAddress = getFrameBufferByteAddress(state, frameTexture.target);
+		const byteAddress = getOverlayBufferByteAddress(state, overlayTexture.target);
 		if (byteAddress === undefined || byteAddress + byteLength > memoryViews.uint8.byteLength) {
 			return;
 		}
@@ -229,7 +229,7 @@ export function createWasmFrameTextureDrawer({
 			sourceHeight,
 			viewport.width,
 			viewport.height,
-			frameTexture.size
+			overlayTexture.size
 		);
 		layer.drawTexture(texture, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
 	};

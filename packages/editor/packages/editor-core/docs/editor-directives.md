@@ -78,6 +78,7 @@ Supported paths:
 - `bin.<id>.memories.<name>` - additional memory load targets for the same binary asset.
 - `keyboard.keyCodeMemory` / `keyboard.keyPressedMemory` - memory ids for browser keyboard state.
 - `midi.inputs.<id>.port` / `midi.inputs.<id>.callback` - browser MIDI input bindings.
+- `webUI.overlay.<field>` - WebAssembly-generated RGBA texture drawn over the complete editor.
 
 Examples:
 
@@ -94,6 +95,26 @@ Examples:
 ; @config midi.inputs.0.port 0
 ; @config midi.inputs.0.callback onMidiIn
 ```
+
+#### WASM editor overlay
+
+The web UI can call an exported WebAssembly function every editor frame, read an RGBA8 pixel buffer from memory, and
+draw it over the complete editor. Configure the export name, qualified memory target, and source dimensions:
+
+```txt
+; @config webUI.overlay.entry renderFrame
+; @config webUI.overlay.target screen:rgba
+; @config webUI.overlay.width 64
+; @config webUI.overlay.height 32
+; @config webUI.overlay.filter nearest
+; @config webUI.overlay.objectFit fill
+```
+
+The target contains `width * height * 4` bytes in top-to-bottom RGBA order. Pixel alpha controls how strongly the
+overlay covers the editor: `0` is transparent and `255` is opaque. The default filter is `nearest`; `linear` enables
+interpolated scaling. The default object fit is `fill`; `cover`, `contain`, and `none` are also supported. An optional
+positive numeric `webUI.overlay.size` sets the displayed width in pixels, while a percentage such as `150%` scales
+relative to the source width and preserves the source aspect ratio.
 
 Supported `font` values:
 

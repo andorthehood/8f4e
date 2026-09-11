@@ -116,12 +116,12 @@ describe('parseEditorDirectives', () => {
 		const configPlugin = createDirectivePlugin('config', () => undefined);
 
 		expect(
-			parseEditorDirectives(['; @config', '; - webUI.background.target', '; - frame:buffer'], [configPlugin])
+			parseEditorDirectives(['; @config', '; - webUI.overlay.target', '; - frame:buffer'], [configPlugin])
 		).toEqual([
 			{
 				name: 'config',
 				rawRow: 0,
-				args: ['webUI.background.target', 'frame:buffer'],
+				args: ['webUI.overlay.target', 'frame:buffer'],
 				sourceLine: '; @config',
 			},
 		]);
