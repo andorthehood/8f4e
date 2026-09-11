@@ -109,7 +109,7 @@ The exact callback/retained API may be refined, but phase and ordering semantics
 - `packages/editor/packages/glugglug2/src/index.ts` - Root exports.
 - `packages/editor/packages/glugglug2/screenshot-tests/` - Pixel orientation, filtering, and layer coverage.
 - `packages/editor/packages/glugglug2/README.md` - Texture API, phase semantics, and ownership.
-- `packages/editor/packages/web-ui/src/drawers/wasmOverlayTexture.ts` - Future migration consumer.
+- `packages/editor/packages/web-ui/src/drawers/wasmFrameTexture.ts` - Future migration consumer.
 
 ## Risks & Considerations
 
@@ -127,7 +127,7 @@ The exact callback/retained API may be refined, but phase and ordering semantics
 - **Related**: TODO 468 (shader-batched raster caches)
 - **Related**: TODO 472 (shader underlay plugin)
 - **Related**: TODO 473 (post-process plugin)
-- **Consumer**: `packages/editor/packages/web-ui/src/drawers/wasmOverlayTexture.ts`
+- **Consumer**: `packages/editor/packages/web-ui/src/drawers/wasmFrameTexture.ts`
 
 ## Notes
 
