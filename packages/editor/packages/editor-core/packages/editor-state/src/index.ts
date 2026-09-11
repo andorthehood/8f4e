@@ -122,7 +122,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	registerEffect(autoEnvConstants(store)); // Must run after codeBlockCreator to ensure env block is created
 	registerEffect(blockTypeUpdater(store)); // Must run before compiler to classify blocks first
 	registerEffect(globalEditorDirectivesEffect(store));
-	registerEffect(compiler(store, events));
+	registerEffect(compiler(store));
 	registerEffect(codeBlockRendering(store, events));
 	registerEffect(viewportDirectiveEffect(store, events));
 	registerEffect(entryOutlines(store));

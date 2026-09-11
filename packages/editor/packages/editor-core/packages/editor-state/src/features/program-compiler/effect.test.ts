@@ -2,7 +2,6 @@ import type { State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
-import { createMockEventDispatcherWithVitest } from '~/pureHelpers/testingUtils/vitestTestUtils';
 import { recompileDebounceDelayEditorConfigValidator } from './editorConfig';
 import compilerEffect from './effect';
 
@@ -10,7 +9,6 @@ describe('program compiler effect', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockCompileCode: MockInstance;
-	let mockEvents: ReturnType<typeof createMockEventDispatcherWithVitest>;
 	let subscribeSpy: MockInstance;
 
 	beforeEach(() => {
@@ -43,7 +41,6 @@ describe('program compiler effect', () => {
 		mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = helperBlock;
 
 		store = createStateManager(mockState);
-		mockEvents = createMockEventDispatcherWithVitest();
 		subscribeSpy = vi.spyOn(store, 'subscribe') as MockInstance;
 	});
 
@@ -53,7 +50,7 @@ describe('program compiler effect', () => {
 	});
 
 	async function triggerProgrammaticCompile(delayMs = 500): Promise<void> {
-		compilerEffect(store, mockEvents);
+		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
 			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
@@ -189,13 +186,13 @@ describe('program compiler effect', () => {
 	});
 
 	it('registers the recompile debounce delay editor config validator', () => {
-		compilerEffect(store, mockEvents);
+		compilerEffect(store);
 
 		expect(mockState.editorConfigValidators.recompileDebounceDelay).toBe(recompileDebounceDelayEditorConfigValidator);
 	});
 
 	it('cancels a scheduled compilation when disposed', async () => {
-		const dispose = compilerEffect(store, mockEvents);
+		const dispose = compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
 			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
@@ -206,20 +203,6 @@ describe('program compiler effect', () => {
 		await vi.advanceTimersByTimeAsync(500);
 
 		expect(mockCompileCode).not.toHaveBeenCalled();
-	});
-
-	it('compiles populated projects without a runtime selection', async () => {
-		mockState.editorConfig = {};
-		compilerEffect(store, mockEvents);
-		const projectPopulatedCall = (mockEvents.on as unknown as MockInstance).mock.calls.find(
-			call => call[0] === 'projectCodeBlocksPopulated'
-		);
-		expect(projectPopulatedCall).toBeDefined();
-
-		projectPopulatedCall![1]();
-		await vi.advanceTimersByTimeAsync(500);
-
-		expect(mockCompileCode).toHaveBeenCalledOnce();
 	});
 
 	it('passes the includes collection and resolver to the compiler callback', async () => {
@@ -279,7 +262,7 @@ describe('program compiler effect', () => {
 
 	it('uses the configured recompile debounce delay', async () => {
 		mockState.editorConfig.recompileDebounceDelay = 120;
-		compilerEffect(store, mockEvents);
+		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
 			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);
@@ -294,7 +277,7 @@ describe('program compiler effect', () => {
 	});
 
 	it('uses the default recompile debounce delay when the config value is absent', async () => {
-		compilerEffect(store, mockEvents);
+		compilerEffect(store);
 		const programmaticChangeCall = subscribeSpy.mock.calls.find(
 			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
 		);

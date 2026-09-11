@@ -110,10 +110,6 @@ draw it centered over the editor. Configure the export name, qualified memory ta
 ; @config webUI.overlay.filter nearest
 ```
 
-The overlay creates its own WebAssembly instance, so it does not require a `runtime` configuration. When no runtime is
-configured, the editor does not load one. Add a runtime only if the project also needs continuous worker or audio
-execution outside the overlay render callback.
-
 The target contains `width * height * 4` bytes in top-to-bottom RGBA order. Pixel alpha controls how strongly the
 overlay covers the editor: `0` is transparent and `255` is opaque. The default filter is `nearest`; `linear` enables
 interpolated scaling. The texture is centered at its source dimensions by default. An optional numeric

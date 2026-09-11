@@ -13,7 +13,6 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 - **Memory Management**: Tracks compiler-derived memory usage and handles memory recreation events
 - **Performance Tracking**: Measures and logs compilation time
 - **Auto Compilation**: Recompiles changed compilable blocks automatically
-- **Initial Compilation**: Compiles after project code blocks are populated, whether or not a runtime is selected
 - **Recompile Debounce**: Defaults to 500ms and can be configured with `; @config recompileDebounceDelay <ms>`
 
 ## Compiler Options
