@@ -18,14 +18,8 @@ type WasmOverlayTextureModule = typeof import('./drawers/wasmOverlayTexture');
 let wasmOverlayTextureModulePromise: Promise<WasmOverlayTextureModule> | undefined;
 
 function loadWasmOverlayTextureModule(): Promise<WasmOverlayTextureModule> {
-	const pendingModule = wasmOverlayTextureModulePromise ?? import('./drawers/wasmOverlayTexture');
-	wasmOverlayTextureModulePromise = pendingModule;
-	return pendingModule.catch(error => {
-		if (wasmOverlayTextureModulePromise === pendingModule) {
-			wasmOverlayTextureModulePromise = undefined;
-		}
-		throw error;
-	});
+	wasmOverlayTextureModulePromise ??= import('./drawers/wasmOverlayTexture');
+	return wasmOverlayTextureModulePromise;
 }
 
 // Re-export types
@@ -137,7 +131,6 @@ export default async function init(
 	let overlayTextureLayer: RgbaTextureLayer | undefined;
 	let overlayTextureKey = '';
 	let loadingOverlayTextureModule = false;
-	let failedOverlayTextureKey = '';
 	let destroyed = false;
 
 	function destroyOverlayTextureLayer(): void {
@@ -162,33 +155,22 @@ export default async function init(
 		const overlayTexture = getOverlayTexture();
 		const nextOverlayTextureKey = overlayTexture ? JSON.stringify(overlayTexture) : '';
 		if (!overlayTexture || !options.getCodeBuffer || !options.getMemory) {
-			failedOverlayTextureKey = '';
 			destroyOverlayTextureLayer();
 			return;
 		}
 
 		if (!overlayTextureModule) {
-			if (loadingOverlayTextureModule || failedOverlayTextureKey === nextOverlayTextureKey) {
+			if (loadingOverlayTextureModule) {
 				return;
 			}
 
 			loadingOverlayTextureModule = true;
-			const requestedOverlayTextureKey = nextOverlayTextureKey;
-			void loadWasmOverlayTextureModule()
-				.then(module => {
-					loadingOverlayTextureModule = false;
-					if (!destroyed) {
-						overlayTextureModule = module;
-						failedOverlayTextureKey = '';
-					}
-				})
-				.catch(error => {
-					loadingOverlayTextureModule = false;
-					if (!destroyed) {
-						failedOverlayTextureKey = requestedOverlayTextureKey;
-						console.error('Failed to load overlay texture renderer:', error);
-					}
-				});
+			void loadWasmOverlayTextureModule().then(module => {
+				loadingOverlayTextureModule = false;
+				if (!destroyed) {
+					overlayTextureModule = module;
+				}
+			});
 			return;
 		}
 

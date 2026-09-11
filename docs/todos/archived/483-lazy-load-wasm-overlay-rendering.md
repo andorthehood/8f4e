@@ -75,8 +75,8 @@ creates and owns its own layer only when a complete overlay configuration is pre
 configuration destroys the old layer and its GPU resources; disposal during loading cannot create a late layer.
 
 In the `@8f4e/editor-default` production build, the initial shared editor chunk changed from 388.76 kB raw / 93.89 kB
-gzip to 378.38 kB raw / 91.51 kB gzip. The deferred overlay chunk is 11.61 kB raw / 4.31 kB gzip. Overlay-free editors
-therefore save about 10.38 kB raw / 2.38 kB gzip and avoid the overlay shader and fullscreen-geometry allocations.
+gzip to 378.12 kB raw / 91.41 kB gzip. The deferred overlay chunk is 11.61 kB raw / 4.31 kB gzip. Overlay-free editors
+therefore save about 10.64 kB raw / 2.48 kB gzip and avoid the overlay shader and fullscreen-geometry allocations.
 
 ## Archive Instructions
 
