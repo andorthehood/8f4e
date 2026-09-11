@@ -31,9 +31,14 @@ describe('editor state lifecycle', () => {
 		});
 
 		expect(enabledStore.getState().featureFlags.browserLocalNotes).toBe(true);
-		expect(enabledEvents.on).toHaveBeenCalledWith('projectCodeBlocksPopulated', expect.any(Function));
 		expect(disabledStore.getState().featureFlags.browserLocalNotes).toBe(false);
-		expect(disabledEvents.on).not.toHaveBeenCalledWith('projectCodeBlocksPopulated', expect.any(Function));
+		const enabledProjectPopulatedHandlers = vi
+			.mocked(enabledEvents.on)
+			.mock.calls.filter(([eventName]) => eventName === 'projectCodeBlocksPopulated');
+		const disabledProjectPopulatedHandlers = vi
+			.mocked(disabledEvents.on)
+			.mock.calls.filter(([eventName]) => eventName === 'projectCodeBlocksPopulated');
+		expect(enabledProjectPopulatedHandlers).toHaveLength(disabledProjectPopulatedHandlers.length + 1);
 
 		enabledStore.dispose();
 		disabledStore.dispose();

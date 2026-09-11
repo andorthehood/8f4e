@@ -3,8 +3,6 @@
 note
 ; @pos -69 -13
 ; @home left
-; @config runtime WebWorkerRuntime
-; @config workerRuntime.sampleRate 1
 ; @config export.fileName overlayTexture
 ; @config webUI.overlay.entry main
 ; @config webUI.overlay.target screen:rgba

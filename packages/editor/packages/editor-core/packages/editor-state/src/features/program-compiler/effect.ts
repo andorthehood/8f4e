@@ -1,4 +1,4 @@
-import type { InfoRecord, State } from '@8f4e/editor-state-types';
+import type { EventDispatcher, InfoRecord, State } from '@8f4e/editor-state-types';
 import type { CompilerDiagnostic } from '@8f4e/language-spec';
 import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
@@ -10,7 +10,7 @@ import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorC
 
 const includesBlockType = documentBlockInstructionByType.includes.type;
 
-export default function compiler(store: StateManager<State>): () => void {
+export default function compiler(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 	registerRecompileDebounceDelayEditorConfigValidator(store);
 	let disposed = false;
@@ -153,11 +153,13 @@ export default function compiler(store: StateManager<State>): () => void {
 
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeChanged);
 	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticCodeChanged);
+	events.on('projectCodeBlocksPopulated', scheduleRecompile);
 
 	return () => {
 		disposed = true;
 		scheduleRecompile.cancel();
 		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeChanged);
 		store.unsubscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticCodeChanged);
+		events.off('projectCodeBlocksPopulated', scheduleRecompile);
 	};
 }
