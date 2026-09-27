@@ -11,7 +11,6 @@ const SPACE_CHARACTER_CODE = 32;
  */
 export class DrawContext {
 	private readonly sprites: SpriteDrawContext;
-	private characterWidth: number;
 
 	/**
 	 * Creates a reusable editor drawing context.
@@ -19,9 +18,11 @@ export class DrawContext {
 	 * @param target - Numeric sprite destination, normally the glugglugglug engine.
 	 * @param characterWidth - Initial fixed horizontal glyph advance in pixels.
 	 */
-	constructor(target: SpriteTarget, characterWidth: number) {
+	constructor(
+		target: SpriteTarget,
+		private characterWidth: number
+	) {
 		this.sprites = new SpriteDrawContext(target);
-		this.characterWidth = characterWidth;
 	}
 
 	/**
