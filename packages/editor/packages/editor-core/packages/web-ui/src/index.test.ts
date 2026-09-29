@@ -154,11 +154,6 @@ function createSpriteData() {
 	};
 }
 
-async function settleOverlayModuleLoad(): Promise<void> {
-	await import('./drawers/wasmOverlayTexture');
-	await Promise.resolve();
-}
-
 describe('web-ui init', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
@@ -213,7 +208,7 @@ describe('web-ui init', () => {
 		expect(mocks.RgbaTextureLayer).not.toHaveBeenCalled();
 	});
 
-	it('loads and registers a configured overlay after the line renderer', async () => {
+	it('registers a configured overlay after the line renderer', async () => {
 		const { default: init } = await import('./index');
 		const state = createMockState();
 		const memoryViews = {
@@ -235,9 +230,6 @@ describe('web-ui init', () => {
 			getCodeBuffer: () => new Uint8Array(0),
 			getMemory: () => null,
 		});
-
-		expect(mocks.RgbaTextureLayer).not.toHaveBeenCalled();
-		await settleOverlayModuleLoad();
 
 		expect(mocks.RgbaTextureLayer).toHaveBeenCalledWith(mocks.engine, { phase: 'postDraw' });
 		expect(mocks.LineDrawer.mock.invocationCallOrder[0]).toBeLessThan(
@@ -468,7 +460,6 @@ describe('web-ui init', () => {
 		});
 		expect(instantiateOverlayTextureWasm).not.toHaveBeenCalled();
 
-		await settleOverlayModuleLoad();
 		view.renderFrame();
 
 		expect(instantiateOverlayTextureWasm).toHaveBeenCalledWith(memory, codeBuffer);

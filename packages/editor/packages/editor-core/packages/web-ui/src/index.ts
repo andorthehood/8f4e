@@ -1,7 +1,7 @@
 import type { State } from '@8f4e/editor-state-types';
 import type { SpriteAtlas, SpriteIdLookups } from '@8f4e/sprite-generator';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
-import { Engine, LineDrawer, type RgbaTextureLayer } from 'glugglugglug';
+import { Engine, LineDrawer, RgbaTextureLayer } from 'glugglugglug';
 import { DrawContext } from './drawContext';
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';
@@ -9,18 +9,9 @@ import drawContextMenu from './drawers/contextMenu';
 import drawDialog from './drawers/dialog';
 import drawBackground from './drawers/drawBackground';
 import drawModeOverlay from './drawers/modeOverlay';
-import type { WasmOverlayTextureOptions } from './drawers/wasmOverlayTexture';
+import { createWasmOverlayTextureDrawer, type WasmOverlayTextureOptions } from './drawers/wasmOverlayTexture';
 import type { MemoryViews } from './types';
 import { resolveWireColors } from './wire-colors';
-
-type WasmOverlayTextureModule = typeof import('./drawers/wasmOverlayTexture');
-
-let wasmOverlayTextureModulePromise: Promise<WasmOverlayTextureModule> | undefined;
-
-function loadWasmOverlayTextureModule(): Promise<WasmOverlayTextureModule> {
-	wasmOverlayTextureModulePromise ??= import('./drawers/wasmOverlayTexture');
-	return wasmOverlayTextureModulePromise;
-}
 
 // Re-export types
 export type { MemoryViews } from './types';
@@ -127,11 +118,8 @@ export default async function init(
 	engine.hooks.postDraw.push(renderStatsHook);
 
 	let overlayTexture = options.overlayTexture;
-	let overlayTextureModule: WasmOverlayTextureModule | undefined;
 	let overlayTextureLayer: RgbaTextureLayer | undefined;
 	let overlayTextureKey = '';
-	let loadingOverlayTextureModule = false;
-	let destroyed = false;
 
 	function destroyOverlayTextureLayer(): void {
 		overlayTextureLayer?.destroy();
@@ -148,29 +136,9 @@ export default async function init(
 	}
 
 	function syncWasmOverlayTexture(): void {
-		if (destroyed) {
-			return;
-		}
-
 		const nextOverlayTextureKey = overlayTexture ? JSON.stringify(overlayTexture) : '';
 		if (!overlayTexture || !options.getCodeBuffer || !options.getMemory) {
 			destroyOverlayTextureLayer();
-			return;
-		}
-
-		if (!overlayTextureModule) {
-			if (loadingOverlayTextureModule) {
-				return;
-			}
-
-			loadingOverlayTextureModule = true;
-			void loadWasmOverlayTextureModule().then(module => {
-				loadingOverlayTextureModule = false;
-				if (!destroyed) {
-					overlayTextureModule = module;
-					syncWasmOverlayTexture();
-				}
-			});
 			return;
 		}
 
@@ -179,7 +147,7 @@ export default async function init(
 		}
 
 		destroyOverlayTextureLayer();
-		const drawWasmOverlayTexture = overlayTextureModule.createWasmOverlayTextureDrawer({
+		const drawWasmOverlayTexture = createWasmOverlayTextureDrawer({
 			state,
 			memoryViews,
 			overlayTexture,
@@ -188,7 +156,7 @@ export default async function init(
 			getViewportSize: () => ({ width: viewportWidth, height: viewportHeight }),
 			instantiate: options.instantiateOverlayTextureWasm,
 		});
-		overlayTextureLayer = new overlayTextureModule.RgbaTextureLayer(engine, { phase: 'postDraw' });
+		overlayTextureLayer = new RgbaTextureLayer(engine, { phase: 'postDraw' });
 		overlayTextureLayer.setDrawCallback(layer => {
 			drawWasmOverlayTexture(layer);
 		});
@@ -304,7 +272,6 @@ export default async function init(
 			engine.renderFrame(drawFrame);
 		},
 		destroy: () => {
-			destroyed = true;
 			pauseRendering();
 			lines.destroy();
 			destroyOverlayTextureLayer();

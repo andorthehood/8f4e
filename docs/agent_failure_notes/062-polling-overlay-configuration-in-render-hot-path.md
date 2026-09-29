@@ -58,15 +58,14 @@ Editor-core should resolve the initial overlay configuration once, pass it into 
 `editorConfig.webUI` through the existing state manager. The subscription callback re-resolves the configuration and
 pushes it to the view through `setOverlayTexture(config | undefined)`.
 
-Web-ui should synchronize the lazy module and texture-layer lifecycle only at three boundaries:
+Web-ui should synchronize the texture-layer lifecycle only at two boundaries:
 
 1. Initial view setup.
 2. An explicit `setOverlayTexture(...)` call after configuration changes.
-3. Completion of the lazy module import, using the latest configuration.
 
-The editor must unsubscribe during disposal, and a late import completion must not recreate resources after the view has
-been destroyed. The RGBA layer's draw callback remains in the render loop so changing framebuffer pixels still appear on
-each frame.
+The editor must unsubscribe during disposal. The RGBA layer's draw callback remains in the render loop so changing
+framebuffer pixels still appear on each frame. If lazy loading is revisited, module-load completion becomes a third
+lifecycle boundary and must use the latest configuration without recreating resources after the view has been destroyed.
 
 Tests should verify both sides of the boundary: editor-core subscribes, pushes updated configuration, and unsubscribes;
 web-ui creates, replaces, and destroys overlay resources in response to setter calls without relying on `renderFrame()`
