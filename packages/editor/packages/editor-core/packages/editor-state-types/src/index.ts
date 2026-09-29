@@ -204,6 +204,15 @@ export interface TooltipHighlight {
 	fillColor: FillSpriteColorName;
 }
 
+export interface TooltipTarget {
+	codeBlockCreationIndex: number;
+	lineNumber: number;
+}
+
+export interface TooltipAnimation {
+	startedAt?: number;
+}
+
 export interface TooltipState {
 	text: string[];
 	characters: Array<Array<number | string>>;
@@ -213,6 +222,8 @@ export interface TooltipState {
 	layout: TooltipLayout;
 	highlights: TooltipHighlight[];
 	liveValues: TooltipLiveValue[];
+	target?: TooltipTarget;
+	animation: TooltipAnimation;
 }
 
 // Feature Flags types (top-level public API)
