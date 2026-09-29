@@ -64,6 +64,7 @@ Active todo files are listed below.
 | 482 | Resolve sprite identifiers before drawing | 🟡 | 2-4h | 2026-09-06 | Resolve public atlas keys during setup and use dense numeric metadata lookup for each sprite submission. |
 | 483 | Lazy-load WASM overlay rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer overlay drawer and RGBA layer only when a project configures an overlay. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
+| 487 | Save projects to reusable browser file handles | 🟡 | 1-2d | 2026-09-29 | Make `Cmd+S`/`Ctrl+S` save canonical `.8f4e` source through a reusable file handle while leaving browser-session autosave independent. |
 
 ### 🟢 Low Priority
 

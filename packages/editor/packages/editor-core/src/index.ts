@@ -228,17 +228,22 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 
 	updateStateWithSpriteData(state, spriteData);
 	const renderProjection = createWebUiRenderProjection(store, events);
+	const getOverlayTexture = () => resolveWebUiOverlayConfig(state) ?? options.overlayTexture;
 
 	view = await initView(state, renderProjection, canvas, memoryViews, spriteData, {
 		renderStatsIntervalFrames: options.renderStatsIntervalFrames,
-		overlayTexture: options.overlayTexture,
-		getOverlayTexture: () => resolveWebUiOverlayConfig(state) ?? options.overlayTexture,
+		overlayTexture: getOverlayTexture(),
 		getCodeBuffer: () => currentCodeBuffer,
 		getMemory: () => currentMemoryRef,
 		onRenderStats: stats => {
 			store.set('info.graphics', toGraphicsInfoRecord(stats));
 		},
 	});
+	const syncOverlayTexture = () => {
+		view.setOverlayTexture(getOverlayTexture());
+	};
+	store.subscribe('editorConfig.webUI', syncOverlayTexture);
+	syncOverlayTexture();
 
 	const cleanupSpriteSheet = createSpriteSheetManager(store, view, events);
 
@@ -296,6 +301,7 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 				cleanupEditorEnvironmentPlugins,
 				cleanupSpriteSheet,
 				() => renderProjection.dispose(),
+				() => store.unsubscribe('editorConfig.webUI', syncOverlayTexture),
 				() => store.dispose(),
 				() => events.dispose(),
 				() => view.destroy(),

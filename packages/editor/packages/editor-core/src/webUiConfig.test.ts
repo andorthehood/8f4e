@@ -5,7 +5,7 @@ import { resolveWebUiOverlayConfig, webUiEditorConfigSchemaContribution } from '
 describe('web-ui editor config', () => {
 	it('contributes overlay texture config schema paths', () => {
 		expect(webUiEditorConfigSchemaContribution.root).toBe('webUI');
-		expect(webUiEditorConfigSchemaContribution.schema).toMatchObject({
+		expect(webUiEditorConfigSchemaContribution.schema).toEqual({
 			type: 'object',
 			properties: {
 				overlay: {
@@ -15,16 +15,13 @@ describe('web-ui editor config', () => {
 						target: { type: 'string' },
 						width: { type: 'integer', minimum: 1 },
 						height: { type: 'integer', minimum: 1 },
-						size: {
-							anyOf: [
-								{ type: 'number', minimum: 1 },
-								{ type: 'string', pattern: '^\\d+(?:\\.\\d+)?%$' },
-							],
-						},
-						objectFit: { type: 'string', enum: ['fill', 'cover', 'contain', 'none'] },
+						magnification: { type: 'number', minimum: 1 },
+						filter: { type: 'string', enum: ['nearest', 'linear'] },
 					},
+					additionalProperties: false,
 				},
 			},
+			additionalProperties: false,
 		});
 	});
 
@@ -37,9 +34,8 @@ describe('web-ui editor config', () => {
 						target: 'screen:rgba',
 						width: 64,
 						height: 32,
-						size: '150%',
+						magnification: 3,
 						filter: 'linear',
-						objectFit: 'none',
 					},
 				},
 			},
@@ -50,9 +46,8 @@ describe('web-ui editor config', () => {
 			target: 'screen:rgba',
 			width: 64,
 			height: 32,
-			size: '150%',
+			magnification: 3,
 			filter: 'linear',
-			objectFit: 'none',
 		});
 	});
 

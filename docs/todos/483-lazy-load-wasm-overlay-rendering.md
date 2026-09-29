@@ -12,8 +12,8 @@ completed: null
 
 ## Problem Description
 
-The web UI eagerly imports `createWasmOverlayTextureDrawer` and `RgbaTextureLayer`, and constructs a texture layer for
-every editor. Projects without a framebuffer overlay still download its implementation and initialize its resources.
+The web UI eagerly imports `createWasmOverlayTextureDrawer` and `RgbaTextureLayer`. Projects without a framebuffer
+overlay still download the implementation, although they do not initialize its rendering resources.
 
 ## Proposed Solution
 
@@ -27,31 +27,31 @@ rendering resources owned by each editor instance.
    engine's package exports allow the RGBA implementation to stay outside the initial bundle.
 2. Introduce an asynchronous loader triggered by resolved overlay configuration. Start drawing once the latest
    configuration, compiled code, and memory are ready; preserve topmost overlay ordering relative to other layers.
-3. Handle configuration changes and disposal while loading, release resources when appropriate, and preserve rendering
-   pause/resume and resource-release behavior.
+3. Keep configuration changes event-driven while handling configuration changes and disposal during loading. Preserve
+   rendering pause/resume and resource-release behavior.
 4. Verify the emitted chunks and compare initial minified/gzip bytes and first-overlay readiness.
 
 ## Success Criteria
 
-- [ ] Editors without a configured framebuffer overlay neither fetch the optional implementation nor create its layer.
+- [ ] Editors without a configured framebuffer overlay do not fetch the optional implementation.
 - [ ] Initial configuration and later configuration changes activate the correct overlay.
 - [ ] Concurrent editors share module loading but retain independent resources.
-- [ ] Late or failed loads cannot resurrect disposed resources or leave unhandled rejections.
+- [ ] Late loads cannot resurrect disposed resources.
 - [ ] Rendering order, memory/code updates, and resource release/resume retain their behavior.
-- [ ] Before/after production measurements demonstrate the initial-download savings.
+- [ ] Before/after production measurements demonstrate that the initial-download savings justify the added complexity.
 
 ## Affected Components
 
 - `packages/editor/packages/editor-core/packages/web-ui/src/index.ts`
 - `packages/editor/packages/editor-core/packages/web-ui/src/drawers/wasmOverlayTexture.ts`
 - `packages/editor/packages/editor-core/packages/web-ui/packages/glugglugglug/src/plugins/rgba-texture-layer/`
-- `packages/editor/packages/editor-core/src/webUiConfig.ts`
 
 ## Risks & Considerations
 
 Adding a dynamic import is insufficient if another static import retains the same implementation. Inspect the final
-website bundle, including any shared chunks. Loading must not introduce asynchronous work into every draw call.
-Overlay projects may incur an extra request before their first overlay frame; measure that tradeoff.
+website bundle, including any shared chunks. Loading must not introduce asynchronous work into every draw call. The
+previous implementation saved about 2.6 kB gzip, so a future attempt should first establish that this small reduction is
+worth the lifecycle complexity.
 
 ## Validation Checkpoints
 
@@ -70,7 +70,9 @@ Overlay projects may incur an extra request before their first overlay frame; me
 
 ## Notes
 
-Identified through source inspection on 2026-09-06. Savings are unmeasured; establish a fresh baseline during implementation.
+An implementation completed on 2026-09-11 reduced the initial editor bundle by about 2.6 kB gzip, but was removed before
+release because its asynchronous module and resource lifecycle added more complexity than the small saving justified.
+The event-driven configuration path remains and should not be replaced with render-loop polling in any future attempt.
 
 ## Archive Instructions
 

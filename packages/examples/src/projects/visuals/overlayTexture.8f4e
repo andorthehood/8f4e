@@ -1,0 +1,151 @@
+8f4e/v1
+
+function redChannel
+; @pos -3 16
+param int pixelIndex
+param int width
+param int frame
+
+push pixelIndex
+push width
+push 1
+sub
+and
+push 8
+mul
+push frame
+add
+push 255
+and
+
+functionEnd int
+
+function greenChannel
+; @pos 31 16
+param int pixelIndex
+param int width
+param int frame
+
+push pixelIndex
+push width
+ensureNonZero
+div
+push 14
+mul
+push frame
+push 2
+mul
+add
+push 255
+and
+
+functionEnd int
+
+function blueChannel
+; @pos 65 16
+param int pixelIndex
+param int width
+param int frame
+
+push pixelIndex
+push width
+push 1
+sub
+and
+push pixelIndex
+push width
+ensureNonZero
+div
+add
+push 8
+mul
+push frame
+push 3
+mul
+add
+push 255
+and
+
+functionEnd int
+
+constants env
+; @pos 0 0
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+const SAMPLE_RATE 1
+
+constantsEnd
+
+note
+; @pos -62 -22
+; @home left
+; @config runtime WebWorkerRuntime
+; @config workerRuntime.sampleRate 1
+; @config export.fileName overlayTexture
+; @config webUI.overlay.entry main
+; @config webUI.overlay.target screen:rgba
+; @config webUI.overlay.width 32
+; @config webUI.overlay.height 32
+; @config webUI.overlay.magnification 8
+; @config webUI.overlay.filter nearest
+
+; The main entry runs once per editor
+; frame and fills a 32 x 32 RGBA8
+; image. Its pixels are magnified and
+; centered over the editor.
+noteEnd
+
+entry main
+module screen
+; @pos 119 -9
+; @home right
+
+const WIDTH 32
+const HEIGHT 32
+const PIXEL_COUNT WIDTH*HEIGHT
+
+int frame
+int8u[] rgba PIXEL_COUNT*4
+
+; Advance the animation.
+push &frame
+push frame
+push 1
+add
+store
+
+loop PIXEL_COUNT
+; Push channels in reverse order 
+; because storeBytes writes them 
+; in pop order.
+
+push 255 ; alpha channel
+
+loopIndex
+push WIDTH
+push frame
+call blueChannel
+
+loopIndex
+push WIDTH
+push frame
+call greenChannel
+
+loopIndex
+push WIDTH
+push frame
+call redChannel
+
+; Store one RGBA pixel.
+push &rgba
+loopIndex
+push 4
+mul
+add
+storeBytes 4
+loopEnd
+
+moduleEnd
+entryEnd
