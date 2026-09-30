@@ -80,7 +80,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
-| 488 | Remove disabled editor debug overlays | 2026-09-30 | Removed the disconnected info and console overlays, their public flags, and the unconsumed console logging state. |
+| 488 | Remove disabled editor debug overlays | 2026-09-30 | Removed the disconnected info and console overlays and their public flags while retaining state-backed logging. |
 | 274 | Remove unused editor-core feature-flag configuration | 2026-09-30 | Deleted the test-only editor-core implementation and retained focused coverage beside the canonical editor-state feature flags. |
 | 448 | Move prototype content validation to parser | 2026-09-07 | Cancelled as stale; parser-owned placement validation already rejects invalid prototype contents. GitHub issue #944 was closed as not planned. |
 | 425 | Split StackItem into value and address variants | 2026-09-07 | Cancelled as stale; the value/address discriminated union is already implemented. GitHub issue #713 was closed as not planned. |

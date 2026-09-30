@@ -3,6 +3,7 @@ import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { EMPTY_DEFAULT_PROJECT } from '~/features/project-import/emptyDefaultProject';
+import { error, warn } from '../logger/logger';
 
 export default function projectImport(store: StateManager<State>, events: EventDispatcher): void {
 	const state = store.getState();
@@ -20,6 +21,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			})
 			.catch(err => {
 				console.warn('Failed to load project from storage:', err);
+				warn(state, 'Failed to load project from storage');
 				loadProject({ project: EMPTY_DEFAULT_PROJECT });
 			});
 	}
@@ -27,6 +29,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 	async function loadProjectByUrl({ projectUrl }: { projectUrl: string }) {
 		if (!state.callbacks.getProject) {
 			console.warn('No getProject callback provided');
+			warn(state, 'No getProject callback provided');
 			return;
 		}
 		try {
@@ -35,6 +38,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			loadProject({ project });
 		} catch (err) {
 			console.error('Failed to load project by url:', err);
+			error(state, 'Failed to load project by url');
 			loadProject({ project: EMPTY_DEFAULT_PROJECT });
 		}
 	}
@@ -46,6 +50,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 	function onImportProject() {
 		if (!state.callbacks.importProject) {
 			console.warn('No importProject callback provided');
+			warn(state, 'No importProject callback provided');
 			return;
 		}
 
@@ -56,6 +61,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			})
 			.catch(err => {
 				console.error('Failed to load project from file:', err);
+				error(state, 'Failed to load project from file');
 			});
 	}
 

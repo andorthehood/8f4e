@@ -18,11 +18,10 @@ either flag cannot display an overlay.
 
 The overlays were deliberately disconnected from the render loop in commit `bd882a53b` (`fix(web-ui): disable debug
 overlays`), but the surrounding feature surface was left in place. The feature-flag documentation still describes both
-overlays as functional, including a debug-mode example. The console logger also continues collecting bounded log
-entries in editor state even though the orphaned console drawer is the only in-repository reader of those entries.
+overlays as functional, including a debug-mode example. The state-backed logger is a separate diagnostic facility and
+must remain available even without a built-in overlay consumer.
 
-This leaves nonfunctional public options, unnecessary runtime work, misleading documentation, and tests and fixtures
-that must keep obsolete state shapes alive.
+This leaves nonfunctional public options, misleading documentation, and dead rendering code.
 
 ## Proposed Solution
 
@@ -30,14 +29,12 @@ Remove both overlay features completely, without compatibility fallbacks:
 
 - Remove `infoOverlay` and `consoleOverlay` from the public feature-flag type, defaults, fixtures, and documentation.
 - Delete the orphaned info and console overlay drawers and their dedicated tests or screenshot fixtures.
-- Remove the internal console log state, logger helpers, and logging calls whose only purpose was feeding the console
-  overlay.
-- Preserve real runtime, compilation, and import behavior while removing the discarded logging side effects.
+- Preserve the internal console log state, logger helpers, and logging calls for non-overlay diagnostic consumers.
 
 Keep the general `state.info` records, sampled render statistics, and the `@info` editor directive. Those have live
 consumers independent of the removed info overlay. Also keep the mode overlay and its shared debug font and color
 resources, and do not conflate the overlay logger with the separate `consoleLog` context-menu action that writes an
-event to the browser console.
+event to the browser console. Keep the state-backed logger independently of both UI paths.
 
 ## Anti-Patterns
 
@@ -46,7 +43,7 @@ event to the browser console.
   intentionally disabled.
 - Do not remove `state.info`, render-stat collection, `@info`, `modeOverlay`, or shared sprite colors still used by the
   mode overlay.
-- Do not preserve `ConsoleState`, `LogMessage`, or logger calls solely for hypothetical future consumers.
+- Do not remove `ConsoleState`, `LogMessage`, the bounded log buffer, or existing logger call sites.
 - Do not rewrite archived TODOs or Git history to hide the earlier overlay implementation.
 
 ## Implementation Plan
@@ -65,23 +62,22 @@ event to the browser console.
 - Remove drawer-specific tests, exports, fixtures, and documentation.
 - Confirm that the active Web UI render loop has no remaining overlay branches or imports.
 
-### Step 3: Remove console logging state
+### Step 3: Preserve state-backed logging
 
-- Remove `ConsoleState` and `LogMessage` from editor-state types and delete `state.console` initialization.
-- Delete the editor-state logger helper and its README/tests.
-- Remove logger imports and calls from project import, program compilation, and runtime effects while preserving their
-  actual control flow, callbacks, state updates, and error handling.
+- Keep `ConsoleState`, `LogMessage`, and `state.console` initialization.
+- Keep the editor-state logger helper, documentation, and focused tests.
+- Keep logger imports and calls in project import, program compilation, and runtime effects.
 
 ### Step 4: Correct documentation and focused tests
 
 - Remove the overlay flags and debug-mode example from `docs/feature-flags.md`.
-- Update comments that describe the console state as part of the public editor state.
-- Retain or add focused tests proving that the remaining mode overlay, render statistics, and `@info` directive are
-  unaffected.
+- Retain focused tests for state-backed logging and confirm that the remaining mode overlay, render statistics, and
+  `@info` directive are unaffected.
 
 ## Validation Checkpoints
 
-- `rg -n "infoOverlay|consoleOverlay|ConsoleState|LogMessage|state\\.console" packages/editor docs/feature-flags.md`
+- `rg -n "infoOverlay|consoleOverlay" packages/editor docs/feature-flags.md`
+- `rg -n "ConsoleState|LogMessage|state\\.console|features/logger" packages/editor`
 - `npx nx run-many --target=test --projects=@8f4e/editor-state,@8f4e/web-ui,@8f4e/editor-core`
 - `npx nx run-many --target=typecheck --projects=@8f4e/editor-state-types,@8f4e/editor-state,@8f4e/web-ui,@8f4e/editor-core`
 - `npx nx run @8f4e/editor-website:build`
@@ -91,39 +87,34 @@ event to the browser console.
 
 - [x] The public feature-flag API contains neither `infoOverlay` nor `consoleOverlay`.
 - [x] The two orphaned Web UI drawers and their dedicated coverage are removed.
-- [x] Editor state no longer allocates or mutates an internal console log buffer.
-- [x] Project import, compilation, and runtime behavior remain unchanged apart from removal of invisible logging work.
+- [x] Editor state retains its bounded console log buffer and logger types.
+- [x] Project import, compilation, and runtime logger calls remain intact.
 - [x] Feature-flag documentation no longer advertises either overlay.
-- [x] `state.info`, render statistics, `@info`, `modeOverlay`, and the browser-console menu action remain functional.
+- [x] `state.info`, render statistics, `@info`, `modeOverlay`, state-backed logging, and the browser-console menu action
+  remain functional.
 - [x] Relevant tests, typechecks, and the editor website build pass.
 
 ## Affected Components
 
-- `packages/editor/packages/editor-core/packages/editor-state-types/src/index.ts` - remove overlay flags and console types.
+- `packages/editor/packages/editor-core/packages/editor-state-types/src/index.ts` - remove overlay flags while retaining
+  console logger types.
 - `packages/editor/packages/editor-core/packages/editor-state/src/pureHelpers/state/featureFlags.ts` - remove canonical
   defaults.
-- `packages/editor/packages/editor-core/packages/editor-state/src/features/logger/` - remove the unconsumed logging
-  subsystem.
-- `packages/editor/packages/editor-core/packages/editor-state/src/features/project-import/effect.ts` - remove overlay
-  logger calls without changing import behavior.
-- `packages/editor/packages/editor-core/packages/editor-state/src/features/program-compiler/effect.ts` - remove overlay
-  logger calls without changing compilation behavior.
-- `packages/editor/packages/editor-core/packages/editor-state/src/features/runtime/effect.ts` - remove overlay logger
-  calls without changing runtime behavior.
+- `packages/editor/packages/editor-core/packages/editor-state/src/features/logger/` - retain state-backed diagnostics.
 - `packages/editor/packages/editor-core/packages/web-ui/src/drawers/infoOverlay.ts` - remove orphaned info rendering.
 - `packages/editor/packages/editor-core/packages/web-ui/src/drawers/consoleOverlay.ts` - remove orphaned console rendering.
 - `packages/editor/packages/editor-core/packages/editor-state-testing/src/index.ts` and editor test fixtures - narrow the
-  complete feature-flag and state shapes.
+  complete feature-flag shape while retaining console state.
 - `docs/feature-flags.md` - remove stale overlay documentation and examples.
 
 ## Risks & Considerations
 
 - **Shared visual resources**: `fontDebugInfo` and `debugInfoBackground` are still used by `modeOverlay`; remove only
   resources proven exclusive to the deleted drawers.
-- **Logger call sites**: Some calls sit beside real failure handling. Remove the log side effect without swallowing,
-  rethrowing, or otherwise changing errors.
-- **Public state shape**: The editor exposes its state object. The project is unreleased, so no compatibility shim is
-  required, but all internal fixtures must be updated consistently.
+- **Logger ownership**: State-backed diagnostic history remains useful independently of the removed overlay, so do not
+  treat lack of a built-in renderer as evidence that the logger is dead.
+- **Public flag shape**: The project is unreleased, so obsolete overlay flags can be removed without a compatibility
+  shim, but all internal fixtures must be updated consistently.
 - **Historical documentation**: Archived TODOs may continue describing the old implementation as historical evidence.
 
 ## Related Items
@@ -136,9 +127,9 @@ event to the browser console.
 A repository audit on 2026-09-30 found no production read of either overlay flag and no import of either drawer. The
 render-loop disconnection dates to 2026-04-24.
 
-Completed on 2026-09-30 by removing the two public flags and drawers, deleting the unconsumed console logging state,
-and updating the remaining fixtures and feature-flag documentation. The focused editor tests, typechecks, and editor
-website build pass with the live info and mode-overlay behavior retained.
+Completed on 2026-09-30 by removing the two public flags and drawers while retaining the state-backed logger, its
+bounded history, and all existing call sites. The remaining fixtures and feature-flag documentation were updated, and
+the focused editor tests, typechecks, and editor website build pass.
 
 ## Archive Instructions
 

@@ -352,6 +352,10 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			compilationErrors: [],
 			editorDirectiveErrors: [],
 		},
+		console: {
+			logs: [],
+			maxLogs: 100,
+		},
 		runtime: {
 			values: {},
 		},

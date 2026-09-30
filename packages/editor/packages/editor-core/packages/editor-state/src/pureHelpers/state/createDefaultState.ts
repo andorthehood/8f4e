@@ -84,6 +84,10 @@ export default function createDefaultState() {
 			compilationErrors: [],
 			editorDirectiveErrors: [],
 		},
+		console: {
+			logs: [],
+			maxLogs: 100,
+		},
 		globalEditorDirectives: {},
 		runtime: {
 			values: {},
