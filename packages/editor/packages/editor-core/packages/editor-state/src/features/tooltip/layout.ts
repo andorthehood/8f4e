@@ -110,6 +110,8 @@ export function getTooltipState(
 		lineNumber: selectedCodeBlock.cursor.row,
 	};
 	const previousTarget = state.tooltip.target;
+	// Tooltip state also refreshes for compiler, sprite, and viewport changes. Preserve the start time for the
+	// same visible line so those updates do not restart its entrance animation.
 	const isSameTarget =
 		state.tooltip.lineCount > 0 &&
 		previousTarget?.codeBlockCreationIndex === target.codeBlockCreationIndex &&
