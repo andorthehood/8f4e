@@ -61,14 +61,12 @@ describe('keyboardEvents mode switching', () => {
 
 		featureFlags = {
 			contextMenu: true,
-			infoOverlay: true,
 			moduleDragging: true,
 			codeLineSelection: false,
 			viewportDragging: true,
 			editing: false,
 			modeToggling: true,
 			historyTracking: true,
-			consoleOverlay: true,
 		};
 		editorMode = 'view';
 		codeBlockRendering = { showHiddenCodeBlocks: false };

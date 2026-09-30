@@ -47,7 +47,6 @@ import type {
 	JSONSchemaLike,
 } from './features/editor-config/types';
 import type { ResolvedGlobalEditorDirectives } from './features/global-editor-directives/types';
-import type { ConsoleState, LogMessage } from './features/logger/types';
 import type { ContextMenu, ContextMenuItem, MenuGenerator, MenuStackEntry } from './features/menu/types';
 import type { PresentationState } from './features/presentation/types';
 import type { CompilationResult, Compiler } from './features/program-compiler/types';
@@ -79,7 +78,6 @@ import type {
 // Re-export dialog types
 // Re-export global-editor-directives types
 // Re-export runtime types
-// Re-export logger types
 // Re-export binary-assets types
 // Re-export code-editing types
 // Re-export project-import types
@@ -98,7 +96,6 @@ export type {
 	CompilationResult,
 	Compiler,
 	CompilerMemoryAction as MemoryAction,
-	ConsoleState,
 	ContextMenu,
 	ContextMenuItem,
 	Crossfade,
@@ -115,7 +112,6 @@ export type {
 	InternalKeyboardEvent,
 	InternalMouseEvent,
 	JSONSchemaLike,
-	LogMessage,
 	MemoryIdentifier,
 	MenuGenerator,
 	MenuStackEntry,
@@ -231,9 +227,6 @@ export interface FeatureFlags {
 	/** Enable/disable right-click context menu functionality */
 	contextMenu: boolean;
 
-	/** Enable/disable info overlay display (development information) */
-	infoOverlay: boolean;
-
 	/** Enable/disable dragging and repositioning of code block modules */
 	moduleDragging: boolean;
 
@@ -254,9 +247,6 @@ export interface FeatureFlags {
 
 	/** Enable/disable history tracking for undo/redo functionality */
 	historyTracking?: boolean;
-
-	/** Enable/disable console overlay display (internal logging) */
-	consoleOverlay: boolean;
 
 	/** Enable/disable arrows that point toward off-screen code blocks */
 	offscreenBlockArrows: boolean;
@@ -384,8 +374,6 @@ export interface State {
 	redoStack: ProjectObjectModel[];
 	storageQuota: { usedBytes: number; totalBytes: number };
 	binaryAssets: BinaryAsset[];
-	/** Console state for internal logging */
-	console: ConsoleState;
 	runtime: {
 		values: RuntimeValuesByRuntimeId;
 	};
@@ -419,7 +407,6 @@ export type {
 	EditorConfigValidatorRegistry,
 } from './features/editor-config/types';
 export type * from './features/global-editor-directives/types';
-export type * from './features/logger/types';
 export type * from './features/menu/types';
 export type * from './features/presentation/types';
 export type * from './features/program-compiler/types';

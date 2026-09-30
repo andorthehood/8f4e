@@ -5,8 +5,6 @@ The feature flags system allows you to enable/disable specific editor functional
 ## Available Feature Flags
 
 - `contextMenu: boolean` - Enable/disable right-click context menu functionality
-- `infoOverlay: boolean` - Enable/disable info overlay display (development information)  
-- `consoleOverlay: boolean` - Enable/disable console overlay display (internal logging) (default: false)
 - `moduleDragging: boolean` - Enable/disable dragging and repositioning of code block modules
 - `viewportDragging: boolean` - Enable/disable panning/scrolling of the editor viewport
 - `editing: boolean` - Enable/disable all editing functionality (create, edit, delete, save)
@@ -61,7 +59,7 @@ const state = init(events, project, {
     editing: false,             // Disable all editing functionality
     contextMenu: false,         // Disable context menus
     moduleDragging: false,      // Disable module dragging
-    // viewportDragging and infoOverlay remain enabled for navigation
+    // viewportDragging remains enabled for navigation
   }
 });
 ```
@@ -77,7 +75,6 @@ const state = init(events, project, {
     contextMenu: false,         // Disable context menus
     moduleDragging: false,      // Disable module dragging
     viewportDragging: false,    // Disable viewport panning
-    // infoOverlay remains enabled
   }
 });
 ```
@@ -90,23 +87,8 @@ import init from '@8f4e/editor-core';
 const state = init(events, project, {
   featureFlags: {
     contextMenu: false,
-    infoOverlay: false,      // Hide development information
     moduleDragging: false,
     // viewportDragging and localStorage remain enabled for navigation
-  }
-});
-```
-
-### Debug Mode (With Console Overlay)
-
-```typescript
-import init from '@8f4e/editor-core';
-
-const state = init(events, project, {
-  featureFlags: {
-    consoleOverlay: true,   // Enable console overlay for debugging
-    infoOverlay: true,      // Also show info overlay
-    // Other features remain enabled
   }
 });
 ```
@@ -116,14 +98,6 @@ const state = init(events, project, {
 Screenshot export temporarily disables visual guide features such as `modeOverlay` and `offscreenBlockArrows` through
 editor-state before rendering the capture frame.
 
-Console overlay features:
-- Displays internal editor logs on the right side of the screen
-- Shows timestamped log entries with level indicators (log, warn, error, info)
-- Uses color-coded backgrounds: red for errors, yellow/orange for warnings
-- Automatically limits to 100 log entries (circular buffer)
-- Truncates long messages to fit the screen width
-- Perfect for debugging editor behavior without opening DevTools
-
 ### Completely Locked Editor
 
 ```typescript
@@ -132,7 +106,6 @@ import init from '@8f4e/editor-core';
 const state = init(events, project, {
   featureFlags: {
     contextMenu: false,
-    infoOverlay: false,
     moduleDragging: false,
     viewportDragging: false,
   }

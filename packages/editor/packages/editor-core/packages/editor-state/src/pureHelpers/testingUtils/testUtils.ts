@@ -329,14 +329,12 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		},
 		featureFlags: {
 			contextMenu: true,
-			infoOverlay: true,
 			moduleDragging: true,
 			codeLineSelection: true,
 			viewportDragging: true,
 			editing: true,
 			modeToggling: true,
 			modeOverlay: true,
-			consoleOverlay: false,
 			offscreenBlockArrows: true,
 			projectOpening: true,
 			projectCreation: true,
@@ -353,10 +351,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 		codeErrors: {
 			compilationErrors: [],
 			editorDirectiveErrors: [],
-		},
-		console: {
-			logs: [],
-			maxLogs: 100,
 		},
 		runtime: {
 			values: {},

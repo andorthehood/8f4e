@@ -64,7 +64,6 @@ Active todo files are listed below.
 | 483 | Lazy-load WASM overlay rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer overlay drawer and RGBA layer only when a project configures an overlay. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
 | 487 | Save projects to reusable browser file handles | 🟡 | 1-2d | 2026-09-29 | Make `Cmd+S`/`Ctrl+S` save canonical `.8f4e` source through a reusable file handle while leaving browser-session autosave independent. |
-| 488 | Remove disabled editor debug overlays | 🟡 | 4-8h | 2026-09-30 | Remove the disconnected info and console overlays, their public flags, and the console logging state that no UI consumes. |
 
 ### 🟢 Low Priority
 
@@ -81,6 +80,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 488 | Remove disabled editor debug overlays | 2026-09-30 | Removed the disconnected info and console overlays, their public flags, and the unconsumed console logging state. |
 | 274 | Remove unused editor-core feature-flag configuration | 2026-09-30 | Deleted the test-only editor-core implementation and retained focused coverage beside the canonical editor-state feature flags. |
 | 448 | Move prototype content validation to parser | 2026-09-07 | Cancelled as stale; parser-owned placement validation already rejects invalid prototype contents. GitHub issue #944 was closed as not planned. |
 | 425 | Split StackItem into value and address variants | 2026-09-07 | Cancelled as stale; the value/address discriminated union is already implemented. GitHub issue #713 was closed as not planned. |

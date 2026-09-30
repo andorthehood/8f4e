@@ -4,8 +4,8 @@ priority: Medium
 effort: 4-8h
 created: 2026-09-30
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-09-30
 ---
 
 # TODO: Remove Disabled Editor Debug Overlays
@@ -89,13 +89,13 @@ event to the browser console.
 
 ## Success Criteria
 
-- [ ] The public feature-flag API contains neither `infoOverlay` nor `consoleOverlay`.
-- [ ] The two orphaned Web UI drawers and their dedicated coverage are removed.
-- [ ] Editor state no longer allocates or mutates an internal console log buffer.
-- [ ] Project import, compilation, and runtime behavior remain unchanged apart from removal of invisible logging work.
-- [ ] Feature-flag documentation no longer advertises either overlay.
-- [ ] `state.info`, render statistics, `@info`, `modeOverlay`, and the browser-console menu action remain functional.
-- [ ] Relevant tests, typechecks, and the editor website build pass.
+- [x] The public feature-flag API contains neither `infoOverlay` nor `consoleOverlay`.
+- [x] The two orphaned Web UI drawers and their dedicated coverage are removed.
+- [x] Editor state no longer allocates or mutates an internal console log buffer.
+- [x] Project import, compilation, and runtime behavior remain unchanged apart from removal of invisible logging work.
+- [x] Feature-flag documentation no longer advertises either overlay.
+- [x] `state.info`, render statistics, `@info`, `modeOverlay`, and the browser-console menu action remain functional.
+- [x] Relevant tests, typechecks, and the editor website build pass.
 
 ## Affected Components
 
@@ -135,6 +135,10 @@ event to the browser console.
 
 A repository audit on 2026-09-30 found no production read of either overlay flag and no import of either drawer. The
 render-loop disconnection dates to 2026-04-24.
+
+Completed on 2026-09-30 by removing the two public flags and drawers, deleting the unconsumed console logging state,
+and updating the remaining fixtures and feature-flag documentation. The focused editor tests, typechecks, and editor
+website build pass with the live info and mode-overlay behavior retained.
 
 ## Archive Instructions
 

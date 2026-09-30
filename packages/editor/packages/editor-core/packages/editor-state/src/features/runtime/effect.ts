@@ -1,7 +1,6 @@
 import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
 
-import { error, log } from '../logger/logger';
 import {
 	collectRuntimeEditorConfigSchemaContributions,
 	registerRuntimeSelectionEditorConfigValidator,
@@ -20,7 +19,6 @@ export default function runtime(store: StateManager<State>, events: EventDispatc
 
 	async function initOrDestroyOrUpdateRuntime() {
 		if (disposed || isInitializing) {
-			log(state, 'Runtime is already initializing, skipping...', 'Runtime');
 			return;
 		}
 
@@ -35,7 +33,6 @@ export default function runtime(store: StateManager<State>, events: EventDispatc
 
 		try {
 			if (runtimeDestroyer) {
-				log(state, `Destroying runtime: ${onlineRuntime}`, 'Runtime');
 				runtimeDestroyer();
 				runtimeDestroyer = null;
 				onlineRuntime = null;
@@ -47,10 +44,7 @@ export default function runtime(store: StateManager<State>, events: EventDispatc
 			}
 
 			const selectedRuntimeEntry = state.runtimeRegistry[selectedRuntimeId];
-			log(state, `Requesting runtime: ${selectedRuntimeId}`, 'Runtime');
-
 			const runtimeFactory = selectedRuntimeEntry.factory;
-			log(state, `Loaded runtime from registry: ${selectedRuntimeId}`, 'Runtime');
 
 			if (typeof runtimeFactory !== 'function') {
 				throw new Error(`Runtime ${selectedRuntimeId} did not return a valid factory function`);
@@ -58,10 +52,8 @@ export default function runtime(store: StateManager<State>, events: EventDispatc
 
 			runtimeDestroyer = runtimeFactory(store, events);
 			onlineRuntime = selectedRuntimeId;
-			log(state, `Successfully initialized runtime: ${selectedRuntimeId}`, 'Runtime');
 		} catch (err) {
 			console.error('Failed to initialize runtime:', err);
-			error(state, `Failed to initialize runtime: ${err instanceof Error ? err.message : 'Unknown error'}`);
 			throw new Error(
 				`Failed to load runtime ${selectedRuntimeId}: ${err instanceof Error ? err.message : 'Unknown error'}`
 			);

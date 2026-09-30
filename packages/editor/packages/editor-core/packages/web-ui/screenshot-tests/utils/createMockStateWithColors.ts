@@ -31,7 +31,6 @@ export default async function createMockStateWithColors(overrides: Partial<State
 	const state = createMockState({
 		featureFlags: {
 			contextMenu: true,
-			infoOverlay: false,
 			moduleDragging: false,
 			codeLineSelection: true,
 			viewportDragging: false,

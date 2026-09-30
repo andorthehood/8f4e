@@ -4,7 +4,6 @@ import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/lan
 import type { StateManager } from '@8f4e/state-manager';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
-import { log } from '../logger/logger';
 import convertGraphicDataToProjectStructure from '../project-export/serializeCodeBlocks';
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
 
@@ -85,19 +84,11 @@ export default function compiler(store: StateManager<State>): () => void {
 			});
 			store.set('codeErrors.compilationErrors', []);
 
-			if (memoryReinitialized) {
-				log(state, 'WASM Memory instance was (re)created', 'Compiler');
-				log(state, 'Memory was (re)initialized', 'Compiler');
-			}
-
-			log(state, 'Compilation succeeded in ' + compilationTimeMs.toFixed(2) + 'ms', 'Compiler');
 			console.log('[Compiler] Compilation succeeded with config:', compilerOptions);
 		} catch (error) {
 			if (disposed) {
 				return;
 			}
-
-			log(state, 'Compilation failed', 'Compiler');
 
 			store.set('compiler.isCompiling', false);
 			setCompilerInfo({ isCompiling: false });
