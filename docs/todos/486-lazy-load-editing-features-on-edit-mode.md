@@ -68,7 +68,7 @@ testing helpers. Changing the product website's initial mode is a separate produ
 
 ## Related Items
 
-- [TODO 274: Remove unused editor-core feature-flag configuration](274-consolidate-default-feature-flags-source.md).
+- [TODO 274: Remove unused editor-core feature-flag configuration](archived/274-consolidate-default-feature-flags-source.md).
 - [TODO 484: Lazy-load context-menu builders](archived/484-lazy-load-context-menu-builders.md).
 - [TODO 485: Lazy-load project export formatting](archived/485-lazy-load-project-export-formatting.md).
 
