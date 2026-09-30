@@ -5,6 +5,41 @@ import type { DrawContext } from '../../drawContext';
 import type { MemoryViews } from '../../types';
 import formatDebuggerValue, { formatDebuggerValueAtAddress } from './widgets/formatDebuggerValue';
 
+const TOOLTIP_SPRING_DURATION_MS = 600;
+const TOOLTIP_SPRING_REVOLUTIONS = 1.5;
+const TOOLTIP_SPRING_VERTICAL_SCALE = 0.5;
+const tooltipAnimationOffsetChars = 2;
+
+export interface TooltipAnimationOffset {
+	x: number;
+	y: number;
+}
+
+export function getTooltipAnimationOffset(state: State, now = performance.now()): TooltipAnimationOffset {
+	const { startedAt } = state.tooltip.animation;
+
+	if (startedAt === undefined) {
+		return { x: 0, y: 0 };
+	}
+
+	const progress = Math.min(Math.max((now - startedAt) / TOOLTIP_SPRING_DURATION_MS, 0), 1);
+	if (progress === 1) {
+		return { x: 0, y: 0 };
+	}
+
+	const damping = (1 - progress) ** 1.5;
+	const angle = progress * TOOLTIP_SPRING_REVOLUTIONS * Math.PI * 2;
+	const horizontalRadius = tooltipAnimationOffsetChars * state.viewport.vGrid;
+	const verticalRadius = horizontalRadius * TOOLTIP_SPRING_VERTICAL_SCALE;
+	const x = Math.round(-horizontalRadius * damping * Math.cos(angle));
+	const y = Math.round(-verticalRadius * damping * Math.sin(angle));
+
+	return {
+		x: x === 0 ? 0 : x,
+		y: y === 0 ? 0 : y,
+	};
+}
+
 function getMemoryForLiveValueLine(
 	state: State,
 	moduleId: string,
@@ -77,7 +112,13 @@ function drawTextCharacters(
 	}
 }
 
-function drawLiveValue(engine: DrawContext, state: State, memoryViews: MemoryViews, liveValue: TooltipLiveValue): void {
+function drawLiveValue(
+	engine: DrawContext,
+	state: State,
+	memoryViews: MemoryViews,
+	liveValue: TooltipLiveValue,
+	offset: TooltipAnimationOffset
+): void {
 	const spriteLookups = state.spriteLookups!;
 	const value = getLiveValueText(state, memoryViews, liveValue);
 
@@ -89,8 +130,8 @@ function drawLiveValue(engine: DrawContext, state: State, memoryViews: MemoryVie
 		engine,
 		state,
 		value,
-		liveValue.x,
-		liveValue.y,
+		liveValue.x + offset.x,
+		liveValue.y + offset.y,
 		liveValue.color ?? spriteLookups.fontTooltipHighlight
 	);
 }
@@ -116,13 +157,20 @@ export default function drawSelectedLineHint(
 	}
 
 	const { width, height, x, y, lineX } = state.tooltip.layout;
+	const animationOffset = getTooltipAnimationOffset(state);
 
-	engine.drawSprite(x, y, spriteLookups.fillColors.tooltipBackground, width, height);
+	engine.drawSprite(
+		x + animationOffset.x,
+		y + animationOffset.y,
+		spriteLookups.fillColors.tooltipBackground,
+		width,
+		height
+	);
 
 	for (const highlight of state.tooltip.highlights) {
 		engine.drawSprite(
-			highlight.x,
-			highlight.y,
+			highlight.x + animationOffset.x,
+			highlight.y + animationOffset.y,
 			spriteLookups.fillColors[highlight.fillColor],
 			highlight.width,
 			highlight.height
@@ -135,12 +183,12 @@ export default function drawSelectedLineHint(
 			state,
 			state.tooltip.characters[index],
 			state.tooltip.colors[index],
-			lineX,
-			y + index * state.viewport.hGrid
+			lineX + animationOffset.x,
+			y + index * state.viewport.hGrid + animationOffset.y
 		);
 	}
 
 	for (const liveValue of state.tooltip.liveValues) {
-		drawLiveValue(engine, state, memoryViews, liveValue);
+		drawLiveValue(engine, state, memoryViews, liveValue, animationOffset);
 	}
 }

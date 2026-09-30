@@ -326,6 +326,10 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			},
 			highlights: [],
 			liveValues: [],
+			target: undefined,
+			animation: {
+				startedAt: undefined,
+			},
 		},
 		featureFlags: {
 			contextMenu: true,

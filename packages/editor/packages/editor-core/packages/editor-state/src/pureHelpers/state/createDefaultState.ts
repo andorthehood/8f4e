@@ -66,6 +66,10 @@ export default function createDefaultState() {
 			},
 			highlights: [],
 			liveValues: [],
+			target: undefined,
+			animation: {
+				startedAt: undefined,
+			},
 		},
 		featureFlags: defaultFeatureFlags,
 		editorMode: 'view' as const,

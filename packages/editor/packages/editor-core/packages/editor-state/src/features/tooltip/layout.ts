@@ -31,6 +31,10 @@ export function createEmptyTooltipState(): TooltipState {
 		layout: { ...emptyTooltipLayout },
 		highlights: [],
 		liveValues: [],
+		target: undefined,
+		animation: {
+			startedAt: undefined,
+		},
 	};
 }
 
@@ -97,9 +101,21 @@ function getTooltipHighlights(
 export function getTooltipState(
 	content: SelectedLineTooltipContent,
 	state: State,
-	selectedCodeBlock: CodeBlockGraphicData
+	selectedCodeBlock: CodeBlockGraphicData,
+	now = performance.now()
 ): TooltipState {
 	const layout = getTooltipLayout(content, state, selectedCodeBlock);
+	const target = {
+		codeBlockCreationIndex: selectedCodeBlock.creationIndex,
+		lineNumber: selectedCodeBlock.cursor.row,
+	};
+	const previousTarget = state.tooltip.target;
+	// Tooltip state also refreshes for compiler, sprite, and viewport changes. Preserve the start time for the
+	// same visible line so those updates do not restart its entrance animation.
+	const isSameTarget =
+		state.tooltip.lineCount > 0 &&
+		previousTarget?.codeBlockCreationIndex === target.codeBlockCreationIndex &&
+		previousTarget.lineNumber === target.lineNumber;
 
 	return {
 		text: content.text,
@@ -110,5 +126,9 @@ export function getTooltipState(
 		layout,
 		highlights: getTooltipHighlights(content.highlightTargets, layout, state),
 		liveValues: getTooltipLiveValues(content.liveValueTargets, layout, state),
+		target,
+		animation: {
+			startedAt: isSameTarget ? state.tooltip.animation.startedAt : now,
+		},
 	};
 }
