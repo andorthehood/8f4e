@@ -128,7 +128,7 @@ event to the browser console.
 
 ## Related Items
 
-- **Related**: `docs/todos/274-consolidate-default-feature-flags-source.md`
+- **Related**: `docs/todos/archived/274-consolidate-default-feature-flags-source.md`
 - **Historical**: `docs/todos/archived/113-console-overlay.md`
 
 ## Notes
