@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2h
 created: 2026-02-21
 issue: https://github.com/andorthehood/8f4e/issues/552
-status: Open
-completed: null
+status: Completed
+completed: 2026-09-30
 ---
 
 # TODO: Remove Unused Editor-Core Feature-Flag Configuration
@@ -67,11 +67,11 @@ the editor-state feature-flag tests rather than retaining an alias or re-export.
 
 ## Success Criteria
 
-- [ ] `packages/editor/packages/editor-core/src/config/featureFlags.ts` no longer exists.
-- [ ] Exactly one live `defaultFeatureFlags` and `validateFeatureFlags` implementation remains.
-- [ ] No compatibility re-export or fallback module is retained.
-- [ ] Partial feature-flag overrides retain their current behavior through editor initialization.
-- [ ] Relevant editor-state and editor-core tests and typechecks pass.
+- [x] `packages/editor/packages/editor-core/src/config/featureFlags.ts` no longer exists.
+- [x] Exactly one live `defaultFeatureFlags` and `validateFeatureFlags` implementation remains.
+- [x] No compatibility re-export or fallback module is retained.
+- [x] Partial feature-flag overrides retain their current behavior through editor initialization.
+- [x] Relevant editor-state and editor-core tests and typechecks pass.
 
 ## Affected Components
 
@@ -101,6 +101,9 @@ the editor-state feature-flag tests rather than retaining an alias or re-export.
 
 The implementation direction was clarified by a repository audit on 2026-09-30: the editor-core module is test-only,
 so retaining a forwarding module would preserve unused surface without serving a compatibility requirement.
+
+Completed on 2026-09-30 by deleting the unused editor-core implementation and its duplicate tests, then adding focused
+coverage beside the canonical editor-state implementation.
 
 ## Archive Instructions
 

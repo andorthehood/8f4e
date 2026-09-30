@@ -24,7 +24,6 @@ Active todo files are listed below.
 | 058 | Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support | 🟡 | 4-6 days | 2025-09-11 | The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the proj... |
 | 064 | Research WebAssembly Runtimes for ARM Microcontroller Support | 🟡 | 3-5 days | 2025-09-10 | The 8f4e project currently supports browser-based WebAssembly runtimes (WebWorker and AudioWorklet) but lacks native runtimes for embedded ARM microcontrollers. To implement the... |
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
-| 274 | Remove unused editor-core feature-flag configuration | 🟡 | 1-2h | 2026-02-21 | Delete the test-only editor-core feature-flag implementation and retain editor-state as the sole live owner. |
 | 291 | Add int64 support across compiler, runtime, and docs | 🟡 | 2-4d | 2026-03-09 | The language already has dedicated `float64` support, including 64-bit memory allocation and type-aware compiler paths, but there is no equivalent `int64` support. |
 | 297 | Add url editor directive for clickable links | 🟡 | 4-8h | 2026-03-12 | The editor currently has no directive for attaching a clickable external link to a code block. |
 | 302 | Add jump editor directive for code block navigation | 🟡 | 4-8h | 2026-03-14 | The editor currently supports code block navigation through the context-menu jump flow, but there is no in-code directive for linking one code block to another. |
@@ -82,6 +81,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 274 | Remove unused editor-core feature-flag configuration | 2026-09-30 | Deleted the test-only editor-core implementation and retained focused coverage beside the canonical editor-state feature flags. |
 | 448 | Move prototype content validation to parser | 2026-09-07 | Cancelled as stale; parser-owned placement validation already rejects invalid prototype contents. GitHub issue #944 was closed as not planned. |
 | 425 | Split StackItem into value and address variants | 2026-09-07 | Cancelled as stale; the value/address discriminated union is already implemented. GitHub issue #713 was closed as not planned. |
 | 408 | Reduce tokenizer identifier classification work | 2026-09-07 | Cancelled as stale; identifier dispatch is already optimized and GitHub issue #661 was already closed as completed. |
