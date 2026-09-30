@@ -8,10 +8,10 @@ export default function findCrossfadeWidgetAtViewportCoordinates(
 ): Crossfade | undefined {
 	return codeBlock.widgets.crossfades.find(crossfade => {
 		return (
-			x >= codeBlock.x + codeBlock.offsetX + crossfade.x - state.viewport.x &&
-			x <= codeBlock.x + codeBlock.offsetX + crossfade.width + crossfade.x - state.viewport.x &&
-			y >= codeBlock.y + codeBlock.offsetY + crossfade.y - state.viewport.y &&
-			y <= codeBlock.y + codeBlock.offsetY + crossfade.height + crossfade.y - state.viewport.y
+			x >= codeBlock.x + crossfade.x - state.viewport.x &&
+			x <= codeBlock.x + crossfade.width + crossfade.x - state.viewport.x &&
+			y >= codeBlock.y + crossfade.y - state.viewport.y &&
+			y <= codeBlock.y + crossfade.height + crossfade.y - state.viewport.y
 		);
 	});
 }

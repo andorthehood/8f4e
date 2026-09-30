@@ -378,18 +378,6 @@ Example:
 ; @config midi.inputs.1.callback onPitchBend
 ```
 
-### `@offset`
-
-Apply code-block visual position offset from an integer memory value.
-
-```txt
-; @offset <axis> <memoryId>
-```
-
-Where:
-
-- `axis` is `x` or `y`.
-
 ### `@tab`
 
 Define a visual tab stop for literal tab characters within the code block.

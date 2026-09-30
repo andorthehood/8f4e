@@ -35,8 +35,8 @@ describe('createMockCodeBlock', () => {
 			expect(normalizeBlock(block)).toMatchSnapshot();
 		});
 
-		it('should override name and offsets', () => {
-			const block = createMockCodeBlock({ name: 'custom-block', offsetX: 10, offsetY: 20 });
+		it('should override the block name', () => {
+			const block = createMockCodeBlock({ name: 'custom-block' });
 			expect(normalizeBlock(block)).toMatchSnapshot();
 		});
 
@@ -57,14 +57,8 @@ describe('createMockCodeBlock', () => {
 	describe('cursor calculation', () => {
 		it('should calculate cursor position correctly', () => {
 			const block = createMockCodeBlock({ x: 100, y: 200, width: 200, height: 150 });
-			// Cursor X = x + offsetX + width/2 = 100 + 0 + 200/2 = 200
+			// Cursor X = x + width/2 = 100 + 200/2 = 200
 			// Cursor Y (relative) = height/2 = 150/2 = 75
-			expect(normalizeBlock(block)).toMatchSnapshot();
-		});
-
-		it('should calculate cursor with offsets', () => {
-			const block = createMockCodeBlock({ x: 100, y: 200, width: 200, height: 100, offsetX: 10, offsetY: 20 });
-			// Cursor X = x + offsetX + width/2 = 100 + 10 + 200/2 = 210
 			expect(normalizeBlock(block)).toMatchSnapshot();
 		});
 
@@ -92,11 +86,6 @@ describe('createMockCodeBlock', () => {
 
 		it('should handle zero dimensions', () => {
 			const block = createMockCodeBlock({ width: 0, height: 0 });
-			expect(normalizeBlock(block)).toMatchSnapshot();
-		});
-
-		it('should handle negative offsets', () => {
-			const block = createMockCodeBlock({ x: 100, offsetX: -20, offsetY: -30, width: 100 });
 			expect(normalizeBlock(block)).toMatchSnapshot();
 		});
 

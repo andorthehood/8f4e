@@ -167,32 +167,6 @@ describe('findClosestCodeBlockInDirection', () => {
 			expect(result.name).toBe('selected');
 		});
 
-		it('should handle blocks with offsets', () => {
-			const selected = createMockCodeBlock({
-				name: 'selected',
-				x: 0,
-				y: 0,
-				width: 100,
-				height: 100,
-				offsetX: 10,
-				offsetY: 10,
-			});
-			const right = createMockCodeBlock({
-				name: 'right',
-				x: 200,
-				y: 0,
-				width: 100,
-				height: 100,
-				offsetX: 20,
-				offsetY: 20,
-			});
-			const codeBlocks = [selected, right];
-
-			const result = findClosestCodeBlockInDirection(codeBlocks, selected, 'right');
-
-			expect(result.name).toBe('right');
-		});
-
 		it('should handle overlapping positions', () => {
 			const selected = createMockCodeBlock({ name: 'selected', x: 100, y: 100 });
 			const overlap = createMockCodeBlock({ name: 'overlap', x: 100, y: 100 });
@@ -443,8 +417,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 0,
 				width: 100,
 				height: 300,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 110,
 			});
 			// Two neighbors to the right at different heights
@@ -469,8 +441,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 0,
 				width: 100,
 				height: 300,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 280,
 			});
 			// Two neighbors to the right at different heights
@@ -495,8 +465,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 0,
 				width: 100,
 				height: 300,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 110,
 			});
 			// Two neighbors to the left at different heights
@@ -519,8 +487,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 0,
 				width: 100,
 				height: 400,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 200,
 			});
 			// Multiple neighbors at different heights
@@ -563,8 +529,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 200,
 				width: 100,
 				height: 100,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 250,
 			});
 			// Blocks above and below
@@ -588,8 +552,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 0,
 				width: 100,
 				height: 500,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 10,
 			});
 			// Multiple neighbors spanning the height
@@ -613,8 +575,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 0,
 				width: 100,
 				height: 300,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 150,
 			});
 			// Neighbor that spans Y=100 to Y=200 (center at Y=150)
@@ -637,8 +597,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 0,
 				width: 100,
 				height: 200,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 100,
 			});
 			// Close but vertically misaligned neighbor
@@ -663,8 +621,6 @@ describe('findClosestCodeBlockInDirection', () => {
 				y: 0,
 				width: 100,
 				height: 400,
-				offsetX: 0,
-				offsetY: 0,
 				cursorY: 200,
 			});
 			// Three neighbors at same horizontal distance

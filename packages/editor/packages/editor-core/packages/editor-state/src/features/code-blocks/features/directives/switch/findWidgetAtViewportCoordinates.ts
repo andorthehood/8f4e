@@ -16,10 +16,10 @@ export default function findSwitchWidgetAtViewportCoordinates(
 ): Switch | undefined {
 	return codeBlock.widgets.switches.find(_switch => {
 		return (
-			x >= codeBlock.x + codeBlock.offsetX + _switch.x - state.viewport.x &&
-			x <= codeBlock.x + codeBlock.offsetX + _switch.width + _switch.x - state.viewport.x &&
-			y >= codeBlock.y + codeBlock.offsetY + _switch.y - state.viewport.y &&
-			y <= codeBlock.y + codeBlock.offsetY + _switch.height + _switch.y - state.viewport.y
+			x >= codeBlock.x + _switch.x - state.viewport.x &&
+			x <= codeBlock.x + _switch.width + _switch.x - state.viewport.x &&
+			y >= codeBlock.y + _switch.y - state.viewport.y &&
+			y <= codeBlock.y + _switch.height + _switch.y - state.viewport.y
 		);
 	});
 }

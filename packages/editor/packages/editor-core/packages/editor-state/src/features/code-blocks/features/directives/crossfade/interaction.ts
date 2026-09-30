@@ -31,7 +31,7 @@ export default function crossfade(store: StateManager<State>, events: EventDispa
 		}
 
 		const { crossfade, codeBlock, leftMemory, rightMemory } = activeCrossfade;
-		const relativeX = x - (codeBlock.x + codeBlock.offsetX + crossfade.x - state.viewport.x);
+		const relativeX = x - (codeBlock.x + crossfade.x - state.viewport.x);
 		const normalized = clamp((relativeX - crossfade.handleWidth / 2) / crossfade.trackWidth, 0, 1);
 		const position = normalized * 2 - 1;
 		const leftValue = (1 - position) / 2;

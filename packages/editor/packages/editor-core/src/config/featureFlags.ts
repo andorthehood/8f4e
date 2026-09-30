@@ -24,7 +24,6 @@ export const defaultFeatureFlags = {
 	modeOverlay: true,
 	historyTracking: true,
 	consoleOverlay: true,
-	positionOffsetters: true,
 	offscreenBlockArrows: true,
 	projectOpening: true,
 	projectCreation: true,

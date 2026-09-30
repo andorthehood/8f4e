@@ -46,7 +46,6 @@ describe('pianoKeyboard interaction', () => {
 		const codeBlock = createMockCodeBlock({
 			x: 100,
 			y: 50,
-			offsetX: 5,
 			code: ['module test-block', 'int[] notes 10', 'int noteCount 0', '; @piano &notes &noteCount 48', 'moduleEnd'],
 		});
 		codeBlock.widgets.pianoKeyboards = [
@@ -101,7 +100,7 @@ describe('pianoKeyboard interaction', () => {
 
 	function clickKey(codeBlock: ReturnType<typeof createCodeBlockWithPiano>, keyOffset: number) {
 		onCallbacks.get('codeBlockClick')?.({
-			x: 100 + 5 + 20 + keyOffset * 10 + 1,
+			x: 100 + 20 + keyOffset * 10 + 1,
 			y: 50 + 40 + 1,
 			codeBlock,
 		});

@@ -24,8 +24,8 @@ export interface ArrowPlacement {
 export function calculateArrowPlacement(codeBlock: CodeBlockGraphicData, state: State): ArrowPlacement {
 	const arrowPlacement: ArrowPlacement = {};
 	const { borderLineCoordinates, center } = state.viewport;
-	const targetX = codeBlock.x + codeBlock.offsetX;
-	const targetY = codeBlock.y + codeBlock.offsetY;
+	const targetX = codeBlock.x;
+	const targetY = codeBlock.y;
 	const deltaX = targetX - center.x;
 	const deltaY = targetY - center.y;
 

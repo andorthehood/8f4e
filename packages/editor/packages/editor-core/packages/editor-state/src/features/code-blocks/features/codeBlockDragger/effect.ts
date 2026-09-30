@@ -66,8 +66,8 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			dragSet = [draggedCodeBlock];
 		}
 
-		const relativeX = Math.abs(x - (draggedCodeBlock.x + draggedCodeBlock.offsetX - state.viewport.x));
-		const relativeY = Math.abs(y - (draggedCodeBlock.y + draggedCodeBlock.offsetY - state.viewport.y));
+		const relativeX = Math.abs(x - (draggedCodeBlock.x - state.viewport.x));
+		const relativeY = Math.abs(y - (draggedCodeBlock.y - state.viewport.y));
 
 		events.dispatch<CodeBlockClickEvent>('codeBlockClick', {
 			x,

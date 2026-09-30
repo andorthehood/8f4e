@@ -44,7 +44,7 @@ function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
  *
  * @remarks
  * **Cursor Coordinate System:**
- * - `cursor.x` is absolute (computed as block center: x + offsetX + width/2)
+ * - `cursor.x` is absolute (computed as block center: x + width/2)
  * - `cursor.y` is relative to the block (defaults to height/2, i.e., center of block)
  *
  * @example
@@ -61,7 +61,7 @@ function createMockAsyncFunction<T>(returnValue: T): () => Promise<T> {
  *
  * @example
  * // Override any property
- * const block = createMockCodeBlock({ name: 'custom', code: ['test'], offsetX: 10, offsetY: 10 });
+ * const block = createMockCodeBlock({ name: 'custom', code: ['test'] });
  */
 export function createMockCodeBlock(
 	options: Partial<CodeBlockGraphicData> & { cursorY?: number } = {}
@@ -72,8 +72,6 @@ export function createMockCodeBlock(
 	const y = overrides.y ?? 0;
 	const width = overrides.width ?? 100;
 	const height = overrides.height ?? 100;
-	const offsetX = overrides.offsetX ?? 0;
-	const offsetY = overrides.offsetY ?? 0;
 	const code = overrides.code ?? [];
 	const name = (overrides.name ?? getCodeBlockNameFromSource(code)) || 'test-block';
 	const projectPath = overrides.projectPath ?? ROOT_PROJECT_GROUP_PATH;
@@ -86,7 +84,7 @@ export function createMockCodeBlock(
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
 	const gridY = overrides.gridY ?? Math.round(y / defaultHGrid);
 
-	const cursorX = x + offsetX + width / 2;
+	const cursorX = x + width / 2;
 	const cursorYValue = cursorY ?? height / 2;
 	const cursor = overrides.cursor ?? {
 		col: 0,
@@ -102,8 +100,6 @@ export function createMockCodeBlock(
 		gridY,
 		width,
 		height,
-		offsetX,
-		offsetY,
 		cursor,
 		name,
 		code,
@@ -341,7 +337,6 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			modeToggling: true,
 			modeOverlay: true,
 			consoleOverlay: false,
-			positionOffsetters: true,
 			offscreenBlockArrows: true,
 			projectOpening: true,
 			projectCreation: true,

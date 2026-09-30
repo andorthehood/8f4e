@@ -26,7 +26,6 @@ import outputs from './features/outputs/updateGraphicData';
 import gaps from './gaps';
 import getCodeBlockGridWidth from './getCodeBlockGridWidth';
 import paramShape, { updateParamShapeDeclarations } from './paramShape/updateGraphicData';
-import positionOffsetters from './positionOffsetters';
 import shape, { updateShapeDeclarations } from './shape/updateGraphicData';
 import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
 import getCodeBlockNameFromSource from './utils/getCodeBlockNameFromSource';
@@ -118,7 +117,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		runAfterGraphicDataWidthCalculation(graphicData, state, directiveState);
 		outputs(graphicData, state);
 		inputs(graphicData, state);
-		positionOffsetters(graphicData, state);
 		blockHighlights(graphicData, state);
 
 		const gapRowCount = [...graphicData.gaps.values()].reduce((total, gap) => total + gap.size, 0);

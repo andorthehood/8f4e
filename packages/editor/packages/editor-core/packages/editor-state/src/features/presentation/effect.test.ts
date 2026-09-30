@@ -18,8 +18,6 @@ function createCodeBlock(
 		y,
 		width: 120,
 		height: 80,
-		offsetX: 0,
-		offsetY: 0,
 		parsedDirectives: [
 			{
 				prefix: '@',

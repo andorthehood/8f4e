@@ -295,8 +295,6 @@ export interface CodeBlockGraphicData {
 	};
 	/** Human/source-facing block name derived from the block opener line. */
 	name: string;
-	positionOffsetterXWordAddress?: number;
-	positionOffsetterYWordAddress?: number;
 	/** Grid-space X coordinate (source of truth for horizontal position). Pixel X = gridX * vGrid */
 	gridX: number;
 	/** Grid-space Y coordinate (source of truth for vertical position). Pixel Y = gridY * hGrid */
@@ -305,8 +303,6 @@ export interface CodeBlockGraphicData {
 	x: number;
 	/** Pixel-space Y coordinate, computed from gridY * hGrid (where hGrid = characterHeight) */
 	y: number;
-	offsetX: number;
-	offsetY: number;
 	widgets: {
 		blockHighlights: Array<{
 			x: number;

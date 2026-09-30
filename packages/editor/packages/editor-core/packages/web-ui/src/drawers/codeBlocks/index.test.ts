@@ -188,7 +188,6 @@ describe('drawModules', () => {
 				codeBlocks: [hiddenBlock],
 			},
 			featureFlags: {
-				positionOffsetters: true,
 				codeLineSelection: true,
 				editing: true,
 			},
@@ -222,7 +221,6 @@ describe('drawModules', () => {
 				showHiddenCodeBlocks: true,
 			},
 			featureFlags: {
-				positionOffsetters: true,
 				codeLineSelection: true,
 				editing: true,
 			},

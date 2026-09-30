@@ -156,12 +156,6 @@ export const projects = [
 		path: 'machine-learning/digitClassifier.8f4e',
 	},
 	{
-		id: 'dancing-sine',
-		title: 'Dancing with the sine table',
-		description: 'Follow four moving pointers as they step through a sine lookup table.',
-		path: 'visuals/dancingWithTheSineLT.8f4e',
-	},
-	{
 		id: 'overlay-texture',
 		title: 'WASM texture overlay',
 		description: 'Watch a WebAssembly-generated RGBA image animate in the center of the editor.',

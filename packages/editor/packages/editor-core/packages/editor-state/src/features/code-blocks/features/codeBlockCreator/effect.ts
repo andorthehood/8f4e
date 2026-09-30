@@ -238,9 +238,7 @@ export default function codeBlockCreator(store: StateManager<State>, events: Eve
 			x: pixelX,
 			y: pixelY,
 			lineNumberColumnWidth: 2,
-			offsetX: 0,
 			lastUpdated: Date.now(),
-			offsetY: 0,
 			creationIndex,
 			blockType: 'unknown', // Will be updated by blockTypeUpdater effect
 			entry,

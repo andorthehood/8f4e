@@ -18,10 +18,10 @@ export default function findButtonWidgetAtViewportCoordinates(
 ): Switch | undefined {
 	return codeBlock.widgets.buttons.find(button => {
 		return (
-			x >= codeBlock.x + codeBlock.offsetX + button.x - state.viewport.x &&
-			x <= codeBlock.x + codeBlock.offsetX + button.width + button.x - state.viewport.x &&
-			y >= codeBlock.y + codeBlock.offsetY + button.y - state.viewport.y &&
-			y <= codeBlock.y + codeBlock.offsetY + button.height + button.y - state.viewport.y
+			x >= codeBlock.x + button.x - state.viewport.x &&
+			x <= codeBlock.x + button.width + button.x - state.viewport.x &&
+			y >= codeBlock.y + button.y - state.viewport.y &&
+			y <= codeBlock.y + button.height + button.y - state.viewport.y
 		);
 	});
 }

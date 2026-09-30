@@ -14,7 +14,6 @@ const exampleProjects = [
 	'packages/examples/src/projects/audio/keyboardControlledMonoSynth.8f4e',
 	'packages/examples/src/projects/digital/bistableMultivibrators.8f4e',
 	'packages/examples/src/projects/machine-learning/xorProblem.8f4e',
-	'packages/examples/src/projects/visuals/dancingWithTheSineLT.8f4e',
 ] as const;
 
 function getSnapshotPath(relativePath: string): string {
