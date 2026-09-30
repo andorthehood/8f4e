@@ -100,8 +100,6 @@ describe('slider interaction', () => {
 			name: 'test-block',
 			x: 0,
 			y: 0,
-			offsetX: 0,
-			offsetY: 0,
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
@@ -136,8 +134,6 @@ describe('slider interaction', () => {
 			name: 'test-block',
 			x: 0,
 			y: 0,
-			offsetX: 0,
-			offsetY: 0,
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
@@ -171,8 +167,6 @@ describe('slider interaction', () => {
 			name: 'test-block',
 			x: 0,
 			y: 0,
-			offsetX: 0,
-			offsetY: 0,
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
@@ -206,8 +200,6 @@ describe('slider interaction', () => {
 			name: 'test-block',
 			x: 0,
 			y: 0,
-			offsetX: 0,
-			offsetY: 0,
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
@@ -243,8 +235,6 @@ describe('slider interaction', () => {
 			name: 'test-block',
 			x: 0,
 			y: 0,
-			offsetX: 0,
-			offsetY: 0,
 		});
 		mockCodeBlock.widgets.sliders = [
 			{
@@ -285,8 +275,6 @@ describe('slider interaction', () => {
 			name: 'test-block',
 			x: 0,
 			y: 0,
-			offsetX: 0,
-			offsetY: 0,
 		});
 		mockCodeBlock.widgets.sliders = [
 			{

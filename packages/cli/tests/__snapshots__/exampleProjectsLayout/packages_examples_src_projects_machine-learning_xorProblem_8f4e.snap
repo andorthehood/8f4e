@@ -1,9 +1,8 @@
 {
   "sourceModuleOrder": [
-    "projectConfig",
     "result",
     "notes",
-    "switches",
+    "inputs",
     "perceptron",
     "perceptron2",
     "activationFn",
@@ -14,56 +13,48 @@
   ],
   "compiledModuleLayout": [
     {
-      "id": "projectConfig",
-      "index": 0,
-      "byteAddress": 60,
-      "wordAlignedAddress": 15,
-      "wordAlignedSize": 0,
-      "skipExecutionInCycle": false
-    },
-    {
       "id": "result",
-      "index": 1,
-      "byteAddress": 60,
-      "wordAlignedAddress": 15,
+      "index": 0,
+      "byteAddress": 68,
+      "wordAlignedAddress": 17,
       "wordAlignedSize": 1,
       "skipExecutionInCycle": false
     },
     {
       "id": "notes",
-      "index": 2,
-      "byteAddress": 24,
-      "wordAlignedAddress": 6,
+      "index": 1,
+      "byteAddress": 32,
+      "wordAlignedAddress": 8,
       "wordAlignedSize": 0,
       "skipExecutionInCycle": false
     },
     {
-      "id": "switches",
-      "index": 3,
-      "byteAddress": 64,
-      "wordAlignedAddress": 16,
+      "id": "inputs",
+      "index": 2,
+      "byteAddress": 24,
+      "wordAlignedAddress": 6,
       "wordAlignedSize": 2,
       "skipExecutionInCycle": false
     },
     {
       "id": "perceptron",
-      "index": 4,
-      "byteAddress": 24,
-      "wordAlignedAddress": 6,
+      "index": 3,
+      "byteAddress": 32,
+      "wordAlignedAddress": 8,
       "wordAlignedSize": 3,
       "skipExecutionInCycle": false
     },
     {
       "id": "perceptron2",
-      "index": 5,
-      "byteAddress": 36,
-      "wordAlignedAddress": 9,
+      "index": 4,
+      "byteAddress": 44,
+      "wordAlignedAddress": 11,
       "wordAlignedSize": 3,
       "skipExecutionInCycle": false
     },
     {
       "id": "activationFn",
-      "index": 6,
+      "index": 5,
       "byteAddress": 0,
       "wordAlignedAddress": 0,
       "wordAlignedSize": 2,
@@ -71,7 +62,7 @@
     },
     {
       "id": "activationFn2",
-      "index": 7,
+      "index": 6,
       "byteAddress": 8,
       "wordAlignedAddress": 2,
       "wordAlignedSize": 2,
@@ -79,15 +70,15 @@
     },
     {
       "id": "perceptron3",
-      "index": 8,
-      "byteAddress": 48,
-      "wordAlignedAddress": 12,
+      "index": 7,
+      "byteAddress": 56,
+      "wordAlignedAddress": 14,
       "wordAlignedSize": 3,
       "skipExecutionInCycle": false
     },
     {
       "id": "activationFn3",
-      "index": 9,
+      "index": 8,
       "byteAddress": 16,
       "wordAlignedAddress": 4,
       "wordAlignedSize": 2,

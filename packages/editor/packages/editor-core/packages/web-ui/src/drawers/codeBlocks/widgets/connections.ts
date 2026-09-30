@@ -34,10 +34,10 @@ export default function drawConnections(
 			}
 
 			lines.drawLine(
-				codeBlock.x + codeBlock.offsetX + input.wireX - state.viewport.x,
-				codeBlock.y + codeBlock.offsetY + input.wireY - state.viewport.y,
-				output.codeBlock.x + output.codeBlock.offsetX + output.wireX - state.viewport.x,
-				output.codeBlock.y + output.codeBlock.offsetY + output.wireY - state.viewport.y,
+				codeBlock.x + input.wireX - state.viewport.x,
+				codeBlock.y + input.wireY - state.viewport.y,
+				output.codeBlock.x + output.wireX - state.viewport.x,
+				output.codeBlock.y + output.wireY - state.viewport.y,
 				isSelected ? WIRE_HIGHLIGHTED_WIDTH : WIRE_WIDTH,
 				wireColors[isSelected ? WIRE_HIGHLIGHTED_COLOR : WIRE_COLOR]
 			);

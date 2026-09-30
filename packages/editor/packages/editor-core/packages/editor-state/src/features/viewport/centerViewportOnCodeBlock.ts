@@ -9,8 +9,6 @@ export interface CodeBlockBounds {
 	y: number;
 	width: number;
 	height: number;
-	offsetX: number;
-	offsetY: number;
 }
 
 export interface CenterViewportOnCodeBlockOptions {
@@ -38,8 +36,6 @@ export interface CenterViewportOnCodeBlockOptions {
  * **Constraints:**
  * - Oversized blocks get `round((viewport.height * 0.25) / viewport.hGrid) * viewport.hGrid` padding above their top edge
  * - For large blocks (taller than viewport), only the bottom may be clipped
- * - Code block offsets (offsetX, offsetY) are included in calculations
- *
  * **Implementation Notes:**
  * - This function is pure and does not mutate the viewport parameter
  * - Coordinates use pixels, not grid units (grid conversion happens elsewhere)
@@ -51,8 +47,8 @@ export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
 	codeBlock: T,
 	{ alignment = 'center' }: CenterViewportOnCodeBlockOptions = {}
 ): Position {
-	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
-	const blockCenterY = codeBlock.y + codeBlock.offsetY + codeBlock.height / 2;
+	const blockCenterX = codeBlock.x + codeBlock.width / 2;
+	const blockCenterY = codeBlock.y + codeBlock.height / 2;
 
 	const viewportCenterX =
 		alignment === 'left' ? viewport.width * 0.25 : alignment === 'right' ? viewport.width * 0.75 : viewport.width / 2;
@@ -66,7 +62,7 @@ export default function centerViewportOnCodeBlock<T extends CodeBlockBounds>(
 	const idealViewportX = blockCenterX - viewportCenterX;
 	const idealViewportY = blockCenterY - viewportCenterY;
 
-	const blockTop = codeBlock.y + codeBlock.offsetY;
+	const blockTop = codeBlock.y;
 	const oversizedBlockPadding = Math.round((viewport.height * 0.25) / viewport.hGrid) * viewport.hGrid;
 	const oversizedBlockTop = blockTop - oversizedBlockPadding;
 	const constrainedViewportY =

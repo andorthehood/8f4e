@@ -26,15 +26,13 @@ describe('centerViewportOnCodeBlockCursor', () => {
 			y: 400,
 			width: 200,
 			height: 160,
-			offsetX: 10,
-			offsetY: 20,
 			cursor: { y: 48 },
 		};
 
 		const nextViewport = centerViewportOnCodeBlockCursor(viewport, codeBlock);
 
-		expect(nextViewport.x).toBe(-88);
-		expect(nextViewport.y).toBe(176);
+		expect(nextViewport.x).toBe(-96);
+		expect(nextViewport.y).toBe(144);
 		expect(viewport.x).toBe(0);
 		expect(viewport.y).toBe(0);
 	});

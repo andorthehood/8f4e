@@ -53,8 +53,8 @@ function alignTargetBlockCursorForHorizontalNavigation(
 	}
 
 	const state = getState(source);
-	const sourceAbsoluteCursorY = sourceBlock.y + sourceBlock.offsetY + sourceBlock.cursor.y;
-	const targetRelativeCursorY = sourceAbsoluteCursorY - (targetBlock.y + targetBlock.offsetY);
+	const sourceAbsoluteCursorY = sourceBlock.y + sourceBlock.cursor.y;
+	const targetRelativeCursorY = sourceAbsoluteCursorY - targetBlock.y;
 	const targetPhysicalRow = Math.max(Math.floor(targetRelativeCursorY / state.viewport.hGrid), 0);
 	const targetDirectiveState = deriveDirectiveState(targetBlock.code, targetBlock.parsedDirectives, {
 		isExpandedForEditing: true,

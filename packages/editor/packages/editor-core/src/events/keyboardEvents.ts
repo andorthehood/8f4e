@@ -42,9 +42,7 @@ function getDirectionFromArrowKey(key: string): Direction | null {
  * - `insertNewLine` – when Enter is pressed.
  * - `insertText` – when a single printable character key is pressed without modifier keys; payload includes text.
  *
- * Additionally:
- * - holding F9 reveals blocks hidden by `; @hidden`
- * - F10 toggles position offsetters directly via store mutation
+ * Additionally, holding F9 reveals blocks hidden by `; @hidden`.
  *
  * @param element - Focusable editor element that owns the keyboard input.
  * @param events - Dispatcher used to emit editor actions in response to keyboard input.
@@ -110,13 +108,6 @@ export default function keyboardEvents(
 			if (!state.codeBlockRendering.showHiddenCodeBlocks) {
 				store.set('codeBlockRendering.showHiddenCodeBlocks', true);
 			}
-			return;
-		}
-
-		// Handle F10 for toggling position offsetters
-		if (key === 'F10') {
-			event.preventDefault();
-			store.set('featureFlags.positionOffsetters', !state.featureFlags.positionOffsetters);
 			return;
 		}
 

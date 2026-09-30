@@ -118,9 +118,25 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
             "lineNumber": 16,
           },
           {
+            "arguments": [
+              {
+                "isInteger": false,
+                "type": "literal",
+                "value": 0.5,
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 17,
+          },
+          {
+            "arguments": [],
+            "instruction": "mul",
+            "lineNumber": 18,
+          },
+          {
             "arguments": [],
             "instruction": "store",
-            "lineNumber": 17,
+            "lineNumber": 19,
           },
           {
             "arguments": [
@@ -134,7 +150,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
               },
             ],
             "instruction": "push",
-            "lineNumber": 22,
+            "lineNumber": 24,
           },
           {
             "arguments": [
@@ -146,7 +162,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
               },
             ],
             "instruction": "push",
-            "lineNumber": 23,
+            "lineNumber": 25,
           },
           {
             "arguments": [
@@ -159,17 +175,17 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
               },
             ],
             "instruction": "push",
-            "lineNumber": 24,
+            "lineNumber": 26,
           },
           {
             "arguments": [],
             "instruction": "add",
-            "lineNumber": 25,
+            "lineNumber": 27,
           },
           {
             "arguments": [],
             "instruction": "store",
-            "lineNumber": 26,
+            "lineNumber": 28,
           },
           {
             "arguments": [
@@ -181,7 +197,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
               },
             ],
             "instruction": "push",
-            "lineNumber": 31,
+            "lineNumber": 33,
           },
           {
             "arguments": [
@@ -195,22 +211,22 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
               },
             ],
             "instruction": "push",
-            "lineNumber": 32,
+            "lineNumber": 34,
           },
           {
             "arguments": [],
             "instruction": "greaterThan",
-            "lineNumber": 33,
+            "lineNumber": 35,
           },
           {
             "arguments": [],
             "ifBlock": {
               "hasElse": false,
-              "matchingIfEndIndex": 20,
+              "matchingIfEndIndex": 22,
               "resultTypes": [],
             },
             "instruction": "if",
-            "lineNumber": 34,
+            "lineNumber": 36,
           },
           {
             "arguments": [
@@ -224,7 +240,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
               },
             ],
             "instruction": "push",
-            "lineNumber": 35,
+            "lineNumber": 37,
           },
           {
             "arguments": [
@@ -238,26 +254,26 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
               },
             ],
             "instruction": "push",
-            "lineNumber": 36,
-          },
-          {
-            "arguments": [],
-            "instruction": "store",
-            "lineNumber": 37,
-          },
-          {
-            "arguments": [],
-            "ifEndBlock": {
-              "matchingIfIndex": 16,
-              "resultTypes": [],
-            },
-            "instruction": "ifEnd",
             "lineNumber": 38,
           },
           {
             "arguments": [],
-            "instruction": "moduleEnd",
+            "instruction": "store",
+            "lineNumber": 39,
+          },
+          {
+            "arguments": [],
+            "ifEndBlock": {
+              "matchingIfIndex": 18,
+              "resultTypes": [],
+            },
+            "instruction": "ifEnd",
             "lineNumber": 40,
+          },
+          {
+            "arguments": [],
+            "instruction": "moduleEnd",
+            "lineNumber": 42,
           },
         ],
         "moduleLine": {
@@ -272,11 +288,11 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
-        "projectBlockId": 55,
+        "projectBlockId": 177,
         "type": "module",
       },
       "cycleFunction": [
-        87,
+        93,
         2,
         1,
         127,
@@ -296,6 +312,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         42,
         2,
         0,
+        67,
+        0,
+        0,
+        0,
+        63,
+        148,
         33,
         1,
         33,
@@ -367,54 +389,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       ],
       "executionEntryName": "main",
       "id": "audioout",
-      "index": 2,
-      "skipExecutionInCycle": undefined,
-    },
-    "notes": {
-      "ast": {
-        "id": "notes",
-        "lines": [
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "notes",
-              },
-            ],
-            "instruction": "module",
-            "lineNumber": 0,
-          },
-          {
-            "arguments": [],
-            "instruction": "moduleEnd",
-            "lineNumber": 8,
-          },
-        ],
-        "moduleLine": {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "notes",
-            },
-          ],
-          "instruction": "module",
-          "lineNumber": 0,
-        },
-        "projectBlockId": 96,
-        "type": "module",
-      },
-      "cycleFunction": [
-        2,
-        0,
-        11,
-      ],
-      "executionEntryName": "main",
-      "id": "notes",
-      "index": 3,
+      "index": 1,
       "skipExecutionInCycle": undefined,
     },
     "phaseAccumulator": {
@@ -752,7 +727,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "instruction": "module",
           "lineNumber": 0,
         },
-        "projectBlockId": 12,
+        "projectBlockId": 134,
         "type": "module",
       },
       "cycleFunction": [
@@ -860,63 +835,16 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
       ],
       "executionEntryName": "main",
       "id": "phaseAccumulator",
-      "index": 1,
-      "skipExecutionInCycle": undefined,
-    },
-    "projectConfig": {
-      "ast": {
-        "id": "projectConfig",
-        "lines": [
-          {
-            "arguments": [
-              {
-                "referenceKind": "plain",
-                "scope": "local",
-                "type": "identifier",
-                "value": "projectConfig",
-              },
-            ],
-            "instruction": "module",
-            "lineNumber": 0,
-          },
-          {
-            "arguments": [],
-            "instruction": "moduleEnd",
-            "lineNumber": 7,
-          },
-        ],
-        "moduleLine": {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "projectConfig",
-            },
-          ],
-          "instruction": "module",
-          "lineNumber": 0,
-        },
-        "projectBlockId": 4,
-        "type": "module",
-      },
-      "cycleFunction": [
-        2,
-        0,
-        11,
-      ],
-      "executionEntryName": "main",
-      "id": "projectConfig",
       "index": 0,
       "skipExecutionInCycle": undefined,
     },
   },
-  "compiledWasm": "AGFzbQEAAAABFwVgAABgAX8Bf2ACf38Bf2AAAGABfQF9AhEBBGhvc3QGbWVtb3J5AgMBAQMJCAAAAwQAAAAAByADDGluaXREZWZhdWx0cwAABG1haW4AAQZidWZmZXIAAgwBAgr7AgghAEEAQQBBmAT8CwBBAEEAQQT8CAAAQYQEQQBBDPwIAQALCgAQBBAFEAYQBwskAQF/QQAhAAJAA0AgAEGAAU4EQAwCCyAAQQFqIQAQAQwACwsLZAEBfSAAQ9sPyT9eBEBD2w9JQCAAkyEACyAAQ9sPyT9DAACAv5RdBEBD2w9JQEMAAIC/lCAAkyEACyAAIACUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAtkAQF9QZAEQZAEKgIAQ9sPyUBBjAQoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBkAQqAgBD2w9JQF4EQEGQBEPbD0nAOAIAC0GUBEGQBCoCABADOAIAC1cCAX8BfUGEBCgCAEEAKAIAKgIAIQEhACAAPwBBAWtBEHRB/P8Dak0EQCAAIAE4AgAFC0GEBEGEBCgCAEEEajYCAEGEBCgCAEGABEoEQEGEBEEENgIACwsCAAsLFQIBBBQCAAABDAQAAAAAANxDCAIAAA==",
+  "compiledWasm": "AGFzbQEAAAABFwVgAABgAX8Bf2ACf38Bf2AAAGABfQF9AhEBBGhvc3QGbWVtb3J5AgMBAQMHBgAAAwQAAAcgAwxpbml0RGVmYXVsdHMAAARtYWluAAEGYnVmZmVyAAIMAQIK9wIGIQBBAEEAQZgE/AsAQQBBAEEE/AgAAEGEBEEAQQz8CAEACwYAEAQQBQskAQF/QQAhAAJAA0AgAEGAAU4EQAwCCyAAQQFqIQAQAQwACwsLZAEBfSAAQ9sPyT9eBEBD2w9JQCAAkyEACyAAQ9sPyT9DAACAv5RdBEBD2w9JQEMAAIC/lCAAkyEACyAAIACUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAtkAQF9QZAEQZAEKgIAQ9sPyUBBjAQoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBkAQqAgBD2w9JQF4EQEGQBEPbD0nAOAIAC0GUBEGQBCoCABADOAIAC10CAX8BfUGEBCgCAEEAKAIAKgIAQwAAAD+UIQEhACAAPwBBAWtBEHRB/P8Dak0EQCAAIAE4AgAFC0GEBEGEBCgCAEEEajYCAEGEBCgCAEGABEoEQEGEBEEENgIACwsLFQIBBBQCAAABDAQAAAAAANxDCAIAAA==",
   "constants": [
     {
       "code": [
         "constants env",
-        "; @pos -49 1",
+        "; @pos -120 12",
         "; @favorite",
         "; Auto-generated environment constants",
         "; Changes will be overwritten",
@@ -926,12 +854,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "constantsEnd",
       ],
-      "id": 107,
+      "id": 78,
     },
     {
       "code": [
         "constants math",
-        "; @pos -49 15",
+        "; @pos -120 34",
         "",
         "const PI      3.141592653589793",
         "const NEG_PI -3.141592653589793",
@@ -952,14 +880,14 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "constantsEnd",
       ],
-      "id": 128,
+      "id": 89,
     },
   ],
   "functions": [
     {
       "code": [
         "function buffer",
-        "; @pos -49 13",
+        "; @pos -120 23",
         "#export buffer",
         "use env",
         "",
@@ -968,7 +896,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "loopEnd",
         "functionEnd",
       ],
-      "id": 118,
+      "id": 3,
     },
     {
       "code": [
@@ -1037,7 +965,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "",
         "functionEnd float",
       ],
-      "id": 150,
+      "id": 13,
     },
   ],
   "groups": [],
@@ -1060,7 +988,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "value": 4,
       },
     },
-    "notes": {},
     "phaseAccumulator": {
       "defaultFreq": {
         "hasExplicitDefault": true,
@@ -1083,7 +1010,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "value": 0,
       },
     },
-    "projectConfig": {},
   },
   "memoryPlan": {
     "moduleList": [
@@ -1279,19 +1205,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "memoryIndex": 0,
         "wordAlignedByteLength": 520,
         "wordAlignedSize": 130,
-      },
-      {
-        "byteAddress": 520,
-        "declarationSources": [],
-        "declarations": [],
-        "endAddressSafeByteLength": 0,
-        "endByteAddress": 520,
-        "id": "notes",
-        "lineNumber": 0,
-        "memory": {},
-        "memoryIndex": 0,
-        "wordAlignedByteLength": 0,
-        "wordAlignedSize": 0,
       },
       {
         "byteAddress": 520,
@@ -1528,19 +1441,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "wordAlignedByteLength": 16,
         "wordAlignedSize": 4,
       },
-      {
-        "byteAddress": 536,
-        "declarationSources": [],
-        "declarations": [],
-        "endAddressSafeByteLength": 0,
-        "endByteAddress": 536,
-        "id": "projectConfig",
-        "lineNumber": 0,
-        "memory": {},
-        "memoryIndex": 0,
-        "wordAlignedByteLength": 0,
-        "wordAlignedSize": 0,
-      },
     ],
     "modules": {
       "audioout": {
@@ -1735,19 +1635,6 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "memoryIndex": 0,
         "wordAlignedByteLength": 520,
         "wordAlignedSize": 130,
-      },
-      "notes": {
-        "byteAddress": 520,
-        "declarationSources": [],
-        "declarations": [],
-        "endAddressSafeByteLength": 0,
-        "endByteAddress": 520,
-        "id": "notes",
-        "lineNumber": 0,
-        "memory": {},
-        "memoryIndex": 0,
-        "wordAlignedByteLength": 0,
-        "wordAlignedSize": 0,
       },
       "phaseAccumulator": {
         "byteAddress": 520,
@@ -1984,39 +1871,12 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "wordAlignedByteLength": 16,
         "wordAlignedSize": 4,
       },
-      "projectConfig": {
-        "byteAddress": 536,
-        "declarationSources": [],
-        "declarations": [],
-        "endAddressSafeByteLength": 0,
-        "endByteAddress": 536,
-        "id": "projectConfig",
-        "lineNumber": 0,
-        "memory": {},
-        "memoryIndex": 0,
-        "wordAlignedByteLength": 0,
-        "wordAlignedSize": 0,
-      },
     },
     "nextByteAddressByMemoryIndex": {
       "0": 536,
     },
   },
   "modules": [
-    {
-      "code": [
-        "module projectConfig",
-        "; @pos -94 1",
-        "; @config runtime AudioWorkletRuntime",
-        "; @config audioRuntime.sampleRate 48000",
-        "; @config audioRuntime.audioOutBufferLAddress audioout:buffer",
-        "; @config export.fileName audioBuffer",
-        "",
-        "moduleEnd",
-      ],
-      "entry": "main",
-      "id": 4,
-    },
     {
       "code": [
         "module phaseAccumulator",
@@ -2064,7 +1924,7 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "moduleEnd",
       ],
       "entry": "main",
-      "id": 12,
+      "id": 134,
     },
     {
       "code": [
@@ -2085,6 +1945,8 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "; in the buffer",
         "push pointer",
         "push *in",
+        "push 0.5",
+        "mul",
         "store",
         "",
         "; Increment the buffer",
@@ -2111,11 +1973,29 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "moduleEnd",
       ],
       "entry": "main",
-      "id": 55,
+      "id": 177,
+    },
+  ],
+  "notes": [
+    {
+      "code": [
+        "note",
+        "; @pos -120 0",
+        "; @config runtime AudioWorkletRuntime",
+        "; @config audioRuntime.sampleRate 48000",
+        "; @config audioRuntime.audioOutBufferLAddress audioout:buffer",
+        "; @config export.fileName audioBuffer",
+        "; @config color.text.instruction cyan",
+        "; @config color.fill.trace cyan",
+        "; @config color.fill.background #111",
+        "",
+        "noteEnd",
+      ],
+      "id": 111,
     },
     {
       "code": [
-        "module notes",
+        "note",
         "; @pos 131 7",
         "; A minimal audio synthesis example",
         "; that generates a sine wave",
@@ -2123,26 +2003,22 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
         "; and writes each sample into a",
         "; fixed-size circular audio buffer",
         "; (audioout)",
-        "moduleEnd",
+        "noteEnd",
       ],
-      "entry": "main",
-      "id": 96,
+      "id": 123,
     },
   ],
-  "notes": [],
   "pointerMetadataByModuleId": {
     "audioout": {
       "in": {
         "pointeeMemoryIndex": 0,
       },
     },
-    "notes": {},
     "phaseAccumulator": {
       "frequency": {
         "pointeeMemoryIndex": 0,
       },
     },
-    "projectConfig": {},
   },
   "projectMemoryExposuresByGroupPath": {},
   "prototypes": [],

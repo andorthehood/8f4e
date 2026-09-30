@@ -15,8 +15,8 @@ export default function centerViewportOnCodeBlockCursor<T extends CodeBlockCurso
 	viewport: Viewport,
 	codeBlock: T
 ): Position {
-	const blockCenterX = codeBlock.x + codeBlock.offsetX + codeBlock.width / 2;
-	const highlightedLineY = codeBlock.y + codeBlock.offsetY + codeBlock.cursor.y;
+	const blockCenterX = codeBlock.x + codeBlock.width / 2;
+	const highlightedLineY = codeBlock.y + codeBlock.cursor.y;
 	const [x, y] = roundToGrid(blockCenterX - viewport.width / 2, highlightedLineY - viewport.height / 2, viewport);
 
 	return {

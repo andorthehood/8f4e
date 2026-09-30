@@ -420,7 +420,7 @@ describe('codeBlockNavigation', () => {
 
 			jumpToCodeBlock(state, 4, 'down');
 
-			expect(state.viewport.y).toBe(downBlock.y + downBlock.offsetY + downBlock.cursor.y - state.viewport.height / 2);
+			expect(state.viewport.y).toBe(downBlock.y + downBlock.cursor.y - state.viewport.height / 2);
 		});
 	});
 

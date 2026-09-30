@@ -23,7 +23,7 @@ export default function slider(store: StateManager<State>, events: EventDispatch
 		const { slider, codeBlock } = activeSlider;
 
 		// Calculate relative x position within the slider
-		const relativeX = x - (codeBlock.x + codeBlock.offsetX + slider.x - state.viewport.x);
+		const relativeX = x - (codeBlock.x + slider.x - state.viewport.x);
 		const normalizedValue = Math.max(0, Math.min(1, relativeX / slider.width));
 
 		// Map to slider range

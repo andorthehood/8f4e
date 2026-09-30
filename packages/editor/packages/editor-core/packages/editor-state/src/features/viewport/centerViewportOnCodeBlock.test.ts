@@ -2,21 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { createMockViewport } from '~/pureHelpers/testingUtils/testUtils';
 import centerViewportOnCodeBlock, { type CodeBlockBounds } from './centerViewportOnCodeBlock';
 
-function createMockCodeBlock(
-	x: number,
-	y: number,
-	width: number,
-	height: number,
-	offsetX = 0,
-	offsetY = 0
-): CodeBlockBounds {
+function createMockCodeBlock(x: number, y: number, width: number, height: number): CodeBlockBounds {
 	return {
 		x,
 		y,
 		width,
 		height,
-		offsetX,
-		offsetY,
 	};
 }
 
@@ -91,20 +82,6 @@ describe('centerViewportOnCodeBlock', () => {
 		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(-144);
 	});
 
-	it('accounts for offsets in both axes', () => {
-		const viewport = createMockViewport(0, 0, 800, 600);
-		const codeBlock = createMockCodeBlock(100, 200, 200, 100, 30, 40);
-
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -168, y: -16 });
-	});
-
-	it('applies the rounded 25% viewport-height top margin with offsetY for large blocks', () => {
-		const viewport = createMockViewport(0, 0, 800, 600);
-		const codeBlock = createMockCodeBlock(0, 100, 100, 800, 0, 50);
-
-		expect(centerViewportOnCodeBlock(viewport, codeBlock).y).toBe(0);
-	});
-
 	it('handles zero-sized blocks', () => {
 		const viewport = createMockViewport(0, 0, 800, 600);
 		const codeBlock = createMockCodeBlock(100, 100, 0, 0);
@@ -117,13 +94,6 @@ describe('centerViewportOnCodeBlock', () => {
 		const codeBlock = createMockCodeBlock(-200, -100, 100, 100);
 
 		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -552, y: -352 });
-	});
-
-	it('handles negative offsets', () => {
-		const viewport = createMockViewport(0, 0, 800, 600);
-		const codeBlock = createMockCodeBlock(100, 100, 100, 100, -20, -30);
-
-		expect(centerViewportOnCodeBlock(viewport, codeBlock)).toEqual({ x: -272, y: -176 });
 	});
 
 	it('keeps the rounded 25% viewport-height margin for oversized blocks in a very small viewport', () => {

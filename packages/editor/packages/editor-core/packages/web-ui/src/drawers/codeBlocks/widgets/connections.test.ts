@@ -30,15 +30,11 @@ describe('drawConnections', () => {
 			name: 'inputModule',
 			x: 100,
 			y: 200,
-			offsetX: 7,
-			offsetY: 11,
 		});
 		const outputBlock = createMockCodeBlock({
 			name: 'outputModule',
 			x: 300,
 			y: 400,
-			offsetX: 13,
-			offsetY: 17,
 		});
 		const input: Input = {
 			codeBlock: inputBlock,
@@ -107,6 +103,6 @@ describe('drawConnections', () => {
 
 		drawConnections(lines, wireColors, state, createMemoryViews({ int32: [0, 0, outputAddress] }));
 
-		expect(lines.drawLine).toHaveBeenCalledWith(117, 247, 463, 471, 2, wireColors.wireHighlighted);
+		expect(lines.drawLine).toHaveBeenCalledWith(110, 236, 450, 454, 2, wireColors.wireHighlighted);
 	});
 });

@@ -13,8 +13,6 @@ export function createCodeBlockGraphicData(
 	const y = overrides.y ?? 0;
 	const width = overrides.width ?? 100;
 	const height = overrides.height ?? 100;
-	const offsetX = overrides.offsetX ?? 0;
-	const offsetY = overrides.offsetY ?? 0;
 	const code = overrides.code ?? [];
 	const name = (overrides.name ?? getCodeBlockNameFromSource(code)) || 'code-block';
 	const projectPath = overrides.projectPath ?? ROOT_PROJECT_GROUP_PATH;
@@ -25,7 +23,7 @@ export function createCodeBlockGraphicData(
 	const gridX = overrides.gridX ?? Math.round(x / defaultVGrid);
 	const gridY = overrides.gridY ?? Math.round(y / defaultHGrid);
 
-	const cursorX = x + offsetX + width / 2;
+	const cursorX = x + width / 2;
 	const cursorYValue = cursorY ?? height / 2;
 	const cursor = overrides.cursor ?? {
 		col: 0,
@@ -41,8 +39,6 @@ export function createCodeBlockGraphicData(
 		gridY,
 		width,
 		height,
-		offsetX,
-		offsetY,
 		cursor,
 		name,
 		code,

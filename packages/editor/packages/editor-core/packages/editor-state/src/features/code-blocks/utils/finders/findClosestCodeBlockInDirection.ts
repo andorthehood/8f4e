@@ -8,11 +8,11 @@ import type { CodeBlockGraphicData, Direction } from '@8f4e/editor-state-types';
 const ALIGNMENT_WEIGHT = 2.0;
 
 /**
- * Calculate the absolute position boundaries of a code block including offsets.
+ * Calculate the absolute position boundaries of a code block.
  */
 function getBlockBounds(block: CodeBlockGraphicData) {
-	const left = block.x + block.offsetX;
-	const top = block.y + block.offsetY;
+	const left = block.x;
+	const top = block.y;
 	const right = left + block.width;
 	const bottom = top + block.height;
 	return { left, top, right, bottom };

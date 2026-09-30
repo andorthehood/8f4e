@@ -94,7 +94,7 @@ function getClickedKeyOffset(
 	keyboard: PianoKeyboard,
 	x: number
 ): number {
-	const keyboardViewportX = codeBlock.x + codeBlock.offsetX + keyboard.x - state.viewport.x;
+	const keyboardViewportX = codeBlock.x + keyboard.x - state.viewport.x;
 
 	return Math.floor((x - keyboardViewportX) / keyboard.keyWidth);
 }

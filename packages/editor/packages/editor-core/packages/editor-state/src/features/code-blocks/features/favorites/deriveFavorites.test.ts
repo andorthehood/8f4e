@@ -22,8 +22,6 @@ function mockCodeBlock(
 		height: 100,
 		x: 0,
 		y: 0,
-		offsetX: 0,
-		offsetY: 0,
 		disabled: false,
 		isHome: false,
 		lastUpdated: 0,

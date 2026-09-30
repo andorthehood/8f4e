@@ -16,10 +16,10 @@ export default function findSliderWidgetAtViewportCoordinates(
 ): Slider | undefined {
 	return codeBlock.widgets.sliders.find(slider => {
 		return (
-			x >= codeBlock.x + codeBlock.offsetX + slider.x - state.viewport.x &&
-			x <= codeBlock.x + codeBlock.offsetX + slider.width + slider.x - state.viewport.x &&
-			y >= codeBlock.y + codeBlock.offsetY + slider.y - state.viewport.y &&
-			y <= codeBlock.y + codeBlock.offsetY + slider.height + slider.y - state.viewport.y
+			x >= codeBlock.x + slider.x - state.viewport.x &&
+			x <= codeBlock.x + slider.width + slider.x - state.viewport.x &&
+			y >= codeBlock.y + slider.y - state.viewport.y &&
+			y <= codeBlock.y + slider.height + slider.y - state.viewport.y
 		);
 	});
 }

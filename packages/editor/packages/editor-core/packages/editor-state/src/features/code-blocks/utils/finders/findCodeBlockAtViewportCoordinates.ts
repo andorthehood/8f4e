@@ -16,12 +16,12 @@ export default function findCodeBlockAtViewportCoordinates(
 ): CodeBlockGraphicData | undefined {
 	for (let index = state.codeBlockRendering.codeBlocks.length - 1; index >= 0; index -= 1) {
 		const graphicData = state.codeBlockRendering.codeBlocks[index];
-		const { width, height, x, y, offsetX, offsetY } = graphicData;
+		const { width, height, x, y } = graphicData;
 		if (
-			searchX >= x + offsetX - state.viewport.x &&
-			searchX <= x + offsetX + width - state.viewport.x &&
-			searchY >= y + offsetY - state.viewport.y &&
-			searchY <= y + offsetY + height - state.viewport.y
+			searchX >= x - state.viewport.x &&
+			searchX <= x + width - state.viewport.x &&
+			searchY >= y - state.viewport.y &&
+			searchY <= y + height - state.viewport.y
 		) {
 			return graphicData;
 		}

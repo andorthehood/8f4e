@@ -48,28 +48,13 @@ export default function drawModules(
 		const codeCells = renderData.codeBlocks.get(codeBlock.creationIndex)?.codeCells ?? [];
 		const renderHiddenPreview = codeBlock.hidden && !state.codeBlockRendering.showHiddenCodeBlocks;
 
-		// Read position offsets from memory only if the feature is enabled
-		if (state.featureFlags.positionOffsetters) {
-			if (codeBlock.positionOffsetterXWordAddress) {
-				codeBlock.offsetX = memoryViews.int32[codeBlock.positionOffsetterXWordAddress];
-			}
-
-			if (codeBlock.positionOffsetterYWordAddress) {
-				codeBlock.offsetY = memoryViews.int32[codeBlock.positionOffsetterYWordAddress];
-			}
-		} else {
-			// When disabled, force offsets to 0
-			codeBlock.offsetX = 0;
-			codeBlock.offsetY = 0;
-		}
-
 		if (
-			codeBlock.x + codeBlock.offsetX + offsetX > -1 * codeBlock.width &&
-			codeBlock.y + codeBlock.offsetY + offsetY > -1 * codeBlock.height &&
-			codeBlock.x + codeBlock.offsetX + offsetX < state.viewport.width &&
-			codeBlock.y + codeBlock.offsetY + offsetY < state.viewport.height
+			codeBlock.x + offsetX > -1 * codeBlock.width &&
+			codeBlock.y + offsetY > -1 * codeBlock.height &&
+			codeBlock.x + offsetX < state.viewport.width &&
+			codeBlock.y + offsetY < state.viewport.height
 		) {
-			engine.startGroup(codeBlock.x + codeBlock.offsetX, codeBlock.y + codeBlock.offsetY);
+			engine.startGroup(codeBlock.x, codeBlock.y);
 			if (!renderHiddenPreview) {
 				if (codeBlock === state.codeBlockRendering.draggedCodeBlock) {
 					engine.drawSprite(0, 0, spriteLookups.fillColors.moduleBackgroundDragged, codeBlock.width, codeBlock.height);

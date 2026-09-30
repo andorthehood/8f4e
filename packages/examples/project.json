@@ -24,7 +24,7 @@
 			"dependsOn": [
 				{
 					"projects": ["@8f4e/cli"],
-					"target": "build",
+					"target": "test",
 					"params": "ignore"
 				}
 			],

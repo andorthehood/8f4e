@@ -69,7 +69,6 @@ describe('keyboardEvents mode switching', () => {
 			modeToggling: true,
 			historyTracking: true,
 			consoleOverlay: true,
-			positionOffsetters: true,
 		};
 		editorMode = 'view';
 		codeBlockRendering = { showHiddenCodeBlocks: false };
@@ -77,9 +76,6 @@ describe('keyboardEvents mode switching', () => {
 		set = vi.fn((path: string, value: unknown) => {
 			if (path === 'codeBlockRendering.showHiddenCodeBlocks') {
 				codeBlockRendering.showHiddenCodeBlocks = value as boolean;
-			}
-			if (path === 'featureFlags.positionOffsetters') {
-				featureFlags.positionOffsetters = value as boolean;
 			}
 		});
 
