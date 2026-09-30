@@ -24,7 +24,7 @@ Active todo files are listed below.
 | 058 | Research C/C++ WebAssembly Runtimes on Linux with ALSA Audio Support | 🟡 | 4-6 days | 2025-09-11 | The 8f4e project requires a native C/C++ runtime for Linux systems with ALSA audio integration to complement the existing browser-based WebAssembly runtimes. Currently, the proj... |
 | 064 | Research WebAssembly Runtimes for ARM Microcontroller Support | 🟡 | 3-5 days | 2025-09-10 | The 8f4e project currently supports browser-based WebAssembly runtimes (WebWorker and AudioWorklet) but lacks native runtimes for embedded ARM microcontrollers. To implement the... |
 | 240 | Add row-align context-menu action with fixed spacing | 🟡 | 4-8h | 2026-02-18 | There is no quick layout action to arrange multiple related code blocks into a clean horizontal row while keeping their relative left-to-right order. |
-| 274 | Consolidate defaultFeatureFlags into a single source of truth | 🟡 | 2-4h | 2026-02-21 | There are currently two `defaultFeatureFlags` definitions: |
+| 274 | Remove unused editor-core feature-flag configuration | 🟡 | 1-2h | 2026-02-21 | Delete the test-only editor-core feature-flag implementation and retain editor-state as the sole live owner. |
 | 291 | Add int64 support across compiler, runtime, and docs | 🟡 | 2-4d | 2026-03-09 | The language already has dedicated `float64` support, including 64-bit memory allocation and type-aware compiler paths, but there is no equivalent `int64` support. |
 | 297 | Add url editor directive for clickable links | 🟡 | 4-8h | 2026-03-12 | The editor currently has no directive for attaching a clickable external link to a code block. |
 | 302 | Add jump editor directive for code block navigation | 🟡 | 4-8h | 2026-03-14 | The editor currently supports code block navigation through the context-menu jump flow, but there is no in-code directive for linking one code block to another. |
@@ -65,6 +65,7 @@ Active todo files are listed below.
 | 483 | Lazy-load WASM overlay rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer overlay drawer and RGBA layer only when a project configures an overlay. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
 | 487 | Save projects to reusable browser file handles | 🟡 | 1-2d | 2026-09-29 | Make `Cmd+S`/`Ctrl+S` save canonical `.8f4e` source through a reusable file handle while leaving browser-session autosave independent. |
+| 488 | Remove disabled editor debug overlays | 🟡 | 4-8h | 2026-09-30 | Remove the disconnected info and console overlays, their public flags, and the console logging state that no UI consumes. |
 
 ### 🟢 Low Priority
 
@@ -75,6 +76,7 @@ Active todo files are listed below.
 | 389 | Add EagleSpCGA Alt3 8x8 font to sprite-generator | 🟢 | 4-8h | 2026-05-04 | The editor sprite-generator has several bundled bitmap fonts, including a few compact 8-pixel-high options, but it does not include EagleSpCGA Alt3 8x8. That leaves the editor w... |
 | 465 | Add Sergamon font to the editor | 🟢 | 4-8h | 2026-07-30 | Add Sergamon's 8x16 programming-font glyphs to the sprite-generator pipeline and expose the font through editor configuration. |
 | 466 | Add Scientifica font to the editor | 🟢 | 4-8h | 2026-07-30 | Import Scientifica's regular 11-pixel BDF face into the sprite-generator pipeline and expose the condensed font through editor configuration. |
+| 489 | Remove obsolete intermodular nth-reference helpers | 🟢 | 1h | 2026-09-30 | Delete two test-only tokenizer helpers while preserving the live `&module:<index>` classifier path. |
 
 ## Completed TODOs
 
