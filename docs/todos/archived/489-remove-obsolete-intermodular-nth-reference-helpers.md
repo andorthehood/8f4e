@@ -4,8 +4,8 @@ priority: Low
 effort: 1h
 created: 2026-09-30
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-09-30
 ---
 
 # TODO: Remove Obsolete Intermodular Nth-Reference Helpers
@@ -66,11 +66,11 @@ structured identifier type, the live classifier coverage, and all downstream mem
 
 ## Success Criteria
 
-- [ ] Both legacy helper files and their dedicated tests are removed.
-- [ ] No import, export, documentation, or test refers to either helper name.
-- [ ] `&module:<index>` continues to classify as an intermodular module nth reference.
-- [ ] Malformed nth references retain active parser coverage.
-- [ ] Tokenizer and compiler tests and typechecks pass.
+- [x] Both legacy helper files and their dedicated tests are removed.
+- [x] No source import, export, or active test refers to either helper name.
+- [x] `&module:<index>` continues to classify as an intermodular module nth reference.
+- [x] Malformed nth references retain active parser coverage.
+- [x] Tokenizer and compiler tests and typechecks pass.
 
 ## Affected Components
 
@@ -102,6 +102,9 @@ structured identifier type, the live classifier coverage, and all downstream mem
 
 A repository audit on 2026-09-30 confirmed that the helpers are test-only while the syntax remains live through the
 centralized argument classifier.
+
+Completed on 2026-09-30 by deleting both test-only helpers and moving their useful shape assertions to the active
+identifier-classifier suite. Tokenizer and compiler tests and typechecks pass with nth-reference syntax unchanged.
 
 ## Archive Instructions
 

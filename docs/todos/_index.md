@@ -76,12 +76,12 @@ Active todo files are listed below.
 | 389 | Add EagleSpCGA Alt3 8x8 font to sprite-generator | 🟢 | 4-8h | 2026-05-04 | The editor sprite-generator has several bundled bitmap fonts, including a few compact 8-pixel-high options, but it does not include EagleSpCGA Alt3 8x8. That leaves the editor w... |
 | 465 | Add Sergamon font to the editor | 🟢 | 4-8h | 2026-07-30 | Add Sergamon's 8x16 programming-font glyphs to the sprite-generator pipeline and expose the font through editor configuration. |
 | 466 | Add Scientifica font to the editor | 🟢 | 4-8h | 2026-07-30 | Import Scientifica's regular 11-pixel BDF face into the sprite-generator pipeline and expose the condensed font through editor configuration. |
-| 489 | Remove obsolete intermodular nth-reference helpers | 🟢 | 1h | 2026-09-30 | Delete two test-only tokenizer helpers while preserving the live `&module:<index>` classifier path. |
 
 ## Completed TODOs
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 489 | Remove obsolete intermodular nth-reference helpers | 2026-09-30 | Deleted two test-only tokenizer helpers while preserving and strengthening coverage of the live nth-reference classifier. |
 | 448 | Move prototype content validation to parser | 2026-09-07 | Cancelled as stale; parser-owned placement validation already rejects invalid prototype contents. GitHub issue #944 was closed as not planned. |
 | 425 | Split StackItem into value and address variants | 2026-09-07 | Cancelled as stale; the value/address discriminated union is already implemented. GitHub issue #713 was closed as not planned. |
 | 408 | Reduce tokenizer identifier classification work | 2026-09-07 | Cancelled as stale; identifier dispatch is already optimized and GitHub issue #661 was already closed as completed. |

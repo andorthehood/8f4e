@@ -32,7 +32,14 @@ describe('classifyIdentifier – check ordering regression', () => {
 
 	describe('&mod:0 → intermodular-module-nth-reference, not intermodular-reference', () => {
 		it('classifies &mod:0 as intermodular-module-nth-reference', () => {
-			expect(classifyIdentifier('&mod:0').referenceKind).toBe('intermodular-module-nth-reference');
+			expect(classifyIdentifier('&mod:0')).toEqual({
+				type: ArgumentType.IDENTIFIER,
+				value: '&mod:0',
+				referenceKind: 'intermodular-module-nth-reference',
+				scope: 'intermodule',
+				targetModuleId: 'mod',
+				targetMemoryIndex: 0,
+			});
 		});
 
 		it('classifies &mod:1 as intermodular-module-nth-reference', () => {
@@ -48,6 +55,13 @@ describe('classifyIdentifier – check ordering regression', () => {
 			expect(result.referenceKind).toBe('intermodular-module-nth-reference');
 			expect(result.scope).toBe('intermodule');
 		});
+
+		it.each(['&module:', 'module:0', '&module:0&', '&module:-1', '&module:1.5'])(
+			'does not classify malformed nth reference %s as an nth reference',
+			value => {
+				expect(classifyIdentifier(value).referenceKind).not.toBe('intermodular-module-nth-reference');
+			}
+		);
 	});
 
 	describe('&mod:mem → intermodular-reference, not memory-reference', () => {
