@@ -3,52 +3,6 @@
     "startingMemoryWordAddress": 0
   },
   "compiledModules": {
-    "projectConfig": {
-      "id": "projectConfig",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "ast": {
-        "type": "module",
-        "id": "projectConfig",
-        "lines": [
-          {
-            "lineNumber": 0,
-            "instruction": "module",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "projectConfig",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 7,
-            "instruction": "moduleEnd",
-            "arguments": []
-          }
-        ],
-        "moduleLine": {
-          "lineNumber": 0,
-          "instruction": "module",
-          "arguments": [
-            {
-              "type": "identifier",
-              "value": "projectConfig",
-              "referenceKind": "plain",
-              "scope": "local"
-            }
-          ]
-        },
-        "projectBlockId": 4
-      },
-      "index": 0,
-      "executionEntryName": "main"
-    },
     "phaseAccumulator": {
       "id": "phaseAccumulator",
       "cycleFunction": [
@@ -489,15 +443,15 @@
             }
           ]
         },
-        "projectBlockId": 12
+        "projectBlockId": 134
       },
-      "index": 1,
+      "index": 0,
       "executionEntryName": "main"
     },
     "audioout": {
       "id": "audioout",
       "cycleFunction": [
-        87,
+        93,
         2,
         1,
         127,
@@ -517,6 +471,12 @@
         42,
         2,
         0,
+        67,
+        0,
+        0,
+        0,
+        63,
+        148,
         33,
         1,
         33,
@@ -701,11 +661,27 @@
           },
           {
             "lineNumber": 17,
+            "instruction": "push",
+            "arguments": [
+              {
+                "value": 0.5,
+                "type": "literal",
+                "isInteger": false
+              }
+            ]
+          },
+          {
+            "lineNumber": 18,
+            "instruction": "mul",
+            "arguments": []
+          },
+          {
+            "lineNumber": 19,
             "instruction": "store",
             "arguments": []
           },
           {
-            "lineNumber": 22,
+            "lineNumber": 24,
             "instruction": "push",
             "arguments": [
               {
@@ -719,7 +695,7 @@
             ]
           },
           {
-            "lineNumber": 23,
+            "lineNumber": 25,
             "instruction": "push",
             "arguments": [
               {
@@ -731,7 +707,7 @@
             ]
           },
           {
-            "lineNumber": 24,
+            "lineNumber": 26,
             "instruction": "push",
             "arguments": [
               {
@@ -744,17 +720,17 @@
             ]
           },
           {
-            "lineNumber": 25,
+            "lineNumber": 27,
             "instruction": "add",
             "arguments": []
           },
           {
-            "lineNumber": 26,
+            "lineNumber": 28,
             "instruction": "store",
             "arguments": []
           },
           {
-            "lineNumber": 31,
+            "lineNumber": 33,
             "instruction": "push",
             "arguments": [
               {
@@ -766,7 +742,7 @@
             ]
           },
           {
-            "lineNumber": 32,
+            "lineNumber": 34,
             "instruction": "push",
             "arguments": [
               {
@@ -780,22 +756,22 @@
             ]
           },
           {
-            "lineNumber": 33,
+            "lineNumber": 35,
             "instruction": "greaterThan",
             "arguments": []
           },
           {
-            "lineNumber": 34,
+            "lineNumber": 36,
             "instruction": "if",
             "arguments": [],
             "ifBlock": {
-              "matchingIfEndIndex": 20,
+              "matchingIfEndIndex": 22,
               "resultTypes": [],
               "hasElse": false
             }
           },
           {
-            "lineNumber": 35,
+            "lineNumber": 37,
             "instruction": "push",
             "arguments": [
               {
@@ -809,7 +785,7 @@
             ]
           },
           {
-            "lineNumber": 36,
+            "lineNumber": 38,
             "instruction": "push",
             "arguments": [
               {
@@ -823,21 +799,21 @@
             ]
           },
           {
-            "lineNumber": 37,
+            "lineNumber": 39,
             "instruction": "store",
             "arguments": []
           },
           {
-            "lineNumber": 38,
+            "lineNumber": 40,
             "instruction": "ifEnd",
             "arguments": [],
             "ifEndBlock": {
-              "matchingIfIndex": 16,
+              "matchingIfIndex": 18,
               "resultTypes": []
             }
           },
           {
-            "lineNumber": 40,
+            "lineNumber": 42,
             "instruction": "moduleEnd",
             "arguments": []
           }
@@ -854,55 +830,9 @@
             }
           ]
         },
-        "projectBlockId": 55
+        "projectBlockId": 177
       },
-      "index": 2,
-      "executionEntryName": "main"
-    },
-    "notes": {
-      "id": "notes",
-      "cycleFunction": [
-        2,
-        0,
-        11
-      ],
-      "ast": {
-        "type": "module",
-        "id": "notes",
-        "lines": [
-          {
-            "lineNumber": 0,
-            "instruction": "module",
-            "arguments": [
-              {
-                "type": "identifier",
-                "value": "notes",
-                "referenceKind": "plain",
-                "scope": "local"
-              }
-            ]
-          },
-          {
-            "lineNumber": 8,
-            "instruction": "moduleEnd",
-            "arguments": []
-          }
-        ],
-        "moduleLine": {
-          "lineNumber": 0,
-          "instruction": "module",
-          "arguments": [
-            {
-              "type": "identifier",
-              "value": "notes",
-              "referenceKind": "plain",
-              "scope": "local"
-            }
-          ]
-        },
-        "projectBlockId": 96
-      },
-      "index": 3,
+      "index": 1,
       "executionEntryName": "main"
     }
   },
@@ -1100,19 +1030,6 @@
             "isInherited": false
           }
         ]
-      },
-      "notes": {
-        "memoryIndex": 0,
-        "id": "notes",
-        "lineNumber": 0,
-        "byteAddress": 520,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 520,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
       },
       "phaseAccumulator": {
         "memoryIndex": 0,
@@ -1348,19 +1265,6 @@
             "isInherited": false
           }
         ]
-      },
-      "projectConfig": {
-        "memoryIndex": 0,
-        "id": "projectConfig",
-        "lineNumber": 0,
-        "byteAddress": 536,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 536,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
       }
     },
     "moduleList": [
@@ -1556,19 +1460,6 @@
             "isInherited": false
           }
         ]
-      },
-      {
-        "memoryIndex": 0,
-        "id": "notes",
-        "lineNumber": 0,
-        "byteAddress": 520,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 520,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
       },
       {
         "memoryIndex": 0,
@@ -1804,19 +1695,6 @@
             "isInherited": false
           }
         ]
-      },
-      {
-        "memoryIndex": 0,
-        "id": "projectConfig",
-        "lineNumber": 0,
-        "byteAddress": 536,
-        "wordAlignedSize": 0,
-        "wordAlignedByteLength": 0,
-        "endByteAddress": 536,
-        "endAddressSafeByteLength": 0,
-        "memory": {},
-        "declarations": [],
-        "declarationSources": []
       }
     ],
     "nextByteAddressByMemoryIndex": {
@@ -1841,7 +1719,6 @@
         "isInherited": false
       }
     },
-    "notes": {},
     "phaseAccumulator": {
       "defaultFreq": {
         "value": 440,
@@ -1863,8 +1740,7 @@
         "hasExplicitDefault": false,
         "isInherited": false
       }
-    },
-    "projectConfig": {}
+    }
   },
   "pointerMetadataByModuleId": {
     "audioout": {
@@ -1872,14 +1748,12 @@
         "pointeeMemoryIndex": 0
       }
     },
-    "notes": {},
     "phaseAccumulator": {
       "frequency": {
         "pointeeMemoryIndex": 0
       }
-    },
-    "projectConfig": {}
+    }
   },
-  "compiledWasm": "AGFzbQEAAAABFwVgAABgAX8Bf2ACf38Bf2AAAGABfQF9AhEBBGhvc3QGbWVtb3J5AgMBAQMJCAAAAwQAAAAAByADDGluaXREZWZhdWx0cwAABG1haW4AAQZidWZmZXIAAgwBAgr7AgghAEEAQQBBmAT8CwBBAEEAQQT8CAAAQYQEQQBBDPwIAQALCgAQBBAFEAYQBwskAQF/QQAhAAJAA0AgAEGAAU4EQAwCCyAAQQFqIQAQAQwACwsLZAEBfSAAQ9sPyT9eBEBD2w9JQCAAkyEACyAAQ9sPyT9DAACAv5RdBEBD2w9JQEMAAIC/lCAAkyEACyAAIACUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAsCAAtkAQF9QZAEQZAEKgIAQ9sPyUBBjAQoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBkAQqAgBD2w9JQF4EQEGQBEPbD0nAOAIAC0GUBEGQBCoCABADOAIAC1cCAX8BfUGEBCgCAEEAKAIAKgIAIQEhACAAPwBBAWtBEHRB/P8Dak0EQCAAIAE4AgAFC0GEBEGEBCgCAEEEajYCAEGEBCgCAEGABEoEQEGEBEEENgIACwsCAAsLFQIBBBQCAAABDAQAAAAAANxDCAIAAA==",
+  "compiledWasm": "AGFzbQEAAAABFwVgAABgAX8Bf2ACf38Bf2AAAGABfQF9AhEBBGhvc3QGbWVtb3J5AgMBAQMHBgAAAwQAAAcgAwxpbml0RGVmYXVsdHMAAARtYWluAAEGYnVmZmVyAAIMAQIK9wIGIQBBAEEAQZgE/AsAQQBBAEEE/AgAAEGEBEEAQQz8CAEACwYAEAQQBQskAQF/QQAhAAJAA0AgAEGAAU4EQAwCCyAAQQFqIQAQAQwACwsLZAEBfSAAQ9sPyT9eBEBD2w9JQCAAkyEACyAAQ9sPyT9DAACAv5RdBEBD2w9JQEMAAIC/lCAAkyEACyAAIACUIQEgAUPRDFC5lEOIiAg8kiABlEOrqiq+kiABlEMAAIA/kiAAlAtkAQF9QZAEQZAEKgIAQ9sPyUBBjAQoAgAqAgCUQYD3ArIhACAAQwAAAABbBEBDAACAPyEACyAAlZI4AgBBkAQqAgBD2w9JQF4EQEGQBEPbD0nAOAIAC0GUBEGQBCoCABADOAIAC10CAX8BfUGEBCgCAEEAKAIAKgIAQwAAAD+UIQEhACAAPwBBAWtBEHRB/P8Dak0EQCAAIAE4AgAFC0GEBEGEBCgCAEEEajYCAEGEBCgCAEGABEoEQEGEBEEENgIACwsLFQIBBBQCAAABDAQAAAAAANxDCAIAAA==",
   "requiredMemoryBytes": 536
 }
