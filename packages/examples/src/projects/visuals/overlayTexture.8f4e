@@ -18,8 +18,8 @@ note
 ; @config export.fileName overlayTexture
 ; @config webUI.overlay.entry main
 ; @config webUI.overlay.target screen:rgba
-; @config webUI.overlay.width 16
-; @config webUI.overlay.height 16
+; @config webUI.overlay.width 32
+; @config webUI.overlay.height 32
 ; @config webUI.overlay.magnification 8
 ; @config color.fill.background #111
 
