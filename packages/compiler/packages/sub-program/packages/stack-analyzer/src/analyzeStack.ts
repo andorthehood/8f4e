@@ -35,7 +35,6 @@ import {
 	createFunctionId,
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	ErrorCode,
-	functionValueTypeToLocalBinding,
 	getEffectiveFunctionMetadata,
 	getError,
 	isFunctionBodyInstructionName,
@@ -45,7 +44,15 @@ import {
 	resolveRegionDirective,
 } from '@8f4e/language-spec';
 import type { SemanticReferenceReport } from '@8f4e/semantic-reference-resolver';
-import { createCompilationContext, popBlock, pushBlock, resolveMapKind } from '@8f4e/semantic-utils';
+import {
+	allocateLocal,
+	allocateLocalFromType,
+	createCompilationContext,
+	popBlock,
+	pushBlock,
+	resetLocals,
+	resolveMapKind,
+} from '@8f4e/semantic-utils';
 import { analyzeInstruction } from './analyzeInstruction';
 import { cloneStack } from './instructionAnalyzers/stack';
 import { validateMapValueKind } from './mapValueKind';
@@ -172,7 +179,7 @@ function registerFunctionParameter(
 	paramName: string,
 	context: FunctionCompilationContext
 ): void {
-	context.locals[paramName] = functionValueTypeToLocalBinding(paramType, Object.keys(context.locals).length);
+	allocateLocalFromType(context, paramName, paramType);
 	context.currentFunctionParameterCount += 1;
 }
 
@@ -189,7 +196,7 @@ function applyFunctionLine(line: CompilerASTLine, context: FunctionCompilationCo
 	context.currentFunctionExportName = undefined;
 	context.currentFunctionImport = undefined;
 	context.mode = functionBlockType;
-	context.locals = {};
+	resetLocals(context);
 
 	pushBlock(context, {
 		blockType: BlockType.FUNCTION,
@@ -212,7 +219,7 @@ function applyLocalLine(line: CompilerASTLine, context: CompilationContext): voi
 	const nameArg = line.arguments[1] as { value: string };
 	const localName = nameArg.value;
 
-	context.locals[localName] = functionValueTypeToLocalBinding(typeArg.value, Object.keys(context.locals).length);
+	allocateLocalFromType(context, localName, typeArg.value);
 }
 
 function applyLocalSetLine(
@@ -251,11 +258,9 @@ function getResultTypes(line: CompilerASTLine): Array<'int' | 'float'> {
 
 function applyLoopLine(line: CompilerASTLine, context: CompilationContext): void {
 	const loopCounterLocalName = `__infiniteLoopProtectionCounter${line.lineNumber}`;
-	const loopCounterLocal = {
+	const loopCounterLocal = allocateLocal(context, loopCounterLocalName, {
 		isInteger: true,
-		index: Object.keys(context.locals).length,
-	};
-	context.locals[loopCounterLocalName] = loopCounterLocal;
+	});
 	pushBlock(context, {
 		expectedResultTypes: [],
 		blockType: BlockType.LOOP,

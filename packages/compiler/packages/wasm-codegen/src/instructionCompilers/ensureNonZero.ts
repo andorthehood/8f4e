@@ -15,6 +15,7 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import type { InstructionCompiler } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
+import { allocateLocal } from '@8f4e/semantic-utils';
 import { saveByteCode } from './utils/saveByteCode';
 
 /**
@@ -38,13 +39,12 @@ const ensureNonZero: InstructionCompiler = (line, context, facts) => {
 	}
 
 	const tempVariableName = '__ensureNonZero_temp_' + line.lineNumber;
-	const tempLocalIndex = Object.keys(context.locals).length;
 
 	if (isInteger) {
-		context.locals[tempVariableName] = {
+		const tempLocal = allocateLocal(context, tempVariableName, {
 			isInteger: true,
-			index: tempLocalIndex,
-		};
+		});
+		const tempLocalIndex = tempLocal.index;
 		return saveByteCode(context, [
 			...localSet(tempLocalIndex),
 			...localGet(tempLocalIndex),
@@ -57,11 +57,11 @@ const ensureNonZero: InstructionCompiler = (line, context, facts) => {
 			WASM_END,
 		]);
 	} else {
-		context.locals[tempVariableName] = {
+		const tempLocal = allocateLocal(context, tempVariableName, {
 			isInteger: false,
 			...(isFloat64 ? { isFloat64: true } : {}),
-			index: tempLocalIndex,
-		};
+		});
+		const tempLocalIndex = tempLocal.index;
 		const zeroByteCode = isFloat64 ? f64const(0) : f32const(0);
 		const fallbackByteCode = isFloat64 ? f64const(defaultNonZeroValue) : f32const(defaultNonZeroValue);
 		return saveByteCode(context, [

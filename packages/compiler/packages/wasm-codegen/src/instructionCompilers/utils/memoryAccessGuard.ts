@@ -19,6 +19,7 @@ import {
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
 import type { CodegenContext, CompilationContext, StackItem } from '@8f4e/language-spec';
+import { getOrCreateLocal } from '@8f4e/semantic-utils';
 
 type NumericWasmValueType = typeof WASM_TYPE_I32 | typeof WASM_TYPE_F32 | typeof WASM_TYPE_F64;
 
@@ -70,19 +71,11 @@ export function getOrCreateMemoryGuardLocal(
 	name: string,
 	item: Pick<StackItem, 'valueType'>
 ) {
-	const existing = context.locals[name];
-	if (existing) {
-		return existing;
-	}
-
 	const valueType = item.valueType;
-	const local = {
+	return getOrCreateLocal(context, name, {
 		isInteger: valueType === 'int',
 		...(valueType === 'float64' ? { isFloat64: true } : {}),
-		index: Math.max(-1, ...Object.values(context.locals).map(local => local.index)) + 1,
-	};
-	context.locals[name] = local;
-	return local;
+	});
 }
 
 /**
