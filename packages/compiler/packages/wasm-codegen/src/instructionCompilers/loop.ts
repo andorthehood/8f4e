@@ -13,7 +13,7 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import type { InstructionCompiler, LoopBlockStackFrame, LoopLine, ResolvedLoopLine } from '@8f4e/language-spec';
 import { ArgumentType, BlockType, ErrorCode, getError } from '@8f4e/language-spec';
-import { pushBlock } from '@8f4e/semantic-utils';
+import { allocateLocal, pushBlock } from '@8f4e/semantic-utils';
 import { saveByteCode } from './utils/saveByteCode';
 
 const DEFAULT_LOOP_CAP = 1000;
@@ -30,12 +30,10 @@ const loop: InstructionCompiler<ResolvedLoopLine | LoopLine> = (line, context) =
 	const effectiveCap = capArg !== undefined ? (capArg.value as number) : (context.loopCap ?? DEFAULT_LOOP_CAP);
 
 	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
-	const counterLocalIndex = Object.keys(context.locals).length;
-	const loopCounterLocal = {
+	const loopCounterLocal = allocateLocal(context, infiniteLoopProtectionCounterName, {
 		isInteger: true,
-		index: counterLocalIndex,
-	};
-	context.locals[infiniteLoopProtectionCounterName] = loopCounterLocal;
+	});
+	const counterLocalIndex = loopCounterLocal.index;
 
 	const loopBlock: LoopBlockStackFrame = {
 		expectedResultTypes: [],

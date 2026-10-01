@@ -2,6 +2,7 @@ import type {
 	BlockStack,
 	BlockTypeValue,
 	CompilationContext,
+	LocalMap,
 	LoopBlockStackFrame,
 	MapBlockStackFrame,
 } from '@8f4e/language-spec';
@@ -26,6 +27,11 @@ function createEmptyBlockDepths(): Record<BlockTypeValue, number> {
 		[BlockType.CONSTANTS]: 0,
 		[BlockType.MAP]: 0,
 	};
+}
+
+/** Derives the first unused local index for a context seeded with bindings. */
+function getNextLocalIndex(locals: LocalMap): number {
+	return Object.values(locals).reduce((nextIndex, local) => Math.max(nextIndex, local.index + 1), 0);
 }
 
 /** Derives cached active block state from an already-seeded block stack. */
@@ -69,6 +75,7 @@ export function createCompilationContext<TContext extends CompilationContext = C
 			prototypeShapeIds: [],
 		},
 		locals: {},
+		nextLocalIndex: 0,
 		byteCode: [],
 		stack: [],
 		blockStack: [],
@@ -106,9 +113,11 @@ export function createCompilationContext<TContext extends CompilationContext = C
 	const activeBlockDepths = overrides.activeBlockDepths ?? blockState.activeBlockDepths;
 	const activeLoopBlocks = overrides.activeLoopBlocks ?? blockState.activeLoopBlocks;
 	const activeMapBlock = overrides.activeMapBlock ?? blockState.activeMapBlock;
+	const nextLocalIndex = overrides.nextLocalIndex ?? getNextLocalIndex(context.locals);
 
 	return {
 		...context,
+		nextLocalIndex,
 		activeBlockDepths,
 		activeLoopBlocks,
 		activeMapBlock,

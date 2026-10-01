@@ -12,6 +12,7 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import type { InstructionCompiler } from '@8f4e/language-spec';
+import { allocateLocal } from '@8f4e/semantic-utils';
 import { saveByteCode } from './utils/saveByteCode';
 
 /**
@@ -23,12 +24,10 @@ const abs: InstructionCompiler = (line, context, facts) => {
 
 	if (operand.valueType === 'int') {
 		const valueName = '__absify_value' + line.lineNumber;
-		const valueLocalIndex = Object.keys(context.locals).length;
-
-		context.locals[valueName] = {
+		const valueLocal = allocateLocal(context, valueName, {
 			isInteger: true,
-			index: valueLocalIndex,
-		};
+		});
+		const valueLocalIndex = valueLocal.index;
 
 		return saveByteCode(context, [
 			...localSet(valueLocalIndex),

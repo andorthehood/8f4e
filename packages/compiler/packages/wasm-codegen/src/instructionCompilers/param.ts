@@ -1,5 +1,5 @@
 import type { FunctionCodegenContext, FunctionValueType, InstructionCompiler, ParamLine } from '@8f4e/language-spec';
-import { functionValueTypeToLocalBinding } from '@8f4e/language-spec';
+import { allocateLocalFromType } from '@8f4e/semantic-utils';
 
 /**
  * Instruction compiler for `param`.
@@ -10,8 +10,7 @@ export function registerFunctionParameter(
 	paramName: string,
 	context: FunctionCodegenContext
 ): FunctionCodegenContext {
-	const paramIndex = Object.keys(context.locals).length;
-	context.locals[paramName] = functionValueTypeToLocalBinding(paramType, paramIndex);
+	allocateLocalFromType(context, paramName, paramType);
 	context.currentFunctionParameterCount += 1;
 
 	return context;

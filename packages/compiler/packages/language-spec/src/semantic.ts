@@ -141,6 +141,8 @@ export type CompilationMode = CompilerSourceCompilationMode;
 export interface CompilationContext {
 	namespace: Namespace;
 	locals: LocalMap;
+	/** Next WebAssembly local index assigned by the shared local allocator. */
+	nextLocalIndex: number;
 	stack: Stack;
 	blockStack: BlockStack;
 	/** Cached active block counts keyed by block type, maintained with block stack mutations. */
