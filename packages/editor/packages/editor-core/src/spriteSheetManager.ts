@@ -3,7 +3,6 @@ import generateSprite from '@8f4e/sprite-generator';
 import type { StateManager } from '@8f4e/state-manager';
 import type { SpriteData } from '@8f4e/web-ui';
 import type { EventDispatcher } from './events';
-import { updateStateWithSpriteData } from './updateStateWithSpriteData';
 
 type SpriteSheetView = {
 	loadSpriteAtlas: (spriteData: SpriteData) => void;
@@ -31,9 +30,6 @@ export function createSpriteSheetManager(
 		}
 
 		view.loadSpriteAtlas(spriteData);
-
-		// Update state with new sprite data
-		updateStateWithSpriteData(state, spriteData);
 
 		events.dispatch('spriteSheetRerendered');
 	};

@@ -60,7 +60,6 @@ Active todo files are listed below.
 | 478 | Resolve group memory exposures through an alias table | 🟡 | 4-8h | 2026-08-26 | Keep composed AST references source-faithful and resolve structured group-memory aliases in the layout-aware and semantic reference passes. |
 | 480 | Simplify map codegen with reverse row order | 🟡 | 2-4h | 2026-09-06 | Emit map rows in reverse order to preserve first-match-wins behavior while removing matched/condition temporaries and runtime bookkeeping. |
 | 481 | Allocate compiler local indices with a counter | 🟡 | 2-4h | 2026-09-06 | Replace repeated local-map scans with a per-context allocator across semantic resolution, stack analysis, and Wasm codegen. |
-| 482 | Resolve sprite identifiers before drawing | 🟡 | 2-4h | 2026-09-06 | Resolve public atlas keys during setup and use dense numeric metadata lookup for each sprite submission. |
 | 483 | Lazy-load WASM overlay rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer overlay drawer and RGBA layer only when a project configures an overlay. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
 | 487 | Save projects to reusable browser file handles | 🟡 | 1-2d | 2026-09-29 | Make `Cmd+S`/`Ctrl+S` save canonical `.8f4e` source through a reusable file handle while leaving browser-session autosave independent. |
@@ -79,6 +78,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 482 | Resolve sprite identifiers before drawing | 2026-10-01 | Added setup-time public-key resolution, atlas-specific dense sprite ids, direct packed-metadata submission, atlas-replacement integration, and a retained byte-equivalence benchmark. |
 | 489 | Remove obsolete intermodular nth-reference helpers | 2026-09-30 | Deleted two test-only tokenizer helpers while preserving and strengthening coverage of the live nth-reference classifier. |
 | 488 | Remove disabled editor debug overlays | 2026-09-30 | Removed the disconnected info and console overlays and their public flags while retaining state-backed logging. |
 | 274 | Remove unused editor-core feature-flag configuration | 2026-09-30 | Deleted the test-only editor-core implementation and retained focused coverage beside the canonical editor-state feature flags. |

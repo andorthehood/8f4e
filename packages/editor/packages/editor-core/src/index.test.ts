@@ -68,7 +68,7 @@ vi.mock('@8f4e/sprite-generator', () => ({
 		spriteAtlas: {
 			image: {} as OffscreenCanvas,
 			lookup: {},
-			spriteIds: {},
+			spriteIdentifiers: {},
 		},
 		characterWidth: 8,
 		characterHeight: 16,
@@ -93,10 +93,6 @@ vi.mock('./editorEnvironmentPlugins/manager', () => ({
 
 vi.mock('./spriteSheetManager', () => ({
 	createSpriteSheetManager: vi.fn(() => cleanupSpriteSheet),
-}));
-
-vi.mock('./updateStateWithSpriteData', () => ({
-	updateStateWithSpriteData: vi.fn(),
 }));
 
 describe('editor init', () => {

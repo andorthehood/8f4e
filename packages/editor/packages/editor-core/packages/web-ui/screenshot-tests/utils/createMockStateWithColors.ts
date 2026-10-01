@@ -1,22 +1,10 @@
 import { createMockState } from '@8f4e/editor-state-testing';
 import type { State } from '@8f4e/editor-state-types';
-import generateSprite from '@8f4e/sprite-generator';
-import type { SpriteData } from '../../src';
-
-/**
- * Updates the state with sprite data from a generated sprite sheet.
- * This is a helper function to reduce duplication in test setup.
- */
-function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
-	state.spriteLookups = spriteData.spriteAtlas.spriteIds;
-	state.viewport.hGrid = spriteData.characterHeight;
-	state.viewport.vGrid = spriteData.characterWidth;
-}
 
 /**
  * Create a mock state for web-ui screenshot tests.
  * Extends the base createMockState from editor-state with web-ui specific defaults.
- * Also generates sprite data and populates spriteLookups, hGrid, and vGrid.
+ * Sprite lookups are populated when the web UI installs its generated atlas.
  *
  * @param overrides Optional partial state to override defaults
  * @returns A complete State object with web-ui defaults including color scheme and sprite data
@@ -27,8 +15,8 @@ function updateStateWithSpriteData(state: State, spriteData: SpriteData): void {
  * const state = await createMockStateWithColors({ featureFlags: { editing: false } });
  * ```
  */
-export default async function createMockStateWithColors(overrides: Partial<State> = {}): Promise<State> {
-	const state = createMockState({
+export default function createMockStateWithColors(overrides: Partial<State> = {}): State {
+	return createMockState({
 		featureFlags: {
 			contextMenu: true,
 			moduleDragging: false,
@@ -42,14 +30,4 @@ export default async function createMockStateWithColors(overrides: Partial<State
 		editorMode: 'view',
 		...overrides,
 	});
-
-	// Generate sprite data and populate state
-	const spriteData = await generateSprite({
-		font: state.editorConfig.font,
-		colorScheme: state.editorConfig.color,
-	});
-
-	updateStateWithSpriteData(state, spriteData);
-
-	return state;
 }

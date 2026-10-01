@@ -220,13 +220,12 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 		services: pluginServices.services,
 	});
 
-	// Generate sprite data and update state before initializing view
+	// Generate sprite data before initializing the view that installs and resolves the atlas.
 	const spriteData = await generateSprite({
 		font: state.editorConfig.font,
 		colorScheme: state.editorConfig.color,
 	});
 
-	updateStateWithSpriteData(state, spriteData);
 	const renderProjection = createWebUiRenderProjection(store, events);
 	const getOverlayTexture = () => resolveWebUiOverlayConfig(state) ?? options.overlayTexture;
 
@@ -237,6 +236,10 @@ export default async function init(canvas: HTMLCanvasElement, options: EditorOpt
 		getMemory: () => currentMemoryRef,
 		onRenderStats: stats => {
 			store.set('info.graphics', toGraphicsInfoRecord(stats));
+		},
+		onSpriteAtlasResolved: (spriteLookups, resolvedSpriteData) => {
+			updateStateWithSpriteData(state, resolvedSpriteData, spriteLookups);
+			renderProjection.refresh();
 		},
 	});
 	const syncOverlayTexture = () => {
