@@ -231,9 +231,6 @@ export interface FeatureFlags {
 	/** Enable/disable right-click context menu functionality */
 	contextMenu: boolean;
 
-	/** Enable/disable info overlay display (development information) */
-	infoOverlay: boolean;
-
 	/** Enable/disable dragging and repositioning of code block modules */
 	moduleDragging: boolean;
 
@@ -254,9 +251,6 @@ export interface FeatureFlags {
 
 	/** Enable/disable history tracking for undo/redo functionality */
 	historyTracking?: boolean;
-
-	/** Enable/disable console overlay display (internal logging) */
-	consoleOverlay: boolean;
 
 	/** Enable/disable arrows that point toward off-screen code blocks */
 	offscreenBlockArrows: boolean;

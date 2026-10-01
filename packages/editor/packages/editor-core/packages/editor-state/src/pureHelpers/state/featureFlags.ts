@@ -6,7 +6,6 @@ import type { FeatureFlags, FeatureFlagsConfig } from '@8f4e/editor-state-types'
  */
 export const defaultFeatureFlags: FeatureFlags = {
 	contextMenu: true,
-	infoOverlay: false,
 	moduleDragging: true,
 	codeLineSelection: true,
 	viewportDragging: true,
@@ -14,7 +13,6 @@ export const defaultFeatureFlags: FeatureFlags = {
 	modeToggling: true,
 	modeOverlay: true,
 	historyTracking: true,
-	consoleOverlay: true,
 	offscreenBlockArrows: true,
 	projectOpening: true,
 	projectCreation: true,

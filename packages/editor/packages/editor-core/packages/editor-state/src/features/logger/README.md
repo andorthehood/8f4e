@@ -54,5 +54,5 @@ info(state: State, message: string, category?: string): void
 
 - Logs are kept in memory only (not persisted)
 - Oldest logs are automatically dropped when maxLogs is exceeded
-- No log filtering or search capabilities in core logger (handled by UI)
+- No built-in UI, filtering, or search is provided
 - Timestamp resolution is seconds (HH:MM:SS format)

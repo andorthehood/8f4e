@@ -1,5 +1,5 @@
 /**
- * Types for logger feature - internal logging and console overlay.
+ * Types for state-backed editor logging.
  */
 
 /**
@@ -13,7 +13,7 @@ export interface LogMessage {
 }
 
 /**
- * Console state for internal logging buffer.
+ * Console state for the internal logging buffer.
  */
 export interface ConsoleState {
 	logs: LogMessage[];

@@ -95,7 +95,7 @@ the editor-state feature-flag tests rather than retaining an alias or re-export.
 
 ## Related Items
 
-- **Related**: `docs/todos/488-remove-disabled-editor-debug-overlays.md`
+- **Related**: `docs/todos/archived/488-remove-disabled-editor-debug-overlays.md`
 
 ## Notes
 
