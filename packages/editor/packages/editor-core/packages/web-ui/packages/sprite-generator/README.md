@@ -5,25 +5,28 @@ This package generates sprite sheets for the 8f4e editor, including fonts, icons
 ## Sprite atlas output
 
 The generator returns a `spriteAtlas` containing the generated `OffscreenCanvas`, one flat deduplicated lookup, and
-grouped numeric sprite IDs for hot-path drawing. Source coordinates are an internal generation detail and are not
-included in the public result:
+grouped public numeric identifiers. Resolve those identifiers against the installed atlas to produce dense IDs for
+hot-path drawing. Source coordinates are an internal generation detail and are not included in the public result:
 
 ```ts
-import generateSprite from '@8f4e/sprite-generator';
+import generateSprite, { resolveSpriteIds } from '@8f4e/sprite-generator';
 import { Engine } from 'glugglugglug';
 
 const { spriteAtlas } = await generateSprite({ font: 'ibmvga8x16' });
 const engine = new Engine(canvas);
 
-engine.setSpriteAtlas(spriteAtlas.image, spriteAtlas.lookup);
+const resolver = engine.setSpriteAtlas(spriteAtlas.image, spriteAtlas.lookup);
+const spriteIds = resolveSpriteIds(spriteAtlas.spriteIdentifiers, resolver);
 engine.renderFrame(() => {
-	engine.drawSprite(20, 20, spriteAtlas.spriteIds.fontCode[65]);
-	engine.drawSprite(40, 20, spriteAtlas.spriteIds.fillColors.background, 200, 100);
+	engine.drawSprite(20, 20, spriteIds.fontCode[65]);
+	engine.drawSprite(40, 20, spriteIds.fillColors.background, 200, 100);
 });
 ```
 
-Aliases and semantic roles that refer to the same source rectangle share one dense numeric ID. Callers should retain
-`spriteIds` and pass those numbers directly rather than constructing identifiers inside the render loop.
+Aliases and semantic roles that refer to the same source rectangle share one public numeric identifier. Callers resolve
+the grouped `spriteIdentifiers` against the resolver returned for the installed atlas, retain the resulting `spriteIds`,
+and pass those dense ids directly rather than resolving identifiers inside the render loop. Repeat this step whenever
+the atlas is replaced.
 
 ## Font Bitmaps
 

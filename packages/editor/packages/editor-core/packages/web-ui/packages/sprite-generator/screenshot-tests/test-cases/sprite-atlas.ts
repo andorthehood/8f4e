@@ -1,4 +1,4 @@
-import generateSprite from '@8f4e/sprite-generator';
+import generateSprite, { resolveSpriteIds } from '@8f4e/sprite-generator';
 import { Engine } from 'glugglugglug';
 
 const output = document.querySelector<HTMLCanvasElement>('#test-canvas');
@@ -8,9 +8,8 @@ if (!output) {
 
 const { characterHeight, characterWidth, spriteAtlas } = await generateSprite({ font: 'ibmvga8x16' });
 const engine = new Engine(output, { initialCapacity: 4 });
-const ids = spriteAtlas.spriteIds;
-
-engine.setSpriteAtlas(spriteAtlas.image, spriteAtlas.lookup);
+const resolver = engine.setSpriteAtlas(spriteAtlas.image, spriteAtlas.lookup);
+const ids = resolveSpriteIds(spriteAtlas.spriteIdentifiers, resolver);
 engine.renderFrame(() => {
 	engine.drawSprite(0, 0, ids.fillColors.background, output.width, output.height);
 	engine.drawSprite(32, 32, ids.fillColors.moduleBackground, 640, 208);

@@ -1,7 +1,7 @@
-import type { SpriteCoordinates, SpriteLookup } from 'glugglugglug';
+import type { SpriteCoordinates, SpriteId, SpriteLookup } from 'glugglugglug';
 import { describe, expect, it } from 'vitest';
 
-import { createSpriteAtlas } from '../src/index.ts';
+import { createSpriteAtlas, resolveSpriteIds } from '../src/index.ts';
 
 describe('sprite atlas output', () => {
 	it('flattens semantic groups into dense numeric sprite ids', () => {
@@ -19,9 +19,16 @@ describe('sprite atlas output', () => {
 			0: red,
 			1: green,
 		});
-		expect(atlas.spriteIds).toEqual({
+		expect(atlas.spriteIdentifiers).toEqual({
 			fontCode: { 65: 0, A: 0 },
 			fillColors: { foreground: 0, background: 1 },
+		});
+		const resolved = resolveSpriteIds(atlas.spriteIdentifiers, {
+			resolveSprite: identifier => (Number(identifier) + 10) as SpriteId,
+		});
+		expect(resolved).toEqual({
+			fontCode: { 65: 10, A: 10 },
+			fillColors: { foreground: 10, background: 11 },
 		});
 	});
 

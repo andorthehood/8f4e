@@ -1,5 +1,10 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { SpriteAtlas, SpriteIdLookups } from '@8f4e/sprite-generator';
+import {
+	resolveSpriteIds,
+	type SpriteAtlas,
+	type SpriteIdentifierLookups,
+	type SpriteIdLookups,
+} from '@8f4e/sprite-generator';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import { Engine, LineDrawer, RgbaTextureLayer } from 'glugglugglug';
 import { DrawContext } from './drawContext';
@@ -17,7 +22,7 @@ import { resolveWireColors } from './wire-colors';
 export type { MemoryViews } from './types';
 
 export interface SpriteData {
-	spriteAtlas: SpriteAtlas<SpriteIdLookups>;
+	spriteAtlas: SpriteAtlas<SpriteIdentifierLookups>;
 	characterWidth: number;
 	characterHeight: number;
 }
@@ -34,6 +39,8 @@ export interface RenderStats {
 
 export interface WebUiOptions {
 	onRenderStats?: (stats: RenderStats) => void;
+	/** Receives ids resolved against each installed atlas before rendering resumes. */
+	onSpriteAtlasResolved?: (spriteLookups: SpriteIdLookups, spriteData: SpriteData) => void;
 	renderStatsIntervalFrames?: number;
 	overlayTexture?: WasmOverlayTextureOptions;
 	getCodeBuffer?: () => Uint8Array;
@@ -76,7 +83,19 @@ export default async function init(
 	let statsSampleStartFrameCount = 0;
 	let statsSampleStartTime = performance.now();
 
-	engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
+	function installSpriteAtlas(nextSpriteData: SpriteData): void {
+		const resolver = engine.setSpriteAtlas(nextSpriteData.spriteAtlas.image, nextSpriteData.spriteAtlas.lookup);
+		const spriteLookups = resolveSpriteIds(nextSpriteData.spriteAtlas.spriteIdentifiers, resolver) as SpriteIdLookups;
+		if (options.onSpriteAtlasResolved) {
+			options.onSpriteAtlasResolved(spriteLookups, nextSpriteData);
+		} else {
+			state.spriteLookups = spriteLookups;
+			state.viewport.hGrid = nextSpriteData.characterHeight;
+			state.viewport.vGrid = nextSpriteData.characterWidth;
+		}
+	}
+
+	installSpriteAtlas(spriteData);
 
 	function getSampledFps(): number {
 		const now = performance.now();
@@ -259,7 +278,7 @@ export default async function init(
 			return true;
 		},
 		loadSpriteAtlas: spriteData => {
-			engine.setSpriteAtlas(spriteData.spriteAtlas.image, spriteData.spriteAtlas.lookup);
+			installSpriteAtlas(spriteData);
 			draw.setCharacterWidth(spriteData.characterWidth);
 			wireColors = resolveWireColors(state.editorConfig.color);
 		},

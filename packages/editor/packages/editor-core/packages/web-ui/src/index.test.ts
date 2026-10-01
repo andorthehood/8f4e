@@ -17,7 +17,7 @@ const mocks = vi.hoisted(() => {
 			spriteCount: 100,
 			uploadedInstanceBytes: 2000,
 		},
-		setSpriteAtlas: vi.fn(),
+		setSpriteAtlas: vi.fn(() => ({ resolveSprite: (identifier: string | number) => Number(identifier) + 100 })),
 		drawSprite: vi.fn(),
 		renderFrame: vi.fn((drawFrame: () => void) => {
 			for (const hook of engine.hooks.preDraw) hook();
@@ -142,15 +142,15 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 	};
 }
 
-function createSpriteData() {
+function createSpriteData(identifier = 0, characterWidth = 8, characterHeight = 16) {
 	return {
 		spriteAtlas: {
 			image: {} as OffscreenCanvas,
 			lookup: {},
-			spriteIds: {},
+			spriteIdentifiers: { fillColors: { background: identifier } } as never,
 		},
-		characterWidth: 8,
-		characterHeight: 16,
+		characterWidth,
+		characterHeight,
 	};
 }
 
@@ -350,6 +350,28 @@ describe('web-ui init', () => {
 		view.loadSpriteAtlas(createSpriteData());
 
 		expect(mocks.resolveWireColors).toHaveBeenLastCalledWith(nextColorScheme);
+	});
+
+	it('rebuilds resolved sprite ids and grid metrics when the atlas is replaced', async () => {
+		const { default: init } = await import('./index');
+		const state = createMockState();
+		const memoryViews = {
+			int8: new Int8Array(0),
+			int16: new Int16Array(0),
+			int32: new Int32Array(0),
+			uint8: new Uint8Array(0),
+			uint16: new Uint16Array(0),
+			float32: new Float32Array(0),
+			float64: new Float64Array(0),
+		};
+
+		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData(7, 8, 16));
+		expect(state.spriteLookups?.fillColors.background).toBe(107);
+		expect(state.viewport).toEqual(expect.objectContaining({ hGrid: 16, vGrid: 8 }));
+
+		view.loadSpriteAtlas(createSpriteData(42, 10, 18));
+		expect(state.spriteLookups?.fillColors.background).toBe(142);
+		expect(state.viewport).toEqual(expect.objectContaining({ hGrid: 18, vGrid: 10 }));
 	});
 
 	it('emits render stats at the configured frame interval', async () => {
