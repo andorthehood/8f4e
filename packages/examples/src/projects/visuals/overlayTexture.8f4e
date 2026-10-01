@@ -31,7 +31,7 @@ noteEnd
 
 entry main
 module screen
-; @pos 98 -2
+; @pos 97 0
 
 const WIDTH 32
 const HEIGHT 32
@@ -42,7 +42,7 @@ int8u[] rgba PIXEL_COUNT*4
 
 moduleEnd
 module frameCounter
-; @pos 103 -27
+; @pos 99 -31
 
 int frame
 push &frame
