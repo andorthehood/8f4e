@@ -394,7 +394,6 @@ describe('editor init', () => {
 					width: 64,
 					height: 32,
 					magnification: 3,
-					filter: 'linear',
 				},
 			},
 		};
@@ -405,7 +404,6 @@ describe('editor init', () => {
 			width: 64,
 			height: 32,
 			magnification: 3,
-			filter: 'linear',
 		});
 		expect(viewOptions.getCodeBuffer?.()).toBeInstanceOf(Uint8Array);
 		expect(viewOptions.getMemory?.()).toBeNull();

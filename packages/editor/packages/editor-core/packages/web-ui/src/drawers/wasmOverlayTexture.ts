@@ -1,5 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
-import type { RgbaTexture, RgbaTextureFilter, RgbaTextureLayer } from 'glugglugglug';
+import type { RgbaTexture, RgbaTextureLayer } from 'glugglugglug';
 import type { MemoryViews } from '../types';
 
 export interface WasmOverlayTextureOptions {
@@ -8,7 +8,6 @@ export interface WasmOverlayTextureOptions {
 	width: number;
 	height: number;
 	magnification?: number;
-	filter?: RgbaTextureFilter;
 }
 
 export interface WasmOverlayTextureDrawerOptions {
@@ -84,7 +83,6 @@ export function createWasmOverlayTextureDrawer({
 	const sourceWidth = normalizePositiveInteger(overlayTexture.width);
 	const sourceHeight = normalizePositiveInteger(overlayTexture.height);
 	const byteLength = sourceWidth * sourceHeight * 4;
-	const filter = overlayTexture.filter ?? 'nearest';
 	const magnification = normalizeMagnification(overlayTexture.magnification);
 	let texture: RgbaTexture | undefined;
 	let cachedMemory: WebAssembly.Memory | null = null;
@@ -176,7 +174,7 @@ export function createWasmOverlayTextureDrawer({
 		const data = memoryViews.uint8.subarray(byteAddress, byteAddress + byteLength);
 		texture = layer.uploadRgba8Texture(data, sourceWidth, sourceHeight, {
 			texture,
-			filter,
+			filter: 'nearest',
 		});
 		const viewport = getViewportSize();
 		const drawRect = getCenteredDrawRect(sourceWidth, sourceHeight, viewport.width, viewport.height, magnification);
