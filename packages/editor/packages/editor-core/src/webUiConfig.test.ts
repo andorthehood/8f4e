@@ -16,7 +16,6 @@ describe('web-ui editor config', () => {
 						width: { type: 'integer', minimum: 1 },
 						height: { type: 'integer', minimum: 1 },
 						magnification: { type: 'number', minimum: 1 },
-						filter: { type: 'string', enum: ['nearest', 'linear'] },
 					},
 					additionalProperties: false,
 				},
@@ -35,7 +34,6 @@ describe('web-ui editor config', () => {
 						width: 64,
 						height: 32,
 						magnification: 3,
-						filter: 'linear',
 					},
 				},
 			},
@@ -47,7 +45,6 @@ describe('web-ui editor config', () => {
 			width: 64,
 			height: 32,
 			magnification: 3,
-			filter: 'linear',
 		});
 	});
 

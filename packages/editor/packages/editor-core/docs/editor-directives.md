@@ -107,12 +107,11 @@ draw it centered over the editor. Configure the export name, qualified memory ta
 ; @config webUI.overlay.width 64
 ; @config webUI.overlay.height 32
 ; @config webUI.overlay.magnification 4
-; @config webUI.overlay.filter nearest
 ```
 
 The target contains `width * height * 4` bytes in top-to-bottom RGBA order. Pixel alpha controls how strongly the
-overlay covers the editor: `0` is transparent and `255` is opaque. The default filter is `nearest`; `linear` enables
-interpolated scaling. The texture is centered at its source dimensions by default. An optional numeric
+overlay covers the editor: `0` is transparent and `255` is opaque. The texture always uses nearest-neighbor filtering
+and is centered at its source dimensions by default. An optional numeric
 `webUI.overlay.magnification` of at least `1` multiplies both displayed dimensions while preserving the source aspect
 ratio; for example, `4` displays each source pixel as a 4 × 4 block.
 

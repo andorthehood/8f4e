@@ -16,7 +16,6 @@ export const webUiEditorConfigSchemaContribution: EditorConfigSchemaContribution
 					width: { type: 'integer', minimum: 1 },
 					height: { type: 'integer', minimum: 1 },
 					magnification: { type: 'number', minimum: 1 },
-					filter: { type: 'string', enum: ['nearest', 'linear'] },
 				},
 				additionalProperties: false,
 			},
@@ -70,14 +69,11 @@ export function resolveWebUiOverlayConfig(state: State): WebUiOptions['overlayTe
 		return undefined;
 	}
 
-	const filter = overlay.filter === 'linear' || overlay.filter === 'nearest' ? overlay.filter : undefined;
-
 	return {
 		entry,
 		target,
 		width,
 		height,
 		...(magnification ? { magnification } : {}),
-		...(filter ? { filter } : {}),
 	};
 }
