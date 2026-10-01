@@ -18,8 +18,8 @@ note
 ; @config export.fileName overlayTexture
 ; @config webUI.overlay.entry main
 ; @config webUI.overlay.target screen:rgba
-; @config webUI.overlay.width 32
-; @config webUI.overlay.height 32
+; @config webUI.overlay.width 16
+; @config webUI.overlay.height 16
 ; @config webUI.overlay.magnification 8
 ; @config color.fill.background #111
 
@@ -31,7 +31,7 @@ noteEnd
 
 entry main
 module screen
-; @pos 92 2
+; @pos 98 -2
 
 const WIDTH 32
 const HEIGHT 32
@@ -42,7 +42,7 @@ int8u[] rgba PIXEL_COUNT*4
 
 moduleEnd
 module frameCounter
-; @pos 97 -31
+; @pos 103 -27
 
 int frame
 push &frame
@@ -53,7 +53,7 @@ store
 
 moduleEnd
 module screen2
-; @pos 150 -21
+; @pos 143 -21
 ; @home right
 use screen
 
