@@ -1,6 +1,6 @@
 import type { PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
-import formatDebuggerValue from './formatDebuggerValue';
+import formatDebuggerValue, { formatDebuggerValueAtAddress } from './formatDebuggerValue';
 
 function createMemoryViews() {
 	const buffer = new ArrayBuffer(8);
@@ -55,5 +55,48 @@ describe('formatDebuggerValue', () => {
 		expect(
 			formatDebuggerValue(memoryViews, createMemory({ elementWordSize: 1, wordAlignedSize: 0.25 }), 0, 'hex')
 		).toBe('0a');
+	});
+
+	it('renders an invalid marker for a negative dereferenced byte address', () => {
+		const memoryViews = createMemoryViews();
+
+		expect(
+			formatDebuggerValueAtAddress(
+				memoryViews,
+				-1,
+				-0.25,
+				{ elementWordSize: 1, isInteger: true, isUnsigned: true },
+				'decimal'
+			)
+		).toBe('?');
+	});
+
+	it('renders an invalid marker for an out-of-range watch index', () => {
+		const memoryViews = createMemoryViews();
+
+		expect(formatDebuggerValue(memoryViews, createMemory({ elementWordSize: 4 }), 2, 'decimal')).toBe('?');
+	});
+
+	it('renders an invalid marker for misaligned and truncated values', () => {
+		const memoryViews = createMemoryViews();
+
+		expect(
+			formatDebuggerValueAtAddress(
+				memoryViews,
+				1,
+				0,
+				{ elementWordSize: 2, isInteger: true, isUnsigned: false },
+				'decimal'
+			)
+		).toBe('?');
+		expect(
+			formatDebuggerValueAtAddress(
+				memoryViews,
+				4,
+				1,
+				{ elementWordSize: 8, isInteger: false, isUnsigned: false },
+				'hex'
+			)
+		).toBe('?');
 	});
 });
