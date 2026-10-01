@@ -33,14 +33,19 @@ import {
 	compilerSourceBlockInstructionByType,
 	createFunctionId,
 	ErrorCode,
-	functionValueTypeToLocalBinding,
 	getEffectiveFunctionMetadata,
 	getError,
 	isSemanticInstructionLine,
 	MAX_FUNCTION_PARAMETERS,
 	resolveRegionDirective,
 } from '@8f4e/language-spec';
-import { createCompilationContext, popBlock, pushBlock } from '@8f4e/semantic-utils';
+import {
+	allocateLocalFromType,
+	createCompilationContext,
+	popBlock,
+	pushBlock,
+	resetLocals,
+} from '@8f4e/semantic-utils';
 import resolveLineReferences from './resolveLineReferences';
 
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
@@ -223,7 +228,7 @@ function registerFunctionParameter(
 		throw getError(ErrorCode.DUPLICATE_PARAMETER_NAME, line, context);
 	}
 
-	context.locals[paramName] = functionValueTypeToLocalBinding(paramType, Object.keys(context.locals).length);
+	allocateLocalFromType(context, paramName, paramType);
 	context.currentFunctionParameterCount += 1;
 
 	if (context.currentFunctionParameterCount > MAX_FUNCTION_PARAMETERS) {
@@ -244,7 +249,7 @@ function applyFunctionLine(line: CompilerASTLine, context: FunctionCompilationCo
 	context.currentFunctionExportName = undefined;
 	context.currentFunctionImport = undefined;
 	context.mode = functionBlockType;
-	context.locals = {};
+	resetLocals(context);
 
 	pushBlock(context, {
 		blockType: BlockType.FUNCTION,
@@ -271,7 +276,7 @@ function applyLocalLine(line: CompilerASTLine, context: ModuleCompilationContext
 		throw getError(ErrorCode.LOCAL_NAME_COLLISION_WITH_MEMORY, line, context, { identifier: localName });
 	}
 
-	context.locals[localName] = functionValueTypeToLocalBinding(typeArg.value, Object.keys(context.locals).length);
+	allocateLocalFromType(context, localName, typeArg.value);
 }
 
 function applyMapBeginLine(

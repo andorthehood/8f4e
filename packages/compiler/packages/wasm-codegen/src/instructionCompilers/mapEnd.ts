@@ -20,7 +20,7 @@ import type {
 	MapEndLine,
 	StackAnalysisNumericValueKind,
 } from '@8f4e/language-spec';
-import { popBlock } from '@8f4e/semantic-utils';
+import { allocateLocal, popBlock } from '@8f4e/semantic-utils';
 import { saveByteCode } from './utils/saveByteCode';
 
 const constOp: Record<StackAnalysisNumericValueKind, (v: number) => number[]> = {
@@ -54,7 +54,7 @@ const eqOpcode: Record<StackAnalysisNumericValueKind, WASMInstructionCode> = {
  *
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const mapEnd: InstructionCompiler<MapEndLine> = (_line: MapEndLine, context, facts) => {
+const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context, facts) => {
 	const { inputKind, outputKind } = facts.map!;
 	const outputIsInteger = outputKind === 'int32';
 	const outputIsFloat64 = outputKind === 'float64';
@@ -73,31 +73,25 @@ const mapEnd: InstructionCompiler<MapEndLine> = (_line: MapEndLine, context, fac
 		saveByteCode(context, [WASM_DROP, ...constOp[outputKind](defaultValue)]);
 	} else {
 		// Allocate four temporary locals: inputLocal, resultLocal, matchedLocal, condLocal
-		const localBase = Object.keys(context.locals).length;
-
-		context.locals[`__map_${localBase}_input`] = {
+		const inputLocal = allocateLocal(context, `__map_${line.lineNumber}_input`, {
 			isInteger: inputIsInteger,
 			...(inputIsFloat64 ? { isFloat64: true } : {}),
-			index: localBase,
-		};
-		context.locals[`__map_${localBase}_result`] = {
+		});
+		const resultLocal = allocateLocal(context, `__map_${line.lineNumber}_result`, {
 			isInteger: outputIsInteger,
 			...(outputIsFloat64 ? { isFloat64: true } : {}),
-			index: localBase + 1,
-		};
-		context.locals[`__map_${localBase}_matched`] = {
+		});
+		const matchedLocal = allocateLocal(context, `__map_${line.lineNumber}_matched`, {
 			isInteger: true,
-			index: localBase + 2,
-		};
-		context.locals[`__map_${localBase}_cond`] = {
+		});
+		const condLocal = allocateLocal(context, `__map_${line.lineNumber}_cond`, {
 			isInteger: true,
-			index: localBase + 3,
-		};
+		});
 
-		const inputLocalIdx = localBase;
-		const resultLocalIdx = localBase + 1;
-		const matchedLocalIdx = localBase + 2;
-		const condLocalIdx = localBase + 3;
+		const inputLocalIdx = inputLocal.index;
+		const resultLocalIdx = resultLocal.index;
+		const matchedLocalIdx = matchedLocal.index;
+		const condLocalIdx = condLocal.index;
 
 		// Step 1: save input; Step 2: init resultLocal; Step 3: init matchedLocal
 		saveByteCode(context, [

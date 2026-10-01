@@ -1,5 +1,5 @@
 import type { FunctionValueType, InstructionCompiler, LocalDeclarationLine } from '@8f4e/language-spec';
-import { functionValueTypeToLocalBinding } from '@8f4e/language-spec';
+import { allocateLocalFromType } from '@8f4e/semantic-utils';
 
 /**
  * Instruction compiler for `local`.
@@ -9,10 +9,7 @@ const local: InstructionCompiler<LocalDeclarationLine> = (line: LocalDeclaration
 	const typeArg = line.arguments[0];
 	const nameArg = line.arguments[1];
 
-	context.locals[nameArg.value] = functionValueTypeToLocalBinding(
-		typeArg.value as FunctionValueType,
-		Object.keys(context.locals).length
-	);
+	allocateLocalFromType(context, nameArg.value, typeArg.value as FunctionValueType);
 
 	return context;
 };

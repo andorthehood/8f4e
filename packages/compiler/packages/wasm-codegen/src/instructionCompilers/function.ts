@@ -1,6 +1,6 @@
 import type { FunctionCodegenContext, FunctionLine, InstructionCompiler } from '@8f4e/language-spec';
 import { BlockType, compilerSourceBlockInstructionByType } from '@8f4e/language-spec';
-import { pushBlock } from '@8f4e/semantic-utils';
+import { pushBlock, resetLocals } from '@8f4e/semantic-utils';
 
 const functionBlockType = compilerSourceBlockInstructionByType.function.type;
 
@@ -23,7 +23,7 @@ const _function: InstructionCompiler<FunctionLine, FunctionCodegenContext> = (li
 	context.mode = functionBlockType;
 
 	// Initialize empty locals - parameters will be added by param instructions
-	context.locals = {};
+	resetLocals(context);
 
 	pushBlock(context, {
 		blockType: BlockType.FUNCTION,
