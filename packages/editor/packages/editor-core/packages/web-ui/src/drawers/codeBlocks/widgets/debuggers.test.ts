@@ -45,4 +45,43 @@ describe('drawDebuggers', () => {
 		expect(drawText).toHaveBeenNthCalledWith(2, 13, 7, '2, 3', state.spriteLookups?.fontNumbers);
 		expect(drawText).toHaveBeenNthCalledWith(3, 45, 7, ']', state.spriteLookups?.fontCode);
 	});
+
+	it('renders an invalid marker when a watch points outside memory', () => {
+		const engine = createDrawContextMock();
+		const state = createMockState({
+			viewport: { vGrid: 8, hGrid: 16 },
+			spriteLookups: {
+				fontCode: createSpriteIdLookupMock(),
+				fontNumbers: createSpriteIdLookupMock(),
+			} as never,
+		});
+		const codeBlock = createMockCodeBlock({
+			widgets: {
+				debuggers: [
+					{
+						x: 5,
+						y: 7,
+						memory: {
+							byteAddress: 0,
+							wordAlignedAddress: 0,
+							elementWordSize: 4,
+							isInteger: true,
+							isUnsigned: false,
+						},
+						bufferPointer: 1,
+						displayFormat: 'decimal',
+						showAddress: false,
+						showEndAddress: false,
+					},
+				],
+			} as never,
+		});
+
+		drawDebuggers(engine, state, codeBlock, createMemoryViews());
+
+		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
+		expect(drawText).toHaveBeenNthCalledWith(1, 5, 7, '[', state.spriteLookups?.fontCode);
+		expect(drawText).toHaveBeenNthCalledWith(2, 13, 7, '?', state.spriteLookups?.fontNumbers);
+		expect(drawText).toHaveBeenNthCalledWith(3, 21, 7, ']', state.spriteLookups?.fontCode);
+	});
 });

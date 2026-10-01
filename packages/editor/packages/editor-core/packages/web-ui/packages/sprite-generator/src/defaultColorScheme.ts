@@ -37,7 +37,7 @@ const defaultColorScheme: ColorScheme = {
 		backgroundDots2: '#333333',
 		moduleBackground: 'rgba(0,0,0,0.9)',
 		debugInfoBackground: 'rgba(0,0,0,0.9)',
-		moduleBackgroundDragged: 'rgba(0,0,0,1)',
+		moduleBackgroundDragged: 'rgba(0,0,0,0.9)',
 		moduleBackgroundDisabled: 'rgba(0,0,0,0.9)',
 		wire: 'rgba(255,255,255,0.3)',
 		wireHighlighted: '#ffffff',
