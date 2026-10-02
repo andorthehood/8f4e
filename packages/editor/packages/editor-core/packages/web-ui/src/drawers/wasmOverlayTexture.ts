@@ -2,12 +2,15 @@ import type { State } from '@8f4e/editor-state-types';
 import type { RgbaTexture, RgbaTextureLayer } from 'glugglugglug';
 import type { MemoryViews } from '../types';
 
+type OverlayPosition = 'left' | 'center' | 'right';
+
 export interface WasmOverlayTextureOptions {
 	entry: string;
 	target: string;
 	width: number;
 	height: number;
 	magnification?: number;
+	position?: OverlayPosition;
 }
 
 export interface WasmOverlayTextureDrawerOptions {
@@ -54,17 +57,23 @@ function getOverlayBufferByteAddress(state: State, target: string): number | und
 	return typeof memory?.byteAddress === 'number' ? memory.byteAddress : undefined;
 }
 
-export function getCenteredDrawRect(
+export function getOverlayDrawRect(
 	sourceWidth: number,
 	sourceHeight: number,
 	viewportWidth: number,
 	viewportHeight: number,
-	magnification = 1
+	magnification = 1,
+	position: OverlayPosition = 'center'
 ): { x: number; y: number; width: number; height: number } {
 	const width = sourceWidth * magnification;
 	const height = sourceHeight * magnification;
+	const horizontalCenter = {
+		left: viewportWidth / 4,
+		center: viewportWidth / 2,
+		right: (viewportWidth * 3) / 4,
+	}[position];
 	return {
-		x: (viewportWidth - width) / 2,
+		x: horizontalCenter - width / 2,
 		y: (viewportHeight - height) / 2,
 		width,
 		height,
@@ -84,6 +93,7 @@ export function createWasmOverlayTextureDrawer({
 	const sourceHeight = normalizePositiveInteger(overlayTexture.height);
 	const byteLength = sourceWidth * sourceHeight * 4;
 	const magnification = normalizeMagnification(overlayTexture.magnification);
+	const position = overlayTexture.position ?? 'center';
 	let texture: RgbaTexture | undefined;
 	let cachedMemory: WebAssembly.Memory | null = null;
 	let cachedCodeBuffer: Uint8Array | undefined;
@@ -177,7 +187,14 @@ export function createWasmOverlayTextureDrawer({
 			filter: 'nearest',
 		});
 		const viewport = getViewportSize();
-		const drawRect = getCenteredDrawRect(sourceWidth, sourceHeight, viewport.width, viewport.height, magnification);
+		const drawRect = getOverlayDrawRect(
+			sourceWidth,
+			sourceHeight,
+			viewport.width,
+			viewport.height,
+			magnification,
+			position
+		);
 		layer.drawTexture(texture, drawRect.x, drawRect.y, drawRect.width, drawRect.height);
 	};
 }

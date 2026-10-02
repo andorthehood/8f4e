@@ -99,7 +99,8 @@ Examples:
 #### WASM editor overlay
 
 The web UI can call an exported WebAssembly function every editor frame, read an RGBA8 pixel buffer from memory, and
-draw it centered over the editor. Configure the export name, qualified memory target, and source dimensions:
+draw it over the editor. Configure the export name, qualified memory target, source dimensions, and horizontal
+position:
 
 ```txt
 ; @config webUI.overlay.entry renderFrame
@@ -107,13 +108,15 @@ draw it centered over the editor. Configure the export name, qualified memory ta
 ; @config webUI.overlay.width 64
 ; @config webUI.overlay.height 32
 ; @config webUI.overlay.magnification 4
+; @config webUI.overlay.position center
 ```
 
 The target contains `width * height * 4` bytes in top-to-bottom RGBA order. Pixel alpha controls how strongly the
 overlay covers the editor: `0` is transparent and `255` is opaque. The texture always uses nearest-neighbor filtering
-and is centered at its source dimensions by default. An optional numeric
-`webUI.overlay.magnification` of at least `1` multiplies both displayed dimensions while preserving the source aspect
-ratio; for example, `4` displays each source pixel as a 4 × 4 block.
+and is vertically centered. `webUI.overlay.position` accepts `left`, `center`, or `right`; these place the texture in
+the center of the left half, the full viewport, or the right half respectively. It defaults to `center`. An optional
+numeric `webUI.overlay.magnification` of at least `1` multiplies both displayed dimensions while preserving the source
+aspect ratio; for example, `4` displays each source pixel as a 4 × 4 block.
 
 Supported `font` values:
 

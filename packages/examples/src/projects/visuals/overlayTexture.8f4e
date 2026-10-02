@@ -21,6 +21,7 @@ note
 ; @config webUI.overlay.width 32
 ; @config webUI.overlay.height 32
 ; @config webUI.overlay.magnification 8
+; @config webUI.overlay.position left
 ; @config color.fill.background #111
 
 ; The main entry runs once per editor
