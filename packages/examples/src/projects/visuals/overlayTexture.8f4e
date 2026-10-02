@@ -1,7 +1,7 @@
 8f4e/v1
 
 constants env
-; @pos 0 0
+; @pos -62 -2
 ; @favorite
 ; Auto-generated environment constants
 ; Changes will be overwritten
@@ -22,7 +22,7 @@ note
 ; @config webUI.overlay.height 32
 ; @config webUI.overlay.magnification 8
 ; @config webUI.overlay.position left
-; @config color.fill.background #111
+; @config color.fill.background #002
 
 ; The main entry runs once per editor
 ; frame and fills a 32 x 32 RGBA8
@@ -30,22 +30,32 @@ note
 ; centered over the editor.
 noteEnd
 
+note
+; @pos 54 2
+
+; The shortest 8f4e program
+; I managed to write that
+; generates something
+; visually interesting
+
+noteEnd
+
 entry main
 module screen
-; @pos 97 0
+; @pos 97 1
 
 const WIDTH 32
 const HEIGHT 32
 const PIXEL_COUNT WIDTH*HEIGHT
 
-int frame
+; Framebuffer
 int8u[] rgba PIXEL_COUNT*4
 
 moduleEnd
 module frameCounter
-; @pos 99 -31
+; @pos 99 -32
 
-int frame
+int frame ; @w
 push &frame
 push frame
 push 1
