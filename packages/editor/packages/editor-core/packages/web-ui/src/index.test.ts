@@ -479,6 +479,7 @@ describe('web-ui init', () => {
 			width: 1,
 			height: 1,
 			magnification: 32,
+			position: 'left',
 		});
 		expect(instantiateOverlayTextureWasm).not.toHaveBeenCalled();
 
@@ -499,7 +500,7 @@ describe('web-ui init', () => {
 		expect([...data]).toEqual([10, 20, 30, 255]);
 		expect(mocks.overlayTextureLayer.drawTexture).toHaveBeenCalledWith(
 			{ texture: {}, width: 128, height: 128, filter: 'nearest' },
-			144,
+			64,
 			74,
 			32,
 			32

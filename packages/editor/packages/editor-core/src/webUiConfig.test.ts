@@ -16,6 +16,7 @@ describe('web-ui editor config', () => {
 						width: { type: 'integer', minimum: 1 },
 						height: { type: 'integer', minimum: 1 },
 						magnification: { type: 'number', minimum: 1 },
+						position: { type: 'string', enum: ['left', 'center', 'right'] },
 					},
 					additionalProperties: false,
 				},
@@ -34,6 +35,7 @@ describe('web-ui editor config', () => {
 						width: 64,
 						height: 32,
 						magnification: 3,
+						position: 'right',
 					},
 				},
 			},
@@ -45,6 +47,7 @@ describe('web-ui editor config', () => {
 			width: 64,
 			height: 32,
 			magnification: 3,
+			position: 'right',
 		});
 	});
 

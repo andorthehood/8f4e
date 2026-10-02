@@ -394,6 +394,7 @@ describe('editor init', () => {
 					width: 64,
 					height: 32,
 					magnification: 3,
+					position: 'left',
 				},
 			},
 		};
@@ -404,6 +405,7 @@ describe('editor init', () => {
 			width: 64,
 			height: 32,
 			magnification: 3,
+			position: 'left',
 		});
 		expect(viewOptions.getCodeBuffer?.()).toBeInstanceOf(Uint8Array);
 		expect(viewOptions.getMemory?.()).toBeNull();

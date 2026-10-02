@@ -16,6 +16,7 @@ export const webUiEditorConfigSchemaContribution: EditorConfigSchemaContribution
 					width: { type: 'integer', minimum: 1 },
 					height: { type: 'integer', minimum: 1 },
 					magnification: { type: 'number', minimum: 1 },
+					position: { type: 'string', enum: ['left', 'center', 'right'] },
 				},
 				additionalProperties: false,
 			},
@@ -57,6 +58,10 @@ export function resolveWebUiOverlayConfig(state: State): WebUiOptions['overlayTe
 	const height = getPositiveInteger(overlay, 'height');
 	const magnificationValue = getFiniteNumber(overlay, 'magnification');
 	const magnification = magnificationValue !== undefined && magnificationValue >= 1 ? magnificationValue : undefined;
+	const position =
+		overlay.position === 'left' || overlay.position === 'center' || overlay.position === 'right'
+			? overlay.position
+			: undefined;
 
 	if (
 		typeof entry !== 'string' ||
@@ -75,5 +80,6 @@ export function resolveWebUiOverlayConfig(state: State): WebUiOptions['overlayTe
 		width,
 		height,
 		...(magnification ? { magnification } : {}),
+		...(position ? { position } : {}),
 	};
 }
