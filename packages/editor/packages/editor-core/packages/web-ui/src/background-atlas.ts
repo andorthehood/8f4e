@@ -1,5 +1,4 @@
-import { type CompositeSprite, extendSpriteAtlas } from '@8f4e/sprite-atlas-extender';
-import type { SpriteAtlas, SpriteIdentifierLookups } from '@8f4e/sprite-generator';
+import type { CompositeSprite } from '@8f4e/sprite-atlas-extender';
 import type { SpriteData } from './index';
 
 const BACKGROUND_COLUMNS = 64;
@@ -7,16 +6,14 @@ const BACKGROUND_ROWS = 32;
 const DOT_SIZE = 2;
 const BACKGROUND_IDENTIFIER = 'web-ui:background';
 
-type BackgroundIdentifiers = SpriteIdentifierLookups & { background: Record<0, string> };
-
-/** Adds the editor's repeating background tile to the base generated sprites. */
-export function extendBackgroundAtlas(spriteData: SpriteData): SpriteAtlas<BackgroundIdentifiers> {
+/** Defines the editor's repeating background tile using existing fill-color rectangles. */
+export function createBackgroundSprite(spriteData: SpriteData): CompositeSprite {
 	const { characterWidth, characterHeight, spriteAtlas } = spriteData;
 	const width = BACKGROUND_COLUMNS * characterWidth;
 	const height = BACKGROUND_ROWS * characterHeight;
 	const dotOffsetX = Math.floor((characterWidth - DOT_SIZE) / 2);
 	const dotOffsetY = Math.floor((characterHeight - DOT_SIZE) / 2);
-	const composite: CompositeSprite = {
+	return {
 		id: BACKGROUND_IDENTIFIER,
 		width,
 		height,
@@ -37,14 +34,6 @@ export function extendBackgroundAtlas(spriteData: SpriteData): SpriteAtlas<Backg
 					);
 				}
 			}
-		},
-	};
-	const completed = extendSpriteAtlas(spriteAtlas, [composite]);
-	return {
-		...completed,
-		spriteIdentifiers: {
-			...spriteAtlas.spriteIdentifiers,
-			background: { 0: BACKGROUND_IDENTIFIER },
 		},
 	};
 }

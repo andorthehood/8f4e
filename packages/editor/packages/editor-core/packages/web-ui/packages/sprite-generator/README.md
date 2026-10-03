@@ -1,9 +1,9 @@
 # Sprite Generator Package
 
-This package generates sprite sheets for the 8f4e editor, including fonts, icons, and UI elements.
+This package generates the base sprite sheet for the 8f4e editor: fonts, individual icon glyphs, and solid color fills.
 
-It supplies solid fill-color sprites. Web-ui uses these to compose its background and dot rectangles through
-`@8f4e/sprite-atlas-extender`. Dedicated dot sprites and the repeating background tile are not generated here.
+Web-ui uses these primitives to compose its repeating background, connectors, and switches through
+`@8f4e/sprite-atlas-extender`. This package generates no complete icon layouts or dedicated dot sprites.
 
 ## Sprite atlas output
 
@@ -30,6 +30,13 @@ Aliases and semantic roles that refer to the same source rectangle share one pub
 the grouped `spriteIdentifiers` against the resolver returned for the installed atlas, retain the resulting `spriteIds`,
 and pass those dense ids directly rather than resolving identifiers inside the render loop. Repeat this step whenever
 the atlas is replaced.
+
+The base groups include `fillColors`, text font groups, `iconFillColors` for connector and switch backgrounds,
+`iconGlyphs` for separate brackets and the switch knob, and `feedbackGlyphs` for individually colored stars.
+All icon primitives occupy one character cell. Empty feedback theme colors are omitted and the remaining stars
+receive sequential keys; at least one star is required for the neutral fallback.
+Web-ui adds the completed `background`, `icons`, and `feedbackScale` groups. Its internal `Icon` constants and the
+editor's `EditorSpriteIdLookups` type describe those composites.
 
 ## Font Bitmaps
 

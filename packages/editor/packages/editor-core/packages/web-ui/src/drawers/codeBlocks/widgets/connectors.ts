@@ -1,6 +1,6 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
-import { Icon } from '@8f4e/sprite-generator';
 import type { DrawContext } from '../../../drawContext';
+import { Icon } from '../../../icon-sprites';
 import type { MemoryViews } from '../../../types';
 
 export default function drawConnectors(

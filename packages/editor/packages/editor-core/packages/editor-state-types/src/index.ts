@@ -9,7 +9,13 @@ import type {
 	MemoryAction as CompilerMemoryAction,
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
-import type { FillSpriteColorName, SpriteFont, SpriteId, SpriteIdLookups } from '@8f4e/sprite-generator';
+import type {
+	FillSpriteColorName,
+	SpriteFont,
+	SpriteId,
+	SpriteIdLookup,
+	SpriteIdLookups,
+} from '@8f4e/sprite-generator';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
@@ -358,8 +364,12 @@ export interface Options {
 	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 }
 
-/** Base generated sprites plus the background tile composed by web-ui. */
-export type EditorSpriteIdLookups = SpriteIdLookups & { background: Record<0, SpriteId> };
+/** Base generated sprites plus the background, connector, and switch composites owned by web-ui. */
+export type EditorSpriteIdLookups = SpriteIdLookups & {
+	background: Record<0, SpriteId>;
+	icons: Record<0 | 1 | 2, SpriteId>;
+	feedbackScale: SpriteIdLookup & { readonly 0: SpriteId };
+};
 
 // State interface - complete editor state tree (top-level public API)
 export interface State {

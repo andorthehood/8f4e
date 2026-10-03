@@ -6,9 +6,19 @@ export const TEXT_COLOR_NAMES = Object.keys(defaultColorScheme.text) as Array<ke
 export const FILL_COLOR_NAMES = Object.keys(defaultColorScheme.fill) as Array<keyof ColorScheme['fill']>;
 
 const FONT_COLUMNS = 128;
-const FEEDBACK_SCALE_SLOT_COUNT = 6;
-const FEEDBACK_SCALE_ITEM_COLUMNS = 3;
-const ICON_CHARACTER_WIDTHS = [3, 4, 4] as const;
+export const ICON_BACKGROUND_NAMES = [
+	'inputConnectorBackground',
+	'outputConnectorBackground',
+	'switchBackground',
+] as const;
+export const ICON_GLYPH_NAMES = [
+	'inputLeftBracket',
+	'inputRightBracket',
+	'switchKnob',
+	'outputLeftBracket',
+	'outputRightBracket',
+] as const;
+export const FEEDBACK_GLYPH_COUNT = 6;
 
 function columnsToPixels(columns: number, characterWidth: number): number {
 	return columns * characterWidth;
@@ -47,31 +57,25 @@ function createSection(
 
 export function createAtlasLayout(characterWidth: number, characterHeight: number) {
 	const fontRows = TEXT_COLOR_NAMES.length;
-	const feedbackScaleYRows = fontRows;
-	const fillColorsYRows = feedbackScaleYRows + 1;
-	const iconsYRows = fillColorsYRows + 1;
-
-	const feedbackScaleWidthColumns = FEEDBACK_SCALE_SLOT_COUNT * FEEDBACK_SCALE_ITEM_COLUMNS;
+	const fillColorsYRows = fontRows;
+	const iconPrimitivesYRows = fillColorsYRows + 1;
 	const fillColorsWidthColumns = FILL_COLOR_NAMES.length;
-	const iconsWidthColumns = ICON_CHARACTER_WIDTHS.reduce((sum, width) => sum + width, 0);
+	const iconPrimitivesWidthColumns = ICON_BACKGROUND_NAMES.length + ICON_GLYPH_NAMES.length + FEEDBACK_GLYPH_COUNT;
 	const font = createSection(0, 0, FONT_COLUMNS, fontRows, characterWidth, characterHeight);
-	const feedbackScale = createSection(
+	const fillColors = createSection(0, fillColorsYRows, fillColorsWidthColumns, 1, characterWidth, characterHeight);
+	const iconPrimitives = createSection(
 		0,
-		feedbackScaleYRows,
-		feedbackScaleWidthColumns,
+		iconPrimitivesYRows,
+		iconPrimitivesWidthColumns,
 		1,
 		characterWidth,
 		characterHeight
 	);
-	const fillColors = createSection(0, fillColorsYRows, fillColorsWidthColumns, 1, characterWidth, characterHeight);
-	const icons = createSection(0, iconsYRows, iconsWidthColumns, 1, characterWidth, characterHeight);
-
 	return {
-		canvasWidth: Math.max(font.right, feedbackScale.right, fillColors.right, icons.right),
-		canvasHeight: icons.bottom,
+		canvasWidth: Math.max(font.right, fillColors.right, iconPrimitives.right),
+		canvasHeight: iconPrimitives.bottom,
 		font,
-		feedbackScale,
 		fillColors,
-		icons,
+		iconPrimitives,
 	};
 }

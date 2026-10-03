@@ -19,8 +19,16 @@ const mocks = vi.hoisted(() => {
 			uploadedInstanceBytes: 2000,
 		},
 		setSpriteAtlas: vi.fn(() => ({
-			resolveSprite: (identifier: string | number) =>
-				identifier === 'web-ui:background' ? 999 : Number(identifier) + 100,
+			resolveSprite: (identifier: string | number) => {
+				const index = [
+					'web-ui:background',
+					'web-ui:input',
+					'web-ui:switch-off',
+					'web-ui:switch-on',
+					'web-ui:feedback:0',
+				].indexOf(String(identifier));
+				return index >= 0 ? 999 + index : Number(identifier) + 100;
+			},
 		})),
 		drawSprite: vi.fn(),
 		renderFrame: vi.fn((drawFrame: () => void) => {
@@ -58,9 +66,14 @@ const mocks = vi.hoisted(() => {
 	const cancelAnimationFrame = vi.fn();
 
 	return {
-		extendBackgroundAtlas: vi.fn((data: SpriteData) => ({
+		extendEditorAtlas: vi.fn((data: SpriteData) => ({
 			...data.spriteAtlas,
-			spriteIdentifiers: { ...data.spriteAtlas.spriteIdentifiers, background: { 0: 'web-ui:background' } },
+			spriteIdentifiers: {
+				...data.spriteAtlas.spriteIdentifiers,
+				background: { 0: 'web-ui:background' },
+				icons: { 0: 'web-ui:input', 1: 'web-ui:switch-off', 2: 'web-ui:switch-on' },
+				feedbackScale: { 0: 'web-ui:feedback:0' },
+			},
 		})),
 		engine,
 		overlayTextureLayer,
@@ -100,7 +113,7 @@ vi.mock('glugglugglug', () => ({
 	LineDrawer: mocks.LineDrawer,
 }));
 
-vi.mock('./background-atlas', () => ({ extendBackgroundAtlas: mocks.extendBackgroundAtlas }));
+vi.mock('./sprite-composites', () => ({ extendEditorAtlas: mocks.extendEditorAtlas }));
 
 vi.mock('./drawers/drawBackground', () => ({
 	default: mocks.drawBackground,
@@ -378,13 +391,17 @@ describe('web-ui init', () => {
 		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData(7, 8, 16));
 		expect(state.spriteLookups?.fillColors.background).toBe(107);
 		expect(state.spriteLookups?.background[0]).toBe(999);
-		expect(mocks.extendBackgroundAtlas).toHaveBeenCalledOnce();
+		expect(state.spriteLookups?.icons[0]).toBe(1000);
+		expect(state.spriteLookups?.feedbackScale[0]).toBe(1003);
+		expect(mocks.extendEditorAtlas).toHaveBeenCalledOnce();
 		expect(state.viewport).toEqual(expect.objectContaining({ hGrid: 16, vGrid: 8 }));
 
 		view.loadSpriteAtlas(createSpriteData(42, 10, 18));
 		expect(state.spriteLookups?.fillColors.background).toBe(142);
 		expect(state.spriteLookups?.background[0]).toBe(999);
-		expect(mocks.extendBackgroundAtlas).toHaveBeenCalledTimes(2);
+		expect(state.spriteLookups?.icons[0]).toBe(1000);
+		expect(state.spriteLookups?.feedbackScale[0]).toBe(1003);
+		expect(mocks.extendEditorAtlas).toHaveBeenCalledTimes(2);
 		expect(state.viewport).toEqual(expect.objectContaining({ hGrid: 18, vGrid: 10 }));
 	});
 

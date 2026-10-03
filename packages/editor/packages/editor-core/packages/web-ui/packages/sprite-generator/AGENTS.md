@@ -3,8 +3,9 @@
 ## Package Scope & Layout
 - Path: `packages/editor/packages/editor-core/packages/web-ui/packages/sprite-generator`; source in `src/`, output in `dist/`.
 - Alias: `@8f4e/sprite-generator`.
-- Generate base sprites and solid fill-color sprites here. Web-ui composes background tiles from filled rectangles using the generic
-  `@8f4e/sprite-atlas-extender` package.
+- Generate base fonts, individual icon glyphs, feedback stars, and solid fill-color sprites here.
+- Web-ui composes background tiles, connectors, and switches using the generic `@8f4e/sprite-atlas-extender` package.
+  Keep complete icon layouts and their semantic identifiers in web-ui.
 
 ## Build, Test, Dev
 - From root: `npx nx run @8f4e/sprite-generator:build|test|typecheck`.

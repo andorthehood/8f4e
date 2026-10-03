@@ -2,7 +2,6 @@ import type { EditorSpriteIdLookups, State } from '@8f4e/editor-state-types';
 import { resolveSpriteIds, type SpriteAtlas, type SpriteIdentifierLookups } from '@8f4e/sprite-generator';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import { Engine, LineDrawer, RgbaTextureLayer } from 'glugglugglug';
-import { extendBackgroundAtlas } from './background-atlas';
 import { DrawContext } from './drawContext';
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';
@@ -11,6 +10,7 @@ import drawDialog from './drawers/dialog';
 import drawBackground from './drawers/drawBackground';
 import drawModeOverlay from './drawers/modeOverlay';
 import { createWasmOverlayTextureDrawer, type WasmOverlayTextureOptions } from './drawers/wasmOverlayTexture';
+import { extendEditorAtlas } from './sprite-composites';
 import type { MemoryViews } from './types';
 import { resolveWireColors } from './wire-colors';
 
@@ -80,7 +80,7 @@ export default async function init(
 	let statsSampleStartTime = performance.now();
 
 	function installSpriteAtlas(nextSpriteData: SpriteData): void {
-		const completed = extendBackgroundAtlas(nextSpriteData);
+		const completed = extendEditorAtlas(nextSpriteData);
 		const resolver = engine.setSpriteAtlas(completed.image, completed.lookup);
 		const spriteLookups = resolveSpriteIds(completed.spriteIdentifiers, resolver) as EditorSpriteIdLookups;
 		if (options.onSpriteAtlasResolved) {

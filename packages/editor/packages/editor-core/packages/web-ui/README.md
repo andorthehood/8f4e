@@ -8,11 +8,13 @@ Rendering is backed by `glugglugglug`. Sprite names are resolved to dense numeri
 per-frame drawers submit only positions, sizes, and numeric IDs. WebAssembly RGBA frames are
 drawn below the sprites, while connections are drawn as a line overlay above them.
 
-Before installing each atlas, web-ui composes its 64-by-32-cell background tile using
-`@8f4e/sprite-atlas-extender`. The sprite generator supplies solid fill-color sprites;
-`src/background-atlas.ts` draws the background and alternating 2-by-2-pixel dots as filled rectangles.
-Composition runs once per atlas installation,
-including font or theme replacements, and the finished tile is drawn through the normal sprite API.
+Before installing each atlas, `src/sprite-composites.ts` bakes the background tile, input connector, switch states,
+and colored output connectors in one pass using `@8f4e/sprite-atlas-extender`. The sprite generator supplies
+individual glyphs and solid fill-color sprites. `src/background-atlas.ts` defines the 64-by-32-cell background
+with alternating 2-by-2-pixel dot rectangles; `src/icon-sprites.ts` assembles the connector and switch glyphs
+over their theme backgrounds. Composition runs once per atlas installation, including font or theme replacements.
+Completed `background`, `icons`, and `feedbackScale` groups are resolved to dense IDs alongside the base sprites,
+then drawn through the normal sprite API.
 
 ## API
 
