@@ -1,12 +1,8 @@
-import type { State } from '@8f4e/editor-state-types';
-import {
-	resolveSpriteIds,
-	type SpriteAtlas,
-	type SpriteIdentifierLookups,
-	type SpriteIdLookups,
-} from '@8f4e/sprite-generator';
+import type { EditorSpriteIdLookups, State } from '@8f4e/editor-state-types';
+import { resolveSpriteIds, type SpriteAtlas, type SpriteIdentifierLookups } from '@8f4e/sprite-generator';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import { Engine, LineDrawer, RgbaTextureLayer } from 'glugglugglug';
+import { extendBackgroundAtlas } from './background-atlas';
 import { DrawContext } from './drawContext';
 import drawCodeBlocks from './drawers/codeBlocks';
 import drawConnections from './drawers/codeBlocks/widgets/connections';
@@ -40,7 +36,7 @@ export interface RenderStats {
 export interface WebUiOptions {
 	onRenderStats?: (stats: RenderStats) => void;
 	/** Receives ids resolved against each installed atlas before rendering resumes. */
-	onSpriteAtlasResolved?: (spriteLookups: SpriteIdLookups, spriteData: SpriteData) => void;
+	onSpriteAtlasResolved?: (spriteLookups: EditorSpriteIdLookups, spriteData: SpriteData) => void;
 	renderStatsIntervalFrames?: number;
 	overlayTexture?: WasmOverlayTextureOptions;
 	getCodeBuffer?: () => Uint8Array;
@@ -84,8 +80,9 @@ export default async function init(
 	let statsSampleStartTime = performance.now();
 
 	function installSpriteAtlas(nextSpriteData: SpriteData): void {
-		const resolver = engine.setSpriteAtlas(nextSpriteData.spriteAtlas.image, nextSpriteData.spriteAtlas.lookup);
-		const spriteLookups = resolveSpriteIds(nextSpriteData.spriteAtlas.spriteIdentifiers, resolver) as SpriteIdLookups;
+		const completed = extendBackgroundAtlas(nextSpriteData);
+		const resolver = engine.setSpriteAtlas(completed.image, completed.lookup);
+		const spriteLookups = resolveSpriteIds(completed.spriteIdentifiers, resolver) as EditorSpriteIdLookups;
 		if (options.onSpriteAtlasResolved) {
 			options.onSpriteAtlasResolved(spriteLookups, nextSpriteData);
 		} else {

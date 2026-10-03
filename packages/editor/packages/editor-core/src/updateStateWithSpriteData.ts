@@ -1,5 +1,4 @@
-import type { State } from '@8f4e/editor-state-types';
-import type { SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { EditorSpriteIdLookups, State } from '@8f4e/editor-state-types';
 import type { SpriteData } from '@8f4e/web-ui';
 
 /**
@@ -12,7 +11,11 @@ import type { SpriteData } from '@8f4e/web-ui';
  * @param spriteData - Generated sprite data containing character dimensions.
  * @param spriteLookups - Dense ids resolved from the atlas installed by the web UI.
  */
-export function updateStateWithSpriteData(state: State, spriteData: SpriteData, spriteLookups: SpriteIdLookups): void {
+export function updateStateWithSpriteData(
+	state: State,
+	spriteData: SpriteData,
+	spriteLookups: EditorSpriteIdLookups
+): void {
 	state.spriteLookups = spriteLookups;
 	state.viewport.hGrid = spriteData.characterHeight;
 	state.viewport.vGrid = spriteData.characterWidth;

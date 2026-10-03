@@ -2,6 +2,9 @@
 
 This package generates sprite sheets for the 8f4e editor, including fonts, icons, and UI elements.
 
+It supplies solid fill-color sprites. Web-ui uses these to compose its background and dot rectangles through
+`@8f4e/sprite-atlas-extender`. Dedicated dot sprites and the repeating background tile are not generated here.
+
 ## Sprite atlas output
 
 The generator returns a `spriteAtlas` containing the generated `OffscreenCanvas`, one flat deduplicated lookup, and

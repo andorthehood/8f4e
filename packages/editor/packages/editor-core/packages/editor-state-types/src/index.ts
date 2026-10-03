@@ -9,7 +9,7 @@ import type {
 	MemoryAction as CompilerMemoryAction,
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
-import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { FillSpriteColorName, SpriteFont, SpriteId, SpriteIdLookups } from '@8f4e/sprite-generator';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
@@ -358,12 +358,15 @@ export interface Options {
 	editorConfigSchemaContributions?: EditorConfigSchemaContributionRegistry;
 }
 
+/** Base generated sprites plus the background tile composed by web-ui. */
+export type EditorSpriteIdLookups = SpriteIdLookups & { background: Record<0, SpriteId> };
+
 // State interface - complete editor state tree (top-level public API)
 export interface State {
 	compiler: Compiler;
 	codeBlockRendering: CodeBlockRendering;
 	contextMenu: ContextMenu;
-	spriteLookups?: SpriteIdLookups;
+	spriteLookups?: EditorSpriteIdLookups;
 	/** Arbitrary key/value records rendered by `; @info <id>` directives. */
 	info: InfoState;
 	tooltip: TooltipState;

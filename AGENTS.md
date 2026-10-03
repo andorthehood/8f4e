@@ -8,6 +8,8 @@
 - Packages (Nx workspaces): `packages/*` plus nested libs (e.g., `editor`, `compiler`,
   `editor/packages/editor-core/packages/web-ui/packages/glugglugglug`). Each builds to its own `dist/` directory
   under the package root.
+- `@8f4e/sprite-atlas-extender` is a generic library under web-ui's `packages/`. Web-ui defines background composites;
+  sprite-generator supplies their base sprites. The glugglugglug engine API is unchanged by atlas extension.
 - Builds: the website outputs to `packages/editor/packages/editor-website/dist/`. Package bundles are consumed via
   aliases like `@8f4e/editor-default` and `@8f4e/editor-core`.
 - Docs and assets: `docs/`, selected files copied via Vite static-copy.
@@ -28,6 +30,7 @@
 - `npx nx run @8f4e/8f4e-website:build`: Builds the example product website and its editor dependencies.
 - `npx nx run-many --target=build --all`: Build all packages/libs.
 - `npx nx run-many --target=test --all`: Run Vitest across all packages.
+- `npx nx run @8f4e/sprite-atlas-extender:test:browser`: Verify baked atlas pixels, blending, and restoration in Chromium.
 - `npx nx run @8f4e/examples:test`: Run CLI example-project snapshot tests, then embedded `#test` modules in
   example `.8f4em` files through the CLI test runner.
 - `npx nx run-many --target=typecheck --all`: Type-check all packages; also run on pre-commit via Husky/lint-staged.
