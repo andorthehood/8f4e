@@ -1,6 +1,5 @@
 import type { SpriteCoordinates, SpriteId, SpriteIdentifier } from 'glugglugglug';
 import { createAtlasLayout } from './atlasLayout.ts';
-import generateBackground, { generateLookup as generateLookupForBackground } from './background.ts';
 import defaultColorScheme from './defaultColorScheme.ts';
 import generateFeedbackScale, { generateLookup as generateLookupForFeedbackScale } from './feedbackScale.ts';
 import type { FillSpriteColorName } from './fillColors.ts';
@@ -305,7 +304,6 @@ async function loadFont(font: Font): Promise<FontData> {
 
 interface AtlasCoordinates extends FontLookups {
 	fillColors: Record<FillSpriteColorName, SpriteCoordinates>;
-	background: Record<0, SpriteCoordinates>;
 	icons: Record<IconValue, SpriteCoordinates>;
 	feedbackScale: Partial<Record<number, SpriteCoordinates>>;
 }
@@ -363,7 +361,6 @@ export default async function generateSprite(config: Config): Promise<{
 		...generateFillColors(characterWidth, characterHeight, colorScheme.fill),
 		...generateFeedbackScale(asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 		...generateFont(asciiBitmap, characterWidth, characterHeight, colorScheme.text),
-		...generateBackground(glyphsBitmap, characterWidth, characterHeight, colorScheme.fill),
 		...generateIcons(asciiBitmap, glyphsBitmap, characterWidth, characterHeight, colorScheme.icons),
 	];
 
@@ -397,7 +394,6 @@ export default async function generateSprite(config: Config): Promise<{
 		fillColors: generateLookupForFillColors(characterWidth, characterHeight),
 		...generateLookupsForFonts(characterWidth, characterHeight, colorScheme.text),
 		feedbackScale: generateLookupForFeedbackScale(characterWidth, characterHeight, colorScheme.icons),
-		background: generateLookupForBackground(characterWidth, characterHeight),
 		icons: generateLookupForIcons(characterWidth, characterHeight),
 	};
 	const rawSpriteAtlas = createSpriteAtlas(canvas, atlasCoordinates);

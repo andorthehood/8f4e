@@ -2,6 +2,7 @@ import { createMockState } from '@8f4e/editor-state-testing';
 import { MemoryTypes, type PlannedMemoryDeclaration } from '@8f4e/language-spec';
 import type { WebUiRenderDataSource } from '@8f4e/web-ui-render-projection';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type { SpriteData } from './index';
 
 const renderDataSnapshot = { codeBlocks: new Map() };
 const renderData: WebUiRenderDataSource = { getSnapshot: () => renderDataSnapshot };
@@ -17,7 +18,10 @@ const mocks = vi.hoisted(() => {
 			spriteCount: 100,
 			uploadedInstanceBytes: 2000,
 		},
-		setSpriteAtlas: vi.fn(() => ({ resolveSprite: (identifier: string | number) => Number(identifier) + 100 })),
+		setSpriteAtlas: vi.fn(() => ({
+			resolveSprite: (identifier: string | number) =>
+				identifier === 'web-ui:background' ? 999 : Number(identifier) + 100,
+		})),
 		drawSprite: vi.fn(),
 		renderFrame: vi.fn((drawFrame: () => void) => {
 			for (const hook of engine.hooks.preDraw) hook();
@@ -54,6 +58,10 @@ const mocks = vi.hoisted(() => {
 	const cancelAnimationFrame = vi.fn();
 
 	return {
+		extendBackgroundAtlas: vi.fn((data: SpriteData) => ({
+			...data.spriteAtlas,
+			spriteIdentifiers: { ...data.spriteAtlas.spriteIdentifiers, background: { 0: 'web-ui:background' } },
+		})),
 		engine,
 		overlayTextureLayer,
 		lines,
@@ -91,6 +99,8 @@ vi.mock('glugglugglug', () => ({
 	RgbaTextureLayer: mocks.RgbaTextureLayer,
 	LineDrawer: mocks.LineDrawer,
 }));
+
+vi.mock('./background-atlas', () => ({ extendBackgroundAtlas: mocks.extendBackgroundAtlas }));
 
 vi.mock('./drawers/drawBackground', () => ({
 	default: mocks.drawBackground,
@@ -367,10 +377,14 @@ describe('web-ui init', () => {
 
 		const view = await init(state, renderData, {} as HTMLCanvasElement, memoryViews, createSpriteData(7, 8, 16));
 		expect(state.spriteLookups?.fillColors.background).toBe(107);
+		expect(state.spriteLookups?.background[0]).toBe(999);
+		expect(mocks.extendBackgroundAtlas).toHaveBeenCalledOnce();
 		expect(state.viewport).toEqual(expect.objectContaining({ hGrid: 16, vGrid: 8 }));
 
 		view.loadSpriteAtlas(createSpriteData(42, 10, 18));
 		expect(state.spriteLookups?.fillColors.background).toBe(142);
+		expect(state.spriteLookups?.background[0]).toBe(999);
+		expect(mocks.extendBackgroundAtlas).toHaveBeenCalledTimes(2);
 		expect(state.viewport).toEqual(expect.objectContaining({ hGrid: 18, vGrid: 10 }));
 	});
 
