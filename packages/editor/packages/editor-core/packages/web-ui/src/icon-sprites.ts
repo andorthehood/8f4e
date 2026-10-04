@@ -1,4 +1,5 @@
 import type { CompositeSprite } from '@8f4e/sprite-atlas-extender';
+import { FontGlyph } from '@8f4e/sprite-generator';
 import type { SpriteIdentifier } from 'glugglugglug';
 import type { SpriteData } from './index';
 
@@ -8,9 +9,14 @@ export const Icon = {
 	SWITCH_ON: 2,
 } as const;
 
-/** Defines editor icons using only single-cell glyphs and fills from the source atlas. */
+/** Defines editor icons using characters from the source fonts over solid fills. */
 export function createIconSprites({ characterWidth, characterHeight, spriteAtlas }: SpriteData) {
-	const { iconFillColors: fills, iconGlyphs: glyphs, feedbackGlyphs } = spriteAtlas.spriteIdentifiers;
+	const {
+		iconFillColors: fills,
+		fontInputConnector: inputFont,
+		fontOutputConnector: outputFont,
+		feedbackGlyphs,
+	} = spriteAtlas.spriteIdentifiers;
 	const icons = {
 		[Icon.INPUT]: 'web-ui:input',
 		[Icon.SWITCH_OFF]: 'web-ui:switch-off',
@@ -36,18 +42,18 @@ export function createIconSprites({ characterWidth, characterHeight, spriteAtlas
 	}
 	const composites = [
 		defineSprite(icons[Icon.INPUT], 3, fills.inputConnectorBackground, [
-			[0, glyphs.inputLeftBracket],
-			[2, glyphs.inputRightBracket],
+			[0, inputFont['[']!],
+			[2, inputFont[']']!],
 		]),
 		defineSprite(icons[Icon.SWITCH_OFF], 4, fills.switchBackground, [
-			[0, glyphs.inputLeftBracket],
-			[1, glyphs.switchKnob],
-			[3, glyphs.inputRightBracket],
+			[0, inputFont['[']!],
+			[1, inputFont[FontGlyph.SWITCH_KNOB]!],
+			[3, inputFont[']']!],
 		]),
 		defineSprite(icons[Icon.SWITCH_ON], 4, fills.switchBackground, [
-			[0, glyphs.inputLeftBracket],
-			[2, glyphs.switchKnob],
-			[3, glyphs.inputRightBracket],
+			[0, inputFont['[']!],
+			[2, inputFont[FontGlyph.SWITCH_KNOB]!],
+			[3, inputFont[']']!],
 		]),
 	];
 	const feedbackScale = Object.fromEntries(
@@ -56,9 +62,9 @@ export function createIconSprites({ characterWidth, characterHeight, spriteAtlas
 			const id = `web-ui:feedback:${index}`;
 			composites.push(
 				defineSprite(id, 3, fills.outputConnectorBackground, [
-					[0, glyphs.outputLeftBracket],
+					[0, outputFont['[']!],
 					[1, identifier],
-					[2, glyphs.outputRightBracket],
+					[2, outputFont[']']!],
 				])
 			);
 			return [[index, id]];

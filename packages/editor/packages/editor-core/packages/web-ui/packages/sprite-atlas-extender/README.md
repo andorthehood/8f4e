@@ -49,7 +49,7 @@ engine.render(() => engine.drawSprite(40, 80, panel));
 
 The package defines no editor sprites. Consumers supply composition definitions and keep their own semantic groups.
 Web-ui uses this package to build its repeating background tile from fill-color rectangles and its connectors and
-switches from individual glyphs and solid fills. All editor composition definitions remain in web-ui.
+switches from font characters and solid fills. All editor composition definitions remain in web-ui.
 
 ## Validation
 

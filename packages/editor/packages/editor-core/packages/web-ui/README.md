@@ -10,9 +10,10 @@ drawn below the sprites, while connections are drawn as a line overlay above the
 
 Before installing each atlas, `src/sprite-composites.ts` bakes the background tile, input connector, switch states,
 and colored output connectors in one pass using `@8f4e/sprite-atlas-extender`. The sprite generator supplies
-individual glyphs and solid fill-color sprites. `src/background-atlas.ts` defines the 64-by-32-cell background
+colored fonts, feedback stars, and solid fill-color sprites. `src/background-atlas.ts` defines the 64-by-32-cell background
 with alternating 2-by-2-pixel dot rectangles; `src/icon-sprites.ts` assembles the connector and switch glyphs
-over their theme backgrounds. Composition runs once per atlas installation, including font or theme replacements.
+over their theme backgrounds. Brackets and the switch knob come from `fontInputConnector` and `fontOutputConnector`,
+which share the normal font rows when colors match. Composition runs once per atlas installation, including font or theme replacements.
 Completed `background`, `icons`, and `feedbackScale` groups are resolved to dense IDs alongside the base sprites,
 then drawn through the normal sprite API.
 

@@ -1,6 +1,6 @@
 # Sprite Generator Package
 
-This package generates the base sprite sheet for the 8f4e editor: fonts, individual icon glyphs, and solid color fills.
+This package generates the base sprite sheet for the 8f4e editor: colored pixel fonts, feedback stars, and solid color fills.
 
 Web-ui uses these primitives to compose its repeating background, connectors, and switches through
 `@8f4e/sprite-atlas-extender`. This package generates no complete icon layouts or dedicated dot sprites.
@@ -31,10 +31,15 @@ the grouped `spriteIdentifiers` against the resolver returned for the installed 
 and pass those dense ids directly rather than resolving identifiers inside the render loop. Repeat this step whenever
 the atlas is replaced.
 
-The base groups include `fillColors`, text font groups, `iconFillColors` for connector and switch backgrounds,
-`iconGlyphs` for separate brackets and the switch knob, and `feedbackGlyphs` for individually colored stars.
-All icon primitives occupy one character cell. Empty feedback theme colors are omitted and the remaining stars
-receive sequential keys; at least one star is required for the neutral fallback.
+The base groups include `fillColors`, colored font groups, `iconFillColors` for connector and switch backgrounds,
+and `feedbackGlyphs` for individually colored stars. Fonts contain ASCII characters and the selected font's custom
+glyph set. `fontInputConnector` and `fontOutputConnector` use the connector theme colors and share rows with text
+fonts when colors match. Composite brackets use `font['[']` and `font[']']`; the switch knob uses
+`font[FontGlyph.SWITCH_KNOB]`, where `FontGlyph` is exported by this package. Custom glyphs have private-use Unicode
+character codes and can be accessed by either the character or its numeric code. They are not generated as separate
+icon sprites.
+Empty feedback theme colors are omitted and the remaining stars receive sequential keys; at least one star is
+required so the first available feedback sprite can serve as the fallback.
 Web-ui adds the completed `background`, `icons`, and `feedbackScale` groups. Its internal `Icon` constants and the
 editor's `EditorSpriteIdLookups` type describe those composites.
 

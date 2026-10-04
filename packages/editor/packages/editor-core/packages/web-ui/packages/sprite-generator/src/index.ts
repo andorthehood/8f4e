@@ -23,6 +23,7 @@ import { type ColorScheme, type ColorSchemeOverrides, Command, type Config, FONT
 export type { SpriteId } from 'glugglugglug';
 export { default as defaultColorScheme } from './defaultColorScheme.ts';
 export type { FillSpriteColorName } from './fillColors.ts';
+export { FontGlyph } from './font.ts';
 export type {
 	ResolvedSpriteIds,
 	SpriteAtlas,
@@ -310,7 +311,7 @@ interface AtlasCoordinates extends FontLookups, IconPrimitiveLookups {
 /** Validated fixed-cell font whose fallback glyph is guaranteed to exist. */
 export type SpriteFont = SpriteIdLookup & { readonly 63: SpriteId };
 
-/** Base feedback stars include a fallback glyph for composing the neutral connector. */
+/** Base feedback stars include a fallback glyph for output connector composition. */
 type SpriteFeedbackGlyphs = SpriteIdLookup & { readonly 0: SpriteId };
 
 type NonFontAtlasCoordinates = Omit<AtlasCoordinates, keyof FontLookups>;
@@ -350,6 +351,11 @@ export default async function generateSprite(config: Config): Promise<{
 	const layout = createAtlasLayout(characterWidth, characterHeight);
 	const canvas = new OffscreenCanvas(layout.canvasWidth, layout.canvasHeight);
 	const colorScheme = resolveColorScheme(config.colorScheme);
+	const fontColors = {
+		...colorScheme.text,
+		inputConnector: colorScheme.icons.inputConnector,
+		outputConnector: colorScheme.icons.outputConnector,
+	};
 
 	const ctx = canvas.getContext('2d', {
 		alpha: true,
@@ -358,8 +364,8 @@ export default async function generateSprite(config: Config): Promise<{
 
 	const commands = [
 		...generateFillColors(characterWidth, characterHeight, colorScheme.fill),
-		...generateFont(asciiBitmap, characterWidth, characterHeight, colorScheme.text),
-		...generateIconPrimitives(asciiBitmap, glyphsBitmap, characterWidth, characterHeight, colorScheme.icons),
+		...generateFont(asciiBitmap, glyphsBitmap, characterWidth, characterHeight, fontColors),
+		...generateIconPrimitives(asciiBitmap, characterWidth, characterHeight, colorScheme.icons),
 	];
 
 	commands.forEach(([command, ...params]) => {
@@ -390,7 +396,7 @@ export default async function generateSprite(config: Config): Promise<{
 
 	const atlasCoordinates: AtlasCoordinates = {
 		fillColors: generateLookupForFillColors(characterWidth, characterHeight),
-		...generateLookupsForFonts(characterWidth, characterHeight, colorScheme.text),
+		...generateLookupsForFonts(characterWidth, characterHeight, fontColors),
 		...generateLookupForIconPrimitives(characterWidth, characterHeight, colorScheme.icons),
 	};
 	const rawSpriteAtlas = createSpriteAtlas(canvas, atlasCoordinates);

@@ -1,8 +1,20 @@
 import { describe, expect, it } from 'vitest';
-import generateFonts, { buildFontLayout, drawCharacter, drawCharacterMatrix, generateLookups } from '../src/font';
+import generateFonts, {
+	buildFontLayout,
+	drawCharacter,
+	drawCharacterMatrix,
+	FontGlyph,
+	generateLookups,
+} from '../src/font';
 import { Command } from '../src/types';
 import { characterDimensions6x10, characterDimensions8x16, minimalColorScheme } from './utils/testFixtures';
 import { createMockBitmap, findAllCommands } from './utils/testHelpers';
+
+const fontColors = {
+	...minimalColorScheme.text,
+	inputConnector: minimalColorScheme.icons.inputConnector,
+	outputConnector: minimalColorScheme.icons.outputConnector,
+};
 
 describe('font module', () => {
 	describe('drawCharacter function', () => {
@@ -145,9 +157,10 @@ describe('font module', () => {
 		it('should generate drawing commands for 8x16 characters', () => {
 			const commands = generateFonts(
 				mockFont,
+				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.text
+				fontColors
 			);
 
 			// Should start with reset transform
@@ -161,9 +174,10 @@ describe('font module', () => {
 		it('should generate drawing commands for 6x10 characters', () => {
 			const commands = generateFonts(
 				mockFont,
+				mockFont,
 				characterDimensions6x10.width,
 				characterDimensions6x10.height,
-				minimalColorScheme.text
+				fontColors
 			);
 
 			// Should start with reset transform
@@ -177,29 +191,31 @@ describe('font module', () => {
 		it('should generate fill color commands for all text colors', () => {
 			const commands = generateFonts(
 				mockFont,
+				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.text
+				fontColors
 			);
 
 			const fillColorCommands = findAllCommands(commands, Command.FILL_COLOR);
 			const colorValues = fillColorCommands.map(cmd => cmd[1]);
 
 			// Should include all text colors from color scheme
-			expect(colorValues).toContain(minimalColorScheme.text.lineNumber);
-			expect(colorValues).toContain(minimalColorScheme.text.entryName);
-			expect(colorValues).toContain(minimalColorScheme.text.instruction);
-			expect(colorValues).toContain(minimalColorScheme.text.code);
-			expect(colorValues).toContain(minimalColorScheme.text.numbers);
-			expect(colorValues).toContain(minimalColorScheme.text.menuItemText);
+			expect(colorValues).toContain(fontColors.lineNumber);
+			expect(colorValues).toContain(fontColors.entryName);
+			expect(colorValues).toContain(fontColors.instruction);
+			expect(colorValues).toContain(fontColors.code);
+			expect(colorValues).toContain(fontColors.numbers);
+			expect(colorValues).toContain(fontColors.menuItemText);
 		});
 
 		it('should generate translate commands for positioning fonts', () => {
 			const commands = generateFonts(
 				mockFont,
+				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.text
+				fontColors
 			);
 
 			const translateCommands = findAllCommands(commands, Command.TRANSLATE);
@@ -209,8 +225,8 @@ describe('font module', () => {
 		});
 
 		it('should handle different character dimensions correctly', () => {
-			const commands8x16 = generateFonts(mockFont, 8, 16, minimalColorScheme.text);
-			const commands6x10 = generateFonts(mockFont, 6, 10, minimalColorScheme.text);
+			const commands8x16 = generateFonts(mockFont, mockFont, 8, 16, fontColors);
+			const commands6x10 = generateFonts(mockFont, mockFont, 6, 10, fontColors);
 
 			// Both should start with reset transform
 			expect(commands8x16[0]).toEqual([Command.RESET_TRANSFORM]);
@@ -226,29 +242,31 @@ describe('font module', () => {
 		it('should use correct colors from color scheme', () => {
 			const commands = generateFonts(
 				mockFont,
+				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.text
+				fontColors
 			);
 
 			const fillColorCommands = findAllCommands(commands, Command.FILL_COLOR);
 			const colorValues = fillColorCommands.map(cmd => cmd[1]);
 
 			// Check all text colors are present
-			Object.values(minimalColorScheme.text).forEach(color => {
+			Object.values(fontColors).forEach(color => {
 				expect(colorValues).toContain(color);
 			});
 		});
 		it('should render only one row per unique color (deduplicated)', () => {
 			const commands = generateFonts(
 				mockFont,
+				mockFont,
 				characterDimensions8x16.width,
 				characterDimensions8x16.height,
-				minimalColorScheme.text
+				fontColors
 			);
 
 			const fillColorCommands = findAllCommands(commands, Command.FILL_COLOR);
-			const uniqueColorValues = [...new Set(Object.values(minimalColorScheme.text))];
+			const uniqueColorValues = [...new Set(Object.values(fontColors))];
 
 			// Should produce exactly one fill color command per unique color, not one per role
 			expect(fillColorCommands.length).toBe(uniqueColorValues.length);
@@ -258,7 +276,7 @@ describe('font module', () => {
 	describe('buildFontLayout function', () => {
 		it('should assign the same row index to roles with identical colors', () => {
 			// minimalColorScheme has code/errorMessage/menuItemText/dialogText/dialogTitle all as '#ffffff'
-			const { rowsByRole } = buildFontLayout(minimalColorScheme.text);
+			const { rowsByRole } = buildFontLayout(fontColors);
 			expect(rowsByRole.errorMessage).toBe(rowsByRole.code);
 			expect(rowsByRole.menuItemText).toBe(rowsByRole.code);
 			expect(rowsByRole.dialogText).toBe(rowsByRole.code);
@@ -266,7 +284,7 @@ describe('font module', () => {
 		});
 
 		it('should assign different row indices to roles with different colors', () => {
-			const { rowsByRole } = buildFontLayout(minimalColorScheme.text);
+			const { rowsByRole } = buildFontLayout(fontColors);
 			// lineNumber (#333333), instruction (#887ecb), code (#ffffff) are all distinct
 			expect(rowsByRole.lineNumber).not.toBe(rowsByRole.instruction);
 			expect(rowsByRole.instruction).not.toBe(rowsByRole.code);
@@ -274,20 +292,20 @@ describe('font module', () => {
 		});
 
 		it('should produce only as many unique rows as there are distinct colors', () => {
-			const { uniqueRows } = buildFontLayout(minimalColorScheme.text);
+			const { uniqueRows } = buildFontLayout(fontColors);
 			// minimalColorScheme has several text roles sharing the same colors.
-			const uniqueColorValues = [...new Set(Object.values(minimalColorScheme.text))];
+			const uniqueColorValues = [...new Set(Object.values(fontColors))];
 			expect(uniqueRows.length).toBe(uniqueColorValues.length);
 		});
 
-		it('should order unique rows by first appearance of each color in TEXT_COLOR_NAMES', () => {
-			const { uniqueRows } = buildFontLayout(minimalColorScheme.text);
+		it('should order unique rows by first appearance of each color in FONT_COLOR_NAMES', () => {
+			const { uniqueRows } = buildFontLayout(fontColors);
 			// First role is 'lineNumber' with '#333333', so row 0 should be that color
-			expect(uniqueRows[0].color).toBe(minimalColorScheme.text.lineNumber);
+			expect(uniqueRows[0].color).toBe(fontColors.lineNumber);
 		});
 
 		it('should include all roles for each unique color in the roles array', () => {
-			const { uniqueRows } = buildFontLayout(minimalColorScheme.text);
+			const { uniqueRows } = buildFontLayout(fontColors);
 			const whiteRow = uniqueRows.find(row => row.color === '#ffffff');
 			expect(whiteRow).toBeDefined();
 			expect(whiteRow!.roles).toContain('code');
@@ -299,12 +317,36 @@ describe('font module', () => {
 	});
 
 	describe('generateLookups function', () => {
+		it('shares complete font rows between matching text and connector colors', () => {
+			const lookups = generateLookups(8, 16, fontColors);
+			expect(lookups.fontInputConnector['[']).toEqual(lookups.fontCode['[']);
+			expect(lookups.fontOutputConnector[']']).toEqual(lookups.fontCode[']']);
+			for (const font of Object.values(lookups)) {
+				expect(font[FontGlyph.SWITCH_KNOB]).toBeDefined();
+				expect(font[FontGlyph.SWITCH_KNOB]).toEqual(font[FontGlyph.SWITCH_KNOB.charCodeAt(0)]);
+			}
+			expect(lookups.fontInputConnector[FontGlyph.SWITCH_KNOB]).toEqual({
+				x: (128 + 6) * 8,
+				y: lookups.fontCode['[']!.y,
+				spriteWidth: 8,
+				spriteHeight: 16,
+			});
+			expect(lookups.fontCode[6]).not.toEqual(lookups.fontCode[FontGlyph.SWITCH_KNOB]);
+		});
+
+		it('assigns separate font rows when connector theme colors differ', () => {
+			const lookups = generateLookups(6, 10, {
+				...fontColors,
+				inputConnector: '#123456',
+				outputConnector: '#fedcba',
+			});
+			expect(lookups.fontInputConnector['[']!.y).not.toBe(lookups.fontCode['[']!.y);
+			expect(lookups.fontOutputConnector[']']!.y).not.toBe(lookups.fontInputConnector[']']!.y);
+			expect(lookups.fontInputConnector[FontGlyph.SWITCH_KNOB]).toMatchObject({ spriteWidth: 6, spriteHeight: 10 });
+		});
+
 		it('should generate correct lookups for 8x16 characters', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height,
-				minimalColorScheme.text
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height, fontColors);
 
 			// Should have font lookups for all text color types
 			expect(lookups.fontLineNumber).toBeDefined();
@@ -331,11 +373,7 @@ describe('font module', () => {
 		});
 
 		it('should generate correct lookups for 6x10 characters', () => {
-			const lookups = generateLookups(
-				characterDimensions6x10.width,
-				characterDimensions6x10.height,
-				minimalColorScheme.text
-			);
+			const lookups = generateLookups(characterDimensions6x10.width, characterDimensions6x10.height, fontColors);
 
 			// Should have same font lookup types
 			expect(lookups.fontLineNumber).toBeDefined();
@@ -345,11 +383,7 @@ describe('font module', () => {
 		});
 
 		it('should generate correct sprite coordinates for ASCII characters', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height,
-				minimalColorScheme.text
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height, fontColors);
 
 			// Check character 'A' (ASCII 65) in first font
 			const charA = lookups.fontLineNumber[65];
@@ -365,11 +399,7 @@ describe('font module', () => {
 		});
 
 		it('should generate correct sprite coordinates for string characters', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height,
-				minimalColorScheme.text
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height, fontColors);
 
 			// Check character 'A' by string and by ASCII code
 			const charAByString = lookups.fontLineNumber['A'];
@@ -381,11 +411,7 @@ describe('font module', () => {
 		});
 
 		it('should generate lookups with different Y positions for roles with different colors', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height,
-				minimalColorScheme.text
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height, fontColors);
 
 			// lineNumber, instruction, and code all have distinct colors in the test fixture
 			const charALineNumber = lookups.fontLineNumber['A'];
@@ -404,11 +430,7 @@ describe('font module', () => {
 
 		it('should share Y position for roles with the same color', () => {
 			// In minimalColorScheme: code, errorMessage, menuItemText, dialogText, dialogTitle all use '#ffffff'
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height,
-				minimalColorScheme.text
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height, fontColors);
 
 			const charACode = lookups.fontCode['A'];
 			const charAErrorMessage = lookups.fontErrorMessage['A'];
@@ -435,11 +457,7 @@ describe('font module', () => {
 		});
 
 		it('should handle all ASCII characters', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height,
-				minimalColorScheme.text
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height, fontColors);
 
 			// Check space character (ASCII 32)
 			expect(lookups.fontCode[32]).toBeDefined();
@@ -453,11 +471,7 @@ describe('font module', () => {
 		});
 
 		it('should generate coordinates with correct character spacing', () => {
-			const lookups = generateLookups(
-				characterDimensions8x16.width,
-				characterDimensions8x16.height,
-				minimalColorScheme.text
-			);
+			const lookups = generateLookups(characterDimensions8x16.width, characterDimensions8x16.height, fontColors);
 
 			// Check that characters are spaced by character width
 			const charA = lookups.fontCode['A']; // ASCII 65

@@ -1,22 +1,20 @@
 import defaultColorScheme from './defaultColorScheme.ts';
+import Glyph from './fonts/types.ts';
 
 import type { ColorScheme } from './types.ts';
 
 export const TEXT_COLOR_NAMES = Object.keys(defaultColorScheme.text) as Array<keyof ColorScheme['text']>;
+export const FONT_COLOR_NAMES = [...TEXT_COLOR_NAMES, 'inputConnector', 'outputConnector'] as const;
 export const FILL_COLOR_NAMES = Object.keys(defaultColorScheme.fill) as Array<keyof ColorScheme['fill']>;
 
-const FONT_COLUMNS = 128;
+export const ASCII_CHARACTER_COUNT = 128;
+export const CUSTOM_GLYPH_COUNT = Math.max(...Object.values(Glyph)) + 1;
+// Keep column boundaries exactly representable in normalized texture coordinates when stretching fills.
+const FONT_COLUMNS = 2 ** Math.ceil(Math.log2(ASCII_CHARACTER_COUNT + CUSTOM_GLYPH_COUNT));
 export const ICON_BACKGROUND_NAMES = [
 	'inputConnectorBackground',
 	'outputConnectorBackground',
 	'switchBackground',
-] as const;
-export const ICON_GLYPH_NAMES = [
-	'inputLeftBracket',
-	'inputRightBracket',
-	'switchKnob',
-	'outputLeftBracket',
-	'outputRightBracket',
 ] as const;
 export const FEEDBACK_GLYPH_COUNT = 6;
 
@@ -56,11 +54,11 @@ function createSection(
 }
 
 export function createAtlasLayout(characterWidth: number, characterHeight: number) {
-	const fontRows = TEXT_COLOR_NAMES.length;
+	const fontRows = FONT_COLOR_NAMES.length;
 	const fillColorsYRows = fontRows;
 	const iconPrimitivesYRows = fillColorsYRows + 1;
 	const fillColorsWidthColumns = FILL_COLOR_NAMES.length;
-	const iconPrimitivesWidthColumns = ICON_BACKGROUND_NAMES.length + ICON_GLYPH_NAMES.length + FEEDBACK_GLYPH_COUNT;
+	const iconPrimitivesWidthColumns = ICON_BACKGROUND_NAMES.length + FEEDBACK_GLYPH_COUNT;
 	const font = createSection(0, 0, FONT_COLUMNS, fontRows, characterWidth, characterHeight);
 	const fillColors = createSection(0, fillColorsYRows, fillColorsWidthColumns, 1, characterWidth, characterHeight);
 	const iconPrimitives = createSection(

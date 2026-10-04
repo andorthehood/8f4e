@@ -1,30 +1,21 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import generateIconPrimitives, { generateLookup, getFeedbackGlyphColors } from '../src/icon-primitives';
-import generateSprite, { defaultColorScheme } from '../src/index';
+import generateSprite, { defaultColorScheme, FontGlyph } from '../src/index';
 import { Command } from '../src/types';
 
 afterEach(() => vi.unstubAllGlobals());
 
 describe('icon primitives', () => {
-	it('draws only single-cell fills and individual font glyphs', () => {
+	it('draws only background fills and feedback stars', () => {
 		const ascii = Array(128 * 16).fill(0);
-		const glyphs = Array(19 * 16).fill(0);
 		ascii['['.charCodeAt(0) * 16] = 0b10000000;
 		ascii[']'.charCodeAt(0) * 16] = 0b00000001;
 		ascii['*'.charCodeAt(0) * 16] = 0b00010000;
-		glyphs[6 * 16 + 2] = 0b00100000;
-		const commands = generateIconPrimitives(ascii, glyphs, 8, 16, defaultColorScheme.icons);
+		const commands = generateIconPrimitives(ascii, 8, 16, defaultColorScheme.icons);
 		expect(commands.filter(command => command[0] === Command.RECTANGLE)).toEqual(
 			Array(3).fill([Command.RECTANGLE, 0, 0, 8, 16])
 		);
-		expect(commands.filter(command => command[0] === Command.PIXEL)).toEqual([
-			[Command.PIXEL, 0, 0],
-			[Command.PIXEL, 7, 0],
-			[Command.PIXEL, 2, 2],
-			[Command.PIXEL, 0, 0],
-			[Command.PIXEL, 7, 0],
-			...Array(6).fill([Command.PIXEL, 3, 0]),
-		]);
+		expect(commands.filter(command => command[0] === Command.PIXEL)).toEqual(Array(6).fill([Command.PIXEL, 3, 0]));
 		for (const group of Object.values(generateLookup(8, 16, defaultColorScheme.icons))) {
 			for (const coordinates of Object.values(group)) {
 				expect(coordinates).toMatchObject({ spriteWidth: 8, spriteHeight: 16 });
@@ -66,8 +57,14 @@ describe('icon primitives', () => {
 		expect(spriteAtlas.spriteIdentifiers).not.toHaveProperty('background');
 		expect(spriteAtlas.spriteIdentifiers).not.toHaveProperty('icons');
 		expect(spriteAtlas.spriteIdentifiers).not.toHaveProperty('feedbackScale');
+		expect(spriteAtlas.spriteIdentifiers).not.toHaveProperty('iconGlyphs');
 		expect(spriteAtlas.spriteIdentifiers.feedbackGlyphs[0]).toBeDefined();
-		const coordinates = spriteAtlas.lookup[spriteAtlas.spriteIdentifiers.iconGlyphs.switchKnob];
+		const identifiers = spriteAtlas.spriteIdentifiers;
+		expect(identifiers.fontInputConnector['[']).toBe(identifiers.fontEntryName['[']);
+		expect(identifiers.fontInputConnector[FontGlyph.SWITCH_KNOB]).toBe(
+			identifiers.fontEntryName[FontGlyph.SWITCH_KNOB]
+		);
+		const coordinates = spriteAtlas.lookup[identifiers.fontInputConnector[FontGlyph.SWITCH_KNOB]!];
 		expect(coordinates).toMatchObject({ spriteWidth: 6, spriteHeight: 10 });
 		await expect(
 			generateSprite({

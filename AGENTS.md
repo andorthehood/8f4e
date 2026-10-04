@@ -9,7 +9,7 @@
   `editor/packages/editor-core/packages/web-ui/packages/glugglugglug`). Each builds to its own `dist/` directory
   under the package root.
 - `@8f4e/sprite-atlas-extender` is a generic library under web-ui's `packages/`. Web-ui defines background, connector,
-  and switch composites; sprite-generator supplies their individual glyphs and fills. The glugglugglug engine API is
+  and switch composites; sprite-generator supplies colored fonts, feedback stars, and fills. The glugglugglug engine API is
   unchanged by atlas extension.
 - Builds: the website outputs to `packages/editor/packages/editor-website/dist/`. Package bundles are consumed via
   aliases like `@8f4e/editor-default` and `@8f4e/editor-core`.

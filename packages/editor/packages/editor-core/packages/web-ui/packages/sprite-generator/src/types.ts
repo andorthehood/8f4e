@@ -98,6 +98,9 @@ export interface ColorScheme {
 	};
 }
 
+/** Text and connector roles use the same colored pixel-font rows. */
+export type FontColors = ColorScheme['text'] & Pick<ColorScheme['icons'], 'inputConnector' | 'outputConnector'>;
+
 export const FONT_NAMES = [
 	'attpc63008x16',
 	'6x10',

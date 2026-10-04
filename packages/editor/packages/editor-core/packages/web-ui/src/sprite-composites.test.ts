@@ -1,5 +1,5 @@
 import type { CompositeSprite } from '@8f4e/sprite-atlas-extender';
-import { resolveSpriteIds } from '@8f4e/sprite-generator';
+import { FontGlyph, resolveSpriteIds } from '@8f4e/sprite-generator';
 import type { SpriteId, SpriteIdentifier } from 'glugglugglug';
 import { describe, expect, it, vi } from 'vitest';
 import { createIconSprites, Icon } from './icon-sprites';
@@ -24,13 +24,8 @@ function source(width = 8, height = 16): SpriteData {
 			spriteIdentifiers: {
 				fillColors: { background: 1, backgroundDots: 2, backgroundDots2: 3 },
 				iconFillColors: { inputConnectorBackground: 4, outputConnectorBackground: 5, switchBackground: 6 },
-				iconGlyphs: {
-					inputLeftBracket: 7,
-					inputRightBracket: 8,
-					switchKnob: 9,
-					outputLeftBracket: 10,
-					outputRightBracket: 11,
-				},
+				fontInputConnector: { '[': 7, ']': 8, [FontGlyph.SWITCH_KNOB]: 9 },
+				fontOutputConnector: { '[': 10, ']': 11 },
 				feedbackGlyphs: { 0: 12, 1: 13 },
 			} as SpriteData['spriteAtlas']['spriteIdentifiers'],
 		},
@@ -91,7 +86,10 @@ describe('editor sprite composites', () => {
 			'web-ui:feedback:1',
 		]);
 		expect(completed.spriteIdentifiers.fillColors).toBe(spriteData.spriteAtlas.spriteIdentifiers.fillColors);
-		expect(completed.spriteIdentifiers.iconGlyphs).toBe(spriteData.spriteAtlas.spriteIdentifiers.iconGlyphs);
+		expect(completed.spriteIdentifiers.fontInputConnector).toBe(
+			spriteData.spriteAtlas.spriteIdentifiers.fontInputConnector
+		);
+		expect(completed.spriteIdentifiers).not.toHaveProperty('iconGlyphs');
 		expect(completed.spriteIdentifiers).not.toHaveProperty('dots');
 		expect(spriteData.spriteAtlas.spriteIdentifiers).not.toHaveProperty('icons');
 		expect(spriteData.spriteAtlas.spriteIdentifiers).not.toHaveProperty('feedbackScale');
