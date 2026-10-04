@@ -8,7 +8,7 @@ Serializes editor state for session persistence and project file export.
 
 - **Session Object Serialization**: `serializeToProject` converts editor code blocks to `ProjectObjectModel`
 - **Session Saving**: Saves current session state through the local/session storage callbacks
-- **`.8f4e` Export**: Converts the session project structure to the `.8f4e` file format for project downloads
+- **`.8f4e` Save/Export**: Serializes canonical source through separate `saveProject` and `exportProject` callbacks
 - **WASM Export**: Exports compiled WASM modules through the separate WASM export path
 
 ## Export
@@ -24,7 +24,14 @@ directives remain embedded in block source.
 
 ### `.8f4e` Project Export
 
-Project file export first calls `serializeToProject` to collect the current code blocks, then passes that structure to `serializeProjectTo8f4e` to produce the `.8f4e` file content. This path is used for project downloads, while JSON output from `serializeToProject` is intended for session persistence only.
+The `saveProject` and `exportProject` events first call `serializeToProject` to collect the current code blocks,
+then pass that structure to `serializeProjectTo8f4e` to produce canonical `.8f4e` source. Both callbacks receive that
+text and the configured export filename. The focused canvas's `Cmd+S`/`Ctrl+S` shortcut dispatches `saveProject`.
+The export menu dispatches `exportProject`, which the default composition implements as Save As.
+
+Code-change subscriptions continue to call `saveSession` with the project object for browser recovery. Explicit
+file saves do not call `saveSession`, and automatic session saves do not write to disk. Browser handles, permissions,
+and fallback downloads belong to the host composition; the editor state owns serialization and event routing.
 
 ### WASM Export
 

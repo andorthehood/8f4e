@@ -5,11 +5,10 @@ import { getProject } from './get-project';
 import { createRuntimeRegistry } from './runtime-registry';
 import { resolveStdlibInclude } from './stdlib-resolver';
 import {
+	createProjectFileCallbacks,
 	createStorageCallbacks,
 	exportBinaryCode,
 	exportCanvasScreenshot,
-	exportProject,
-	importProject,
 } from './storage-callbacks';
 
 const DEFAULT_STORAGE_NAMESPACE = 'editor';
@@ -42,6 +41,7 @@ export async function mountDefaultEditor(
 ): Promise<DefaultEditorInstance> {
 	const compilerService = createCompilerService();
 	const storageCallbacks = createStorageCallbacks({ storage, storageNamespace, initialProjectUrl });
+	const { dispose: disposeProjectFiles, ...projectFileCallbacks } = createProjectFileCallbacks();
 	let editor: Editor;
 	try {
 		editor = await initEditor(canvas, {
@@ -57,13 +57,13 @@ export async function mountDefaultEditor(
 				resolveInclude: resolveStdlibInclude,
 				compileCode: (input, compilerOptions) => compilerService.compileCode(input, compilerOptions, editor),
 				...storageCallbacks,
-				importProject,
-				exportProject,
+				...projectFileCallbacks,
 				exportBinaryCode: fileName => exportBinaryCode(fileName, compilerService.getCodeBuffer()),
 				exportCanvasScreenshot,
 			},
 		});
 	} catch (error) {
+		disposeProjectFiles();
 		compilerService.dispose();
 		throw error;
 	}
@@ -71,6 +71,7 @@ export async function mountDefaultEditor(
 	return {
 		...editor,
 		dispose: () => {
+			disposeProjectFiles();
 			try {
 				editor.dispose();
 			} finally {

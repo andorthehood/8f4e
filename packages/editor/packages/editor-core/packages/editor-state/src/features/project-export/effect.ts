@@ -1,5 +1,6 @@
 import type { EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import { error as logError } from '../logger/logger';
 import { registerExportFileNameEditorConfigValidator } from './editorConfig';
 import getExportBaseName from './getExportBaseName';
 import { serializeProjectTo8f4e } from './serializeTo8f4e';
@@ -10,9 +11,10 @@ export default function projectExport(store: StateManager<State>, events: EventD
 
 	const state = store.getState();
 
-	function onExportProject() {
-		if (!state.callbacks.exportProject) {
-			console.warn('No exportProject callback provided');
+	function onSaveProject(event: 'saveProject' | 'exportProject') {
+		const callback = state.callbacks[event];
+		if (!callback) {
+			console.warn(`No ${event} callback provided`);
 			return;
 		}
 
@@ -24,11 +26,13 @@ export default function projectExport(store: StateManager<State>, events: EventD
 			text = serializeProjectTo8f4e(projectToSave);
 		} catch (error) {
 			console.error('Failed to serialize project:', error);
+			logError(state, 'Failed to serialize project');
 			return;
 		}
 
-		state.callbacks.exportProject(text, fileName).catch(error => {
+		callback(text, fileName).catch(error => {
 			console.error('Failed to save project to file:', error);
+			logError(state, 'Failed to save project to file');
 		});
 	}
 
@@ -69,6 +73,7 @@ export default function projectExport(store: StateManager<State>, events: EventD
 	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onSaveSession);
 	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', onSaveSession);
 	events.on('saveSession', onSaveSession);
-	events.on('exportProject', onExportProject);
+	events.on('saveProject', () => onSaveProject('saveProject'));
+	events.on('exportProject', () => onSaveProject('exportProject'));
 	events.on('exportWasm', onExportWasm);
 }

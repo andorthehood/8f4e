@@ -43,7 +43,16 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		}
 	}
 
-	function loadProject({ project: newProject }: { project: ProjectObjectModel }) {
+	function loadProject({
+		project: newProject,
+		preserveFileAssociation = false,
+	}: {
+		project: ProjectObjectModel;
+		preserveFileAssociation?: boolean;
+	}) {
+		if (!preserveFileAssociation) {
+			state.callbacks.projectLoaded?.(newProject);
+		}
 		store.set('initialProjectState', newProject);
 	}
 
@@ -57,7 +66,9 @@ export default function projectImport(store: StateManager<State>, events: EventD
 		state.callbacks
 			.importProject()
 			.then(project => {
-				loadProject({ project });
+				if (project) {
+					loadProject({ project });
+				}
 			})
 			.catch(err => {
 				console.error('Failed to load project from file:', err);
@@ -65,6 +76,7 @@ export default function projectImport(store: StateManager<State>, events: EventD
 			});
 	}
 
+	events.on('new', () => loadProject({ project: EMPTY_DEFAULT_PROJECT }));
 	events.on('importProject', onImportProject);
 	events.on('loadProject', loadProject);
 	events.on('loadProjectByUrl', loadProjectByUrl);

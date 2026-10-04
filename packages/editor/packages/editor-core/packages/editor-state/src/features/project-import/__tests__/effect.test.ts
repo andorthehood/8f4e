@@ -53,6 +53,36 @@ describe('projectImport', () => {
 		});
 	});
 
+	it('starts a new empty project and clears the previous file association', () => {
+		mockState.callbacks.projectLoaded = vi.fn();
+		projectImport(store, mockEvents);
+		const handler = vi.mocked(mockEvents.on).mock.calls.find(call => call[0] === 'new')![1];
+		handler(undefined);
+		expect(mockState.initialProjectState).toEqual(EMPTY_DEFAULT_PROJECT);
+		expect(mockState.callbacks.projectLoaded).toHaveBeenCalledWith(EMPTY_DEFAULT_PROJECT);
+	});
+
+	it('notifies the host for replacements, but preserves the file association for history', () => {
+		mockState.callbacks.projectLoaded = vi.fn();
+		projectImport(store, mockEvents);
+		const handler = (mockEvents.on as unknown as MockInstance).mock.calls.find(call => call[0] === 'loadProject')![1];
+		handler({ project: EMPTY_DEFAULT_PROJECT });
+		expect(mockState.callbacks.projectLoaded).toHaveBeenCalledWith(EMPTY_DEFAULT_PROJECT);
+		handler({ project: EMPTY_DEFAULT_PROJECT, preserveFileAssociation: true });
+		expect(mockState.callbacks.projectLoaded).toHaveBeenCalledOnce();
+	});
+
+	it('leaves the project and file association unchanged after import cancellation', async () => {
+		mockState.callbacks.importProject = vi.fn().mockResolvedValue(null);
+		mockState.callbacks.projectLoaded = vi.fn();
+		const original = mockState.initialProjectState;
+		projectImport(store, mockEvents);
+		const handler = (mockEvents.on as unknown as MockInstance).mock.calls.find(call => call[0] === 'importProject')![1];
+		await handler();
+		expect(mockState.initialProjectState).toBe(original);
+		expect(mockState.callbacks.projectLoaded).not.toHaveBeenCalled();
+	});
+
 	describe('Initial session loading', () => {
 		it('should load empty project when loadSession callback is absent', async () => {
 			projectImport(store, mockEvents);

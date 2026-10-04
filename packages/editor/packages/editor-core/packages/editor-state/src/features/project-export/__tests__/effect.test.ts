@@ -118,6 +118,35 @@ describe('projectExport', () => {
 		});
 	});
 
+	describe('saveProject', () => {
+		it('saves canonical text with the configured filename without saving the session', async () => {
+			const saveProject = vi.fn().mockResolvedValue(undefined);
+			const saveSession = vi.fn().mockResolvedValue(undefined);
+			mockState.callbacks.saveProject = saveProject;
+			mockState.callbacks.saveSession = saveSession;
+			mockState.editorConfig.export = { fileName: 'my-project' };
+			projectExport(store, mockEvents);
+			const handler = (mockEvents.on as unknown as MockInstance).mock.calls.find(call => call[0] === 'saveProject')![1];
+			await handler();
+			expect(saveProject).toHaveBeenCalledWith(expect.stringMatching(/^8f4e\/v1/), 'my-project.8f4e');
+			expect(saveSession).not.toHaveBeenCalled();
+			expect(mockExportProject).not.toHaveBeenCalled();
+		});
+
+		it('reports filesystem errors through the editor logger', async () => {
+			const spy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+			mockState.callbacks.saveProject = vi.fn().mockRejectedValue(new Error('denied'));
+			projectExport(store, mockEvents);
+			const handler = (mockEvents.on as unknown as MockInstance).mock.calls.find(call => call[0] === 'saveProject')![1];
+			await handler();
+			expect(mockState.console.logs.at(-1)).toMatchObject({
+				level: 'error',
+				message: 'Failed to save project to file',
+			});
+			spy.mockRestore();
+		});
+	});
+
 	describe('exportFileName', () => {
 		it('should use custom exportFileName as base for .8f4e export', async () => {
 			mockState.editorConfig.export = { fileName: 'my-project' };
@@ -266,6 +295,7 @@ describe('projectExport', () => {
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });
 
 			mockState.callbacks.saveSession = mockSaveSession;
+			mockState.callbacks.saveProject = vi.fn().mockResolvedValue(undefined);
 			mockState.callbacks.getStorageQuota = mockGetStorageQuota;
 
 			const subscribeSpy = vi.spyOn(store, 'subscribe');
@@ -286,6 +316,7 @@ describe('projectExport', () => {
 			await codeChangeCallback();
 
 			expect(mockSaveSession).toHaveBeenCalled();
+			expect(mockState.callbacks.saveProject).not.toHaveBeenCalled();
 
 			subscribeSpy.mockRestore();
 		});

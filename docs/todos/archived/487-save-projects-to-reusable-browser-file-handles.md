@@ -4,8 +4,8 @@ priority: Medium
 effort: 1-2d
 created: 2026-09-29
 issue: null
-status: Open
-completed: null
+status: Completed
+completed: 2026-10-04
 ---
 
 # TODO: Save Projects to Reusable Browser File Handles
@@ -120,17 +120,17 @@ require storing structured-cloneable handles in IndexedDB and rechecking permiss
 
 ## Success Criteria
 
-- [ ] `Cmd+S` and `Ctrl+S` save canonical `.8f4e` text through the explicit project-file path.
-- [ ] The shortcut no longer calls `saveSession`; code-change autosave continues updating browser storage.
-- [ ] A project opened through the File System Access API saves back to the opened file after write permission is
+- [x] `Cmd+S` and `Ctrl+S` save canonical `.8f4e` text through the explicit project-file path.
+- [x] The shortcut no longer calls `saveSession`; code-change autosave continues updating browser storage.
+- [x] A project opened through the File System Access API saves back to the opened file after write permission is
       granted.
-- [ ] The first save without a handle opens a save picker, and later saves reuse the resulting handle.
-- [ ] A successful Save As/export updates the active handle.
-- [ ] Unrelated project replacement clears the handle, while undo and redo preserve it.
-- [ ] Picker cancellation is silent and leaves the current handle unchanged.
-- [ ] Concurrent saves are serialized and cannot corrupt or reorder file contents.
-- [ ] Unsupported browsers retain functional upload/download behavior.
-- [ ] Tests cover keyboard dispatch, serialization, handle reuse, permission outcomes, cancellation, fallback behavior,
+- [x] The first save without a handle opens a save picker, and later saves reuse the resulting handle.
+- [x] A successful Save As/export updates the active handle.
+- [x] Unrelated project replacement clears the handle, while undo and redo preserve it.
+- [x] Picker cancellation is silent and leaves the current handle unchanged.
+- [x] Concurrent saves are serialized and cannot corrupt or reorder file contents.
+- [x] Unsupported browsers retain functional upload/download behavior.
+- [x] Tests cover keyboard dispatch, serialization, handle reuse, permission outcomes, cancellation, fallback behavior,
       and per-editor isolation.
 
 ## Affected Components
@@ -168,22 +168,39 @@ require storing structured-cloneable handles in IndexedDB and rechecking permiss
 
 ## Related Items
 
-- [TODO 245: Configurable export filename from project config](archived/245-configurable-export-filename-from-project-config.md).
-- [TODO 247: Remove runtime-ready project export](archived/247-remove-runtime-ready-project-export.md).
+- [TODO 245: Configurable export filename from project config](245-configurable-export-filename-from-project-config.md).
+- [TODO 247: Remove runtime-ready project export](247-remove-runtime-ready-project-export.md).
 
 ## References
 
 - [MDN: `showOpenFilePicker()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/showOpenFilePicker)
 - [MDN: `showSaveFilePicker()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/showSaveFilePicker)
 - [File System Access specification](https://wicg.github.io/file-system-access/)
-- [Project export effect](../../packages/editor/packages/editor-core/packages/editor-state/src/features/project-export/effect.ts)
-- [Default storage callbacks](../../packages/editor/packages/editor-default/src/storage-callbacks.ts)
-- [Editor keyboard events](../../packages/editor/packages/editor-core/src/events/keyboardEvents.ts)
+- [Project export effect](../../../packages/editor/packages/editor-core/packages/editor-state/src/features/project-export/effect.ts)
+- [Default storage callbacks](../../../packages/editor/packages/editor-default/src/storage-callbacks.ts)
+- [Editor keyboard events](../../../packages/editor/packages/editor-core/src/events/keyboardEvents.ts)
 
 ## Notes
 
 The desired behavior was clarified on 2026-09-29: automatic session saving already covers browser recovery, so the
 existing `Cmd+S`/`Ctrl+S` capture should be disconnected from `saveSession` and used exclusively for filesystem saving.
+
+## Implementation Notes
+
+Implemented the host-neutral `saveProject` callback/event and the per-mounted-editor project-file controller.
+Project replacements notify the controller through `projectLoaded`; undo/redo snapshots explicitly preserve the
+file association. The New Project menu event now loads the empty project through that same replacement path.
+Pending writes are serialized, share a pending save destination, and are discarded or aborted if the project is
+replaced or the editor is disposed. A handle is adopted only after a successful file write or parsed disk import.
+
+Validation completed:
+
+- The three affected test suites, four package type checks, and editor website production build passed.
+- Biome checks and `git diff --check` passed.
+- A Chromium smoke check exercised both save shortcuts in the built editor, canonical source output, handle reuse,
+  opening, Save As, cancellation, replacement, and native upload/download fallback. Picker dialogs were simulated;
+  file reads and writes used real origin-private browser file handles. Native OS picker dialogs and interactive
+  permission prompts still need manual verification.
 
 ## Archive Instructions
 

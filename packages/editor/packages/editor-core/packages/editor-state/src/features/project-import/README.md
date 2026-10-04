@@ -35,15 +35,21 @@ uploads, direct project URLs, and default templates.
 
 ### Events Listened To
 
-- `loadProject` - Loads a project object into editor state
+- `new` - Starts an empty project and clears the file association
+- `loadProject` - Loads a project object into editor state; history snapshots pass `preserveFileAssociation: true`
 - `importProject` - Imports a `.8f4e` project from disk
 - `loadProjectByUrl` - Loads and parses a `.8f4e` project from a URL
 
 ### Callbacks Used
 
 - `state.callbacks.loadSession()` - Retrieves the locally saved project object
-- `state.callbacks.importProject()` - Opens file picker and parses `.8f4e` text
+- `state.callbacks.importProject()` - Opens a file picker and parses `.8f4e` text; returns `null` on cancellation
+- `state.callbacks.projectLoaded(project)` - Notifies the host before an unrelated project replaces the current one
 - `state.callbacks.getProject(url)` - Fetches `.8f4e` text by URL
+
+The default composition associates successfully opened files with their browser handles through `projectLoaded`.
+Other replacements (including new projects, URLs/examples, and restored sessions) clear that association. Undo and
+redo preserve it. Cancelled or failed disk imports leave both the current project and file association unchanged.
 
 ### State Touched
 
