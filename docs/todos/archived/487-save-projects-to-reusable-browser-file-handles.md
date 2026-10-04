@@ -190,13 +190,15 @@ existing `Cmd+S`/`Ctrl+S` capture should be disconnected from `saveSession` and 
 Implemented the host-neutral `saveProject` callback/event and the per-mounted-editor project-file controller.
 Project replacements notify the controller through `projectLoaded`; undo/redo snapshots explicitly preserve the
 file association. The New Project menu event now loads the empty project through that same replacement path.
-Pending writes are serialized, share a pending save destination, and are discarded or aborted if the project is
-replaced or the editor is disposed. A handle is adopted only after a successful file write or parsed disk import.
+Pending writes are serialized and share a pending save destination. Accepted saves finish with their captured
+source and destination even if the project is replaced or the editor is disposed. A successful write adopts its
+handle only if the original project is still loaded; a parsed disk import adopts its handle when loaded.
 
 Validation completed:
 
 - The three affected test suites, four package type checks, and editor website production build passed.
 - Biome checks and `git diff --check` passed.
+- A Chromium UI regression verified that Cmd+S followed by New Project during a delayed write completes the accepted save.
 - A Chromium smoke check exercised both save shortcuts in the built editor, canonical source output, handle reuse,
   opening, Save As, cancellation, replacement, and native upload/download fallback. Picker dialogs were simulated;
   file reads and writes used real origin-private browser file handles. Native OS picker dialogs and interactive

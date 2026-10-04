@@ -143,31 +143,27 @@ export function createProjectFileCallbacks() {
 		return project;
 	}
 
-	function save(data: string, fileName: string, saveAs: boolean): Promise<void> {
+	async function save(data: string, fileName: string, saveAs: boolean): Promise<void> {
 		const currentGeneration = generation;
 		const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
 		const pickerWindow = window as PickerWindow;
 		let destination: Promise<ProjectFileHandle | undefined>;
 
-		try {
-			// Start pickers and permission requests during the command's user activation, before queuing writes.
-			if (!saveAs && pendingDestination) {
-				destination = pendingDestination;
-			} else if (!saveAs && activeHandle) {
-				const handle = activeHandle;
-				destination = handle.requestPermission({ mode: 'readwrite' }).then(permission => {
-					if (permission !== 'granted') throw new Error('Permission to save the project was denied');
-					return handle;
-				});
-			} else if (pickerWindow.showSaveFilePicker) {
-				const picked = pickerWindow.showSaveFilePicker({ suggestedName: fileName, types: [projectFileType] });
-				pendingDestination = picked;
-				destination = picked;
-			} else {
-				destination = Promise.resolve(undefined);
-			}
-		} catch (error) {
-			return Promise.reject(error);
+		// Start pickers and permission requests during the command's user activation, before queuing writes.
+		if (!saveAs && pendingDestination) {
+			destination = pendingDestination;
+		} else if (!saveAs && activeHandle) {
+			const handle = activeHandle;
+			destination = handle.requestPermission({ mode: 'readwrite' }).then(permission => {
+				if (permission !== 'granted') throw new Error('Permission to save the project was denied');
+				return handle;
+			});
+		} else if (pickerWindow.showSaveFilePicker) {
+			const picked = pickerWindow.showSaveFilePicker({ suggestedName: fileName, types: [projectFileType] });
+			pendingDestination = picked;
+			destination = picked;
+		} else {
+			destination = Promise.resolve(undefined);
 		}
 
 		// Observe picker rejection immediately, even if an earlier write is still pending.
@@ -177,7 +173,6 @@ export function createProjectFileCallbacks() {
 		);
 		const operation = writes.then(async () => {
 			const result = await prepared;
-			if (currentGeneration !== generation) return;
 			if ('error' in result) {
 				if (isPickerCancellation(result.error)) return;
 				throw result.error;
@@ -188,15 +183,7 @@ export function createProjectFileCallbacks() {
 			}
 			const writable = await result.handle.createWritable();
 			try {
-				if (currentGeneration !== generation) {
-					await writable.abort();
-					return;
-				}
 				await writable.write(blob);
-				if (currentGeneration !== generation) {
-					await writable.abort();
-					return;
-				}
 				await writable.close();
 			} catch (error) {
 				await writable.abort().catch(() => undefined);

@@ -278,19 +278,24 @@ describe('project file callbacks', () => {
 		expect(second.writable.write).toHaveBeenCalledTimes(2);
 	});
 
-	it('does not adopt or write a delayed picker after a project replacement', async () => {
+	it('finishes a delayed save without adopting its handle after a project replacement', async () => {
 		const picked = deferred<typeof handle>();
 		showSaveFilePicker.mockReturnValueOnce(picked.promise);
 		const save = callbacks.saveProject('old project', 'demo.8f4e');
 		callbacks.projectLoaded(project);
 		picked.resolve(handle);
 		await save;
-		expect(handle.createWritable).not.toHaveBeenCalled();
+		expect(handle.writable.close).toHaveBeenCalledOnce();
+		expect(await handle.writable.write.mock.calls[0][0].text()).toBe('old project');
 		await callbacks.saveProject('new project', 'demo.8f4e');
 		expect(showSaveFilePicker).toHaveBeenCalledTimes(2);
 	});
 
-	it('aborts an in-flight write and discards queued saves after replacement', async () => {
+	it('finishes in-flight and queued saves to their captured handle after replacement', async () => {
+		await callbacks.saveProject('initial', 'demo.8f4e');
+		handle.writable.write.mockClear();
+		handle.writable.close.mockClear();
+		handle.createWritable.mockClear();
 		const firstWrite = deferred<void>();
 		handle.writable.write.mockReturnValueOnce(firstWrite.promise);
 		const first = callbacks.saveProject('old project', 'demo.8f4e');
@@ -299,19 +304,31 @@ describe('project file callbacks', () => {
 		callbacks.projectLoaded(project);
 		firstWrite.resolve();
 		await Promise.all([first, second]);
-		expect(handle.writable.abort).toHaveBeenCalledOnce();
-		expect(handle.writable.close).not.toHaveBeenCalled();
-		expect(handle.writable.write).toHaveBeenCalledOnce();
+		expect(handle.writable.abort).not.toHaveBeenCalled();
+		expect(handle.writable.close).toHaveBeenCalledTimes(2);
+		expect(await handle.writable.write.mock.calls[0][0].text()).toBe('old project');
+		expect(await handle.writable.write.mock.calls[1][0].text()).toBe('also old');
+		expect(handle.writable.close.mock.invocationCallOrder[0]).toBeLessThan(
+			handle.createWritable.mock.invocationCallOrder[1]
+		);
+
+		const replacementHandle = createHandle();
+		showSaveFilePicker.mockResolvedValueOnce(replacementHandle);
+		await callbacks.saveProject('new project', 'new.8f4e');
+		expect(showSaveFilePicker).toHaveBeenCalledTimes(2);
+		expect(replacementHandle.writable.close).toHaveBeenCalledOnce();
+		expect(handle.writable.write).toHaveBeenCalledTimes(2);
 	});
 
-	it('invalidates pending saves when the mounted editor is disposed', async () => {
+	it('finishes an accepted save when the mounted editor is disposed', async () => {
 		const picked = deferred<typeof handle>();
 		showSaveFilePicker.mockReturnValueOnce(picked.promise);
 		const save = callbacks.saveProject('old project', 'demo.8f4e');
 		callbacks.dispose();
 		picked.resolve(handle);
 		await save;
-		expect(handle.createWritable).not.toHaveBeenCalled();
+		expect(handle.writable.close).toHaveBeenCalledOnce();
+		expect(handle.writable.abort).not.toHaveBeenCalled();
 	});
 
 	it('downloads every save when picker APIs are unavailable', async () => {

@@ -53,6 +53,8 @@ Each mounted editor retains its own file association for the current page lifeti
 association, while the browser recovery session remains available. Loading a new project, a URL/example, or a
 restored session clears the association. Edits, navigation, undo, and redo keep it. Cancelling a picker leaves the
 project and prior association intact. Filesystem saves run in command order, independently of session autosave.
+An accepted save finishes with its captured source and destination even if the editor switches projects or is
+disposed. Its destination becomes the active file only if the same project is still loaded.
 
 Browsers without the picker APIs use file uploads for Open and downloads for Save/Export. An uploaded file has no
 writable association; saving chooses a destination if the save picker is available, or downloads a new file.
