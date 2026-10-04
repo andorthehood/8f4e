@@ -61,7 +61,6 @@ Active todo files are listed below.
 | 480 | Simplify map codegen with reverse row order | 🟡 | 2-4h | 2026-09-06 | Emit map rows in reverse order to preserve first-match-wins behavior while removing matched/condition temporaries and runtime bookkeeping. |
 | 483 | Lazy-load WASM overlay rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer overlay drawer and RGBA layer only when a project configures an overlay. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
-| 487 | Save projects to reusable browser file handles | 🟡 | 1-2d | 2026-09-29 | Make `Cmd+S`/`Ctrl+S` save canonical `.8f4e` source through a reusable file handle while leaving browser-session autosave independent. |
 
 ### 🟢 Low Priority
 
@@ -77,6 +76,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 487 | Save projects to reusable browser file handles | 2026-10-04 | Separated explicit source saves from session autosave; added per-editor writable file associations, Save As, safe project replacement, cancellation, and upload/download fallback. |
 | 481 | Centralize compiler local allocation | 2026-10-01 | Added shared allocation, typed-allocation, reuse, and reset helpers across compiler stages; 2,000-local warm-cache compilation fell from 322.048 ms to 3.363 ms in the documented benchmark. |
 | 482 | Resolve sprite identifiers before drawing | 2026-10-01 | Added setup-time public-key resolution, atlas-specific dense sprite ids, direct packed-metadata submission, atlas-replacement integration, and a retained byte-equivalence benchmark. |
 | 489 | Remove obsolete intermodular nth-reference helpers | 2026-09-30 | Deleted two test-only tokenizer helpers while preserving and strengthening coverage of the live nth-reference classifier. |

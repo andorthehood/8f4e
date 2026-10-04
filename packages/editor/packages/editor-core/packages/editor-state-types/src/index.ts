@@ -301,7 +301,11 @@ export interface Callbacks {
 	saveBrowserLocalNotes?: (blocks: BrowserLocalNoteStorageBlock[]) => Promise<void>;
 
 	// File handling callbacks
-	importProject?: () => Promise<ProjectObjectModel>;
+	/** Returns null when the picker is cancelled. */
+	importProject?: () => Promise<ProjectObjectModel | null>;
+	/** Called for unrelated project replacements, including successful disk imports; excluded for undo/redo. */
+	projectLoaded?: (project: ProjectObjectModel) => void;
+	saveProject?: (data: string, fileName: string) => Promise<void>;
 	exportProject?: (data: string, fileName: string) => Promise<void>;
 	exportBinaryCode?: (fileName: string) => Promise<void>;
 	exportCanvasScreenshot?: (fileName: string) => Promise<void>;

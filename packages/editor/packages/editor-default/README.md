@@ -43,6 +43,22 @@ the editor starts with an empty project and does not fetch an example project re
 [examples gallery](https://8f4e.com/examples/); its links open projects by URL. The editor's menu supports opening
 projects from disk and adding built-in modules.
 
+Code changes automatically save a recovery session to browser storage. With the editor canvas focused, `Cmd+S`
+or `Ctrl+S` saves canonical `.8f4e` source to disk. In browsers supporting the File System Access API in a secure
+context, the first Save chooses a destination and later saves reuse it. Opening a project from disk associates the
+selected file with the editor; the first Save can ask for write permission. The Export Project menu action acts as
+Save As: it chooses a destination and makes that file the target of later saves.
+
+Each mounted editor retains its own file association for the current page lifetime. Reloading the page loses the
+association, while the browser recovery session remains available. Loading a new project, a URL/example, or a
+restored session clears the association. Edits, navigation, undo, and redo keep it. Cancelling a picker leaves the
+project and prior association intact. Filesystem saves run in command order, independently of session autosave.
+An accepted save finishes with its captured source and destination even if the editor switches projects or is
+disposed. Its destination becomes the active file only if the same project is still loaded.
+
+Browsers without the picker APIs use file uploads for Open and downloads for Save/Export. An uploaded file has no
+writable association; saving chooses a destination if the save picker is available, or downloads a new file.
+
 Build, test, and type-check it from the workspace root:
 
 ```bash

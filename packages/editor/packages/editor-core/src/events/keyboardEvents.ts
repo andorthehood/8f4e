@@ -33,7 +33,7 @@ function getDirectionFromArrowKey(key: string): Direction | null {
  * editor actions via the provided EventDispatcher.
  *
  * This listener interprets key presses and may dispatch the following events:
- * - `saveSession` – when the platform modifier key (Ctrl/Cmd) + S is pressed.
+ * - `saveProject` – when the platform modifier key (Ctrl/Cmd) + S is pressed.
  * - `undo` – when the modifier key + Z (without Shift) is pressed.
  * - `redo` – when the modifier key + Shift+Z or modifier key + Y is pressed.
  * - `navigateCodeBlock` – when the modifier key + an arrow key is pressed; payload includes a direction.
@@ -121,7 +121,7 @@ export default function keyboardEvents(
 			// Save
 			if (lowerKey === 's') {
 				event.preventDefault();
-				events.dispatch('saveSession');
+				events.dispatch('saveProject');
 				return;
 			}
 

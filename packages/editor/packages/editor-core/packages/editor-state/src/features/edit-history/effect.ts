@@ -44,7 +44,7 @@ export default function historyTracking(store: StateManager<State>, events: Even
 				state.redoStack.shift();
 			}
 			state.redoStack.push(serializeToProject(state));
-			events.dispatch('loadProject', { project: previousState });
+			events.dispatch('loadProject', { project: previousState, preserveFileAssociation: true });
 		}
 	}
 
@@ -60,7 +60,7 @@ export default function historyTracking(store: StateManager<State>, events: Even
 				state.historyStack.shift();
 			}
 			state.historyStack.push(serializeToProject(state));
-			events.dispatch('loadProject', { project: nextState });
+			events.dispatch('loadProject', { project: nextState, preserveFileAssociation: true });
 		}
 	}
 
