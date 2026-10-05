@@ -317,7 +317,7 @@ describe('drawModules', () => {
 		expect((engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText).toHaveBeenCalledWith(
 			0,
 			16,
-			'//',
+			';;',
 			state.spriteLookups?.fontPianoKeyWhitePressedOverlay
 		);
 	});

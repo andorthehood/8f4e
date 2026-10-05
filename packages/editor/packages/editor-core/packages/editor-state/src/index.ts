@@ -91,6 +91,8 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	registerEffect(projectExport(store, events));
 	registerEffect(canvasScreenshot(store, events));
 	registerEffect(dialog(store, events));
+	// Menus must consume pointer events before code blocks and viewport interactions.
+	registerEffect(contextMenu(store, events));
 	registerEffect(binaryAssetLoadingDialog(store, events));
 
 	registerEffect(runtime(store, events));
@@ -107,7 +109,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	registerEffect(crossfade(store, events));
 	registerEffect(pianoKeyboard(store, events));
 	registerEffect(viewport(store, events));
-	registerEffect(contextMenu(store, events));
 	registerEffect(codeBlockCreator(store, events));
 	registerEffect(skipExecutionToggler(store, events));
 	registerEffect(groupSkipExecutionToggler(store, events));

@@ -1,69 +1,12 @@
 import type { CodeBlockGraphicData, EventDispatcher, PianoKeyboard, State } from '@8f4e/editor-state-types';
-import { arrayMemoryDeclarationInstructions } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import type { CodeBlockClickEvent } from '../../codeBlockDragger/effect';
 import findPianoKeyboardWidgetAtViewportCoordinates from './findWidgetAtViewportCoordinates';
 
-// Data flow must stay one-way:
-// UI key press -> edits code -> runtime updates memory -> UI reflects memory.
-// Pressed keys may also come from another program writing the pressed-key memory buffer,
-// so rendering must never treat code or interaction state as the source of truth.
-function escapeRegExp(text: string): string {
-	return text.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-function findPressedNumberOfKeysMemoryLineNumber(code: string[], memoryId: string): number {
-	const regexp = new RegExp(`^\\s*int\\s+${escapeRegExp(memoryId)}\\s+`);
-
-	return code.findIndex(line => regexp.test(line));
-}
-
-function formatMemoryValue(value: number, isInteger: boolean): string {
-	return isInteger ? `${value}` : `${value}.0`;
-}
-
-function createArrayDeclarationRegexp(memoryId: string): RegExp {
-	const arrayDeclarationInstructionPattern = arrayMemoryDeclarationInstructions.map(escapeRegExp).join('|');
-
-	return new RegExp(
-		`^(?<prefix>\\s*(?:${arrayDeclarationInstructionPattern})\\s+${escapeRegExp(
-			memoryId
-		)}\\s+)(?<elementCount>\\S+)(?:\\s+[^;]*?)?(?<comment>\\s*;.*)?\\s*$`
-	);
-}
-
-function findPressedKeysListMemoryLineNumber(code: string[], memoryId: string): number {
-	const regexp = createArrayDeclarationRegexp(memoryId);
-
-	return code.findIndex(line => regexp.test(line));
-}
-
-function updatePressedKeysListMemoryDefaultValues(
-	code: string[],
-	pressedKeysListMemoryId: string,
-	pressedKeys: Set<number>,
-	isInteger: boolean,
-	startingNumber: number
-): string[] | undefined {
-	const lineNumber = findPressedKeysListMemoryLineNumber(code, pressedKeysListMemoryId);
-	if (lineNumber === -1) {
-		return undefined;
-	}
-
-	const line = code[lineNumber];
-	const groups = createArrayDeclarationRegexp(pressedKeysListMemoryId).exec(line)?.groups;
-	if (!groups?.prefix || !groups.elementCount) {
-		return undefined;
-	}
-
-	const defaultValues = Array.from(pressedKeys).map(key => formatMemoryValue(key + startingNumber, isInteger));
-	const serializedDefaultValues = defaultValues.length > 0 ? ` ${defaultValues.join(' ')}` : '';
-
-	const updatedCode = [...code];
-	updatedCode[lineNumber] = `${groups.prefix}${groups.elementCount}${serializedDefaultValues}${groups.comment ?? ''}`;
-
-	return updatedCode;
-}
+// Runtime memory is the source of truth for both clicks and pressed-note highlights.
+const float32DecodeBuffer = new ArrayBuffer(4);
+const float32DecodeInt32 = new Int32Array(float32DecodeBuffer);
+const float32DecodeFloat32 = new Float32Array(float32DecodeBuffer);
 
 function readRuntimePressedKeys(state: State, keyboard: PianoKeyboard): Set<number> {
 	const pressedKeys = new Set<number>();
@@ -73,16 +16,17 @@ function readRuntimePressedKeys(state: State, keyboard: PianoKeyboard): Set<numb
 		return pressedKeys;
 	}
 
-	const numberOfKeys = Math.max(0, getWordFromMemory(keyboard.pressedNumberOfKeysMemory.wordAlignedAddress) || 0);
+	const numberOfKeys = Math.max(
+		0,
+		Math.trunc(getWordFromMemory(keyboard.pressedNumberOfKeysMemory.wordAlignedAddress)) || 0
+	);
 	const readableKeys = Math.min(numberOfKeys, keyboard.pressedKeysListMemory.numberOfElements);
 
 	for (let i = 0; i < readableKeys; i++) {
-		const keyValue = getWordFromMemory(keyboard.pressedKeysListMemory.wordAlignedAddress + i);
-		const keyOffset = Math.trunc(keyValue - keyboard.startingNumber);
-
-		if (keyOffset >= 0 && keyOffset < keyboard.keys.length) {
-			pressedKeys.add(keyOffset);
-		}
+		const word = getWordFromMemory(keyboard.pressedKeysListMemory.wordAlignedAddress + i);
+		float32DecodeInt32[0] = word;
+		const keyValue = keyboard.pressedKeysListMemory.isInteger ? word : float32DecodeFloat32[0];
+		pressedKeys.add(keyValue);
 	}
 
 	return pressedKeys;
@@ -113,43 +57,32 @@ export default function pianoKeyboard(store: StateManager<State>, events: EventD
 			return;
 		}
 
+		const setWordInMemory = state.callbacks?.setWordInMemory;
+		if (!state.callbacks?.getWordFromMemory || !setWordInMemory) {
+			return;
+		}
+
+		const noteNumber = keyboard.startingNumber + key;
 		const pressedKeys = readRuntimePressedKeys(state, keyboard);
-		if (pressedKeys.has(key)) {
-			pressedKeys.delete(key);
+		if (pressedKeys.has(noteNumber)) {
+			pressedKeys.delete(noteNumber);
 		} else {
-			if (pressedKeys.size === keyboard.pressedKeysListMemory.numberOfElements) {
+			if (pressedKeys.size >= keyboard.pressedKeysListMemory.numberOfElements) {
 				return;
 			}
-			pressedKeys.add(key);
+			pressedKeys.add(noteNumber);
 		}
 
-		const pressedNumberOfKeysMemoryLineNumber = findPressedNumberOfKeysMemoryLineNumber(
-			codeBlock.code,
-			keyboard.pressedNumberOfKeysMemory.id
-		);
-
-		if (pressedNumberOfKeysMemoryLineNumber === -1) {
-			return;
+		let index = 0;
+		for (const note of pressedKeys) {
+			setWordInMemory(
+				keyboard.pressedKeysListMemory.wordAlignedAddress + index,
+				note,
+				keyboard.pressedKeysListMemory.isInteger
+			);
+			index += 1;
 		}
-
-		const updatedCode = [...codeBlock.code];
-		updatedCode[pressedNumberOfKeysMemoryLineNumber] =
-			'int ' + keyboard.pressedNumberOfKeysMemory.id + ' ' + pressedKeys.size;
-
-		const codeWithUpdatedDefaults = updatePressedKeysListMemoryDefaultValues(
-			updatedCode,
-			keyboard.pressedKeysListMemory.id,
-			pressedKeys,
-			keyboard.pressedKeysListMemory.isInteger,
-			keyboard.startingNumber
-		);
-		if (!codeWithUpdatedDefaults) {
-			return;
-		}
-
-		codeBlock.code = codeWithUpdatedDefaults;
-
-		store.set('codeBlockRendering.selectedCodeBlock.code', codeBlock.code);
+		setWordInMemory(keyboard.pressedNumberOfKeysMemory.wordAlignedAddress, pressedKeys.size, true);
 	};
 
 	events.on('codeBlockClick', onCodeBlockClick);

@@ -272,6 +272,9 @@ Render a slider that writes to a memory address.
 
 If provided, `min`, `max`, and `step` must be finite decimal numbers, and `step` must be greater than zero.
 
+Use **Save slider and piano values to code** in the module context menu to save current runtime values as declaration
+defaults in that module.
+
 ### `@crossfade`
 
 Render a center-origin crossfade control that writes to two float memory addresses. The left address is driven when the
@@ -324,11 +327,15 @@ Render a piano keyboard control.
 
 Notes:
 
-- Both memory arguments are addresses because the piano edits the corresponding declarations and observes their runtime
-  storage.
+- Both memory arguments are addresses because piano clicks update the pressed-key array and count directly in runtime
+  memory, like sliders. Clicks leave source code and declaration defaults unchanged; note highlights reflect runtime memory.
+- Use **Save slider and piano values to code** in the module context menu to save the current notes and count as declaration
+  defaults. This preserves the array size and inline comments; memories referenced in another module are skipped.
 - `pressedKeysListAddress` is used as both keyboard id and pressed-key array address.
 - `startingMidiNote` defaults to `0`.
 - `startingMidiNote` must be a non-negative integer.
+- Every other note label has a shaded background using the theme's highlighted code line color, starting with the second
+  key. All note labels use the theme's code text color.
 
 ### Keyboard Memory Config
 

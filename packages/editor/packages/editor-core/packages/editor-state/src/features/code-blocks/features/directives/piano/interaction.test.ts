@@ -26,6 +26,9 @@ describe('pianoKeyboard interaction', () => {
 			},
 			callbacks: {
 				getWordFromMemory: vi.fn((wordAlignedAddress: number) => memoryStore.get(wordAlignedAddress) ?? 0),
+				setWordInMemory: vi.fn((wordAlignedAddress: number, value: number, isInteger: boolean) => {
+					memoryStore.set(wordAlignedAddress, isInteger ? value : new Int32Array(new Float32Array([value]).buffer)[0]);
+				}),
 			},
 		});
 
@@ -121,46 +124,123 @@ describe('pianoKeyboard interaction', () => {
 		expect(mockEvents.off).toHaveBeenCalledWith('codeBlockClick', expect.any(Function));
 	});
 
-	it('adds a clicked key to the array default values based on the runtime memory state', () => {
+	it('adds a clicked note directly to runtime memory without editing code', () => {
 		const codeBlock = createCodeBlockWithPiano();
+		const originalCode = [...codeBlock.code];
 		const cleanup = pianoKeyboard(mockStore, mockEvents);
 
 		clickKey(codeBlock, 2);
 
-		expect(mockStore.set).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlock.code', [
-			'module test-block',
-			'int[] notes 10 50',
-			'int noteCount 1',
-			'; @piano &notes &noteCount 48',
-			'moduleEnd',
-		]);
-
+		expect(memoryStore.get(5)).toBe(50);
+		expect(memoryStore.get(20)).toBe(1);
+		expect(mockState.callbacks.setWordInMemory).toHaveBeenLastCalledWith(20, 1, true);
+		expect(codeBlock.code).toEqual(originalCode);
+		expect(mockStore.set).not.toHaveBeenCalled();
 		cleanup();
 	});
 
-	it('removes a clicked key from the array default values based on the runtime memory state', () => {
+	it('removes a clicked note and compacts the remaining runtime notes', () => {
 		const codeBlock = createCodeBlockWithPiano();
-		codeBlock.code = [
-			'module test-block',
-			'int[] notes 10 50',
-			'int noteCount 1',
-			'; @piano &notes &noteCount 48',
-			'moduleEnd',
-		];
+		memoryStore.set(20, 3);
+		memoryStore.set(5, 48);
+		memoryStore.set(6, 50);
+		memoryStore.set(7, 52);
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		clickKey(codeBlock, 2);
+
+		expect(memoryStore.get(5)).toBe(48);
+		expect(memoryStore.get(6)).toBe(52);
+		expect(memoryStore.get(20)).toBe(2);
+		expect(mockStore.set).not.toHaveBeenCalled();
+		cleanup();
+	});
+
+	it('reads current runtime memory on each click', () => {
+		const codeBlock = createCodeBlockWithPiano();
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		clickKey(codeBlock, 2);
+		clickKey(codeBlock, 4);
+		expect(memoryStore.get(5)).toBe(50);
+		expect(memoryStore.get(6)).toBe(52);
+		expect(memoryStore.get(20)).toBe(2);
+
+		clickKey(codeBlock, 2);
+		clickKey(codeBlock, 4);
+		expect(memoryStore.get(20)).toBe(0);
+		cleanup();
+	});
+
+	it('preserves notes written by the runtime outside the visible keyboard range', () => {
+		const codeBlock = createCodeBlockWithPiano();
+		memoryStore.set(20, 2);
+		memoryStore.set(5, 36);
+		memoryStore.set(6, 84);
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		clickKey(codeBlock, 2);
+
+		expect(memoryStore.get(5)).toBe(36);
+		expect(memoryStore.get(6)).toBe(84);
+		expect(memoryStore.get(7)).toBe(50);
+		expect(memoryStore.get(20)).toBe(3);
+		cleanup();
+	});
+
+	it('does not add notes when the runtime array is full', () => {
+		const codeBlock = createCodeBlockWithPiano();
+		codeBlock.widgets.pianoKeyboards[0].pressedKeysListMemory.numberOfElements = 1;
+		memoryStore.set(20, 1);
+		memoryStore.set(5, 36);
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		clickKey(codeBlock, 2);
+
+		expect(mockState.callbacks.setWordInMemory).not.toHaveBeenCalled();
+		cleanup();
+	});
+
+	it('allows removing a note when the runtime array is full', () => {
+		const codeBlock = createCodeBlockWithPiano();
+		codeBlock.widgets.pianoKeyboards[0].pressedKeysListMemory.numberOfElements = 1;
 		memoryStore.set(20, 1);
 		memoryStore.set(5, 50);
 		const cleanup = pianoKeyboard(mockStore, mockEvents);
 
 		clickKey(codeBlock, 2);
 
-		expect(mockStore.set).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlock.code', [
-			'module test-block',
-			'int[] notes 10',
-			'int noteCount 0',
-			'; @piano &notes &noteCount 48',
-			'moduleEnd',
-		]);
+		expect(memoryStore.get(20)).toBe(0);
+		cleanup();
+	});
 
+	it('decodes and writes float32 note arrays through the memory callbacks', () => {
+		const codeBlock = createCodeBlockWithPiano();
+		codeBlock.widgets.pianoKeyboards[0].pressedKeysListMemory.isInteger = false;
+		memoryStore.set(20, 1);
+		memoryStore.set(5, new Int32Array(new Float32Array([48]).buffer)[0]);
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		clickKey(codeBlock, 2);
+
+		expect(mockState.callbacks.setWordInMemory).toHaveBeenCalledWith(5, 48, false);
+		expect(mockState.callbacks.setWordInMemory).toHaveBeenCalledWith(6, 50, false);
+		expect(memoryStore.get(20)).toBe(2);
+
+		clickKey(codeBlock, 2);
+		expect(memoryStore.get(20)).toBe(1);
+		cleanup();
+	});
+
+	it.each(['getWordFromMemory', 'setWordInMemory'] as const)('ignores clicks without %s', callback => {
+		const codeBlock = createCodeBlockWithPiano();
+		mockState.callbacks[callback] = undefined;
+		const cleanup = pianoKeyboard(mockStore, mockEvents);
+
+		clickKey(codeBlock, 2);
+
+		expect(memoryStore.size).toBe(0);
+		expect(mockStore.set).not.toHaveBeenCalled();
 		cleanup();
 	});
 });
