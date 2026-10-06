@@ -32,6 +32,7 @@ export const moduleMenu: MenuGenerator = state => {
 	// Check if code block has ; @favorite directive
 	const hasFavoriteDirective = state.codeBlockRendering.selectedCodeBlock?.isFavorite ?? false;
 	const hasSliders = (state.codeBlockRendering.selectedCodeBlock?.widgets.sliders.length ?? 0) > 0;
+	const hasPianos = (selectedCodeBlock?.widgets.pianoKeyboards.length ?? 0) > 0;
 	const hasMemoryConnections = state.codeBlockRendering.selectedCodeBlock
 		? hasIntermodularMemoryConnections(state.codeBlockRendering.selectedCodeBlock.code)
 		: false;
@@ -144,11 +145,11 @@ export const moduleMenu: MenuGenerator = state => {
 						close: true,
 					},
 					{
-						title: 'Save slider values to code',
+						title: 'Save slider and piano values to code',
 						action: 'saveSliderValuesToCode',
 						payload: { codeBlock: state.codeBlockRendering.selectedCodeBlock },
 						close: true,
-						disabled: !hasSliders || !state.callbacks.getWordFromMemory,
+						disabled: !(hasSliders || hasPianos) || !state.callbacks.getWordFromMemory,
 					},
 					{
 						title: 'Remove connections',

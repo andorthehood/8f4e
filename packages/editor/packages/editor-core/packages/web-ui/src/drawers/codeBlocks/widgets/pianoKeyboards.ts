@@ -8,7 +8,7 @@ type PianoKeyboardKey = PianoKeyboardData['keys'][number];
 
 function drawPressedKey(engine: DrawContext, spriteLookups: SpriteIdLookups, key: PianoKeyboardKey): void {
 	for (const y of key.pressedOverlayRows) {
-		engine.drawText(key.pressedOverlayX, y, '//', spriteLookups[key.pressedOverlayFont]);
+		engine.drawText(key.pressedOverlayX, y, ';;', spriteLookups[key.pressedOverlayFont]);
 	}
 }
 
@@ -107,6 +107,9 @@ export default function drawer(
 		);
 
 		for (const key of keys) {
+			if (key.offset % 2 === 1) {
+				engine.drawSprite(key.labelX, key.labelY, spriteLookups.fillColors.highlightedCodeLine, keyWidth, keyY);
+			}
 			engine.drawText(key.labelX, key.labelY, key.label, spriteLookups.fontCode);
 		}
 		engine.endGroup();

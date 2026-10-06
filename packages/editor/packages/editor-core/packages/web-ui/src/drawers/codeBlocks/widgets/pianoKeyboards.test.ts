@@ -139,16 +139,16 @@ describe('drawPianoKeyboards', () => {
 		expect(drawSprite).toHaveBeenCalledWith(2, 16, 'pianoKeyWhite', 2, 8);
 		expect(drawSprite).toHaveBeenCalledWith(2.75, 16, 'pianoKeyBlack', 0.5, 8);
 		expect(drawSprite).toHaveBeenCalledWith(4, 4, 'pianoKeyWhite', 2, 20);
-		expect(drawText).toHaveBeenCalledWith(0, 4, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
-		expect(drawText).toHaveBeenCalledWith(0, 8, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
-		expect(drawText).toHaveBeenCalledWith(0, 12, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
-		expect(drawText).toHaveBeenCalledWith(0, 16, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
-		expect(drawText).toHaveBeenCalledWith(0, 20, '//', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
-		expect(drawText).toHaveBeenCalledWith(2, 4, '//', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
-		expect(drawText).toHaveBeenCalledWith(2, 8, '//', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
-		expect(drawText).toHaveBeenCalledWith(2, 12, '//', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
-		expect(drawText).not.toHaveBeenCalledWith(2, 16, '//');
-		expect(drawText).not.toHaveBeenCalledWith(2, 20, '//');
+		expect(drawText).toHaveBeenCalledWith(0, 4, ';;', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(0, 8, ';;', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(0, 12, ';;', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(0, 16, ';;', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(0, 20, ';;', state.spriteLookups?.fontPianoKeyWhitePressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(2, 4, ';;', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(2, 8, ';;', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
+		expect(drawText).toHaveBeenCalledWith(2, 12, ';;', state.spriteLookups?.fontPianoKeyBlackPressedOverlay);
+		expect(drawText).not.toHaveBeenCalledWith(2, 16, ';;');
+		expect(drawText).not.toHaveBeenCalledWith(2, 20, ';;');
 	});
 
 	it('does not draw pressed overlays when runtime memory has no pressed count', () => {
@@ -177,7 +177,7 @@ describe('drawPianoKeyboards', () => {
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
 
 		expect(drawSprite).toHaveBeenCalledWith(4, 4, 'pianoKeyWhite', 2, 20);
-		expect(drawText).not.toHaveBeenCalledWith(expect.any(Number), expect.any(Number), '//');
+		expect(drawText).not.toHaveBeenCalledWith(expect.any(Number), expect.any(Number), ';;');
 	});
 
 	it('draws duplicate runtime notes directly without normalizing pressed keys', () => {
@@ -203,8 +203,8 @@ describe('drawPianoKeyboards', () => {
 		drawPianoKeyboards(engine, state, codeBlock, createMemoryViews({ int32: [0, 2, 0, 0, 48, 48] }));
 
 		const drawText = (engine as unknown as { drawText: ReturnType<typeof vi.fn> }).drawText;
-		const slashCalls = drawText.mock.calls.filter(call => call[2] === '//');
+		const overlayCalls = drawText.mock.calls.filter(call => call[2] === ';;');
 
-		expect(slashCalls.filter(call => call[0] === 0)).toHaveLength(10);
+		expect(overlayCalls.filter(call => call[0] === 0)).toHaveLength(10);
 	});
 });

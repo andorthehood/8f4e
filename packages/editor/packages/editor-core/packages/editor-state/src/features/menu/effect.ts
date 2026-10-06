@@ -70,6 +70,9 @@ function keepMenuWithinViewport(state: State): void {
 export default function contextMenu(store: StateManager<State>, events: EventDispatcher): () => void {
 	const state = store.getState();
 	const onMouseMove = (event: MouseEvent) => {
+		if (!state.contextMenu.open) {
+			return;
+		}
 		const { itemWidth } = state.contextMenu;
 		const { x, y } = getMenuViewportPosition(state);
 		state.contextMenu.highlightedItem = getHighlightedMenuItem(
@@ -82,12 +85,14 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 	};
 
 	const close = () => {
-		events.off('mousedown', onMouseDown);
-		events.off('mousemove', onMouseMove);
 		state.contextMenu.open = false;
 	};
 
 	const onMouseDown = (event: MouseEvent) => {
+		if (!state.contextMenu.open) {
+			return;
+		}
+		event.stopPropagation = true;
 		const { highlightedItem, items } = state.contextMenu;
 		const item = items[highlightedItem];
 
@@ -108,8 +113,6 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 		} else {
 			close();
 		}
-
-		event.stopPropagation = true;
 	};
 
 	const onContextMenu = async (event: MouseEvent) => {
@@ -137,9 +140,6 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 
 		state.contextMenu.itemWidth = getLongestMenuItem(state.contextMenu.items) * state.viewport.vGrid;
 		keepMenuWithinViewport(state);
-
-		events.on('mousedown', onMouseDown);
-		events.on('mousemove', onMouseMove);
 	};
 
 	const onOpenSubMenu = async (event: MenuEvent) => {
@@ -182,8 +182,14 @@ export default function contextMenu(store: StateManager<State>, events: EventDis
 	events.on('openSubMenu', onOpenSubMenu);
 	events.on('contextmenu', onContextMenu);
 	events.on('menuBack', onMenuBack);
+	events.on('mousedown', onMouseDown);
+	events.on('mousemove', onMouseMove);
 
 	return () => {
 		events.off('contextmenu', onContextMenu);
+		events.off('openSubMenu', onOpenSubMenu);
+		events.off('menuBack', onMenuBack);
+		events.off('mousedown', onMouseDown);
+		events.off('mousemove', onMouseMove);
 	};
 }

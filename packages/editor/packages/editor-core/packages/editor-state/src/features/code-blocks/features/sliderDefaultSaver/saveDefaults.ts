@@ -1,13 +1,16 @@
 import type { CodeBlockGraphicData, Slider } from '@8f4e/editor-state-types';
 import {
 	ArgumentType,
+	arrayMemoryDeclarationInstructions,
 	type CompilerASTLine,
 	isMemoryDeclarationLine,
 	scalarMemoryDeclarationInstructions,
 } from '@8f4e/language-spec';
 import { parseLine } from '@8f4e/tokenizer';
+import getCodeBlockModuleId from '~/pureHelpers/getCodeBlockModuleId';
 
 const scalarMemoryDeclarationInstructionSet = new Set<string>(scalarMemoryDeclarationInstructions);
+const arrayMemoryDeclarationInstructionSet = new Set<string>(arrayMemoryDeclarationInstructions);
 const float32DecodeBuffer = new ArrayBuffer(4);
 const float32DecodeInt32 = new Int32Array(float32DecodeBuffer);
 const float32DecodeFloat32 = new Float32Array(float32DecodeBuffer);
@@ -26,12 +29,14 @@ function parseSourceLine(line: string, lineNumber: number): CompilerASTLine | un
 	}
 }
 
-function getScalarMemoryDeclarationId(line: string, lineNumber: number): string | undefined {
+function getMemoryDeclarationId(line: string, lineNumber: number, isArray = false): string | undefined {
 	const parsedLine = parseSourceLine(line, lineNumber);
 	if (
 		!parsedLine ||
 		!isMemoryDeclarationLine(parsedLine) ||
-		!scalarMemoryDeclarationInstructionSet.has(parsedLine.instruction)
+		!(isArray ? arrayMemoryDeclarationInstructionSet : scalarMemoryDeclarationInstructionSet).has(
+			parsedLine.instruction
+		)
 	) {
 		return undefined;
 	}
@@ -101,17 +106,22 @@ function formatRuntimeSliderValue(value: number, slider: Slider): string | undef
 	return /[.eE]/.test(serializedValue) ? serializedValue : `${serializedValue}.0`;
 }
 
-function replaceScalarMemoryDeclarationDefault(line: string, memoryId: string, value: string): string | undefined {
+function replaceMemoryDeclarationDefault(
+	line: string,
+	memoryId: string,
+	value: string,
+	isArray = false
+): string | undefined {
 	const [body = '', comment] = line.split(/;(.*)/s);
 	const pattern = new RegExp(
-		`^(?<prefix>\\s*\\S+\\s+${escapeRegExp(memoryId)})(?<defaults>(?:\\s+\\S+)*)?(?<trailingWhitespace>\\s*)$`
+		`^(?<prefix>\\s*\\S+\\s+${escapeRegExp(memoryId)}${isArray ? '\\s+\\S+' : ''})(?<defaults>(?:\\s+\\S+)*)?(?<trailingWhitespace>\\s*)$`
 	);
 	const groups = pattern.exec(body)?.groups;
 	if (!groups?.prefix) {
 		return undefined;
 	}
 
-	return `${groups.prefix} ${value}${comment !== undefined ? ` ;${comment}` : ''}`;
+	return `${groups.prefix}${value ? ` ${value}` : ''}${comment !== undefined ? ` ;${comment}` : ''}`;
 }
 
 export function saveSliderDefaultValuesToCode(
@@ -136,13 +146,13 @@ export function saveSliderDefaultValuesToCode(
 
 	let didUpdate = false;
 	const updatedCode = codeBlock.code.map((line, index) => {
-		const memoryId = getScalarMemoryDeclarationId(line, index + 1);
+		const memoryId = getMemoryDeclarationId(line, index + 1);
 		const value = memoryId ? sliderValueById.get(memoryId) : undefined;
 		if (!memoryId || value === undefined) {
 			return line;
 		}
 
-		const updatedLine = replaceScalarMemoryDeclarationDefault(line, memoryId, value);
+		const updatedLine = replaceMemoryDeclarationDefault(line, memoryId, value);
 		if (updatedLine === undefined || updatedLine === line) {
 			return line;
 		}
@@ -152,4 +162,90 @@ export function saveSliderDefaultValuesToCode(
 	});
 
 	return didUpdate ? updatedCode : undefined;
+}
+
+export function savePianoDefaultValuesToCode(
+	codeBlock: CodeBlockGraphicData,
+	getWordFromMemory: ((wordAlignedAddress: number) => number) | undefined
+): string[] | undefined {
+	if (!getWordFromMemory || codeBlock.widgets.pianoKeyboards.length === 0) {
+		return undefined;
+	}
+
+	const updatedCode = [...codeBlock.code];
+	for (const keyboard of codeBlock.widgets.pianoKeyboards) {
+		const notesMemory = keyboard.pressedKeysListMemory;
+		const countMemory = keyboard.pressedNumberOfKeysMemory;
+		const directive = codeBlock.parsedDirectives.find(
+			candidate => candidate.name === 'piano' && candidate.rawRow === keyboard.lineNumber
+		);
+		// Save only declarations owned by this block, even when another module uses the same memory names.
+		if (
+			directive?.args.slice(0, 2).some(argument => {
+				const separator = argument.lastIndexOf(':');
+				const moduleId = argument.slice(1, separator);
+				return separator !== -1 && moduleId !== codeBlock.name && moduleId !== getCodeBlockModuleId(codeBlock);
+			})
+		) {
+			continue;
+		}
+		const notesLine = updatedCode.findIndex(
+			(line, index) => getMemoryDeclarationId(line, index + 1, true) === notesMemory.id
+		);
+		const countLine = updatedCode.findIndex(
+			(line, index) => getMemoryDeclarationId(line, index + 1) === countMemory.id
+		);
+		if (notesLine === -1 || countLine === -1) {
+			continue;
+		}
+
+		const runtimeCount = getWordFromMemory(countMemory.wordAlignedAddress);
+		if (!Number.isFinite(runtimeCount)) {
+			continue;
+		}
+		const count = Math.min(Math.max(0, Math.trunc(runtimeCount)), notesMemory.numberOfElements);
+		const values: string[] = [];
+		for (let index = 0; index < count; index++) {
+			const address =
+				notesMemory.wordAlignedAddress + (index * notesMemory.elementWordSize) / Int32Array.BYTES_PER_ELEMENT;
+			const word = getWordFromMemory(address);
+			const value = notesMemory.isInteger
+				? word
+				: notesMemory.isFloat64
+					? decodeFloat64Words(word, getWordFromMemory(address + 1))
+					: decodeFloat32Word(word);
+			if (!Number.isFinite(value)) {
+				break;
+			}
+			const serialized = Object.is(value, -0) ? '0' : value.toString();
+			values.push(notesMemory.isInteger || /[.eE]/.test(serialized) ? serialized : `${serialized}.0`);
+		}
+		if (values.length !== count) {
+			continue;
+		}
+
+		const notesDeclaration = replaceMemoryDeclarationDefault(
+			updatedCode[notesLine],
+			notesMemory.id,
+			values.join(' '),
+			true
+		);
+		const countDeclaration = replaceMemoryDeclarationDefault(updatedCode[countLine], countMemory.id, count.toString());
+		if (notesDeclaration !== undefined && countDeclaration !== undefined) {
+			updatedCode[notesLine] = notesDeclaration;
+			updatedCode[countLine] = countDeclaration;
+		}
+	}
+
+	return updatedCode.some((line, index) => line !== codeBlock.code[index]) ? updatedCode : undefined;
+}
+
+export function saveControlDefaultValuesToCode(
+	codeBlock: CodeBlockGraphicData,
+	getWordFromMemory: ((wordAlignedAddress: number) => number) | undefined
+): string[] | undefined {
+	const sliderCode = saveSliderDefaultValuesToCode(codeBlock, getWordFromMemory);
+	return (
+		savePianoDefaultValuesToCode({ ...codeBlock, code: sliderCode ?? codeBlock.code }, getWordFromMemory) ?? sliderCode
+	);
 }

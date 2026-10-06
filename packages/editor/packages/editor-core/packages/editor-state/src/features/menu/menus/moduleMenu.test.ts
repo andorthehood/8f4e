@@ -1,3 +1,4 @@
+import type { PianoKeyboard } from '@8f4e/editor-state-types';
 import { describe, expect, it } from 'vitest';
 import { createMockCodeBlock, createMockState } from '~/pureHelpers/testingUtils/testUtils';
 import { moduleMenu } from './moduleMenu';
@@ -90,7 +91,7 @@ describe('module menu', () => {
 
 		expect(item).toEqual(
 			expect.objectContaining({
-				title: 'Save slider values to code',
+				title: 'Save slider and piano values to code',
 				payload: { codeBlock },
 				close: true,
 				disabled: false,
@@ -125,6 +126,25 @@ describe('module menu', () => {
 
 		expect(item).toEqual(expect.objectContaining({ disabled: true }));
 	});
+
+	it.each([true, false])(
+		'enables the shared save action for piano-only modules when memory is readable: %s',
+		async readable => {
+			const codeBlock = createMockCodeBlock({ blockType: 'module' });
+			codeBlock.widgets.pianoKeyboards = [{} as PianoKeyboard];
+			const state = createMockState({
+				callbacks: { getWordFromMemory: readable ? () => 0 : undefined },
+				codeBlockRendering: { selectedCodeBlock: codeBlock },
+			});
+			const items = await moduleMenu(state);
+			expect(items.find(item => item.action === 'saveSliderValuesToCode')).toEqual(
+				expect.objectContaining({
+					title: 'Save slider and piano values to code',
+					disabled: !readable,
+				})
+			);
+		}
+	);
 
 	it('adds an action for removing intermodular memory connections', async () => {
 		const codeBlock = createMockCodeBlock({

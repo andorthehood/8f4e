@@ -9,6 +9,8 @@ Manages context menu interactions in the editor: opening menus, highlighting opt
 - **Menu Opening**: Displays context menus at specified screen positions
 - **Option Highlighting**: Tracks which menu option is currently highlighted (hover/keyboard navigation)
 - **Action Dispatch**: Executes menu actions when options are selected
+- **Pointer Handling**: An open menu consumes mouse presses and movement before code blocks or the viewport can react,
+  including the click that closes the menu.
 - **State Management**: Maintains menu state (open/closed, position, highlighted option)
 
 ## Events & Callbacks
