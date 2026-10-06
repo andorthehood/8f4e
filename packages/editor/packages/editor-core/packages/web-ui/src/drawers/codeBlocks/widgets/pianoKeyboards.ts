@@ -8,7 +8,7 @@ type PianoKeyboardKey = PianoKeyboardData['keys'][number];
 
 function drawPressedKey(engine: DrawContext, spriteLookups: SpriteIdLookups, key: PianoKeyboardKey): void {
 	for (const y of key.pressedOverlayRows) {
-		engine.drawText(key.pressedOverlayX, y, '::', spriteLookups[key.pressedOverlayFont]);
+		engine.drawText(key.pressedOverlayX, y, ';;', spriteLookups[key.pressedOverlayFont]);
 	}
 }
 
