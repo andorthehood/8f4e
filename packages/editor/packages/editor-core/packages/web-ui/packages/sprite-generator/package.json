@@ -27,6 +27,6 @@
     "glugglugglug": "*"
   },
   "devDependencies": {
-    "vite": "7.3.5"
+    "vite": "7.3.7"
   }
 }
