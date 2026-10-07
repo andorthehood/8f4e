@@ -31,6 +31,14 @@ describe('parseIncludeDeclarations', () => {
 		});
 	});
 
+	it('preserves export selections and local names', () => {
+		const source = ['includes', 'include std/trig sine', 'include std/trig cosine cos', 'includesEnd'].join('\n');
+		expect(parseIncludeDeclarations(source).includes).toEqual([
+			{ includeId: 'std/trig', exportedName: 'sine', lineNumber: 2 },
+			{ includeId: 'std/trig', exportedName: 'cosine', localName: 'cos', lineNumber: 3 },
+		]);
+	});
+
 	it('allows sources without an includes block', () => {
 		const source = ['8f4e/v1', '', 'entry main', 'entryEnd'].join('\n');
 
@@ -47,8 +55,8 @@ describe('parseIncludeDeclarations', () => {
 
 	it('rejects malformed include declarations inside the includes block', () => {
 		expect(() =>
-			parseIncludeDeclarations(['8f4e/v1', 'includes', 'include std/a std/b', 'includesEnd'].join('\n'))
-		).toThrow('include requires exactly one include id');
+			parseIncludeDeclarations(['8f4e/v1', 'includes', 'include std/a a alias extra', 'includesEnd'].join('\n'))
+		).toThrow('include expects <path> [exportedName [localName]]');
 	});
 
 	it('rejects unclosed include blocks', () => {
@@ -112,7 +120,7 @@ describe('resolveIncludeSourceTree', () => {
 
 describe('resolveIncludeSourceTreeAsync', () => {
 	it('resolves each unique include id once', async () => {
-		const source = ['8f4e/v1', 'includes', 'include std/a', 'include std/a', 'includesEnd'].join('\n');
+		const source = ['8f4e/v1', 'includes', 'include std/a a first', 'include std/a b second', 'includesEnd'].join('\n');
 		const resolvedIds: string[] = [];
 
 		await expect(

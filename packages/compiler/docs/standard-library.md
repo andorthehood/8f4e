@@ -42,16 +42,45 @@ moduleEnd
 entryEnd
 ```
 
-Each `include` line accepts one standard library include id. An include id may provide multiple overloads of the
-same function name, or multiple public functions when the stdlib source marks them with include-local `#export`.
+Each `include` line accepts a source id, an optional exported function name, and an optional local name:
 
-Includes are resolved during project loading. The CLI loads the shipped standard library files from the installed
-package, while browser-based tools load those same files lazily. The compiler receives the included source as ordinary
-function blocks, so overload resolution, stack typing, and `call` behavior are the same as user-defined functions.
+```8f4e
+include <path> [exportedName [localName]]
+```
+
+- `include <path>` includes every public function under its exported name.
+- `include <path> <exportedName>` selects that public function, keeping its exported name.
+- `include <path> <exportedName> <localName>` selects that public function and names it locally.
+
+For example, rename the standard-library sine function to `sin`:
+
+```8f4e
+includes
+include std/math/trig/sine sine sin
+includesEnd
+
+; Inside a module or function:
+push 0.5
+call sin
+```
 
 Inside standard-library source files, `#export` marks functions that become public to the including project. The project
 preparser consumes those markers before compilation, so they do not create WebAssembly exports. Non-exported functions in
 an included source file are treated as private helpers and are renamed with an include-specific prefix.
+
+An include source may export several distinct functions. Select them on separate lines using the same source id.
+Selections use the names exposed by include-local `#export`, including any export aliases, and include every public
+overload of the selected name. Missing exports and private helper names cannot be selected.
+
+Repeated declarations of the same source, export, and local name are deduplicated. Different local names can expose
+the same exported function more than once, and selections can be combined with the include-all form. Each source is
+loaded once per resolution pass and its private helpers are shared by all selections. Unselected exports remain private
+dependencies so calls inside included functions still work. Local names use the same overload and duplicate-signature
+rules as ordinary project functions.
+
+Includes are resolved during project loading. The CLI loads the shipped standard library files from the installed
+package, while browser-based tools load those same files lazily. The compiler receives the included source as ordinary
+function blocks, so overload resolution, stack typing, and `call` behavior are the same as user-defined functions.
 
 ## `std/stack/dup`
 

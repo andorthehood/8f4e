@@ -25,6 +25,17 @@ type FunctionIncludeBlock = {
 	startLineNumber: number;
 };
 
+type IncludeDeclaration = {
+	includeId: string;
+	exportedName?: string;
+	localName?: string;
+	lineNumber: number;
+};
+
+type ProjectIncludeDeclaration = IncludeDeclaration & { projectBlockId: number };
+
+type IncludeBindings = Map<string, Set<string>>;
+
 type IncludeExport = {
 	lineIndex: number;
 	publicName: string;
@@ -150,6 +161,16 @@ function createCallTargetRewriteMap(includeId: string, functions: IncludeFunctio
 		finalNamesByOriginalName.set(func.originalName, names);
 	}
 
+	// Source declarations take precedence when an export alias matches another function's source name.
+	const originalNames = new Set(finalNamesByOriginalName.keys());
+	for (const func of functions) {
+		if (func.export && !originalNames.has(func.export.publicName)) {
+			const names = finalNamesByOriginalName.get(func.export.publicName) ?? new Set<string>();
+			names.add(func.finalName);
+			finalNamesByOriginalName.set(func.export.publicName, names);
+		}
+	}
+
 	const rewriteMap = new Map<string, string>();
 	const ambiguousNames = new Set<string>();
 
@@ -201,39 +222,70 @@ function rewriteIncludeFunctionCode(
 	});
 }
 
-/**
- * Converts resolved include source text into function source blocks.
- */
-export function resolveFunctionIncludeSource(includeId: string, source: string): ResolvedFunctionSource[] {
-	const includeFunctions = createIncludeFunctions(includeId, splitFunctionBlocks(normalizeSourceLines(source)));
-	const callTargetRewriteMap = createCallTargetRewriteMap(includeId, includeFunctions);
-
-	return includeFunctions.map(func => ({
-		code: rewriteIncludeFunctionCode(func, callTargetRewriteMap),
-		source: {
-			kind: 'include' as const,
-			includeId,
-			symbolName: func.finalName,
-		},
-	}));
+function addIncludeBinding(bindings: IncludeBindings, exportedName: string, localName: string): void {
+	const names = bindings.get(exportedName) ?? new Set<string>();
+	names.add(localName);
+	bindings.set(exportedName, names);
 }
 
-function expandProjectInclude(
-	includedFunctionBlocks: ResolvedFunctionSource[],
-	expandedIncludeIds: Set<string>,
+function expandIncludeFunctions(
 	includeId: string,
-	source: string
-): void {
-	if (expandedIncludeIds.has(includeId)) {
-		return;
+	functions: IncludeFunction[],
+	bindings: IncludeBindings
+): ResolvedFunctionSource[] {
+	const prefix = getIncludeFunctionPrefix(includeId);
+	const assignedNames = new Set([
+		...functions.filter(func => !func.export).map(func => `${prefix}${func.originalName}`),
+		...[...bindings.values()].flatMap(names => [...names]),
+	]);
+	const privateExportNames = new Map<string, string>();
+	for (const func of functions) {
+		const publicName = func.export?.publicName;
+		if (publicName === undefined || bindings.has(publicName) || privateExportNames.has(publicName)) {
+			continue;
+		}
+		const baseName = `${prefix}${publicName}`;
+		let privateName = baseName;
+		for (let suffix = 1; assignedNames.has(privateName); suffix += 1) {
+			privateName = `${baseName}_${suffix}`;
+		}
+		assignedNames.add(privateName);
+		privateExportNames.set(publicName, privateName);
 	}
+	// One canonical name per function keeps internal calls and helpers shared across aliases.
+	const canonicalFunctions = functions.map(func => ({
+		...func,
+		finalName: func.export
+			? (bindings.get(func.export.publicName)?.values().next().value ?? privateExportNames.get(func.export.publicName)!)
+			: `${prefix}${func.originalName}`,
+	}));
+	const callTargetRewriteMap = createCallTargetRewriteMap(includeId, canonicalFunctions);
 
-	includedFunctionBlocks.push(...resolveFunctionIncludeSource(includeId, source));
-	expandedIncludeIds.add(includeId);
+	return canonicalFunctions.flatMap(func => {
+		const names = func.export ? bindings.get(func.export.publicName) : undefined;
+		return [...(names ?? [func.finalName])].map(finalName => ({
+			code: rewriteIncludeFunctionCode({ ...func, finalName }, callTargetRewriteMap),
+			source: { kind: 'include' as const, includeId, symbolName: finalName },
+		}));
+	});
+}
+
+/**
+ * Converts all public exports and their private dependencies into function source blocks.
+ */
+export function resolveFunctionIncludeSource(includeId: string, source: string): ResolvedFunctionSource[] {
+	const functions = createIncludeFunctions(includeId, splitFunctionBlocks(normalizeSourceLines(source)));
+	const bindings: IncludeBindings = new Map();
+	for (const func of functions) {
+		if (func.export) {
+			addIncludeBinding(bindings, func.export.publicName, func.export.publicName);
+		}
+	}
+	return expandIncludeFunctions(includeId, functions, bindings);
 }
 
 export function collectProjectIncludeIdsFromBlock(block: Pick<ProjectBlock, 'code' | 'id'>) {
-	const includeIds: Array<{ includeId: string; lineNumber: number }> = [];
+	const includeIds: IncludeDeclaration[] = [];
 
 	for (const [index, line] of block.code.entries()) {
 		const lineNumber = index + 1;
@@ -246,11 +298,16 @@ export function collectProjectIncludeIdsFromBlock(block: Pick<ProjectBlock, 'cod
 			continue;
 		}
 
-		const [instruction, includeId, ...extraArgs] = trimmed.split(/\s+/);
+		const [instruction, includeId, exportedName, localName, ...extraArgs] = trimmed.split(/\s+/);
 		if (instruction !== 'include' || !includeId || extraArgs.length > 0) {
-			throw new ProjectIncludeError('include requires exactly one include id', lineNumber, block.id);
+			throw new ProjectIncludeError('include expects <path> [exportedName [localName]]', lineNumber, block.id);
 		}
-		includeIds.push({ includeId, lineNumber });
+		includeIds.push({
+			includeId,
+			lineNumber,
+			...(exportedName ? { exportedName } : {}),
+			...(localName ? { localName } : {}),
+		});
 	}
 
 	return includeIds;
@@ -290,24 +347,45 @@ export function resolveProjectIncludes(
 	resolveInclude: SyncProjectIncludeResolver
 ): ResolvedFunctionSource[] {
 	const includedFunctionBlocks: ResolvedFunctionSource[] = [];
-	const expandedIncludeIds = new Set<string>();
+	const declarationsByIncludeId = new Map<string, ProjectIncludeDeclaration[]>();
 
 	for (const block of includeBlocks) {
 		if (block.disabled) {
 			continue;
 		}
-		for (const { includeId, lineNumber } of collectProjectIncludeIdsFromBlock(block)) {
-			if (expandedIncludeIds.has(includeId)) {
-				continue;
-			}
-
-			const source = resolveInclude(includeId);
-			if (source === undefined) {
-				throw new ProjectIncludeError(`unresolved include "${includeId}"`, lineNumber, block.id);
-			}
-
-			expandProjectInclude(includedFunctionBlocks, expandedIncludeIds, includeId, source);
+		for (const declaration of collectProjectIncludeIdsFromBlock(block)) {
+			const declarations = declarationsByIncludeId.get(declaration.includeId) ?? [];
+			declarations.push({ ...declaration, projectBlockId: block.id });
+			declarationsByIncludeId.set(declaration.includeId, declarations);
 		}
+	}
+
+	for (const [includeId, declarations] of declarationsByIncludeId) {
+		const source = resolveInclude(includeId);
+		if (source === undefined) {
+			const { lineNumber, projectBlockId } = declarations[0]!;
+			throw new ProjectIncludeError(`unresolved include "${includeId}"`, lineNumber, projectBlockId);
+		}
+		const functions = createIncludeFunctions(includeId, splitFunctionBlocks(normalizeSourceLines(source)));
+		const publicNames = new Set(functions.flatMap(func => (func.export ? [func.export.publicName] : [])));
+		const bindings: IncludeBindings = new Map();
+		for (const { exportedName, localName, lineNumber, projectBlockId } of declarations) {
+			if (exportedName === undefined) {
+				for (const publicName of publicNames) {
+					addIncludeBinding(bindings, publicName, publicName);
+				}
+			} else {
+				if (!publicNames.has(exportedName)) {
+					throw new ProjectIncludeError(
+						`include "${includeId}" does not export "${exportedName}"`,
+						lineNumber,
+						projectBlockId
+					);
+				}
+				addIncludeBinding(bindings, exportedName, localName ?? exportedName);
+			}
+		}
+		includedFunctionBlocks.push(...expandIncludeFunctions(includeId, functions, bindings));
 	}
 
 	return includedFunctionBlocks;

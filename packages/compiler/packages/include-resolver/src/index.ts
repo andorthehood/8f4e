@@ -5,6 +5,8 @@ export type IncludeSourceResolverAsync = (includeId: string) => string | Promise
 
 export interface IncludeDeclaration {
 	includeId: string;
+	exportedName?: string;
+	localName?: string;
 	lineNumber: number;
 }
 
@@ -48,11 +50,16 @@ function isGapLine(trimmedLine: string): boolean {
 }
 
 function parseIncludeDeclarationLine(line: string, lineNumber: number): IncludeDeclaration {
-	const [instruction, includeId, ...extraArgs] = line.trim().split(/\s+/);
+	const [instruction, includeId, exportedName, localName, ...extraArgs] = line.trim().split(/\s+/);
 	if (instruction !== 'include' || !includeId || extraArgs.length > 0) {
-		throw new IncludeResolutionError('include requires exactly one include id', lineNumber);
+		throw new IncludeResolutionError('include expects <path> [exportedName [localName]]', lineNumber);
 	}
-	return { includeId, lineNumber };
+	return {
+		includeId,
+		lineNumber,
+		...(exportedName ? { exportedName } : {}),
+		...(localName ? { localName } : {}),
+	};
 }
 
 export function parseIncludeDeclarations(source: string): IncludeParseResult {

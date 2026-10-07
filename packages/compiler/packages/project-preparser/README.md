@@ -30,3 +30,7 @@ This package does not own:
 
 Groups recursively own their project blocks. Their memory exposure declarations remain symbolic project metadata;
 the program composer resolves those aliases before the compiler's single global memory-planning pass.
+
+Include declarations use `include <path> [exportedName [localName]]`: omit the name to expose all public exports,
+select an exported name to expose its overload family, or add a local name to rename that selection. Repeated selections
+are merged per source, private dependencies are shared, and included calls are rewritten to follow the selected names.
