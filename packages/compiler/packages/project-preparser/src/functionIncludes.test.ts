@@ -54,9 +54,9 @@ describe('include function expansion', () => {
 		);
 		expect(functions[0]!.code).toEqual(['function first', '', 'call helper', 'functionEnd int']);
 		expect(functions[0]!.bindings.functionName).toBe('first');
-		expect(functions[0]!.bindings.callTargets.get('helper')).toBe('__8f4e_std_test__private__helper');
+		expect(functions[0]!.bindings.callTargets.get('helper')).toBe('__8f4e_std_test__nonexported__helper');
 		expect(functions[1]!.code).toEqual(['function helper', 'param int value', 'functionEnd int']);
-		expect(functions[1]!.bindings.functionName).toBe('__8f4e_std_test__private__helper');
+		expect(functions[1]!.bindings.functionName).toBe('__8f4e_std_test__nonexported__helper');
 	});
 
 	it('uses include-local export aliases as the public binding names', () => {
@@ -81,7 +81,10 @@ describe('include function expansion', () => {
 				'functionEnd float',
 			].join('\n')
 		);
-		expect(functions.map(func => func.bindings.functionName)).toEqual(['convert', '__8f4e_std_test__private__convert']);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'convert',
+			'__8f4e_std_test__nonexported__convert',
+		]);
 		expect(new Set(functions.map(func => func.source.symbolName)).size).toBe(2);
 	});
 
@@ -130,11 +133,11 @@ describe('include export selections', () => {
 		expect(functions.map(func => func.bindings.functionName)).toEqual([
 			'first',
 			'first',
-			'__8f4e_std_test__public__second',
-			'__8f4e_std_test__private__helper',
-			'__8f4e_std_test__private__helper',
+			'__8f4e_std_test__unselected__second',
+			'__8f4e_std_test__nonexported__helper',
+			'__8f4e_std_test__nonexported__helper',
 		]);
-		expect(functions[0]!.bindings.callTargets.get('second')).toBe('__8f4e_std_test__public__second');
+		expect(functions[0]!.bindings.callTargets.get('second')).toBe('__8f4e_std_test__unselected__second');
 	});
 
 	it('merges selected exports and identical selections, loading each source once', async () => {
@@ -152,8 +155,8 @@ describe('include export selections', () => {
 			'a',
 			'a',
 			'b',
-			'__8f4e_std_test__private__helper',
-			'__8f4e_std_test__private__helper',
+			'__8f4e_std_test__nonexported__helper',
+			'__8f4e_std_test__nonexported__helper',
 		]);
 		expect(functions[0]!.code).toContain('call helper value');
 		expect(functions[0]!.bindings.callTargets.get('second')).toBe('b');
@@ -176,8 +179,8 @@ describe('include export selections', () => {
 			'first',
 			'first',
 			'second',
-			'__8f4e_std_test__private__helper',
-			'__8f4e_std_test__private__helper',
+			'__8f4e_std_test__nonexported__helper',
+			'__8f4e_std_test__nonexported__helper',
 		]);
 	});
 
@@ -227,11 +230,11 @@ describe('include export selections', () => {
 			includeId => (includeId === 'std/test' ? selectableSource : undefined)
 		);
 		expect(functions.map(func => func.bindings.functionName)).toEqual([
-			'__8f4e_std_test__public__first',
-			'__8f4e_std_test__public__first',
+			'__8f4e_std_test__unselected__first',
+			'__8f4e_std_test__unselected__first',
 			'second',
-			'__8f4e_std_test__private__helper',
-			'__8f4e_std_test__private__helper',
+			'__8f4e_std_test__nonexported__helper',
+			'__8f4e_std_test__nonexported__helper',
 		]);
 	});
 
@@ -266,8 +269,8 @@ describe('include export selections', () => {
 			].join('\n')
 		);
 		expect(functions.map(func => func.bindings.functionName)).toEqual([
-			'__8f4e_std_test__public__first',
-			'__8f4e_std_test__public__second',
+			'__8f4e_std_test__unselected__first',
+			'__8f4e_std_test__unselected__second',
 			'selected',
 		]);
 		expect(new Set(functions.map(func => func.source.symbolName)).size).toBe(3);
@@ -289,8 +292,8 @@ describe('include export selections', () => {
 			].join('\n')
 		);
 		expect(new Set(functions.map(func => func.source.symbolName)).size).toBe(3);
-		expect(functions[0]!.bindings.callTargets.get('helper')).toBe('__8f4e_std_test__private__helper');
-		expect(functions[2]!.bindings.callTargets.get('sourceName')).toBe('__8f4e_std_test__public__helper');
+		expect(functions[0]!.bindings.callTargets.get('helper')).toBe('__8f4e_std_test__nonexported__helper');
+		expect(functions[2]!.bindings.callTargets.get('sourceName')).toBe('__8f4e_std_test__unselected__helper');
 	});
 
 	it('reports unresolved includes with block-relative diagnostics', async () => {

@@ -139,7 +139,9 @@ function createIncludeFunctions(includeId: string, blocks: FunctionIncludeBlock[
 		return {
 			...block,
 			originalName,
-			finalName: includeExport ? `${prefix}public__${includeExport.publicName}` : `${prefix}private__${originalName}`,
+			finalName: includeExport
+				? `${prefix}unselected__${includeExport.publicName}`
+				: `${prefix}nonexported__${originalName}`,
 			...(includeExport ? { export: includeExport } : {}),
 		};
 	});

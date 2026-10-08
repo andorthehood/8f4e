@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_test_math__private__helper__float": {
+    "__8f4e_test_math__nonexported__helper__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_test_math__private__helper",
+              "value": "__8f4e_test_math__nonexported__helper",
             },
           ],
           "instruction": "function",
@@ -67,10 +67,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_test_math__private__helper",
+      "name": "__8f4e_test_math__nonexported__helper",
       "type": "function",
     },
-    "__8f4e_test_math__private__helper__int": {
+    "__8f4e_test_math__nonexported__helper__int": {
       "lines": [
         {
           "arguments": [
@@ -78,7 +78,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_test_math__private__helper",
+              "value": "__8f4e_test_math__nonexported__helper",
             },
           ],
           "instruction": "function",
@@ -137,7 +137,7 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_test_math__private__helper",
+      "name": "__8f4e_test_math__nonexported__helper",
       "type": "function",
     },
     "addOne__float": {
@@ -176,7 +176,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_test_math__private__helper",
+              "value": "__8f4e_test_math__nonexported__helper",
             },
             {
               "referenceKind": "plain",
@@ -238,7 +238,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_test_math__private__helper",
+              "value": "__8f4e_test_math__nonexported__helper",
             },
             {
               "referenceKind": "plain",
@@ -339,8 +339,8 @@
     },
   },
   "functionOverview": {
-    "__8f4e_test_math__private__helper__float": {
-      "id": "__8f4e_test_math__private__helper__float",
+    "__8f4e_test_math__nonexported__helper__float": {
+      "id": "__8f4e_test_math__nonexported__helper__float",
       "signature": {
         "parameters": [
           "float",
@@ -350,8 +350,8 @@
         ],
       },
     },
-    "__8f4e_test_math__private__helper__int": {
-      "id": "__8f4e_test_math__private__helper__int",
+    "__8f4e_test_math__nonexported__helper__int": {
+      "id": "__8f4e_test_math__nonexported__helper__int",
       "signature": {
         "parameters": [
           "int",
@@ -553,8 +553,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_test_math__private__helper__float",
-      "__8f4e_test_math__private__helper__int",
+      "__8f4e_test_math__nonexported__helper__float",
+      "__8f4e_test_math__nonexported__helper__int",
       "addOne__float",
       "addOne__int",
       "addTwo__int",

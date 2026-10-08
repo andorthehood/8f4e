@@ -35,5 +35,6 @@ Include declarations use `include <path> [exportedName [localName]]`: omit the n
 select an exported name to expose its overload family, or add a local name to rename that selection. Repeated selections
 are merged per source, with one local name per export. Conflicting selections of one export under different local names
 are rejected. The program composer applies final declaration names and include-local call targets to validated ASTs.
-Later compiler passes receive ordinary functions. Private dependencies use include-specific internal names; collisions
-with project declarations are handled by ordinary namespace validation.
+Later compiler passes receive ordinary functions. Include-specific internal names use `nonexported` for functions without
+an export marker and `unselected` for exports that were not selected. Collisions with project declarations are handled by
+ordinary namespace validation.
