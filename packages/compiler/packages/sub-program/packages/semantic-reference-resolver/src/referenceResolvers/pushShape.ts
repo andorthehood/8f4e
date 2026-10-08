@@ -1,7 +1,6 @@
 import {
 	ArgumentType,
 	type CodegenPushLine,
-	type CompilationContext,
 	ErrorCode,
 	getError,
 	getParamType,
@@ -12,8 +11,13 @@ import {
 	type ResolvedPushShapeLine,
 } from '@8f4e/language-spec';
 import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
+import type { ReferenceResolutionContext } from '../context';
 
-function createAddressPushLine(line: PushShapeLine, memoryId: string, context: CompilationContext): CodegenPushLine {
+function createAddressPushLine(
+	line: PushShapeLine,
+	memoryId: string,
+	context: ReferenceResolutionContext
+): CodegenPushLine {
 	const address = memoryStartAddressValue(
 		getResolvedMemoryDeclaration(context, memoryId)!,
 		context.namespace.moduleName
@@ -42,7 +46,7 @@ function createAddressPushLine(line: PushShapeLine, memoryId: string, context: C
  */
 export default function resolvePushShapeReferences(
 	line: PushShapeLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): ResolvedPushShapeLine {
 	const prototypeId = line.arguments[0].value;
 	const prototype = context.prototypeShapes?.[prototypeId];

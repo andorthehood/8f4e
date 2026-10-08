@@ -10,5 +10,8 @@ exposed; `ProjectObjectModel` remains owned by `@8f4e/language-spec`.
 All recursively owned projects have already been flattened with isolated internal symbols at this boundary. Memory
 addresses and function/type indexes are therefore assigned once for the complete program, avoiding a linker or
 relocation layer before final WebAssembly emission. Function registration resolves signatures and `paramShape` expansions
-once, pairing each unchanged AST with its metadata. Semantic resolution, stack analysis, and function codegen receive
-those registered declarations directly; the registry remains available for resolving calls.
+once, including imports, exports, and impurity flags. Semantic resolution consumes these registered declarations and
+assigns source binding identities while producing executable bodies without declarations. Stack analysis consumes those
+bodies and produces execution facts. Codegen assigns WebAssembly local indexes and emits bytecode from resolved bodies
+and stack facts. The original ASTs remain unchanged for diagnostics and compiled output; the registry remains available
+for matching calls.

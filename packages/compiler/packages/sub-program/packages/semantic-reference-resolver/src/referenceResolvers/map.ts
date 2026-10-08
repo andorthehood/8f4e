@@ -1,9 +1,10 @@
-import type { CompilationContext, MapLine, ResolvedArgumentLiteral, ResolvedMapLine } from '@8f4e/language-spec';
+import type { MapLine, ResolvedArgumentLiteral, ResolvedMapLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 import { resolveAndValidateValueArguments } from './helpers';
 
 /** Creates the implicit key argument for one-argument `map` rows from the active map state. */
-function createImplicitKeyArgument(context: CompilationContext): ResolvedArgumentLiteral {
+function createImplicitKeyArgument(context: ReferenceResolutionContext): ResolvedArgumentLiteral {
 	const { mapState } = context.activeMapBlock!;
 
 	return {
@@ -24,7 +25,7 @@ function createImplicitKeyArgument(context: CompilationContext): ResolvedArgumen
  * @param context - Compilation context used by the operation.
  * @returns Map line with resolved key/value arguments.
  */
-export default function resolveMapReferences(line: MapLine, context: CompilationContext): ResolvedMapLine {
+export default function resolveMapReferences(line: MapLine, context: ReferenceResolutionContext): ResolvedMapLine {
 	if (line.arguments.length === 1) {
 		const resolved = resolveAndValidateValueArguments(line, context, [0]);
 

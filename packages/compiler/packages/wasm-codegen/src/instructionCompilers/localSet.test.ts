@@ -1,4 +1,4 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
+import type { ResolvedLocalSetLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
@@ -11,7 +11,7 @@ describe('localSet instruction compiler', () => {
 		const local = { isInteger: true, index: 0 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				value: local,
+				0: local,
 			},
 		});
 		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
@@ -22,8 +22,8 @@ describe('localSet instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'localSet',
 				arguments: [classifyIdentifier('value')],
-				local,
-			} as CompilerASTLine,
+				binding: { id: 0, name: 'value', type: 'int' },
+			} as ResolvedLocalSetLine,
 			context
 		);
 

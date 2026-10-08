@@ -4,7 +4,7 @@ import {
 	createFunctionParameterSignatureKey,
 	encodeFunctionValueType,
 	type FunctionValueType,
-	functionValueTypeToLocalBinding,
+	functionValueTypeToLocalMetadata,
 	functionValueTypeToStackItem,
 	stackItemMatchesFunctionValueType,
 } from './functionTypes';
@@ -12,15 +12,15 @@ import type { StackItem } from './semantic';
 
 describe('function value type helpers', () => {
 	it.each([
-		['int', { isInteger: true, index: 2 }],
-		['float', { isInteger: false, index: 2 }],
-		['float64', { isInteger: false, isFloat64: true, index: 2 }],
-		['int*', { isInteger: true, pointeeBaseType: 'int', pointerDepth: 1, index: 2 }],
-		['int8u*', { isInteger: true, pointeeBaseType: 'int8u', pointerDepth: 1, index: 2 }],
-		['float64**', { isInteger: true, pointeeBaseType: 'float64', pointerDepth: 2, index: 2 }],
-		['opaque', { isInteger: false, index: 2 }],
-	])('converts %s to a local binding', (type, expected) => {
-		expect(functionValueTypeToLocalBinding(type as FunctionValueType, 2)).toEqual(expected);
+		['int', { isInteger: true }],
+		['float', { isInteger: false }],
+		['float64', { isInteger: false, isFloat64: true }],
+		['int*', { isInteger: true, pointeeBaseType: 'int', pointerDepth: 1 }],
+		['int8u*', { isInteger: true, pointeeBaseType: 'int8u', pointerDepth: 1 }],
+		['float64**', { isInteger: true, pointeeBaseType: 'float64', pointerDepth: 2 }],
+		['opaque', { isInteger: false }],
+	])('converts %s to source value metadata', (type, expected) => {
+		expect(functionValueTypeToLocalMetadata(type as FunctionValueType)).toEqual(expected);
 	});
 
 	it.each([

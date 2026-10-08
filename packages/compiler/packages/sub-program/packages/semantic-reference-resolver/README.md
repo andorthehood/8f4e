@@ -1,21 +1,17 @@
 # @8f4e/semantic-reference-resolver
 
-`@8f4e/semantic-reference-resolver` is the sub-program-level compiler pass that resolves semantic value references after constants, memory layout references, defaults, namespaces, and function metadata are available.
+This pass resolves source bindings and produces executable module and function bodies after constants, memory layout, defaults, namespaces, and function registration are available.
 
-It owns:
+Function registration supplies resolved signatures, imports, exports, impurity flags, and `paramShape` expansions. The resolver consumes those declarations once. It assigns each parameter and local declaration a binding identity, so references keep their original target even when a later declaration reuses the name.
 
-- folding remaining literal compile-time value expressions;
-- resolving instruction value positions that refer to memory declarations, locals, pointers, and functions;
-- extracting push, call, localSet, and pushShape semantic facts without mutating the source AST;
-- producing a semantic reference report whose per-line facts are aligned with the original module/function AST lines.
+The output contains:
 
-It does not own:
+- immutable source ASTs for diagnostics and compiled output;
+- registered function metadata;
+- source bindings with types and parameter positions, without WebAssembly local indexes;
+- executable bodies containing resolved arguments, binding references, inline call pushes, and shape expansions;
+- module execution metadata such as `skipExecutionInCycle`.
 
-- source tokenization or syntax validation;
-- constant resolution;
-- memory layout planning;
-- memory address/reference inlining;
-- stack-effect validation;
-- WebAssembly bytecode emission.
+Declaration instructions are absent from executable bodies. Loop defaults and `#loopCap` are normalized into explicit loop caps. Each body line retains its original source-line index for stack facts and diagnostics. Memory IO restrictions on pure functions are checked here, after resolving pointer dereferences.
 
-The compiler should call this pass once per sub-program compilation from `compileSubProgram`. Function inputs are registered declarations that pair unchanged ASTs with their already-resolved metadata; this pass does not rebuild function signatures or `paramShape` expansions. Downstream passes should consume the semantic reference report alongside the unchanged ASTs instead of running their own line-by-line reference resolution. The report is a delta: it stores only extracted facts such as resolved arguments, local metadata, push targets, inline call pushes, and shape expansions.
+Stack analysis and codegen consume these bodies directly. They do not replay declarations or resolve source names. This pass does not parse source, validate syntax, construct constant namespaces, plan memory, validate execution stacks, or emit WebAssembly.

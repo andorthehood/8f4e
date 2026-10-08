@@ -29,6 +29,24 @@ In short:
 - original AST plus resolved value reports
 - compilation
 
+## Declaration and Execution Handoff
+
+Function registration resolves signatures, `paramShape` expansions, imports, exports, and impurity flags. Semantic
+reference resolution then assigns source binding identities and produces executable bodies. These bodies exclude
+parameter/local declarations, source block markers, memory declarations, and compiler directives. Loop defaults are
+already explicit, and module execution directives are recorded as metadata.
+
+Stack analysis consumes executable bodies and returns execution facts. Local pointer facts are keyed by binding
+identity, without WebAssembly indexes. It validates returns against registered signatures and never reconstructs
+imports, exports, parameters, or module execution metadata.
+
+Codegen owns WebAssembly local indexes and generated temporary locals. It allocates source binding storage before
+emitting a body and reads registered metadata directly when building function types, imports, and exports. Original
+ASTs remain attached for source diagnostics and tooling; downstream stages do not replay declarations from them.
+
+Source-only function structure rules, including parameter ordering, duplicate directives, and imported function bodies,
+are checked during tokenization. Duplicate symbols and resolved signature limits remain semantic checks.
+
 ## Design Rule
 
 Compile-time expressions should have one owner.

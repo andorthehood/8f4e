@@ -9,7 +9,6 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import type { ASTLineBase, InstructionCompiler, LoadInstructionSpecName, MemoryLoadVariant } from '@8f4e/language-spec';
 import { getInstructionSpec } from '@8f4e/language-spec';
-import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { guardedLoad, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
 import { requireStackAddress } from './utils/stackItem';
@@ -30,7 +29,6 @@ const loadVariantByteCode: Record<MemoryLoadVariant, (memoryIndex: number) => nu
 };
 
 const load: InstructionCompiler<LoadLine> = (line, context, facts) => {
-	assertFunctionMemoryIoAllowed(line, context);
 	const [rawAddress] = facts.stackAnalysis.consumedOperands;
 	const address = requireStackAddress(rawAddress, line, context);
 	const operation = getInstructionSpec(line.instruction).effects.memory;

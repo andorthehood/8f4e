@@ -1,0 +1,11 @@
+8f4e/v1
+
+function consume
+param int value
+push value
+functionEnd int
+
+function pureCaller
+param int* pointer
+call consume *pointer
+functionEnd int

@@ -508,6 +508,7 @@ export const instructionSpecs = {
 		stack: stack({ inputs: ['int'], outputs: [] }),
 	},
 	function: {
+		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		placement: {
 			block: {
@@ -522,6 +523,7 @@ export const instructionSpecs = {
 		docs: { shortDescription: 'Starts a function block.' },
 	},
 	functionEnd: {
+		codegen: false,
 		sourceArguments: { argumentTypes: 'functionTypeIdentifier' },
 		placement: {
 			...functionPlacement,
@@ -638,6 +640,7 @@ export const instructionSpecs = {
 		effect: stackMutation(1, [{ kind: 'float', isNonZero: false }]),
 	}),
 	local: {
+		codegen: false,
 		sourceArguments: {
 			minArguments: 2,
 			maxArguments: 2,
@@ -670,6 +673,7 @@ export const instructionSpecs = {
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	'#loopCap': {
+		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'nonNegativeIntegerLiteral' },
 		placement: moduleOrFunctionPlacement,
 		functionDeclaration: { preBody: true, importedFunction: true },
@@ -684,6 +688,7 @@ export const instructionSpecs = {
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	'#export': {
+		codegen: false,
 		sourceArguments: { maxArguments: 1, argumentTypes: 'identifier' },
 		placement: functionPlacement,
 		functionDeclaration: { preBody: true },
@@ -693,6 +698,7 @@ export const instructionSpecs = {
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	'#import': {
+		codegen: false,
 		sourceArguments: {
 			minArguments: 1,
 			maxArguments: 1,
@@ -706,12 +712,14 @@ export const instructionSpecs = {
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	'#skipExecution': {
+		codegen: false,
 		sourceArguments: noSourceArguments,
 		placement: modulePlacement,
 		docs: { shortDescription: 'Skips the current module during main execution.' },
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	'#impure': {
+		codegen: false,
 		sourceArguments: noSourceArguments,
 		placement: functionPlacement,
 		functionDeclaration: { preBody: true, importedFunction: true },
@@ -862,6 +870,7 @@ export const instructionSpecs = {
 		outputs: ['int'],
 	}),
 	param: {
+		codegen: false,
 		sourceArguments: {
 			minArguments: 2,
 			maxArguments: 2,
@@ -873,6 +882,7 @@ export const instructionSpecs = {
 		stack: stack({ inputs: [], outputs: [] }),
 	},
 	paramShape: {
+		codegen: false,
 		sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: 'identifier' },
 		placement: functionPlacement,
 		functionDeclaration: { preBody: true, importedFunction: true },

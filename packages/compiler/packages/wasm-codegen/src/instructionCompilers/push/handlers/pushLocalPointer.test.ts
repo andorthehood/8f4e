@@ -9,10 +9,10 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('pushLocalPointer', () => {
 	it('dereferences a local pointer via a guarded load', () => {
-		const local = { kind: 'value', valueType: 'int', pointeeBaseType: 'float' as const, pointerDepth: 1, index: 1 };
+		const local = { isInteger: true as const, pointeeBaseType: 'float' as const, pointerDepth: 1, index: 1 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				lut: local,
+				0: local,
 			},
 		});
 
@@ -21,7 +21,7 @@ describe('pushLocalPointer', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('*lut')],
-				resolvedTarget: { kind: 'local-pointer', localName: 'lut' },
+				resolvedTarget: { kind: 'local-pointer', binding: { id: 0, name: 'lut', type: 'float*' } },
 			} as ResolvedLocalPointerPushLine,
 			context
 		);
@@ -35,10 +35,10 @@ describe('pushLocalPointer', () => {
 	});
 
 	it('dereferences an unsigned int8 local pointer via an unsigned guarded load', () => {
-		const local = { kind: 'value', valueType: 'int', pointeeBaseType: 'int8u' as const, pointerDepth: 1, index: 1 };
+		const local = { isInteger: true as const, pointeeBaseType: 'int8u' as const, pointerDepth: 1, index: 1 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				bytes: local,
+				0: local,
 			},
 		});
 
@@ -47,7 +47,7 @@ describe('pushLocalPointer', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('*bytes')],
-				resolvedTarget: { kind: 'local-pointer', localName: 'bytes' },
+				resolvedTarget: { kind: 'local-pointer', binding: { id: 0, name: 'bytes', type: 'int8u*' } },
 			} as ResolvedLocalPointerPushLine,
 			context
 		);

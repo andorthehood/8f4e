@@ -43,8 +43,6 @@ functionEnd int
 			'store',
 		]);
 		expect(analyzedResult.compiledFunctions![functionId].stackAnalysis?.map(line => line.instruction)).toEqual([
-			'function',
-			'param',
 			'push',
 			'push',
 			'add',

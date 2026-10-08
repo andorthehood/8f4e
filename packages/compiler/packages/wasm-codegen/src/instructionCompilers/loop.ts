@@ -11,23 +11,19 @@ import {
 	WASM_LOOP,
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
-import type { InstructionCompiler, LoopBlockStackFrame, LoopLine, ResolvedLoopLine } from '@8f4e/language-spec';
-import { ArgumentType, BlockType, ErrorCode, getError } from '@8f4e/language-spec';
-import { allocateLocal, pushBlock } from '@8f4e/semantic-utils';
+import type { CodegenLoopBlockStackFrame, InstructionCompiler, ResolvedLoopLine } from '@8f4e/language-spec';
+import { BlockType } from '@8f4e/language-spec';
+import { pushBlock } from '@8f4e/semantic-utils';
+import { allocateLocal } from '../localStorage';
 import { saveByteCode } from './utils/saveByteCode';
-
-const DEFAULT_LOOP_CAP = 1000;
 
 /**
  * Instruction compiler for `loop`.
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
-const loop: InstructionCompiler<ResolvedLoopLine | LoopLine> = (line, context) => {
+const loop: InstructionCompiler<ResolvedLoopLine> = (line, context) => {
 	const capArg = line.arguments[0];
-	if (capArg !== undefined && capArg.type !== ArgumentType.LITERAL) {
-		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
-	}
-	const effectiveCap = capArg !== undefined ? (capArg.value as number) : (context.loopCap ?? DEFAULT_LOOP_CAP);
+	const effectiveCap = capArg.value;
 
 	const infiniteLoopProtectionCounterName = '__infiniteLoopProtectionCounter' + line.lineNumber;
 	const loopCounterLocal = allocateLocal(context, infiniteLoopProtectionCounterName, {
@@ -35,10 +31,9 @@ const loop: InstructionCompiler<ResolvedLoopLine | LoopLine> = (line, context) =
 	});
 	const counterLocalIndex = loopCounterLocal.index;
 
-	const loopBlock: LoopBlockStackFrame = {
+	const loopBlock: CodegenLoopBlockStackFrame = {
 		expectedResultTypes: [],
 		blockType: BlockType.LOOP,
-		loopCounterLocalName: infiniteLoopProtectionCounterName,
 		loopCounterLocal,
 	};
 

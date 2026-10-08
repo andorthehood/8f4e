@@ -1,7 +1,6 @@
 import { i32store8, localGet, localSet } from '@8f4e/compiler-wasm-utils';
 import type { InstructionCompiler, StoreBytesLine } from '@8f4e/language-spec';
 import { getInstructionSpec } from '@8f4e/language-spec';
-import assertFunctionMemoryIoAllowed from './assertFunctionMemoryIoAllowed';
 import { getOrCreateMemoryGuardLocal, guardedStoreFromLocals, isSafeMemoryAccess } from './utils/memoryAccessGuard';
 import { saveByteCode } from './utils/saveByteCode';
 import { requireStackAddress } from './utils/stackItem';
@@ -11,7 +10,6 @@ import { requireStackAddress } from './utils/stackItem';
  * @see [Instruction docs](../../docs/instructions/memory.md)
  */
 const storeBytes: InstructionCompiler<StoreBytesLine> = (line, context, facts) => {
-	assertFunctionMemoryIoAllowed(line, context);
 	const count = line.arguments[0].value;
 	const operation = getInstructionSpec(line.instruction).effects.memory;
 	const accessByteWidth = operation.accessByteWidth;

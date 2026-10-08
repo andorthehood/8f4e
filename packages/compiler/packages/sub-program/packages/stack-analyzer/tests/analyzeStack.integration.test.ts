@@ -1,8 +1,8 @@
-import type { FunctionAST, ModuleAST, PrototypeAST } from '@8f4e/language-spec';
+import type { SourceLocalBinding } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { type AnalyzeStackSubProgramInput, analyzeStack } from '../src';
 
-type StackAnalyzerIntegrationInput = AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>;
+type StackAnalyzerIntegrationInput = AnalyzeStackSubProgramInput;
 
 describe('analyzeStack integration', () => {
 	it('analyzes a sub-program-level module and function report from pass-shaped fixtures', () => {
@@ -162,62 +162,6 @@ describe('analyzeStack integration', () => {
 				},
 			],
 		} as const;
-		const semanticReferences = {
-			modules: {
-				main: {
-					lineFacts: [
-						undefined,
-						undefined,
-						{
-							arguments: [
-								{
-									type: 'literal',
-									value: 4,
-									isInteger: true,
-									address: {
-										memoryIndex: 0,
-										safeRange: bufferRange,
-									},
-								},
-							],
-						},
-						undefined,
-						undefined,
-						undefined,
-						undefined,
-						undefined,
-						undefined,
-					],
-				},
-			},
-			functions: {
-				increment__int: {
-					functionId: 'increment__int',
-					lineFacts: [
-						undefined,
-						undefined,
-						undefined,
-						undefined,
-						{
-							resolvedTarget: {
-								kind: 'local',
-								localName: 'value',
-							},
-						},
-						undefined,
-						undefined,
-						undefined,
-						{
-							resolvedTarget: {
-								kind: 'local',
-								localName: 'temp',
-							},
-						},
-						undefined,
-					],
-				},
-			},
-		} as const;
 		const namespaces = {
 			main: {
 				kind: 'module',
@@ -316,12 +260,56 @@ describe('analyzeStack integration', () => {
 			signatures: [],
 			baseTypeIndex: 3,
 		} as const;
-		const prototypeShapes = {} as const;
+		const valueBinding: SourceLocalBinding = { id: 0, name: 'value', type: 'int', parameterIndex: 0 };
+		const tempBinding: SourceLocalBinding = { id: 1, name: 'temp', type: 'int' };
+		const semanticReferences = {
+			modules: {
+				main: {
+					ast: ast.modules[0],
+					bindings: [],
+					skipExecutionInCycle: false,
+					body: ast.modules[0].lines.slice(2, -1).map((line, index) => ({
+						sourceLineIndex: index + 2,
+						line:
+							index === 0
+								? {
+										...line,
+										arguments: [
+											{
+												type: 'literal',
+												value: 4,
+												isInteger: true,
+												address: { memoryIndex: 0, safeRange: bufferRange },
+											},
+										],
+									}
+								: line,
+					})),
+				},
+			},
+			functions: {
+				increment__int: {
+					ast: ast.functions[0],
+					metadata: { ...functions.byId.increment__int, exportName: 'inc' },
+					bindings: [valueBinding, tempBinding],
+					body: ast.functions[0].lines.slice(4, -1).map((line, index) => ({
+						sourceLineIndex: index + 4,
+						line:
+							line.instruction === 'localSet'
+								? { ...line, binding: tempBinding }
+								: line.instruction === 'push' && line.arguments[0].type === 'identifier'
+									? {
+											...line,
+											resolvedTarget: { kind: 'local' as const, binding: index === 0 ? valueBinding : tempBinding },
+										}
+									: line,
+					})),
+				},
+			},
+		};
 
 		expect(
 			analyzeStack({
-				ast,
-				registeredFunctions: [{ ast: ast.functions[0], metadata: functions.byId.increment__int }],
 				semanticReferences,
 				namespaces,
 				memoryPlan,
@@ -329,7 +317,6 @@ describe('analyzeStack integration', () => {
 				pointerMetadataByModuleId,
 				functions,
 				functionTypeRegistry,
-				prototypeShapes,
 			} satisfies StackAnalyzerIntegrationInput)
 		).toMatchSnapshot();
 	});

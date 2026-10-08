@@ -9,10 +9,10 @@ const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
 describe('pushLocal', () => {
 	it('pushes a local via local.get', () => {
-		const local = { kind: 'value', valueType: 'int', index: 3 };
+		const local = { isInteger: true, index: 3 };
 		const context = createInstructionCompilerTestContext({
 			locals: {
-				temp: local,
+				0: local,
 			},
 		});
 
@@ -21,7 +21,7 @@ describe('pushLocal', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [classifyIdentifier('temp')],
-				resolvedTarget: { kind: 'local', localName: 'temp' },
+				resolvedTarget: { kind: 'local', binding: { id: 0, name: 'temp', type: 'int' } },
 			} as ResolvedLocalPushLine,
 			context
 		);

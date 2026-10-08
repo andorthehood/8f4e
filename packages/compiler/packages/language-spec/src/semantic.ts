@@ -21,8 +21,13 @@ import type {
 	PushShapeLine,
 } from './ast';
 import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMetadata } from './compiled';
-import type { FunctionImportMetadata, FunctionValueType } from './functionTypes';
-import type { CompiledModuleBlockType, CompilerSourceBlockType, CompilerSourceCompilationMode } from './instructions';
+import type { FunctionValueType } from './functionTypes';
+import type {
+	CodegenInstructionName,
+	CompiledModuleBlockType,
+	CompilerSourceBlockType,
+	CompilerSourceCompilationMode,
+} from './instructions';
 import type {
 	ArrayDeclarationInstruction,
 	MemoryDefaults,
@@ -88,18 +93,17 @@ export type ResolvedIntegerArgumentLiteral = ResolvedArgumentLiteral & {
 	isFloat64?: false;
 };
 
-/** Resolved scalar local variable slot and type metadata for function compilation. */
-export interface ScalarLocalBinding {
+/** Scalar local value facts, independent of WebAssembly storage. */
+export interface ScalarLocalMetadata {
 	isInteger: boolean;
 	isFloat64?: boolean;
 	pointeeBaseType?: undefined;
 	pointeeMemoryIndex?: number;
 	pointeeMemoryRegionName?: string;
-	index: number;
 }
 
-/** Resolved pointer local variable slot and type metadata for function compilation. */
-export interface PointerLocalBinding {
+/** Pointer local value facts, independent of WebAssembly storage. */
+export interface PointerLocalMetadata {
 	isInteger: true;
 	isFloat64?: false;
 	pointeeBaseType: PointeeBaseType;
@@ -107,12 +111,23 @@ export interface PointerLocalBinding {
 	pointeeMemoryIndex?: number;
 	pointeeMemoryRegionName?: string;
 	pointeeElementCount?: number;
-	index: number;
 }
 
-export type LocalBinding = ScalarLocalBinding | PointerLocalBinding;
+export type LocalValueMetadata = ScalarLocalMetadata | PointerLocalMetadata;
+export type LocalMap = Record<string, LocalValueMetadata>;
 
-export type LocalMap = Record<string, LocalBinding>;
+export type ScalarLocalBinding = ScalarLocalMetadata & { index: number };
+export type PointerLocalBinding = PointerLocalMetadata & { index: number };
+export type LocalBinding = ScalarLocalBinding | PointerLocalBinding;
+export type LocalStorageMap = Record<string, LocalBinding>;
+
+/** One resolved source declaration; its identity remains stable across later stages. */
+export interface SourceLocalBinding {
+	id: number;
+	name: string;
+	type: FunctionValueType;
+	parameterIndex?: number;
+}
 
 /** Mutable namespace state available while compiling modules, constants, and functions. */
 export interface Namespace {
@@ -141,8 +156,6 @@ export type CompilationMode = CompilerSourceCompilationMode;
 export interface CompilationContext {
 	namespace: Namespace;
 	locals: LocalMap;
-	/** Next WebAssembly local index assigned by the shared local allocator. */
-	nextLocalIndex: number;
 	stack: Stack;
 	blockStack: BlockStack;
 	/** Cached active block counts keyed by block type, maintained with block stack mutations. */
@@ -178,16 +191,8 @@ export interface CompilationContext {
 	currentFunctionId?: string;
 	currentFunctionName?: string;
 	currentFunctionMetadata?: FunctionMetadata;
-	currentFunctionParameterCount?: number;
-	currentFunctionTypeIndex?: number;
-	currentFunctionIsImpure?: boolean;
-	currentFunctionExportName?: string;
-	currentFunctionImport?: FunctionImportMetadata;
 	functionTypeRegistry?: FunctionTypeRegistry;
 	prototypeShapes?: Readonly<Record<string, PrototypeAST>>;
-	skipExecutionInCycle?: boolean;
-	/** Current default loop cap for subsequent loops. Defaults to 1000 when not set. */
-	loopCap?: number;
 }
 
 /** Compilation context narrowed to a module body. */
@@ -214,8 +219,6 @@ export interface FunctionCompilationContext extends CompilationContext {
 	currentFunctionId: string;
 	currentFunctionName: string;
 	currentFunctionMetadata: FunctionMetadata;
-	currentFunctionParameterCount: number;
-	currentFunctionTypeIndex?: number;
 	functionTypeRegistry: FunctionTypeRegistry;
 }
 
@@ -267,7 +270,7 @@ export interface StackAnalysisResult {
 }
 
 export interface StackAnalysisLocalPointerFact {
-	localName: string;
+	bindingId: number;
 	pointeeMemoryIndex: number;
 	pointeeMemoryRegionName?: string;
 }
@@ -319,7 +322,15 @@ export interface MemoryReferenceResolutionReport {
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 }
 
-export type CodegenContext<TContext extends CompilationContext = CompilationContext> = Omit<TContext, 'stack'>;
+export type CodegenContext<TContext extends CompilationContext = CompilationContext> = Omit<
+	TContext,
+	'stack' | 'locals' | 'activeLoopBlocks' | 'blockStack'
+> & {
+	locals: LocalStorageMap;
+	nextLocalIndex: number;
+	activeLoopBlocks: CodegenLoopBlockStackFrame[];
+	blockStack: Array<Exclude<BlockStackFrame, LoopBlockStackFrame> | CodegenLoopBlockStackFrame>;
+};
 export type FunctionCodegenContext = CodegenContext<FunctionCompilationContext>;
 
 export type ResolvedMapValueArgument = ResolvedArgumentLiteral | ArgumentStringLiteral;
@@ -337,7 +348,7 @@ export type ResolvedMemoryCopyLine = Omit<MemoryCopyLine, 'arguments'> & {
 };
 
 export type ResolvedLoopLine = Omit<LoopLine, 'arguments'> & {
-	arguments: [] | [ResolvedArgumentLiteral];
+	arguments: [ResolvedArgumentLiteral];
 };
 
 export type ArrayDeclarationInitializerArgument =
@@ -378,7 +389,7 @@ export type ResolvedLocalPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier];
 	resolvedTarget: {
 		kind: 'local';
-		localName: string;
+		binding: SourceLocalBinding;
 	};
 };
 
@@ -386,7 +397,7 @@ export type ResolvedLocalPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 	resolvedTarget: {
 		kind: 'local-pointer';
-		localName: string;
+		binding: SourceLocalBinding;
 	};
 };
 
@@ -405,6 +416,8 @@ export type PushIdentifierLine = Omit<PushLine, 'arguments'> & {
 export type MemoryPointerPushLine = Omit<PushLine, 'arguments'> & {
 	arguments: [MemoryPointerIdentifier];
 };
+
+export type ResolvedLocalSetLine = LocalSetLine & { binding: SourceLocalBinding };
 
 export type SemanticCallLine = Omit<CallLine, 'arguments'> & {
 	arguments: [ArgumentIdentifier, ...PushArgument[]];
@@ -428,7 +441,7 @@ export type SemanticReferenceLine<TLine extends CompilerASTLine = CompilerASTLin
 		: TLine extends MapLine
 			? ResolvedMapLine
 			: TLine extends LocalSetLine
-				? LocalSetLine
+				? ResolvedLocalSetLine
 				: TLine extends PushLine
 					? SemanticPushLine
 					: TLine extends PushShapeLine
@@ -441,12 +454,8 @@ export type SemanticReferenceLine<TLine extends CompilerASTLine = CompilerASTLin
 									? ArrayDeclarationLine
 									: TLine;
 
-export interface SemanticReferenceLineFacts {
-	arguments?: SemanticReferenceLine['arguments'];
-	inlineArgumentPushes?: NonNullable<SemanticCallLine['inlineArgumentPushes']>;
-	resolvedTarget?: ResolvedPushLine['resolvedTarget'];
-	shapeExpansions?: ResolvedPushShapeLine['shapeExpansions'];
-}
+/** Resolved instructions that remain after declaration processing. */
+export type ExecutableInstructionLine = Extract<SemanticReferenceLine, { instruction: CodegenInstructionName }>;
 
 export const BlockType = {
 	MODULE: 0,
@@ -509,10 +518,13 @@ export interface ConstantsBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.CONSTANTS;
 }
 
-/** Block stack frame for an open loop, including its generated counter local. */
+/** Stack-analysis frame for an open loop. */
 export interface LoopBlockStackFrame extends BlockStackFrameBase {
 	blockType: typeof BlockType.LOOP;
-	loopCounterLocalName: string;
+}
+
+/** Backend loop frame with its generated WebAssembly counter slot. */
+export interface CodegenLoopBlockStackFrame extends LoopBlockStackFrame {
 	loopCounterLocal: LocalBinding;
 }
 

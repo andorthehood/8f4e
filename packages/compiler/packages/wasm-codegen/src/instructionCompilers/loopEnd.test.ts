@@ -13,8 +13,7 @@ describe('loopEnd instruction compiler', () => {
 				{
 					blockType: BlockType.LOOP,
 					expectedResultTypes: [],
-					loopCounterLocalName: '__loopCounter1',
-					loopCounterLocal: { kind: 'value', valueType: 'int', index: 0 },
+					loopCounterLocal: { isInteger: true, index: 0 },
 				},
 			],
 		});

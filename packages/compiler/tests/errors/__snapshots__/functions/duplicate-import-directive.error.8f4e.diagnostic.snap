@@ -1,8 +1,6 @@
 {
-  "code": 60,
+  "code": 14,
   "context": {
-    "codeBlockId": "bad",
-    "codeBlockType": "function",
     "projectBlockId": 8,
   },
   "line": {
@@ -15,7 +13,8 @@
       },
     ],
     "instruction": "#import",
+    "isBlockPrologue": true,
     "lineNumber": 2,
   },
-  "message": "Duplicate function import directive. Imported functions can only declare one #import. (60)",
+  "message": "A function may only declare one import directive.",
 }

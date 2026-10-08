@@ -1,11 +1,11 @@
 import {
 	ArgumentType,
-	type CompilationContext,
 	ErrorCode,
 	getError,
 	type MemoryCopyLine,
 	type ResolvedMemoryCopyLine,
 } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 import { resolveAndValidateValueArguments } from './helpers';
 
 /**
@@ -17,7 +17,7 @@ import { resolveAndValidateValueArguments } from './helpers';
  */
 export default function resolveMemoryCopyReferences(
 	line: MemoryCopyLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): ResolvedMemoryCopyLine | MemoryCopyLine {
 	const resolved = resolveAndValidateValueArguments(line, context, [0]);
 

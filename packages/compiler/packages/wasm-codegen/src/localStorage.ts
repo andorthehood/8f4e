@@ -1,9 +1,7 @@
-import type { CompilationContext, FunctionValueType, LocalBinding } from '@8f4e/language-spec';
-import { functionValueTypeToLocalBinding } from '@8f4e/language-spec';
+import type { FunctionValueType, LocalBinding, LocalStorageMap, LocalValueMetadata } from '@8f4e/language-spec';
+import { functionValueTypeToLocalMetadata } from '@8f4e/language-spec';
 
-type LocalAllocationContext = Pick<CompilationContext, 'locals' | 'nextLocalIndex'>;
-type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
-type LocalBindingMetadata = DistributiveOmit<LocalBinding, 'index'>;
+type LocalAllocationContext = { locals: LocalStorageMap; nextLocalIndex: number };
 
 function registerLocal(context: LocalAllocationContext, name: string, local: LocalBinding): LocalBinding {
 	context.locals[name] = local;
@@ -15,7 +13,7 @@ function registerLocal(context: LocalAllocationContext, name: string, local: Loc
 export function allocateLocal(
 	context: LocalAllocationContext,
 	name: string,
-	binding: LocalBindingMetadata
+	binding: LocalValueMetadata
 ): LocalBinding {
 	return registerLocal(context, name, { ...binding, index: context.nextLocalIndex } as LocalBinding);
 }
@@ -26,20 +24,14 @@ export function allocateLocalFromType(
 	name: string,
 	type: FunctionValueType
 ): LocalBinding {
-	return registerLocal(context, name, functionValueTypeToLocalBinding(type, context.nextLocalIndex));
+	return allocateLocal(context, name, functionValueTypeToLocalMetadata(type));
 }
 
 /** Returns an existing named local binding or allocates it when absent. */
 export function getOrCreateLocal(
 	context: LocalAllocationContext,
 	name: string,
-	binding: LocalBindingMetadata
+	binding: LocalValueMetadata
 ): LocalBinding {
 	return context.locals[name] ?? allocateLocal(context, name, binding);
-}
-
-/** Clears all local bindings and restarts index allocation at zero. */
-export function resetLocals(context: LocalAllocationContext): void {
-	context.locals = {};
-	context.nextLocalIndex = 0;
 }

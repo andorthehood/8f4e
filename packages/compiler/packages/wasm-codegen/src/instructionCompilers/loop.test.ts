@@ -14,7 +14,7 @@ describe('loop instruction compiler', () => {
 			{
 				lineNumber: 2,
 				instruction: 'loop',
-				arguments: [],
+				arguments: [{ type: ArgumentType.LITERAL, value: 1000, isInteger: true }],
 			} as CompilerASTLine,
 			context
 		);
@@ -46,30 +46,8 @@ describe('loop instruction compiler', () => {
 		}).toMatchSnapshot();
 	});
 
-	it('uses context.loopCap when no argument is provided', () => {
+	it('compiles a smaller resolved cap', () => {
 		const context = createInstructionCompilerTestContext();
-		context.loopCap = 500;
-
-		analyzeAndCompileInstruction(
-			loop,
-			{
-				lineNumber: 2,
-				instruction: 'loop',
-				arguments: [],
-			} as CompilerASTLine,
-			context
-		);
-
-		expect({
-			blockStack: context.blockStack,
-			locals: context.locals,
-			byteCode: context.byteCode,
-		}).toMatchSnapshot();
-	});
-
-	it('explicit argument overrides context.loopCap', () => {
-		const context = createInstructionCompilerTestContext();
-		context.loopCap = 500;
 
 		analyzeAndCompileInstruction(
 			loop,

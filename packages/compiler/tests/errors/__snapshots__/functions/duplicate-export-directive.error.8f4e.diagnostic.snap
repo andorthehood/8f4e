@@ -1,8 +1,6 @@
 {
-  "code": 52,
+  "code": 13,
   "context": {
-    "codeBlockId": "bad",
-    "codeBlockType": "function",
     "projectBlockId": 8,
   },
   "line": {
@@ -15,7 +13,8 @@
       },
     ],
     "instruction": "#export",
+    "isBlockPrologue": true,
     "lineNumber": 2,
   },
-  "message": "Duplicate function export name: second. Exported function names must be unique and must not reuse built-in export names. (52)",
+  "message": "A function may only declare one export directive.",
 }

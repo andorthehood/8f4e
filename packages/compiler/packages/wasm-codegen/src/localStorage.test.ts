@@ -1,10 +1,14 @@
+import type { LocalStorageMap } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
-import { createCompilationContext } from './createCompilationContext';
-import { allocateLocal, allocateLocalFromType, getOrCreateLocal, resetLocals } from './localBindings';
+import { allocateLocal, allocateLocalFromType, getOrCreateLocal } from './localStorage';
 
-describe('local bindings', () => {
+function createLocalContext(overrides: { locals?: LocalStorageMap; nextLocalIndex?: number } = {}) {
+	return { locals: {}, nextLocalIndex: 0, ...overrides };
+}
+
+describe('WebAssembly local storage', () => {
 	it('allocates bindings in order and registers them by name', () => {
-		const context = createCompilationContext();
+		const context = createLocalContext();
 
 		const first = allocateLocal(context, 'first', { isInteger: true });
 		const second = allocateLocal(context, 'second', { isInteger: false, isFloat64: true });
@@ -16,7 +20,7 @@ describe('local bindings', () => {
 	});
 
 	it('allocates language value types with their binding metadata', () => {
-		const context = createCompilationContext();
+		const context = createLocalContext();
 
 		const integer = allocateLocalFromType(context, 'integer', 'int');
 		const float64Pointer = allocateLocalFromType(context, 'pointer', 'float64*');
@@ -30,8 +34,9 @@ describe('local bindings', () => {
 		});
 	});
 
-	it('derives the next index once for a sparse seeded context', () => {
-		const context = createCompilationContext({
+	it('continues from an explicitly seeded backend index', () => {
+		const context = createLocalContext({
+			nextLocalIndex: 6,
 			locals: {
 				first: { isInteger: true, index: 1 },
 				last: { isInteger: false, index: 5 },
@@ -45,7 +50,7 @@ describe('local bindings', () => {
 	});
 
 	it('reuses an existing binding without advancing the counter', () => {
-		const context = createCompilationContext();
+		const context = createLocalContext();
 		const existing = allocateLocal(context, 'shared', { isInteger: true });
 
 		const reused = getOrCreateLocal(context, 'shared', { isInteger: false });
@@ -55,23 +60,12 @@ describe('local bindings', () => {
 	});
 
 	it('allocates a missing get-or-create binding through the shared counter', () => {
-		const context = createCompilationContext();
+		const context = createLocalContext();
 
 		const created = getOrCreateLocal(context, 'created', { isInteger: false });
 
 		expect(created).toEqual({ isInteger: false, index: 0 });
 		expect(context.locals.created).toBe(created);
 		expect(context.nextLocalIndex).toBe(1);
-	});
-
-	it('clears bindings and resets the next index together', () => {
-		const context = createCompilationContext();
-		allocateLocal(context, 'value', { isInteger: true });
-
-		resetLocals(context);
-
-		expect(context.locals).toEqual({});
-		expect(context.nextLocalIndex).toBe(0);
-		expect(allocateLocal(context, 'replacement', { isInteger: true }).index).toBe(0);
 	});
 });

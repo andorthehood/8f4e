@@ -18,8 +18,8 @@ import {
 	type WASM_TYPE_I32,
 	WASM_TYPE_VOID,
 } from '@8f4e/compiler-wasm-utils';
-import type { CodegenContext, CompilationContext, StackItem } from '@8f4e/language-spec';
-import { getOrCreateLocal } from '@8f4e/semantic-utils';
+import type { CodegenContext, StackItem } from '@8f4e/language-spec';
+import { getOrCreateLocal } from '../../localStorage';
 
 type NumericWasmValueType = typeof WASM_TYPE_I32 | typeof WASM_TYPE_F32 | typeof WASM_TYPE_F64;
 
@@ -56,7 +56,7 @@ type GuardedMemoryCopyOptions = {
 	memoryCopyByteCode: number[];
 };
 
-type MemoryGuardContext = CodegenContext | CompilationContext;
+type MemoryGuardContext = CodegenContext;
 
 /**
  * Allocates or reuses a hidden local used by emitted memory guard bytecode.

@@ -20,7 +20,8 @@ import type {
 	MapEndLine,
 	StackAnalysisNumericValueKind,
 } from '@8f4e/language-spec';
-import { allocateLocal, popBlock } from '@8f4e/semantic-utils';
+import { popBlock } from '@8f4e/semantic-utils';
+import { allocateLocal } from '../localStorage';
 import { saveByteCode } from './utils/saveByteCode';
 
 const constOp: Record<StackAnalysisNumericValueKind, (v: number) => number[]> = {

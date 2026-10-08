@@ -192,6 +192,12 @@ export const codegenInstructionNames = instructionSpecEntries
 	.filter(([, spec]) => spec.sourceInstruction !== false && spec.codegen !== false)
 	.map(([instruction]) => instruction) as CodegenInstructionName[];
 
+const codegenInstructionNameSet: ReadonlySet<string> = new Set(codegenInstructionNames);
+
+export function isCodegenInstructionName(instruction: string): instruction is CodegenInstructionName {
+	return codegenInstructionNameSet.has(instruction);
+}
+
 export function hasBinaryMatchingOperands(spec: InstructionSpec | undefined): boolean {
 	return (
 		spec?.operandTypes === 'matching' &&

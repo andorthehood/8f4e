@@ -326,21 +326,29 @@ describe('resolveSemanticReferences integration', () => {
 			state: ast.prototypes[0],
 		} as const;
 
-		expect(
-			resolveSemanticReferences({
-				ast,
-				registeredFunctions: [{ ast: ast.functions[0], metadata: functions.byId.increment__int }],
-				namespaces,
-				memoryPlan,
-				memoryAliases: new Map(),
-				memoryDefaultsByModuleId,
-				pointerMetadataByModuleId,
-				constantReferences,
-				memoryReferences,
-				functions,
-				functionTypeRegistry,
-				prototypeShapes,
-			} satisfies SemanticReferenceResolverIntegrationInput)
-		).toMatchSnapshot();
+		const result = resolveSemanticReferences({
+			ast,
+			registeredFunctions: [{ ast: ast.functions[0], metadata: functions.byId.increment__int }],
+			namespaces,
+			memoryPlan,
+			memoryAliases: new Map(),
+			memoryDefaultsByModuleId,
+			pointerMetadataByModuleId,
+			constantReferences,
+			memoryReferences,
+			functions,
+			functionTypeRegistry,
+			prototypeShapes,
+		} satisfies SemanticReferenceResolverIntegrationInput);
+		expect(result.references.modules.main.ast).toBe(ast.modules[0]);
+		expect(result.references.functions.increment__int.ast).toBe(ast.functions[0]);
+		expect({
+			modules: Object.fromEntries(
+				Object.entries(result.references.modules).map(([id, { ast: _ast, ...unit }]) => [id, unit])
+			),
+			functions: Object.fromEntries(
+				Object.entries(result.references.functions).map(([id, { ast: _ast, ...unit }]) => [id, unit])
+			),
+		}).toMatchSnapshot();
 	});
 });

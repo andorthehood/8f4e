@@ -8,22 +8,25 @@ import {
 import type {
 	CompiledFunction,
 	CompileOptions,
-	FunctionCompilationContext,
+	FunctionCodegenContext,
 	FunctionRegistry,
 	FunctionTypeRegistry,
 	Namespaces,
-	RegisteredFunction,
+	ValidatedFunctionAST,
 } from '@8f4e/language-spec';
-import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/language-spec';
+
+import { BlockType } from '@8f4e/language-spec';
 import type { FunctionSemanticReferences } from '@8f4e/semantic-reference-resolver';
-import { createCompilationContext } from '@8f4e/semantic-utils';
 import type { StackAnalyzedFunction } from '@8f4e/stack-analyzer';
 import { compileCodegenLine } from './compileLine';
+import { createCodegenContext } from './createCodegenContext';
+import { functionValueTypeToWasmType } from './functionValueType';
+import { getOrRegisterFunctionType } from './instructionCompilers/utils/functionTypeRegistry';
 
 /**
- * Compiles one registered function declaration into a WebAssembly function body or import metadata.
+ * Compiles one resolved function into a WebAssembly function body or import metadata.
  *
- * @param declaration - Validated AST and its registered function metadata.
+ * @param resolved - Executable body, source bindings, and registered function metadata.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param functions - Function registry available to compilation.
@@ -32,53 +35,53 @@ import { compileCodegenLine } from './compileLine';
  * @returns The compiled function artifact.
  */
 export function compileFunction(
-	declaration: RegisteredFunction,
+	resolved: FunctionSemanticReferences,
 	namespaces: Namespaces,
 	typeRegistry: FunctionTypeRegistry,
 	functions: FunctionRegistry,
-	semanticReferences: FunctionSemanticReferences,
 	stackReport: StackAnalyzedFunction,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
-	const { ast, metadata: functionMetadata } = declaration;
-	const context = createCompilationContext<FunctionCompilationContext>({
-		namespace: {
-			namespaces,
-			moduleName: undefined,
-			functions,
-			prototypeShapeIds: [],
+	const { ast, metadata: functionMetadata, bindings, body } = resolved;
+	const context = createCodegenContext<FunctionCodegenContext>(
+		{
+			namespace: {
+				namespaces,
+				moduleName: undefined,
+				functions,
+				prototypeShapeIds: [],
+			},
+			byteCode: [],
+			blockStack: [{ blockType: BlockType.FUNCTION, expectedResultTypes: [] }],
+			startingByteAddress: 0,
+			currentModuleNextWordOffset: 0,
+			currentModuleWordAlignedSize: 0,
+			currentMemoryIndex: 0,
+			memoryRegions: [],
+			mode: 'function',
+			codeBlockType: 'function',
+			projectBlockId: ast.projectBlockId,
+			source: ast.source,
+			currentFunctionId: functionMetadata.id,
+			currentFunctionName: functionMetadata.name,
+			currentFunctionMetadata: functionMetadata,
+			codeBlockId: functionMetadata.name,
+			functionTypeRegistry: typeRegistry,
 		},
-		locals: {},
-		byteCode: [],
-		stack: [],
-		blockStack: [],
-		startingByteAddress: 0,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: 0,
-		memoryRegions: [],
-		mode: 'function',
-		codeBlockType: 'function',
-		projectBlockId: ast.projectBlockId,
-		source: ast.source,
-		currentFunctionId: functionMetadata.id,
-		currentFunctionName: functionMetadata.name,
-		currentFunctionMetadata: functionMetadata,
-		currentFunctionParameterCount: 0,
-		functionTypeRegistry: typeRegistry,
-	});
+		bindings
+	);
 
-	for (const [lineIndex, sourceLine] of ast.lines.entries()) {
-		if (isSemanticInstructionLine(sourceLine) || isMemoryDeclarationLine(sourceLine)) {
-			continue;
-		}
-		compileCodegenLine(sourceLine, semanticReferences.lineFacts[lineIndex], stackReport.lineFacts[lineIndex]!, context);
-	}
+	for (const { sourceLineIndex, line } of body)
+		compileCodegenLine(line, stackReport.lineFacts[sourceLineIndex]!, context);
+	const typeIndex = getOrRegisterFunctionType(typeRegistry, {
+		params: functionMetadata.signature.parameters.map(functionValueTypeToWasmType),
+		results: functionMetadata.signature.returns.map(functionValueTypeToWasmType),
+	});
 
 	// Collect locals (excluding parameters)
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
 	// Regular locals declared with the 'local' instruction come after parameters
-	const parameterCount = context.currentFunctionParameterCount;
+	const parameterCount = functionMetadata.signature.parameters.length;
 	const localDeclarations = Object.entries(context.locals)
 		.filter(([, local]) => local.index >= parameterCount)
 		.map(([, local]) => ({
@@ -91,7 +94,7 @@ export function compileFunction(
 		id: functionMetadata.id,
 		name: functionMetadata.name,
 		signature: functionMetadata.signature,
-		body: context.currentFunctionImport
+		body: functionMetadata.import
 			? []
 			: createFunction(
 					localDeclarations.map(local =>
@@ -102,12 +105,12 @@ export function compileFunction(
 					),
 					context.byteCode
 				),
-		locals: context.currentFunctionImport ? [] : localDeclarations,
-		...(context.currentFunctionExportName ? { exportName: context.currentFunctionExportName } : {}),
-		...(context.currentFunctionImport ? { import: context.currentFunctionImport } : {}),
+		locals: functionMetadata.import ? [] : localDeclarations,
+		...(functionMetadata.exportName ? { exportName: functionMetadata.exportName } : {}),
+		...(functionMetadata.import ? { import: functionMetadata.import } : {}),
 		wasmIndex: functionMetadata.wasmIndex,
-		typeIndex: context.currentFunctionTypeIndex!,
-		ast,
+		typeIndex: typeIndex,
+		ast: ast as ValidatedFunctionAST,
 		...(stackReport.used ? { used: true } : {}),
 		...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		...(options.includeStackAnalysis ? { stackAnalysis: stackReport.stackAnalysis } : {}),

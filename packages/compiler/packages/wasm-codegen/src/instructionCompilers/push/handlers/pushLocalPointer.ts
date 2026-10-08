@@ -1,6 +1,5 @@
 import { localGet } from '@8f4e/compiler-wasm-utils';
 import type { CodegenContext, PointerLocalBinding, ResolvedLocalPointerPushLine } from '@8f4e/language-spec';
-import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../utils/saveByteCode';
 import { buildPointerDereferenceByteCode } from '../shared';
 
@@ -12,9 +11,8 @@ import { buildPointerDereferenceByteCode } from '../shared';
  * @returns The computed result.
  */
 export default function pushLocalPointer(line: ResolvedLocalPointerPushLine, context: CodegenContext): CodegenContext {
-	const local = context.locals[line.resolvedTarget.localName]! as PointerLocalBinding;
+	const local = context.locals[line.resolvedTarget.binding.id]! as PointerLocalBinding;
 	const { dereferenceDepth } = line.arguments[0];
-	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(
 		context,
 		line.lineNumber,

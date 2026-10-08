@@ -1,8 +1,6 @@
 {
-  "code": 61,
+  "code": 15,
   "context": {
-    "codeBlockId": "bad",
-    "codeBlockType": "function",
     "projectBlockId": 8,
   },
   "line": {
@@ -15,7 +13,8 @@
       },
     ],
     "instruction": "#export",
+    "isBlockPrologue": true,
     "lineNumber": 2,
   },
-  "message": "Imported functions cannot also be exported. (61)",
+  "message": "A function cannot be both imported and exported.",
 }

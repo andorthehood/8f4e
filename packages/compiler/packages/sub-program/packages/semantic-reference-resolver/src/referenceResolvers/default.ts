@@ -1,4 +1,5 @@
-import type { CompilationContext, DefaultLine, ResolvedDefaultLine } from '@8f4e/language-spec';
+import type { DefaultLine, ResolvedDefaultLine } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 import { resolveAndValidateValueArguments } from './helpers';
 
 /**
@@ -11,7 +12,7 @@ import { resolveAndValidateValueArguments } from './helpers';
  */
 export default function resolveDefaultReferences(
 	line: DefaultLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): ResolvedDefaultLine | DefaultLine {
 	const resolved = resolveAndValidateValueArguments(line, context, [0]);
 

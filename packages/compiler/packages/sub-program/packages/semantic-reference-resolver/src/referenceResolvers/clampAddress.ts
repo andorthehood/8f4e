@@ -1,5 +1,6 @@
-import type { CompilationContext, CompilerASTLine } from '@8f4e/language-spec';
+import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, getError, SUPPORTED_MEMORY_ACCESS_BYTE_WIDTHS } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 import { resolveAndValidateValueArguments } from './helpers';
 
 /**
@@ -11,7 +12,7 @@ import { resolveAndValidateValueArguments } from './helpers';
  */
 export default function resolveClampAddressReferences(
 	line: CompilerASTLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): CompilerASTLine {
 	const resolved = resolveAndValidateValueArguments(line, context, [0]);
 	const argument = resolved.arguments[0];

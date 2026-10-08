@@ -1,5 +1,5 @@
 import { type ScalarMemoryDeclarationInstruction, scalarMemoryDeclarationInstructions } from './memory';
-import type { LocalBinding, StackItem } from './semantic';
+import type { LocalBinding, LocalValueMetadata, StackItem } from './semantic';
 
 export type ScalarTypeIdentifier = Exclude<ScalarMemoryDeclarationInstruction, `${string}*`>;
 export type PointerFunctionTypeIdentifier = Extract<ScalarMemoryDeclarationInstruction, `${string}*`>;
@@ -48,21 +48,21 @@ function getPointerParts(type: PointerFunctionValueType) {
 	return { baseType, pointerDepth };
 }
 
-export function functionValueTypeToLocalBinding(type: FunctionValueType, index: number): LocalBinding {
+export function functionValueTypeToLocalMetadata(type: FunctionValueType): LocalValueMetadata {
 	if (type === 'int') {
-		return { isInteger: true, index };
+		return { isInteger: true };
 	}
 
 	if (type === 'float') {
-		return { isInteger: false, index };
+		return { isInteger: false };
 	}
 
 	if (type === 'float64') {
-		return { isInteger: false, isFloat64: true, index };
+		return { isInteger: false, isFloat64: true };
 	}
 
 	if (!isPointerFunctionValueType(type)) {
-		return { isInteger: false, index };
+		return { isInteger: false };
 	}
 
 	const { baseType, pointerDepth } = getPointerParts(type);
@@ -70,11 +70,10 @@ export function functionValueTypeToLocalBinding(type: FunctionValueType, index: 
 		isInteger: true,
 		pointeeBaseType: baseType,
 		pointerDepth,
-		index,
 	};
 }
 
-function localBindingToStackItem(binding: LocalBinding): StackItem {
+function localBindingToStackItem(binding: LocalValueMetadata): StackItem {
 	if (binding.pointeeBaseType) {
 		return {
 			kind: 'address',
@@ -99,7 +98,7 @@ function localBindingToStackItem(binding: LocalBinding): StackItem {
 }
 
 export function functionValueTypeToStackItem(type: FunctionValueType): StackItem {
-	return localBindingToStackItem(functionValueTypeToLocalBinding(type, 0));
+	return localBindingToStackItem(functionValueTypeToLocalMetadata(type));
 }
 
 export function stackItemMatchesFunctionValueType(stackItem: StackItem, type: FunctionValueType): boolean {

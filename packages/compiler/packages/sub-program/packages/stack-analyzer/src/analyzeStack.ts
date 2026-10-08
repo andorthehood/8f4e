@@ -2,71 +2,34 @@ import type {
 	CompilationContext,
 	CompiledStackAnalysisLine,
 	CompilerASTLine,
-	FunctionAST,
 	FunctionCompilationContext,
-	FunctionImportMetadata,
-	FunctionMetadata,
 	FunctionRegistry,
 	FunctionTypeRegistry,
-	FunctionValueType,
-	LocalBinding,
 	MemoryDefaults,
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
-	ModuleAST,
 	ModuleCompilationContext,
 	Namespaces,
-	PrototypeAST,
-	RegisteredFunction,
 	ResolvedDefaultLine,
+	ResolvedLocalSetLine,
 	ResolvedMapLine,
-	SemanticInstructionLine,
 	SemanticReferenceLine,
 	Stack,
 	StackAnalysisLineFacts,
 	StackAnalysisLocalPointerFact,
-	ValidatedFunctionAST,
-	ValidatedModuleAST,
-	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import {
-	ArgumentType,
-	BlockType,
-	compilerSourceBlockInstructionByType,
-	DEFAULT_HOST_IMPORT_MODULE_NAME,
-	ErrorCode,
-	getError,
-	isFunctionBodyInstructionName,
-	isImportedFunctionDeclarationInstructionName,
-	isMemoryDeclarationLine,
-	isSemanticInstructionLine,
-} from '@8f4e/language-spec';
-import type { SemanticReferenceReport } from '@8f4e/semantic-reference-resolver';
-import {
-	allocateLocal,
-	allocateLocalFromType,
-	createCompilationContext,
-	popBlock,
-	pushBlock,
-	resetLocals,
-	resolveMapKind,
-} from '@8f4e/semantic-utils';
+import { ArgumentType, BlockType, ErrorCode, functionValueTypeToLocalMetadata, getError } from '@8f4e/language-spec';
+import type {
+	FunctionSemanticReferences,
+	ModuleSemanticReferences,
+	SemanticReferenceReport,
+} from '@8f4e/semantic-reference-resolver';
+import { createCompilationContext, popBlock, pushBlock, resolveMapKind } from '@8f4e/semantic-utils';
 import { analyzeInstruction } from './analyzeInstruction';
 import { cloneStack } from './instructionAnalyzers/stack';
 import { validateMapValueKind } from './mapValueKind';
 
-const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
-const functionBlockType = compilerSourceBlockInstructionByType.function.type;
-
-export interface AnalyzeStackSubProgramInput<
-	TModule extends ModuleAST = ValidatedModuleAST,
-	TFunction extends FunctionAST = ValidatedFunctionAST,
-	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
-> {
-	ast: {
-		modules: readonly TModule[];
-	};
-	registeredFunctions: readonly RegisteredFunction<TFunction>[];
+export interface AnalyzeStackSubProgramInput {
 	semanticReferences: SemanticReferenceReport;
 	namespaces: Namespaces;
 	memoryPlan: MemoryLayoutPlan;
@@ -74,14 +37,12 @@ export interface AnalyzeStackSubProgramInput<
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	functions: FunctionRegistry;
 	functionTypeRegistry: FunctionTypeRegistry;
-	prototypeShapes: Readonly<Record<string, TPrototype>>;
 }
 
 export interface StackAnalyzedModule {
 	lineFacts: Array<StackAnalysisLineFacts | undefined>;
 	stackAnalysis: CompiledStackAnalysisLine[];
 	finalStack: Stack;
-	skipExecutionInCycle?: boolean;
 }
 
 export interface StackAnalyzedFunction {
@@ -89,10 +50,6 @@ export interface StackAnalyzedFunction {
 	lineFacts: Array<StackAnalysisLineFacts | undefined>;
 	stackAnalysis: CompiledStackAnalysisLine[];
 	finalStack: Stack;
-	locals: Record<string, LocalBinding>;
-	parameterCount: number;
-	import?: FunctionImportMetadata;
-	exportName?: string;
 	used?: boolean;
 }
 
@@ -109,113 +66,13 @@ function toCompiledStackAnalysisLine(line: CompilerASTLine, facts: StackAnalysis
 	};
 }
 
-function createEmptyLineFacts(_line: CompilerASTLine, context: CompilationContext): StackAnalysisLineFacts {
-	const stackBefore = cloneStack(context.stack);
-	return {
-		stackAnalysis: {
-			stackBefore,
-			stackAfter: cloneStack(context.stack),
-			consumedOperands: [],
-			producedStackItems: [],
-		},
-	};
-}
-
-function collectPrototypeShapeIds(ast: ModuleAST): string[] {
-	const prototypeShapeIds: string[] = [];
-	for (const line of ast.lines) {
-		if (line.instruction !== 'shape') {
-			continue;
-		}
-		const prototypeId = line.arguments[0].value;
-		if (!prototypeShapeIds.includes(prototypeId)) {
-			prototypeShapeIds.push(prototypeId);
-		}
-	}
-	return prototypeShapeIds;
-}
-
-function applySemanticLine(line: SemanticInstructionLine, context: CompilationContext): void {
-	switch (line.instruction) {
-		case 'const':
-		case 'use':
-			return;
-		case 'module': {
-			const moduleId = line.arguments[0].value;
-			pushBlock(context, { expectedResultTypes: [], blockType: BlockType.MODULE });
-			context.namespace.moduleName = moduleId;
-			context.codeBlockId = moduleId;
-			context.codeBlockType = moduleBlockType;
-			return;
-		}
-		case 'moduleEnd':
-			popBlock(context);
-			return;
-		case 'shape': {
-			const prototypeId = line.arguments[0].value;
-			if (!context.namespace.prototypeShapeIds.includes(prototypeId)) {
-				context.namespace.prototypeShapeIds.push(prototypeId);
-			}
-			return;
-		}
-	}
-}
-
-function registerFunctionParameter(
-	paramType: FunctionValueType,
-	paramName: string,
-	context: FunctionCompilationContext
-): void {
-	allocateLocalFromType(context, paramName, paramType);
-	context.currentFunctionParameterCount += 1;
-}
-
-function applyFunctionLine(line: CompilerASTLine, context: FunctionCompilationContext): void {
-	const functionName = (line.arguments[0] as { value: string }).value;
-	const functionId = context.currentFunctionMetadata.id;
-
-	context.currentFunctionId = functionId;
-	context.currentFunctionName = functionName;
-	context.codeBlockId = functionName;
-	context.codeBlockType = functionBlockType;
-	context.currentFunctionParameterCount = 0;
-	context.currentFunctionIsImpure = false;
-	context.currentFunctionExportName = undefined;
-	context.currentFunctionImport = undefined;
-	context.mode = functionBlockType;
-	resetLocals(context);
-
-	pushBlock(context, {
-		blockType: BlockType.FUNCTION,
-		expectedResultTypes: [],
-	});
-}
-
-function applyParamShapeLine(line: CompilerASTLine, context: FunctionCompilationContext): void {
-	const expansion = context.currentFunctionMetadata.paramShapeExpansions!.find(
-		expansion => expansion.lineNumber === line.lineNumber
-	)!;
-
-	for (const parameter of expansion.parameters) {
-		registerFunctionParameter(parameter.type, parameter.name, context);
-	}
-}
-
-function applyLocalLine(line: CompilerASTLine, context: CompilationContext): void {
-	const typeArg = line.arguments[0] as { value: FunctionValueType };
-	const nameArg = line.arguments[1] as { value: string };
-	const localName = nameArg.value;
-
-	allocateLocalFromType(context, localName, typeArg.value);
-}
-
 function applyLocalSetLine(
 	line: CompilerASTLine,
 	facts: StackAnalysisLineFacts,
 	context: CompilationContext
 ): StackAnalysisLocalPointerFact | undefined {
 	const [operand] = facts.stackAnalysis.consumedOperands;
-	const localName = (line.arguments[0] as { value: string }).value;
+	const localName = (line as ResolvedLocalSetLine).binding.id;
 	const local = context.locals[localName]!;
 	if (!local.pointeeBaseType || operand?.kind !== 'address') {
 		return undefined;
@@ -229,7 +86,7 @@ function applyLocalSetLine(
 	}
 
 	return {
-		localName,
+		bindingId: localName,
 		pointeeMemoryIndex: operand.address.memoryIndex,
 		...(operand.address.memoryRegionName ? { pointeeMemoryRegionName: operand.address.memoryRegionName } : {}),
 	};
@@ -243,17 +100,8 @@ function getResultTypes(line: CompilerASTLine): Array<'int' | 'float'> {
 	return pairedLine.blockBlock?.resultTypes ?? pairedLine.ifBlock?.resultTypes ?? [];
 }
 
-function applyLoopLine(line: CompilerASTLine, context: CompilationContext): void {
-	const loopCounterLocalName = `__infiniteLoopProtectionCounter${line.lineNumber}`;
-	const loopCounterLocal = allocateLocal(context, loopCounterLocalName, {
-		isInteger: true,
-	});
-	pushBlock(context, {
-		expectedResultTypes: [],
-		blockType: BlockType.LOOP,
-		loopCounterLocalName,
-		loopCounterLocal,
-	});
+function applyLoopLine(_line: CompilerASTLine, context: CompilationContext): void {
+	pushBlock(context, { expectedResultTypes: [], blockType: BlockType.LOOP });
 }
 
 function applyMapBeginLine(line: CompilerASTLine, context: CompilationContext): void {
@@ -328,24 +176,6 @@ function applyStackLineEffect(
 	context: CompilationContext
 ): void {
 	switch (line.instruction) {
-		case 'function':
-			applyFunctionLine(line, context as FunctionCompilationContext);
-			return;
-		case 'functionEnd':
-			popBlock(context);
-			return;
-		case 'param': {
-			const paramType = line.arguments[0].value as FunctionValueType;
-			const paramName = line.arguments[1].value;
-			registerFunctionParameter(paramType, paramName, context as FunctionCompilationContext);
-			return;
-		}
-		case 'paramShape':
-			applyParamShapeLine(line, context as FunctionCompilationContext);
-			return;
-		case 'local':
-			applyLocalLine(line, context);
-			return;
 		case 'localSet': {
 			const localPointer = applyLocalSetLine(line, facts, context);
 			if (localPointer) {
@@ -386,82 +216,37 @@ function applyStackLineEffect(
 		case 'mapEnd':
 			popBlock(context);
 			return;
-		case '#loopCap':
-			context.loopCap = line.arguments[0].value as number;
-			return;
-		case '#skipExecution':
-			context.skipExecutionInCycle = true;
-			return;
-		case '#impure':
-			context.currentFunctionIsImpure = true;
-			return;
-		case '#export': {
-			const exportName =
-				line.arguments[0]?.type === ArgumentType.IDENTIFIER ? line.arguments[0].value : context.currentFunctionName;
-			if (context.currentFunctionImport !== undefined) {
-				throw getError(ErrorCode.IMPORT_EXPORT_CONFLICT, line, context);
-			}
-			if (context.currentFunctionExportName !== undefined) {
-				throw getError(ErrorCode.DUPLICATE_EXPORT_NAME, line, context, { identifier: exportName });
-			}
-			context.currentFunctionExportName = exportName;
-			return;
-		}
-		case '#import': {
-			if (context.currentFunctionImport !== undefined) {
-				throw getError(ErrorCode.DUPLICATE_FUNCTION_IMPORT, line, context);
-			}
-			if (context.currentFunctionExportName !== undefined) {
-				throw getError(ErrorCode.IMPORT_EXPORT_CONFLICT, line, context);
-			}
-			context.currentFunctionImport = {
-				moduleName: DEFAULT_HOST_IMPORT_MODULE_NAME,
-				fieldName: line.arguments[0].value as string,
-			};
-			context.currentFunctionIsImpure = true;
-			return;
-		}
 	}
 }
 
 function analyzeSemanticReferenceLine(
 	line: SemanticReferenceLine,
-	context: CompilationContext,
-	options: { skipImportedFunctionEnd?: boolean } = {}
-): StackAnalysisLineFacts | undefined {
-	if (isSemanticInstructionLine(line)) {
-		applySemanticLine(line, context);
-		return undefined;
-	}
-
-	if (isMemoryDeclarationLine(line)) {
-		return undefined;
-	}
-
-	const facts =
-		options.skipImportedFunctionEnd && line.instruction === 'functionEnd'
-			? createEmptyLineFacts(line, context)
-			: analyzeInstruction(line, context);
+	context: CompilationContext
+): StackAnalysisLineFacts {
+	const facts = analyzeInstruction(line, context);
 	applyStackLineEffect(line, facts, context);
 	return facts;
 }
 
 function createModuleContext(
-	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
-	ast: ModuleAST
+	input: AnalyzeStackSubProgramInput,
+	resolved: ModuleSemanticReferences
 ): ModuleCompilationContext {
+	const { ast } = resolved;
 	const plannedModule = input.memoryPlan.modules[ast.id];
 	return createCompilationContext<ModuleCompilationContext>({
 		namespace: {
 			namespaces: input.namespaces,
-			moduleName: undefined,
+			moduleName: ast.id,
 			functions: input.functions,
-			prototypeShapeIds: collectPrototypeShapeIds(ast),
+			prototypeShapeIds: [],
 		},
-		locals: {},
+		locals: Object.fromEntries(
+			resolved.bindings.map(binding => [binding.id, functionValueTypeToLocalMetadata(binding.type)])
+		),
 		byteCode: [],
 		stack: [],
-		blockStack: [],
+		blockStack: [{ blockType: BlockType.MODULE, expectedResultTypes: [] }],
 		startingByteAddress: plannedModule.byteAddress,
 		currentModuleNextWordOffset: plannedModule.wordAlignedSize,
 		currentModuleWordAlignedSize: plannedModule.wordAlignedSize,
@@ -472,48 +257,34 @@ function createModuleContext(
 		memoryDefaults: input.memoryDefaultsByModuleId[ast.id],
 		pointerMetadata: input.pointerMetadataByModuleId[ast.id],
 		mode: 'module',
+		codeBlockId: ast.id,
+		codeBlockType: 'module',
 		functionTypeRegistry: input.functionTypeRegistry,
-		prototypeShapes: input.prototypeShapes,
 		projectBlockId: ast.projectBlockId,
 		source: ast.source,
 	});
 }
 
-function analyzeModule(
-	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
-	ast: ModuleAST
-): StackAnalyzedModule {
-	const context = createModuleContext(input, ast);
-	const semanticLineFacts = input.semanticReferences.modules[ast.id].lineFacts;
-	const stackLineFacts: Array<StackAnalysisLineFacts | undefined> = [];
+function analyzeModule(input: AnalyzeStackSubProgramInput, resolved: ModuleSemanticReferences): StackAnalyzedModule {
+	const { ast, body } = resolved;
+	const context = createModuleContext(input, resolved);
+	const lineFacts: Array<StackAnalysisLineFacts | undefined> = Array(ast.lines.length).fill(undefined);
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
-
-	for (const [index, sourceLine] of ast.lines.entries()) {
-		const line = { ...sourceLine, ...(semanticLineFacts[index] ?? {}) } as SemanticReferenceLine;
+	for (const { sourceLineIndex, line } of body) {
 		const facts = analyzeSemanticReferenceLine(line, context);
-		stackLineFacts.push(facts);
-		if (facts) {
-			stackAnalysis.push(toCompiledStackAnalysisLine(sourceLine, facts));
-		}
+		lineFacts[sourceLineIndex] = facts;
+		stackAnalysis.push(toCompiledStackAnalysisLine(line, facts));
 	}
-
-	if (context.stack.length > 0) {
-		throw getError(ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS, ast.lines[0], context);
-	}
-
-	return {
-		lineFacts: stackLineFacts,
-		stackAnalysis,
-		finalStack: cloneStack(context.stack),
-		...(context.skipExecutionInCycle ? { skipExecutionInCycle: true } : {}),
-	};
+	if (context.stack.length > 0)
+		throw getError(ErrorCode.STACK_EXPECTED_ZERO_ELEMENTS, ast.lines[ast.lines.length - 1], context);
+	return { lineFacts, stackAnalysis, finalStack: cloneStack(context.stack) };
 }
 
 function createFunctionContext(
-	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
-	ast: FunctionAST,
-	functionMetadata: FunctionMetadata
+	input: AnalyzeStackSubProgramInput,
+	resolved: FunctionSemanticReferences
 ): FunctionCompilationContext {
+	const { ast, metadata: functionMetadata } = resolved;
 	return createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces: input.namespaces,
@@ -521,10 +292,12 @@ function createFunctionContext(
 			functions: input.functions,
 			prototypeShapeIds: [],
 		},
-		locals: {},
+		locals: Object.fromEntries(
+			resolved.bindings.map(binding => [binding.id, functionValueTypeToLocalMetadata(binding.type)])
+		),
 		byteCode: [],
 		stack: [],
-		blockStack: [],
+		blockStack: [{ blockType: BlockType.FUNCTION, expectedResultTypes: [] }],
 		startingByteAddress: 0,
 		currentModuleNextWordOffset: 0,
 		currentModuleWordAlignedSize: 0,
@@ -533,81 +306,52 @@ function createFunctionContext(
 		memoryDefaults: {},
 		pointerMetadata: {},
 		mode: 'function',
+		codeBlockId: functionMetadata.name,
 		codeBlockType: 'function',
 		projectBlockId: ast.projectBlockId,
 		source: ast.source,
 		currentFunctionId: functionMetadata.id,
 		currentFunctionName: functionMetadata.name,
 		currentFunctionMetadata: functionMetadata,
-		currentFunctionParameterCount: 0,
+
 		functionTypeRegistry: input.functionTypeRegistry,
-		prototypeShapes: input.prototypeShapes,
 	});
 }
 
 function analyzeFunction(
-	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
-	declaration: RegisteredFunction<FunctionAST>
+	input: AnalyzeStackSubProgramInput,
+	resolved: FunctionSemanticReferences
 ): StackAnalyzedFunction {
-	const { ast, metadata: functionMetadata } = declaration;
-	const context = createFunctionContext(input, ast, functionMetadata);
-	const semanticLineFacts = input.semanticReferences.functions[functionMetadata.id].lineFacts;
-	const stackLineFacts: Array<StackAnalysisLineFacts | undefined> = [];
+	const { ast, metadata, body } = resolved;
+	const context = createFunctionContext(input, resolved);
+	const lineFacts: Array<StackAnalysisLineFacts | undefined> = Array(ast.lines.length).fill(undefined);
 	const stackAnalysis: CompiledStackAnalysisLine[] = [];
-	let functionBodyStarted = false;
-
-	for (const [index, sourceLine] of ast.lines.entries()) {
-		const line = { ...sourceLine, ...(semanticLineFacts[index] ?? {}) } as SemanticReferenceLine;
-		if (ast.importLine && !isImportedFunctionDeclarationInstructionName(line.instruction)) {
-			throw getError(
-				line.instruction === '#export' ? ErrorCode.IMPORT_EXPORT_CONFLICT : ErrorCode.IMPORTED_FUNCTION_BODY,
-				line,
-				context
-			);
-		}
-		if (functionBodyStarted && (line.instruction === 'param' || line.instruction === 'paramShape')) {
-			throw getError(ErrorCode.PARAM_AFTER_FUNCTION_BODY, line, context);
-		}
-
-		const analyzedLine = analyzeSemanticReferenceLine(line, context, {
-			skipImportedFunctionEnd: !!ast.importLine,
-		});
-		if (analyzedLine) {
-			stackAnalysis.push(toCompiledStackAnalysisLine(sourceLine, analyzedLine));
-		}
-		stackLineFacts.push(analyzedLine);
-		if (isFunctionBodyInstructionName(line.instruction)) {
-			functionBodyStarted = true;
-		}
+	for (const { sourceLineIndex, line } of body) {
+		const facts = analyzeSemanticReferenceLine(line, context);
+		lineFacts[sourceLineIndex] = facts;
+		stackAnalysis.push(toCompiledStackAnalysisLine(line, facts));
 	}
-
-	return {
-		functionId: functionMetadata.id,
-		lineFacts: stackLineFacts,
-		stackAnalysis,
-		finalStack: cloneStack(context.stack),
-		locals: { ...context.locals },
-		parameterCount: context.currentFunctionParameterCount,
-		...(context.currentFunctionExportName ? { exportName: context.currentFunctionExportName } : {}),
-		...(context.currentFunctionImport ? { import: context.currentFunctionImport } : {}),
-	};
+	if (!metadata.import) {
+		const facts = analyzeInstruction(ast.functionEndLine, context);
+		lineFacts[ast.lines.indexOf(ast.functionEndLine)] = facts;
+		stackAnalysis.push(toCompiledStackAnalysisLine(ast.functionEndLine, facts));
+	}
+	return { functionId: metadata.id, lineFacts, stackAnalysis, finalStack: cloneStack(context.stack) };
 }
 
-export function analyzeStack<
-	TModule extends ModuleAST = ValidatedModuleAST,
-	TFunction extends FunctionAST = ValidatedFunctionAST,
-	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
->(input: AnalyzeStackSubProgramInput<TModule, TFunction, TPrototype>): StackAnalysisSubProgramReport {
+export function analyzeStack(input: AnalyzeStackSubProgramInput): StackAnalysisSubProgramReport {
 	const functionReports = Object.fromEntries(
-		input.registeredFunctions.map(declaration => {
-			const report = analyzeFunction(input, declaration);
+		Object.values(input.semanticReferences.functions).map(resolved => {
+			const report = analyzeFunction(input, resolved);
 			return [report.functionId, report];
 		})
 	);
-	const modules = Object.fromEntries(input.ast.modules.map(ast => [ast.id, analyzeModule(input, ast)]));
+	const modules = Object.fromEntries(
+		Object.values(input.semanticReferences.modules).map(resolved => [resolved.ast.id, analyzeModule(input, resolved)])
+	);
 	const usedFunctionIdSet = new Set<string>();
 	for (const functionReport of Object.values(functionReports)) {
-		if (functionReport.exportName) {
+		if (input.semanticReferences.functions[functionReport.functionId].metadata.exportName) {
 			usedFunctionIdSet.add(functionReport.functionId);
 		}
 		for (const facts of functionReport.lineFacts) {

@@ -1,13 +1,13 @@
 import type {
 	CallLine,
 	CodegenPushLine,
-	CompilationContext,
 	PushArgument,
 	PushLine,
 	SemanticCallLine,
 	SemanticPushLine,
 } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, getError } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 import resolvePushReferences from './push';
 
 function createInlinePushLine(line: CallLine, argument: PushArgument): PushLine {
@@ -38,7 +38,7 @@ function isCodegenPushLine(line: SemanticPushLine): line is CodegenPushLine {
  */
 export default function resolveCallReferences(
 	line: CallLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): CallLine | SemanticCallLine {
 	const functionName = line.arguments[0].value;
 	const functionRegistry = context.namespace.functions!;

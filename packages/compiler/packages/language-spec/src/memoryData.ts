@@ -1,12 +1,12 @@
 import type { MemoryPointerMetadata, MemoryValueKind, PlannedMemoryDeclaration } from './memory';
 import { BASE_TYPE_METADATA } from './memory';
-import type { PointerLocalBinding, StackAddress } from './semantic';
+import type { PointerLocalMetadata, StackAddress } from './semantic';
 
 export type PointerMetadata =
 	| (Pick<PlannedMemoryDeclaration, 'memoryIndex' | 'memoryRegionName' | 'pointeeBaseType' | 'pointerDepth'> &
 			Partial<MemoryPointerMetadata>)
 	| Pick<
-			PointerLocalBinding,
+			PointerLocalMetadata,
 			'pointeeBaseType' | 'pointerDepth' | 'pointeeMemoryIndex' | 'pointeeMemoryRegionName' | 'pointeeElementCount'
 	  >
 	| {
