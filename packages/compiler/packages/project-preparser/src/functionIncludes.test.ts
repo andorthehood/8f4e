@@ -1,119 +1,112 @@
 import { describe, expect, it } from 'vitest';
-
 import {
-	type ProjectIncludeError,
+	collectProjectIncludeIdsFromBlock,
+	collectProjectIncludeIdsFromText,
 	resolveFunctionIncludeSource,
+	resolveProjectIncludes,
 	resolveProjectIncludesAsync,
 } from './functionIncludes';
 
-describe('resolveFunctionIncludeSource', () => {
-	it('splits exported include functions and prefixes internal helper functions', () => {
-		expect(
-			resolveFunctionIncludeSource(
-				'std/test/helpers',
-				[
-					'function first',
-					'#export',
-					'call helper',
-					'functionEnd int',
-					'',
-					'function helper',
-					'param int value',
-					'functionEnd int',
-					'',
-				].join('\n')
-			)
-		).toEqual([
-			{
-				code: ['function first', '', 'call __8f4e_std_test_helpers__helper', 'functionEnd int'],
-				source: {
-					kind: 'include',
-					includeId: 'std/test/helpers',
-					symbolName: 'first',
-				},
-			},
-			{
-				code: ['function __8f4e_std_test_helpers__helper', 'param int value', 'functionEnd int'],
-				source: {
-					kind: 'include',
-					includeId: 'std/test/helpers',
-					symbolName: '__8f4e_std_test_helpers__helper',
-				},
-			},
-		]);
+const selectableSource = [
+	'function originalFirst',
+	'#export first',
+	'param int value',
+	'call helper value',
+	'call second',
+	'functionEnd int',
+	'function originalFirst',
+	'#export first',
+	'param float value',
+	'call helper value',
+	'functionEnd float',
+	'function second',
+	'#export',
+	'param int value',
+	'call helper value',
+	'functionEnd int',
+	'function helper',
+	'param int value',
+	'push value',
+	'functionEnd int',
+	'function helper',
+	'param float value',
+	'push value',
+	'functionEnd float',
+].join('\n');
+
+function includeBlock(...declarations: string[]) {
+	return { id: 42, code: ['includes', ...declarations, 'includesEnd'] };
+}
+
+describe('include function expansion', () => {
+	it('preserves source text and records bindings for each body and its dependencies', () => {
+		const functions = resolveFunctionIncludeSource(
+			'std/test',
+			[
+				'function first',
+				'#export',
+				'call helper',
+				'functionEnd int',
+				'function helper',
+				'param int value',
+				'functionEnd int',
+			].join('\n')
+		);
+		expect(functions[0]!.code).toEqual(['function first', '', 'call helper', 'functionEnd int']);
+		expect(functions[0]!.bindings.functionName).toBe('first');
+		expect(functions[0]!.bindings.callTargets.get('helper')).toBe('__8f4e_std_test__nonexported__helper');
+		expect(functions[1]!.code).toEqual(['function helper', 'param int value', 'functionEnd int']);
+		expect(functions[1]!.bindings.functionName).toBe('__8f4e_std_test__nonexported__helper');
 	});
 
-	it('supports include-local export aliases', () => {
-		expect(
-			resolveFunctionIncludeSource(
-				'std/test/helpers',
-				['function internalName', '#export publicName', 'functionEnd'].join('\n')
-			)
-		).toEqual([
-			{
-				code: ['function publicName', '', 'functionEnd'],
-				source: {
-					kind: 'include',
-					includeId: 'std/test/helpers',
-					symbolName: 'publicName',
-				},
-			},
-		]);
+	it('uses include-local export aliases as the public binding names', () => {
+		const functions = resolveFunctionIncludeSource(
+			'std/test',
+			['function internalName', '#export publicName', 'functionEnd'].join('\n')
+		);
+		expect(functions[0]!.bindings.functionName).toBe('publicName');
+		expect(functions[0]!.code).toEqual(['function internalName', '', 'functionEnd']);
 	});
 
 	it('allows partially exported overload families when calls are unambiguous', () => {
-		expect(
-			resolveFunctionIncludeSource(
-				'std/test/helpers',
-				[
-					'function convert',
-					'#export',
-					'param int value',
-					'functionEnd int',
-					'',
-					'function convert',
-					'param float value',
-					'functionEnd float',
-				].join('\n')
-			)
-		).toEqual([
-			{
-				code: ['function convert', '', 'param int value', 'functionEnd int'],
-				source: { kind: 'include', includeId: 'std/test/helpers', symbolName: 'convert' },
-			},
-			{
-				code: ['function __8f4e_std_test_helpers__convert', 'param float value', 'functionEnd float'],
-				source: {
-					kind: 'include',
-					includeId: 'std/test/helpers',
-					symbolName: '__8f4e_std_test_helpers__convert',
-				},
-			},
+		const functions = resolveFunctionIncludeSource(
+			'std/test',
+			[
+				'function convert',
+				'#export',
+				'param int value',
+				'functionEnd int',
+				'function convert',
+				'param float value',
+				'functionEnd float',
+			].join('\n')
+		);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'convert',
+			'__8f4e_std_test__nonexported__convert',
 		]);
+		expect(new Set(functions.map(func => func.source.symbolName)).size).toBe(2);
 	});
 
-	it('throws when include source has no exported functions', () => {
-		expect(() =>
-			resolveFunctionIncludeSource('std/test/helpers', ['function helper', 'functionEnd int'].join('\n'))
-		).toThrow('include "std/test/helpers" must export at least one function');
+	it('rejects sources without exported functions', () => {
+		expect(() => resolveFunctionIncludeSource('std/test', 'function helper\nfunctionEnd')).toThrow(
+			'include "std/test" must export at least one function'
+		);
 	});
 
-	it('throws when mixed public/internal overload calls cannot be rewritten unambiguously', () => {
+	it('rejects ambiguous mixed public/private overload calls', () => {
 		expect(() =>
 			resolveFunctionIncludeSource(
-				'std/test/helpers',
+				'std/test',
 				[
 					'function caller',
 					'#export',
-					'push 1',
-					'call convert',
+					'call convert 1',
 					'functionEnd int',
-					'',
 					'function convert',
 					'#export',
 					'param int value',
 					'functionEnd int',
-					'',
 					'function convert',
 					'param float value',
 					'functionEnd float',
@@ -123,76 +116,207 @@ describe('resolveFunctionIncludeSource', () => {
 	});
 });
 
-describe('resolveProjectIncludesAsync', () => {
-	it('resolves include lines from project includes blocks into function blocks', async () => {
-		await expect(
-			resolveProjectIncludesAsync(
-				[
-					{
-						id: 10,
-						code: [
-							'includes',
-							'; @pos 0 0',
-							'include std/events/risingEdge',
-							'include std/memory/wrapPointer',
-							'includesEnd',
-						],
-					},
-				],
-				async includeId => {
-					if (includeId === 'std/events/risingEdge') {
-						return ['function risingEdge', '#export', 'functionEnd int'].join('\n');
-					}
-					if (includeId === 'std/memory/wrapPointer') {
-						return ['function wrapPointer', '#export', 'functionEnd int*'].join('\n');
-					}
-					return undefined;
-				}
-			)
-		).resolves.toEqual([
-			{
-				code: ['function risingEdge', '', 'functionEnd int'],
-				source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
-			},
-			{
-				code: ['function wrapPointer', '', 'functionEnd int*'],
-				source: { kind: 'include', includeId: 'std/memory/wrapPointer', symbolName: 'wrapPointer' },
-			},
+describe('include export selections', () => {
+	it('resolves multiple sources and their include metadata', async () => {
+		const functions = await resolveProjectIncludesAsync(
+			[includeBlock('include std/first', 'include std/second')],
+			includeId => `function ${includeId.split('/')[1]}\n#export\nfunctionEnd`
+		);
+		expect(functions.map(func => [func.source.includeId, func.bindings.functionName])).toEqual([
+			['std/first', 'first'],
+			['std/second', 'second'],
 		]);
 	});
 
-	it('dedupes repeated include declarations by include id', async () => {
-		await expect(
-			resolveProjectIncludesAsync(
-				[
-					{
-						id: 10,
-						code: ['includes', 'include std/events/risingEdge', 'include std/events/risingEdge', 'includesEnd'],
-					},
-				],
-				async includeId =>
-					includeId === 'std/events/risingEdge'
-						? ['function risingEdge', '#export', 'functionEnd int'].join('\n')
-						: undefined
-			)
-		).resolves.toEqual([
-			{
-				code: ['function risingEdge', '', 'functionEnd int'],
-				source: { kind: 'include', includeId: 'std/events/risingEdge', symbolName: 'risingEdge' },
-			},
+	it('selects the whole public overload family, keeping unselected exports as internal dependencies', () => {
+		const functions = resolveProjectIncludes([includeBlock('include std/test first')], () => selectableSource);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'first',
+			'first',
+			'__8f4e_std_test__unselected__second',
+			'__8f4e_std_test__nonexported__helper',
+			'__8f4e_std_test__nonexported__helper',
+		]);
+		expect(functions[0]!.bindings.callTargets.get('second')).toBe('__8f4e_std_test__unselected__second');
+	});
+
+	it('merges selected exports and identical selections, loading each source once', async () => {
+		const loaded: string[] = [];
+		const functions = await resolveProjectIncludesAsync(
+			[includeBlock('include std/test first a', 'include std/test second b', 'include std/test first a')],
+			async includeId => {
+				loaded.push(includeId);
+				return selectableSource;
+			}
+		);
+		expect(loaded).toEqual(['std/test']);
+		expect(functions).toHaveLength(5);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'a',
+			'a',
+			'b',
+			'__8f4e_std_test__nonexported__helper',
+			'__8f4e_std_test__nonexported__helper',
+		]);
+		expect(functions[0]!.code).toContain('call helper value');
+		expect(functions[0]!.bindings.callTargets.get('second')).toBe('b');
+	});
+
+	it('preserves original source through syntax validation when selections or names change', () => {
+		const all = resolveProjectIncludes([includeBlock('include std/test')], () => selectableSource);
+		const selected = resolveProjectIncludes([includeBlock('include std/test first renamed')], () => selectableSource);
+		expect(selected.map(func => func.code)).toEqual(all.map(func => func.code));
+		expect(selected[0]!.bindings.functionName).toBe('renamed');
+	});
+
+	it('deduplicates repeated include-all declarations', () => {
+		const functions = resolveProjectIncludes(
+			[includeBlock('include std/test', 'include std/test')],
+			() => selectableSource
+		);
+		expect(functions).toHaveLength(5);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'first',
+			'first',
+			'second',
+			'__8f4e_std_test__nonexported__helper',
+			'__8f4e_std_test__nonexported__helper',
 		]);
 	});
 
-	it('throws structured include errors with block-relative line numbers', async () => {
+	it.each([
+		['include std/test first a', 'include std/test first b'],
+		['include std/test', 'include std/test first renamed'],
+		['include std/test first renamed', 'include std/test'],
+	])('rejects conflicting names for one export: %s, %s', (...declarations) => {
+		expect(() => resolveProjectIncludes([includeBlock(...declarations)], () => selectableSource)).toThrowError(
+			expect.objectContaining({
+				lineNumber: 3,
+				projectBlockId: 42,
+				message: expect.stringContaining('is already included as'),
+			})
+		);
+	});
+
+	it('leaves collisions between different exports to ordinary namespace validation', () => {
+		const functions = resolveProjectIncludes(
+			[includeBlock('include std/test first sameName', 'include std/test second sameName')],
+			() => selectableSource
+		);
+		expect(functions.slice(0, 3).map(func => func.bindings.functionName)).toEqual(['sameName', 'sameName', 'sameName']);
+	});
+
+	it.each(['missing', 'helper', 'originalFirst'])(
+		'rejects non-public selections with declaration diagnostics: %s',
+		name => {
+			expect(() =>
+				resolveProjectIncludes([includeBlock(`include std/test ${name}`)], () => selectableSource)
+			).toThrowError(
+				expect.objectContaining({
+					message: `Parse error at line 2: include "std/test" does not export "${name}"`,
+					lineNumber: 2,
+					projectBlockId: 42,
+				})
+			);
+		}
+	);
+
+	it('skips disabled include blocks', async () => {
+		const functions = await resolveProjectIncludesAsync(
+			[
+				{ ...includeBlock('include std/missing helper alias'), disabled: true },
+				includeBlock('include std/test second'),
+			],
+			includeId => (includeId === 'std/test' ? selectableSource : undefined)
+		);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'__8f4e_std_test__unselected__first',
+			'__8f4e_std_test__unselected__first',
+			'second',
+			'__8f4e_std_test__nonexported__helper',
+			'__8f4e_std_test__nonexported__helper',
+		]);
+	});
+
+	it('rewrites recursive source-name and export-alias calls to one identity', () => {
+		const functions = resolveProjectIncludes([includeBlock('include std/test publicName localName')], () =>
+			['function sourceName', '#export publicName', 'call sourceName', 'call publicName', 'functionEnd'].join('\n')
+		);
+		expect(functions[0]!.bindings.functionName).toBe('localName');
+		expect(functions[0]!.code).toEqual([
+			'function sourceName',
+			'',
+			'call sourceName',
+			'call publicName',
+			'functionEnd',
+		]);
+		expect(functions[0]!.bindings.callTargets.get('sourceName')).toBe('localName');
+		expect(functions[0]!.bindings.callTargets.get('publicName')).toBe('localName');
+	});
+
+	it('keeps distinct export aliases under distinct identities when unselected', () => {
+		const functions = resolveProjectIncludes([includeBlock('include std/test selected')], () =>
+			[
+				'function sameSourceName',
+				'#export first',
+				'functionEnd',
+				'function sameSourceName',
+				'#export second',
+				'functionEnd',
+				'function selected',
+				'#export',
+				'functionEnd',
+			].join('\n')
+		);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'__8f4e_std_test__unselected__first',
+			'__8f4e_std_test__unselected__second',
+			'selected',
+		]);
+		expect(new Set(functions.map(func => func.source.symbolName)).size).toBe(3);
+	});
+
+	it('keeps export and helper names separate and preserves source-name call precedence', () => {
+		const functions = resolveProjectIncludes([includeBlock('include std/test selected')], () =>
+			[
+				'function sourceName',
+				'#export helper',
+				'call helper',
+				'functionEnd',
+				'function helper',
+				'functionEnd',
+				'function selected',
+				'#export',
+				'call sourceName',
+				'functionEnd',
+			].join('\n')
+		);
+		expect(new Set(functions.map(func => func.source.symbolName)).size).toBe(3);
+		expect(functions[0]!.bindings.callTargets.get('helper')).toBe('__8f4e_std_test__nonexported__helper');
+		expect(functions[2]!.bindings.callTargets.get('sourceName')).toBe('__8f4e_std_test__unselected__helper');
+	});
+
+	it('reports unresolved includes with block-relative diagnostics', async () => {
 		await expect(
-			resolveProjectIncludesAsync(
-				[{ id: 10, code: ['includes', 'include std/missing', 'includesEnd'] }],
-				() => undefined
-			)
+			resolveProjectIncludesAsync([includeBlock('include std/missing')], () => undefined)
 		).rejects.toMatchObject({
-			name: 'ProjectIncludeError',
 			lineNumber: 2,
+			projectBlockId: 42,
 			message: 'Parse error at line 2: unresolved include "std/missing"',
-		} satisfies Partial<ProjectIncludeError>);
+		});
+	});
+
+	it('collects source ids from selected and renamed includes', () => {
+		expect(
+			collectProjectIncludeIdsFromText(
+				'8f4e/v1\nincludes\ninclude std/test first a\ninclude std/other second\nincludesEnd'
+			)
+		).toEqual(['std/test', 'std/other']);
+	});
+
+	it.each(['include', 'include std/test first alias extra'])('rejects malformed declarations: %s', line => {
+		expect(() => collectProjectIncludeIdsFromBlock(includeBlock(line))).toThrow(
+			'include expects <path> [exportedName [localName]]'
+		);
 	});
 });

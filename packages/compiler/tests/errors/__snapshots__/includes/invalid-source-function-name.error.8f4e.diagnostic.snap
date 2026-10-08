@@ -1,0 +1,15 @@
+{
+  "code": 2,
+  "context": {
+    "source": {
+      "includeId": "test/invalid-function-name",
+      "kind": "include",
+      "symbolName": "renamed",
+    },
+  },
+  "line": {
+    "instruction": "function",
+    "lineNumber": 0,
+  },
+  "message": "Invalid argument for function: expected identifier.",
+}

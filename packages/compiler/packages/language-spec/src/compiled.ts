@@ -65,6 +65,12 @@ export interface FunctionMetadata {
 
 export type FunctionMetadataLookup = Record<string, FunctionMetadata>;
 
+/** Final declaration and include-local call names applied during program composition. */
+export interface IncludedFunctionBindings {
+	functionName: string;
+	callTargets: ReadonlyMap<string, string>;
+}
+
 /** Function metadata indexed by compiler id, plus source-name arity metadata for calls. */
 export interface FunctionRegistry {
 	byId: FunctionMetadataLookup;

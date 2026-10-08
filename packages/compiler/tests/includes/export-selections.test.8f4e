@@ -1,0 +1,26 @@
+8f4e/v1
+
+includes
+include test/math inc addOne
+include test/math twice addTwo
+include test/math inc addOne
+includesEnd
+
+entry test
+module includeSelectionAssertions
+; Renaming preserves both public overloads.
+call addOne 10
+call assert 11
+
+call addOne 1.5
+call assert 2.5
+
+; Internal calls follow source names and export aliases.
+call addTwo 20
+call assert 22
+
+; Repeated identical selections are deduplicated.
+call addOne 30
+call assert 31
+moduleEnd
+entryEnd

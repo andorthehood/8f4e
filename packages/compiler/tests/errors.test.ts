@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { describe, expect, test } from 'vitest';
 
 import { compileProject, parseProjectSource, serializeDiagnostic } from '../src';
-import { resolveStdlibInclude } from './stdlibResolver';
+import { resolveTestInclude } from './testIncludeResolver';
 
 const errorRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), 'errors');
 const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
@@ -42,7 +42,7 @@ async function compileErrorFixture(filePath: string) {
 	return compileProject(parseProjectSource(source), {
 		disableSharedMemory: true,
 		memoryRegions: getTestMemoryRegions(source),
-		resolveInclude: resolveStdlibInclude,
+		resolveInclude: resolveTestInclude,
 	});
 }
 
@@ -59,21 +59,22 @@ describe('8f4e compiler error fixtures', () => {
 		expect(errorFiles.length).toBeGreaterThan(0);
 	});
 
-	test.each(
-		errorFiles.map(filePath => [path.relative(errorRoot, filePath), filePath])
-	)('%s', async (_name, filePath) => {
-		let thrownError: unknown;
+	test.each(errorFiles.map(filePath => [path.relative(errorRoot, filePath), filePath]))(
+		'%s',
+		async (_name, filePath) => {
+			let thrownError: unknown;
 
-		try {
-			await compileErrorFixture(filePath);
-		} catch (error) {
-			thrownError = error;
+			try {
+				await compileErrorFixture(filePath);
+			} catch (error) {
+				thrownError = error;
+			}
+
+			expect(thrownError).toBeDefined();
+			const snapshotPath = getErrorSnapshotPath(filePath);
+
+			await fs.mkdir(path.dirname(snapshotPath), { recursive: true });
+			await expect(serializeDiagnostic(thrownError)).toMatchFileSnapshot(snapshotPath);
 		}
-
-		expect(thrownError).toBeDefined();
-		const snapshotPath = getErrorSnapshotPath(filePath);
-
-		await fs.mkdir(path.dirname(snapshotPath), { recursive: true });
-		await expect(serializeDiagnostic(thrownError)).toMatchFileSnapshot(snapshotPath);
-	});
+	);
 });

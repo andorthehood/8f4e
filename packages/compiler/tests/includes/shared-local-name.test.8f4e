@@ -1,0 +1,27 @@
+8f4e/v1
+
+includes
+include test/overloads foo sameName
+include test/overloads bar sameName
+includesEnd
+
+function sameName
+param float64 value
+push value
+push 3.0f64
+add
+functionEnd float64
+
+entry test
+module sharedLocalNameAssertions
+; Two included exports and a project declaration form ordinary overloads.
+call sameName 10
+call assert 11
+
+call sameName 10.5
+call assert 12.5
+
+call sameName 10.5f64
+call assert 13.5f64
+moduleEnd
+entryEnd

@@ -5,6 +5,8 @@ export type IncludeSourceResolverAsync = (includeId: string) => string | Promise
 
 export interface IncludeDeclaration {
 	includeId: string;
+	exportedName?: string;
+	localName?: string;
 	lineNumber: number;
 }
 
@@ -48,11 +50,16 @@ function isGapLine(trimmedLine: string): boolean {
 }
 
 function parseIncludeDeclarationLine(line: string, lineNumber: number): IncludeDeclaration {
-	const [instruction, includeId, ...extraArgs] = line.trim().split(/\s+/);
+	const [instruction, includeId, exportedName, localName, ...extraArgs] = line.trim().split(/\s+/);
 	if (instruction !== 'include' || !includeId || extraArgs.length > 0) {
-		throw new IncludeResolutionError('include requires exactly one include id', lineNumber);
+		throw new IncludeResolutionError('include expects <path> [exportedName [localName]]', lineNumber);
 	}
-	return { includeId, lineNumber };
+	return {
+		includeId,
+		lineNumber,
+		...(exportedName ? { exportedName } : {}),
+		...(localName ? { localName } : {}),
+	};
 }
 
 export function parseIncludeDeclarations(source: string): IncludeParseResult {
@@ -101,8 +108,10 @@ export function parseIncludeDeclarations(source: string): IncludeParseResult {
 	return { source, includes };
 }
 
-export function resolveIncludeSourceTree(source: string, resolveInclude: IncludeSourceResolver): IncludeSourceTree {
-	const parsed = parseIncludeDeclarations(source);
+function resolveParsedIncludeSourceTree(
+	parsed: IncludeParseResult,
+	resolveInclude: IncludeSourceResolver
+): IncludeSourceTree {
 	const resolvedIncludeIds = new Set<string>();
 	const children: IncludeSourceTreeNode[] = [];
 
@@ -123,6 +132,10 @@ export function resolveIncludeSourceTree(source: string, resolveInclude: Include
 	return { source: parsed.source, children };
 }
 
+export function resolveIncludeSourceTree(source: string, resolveInclude: IncludeSourceResolver): IncludeSourceTree {
+	return resolveParsedIncludeSourceTree(parseIncludeDeclarations(source), resolveInclude);
+}
+
 export async function resolveIncludeSourceTreeAsync(
 	source: string,
 	resolveInclude: IncludeSourceResolverAsync
@@ -136,5 +149,5 @@ export async function resolveIncludeSourceTreeAsync(
 		}
 	}
 
-	return resolveIncludeSourceTree(source, includeId => includeSources.get(includeId));
+	return resolveParsedIncludeSourceTree(parsed, includeId => includeSources.get(includeId));
 }

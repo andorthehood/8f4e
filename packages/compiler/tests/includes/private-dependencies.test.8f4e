@@ -1,0 +1,13 @@
+8f4e/v1
+
+includes
+include test/math twice addTwo
+includesEnd
+
+entry test
+module privateDependencyAssertions
+; Unselected inc overloads remain available to included functions.
+call addTwo 5
+call assert 7
+moduleEnd
+entryEnd

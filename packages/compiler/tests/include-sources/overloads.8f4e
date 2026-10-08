@@ -1,0 +1,15 @@
+function foo
+#export
+param int value
+push value
+push 1
+add
+functionEnd int
+
+function bar
+#export
+param float value
+push value
+push 2.0
+add
+functionEnd float

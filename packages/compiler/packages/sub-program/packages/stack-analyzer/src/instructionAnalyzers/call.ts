@@ -28,15 +28,8 @@ function formatFunctionCallSignature(functionName: string, parameters: readonly 
 
 function resolveTargetFunction(line: SemanticCallLine, context: CompilationContext): FunctionMetadata {
 	const functionName = line.arguments[0].value;
-	const functionRegistry = context.namespace.functions;
-	if (!functionRegistry) {
-		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
-	}
-
-	const arity = functionRegistry.arityByName[functionName];
-	if (arity === undefined) {
-		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
-	}
+	const functionRegistry = context.namespace.functions!;
+	const arity = functionRegistry.arityByName[functionName]!;
 
 	if (context.stack.length < arity) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);

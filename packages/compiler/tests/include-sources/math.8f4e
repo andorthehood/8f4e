@@ -1,0 +1,32 @@
+function increment
+#export inc
+param int value
+call helper value
+functionEnd int
+
+function increment
+#export inc
+param float value
+call helper value
+functionEnd float
+
+function twice
+#export
+param int value
+call inc value
+call increment
+functionEnd int
+
+function helper
+param int value
+push value
+push 1
+add
+functionEnd int
+
+function helper
+param float value
+push value
+push 1.0
+add
+functionEnd float

@@ -1,0 +1,12 @@
+8f4e/v1
+
+includes
+include test/math inc addOne
+includesEnd
+
+entry main
+module unselectedExportHost
+call twice 1
+drop
+moduleEnd
+entryEnd

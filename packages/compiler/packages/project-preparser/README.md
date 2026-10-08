@@ -30,3 +30,11 @@ This package does not own:
 
 Groups recursively own their project blocks. Their memory exposure declarations remain symbolic project metadata;
 the program composer resolves those aliases before the compiler's single global memory-planning pass.
+
+Include declarations use `include <path> [exportedName [localName]]`: omit the name to expose all public exports,
+select an exported name to expose its overload family, or add a local name to rename that selection. Repeated selections
+are merged per source, with one local name per export. Conflicting selections of one export under different local names
+are rejected. The program composer applies final declaration names and include-local call targets to validated ASTs.
+Later compiler passes receive ordinary functions. Include-specific internal names use `nonexported` for functions without
+an export marker and `unselected` for exports that were not selected. Collisions with project declarations are handled by
+ordinary namespace validation.

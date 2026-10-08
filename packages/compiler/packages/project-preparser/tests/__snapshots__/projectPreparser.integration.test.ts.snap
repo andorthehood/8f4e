@@ -4,6 +4,12 @@ exports[`project-preparser integration > parses project source into typed collec
 {
   "includedFunctions": [
     {
+      "bindings": {
+        "callTargets": Map {
+          "risingEdge" => "risingEdge",
+        },
+        "functionName": "risingEdge",
+      },
       "code": [
         "function risingEdge",
         "",
@@ -16,6 +22,12 @@ exports[`project-preparser integration > parses project source into typed collec
       },
     },
     {
+      "bindings": {
+        "callTargets": Map {
+          "wrapPointer" => "wrapPointer",
+        },
+        "functionName": "wrapPointer",
+      },
       "code": [
         "function wrapPointer",
         "",
@@ -28,6 +40,12 @@ exports[`project-preparser integration > parses project source into typed collec
       },
     },
     {
+      "bindings": {
+        "callTargets": Map {
+          "wrapPointer" => "wrapPointer",
+        },
+        "functionName": "wrapPointer",
+      },
       "code": [
         "function wrapPointer",
         "",

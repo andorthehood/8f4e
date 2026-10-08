@@ -16,7 +16,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { compileProject, parseProjectSource, serializeDiagnostic } from '../src';
-import { resolveStdlibInclude } from './stdlibResolver';
+import { resolveTestInclude } from './testIncludeResolver';
 
 interface AssertionFailure {
 	assertIndex: number;
@@ -355,7 +355,7 @@ export async function compileFixtureProgramSource(
 			disableSharedMemory: true,
 			includeStackAnalysis: options.includeStackAnalysis,
 			memoryRegions,
-			resolveInclude: resolveStdlibInclude,
+			resolveInclude: resolveTestInclude,
 			cache: options.cache,
 		}),
 	};
