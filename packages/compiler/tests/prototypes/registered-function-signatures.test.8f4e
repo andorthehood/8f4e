@@ -1,0 +1,40 @@
+8f4e/v1
+
+; Each declaration keeps its own
+; expanded signature through
+; semantic analysis and codegen.
+function readState
+#impure
+paramShape integerState
+push *value
+functionEnd int
+
+function readState
+#impure
+paramShape floatState
+push *value
+functionEnd float
+
+prototype integerState
+int value 7
+prototypeEnd
+
+prototype floatState
+float value 2.5
+prototypeEnd
+
+entry test
+module integerCaller
+shape integerState
+pushShape integerState
+call readState
+call assert 7
+moduleEnd
+
+module floatCaller
+shape floatState
+pushShape floatState
+call readState
+call assert 2.5
+moduleEnd
+entryEnd

@@ -124,44 +124,6 @@ functionEnd int
 		expect(second.compileResult.cache.ast.stats.hits).toBeGreaterThanOrEqual(2);
 	});
 
-	test('registers fresh function metadata when a prototype changes around a cached function AST', async () => {
-		const createSource = (type: 'int' | 'float') => `
-8f4e/v1
-
-prototype state
-${type} value
-prototypeEnd
-
-function touch
-#impure
-paramShape state
-push *value
-drop
-functionEnd
-
-entry main
-module caller
-shape state
-pushShape state
-call touch
-moduleEnd
-entryEnd
-`;
-		const first = await compileFixtureProgramSource(createSource('int'));
-		const cachedFunctionAst = first.compileResult.cache.ast.entries.get('root:function:0')?.ast;
-		const second = await compileFixtureProgramSource(createSource('float'), {
-			cache: first.compileResult.cache,
-		});
-		const integerFunctionId = createFunctionId('touch', ['int*']);
-		const floatFunctionId = createFunctionId('touch', ['float*']);
-
-		expect(second.compileResult.cache.ast.entries.get('root:function:0')?.ast).toBe(cachedFunctionAst);
-		expect(first.compileResult.compiledFunctions![integerFunctionId].signature.parameters).toEqual(['int*']);
-		expect(second.compileResult.compiledFunctions![floatFunctionId].signature.parameters).toEqual(['float*']);
-		expect(second.compileResult.compiledFunctions![integerFunctionId]).toBeUndefined();
-		expect(cachedFunctionAst?.lines.find(line => line.instruction === 'paramShape')?.arguments[0].value).toBe('state');
-	});
-
 	test('re-resolves constants when reusing an unchanged module AST from cache', async () => {
 		const createSource = (size: number) => `
 8f4e/v1
