@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "loadAt__int_p__int": {
+    "__8f4e_std_memory_loadAt__public__loadAt__int_p__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "loadAt",
+              "value": "__8f4e_std_memory_loadAt__public__loadAt",
             },
           ],
           "instruction": "function",
@@ -111,13 +111,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "loadAt",
+      "name": "__8f4e_std_memory_loadAt__public__loadAt",
       "type": "function",
     },
   },
   "functionOverview": {
-    "loadAt__int_p__int": {
-      "id": "loadAt__int_p__int",
+    "__8f4e_std_memory_loadAt__public__loadAt__int_p__int": {
+      "id": "__8f4e_std_memory_loadAt__public__loadAt__int_p__int",
       "signature": {
         "parameters": [
           "int*",
@@ -366,7 +366,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "loadAt__int_p__int",
+      "__8f4e_std_memory_loadAt__public__loadAt__int_p__int",
     ],
     "compiledModules": [
       "loadAtAssertions",

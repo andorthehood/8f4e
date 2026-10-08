@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "storeAt__int_p__int__int": {
+    "__8f4e_std_memory_storeAt__public__storeAt__int_p__int__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "storeAt",
+              "value": "__8f4e_std_memory_storeAt__public__storeAt",
             },
           ],
           "instruction": "function",
@@ -132,13 +132,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "storeAt",
+      "name": "__8f4e_std_memory_storeAt__public__storeAt",
       "type": "function",
     },
   },
   "functionOverview": {
-    "storeAt__int_p__int__int": {
-      "id": "storeAt__int_p__int__int",
+    "__8f4e_std_memory_storeAt__public__storeAt__int_p__int__int": {
+      "id": "__8f4e_std_memory_storeAt__public__storeAt__int_p__int__int",
       "signature": {
         "parameters": [
           "int*",
@@ -478,7 +478,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "storeAt__int_p__int__int",
+      "__8f4e_std_memory_storeAt__public__storeAt__int_p__int__int",
     ],
     "compiledModules": [
       "storeAtAssertions",

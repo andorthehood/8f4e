@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "hasChanged__float__float_p": {
+    "__8f4e_std_events_hasChanged__public__hasChanged__float__float_p": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "hasChanged",
+              "value": "__8f4e_std_events_hasChanged__public__hasChanged",
             },
           ],
           "instruction": "function",
@@ -120,10 +120,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "hasChanged",
+      "name": "__8f4e_std_events_hasChanged__public__hasChanged",
       "type": "function",
     },
-    "hasChanged__int__int_p": {
+    "__8f4e_std_events_hasChanged__public__hasChanged__int__int_p": {
       "lines": [
         {
           "arguments": [
@@ -131,7 +131,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "hasChanged",
+              "value": "__8f4e_std_events_hasChanged__public__hasChanged",
             },
           ],
           "instruction": "function",
@@ -241,13 +241,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "hasChanged",
+      "name": "__8f4e_std_events_hasChanged__public__hasChanged",
       "type": "function",
     },
   },
   "functionOverview": {
-    "hasChanged__float__float_p": {
-      "id": "hasChanged__float__float_p",
+    "__8f4e_std_events_hasChanged__public__hasChanged__float__float_p": {
+      "id": "__8f4e_std_events_hasChanged__public__hasChanged__float__float_p",
       "signature": {
         "parameters": [
           "float",
@@ -258,8 +258,8 @@
         ],
       },
     },
-    "hasChanged__int__int_p": {
-      "id": "hasChanged__int__int_p",
+    "__8f4e_std_events_hasChanged__public__hasChanged__int__int_p": {
+      "id": "__8f4e_std_events_hasChanged__public__hasChanged__int__int_p",
       "signature": {
         "parameters": [
           "int",
@@ -588,8 +588,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "hasChanged__float__float_p",
-      "hasChanged__int__int_p",
+      "__8f4e_std_events_hasChanged__public__hasChanged__float__float_p",
+      "__8f4e_std_events_hasChanged__public__hasChanged__int__int_p",
     ],
     "compiledModules": [
       "hasChangedFloatAssertions",

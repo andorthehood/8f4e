@@ -1,0 +1,11 @@
+{
+  "code": 2,
+  "context": {
+    "projectBlockId": 3,
+  },
+  "line": {
+    "instruction": "include",
+    "lineNumber": 2,
+  },
+  "message": "Invalid argument for function: expected identifier.",
+}

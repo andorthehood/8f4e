@@ -108,8 +108,10 @@ export function parseIncludeDeclarations(source: string): IncludeParseResult {
 	return { source, includes };
 }
 
-export function resolveIncludeSourceTree(source: string, resolveInclude: IncludeSourceResolver): IncludeSourceTree {
-	const parsed = parseIncludeDeclarations(source);
+function resolveParsedIncludeSourceTree(
+	parsed: IncludeParseResult,
+	resolveInclude: IncludeSourceResolver
+): IncludeSourceTree {
 	const resolvedIncludeIds = new Set<string>();
 	const children: IncludeSourceTreeNode[] = [];
 
@@ -130,6 +132,10 @@ export function resolveIncludeSourceTree(source: string, resolveInclude: Include
 	return { source: parsed.source, children };
 }
 
+export function resolveIncludeSourceTree(source: string, resolveInclude: IncludeSourceResolver): IncludeSourceTree {
+	return resolveParsedIncludeSourceTree(parseIncludeDeclarations(source), resolveInclude);
+}
+
 export async function resolveIncludeSourceTreeAsync(
 	source: string,
 	resolveInclude: IncludeSourceResolverAsync
@@ -143,5 +149,5 @@ export async function resolveIncludeSourceTreeAsync(
 		}
 	}
 
-	return resolveIncludeSourceTree(source, includeId => includeSources.get(includeId));
+	return resolveParsedIncludeSourceTree(parsed, includeId => includeSources.get(includeId));
 }

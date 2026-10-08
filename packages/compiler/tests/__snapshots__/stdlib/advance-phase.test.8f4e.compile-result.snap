@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "advancePhase__float_p__float__int": {
+    "__8f4e_std_math_trig_advancePhase__public__advancePhase__float_p__float__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "advancePhase",
+              "value": "__8f4e_std_math_trig_advancePhase__public__advancePhase",
             },
           ],
           "instruction": "function",
@@ -284,13 +284,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "advancePhase",
+      "name": "__8f4e_std_math_trig_advancePhase__public__advancePhase",
       "type": "function",
     },
   },
   "functionOverview": {
-    "advancePhase__float_p__float__int": {
-      "id": "advancePhase__float_p__float__int",
+    "__8f4e_std_math_trig_advancePhase__public__advancePhase__float_p__float__int": {
+      "id": "__8f4e_std_math_trig_advancePhase__public__advancePhase__float_p__float__int",
       "signature": {
         "parameters": [
           "float*",
@@ -539,7 +539,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "advancePhase__float_p__float__int",
+      "__8f4e_std_math_trig_advancePhase__public__advancePhase__float_p__float__int",
     ],
     "compiledModules": [
       "advancePhaseAssertions",

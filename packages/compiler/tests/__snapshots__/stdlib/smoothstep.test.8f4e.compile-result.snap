@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "smoothstep__float": {
+    "__8f4e_std_math_smoothstep__public__smoothstep__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "smoothstep",
+              "value": "__8f4e_std_math_smoothstep__public__smoothstep",
             },
           ],
           "instruction": "function",
@@ -111,13 +111,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "smoothstep",
+      "name": "__8f4e_std_math_smoothstep__public__smoothstep",
       "type": "function",
     },
   },
   "functionOverview": {
-    "smoothstep__float": {
-      "id": "smoothstep__float",
+    "__8f4e_std_math_smoothstep__public__smoothstep__float": {
+      "id": "__8f4e_std_math_smoothstep__public__smoothstep__float",
       "signature": {
         "parameters": [
           "float",
@@ -323,7 +323,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "smoothstep__float",
+      "__8f4e_std_math_smoothstep__public__smoothstep__float",
     ],
     "compiledModules": [
       "smoothstepAssertions",

@@ -1,7 +1,10 @@
 import {
+	type CallLine,
 	type CompilerCache,
 	createChildProjectGroupPath,
 	createProjectModuleId,
+	type FunctionLine,
+	type IncludedFunctionBindings,
 	type ProjectConstantNamespacePassLine,
 	type ProjectGroupPath,
 	type ProjectObjectModel,
@@ -60,6 +63,31 @@ function appendMemoryExposureAliases(
 
 	aliases.set(groupPath, groupAliases);
 	program.memoryAliases = aliases;
+}
+
+function bindIncludedFunction(ast: ValidatedFunctionAST, bindings: IncludedFunctionBindings): ValidatedFunctionAST {
+	const functionLine: FunctionLine = {
+		...ast.functionLine,
+		arguments: [{ ...ast.functionLine.arguments[0], value: bindings.internalName }],
+	};
+	return {
+		...ast,
+		name: bindings.internalName,
+		callableNames: bindings.callableNames,
+		functionLine,
+		lines: ast.lines.map(line => {
+			if (line === ast.functionLine) return functionLine;
+			if (line.instruction !== 'call') return line;
+			const target = line.arguments[0];
+			return {
+				...line,
+				arguments: [
+					{ ...target, value: bindings.callTargets.get(target.value) ?? target.value },
+					...line.arguments.slice(1),
+				],
+			} as CallLine;
+		}),
+	};
 }
 
 function appendUnit(
@@ -121,14 +149,13 @@ function appendUnit(
 				)
 			)
 		),
-		...includedFunctions.map((func, index) =>
-			qualify(
-				compileSourceToAST<ValidatedFunctionAST>(
-					createCompilerSource(func, projectPath, `include:function:${index}`),
-					program.cache
-				)
-			)
-		)
+		...includedFunctions.map((func, index) => {
+			const ast = compileSourceToAST<ValidatedFunctionAST>(
+				createCompilerSource(func, projectPath, `include:function:${index}`),
+				program.cache
+			);
+			return qualify(bindIncludedFunction(ast, func.bindings));
+		})
 	);
 
 	const moduleIndexByEntry = new Map<string, number>();

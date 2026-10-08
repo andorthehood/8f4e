@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "fract__float": {
+    "__8f4e_std_math_fract__public__fract__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "fract",
+              "value": "__8f4e_std_math_fract__public__fract",
             },
           ],
           "instruction": "function",
@@ -76,13 +76,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "fract",
+      "name": "__8f4e_std_math_fract__public__fract",
       "type": "function",
     },
   },
   "functionOverview": {
-    "fract__float": {
-      "id": "fract__float",
+    "__8f4e_std_math_fract__public__fract__float": {
+      "id": "__8f4e_std_math_fract__public__fract__float",
       "signature": {
         "parameters": [
           "float",
@@ -271,7 +271,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "fract__float",
+      "__8f4e_std_math_fract__public__fract__float",
     ],
     "compiledModules": [
       "fractAssertions",

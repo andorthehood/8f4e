@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "saw__float": {
+    "__8f4e_std_math_trig_saw__public__saw__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "saw",
+              "value": "__8f4e_std_math_trig_saw__public__saw",
             },
           ],
           "instruction": "function",
@@ -84,13 +84,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "saw",
+      "name": "__8f4e_std_math_trig_saw__public__saw",
       "type": "function",
     },
   },
   "functionOverview": {
-    "saw__float": {
-      "id": "saw__float",
+    "__8f4e_std_math_trig_saw__public__saw__float": {
+      "id": "__8f4e_std_math_trig_saw__public__saw__float",
       "signature": {
         "parameters": [
           "float",
@@ -316,7 +316,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "saw__float",
+      "__8f4e_std_math_trig_saw__public__saw__float",
     ],
     "compiledModules": [
       "sawAssertions",

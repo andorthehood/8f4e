@@ -1,4 +1,11 @@
-import type { ProjectBlock, ProjectIncludeResolver, SourceMetadata } from '@8f4e/language-spec';
+import type {
+	ExportLine,
+	IncludedFunctionBindings,
+	ProjectBlock,
+	ProjectIncludeResolver,
+	SourceMetadata,
+} from '@8f4e/language-spec';
+import { parseLine, SyntaxRulesError } from '@8f4e/tokenizer';
 import { INCLUDES_BLOCK_DELIMITER } from './delimiters';
 import { isProjectGapLine } from './projectLines';
 
@@ -6,6 +13,7 @@ type SyncProjectIncludeResolver = (includeId: string) => string | undefined;
 
 type ResolvedFunctionSource = {
 	code: string[];
+	bindings: IncludedFunctionBindings;
 	source: SourceMetadata;
 };
 
@@ -106,13 +114,8 @@ function getIncludeExport(includeId: string, block: FunctionIncludeBlock): Inclu
 			);
 		}
 
-		const [, publicName, ...extraArgs] = line.trim().split(/\s+/);
-		if (extraArgs.length > 0) {
-			throw new ProjectIncludeError(
-				`include "${includeId}" #export accepts at most one alias`,
-				block.startLineNumber + lineIndex
-			);
-		}
+		const exportLine = parseLine(line, block.startLineNumber + lineIndex) as ExportLine;
+		const publicName = exportLine.arguments[0]?.value;
 
 		includeExport = {
 			lineIndex,
@@ -121,10 +124,6 @@ function getIncludeExport(includeId: string, block: FunctionIncludeBlock): Inclu
 	}
 
 	return includeExport;
-}
-
-function replaceInstructionFirstArgument(line: string, instruction: string, argument: string): string {
-	return line.replace(new RegExp(`^(\\s*${instruction}\\s+)\\S+`), `$1${argument}`);
 }
 
 function getLineFirstArgument(line: string): string {
@@ -140,7 +139,7 @@ function createIncludeFunctions(includeId: string, blocks: FunctionIncludeBlock[
 		return {
 			...block,
 			originalName,
-			finalName: includeExport?.publicName ?? `${prefix}${originalName}`,
+			finalName: includeExport ? `${prefix}public__${includeExport.publicName}` : `${prefix}private__${originalName}`,
 			...(includeExport ? { export: includeExport } : {}),
 		};
 	});
@@ -200,28 +199,6 @@ function createCallTargetRewriteMap(includeId: string, functions: IncludeFunctio
 	return rewriteMap;
 }
 
-function rewriteIncludeFunctionCode(
-	func: IncludeFunction,
-	callTargetRewriteMap: ReadonlyMap<string, string>
-): string[] {
-	return func.code.map((line, lineIndex) => {
-		if (lineIndex === 0) {
-			return replaceInstructionFirstArgument(line, 'function', func.finalName);
-		}
-		if (func.export?.lineIndex === lineIndex) {
-			return '';
-		}
-		if (startsWithInstruction(line, 'call')) {
-			const targetName = getLineFirstArgument(line);
-			const rewrittenTargetName = callTargetRewriteMap.get(targetName);
-			if (rewrittenTargetName && rewrittenTargetName !== targetName) {
-				return replaceInstructionFirstArgument(line, 'call', rewrittenTargetName);
-			}
-		}
-		return line;
-	});
-}
-
 function addIncludeBinding(bindings: IncludeBindings, exportedName: string, localName: string): void {
 	const names = bindings.get(exportedName) ?? new Set<string>();
 	names.add(localName);
@@ -233,41 +210,16 @@ function expandIncludeFunctions(
 	functions: IncludeFunction[],
 	bindings: IncludeBindings
 ): ResolvedFunctionSource[] {
-	const prefix = getIncludeFunctionPrefix(includeId);
-	const assignedNames = new Set([
-		...functions.filter(func => !func.export).map(func => `${prefix}${func.originalName}`),
-		...[...bindings.values()].flatMap(names => [...names]),
-	]);
-	const privateExportNames = new Map<string, string>();
-	for (const func of functions) {
-		const publicName = func.export?.publicName;
-		if (publicName === undefined || bindings.has(publicName) || privateExportNames.has(publicName)) {
-			continue;
-		}
-		const baseName = `${prefix}${publicName}`;
-		let privateName = baseName;
-		for (let suffix = 1; assignedNames.has(privateName); suffix += 1) {
-			privateName = `${baseName}_${suffix}`;
-		}
-		assignedNames.add(privateName);
-		privateExportNames.set(publicName, privateName);
-	}
-	// One canonical name per function keeps internal calls and helpers shared across aliases.
-	const canonicalFunctions = functions.map(func => ({
-		...func,
-		finalName: func.export
-			? (bindings.get(func.export.publicName)?.values().next().value ?? privateExportNames.get(func.export.publicName)!)
-			: `${prefix}${func.originalName}`,
+	const callTargetRewriteMap = createCallTargetRewriteMap(includeId, functions);
+	return functions.map(func => ({
+		code: func.code.map((line, index) => (index === func.export?.lineIndex ? '' : line)),
+		bindings: {
+			internalName: func.finalName,
+			callableNames: func.export ? [...(bindings.get(func.export.publicName) ?? [])] : [],
+			callTargets: callTargetRewriteMap,
+		},
+		source: { kind: 'include' as const, includeId, symbolName: func.finalName },
 	}));
-	const callTargetRewriteMap = createCallTargetRewriteMap(includeId, canonicalFunctions);
-
-	return canonicalFunctions.flatMap(func => {
-		const names = func.export ? bindings.get(func.export.publicName) : undefined;
-		return [...(names ?? [func.finalName])].map(finalName => ({
-			code: rewriteIncludeFunctionCode({ ...func, finalName }, callTargetRewriteMap),
-			source: { kind: 'include' as const, includeId, symbolName: finalName },
-		}));
-	});
 }
 
 /**
@@ -301,6 +253,19 @@ export function collectProjectIncludeIdsFromBlock(block: Pick<ProjectBlock, 'cod
 		const [instruction, includeId, exportedName, localName, ...extraArgs] = trimmed.split(/\s+/);
 		if (instruction !== 'include' || !includeId || extraArgs.length > 0) {
 			throw new ProjectIncludeError('include expects <path> [exportedName [localName]]', lineNumber, block.id);
+		}
+		for (const name of [exportedName, localName]) {
+			if (name !== undefined) {
+				try {
+					parseLine(`function ${name}`, lineNumber);
+				} catch (error) {
+					if (error instanceof SyntaxRulesError) {
+						error.line = { lineNumber, instruction: 'include' };
+						error.context = { projectBlockId: block.id };
+					}
+					throw error;
+				}
+			}
 		}
 		includeIds.push({
 			includeId,
@@ -342,13 +307,10 @@ export function collectProjectIncludeIdsFromText(text: string): string[] {
 	return includeIds;
 }
 
-export function resolveProjectIncludes(
-	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
-	resolveInclude: SyncProjectIncludeResolver
-): ResolvedFunctionSource[] {
-	const includedFunctionBlocks: ResolvedFunctionSource[] = [];
+function collectProjectIncludeDeclarations(
+	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[]
+): Map<string, ProjectIncludeDeclaration[]> {
 	const declarationsByIncludeId = new Map<string, ProjectIncludeDeclaration[]>();
-
 	for (const block of includeBlocks) {
 		if (block.disabled) {
 			continue;
@@ -359,6 +321,14 @@ export function resolveProjectIncludes(
 			declarationsByIncludeId.set(declaration.includeId, declarations);
 		}
 	}
+	return declarationsByIncludeId;
+}
+
+function resolveProjectIncludeDeclarations(
+	declarationsByIncludeId: Map<string, ProjectIncludeDeclaration[]>,
+	resolveInclude: SyncProjectIncludeResolver
+): ResolvedFunctionSource[] {
+	const includedFunctionBlocks: ResolvedFunctionSource[] = [];
 
 	for (const [includeId, declarations] of declarationsByIncludeId) {
 		const source = resolveInclude(includeId);
@@ -391,22 +361,21 @@ export function resolveProjectIncludes(
 	return includedFunctionBlocks;
 }
 
+export function resolveProjectIncludes(
+	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
+	resolveInclude: SyncProjectIncludeResolver
+): ResolvedFunctionSource[] {
+	return resolveProjectIncludeDeclarations(collectProjectIncludeDeclarations(includeBlocks), resolveInclude);
+}
+
 export async function resolveProjectIncludesAsync(
 	includeBlocks: readonly Pick<ProjectBlock, 'code' | 'id' | 'disabled'>[],
 	resolveInclude: ProjectIncludeResolver
 ): Promise<ResolvedFunctionSource[]> {
+	const declarations = collectProjectIncludeDeclarations(includeBlocks);
 	const includeSources = new Map<string, string | undefined>();
-
-	for (const block of includeBlocks) {
-		if (block.disabled) {
-			continue;
-		}
-		for (const { includeId } of collectProjectIncludeIdsFromBlock(block)) {
-			if (!includeSources.has(includeId)) {
-				includeSources.set(includeId, await resolveInclude(includeId));
-			}
-		}
+	for (const includeId of declarations.keys()) {
+		includeSources.set(includeId, await resolveInclude(includeId));
 	}
-
-	return resolveProjectIncludes(includeBlocks, includeId => includeSources.get(includeId));
+	return resolveProjectIncludeDeclarations(declarations, includeId => includeSources.get(includeId));
 }

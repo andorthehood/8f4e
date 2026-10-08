@@ -9,7 +9,7 @@
         "referenceKind": "plain",
         "scope": "local",
         "type": "identifier",
-        "value": "same",
+        "value": "__8f4e_test_math__public__twice",
       },
     ],
     "instruction": "function",

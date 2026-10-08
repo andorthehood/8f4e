@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "xorshift__int_p": {
+    "__8f4e_std_random_xorshift__public__xorshift__int_p": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "xorshift",
+              "value": "__8f4e_std_random_xorshift__public__xorshift",
             },
           ],
           "instruction": "function",
@@ -237,13 +237,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "xorshift",
+      "name": "__8f4e_std_random_xorshift__public__xorshift",
       "type": "function",
     },
   },
   "functionOverview": {
-    "xorshift__int_p": {
-      "id": "xorshift__int_p",
+    "__8f4e_std_random_xorshift__public__xorshift__int_p": {
+      "id": "__8f4e_std_random_xorshift__public__xorshift__int_p",
       "signature": {
         "parameters": [
           "int*",
@@ -517,7 +517,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "xorshift__int_p",
+      "__8f4e_std_random_xorshift__public__xorshift__int_p",
     ],
     "compiledModules": [
       "xorshiftAssertions",

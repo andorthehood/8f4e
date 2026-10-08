@@ -42,7 +42,7 @@ export default function resolveCallReferences(
 ): CallLine | SemanticCallLine {
 	const functionName = line.arguments[0].value;
 	const functionRegistry = context.namespace.functions!;
-	if (functionRegistry.arityByName[functionName] === undefined) {
+	if (functionRegistry.byName[functionName] === undefined) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context);
 	}
 

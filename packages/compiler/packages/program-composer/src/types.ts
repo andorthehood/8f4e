@@ -1,5 +1,6 @@
 import type {
 	CompilerCache,
+	IncludedFunctionBindings,
 	ProjectConstantNamespaceScope,
 	ProjectGroupPath,
 	ProjectMemoryAliasLookup,
@@ -20,7 +21,10 @@ export type CompilerDerivedSource = {
 };
 
 /** Include expansions keyed by the canonical path of the project group that owns them. */
-export type IncludedFunctionsByProjectGroupPath = ReadonlyMap<ProjectGroupPath, readonly CompilerDerivedSource[]>;
+export type IncludedFunctionsByProjectGroupPath = ReadonlyMap<
+	ProjectGroupPath,
+	readonly (CompilerDerivedSource & { bindings: IncludedFunctionBindings })[]
+>;
 
 /** A group memory exposure with its canonical group and backing-module identities. */
 export interface ComposedProjectMemoryExposure extends ProjectMemoryExposure {

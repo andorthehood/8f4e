@@ -69,7 +69,7 @@ export function collectFunctionMetadataFromAsts(
 	options: FunctionMetadataCollectionOptions
 ): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
-	const arityByName: FunctionRegistry['arityByName'] = {};
+	const byName: FunctionRegistry['byName'] = {};
 	const overloadCountsByName = asts.reduce<Record<string, number>>((counts, ast) => {
 		counts[ast.name] = (counts[ast.name] ?? 0) + 1;
 		return counts;
@@ -84,26 +84,6 @@ export function collectFunctionMetadataFromAsts(
 		const name = ast.name;
 		const functionMetadata = getEffectiveFunctionMetadata(ast, options.prototypeShapes);
 		const id = createFunctionId(name, functionMetadata.signature.parameters);
-		if (reservedFunctionNames.has(name)) {
-			throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
-				identifier: name,
-			});
-		}
-		if (seenFunctionIds.has(id)) {
-			throw getError(ErrorCode.DUPLICATE_FUNCTION_SIGNATURE, ast.functionLine, getAstDiagnosticContext(ast), {
-				identifier: id,
-			});
-		}
-
-		const existingArity = arityByName[name];
-		const arity = functionMetadata.signature.parameters.length;
-		if (existingArity !== undefined) {
-			if (existingArity === 0 || arity === 0 || existingArity !== arity) {
-				throw getError(ErrorCode.INVALID_FUNCTION_OVERLOAD_SET, ast.functionLine, getAstDiagnosticContext(ast), {
-					identifier: name,
-				});
-			}
-		}
 
 		const importedFunction = getFunctionImportMetadata(ast);
 		// Imported functions cannot be valid exports; keep that conflict in per-function directive validation.
@@ -142,12 +122,33 @@ export function collectFunctionMetadataFromAsts(
 			...(importedFunction ? { import: importedFunction } : {}),
 			...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		};
-		seenFunctionIds.add(id);
+		for (const callableName of new Set([name, ...(ast.callableNames ?? [])])) {
+			const callId = createFunctionId(callableName, functionMetadata.signature.parameters);
+			if (reservedFunctionNames.has(callableName)) {
+				throw getError(ErrorCode.DUPLICATE_IDENTIFIER, ast.functionLine, getAstDiagnosticContext(ast), {
+					identifier: callableName,
+				});
+			}
+			if (seenFunctionIds.has(callId)) {
+				throw getError(ErrorCode.DUPLICATE_FUNCTION_SIGNATURE, ast.functionLine, getAstDiagnosticContext(ast), {
+					identifier: callId,
+				});
+			}
+			const overloads = byName[callableName] ?? [];
+			const existingArity = overloads[0]?.signature.parameters.length;
+			const arity = functionMetadata.signature.parameters.length;
+			if (existingArity !== undefined && (existingArity === 0 || arity === 0 || existingArity !== arity)) {
+				throw getError(ErrorCode.INVALID_FUNCTION_OVERLOAD_SET, ast.functionLine, getAstDiagnosticContext(ast), {
+					identifier: callableName,
+				});
+			}
+			seenFunctionIds.add(callId);
+			byName[callableName] = [...overloads, metadata];
+		}
 		byId[id] = metadata;
-		arityByName[name] = arity;
 	}
 
-	return { byId, arityByName };
+	return { byId, byName };
 }
 
 /**

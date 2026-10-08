@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "triangle__float": {
+    "__8f4e_std_math_trig_triangle__public__triangle__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "triangle",
+              "value": "__8f4e_std_math_trig_triangle__public__triangle",
             },
           ],
           "instruction": "function",
@@ -116,13 +116,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "triangle",
+      "name": "__8f4e_std_math_trig_triangle__public__triangle",
       "type": "function",
     },
   },
   "functionOverview": {
-    "triangle__float": {
-      "id": "triangle__float",
+    "__8f4e_std_math_trig_triangle__public__triangle__float": {
+      "id": "__8f4e_std_math_trig_triangle__public__triangle__float",
       "signature": {
         "parameters": [
           "float",
@@ -348,7 +348,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "triangle__float",
+      "__8f4e_std_math_trig_triangle__public__triangle__float",
     ],
     "compiledModules": [
       "triangleAssertions",

@@ -27,4 +27,6 @@ This file extends the root and compiler package guidance for `packages/compiler/
 - Do not lower a project into a second whole-project compiler input. Private compiler stages consume the canonical
   collections directly.
 - Include source is resolved behind `compileProject` and passed to private compiler stages as derived functions.
+- The tokenizer validates include binding names and include-local export syntax once during include preparation.
+  Preserve function bodies as source text; the program composer applies internal names and call bindings to validated ASTs.
 - Keep compiler diagnostics block-relative. If project-level preparation reports an error from inside a block, attach the project block id and use the line number within that block.

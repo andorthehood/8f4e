@@ -1,0 +1,5 @@
+8f4e/v1
+
+includes
+include test/invalid-function-name validName renamed
+includesEnd

@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "clamp__float__float__float": {
+    "__8f4e_std_math_clamp__public__clamp__float__float__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "clamp",
+              "value": "__8f4e_std_math_clamp__public__clamp",
             },
           ],
           "instruction": "function",
@@ -117,10 +117,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "clamp",
+      "name": "__8f4e_std_math_clamp__public__clamp",
       "type": "function",
     },
-    "clamp__int__int__int": {
+    "__8f4e_std_math_clamp__public__clamp__int__int__int": {
       "lines": [
         {
           "arguments": [
@@ -128,7 +128,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "clamp",
+              "value": "__8f4e_std_math_clamp__public__clamp",
             },
           ],
           "instruction": "function",
@@ -237,13 +237,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "clamp",
+      "name": "__8f4e_std_math_clamp__public__clamp",
       "type": "function",
     },
   },
   "functionOverview": {
-    "clamp__float__float__float": {
-      "id": "clamp__float__float__float",
+    "__8f4e_std_math_clamp__public__clamp__float__float__float": {
+      "id": "__8f4e_std_math_clamp__public__clamp__float__float__float",
       "signature": {
         "parameters": [
           "float",
@@ -255,8 +255,8 @@
         ],
       },
     },
-    "clamp__int__int__int": {
-      "id": "clamp__int__int__int",
+    "__8f4e_std_math_clamp__public__clamp__int__int__int": {
+      "id": "__8f4e_std_math_clamp__public__clamp__int__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -470,8 +470,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "clamp__float__float__float",
-      "clamp__int__int__int",
+      "__8f4e_std_math_clamp__public__clamp__float__float__float",
+      "__8f4e_std_math_clamp__public__clamp__int__int__int",
     ],
     "compiledModules": [
       "clampIntAssertions",

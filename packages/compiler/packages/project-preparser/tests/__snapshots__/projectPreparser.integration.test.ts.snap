@@ -4,6 +4,15 @@ exports[`project-preparser integration > parses project source into typed collec
 {
   "includedFunctions": [
     {
+      "bindings": {
+        "callTargets": Map {
+          "risingEdge" => "__8f4e_std_events_risingEdge__public__risingEdge",
+        },
+        "callableNames": [
+          "risingEdge",
+        ],
+        "internalName": "__8f4e_std_events_risingEdge__public__risingEdge",
+      },
       "code": [
         "function risingEdge",
         "",
@@ -12,10 +21,19 @@ exports[`project-preparser integration > parses project source into typed collec
       "source": {
         "includeId": "std/events/risingEdge",
         "kind": "include",
-        "symbolName": "risingEdge",
+        "symbolName": "__8f4e_std_events_risingEdge__public__risingEdge",
       },
     },
     {
+      "bindings": {
+        "callTargets": Map {
+          "wrapPointer" => "__8f4e_std_memory_wrapPointer__public__wrapPointer",
+        },
+        "callableNames": [
+          "wrapPointer",
+        ],
+        "internalName": "__8f4e_std_memory_wrapPointer__public__wrapPointer",
+      },
       "code": [
         "function wrapPointer",
         "",
@@ -24,10 +42,19 @@ exports[`project-preparser integration > parses project source into typed collec
       "source": {
         "includeId": "std/memory/wrapPointer",
         "kind": "include",
-        "symbolName": "wrapPointer",
+        "symbolName": "__8f4e_std_memory_wrapPointer__public__wrapPointer",
       },
     },
     {
+      "bindings": {
+        "callTargets": Map {
+          "wrapPointer" => "__8f4e_std_memory_wrapPointer__public__wrapPointer",
+        },
+        "callableNames": [
+          "wrapPointer",
+        ],
+        "internalName": "__8f4e_std_memory_wrapPointer__public__wrapPointer",
+      },
       "code": [
         "function wrapPointer",
         "",
@@ -36,7 +63,7 @@ exports[`project-preparser integration > parses project source into typed collec
       "source": {
         "includeId": "std/memory/wrapPointer",
         "kind": "include",
-        "symbolName": "wrapPointer",
+        "symbolName": "__8f4e_std_memory_wrapPointer__public__wrapPointer",
       },
     },
   ],

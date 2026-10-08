@@ -74,7 +74,8 @@ overload of the selected name. Missing exports and private helper names cannot b
 
 Repeated declarations of the same source, export, and local name are deduplicated. Different local names can expose
 the same exported function more than once, and selections can be combined with the include-all form. Each source is
-loaded once per resolution pass and its private helpers are shared by all selections. Unselected exports remain private
+loaded once per resolution pass. Local names bind to the same compiled function bodies, and private helpers are shared
+by all selections. Unselected exports remain private
 dependencies so calls inside included functions still work. Local names use the same overload and duplicate-signature
 rules as ordinary project functions.
 

@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "decrementPointer__float_p_p__float_p__int": {
+    "__8f4e_std_memory_decrementPointer__public__decrementPointer__float_p_p__float_p__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "decrementPointer",
+              "value": "__8f4e_std_memory_decrementPointer__public__decrementPointer",
             },
           ],
           "instruction": "function",
@@ -258,10 +258,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "decrementPointer",
+      "name": "__8f4e_std_memory_decrementPointer__public__decrementPointer",
       "type": "function",
     },
-    "decrementPointer__int_p_p__int_p__int": {
+    "__8f4e_std_memory_decrementPointer__public__decrementPointer__int_p_p__int_p__int": {
       "lines": [
         {
           "arguments": [
@@ -269,7 +269,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "decrementPointer",
+              "value": "__8f4e_std_memory_decrementPointer__public__decrementPointer",
             },
           ],
           "instruction": "function",
@@ -519,13 +519,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "decrementPointer",
+      "name": "__8f4e_std_memory_decrementPointer__public__decrementPointer",
       "type": "function",
     },
   },
   "functionOverview": {
-    "decrementPointer__float_p_p__float_p__int": {
-      "id": "decrementPointer__float_p_p__float_p__int",
+    "__8f4e_std_memory_decrementPointer__public__decrementPointer__float_p_p__float_p__int": {
+      "id": "__8f4e_std_memory_decrementPointer__public__decrementPointer__float_p_p__float_p__int",
       "signature": {
         "parameters": [
           "float**",
@@ -535,8 +535,8 @@
         "returns": [],
       },
     },
-    "decrementPointer__int_p_p__int_p__int": {
-      "id": "decrementPointer__int_p_p__int_p__int",
+    "__8f4e_std_memory_decrementPointer__public__decrementPointer__int_p_p__int_p__int": {
+      "id": "__8f4e_std_memory_decrementPointer__public__decrementPointer__int_p_p__int_p__int",
       "signature": {
         "parameters": [
           "int**",
@@ -916,8 +916,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "decrementPointer__float_p_p__float_p__int",
-      "decrementPointer__int_p_p__int_p__int",
+      "__8f4e_std_memory_decrementPointer__public__decrementPointer__float_p_p__float_p__int",
+      "__8f4e_std_memory_decrementPointer__public__decrementPointer__int_p_p__int_p__int",
     ],
     "compiledModules": [
       "decrementPointerFloatAssertions",

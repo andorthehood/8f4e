@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "wrapPointer__int__float_p__int": {
+    "__8f4e_std_memory_wrapPointer__public__wrapPointer__int__float_p__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "wrapPointer",
+              "value": "__8f4e_std_memory_wrapPointer__public__wrapPointer",
             },
           ],
           "instruction": "function",
@@ -226,10 +226,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "wrapPointer",
+      "name": "__8f4e_std_memory_wrapPointer__public__wrapPointer",
       "type": "function",
     },
-    "wrapPointer__int__int_p__int": {
+    "__8f4e_std_memory_wrapPointer__public__wrapPointer__int__int_p__int": {
       "lines": [
         {
           "arguments": [
@@ -237,7 +237,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "wrapPointer",
+              "value": "__8f4e_std_memory_wrapPointer__public__wrapPointer",
             },
           ],
           "instruction": "function",
@@ -455,13 +455,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "wrapPointer",
+      "name": "__8f4e_std_memory_wrapPointer__public__wrapPointer",
       "type": "function",
     },
   },
   "functionOverview": {
-    "wrapPointer__int__float_p__int": {
-      "id": "wrapPointer__int__float_p__int",
+    "__8f4e_std_memory_wrapPointer__public__wrapPointer__int__float_p__int": {
+      "id": "__8f4e_std_memory_wrapPointer__public__wrapPointer__int__float_p__int",
       "signature": {
         "parameters": [
           "int",
@@ -473,8 +473,8 @@
         ],
       },
     },
-    "wrapPointer__int__int_p__int": {
-      "id": "wrapPointer__int__int_p__int",
+    "__8f4e_std_memory_wrapPointer__public__wrapPointer__int__int_p__int": {
+      "id": "__8f4e_std_memory_wrapPointer__public__wrapPointer__int__int_p__int",
       "signature": {
         "parameters": [
           "int",
@@ -885,8 +885,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "wrapPointer__int__float_p__int",
-      "wrapPointer__int__int_p__int",
+      "__8f4e_std_memory_wrapPointer__public__wrapPointer__int__float_p__int",
+      "__8f4e_std_memory_wrapPointer__public__wrapPointer__int__int_p__int",
     ],
     "compiledModules": [
       "wrapPointerIntAssertions",

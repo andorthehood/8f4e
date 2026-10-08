@@ -6,7 +6,7 @@ import type {
 	Stack,
 	StackItem,
 } from '@8f4e/language-spec';
-import { createFunctionId, ErrorCode, functionValueTypeToStackItem, getError } from '@8f4e/language-spec';
+import { ErrorCode, functionValueTypeToStackItem, getError } from '@8f4e/language-spec';
 import { analyzePush } from './push';
 import { consume, produce } from './stack';
 
@@ -18,40 +18,29 @@ function stackItemToExactFunctionValueType(stackItem: StackItem): FunctionValueT
 	return stackItem.valueType as FunctionValueType;
 }
 
-function stackItemsToFunctionId(functionName: string, stackItems: readonly StackItem[]): string {
-	return createFunctionId(functionName, stackItems.map(stackItemToExactFunctionValueType));
-}
-
 function formatFunctionCallSignature(functionName: string, parameters: readonly FunctionValueType[]): string {
 	return `${functionName}(${parameters.join(', ')})`;
 }
 
 function resolveTargetFunction(line: SemanticCallLine, context: CompilationContext): FunctionMetadata {
 	const functionName = line.arguments[0].value;
-	const functionRegistry = context.namespace.functions;
-	if (!functionRegistry) {
-		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
-	}
-
-	const arity = functionRegistry.arityByName[functionName];
-	if (arity === undefined) {
-		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
-	}
+	const overloads = context.namespace.functions!.byName[functionName]!;
+	const arity = overloads[0]!.signature.parameters.length;
 
 	if (context.stack.length < arity) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
 	const operands = context.stack.slice(context.stack.length - arity);
-	const exactMatch = functionRegistry.byId[stackItemsToFunctionId(functionName, operands)];
+	const inferredParameterTypes = operands.map(stackItemToExactFunctionValueType);
+	const exactMatch = overloads.find(metadata =>
+		metadata.signature.parameters.every((type, index) => type === inferredParameterTypes[index])
+	);
 	if (exactMatch) {
 		return exactMatch;
 	}
-
-	const inferredParameterTypes = operands.map(stackItemToExactFunctionValueType);
-	const availableOverloadSignatures = Object.values(functionRegistry.byId)
-		.filter(functionMetadata => functionMetadata.name === functionName)
-		.map(functionMetadata => formatFunctionCallSignature(functionName, functionMetadata.signature.parameters))
+	const availableOverloadSignatures = overloads
+		.map(metadata => formatFunctionCallSignature(functionName, metadata.signature.parameters))
 		.sort((left, right) => left.localeCompare(right));
 
 	throw getError(ErrorCode.FUNCTION_OVERLOAD_NO_MATCH, line, context, {

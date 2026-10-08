@@ -30,7 +30,6 @@ import {
 	ArgumentType,
 	BASE_TYPE_METADATA,
 	BlockType,
-	createFunctionId,
 	ErrorCode,
 	functionValueTypeToStackItem,
 	GLOBAL_ALIGNMENT_BOUNDARY,
@@ -630,10 +629,6 @@ function stackItemToExactFunctionValueType(stackItem: StackItem): FunctionValueT
 	return stackItem.valueType as FunctionValueType;
 }
 
-function stackItemsToFunctionId(functionName: string, stackItems: readonly StackItem[]): string {
-	return createFunctionId(functionName, stackItems.map(stackItemToExactFunctionValueType));
-}
-
 function formatFunctionCallSignature(functionName: string, parameters: readonly FunctionValueType[]): string {
 	return `${functionName}(${parameters.join(', ')})`;
 }
@@ -645,23 +640,25 @@ function resolveTargetFunctionForTest(line: CompilerASTLine, context: Compilatio
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
 	}
 
-	const arity = functionRegistry.arityByName[functionName];
-	if (arity === undefined) {
+	const overloads = functionRegistry.byName[functionName];
+	if (overloads === undefined) {
 		throw getError(ErrorCode.UNDEFINED_FUNCTION, line, context, { identifier: functionName });
 	}
+	const arity = overloads[0]!.signature.parameters.length;
 	if (context.stack.length < arity) {
 		throw getError(ErrorCode.INSUFFICIENT_OPERANDS, line, context);
 	}
 
 	const operands = context.stack.slice(context.stack.length - arity);
-	const exactMatch = functionRegistry.byId[stackItemsToFunctionId(functionName, operands)];
+	const inferredParameterTypes = operands.map(stackItemToExactFunctionValueType);
+	const exactMatch = overloads.find(metadata =>
+		metadata.signature.parameters.every((type, index) => type === inferredParameterTypes[index])
+	);
 	if (exactMatch) {
 		return exactMatch;
 	}
 
-	const inferredParameterTypes = operands.map(stackItemToExactFunctionValueType);
-	const availableOverloadSignatures = Object.values(functionRegistry.byId)
-		.filter(functionMetadata => functionMetadata.name === functionName)
+	const availableOverloadSignatures = overloads
 		.map(functionMetadata => formatFunctionCallSignature(functionName, functionMetadata.signature.parameters))
 		.sort((left, right) => left.localeCompare(right));
 	throw getError(ErrorCode.FUNCTION_OVERLOAD_NO_MATCH, line, context, {

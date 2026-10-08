@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "cosine__float": {
+    "__8f4e_std_math_trig_cosine__public__cosine__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "cosine",
+              "value": "__8f4e_std_math_trig_cosine__public__cosine",
             },
           ],
           "instruction": "function",
@@ -541,13 +541,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "cosine",
+      "name": "__8f4e_std_math_trig_cosine__public__cosine",
       "type": "function",
     },
   },
   "functionOverview": {
-    "cosine__float": {
-      "id": "cosine__float",
+    "__8f4e_std_math_trig_cosine__public__cosine__float": {
+      "id": "__8f4e_std_math_trig_cosine__public__cosine__float",
       "signature": {
         "parameters": [
           "float",
@@ -736,7 +736,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "cosine__float",
+      "__8f4e_std_math_trig_cosine__public__cosine__float",
     ],
     "compiledModules": [
       "cosineAssertions",

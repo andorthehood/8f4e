@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "lerp__float__float__float": {
+    "__8f4e_std_math_lerp__public__lerp__float__float__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "lerp",
+              "value": "__8f4e_std_math_lerp__public__lerp",
             },
           ],
           "instruction": "function",
@@ -146,13 +146,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "lerp",
+      "name": "__8f4e_std_math_lerp__public__lerp",
       "type": "function",
     },
   },
   "functionOverview": {
-    "lerp__float__float__float": {
-      "id": "lerp__float__float__float",
+    "__8f4e_std_math_lerp__public__lerp__float__float__float": {
+      "id": "__8f4e_std_math_lerp__public__lerp__float__float__float",
       "signature": {
         "parameters": [
           "float",
@@ -378,7 +378,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "lerp__float__float__float",
+      "__8f4e_std_math_lerp__public__lerp__float__float__float",
     ],
     "compiledModules": [
       "lerpAssertions",

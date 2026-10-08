@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "nearestValue__float__float_p__int": {
+    "__8f4e_std_memory_nearestValue__public__nearestValue__float__float_p__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "nearestValue",
+              "value": "__8f4e_std_memory_nearestValue__public__nearestValue",
             },
           ],
           "instruction": "function",
@@ -576,10 +576,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "nearestValue",
+      "name": "__8f4e_std_memory_nearestValue__public__nearestValue",
       "type": "function",
     },
-    "nearestValue__int__int_p__int": {
+    "__8f4e_std_memory_nearestValue__public__nearestValue__int__int_p__int": {
       "lines": [
         {
           "arguments": [
@@ -587,7 +587,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "nearestValue",
+              "value": "__8f4e_std_memory_nearestValue__public__nearestValue",
             },
           ],
           "instruction": "function",
@@ -1155,13 +1155,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "nearestValue",
+      "name": "__8f4e_std_memory_nearestValue__public__nearestValue",
       "type": "function",
     },
   },
   "functionOverview": {
-    "nearestValue__float__float_p__int": {
-      "id": "nearestValue__float__float_p__int",
+    "__8f4e_std_memory_nearestValue__public__nearestValue__float__float_p__int": {
+      "id": "__8f4e_std_memory_nearestValue__public__nearestValue__float__float_p__int",
       "signature": {
         "parameters": [
           "float",
@@ -1173,8 +1173,8 @@
         ],
       },
     },
-    "nearestValue__int__int_p__int": {
-      "id": "nearestValue__int__int_p__int",
+    "__8f4e_std_memory_nearestValue__public__nearestValue__int__int_p__int": {
+      "id": "__8f4e_std_memory_nearestValue__public__nearestValue__int__int_p__int",
       "signature": {
         "parameters": [
           "int",
@@ -1941,8 +1941,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "nearestValue__float__float_p__int",
-      "nearestValue__int__int_p__int",
+      "__8f4e_std_memory_nearestValue__public__nearestValue__float__float_p__int",
+      "__8f4e_std_memory_nearestValue__public__nearestValue__int__int_p__int",
     ],
     "compiledModules": [
       "nearestValueFloatAssertions",

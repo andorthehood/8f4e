@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "risingEdge__float__float_p": {
+    "__8f4e_std_events_risingEdge__public__risingEdge__float__float_p": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "risingEdge",
+              "value": "__8f4e_std_events_risingEdge__public__risingEdge",
             },
           ],
           "instruction": "function",
@@ -120,10 +120,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "risingEdge",
+      "name": "__8f4e_std_events_risingEdge__public__risingEdge",
       "type": "function",
     },
-    "risingEdge__int__int_p": {
+    "__8f4e_std_events_risingEdge__public__risingEdge__int__int_p": {
       "lines": [
         {
           "arguments": [
@@ -131,7 +131,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "risingEdge",
+              "value": "__8f4e_std_events_risingEdge__public__risingEdge",
             },
           ],
           "instruction": "function",
@@ -241,13 +241,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "risingEdge",
+      "name": "__8f4e_std_events_risingEdge__public__risingEdge",
       "type": "function",
     },
   },
   "functionOverview": {
-    "risingEdge__float__float_p": {
-      "id": "risingEdge__float__float_p",
+    "__8f4e_std_events_risingEdge__public__risingEdge__float__float_p": {
+      "id": "__8f4e_std_events_risingEdge__public__risingEdge__float__float_p",
       "signature": {
         "parameters": [
           "float",
@@ -258,8 +258,8 @@
         ],
       },
     },
-    "risingEdge__int__int_p": {
-      "id": "risingEdge__int__int_p",
+    "__8f4e_std_events_risingEdge__public__risingEdge__int__int_p": {
+      "id": "__8f4e_std_events_risingEdge__public__risingEdge__int__int_p",
       "signature": {
         "parameters": [
           "int",
@@ -606,8 +606,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "risingEdge__float__float_p",
-      "risingEdge__int__int_p",
+      "__8f4e_std_events_risingEdge__public__risingEdge__float__float_p",
+      "__8f4e_std_events_risingEdge__public__risingEdge__int__int_p",
     ],
     "compiledModules": [
       "risingEdgeIntAssertions",

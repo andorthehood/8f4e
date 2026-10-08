@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "triggerToGate__float__int__int_p": {
+    "__8f4e_std_events_triggerToGate__public__triggerToGate__float__int__int_p": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "triggerToGate",
+              "value": "__8f4e_std_events_triggerToGate__public__triggerToGate",
             },
           ],
           "instruction": "function",
@@ -248,10 +248,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "triggerToGate",
+      "name": "__8f4e_std_events_triggerToGate__public__triggerToGate",
       "type": "function",
     },
-    "triggerToGate__int__int__int_p": {
+    "__8f4e_std_events_triggerToGate__public__triggerToGate__int__int__int_p": {
       "lines": [
         {
           "arguments": [
@@ -259,7 +259,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "triggerToGate",
+              "value": "__8f4e_std_events_triggerToGate__public__triggerToGate",
             },
           ],
           "instruction": "function",
@@ -499,13 +499,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "triggerToGate",
+      "name": "__8f4e_std_events_triggerToGate__public__triggerToGate",
       "type": "function",
     },
   },
   "functionOverview": {
-    "triggerToGate__float__int__int_p": {
-      "id": "triggerToGate__float__int__int_p",
+    "__8f4e_std_events_triggerToGate__public__triggerToGate__float__int__int_p": {
+      "id": "__8f4e_std_events_triggerToGate__public__triggerToGate__float__int__int_p",
       "signature": {
         "parameters": [
           "float",
@@ -517,8 +517,8 @@
         ],
       },
     },
-    "triggerToGate__int__int__int_p": {
-      "id": "triggerToGate__int__int__int_p",
+    "__8f4e_std_events_triggerToGate__public__triggerToGate__int__int__int_p": {
+      "id": "__8f4e_std_events_triggerToGate__public__triggerToGate__int__int__int_p",
       "signature": {
         "parameters": [
           "int",
@@ -1458,8 +1458,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "triggerToGate__float__int__int_p",
-      "triggerToGate__int__int__int_p",
+      "__8f4e_std_events_triggerToGate__public__triggerToGate__float__int__int_p",
+      "__8f4e_std_events_triggerToGate__public__triggerToGate__int__int__int_p",
     ],
     "compiledModules": [
       "triggerToGateFloatAssertions",

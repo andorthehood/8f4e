@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "gateToTrigger__float__float_p": {
+    "__8f4e_std_events_gateToTrigger__public__gateToTrigger__float__float_p": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "gateToTrigger",
+              "value": "__8f4e_std_events_gateToTrigger__public__gateToTrigger",
             },
           ],
           "instruction": "function",
@@ -120,10 +120,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "gateToTrigger",
+      "name": "__8f4e_std_events_gateToTrigger__public__gateToTrigger",
       "type": "function",
     },
-    "gateToTrigger__int__int_p": {
+    "__8f4e_std_events_gateToTrigger__public__gateToTrigger__int__int_p": {
       "lines": [
         {
           "arguments": [
@@ -131,7 +131,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "gateToTrigger",
+              "value": "__8f4e_std_events_gateToTrigger__public__gateToTrigger",
             },
           ],
           "instruction": "function",
@@ -241,13 +241,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "gateToTrigger",
+      "name": "__8f4e_std_events_gateToTrigger__public__gateToTrigger",
       "type": "function",
     },
   },
   "functionOverview": {
-    "gateToTrigger__float__float_p": {
-      "id": "gateToTrigger__float__float_p",
+    "__8f4e_std_events_gateToTrigger__public__gateToTrigger__float__float_p": {
+      "id": "__8f4e_std_events_gateToTrigger__public__gateToTrigger__float__float_p",
       "signature": {
         "parameters": [
           "float",
@@ -258,8 +258,8 @@
         ],
       },
     },
-    "gateToTrigger__int__int_p": {
-      "id": "gateToTrigger__int__int_p",
+    "__8f4e_std_events_gateToTrigger__public__gateToTrigger__int__int_p": {
+      "id": "__8f4e_std_events_gateToTrigger__public__gateToTrigger__int__int_p",
       "signature": {
         "parameters": [
           "int",
@@ -935,8 +935,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "gateToTrigger__float__float_p",
-      "gateToTrigger__int__int_p",
+      "__8f4e_std_events_gateToTrigger__public__gateToTrigger__float__float_p",
+      "__8f4e_std_events_gateToTrigger__public__gateToTrigger__int__int_p",
     ],
     "compiledModules": [
       "gateToTriggerFloatAssertions",

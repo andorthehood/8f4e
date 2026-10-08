@@ -136,6 +136,7 @@ export function qualifyAst<TAst extends ValidatedAST>(ast: TAst, prefix: string)
 			return {
 				...ast,
 				name: qualifySymbol(prefix, ast.name),
+				...(ast.callableNames ? { callableNames: ast.callableNames.map(name => qualifySymbol(prefix, name)) } : {}),
 				lines,
 				functionLine: getQualifiedLine(ast.functionLine),
 				functionEndLine: getQualifiedLine(ast.functionEndLine),
