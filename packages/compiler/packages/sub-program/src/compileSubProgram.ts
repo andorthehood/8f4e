@@ -19,7 +19,6 @@ import {
 	createFunctionId,
 	ErrorCode,
 	GLOBAL_ALIGNMENT_BOUNDARY,
-	getEffectiveFunctionMetadata,
 	getError,
 	getProjectMemoryExposureTargetError,
 } from '@8f4e/language-spec';
@@ -30,11 +29,7 @@ import type { ComposedProgram } from '@8f4e/program-composer/internal';
 import { resolveSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { analyzeStack } from '@8f4e/stack-analyzer';
 import { compileFunction, compileModules } from '@8f4e/wasm-codegen';
-import {
-	assertUniqueModuleIds,
-	collectFunctionMetadataFromAsts,
-	collectNamespacesFromASTs,
-} from './semantic/buildNamespace';
+import { assertUniqueModuleIds, collectNamespacesFromASTs, registerFunctions } from './semantic/buildNamespace';
 
 interface CompiledSubProgram {
 	entryNames: string[];
@@ -256,14 +251,14 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	const userDefinedFunctionBaseIndex = options.startingFunctionIndex ?? importedFunctionCount + builtInFunctionCount;
 
 	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
-	const userFunctionMetadata = collectFunctionMetadataFromAsts(subProgramAst.functions, {
+	const registration = registerFunctions(subProgramAst.functions, {
 		importedFunctionBaseIndex: 0,
 		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
 		reservedFunctionIds: entryNames,
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
 		prototypeShapes: prototypeShapesById,
 	});
-	const functionRegistry = mergeFunctionRegistries(entryFunctionMetadata, userFunctionMetadata);
+	const functionRegistry = mergeFunctionRegistries(entryFunctionMetadata, registration.registry);
 
 	const functionTypeRegistry: FunctionTypeRegistry = {
 		types: [],
@@ -272,6 +267,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	};
 	const semanticReferences = resolveSemanticReferences({
 		ast: subProgramAst,
+		registeredFunctions: registration.declarations,
 		namespaces,
 		memoryPlan,
 		memoryAliases: program.memoryAliases,
@@ -286,8 +282,8 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	const stackReport = analyzeStack({
 		ast: {
 			modules: subProgramAst.modules,
-			functions: subProgramAst.functions,
 		},
+		registeredFunctions: registration.declarations,
 		semanticReferences,
 		namespaces,
 		memoryPlan,
@@ -298,19 +294,17 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		prototypeShapes: prototypeShapesById,
 	});
 
-	const compiledFunctions = subProgramAst.functions.map(ast => {
-		const signatureMetadata = getEffectiveFunctionMetadata(ast, prototypeShapesById);
-		const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
-		return compileFunction(
-			ast,
+	const compiledFunctions = registration.declarations.map(declaration =>
+		compileFunction(
+			declaration,
 			namespaces,
 			functionTypeRegistry,
 			functionRegistry,
-			semanticReferences.functions[functionId],
-			stackReport.functions[functionId],
+			semanticReferences.functions[declaration.metadata.id],
+			stackReport.functions[declaration.metadata.id],
 			options
-		);
-	});
+		)
+	);
 	const compiledModules = compileModules(
 		subProgramAst.modules,
 		options,

@@ -12,7 +12,7 @@ import type {
 	FunctionRegistry,
 	FunctionTypeRegistry,
 	Namespaces,
-	ValidatedFunctionAST,
+	RegisteredFunction,
 } from '@8f4e/language-spec';
 import { isMemoryDeclarationLine, isSemanticInstructionLine } from '@8f4e/language-spec';
 import type { FunctionSemanticReferences } from '@8f4e/semantic-reference-resolver';
@@ -21,9 +21,9 @@ import type { StackAnalyzedFunction } from '@8f4e/stack-analyzer';
 import { compileCodegenLine } from './compileLine';
 
 /**
- * Compiles one validated function AST into a WebAssembly function body or import metadata.
+ * Compiles one registered function declaration into a WebAssembly function body or import metadata.
  *
- * @param ast - Validated AST being processed.
+ * @param declaration - Validated AST and its registered function metadata.
  * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param functions - Function registry available to compilation.
@@ -32,7 +32,7 @@ import { compileCodegenLine } from './compileLine';
  * @returns The compiled function artifact.
  */
 export function compileFunction(
-	ast: ValidatedFunctionAST,
+	declaration: RegisteredFunction,
 	namespaces: Namespaces,
 	typeRegistry: FunctionTypeRegistry,
 	functions: FunctionRegistry,
@@ -40,7 +40,7 @@ export function compileFunction(
 	stackReport: StackAnalyzedFunction,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
-	const functionMetadata = functions.byId[stackReport.functionId]!;
+	const { ast, metadata: functionMetadata } = declaration;
 	const context = createCompilationContext<FunctionCompilationContext>({
 		namespace: {
 			namespaces,

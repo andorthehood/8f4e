@@ -1,5 +1,5 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { ValidatedAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
+import type { FunctionAST, ValidatedAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature, FunctionValueType } from './functionTypes';
 import type { MemoryDefaults, MemoryLayoutPlan, MemoryPointerMetadataMap } from './memory';
@@ -64,6 +64,12 @@ export interface FunctionMetadata {
 }
 
 export type FunctionMetadataLookup = Record<string, FunctionMetadata>;
+
+/** Function declaration associated with the metadata produced during namespace registration. */
+export interface RegisteredFunction<TFunction extends FunctionAST = ValidatedFunctionAST> {
+	ast: TFunction;
+	metadata: FunctionMetadata;
+}
 
 /** Final declaration and include-local call names applied during program composition. */
 export interface IncludedFunctionBindings {

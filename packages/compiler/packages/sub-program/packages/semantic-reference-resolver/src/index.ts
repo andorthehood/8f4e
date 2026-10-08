@@ -19,6 +19,7 @@ import type {
 	Namespaces,
 	ProjectMemoryAliasLookup,
 	PrototypeAST,
+	RegisteredFunction,
 	ResolvedMapLine,
 	SemanticReferenceLine,
 	SemanticReferenceLineFacts,
@@ -31,9 +32,7 @@ import {
 	ArgumentType,
 	BlockType,
 	compilerSourceBlockInstructionByType,
-	createFunctionId,
 	ErrorCode,
-	getEffectiveFunctionMetadata,
 	getError,
 	isSemanticInstructionLine,
 	MAX_FUNCTION_PARAMETERS,
@@ -54,12 +53,10 @@ export interface SemanticReferenceResolverSubProgramAST<
 	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
 	TModule extends ModuleAST = ValidatedModuleAST,
 	TConstants extends ConstantsAST = ValidatedConstantsAST,
-	TFunction extends FunctionAST = ValidatedFunctionAST,
 > {
 	prototypes: readonly TPrototype[];
 	modules: readonly TModule[];
 	constants: readonly TConstants[];
-	functions: readonly TFunction[];
 }
 
 export interface ResolveSemanticReferencesInput<
@@ -68,7 +65,8 @@ export interface ResolveSemanticReferencesInput<
 	TConstants extends ConstantsAST = ValidatedConstantsAST,
 	TFunction extends FunctionAST = ValidatedFunctionAST,
 > {
-	ast: SemanticReferenceResolverSubProgramAST<TPrototype, TModule, TConstants, TFunction>;
+	ast: SemanticReferenceResolverSubProgramAST<TPrototype, TModule, TConstants>;
+	registeredFunctions: readonly RegisteredFunction<TFunction>[];
 	namespaces: Namespaces;
 	memoryPlan: MemoryLayoutPlan;
 	memoryAliases: ProjectMemoryAliasLookup;
@@ -388,23 +386,6 @@ function createModuleContext(
 	});
 }
 
-function getFunctionMetadata(
-	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
-	ast: FunctionAST
-): FunctionMetadata {
-	const signatureMetadata = getEffectiveFunctionMetadata(ast, input.prototypeShapes);
-	const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
-	const functionMetadata = input.functions.byId[functionId];
-	if (!functionMetadata) {
-		throw getError(ErrorCode.UNDEFINED_FUNCTION, ast.functionLine, {
-			codeBlockType: ast.type,
-			...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
-		});
-	}
-
-	return functionMetadata;
-}
-
 function createFunctionContext(
 	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
 	ast: FunctionAST,
@@ -480,10 +461,10 @@ function resolveModuleReferences(
 
 function resolveFunctionReferences(
 	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
-	ast: FunctionAST,
+	declaration: RegisteredFunction<FunctionAST>,
 	astIndex: number
 ): [string, FunctionSemanticReferences] {
-	const functionMetadata = getFunctionMetadata(input, ast);
+	const { ast, metadata: functionMetadata } = declaration;
 	const lineFacts = resolveLineFacts(
 		ast.lines,
 		createFunctionContext(input, ast, functionMetadata),
@@ -509,7 +490,7 @@ export function resolveSemanticReferences<
 		references: {
 			modules: Object.fromEntries(input.ast.modules.map((ast, index) => resolveModuleReferences(input, ast, index))),
 			functions: Object.fromEntries(
-				input.ast.functions.map((ast, index) => resolveFunctionReferences(input, ast, index))
+				input.registeredFunctions.map((declaration, index) => resolveFunctionReferences(input, declaration, index))
 			),
 		},
 	};

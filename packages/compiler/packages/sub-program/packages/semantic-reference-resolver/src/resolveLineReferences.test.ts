@@ -4,6 +4,7 @@ import {
 	type CompilerASTLine,
 	createFunctionId,
 	ErrorCode,
+	type FunctionMetadata,
 	type MemoryLayoutPlan,
 	type ValidatedFunctionAST,
 } from '@8f4e/language-spec';
@@ -578,9 +579,16 @@ describe('resolveSemanticReferences', () => {
 			functionLine,
 			functionEndLine,
 		} as ValidatedFunctionAST;
+		const metadata = {
+			id: functionId,
+			name: 'echo',
+			signature: { parameters: ['int'], returns: ['int'] },
+			wasmIndex: 0,
+		} satisfies FunctionMetadata;
 
 		const result = resolveSemanticReferences({
-			ast: { prototypes: [], modules: [], constants: [], functions: [ast] },
+			ast: { prototypes: [], modules: [], constants: [] },
+			registeredFunctions: [{ ast, metadata }],
 			namespaces: {},
 			memoryPlan: createEmptyMemoryPlan(),
 			memoryAliases: new Map(),
@@ -597,12 +605,7 @@ describe('resolveSemanticReferences', () => {
 			},
 			functions: {
 				byId: {
-					[functionId]: {
-						id: functionId,
-						name: 'echo',
-						signature: { parameters: ['int'], returns: ['int'] },
-						wasmIndex: 0,
-					},
+					[functionId]: metadata,
 				},
 				arityByName: { echo: 1 },
 			},

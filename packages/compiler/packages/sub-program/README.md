@@ -9,4 +9,6 @@ exposed; `ProjectObjectModel` remains owned by `@8f4e/language-spec`.
 
 All recursively owned projects have already been flattened with isolated internal symbols at this boundary. Memory
 addresses and function/type indexes are therefore assigned once for the complete program, avoiding a linker or
-relocation layer before final WebAssembly emission.
+relocation layer before final WebAssembly emission. Function registration resolves signatures and `paramShape` expansions
+once, pairing each unchanged AST with its metadata. Semantic resolution, stack analysis, and function codegen receive
+those registered declarations directly; the registry remains available for resolving calls.

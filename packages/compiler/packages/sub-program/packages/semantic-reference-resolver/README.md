@@ -18,4 +18,4 @@ It does not own:
 - stack-effect validation;
 - WebAssembly bytecode emission.
 
-The compiler should call this pass once per sub-program compilation from `compileSubProgram`. Downstream passes should consume the semantic reference report alongside the unchanged sub-program AST instead of running their own line-by-line reference resolution. The report is a delta: it stores only extracted facts such as resolved arguments, local metadata, push targets, inline call pushes, and shape expansions.
+The compiler should call this pass once per sub-program compilation from `compileSubProgram`. Function inputs are registered declarations that pair unchanged ASTs with their already-resolved metadata; this pass does not rebuild function signatures or `paramShape` expansions. Downstream passes should consume the semantic reference report alongside the unchanged ASTs instead of running their own line-by-line reference resolution. The report is a delta: it stores only extracted facts such as resolved arguments, local metadata, push targets, inline call pushes, and shape expansions.

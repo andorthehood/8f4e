@@ -4,7 +4,8 @@
 
 ```ts
 const stackReport = analyzeStack({
-	ast: { modules, functions },
+	ast: { modules },
+	registeredFunctions,
 	semanticReferences,
 	namespaces,
 	memoryPlan,
@@ -16,7 +17,7 @@ const stackReport = analyzeStack({
 });
 ```
 
-The root package entrypoint exports `analyzeStack`. It receives the unchanged sub-program ASTs, a semantic reference report, and the compiler metadata that already exists after namespace, memory layout, memory default, memory reference, function metadata, and semantic reference resolver passes. It returns a sub-program stack-analysis report keyed by module id and function id.
+The root package entrypoint exports `analyzeStack`. It receives unchanged module ASTs, registered function declarations, a semantic reference report, and the compiler metadata that already exists after namespace, memory layout, memory default, memory reference, function metadata, and semantic reference resolver passes. Registered functions pair their unchanged ASTs with resolved metadata, so stack analysis uses existing identities and signatures without repeating registration. It returns a sub-program stack-analysis report keyed by module id and function id.
 
 Each module/function report contains:
 

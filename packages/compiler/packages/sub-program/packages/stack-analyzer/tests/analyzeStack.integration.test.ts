@@ -321,6 +321,7 @@ describe('analyzeStack integration', () => {
 		expect(
 			analyzeStack({
 				ast,
+				registeredFunctions: [{ ast: ast.functions[0], metadata: functions.byId.increment__int }],
 				semanticReferences,
 				namespaces,
 				memoryPlan,

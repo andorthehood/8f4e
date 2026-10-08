@@ -329,6 +329,7 @@ describe('resolveSemanticReferences integration', () => {
 		expect(
 			resolveSemanticReferences({
 				ast,
+				registeredFunctions: [{ ast: ast.functions[0], metadata: functions.byId.increment__int }],
 				namespaces,
 				memoryPlan,
 				memoryAliases: new Map(),
