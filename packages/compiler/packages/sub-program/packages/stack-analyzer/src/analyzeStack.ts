@@ -41,7 +41,6 @@ import {
 	isImportedFunctionDeclarationInstructionName,
 	isMemoryDeclarationLine,
 	isSemanticInstructionLine,
-	resolveRegionDirective,
 } from '@8f4e/language-spec';
 import type { SemanticReferenceReport } from '@8f4e/semantic-reference-resolver';
 import {
@@ -76,7 +75,6 @@ export interface AnalyzeStackSubProgramInput<
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	functions: FunctionRegistry;
 	functionTypeRegistry: FunctionTypeRegistry;
-	memoryRegions: readonly string[];
 	prototypeShapes: Readonly<Record<string, TPrototype>>;
 }
 
@@ -149,16 +147,6 @@ function applySemanticLine(line: SemanticInstructionLine, context: CompilationCo
 			context.namespace.moduleName = moduleId;
 			context.codeBlockId = moduleId;
 			context.codeBlockType = moduleBlockType;
-			return;
-		}
-		case '#region': {
-			const region = resolveRegionDirective(line, context);
-			context.currentMemoryIndex = region.memoryIndex;
-			if (region.memoryRegionName) {
-				context.currentMemoryRegionName = region.memoryRegionName;
-			} else {
-				delete context.currentMemoryRegionName;
-			}
 			return;
 		}
 		case 'moduleEnd':
@@ -484,7 +472,6 @@ function createModuleContext(
 		currentPlannedModule: plannedModule,
 		memoryDefaults: input.memoryDefaultsByModuleId[ast.id],
 		pointerMetadata: input.pointerMetadataByModuleId[ast.id],
-		memoryRegions: [...input.memoryRegions],
 		mode: 'module',
 		functionTypeRegistry: input.functionTypeRegistry,
 		prototypeShapes: input.prototypeShapes,
@@ -563,7 +550,6 @@ function createFunctionContext(
 		memoryPlan: input.memoryPlan,
 		memoryDefaults: {},
 		pointerMetadata: {},
-		memoryRegions: [],
 		mode: 'function',
 		codeBlockType: 'function',
 		projectBlockId: ast.projectBlockId,

@@ -316,7 +316,6 @@ describe('analyzeStack integration', () => {
 			signatures: [],
 			baseTypeIndex: 3,
 		} as const;
-		const memoryRegions = [] as const;
 		const prototypeShapes = {} as const;
 
 		expect(
@@ -329,7 +328,6 @@ describe('analyzeStack integration', () => {
 				pointerMetadataByModuleId,
 				functions,
 				functionTypeRegistry,
-				memoryRegions,
 				prototypeShapes,
 			} satisfies StackAnalyzerIntegrationInput)
 		).toMatchSnapshot();

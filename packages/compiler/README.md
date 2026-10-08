@@ -179,3 +179,18 @@ source
   -> private emission artifacts
   -> WASM module + runtime metadata
 ```
+
+## Test fixture configuration
+
+Compiler fixtures under `tests/` use comments to supply options to the test runners. For example:
+
+```8f4e
+; @memoryRegions sampleMemory displayMemory
+```
+
+The success-fixture runner in `tests/testUtils.ts` and the error-fixture runner in `tests/errors.test.ts` read this
+comment and pass `memoryRegions: ['sampleMemory', 'displayMemory']` to `compileProject`. It is test-fixture metadata,
+not an editor directive or a language instruction; the compiler treats the line as an ordinary comment.
+
+Programs select a configured region with `#region sampleMemory`. Outside these tests, the host supplies the available
+regions through the `memoryRegions` compile option.

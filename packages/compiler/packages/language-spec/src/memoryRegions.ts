@@ -1,5 +1,4 @@
-import { ArgumentType } from './arguments';
-import type { CompilerASTLine, RegionLine } from './ast';
+import type { CompilerASTLine } from './ast';
 import { ErrorCode, getError } from './compilerError';
 import type { CompilerDiagnosticContext } from './diagnostics';
 import type { MemoryRegionIdentity } from './memory';
@@ -69,7 +68,7 @@ export function resolveMemoryRegionByIndex(
 	line: CompilerASTLine,
 	context?: CompilationContext | CompilerDiagnosticContext
 ): MemoryRegionIdentity {
-	if (!Number.isInteger(memoryIndex) || memoryIndex < DEFAULT_MEMORY_INDEX || memoryIndex > memoryRegions.length) {
+	if (memoryIndex > memoryRegions.length) {
 		throw getError(ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS, line, context, { identifier: String(memoryIndex) });
 	}
 
@@ -87,13 +86,4 @@ export function resolveMemoryRegionName(
 	}
 
 	return getMemoryRegionByName(memoryRegionName, memoryRegions);
-}
-
-export function resolveRegionDirective(line: RegionLine, context: CompilationContext): MemoryRegionIdentity {
-	const [argument] = line.arguments;
-	if (argument.type === ArgumentType.LITERAL) {
-		return resolveMemoryRegionByIndex(argument.value, context.memoryRegions, line, context);
-	}
-
-	return resolveMemoryRegionName(argument.value, context.memoryRegions, line, context);
 }

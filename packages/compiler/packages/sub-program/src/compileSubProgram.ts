@@ -281,7 +281,6 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		memoryReferences: memoryReferenceResolution.references,
 		functions: functionRegistry,
 		functionTypeRegistry,
-		memoryRegions: options.memoryRegions ?? [],
 		prototypeShapes: prototypeShapesById,
 	}).references;
 	const stackReport = analyzeStack({
@@ -296,7 +295,6 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
 		functions: functionRegistry,
 		functionTypeRegistry,
-		memoryRegions: options.memoryRegions ?? [],
 		prototypeShapes: prototypeShapesById,
 	});
 

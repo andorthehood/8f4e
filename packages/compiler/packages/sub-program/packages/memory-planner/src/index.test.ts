@@ -7,7 +7,7 @@ import type {
 	ValidatedModuleAST,
 	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { ArgumentType } from '@8f4e/language-spec';
+import { ArgumentType, ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { MemoryPlannerError, planSubProgramMemoryLayout } from './index';
 
@@ -55,6 +55,15 @@ function moduleLine(id: string, lineNumber: number) {
 		instruction: 'module',
 		arguments: [identifier(id)],
 	} as const;
+}
+
+function regionLine(value: string | number, lineNumber: number): RegionLine {
+	return {
+		lineNumber,
+		instruction: '#region',
+		arguments: [typeof value === 'number' ? literal(value) : identifier(value)],
+		isBlockPrologue: true,
+	};
 }
 
 function validatedModuleAst(
@@ -217,6 +226,33 @@ describe('planSubProgramMemoryLayout', () => {
 			0: 16,
 			1: 12,
 		});
+	});
+
+	it.each([
+		['missing', ErrorCode.UNKNOWN_MEMORY_REGION],
+		[2, ErrorCode.MEMORY_REGION_INDEX_OUT_OF_BOUNDS],
+	] as const)('rejects invalid region %s during planning', (region, code) => {
+		const line = regionLine(region, 2);
+		expect(() =>
+			planSubProgramMemoryLayout({
+				prototypes: [],
+				modules: [validatedModuleAst('main', 1, [], line)],
+				constantReferences: noConstantReferences(),
+				memoryRegions: ['audio'],
+			})
+		).toThrowError(expect.objectContaining({ code, line }));
+	});
+
+	it('validates earlier region directives before selecting the final region', () => {
+		const invalidLine = regionLine('missing', 2);
+		expect(() =>
+			planSubProgramMemoryLayout({
+				prototypes: [],
+				modules: [validatedModuleAst('main', 1, [invalidLine, regionLine('audio', 3)])],
+				constantReferences: noConstantReferences(),
+				memoryRegions: ['audio'],
+			})
+		).toThrowError(expect.objectContaining({ code: ErrorCode.UNKNOWN_MEMORY_REGION, line: invalidLine }));
 	});
 
 	it('plans compiler-normalized declaration lines', () => {

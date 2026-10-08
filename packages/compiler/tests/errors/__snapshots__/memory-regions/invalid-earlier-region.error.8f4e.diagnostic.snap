@@ -1,0 +1,21 @@
+{
+  "code": 55,
+  "context": {
+    "codeBlockId": "invalidEarlierRegion",
+    "codeBlockType": "module",
+    "projectBlockId": 5,
+  },
+  "line": {
+    "arguments": [
+      {
+        "referenceKind": "plain",
+        "scope": "local",
+        "type": "identifier",
+        "value": "missingMemory",
+      },
+    ],
+    "instruction": "#region",
+    "lineNumber": 1,
+  },
+  "message": "Unknown memory region: missingMemory. (55)",
+}

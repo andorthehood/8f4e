@@ -45,7 +45,7 @@ export function compileModule(
 	functions: FunctionRegistry | undefined,
 	semanticReferences: ModuleSemanticReferences,
 	stackReport: StackAnalyzedModule,
-	options: Pick<CompileOptions, 'includeStackAnalysis' | 'memoryRegions'> = {},
+	options: Pick<CompileOptions, 'includeStackAnalysis'> = {},
 	typeRegistry?: FunctionTypeRegistry,
 	prototypeShapes?: Readonly<Record<string, ValidatedPrototypeAST>>
 ): CompiledModule {
@@ -74,7 +74,6 @@ export function compileModule(
 		currentPlannedModule: plannedModule,
 		memoryDefaults: namespace.memoryDefaults,
 		pointerMetadata: namespace.pointerMetadata,
-		memoryRegions: options.memoryRegions ?? [],
 		mode: 'module',
 		functionTypeRegistry: typeRegistry,
 		prototypeShapes,

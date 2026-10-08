@@ -1,0 +1,22 @@
+8f4e/v1
+; @memoryRegions sampleMemory
+
+entry test
+module customRegion
+#region 0
+#region sampleMemory
+int value 13
+
+push value
+call assert 13
+moduleEnd
+
+module defaultRegion
+#region sampleMemory
+#region 0
+int value 7
+
+push value
+call assert 7
+moduleEnd
+entryEnd

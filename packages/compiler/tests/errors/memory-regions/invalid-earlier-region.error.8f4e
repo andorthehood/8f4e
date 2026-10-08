@@ -1,0 +1,9 @@
+8f4e/v1
+; @memoryRegions sampleMemory
+
+entry main
+module invalidEarlierRegion
+#region missingMemory
+#region sampleMemory
+moduleEnd
+entryEnd
