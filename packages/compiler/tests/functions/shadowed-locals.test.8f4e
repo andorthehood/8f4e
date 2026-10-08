@@ -1,0 +1,31 @@
+8f4e/v1
+
+; Earlier references keep their
+; bindings when a later local
+; reuses the parameter name and
+; changes its type. The abs
+; instruction precedes both
+; local declarations.
+entry test
+module shadowedLocalAssertions
+call bindingSlots -11
+call assert 2.5
+call assert 7
+call assert 11
+moduleEnd
+entryEnd
+
+function bindingSlots
+#export
+param int value
+push value
+abs
+local int value
+push 7
+localSet value
+push value
+local float value
+push 2.5
+localSet value
+push value
+functionEnd int int float

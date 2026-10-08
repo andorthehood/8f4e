@@ -1,0 +1,30 @@
+8f4e/v1
+
+; Loop counters keep distinct
+; storage from locals declared
+; after an earlier loop. Explicit
+; caps override the directive.
+entry test
+module loopLocalStorageAssertions
+call capped
+call assert 2
+call assert 1
+moduleEnd
+entryEnd
+
+function capped
+#export
+#loopCap 2
+local int total
+loop
+loopIndex
+localSet total
+loopEnd
+push total
+local int late
+loop 3
+loopIndex
+localSet late
+loopEnd
+push late
+functionEnd int int

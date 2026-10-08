@@ -17,7 +17,7 @@ moduleEnd
 
 module skippedEntryModule
 #skipExecution
-int counter 0
+int counter 3
 
 push &counter
 push counter
@@ -40,5 +40,5 @@ call assert 3
 
 push &skippedEntryModule:counter
 load
-call assert 0
+call assert 3
 functionEnd
