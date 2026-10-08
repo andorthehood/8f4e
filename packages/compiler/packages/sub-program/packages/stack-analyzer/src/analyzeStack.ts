@@ -17,6 +17,7 @@ import type {
 	ModuleCompilationContext,
 	Namespaces,
 	PrototypeAST,
+	RegisteredFunction,
 	ResolvedDefaultLine,
 	ResolvedMapLine,
 	SemanticInstructionLine,
@@ -32,10 +33,8 @@ import {
 	ArgumentType,
 	BlockType,
 	compilerSourceBlockInstructionByType,
-	createFunctionId,
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	ErrorCode,
-	getEffectiveFunctionMetadata,
 	getError,
 	isFunctionBodyInstructionName,
 	isImportedFunctionDeclarationInstructionName,
@@ -66,8 +65,8 @@ export interface AnalyzeStackSubProgramInput<
 > {
 	ast: {
 		modules: readonly TModule[];
-		functions: readonly TFunction[];
 	};
+	registeredFunctions: readonly RegisteredFunction<TFunction>[];
 	semanticReferences: SemanticReferenceReport;
 	namespaces: Namespaces;
 	memoryPlan: MemoryLayoutPlan;
@@ -510,23 +509,6 @@ function analyzeModule(
 	};
 }
 
-function getFunctionMetadata(
-	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
-	ast: FunctionAST
-): FunctionMetadata {
-	const signatureMetadata = getEffectiveFunctionMetadata(ast, input.prototypeShapes);
-	const functionId = createFunctionId(ast.name, signatureMetadata.signature.parameters);
-	const functionMetadata = input.functions.byId[functionId];
-	if (!functionMetadata) {
-		throw getError(ErrorCode.UNDEFINED_FUNCTION, ast.functionLine, {
-			codeBlockType: ast.type,
-			...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
-		});
-	}
-
-	return functionMetadata;
-}
-
 function createFunctionContext(
 	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
 	ast: FunctionAST,
@@ -565,9 +547,9 @@ function createFunctionContext(
 
 function analyzeFunction(
 	input: AnalyzeStackSubProgramInput<ModuleAST, FunctionAST, PrototypeAST>,
-	ast: FunctionAST
+	declaration: RegisteredFunction<FunctionAST>
 ): StackAnalyzedFunction {
-	const functionMetadata = getFunctionMetadata(input, ast);
+	const { ast, metadata: functionMetadata } = declaration;
 	const context = createFunctionContext(input, ast, functionMetadata);
 	const semanticLineFacts = input.semanticReferences.functions[functionMetadata.id].lineFacts;
 	const stackLineFacts: Array<StackAnalysisLineFacts | undefined> = [];
@@ -617,8 +599,8 @@ export function analyzeStack<
 	TPrototype extends PrototypeAST = ValidatedPrototypeAST,
 >(input: AnalyzeStackSubProgramInput<TModule, TFunction, TPrototype>): StackAnalysisSubProgramReport {
 	const functionReports = Object.fromEntries(
-		input.ast.functions.map(ast => {
-			const report = analyzeFunction(input, ast);
+		input.registeredFunctions.map(declaration => {
+			const report = analyzeFunction(input, declaration);
 			return [report.functionId, report];
 		})
 	);

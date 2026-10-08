@@ -12,6 +12,7 @@ import {
 	getError,
 	getMemoryRegionFields,
 	type Namespaces,
+	type RegisteredFunction,
 	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
@@ -30,14 +31,19 @@ function getAstDiagnosticContext(
 	};
 }
 
-/** Inputs for collecting function metadata and validating whole-program function names. */
-type FunctionMetadataCollectionOptions = {
+/** Inputs for registering function metadata and validating whole-program function names. */
+type FunctionRegistrationOptions = {
 	importedFunctionBaseIndex: number;
 	definedFunctionBaseIndex: number;
 	reservedFunctionIds: readonly string[];
 	reservedExportNames: readonly string[];
 	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>;
 };
+
+interface FunctionRegistration {
+	registry: FunctionRegistry;
+	declarations: RegisteredFunction[];
+}
 
 function getFunctionImportMetadata(ast: ValidatedFunctionAST): FunctionImportMetadata | undefined {
 	if (!ast.importLine) {
@@ -55,7 +61,7 @@ function getFunctionExportName(ast: ValidatedFunctionAST): string | undefined {
 }
 
 /**
- * Scans function ASTs and collects pre-codegen function metadata.
+ * Registers function declarations and resolves their metadata once for later compiler stages.
  * This allows semantic reference resolution (e.g. `call` target validation) and
  * function-body codegen to rely on the same registry before full function
  * compilation completes.
@@ -64,10 +70,11 @@ function getFunctionExportName(ast: ValidatedFunctionAST): string | undefined {
  * @param options - Compiler options for this compilation pass.
  * @returns The computed result.
  */
-export function collectFunctionMetadataFromAsts(
+export function registerFunctions(
 	asts: readonly ValidatedFunctionAST[],
-	options: FunctionMetadataCollectionOptions
-): FunctionRegistry {
+	options: FunctionRegistrationOptions
+): FunctionRegistration {
+	const declarations: RegisteredFunction[] = [];
 	const byId: FunctionMetadataLookup = {};
 	const arityByName: FunctionRegistry['arityByName'] = {};
 	const overloadCountsByName = asts.reduce<Record<string, number>>((counts, ast) => {
@@ -145,9 +152,10 @@ export function collectFunctionMetadataFromAsts(
 		seenFunctionIds.add(id);
 		byId[id] = metadata;
 		arityByName[name] = arity;
+		declarations.push({ ast, metadata });
 	}
 
-	return { byId, arityByName };
+	return { registry: { byId, arityByName }, declarations };
 }
 
 /**
