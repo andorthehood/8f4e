@@ -19,7 +19,7 @@ function listTypeScriptFiles(directory: string): string[] {
 }
 
 describe('compiler architecture boundaries', () => {
-	it('keeps instruction codegen independent from stack-analysis state and validators', () => {
+	it('keeps instruction codegen independent from semantic and stack validation', () => {
 		const violations = listTypeScriptFiles(instructionCompilerRoot).flatMap(file => {
 			const source = readFileSync(file, 'utf8');
 			const relativePath = relative(import.meta.dirname, file);
@@ -31,6 +31,10 @@ describe('compiler architecture boundaries', () => {
 
 			if (/from ['"]@8f4e\/stack-analyzer['"]/.test(source)) {
 				fileViolations.push(`${relativePath}: stackAnalysis import`);
+			}
+
+			if (source.includes('IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO')) {
+				fileViolations.push(`${relativePath}: function memory IO validation`);
 			}
 
 			return fileViolations;

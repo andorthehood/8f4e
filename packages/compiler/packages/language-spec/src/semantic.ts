@@ -447,7 +447,7 @@ export type SemanticReferenceLine<TLine extends CompilerASTLine = CompilerASTLin
 					: TLine extends PushShapeLine
 						? ResolvedPushShapeLine
 						: TLine extends LoopLine
-							? ResolvedLoopLine | LoopLine
+							? ResolvedLoopLine
 							: TLine extends MemoryCopyLine
 								? ResolvedMemoryCopyLine | MemoryCopyLine
 								: TLine extends ArrayDeclarationLine

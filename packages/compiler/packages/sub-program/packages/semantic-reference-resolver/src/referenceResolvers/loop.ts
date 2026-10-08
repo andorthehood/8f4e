@@ -4,29 +4,27 @@ import type { ReferenceResolutionContext } from '../context';
 import { resolveAndValidateValueArguments } from './helpers';
 
 /**
- * Resolves the optional loop cap argument. Resolved caps must be non-negative integers.
+ * Resolves the optional loop cap into a literal, including directive and default caps.
+ * Resolved caps must be non-negative integers.
  *
  * @param line - Source AST line being processed.
  * @param context - Compilation context used by the operation.
  * @returns Loop line with resolved cap metadata.
  */
-export default function resolveLoopReferences(
-	line: LoopLine,
-	context: ReferenceResolutionContext
-): ResolvedLoopLine | LoopLine {
+export default function resolveLoopReferences(line: LoopLine, context: ReferenceResolutionContext): ResolvedLoopLine {
 	if (line.arguments.length === 0) {
 		return { ...line, arguments: [{ type: ArgumentType.LITERAL, value: context.loopCap ?? 1000, isInteger: true }] };
 	}
 
-	const resolved = resolveAndValidateValueArguments(line, context, [0]);
+	const resolved = resolveAndValidateValueArguments(line, context, [0]) as ResolvedLoopLine;
 	const argument = resolved.arguments[0];
 
-	if (argument?.type === ArgumentType.LITERAL && !argument.isInteger) {
+	if (!argument.isInteger) {
 		throw getError(ErrorCode.TYPE_MISMATCH, line, context);
 	}
-	if (argument?.type === ArgumentType.LITERAL && argument.value < 0) {
+	if (argument.value < 0) {
 		throw getError(ErrorCode.EXPECTED_VALUE, line, context);
 	}
 
-	return resolved as ResolvedLoopLine | LoopLine;
+	return resolved;
 }
