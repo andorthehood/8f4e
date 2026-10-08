@@ -1,5 +1,5 @@
 import type { CompilationContext, SemanticInstructionLine } from '@8f4e/language-spec';
-import { BlockType, compilerSourceBlockInstructionByType, resolveRegionDirective } from '@8f4e/language-spec';
+import { BlockType, compilerSourceBlockInstructionByType } from '@8f4e/language-spec';
 import { popBlock, pushBlock } from '@8f4e/semantic-utils';
 
 const moduleBlockType = compilerSourceBlockInstructionByType.module.type;
@@ -22,16 +22,6 @@ export function applySemanticLine(line: SemanticInstructionLine, context: Compil
 			context.namespace.moduleName = moduleId;
 			context.codeBlockId = moduleId;
 			context.codeBlockType = moduleBlockType;
-			return;
-		}
-		case '#region': {
-			const region = resolveRegionDirective(line, context);
-			context.currentMemoryIndex = region.memoryIndex;
-			if (region.memoryRegionName) {
-				context.currentMemoryRegionName = region.memoryRegionName;
-			} else {
-				delete context.currentMemoryRegionName;
-			}
 			return;
 		}
 		case 'moduleEnd':

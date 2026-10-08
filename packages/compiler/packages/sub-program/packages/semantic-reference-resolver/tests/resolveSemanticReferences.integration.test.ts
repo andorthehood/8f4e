@@ -322,7 +322,6 @@ describe('resolveSemanticReferences integration', () => {
 		const pointerMetadataByModuleId = {
 			main: {},
 		} as const;
-		const memoryRegions = [] as const;
 		const prototypeShapes = {
 			state: ast.prototypes[0],
 		} as const;
@@ -339,7 +338,6 @@ describe('resolveSemanticReferences integration', () => {
 				memoryReferences,
 				functions,
 				functionTypeRegistry,
-				memoryRegions,
 				prototypeShapes,
 			} satisfies SemanticReferenceResolverIntegrationInput)
 		).toMatchSnapshot();

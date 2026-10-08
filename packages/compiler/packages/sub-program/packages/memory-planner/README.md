@@ -34,6 +34,7 @@ This package owns:
 
 - Module byte addresses.
 - Memory declaration byte addresses.
+- Resolving and validating module `#region` directives against the configured memory regions before allocation.
 - Building planner-ready memory layout source from validated ASTs.
 - Declaration order after `shape` expansion.
 - Declaration size and type layout facts.
@@ -49,3 +50,7 @@ This package does not own:
 - Code generation or stack/type validation.
 
 The planner reads constant-resolution facts before normalizing declaration sizes. It expects array element counts to become literal planner-ready values after those facts and pure literal arithmetic are applied. Layout-dependent declaration sizes, such as `int[] dest count(source)`, are not supported.
+
+Each `#region` directive is validated once while building planner-ready module source. The last directive selects the
+module's region. Later semantic resolution, stack analysis, and code generation consume the validated `memoryIndex` and
+`memoryRegionName` from the memory plan without interpreting or validating the directive again.

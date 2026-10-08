@@ -12,7 +12,6 @@ const stackReport = analyzeStack({
 	pointerMetadataByModuleId,
 	functions,
 	functionTypeRegistry,
-	memoryRegions,
 	prototypeShapes,
 });
 ```
