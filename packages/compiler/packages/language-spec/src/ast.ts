@@ -250,8 +250,6 @@ export interface FunctionAST extends SourceBlockMetadata {
 	type: 'function';
 	/** Source-level callable name written after the `function` instruction. */
 	name: string;
-	/** Additional callable names registered against this function's identity after source expansion. */
-	callableNames?: string[];
 	lines: CompilerASTLines;
 	functionLine: FunctionLine;
 	functionEndLine: FunctionEndLine;

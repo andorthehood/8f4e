@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "hasChanged__float__float_p": {
+    "countdown__int": {
       "lines": [
         {
           "arguments": [
@@ -8,29 +8,24 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "hasChanged",
+              "value": "countdown",
             },
           ],
           "instruction": "function",
         },
         {
-          "arguments": [],
-          "instruction": "#impure",
-          "isBlockPrologue": true,
-        },
-        {
           "arguments": [
             {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "float",
+              "value": "int",
             },
             {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "currentValue",
+              "value": "remaining",
             },
           ],
           "instruction": "param",
@@ -38,75 +33,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "float*",
-            },
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "previousValue",
-            },
-          ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "currentValue",
+              "isInteger": true,
+              "type": "literal",
+              "value": 200,
             },
           ],
           "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "previousValue",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "loadFloat",
-        },
-        {
-          "arguments": [],
-          "instruction": "notEqual",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "previousValue",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "currentValue",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "store",
         },
         {
           "arguments": [
@@ -120,10 +52,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "hasChanged",
+      "name": "countdown",
       "type": "function",
     },
-    "hasChanged__int__int_p": {
+    "delegated__int": {
       "lines": [
         {
           "arguments": [
@@ -131,15 +63,10 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "hasChanged",
+              "value": "delegated",
             },
           ],
           "instruction": "function",
-        },
-        {
-          "arguments": [],
-          "instruction": "#impure",
-          "isBlockPrologue": true,
         },
         {
           "arguments": [
@@ -153,7 +80,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "currentValue",
+              "value": "value",
             },
           ],
           "instruction": "param",
@@ -164,70 +91,16 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "int*",
+              "value": "external",
             },
             {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "previousValue",
+              "value": "value",
             },
           ],
-          "instruction": "param",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "currentValue",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "dereferenceDepth": 1,
-              "referenceKind": "memory-pointer",
-              "scope": "local",
-              "targetMemoryId": "previousValue",
-              "type": "identifier",
-              "value": "*previousValue",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "notEqual",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "previousValue",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "currentValue",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
-          "instruction": "store",
+          "instruction": "call",
         },
         {
           "arguments": [
@@ -241,29 +114,408 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "hasChanged",
+      "name": "delegated",
+      "type": "function",
+    },
+    "descend__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "descend",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "remaining",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 100,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "descend",
+      "type": "function",
+    },
+    "external__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "external",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "external",
+      "type": "function",
+    },
+    "sumDown__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "sumDown",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "remaining",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "remaining",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "greaterThan",
+        },
+        {
+          "arguments": [],
+          "instruction": "if",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "remaining",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sub",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "sumDown",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "remaining",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "add",
+        },
+        {
+          "arguments": [],
+          "instruction": "else",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "ifEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "sumDown",
+      "type": "function",
+    },
+    "viaAlias__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "viaAlias",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "sumDown",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "value",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "viaAlias",
       "type": "function",
     },
   },
   "functionOverview": {
-    "hasChanged__float__float_p": {
-      "id": "hasChanged__float__float_p",
+    "countdown__int": {
+      "id": "countdown__int",
       "signature": {
         "parameters": [
-          "float",
-          "float*",
+          "int",
         ],
         "returns": [
           "int",
         ],
       },
     },
-    "hasChanged__int__int_p": {
-      "id": "hasChanged__int__int_p",
+    "delegated__int": {
+      "id": "delegated__int",
       "signature": {
         "parameters": [
           "int",
-          "int*",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "descend__int": {
+      "id": "descend__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "external__int": {
+      "id": "external__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "sumDown__int": {
+      "id": "sumDown__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "viaAlias__int": {
+      "id": "viaAlias__int",
+      "signature": {
+        "parameters": [
+          "int",
         ],
         "returns": [
           "int",
@@ -272,8 +524,8 @@
     },
   },
   "moduleAst": {
-    "hasChangedIntAssertions": {
-      "id": "hasChangedIntAssertions",
+    "recursiveIncludeAssertions": {
+      "id": "recursiveIncludeAssertions",
       "lines": [
         {
           "arguments": [
@@ -281,7 +533,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "hasChangedIntAssertions",
+              "value": "recursiveIncludeAssertions",
             },
           ],
           "instruction": "module",
@@ -292,36 +544,12 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "previousInt",
+              "value": "sumDown",
             },
-          ],
-          "instruction": "int",
-        },
-        {
-          "arguments": [
             {
               "isInteger": true,
               "type": "literal",
-              "value": 0,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "hasChanged",
-            },
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "previousInt",
-              "type": "identifier",
-              "value": "&previousInt",
+              "value": 3,
             },
           ],
           "instruction": "call",
@@ -337,7 +565,7 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 0,
+              "value": 6,
             },
           ],
           "instruction": "call",
@@ -348,52 +576,12 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "previousInt",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
+              "value": "viaAlias",
             },
             {
               "isInteger": true,
               "type": "literal",
-              "value": 0,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "hasChanged",
-            },
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "previousInt",
-              "type": "identifier",
-              "value": "&previousInt",
+              "value": 3,
             },
           ],
           "instruction": "call",
@@ -409,7 +597,7 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 1,
+              "value": 6,
             },
           ],
           "instruction": "call",
@@ -420,52 +608,12 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "previousInt",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
+              "value": "descend",
             },
             {
               "isInteger": true,
               "type": "literal",
-              "value": 4,
-            },
-          ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "hasChanged",
-            },
-            {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "previousInt",
-              "type": "identifier",
-              "value": "&previousInt",
+              "value": 3,
             },
           ],
           "instruction": "call",
@@ -481,7 +629,7 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 0,
+              "value": 100,
             },
           ],
           "instruction": "call",
@@ -489,28 +637,15 @@
         {
           "arguments": [
             {
-              "isInteger": true,
-              "type": "literal",
-              "value": -2,
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "hasChanged",
+              "value": "countdown",
             },
             {
-              "isEndAddress": false,
-              "referenceKind": "memory-reference",
-              "scope": "local",
-              "targetMemoryId": "previousInt",
-              "type": "identifier",
-              "value": "&previousInt",
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
             },
           ],
           "instruction": "call",
@@ -526,7 +661,7 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 1,
+              "value": 200,
             },
           ],
           "instruction": "call",
@@ -537,10 +672,15 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "previousInt",
+              "value": "delegated",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
             },
           ],
-          "instruction": "push",
+          "instruction": "call",
         },
         {
           "arguments": [
@@ -553,7 +693,7 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": -2,
+              "value": 15,
             },
           ],
           "instruction": "call",
@@ -567,34 +707,23 @@
     },
   },
   "moduleMemory": {
-    "hasChangedIntAssertions": {
-      "memory": {
-        "previousInt": {
-          "byteAddress": 4,
-          "default": 0,
-          "elementWordSize": 4,
-          "id": "previousInt",
-          "isInteger": true,
-          "isUnsigned": false,
-          "memoryIndex": 0,
-          "numberOfElements": 1,
-          "pointerDepth": 0,
-          "type": "int",
-          "wordAlignedAddress": 1,
-          "wordAlignedSize": 1,
-        },
-      },
+    "recursiveIncludeAssertions": {
+      "memory": {},
     },
   },
   "overview": {
     "compiledFunctions": [
-      "hasChanged__float__float_p",
-      "hasChanged__int__int_p",
+      "countdown__int",
+      "delegated__int",
+      "descend__int",
+      "external__int",
+      "sumDown__int",
+      "viaAlias__int",
     ],
     "compiledModules": [
-      "hasChangedIntAssertions",
+      "recursiveIncludeAssertions",
     ],
-    "requiredMemoryBytes": 8,
+    "requiredMemoryBytes": 4,
     "requiredMemoryBytesByRegion": {},
     "wasmExports": [
       "initDefaults",

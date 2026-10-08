@@ -264,7 +264,7 @@
       "name": "__8f4e_test_math__public__inc",
       "type": "function",
     },
-    "__8f4e_test_math__public__twice__int": {
+    "addTwo__int": {
       "lines": [
         {
           "arguments": [
@@ -272,7 +272,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_test_math__public__twice",
+              "value": "addTwo",
             },
           ],
           "instruction": "function",
@@ -334,7 +334,7 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_test_math__public__twice",
+      "name": "addTwo",
       "type": "function",
     },
   },
@@ -383,8 +383,8 @@
         ],
       },
     },
-    "__8f4e_test_math__public__twice__int": {
-      "id": "__8f4e_test_math__public__twice__int",
+    "addTwo__int": {
+      "id": "addTwo__int",
       "signature": {
         "parameters": [
           "int",
@@ -461,7 +461,7 @@
       "__8f4e_test_math__private__helper__int",
       "__8f4e_test_math__public__inc__float",
       "__8f4e_test_math__public__inc__int",
-      "__8f4e_test_math__public__twice__int",
+      "addTwo__int",
     ],
     "compiledModules": [
       "privateDependencyAssertions",

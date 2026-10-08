@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_std_math_normalize__public__normalize__int16_p": {
+    "normalize__int16_p": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_math_normalize__public__normalize",
+              "value": "normalize",
             },
           ],
           "instruction": "function",
@@ -119,10 +119,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_math_normalize__public__normalize",
+      "name": "normalize",
       "type": "function",
     },
-    "__8f4e_std_math_normalize__public__normalize__int16u_p": {
+    "normalize__int16u_p": {
       "lines": [
         {
           "arguments": [
@@ -130,7 +130,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_math_normalize__public__normalize",
+              "value": "normalize",
             },
           ],
           "instruction": "function",
@@ -241,10 +241,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_math_normalize__public__normalize",
+      "name": "normalize",
       "type": "function",
     },
-    "__8f4e_std_math_normalize__public__normalize__int8_p": {
+    "normalize__int8_p": {
       "lines": [
         {
           "arguments": [
@@ -252,7 +252,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_math_normalize__public__normalize",
+              "value": "normalize",
             },
           ],
           "instruction": "function",
@@ -363,10 +363,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_math_normalize__public__normalize",
+      "name": "normalize",
       "type": "function",
     },
-    "__8f4e_std_math_normalize__public__normalize__int8u_p": {
+    "normalize__int8u_p": {
       "lines": [
         {
           "arguments": [
@@ -374,7 +374,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_math_normalize__public__normalize",
+              "value": "normalize",
             },
           ],
           "instruction": "function",
@@ -485,10 +485,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_math_normalize__public__normalize",
+      "name": "normalize",
       "type": "function",
     },
-    "__8f4e_std_math_normalize__public__normalize__int_p": {
+    "normalize__int_p": {
       "lines": [
         {
           "arguments": [
@@ -496,7 +496,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_math_normalize__public__normalize",
+              "value": "normalize",
             },
           ],
           "instruction": "function",
@@ -607,13 +607,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_math_normalize__public__normalize",
+      "name": "normalize",
       "type": "function",
     },
   },
   "functionOverview": {
-    "__8f4e_std_math_normalize__public__normalize__int16_p": {
-      "id": "__8f4e_std_math_normalize__public__normalize__int16_p",
+    "normalize__int16_p": {
+      "id": "normalize__int16_p",
       "signature": {
         "parameters": [
           "int16*",
@@ -623,8 +623,8 @@
         ],
       },
     },
-    "__8f4e_std_math_normalize__public__normalize__int16u_p": {
-      "id": "__8f4e_std_math_normalize__public__normalize__int16u_p",
+    "normalize__int16u_p": {
+      "id": "normalize__int16u_p",
       "signature": {
         "parameters": [
           "int16u*",
@@ -634,8 +634,8 @@
         ],
       },
     },
-    "__8f4e_std_math_normalize__public__normalize__int8_p": {
-      "id": "__8f4e_std_math_normalize__public__normalize__int8_p",
+    "normalize__int8_p": {
+      "id": "normalize__int8_p",
       "signature": {
         "parameters": [
           "int8*",
@@ -645,8 +645,8 @@
         ],
       },
     },
-    "__8f4e_std_math_normalize__public__normalize__int8u_p": {
-      "id": "__8f4e_std_math_normalize__public__normalize__int8u_p",
+    "normalize__int8u_p": {
+      "id": "normalize__int8u_p",
       "signature": {
         "parameters": [
           "int8u*",
@@ -656,8 +656,8 @@
         ],
       },
     },
-    "__8f4e_std_math_normalize__public__normalize__int_p": {
-      "id": "__8f4e_std_math_normalize__public__normalize__int_p",
+    "normalize__int_p": {
+      "id": "normalize__int_p",
       "signature": {
         "parameters": [
           "int*",
@@ -1581,11 +1581,11 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_math_normalize__public__normalize__int_p",
-      "__8f4e_std_math_normalize__public__normalize__int16_p",
-      "__8f4e_std_math_normalize__public__normalize__int16u_p",
-      "__8f4e_std_math_normalize__public__normalize__int8_p",
-      "__8f4e_std_math_normalize__public__normalize__int8u_p",
+      "normalize__int_p",
+      "normalize__int16_p",
+      "normalize__int16u_p",
+      "normalize__int8_p",
+      "normalize__int8u_p",
     ],
     "compiledModules": [
       "normalizeAssertions",

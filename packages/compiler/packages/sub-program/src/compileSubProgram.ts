@@ -85,7 +85,7 @@ function resolveProjectMemoryExposures(
 /** Creates synthetic metadata for generated entry dispatcher functions. */
 function createEntryFunctionMetadata(entryNames: readonly string[], importedFunctionCount: number): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
-	const byName: FunctionRegistry['byName'] = {};
+	const arityByName: FunctionRegistry['arityByName'] = {};
 
 	entryNames.forEach((entryName, index) => {
 		const parameters: FunctionMetadata['signature']['parameters'] = [];
@@ -96,23 +96,23 @@ function createEntryFunctionMetadata(entryNames: readonly string[], importedFunc
 			wasmIndex: importedFunctionCount + 1 + index,
 		};
 		byId[metadata.id] = metadata;
-		byName[entryName] = [metadata];
+		arityByName[entryName] = parameters.length;
 	});
 
-	return { byId, byName };
+	return { byId, arityByName };
 }
 
-/** Merges function registries while preserving callable name bindings. */
+/** Merges function registries while preserving source-name arity metadata. */
 function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
-	const byName: FunctionRegistry['byName'] = {};
+	const arityByName: FunctionRegistry['arityByName'] = {};
 
 	for (const registry of registries) {
 		Object.assign(byId, registry.byId);
-		Object.assign(byName, registry.byName);
+		Object.assign(arityByName, registry.arityByName);
 	}
 
-	return { byId, byName };
+	return { byId, arityByName };
 }
 
 function indexPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {

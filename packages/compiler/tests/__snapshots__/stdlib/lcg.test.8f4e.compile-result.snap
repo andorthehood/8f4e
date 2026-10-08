@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_std_random_lcg__public__lcg__int_p": {
+    "lcg__int_p": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_random_lcg__public__lcg",
+              "value": "lcg",
             },
           ],
           "instruction": "function",
@@ -238,13 +238,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_random_lcg__public__lcg",
+      "name": "lcg",
       "type": "function",
     },
   },
   "functionOverview": {
-    "__8f4e_std_random_lcg__public__lcg__int_p": {
-      "id": "__8f4e_std_random_lcg__public__lcg__int_p",
+    "lcg__int_p": {
+      "id": "lcg__int_p",
       "signature": {
         "parameters": [
           "int*",
@@ -518,7 +518,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_random_lcg__public__lcg__int_p",
+      "lcg__int_p",
     ],
     "compiledModules": [
       "lcgAssertions",

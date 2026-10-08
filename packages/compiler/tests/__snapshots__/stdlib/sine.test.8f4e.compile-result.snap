@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_std_math_trig_sine__public__sine__float": {
+    "sine__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_math_trig_sine__public__sine",
+              "value": "sine",
             },
           ],
           "instruction": "function",
@@ -461,13 +461,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_math_trig_sine__public__sine",
+      "name": "sine",
       "type": "function",
     },
   },
   "functionOverview": {
-    "__8f4e_std_math_trig_sine__public__sine__float": {
-      "id": "__8f4e_std_math_trig_sine__public__sine__float",
+    "sine__float": {
+      "id": "sine__float",
       "signature": {
         "parameters": [
           "float",
@@ -656,7 +656,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_math_trig_sine__public__sine__float",
+      "sine__float",
     ],
     "compiledModules": [
       "sineAssertions",

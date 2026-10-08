@@ -1,5 +1,5 @@
 {
-  "code": 66,
+  "code": 67,
   "context": {
     "codeBlockType": "function",
   },
@@ -9,11 +9,11 @@
         "referenceKind": "plain",
         "scope": "local",
         "type": "identifier",
-        "value": "same",
+        "value": "sameName",
       },
     ],
     "instruction": "function",
     "lineNumber": 0,
   },
-  "message": "Duplicate function overload signature: same__int. Function overloads must have unique parameter signatures. (66)",
+  "message": "Invalid function overload set: sameName. Function overloads must have the same positive parameter count; zero-parameter functions cannot be overloaded. (67)",
 }

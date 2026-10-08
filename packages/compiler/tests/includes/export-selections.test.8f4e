@@ -3,7 +3,6 @@
 includes
 include test/math inc addOne
 include test/math twice addTwo
-include test/math inc incrementAgain
 include test/math inc addOne
 includesEnd
 
@@ -20,8 +19,8 @@ call assert 2.5
 call addTwo 20
 call assert 22
 
-; Repeated selections are deduplicated, while distinct aliases work.
-call incrementAgain 30
+; Repeated identical selections are deduplicated.
+call addOne 30
 call assert 31
 moduleEnd
 entryEnd

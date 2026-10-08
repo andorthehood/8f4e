@@ -72,12 +72,15 @@ An include source may export several distinct functions. Select them on separate
 Selections use the names exposed by include-local `#export`, including any export aliases, and include every public
 overload of the selected name. Missing exports and private helper names cannot be selected.
 
-Repeated declarations of the same source, export, and local name are deduplicated. Different local names can expose
-the same exported function more than once, and selections can be combined with the include-all form. Each source is
-loaded once per resolution pass. Local names bind to the same compiled function bodies, and private helpers are shared
-by all selections. Unselected exports remain private
-dependencies so calls inside included functions still work. Local names use the same overload and duplicate-signature
-rules as ordinary project functions.
+Repeated declarations of the same source, export, and local name are deduplicated. Each export has one local name per
+including project or group; selecting the same export under different names is an error. This also applies when combining
+the include-all form with a renamed selection. Each source is loaded once per resolution pass, and private helpers are
+shared by all selections. Unselected exports remain private dependencies so calls inside included functions still work.
+
+Composition renames selected function declarations and their include-local call targets after syntax validation.
+Local names use the same overload and duplicate-signature rules as ordinary project functions, including when two exports
+or an included function and a project function share a name. The include resolver does not inspect project declarations
+or allocate alternative names to avoid collisions; ordinary namespace validation handles them.
 
 Includes are resolved during project loading. The CLI loads the shipped standard library files from the installed
 package, while browser-based tools load those same files lazily. The compiler receives the included source as ordinary

@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_std_stack_swap__public__swap__float__float": {
+    "swap__float__float": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_stack_swap__public__swap",
+              "value": "swap",
             },
           ],
           "instruction": "function",
@@ -87,10 +87,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_stack_swap__public__swap",
+      "name": "swap",
       "type": "function",
     },
-    "__8f4e_std_stack_swap__public__swap__float__int": {
+    "swap__float__int": {
       "lines": [
         {
           "arguments": [
@@ -98,7 +98,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_stack_swap__public__swap",
+              "value": "swap",
             },
           ],
           "instruction": "function",
@@ -177,10 +177,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_stack_swap__public__swap",
+      "name": "swap",
       "type": "function",
     },
-    "__8f4e_std_stack_swap__public__swap__int__float": {
+    "swap__int__float": {
       "lines": [
         {
           "arguments": [
@@ -188,7 +188,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_stack_swap__public__swap",
+              "value": "swap",
             },
           ],
           "instruction": "function",
@@ -267,10 +267,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_stack_swap__public__swap",
+      "name": "swap",
       "type": "function",
     },
-    "__8f4e_std_stack_swap__public__swap__int__int": {
+    "swap__int__int": {
       "lines": [
         {
           "arguments": [
@@ -278,7 +278,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_stack_swap__public__swap",
+              "value": "swap",
             },
           ],
           "instruction": "function",
@@ -357,13 +357,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_stack_swap__public__swap",
+      "name": "swap",
       "type": "function",
     },
   },
   "functionOverview": {
-    "__8f4e_std_stack_swap__public__swap__float__float": {
-      "id": "__8f4e_std_stack_swap__public__swap__float__float",
+    "swap__float__float": {
+      "id": "swap__float__float",
       "signature": {
         "parameters": [
           "float",
@@ -375,8 +375,8 @@
         ],
       },
     },
-    "__8f4e_std_stack_swap__public__swap__float__int": {
-      "id": "__8f4e_std_stack_swap__public__swap__float__int",
+    "swap__float__int": {
+      "id": "swap__float__int",
       "signature": {
         "parameters": [
           "float",
@@ -388,8 +388,8 @@
         ],
       },
     },
-    "__8f4e_std_stack_swap__public__swap__int__float": {
-      "id": "__8f4e_std_stack_swap__public__swap__int__float",
+    "swap__int__float": {
+      "id": "swap__int__float",
       "signature": {
         "parameters": [
           "int",
@@ -401,8 +401,8 @@
         ],
       },
     },
-    "__8f4e_std_stack_swap__public__swap__int__int": {
-      "id": "__8f4e_std_stack_swap__public__swap__int__int",
+    "swap__int__int": {
+      "id": "swap__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -697,10 +697,10 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_stack_swap__public__swap__float__float",
-      "__8f4e_std_stack_swap__public__swap__float__int",
-      "__8f4e_std_stack_swap__public__swap__int__float",
-      "__8f4e_std_stack_swap__public__swap__int__int",
+      "swap__float__float",
+      "swap__float__int",
+      "swap__int__float",
+      "swap__int__int",
     ],
     "compiledModules": [
       "swapAssertions",

@@ -1,0 +1,14 @@
+8f4e/v1
+
+includes
+include test/overloads foo sameName
+include test/overloads bar sameName
+includesEnd
+
+function sameName
+param int first
+param int second
+push first
+push second
+add
+functionEnd int

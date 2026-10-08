@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_std_memory_copy__public__copy__float_p__float_p": {
+    "copy__float_p__float_p": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_copy__public__copy",
+              "value": "copy",
             },
           ],
           "instruction": "function",
@@ -85,10 +85,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_memory_copy__public__copy",
+      "name": "copy",
       "type": "function",
     },
-    "__8f4e_std_memory_copy__public__copy__int_p__int_p": {
+    "copy__int_p__int_p": {
       "lines": [
         {
           "arguments": [
@@ -96,7 +96,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_copy__public__copy",
+              "value": "copy",
             },
           ],
           "instruction": "function",
@@ -173,13 +173,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_memory_copy__public__copy",
+      "name": "copy",
       "type": "function",
     },
   },
   "functionOverview": {
-    "__8f4e_std_memory_copy__public__copy__float_p__float_p": {
-      "id": "__8f4e_std_memory_copy__public__copy__float_p__float_p",
+    "copy__float_p__float_p": {
+      "id": "copy__float_p__float_p",
       "signature": {
         "parameters": [
           "float*",
@@ -188,8 +188,8 @@
         "returns": [],
       },
     },
-    "__8f4e_std_memory_copy__public__copy__int_p__int_p": {
-      "id": "__8f4e_std_memory_copy__public__copy__int_p__int_p",
+    "copy__int_p__int_p": {
+      "id": "copy__int_p__int_p",
       "signature": {
         "parameters": [
           "int*",
@@ -390,8 +390,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_memory_copy__public__copy__float_p__float_p",
-      "__8f4e_std_memory_copy__public__copy__int_p__int_p",
+      "copy__float_p__float_p",
+      "copy__int_p__int_p",
     ],
     "compiledModules": [
       "copyIntermoduleAssertions",

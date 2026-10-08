@@ -289,18 +289,22 @@ describe('resolveSemanticReferences integration', () => {
 				pointerMetadata: {},
 			},
 		} as const;
-		const byId = {
-			increment__int: {
-				id: 'increment__int',
-				name: 'increment',
-				signature: {
-					parameters: ['int'],
-					returns: ['int'],
+		const functions = {
+			byId: {
+				increment__int: {
+					id: 'increment__int',
+					name: 'increment',
+					signature: {
+						parameters: ['int'],
+						returns: ['int'],
+					},
+					wasmIndex: 2,
 				},
-				wasmIndex: 2,
+			},
+			arityByName: {
+				increment: 1,
 			},
 		} as const;
-		const functions = { byId, byName: { increment: [byId.increment__int] } };
 		const functionTypeRegistry = {
 			types: [],
 			signatures: [],

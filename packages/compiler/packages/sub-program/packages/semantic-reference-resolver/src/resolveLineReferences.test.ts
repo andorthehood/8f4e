@@ -426,7 +426,7 @@ describe('resolveLineReferences', () => {
 			namespace: {
 				moduleName: 'test',
 				namespaces: {},
-				functions: { byId: {}, byName: {} },
+				functions: { byId: {}, arityByName: {} },
 			},
 			locals: {},
 		} as unknown as CompilationContext;
@@ -447,7 +447,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 				functions: {
 					byId: { knownFn: targetFunction },
-					byName: { knownFn: [targetFunction] },
+					arityByName: { knownFn: 0 },
 				},
 			},
 			locals: {},
@@ -474,7 +474,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 				functions: {
 					byId: { knownFn__int: targetFunction },
-					byName: { knownFn: [targetFunction] },
+					arityByName: { knownFn: 1 },
 				},
 			},
 			locals: {},
@@ -501,7 +501,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 				functions: {
 					byId: { knownFn: targetFunction },
-					byName: { knownFn: [targetFunction] },
+					arityByName: { knownFn: 1 },
 				},
 			},
 			locals: {},
@@ -604,9 +604,7 @@ describe('resolveSemanticReferences', () => {
 						wasmIndex: 0,
 					},
 				},
-				byName: {
-					echo: [{ id: functionId, name: 'echo', signature: { parameters: ['int'], returns: ['int'] }, wasmIndex: 0 }],
-				},
+				arityByName: { echo: 1 },
 			},
 			functionTypeRegistry: { types: [], signatures: [], baseTypeIndex: 3 },
 			memoryRegions: [],

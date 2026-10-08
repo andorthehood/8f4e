@@ -519,7 +519,7 @@
       "name": "__8f4e_std_memory_readInterpolated__private__wrapReadAddress",
       "type": "function",
     },
-    "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__float_p__int__float": {
+    "readInterpolated__int__float_p__int__float": {
       "lines": [
         {
           "arguments": [
@@ -527,7 +527,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_readInterpolated__public__readInterpolated",
+              "value": "readInterpolated",
             },
           ],
           "instruction": "function",
@@ -898,10 +898,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_memory_readInterpolated__public__readInterpolated",
+      "name": "readInterpolated",
       "type": "function",
     },
-    "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__int16_p__int__float": {
+    "readInterpolated__int__int16_p__int__float": {
       "lines": [
         {
           "arguments": [
@@ -909,7 +909,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_readInterpolated__public__readInterpolated",
+              "value": "readInterpolated",
             },
           ],
           "instruction": "function",
@@ -1288,10 +1288,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_memory_readInterpolated__public__readInterpolated",
+      "name": "readInterpolated",
       "type": "function",
     },
-    "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__int_p__int__float": {
+    "readInterpolated__int__int_p__int__float": {
       "lines": [
         {
           "arguments": [
@@ -1299,7 +1299,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_readInterpolated__public__readInterpolated",
+              "value": "readInterpolated",
             },
           ],
           "instruction": "function",
@@ -1678,7 +1678,7 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_memory_readInterpolated__public__readInterpolated",
+      "name": "readInterpolated",
       "type": "function",
     },
   },
@@ -1722,8 +1722,8 @@
         ],
       },
     },
-    "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__float_p__int__float": {
-      "id": "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__float_p__int__float",
+    "readInterpolated__int__float_p__int__float": {
+      "id": "readInterpolated__int__float_p__int__float",
       "signature": {
         "parameters": [
           "int",
@@ -1736,8 +1736,8 @@
         ],
       },
     },
-    "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__int16_p__int__float": {
-      "id": "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__int16_p__int__float",
+    "readInterpolated__int__int16_p__int__float": {
+      "id": "readInterpolated__int__int16_p__int__float",
       "signature": {
         "parameters": [
           "int",
@@ -1750,8 +1750,8 @@
         ],
       },
     },
-    "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__int_p__int__float": {
-      "id": "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__int_p__int__float",
+    "readInterpolated__int__int_p__int__float": {
+      "id": "readInterpolated__int__int_p__int__float",
       "signature": {
         "parameters": [
           "int",
@@ -2155,9 +2155,9 @@
       "__8f4e_std_memory_readInterpolated__private__wrapReadAddress__int__float_p__int",
       "__8f4e_std_memory_readInterpolated__private__wrapReadAddress__int__int_p__int",
       "__8f4e_std_memory_readInterpolated__private__wrapReadAddress__int__int16_p__int",
-      "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__float_p__int__float",
-      "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__int_p__int__float",
-      "__8f4e_std_memory_readInterpolated__public__readInterpolated__int__int16_p__int__float",
+      "readInterpolated__int__float_p__int__float",
+      "readInterpolated__int__int_p__int__float",
+      "readInterpolated__int__int16_p__int__float",
     ],
     "compiledModules": [
       "readInterpolatedInt16Assertions",

@@ -1,0 +1,29 @@
+function descend
+#export countdown
+param int remaining
+push remaining
+push 0
+greaterThan
+if
+push remaining
+push 1
+sub
+call descend
+push remaining
+add
+else
+push 0
+ifEnd int
+functionEnd int
+
+function throughAlias
+#export
+param int value
+call countdown value
+functionEnd int
+
+function delegate
+#export
+param int value
+call external value
+functionEnd int

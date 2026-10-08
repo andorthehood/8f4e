@@ -28,5 +28,7 @@ This file extends the root and compiler package guidance for `packages/compiler/
   collections directly.
 - Include source is resolved behind `compileProject` and passed to private compiler stages as derived functions.
 - The tokenizer validates include binding names and include-local export syntax once during include preparation.
-  Preserve function bodies as source text; the program composer applies internal names and call bindings to validated ASTs.
+  Preserve function bodies as source text; the program composer applies final declaration and include-local call names to
+  validated ASTs. Do not inspect project function declarations or allocate names to avoid public-name collisions here;
+  ordinary namespace validation owns those checks.
 - Keep compiler diagnostics block-relative. If project-level preparation reports an error from inside a block, attach the project block id and use the line number within that block.

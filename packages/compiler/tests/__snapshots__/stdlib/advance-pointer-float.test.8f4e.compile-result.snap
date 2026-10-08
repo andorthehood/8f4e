@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_std_memory_advancePointer__public__advancePointer__float_p_p__float_p__int": {
+    "advancePointer__float_p_p__float_p__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_advancePointer__public__advancePointer",
+              "value": "advancePointer",
             },
           ],
           "instruction": "function",
@@ -258,10 +258,10 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_memory_advancePointer__public__advancePointer",
+      "name": "advancePointer",
       "type": "function",
     },
-    "__8f4e_std_memory_advancePointer__public__advancePointer__int_p_p__int_p__int": {
+    "advancePointer__int_p_p__int_p__int": {
       "lines": [
         {
           "arguments": [
@@ -269,7 +269,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_memory_advancePointer__public__advancePointer",
+              "value": "advancePointer",
             },
           ],
           "instruction": "function",
@@ -519,13 +519,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_memory_advancePointer__public__advancePointer",
+      "name": "advancePointer",
       "type": "function",
     },
   },
   "functionOverview": {
-    "__8f4e_std_memory_advancePointer__public__advancePointer__float_p_p__float_p__int": {
-      "id": "__8f4e_std_memory_advancePointer__public__advancePointer__float_p_p__float_p__int",
+    "advancePointer__float_p_p__float_p__int": {
+      "id": "advancePointer__float_p_p__float_p__int",
       "signature": {
         "parameters": [
           "float**",
@@ -535,8 +535,8 @@
         "returns": [],
       },
     },
-    "__8f4e_std_memory_advancePointer__public__advancePointer__int_p_p__int_p__int": {
-      "id": "__8f4e_std_memory_advancePointer__public__advancePointer__int_p_p__int_p__int",
+    "advancePointer__int_p_p__int_p__int": {
+      "id": "advancePointer__int_p_p__int_p__int",
       "signature": {
         "parameters": [
           "int**",
@@ -916,8 +916,8 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_memory_advancePointer__public__advancePointer__float_p_p__float_p__int",
-      "__8f4e_std_memory_advancePointer__public__advancePointer__int_p_p__int_p__int",
+      "advancePointer__float_p_p__float_p__int",
+      "advancePointer__int_p_p__int_p__int",
     ],
     "compiledModules": [
       "advancePointerFloatAssertions",

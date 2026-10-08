@@ -65,15 +65,14 @@ function appendMemoryExposureAliases(
 	program.memoryAliases = aliases;
 }
 
-function bindIncludedFunction(ast: ValidatedFunctionAST, bindings: IncludedFunctionBindings): ValidatedFunctionAST {
+function renameIncludedFunction(ast: ValidatedFunctionAST, bindings: IncludedFunctionBindings): ValidatedFunctionAST {
 	const functionLine: FunctionLine = {
 		...ast.functionLine,
-		arguments: [{ ...ast.functionLine.arguments[0], value: bindings.internalName }],
+		arguments: [{ ...ast.functionLine.arguments[0], value: bindings.functionName }],
 	};
 	return {
 		...ast,
-		name: bindings.internalName,
-		callableNames: bindings.callableNames,
+		name: bindings.functionName,
 		functionLine,
 		lines: ast.lines.map(line => {
 			if (line === ast.functionLine) return functionLine;
@@ -154,7 +153,7 @@ function appendUnit(
 				createCompilerSource(func, projectPath, `include:function:${index}`),
 				program.cache
 			);
-			return qualify(bindIncludedFunction(ast, func.bindings));
+			return qualify(renameIncludedFunction(ast, func.bindings));
 		})
 	);
 

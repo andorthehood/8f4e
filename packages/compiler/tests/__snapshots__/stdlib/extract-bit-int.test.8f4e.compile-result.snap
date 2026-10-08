@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_std_bitwise_extractBit__public__extractBit__int__int": {
+    "extractBit__int__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_bitwise_extractBit__public__extractBit",
+              "value": "extractBit",
             },
           ],
           "instruction": "function",
@@ -99,13 +99,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_bitwise_extractBit__public__extractBit",
+      "name": "extractBit",
       "type": "function",
     },
   },
   "functionOverview": {
-    "__8f4e_std_bitwise_extractBit__public__extractBit__int__int": {
-      "id": "__8f4e_std_bitwise_extractBit__public__extractBit__int__int",
+    "extractBit__int__int": {
+      "id": "extractBit__int__int",
       "signature": {
         "parameters": [
           "int",
@@ -382,7 +382,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_bitwise_extractBit__public__extractBit__int__int",
+      "extractBit__int__int",
     ],
     "compiledModules": [
       "extractBitIntAssertions",

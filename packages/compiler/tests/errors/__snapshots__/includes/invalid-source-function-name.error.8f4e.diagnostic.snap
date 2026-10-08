@@ -4,7 +4,7 @@
     "source": {
       "includeId": "test/invalid-function-name",
       "kind": "include",
-      "symbolName": "__8f4e_test_invalid_function_name__public__validName",
+      "symbolName": "renamed",
     },
   },
   "line": {

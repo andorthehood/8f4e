@@ -53,11 +53,10 @@ describe('include function expansion', () => {
 			].join('\n')
 		);
 		expect(functions[0]!.code).toEqual(['function first', '', 'call helper', 'functionEnd int']);
-		expect(functions[0]!.bindings.internalName).toBe('__8f4e_std_test__public__first');
-		expect(functions[0]!.bindings.callableNames).toEqual(['first']);
+		expect(functions[0]!.bindings.functionName).toBe('first');
 		expect(functions[0]!.bindings.callTargets.get('helper')).toBe('__8f4e_std_test__private__helper');
 		expect(functions[1]!.code).toEqual(['function helper', 'param int value', 'functionEnd int']);
-		expect(functions[1]!.bindings.callableNames).toEqual([]);
+		expect(functions[1]!.bindings.functionName).toBe('__8f4e_std_test__private__helper');
 	});
 
 	it('uses include-local export aliases as the public binding names', () => {
@@ -65,7 +64,7 @@ describe('include function expansion', () => {
 			'std/test',
 			['function internalName', '#export publicName', 'functionEnd'].join('\n')
 		);
-		expect(functions[0]!.bindings.callableNames).toEqual(['publicName']);
+		expect(functions[0]!.bindings.functionName).toBe('publicName');
 		expect(functions[0]!.code).toEqual(['function internalName', '', 'functionEnd']);
 	});
 
@@ -82,7 +81,7 @@ describe('include function expansion', () => {
 				'functionEnd float',
 			].join('\n')
 		);
-		expect(functions.map(func => func.bindings.callableNames)).toEqual([['convert'], []]);
+		expect(functions.map(func => func.bindings.functionName)).toEqual(['convert', '__8f4e_std_test__private__convert']);
 		expect(new Set(functions.map(func => func.source.symbolName)).size).toBe(2);
 	});
 
@@ -120,29 +119,28 @@ describe('include export selections', () => {
 			[includeBlock('include std/first', 'include std/second')],
 			includeId => `function ${includeId.split('/')[1]}\n#export\nfunctionEnd`
 		);
-		expect(functions.map(func => [func.source.includeId, func.bindings.callableNames])).toEqual([
-			['std/first', ['first']],
-			['std/second', ['second']],
+		expect(functions.map(func => [func.source.includeId, func.bindings.functionName])).toEqual([
+			['std/first', 'first'],
+			['std/second', 'second'],
 		]);
 	});
 
 	it('selects the whole public overload family, keeping unselected exports as internal dependencies', () => {
 		const functions = resolveProjectIncludes([includeBlock('include std/test first')], () => selectableSource);
-		expect(functions.map(func => func.bindings.callableNames)).toEqual([['first'], ['first'], [], [], []]);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'first',
+			'first',
+			'__8f4e_std_test__public__second',
+			'__8f4e_std_test__private__helper',
+			'__8f4e_std_test__private__helper',
+		]);
 		expect(functions[0]!.bindings.callTargets.get('second')).toBe('__8f4e_std_test__public__second');
 	});
 
-	it('registers multiple aliases per body and loads each source once', async () => {
+	it('merges selected exports and identical selections, loading each source once', async () => {
 		const loaded: string[] = [];
 		const functions = await resolveProjectIncludesAsync(
-			[
-				includeBlock(
-					'include std/test first a',
-					'include std/test second b',
-					'include std/test first c',
-					'include std/test first a'
-				),
-			],
+			[includeBlock('include std/test first a', 'include std/test second b', 'include std/test first a')],
 			async includeId => {
 				loaded.push(includeId);
 				return selectableSource;
@@ -150,17 +148,22 @@ describe('include export selections', () => {
 		);
 		expect(loaded).toEqual(['std/test']);
 		expect(functions).toHaveLength(5);
-		expect(functions.map(func => func.bindings.callableNames)).toEqual([['a', 'c'], ['a', 'c'], ['b'], [], []]);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'a',
+			'a',
+			'b',
+			'__8f4e_std_test__private__helper',
+			'__8f4e_std_test__private__helper',
+		]);
 		expect(functions[0]!.code).toContain('call helper value');
-		expect(functions[0]!.bindings.callTargets.get('second')).toBe('__8f4e_std_test__public__second');
+		expect(functions[0]!.bindings.callTargets.get('second')).toBe('b');
 	});
 
-	it('keeps bodies and identities unchanged when selections or aliases change', () => {
+	it('preserves original source through syntax validation when selections or names change', () => {
 		const all = resolveProjectIncludes([includeBlock('include std/test')], () => selectableSource);
 		const selected = resolveProjectIncludes([includeBlock('include std/test first renamed')], () => selectableSource);
-		expect(selected.map(({ code, source }) => ({ code, source }))).toEqual(
-			all.map(({ code, source }) => ({ code, source }))
-		);
+		expect(selected.map(func => func.code)).toEqual(all.map(func => func.code));
+		expect(selected[0]!.bindings.functionName).toBe('renamed');
 	});
 
 	it('deduplicates repeated include-all declarations', () => {
@@ -169,19 +172,35 @@ describe('include export selections', () => {
 			() => selectableSource
 		);
 		expect(functions).toHaveLength(5);
-		expect(functions.map(func => func.bindings.callableNames)).toEqual([['first'], ['first'], ['second'], [], []]);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'first',
+			'first',
+			'second',
+			'__8f4e_std_test__private__helper',
+			'__8f4e_std_test__private__helper',
+		]);
 	});
 
 	it.each([
+		['include std/test first a', 'include std/test first b'],
 		['include std/test', 'include std/test first renamed'],
 		['include std/test first renamed', 'include std/test'],
-	])('combines include-all and aliases without duplicating bodies: %s, %s', (...declarations) => {
-		const functions = resolveProjectIncludes([includeBlock(...declarations)], () => selectableSource);
-		expect(functions).toHaveLength(5);
-		for (const func of functions.slice(0, 2)) {
-			expect(func.bindings.callableNames).toHaveLength(2);
-			expect(func.bindings.callableNames).toEqual(expect.arrayContaining(['first', 'renamed']));
-		}
+	])('rejects conflicting names for one export: %s, %s', (...declarations) => {
+		expect(() => resolveProjectIncludes([includeBlock(...declarations)], () => selectableSource)).toThrowError(
+			expect.objectContaining({
+				lineNumber: 3,
+				projectBlockId: 42,
+				message: expect.stringContaining('is already included as'),
+			})
+		);
+	});
+
+	it('leaves collisions between different exports to ordinary namespace validation', () => {
+		const functions = resolveProjectIncludes(
+			[includeBlock('include std/test first sameName', 'include std/test second sameName')],
+			() => selectableSource
+		);
+		expect(functions.slice(0, 3).map(func => func.bindings.functionName)).toEqual(['sameName', 'sameName', 'sameName']);
 	});
 
 	it.each(['missing', 'helper', 'originalFirst'])(
@@ -207,14 +226,20 @@ describe('include export selections', () => {
 			],
 			includeId => (includeId === 'std/test' ? selectableSource : undefined)
 		);
-		expect(functions.map(func => func.bindings.callableNames)).toEqual([[], [], ['second'], [], []]);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'__8f4e_std_test__public__first',
+			'__8f4e_std_test__public__first',
+			'second',
+			'__8f4e_std_test__private__helper',
+			'__8f4e_std_test__private__helper',
+		]);
 	});
 
 	it('rewrites recursive source-name and export-alias calls to one identity', () => {
 		const functions = resolveProjectIncludes([includeBlock('include std/test publicName localName')], () =>
 			['function sourceName', '#export publicName', 'call sourceName', 'call publicName', 'functionEnd'].join('\n')
 		);
-		expect(functions[0]!.bindings.callableNames).toEqual(['localName']);
+		expect(functions[0]!.bindings.functionName).toBe('localName');
 		expect(functions[0]!.code).toEqual([
 			'function sourceName',
 			'',
@@ -222,8 +247,8 @@ describe('include export selections', () => {
 			'call publicName',
 			'functionEnd',
 		]);
-		expect(functions[0]!.bindings.callTargets.get('sourceName')).toBe('__8f4e_std_test__public__publicName');
-		expect(functions[0]!.bindings.callTargets.get('publicName')).toBe('__8f4e_std_test__public__publicName');
+		expect(functions[0]!.bindings.callTargets.get('sourceName')).toBe('localName');
+		expect(functions[0]!.bindings.callTargets.get('publicName')).toBe('localName');
 	});
 
 	it('keeps distinct export aliases under distinct identities when unselected', () => {
@@ -240,7 +265,11 @@ describe('include export selections', () => {
 				'functionEnd',
 			].join('\n')
 		);
-		expect(functions.map(func => func.bindings.callableNames)).toEqual([[], [], ['selected']]);
+		expect(functions.map(func => func.bindings.functionName)).toEqual([
+			'__8f4e_std_test__public__first',
+			'__8f4e_std_test__public__second',
+			'selected',
+		]);
 		expect(new Set(functions.map(func => func.source.symbolName)).size).toBe(3);
 	});
 

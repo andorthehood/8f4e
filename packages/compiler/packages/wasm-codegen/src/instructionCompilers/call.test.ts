@@ -23,11 +23,8 @@ function registerFunction(context: CompilationContext, ...targetFunctions: Funct
 				targetFunction,
 			])
 		),
-		byName: Object.fromEntries(
-			targetFunctions.map(targetFunction => [
-				targetFunction.name,
-				targetFunctions.filter(func => func.name === targetFunction.name),
-			])
+		arityByName: Object.fromEntries(
+			targetFunctions.map(targetFunction => [targetFunction.name, targetFunction.signature.parameters.length])
 		),
 	};
 }

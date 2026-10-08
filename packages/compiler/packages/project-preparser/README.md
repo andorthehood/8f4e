@@ -33,6 +33,7 @@ the program composer resolves those aliases before the compiler's single global 
 
 Include declarations use `include <path> [exportedName [localName]]`: omit the name to expose all public exports,
 select an exported name to expose its overload family, or add a local name to rename that selection. Repeated selections
-are merged per source. Each function body is compiled once, and local names bind to its existing overload metadata in the
-namespace. Private dependencies and calls inside the include use fixed internal names. Binding metadata is passed to the
-program composer, which applies those internal names after syntax validation.
+are merged per source, with one local name per export. Conflicting selections of one export under different local names
+are rejected. The program composer applies final declaration names and include-local call targets to validated ASTs.
+Later compiler passes receive ordinary functions. Private dependencies use include-specific internal names; collisions
+with project declarations are handled by ordinary namespace validation.

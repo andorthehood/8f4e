@@ -42,7 +42,7 @@ type IncludeDeclaration = {
 
 type ProjectIncludeDeclaration = IncludeDeclaration & { projectBlockId: number };
 
-type IncludeBindings = Map<string, Set<string>>;
+type IncludeBindings = Map<string, string>;
 
 type IncludeExport = {
 	lineIndex: number;
@@ -199,23 +199,20 @@ function createCallTargetRewriteMap(includeId: string, functions: IncludeFunctio
 	return rewriteMap;
 }
 
-function addIncludeBinding(bindings: IncludeBindings, exportedName: string, localName: string): void {
-	const names = bindings.get(exportedName) ?? new Set<string>();
-	names.add(localName);
-	bindings.set(exportedName, names);
-}
-
 function expandIncludeFunctions(
 	includeId: string,
 	functions: IncludeFunction[],
 	bindings: IncludeBindings
 ): ResolvedFunctionSource[] {
-	const callTargetRewriteMap = createCallTargetRewriteMap(includeId, functions);
-	return functions.map(func => ({
+	const renamedFunctions = functions.map(func => ({
+		...func,
+		finalName: func.export ? (bindings.get(func.export.publicName) ?? func.finalName) : func.finalName,
+	}));
+	const callTargetRewriteMap = createCallTargetRewriteMap(includeId, renamedFunctions);
+	return renamedFunctions.map(func => ({
 		code: func.code.map((line, index) => (index === func.export?.lineIndex ? '' : line)),
 		bindings: {
-			internalName: func.finalName,
-			callableNames: func.export ? [...(bindings.get(func.export.publicName) ?? [])] : [],
+			functionName: func.finalName,
 			callTargets: callTargetRewriteMap,
 		},
 		source: { kind: 'include' as const, includeId, symbolName: func.finalName },
@@ -230,7 +227,7 @@ export function resolveFunctionIncludeSource(includeId: string, source: string):
 	const bindings: IncludeBindings = new Map();
 	for (const func of functions) {
 		if (func.export) {
-			addIncludeBinding(bindings, func.export.publicName, func.export.publicName);
+			bindings.set(func.export.publicName, func.export.publicName);
 		}
 	}
 	return expandIncludeFunctions(includeId, functions, bindings);
@@ -340,19 +337,24 @@ function resolveProjectIncludeDeclarations(
 		const publicNames = new Set(functions.flatMap(func => (func.export ? [func.export.publicName] : [])));
 		const bindings: IncludeBindings = new Map();
 		for (const { exportedName, localName, lineNumber, projectBlockId } of declarations) {
-			if (exportedName === undefined) {
-				for (const publicName of publicNames) {
-					addIncludeBinding(bindings, publicName, publicName);
-				}
-			} else {
-				if (!publicNames.has(exportedName)) {
+			if (exportedName !== undefined && !publicNames.has(exportedName)) {
+				throw new ProjectIncludeError(
+					`include "${includeId}" does not export "${exportedName}"`,
+					lineNumber,
+					projectBlockId
+				);
+			}
+			for (const publicName of exportedName === undefined ? publicNames : [exportedName]) {
+				const name = localName ?? publicName;
+				const previousName = bindings.get(publicName);
+				if (previousName !== undefined && previousName !== name) {
 					throw new ProjectIncludeError(
-						`include "${includeId}" does not export "${exportedName}"`,
+						`include "${includeId}" export "${publicName}" is already included as "${previousName}"`,
 						lineNumber,
 						projectBlockId
 					);
 				}
-				addIncludeBinding(bindings, exportedName, localName ?? exportedName);
+				bindings.set(publicName, name);
 			}
 		}
 		includedFunctionBlocks.push(...expandIncludeFunctions(includeId, functions, bindings));

@@ -1,6 +1,6 @@
 {
   "functionAst": {
-    "__8f4e_std_math_pow2__public__pow2__int": {
+    "pow2__int": {
       "lines": [
         {
           "arguments": [
@@ -8,7 +8,7 @@
               "referenceKind": "plain",
               "scope": "local",
               "type": "identifier",
-              "value": "__8f4e_std_math_pow2__public__pow2",
+              "value": "pow2",
             },
           ],
           "instruction": "function",
@@ -67,13 +67,13 @@
           "instruction": "functionEnd",
         },
       ],
-      "name": "__8f4e_std_math_pow2__public__pow2",
+      "name": "pow2",
       "type": "function",
     },
   },
   "functionOverview": {
-    "__8f4e_std_math_pow2__public__pow2__int": {
-      "id": "__8f4e_std_math_pow2__public__pow2__int",
+    "pow2__int": {
+      "id": "pow2__int",
       "signature": {
         "parameters": [
           "int",
@@ -262,7 +262,7 @@
   },
   "overview": {
     "compiledFunctions": [
-      "__8f4e_std_math_pow2__public__pow2__int",
+      "pow2__int",
     ],
     "compiledModules": [
       "pow2Assertions",
