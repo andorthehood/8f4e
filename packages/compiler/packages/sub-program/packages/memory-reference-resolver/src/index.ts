@@ -10,13 +10,13 @@ import type {
 	FunctionValueType,
 	LocalDeclarationLine,
 	LocalMap,
+	LocalValueMetadata,
 	MemoryPointerMetadataMap,
 	MemoryReferenceResolutionBlockFacts,
 	MemoryReferenceResolutionLineFacts,
 	MemoryReferenceResolutionReport,
 	ModuleAST,
 	ParamLine,
-	PointerLocalBinding,
 	ProjectMemoryAliasLookup,
 	PrototypeAST,
 	ResolvedArgumentLiteral,
@@ -111,16 +111,17 @@ function createModuleResolutionContext(
 
 const pointerFunctionValueTypes = new Set<string>(POINTER_FUNCTION_TYPE_IDENTIFIERS);
 
-function createPointerLocalBinding(type: FunctionValueType, index: number): PointerLocalBinding | undefined {
+function createPointerLocalBinding(
+	type: FunctionValueType
+): Extract<LocalValueMetadata, { pointeeBaseType: string }> | undefined {
 	if (!pointerFunctionValueTypes.has(type)) {
 		return undefined;
 	}
 
 	return {
 		isInteger: true,
-		pointeeBaseType: type.replace(/\*+$/, '') as PointerLocalBinding['pointeeBaseType'],
+		pointeeBaseType: type.replace(/\*+$/, '') as NonNullable<LocalValueMetadata['pointeeBaseType']>,
 		pointerDepth: type.endsWith('**') ? 2 : 1,
-		index,
 	};
 }
 
@@ -134,18 +135,16 @@ function isFunctionLocalDeclarationLine(line: CompilerASTLine): line is Function
 	return true;
 }
 
-function collectFunctionLocal(line: CompilerASTLine, locals: LocalMap, nextLocalIndex: number): number {
+function collectFunctionLocal(line: CompilerASTLine, locals: LocalMap): void {
 	if (!isFunctionLocalDeclarationLine(line)) {
-		return nextLocalIndex;
+		return;
 	}
 
 	const [typeArgument, nameArgument] = line.arguments;
-	const pointerLocal = createPointerLocalBinding(typeArgument.value as FunctionValueType, nextLocalIndex);
+	const pointerLocal = createPointerLocalBinding(typeArgument.value as FunctionValueType);
 	if (pointerLocal) {
 		locals[nameArgument.value] = pointerLocal;
 	}
-
-	return nextLocalIndex + 1;
 }
 
 function getPointeeMemoryItem(
@@ -274,13 +273,12 @@ function resolveMemoryReferencesInAst(
 		ast.type === 'module'
 			? createModuleResolutionContext(memoryPlan, pointerMetadata, memoryAliases, memoryPlan.modules[ast.id])
 			: createSubProgramResolutionContext(memoryPlan, pointerMetadata, memoryAliases);
-	let nextLocalIndex = 0;
 	const lineFacts = ast.lines.map((line, lineIndex) => {
 		const constantResolvedLine = applyConstantFacts(line, constantReferences?.lineFacts[lineIndex]);
 		const memoryReferenceFacts = resolveMemoryReferenceLineFacts(constantResolvedLine, context);
 		const resolvedLine = applyMemoryReferenceFacts(constantResolvedLine, memoryReferenceFacts);
 		if (ast.type === 'function') {
-			nextLocalIndex = collectFunctionLocal(resolvedLine, context.locals, nextLocalIndex);
+			collectFunctionLocal(resolvedLine, context.locals);
 		}
 		if (ast.type === 'module') {
 			updatePointerMemoryMetadata(resolvedLine, context);

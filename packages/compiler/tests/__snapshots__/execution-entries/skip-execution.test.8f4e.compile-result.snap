@@ -111,7 +111,7 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 0,
+              "value": 3,
             },
           ],
           "instruction": "call",
@@ -245,7 +245,7 @@
             {
               "isInteger": true,
               "type": "literal",
-              "value": 0,
+              "value": 3,
             },
           ],
           "instruction": "int",
@@ -324,7 +324,7 @@
       "memory": {
         "counter": {
           "byteAddress": 8,
-          "default": 0,
+          "default": 3,
           "elementWordSize": 4,
           "hasExplicitDefault": true,
           "id": "counter",

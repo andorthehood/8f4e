@@ -1,11 +1,9 @@
 # @8f4e/stack-analyzer
 
-`@8f4e/stack-analyzer` owns semantic stack validation and stack-effect analysis for a compiled sub-program.
+This package validates executable stacks and propagates execution facts for resolved module and function bodies.
 
 ```ts
 const stackReport = analyzeStack({
-	ast: { modules },
-	registeredFunctions,
 	semanticReferences,
 	namespaces,
 	memoryPlan,
@@ -13,30 +11,11 @@ const stackReport = analyzeStack({
 	pointerMetadataByModuleId,
 	functions,
 	functionTypeRegistry,
-	prototypeShapes,
 });
 ```
 
-The root package entrypoint exports `analyzeStack`. It receives unchanged module ASTs, registered function declarations, a semantic reference report, and the compiler metadata that already exists after namespace, memory layout, memory default, memory reference, function metadata, and semantic reference resolver passes. Registered functions pair their unchanged ASTs with resolved metadata, so stack analysis uses existing identities and signatures without repeating registration. It returns a sub-program stack-analysis report keyed by module id and function id.
+Resolved bodies already contain source binding identities and declaration metadata. The analyzer tracks local value and pointer facts by binding identity, independently of WebAssembly storage. It validates function returns against registered signatures and matches call overloads using stack operand types.
 
-Each module/function report contains:
+Each report contains stack snapshots, per-line execution facts, the final stack, and function usage. Per-line facts retain original source-line indexes; declaration positions have no execution facts. Imports, exports, expanded parameters, locals, and module execution directives belong to the resolved units, not the stack report.
 
-- analyzed codegen lines in source order
-- stack-analysis snapshots for compiled output metadata
-- final stack state
-- function metadata needed to compile the function body
-- stack-derived module/function facts such as `skipExecutionInCycle`, imports, exports, locals, and parameter counts
-
-The stack analyzer is responsible for:
-
-- operand count and operand type checks declared by instruction specs
-- instruction-specific stack effects not expressible in the central instruction spec
-- stack-relevant source effects for modules, functions, locals, params, blocks, maps, and directives
-- function call overload matching from the current namespace registry
-- function return stack validation
-- block result stack validation
-- map input/output stack compatibility
-- address, pointer, clamp-range, and known-integer stack metadata propagation
-- `push`, pointer dereference, and `pushShape` stack item production from resolved semantic facts
-
-It is not responsible for parsing, syntax validation, namespace construction, memory layout planning, memory default resolution, memory-reference resolution, semantic reference resolution, or WASM/codegen emission. Those earlier passes provide the AST and semantic metadata; later codegen consumes the stack report and does not perform stack analysis.
+The analyzer owns operand checks, stack effects, block results, map compatibility, and address, pointer, clamp-range, and known-value propagation. It allocates no WebAssembly locals, including loop counters. Codegen consumes its execution facts without repeating stack analysis.

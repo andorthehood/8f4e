@@ -1,0 +1,262 @@
+{
+  "functionAst": {
+    "capped__void": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "capped",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [],
+          "instruction": "#export",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "#loopCap",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "total",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [],
+          "instruction": "loop",
+        },
+        {
+          "arguments": [],
+          "instruction": "loopIndex",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "total",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [],
+          "instruction": "loopEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "total",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "late",
+            },
+          ],
+          "instruction": "local",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "loop",
+        },
+        {
+          "arguments": [],
+          "instruction": "loopIndex",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "late",
+            },
+          ],
+          "instruction": "localSet",
+        },
+        {
+          "arguments": [],
+          "instruction": "loopEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "late",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "capped",
+      "type": "function",
+    },
+  },
+  "functionOverview": {
+    "capped__void": {
+      "exportName": "capped",
+      "id": "capped__void",
+      "signature": {
+        "parameters": [],
+        "returns": [
+          "int",
+          "int",
+        ],
+      },
+    },
+  },
+  "moduleAst": {
+    "loopLocalStorageAssertions": {
+      "id": "loopLocalStorageAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "loopLocalStorageAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "capped",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "loopLocalStorageAssertions": {
+      "memory": {},
+    },
+  },
+  "overview": {
+    "compiledFunctions": [
+      "capped__void",
+    ],
+    "compiledModules": [
+      "loopLocalStorageAssertions",
+    ],
+    "requiredMemoryBytes": 4,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "capped",
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

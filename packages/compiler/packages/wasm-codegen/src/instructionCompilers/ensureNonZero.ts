@@ -15,7 +15,8 @@ import {
 } from '@8f4e/compiler-wasm-utils';
 import type { InstructionCompiler } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
-import { allocateLocal } from '@8f4e/semantic-utils';
+import { allocateLocal } from '../localStorage';
+
 import { saveByteCode } from './utils/saveByteCode';
 
 /**

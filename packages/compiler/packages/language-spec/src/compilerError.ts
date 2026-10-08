@@ -365,16 +365,6 @@ export function getError(
 				line,
 				context,
 			};
-		case ErrorCode.PARAM_AFTER_FUNCTION_BODY:
-			return {
-				code,
-				message:
-					'Parameter declarations must come immediately after the function declaration, before any other instructions or local variable declarations. (' +
-					code +
-					')',
-				line,
-				context,
-			};
 		case ErrorCode.DUPLICATE_PARAMETER_NAME:
 			return {
 				code,
@@ -535,30 +525,6 @@ export function getError(
 					'Duplicate function export name' +
 					(details?.identifier ? `: ${details.identifier}` : '') +
 					'. Exported function names must be unique and must not reuse built-in export names. (' +
-					code +
-					')',
-				line,
-				context,
-			};
-		case ErrorCode.DUPLICATE_FUNCTION_IMPORT:
-			return {
-				code,
-				message: 'Duplicate function import directive. Imported functions can only declare one #import. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.IMPORT_EXPORT_CONFLICT:
-			return {
-				code,
-				message: 'Imported functions cannot also be exported. (' + code + ')',
-				line,
-				context,
-			};
-		case ErrorCode.IMPORTED_FUNCTION_BODY:
-			return {
-				code,
-				message:
-					'Imported functions cannot have a function body. Only function directives, param declarations, and functionEnd are allowed. (' +
 					code +
 					')',
 				line,

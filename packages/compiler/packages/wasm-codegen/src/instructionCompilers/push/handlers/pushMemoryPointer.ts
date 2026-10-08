@@ -1,6 +1,5 @@
 import { i32const } from '@8f4e/compiler-wasm-utils';
 import type { CodegenContext, ResolvedMemoryPointerPushLine } from '@8f4e/language-spec';
-import assertFunctionMemoryIoAllowed from '../../assertFunctionMemoryIoAllowed';
 import { saveByteCode } from '../../utils/saveByteCode';
 import { buildPointerDereferenceByteCode } from '../shared';
 
@@ -17,7 +16,6 @@ export default function pushMemoryPointer(
 ): CodegenContext {
 	const { memoryItem } = line.resolvedTarget;
 	const { dereferenceDepth } = line.arguments[0];
-	assertFunctionMemoryIoAllowed(line, context);
 	const dereference = buildPointerDereferenceByteCode(
 		context,
 		line.lineNumber,

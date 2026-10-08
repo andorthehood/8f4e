@@ -1,10 +1,10 @@
 import {
 	ArgumentType,
-	type CompilationContext,
 	type CompilerASTLine,
 	isArrayMemoryDeclarationLine,
 	type MemoryDeclarationLine,
 } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 import {
 	resolveArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
@@ -15,7 +15,7 @@ import {
 function requireResolvedArrayValue(
 	argument: CompilerASTLine['arguments'][number] | undefined,
 	line: CompilerASTLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ) {
 	if (argument?.type === ArgumentType.COMPILE_TIME_EXPRESSION) {
 		validateUnresolvedValueExpression(argument, line, context);
@@ -39,7 +39,7 @@ function requireResolvedArrayValue(
  */
 export default function resolveMemoryDeclarationReferences(
 	line: MemoryDeclarationLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): MemoryDeclarationLine {
 	const isArrayDeclaration = isArrayMemoryDeclarationLine(line);
 	const resolveIndexes = isArrayDeclaration

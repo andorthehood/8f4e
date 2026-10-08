@@ -537,7 +537,6 @@ describe('tryResolveValueArgument', () => {
 					valueType: 'int',
 					pointeeBaseType: 'float64',
 					pointerDepth: 2,
-					index: 0,
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;
@@ -562,7 +561,6 @@ describe('tryResolveValueArgument', () => {
 					pointeeBaseType: 'float',
 					pointerDepth: 1,
 					pointeeElementCount: 7,
-					index: 0,
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;
@@ -594,7 +592,6 @@ describe('tryResolveValueArgument', () => {
 					valueType: 'int',
 					pointeeBaseType: 'float',
 					pointerDepth: 1,
-					index: 0,
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;
@@ -615,21 +612,18 @@ describe('tryResolveValueArgument', () => {
 					valueType: 'int',
 					pointeeBaseType: 'int8',
 					pointerDepth: 1,
-					index: 0,
 				},
 				int16Ptr: {
 					kind: 'value',
 					valueType: 'int',
 					pointeeBaseType: 'int16',
 					pointerDepth: 1,
-					index: 1,
 				},
 				float64Ptr: {
 					kind: 'value',
 					valueType: 'int',
 					pointeeBaseType: 'float64',
 					pointerDepth: 1,
-					index: 2,
 				},
 			},
 		} as unknown as MemoryReferenceResolutionContext;

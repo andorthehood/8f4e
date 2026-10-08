@@ -1,6 +1,5 @@
 import {
 	ArgumentType,
-	type CompilationContext,
 	type CompilerASTLine,
 	createFunctionId,
 	ErrorCode,
@@ -10,8 +9,8 @@ import {
 } from '@8f4e/language-spec';
 import { classifyIdentifier, parseArgument } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
-
 import { resolveSemanticReferences } from '.';
+import type { ReferenceResolutionContext } from './context';
 import resolveLineReferences from './resolveLineReferences';
 
 function createSourceMemoryPlan(): MemoryLayoutPlan {
@@ -79,7 +78,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(resolveLineReferences(line, context)).toEqual({
 			...line,
@@ -99,7 +98,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(resolveLineReferences(line, context)).toEqual(line);
 	});
@@ -116,7 +115,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(resolveLineReferences(line, context)).toEqual({
 			...line,
@@ -139,7 +138,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(() => resolveLineReferences(line, context)).toThrow();
 	});
@@ -156,7 +155,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(() => resolveLineReferences(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
@@ -173,7 +172,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(() => resolveLineReferences(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
@@ -190,7 +189,7 @@ describe('resolveLineReferences', () => {
 				namespaces: {},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(() => resolveLineReferences(line, context)).toThrow(`${ErrorCode.UNDECLARED_IDENTIFIER}`);
 	});
@@ -206,12 +205,13 @@ describe('resolveLineReferences', () => {
 				moduleName: 'test',
 				namespaces: {},
 			},
-			locals: { localVar: { isInteger: true, index: 0 } },
-		} as unknown as CompilationContext;
+			locals: { localVar: { isInteger: true } },
+			bindingsByName: { localVar: { id: 0, name: 'localVar', type: 'int' } },
+		} as unknown as ReferenceResolutionContext;
 
 		expect(resolveLineReferences(line, context)).toEqual({
 			...line,
-			resolvedTarget: { kind: 'local', localName: 'localVar' },
+			resolvedTarget: { kind: 'local', binding: { id: 0, name: 'localVar', type: 'int' } },
 		});
 	});
 
@@ -223,7 +223,7 @@ describe('resolveLineReferences', () => {
 			locals: {},
 			startingByteAddress: 16,
 			currentModuleWordAlignedSize: 3,
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'push',
@@ -237,7 +237,7 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'localSet',
@@ -256,7 +256,7 @@ describe('resolveLineReferences', () => {
 			memoryPlan: createEmptyMemoryPlan(),
 			memoryAliases: new Map(),
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'push',
@@ -275,7 +275,7 @@ describe('resolveLineReferences', () => {
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map(),
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'int',
@@ -299,7 +299,7 @@ describe('resolveLineReferences', () => {
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map(),
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'int',
@@ -318,7 +318,7 @@ describe('resolveLineReferences', () => {
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map([['audio', new Map([['level', { targetModuleId: 'source', targetMemoryId: 'buffer' }]])]]),
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'int*',
@@ -343,7 +343,7 @@ describe('resolveLineReferences', () => {
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map(),
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'int[]',
@@ -357,7 +357,7 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'int',
@@ -380,7 +380,7 @@ describe('resolveLineReferences', () => {
 			memoryPlan: createSourceMemoryPlan(),
 			memoryAliases: new Map(),
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'push',
@@ -394,7 +394,7 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'push',
@@ -410,9 +410,9 @@ describe('resolveLineReferences', () => {
 			memoryPlan: createEmptyMemoryPlan(),
 			memoryAliases: new Map(),
 			locals: {
-				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', pointerDepth: 1, index: 0 },
+				lut: { kind: 'value', valueType: 'int', pointeeBaseType: 'float', pointerDepth: 1 },
 			},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'push',
@@ -430,7 +430,7 @@ describe('resolveLineReferences', () => {
 				functions: { byId: {}, arityByName: {} },
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'call',
@@ -452,7 +452,7 @@ describe('resolveLineReferences', () => {
 				},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'call',
@@ -479,7 +479,7 @@ describe('resolveLineReferences', () => {
 				},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'call',
@@ -506,7 +506,7 @@ describe('resolveLineReferences', () => {
 				},
 			},
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 		const line: CompilerASTLine = {
 			lineNumber: 1,
 			instruction: 'call',
@@ -530,7 +530,7 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(() => resolveLineReferences(createClampLine('clampAddress', 0), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
@@ -541,7 +541,7 @@ describe('resolveLineReferences', () => {
 		const context = {
 			namespace: { moduleName: 'test', namespaces: {} },
 			locals: {},
-		} as unknown as CompilationContext;
+		} as unknown as ReferenceResolutionContext;
 
 		expect(() => resolveLineReferences(createClampLine('clampAddress', 3), context)).toThrow(
 			expect.objectContaining({ code: ErrorCode.INVALID_ACCESS_WIDTH })
@@ -613,10 +613,10 @@ describe('resolveSemanticReferences', () => {
 			prototypeShapes: {},
 		});
 
-		expect(result.references.functions[functionId].lineFacts[2]).toEqual({
+		expect(result.references.functions[functionId].body[0].line).toMatchObject({
 			resolvedTarget: {
 				kind: 'local',
-				localName: 'value',
+				binding: { id: 0, name: 'value', type: 'int', parameterIndex: 0 },
 			},
 		});
 	});

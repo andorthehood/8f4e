@@ -1,7 +1,7 @@
 import type {
 	AddressMetadata,
 	CompilationContext,
-	LocalBinding,
+	LocalValueMetadata,
 	PointeeBaseType,
 	PointeeMetadata,
 	ResolvedMemoryDeclaration,
@@ -80,7 +80,9 @@ function pushLiteralStackItems(line: SemanticPushLine, context: CompilationConte
 	];
 }
 
-function getPointeeMetadata(pointerMetadata: ResolvedMemoryDeclaration | LocalBinding): PointeeMetadata | undefined {
+function getPointeeMetadata(
+	pointerMetadata: ResolvedMemoryDeclaration | LocalValueMetadata
+): PointeeMetadata | undefined {
 	return pointerMetadata.pointeeBaseType
 		? {
 				baseType: pointerMetadata.pointeeBaseType,
@@ -104,7 +106,7 @@ function pushDereferencedPointerStackItems(
 		line.resolvedTarget.kind === 'memory-pointer'
 			? line.resolvedTarget.memoryItem
 			: line.resolvedTarget.kind === 'local-pointer'
-				? context.locals[line.resolvedTarget.localName]!
+				? context.locals[line.resolvedTarget.binding.id]!
 				: undefined;
 	if (!pointerMetadata) {
 		return [];
@@ -171,7 +173,7 @@ function pushResolvedTargetStackItems(line: ResolvedPushLine, context: Compilati
 		}
 		case 'local':
 		default: {
-			const local = context.locals[line.resolvedTarget.localName]!;
+			const local = context.locals[line.resolvedTarget.binding.id]!;
 			const pointsTo = getPointeeMetadata(local);
 
 			return [

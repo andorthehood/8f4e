@@ -1,5 +1,6 @@
-import type { CompilationContext, LoopLine, ResolvedLoopLine } from '@8f4e/language-spec';
+import type { LoopLine, ResolvedLoopLine } from '@8f4e/language-spec';
 import { ArgumentType, ErrorCode, getError } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 import { resolveAndValidateValueArguments } from './helpers';
 
 /**
@@ -11,10 +12,10 @@ import { resolveAndValidateValueArguments } from './helpers';
  */
 export default function resolveLoopReferences(
 	line: LoopLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): ResolvedLoopLine | LoopLine {
 	if (line.arguments.length === 0) {
-		return line;
+		return { ...line, arguments: [{ type: ArgumentType.LITERAL, value: context.loopCap ?? 1000, isInteger: true }] };
 	}
 
 	const resolved = resolveAndValidateValueArguments(line, context, [0]);

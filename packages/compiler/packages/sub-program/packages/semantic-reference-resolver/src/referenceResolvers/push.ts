@@ -1,10 +1,9 @@
 import {
 	ArgumentType,
-	type CompilationContext,
 	ErrorCode,
 	getError,
+	type LocalValueMetadata,
 	type MemoryPointerIdentifier,
-	type PointerLocalBinding,
 	type PushLine,
 	type ResolvedLocalPointerPushLine,
 	type ResolvedLocalPushLine,
@@ -13,13 +12,16 @@ import {
 	type SemanticPushLine,
 } from '@8f4e/language-spec';
 import { getResolvedMemoryDeclaration } from '@8f4e/semantic-utils';
+import type { ReferenceResolutionContext } from '../context';
 import {
 	resolveArgumentsAtIndexes,
 	validateIntermoduleAddressReference,
 	validateUnresolvedValueExpression,
 } from './helpers';
 
-function isResolvedPointerLocal(local: CompilationContext['locals'][string] | undefined): local is PointerLocalBinding {
+function isResolvedPointerLocal(
+	local: ReferenceResolutionContext['locals'][string] | undefined
+): local is Extract<LocalValueMetadata, { pointeeBaseType: string }> {
 	return !!local?.pointeeBaseType;
 }
 
@@ -31,7 +33,7 @@ function validateDereferenceDepth(
 	pointerArgument: MemoryPointerIdentifier,
 	pointerMetadata: { pointerDepth: number; pointeeBaseType?: unknown },
 	line: PushLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): void {
 	if (pointerArgument.dereferenceDepth > getDeclaredPointerDepth(pointerMetadata)) {
 		throw getError(ErrorCode.POINTER_DEREFERENCE_DEPTH_EXCEEDED, line, context, {
@@ -40,7 +42,7 @@ function validateDereferenceDepth(
 	}
 }
 
-function throwIfPointeeCountIsUnknown(line: PushLine, context: CompilationContext): void {
+function throwIfPointeeCountIsUnknown(line: PushLine, context: ReferenceResolutionContext): void {
 	const argument = line.arguments[0];
 	if (argument?.type !== ArgumentType.IDENTIFIER || argument.referenceKind !== 'pointee-element-count') {
 		return;
@@ -63,7 +65,7 @@ function throwIfPointeeCountIsUnknown(line: PushLine, context: CompilationContex
  * @param context - Compilation context used by the operation.
  * @returns Push line with resolved target metadata where needed.
  */
-export default function resolvePushReferences(line: PushLine, context: CompilationContext): SemanticPushLine {
+export default function resolvePushReferences(line: PushLine, context: ReferenceResolutionContext): SemanticPushLine {
 	const { line: resolved } = resolveArgumentsAtIndexes(line, context, [0]);
 	const resolvedPushLine = resolved as PushLine;
 
@@ -83,7 +85,7 @@ export default function resolvePushReferences(line: PushLine, context: Compilati
 					...resolvedPushLine,
 					arguments: [argument],
 				};
-				return { ...resolvedLine, resolvedTarget: { kind: 'local' as const, localName: value } };
+				return { ...resolvedLine, resolvedTarget: { kind: 'local' as const, binding: context.bindingsByName[value]! } };
 			}
 
 			const memoryItem = getResolvedMemoryDeclaration(context, value);
@@ -116,7 +118,10 @@ export default function resolvePushReferences(line: PushLine, context: Compilati
 				};
 				return {
 					...resolvedLine,
-					resolvedTarget: { kind: 'local-pointer' as const, localName: pointerArgument.targetMemoryId },
+					resolvedTarget: {
+						kind: 'local-pointer' as const,
+						binding: context.bindingsByName[pointerArgument.targetMemoryId]!,
+					},
 				};
 			}
 		}

@@ -19,24 +19,17 @@ import ensureNonZero from './ensureNonZero';
 import equal from './equal';
 import equalToZero from './equalToZero';
 import exitIfTrue from './exitIfTrue';
-import exportFunction from './exportFunction';
-import _function from './function';
-import functionEnd from './functionEnd';
 import greaterOrEqual from './greaterOrEqual';
 import greaterOrEqualUnsigned from './greaterOrEqualUnsigned';
 import greaterThan from './greaterThan';
 import _if from './if';
 import ifEnd from './ifEnd';
-import importFunction from './importFunction';
-import impure from './impure';
 import lessOrEqual from './lessOrEqual';
 import lessThan from './lessThan';
 import load from './load';
 import loadFloat from './loadFloat';
-import local from './local';
 import localSet from './localSet';
 import loop from './loop';
-import loopCap from './loopCap';
 import loopEnd from './loopEnd';
 import loopIndex from './loopIndex';
 import map from './map';
@@ -49,8 +42,6 @@ import mul from './mul';
 import notEqual from './notEqual';
 import notZero from './notZero';
 import or from './or';
-import param from './param';
-import paramShape from './paramShape';
 import push from './push';
 import pushShape from './pushShape';
 import remainder from './remainder';
@@ -59,7 +50,6 @@ import round from './round';
 import shiftLeft from './shiftLeft';
 import shiftRight from './shiftRight';
 import shiftRightUnsigned from './shiftRightUnsigned';
-import skipExecution from './skipExecution';
 import sqrt from './sqrt';
 import store from './store';
 import storeBytes from './storeBytes';
@@ -86,7 +76,6 @@ const instructions = {
 	sub,
 	div,
 	xor,
-	local,
 	greaterOrEqual,
 	add,
 	min,
@@ -123,17 +112,8 @@ const instructions = {
 	loadFloat,
 	round,
 	ensureNonZero,
-	function: _function,
-	functionEnd,
 	return: _return,
-	param,
-	paramShape,
 	call,
-	'#skipExecution': skipExecution,
-	'#impure': impure,
-	'#export': exportFunction,
-	'#import': importFunction,
-	'#loopCap': loopCap,
 	mapBegin,
 	map,
 	default: _default,

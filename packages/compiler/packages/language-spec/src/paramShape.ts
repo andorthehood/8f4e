@@ -5,11 +5,12 @@ import type { FunctionMetadata, FunctionParamShapeExpansion } from './compiled';
 import { ErrorCode, getError } from './compilerError';
 import type { CompilerDiagnosticContext } from './diagnostics';
 import type { FunctionValueType } from './functionTypes';
-import { isFunctionValueType } from './functionTypes';
+import { isFunctionValueType, MAX_FUNCTION_PARAMETERS, MAX_FUNCTION_RETURN_VALUES } from './functionTypes';
 
 function getAstDiagnosticContext(ast: FunctionAST): CompilerDiagnosticContext {
 	return {
 		codeBlockType: ast.type,
+		codeBlockId: ast.name,
 		...(ast.projectBlockId !== undefined ? { projectBlockId: ast.projectBlockId } : {}),
 	};
 }
@@ -97,6 +98,11 @@ export function getEffectiveFunctionMetadata(
 			paramShapeExpansions.push(expansion);
 			parameters.push(...expansion.parameters.map(parameter => parameter.type));
 		}
+		if (parameters.length > MAX_FUNCTION_PARAMETERS)
+			throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, line, context);
+	}
+	if (ast.functionEndLine.arguments.length > MAX_FUNCTION_RETURN_VALUES) {
+		throw getError(ErrorCode.FUNCTION_SIGNATURE_OVERFLOW, ast.functionEndLine, context);
 	}
 
 	return {

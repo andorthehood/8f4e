@@ -60,6 +60,8 @@ export interface FunctionMetadata {
 	signature: FunctionSignature;
 	wasmIndex: number;
 	import?: FunctionImportMetadata;
+	exportName?: string;
+	isImpure?: boolean;
 	paramShapeExpansions?: FunctionParamShapeExpansion[];
 }
 

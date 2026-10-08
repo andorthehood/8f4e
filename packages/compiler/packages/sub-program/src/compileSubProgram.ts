@@ -280,10 +280,6 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		prototypeShapes: prototypeShapesById,
 	}).references;
 	const stackReport = analyzeStack({
-		ast: {
-			modules: subProgramAst.modules,
-		},
-		registeredFunctions: registration.declarations,
 		semanticReferences,
 		namespaces,
 		memoryPlan,
@@ -291,30 +287,26 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		pointerMetadataByModuleId: memoryDefaultResolution.pointerMetadataByModuleId,
 		functions: functionRegistry,
 		functionTypeRegistry,
-		prototypeShapes: prototypeShapesById,
 	});
 
-	const compiledFunctions = registration.declarations.map(declaration =>
+	const compiledFunctions = Object.values(semanticReferences.functions).map(resolved =>
 		compileFunction(
-			declaration,
+			resolved,
 			namespaces,
 			functionTypeRegistry,
 			functionRegistry,
-			semanticReferences.functions[declaration.metadata.id],
-			stackReport.functions[declaration.metadata.id],
+			stackReport.functions[resolved.metadata.id],
 			options
 		)
 	);
 	const compiledModules = compileModules(
-		subProgramAst.modules,
+		Object.values(semanticReferences.modules),
 		options,
 		namespaces,
 		memoryPlan,
-		semanticReferences,
 		stackReport,
 		functionRegistry,
-		functionTypeRegistry,
-		prototypeShapesById
+		functionTypeRegistry
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],

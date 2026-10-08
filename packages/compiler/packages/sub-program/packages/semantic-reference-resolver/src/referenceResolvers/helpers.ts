@@ -2,7 +2,6 @@ import {
 	type Argument,
 	type ArgumentIdentifier,
 	ArgumentType,
-	type CompilationContext,
 	type CompilerASTLine,
 	type Const,
 	ErrorCode,
@@ -10,8 +9,9 @@ import {
 	type ResolvedArgumentLiteral,
 	resolveProjectMemoryAlias,
 } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 
-function getTargetPlannedModule(context: CompilationContext, targetModuleId: string) {
+function getTargetPlannedModule(context: ReferenceResolutionContext, targetModuleId: string) {
 	return context.memoryPlan.modules[targetModuleId];
 }
 
@@ -27,7 +27,7 @@ function getTargetPlannedModule(context: CompilationContext, targetModuleId: str
 export function validateIntermoduleAddressReference(
 	identifier: ArgumentIdentifier,
 	line: CompilerASTLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): void {
 	if (identifier.referenceKind === 'intermodular-module-reference') {
 		const targetModuleId = identifier.targetModuleId;
@@ -162,7 +162,7 @@ export function foldLiteralExpressionArgument(argument: Argument): Argument | Re
 export function validateUnresolvedValueExpression(
 	argument: Extract<Argument, { type: typeof ArgumentType.COMPILE_TIME_EXPRESSION }>,
 	line: CompilerASTLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): void {
 	if (argument.left.type === ArgumentType.IDENTIFIER) {
 		validateIntermoduleAddressReference(argument.left, line, context);
@@ -187,7 +187,7 @@ export function validateUnresolvedValueExpression(
 export function validateUnresolvedIdentifier(
 	argument: Extract<Argument, { type: typeof ArgumentType.IDENTIFIER }>,
 	line: CompilerASTLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): void {
 	validateIntermoduleAddressReference(argument, line, context);
 	throw getError(ErrorCode.UNDECLARED_IDENTIFIER, line, context, { identifier: argument.value });
@@ -207,7 +207,7 @@ export function validateUnresolvedIdentifier(
  */
 export function resolveArgumentsAtIndexes<TLine extends CompilerASTLine>(
 	line: TLine,
-	context: CompilationContext,
+	context: ReferenceResolutionContext,
 	indexes: number[]
 ): { line: TLine; changed: boolean } {
 	let changed = false;
@@ -237,7 +237,7 @@ export function resolveArgumentsAtIndexes<TLine extends CompilerASTLine>(
  */
 export function resolveAndValidateValueArguments<TLine extends CompilerASTLine>(
 	line: TLine,
-	context: CompilationContext,
+	context: ReferenceResolutionContext,
 	indexes: number[]
 ): TLine {
 	const { line: resolved } = resolveArgumentsAtIndexes(line, context, indexes);

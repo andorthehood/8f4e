@@ -1,7 +1,7 @@
 import { WASM_IF, WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
 import type {
 	AddressMetadata,
-	CompilationContext,
+	CodegenContext,
 	CompilerASTLine,
 	ErrorCodeValue,
 	FunctionMetadata,
@@ -16,7 +16,9 @@ import type {
 	OperandRule,
 	PlannedMemoryDeclaration,
 	PointeeMetadata,
+	ResolvedLocalSetLine,
 	ResolvedMemoryDeclaration,
+	SourceLocalBinding,
 	Stack,
 	StackAnalysisLineFacts,
 	StackAnalysisLocalPointerFact,
@@ -51,11 +53,13 @@ import {
 import { expect } from 'vitest';
 import { kindToStackItem, resolveArgumentValueKind, resolveMemoryValueKind } from './pushValueKind';
 
+type CodegenTestContext = CodegenContext & { stack: Stack };
+
 type CodegenTestResolvedTarget =
 	| { kind: 'memory'; memoryItem: ResolvedMemoryDeclaration }
 	| { kind: 'memory-pointer'; memoryItem: ResolvedMemoryDeclaration }
-	| { kind: 'local'; localName: string }
-	| { kind: 'local-pointer'; localName: string };
+	| { kind: 'local'; binding: SourceLocalBinding }
+	| { kind: 'local-pointer'; binding: SourceLocalBinding };
 
 type CodegenTestLine = CompilerASTLine & {
 	resolvedTarget?: CodegenTestResolvedTarget;
@@ -116,10 +120,13 @@ function getEndAddressSafeByteLength(wordAlignedSize: number): number {
  * @returns A compilation context with default module-scoped state.
  */
 export default function createInstructionCompilerTestContext(
-	overrides: Partial<CompilationContext> = {}
-): CompilationContext {
-	return createCompilationContext({
+	overrides: Partial<CodegenTestContext> = {}
+): CodegenTestContext {
+	return createCompilationContext<CodegenTestContext>({
 		...overrides,
+		nextLocalIndex:
+			overrides.nextLocalIndex ??
+			Object.values(overrides.locals ?? {}).reduce((next, local) => Math.max(next, local.index + 1), 0),
 		namespace: {
 			moduleName: 'test',
 			...overrides.namespace,
@@ -137,9 +144,9 @@ export default function createInstructionCompilerTestContext(
 
 /** Seeds compiler memory-plan context fields from planned memory declaration fixtures. */
 export function seedTestMemoryDeclarations(
-	context: CompilationContext,
+	context: CodegenTestContext,
 	memoryDeclarations: MemoryFixtureMap
-): CompilationContext {
+): CodegenTestContext {
 	const memory = Object.fromEntries(
 		Object.entries(memoryDeclarations).map(([id, memoryItem]) => {
 			const {
@@ -220,14 +227,14 @@ function cloneStack(stack: Stack): Stack {
 	}));
 }
 
-function consume(context: CompilationContext, count: number): Stack {
+function consume(context: CodegenTestContext, count: number): Stack {
 	if (count === 0) {
 		return [];
 	}
 	return context.stack.splice(context.stack.length - count, count);
 }
 
-function produce(context: CompilationContext, items: Stack): void {
+function produce(context: CodegenTestContext, items: Stack): void {
 	context.stack.push(...items);
 }
 
@@ -271,7 +278,7 @@ function validateOperandTypesForTest(
 	operands: StackItem[],
 	rule: OperandRule | OperandRule[],
 	line: CompilerASTLine,
-	context: CompilationContext
+	context: CodegenTestContext
 ): void {
 	const errorCode = getOperandRuleErrorCode(rule);
 	if (Array.isArray(rule)) {
@@ -304,7 +311,7 @@ function validateOperandTypesForTest(
 	}
 }
 
-function validateInstructionForTest(line: CompilerASTLine, context: CompilationContext): void {
+function validateInstructionForTest(line: CompilerASTLine, context: CodegenTestContext): void {
 	const spec = getInstructionSpec(line.instruction) as InstructionSpec<CompilerASTLine> | undefined;
 	const validatedOperands = spec?.validateOperands?.(line, context);
 	const operandsNeeded = validatedOperands?.minOperands ?? spec?.minOperands ?? 0;
@@ -482,7 +489,7 @@ function getPointeeMetadata(pointerMetadata: ResolvedMemoryDeclaration | LocalBi
 }
 
 function getAddressMemoryItem(
-	context: CompilationContext,
+	context: CodegenTestContext,
 	address: AddressMetadata
 ): ResolvedMemoryDeclaration | undefined {
 	const range = address.safeRange ?? address.clampRange;
@@ -495,7 +502,7 @@ function getAddressMemoryItem(
 	return moduleId ? context.memoryPlan.modules[moduleId]?.memory[memoryId] : undefined;
 }
 
-function getAddressPointeeMetadata(context: CompilationContext, address: AddressMetadata): PointeeMetadata | undefined {
+function getAddressPointeeMetadata(context: CodegenTestContext, address: AddressMetadata): PointeeMetadata | undefined {
 	const memoryItem = getAddressMemoryItem(context, address);
 	if (!memoryItem) {
 		return undefined;
@@ -516,7 +523,7 @@ function getAddressPointeeMetadata(context: CompilationContext, address: Address
 	};
 }
 
-function pushLiteralStackItems(line: CompilerASTLine, context: CompilationContext): Stack {
+function pushLiteralStackItems(line: CompilerASTLine, context: CodegenTestContext): Stack {
 	const argument = getCodegenTestArgument(line);
 	if (argument.type === ArgumentType.STRING_LITERAL) {
 		return Array.from(String(argument.value ?? ''), ch =>
@@ -542,13 +549,13 @@ function pushLiteralStackItems(line: CompilerASTLine, context: CompilationContex
 	];
 }
 
-function pushDereferencedPointerStackItems(line: CompilerASTLine, context: CompilationContext): Stack {
+function pushDereferencedPointerStackItems(line: CompilerASTLine, context: CodegenTestContext): Stack {
 	const testLine = codegenTestLine(line);
 	const pointerMetadata =
 		testLine.resolvedTarget?.kind === 'memory-pointer'
 			? testLine.resolvedTarget.memoryItem
 			: testLine.resolvedTarget?.kind === 'local-pointer'
-				? context.locals[testLine.resolvedTarget.localName]!
+				? context.locals[testLine.resolvedTarget.binding.id]!
 				: undefined;
 	if (!pointerMetadata?.pointeeBaseType) {
 		return [];
@@ -580,7 +587,7 @@ function pushDereferencedPointerStackItems(line: CompilerASTLine, context: Compi
 	];
 }
 
-function pushResolvedTargetStackItems(line: CompilerASTLine, context: CompilationContext): Stack {
+function pushResolvedTargetStackItems(line: CompilerASTLine, context: CodegenTestContext): Stack {
 	const testLine = codegenTestLine(line);
 	switch (testLine.resolvedTarget?.kind) {
 		case 'memory': {
@@ -598,7 +605,7 @@ function pushResolvedTargetStackItems(line: CompilerASTLine, context: Compilatio
 		case 'local-pointer':
 			return pushDereferencedPointerStackItems(line, context);
 		case 'local': {
-			const local = context.locals[testLine.resolvedTarget.localName]!;
+			const local = context.locals[testLine.resolvedTarget.binding.id]!;
 			const pointsTo = getPointeeMetadata(local);
 			return [
 				local.pointeeBaseType
@@ -615,7 +622,7 @@ function pushResolvedTargetStackItems(line: CompilerASTLine, context: Compilatio
 	}
 }
 
-function analyzePushForTest(line: CompilerASTLine, context: CompilationContext): Stack {
+function analyzePushForTest(line: CompilerASTLine, context: CodegenTestContext): Stack {
 	const produced = codegenTestLine(line).resolvedTarget
 		? pushResolvedTargetStackItems(line, context)
 		: pushLiteralStackItems(line, context);
@@ -638,7 +645,7 @@ function formatFunctionCallSignature(functionName: string, parameters: readonly 
 	return `${functionName}(${parameters.join(', ')})`;
 }
 
-function resolveTargetFunctionForTest(line: CompilerASTLine, context: CompilationContext): FunctionMetadata {
+function resolveTargetFunctionForTest(line: CompilerASTLine, context: CodegenTestContext): FunctionMetadata {
 	const functionName = String(getCodegenTestArgument(line).value);
 	const functionRegistry = context.namespace.functions;
 	if (!functionRegistry) {
@@ -673,7 +680,7 @@ function resolveTargetFunctionForTest(line: CompilerASTLine, context: Compilatio
 
 function analyzeCallForTest(
 	line: CompilerASTLine,
-	context: CompilationContext
+	context: CodegenTestContext
 ): { consumed: Stack; produced: Stack; targetFunctionId: string } {
 	for (const inlinePushLine of codegenTestLine(line).inlineArgumentPushes ?? []) {
 		analyzePushForTest(inlinePushLine, context);
@@ -686,10 +693,10 @@ function analyzeCallForTest(
 	return { consumed, produced, targetFunctionId: targetFunction.id };
 }
 
-function analyzeLocalSetForTest(line: CompilerASTLine, context: CompilationContext): CodegenTestAnalysis {
+function analyzeLocalSetForTest(line: CompilerASTLine, context: CodegenTestContext): CodegenTestAnalysis {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
-	const localName = String(getCodegenTestArgument(line).value);
+	const localName = (line as ResolvedLocalSetLine).binding.id;
 	const local = context.locals[localName]!;
 
 	if (local.isInteger && operand.valueType !== 'int') {
@@ -702,7 +709,7 @@ function analyzeLocalSetForTest(line: CompilerASTLine, context: CompilationConte
 	const localPointer =
 		local.pointeeBaseType && operand.kind === 'address'
 			? {
-					localName,
+					bindingId: local.index,
 					pointeeMemoryIndex: operand.address.memoryIndex,
 					...(operand.address.memoryRegionName ? { pointeeMemoryRegionName: operand.address.memoryRegionName } : {}),
 				}
@@ -717,7 +724,7 @@ function analyzeLocalSetForTest(line: CompilerASTLine, context: CompilationConte
 
 function resolveStackConsumeCount(
 	line: CompilerASTLine,
-	context: CompilationContext,
+	context: CodegenTestContext,
 	consumes: StackMutationSpec['consumes']
 ): number {
 	if (consumes === 'all') {
@@ -753,7 +760,7 @@ function resolveProducedStackItem(consumed: Stack, spec: StackProducedItemSpec):
 
 function analyzeStackEffectFromSpecForTest(
 	line: CompilerASTLine,
-	context: CompilationContext,
+	context: CodegenTestContext,
 	stackEffect: StackMutationSpec
 ): CodegenTestAnalysis {
 	const consumed = consume(context, resolveStackConsumeCount(line, context, stackEffect.consumes));
@@ -768,7 +775,7 @@ function analyzeStackEffectFromSpecForTest(
 
 function analyzeExpectedBlockResultForTest(
 	line: CompilerASTLine,
-	context: CompilationContext,
+	context: CodegenTestContext,
 	{ restore = false, validateFloatResult = false } = {}
 ): CodegenTestAnalysis {
 	const expectedResultTypes = context.blockStack[context.blockStack.length - 1]?.expectedResultTypes ?? [];
@@ -798,7 +805,7 @@ function analyzeExpectedBlockResultForTest(
 	return { consumed, produced: [] };
 }
 
-function analyzeFromSpecForTest(line: CompilerASTLine, context: CompilationContext): CodegenTestAnalysis {
+function analyzeFromSpecForTest(line: CompilerASTLine, context: CodegenTestContext): CodegenTestAnalysis {
 	const spec = getInstructionSpec(line.instruction) as InstructionSpec<CompilerASTLine> | undefined;
 	const blockClose = spec?.effects?.blockClose;
 	if (blockClose) {
@@ -813,7 +820,7 @@ function analyzeFromSpecForTest(line: CompilerASTLine, context: CompilationConte
 	return { consumed: [], produced: [] };
 }
 
-function analyzeNumericBinaryForTest(line: CompilerASTLine, context: CompilationContext): CodegenTestAnalysis {
+function analyzeNumericBinaryForTest(line: CompilerASTLine, context: CodegenTestContext): CodegenTestAnalysis {
 	const consumed = consume(context, 2);
 	const [left, right] = consumed;
 	if ((line.instruction === 'div' || line.instruction === 'remainder') && !right.isNonZero) {
@@ -873,7 +880,7 @@ function analyzeNumericBinaryForTest(line: CompilerASTLine, context: Compilation
 	return analyzeFromSpecForTest(line, context);
 }
 
-function analyzeAbsForTest(_line: CompilerASTLine, context: CompilationContext): CodegenTestAnalysis {
+function analyzeAbsForTest(_line: CompilerASTLine, context: CodegenTestContext): CodegenTestAnalysis {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
 	const knownAbsValue =
@@ -894,7 +901,7 @@ function analyzeAbsForTest(_line: CompilerASTLine, context: CompilationContext):
 	return { consumed, produced };
 }
 
-function analyzeClampAddressForTest(line: CompilerASTLine, context: CompilationContext): CodegenTestAnalysis {
+function analyzeClampAddressForTest(line: CompilerASTLine, context: CodegenTestContext): CodegenTestAnalysis {
 	const consumed = consume(context, 1);
 	const accessByteWidth = getClampAccessByteWidth(line);
 	const range =
@@ -925,7 +932,7 @@ function analyzeClampAddressForTest(line: CompilerASTLine, context: CompilationC
 	};
 }
 
-function analyzeFunctionEndForTest(line: CompilerASTLine, context: CompilationContext): CodegenTestAnalysis {
+function analyzeFunctionEndForTest(line: CompilerASTLine, context: CodegenTestContext): CodegenTestAnalysis {
 	const returnTypes = line.arguments.map(argument =>
 		'value' in argument ? (argument.value as FunctionValueType) : undefined
 	);
@@ -941,7 +948,7 @@ function analyzeFunctionEndForTest(line: CompilerASTLine, context: CompilationCo
 	return { consumed: consume(context, returnTypes.length), produced: [] };
 }
 
-function analyzeMapEndForTest(line: CompilerASTLine, context: CompilationContext): CodegenTestAnalysis {
+function analyzeMapEndForTest(line: CompilerASTLine, context: CodegenTestContext): CodegenTestAnalysis {
 	const outputType = String(getCodegenTestArgument(line).value);
 	const inputKind = resolveMapKind({
 		valueType: context.activeMapBlock?.mapState.inputIsInteger
@@ -961,7 +968,7 @@ function analyzeMapEndForTest(line: CompilerASTLine, context: CompilationContext
 
 export function analyzeInstructionForCodegenTest(
 	line: CompilerASTLine,
-	context: CompilationContext
+	context: CodegenTestContext
 ): StackAnalysisLineFacts {
 	validateInstructionForTest(line, context);
 	const stackBefore = cloneStack(context.stack);
@@ -1057,8 +1064,8 @@ export function analyzeInstructionForCodegenTest(
 export function analyzeAndCompileInstruction<TLine extends CompilerASTLine>(
 	compileInstruction: InstructionCompiler<TLine>,
 	line: TLine,
-	context: CompilationContext
-): CompilationContext {
+	context: CodegenTestContext
+): CodegenTestContext {
 	const facts = analyzeInstructionForCodegenTest(line, context);
 	compileInstruction(line, context, facts);
 	return context;

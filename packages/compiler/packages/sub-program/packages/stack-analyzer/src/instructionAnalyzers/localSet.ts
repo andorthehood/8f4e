@@ -1,4 +1,4 @@
-import type { CompilationContext, CompilerASTLine, Stack } from '@8f4e/language-spec';
+import type { CompilationContext, CompilerASTLine, ResolvedLocalSetLine, Stack } from '@8f4e/language-spec';
 import { ErrorCode, getError } from '@8f4e/language-spec';
 import { consume } from './stack';
 
@@ -15,7 +15,7 @@ export function analyzeLocalSet(
 ): { consumed: Stack; produced: Stack } {
 	const consumed = consume(context, 1);
 	const operand = consumed[0];
-	const localName = (line.arguments[0] as { value: string }).value;
+	const localName = (line as ResolvedLocalSetLine).binding.id;
 	const local = context.locals[localName]!;
 
 	if (local.isInteger && operand.valueType !== 'int') {

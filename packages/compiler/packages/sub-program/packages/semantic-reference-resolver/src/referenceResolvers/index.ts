@@ -1,5 +1,6 @@
-import type { CompilationContext, CompilerASTLine, SemanticReferenceLine } from '@8f4e/language-spec';
+import type { CompilerASTLine, SemanticReferenceLine } from '@8f4e/language-spec';
 import { isMemoryDeclarationLine } from '@8f4e/language-spec';
+import type { ReferenceResolutionContext } from '../context';
 import resolveCallReferences from './call';
 import resolveClampAddressReferences from './clampAddress';
 import resolveDefaultReferences from './default';
@@ -34,7 +35,7 @@ const instructionReferenceResolvers = {
  */
 export default function resolveLineReferences<TLine extends CompilerASTLine>(
 	line: TLine,
-	context: CompilationContext
+	context: ReferenceResolutionContext
 ): SemanticReferenceLine<TLine> {
 	const referenceResolver =
 		instructionReferenceResolvers[line.instruction as keyof typeof instructionReferenceResolvers];

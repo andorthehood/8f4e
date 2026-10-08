@@ -26,8 +26,6 @@ describe('blockStack utilities', () => {
 	const mockLoopBlock: BlockStack[number] = {
 		blockType: BlockType.LOOP,
 		expectedResultTypes: [],
-		loopCounterLocalName: '__loopCounter1',
-		loopCounterLocal: { kind: 'value', valueType: 'int', index: 0 },
 	};
 	const mockGenericBlock: BlockStack[number] = {
 		blockType: BlockType.BLOCK,
@@ -80,13 +78,9 @@ describe('blockStack utilities', () => {
 			const context = createBlockStackTestContext({ blockStack: [] });
 			const outerLoopBlock: typeof mockLoopBlock = {
 				...mockLoopBlock,
-				loopCounterLocalName: '__outerLoopCounter',
-				loopCounterLocal: { kind: 'value', valueType: 'int', index: 1 },
 			};
 			const innerLoopBlock: typeof mockLoopBlock = {
 				...mockLoopBlock,
-				loopCounterLocalName: '__innerLoopCounter',
-				loopCounterLocal: { kind: 'value', valueType: 'int', index: 2 },
 			};
 
 			pushBlock(context, outerLoopBlock);
@@ -113,13 +107,9 @@ describe('blockStack utilities', () => {
 			const context = createBlockStackTestContext({ blockStack: [] });
 			const outerLoopBlock: typeof mockLoopBlock = {
 				...mockLoopBlock,
-				loopCounterLocalName: '__outerLoopCounter',
-				loopCounterLocal: { kind: 'value', valueType: 'int', index: 1 },
 			};
 			const innerLoopBlock: typeof mockLoopBlock = {
 				...mockLoopBlock,
-				loopCounterLocalName: '__innerLoopCounter',
-				loopCounterLocal: { kind: 'value', valueType: 'int', index: 2 },
 			};
 
 			pushBlock(context, outerLoopBlock);

@@ -1,5 +1,5 @@
 import { i32const, localGet, localSet, WASM_I32_GT_U, WASM_I32_LT_S, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
-import type { CodegenContext, CompilationContext, CompilerASTLine, MemoryAddressRange } from '@8f4e/language-spec';
+import type { CodegenContext, CompilerASTLine, MemoryAddressRange } from '@8f4e/language-spec';
 import { getOrCreateMemoryGuardLocal } from './memoryAccessGuard';
 
 /**
@@ -12,7 +12,7 @@ import { getOrCreateMemoryGuardLocal } from './memoryAccessGuard';
  * @returns The computed result.
  */
 export function clampAddressByteCode(
-	context: CodegenContext | CompilationContext,
+	context: CodegenContext,
 	line: CompilerASTLine,
 	lowerByteAddress: number,
 	upperByteAddressCode: number[]

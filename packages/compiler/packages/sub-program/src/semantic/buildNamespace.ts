@@ -113,8 +113,7 @@ export function registerFunctions(
 		}
 
 		const importedFunction = getFunctionImportMetadata(ast);
-		// Imported functions cannot be valid exports; keep that conflict in per-function directive validation.
-		const exportName = importedFunction ? undefined : getFunctionExportName(ast);
+		const exportName = getFunctionExportName(ast);
 		if (exportName && overloadCountsByName[name] > 1) {
 			throw getError(
 				ErrorCode.OVERLOADED_FUNCTION_EXPORT_UNSUPPORTED,
@@ -147,6 +146,8 @@ export function registerFunctions(
 				? options.importedFunctionBaseIndex + importedFunctionIndex++
 				: options.definedFunctionBaseIndex + definedFunctionIndex++,
 			...(importedFunction ? { import: importedFunction } : {}),
+			...(exportName ? { exportName } : {}),
+			...(importedFunction || ast.lines.some(line => line.instruction === '#impure') ? { isImpure: true } : {}),
 			...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		};
 		seenFunctionIds.add(id);

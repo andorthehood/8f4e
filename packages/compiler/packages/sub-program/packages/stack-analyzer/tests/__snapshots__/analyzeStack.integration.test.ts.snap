@@ -4,42 +4,13 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
 {
   "functions": {
     "increment__int": {
-      "exportName": "inc",
       "finalStack": [],
       "functionId": "increment__int",
       "lineFacts": [
-        {
-          "stackAnalysis": {
-            "consumedOperands": [],
-            "producedStackItems": [],
-            "stackAfter": [],
-            "stackBefore": [],
-          },
-        },
-        {
-          "stackAnalysis": {
-            "consumedOperands": [],
-            "producedStackItems": [],
-            "stackAfter": [],
-            "stackBefore": [],
-          },
-        },
-        {
-          "stackAnalysis": {
-            "consumedOperands": [],
-            "producedStackItems": [],
-            "stackAfter": [],
-            "stackBefore": [],
-          },
-        },
-        {
-          "stackAnalysis": {
-            "consumedOperands": [],
-            "producedStackItems": [],
-            "stackAfter": [],
-            "stackBefore": [],
-          },
-        },
+        undefined,
+        undefined,
+        undefined,
+        undefined,
         {
           "stackAnalysis": {
             "consumedOperands": [],
@@ -199,58 +170,7 @@ exports[`analyzeStack integration > analyzes a sub-program-level module and func
           },
         },
       ],
-      "locals": {
-        "temp": {
-          "index": 1,
-          "isInteger": true,
-        },
-        "value": {
-          "index": 0,
-          "isInteger": true,
-        },
-      },
-      "parameterCount": 1,
       "stackAnalysis": [
-        {
-          "instruction": "function",
-          "lineNumber": 1,
-          "stackAnalysis": {
-            "consumedOperands": [],
-            "producedStackItems": [],
-            "stackAfter": [],
-            "stackBefore": [],
-          },
-        },
-        {
-          "instruction": "#export",
-          "lineNumber": 2,
-          "stackAnalysis": {
-            "consumedOperands": [],
-            "producedStackItems": [],
-            "stackAfter": [],
-            "stackBefore": [],
-          },
-        },
-        {
-          "instruction": "param",
-          "lineNumber": 3,
-          "stackAnalysis": {
-            "consumedOperands": [],
-            "producedStackItems": [],
-            "stackAfter": [],
-            "stackBefore": [],
-          },
-        },
-        {
-          "instruction": "local",
-          "lineNumber": 4,
-          "stackAnalysis": {
-            "consumedOperands": [],
-            "producedStackItems": [],
-            "stackAfter": [],
-            "stackBefore": [],
-          },
-        },
         {
           "instruction": "push",
           "lineNumber": 5,

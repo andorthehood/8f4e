@@ -1,8 +1,6 @@
 {
-  "code": 23,
+  "code": 17,
   "context": {
-    "codeBlockId": "invalid",
-    "codeBlockType": "function",
     "projectBlockId": 8,
   },
   "line": {
@@ -23,5 +21,5 @@
     "instruction": "param",
     "lineNumber": 4,
   },
-  "message": "Parameter declarations must come immediately after the function declaration, before any other instructions or local variable declarations. (23)",
+  "message": "Parameters must be declared before the function body.",
 }

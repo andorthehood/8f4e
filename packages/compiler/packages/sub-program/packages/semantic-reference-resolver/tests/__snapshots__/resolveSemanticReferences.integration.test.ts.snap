@@ -2,37 +2,121 @@
 
 exports[`resolveSemanticReferences integration > resolves sub-program-level semantic references from pass-shaped fixtures 1`] = `
 {
-  "references": {
-    "functions": {
-      "increment__int": {
-        "functionId": "increment__int",
-        "lineFacts": [
-          undefined,
-          undefined,
-          undefined,
-          {
+  "functions": {
+    "increment__int": {
+      "bindings": [
+        {
+          "id": 0,
+          "name": "amount",
+          "parameterIndex": 0,
+          "type": "int",
+        },
+        {
+          "id": 1,
+          "name": "temp",
+          "type": "int",
+        },
+      ],
+      "body": [
+        {
+          "line": {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "amount",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 4,
             "resolvedTarget": {
+              "binding": {
+                "id": 0,
+                "name": "amount",
+                "parameterIndex": 0,
+                "type": "int",
+              },
               "kind": "local",
-              "localName": "amount",
             },
           },
-          undefined,
-          {
+          "sourceLineIndex": 3,
+        },
+        {
+          "line": {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "temp",
+              },
+            ],
+            "binding": {
+              "id": 1,
+              "name": "temp",
+              "type": "int",
+            },
+            "instruction": "localSet",
+            "lineNumber": 5,
+          },
+          "sourceLineIndex": 4,
+        },
+        {
+          "line": {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "temp",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 6,
             "resolvedTarget": {
+              "binding": {
+                "id": 1,
+                "name": "temp",
+                "type": "int",
+              },
               "kind": "local",
-              "localName": "temp",
             },
           },
-          undefined,
-        ],
+          "sourceLineIndex": 5,
+        },
+      ],
+      "metadata": {
+        "id": "increment__int",
+        "name": "increment",
+        "signature": {
+          "parameters": [
+            "int",
+          ],
+          "returns": [
+            "int",
+          ],
+        },
+        "wasmIndex": 2,
       },
     },
-    "modules": {
-      "main": {
-        "lineFacts": [
-          undefined,
-          undefined,
-          {
+  },
+  "modules": {
+    "main": {
+      "bindings": [],
+      "body": [
+        {
+          "line": {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "value",
+              },
+            ],
+            "instruction": "push",
+            "lineNumber": 3,
             "resolvedTarget": {
               "kind": "memory",
               "memoryItem": {
@@ -55,7 +139,10 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
               },
             },
           },
-          {
+          "sourceLineIndex": 2,
+        },
+        {
+          "line": {
             "arguments": [
               {
                 "address": {
@@ -74,8 +161,27 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
                 "value": 4,
               },
             ],
+            "instruction": "push",
+            "lineNumber": 4,
           },
-          {
+          "sourceLineIndex": 3,
+        },
+        {
+          "line": {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "increment",
+              },
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "value",
+              },
+            ],
             "inlineArgumentPushes": [
               {
                 "arguments": [
@@ -111,8 +217,23 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
                 },
               },
             ],
+            "instruction": "call",
+            "lineNumber": 5,
           },
-          {
+          "sourceLineIndex": 4,
+        },
+        {
+          "line": {
+            "arguments": [
+              {
+                "referenceKind": "plain",
+                "scope": "local",
+                "type": "identifier",
+                "value": "state",
+              },
+            ],
+            "instruction": "pushShape",
+            "lineNumber": 6,
             "shapeExpansions": [
               {
                 "pointerType": "int*",
@@ -141,9 +262,10 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
               },
             ],
           },
-          undefined,
-        ],
-      },
+          "sourceLineIndex": 5,
+        },
+      ],
+      "skipExecutionInCycle": false,
     },
   },
 }

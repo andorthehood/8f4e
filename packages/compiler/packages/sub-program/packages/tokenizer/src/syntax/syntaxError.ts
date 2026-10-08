@@ -33,6 +33,11 @@ export const SyntaxErrorCode = {
 	COMPILER_DIRECTIVE_MUST_BE_PROLOGUE: 10,
 	UNRECOGNISED_INSTRUCTION: 11,
 	INSTRUCTION_NOT_ALLOWED_IN_BLOCK: 12,
+	DUPLICATE_FUNCTION_EXPORT: 13,
+	DUPLICATE_FUNCTION_IMPORT: 14,
+	IMPORT_EXPORT_CONFLICT: 15,
+	IMPORTED_FUNCTION_BODY: 16,
+	PARAM_AFTER_FUNCTION_BODY: 17,
 } as const;
 
 export type SyntaxErrorCodeValue = (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode];
@@ -58,6 +63,11 @@ const SyntaxErrorMessages: Record<SyntaxErrorCodeValue, string> = {
 		'Compiler directives must appear in the block prologue, immediately after module or function.',
 	[SyntaxErrorCode.UNRECOGNISED_INSTRUCTION]: 'Unrecognised instruction.',
 	[SyntaxErrorCode.INSTRUCTION_NOT_ALLOWED_IN_BLOCK]: 'Instruction is not allowed in this block.',
+	[SyntaxErrorCode.DUPLICATE_FUNCTION_EXPORT]: 'A function may only declare one export directive.',
+	[SyntaxErrorCode.DUPLICATE_FUNCTION_IMPORT]: 'A function may only declare one import directive.',
+	[SyntaxErrorCode.IMPORT_EXPORT_CONFLICT]: 'A function cannot be both imported and exported.',
+	[SyntaxErrorCode.IMPORTED_FUNCTION_BODY]: 'An imported function cannot have an executable body.',
+	[SyntaxErrorCode.PARAM_AFTER_FUNCTION_BODY]: 'Parameters must be declared before the function body.',
 };
 
 export interface SyntaxErrorLine {

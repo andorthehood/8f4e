@@ -10,6 +10,7 @@ import type {
 	ModuleLine,
 	PrototypeLine,
 } from '@8f4e/language-spec';
+import { isFunctionBodyInstructionName, isImportedFunctionDeclarationInstructionName } from '@8f4e/language-spec';
 import { SyntaxErrorCode, SyntaxRulesError } from './syntax/syntaxError';
 
 /** Accumulates module-specific lines while the tokenizer builds a validated AST. */
@@ -27,6 +28,7 @@ type FunctionASTBuilder = {
 	functionEndLine?: FunctionEndLine;
 	exportLine?: ExportLine;
 	importLine?: ImportLine;
+	bodyStarted?: boolean;
 };
 
 /** Accumulates constants-block metadata while the tokenizer builds a validated AST. */
@@ -85,6 +87,21 @@ export function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockA
 
 /** Records function import, export, and end metadata for a function builder. */
 function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine): void {
+	const fail = (code: (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode]): never => {
+		throw new SyntaxRulesError(code, undefined, line);
+	};
+	if (builder.bodyStarted && (line.instruction === 'param' || line.instruction === 'paramShape'))
+		fail(SyntaxErrorCode.PARAM_AFTER_FUNCTION_BODY);
+	if (builder.importLine && !isImportedFunctionDeclarationInstructionName(line.instruction))
+		fail(
+			line.instruction === '#export' ? SyntaxErrorCode.IMPORT_EXPORT_CONFLICT : SyntaxErrorCode.IMPORTED_FUNCTION_BODY
+		);
+	if (line.instruction === '#export' && builder.exportLine) fail(SyntaxErrorCode.DUPLICATE_FUNCTION_EXPORT);
+	if (line.instruction === '#import') {
+		if (builder.importLine) fail(SyntaxErrorCode.DUPLICATE_FUNCTION_IMPORT);
+		if (builder.exportLine) fail(SyntaxErrorCode.IMPORT_EXPORT_CONFLICT);
+	}
+	if (isFunctionBodyInstructionName(line.instruction)) builder.bodyStarted = true;
 	switch (line.instruction) {
 		case 'functionEnd':
 			builder.functionEndLine = line;
