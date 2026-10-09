@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Export directives are captured
 in compile-result snapshots
 and

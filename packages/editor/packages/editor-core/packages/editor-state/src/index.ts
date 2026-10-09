@@ -3,6 +3,7 @@ import createStateManager, { type StateManager } from '@8f4e/state-manager';
 import binaryAssetLoadingDialog from './features/binary-assets/effect';
 import canvasScreenshot from './features/canvas-screenshot/effect';
 import codeBlockRendering from './features/code-blocks/effect';
+import assertions from './features/code-blocks/features/assertions/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
 import blockTypeUpdater from './features/code-blocks/features/blockTypeUpdater/effect';
 import codeBlockCreator from './features/code-blocks/features/codeBlockCreator/effect';
@@ -124,6 +125,7 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	registerEffect(globalEditorDirectivesEffect(store));
 	registerEffect(compiler(store));
 	registerEffect(codeBlockRendering(store, events));
+	registerEffect(assertions(store));
 	registerEffect(viewportDirectiveEffect(store, events));
 	registerEffect(entryOutlines(store));
 	registerEffect(codeEditing(store, events));

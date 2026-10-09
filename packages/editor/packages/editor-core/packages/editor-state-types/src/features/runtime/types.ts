@@ -5,6 +5,7 @@
 import type { StateManager } from '@8f4e/state-manager';
 import type { EventDispatcher } from '../../shared/types';
 import type { EditorConfig, EditorConfigSchemaContribution } from '../editor-config/types';
+import type { TestRuntimeState } from './testRuntime';
 
 /**
  * Type for runtime factory function.
@@ -15,7 +16,7 @@ export type RuntimeFactory<S = any> = (store: StateManager<S>, events: EventDisp
 export type RuntimeEnvConstantsContributor = (editorConfig: EditorConfig) => string[];
 
 export type RuntimeValueMap = Record<string, unknown>;
-export type RuntimeValuesByRuntimeId = Record<string, RuntimeValueMap>;
+export type RuntimeValuesByRuntimeId = Record<string, RuntimeValueMap> & { TestRuntime?: TestRuntimeState };
 
 /**
  * Runtime registry entry describing a runtime implementation.

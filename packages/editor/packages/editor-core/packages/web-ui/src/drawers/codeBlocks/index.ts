@@ -7,6 +7,7 @@ import drawEntryOutlines from './drawEntryOutlines';
 import drawSelectedLineHint from './drawSelectedLineHint';
 import drawSelectedOutline from './drawSelectedOutline';
 import drawShapeDeclarations from './drawShapeDeclarations';
+import drawAssertions from './widgets/assertions';
 import drawBars from './widgets/bars';
 import drawBlockHighlights from './widgets/blockHighlights';
 import drawButtons from './widgets/buttons';
@@ -105,6 +106,7 @@ export default function drawModules(
 						codeBlock.disabled ? spriteLookups.fontDisabledCode : spriteLookups.fontCode
 					);
 				}
+				drawAssertions(engine, state, codeBlock);
 			}
 
 			if (state.editorMode === 'presentation' && state.codeBlockRendering.selectedCodeBlock === codeBlock) {

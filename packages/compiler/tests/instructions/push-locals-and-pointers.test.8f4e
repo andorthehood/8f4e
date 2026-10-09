@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Push should resolve locals,
 parameters, module memory, and
 pointer dereference depth

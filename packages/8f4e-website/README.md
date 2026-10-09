@@ -55,8 +55,9 @@ Each project has a GitHub source link and an Open in editor link. Hash URLs use 
 
 Both galleries use `src/gallery.ts` for selection, editor lifecycle, and the responsive layout. The test gallery uses
 the editor's default block positioning and keeps editors in edit mode with mode toggling disabled.
-The gallery does not select a test runtime or supply the test harness's custom include resolver. Fixtures that need
-unavailable includes can display compiler diagnostics while their source remains browsable.
+Fixtures select `TestRuntime` through their editor directives and execute tests after successful compilation.
+The gallery does not supply the test harness's custom include resolver. Fixtures that need unavailable includes
+can display compiler diagnostics while their source remains browsable.
 
 ## Typography
 

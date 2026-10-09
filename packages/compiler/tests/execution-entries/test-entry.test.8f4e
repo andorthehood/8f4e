@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 The main entry should compile,
 but the fixture runner only
 executes the test entry.

@@ -50,6 +50,7 @@ import type { ConsoleState, LogMessage } from './features/logger/types';
 import type { ContextMenu, ContextMenuItem, MenuGenerator, MenuStackEntry } from './features/menu/types';
 import type { PresentationState } from './features/presentation/types';
 import type { CompilationResult, Compiler } from './features/program-compiler/types';
+import type { TestRunResult, TestRuntimeState } from './features/runtime/testRuntime';
 import type {
 	RuntimeEnvConstantsContributor,
 	RuntimeFactory,
@@ -137,6 +138,8 @@ export type {
 	Size,
 	Slider,
 	Switch,
+	TestRunResult,
+	TestRuntimeState,
 	TypedValueKind,
 };
 

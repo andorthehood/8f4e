@@ -1,6 +1,18 @@
 8f4e/v1
 
+constants env
+; @pos -96 12
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos -87 1
+; @config runtime TestRuntime
+
 Array initializer values
 should be visible after
 initDefaults
@@ -8,43 +20,27 @@ runs.
 noteEnd
 
 entry test
-module intArrayInitializerAssertions
-; int[] trailing values
-; initialize elements from index
-; 0 and
-; leave omitted elements zeroed.
-int[] notes 10 48 50 53
+module hexadecimalInitializerAssertions
+; @pos -43 0
+; Hexadecimal initializer values
+; should resolve as ordinary
+; integers.
+int[] foo 2 0x01 0x02
 
-push &notes
+push &foo
 load
-assertEqual 48
+assertEqual 1
 
-push &notes
+push &foo
 push 1
-push sizeof(notes)
+push sizeof(foo)
 mul
 add
 load
-assertEqual 50
-
-push &notes
-push 2
-push sizeof(notes)
-mul
-add
-load
-assertEqual 53
-
-push &notes
-push 3
-push sizeof(notes)
-mul
-add
-load
-assertEqual 0
+assertEqual 2
 moduleEnd
-
 module expressionInitializerAssertions
+; @pos -43 21
 ; Constants and compile-time
 ; expressions can provide
 ; initializer
@@ -72,27 +68,8 @@ add
 load
 assertEqual 53
 moduleEnd
-
-module hexadecimalInitializerAssertions
-; Hexadecimal initializer values
-; should resolve as ordinary
-; integers.
-int[] foo 2 0x01 0x02
-
-push &foo
-load
-assertEqual 1
-
-push &foo
-push 1
-push sizeof(foo)
-mul
-add
-load
-assertEqual 2
-moduleEnd
-
 module narrowInitializerAssertions
+; @pos 7 0
 ; Narrow integer arrays should
 ; store initializer values at
 ; their
@@ -148,8 +125,8 @@ add
 load16s
 assertEqual 3000
 moduleEnd
-
 module sparseInitializerAssertions
+; @pos 52 0
 ; Large sparse arrays should
 ; initialize specified values
 ; and
@@ -171,6 +148,42 @@ assertEqual 0
 push &huge
 push 999999
 push sizeof(huge)
+mul
+add
+load
+assertEqual 0
+moduleEnd
+module intArrayInitializerAssertions
+; @pos 52 30
+; int[] trailing values
+; initialize elements from index
+; 0 and
+; leave omitted elements zeroed.
+int[] notes 10 48 50 53
+
+push &notes
+load
+assertEqual 48
+
+push &notes
+push 1
+push sizeof(notes)
+mul
+add
+load
+assertEqual 50
+
+push &notes
+push 2
+push sizeof(notes)
+mul
+add
+load
+assertEqual 53
+
+push &notes
+push 3
+push sizeof(notes)
 mul
 add
 load

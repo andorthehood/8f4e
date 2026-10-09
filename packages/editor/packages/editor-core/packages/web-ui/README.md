@@ -64,6 +64,10 @@ The web-ui package reads from the editor state and render projection but does **
 Atlas and font changes are explicit and are applied through `loadSpriteAtlas()`. Wire colors are resolved from the
 current editor color scheme when the atlas is loaded.
 
+Assertion rectangles come from each code block's `widgets.assertions`. They are drawn after code text, covering
+the line-number area before the assertion instruction. Passed assertions use `color.fill.assertionPassed` (green)
+and failed assertions use `color.fill.assertionFailed` (red). Hidden previews and disabled blocks omit the markers.
+
 ## Docs
 
 - [Drawer best practices](docs/drawer-best-practices.md)

@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Continuation lines append one
 argument to the previous
 instruction.

@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Intermodule address references
 should resolve to usable
 memory

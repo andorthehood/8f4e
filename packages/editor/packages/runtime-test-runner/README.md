@@ -22,6 +22,10 @@ the status (`idle`, `running`, `passed`, `failed`, or `error`), static assertion
 assertion results or runtime error. Assertion failures are also formatted in the browser console. Assertion icons
 are a separate follow-up.
 
+The result-state contract is shared through `@8f4e/editor-state-types`. The editor's assertion-marker effect
+subscribes to these results and derives per-block `widgets.assertions` rectangles, which the web UI draws over
+the assertion line numbers.
+
 Validate from the workspace root:
 
 ```bash

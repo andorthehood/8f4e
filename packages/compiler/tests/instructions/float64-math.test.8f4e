@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Float64 arithmetic and
 comparison behavior should
 execute

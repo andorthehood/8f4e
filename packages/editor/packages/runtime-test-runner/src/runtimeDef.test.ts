@@ -1,8 +1,9 @@
 import type { EventDispatcher, State } from '@8f4e/editor-core';
+import type { TestRunResult } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createTestRuntimeDef } from './runtimeDef';
-import type { TestRunResult, TestRuntimeProgram } from './types';
+import type { TestRuntimeProgram } from './types';
 
 class FakeWorker {
 	static instances: FakeWorker[] = [];

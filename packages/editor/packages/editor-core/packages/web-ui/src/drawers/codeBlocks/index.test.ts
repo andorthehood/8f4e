@@ -77,6 +77,28 @@ function createMemory(overrides: Partial<PlannedMemoryDeclaration> = {}): Planne
 }
 
 describe('drawModules', () => {
+	it('draws assertion rectangles over the rendered line numbers and suppresses them in hidden previews', () => {
+		const block = createMockCodeBlock({ creationIndex: 4, width: 100, height: 64 });
+		block.widgets.assertions = [{ lineNumber: 2, passed: true, x: 8, y: 32, width: 8, height: 16 }];
+		const state = createMockState({
+			spriteLookups: { fillColors: createSpriteIdLookupMock(), fontCode: createSpriteIdLookupMock() } as never,
+			codeBlockRendering: { codeBlocks: [block] },
+		});
+		const engine = createMockEngine();
+		const renderData: WebUiRenderData = { codeBlocks: new Map([[4, { codeCells: [[1], [2], [3]] as never }]]) };
+		drawModules(engine, state, createMemoryViews(), renderData);
+		const sprites = vi.mocked(engine.drawSprite);
+		const markerSprite = state.spriteLookups!.fillColors.assertionPassed;
+		const markerIndex = sprites.mock.calls.findIndex(call => call[2] === markerSprite);
+		expect(sprites).toHaveBeenCalledWith(8, 32, 'assertionPassed', 8, 16);
+		expect(sprites.mock.invocationCallOrder[markerIndex]).toBeGreaterThan(
+			vi.mocked(engine.drawResolvedText).mock.invocationCallOrder.at(-1)!
+		);
+		block.hidden = true;
+		sprites.mockClear();
+		drawModules(engine, state, createMemoryViews(), renderData);
+		expect(sprites.mock.calls.some(call => call[2] === markerSprite)).toBe(false);
+	});
 	it('draws resolved code cells from projected render data', () => {
 		const block = createMockCodeBlock({ creationIndex: 4, width: 100, height: 50 });
 		const state = createMockState({
