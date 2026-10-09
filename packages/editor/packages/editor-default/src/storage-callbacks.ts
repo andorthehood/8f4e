@@ -1,5 +1,4 @@
 import { parseProjectSource } from '@8f4e/compiler';
-import type { BrowserLocalNoteStorageBlock } from '@8f4e/editor-core';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
 import { getProject } from './get-project';
 
@@ -9,15 +8,8 @@ interface StorageCallbacksOptions {
 	initialProjectUrl?: string;
 }
 
-function createStorageKeys(namespace: string) {
-	return {
-		project: `project_${namespace}`,
-		browserLocalNotes: `browserLocalNotes_${namespace}`,
-	};
-}
-
 export function createStorageCallbacks({ storage, storageNamespace, initialProjectUrl }: StorageCallbacksOptions) {
-	const storageKeys = createStorageKeys(storageNamespace);
+	const projectStorageKey = `project_${storageNamespace}`;
 	let pendingInitialProjectUrl = initialProjectUrl;
 
 	return {
@@ -30,7 +22,7 @@ export function createStorageCallbacks({ storage, storageNamespace, initialProje
 					return parseProjectSource(await getProject(projectUrl));
 				}
 
-				const stored = storage.getItem(storageKeys.project);
+				const stored = storage.getItem(projectStorageKey);
 				if (stored) {
 					console.log(`Loading project from storage namespace "${storageNamespace}"`);
 					return JSON.parse(stored);
@@ -44,26 +36,9 @@ export function createStorageCallbacks({ storage, storageNamespace, initialProje
 		},
 		async saveSession(project: ProjectObjectModel): Promise<void> {
 			try {
-				storage.setItem(storageKeys.project, JSON.stringify(project));
+				storage.setItem(projectStorageKey, JSON.stringify(project));
 			} catch (error) {
 				console.error('Failed to save project to storage:', error);
-				throw error;
-			}
-		},
-		async loadBrowserLocalNotes(): Promise<BrowserLocalNoteStorageBlock[] | null> {
-			try {
-				const stored = storage.getItem(storageKeys.browserLocalNotes);
-				return stored ? JSON.parse(stored) : null;
-			} catch (error) {
-				console.error('Failed to load browser-local notes from storage:', error);
-				return null;
-			}
-		},
-		async saveBrowserLocalNotes(blocks: BrowserLocalNoteStorageBlock[]): Promise<void> {
-			try {
-				storage.setItem(storageKeys.browserLocalNotes, JSON.stringify(blocks));
-			} catch (error) {
-				console.error('Failed to save browser-local notes to storage:', error);
 				throw error;
 			}
 		},

@@ -1,5 +1,6 @@
 import type { EventDispatcher, PianoKeyboard } from '@8f4e/editor-state-types';
 import { describe, expect, it, vi } from 'vitest';
+import { EMPTY_DEFAULT_PROJECT } from './features/project-import/emptyDefaultProject';
 import initState from './index';
 import { createMockCodeBlock } from './pureHelpers/testingUtils/testUtils';
 import { createMockEventDispatcherWithVitest } from './pureHelpers/testingUtils/vitestTestUtils';
@@ -19,26 +20,29 @@ describe('editor state lifecycle', () => {
 		store.dispose();
 	});
 
-	it('enables browser-local notes by default and allows disabling them at initialization', () => {
-		const enabledEvents = createMockEventDispatcherWithVitest();
-		const enabledStore = initState(enabledEvents, {
+	it('keeps configuration notes in their project and clears them when an empty project is loaded', () => {
+		const events = createMockEventDispatcherWithVitest();
+		const store = initState(events, {
 			callbacks: { loadSession: async () => null },
 			runtimeRegistry: {},
 		});
-		const disabledEvents = createMockEventDispatcherWithVitest();
-		const disabledStore = initState(disabledEvents, {
-			callbacks: { loadSession: async () => null },
-			runtimeRegistry: {},
-			featureFlags: { browserLocalNotes: false },
-		});
+		const code = ['note local.editorConfig', '; @config font terminus8x16', 'noteEnd'];
 
-		expect(enabledStore.getState().featureFlags.browserLocalNotes).toBe(true);
-		expect(enabledEvents.on).toHaveBeenCalledWith('projectCodeBlocksPopulated', expect.any(Function));
-		expect(disabledStore.getState().featureFlags.browserLocalNotes).toBe(false);
-		expect(disabledEvents.on).not.toHaveBeenCalledWith('projectCodeBlocksPopulated', expect.any(Function));
+		store.set('initialProjectState', { ...EMPTY_DEFAULT_PROJECT, notes: [{ id: 0, code }] });
 
-		enabledStore.dispose();
-		disabledStore.dispose();
+		expect(
+			store
+				.getState()
+				.codeBlockRendering.rootCodeBlocks.filter(block => block.blockType === 'note')
+				.map(block => block.code)
+		).toEqual([code]);
+		expect(store.getState().editorConfig.font).toBe('terminus8x16');
+
+		store.set('initialProjectState', EMPTY_DEFAULT_PROJECT);
+
+		expect(store.getState().codeBlockRendering.rootCodeBlocks.filter(block => block.blockType === 'note')).toEqual([]);
+		expect(store.getState().editorConfig.font).toBeUndefined();
+		store.dispose();
 	});
 
 	it('disposes initialized effects and their active runtime exactly once', async () => {

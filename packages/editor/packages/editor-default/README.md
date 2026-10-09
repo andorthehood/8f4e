@@ -33,9 +33,9 @@ drawing buffer and UI automatically. Wheel input pans the editor and prevents pa
 hosts can pass `captureWheel: false` to leave scrolling to the page.
 
 Each mounted editor owns its compiler worker, compiled memory and code-buffer state, and lazy runtime registry.
-It also owns persistence callbacks for its storage namespace. The default namespace is `editor`, which preserves the
-existing `project_editor` and `browserLocalNotes_editor` keys. Hosts mounting multiple editors should pass a stable,
-unique namespace for each editor. Hosts may also provide a custom `Storage` implementation or an
+It also owns persistence callbacks for its storage namespace. The default namespace is `editor`, which uses the
+`project_editor` key. Hosts mounting multiple editors should pass a stable, unique namespace for each editor.
+Hosts may also provide a custom `Storage` implementation or an
 `initialProjectUrl`; interpreting page URLs remains the host's responsibility.
 
 An explicit `initialProjectUrl` takes precedence on the first load, followed by the saved session. With neither,

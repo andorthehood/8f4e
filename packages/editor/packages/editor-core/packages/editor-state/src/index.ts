@@ -1,7 +1,6 @@
 import type { EventDispatcher, Options, State } from '@8f4e/editor-state-types';
 import createStateManager, { type StateManager } from '@8f4e/state-manager';
 import binaryAssetLoadingDialog from './features/binary-assets/effect';
-import browserLocalNotes from './features/browser-local-notes/effect';
 import canvasScreenshot from './features/canvas-screenshot/effect';
 import codeBlockRendering from './features/code-blocks/effect';
 import autoEnvConstants from './features/code-blocks/features/auto-env-constants/effect';
@@ -127,7 +126,6 @@ export default function init(events: EventDispatcher, options: Options): StateMa
 	registerEffect(codeBlockRendering(store, events));
 	registerEffect(viewportDirectiveEffect(store, events));
 	registerEffect(entryOutlines(store));
-	registerEffect(browserLocalNotes(store, events));
 	registerEffect(codeEditing(store, events));
 	registerEffect(tooltip(store));
 	registerEffect(historyTracking(store, events));

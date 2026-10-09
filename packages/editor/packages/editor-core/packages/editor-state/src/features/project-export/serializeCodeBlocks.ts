@@ -1,7 +1,6 @@
 import type { CodeBlockGraphicData } from '@8f4e/editor-state-types';
 import type { ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
 import { tryParseProjectMemoryExposureLine } from '@8f4e/project-preparser';
-import { isBrowserLocalNoteBlock } from '../browser-local-notes/browserLocalNotes';
 import sortCodeBlocksByGridPosition from '../code-blocks/sortCodeBlocksByGridPosition';
 
 function createEmptyProject(): ProjectObjectModel {
@@ -22,7 +21,7 @@ function createEmptyProject(): ProjectObjectModel {
 export default function convertGraphicDataToProjectStructure(codeBlocks: CodeBlockGraphicData[]): ProjectObjectModel {
 	const project = createEmptyProject();
 
-	for (const codeBlock of sortCodeBlocksByGridPosition(codeBlocks.filter(block => !isBrowserLocalNoteBlock(block)))) {
+	for (const codeBlock of sortCodeBlocksByGridPosition(codeBlocks)) {
 		if (codeBlock.isProjectScope) {
 			project.code.push(...codeBlock.code);
 			continue;

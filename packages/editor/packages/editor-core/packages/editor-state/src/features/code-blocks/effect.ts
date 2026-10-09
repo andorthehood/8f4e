@@ -363,8 +363,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		} else {
 			updateViewport(state, 0, 0, events);
 		}
-
-		events.dispatch('projectCodeBlocksPopulated');
 	};
 
 	function updateErrorMessages() {

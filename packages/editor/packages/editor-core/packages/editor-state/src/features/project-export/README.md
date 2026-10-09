@@ -20,7 +20,8 @@ compilation. It is not a separate editor schema and it is not the exported `.8f4
 
 Each known editor block is placed directly into the model's `modules`, `functions`, `constants`, `prototypes`,
 `includes`, or `notes` collection. Incomplete blocks go to `unknown`; modules carry their required `entry`. Asset
-directives remain embedded in block source.
+directives remain embedded in block source. All notes belong to the project and are included in session saves,
+history snapshots, and project files, regardless of their names.
 
 ### `.8f4e` Project Export
 
