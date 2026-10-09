@@ -17,28 +17,24 @@ call storeAt
 
 push &buffer
 load
-push 11
-assertEqual
+assertEqual 11
 
 push &buffer
 push sizeof(buffer)
 add
 load
-push 22
-assertEqual
+assertEqual 22
 
 push &buffer
 push sizeof(buffer)*2
 add
 load
-push 99
-assertEqual
+assertEqual 99
 
 push &buffer
 push sizeof(buffer)*3
 add
 load
-push 44
-assertEqual
+assertEqual 44
 moduleEnd
 entryEnd

@@ -16,7 +16,6 @@ push &dest
 call copy
 
 push dest
-push 42
-assertEqual
+assertEqual 42
 moduleEnd
 entryEnd

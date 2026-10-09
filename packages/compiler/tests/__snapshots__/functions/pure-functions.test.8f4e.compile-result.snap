@@ -1114,10 +1114,6 @@
               "value": 6,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1160,10 +1156,6 @@
               "value": 3.14159,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1216,10 +1208,6 @@
               "value": 12,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1251,10 +1239,6 @@
               "value": 12,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1337,10 +1321,6 @@
               "value": 42,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1396,10 +1376,6 @@
               "value": 77,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1462,10 +1438,6 @@
               "value": 7,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1497,10 +1469,6 @@
               "value": 25,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1563,10 +1531,6 @@
               "value": 7,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1629,10 +1593,6 @@
               "value": 10,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1685,10 +1645,6 @@
               "value": 9,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1699,10 +1655,6 @@
               "value": 9,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -1756,10 +1708,6 @@
               "value": 0,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {

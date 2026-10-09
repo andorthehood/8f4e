@@ -15,29 +15,25 @@ push 5
 push &values
 push count(values)
 call nearestValue
-push 4
-assertEqual
+assertEqual 4
 
 push -7
 push &values
 push count(values)
 call nearestValue
-push -10
-assertEqual
+assertEqual -10
 
 push 5
 push &ties
 push count(ties)
 call nearestValue
-push 0
-assertEqual
+assertEqual 0
 
 push 99
 push &values
 push 0
 call nearestValue
-push 0
-assertEqual
+assertEqual 0
 moduleEnd
 
 module nearestValueFloatAssertions
@@ -50,28 +46,24 @@ push 0.6
 push &values
 push count(values)
 call nearestValue
-push 0.75
-assertEqual
+assertEqual 0.75
 
 push -0.8
 push &values
 push count(values)
 call nearestValue
-push -1.0
-assertEqual
+assertEqual -1.0
 
 push 0.5
 push &ties
 push count(ties)
 call nearestValue
-push 0.25
-assertEqual
+assertEqual 0.25
 
 push 99.0
 push &values
 push 0
 call nearestValue
-push 0.0
-assertEqual
+assertEqual 0.0
 moduleEnd
 entryEnd

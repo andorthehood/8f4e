@@ -335,10 +335,6 @@
               "value": 6.5,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -391,10 +387,6 @@
               "value": 19,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {
@@ -491,10 +483,6 @@
               "value": 9.5,
             },
           ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [],
           "instruction": "assertEqual",
         },
         {

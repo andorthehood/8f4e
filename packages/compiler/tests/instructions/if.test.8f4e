@@ -15,8 +15,7 @@ push 1
 else
 push -1
 ifEnd int
-push 1
-assertEqual
+assertEqual 1
 
 int falsyInput 0
 push falsyInput
@@ -25,8 +24,7 @@ push 1
 else
 push -1
 ifEnd int
-push -1
-assertEqual
+assertEqual -1
 moduleEnd
 
 module ifFloatAssertions
@@ -39,8 +37,7 @@ push 1.1
 else
 push -1.1
 ifEnd float
-push 1.1
-assertEqual
+assertEqual 1.1
 
 int falsyInput 0
 push falsyInput
@@ -49,8 +46,7 @@ push 1.1
 else
 push -1.1
 ifEnd float
-push -1.1
-assertEqual
+assertEqual -1.1
 moduleEnd
 
 module ifVoidAssertions
@@ -69,8 +65,7 @@ push -1
 store
 ifEnd
 push truthyOutput
-push 1
-assertEqual
+assertEqual 1
 
 int falsyInput 0
 int falsyOutput
@@ -85,8 +80,7 @@ push -1
 store
 ifEnd
 push falsyOutput
-push -1
-assertEqual
+assertEqual -1
 moduleEnd
 
 module multiResultIfAssertions
@@ -103,8 +97,7 @@ push 40
 push 5
 ifEnd int int int
 call packTriple
-push 10203
-assertEqual
+assertEqual 10203
 moduleEnd
 entryEnd
 

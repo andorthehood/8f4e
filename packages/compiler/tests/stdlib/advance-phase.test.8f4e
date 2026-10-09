@@ -14,12 +14,10 @@ push &phase
 push 1.0
 push 4
 call advancePhase
-push 1.570796326794896
-assertEqual
+assertEqual 1.570796326794896
 
 push phase
-push 1.570796326794896
-assertEqual
+assertEqual 1.570796326794896
 
 ; it wraps to the lower bound
 ; after crossing the upper bound.
@@ -27,11 +25,9 @@ push &phase
 push 2.0
 push 4
 call advancePhase
-push -3.141592653589793
-assertEqual
+assertEqual -3.141592653589793
 
 push phase
-push -3.141592653589793
-assertEqual
+assertEqual -3.141592653589793
 moduleEnd
 entryEnd

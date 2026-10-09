@@ -16,15 +16,12 @@ entry test
 module sharedLocalNameAssertions
 ; Two included exports and a project declaration form ordinary overloads.
 call sameName 10
-push 11
-assertEqual
+assertEqual 11
 
 call sameName 10.5
-push 12.5
-assertEqual
+assertEqual 12.5
 
 call sameName 10.5f64
-push 13.5f64
-assertEqual
+assertEqual 13.5f64
 moduleEnd
 entryEnd

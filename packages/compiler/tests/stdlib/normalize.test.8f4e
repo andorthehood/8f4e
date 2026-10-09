@@ -15,8 +15,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push -100
-assertEqual
+assertEqual -100
 
 push &signed8
 push sizeof(signed8)
@@ -25,8 +24,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push 0
-assertEqual
+assertEqual 0
 
 push &signed8
 push sizeof(signed8)*2
@@ -35,8 +33,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push 100
-assertEqual
+assertEqual 100
 
 ; it maps unsigned int8 values
 ; to clamped 0..1 floats.
@@ -47,8 +44,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push 0
-assertEqual
+assertEqual 0
 
 push &unsigned8
 push sizeof(unsigned8)
@@ -57,8 +53,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push 50
-assertEqual
+assertEqual 50
 
 push &unsigned8
 push sizeof(unsigned8)*2
@@ -67,8 +62,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push 100
-assertEqual
+assertEqual 100
 
 ; it maps signed int16 values
 ; using the int16 type range.
@@ -79,8 +73,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push -100
-assertEqual
+assertEqual -100
 
 push &signed16
 push sizeof(signed16)
@@ -89,8 +82,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push 100
-assertEqual
+assertEqual 100
 
 ; it maps unsigned int16 values
 ; using the int16u type range.
@@ -101,8 +93,7 @@ call normalize
 push 100.0
 mul
 castToInt
-push 0
-assertEqual
+assertEqual 0
 
 push &unsigned16
 push sizeof(unsigned16)
@@ -111,7 +102,6 @@ call normalize
 push 100.0
 mul
 castToInt
-push 100
-assertEqual
+assertEqual 100
 moduleEnd
 entryEnd

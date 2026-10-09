@@ -1,6 +1,7 @@
 import type { CompilerASTLine, SemanticReferenceLine } from '@8f4e/language-spec';
 import { isMemoryDeclarationLine } from '@8f4e/language-spec';
 import type { ReferenceResolutionContext } from '../context';
+import resolveAssertEqualReferences from './assertEqual';
 import resolveCallReferences from './call';
 import resolveClampAddressReferences from './clampAddress';
 import resolveDefaultReferences from './default';
@@ -13,6 +14,7 @@ import resolvePushReferences from './push';
 import resolvePushShapeReferences from './pushShape';
 
 const instructionReferenceResolvers = {
+	assertEqual: resolveAssertEqualReferences,
 	call: resolveCallReferences,
 	clampAddress: resolveClampAddressReferences,
 	clampGlobalAddress: resolveClampAddressReferences,

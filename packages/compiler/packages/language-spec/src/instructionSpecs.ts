@@ -310,12 +310,16 @@ export const instructionSpecs = {
 		}
 	),
 	assertEqual: withDocsAndStack(
-		{ ...binaryMatchingSpec, operandTypes: 'sameType' },
 		{
-			shortDescription: 'Reports exact equality of two matching values when assertions are enabled.',
-			inputs: ['T', 'T'],
+			...unaryModuleOrFunctionSpec,
+			sourceArguments: { minArguments: 1, maxArguments: 1, argumentTypes: ['compileTimeValue'] },
+		},
+		{
+			shortDescription:
+				'Reports exact equality of the stack value and an inline expected value when assertions are enabled.',
+			inputs: ['T'],
 			outputs: [],
-			effect: stackMutation(2),
+			effect: stackMutation(1),
 		}
 	),
 	add: withDocsAndStack(binaryMatchingSpec, {

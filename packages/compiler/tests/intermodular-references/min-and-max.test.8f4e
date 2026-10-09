@@ -40,52 +40,40 @@ int minUnsigned8 min(intBoundsSource:unsigned8)
 int maxUnsigned8 max(intBoundsSource:unsigned8)
 
 push minInt
-push -2147483648
-assertEqual
+assertEqual -2147483648
 
 push maxInt
-push 2147483647
-assertEqual
+assertEqual 2147483647
 
 push minInt32
-push -2147483648
-assertEqual
+assertEqual -2147483648
 
 push maxInt32
-push 2147483647
-assertEqual
+assertEqual 2147483647
 
 push minSigned16
-push -32768
-assertEqual
+assertEqual -32768
 
 push maxSigned16
-push 32767
-assertEqual
+assertEqual 32767
 
 push minUnsigned16
-push 0
-assertEqual
+assertEqual 0
 
 push maxUnsigned16
-push 65535
-assertEqual
+assertEqual 65535
 
 push minSigned8
-push -128
-assertEqual
+assertEqual -128
 
 push maxSigned8
-push 127
-assertEqual
+assertEqual 127
 
 push minUnsigned8
-push 0
-assertEqual
+assertEqual 0
 
 push maxUnsigned8
-push 255
-assertEqual
+assertEqual 255
 moduleEnd
 
 module floatBoundAssertions
@@ -96,12 +84,10 @@ float minFloat min(floatBoundsSource:floats)
 float maxFloat max(floatBoundsSource:floats)
 
 push minFloat
-push -3.4028234663852886e38
-assertEqual
+assertEqual -3.4028234663852886e38
 
 push maxFloat
-push 3.4028234663852886e38
-assertEqual
+assertEqual 3.4028234663852886e38
 moduleEnd
 
 module outOfOrderBoundsAssertions
@@ -111,12 +97,10 @@ int minValue min(lateBoundsSource:buffer)
 int maxValue max(lateBoundsSource:buffer)
 
 push minValue
-push -2147483648
-assertEqual
+assertEqual -2147483648
 
 push maxValue
-push 2147483647
-assertEqual
+assertEqual 2147483647
 moduleEnd
 
 module lateBoundsSource
@@ -134,20 +118,16 @@ int minValue min(combinedBoundsSource:buffer)
 int maxValue max(combinedBoundsSource:buffer)
 
 push *ptr
-push 12
-assertEqual
+assertEqual 12
 
 push size
-push 12
-assertEqual
+assertEqual 12
 
 push minValue
-push -2147483648
-assertEqual
+assertEqual -2147483648
 
 push maxValue
-push 2147483647
-assertEqual
+assertEqual 2147483647
 moduleEnd
 
 module combinedBoundsSource

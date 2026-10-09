@@ -13,23 +13,20 @@ push 20.0
 push 0.0
 call lerp
 castToInt
-push 10
-assertEqual
+assertEqual 10
 
 push 10.0
 push 20.0
 push 0.5
 call lerp
 castToInt
-push 15
-assertEqual
+assertEqual 15
 
 push 10.0
 push 20.0
 push 1.0
 call lerp
 castToInt
-push 20
-assertEqual
+assertEqual 20
 moduleEnd
 entryEnd

@@ -21,6 +21,86 @@ function imports(result: CompileResult) {
 }
 
 describe('native compiler assertions', () => {
+	it('resolves inline constants, expressions, locals, memory values, and pointer reads', async () => {
+		const result = await compile(
+			`entry main
+module checks
+const EXPECTED 7
+int value 7
+int* pointer &value
+local int saved
+push 7
+localSet saved
+push 7
+assertEqual EXPECTED
+push 14
+assertEqual EXPECTED*2
+push 7
+assertEqual saved
+push 7
+assertEqual value
+push 7
+assertEqual *pointer
+push &value
+assertEqual &value
+moduleEnd
+entryEnd`,
+			true
+		);
+		const equal = vi.fn();
+		const runtime = await instantiate(result, { assertEqualI32: equal });
+		runtime.exports.initDefaults();
+		runtime.exports.main();
+		expect(equal.mock.calls.slice(0, 5)).toEqual([
+			[7, 7, 0],
+			[14, 14, 1],
+			[7, 7, 2],
+			[7, 7, 3],
+			[7, 7, 4],
+		]);
+		const address = result.memoryPlan.modules.checks.memory.value.byteAddress;
+		expect(equal.mock.calls[5]).toEqual([address, address, 5]);
+	});
+
+	it.each([false, true])('reads the inline expected value only when assertions are enabled=%s', async enabled => {
+		const result = await compile(
+			`function check
+#export
+#impure
+param int* expected
+push 42
+push 7
+assertEqual *expected
+functionEnd int`,
+			enabled
+		);
+		const equal = vi.fn();
+		const runtime = await instantiate(result, { assertEqualI32: equal });
+		new Int32Array(runtime.memory.buffer)[0] = 7;
+		expect(runtime.exports.check(0)).toBe(42);
+		if (enabled) {
+			expect(equal).toHaveBeenCalledWith(7, 7, 0);
+		} else {
+			expect(equal).not.toHaveBeenCalled();
+		}
+	});
+
+	it.each([false, true])(
+		'requires impure permission for inline pointer reads with assertions enabled=%s',
+		async enabled => {
+			await expect(
+				compile(
+					`function check
+param int* expected
+push 7
+assertEqual *expected
+functionEnd`,
+					enabled
+				)
+			).rejects.toMatchObject({ code: ErrorCode.IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO });
+		}
+	);
+
 	it.each([undefined, false])(
 		'consumes operands without imports or sites when enableAssertions is %s',
 		async enabled => {
@@ -34,11 +114,9 @@ push 40
 call tick
 assert
 push 2.0
-push 2.0
-assertEqual
+assertEqual 2.0
 push 3.0f64
-push 3.0f64
-assertEqual
+assertEqual 3.0f64
 push 2
 add
 functionEnd int`,
@@ -64,20 +142,15 @@ assert
 push -3
 assert
 push 3
-push 4
-assertEqual
+assertEqual 4
 push 1.25
-push 1.2501
-assertEqual
+assertEqual 1.2501
 push 1.25f64
-push 1.25f64
-assertEqual
+assertEqual 1.25f64
 push &first
-push &second
-assertEqual
+assertEqual &second
 push &first
-push &first
-assertEqual
+assertEqual &first
 moduleEnd
 entryEnd`);
 		const original = structuredClone(project);
@@ -106,7 +179,7 @@ entryEnd`);
 				codeBlockType: 'module',
 				codeBlockId: 'checks',
 			});
-			expect(project.modules[0].code[site.lineNumber]).toBe(site.instruction);
+			expect(project.modules[0].code[site.lineNumber].split(' ')[0]).toBe(site.instruction);
 		}
 	});
 
@@ -116,8 +189,7 @@ entryEnd`);
 module state
 int value 1
 push value
-push 9
-assertEqual
+assertEqual 9
 moduleEnd
 entryEnd`,
 			true
@@ -141,8 +213,7 @@ function helper
 #export
 param int value
 push value
-push 3
-assertEqual
+assertEqual 3
 call twice value
 functionEnd int
 entry test
@@ -152,8 +223,7 @@ push &output
 call helper 3
 store
 push output
-push 6
-assertEqual
+assertEqual 6
 moduleEnd
 entryEnd`,
 			true
@@ -215,8 +285,7 @@ call assert 7 7
 push 1
 assert
 push 2
-push 2
-assertEqual
+assertEqual 2
 moduleEnd
 entryEnd`,
 			true
@@ -328,8 +397,7 @@ functionEnd`,
 param ${type} received
 param ${type} expected
 push received
-push expected
-assertEqual
+assertEqual expected
 functionEnd`,
 			true
 		);
@@ -356,8 +424,7 @@ functionEnd`,
 param ${type} left
 param ${type} right
 push left
-push right
-assertEqual
+assertEqual right
 functionEnd`,
 			true
 		);
@@ -401,12 +468,12 @@ entryEnd`),
 	it.each([false, true])('rejects invalid operand counts/types with assertions enabled=%s', async enabled => {
 		for (const [body, code] of [
 			['assert', ErrorCode.INSUFFICIENT_OPERANDS],
-			['push 1\nassertEqual', ErrorCode.INSUFFICIENT_OPERANDS],
+			['assertEqual 1', ErrorCode.INSUFFICIENT_OPERANDS],
 			['push 1.0\nassert', ErrorCode.ONLY_INTEGERS],
-			['push 1\npush 1.0\nassertEqual', ErrorCode.UNMATCHING_OPERANDS],
-			['push 1.0\npush 1.0f64\nassertEqual', ErrorCode.UNMATCHING_OPERANDS],
-			['int x\npush &x\npush 1\nassertEqual', ErrorCode.UNMATCHING_OPERANDS],
-			['int x\nfloat y\npush &x\npush &y\nassertEqual', ErrorCode.UNMATCHING_OPERANDS],
+			['push 1\nassertEqual 1.0', ErrorCode.UNMATCHING_OPERANDS],
+			['push 1.0\nassertEqual 1.0f64', ErrorCode.UNMATCHING_OPERANDS],
+			['int x\npush &x\nassertEqual 1', ErrorCode.UNMATCHING_OPERANDS],
+			['int x\nfloat y\npush &x\nassertEqual &y', ErrorCode.UNMATCHING_OPERANDS],
 		] as const) {
 			await expect(compile(`entry main\nmodule invalid\n${body}\nmoduleEnd\nentryEnd`, enabled)).rejects.toMatchObject({
 				code,

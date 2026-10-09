@@ -15,38 +15,30 @@ int value 7
 push 1
 push 2
 add
-push 3
-assertEqual
+assertEqual 3
 push 9
-push 10
-assertEqual
+assertEqual 10
 push &value
-push &value
-assertEqual
+assertEqual &value
 push 3.14
-push 3.14
-assertEqual
+assertEqual 3.14
 push 2.5f64
-push 2.5f64
-assertEqual
+assertEqual 2.5f64
 push 0
 if
 push 99
-push 99
-assertEqual
+assertEqual 99
 ifEnd
 loop 2
 push 7
-push 8
-assertEqual
+assertEqual 8
 loopEnd
 call helper
 moduleEnd
 entryEnd
 function helper
 push 5
-push 5
-assertEqual
+assertEqual 5
 functionEnd`);
 		const saved = structuredClone(original);
 		const compiled = await compileProject(original, { enableAssertions: true, disableSharedMemory: true });
@@ -67,9 +59,9 @@ functionEnd`);
 			const block = [...original.modules, ...original.functions].find(block => block.id === site.projectBlockId)!;
 			expect(block.code[site.lineNumber]).toMatch(/^assertEqual/);
 		}
-		expect(assertionSites[7]).toMatchObject({ codeBlockType: 'function', codeBlockId: 'helper', lineNumber: 3 });
+		expect(assertionSites[7]).toMatchObject({ codeBlockType: 'function', codeBlockId: 'helper', lineNumber: 2 });
 		expect(formatTestFailures(result.failures)).toContain(
-			'assertEqual #5 expected 8, received 7 at module assertions, block line 29 (site 6)'
+			'assertEqual #5 expected 8, received 7 at module assertions, block line 22 (site 6)'
 		);
 	});
 
@@ -82,14 +74,12 @@ call helper
 moduleEnd
 function helper
 push 1
-push 2
-assertEqual
+assertEqual 2
 functionEnd
 group child
 module repeated
 push 3
-push 4
-assertEqual
+assertEqual 4
 moduleEnd
 groupEnd
 groupEnd
@@ -97,11 +87,11 @@ entryEnd`);
 		const compiled = await compileProject(project, { enableAssertions: true, disableSharedMemory: true });
 		const result = await runTests(compiled);
 		expect(result.failures.map(failure => failure.site)).toMatchObject([
-			{ projectGroupPath: 'parent/child', codeBlockId: 'repeated', lineNumber: 3, siteId: 0 },
-			{ projectGroupPath: 'parent', codeBlockId: 'helper', codeBlockType: 'function', lineNumber: 3, siteId: 1 },
+			{ projectGroupPath: 'parent/child', codeBlockId: 'repeated', lineNumber: 2, siteId: 0 },
+			{ projectGroupPath: 'parent', codeBlockId: 'helper', codeBlockType: 'function', lineNumber: 2, siteId: 1 },
 		]);
-		expect(formatTestFailures(result.failures)).toContain('module parent/child/repeated, block line 4 (site 0)');
-		expect(formatTestFailures(result.failures)).toContain('function parent/helper, block line 4 (site 1)');
+		expect(formatTestFailures(result.failures)).toContain('module parent/child/repeated, block line 3 (site 0)');
+		expect(formatTestFailures(result.failures)).toContain('function parent/helper, block line 3 (site 1)');
 	});
 
 	it('executes exported test functions and reports NaN comparisons as failures', async () => {
@@ -110,14 +100,13 @@ function test
 #export
 push -1.0
 sqrt
-push 0.0
-assertEqual
+assertEqual 0.0
 functionEnd`);
 		const compiled = await compileProject(project, { enableAssertions: true, disableSharedMemory: true });
 		const result = await runTests(compiled);
 		expect(result.assertions.length).toBe(1);
 		expect(result.failures).toMatchObject([
-			{ received: Number.NaN, passed: false, site: { codeBlockType: 'function', codeBlockId: 'test', lineNumber: 5 } },
+			{ received: Number.NaN, passed: false, site: { codeBlockType: 'function', codeBlockId: 'test', lineNumber: 4 } },
 		]);
 	});
 
@@ -131,13 +120,12 @@ functionEnd`);
 entry test
 module failure
 push 3
-push 4
-assertEqual
+assertEqual 4
 moduleEnd
 entryEnd`
 			);
 			await expect(runFixtureProgramFile(filePath)).rejects.toThrow(
-				'failing.8f4e: 1 assertion failed:\n  assertEqual #0 expected 4, received 3 at module failure, block line 4 (site 0)'
+				'failing.8f4e: 1 assertion failed:\n  assertEqual #0 expected 4, received 3 at module failure, block line 3 (site 0)'
 			);
 		} finally {
 			await fs.rm(directory, { recursive: true, force: true });
@@ -155,8 +143,8 @@ describe('native assertion source reporting', () => {
 			'- 0',
 			'assert',
 			'push 3',
-			'push 4',
 			'assertEqual',
+			'- 4',
 			'functionEnd',
 		].join('\n');
 		const compiled = await compileProject(
@@ -177,7 +165,7 @@ entryEnd`),
 		);
 		const result = await runTests(compiled);
 		expect(result.failures).toHaveLength(2);
-		expect(compiled.assertionSites!.map(site => site.lineNumber)).toEqual([5, 8]);
+		expect(compiled.assertionSites!.map(site => site.lineNumber)).toEqual([5, 7]);
 		expect(result.failures[0].site.source).toEqual({
 			kind: 'include',
 			includeId: 'tests/verify',
@@ -212,8 +200,7 @@ entry test
 module counter
 int value 7
 push value
-push 7
-assertEqual
+assertEqual 7
 push &value
 push 11
 store
@@ -240,25 +227,21 @@ assert
 push -1
 assert
 push -1
-push -1
-assertEqual
+assertEqual -1
 push 1.0
-push 1.0001
-assertEqual
+assertEqual 1.0001
+local float64 nan
 push -1.0f64
 sqrt
-push -1.0f64
-sqrt
-assertEqual
+localSet nan
+push nan
+assertEqual nan
 push 1e40
-push 1e40
-assertEqual
+assertEqual 1e40
 push -0.0
-push 0.0
-assertEqual
+assertEqual 0.0
 push 1.0f64
-push 1.0001f64
-assertEqual
+assertEqual 1.0001f64
 push 0
 if
 push 0

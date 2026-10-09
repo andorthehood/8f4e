@@ -47,23 +47,19 @@ module floatAbsAssertions
 ; magnitudes.
 push 1.1
 abs
-push 1.1
-assertEqual
+assertEqual 1.1
 
 push -1.1
 abs
-push 1.1
-assertEqual
+assertEqual 1.1
 
 push -69.1
 abs
-push 69.1
-assertEqual
+assertEqual 69.1
 
 push 420.1
 abs
-push 420.1
-assertEqual
+assertEqual 420.1
 moduleEnd
 
 module castToFloatAssertions
@@ -73,23 +69,19 @@ module castToFloatAssertions
 ; to float.
 push 1
 castToFloat
-push 1.0
-assertEqual
+assertEqual 1.0
 
 push -69
 castToFloat
-push -69.0
-assertEqual
+assertEqual -69.0
 
 push 0
 castToFloat
-push 0.0
-assertEqual
+assertEqual 0.0
 
 push 420
 castToFloat
-push 420.0
-assertEqual
+assertEqual 420.0
 moduleEnd
 
 module castToIntAssertions
@@ -97,23 +89,19 @@ module castToIntAssertions
 ; zero.
 push 1.1
 castToInt
-push 1
-assertEqual
+assertEqual 1
 
 push -69.69
 castToInt
-push -69
-assertEqual
+assertEqual -69
 
 push 0.001
 castToInt
-push 0
-assertEqual
+assertEqual 0
 
 push 420.99
 castToInt
-push 420
-assertEqual
+assertEqual 420
 moduleEnd
 
 module roundAssertions
@@ -121,28 +109,23 @@ module roundAssertions
 ; current half-down behavior.
 push 4.1
 round
-push 4.0
-assertEqual
+assertEqual 4.0
 
 push 4.5
 round
-push 4.0
-assertEqual
+assertEqual 4.0
 
 push 4.51
 round
-push 5.0
-assertEqual
+assertEqual 5.0
 
 push 4.6
 round
-push 5.0
-assertEqual
+assertEqual 5.0
 
 push 4.9
 round
-push 5.0
-assertEqual
+assertEqual 5.0
 moduleEnd
 
 module sqrtAssertions

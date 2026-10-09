@@ -20,15 +20,13 @@ int bar 16
 ; locally
 ; redeclared
 push foo
-push 1
-assertEqual
+assertEqual 1
 
 ; it uses the later local
 ; declaration for a shape field
 ; redeclared in the module
 push he
-push 10
-assertEqual
+assertEqual 10
 
 ; it keeps the last local
 ; declaration addressable when
@@ -36,8 +34,7 @@ assertEqual
 ; field is redeclared more than
 ; once
 push bar
-push 16
-assertEqual
+assertEqual 16
 moduleEnd
 
 module boson
@@ -48,21 +45,18 @@ int* test3 &tau:he
 ; intermodule pointers resolve
 ; to the inherited declaration
 push *test2
-push 1
-assertEqual
+assertEqual 1
 
 ; intermodule pointers resolve
 ; to the final local declaration
 ; for repeated names
 push *test1
-push 16
-assertEqual
+assertEqual 16
 
 ; intermodule pointers resolve
 ; to the local declaration that
 ; overrides a shape field
 push *test3
-push 10
-assertEqual
+assertEqual 10
 moduleEnd
 entryEnd

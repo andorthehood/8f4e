@@ -30,8 +30,9 @@ package unit tests continue using Vitest.
 
 Compile test projects with `enableAssertions: true`. Supply callbacks matching the compiler-owned import contract
 and consume its source-site lookup instead of rewriting sources or assigning site IDs in the runner. Native `assert`
-uses a zero/nonzero integer condition; `assertEqual` uses exact equality for matching types and compares pointers by
-address. Callbacks must implement those agreed semantics rather than retain an implicit tolerance.
+uses a zero/nonzero integer condition; `assertEqual expected` consumes one actual stack value and requires an inline
+expected argument. It uses exact equality for matching types and compares pointers by address. Callbacks must
+implement those agreed semantics rather than retain an implicit tolerance.
 
 The compiler lookup identifies static sites by block ID, group path, module/function identity, instruction kind,
 physical block line, and included-source provenance. Runtime invocations report site IDs; loops share a static ID
@@ -159,7 +160,8 @@ The compiler fixture and CLI adapters compile original project sources with nati
 the compiled output to the shared runner. Assertion imports
 and source sites come from the compiler, and the precompiler package has been removed. Fresh CLI/fixture memory is
 initialized once. Approximate expectations in four fixture files now express a `0.001` absolute error bound in source; other
-comparisons use exact `assertEqual`. Editor execution and gallery behavior are deferred.
+comparisons use exact `assertEqual expected`, which consumes one actual stack value and requires the expected value
+inline. The fixture and CLI sources use this syntax directly. Editor execution and gallery behavior are deferred.
 
 ## Archive Instructions
 

@@ -14,26 +14,22 @@ module addAssertions
 push 2
 push 2
 add
-push 4
-assertEqual
+assertEqual 4
 
 push -1
 push 1
 add
-push 0
-assertEqual
+assertEqual 0
 
 push -69
 push 0
 add
-push -69
-assertEqual
+assertEqual -69
 
 push 420
 push 0
 add
-push 420
-assertEqual
+assertEqual 420
 moduleEnd
 
 module subAssertions
@@ -44,26 +40,22 @@ module subAssertions
 push 2
 push 2
 sub
-push 0
-assertEqual
+assertEqual 0
 
 push -1
 push 1
 sub
-push -2
-assertEqual
+assertEqual -2
 
 push -69
 push 0
 sub
-push -69
-assertEqual
+assertEqual -69
 
 push 420
 push 0
 sub
-push 420
-assertEqual
+assertEqual 420
 moduleEnd
 
 module mulAssertions
@@ -73,14 +65,12 @@ module mulAssertions
 push 2
 push 2
 mul
-push 4
-assertEqual
+assertEqual 4
 
 push 2
 push 0
 mul
-push 0
-assertEqual
+assertEqual 0
 moduleEnd
 
 module divAssertions
@@ -90,8 +80,7 @@ push 100
 push 10
 ensureNonZero
 div
-push 10
-assertEqual
+assertEqual 10
 moduleEnd
 
 module remainderAssertions
@@ -102,15 +91,13 @@ push 4
 push 2
 ensureNonZero
 remainder
-push 0
-assertEqual
+assertEqual 0
 
 push 3
 push 2
 ensureNonZero
 remainder
-push 1
-assertEqual
+assertEqual 1
 moduleEnd
 
 module absAssertions
@@ -118,29 +105,24 @@ module absAssertions
 ; magnitudes.
 push 1
 abs
-push 1
-assertEqual
+assertEqual 1
 
 push -1
 abs
-push 1
-assertEqual
+assertEqual 1
 
 push -69
 abs
-push 69
-assertEqual
+assertEqual 69
 
 push 420
 abs
-push 420
-assertEqual
+assertEqual 420
 
 push 8
 push -2
 abs
 div
-push 4
-assertEqual
+assertEqual 4
 moduleEnd
 entryEnd

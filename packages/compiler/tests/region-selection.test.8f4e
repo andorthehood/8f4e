@@ -11,8 +11,7 @@ module customRegion
 int value 13
 
 push value
-push 13
-assertEqual
+assertEqual 13
 moduleEnd
 
 module defaultRegion
@@ -21,7 +20,6 @@ module defaultRegion
 int value 7
 
 push value
-push 7
-assertEqual
+assertEqual 7
 moduleEnd
 entryEnd

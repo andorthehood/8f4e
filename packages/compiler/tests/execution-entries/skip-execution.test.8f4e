@@ -39,11 +39,9 @@ loopEnd
 
 push &activeEntryModule:counter
 load
-push 3
-assertEqual
+assertEqual 3
 
 push &skippedEntryModule:counter
 load
-push 3
-assertEqual
+assertEqual 3
 functionEnd

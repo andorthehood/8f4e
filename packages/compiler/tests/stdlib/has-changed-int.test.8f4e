@@ -14,31 +14,24 @@ int previousInt
 
 push 0
 call hasChanged &previousInt
-push 0
-assertEqual
+assertEqual 0
 push previousInt
-push 0
-assertEqual
+assertEqual 0
 
 push 4
 call hasChanged &previousInt
-push 1
-assertEqual
+assertEqual 1
 push previousInt
-push 4
-assertEqual
+assertEqual 4
 
 push 4
 call hasChanged &previousInt
-push 0
-assertEqual
+assertEqual 0
 
 push -2
 call hasChanged &previousInt
-push 1
-assertEqual
+assertEqual 1
 push previousInt
-push -2
-assertEqual
+assertEqual -2
 moduleEnd
 entryEnd

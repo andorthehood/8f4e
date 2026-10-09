@@ -12,26 +12,20 @@ int seed 69420
 
 push &seed
 call lcg
-push 16539
-assertEqual
+assertEqual 16539
 push seed
-push 16539
-assertEqual
+assertEqual 16539
 
 push &seed
 call lcg
-push 64830
-assertEqual
+assertEqual 64830
 push seed
-push 64830
-assertEqual
+assertEqual 64830
 
 push &seed
 call lcg
-push 33669
-assertEqual
+assertEqual 33669
 push seed
-push 33669
-assertEqual
+assertEqual 33669
 moduleEnd
 entryEnd

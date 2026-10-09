@@ -18,15 +18,19 @@ The callback owns result collection. Returning normally allows execution to cont
 
 ## assertEqual
 
-**Stack effect:** `T T --`
+**Syntax:** `assertEqual expected`
+
+**Stack effect:** `T --`
 
 ```8f4e
 push 2
-push 2
-assertEqual
+assertEqual 2
 ```
 
-Push the received value first, then the expected value. Operands must have matching types: integer, float32, float64,
+Push the received value and supply exactly one expected argument. The argument supports numeric literals,
+constants, compile-time expressions, locals, memory values, and address/pointer references, using the same resolution
+rules as `push`. String literals are not accepted. For example, use `assertEqual EXPECTED`, `assertEqual value`, or
+`assertEqual &value`. The received and expected values must have matching types: integer, float32, float64,
 or matching pointer types. Pointers compare their 32-bit addresses without dereferencing. Pointer and ordinary integer
 operands cannot be mixed. Float32 and float64 operands cannot be mixed or implicitly converted.
 
@@ -36,8 +40,9 @@ by computing an integer condition and using `assert`.
 
 ## Compiler flag and host callbacks
 
-When disabled, `assert` emits one Wasm `drop` and `assertEqual` emits two. Instructions producing those operands still
-execute, including function calls and their side effects. Normal syntax, stack-count, and operand-type checks still
+When disabled, both instructions emit one Wasm `drop`. The inline expected value is not evaluated at runtime.
+Instructions producing the actual stack operand still execute, including function calls and their side effects.
+Normal syntax, reference-resolution, stack-count, and operand-type checks still
 apply. Disabled compilation omits `assertionSites` and native assertion imports.
 
 Enabled compilation adds only the callback signatures used by the program. Each import has no return values:
@@ -125,4 +130,4 @@ The runner supplies collecting callbacks with the semantics above and reports co
 including included helpers. See the [runner API and memory policy](../../../test-runner/README.md).
 
 Ordinary `call assert` still means a call to a user-defined function named `assert`; the test runner does not provide
-that function. To migrate a former equality call, push its arguments explicitly and use `assertEqual`.
+that function. To migrate `call assert received expected`, use `push received` followed by `assertEqual expected`.

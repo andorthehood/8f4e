@@ -13,23 +13,20 @@ call smoothstep
 push 100.0
 mul
 castToInt
-push 0
-assertEqual
+assertEqual 0
 
 push 0.5
 call smoothstep
 push 100.0
 mul
 castToInt
-push 50
-assertEqual
+assertEqual 50
 
 push 1.0
 call smoothstep
 push 100.0
 mul
 castToInt
-push 100
-assertEqual
+assertEqual 100
 moduleEnd
 entryEnd

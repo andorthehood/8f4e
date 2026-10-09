@@ -35,15 +35,15 @@ module addWorks
 push 1
 push 2
 add
-push 3
-assertEqual
+assertEqual 3
 push 1
 assert
 moduleEnd
 entryEnd
 ```
 
-`assert` passes for nonzero integers. `assertEqual` compares matching integer, float32, float64, or pointer values
+`assert` passes for nonzero integers. `assertEqual expected` consumes the actual stack value and compares it to its
+required expected argument. It compares matching integer, float32, float64, or pointer values
 exactly. Pointers compare addresses. NaN fails, matching infinities pass, and signed zero compares equal. Express
 approximate expectations explicitly with arithmetic and `assert`; no tolerance is hidden in the runner.
 
@@ -57,7 +57,7 @@ Failure formatting uses one-based physical block lines and included-source prove
 
 ```text
 1 assertion failed:
-  assertEqual #0 expected 4, received 3 at module addFails, block line 6 (site 0)
+  assertEqual #0 expected 4, received 3 at module addFails, block line 5 (site 0)
 ```
 
 Site IDs belong to one compilation. Static sites remain in compiler output; each executed invocation is recorded by

@@ -196,7 +196,7 @@ describe('cli', () => {
 	it('reports assertion failures from project tests', async () => {
 		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
 			stderr: expect.stringContaining(
-				'assertEqual #0 expected 4, received 3 at module addFails, block line 6 (site 0)'
+				'assertEqual #0 expected 4, received 3 at module addFails, block line 5 (site 0)'
 			),
 		});
 	});
@@ -212,8 +212,7 @@ module driver
 push 0
 if
 push 99
-push 99
-assertEqual
+assertEqual 99
 ifEnd
 loop 2
 call helper
@@ -223,16 +222,15 @@ entryEnd
 function helper
 push
 - 7 ; continued argument
-push 8
-assertEqual
+assertEqual 8
 functionEnd`
 		);
 		await expect(execCli(['test', helperTestPath])).rejects.toMatchObject({
 			stderr: expect.stringContaining(
 				[
 					'2 assertions failed:',
-					'  assertEqual #0 expected 8, received 7 at function helper, block line 5 (site 1)',
-					'  assertEqual #1 expected 8, received 7 at function helper, block line 5 (site 1)',
+					'  assertEqual #0 expected 8, received 7 at function helper, block line 4 (site 1)',
+					'  assertEqual #1 expected 8, received 7 at function helper, block line 4 (site 1)',
 				].join('\n')
 			),
 		});
@@ -247,8 +245,7 @@ functionEnd`
 function test
 #export
 push 3
-push 3
-assertEqual
+assertEqual 3
 functionEnd`
 		);
 		const { stdout } = await execCli(['test', functionTestPath]);
@@ -260,17 +257,7 @@ functionEnd`
 		const groupedTestPath = path.join(tmpDir, 'groupedTest.8f4e');
 		await fs.writeFile(
 			groupedTestPath,
-			[
-				'8f4e/v1',
-				'',
-				'entry test',
-				'module groupedTest',
-				'push 1',
-				'push 1',
-				'assertEqual',
-				'moduleEnd',
-				'entryEnd',
-			].join('\n')
+			['8f4e/v1', '', 'entry test', 'module groupedTest', 'push 1', 'assertEqual 1', 'moduleEnd', 'entryEnd'].join('\n')
 		);
 
 		const { stdout } = await execCli(['test', groupedTestPath]);
@@ -296,8 +283,7 @@ functionEnd`
 				'module target',
 				'int* ptr &dependency:value',
 				'push *ptr',
-				'push 42',
-				'assertEqual',
+				'assertEqual 42',
 				'moduleEnd',
 				'',
 				'module dependency',

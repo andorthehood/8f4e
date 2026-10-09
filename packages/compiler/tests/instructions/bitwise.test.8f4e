@@ -13,14 +13,12 @@ module andAssertions
 push 1
 push 0
 and
-push 0
-assertEqual
+assertEqual 0
 
 push 3
 push 6
 and
-push 2
-assertEqual
+assertEqual 2
 moduleEnd
 
 module orAssertions
@@ -29,14 +27,12 @@ module orAssertions
 push 1
 push 0
 or
-push 1
-assertEqual
+assertEqual 1
 
 push 3
 push 6
 or
-push 7
-assertEqual
+assertEqual 7
 moduleEnd
 
 module xorAssertions
@@ -45,14 +41,12 @@ module xorAssertions
 push 1
 push 0
 xor
-push 1
-assertEqual
+assertEqual 1
 
 push 3
 push 6
 xor
-push 5
-assertEqual
+assertEqual 5
 moduleEnd
 
 module shiftLeftAssertions
@@ -61,20 +55,17 @@ module shiftLeftAssertions
 push 1
 push 1
 shiftLeft
-push 2
-assertEqual
+assertEqual 2
 
 push 1
 push 2
 shiftLeft
-push 4
-assertEqual
+assertEqual 4
 
 push 3
 push 3
 shiftLeft
-push 24
-assertEqual
+assertEqual 24
 moduleEnd
 
 module shiftRightAssertions
@@ -83,19 +74,16 @@ module shiftRightAssertions
 push 1
 push 1
 shiftRight
-push 0
-assertEqual
+assertEqual 0
 
 push 8
 push 2
 shiftRight
-push 2
-assertEqual
+assertEqual 2
 
 push 12
 push 3
 shiftRight
-push 1
-assertEqual
+assertEqual 1
 moduleEnd
 entryEnd

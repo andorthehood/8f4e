@@ -12,26 +12,20 @@ int seed 69420
 
 push &seed
 call xorshift
-push 494363678
-assertEqual
+assertEqual 494363678
 push seed
-push 494363678
-assertEqual
+assertEqual 494363678
 
 push &seed
 call xorshift
-push -814792604
-assertEqual
+assertEqual -814792604
 push seed
-push -814792604
-assertEqual
+assertEqual -814792604
 
 push &seed
 call xorshift
-push -887510667
-assertEqual
+assertEqual -887510667
 push seed
-push -887510667
-assertEqual
+assertEqual -887510667
 moduleEnd
 entryEnd

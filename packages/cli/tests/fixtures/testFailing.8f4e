@@ -5,7 +5,6 @@ module addFails
 push 1
 push 2
 add
-push 4
-assertEqual
+assertEqual 4
 moduleEnd
 entryEnd

@@ -13,19 +13,16 @@ int[] buffer 4 11 22 33 44
 push &buffer
 push 0
 call loadAt
-push 11
-assertEqual
+assertEqual 11
 
 push &buffer
 push 2
 call loadAt
-push 33
-assertEqual
+assertEqual 33
 
 push &buffer
 push 3
 call loadAt
-push 44
-assertEqual
+assertEqual 44
 moduleEnd
 entryEnd
