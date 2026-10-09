@@ -39,30 +39,84 @@ function createEditor() {
 	} as unknown as Editor;
 }
 
-function createSuccessMessage(codeBuffer: Uint8Array, wasmMemory: WebAssembly.Memory) {
+function createSuccessMessage(codeBuffer: Uint8Array, wasmMemory: WebAssembly.Memory, compilationId = 0) {
 	return {
 		type: 'success',
-		compilationId: 0,
+		compilationId,
 		payload: {
+			assertionSites: [],
 			wasmMemory,
 			codeBuffer,
-			compiledModules: [],
+			compiledModules: {},
 			memoryPlan: {},
 			memoryDefaultsByModuleId: {},
 			pointerMetadataByModuleId: {},
 			projectMemoryExposuresByGroupPath: {},
 			requiredMemoryBytes: 0,
-			allocatedMemoryBytes: 0,
-			astCacheStats: {},
+			allocatedMemoryBytes: 65536,
+			astCacheStats: { hits: 0, misses: 0 },
 			hasWasmInstanceBeenReset: false,
-			memoryAction: 'none',
-			compiledFunctions: [],
+			memoryAction: { action: 'reused' },
+			compiledFunctions: {},
 			initOnlyReran: false,
 		},
 	};
 }
 
 describe('compiler service', () => {
+	it('publishes assertion metadata only for a successful current compilation', async () => {
+		const worker = new FakeWorker();
+		const service = createCompilerService(() => worker as unknown as Worker);
+		const editor = createEditor();
+		const memory = new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true });
+		const codeBuffer = new Uint8Array([1]);
+		const first = service.compileCode({} as ProjectObjectModel, {}, editor);
+		expect(service.getAssertionSites()).toBeUndefined();
+		worker.emitMessage(createSuccessMessage(codeBuffer, memory));
+		expect(await first).toMatchObject({ assertionSites: [] });
+		expect(service.getAssertionSites()).toEqual([]);
+		expect(service.getCodeBuffer()).toBe(codeBuffer);
+		expect(service.getMemory()).toBe(memory);
+
+		const second = service.compileCode({} as ProjectObjectModel, {}, editor);
+		expect(service.getAssertionSites()).toBeUndefined();
+		worker.emitMessage({ type: 'compilationError', compilationId: 1, payload: { message: 'syntax error' } });
+		await expect(second).rejects.toMatchObject({ message: 'syntax error' });
+		expect(service.getAssertionSites()).toBeUndefined();
+		service.dispose();
+	});
+
+	it('keeps code, memory, and assertion sites from the latest compilation', async () => {
+		const worker = new FakeWorker();
+		const service = createCompilerService(() => worker as unknown as Worker);
+		const editor = createEditor();
+		const memory = new WebAssembly.Memory({ initial: 1 });
+		const first = service.compileCode({} as ProjectObjectModel, {}, editor);
+		const second = service.compileCode({} as ProjectObjectModel, {}, editor);
+		const codeBuffer = new Uint8Array([2]);
+		worker.emitMessage(createSuccessMessage(codeBuffer, memory, 1));
+		await second;
+		const current = service.getAssertionSites();
+		worker.emitMessage(createSuccessMessage(new Uint8Array([1]), new WebAssembly.Memory({ initial: 1 }), 0));
+		await first;
+		expect(service.getAssertionSites()).toBe(current);
+		expect(service.getCodeBuffer()).toBe(codeBuffer);
+		expect(service.getMemory()).toBe(memory);
+		expect(editor.updateMemoryViews).toHaveBeenCalledExactlyOnceWith(memory);
+		service.dispose();
+	});
+
+	it('does not expose assertion sites when assertions are disabled', async () => {
+		const worker = new FakeWorker();
+		const service = createCompilerService(() => worker as unknown as Worker);
+		const compilation = service.compileCode({} as ProjectObjectModel, {}, createEditor());
+		const success = createSuccessMessage(new Uint8Array([1]), new WebAssembly.Memory({ initial: 1 }));
+		worker.emitMessage({ ...success, payload: { ...success.payload, assertionSites: undefined } });
+		await compilation;
+		expect(service.getAssertionSites()).toBeUndefined();
+		service.dispose();
+	});
+
 	it('isolates workers, include resolution, memory, and code buffers between instances', async () => {
 		const workers: FakeWorker[] = [];
 		const createWorker = () => {

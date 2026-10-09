@@ -10,6 +10,15 @@ export type TestAssertionResult = {
 	passed: boolean;
 } & ({ condition: number } | { received: number; expected: number });
 
+/** Executable artifacts shared by fresh-memory and supplied-memory runs. */
+export type TestProgram = Pick<CompileResult, 'codeBuffer' | 'assertionSites'>;
+
+export type TestRunInput = TestProgram &
+	(
+		| { memories: Record<string, WebAssembly.Memory> }
+		| ({ memories?: undefined } & Pick<CompileResult, 'requiredMemoryBytes' | 'requiredMemoryBytesByRegion'>)
+	);
+
 /** Detects an enabled test entry or a root function exported as `test`. */
 export function hasTestEntry(project: ProjectObjectModel): boolean {
 	function hasTestModules(project: ProjectObjectModel): boolean {
@@ -39,8 +48,8 @@ function getExportedFunction(instance: WebAssembly.Instance, name: string): Call
 	return exported;
 }
 
-/** Initialize fresh non-shared memory once and execute an already compiled test. */
-export async function runTests(compiled: CompileResult) {
+/** Execute once, initializing fresh memory only when the caller has not supplied its own memories. */
+export async function runTests(compiled: TestRunInput) {
 	const sites = compiled.assertionSites;
 	if (!sites) throw new Error('Test compilation requires enableAssertions: true');
 	const assertions: TestAssertionResult[] = [];
@@ -53,12 +62,17 @@ export async function runTests(compiled: CompileResult) {
 			passed: received === expected,
 		});
 	};
-	const memories = {
-		memory: createMemory(compiled.requiredMemoryBytes),
-		...Object.fromEntries(
-			Object.entries(compiled.requiredMemoryBytesByRegion ?? {}).map(([name, bytes]) => [name, createMemory(bytes)])
-		),
-	};
+	let memories: Record<string, WebAssembly.Memory>;
+	if (compiled.memories) {
+		memories = compiled.memories;
+	} else {
+		memories = {
+			memory: createMemory(compiled.requiredMemoryBytes),
+			...Object.fromEntries(
+				Object.entries(compiled.requiredMemoryBytesByRegion ?? {}).map(([name, bytes]) => [name, createMemory(bytes)])
+			),
+		};
+	}
 	const host = {
 		...memories,
 		[ASSERTION_IMPORT_NAMES.assert]: (condition: number, siteId: number) => {
@@ -69,7 +83,7 @@ export async function runTests(compiled: CompileResult) {
 		[ASSERTION_IMPORT_NAMES.assertEqual.float64]: equal,
 	};
 	const { instance } = await WebAssembly.instantiate(new Uint8Array(compiled.codeBuffer), { host });
-	getExportedFunction(instance, 'initDefaults')();
+	if (!compiled.memories) getExportedFunction(instance, 'initDefaults')();
 	getExportedFunction(instance, 'test')();
 	return { instance, memories, assertions, failures: assertions.filter(assertion => !assertion.passed) };
 }

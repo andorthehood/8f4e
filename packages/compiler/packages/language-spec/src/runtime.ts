@@ -1,3 +1,4 @@
+import type { AssertionSite } from './assertions';
 import type { ASTCacheStats } from './cache';
 import type { CompiledFunctionLookup, CompiledModuleLookup } from './compiled';
 import type { MemoryDefaults, MemoryLayoutPlan, MemoryPointerMetadataMap } from './memory';
@@ -21,6 +22,7 @@ export type GetOrCreateWasmInstanceResult = {
 };
 
 export type CompileAndUpdateMemoryResult = {
+	assertionSites?: AssertionSite[];
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;

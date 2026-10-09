@@ -3,6 +3,7 @@ import type { ResolveIncludeRequestMessage, ResolveIncludeResultMessage } from '
 import CompilerWorker from '@8f4e/compiler-worker?worker';
 import type { CompilationResult, Editor } from '@8f4e/editor-core';
 import type {
+	AssertionSite,
 	CompileProjectOptions,
 	CompilerDiagnostic,
 	ProjectIncludeResolver,
@@ -17,6 +18,7 @@ export interface CompilerService {
 	) => Promise<CompilationResult>;
 	getMemory: () => WebAssembly.Memory | null;
 	getCodeBuffer: () => Uint8Array;
+	getAssertionSites: () => AssertionSite[] | undefined;
 	dispose: () => void;
 }
 
@@ -24,6 +26,7 @@ export function createCompilerService(createWorker: () => Worker = () => new Com
 	let compilerWorker: Worker | null = null;
 	let memoryRef: WebAssembly.Memory | null = null;
 	let codeBuffer: Uint8Array = new Uint8Array();
+	let assertionSites: AssertionSite[] | undefined;
 	let nextCompilationId = 0;
 	let includeResolver: ProjectIncludeResolver | undefined;
 	let disposed = false;
@@ -74,6 +77,7 @@ export function createCompilerService(createWorker: () => Worker = () => new Com
 
 	return {
 		async compileCode(project, compilerOptions, editor) {
+			assertionSites = undefined;
 			const { resolveInclude, ...serializableCompilerOptions } = compilerOptions;
 			const worker = getCompilerWorker();
 			includeResolver = resolveInclude;
@@ -86,12 +90,15 @@ export function createCompilerService(createWorker: () => Worker = () => new Com
 						case 'success':
 							worker.removeEventListener('message', handleMessage);
 							pendingCompilations.delete(compilationId);
-							memoryRef = data.payload.wasmMemory;
-							codeBuffer = data.payload.codeBuffer;
-
-							editor.updateMemoryViews(data.payload.wasmMemory);
+							if (compilationId === nextCompilationId - 1) {
+								memoryRef = data.payload.wasmMemory;
+								codeBuffer = data.payload.codeBuffer;
+								assertionSites = data.payload.assertionSites;
+								editor.updateMemoryViews(data.payload.wasmMemory);
+							}
 
 							resolve({
+								assertionSites: data.payload.assertionSites,
 								compiledModules: data.payload.compiledModules,
 								memoryPlan: data.payload.memoryPlan,
 								memoryDefaultsByModuleId: data.payload.memoryDefaultsByModuleId,
@@ -131,12 +138,14 @@ export function createCompilerService(createWorker: () => Worker = () => new Com
 		},
 		getMemory: () => memoryRef,
 		getCodeBuffer: () => codeBuffer,
+		getAssertionSites: () => assertionSites,
 		dispose: () => {
 			if (disposed) {
 				return;
 			}
 
 			disposed = true;
+			assertionSites = undefined;
 			const disposalError = new Error('Compiler service has been disposed');
 			for (const { handleMessage, reject } of pendingCompilations.values()) {
 				compilerWorker?.removeEventListener('message', handleMessage);

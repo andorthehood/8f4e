@@ -52,6 +52,7 @@ export default async function compileAndUpdateMemory(
 	resolveInclude: ProjectIncludeResolver = () => undefined
 ): Promise<CompileAndUpdateMemoryResult> {
 	const {
+		assertionSites,
 		codeBuffer,
 		compiledModules,
 		requiredMemoryBytes,
@@ -141,6 +142,7 @@ export default async function compileAndUpdateMemory(
 	previousCompileState = currentCompileState;
 
 	return {
+		assertionSites,
 		codeBuffer,
 		compiledModules,
 		compiledFunctions,

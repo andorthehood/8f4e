@@ -38,6 +38,11 @@ It also owns persistence callbacks for its storage namespace. The default namesp
 Hosts may also provide a custom `Storage` implementation or an
 `initialProjectUrl`; interpreting page URLs remains the host's responsibility.
 
+The runtime registry includes `TestRuntime`, selected with `; @config runtime TestRuntime`. For projects with an
+enabled test entry, it executes tests once after successful compilation or recompilation, using the editor's current
+memory and publishing results under `state.runtime.values.TestRuntime`. See the
+[test runtime](../runtime-test-runner/README.md) for scheduling and memory ownership.
+
 An explicit `initialProjectUrl` takes precedence on the first load, followed by the saved session. With neither,
 the editor starts with an empty project and does not fetch an example project registry. Browse examples in the
 [examples gallery](https://8f4e.com/examples/); its links open projects by URL. The editor's menu supports opening

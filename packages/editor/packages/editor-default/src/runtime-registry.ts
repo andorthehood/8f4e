@@ -6,7 +6,7 @@ import type {
 } from '@8f4e/editor-core';
 import type { CompilerService } from './compiler-callback';
 
-type CompilerArtifacts = Pick<CompilerService, 'getCodeBuffer' | 'getMemory'>;
+type CompilerArtifacts = Pick<CompilerService, 'getCodeBuffer' | 'getMemory' | 'getAssertionSites'>;
 
 /**
  * Creates a lazy runtime registry entry that defers loading the runtime implementation and schema
@@ -15,7 +15,7 @@ type CompilerArtifacts = Pick<CompilerService, 'getCodeBuffer' | 'getMemory'>;
  */
 function createLazyRuntimeEntry(
 	id: string,
-	editorConfigSchema: EditorConfigSchemaContribution,
+	editorConfigSchema: EditorConfigSchemaContribution | undefined,
 	loader: () => Promise<RuntimeRegistryEntry>
 ): RuntimeRegistryEntry {
 	let loadPromise: Promise<RuntimeRegistryEntry> | null = null;
@@ -28,7 +28,7 @@ function createLazyRuntimeEntry(
 
 	const entry: RuntimeRegistryEntry = {
 		id,
-		editorConfigSchema: {
+		editorConfigSchema: editorConfigSchema && {
 			...editorConfigSchema,
 			schema: stubSchema,
 		},
@@ -68,10 +68,17 @@ function createLazyRuntimeEntry(
  * and replaces it with the full schema after loading.
  */
 export function createRuntimeRegistry(
-	{ getCodeBuffer, getMemory }: CompilerArtifacts,
+	{ getCodeBuffer, getMemory, getAssertionSites }: CompilerArtifacts,
 	sharedAudioContext?: AudioContext
 ): RuntimeRegistry {
 	return {
+		TestRuntime: createLazyRuntimeEntry('TestRuntime', undefined, async () => {
+			const [{ createTestRuntimeDef }, { default: TestWorker }] = await Promise.all([
+				import('@8f4e/runtime-test-runner/runtime-def'),
+				import('@8f4e/runtime-test-runner?worker'),
+			]);
+			return createTestRuntimeDef(getCodeBuffer, getMemory, getAssertionSites, TestWorker);
+		}),
 		WebWorkerRuntime: createLazyRuntimeEntry(
 			'WebWorkerRuntime',
 			{ root: 'workerRuntime', defaults: { sampleRate: 50 }, schema: { type: 'object' } },

@@ -97,6 +97,12 @@ moduleEnd`.split('\n'),
 		project.modules[0].entry = 'test';
 		const result = await compileAndUpdateMemory(project, { ...compilerOptions, enableAssertions: true });
 		const imports = WebAssembly.Module.imports(new WebAssembly.Module(new Uint8Array(result.codeBuffer)));
+		expect(result.assertionSites).toMatchObject([
+			{ instruction: 'assert', codeBlockId: 'checks', lineNumber: 3 },
+			{ instruction: 'assertEqual', lineNumber: 5 },
+			{ instruction: 'assertEqual', lineNumber: 7 },
+			{ instruction: 'assertEqual', lineNumber: 9 },
+		]);
 
 		expect(imports.filter(item => item.kind === 'function').map(item => item.name)).toEqual([
 			'assertCondition',
