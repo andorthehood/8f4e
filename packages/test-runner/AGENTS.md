@@ -2,8 +2,8 @@
 
 - This package owns native assertion callbacks, execution, structured results, and failure formatting shared by
   compiler fixtures and the CLI. Adapters own file handling, compilation options, and snapshots.
-- Keep the runner independent of the compiler implementation. Accept a compile callback so compiler tests can use it
-  without a circular workspace dependency. Keep it browser-safe and free of Node file APIs.
+- Accept compiled output using language-spec contracts; adapters own compilation. Keep the runner independent of
+  the compiler implementation, browser-safe, and free of Node file APIs.
 - Consume compiler-produced assertion sites. Do not rewrite source or inject assertion declarations.
 - Implement nonzero integer conditions and exact equality; approximate expectations belong in project source.
 - Distinguish static site IDs from runtime invocation indices and preserve included-source provenance.

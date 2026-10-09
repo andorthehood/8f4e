@@ -40,9 +40,8 @@ while each invocation receives its own execution index.
 ### Shared execution
 
 Keep `@8f4e/test-runner` as the common owner of callback creation, test execution, result collection, and failure
-formatting. Separate execution of compiled artifacts from the convenience path that compiles a project, so an editor
-runtime can use its existing compilation. Remove source instrumentation and synthetic assertion declarations, then
-remove the nested `@8f4e/test-precompiler` package and its dependency/build configuration.
+formatting. Accept compiler output directly; callers compile projects and retain their compilation metadata.
+Remove source instrumentation and synthetic assertion declarations, then remove the nested `@8f4e/test-precompiler` package and its dependency/build configuration.
 
 Compiler fixture and CLI adapters retain their existing responsibilities for includes, memory options, snapshots,
 file selection, and presentation. Both compile with assertions enabled and use the same execution implementation.
@@ -79,8 +78,8 @@ remaining work.
 
 ## Implementation Plan
 
-1. Refactor the shared runner to consume compiled site metadata and supply callbacks. Support compilation convenience
-   and execution of existing artifacts, with explicit memory and initialization ownership.
+1. Refactor the shared runner to accept compiled artifacts, consume source sites, and supply assertion callbacks.
+   Keep compilation in the adapters, with explicit memory and initialization ownership.
 2. Migrate compiler fixtures and `8f4e test` to native instructions. Existing two-value `call assert` comparisons become
    `assertEqual`, preserving operand-producing code and physical source lines where practical. Review fixtures that
    previously relied on tolerance and express approximate expectations explicitly. Update snapshots.
@@ -156,7 +155,8 @@ Recorded on 2026-10-09. Compiler assertion support is an independent prerequisit
 and when tests run are runner/runtime choices; this plan mandates neither fresh memory per run nor automatic runs
 after compilation. Rendering green/red assertion icons remains a follow-up UI task.
 
-The compiler and CLI migration compiles original project sources with native assertions enabled. Assertion imports
+The compiler fixture and CLI adapters compile original project sources with native assertions enabled, then pass
+the compiled output to the shared runner. Assertion imports
 and source sites come from the compiler, and the precompiler package has been removed. Fresh CLI/fixture memory is
 initialized once. Approximate expectations in four fixture files now express a `0.001` absolute error bound in source; other
 comparisons use exact `assertEqual`. Editor execution and gallery behavior are deferred.

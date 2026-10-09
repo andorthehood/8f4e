@@ -1,4 +1,4 @@
-import { formatTestFailures, runTestProject } from '@8f4e/test-runner';
+import { formatTestFailures, runTests } from '@8f4e/test-runner';
 import { promises as fs } from 'fs';
 import { tmpdir } from 'os';
 import path from 'path';
@@ -49,12 +49,12 @@ push 5
 assertEqual
 functionEnd`);
 		const saved = structuredClone(original);
-		const result = await runTestProject(original, {
-			compile: (project, options) => compileProject(project, options),
-		});
-		const { assertionSites, assertions: events } = result;
+		const compiled = await compileProject(original, { enableAssertions: true, disableSharedMemory: true });
+		const result = await runTests(compiled);
+		const assertionSites = compiled.assertionSites!;
+		const { assertions: events } = result;
 		expect(original).toEqual(saved);
-		expect(result.assertionCount).toBe(8);
+		expect(result.assertions.length).toBe(8);
 		expect(result.failures.map(failure => failure.site.siteId)).toEqual([1, 6, 6]);
 		expect(result.failures.map(failure => failure.assertIndex)).toEqual([1, 5, 6]);
 
@@ -94,9 +94,8 @@ moduleEnd
 groupEnd
 groupEnd
 entryEnd`);
-		const result = await runTestProject(project, {
-			compile: (project, options) => compileProject(project, options),
-		});
+		const compiled = await compileProject(project, { enableAssertions: true, disableSharedMemory: true });
+		const result = await runTests(compiled);
 		expect(result.failures.map(failure => failure.site)).toMatchObject([
 			{ projectGroupPath: 'parent/child', codeBlockId: 'repeated', lineNumber: 3, siteId: 0 },
 			{ projectGroupPath: 'parent', codeBlockId: 'helper', codeBlockType: 'function', lineNumber: 3, siteId: 1 },
@@ -114,10 +113,9 @@ sqrt
 push 0.0
 assertEqual
 functionEnd`);
-		const result = await runTestProject(project, {
-			compile: (project, options) => compileProject(project, options),
-		});
-		expect(result.assertionCount).toBe(1);
+		const compiled = await compileProject(project, { enableAssertions: true, disableSharedMemory: true });
+		const result = await runTests(compiled);
+		expect(result.assertions.length).toBe(1);
 		expect(result.failures).toMatchObject([
 			{ received: Number.NaN, passed: false, site: { codeBlockType: 'function', codeBlockId: 'test', lineNumber: 5 } },
 		]);
@@ -161,7 +159,7 @@ describe('native assertion source reporting', () => {
 			'assertEqual',
 			'functionEnd',
 		].join('\n');
-		const result = await runTestProject(
+		const compiled = await compileProject(
 			parseProjectSource(`8f4e/v1
 includes
 include tests/verify
@@ -172,11 +170,14 @@ call verify
 moduleEnd
 entryEnd`),
 			{
-				compile: (project, options) => compileProject(project, { ...options, resolveInclude: () => included }),
+				enableAssertions: true,
+				disableSharedMemory: true,
+				resolveInclude: () => included,
 			}
 		);
+		const result = await runTests(compiled);
 		expect(result.failures).toHaveLength(2);
-		expect(result.assertionSites.map(site => site.lineNumber)).toEqual([5, 8]);
+		expect(compiled.assertionSites!.map(site => site.lineNumber)).toEqual([5, 8]);
 		expect(result.failures[0].site.source).toEqual({
 			kind: 'include',
 			includeId: 'tests/verify',
@@ -185,7 +186,7 @@ entryEnd`),
 		expect(formatTestFailures(result.failures)).toContain('include tests/verify (verify)');
 	});
 
-	it('requires the compile callback to enable native assertions', async () => {
+	it('requires compilation with native assertions enabled', async () => {
 		const project = parseProjectSource(`8f4e/v1
 entry test
 module check
@@ -193,11 +194,8 @@ push 1
 assert
 moduleEnd
 entryEnd`);
-		await expect(
-			runTestProject(project, {
-				compile: project => compileProject(project, { disableSharedMemory: true }),
-			})
-		).rejects.toThrow('enableAssertions: true');
+		const compiled = await compileProject(project, { disableSharedMemory: true });
+		await expect(runTests(compiled)).rejects.toThrow('enableAssertions: true');
 	});
 });
 
@@ -221,16 +219,72 @@ push 11
 store
 moduleEnd
 entryEnd`);
-	const options = {
-		compile: (project: Parameters<typeof compileProject>[0], options: Parameters<typeof compileProject>[1]) =>
-			compileProject(project, options),
-	};
-	const first = await runTestProject(project, options);
-	const second = await runTestProject(project, options);
-	const address = first.compileResult.memoryPlan.modules.counter.memory.value.wordAlignedAddress;
+	const compiled = await compileProject(project, { enableAssertions: true, disableSharedMemory: true });
+	const first = await runTests(compiled);
+	const second = await runTests(compiled);
+	const address = compiled.memoryPlan.modules.counter.memory.value.wordAlignedAddress;
 	expect(first.failures).toHaveLength(0);
 	expect(second.failures).toHaveLength(0);
-	expect(first.assertionCount).toBe(1);
-	expect(first.host.memory).not.toBe(second.host.memory);
-	expect(new Int32Array((first.host.memory as WebAssembly.Memory).buffer)[address]).toBe(11);
+	expect(first.assertions.length).toBe(1);
+	expect(first.memories.memory).not.toBe(second.memories.memory);
+	expect(new Int32Array(first.memories.memory.buffer)[address]).toBe(11);
+});
+
+it('collects integer truth and exact numeric equality through the compiled Wasm callbacks', async () => {
+	const compiled = await compileProject(
+		parseProjectSource(`8f4e/v1
+entry test
+module checks
+push 0
+assert
+push -1
+assert
+push -1
+push -1
+assertEqual
+push 1.0
+push 1.0001
+assertEqual
+push -1.0f64
+sqrt
+push -1.0f64
+sqrt
+assertEqual
+push 1e40
+push 1e40
+assertEqual
+push -0.0
+push 0.0
+assertEqual
+push 1.0f64
+push 1.0001f64
+assertEqual
+push 0
+if
+push 0
+assert
+ifEnd
+moduleEnd
+entryEnd`),
+		{ enableAssertions: true, disableSharedMemory: true }
+	);
+	const result = await runTests(compiled);
+	expect(result.assertions.map(assertion => assertion.passed)).toEqual([
+		false,
+		true,
+		true,
+		false,
+		false,
+		true,
+		true,
+		false,
+	]);
+	expect(result.assertions.map(assertion => assertion.assertIndex)).toEqual([0, 1, 2, 3, 4, 5, 6, 7]);
+	expect(result.failures).toHaveLength(4);
+	expect(result.assertions[4]).toMatchObject({ received: Number.NaN, expected: Number.NaN });
+	expect(result.assertions[5]).toMatchObject({ received: Infinity, expected: Infinity });
+	expect(result.assertions[6]).toMatchObject({ received: -0, expected: 0 });
+	expect(compiled.assertionSites).toHaveLength(9);
+	expect(result.assertions.some(assertion => assertion.site.siteId === 8)).toBe(false);
+	expect(formatTestFailures(result.failures)).toContain('assert #0 expected nonzero, received 0');
 });
