@@ -79,6 +79,11 @@
               "type": "literal",
               "value": 13,
             },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
           ],
           "instruction": "call",
         },
@@ -165,6 +170,11 @@
               "isInteger": true,
               "type": "literal",
               "value": 7,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
             },
           ],
           "instruction": "call",

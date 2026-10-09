@@ -300,6 +300,11 @@
               "type": "literal",
               "value": 125,
             },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
           ],
           "instruction": "call",
         },

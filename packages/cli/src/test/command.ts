@@ -1,66 +1,16 @@
-import { parseProjectSource } from '@8f4e/compiler';
-import type { ProjectBlock, ProjectObjectModel } from '@8f4e/language-spec';
-import { POINTER_FUNCTION_TYPE_IDENTIFIERS } from '@8f4e/language-spec';
+import { compileProject, parseProjectSource } from '@8f4e/compiler';
+import { formatTestFailures, hasTestEntry, runTestProject } from '@8f4e/test-runner';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { compileProject } from '../compile/compileProject';
-
-const WASM_MEMORY_PAGE_SIZE = 65536;
+import { resolveStdlibInclude } from '../shared/stdlibResolver';
 
 interface TestCommandArgs {
 	inputSpecs: string[];
 }
 
-interface AssertionFailure {
-	assertIndex: number;
-	expected: number;
-	received: number;
-}
-
 interface TestFileResult {
 	assertions: number;
 	skipped: boolean;
-}
-
-type WebAssemblyMemoryLike = {
-	buffer: ArrayBufferLike;
-};
-
-type WebAssemblyInstanceLike = {
-	exports: Record<string, unknown>;
-};
-
-type WebAssemblyApiLike = {
-	Memory: new (descriptor: { initial: number; maximum: number }) => WebAssemblyMemoryLike;
-	instantiate: (
-		bytes: Buffer,
-		imports: { host: Record<string, WebAssemblyMemoryLike | CallableFunction> }
-	) => Promise<{ instance: WebAssemblyInstanceLike }>;
-};
-
-const FLOAT_ASSERT_TOLERANCE = 0.001;
-
-const assertFunctionBlocks: ProjectBlock[] = [
-	{
-		id: -1,
-		code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
-	},
-	{
-		id: -2,
-		code: ['function assert', '#import assert', 'param float received', 'param float expected', 'functionEnd'],
-	},
-	{
-		id: -3,
-		code: ['function assert', '#import assert', 'param float64 received', 'param float64 expected', 'functionEnd'],
-	},
-	...POINTER_FUNCTION_TYPE_IDENTIFIERS.map((type, index) => ({
-		id: -4 - index,
-		code: ['function assert', '#import assert', `param ${type} received`, `param ${type} expected`, 'functionEnd'],
-	})),
-];
-
-function getWebAssemblyApi(): WebAssemblyApiLike {
-	return (globalThis as unknown as { WebAssembly: WebAssemblyApiLike }).WebAssembly;
 }
 
 function parseTestArgs(args: string[]): TestCommandArgs {
@@ -189,34 +139,6 @@ async function resolveInputPaths(inputSpecs: string[]): Promise<string[]> {
 	return uniquePaths;
 }
 
-function createWebAssemblyMemory(requiredMemoryBytes: number): WebAssemblyMemoryLike {
-	const memorySizePages = Math.max(1, Math.ceil(requiredMemoryBytes / WASM_MEMORY_PAGE_SIZE));
-	return new (getWebAssemblyApi().Memory)({ initial: memorySizePages, maximum: memorySizePages });
-}
-
-function createMemoryImports(
-	requiredMemoryBytes: number,
-	requiredMemoryBytesByRegion: Record<string, number> = {}
-): Record<string, WebAssemblyMemoryLike> {
-	return {
-		memory: createWebAssemblyMemory(requiredMemoryBytes),
-		...Object.fromEntries(
-			Object.entries(requiredMemoryBytesByRegion).map(([regionName, bytes]) => [
-				regionName,
-				createWebAssemblyMemory(bytes),
-			])
-		),
-	};
-}
-
-function formatFailure(failure: AssertionFailure): string {
-	return `assert #${failure.assertIndex} expected ${failure.expected}, received ${failure.received}`;
-}
-
-function hasTestEntry(project: ProjectObjectModel): boolean {
-	return project.modules.some(block => !block.disabled && block.entry === 'test');
-}
-
 function getErrorMessage(error: unknown): string {
 	if (error instanceof Error) {
 		return error.message;
@@ -238,51 +160,18 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 		return { assertions: 0, skipped: true };
 	}
 
-	const compileResult = await compileProject(
-		{
-			...project,
-			functions: [...project.functions, ...assertFunctionBlocks],
-		},
-		{
-			compilerOptions: {
+	const result = await runTestProject(project, {
+		compile: instrumented =>
+			compileProject(instrumented, {
 				disableSharedMemory: true,
-			},
-		}
-	);
-
-	const failures: AssertionFailure[] = [];
-	let assertionCount = 0;
-	const memoryImports = createMemoryImports(
-		compileResult.requiredMemoryBytes,
-		compileResult.requiredMemoryBytesByRegion
-	);
-	const { instance } = await getWebAssemblyApi().instantiate(Buffer.from(compileResult.compiledWasm, 'base64'), {
-		host: {
-			...memoryImports,
-			assert(received: number, expected: number) {
-				const assertIndex = assertionCount;
-				assertionCount += 1;
-				if (Math.abs(received - expected) <= FLOAT_ASSERT_TOLERANCE) {
-					return;
-				}
-				failures.push({ assertIndex, expected, received });
-			},
-		},
+				resolveInclude: resolveStdlibInclude,
+			}),
 	});
-
-	(instance.exports.initDefaults as CallableFunction)();
-	(instance.exports.test as CallableFunction)();
-
-	if (failures.length > 0) {
-		throw new Error(
-			[
-				`${failures.length} assertion${failures.length === 1 ? '' : 's'} failed:`,
-				...failures.map(failure => `  ${formatFailure(failure)}`),
-			].join('\n')
-		);
+	if (result.failures.length > 0) {
+		throw new Error(formatTestFailures(result.failures));
 	}
 
-	return { assertions: assertionCount, skipped: false };
+	return { assertions: result.assertionCount, skipped: false };
 }
 
 export async function runTestCommand(args: string[]): Promise<void> {

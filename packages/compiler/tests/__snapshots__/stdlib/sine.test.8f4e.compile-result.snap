@@ -527,6 +527,11 @@
               "type": "literal",
               "value": 0,
             },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
           ],
           "instruction": "call",
         },
@@ -561,6 +566,11 @@
             },
             {
               "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": true,
               "type": "literal",
               "value": 1,
             },
@@ -601,6 +611,11 @@
               "type": "literal",
               "value": 0,
             },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
           ],
           "instruction": "call",
         },
@@ -637,6 +652,11 @@
               "isInteger": false,
               "type": "literal",
               "value": -1,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
             },
           ],
           "instruction": "call",

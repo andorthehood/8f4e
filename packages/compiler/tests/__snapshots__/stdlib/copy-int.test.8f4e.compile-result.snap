@@ -307,6 +307,11 @@
               "type": "literal",
               "value": 42,
             },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
           ],
           "instruction": "call",
         },

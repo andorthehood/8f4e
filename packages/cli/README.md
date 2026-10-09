@@ -20,12 +20,20 @@ cli capture path/to/project.8f4e --buffer audioout:buffer --cycles 128 --repeat 
 cli format path/to/module.8f4em --comment-width 32 --write
 ```
 
+```bash
+cli test path/to/project.8f4e 'path/to/tests/*.8f4em'
+```
+
 ## Output
 
 When `--wasm-output` is used, the CLI writes a decoded WebAssembly binary (`.wasm`) file.
 
 When `format` is used, the CLI wraps long semicolon comments to the requested `--comment-width` or the default width
 of 32. It writes to stdout by default, writes to a separate file with `--out`, or updates the input file with `--write`.
+
+When `test` is used, the CLI executes test entries or exported test functions using `@8f4e/test-runner`, shared with
+compiler fixtures. Failure output includes the input filename, expected/received values, original module or function,
+one-based line within that block, and assertion site ID. Loop invocations of the same assertion share a site ID.
 
 When `capture` is used, the CLI:
 

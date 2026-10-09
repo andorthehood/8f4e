@@ -211,6 +211,11 @@
               "type": "literal",
               "value": 2,
             },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 0,
+            },
           ],
           "instruction": "call",
         },
@@ -221,6 +226,11 @@
               "scope": "local",
               "type": "identifier",
               "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
             },
             {
               "isInteger": true,
