@@ -100,3 +100,5 @@
 
 - [Testing](instructions/testing.md)
   - [assert](instructions/testing.md#assert)
+  - [assertEqual](instructions/testing.md#assertequal)
+  - [Existing runner utility](instructions/testing.md#existing-runner-utility)

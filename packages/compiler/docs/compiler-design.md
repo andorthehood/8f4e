@@ -113,3 +113,16 @@ Memory clearing and passive data segmentation are separate responsibilities:
 - segment coalescing only optimizes byte payload shape.
 
 Do not add per-array or per-range zero-fill logic unless a measured optimization requires changing this contract.
+
+
+## Native Assertion Planning
+
+Native assertions are recognized and stack-checked in either flag mode. With `enableAssertions: false`, codegen emits
+operand drops. With the flag enabled, sub-program orchestration plans typed host imports and static assertion sites
+from resolved executable bodies and stack facts. Imports are planned before final Wasm function indices are assigned;
+user imports retain their indices, while entry and defined-function indices account for the added assertion imports.
+
+The composer records original block names and canonical group paths separately from qualified AST symbols. Assertion
+planning combines these identities with physical source lines, project block IDs, and included-source provenance.
+The emitted compiler result exposes that lookup only when assertions are enabled. Callbacks, result collection,
+memory/reset policy, and execution scheduling belong to consumers.

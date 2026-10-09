@@ -48,6 +48,18 @@ export function validateOperandTypes(
 		if (!areAllOperandsFloats(...operands)) {
 			throw getError(errorCode, line, context);
 		}
+	} else if (rule === 'sameType') {
+		const [left, right] = operands;
+		if (
+			left.valueType !== right.valueType ||
+			left.kind !== right.kind ||
+			(left.kind === 'address' &&
+				right.kind === 'address' &&
+				(left.pointsTo?.baseType !== right.pointsTo?.baseType ||
+					left.pointsTo?.pointerDepth !== right.pointsTo?.pointerDepth))
+		) {
+			throw getError(errorCode, line, context);
+		}
 	} else if (rule === 'matching') {
 		if (!areAllOperandsIntegers(...operands) && !areAllOperandsFloats(...operands)) {
 			throw getError(errorCode, line, context);

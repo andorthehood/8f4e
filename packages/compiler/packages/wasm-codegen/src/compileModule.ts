@@ -6,6 +6,7 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import type {
+	AssertionCodegenSites,
 	CompiledModule,
 	CompileOptions,
 	FunctionRegistry,
@@ -36,12 +37,14 @@ export function compileModule(
 	functions: FunctionRegistry | undefined,
 	stackReport: StackAnalyzedModule,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {},
-	typeRegistry?: FunctionTypeRegistry
+	typeRegistry?: FunctionTypeRegistry,
+	assertionCalls?: AssertionCodegenSites
 ): CompiledModule {
 	const { ast, bindings, body } = resolved;
 	const context = createCodegenContext(
 		{
 			functions,
+			assertionCalls,
 			byteCode: [],
 			blockStack: [{ blockType: BlockType.MODULE, expectedResultTypes: [] }],
 			functionTypeRegistry: typeRegistry,

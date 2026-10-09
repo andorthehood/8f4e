@@ -1,4 +1,5 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
+import type { AssertionSite } from './assertions';
 import type { FunctionAST, ValidatedAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature, FunctionValueType } from './functionTypes';
@@ -104,6 +105,8 @@ export interface CompilerCache {
 }
 
 export type CompileResult = {
+	/** Native assertion sites for this compilation, present only when assertions are enabled. */
+	assertionSites?: AssertionSite[];
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;

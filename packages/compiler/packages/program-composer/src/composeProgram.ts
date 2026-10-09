@@ -112,7 +112,17 @@ function appendUnit(
 	});
 
 	const prefix = projectPath === ROOT_PROJECT_GROUP_PATH ? undefined : `${projectPath}/`;
-	const qualify = <TAst extends ValidatedAST>(ast: TAst): TAst => (prefix ? qualifyAst(ast, prefix) : ast);
+	const qualify = <TAst extends ValidatedAST>(
+		ast: TAst,
+		codeBlockId = ast.type === 'function' ? ast.name : ast.id
+	): TAst => {
+		const composed = prefix ? qualifyAst(ast, prefix) : ast;
+		program.sourceIdentities.set(composed, {
+			projectGroupPath: projectPath,
+			codeBlockId,
+		});
+		return composed;
+	};
 	const prototypes = project.prototypes.filter(block => !block.disabled);
 	const modules = project.modules.filter(block => !block.disabled);
 	const constants = project.constants.filter(block => !block.disabled);
@@ -153,7 +163,7 @@ function appendUnit(
 				createCompilerSource(func, projectPath, `include:function:${index}`),
 				program.cache
 			);
-			return qualify(renameIncludedFunction(ast, func.bindings));
+			return qualify(renameIncludedFunction(ast, func.bindings), ast.name);
 		})
 	);
 
@@ -186,6 +196,7 @@ export function composeProgram(
 	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath = new Map()
 ): ComposedProgram {
 	const program: ComposedProgram = {
+		sourceIdentities: new WeakMap(),
 		entryNames: ['main'],
 		moduleEntryNames: [],
 		ast: {

@@ -1,4 +1,5 @@
 import type {
+	AST,
 	CompilerCache,
 	IncludedFunctionBindings,
 	ProjectConstantNamespaceScope,
@@ -34,6 +35,8 @@ export interface ComposedProjectMemoryExposure extends ProjectMemoryExposure {
 
 /** One globally planned AST assembled from a recursive project tree. */
 export interface ComposedProgram {
+	/** Original block names and group paths keyed by the composed AST, before symbol qualification. */
+	sourceIdentities: WeakMap<AST, { projectGroupPath: ProjectGroupPath; codeBlockId: string }>;
 	entryNames: string[];
 	moduleEntryNames: string[];
 	ast: {

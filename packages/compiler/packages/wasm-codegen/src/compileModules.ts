@@ -1,4 +1,11 @@
-import type { CompiledModule, CompileOptions, FunctionRegistry, FunctionTypeRegistry } from '@8f4e/language-spec';
+import type {
+	AST,
+	AssertionCodegenSites,
+	CompiledModule,
+	CompileOptions,
+	FunctionRegistry,
+	FunctionTypeRegistry,
+} from '@8f4e/language-spec';
 import type { ModuleSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import type { StackAnalysisSubProgramReport } from '@8f4e/stack-analyzer';
 import { compileModule } from './compileModule';
@@ -18,9 +25,18 @@ export function compileModules(
 	options: CompileOptions,
 	stackReport: StackAnalysisSubProgramReport,
 	compiledFunctions?: FunctionRegistry,
-	typeRegistry?: FunctionTypeRegistry
+	typeRegistry?: FunctionTypeRegistry,
+	assertionCalls?: ReadonlyMap<AST, AssertionCodegenSites>
 ): CompiledModule[] {
 	return modules.map((resolved, index) =>
-		compileModule(resolved, index, compiledFunctions, stackReport.modules[resolved.ast.id], options, typeRegistry)
+		compileModule(
+			resolved,
+			index,
+			compiledFunctions,
+			stackReport.modules[resolved.ast.id],
+			options,
+			typeRegistry,
+			assertionCalls?.get(resolved.ast)
+		)
 	);
 }

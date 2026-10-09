@@ -1,5 +1,6 @@
 export * from './addressValues';
 export * from './arguments';
+export * from './assertions';
 export * from './ast';
 export * from './cache';
 export * from './compiled';

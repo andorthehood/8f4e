@@ -1,14 +1,126 @@
 # Testing
 
-## Assert Utility
+The compiler provides native `assert` and `assertEqual` instructions. Both are accepted in modules and functions.
+`compileProject(project, { enableAssertions: true })` enables callback emission and source-site metadata. The flag
+is `false` by default; disabled assertions consume their operands without requiring assertion imports.
 
-The CLI test command provides an imported utility function named `assert`.
+## assert
 
-**Stack effect:** `int int --`
+**Stack effect:** `int --`
 
-**Syntax:** `call assert`
+```8f4e
+push 1
+assert
+```
 
-**Usage:**
+Zero fails and any nonzero integer passes. When enabled, the instruction calls `host.assertCondition(condition, siteId)`.
+The callback owns result collection. Returning normally allows execution to continue after a failed condition.
+
+## assertEqual
+
+**Stack effect:** `T T --`
+
+```8f4e
+push 2
+push 2
+assertEqual
+```
+
+Push the received value first, then the expected value. Operands must have matching types: integer, float32, float64,
+or matching pointer types. Pointers compare their 32-bit addresses without dereferencing. Pointer and ordinary integer
+operands cannot be mixed. Float32 and float64 operands cannot be mixed or implicitly converted.
+
+Equality is exact, with no epsilon or tolerance: close but unequal floats fail, NaN fails equality, matching infinities
+pass, and positive/negative zero compare equal. Approximate expectations must be expressed separately, for example
+by computing an integer condition and using `assert`.
+
+## Compiler flag and host callbacks
+
+When disabled, `assert` emits one Wasm `drop` and `assertEqual` emits two. Instructions producing those operands still
+execute, including function calls and their side effects. Normal syntax, stack-count, and operand-type checks still
+apply. Disabled compilation omits `assertionSites` and native assertion imports.
+
+Enabled compilation adds only the callback signatures used by the program. Each import has no return values:
+
+| Import | Wasm parameters | JavaScript callback |
+| --- | --- | --- |
+| `host.assertCondition` | `i32, i32` | `(condition, siteId) => void` |
+| `host.assertEqualI32` | `i32, i32, i32` | `(received, expected, siteId) => void` |
+| `host.assertEqualF32` | `f32, f32, i32` | `(received, expected, siteId) => void` |
+| `host.assertEqualF64` | `f64, f64, i32` | `(received, expected, siteId) => void` |
+
+The compiler appends the site ID after the source operands. Integer and pointer operands use the I32 callback;
+JavaScript receives signed 32-bit values, preserving every address bit. Float callbacks receive values in their
+original Wasm precision. The names are exported as `ASSERTION_IMPORT_NAMES` from `@8f4e/language-spec`.
+
+The compiler knows these signatures; callers do not supply import descriptions or JavaScript callbacks during
+compilation. Supply matching callbacks when instantiating the emitted Wasm. Callbacks implement the documented
+condition/equality checks and own their reporting policy. They can collect both successful and failed assertions:
+
+```ts
+const compiled = await compileProject(project, { enableAssertions: true, disableSharedMemory: true });
+const memory = new WebAssembly.Memory({
+  initial: Math.max(1, Math.ceil(compiled.requiredMemoryBytes / 65536)),
+  maximum: Math.max(1, Math.ceil(compiled.requiredMemoryBytes / 65536)),
+});
+const results = [];
+const equal = (received, expected, siteId) => {
+  results.push({ siteId, received, expected, passed: received === expected });
+};
+const { instance } = await WebAssembly.instantiate(new Uint8Array(compiled.codeBuffer), {
+  host: {
+    memory,
+    assertCondition: (condition, siteId) => {
+      results.push({ siteId, condition, passed: condition !== 0 });
+    },
+    assertEqualI32: equal,
+    assertEqualF32: equal,
+    assertEqualF64: equal,
+  },
+});
+```
+
+This example supplies the default non-shared memory. Programs with custom memory regions also require the corresponding
+memory imports. Every emitted assertion import is required during instantiation, even when its call is in a branch
+that is never executed. Callback exceptions propagate and interrupt the current invocation; collecting callbacks
+should return normally to run later assertions.
+
+Assertions check operands in the current state. They do not initialize or reset memory, select execution entries,
+schedule tests, or require a fresh instance. Those decisions belong to the caller or test runner.
+
+## Source-site lookup
+
+Enabled compilation returns `compiled.assertionSites`, an array of static sites indexed by the emitted `siteId`:
+
+```ts
+interface AssertionSite {
+  siteId: number;
+  instruction: 'assert' | 'assertEqual';
+  projectBlockId?: number;
+  projectGroupPath: string;
+  codeBlockType: 'module' | 'function';
+  codeBlockId: string;
+  functionId?: string;
+  lineNumber: number;
+  source?: { kind: 'include'; includeId: string; symbolName: string };
+}
+```
+
+`lineNumber` is the zero-based physical line inside the original block, including comments and continuation lines.
+`codeBlockId` is the original module/function name before group qualification. `projectGroupPath` is the canonical
+encoded group path, with an empty string for the root. Function sites also carry the qualified, signature-derived
+`functionId`, distinguishing overloads even in included sources. Included functions retain their original symbol
+and source provenance. Their optional project block ID is present when the derived source supplies one.
+
+The lookup includes static sites in unexecuted branches and functions. Each loop iteration reports the same site ID;
+invocation counts and execution order belong to the caller. An enabled program with no native assertions returns an
+empty array and emits no assertion imports. Site IDs belong to one compilation; consumers must associate results
+with that compilation before matching them to editor lines.
+
+## Existing runner utility
+
+The compiler fixture runner and `8f4e test` currently continue using the ordinary `call assert` utility supplied by
+`@8f4e/test-runner`. The runner instruments source calls with its nested precompiler and injects typed host declarations:
 
 ```8f4e
 entry test
@@ -19,22 +131,11 @@ add
 push 3
 call assert
 moduleEnd
-entryEnd```
-
-**Behavior:**
-- Push the received value first, then the expected value.
-- `call assert` consumes both integer values.
-- The CLI test runner injects `function assert` as a host import before compiling tests.
-- The CLI host implementation counts each call and reports calls where the received value differs from the expected value.
-
-**Host import ABI:**
-
-```ts
-host.assert(received: number, expected: number): void
+entryEnd
 ```
 
-The compiler does not treat `assert` as a built-in instruction. It is just an imported function supplied by the CLI test runner.
-
-**Limitations:**
-- Float assertions and approximate comparisons are not supported yet
-- Source-location tracking for assertion failures is not supported yet
+These are normal function calls, independent of `enableAssertions`. The current runner's host ABI is
+`host.assert(received, expected, siteId)`; integer, float32, float64, and pointer overloads are supported. Its comparison
+tolerance is `0.001`, NaN comparisons fail, and it reports original source sites from its precompiler. Native callbacks
+have separate import names so both mechanisms can coexist. Migrating the runner, fixtures, CLI, and editor is tracked
+separately in TODO 491; adding compiler support does not perform that migration.

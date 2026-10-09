@@ -22,6 +22,8 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import type {
+	AssertionImport,
+	AssertionSite,
 	CompiledFunction,
 	CompiledModule,
 	CompileOptions,
@@ -41,6 +43,8 @@ import {
 import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
 
 interface EmissionProgram {
+	assertionImports?: AssertionImport[];
+	assertionSites?: AssertionSite[];
 	entryNames: string[];
 	compiledModules: CompiledModule[];
 	compiledFunctions: CompiledFunction[];
@@ -93,6 +97,8 @@ export function emitWasmProgram(
 	options: Pick<CompileOptions, 'disableSharedMemory' | 'memoryRegions'>
 ): CompileResult {
 	const {
+		assertionImports = [],
+		assertionSites,
 		entryNames,
 		compiledModules,
 		compiledFunctions,
@@ -118,7 +124,7 @@ export function emitWasmProgram(
 	const functionSignatures = compiledModules.map(() => 0x00);
 	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
-	const importedFunctionCount = importedUserFunctions.length;
+	const importedFunctionCount = importedUserFunctions.length + assertionImports.length;
 	const builtInFunctionCount = 1 + entryNames.length;
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = definedFunctions.map(func => func.typeIndex);
@@ -167,6 +173,7 @@ export function emitWasmProgram(
 		...importedUserFunctions.map(func =>
 			createFunctionImport(func.import!.moduleName, func.import!.fieldName, func.typeIndex)
 		),
+		...assertionImports.map(func => createFunctionImport(func.moduleName, func.fieldName, func.typeIndex)),
 	];
 	const builtInFunctionSignatures = [0x00, ...entryNames.map(() => 0x00)];
 	const builtInFunctionBodies = [createFunction([], memoryInitiatorFunction), ...entryDispatcherFunctions];
@@ -177,6 +184,7 @@ export function emitWasmProgram(
 	const wasmVersion = createWasmVersion(1);
 
 	return {
+		...(assertionSites ? { assertionSites } : {}),
 		codeBuffer: Uint8Array.from([
 			...WASM_HEADER,
 			...wasmVersion,

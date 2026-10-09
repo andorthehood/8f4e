@@ -1,5 +1,7 @@
 import { ConstantResolverError, type ResolveConstantsSubProgramAST, resolveConstants } from '@8f4e/constant-resolver';
 import type {
+	AssertionImport,
+	AssertionSite,
 	CompiledFunction,
 	CompiledModule,
 	CompileOptions,
@@ -29,9 +31,12 @@ import type { ComposedProgram } from '@8f4e/program-composer/internal';
 import { resolveSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { analyzeStack } from '@8f4e/stack-analyzer';
 import { compileFunction, compileModules } from '@8f4e/wasm-codegen';
+import { planAssertions } from './assertions';
 import { assertUniqueModuleIds, collectNamespacesFromASTs, registerFunctions } from './semantic/buildNamespace';
 
 interface CompiledSubProgram {
+	assertionImports?: AssertionImport[];
+	assertionSites?: AssertionSite[];
 	entryNames: string[];
 	compiledModules: CompiledModule[];
 	compiledFunctions: CompiledFunction[];
@@ -289,13 +294,26 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		functionTypeRegistry,
 	});
 
+	const assertionPlan = options.enableAssertions
+		? planAssertions(program, semanticReferences, stackReport, functionTypeRegistry, importedUserFunctionCount)
+		: undefined;
+	// Registration provides symbolic metadata to analysis. Finalize defined indices after planning typed imports.
+	const assertionImportCount = assertionPlan?.imports.length ?? 0;
+	for (const metadata of Object.values(entryFunctionMetadata.byId)) metadata.wasmIndex += assertionImportCount;
+	if (options.startingFunctionIndex === undefined) {
+		for (const metadata of Object.values(registration.registry.byId)) {
+			if (!metadata.import) metadata.wasmIndex += assertionImportCount;
+		}
+	}
+
 	const compiledFunctions = Object.values(semanticReferences.functions).map(resolved =>
 		compileFunction(
 			resolved,
 			functionTypeRegistry,
 			functionRegistry,
 			stackReport.functions[resolved.metadata.id],
-			options
+			options,
+			assertionPlan?.calls.get(resolved.ast)
 		)
 	);
 	const compiledModules = compileModules(
@@ -303,13 +321,15 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		options,
 		stackReport,
 		functionRegistry,
-		functionTypeRegistry
+		functionTypeRegistry,
+		assertionPlan?.calls
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],
 	}));
 
 	return {
+		...(assertionPlan ? { assertionImports: assertionPlan.imports, assertionSites: assertionPlan.sites } : {}),
 		entryNames,
 		compiledModules,
 		compiledFunctions,

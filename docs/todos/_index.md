@@ -60,6 +60,7 @@ Active todo files are listed below.
 | 478 | Resolve group memory exposures through an alias table | 🟡 | 4-8h | 2026-08-26 | Keep composed AST references source-faithful and resolve structured group-memory aliases in the layout-aware and semantic reference passes. |
 | 483 | Lazy-load WASM overlay rendering | 🟡 | 1-2d | 2026-09-06 | Load the framebuffer overlay drawer and RGBA layer only when a project configures an overlay. |
 | 486 | Lazy-load editing features on entering edit mode | 🟡 | 2-4d | 2026-09-06 | Keep authoring-only effects out of view-mode startup and load them before editing becomes available. |
+| 491 | Migrate project testing to native assertions | 🟡 | 2-4d | 2026-10-09 | Use TODO 490 in the shared runner, migrate fixtures and CLI, remove the precompiler, and add an editor test runtime. |
 
 ### 🟢 Low Priority
 
@@ -75,6 +76,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
+| 490 | Add native compiler assertions | 2026-10-09 | Added opt-in assert/assertEqual, typed callbacks, disabled operand drops, and compiler source-site metadata; existing testing remains in place pending TODO 491. |
 | 480 | Simplify map codegen with reverse row order | 2026-10-09 | Preserved first-match behavior with two map temporaries; added numeric edge-case project fixtures and a one-time benchmark showing 2.40–2.47× faster 64-row lookups and 1,863 → 895 byte fixtures. |
 | 487 | Save projects to reusable browser file handles | 2026-10-04 | Separated explicit source saves from session autosave; added per-editor writable file associations, Save As, safe project replacement, cancellation, and upload/download fallback. |
 | 481 | Centralize compiler local allocation | 2026-10-01 | Added shared allocation, typed-allocation, reuse, and reset helpers across compiler stages; 2,000-local warm-cache compilation fell from 322.048 ms to 3.363 ms in the documented benchmark. |

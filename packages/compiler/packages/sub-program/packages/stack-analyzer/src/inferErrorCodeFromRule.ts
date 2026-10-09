@@ -14,7 +14,7 @@ export function inferErrorCodeFromRule(rule: OperandRule | OperandRule[]): Error
 		return ErrorCode.ONLY_INTEGERS;
 	} else if (rule === 'float') {
 		return ErrorCode.ONLY_FLOATS;
-	} else if (rule === 'matching') {
+	} else if (rule === 'matching' || rule === 'sameType') {
 		return ErrorCode.UNMATCHING_OPERANDS;
 	}
 	throw new Error(`Unexpected operand rule: ${rule}`);
