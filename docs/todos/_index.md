@@ -75,7 +75,7 @@ Active todo files are listed below.
 
 | ID | Title | Completed | Notes |
 | ---- | ----- | --------- | ----- |
-| 480 | Simplify map codegen with reverse row order | 2026-10-09 | Preserved first-match behavior with two map temporaries; added numeric edge-case runtime coverage and a retained benchmark showing 2.40–2.47× faster 64-row lookups and 1,863 → 895 byte fixtures. |
+| 480 | Simplify map codegen with reverse row order | 2026-10-09 | Preserved first-match behavior with two map temporaries; added numeric edge-case project fixtures and a one-time benchmark showing 2.40–2.47× faster 64-row lookups and 1,863 → 895 byte fixtures. |
 | 487 | Save projects to reusable browser file handles | 2026-10-04 | Separated explicit source saves from session autosave; added per-editor writable file associations, Save As, safe project replacement, cancellation, and upload/download fallback. |
 | 481 | Centralize compiler local allocation | 2026-10-01 | Added shared allocation, typed-allocation, reuse, and reset helpers across compiler stages; 2,000-local warm-cache compilation fell from 322.048 ms to 3.363 ms in the documented benchmark. |
 | 482 | Resolve sprite identifiers before drawing | 2026-10-01 | Added setup-time public-key resolution, atlas-specific dense sprite ids, direct packed-metadata submission, atlas-replacement integration, and a retained byte-equivalence benchmark. |
