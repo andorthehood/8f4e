@@ -19,6 +19,7 @@ export default defineConfig(() => ({
 			input: {
 				home: 'src/index.html',
 				examples: 'src/examples/index.html',
+				tests: 'src/tests/index.html',
 			},
 			output: {
 				entryFileNames: 'assets/entries/[name]-[hash].js',
