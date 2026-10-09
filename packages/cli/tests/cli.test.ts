@@ -195,7 +195,9 @@ describe('cli', () => {
 
 	it('reports assertion failures from project tests', async () => {
 		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
-			stderr: expect.stringContaining('assert #0 expected 4, received 3 at module addFails, block line 6 (site 0)'),
+			stderr: expect.stringContaining(
+				'assertEqual #0 expected 4, received 3 at module addFails, block line 6 (site 0)'
+			),
 		});
 	});
 
@@ -209,7 +211,9 @@ entry test
 module driver
 push 0
 if
-call assert 99 99
+push 99
+push 99
+assertEqual
 ifEnd
 loop 2
 call helper
@@ -217,17 +221,18 @@ loopEnd
 moduleEnd
 entryEnd
 function helper
-call assert ; continued arguments
-- 7
-- 8
+push
+- 7 ; continued argument
+push 8
+assertEqual
 functionEnd`
 		);
 		await expect(execCli(['test', helperTestPath])).rejects.toMatchObject({
 			stderr: expect.stringContaining(
 				[
 					'2 assertions failed:',
-					'  assert #0 expected 8, received 7 at function helper, block line 2 (site 1)',
-					'  assert #1 expected 8, received 7 at function helper, block line 2 (site 1)',
+					'  assertEqual #0 expected 8, received 7 at function helper, block line 5 (site 1)',
+					'  assertEqual #1 expected 8, received 7 at function helper, block line 5 (site 1)',
 				].join('\n')
 			),
 		});
@@ -241,7 +246,9 @@ functionEnd`
 			`8f4e/v1
 function test
 #export
-call assert 3 3
+push 3
+push 3
+assertEqual
 functionEnd`
 		);
 		const { stdout } = await execCli(['test', functionTestPath]);
@@ -260,7 +267,7 @@ functionEnd`
 				'module groupedTest',
 				'push 1',
 				'push 1',
-				'call assert',
+				'assertEqual',
 				'moduleEnd',
 				'entryEnd',
 			].join('\n')
@@ -290,7 +297,7 @@ functionEnd`
 				'int* ptr &dependency:value',
 				'push *ptr',
 				'push 42',
-				'call assert',
+				'assertEqual',
 				'moduleEnd',
 				'',
 				'module dependency',

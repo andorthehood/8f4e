@@ -17,7 +17,8 @@ int[] notes 10 48 50 53
 
 push &notes
 load
-call assert 48
+push 48
+assertEqual
 
 push &notes
 push 1
@@ -25,7 +26,8 @@ push sizeof(notes)
 mul
 add
 load
-call assert 50
+push 50
+assertEqual
 
 push &notes
 push 2
@@ -33,7 +35,8 @@ push sizeof(notes)
 mul
 add
 load
-call assert 53
+push 53
+assertEqual
 
 push &notes
 push 3
@@ -41,7 +44,8 @@ push sizeof(notes)
 mul
 add
 load
-call assert 0
+push 0
+assertEqual
 moduleEnd
 
 module expressionInitializerAssertions
@@ -54,7 +58,8 @@ int[] notes 4 ROOT ROOT+2 ROOT+5
 
 push &notes
 load
-call assert 48
+push 48
+assertEqual
 
 push &notes
 push 1
@@ -62,7 +67,8 @@ push sizeof(notes)
 mul
 add
 load
-call assert 50
+push 50
+assertEqual
 
 push &notes
 push 2
@@ -70,7 +76,8 @@ push sizeof(notes)
 mul
 add
 load
-call assert 53
+push 53
+assertEqual
 moduleEnd
 
 module hexadecimalInitializerAssertions
@@ -81,7 +88,8 @@ int[] foo 2 0x01 0x02
 
 push &foo
 load
-call assert 1
+push 1
+assertEqual
 
 push &foo
 push 1
@@ -89,7 +97,8 @@ push sizeof(foo)
 mul
 add
 load
-call assert 2
+push 2
+assertEqual
 moduleEnd
 
 module narrowInitializerAssertions
@@ -102,7 +111,8 @@ int16[] shorts 3 1000 2000 3000
 
 push &bytes
 load8u
-call assert 1
+push 1
+assertEqual
 
 push &bytes
 push 1
@@ -110,7 +120,8 @@ push sizeof(bytes)
 mul
 add
 load8u
-call assert 2
+push 2
+assertEqual
 
 push &bytes
 push 2
@@ -118,7 +129,8 @@ push sizeof(bytes)
 mul
 add
 load8u
-call assert 3
+push 3
+assertEqual
 
 push &bytes
 push 3
@@ -126,11 +138,13 @@ push sizeof(bytes)
 mul
 add
 load8u
-call assert 4
+push 4
+assertEqual
 
 push &shorts
 load16s
-call assert 1000
+push 1000
+assertEqual
 
 push &shorts
 push 1
@@ -138,7 +152,8 @@ push sizeof(shorts)
 mul
 add
 load16s
-call assert 2000
+push 2000
+assertEqual
 
 push &shorts
 push 2
@@ -146,7 +161,8 @@ push sizeof(shorts)
 mul
 add
 load16s
-call assert 3000
+push 3000
+assertEqual
 moduleEnd
 
 module sparseInitializerAssertions
@@ -158,7 +174,8 @@ int[] huge 1000000 1
 
 push &huge
 load
-call assert 1
+push 1
+assertEqual
 
 push &huge
 push 1
@@ -166,7 +183,8 @@ push sizeof(huge)
 mul
 add
 load
-call assert 0
+push 0
+assertEqual
 
 push &huge
 push 999999
@@ -174,6 +192,7 @@ push sizeof(huge)
 mul
 add
 load
-call assert 0
+push 0
+assertEqual
 moduleEnd
 entryEnd

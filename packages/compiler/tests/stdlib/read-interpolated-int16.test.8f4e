@@ -18,7 +18,8 @@ push count(buffer)
 push 0.5
 call readInterpolated
 castToInt
-call assert 15
+push 15
+assertEqual
 
 push pointer
 push sizeof(buffer)
@@ -28,7 +29,8 @@ push count(buffer)
 push 0.25
 call readInterpolated
 castToInt
-call assert 25
+push 25
+assertEqual
 
 push pointer
 push sizeof(buffer)*2
@@ -38,6 +40,7 @@ push count(buffer)
 push 0.5
 call readInterpolated
 castToInt
-call assert 25
+push 25
+assertEqual
 moduleEnd
 entryEnd

@@ -12,26 +12,31 @@ module extractBitIntAssertions
 push 0b10100100
 push 0
 call extractBit
-call assert 0
+push 0
+assertEqual
 
 push 0b10100100
 push 2
 call extractBit
-call assert 1
+push 1
+assertEqual
 
 push 0b10100100
 push 5
 call extractBit
-call assert 1
+push 1
+assertEqual
 
 push 0b10100100
 push 6
 call extractBit
-call assert 0
+push 0
+assertEqual
 
 push -1
 push 31
 call extractBit
-call assert 1
+push 1
+assertEqual
 moduleEnd
 entryEnd

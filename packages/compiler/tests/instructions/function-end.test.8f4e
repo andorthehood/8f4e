@@ -12,7 +12,8 @@ module functionEndIntReturn
 ; an integer stack value to the
 ; caller.
 call getFunctionEndFortyTwo
-call assert 42
+push 42
+assertEqual
 moduleEnd
 
 module functionEndFloatReturn
@@ -21,7 +22,8 @@ module functionEndFloatReturn
 ; the
 ; caller.
 call getFunctionEndPi
-call assert 3.14
+push 3.14
+assertEqual
 moduleEnd
 
 module functionEndStackValidationRuntimeResult
@@ -29,7 +31,8 @@ module functionEndStackValidationRuntimeResult
 ; computed stack value when the
 ; result type matches.
 call addTwoForFunctionEnd
-call assert 8
+push 8
+assertEqual
 moduleEnd
 
 module functionEndFloat64Return
@@ -38,7 +41,8 @@ module functionEndFloat64Return
 ; stack
 ; value to the caller.
 call getFunctionEndDouble
-call assert 3.14f64
+push 3.14f64
+assertEqual
 moduleEnd
 
 module functionEndFloat64SignatureSnapshot
@@ -46,7 +50,8 @@ module functionEndFloat64SignatureSnapshot
 ; records the float64 return
 ; signature for this function.
 call getDoubleForSignatureSnapshot
-call assert 3.14f64
+push 3.14f64
+assertEqual
 moduleEnd
 entryEnd
 

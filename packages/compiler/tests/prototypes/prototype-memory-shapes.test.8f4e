@@ -18,25 +18,29 @@ int localA 11
 ; it expands prototype fields
 ; before local declarations
 push phase
-call assert 0.0
+push 0.0
+assertEqual
 
 ; it preserves default values
 ; from prototype fields
 push frequency
-call assert 440.0
+push 440.0
+assertEqual
 
 ; it preserves declarations
 ; written in the consuming
 ; module
 push localA
-call assert 11
+push 11
+assertEqual
 
 ; it lays out expanded prototype
 ; fields in declaration order
 push &phase
 push &frequency
 lessThan
-call assert 1
+push 1
+assertEqual
 
 ; it lays out local declarations
 ; after a leading shape
@@ -44,7 +48,8 @@ call assert 1
 push &frequency
 push &localA
 lessThan
-call assert 1
+push 1
+assertEqual
 moduleEnd
 
 module oscB
@@ -55,25 +60,29 @@ shape oscillatorState
 ; appear before a shape
 ; instruction
 push localB
-call assert 22
+push 22
+assertEqual
 
 ; it expands prototype fields
 ; after earlier local
 ; declarations
 push phase
-call assert 0.0
+push 0.0
+assertEqual
 
 ; it reuses prototype defaults
 ; in each consuming module
 push frequency
-call assert 440.0
+push 440.0
+assertEqual
 
 ; it lays out shape fields after
 ; preceding local declarations
 push &localB
 push &phase
 lessThan
-call assert 1
+push 1
+assertEqual
 
 ; it allocates separate storage
 ; for each module that uses the
@@ -81,6 +90,7 @@ call assert 1
 push &phase
 push &oscA:phase
 notEqual
-call assert 1
+push 1
+assertEqual
 moduleEnd
 entryEnd

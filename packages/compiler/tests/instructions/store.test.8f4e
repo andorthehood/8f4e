@@ -20,7 +20,8 @@ push src
 store
 
 push dest
-call assert 42
+push 42
+assertEqual
 moduleEnd
 
 module floatStoreAssertions
@@ -34,7 +35,8 @@ push src
 store
 
 push dest
-call assert 3.14
+push 3.14
+assertEqual
 moduleEnd
 
 module float64StoreAssertions
@@ -49,18 +51,21 @@ push src
 store
 
 push dest
-call assert 1.5f64
+push 1.5f64
+assertEqual
 
 push &dest
 push 8
 ensureNonZero
 remainder
-call assert 0
+push 0
+assertEqual
 
 push &src
 push 8
 ensureNonZero
 remainder
-call assert 0
+push 0
+assertEqual
 moduleEnd
 entryEnd

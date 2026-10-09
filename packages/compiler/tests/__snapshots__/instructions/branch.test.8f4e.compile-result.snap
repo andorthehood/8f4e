@@ -86,23 +86,16 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 0,
             },
           ],
-          "instruction": "call",
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "assertEqual",
         },
         {
           "arguments": [],

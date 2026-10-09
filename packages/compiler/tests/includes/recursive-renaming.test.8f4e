@@ -27,18 +27,23 @@ entry test
 module recursiveIncludeAssertions
 ; Recursion follows the renamed included definition.
 call sumDown 3
-call assert 6
+push 6
+assertEqual
 call viaAlias 3
-call assert 6
+push 6
+assertEqual
 
 ; Calls in project code keep their original targets.
 call descend 3
-call assert 100
+push 100
+assertEqual
 call countdown 3
-call assert 200
+push 200
+assertEqual
 
 ; A target outside the included source stays unchanged.
 call delegated 10
-call assert 15
+push 15
+assertEqual
 moduleEnd
 entryEnd

@@ -39,14 +39,17 @@ module groupBindingAssertions
 ; Each group has its own alias and private dependencies.
 push &left:result
 load
-call assert 11
+push 11
+assertEqual
 
 push &right:result
 load
-call assert 12
+push 12
+assertEqual
 
 ; The root binding remains independent of both groups.
 call adjusted 20
-call assert 21
+push 21
+assertEqual
 moduleEnd
 entryEnd

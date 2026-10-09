@@ -12,18 +12,21 @@ push 7
 push 0
 push 5
 call clamp
-call assert 5
+push 5
+assertEqual
 
 push -2
 push 0
 push 5
 call clamp
-call assert 0
+push 0
+assertEqual
 
 push 3
 push 0
 push 5
 call clamp
-call assert 3
+push 3
+assertEqual
 moduleEnd
 entryEnd

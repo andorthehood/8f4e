@@ -13,14 +13,17 @@ module pushLocalAssertions
 ; round-trip through localSet
 ; and push.
 call readIntLocal
-call assert 7
+push 7
+assertEqual
 
 call readFloatLocal
-call assert 1.5
+push 1.5
+assertEqual
 
 push 2.0f64
 call doubleFloat64
-call assert 4.0f64
+push 4.0f64
+assertEqual
 moduleEnd
 
 module localShadowMemoryAssertions
@@ -31,7 +34,8 @@ module localShadowMemoryAssertions
 int value 42
 push 7
 call shadowValue
-call assert 7
+push 7
+assertEqual
 moduleEnd
 
 module pointerDereferenceDepthAssertions
@@ -45,10 +49,11 @@ float** pptr &ptr
 
 push *pptr
 push &value
-call assert
+assertEqual
 
 push **pptr
-call assert 1.5
+push 1.5
+assertEqual
 moduleEnd
 entryEnd
 

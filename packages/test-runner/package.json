@@ -20,8 +20,7 @@
   "author": "Andor Polgar",
   "license": "MIT",
   "dependencies": {
-    "@8f4e/language-spec": "*",
-    "@8f4e/test-precompiler": "*"
+    "@8f4e/language-spec": "*"
   },
   "devDependencies": {
     "@8f4e/config": "*",

@@ -15,7 +15,8 @@ module paramOrderAssertions
 push 2
 push 3
 call addParams
-call assert 5
+push 5
+assertEqual
 moduleEnd
 
 module paramDifferentOrderAssertions
@@ -25,7 +26,8 @@ module paramDifferentOrderAssertions
 push 10
 push 3
 call subtractReverse
-call assert -7
+push -7
+assertEqual
 moduleEnd
 
 module paramPartialUseAssertions
@@ -34,7 +36,8 @@ module paramPartialUseAssertions
 push 6
 push 99
 call useFirst
-call assert 12
+push 12
+assertEqual
 moduleEnd
 
 module paramRepeatedUseAssertions
@@ -42,7 +45,8 @@ module paramRepeatedUseAssertions
 ; multiple times.
 push 7
 call squareParam
-call assert 49
+push 49
+assertEqual
 moduleEnd
 
 module namedParamAssertions
@@ -52,7 +56,8 @@ module namedParamAssertions
 push 4
 push 5
 call calculateArea
-call assert 20
+push 20
+assertEqual
 moduleEnd
 
 module localAfterParamAssertions
@@ -62,7 +67,8 @@ module localAfterParamAssertions
 push 8
 push 9
 call addParamsWithLocal
-call assert 17
+push 17
+assertEqual
 moduleEnd
 
 module mixedWidthParamAssertions
@@ -72,14 +78,16 @@ push 3
 push 2.0
 push 1.5f64
 call mixedAll
-call assert 9.0f64
+push 9.0f64
+assertEqual
 moduleEnd
 
 module noParamFunctionAssertions
 ; Functions with no params still
 ; have a callable signature.
 call noParams
-call assert 42
+push 42
+assertEqual
 moduleEnd
 entryEnd
 

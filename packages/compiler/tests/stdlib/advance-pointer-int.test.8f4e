@@ -19,7 +19,7 @@ call advancePointer
 
 push pointer
 push &buffer+sizeof(buffer)
-call assert
+assertEqual
 
 push &pointer
 push &buffer
@@ -28,7 +28,7 @@ call advancePointer
 
 push pointer
 push buffer&
-call assert
+assertEqual
 
 push &pointer
 push &buffer
@@ -37,6 +37,6 @@ call advancePointer
 
 push pointer
 push &buffer
-call assert
+assertEqual
 moduleEnd
 entryEnd

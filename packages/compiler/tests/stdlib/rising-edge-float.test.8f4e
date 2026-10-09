@@ -14,26 +14,33 @@ float previousFloat
 
 push 0.0
 call risingEdge &previousFloat
-call assert 0
+push 0
+assertEqual
 push previousFloat
-call assert 0.0
+push 0.0
+assertEqual
 
 push 0.25
 call risingEdge &previousFloat
-call assert 1
+push 1
+assertEqual
 push previousFloat
-call assert 0.25
+push 0.25
+assertEqual
 
 push 0.25
 call risingEdge &previousFloat
-call assert 0
+push 0
+assertEqual
 
 push -0.5
 call risingEdge &previousFloat
-call assert 0
+push 0
+assertEqual
 
 push 0.0
 call risingEdge &previousFloat
-call assert 1
+push 1
+assertEqual
 moduleEnd
 entryEnd

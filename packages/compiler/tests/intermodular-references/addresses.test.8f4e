@@ -26,10 +26,12 @@ int* bufferStart &addressSource:buffer
 int* moduleStart &addressSource:
 
 push *bufferStart
-call assert 11
+push 11
+assertEqual
 
 push *moduleStart
-call assert 11
+push 11
+assertEqual
 
 ; End-address references should
 ; point at the final
@@ -40,13 +42,16 @@ int* scalarEnd addressSource:scalar&
 int* moduleEnd addressSource:&
 
 push *bufferEnd
-call assert 33
+push 33
+assertEqual
 
 push *scalarEnd
-call assert 42
+push 42
+assertEqual
 
 push *moduleEnd
-call assert 99
+push 99
+assertEqual
 moduleEnd
 
 module outOfOrderAddressAssertions
@@ -58,10 +63,12 @@ int* start &lateAddressSource:buffer
 int* end lateAddressSource:buffer&
 
 push *start
-call assert 5
+push 5
+assertEqual
 
 push *end
-call assert 8
+push 8
+assertEqual
 moduleEnd
 
 module lateAddressSource
@@ -90,16 +97,20 @@ int* third &nthAddressSource:2
 push first
 push base
 equal
-call assert 1
+push 1
+assertEqual
 
 push *first
-call assert 10
+push 10
+assertEqual
 
 push *second
-call assert 20
+push 20
+assertEqual
 
 push *third
-call assert 30
+push 30
+assertEqual
 moduleEnd
 
 module nthArraySource
@@ -114,7 +125,8 @@ module nthArrayAssertions
 int* scalar &nthArraySource:1
 
 push *scalar
-call assert 60
+push 60
+assertEqual
 moduleEnd
 
 module sameModuleAddressAssertions
@@ -126,10 +138,12 @@ int* startPtr &buffer
 int* endPtr buffer&
 
 push *startPtr
-call assert 1
+push 1
+assertEqual
 
 push *endPtr
-call assert 5
+push 5
+assertEqual
 moduleEnd
 
 module currentModuleShorthandAssertions
@@ -145,16 +159,19 @@ int* moduleEndPtr this&
 int* second &this:1
 
 push *moduleStart
-call assert 10
+push 10
+assertEqual
 
 push *second
-call assert 20
+push 20
+assertEqual
 
 push moduleEndPtr
 push &moduleEndPtr
 push sizeof(moduleEndPtr)
 add
 equal
-call assert 1
+push 1
+assertEqual
 moduleEnd
 entryEnd

@@ -117,25 +117,12 @@ invocation counts and execution order belong to the caller. An enabled program w
 empty array and emits no assertion imports. Site IDs belong to one compilation; consumers must associate results
 with that compilation before matching them to editor lines.
 
-## Existing runner utility
+## Shared test runner
 
-The compiler fixture runner and `8f4e test` currently continue using the ordinary `call assert` utility supplied by
-`@8f4e/test-runner`. The runner instruments source calls with its nested precompiler and injects typed host declarations:
+Compiler fixtures and `8f4e test` use `@8f4e/test-runner` with assertions enabled.
+They use these native instructions directly; sources are not instrumented and no assertion functions are injected.
+The runner supplies collecting callbacks with the semantics above and reports compiler-produced source sites,
+including included helpers. See the [runner API and memory policy](../../../test-runner/README.md).
 
-```8f4e
-entry test
-module addWorks
-push 1
-push 2
-add
-push 3
-call assert
-moduleEnd
-entryEnd
-```
-
-These are normal function calls, independent of `enableAssertions`. The current runner's host ABI is
-`host.assert(received, expected, siteId)`; integer, float32, float64, and pointer overloads are supported. Its comparison
-tolerance is `0.001`, NaN comparisons fail, and it reports original source sites from its precompiler. Native callbacks
-have separate import names so both mechanisms can coexist. Migrating the runner, fixtures, CLI, and editor is tracked
-separately in TODO 491; adding compiler support does not perform that migration.
+Ordinary `call assert` still means a call to a user-defined function named `assert`; the test runner does not provide
+that function. To migrate a former equality call, push its arguments explicitly and use `assertEqual`.

@@ -10,8 +10,10 @@ noteEnd
 entry test
 module loopLocalStorageAssertions
 call capped
-call assert 2
-call assert 1
+push 2
+assertEqual
+push 1
+assertEqual
 moduleEnd
 entryEnd
 

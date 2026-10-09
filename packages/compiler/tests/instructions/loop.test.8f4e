@@ -25,7 +25,8 @@ store
 loopEnd
 
 push counter
-call assert 10
+push 10
+assertEqual
 moduleEnd
 
 module loopCapAssertions
@@ -43,6 +44,7 @@ store
 loopEnd
 
 push counter
-call assert 1000
+push 1000
+assertEqual
 moduleEnd
 entryEnd

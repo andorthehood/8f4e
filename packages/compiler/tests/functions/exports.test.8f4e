@@ -13,12 +13,14 @@ module exportedFunctionAssertions
 push 2
 push 3
 call addForExportSnapshot
-call assert 5
+push 5
+assertEqual
 
 push 4
 push 5
 call multiplyExportedByOwnName
-call assert 20
+push 20
+assertEqual
 moduleEnd
 entryEnd
 

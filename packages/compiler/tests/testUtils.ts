@@ -252,9 +252,7 @@ function serializeCompiledFunctionOverview(func: CompiledFunction): Record<strin
 }
 
 function getFixtureCompiledFunctions(result: CompileResult): Array<[string, CompiledFunction]> {
-	return Object.entries(result.compiledFunctions ?? {})
-		.filter(([, func]) => func.import?.moduleName !== 'host' || func.import.fieldName !== 'assert')
-		.sort(([left], [right]) => left.localeCompare(right));
+	return Object.entries(result.compiledFunctions ?? {}).sort(([left], [right]) => left.localeCompare(right));
 }
 
 export function serializeCompileResult(result: CompileResult): FixtureCompileSnapshots {
@@ -353,9 +351,9 @@ export async function runFixtureProgramFile(filePath: string): Promise<FixturePr
 	let result: TestRunResult<CompileResult>;
 	try {
 		result = await runTestProject(project, {
-			compile: instrumented =>
-				compileProject(instrumented, {
-					disableSharedMemory: true,
+			compile: (project, assertionOptions) =>
+				compileProject(project, {
+					...assertionOptions,
 					memoryRegions: getTestMemoryRegions(source),
 					resolveInclude: resolveTestInclude,
 				}),

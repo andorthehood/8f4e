@@ -14,24 +14,31 @@ float previousFloat
 
 push 0.0
 call hasChanged &previousFloat
-call assert 0
+push 0
+assertEqual
 push previousFloat
-call assert 0.0
+push 0.0
+assertEqual
 
 push 1.5
 call hasChanged &previousFloat
-call assert 1
+push 1
+assertEqual
 push previousFloat
-call assert 1.5
+push 1.5
+assertEqual
 
 push 1.5
 call hasChanged &previousFloat
-call assert 0
+push 0
+assertEqual
 
 push -0.75
 call hasChanged &previousFloat
-call assert 1
+push 1
+assertEqual
 push previousFloat
-call assert -0.75
+push -0.75
+assertEqual
 moduleEnd
 entryEnd

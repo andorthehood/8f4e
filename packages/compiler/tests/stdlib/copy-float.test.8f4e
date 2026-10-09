@@ -19,6 +19,7 @@ push dest
 push 10.0
 mul
 castToInt
-call assert 125
+push 125
+assertEqual
 moduleEnd
 entryEnd

@@ -14,7 +14,8 @@ mapBegin int
 mapEnd int
 push 0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -22,7 +23,8 @@ default -7
 mapEnd int
 push -7
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1
 mapBegin int
@@ -30,7 +32,8 @@ map 1 10
 mapEnd int
 push 10
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -38,7 +41,8 @@ map 1 10
 mapEnd int
 push 0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -47,7 +51,8 @@ default -7
 mapEnd int
 push -7
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -57,7 +62,8 @@ mapBegin int
 mapEnd float
 push 0.0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -65,7 +71,8 @@ default -7.5
 mapEnd float
 push -7.5
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1
 mapBegin int
@@ -73,7 +80,8 @@ map 1 10.5
 mapEnd float
 push 10.5
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -81,7 +89,8 @@ map 1 10.5
 mapEnd float
 push 0.0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -90,7 +99,8 @@ default -7.5
 mapEnd float
 push -7.5
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -100,7 +110,8 @@ mapBegin int
 mapEnd float64
 push 0.0f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -108,7 +119,8 @@ default -7.5f64
 mapEnd float64
 push -7.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1
 mapBegin int
@@ -116,7 +128,8 @@ map 1 10.5f64
 mapEnd float64
 push 10.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -124,7 +137,8 @@ map 1 10.5f64
 mapEnd float64
 push 0.0f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3
 mapBegin int
@@ -133,7 +147,8 @@ default -7.5f64
 mapEnd float64
 push -7.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -143,7 +158,8 @@ mapBegin float
 mapEnd int
 push 0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -151,7 +167,8 @@ default -7
 mapEnd int
 push -7
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1.0
 mapBegin float
@@ -159,7 +176,8 @@ map 1.0 10
 mapEnd int
 push 10
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -167,7 +185,8 @@ map 1.0 10
 mapEnd int
 push 0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -176,7 +195,8 @@ default -7
 mapEnd int
 push -7
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -186,7 +206,8 @@ mapBegin float
 mapEnd float
 push 0.0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -194,7 +215,8 @@ default -7.5
 mapEnd float
 push -7.5
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1.0
 mapBegin float
@@ -202,7 +224,8 @@ map 1.0 10.5
 mapEnd float
 push 10.5
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -210,7 +233,8 @@ map 1.0 10.5
 mapEnd float
 push 0.0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -219,7 +243,8 @@ default -7.5
 mapEnd float
 push -7.5
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -229,7 +254,8 @@ mapBegin float
 mapEnd float64
 push 0.0f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -237,7 +263,8 @@ default -7.5f64
 mapEnd float64
 push -7.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1.0
 mapBegin float
@@ -245,7 +272,8 @@ map 1.0 10.5f64
 mapEnd float64
 push 10.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -253,7 +281,8 @@ map 1.0 10.5f64
 mapEnd float64
 push 0.0f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0
 mapBegin float
@@ -262,7 +291,8 @@ default -7.5f64
 mapEnd float64
 push -7.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -272,7 +302,8 @@ mapBegin float64
 mapEnd int
 push 0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -280,7 +311,8 @@ default -7
 mapEnd int
 push -7
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1.0f64
 mapBegin float64
@@ -288,7 +320,8 @@ map 1.0f64 10
 mapEnd int
 push 10
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -296,7 +329,8 @@ map 1.0f64 10
 mapEnd int
 push 0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -305,7 +339,8 @@ default -7
 mapEnd int
 push -7
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -315,7 +350,8 @@ mapBegin float64
 mapEnd float
 push 0.0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -323,7 +359,8 @@ default -7.5
 mapEnd float
 push -7.5
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1.0f64
 mapBegin float64
@@ -331,7 +368,8 @@ map 1.0f64 10.5
 mapEnd float
 push 10.5
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -339,7 +377,8 @@ map 1.0f64 10.5
 mapEnd float
 push 0.0
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -348,7 +387,8 @@ default -7.5
 mapEnd float
 push -7.5
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -358,7 +398,8 @@ mapBegin float64
 mapEnd float64
 push 0.0f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -366,7 +407,8 @@ default -7.5f64
 mapEnd float64
 push -7.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 1.0f64
 mapBegin float64
@@ -374,7 +416,8 @@ map 1.0f64 10.5f64
 mapEnd float64
 push 10.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -382,7 +425,8 @@ map 1.0f64 10.5f64
 mapEnd float64
 push 0.0f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push 3.0f64
 mapBegin float64
@@ -391,7 +435,8 @@ default -7.5f64
 mapEnd float64
 push -7.5f64
 equal
-call assert 1
+push 1
+assertEqual
 
 moduleEnd
 
@@ -406,7 +451,8 @@ map 16777216.0 10
 map 16777217.0 20
 default -7
 mapEnd int
-call assert 10
+push 10
+assertEqual
 
 push 16777217.0
 mapBegin float
@@ -414,7 +460,8 @@ map 16777216.0 10
 map 16777217.0 20
 default -7
 mapEnd int
-call assert 10
+push 10
+assertEqual
 
 push 16777218.0
 mapBegin float
@@ -422,7 +469,8 @@ map 16777216.0 10
 map 16777217.0 20
 default -7
 mapEnd int
-call assert -7
+push -7
+assertEqual
 
 push 16777216.0f64
 mapBegin float64
@@ -430,7 +478,8 @@ map 16777216.0f64 10
 map 16777217.0f64 20
 default -7
 mapEnd int
-call assert 10
+push 10
+assertEqual
 
 push 16777217.0f64
 mapBegin float64
@@ -438,7 +487,8 @@ map 16777216.0f64 10
 map 16777217.0f64 20
 default -7
 mapEnd int
-call assert 20
+push 20
+assertEqual
 
 push 16777218.0f64
 mapBegin float64
@@ -446,7 +496,8 @@ map 16777216.0f64 10
 map 16777217.0f64 20
 default -7
 mapEnd int
-call assert -7
+push -7
+assertEqual
 
 moduleEnd
 
@@ -465,7 +516,8 @@ mapEnd float
 store
 push &result
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push 0.0
 mapBegin float
@@ -474,7 +526,8 @@ map 0.0 -0.0
 mapEnd float
 push 5.0
 equal
-call assert 1
+push 1
+assertEqual
 
 push &result
 push -0.0
@@ -486,7 +539,8 @@ mapEnd float
 store
 push &result
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push -0.0
 mapBegin float
@@ -495,7 +549,8 @@ map 0.0 -0.0
 mapEnd float
 push 5.0
 equal
-call assert 1
+push 1
+assertEqual
 
 push &result
 push 0.0
@@ -505,7 +560,8 @@ mapEnd float
 store
 push &result
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push &result
 push 0.0
@@ -516,7 +572,8 @@ mapEnd float
 store
 push &result
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push &result
 push -1.0
@@ -527,7 +584,8 @@ mapEnd float
 store
 push &result
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push &result
 push -1.0
@@ -539,7 +597,8 @@ mapEnd float
 store
 push &result
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 moduleEnd
 
 module mapSignedZeroFloat64Assertions
@@ -557,12 +616,14 @@ mapEnd float64
 store
 push &result
 load
-call assert 0
+push 0
+assertEqual
 push &result
 push 4
 add
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push 0.0f64
 mapBegin float64
@@ -571,7 +632,8 @@ map 0.0f64 -0.0f64
 mapEnd float64
 push 5.0f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push &result
 push -0.0f64
@@ -583,12 +645,14 @@ mapEnd float64
 store
 push &result
 load
-call assert 0
+push 0
+assertEqual
 push &result
 push 4
 add
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push -0.0f64
 mapBegin float64
@@ -597,7 +661,8 @@ map 0.0f64 -0.0f64
 mapEnd float64
 push 5.0f64
 equal
-call assert 1
+push 1
+assertEqual
 
 push &result
 push 0.0f64
@@ -607,12 +672,14 @@ mapEnd float64
 store
 push &result
 load
-call assert 0
+push 0
+assertEqual
 push &result
 push 4
 add
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push &result
 push 0.0f64
@@ -623,12 +690,14 @@ mapEnd float64
 store
 push &result
 load
-call assert 0
+push 0
+assertEqual
 push &result
 push 4
 add
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push &result
 push -1.0f64
@@ -639,12 +708,14 @@ mapEnd float64
 store
 push &result
 load
-call assert 0
+push 0
+assertEqual
 push &result
 push 4
 add
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 
 push &result
 push -1.0f64
@@ -656,11 +727,13 @@ mapEnd float64
 store
 push &result
 load
-call assert 0
+push 0
+assertEqual
 push &result
 push 4
 add
 load
-call assert -2147483648
+push -2147483648
+assertEqual
 moduleEnd
 entryEnd

@@ -2,8 +2,8 @@
 
 note
 Float instruction behavior is
-checked through the shared
-imported assert helper.
+checked with native
+assertions.
 noteEnd
 
 entry test
@@ -15,18 +15,31 @@ module floatMulAssertions
 push 4.001
 push 0.5
 mul
-call assert 2.0
+push 2.0
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 moduleEnd
 
 module floatDivAssertions
-; Float division uses assert
-; for tolerance-based
-; comparison.
+; Float division checks an
+; explicit absolute error bound.
 push 420.001
 push 69.001
 ensureNonZero
 div
-call assert 6.0869
+push 6.0869
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 moduleEnd
 
 module floatAbsAssertions
@@ -34,19 +47,23 @@ module floatAbsAssertions
 ; magnitudes.
 push 1.1
 abs
-call assert 1.1
+push 1.1
+assertEqual
 
 push -1.1
 abs
-call assert 1.1
+push 1.1
+assertEqual
 
 push -69.1
 abs
-call assert 69.1
+push 69.1
+assertEqual
 
 push 420.1
 abs
-call assert 420.1
+push 420.1
+assertEqual
 moduleEnd
 
 module castToFloatAssertions
@@ -56,19 +73,23 @@ module castToFloatAssertions
 ; to float.
 push 1
 castToFloat
-call assert 1.0
+push 1.0
+assertEqual
 
 push -69
 castToFloat
-call assert -69.0
+push -69.0
+assertEqual
 
 push 0
 castToFloat
-call assert 0.0
+push 0.0
+assertEqual
 
 push 420
 castToFloat
-call assert 420.0
+push 420.0
+assertEqual
 moduleEnd
 
 module castToIntAssertions
@@ -76,19 +97,23 @@ module castToIntAssertions
 ; zero.
 push 1.1
 castToInt
-call assert 1
+push 1
+assertEqual
 
 push -69.69
 castToInt
-call assert -69
+push -69
+assertEqual
 
 push 0.001
 castToInt
-call assert 0
+push 0
+assertEqual
 
 push 420.99
 castToInt
-call assert 420
+push 420
+assertEqual
 moduleEnd
 
 module roundAssertions
@@ -96,23 +121,28 @@ module roundAssertions
 ; current half-down behavior.
 push 4.1
 round
-call assert 4.0
+push 4.0
+assertEqual
 
 push 4.5
 round
-call assert 4.0
+push 4.0
+assertEqual
 
 push 4.51
 round
-call assert 5.0
+push 5.0
+assertEqual
 
 push 4.6
 round
-call assert 5.0
+push 5.0
+assertEqual
 
 push 4.9
 round
-call assert 5.0
+push 5.0
+assertEqual
 moduleEnd
 
 module sqrtAssertions
@@ -120,10 +150,24 @@ module sqrtAssertions
 ; square roots.
 push 4.001
 sqrt
-call assert 2.0
+push 2.0
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 
 push 16.001
 sqrt
-call assert 4.0
+push 4.0
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 moduleEnd
 entryEnd

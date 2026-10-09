@@ -14,7 +14,8 @@ module zeroValueFunctionAssertions
 ; without affecting the stack.
 call noop
 call getZero
-call assert 0
+push 0
+assertEqual
 moduleEnd
 
 module intParameterFunctionAssertions
@@ -23,11 +24,13 @@ module intParameterFunctionAssertions
 push 3
 push 4
 call addInts
-call assert 7
+push 7
+assertEqual
 
 push 5
 call square
-call assert 25
+push 25
+assertEqual
 moduleEnd
 
 module floatParameterFunctionAssertions
@@ -36,7 +39,8 @@ module floatParameterFunctionAssertions
 push 3.0
 push 2.0
 call multiplyFloats
-call assert 6.0
+push 6.0
+assertEqual
 moduleEnd
 
 module mixedParameterFunctionAssertions
@@ -47,7 +51,8 @@ module mixedParameterFunctionAssertions
 push 4
 push 2.5
 call multiplyMixed
-call assert 10.0
+push 10.0
+assertEqual
 moduleEnd
 
 module multipleReturnFunctionAssertions
@@ -56,8 +61,10 @@ module multipleReturnFunctionAssertions
 ; caller stack.
 push 9
 call duplicateInt
-call assert 9
-call assert 9
+push 9
+assertEqual
+push 9
+assertEqual
 moduleEnd
 
 module localFunctionAssertions
@@ -66,7 +73,8 @@ module localFunctionAssertions
 push 2
 push 5
 call addWithLocal
-call assert 7
+push 7
+assertEqual
 moduleEnd
 
 module functionConstantAssertions
@@ -74,7 +82,8 @@ module functionConstantAssertions
 ; function can be used by that
 ; function.
 call getPi
-call assert 3.14159
+push 3.14159
+assertEqual
 moduleEnd
 
 module impureFunctionAssertions
@@ -86,13 +95,15 @@ int dest
 
 push &source
 call readValue
-call assert 42
+push 42
+assertEqual
 
 push &dest
 push 77
 call writeValue
 push dest
-call assert 77
+push 77
+assertEqual
 moduleEnd
 
 module functionControlFlowAssertions
@@ -102,11 +113,13 @@ module functionControlFlowAssertions
 ; stack value.
 push -12
 call absInt
-call assert 12
+push 12
+assertEqual
 
 push 12
 call absInt
-call assert 12
+push 12
+assertEqual
 moduleEnd
 entryEnd
 

@@ -31,13 +31,15 @@ module integerCaller
 shape integerState
 pushShape integerState
 call readState
-call assert 7
+push 7
+assertEqual
 moduleEnd
 
 module floatCaller
 shape floatState
 pushShape floatState
 call readState
-call assert 2.5
+push 2.5
+assertEqual
 moduleEnd
 entryEnd

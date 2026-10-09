@@ -15,15 +15,18 @@ module ensureNonZeroIntAssertions
 ; zero with one.
 push 69
 ensureNonZero
-call assert 69
+push 69
+assertEqual
 
 push 0
 ensureNonZero
-call assert 1
+push 1
+assertEqual
 
 push -420
 ensureNonZero
-call assert -420
+push -420
+assertEqual
 moduleEnd
 
 module ensureNonZeroFloatAssertions
@@ -32,14 +35,17 @@ module ensureNonZeroFloatAssertions
 ; zero with 1.0.
 push 69.1
 ensureNonZero
-call assert 69.1
+push 69.1
+assertEqual
 
 push 0.0
 ensureNonZero
-call assert 1.0
+push 1.0
+assertEqual
 
 push -420.1
 ensureNonZero
-call assert -420.1
+push -420.1
+assertEqual
 moduleEnd
 entryEnd

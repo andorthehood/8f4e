@@ -2,8 +2,8 @@
 
 note
 Bitwise instruction behavior
-is checked through the shared
-imported assert helper.
+is checked with native
+assertions.
 noteEnd
 
 entry test
@@ -13,12 +13,14 @@ module andAssertions
 push 1
 push 0
 and
-call assert 0
+push 0
+assertEqual
 
 push 3
 push 6
 and
-call assert 2
+push 2
+assertEqual
 moduleEnd
 
 module orAssertions
@@ -27,12 +29,14 @@ module orAssertions
 push 1
 push 0
 or
-call assert 1
+push 1
+assertEqual
 
 push 3
 push 6
 or
-call assert 7
+push 7
+assertEqual
 moduleEnd
 
 module xorAssertions
@@ -41,12 +45,14 @@ module xorAssertions
 push 1
 push 0
 xor
-call assert 1
+push 1
+assertEqual
 
 push 3
 push 6
 xor
-call assert 5
+push 5
+assertEqual
 moduleEnd
 
 module shiftLeftAssertions
@@ -55,17 +61,20 @@ module shiftLeftAssertions
 push 1
 push 1
 shiftLeft
-call assert 2
+push 2
+assertEqual
 
 push 1
 push 2
 shiftLeft
-call assert 4
+push 4
+assertEqual
 
 push 3
 push 3
 shiftLeft
-call assert 24
+push 24
+assertEqual
 moduleEnd
 
 module shiftRightAssertions
@@ -74,16 +83,19 @@ module shiftRightAssertions
 push 1
 push 1
 shiftRight
-call assert 0
+push 0
+assertEqual
 
 push 8
 push 2
 shiftRight
-call assert 2
+push 2
+assertEqual
 
 push 12
 push 3
 shiftRight
-call assert 1
+push 1
+assertEqual
 moduleEnd
 entryEnd

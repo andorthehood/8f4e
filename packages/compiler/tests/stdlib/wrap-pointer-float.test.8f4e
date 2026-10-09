@@ -19,7 +19,7 @@ push &buffer
 push count(buffer)
 call wrapPointer
 push &buffer+8
-call assert
+assertEqual
 
 push pointer
 push count(buffer)
@@ -30,7 +30,7 @@ push &buffer
 push count(buffer)
 call wrapPointer
 push &buffer
-call assert
+assertEqual
 
 push pointer
 push sizeof(buffer)
@@ -39,6 +39,6 @@ push &buffer
 push count(buffer)
 call wrapPointer
 push buffer&
-call assert
+assertEqual
 moduleEnd
 entryEnd

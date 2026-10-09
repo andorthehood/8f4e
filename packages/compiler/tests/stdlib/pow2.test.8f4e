@@ -10,18 +10,22 @@ module pow2Assertions
 ; exponent.
 push 0
 call pow2
-call assert 1
+push 1
+assertEqual
 
 push 1
 call pow2
-call assert 2
+push 2
+assertEqual
 
 push 5
 call pow2
-call assert 32
+push 32
+assertEqual
 
 push 10
 call pow2
-call assert 1024
+push 1024
+assertEqual
 moduleEnd
 entryEnd

@@ -11,7 +11,8 @@ module functionReturnConstant
 ; A function without parameters
 ; can return a constant value.
 call getFortyTwoForFunctionTest
-call assert 42
+push 42
+assertEqual
 moduleEnd
 
 module functionWithParameter
@@ -20,11 +21,13 @@ module functionWithParameter
 ; argument.
 push 5
 call doubleForFunctionTest
-call assert 10
+push 10
+assertEqual
 
 push 10
 call doubleForFunctionTest
-call assert 20
+push 20
+assertEqual
 moduleEnd
 
 module functionWithTwoParameters
@@ -34,12 +37,14 @@ module functionWithTwoParameters
 push 3
 push 4
 call addForFunctionTest
-call assert 7
+push 7
+assertEqual
 
 push -5
 push 10
 call addForFunctionTest
-call assert 5
+push 5
+assertEqual
 moduleEnd
 entryEnd
 

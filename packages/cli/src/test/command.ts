@@ -161,9 +161,9 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 	}
 
 	const result = await runTestProject(project, {
-		compile: instrumented =>
-			compileProject(instrumented, {
-				disableSharedMemory: true,
+		compile: (project, assertionOptions) =>
+			compileProject(project, {
+				...assertionOptions,
 				resolveInclude: resolveStdlibInclude,
 			}),
 	});

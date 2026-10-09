@@ -71,6 +71,12 @@ Publish results tagged with a compilation/run identity and ignore results from s
 and execution results so later editor indicators can show red if any invocation fails, green if executed invocations
 all pass, and neutral if a site was never executed. Rendering green/red icons is a follow-up UI task.
 
+## Current migration scope
+
+The current PR migrates only the existing compiler fixture and CLI tests. Editor runtime integration and the test
+gallery are excluded. The editor plan above remains deferred to a separate follow-up; this TODO stays open for that
+remaining work.
+
 ## Implementation Plan
 
 1. Refactor the shared runner to consume compiled site metadata and supply callbacks. Support compilation convenience
@@ -85,15 +91,15 @@ all pass, and neutral if a site was never executed. Rendering green/red icons is
 
 ## Success Criteria
 
-- [ ] Runner callbacks implement the documented integer-condition and exact-equality semantics.
-- [ ] Failure reports use compiler-produced source sites, including nested groups and included code.
-- [ ] A failed assertion does not prevent subsequent assertions from running through the default collecting callbacks.
-- [ ] Loops preserve static site identity while results record each invocation; unexecuted sites remain distinguishable.
+- [x] Runner callbacks implement the documented integer-condition and exact-equality semantics.
+- [x] Failure reports use compiler-produced source sites, including nested groups and included code.
+- [x] A failed assertion does not prevent subsequent assertions from running through the default collecting callbacks.
+- [x] Loops preserve static site identity while results record each invocation; unexecuted sites remain distinguishable.
 - [ ] Compiler fixtures, CLI tests, and the editor runtime share callback creation, execution, and reporting.
-- [ ] The precompiler package and synthetic assertion declarations are removed.
+- [x] The precompiler package and synthetic assertion declarations are removed.
 - [ ] Editor runtime selection controls compilation, initialization instances satisfy imports, and stale results are ignored.
 - [ ] Memory ownership and reset behavior are documented and covered for CLI and editor execution.
-- [ ] Approximate fixture expectations are explicit rather than hidden in `assertEqual` callbacks.
+- [x] Approximate fixture expectations are explicit rather than hidden in `assertEqual` callbacks.
 - [ ] Runner, CLI, and runtime documentation describes the migrated contracts.
 
 ## Validation Checkpoints
@@ -149,6 +155,11 @@ all pass, and neutral if a site was never executed. Rendering green/red icons is
 Recorded on 2026-10-09. Compiler assertion support is an independent prerequisite in TODO 490. Memory/reset behavior
 and when tests run are runner/runtime choices; this plan mandates neither fresh memory per run nor automatic runs
 after compilation. Rendering green/red assertion icons remains a follow-up UI task.
+
+The compiler and CLI migration compiles original project sources with native assertions enabled. Assertion imports
+and source sites come from the compiler, and the precompiler package has been removed. Fresh CLI/fixture memory is
+initialized once. Approximate expectations in four fixture files now express a `0.001` absolute error bound in source; other
+comparisons use exact `assertEqual`. Editor execution and gallery behavior are deferred.
 
 ## Archive Instructions
 

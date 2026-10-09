@@ -14,26 +14,33 @@ int previousInt
 
 push 0
 call risingEdge &previousInt
-call assert 0
+push 0
+assertEqual
 push previousInt
-call assert 0
+push 0
+assertEqual
 
 push 1
 call risingEdge &previousInt
-call assert 1
+push 1
+assertEqual
 push previousInt
-call assert 1
+push 1
+assertEqual
 
 push 1
 call risingEdge &previousInt
-call assert 0
+push 0
+assertEqual
 
 push 0
 call risingEdge &previousInt
-call assert 0
+push 0
+assertEqual
 
 push 1
 call risingEdge &previousInt
-call assert 1
+push 1
+assertEqual
 moduleEnd
 entryEnd

@@ -6,6 +6,6 @@ push 1
 push 2
 add
 push 4
-call assert
+assertEqual
 moduleEnd
 entryEnd
