@@ -1,6 +1,9 @@
 8f4e/v1
 
-; describe branch
+note
+describe branch
+noteEnd
+
 entry test
 module branchAssertions
 ; it exits the current block

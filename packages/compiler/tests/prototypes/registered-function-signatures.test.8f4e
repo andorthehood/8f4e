@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Each declaration keeps its own
-; expanded signature through
-; semantic analysis and codegen.
+note
+Each declaration keeps its own
+expanded signature through
+semantic analysis and codegen.
+noteEnd
+
 function readState
 #impure
 paramShape integerState

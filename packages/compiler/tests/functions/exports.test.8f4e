@@ -1,10 +1,13 @@
 8f4e/v1
 
-; Export directives are captured
-; in compile-result snapshots
-; and
-; the functions still run
-; internally.
+note
+Export directives are captured
+in compile-result snapshots
+and
+the functions still run
+internally.
+noteEnd
+
 entry test
 module exportedFunctionAssertions
 push 2

@@ -1,5 +1,8 @@
 8f4e/v1
+
+note
 ; @memoryRegions sampleMemory
+noteEnd
 
 entry test
 module customRegion

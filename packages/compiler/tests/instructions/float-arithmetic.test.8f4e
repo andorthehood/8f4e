@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Float instruction behavior is
-; checked through the shared
-; imported assert helper.
+note
+Float instruction behavior is
+checked through the shared
+imported assert helper.
+noteEnd
+
 entry test
 module floatMulAssertions
 ; Float multiplication is

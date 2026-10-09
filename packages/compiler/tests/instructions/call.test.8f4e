@@ -1,10 +1,13 @@
 8f4e/v1
 
-; Function calls are checked
-; through executable source
-; fixtures
-; instead of the old module
-; tester.
+note
+Function calls are checked
+through executable source
+fixtures
+instead of the old module
+tester.
+noteEnd
+
 entry test
 module callConstantFunction
 ; Calling a zero-parameter

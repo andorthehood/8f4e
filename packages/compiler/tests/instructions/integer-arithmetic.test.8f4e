@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Integer arithmetic behavior is
-; checked through the shared
-; imported assert helper.
+note
+Integer arithmetic behavior is
+checked through the shared
+imported assert helper.
+noteEnd
+
 entry test
 module addAssertions
 ; Addition keeps signed integer
@@ -29,11 +32,11 @@ add
 call assert 420
 moduleEnd
 
+module subAssertions
 ; Subtraction keeps signed
 ; integer behavior across
 ; positive,
 ; negative, and zero operands.
-module subAssertions
 push 2
 push 2
 sub
@@ -55,10 +58,10 @@ sub
 call assert 420
 moduleEnd
 
+module mulAssertions
 ; Multiplication handles
 ; ordinary products and zero
 ; operands.
-module mulAssertions
 push 2
 push 2
 mul
@@ -70,9 +73,9 @@ mul
 call assert 0
 moduleEnd
 
+module divAssertions
 ; Division works with a non-zero
 ; guard on the divisor.
-module divAssertions
 push 100
 push 10
 ensureNonZero
@@ -80,10 +83,10 @@ div
 call assert 10
 moduleEnd
 
+module remainderAssertions
 ; remainder works when the
 ; divisor is guarded as
 ; non-zero.
-module remainderAssertions
 push 4
 push 2
 ensureNonZero
@@ -97,9 +100,9 @@ remainder
 call assert 1
 moduleEnd
 
+module absAssertions
 ; abs returns positive integer
 ; magnitudes.
-module absAssertions
 push 1
 abs
 call assert 1

@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Pure functions should compile,
-; expose stable signatures in
-; snapshots, and run through
-; normal calls.
+note
+Pure functions should compile,
+expose stable signatures in
+snapshots, and run through
+normal calls.
+noteEnd
+
 entry test
 module zeroValueFunctionAssertions
 ; Functions with no parameters

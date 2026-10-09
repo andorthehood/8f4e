@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Continuation lines append one
-; argument to the previous
-; instruction.
+note
+Continuation lines append one
+argument to the previous
+instruction.
+noteEnd
+
 entry test
 module continuationPointerSource
 ; The split pointer declaration

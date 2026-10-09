@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Array initializer values
-; should be visible after
-; initDefaults
-; runs.
+note
+Array initializer values
+should be visible after
+initDefaults
+runs.
+noteEnd
+
 entry test
 module intArrayInitializerAssertions
 ; int[] trailing values

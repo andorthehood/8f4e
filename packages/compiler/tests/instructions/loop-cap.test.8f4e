@@ -1,7 +1,10 @@
 8f4e/v1
 
-; Loop cap behavior is checked
-; from source-level fixtures.
+note
+Loop cap behavior is checked
+from source-level fixtures.
+noteEnd
+
 entry test
 module defaultLoopCapAssertions
 ; Plain loops stop at the

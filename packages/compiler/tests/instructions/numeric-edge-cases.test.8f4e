@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Numeric edge cases are
-; executable fixtures so the
-; real Wasm
-; runtime path is covered.
+note
+Numeric edge cases are
+executable fixtures so the
+real Wasm
+runtime path is covered.
+noteEnd
+
 entry test
 module castToIntSaturatesOutOfRangeFloat32
 ; castToInt should saturate

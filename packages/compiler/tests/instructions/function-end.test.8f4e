@@ -1,9 +1,11 @@
 8f4e/v1
 
-; functionEnd return
-; declarations define the value
-; passed back
-; to callers.
+note
+The functionEnd return
+declarations define the value
+passed back to callers.
+noteEnd
+
 entry test
 module functionEndIntReturn
 ; functionEnd int should return

@@ -1,8 +1,11 @@
 8f4e/v1
 
-; map runtime behavior is
-; asserted through source-level
-; fixtures.
+note
+map runtime behavior is
+asserted through source-level
+fixtures.
+noteEnd
+
 entry test
 module mapIntIntAssertions
 ; Integer maps return matching
