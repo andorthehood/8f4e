@@ -5,6 +5,7 @@ function createCompilerArtifactsStub() {
 	return {
 		getMemory: vi.fn(() => null),
 		getCodeBuffer: vi.fn(() => new Uint8Array()),
+		getAssertionSites: vi.fn(() => undefined),
 	};
 }
 
@@ -16,5 +17,7 @@ describe('runtime registry', () => {
 		expect(firstRegistry).not.toBe(secondRegistry);
 		expect(firstRegistry.WebWorkerRuntime).not.toBe(secondRegistry.WebWorkerRuntime);
 		expect(firstRegistry.AudioWorkletRuntime).not.toBe(secondRegistry.AudioWorkletRuntime);
+		expect(firstRegistry.TestRuntime).not.toBe(secondRegistry.TestRuntime);
+		expect(firstRegistry.TestRuntime.editorConfigSchema).toBeUndefined();
 	});
 });

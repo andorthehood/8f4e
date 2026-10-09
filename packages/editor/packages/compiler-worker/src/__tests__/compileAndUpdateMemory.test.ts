@@ -75,6 +75,45 @@ moduleEnd
 		expect(updatedMemory[addresses.derived]).toBe(0);
 	});
 
+	it('initializes a project with all assertion imports without running its test entry', async () => {
+		const project = createInput([
+			{
+				code: `module checks
+int ran 0
+push 0
+assert
+push 1
+assertEqual 2
+push 1.0
+assertEqual 2.0
+push 1.0f64
+assertEqual 2.0f64
+push &ran
+push 1
+store
+moduleEnd`.split('\n'),
+			},
+		]);
+		project.modules[0].entry = 'test';
+		const result = await compileAndUpdateMemory(project, { ...compilerOptions, enableAssertions: true });
+		const imports = WebAssembly.Module.imports(new WebAssembly.Module(new Uint8Array(result.codeBuffer)));
+		expect(result.assertionSites).toMatchObject([
+			{ instruction: 'assert', codeBlockId: 'checks', lineNumber: 3 },
+			{ instruction: 'assertEqual', lineNumber: 5 },
+			{ instruction: 'assertEqual', lineNumber: 7 },
+			{ instruction: 'assertEqual', lineNumber: 9 },
+		]);
+
+		expect(imports.filter(item => item.kind === 'function').map(item => item.name)).toEqual([
+			'assertCondition',
+			'assertEqualI32',
+			'assertEqualF32',
+			'assertEqualF64',
+		]);
+		const address = result.memoryPlan.modules.checks.memory.ran.byteAddress / 4;
+		expect(new Int32Array(result.memoryRef.buffer)[address]).toBe(0);
+	});
+
 	it('does not run execution entries when defaults are unchanged', async () => {
 		const firstResult = await compileAndUpdateMemory(createInput(createModules(3)), compilerOptions);
 		const addresses = getAddresses(firstResult);

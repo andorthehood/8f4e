@@ -1,8 +1,8 @@
 {
-  "name": "@8f4e/runtime-audio-worklet",
-  "version": "2.1.14",
+  "name": "@8f4e/runtime-test-runner",
+  "version": "0.1.0",
   "private": true,
-  "description": "8f4e audio worklet runtime package",
+  "description": "8f4e runtime that executes tests once after compilation",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,9 +14,6 @@
     "./runtime-def": {
       "types": "./dist/runtimeDef.d.ts",
       "default": "./dist/runtimeDef.js"
-    },
-    "./worklet": {
-      "default": "./dist/worklet/index.js"
     }
   },
   "sideEffects": false,
@@ -26,16 +23,18 @@
   },
   "author": "Andor Polgar",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/andorthehood/8f4e/issues"
-  },
-  "homepage": "https://github.com/andorthehood/8f4e#readme",
   "dependencies": {
+    "@8f4e/language-spec": "*",
     "@8f4e/test-runner": "*"
   },
-  "devDependencies": {},
   "peerDependencies": {
     "@8f4e/editor-core": "*",
     "@8f4e/state-manager": "*"
+  },
+  "devDependencies": {
+    "@8f4e/compiler": "*",
+    "@8f4e/config": "*",
+    "@types/node": "24.13.2",
+    "vitest": "4.1.7"
   }
 }

@@ -11,6 +11,7 @@ const includeSourceRequestBroker = createIncludeSourceRequestBroker(message => s
 async function compile(project: ProjectObjectModel, compilerOptions: CompileOptions, compilationId: number) {
 	try {
 		const {
+			assertionSites,
 			codeBuffer,
 			compiledModules,
 			compiledFunctions,
@@ -32,6 +33,7 @@ async function compile(project: ProjectObjectModel, compilerOptions: CompileOpti
 			type: 'success',
 			compilationId,
 			payload: {
+				assertionSites,
 				codeBuffer,
 				compiledModules,
 				memoryPlan,

@@ -9,6 +9,7 @@ import type {
 	ProjectIncludeResolver,
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
+import { IGNORED_ASSERTION_IMPORTS } from '@8f4e/test-runner';
 import getMemoryValueChanges from './getMemoryValueChanges';
 import getOrCreateMemory from './getOrCreateMemory';
 
@@ -35,6 +36,7 @@ async function getOrCreateWasmInstanceRef(
 	const result = (await WebAssembly.instantiate(codeBuffer, {
 		host: {
 			memory: memoryRef,
+			...IGNORED_ASSERTION_IMPORTS,
 		},
 		// TODO: revisit this once in a while to check if types have been improved
 	})) as unknown as { instance: WebAssembly.Instance; module: WebAssembly.Module };
@@ -50,6 +52,7 @@ export default async function compileAndUpdateMemory(
 	resolveInclude: ProjectIncludeResolver = () => undefined
 ): Promise<CompileAndUpdateMemoryResult> {
 	const {
+		assertionSites,
 		codeBuffer,
 		compiledModules,
 		requiredMemoryBytes,
@@ -139,6 +142,7 @@ export default async function compileAndUpdateMemory(
 	previousCompileState = currentCompileState;
 
 	return {
+		assertionSites,
 		codeBuffer,
 		compiledModules,
 		compiledFunctions,

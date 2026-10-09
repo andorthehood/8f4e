@@ -27,6 +27,15 @@ need. `runTests(compiled)` allocates fresh memory for each region, calls `initDe
 It returns `instance`, `memories`, `assertions`, and `failures`. Callers retain the compiler's source-site lookup and
 other output themselves. The runner has no compiler implementation dependency or source transformation step.
 
+`runTests({ codeBuffer, assertionSites, memories })` instead borrows the supplied
+`Record<string, WebAssembly.Memory>` host imports. This path needs no allocation sizes and executes against the
+current state without calling `initDefaults()` or resetting memory. The caller owns initialization and lifetime;
+supplied shared memory must match the compiled Wasm imports. The editor test runtime uses this path with memory
+already initialized by its compiler worker.
+
+Hosts that instantiate assertion-enabled Wasm without collecting results can import `IGNORED_ASSERTION_IMPORTS`
+and spread it into their `host` imports alongside memory. These callbacks ignore all assertion invocations.
+
 ## Assertions and reporting
 
 ```8f4e

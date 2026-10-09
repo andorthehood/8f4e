@@ -1,4 +1,5 @@
 import type { State } from '@8f4e/editor-state-types';
+import { IGNORED_ASSERTION_IMPORTS } from '@8f4e/test-runner';
 import type { RgbaTexture, RgbaTextureLayer } from 'glugglugglug';
 import type { MemoryViews } from '../types';
 
@@ -33,6 +34,7 @@ async function instantiateWasmOverlayTexture(
 	const { instance } = (await WebAssembly.instantiate(codeBuffer, {
 		host: {
 			memory,
+			...IGNORED_ASSERTION_IMPORTS,
 		},
 	})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
 

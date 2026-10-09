@@ -1,3 +1,5 @@
+import { IGNORED_ASSERTION_IMPORTS } from '@8f4e/test-runner';
+
 const noop = () => {
 	return;
 };
@@ -16,6 +18,7 @@ export default async function createModule(
 	const { instance } = (await WebAssembly.instantiate(codeBuffer, {
 		host: {
 			memory: memoryRef,
+			...IGNORED_ASSERTION_IMPORTS,
 		},
 	})) as unknown as { instance: WebAssembly.Instance; module: WebAssembly.Module };
 

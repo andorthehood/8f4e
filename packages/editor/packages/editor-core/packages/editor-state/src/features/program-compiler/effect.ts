@@ -2,6 +2,7 @@ import type { InfoRecord, State } from '@8f4e/editor-state-types';
 import type { CompilerDiagnostic } from '@8f4e/language-spec';
 import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
+import { hasTestEntry } from '@8f4e/test-runner';
 import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 import { log } from '../logger/logger';
@@ -45,11 +46,12 @@ export default function compiler(store: StateManager<State>): () => void {
 				return;
 			}
 
+			const project = convertGraphicDataToProjectStructure(state.codeBlockRendering.rootCodeBlocks);
 			const compilerOptions = {
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: true,
+				enableAssertions: hasTestEntry(project),
 			};
-			const project = convertGraphicDataToProjectStructure(state.codeBlockRendering.rootCodeBlocks);
 			const result = await state.callbacks.compileCode(project, {
 				...compilerOptions,
 				...(state.callbacks.resolveInclude ? { resolveInclude: state.callbacks.resolveInclude } : {}),
