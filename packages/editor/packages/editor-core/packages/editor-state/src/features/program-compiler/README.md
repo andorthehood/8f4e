@@ -20,8 +20,12 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 ```typescript
 {
   startingMemoryWordAddress: 0,
+  includeStackAnalysis: true,
+  enableAssertions: hasTestEntry(project),
 }
 ```
+
+Assertions are enabled when the project contains an enabled `test` entry, including nested test modules or a root function exported as `test`. Existing editor instances provide inert assertion callbacks so compilation and normal execution continue to work; this does not execute tests or collect assertion results.
 
 **Note**: The compiler derives the required memory size from its allocation plan and returns the effective page-rounded size. Environment constants are provided via an auto-managed `constants env` block, with runtime-owned lines contributed by the selected runtime.
 

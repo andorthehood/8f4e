@@ -60,6 +60,67 @@ describe('program compiler effect', () => {
 		await vi.advanceTimersByTimeAsync(delayMs);
 	}
 
+	it.each([false, true])('enables assertions for a test module with disabled=%s', async disabled => {
+		mockState.codeBlockRendering.rootCodeBlocks.push(
+			createMockCodeBlock({
+				blockType: 'module',
+				entry: 'test',
+				disabled,
+				code: ['module checks', 'push 1', 'assert', 'moduleEnd'],
+			})
+		);
+
+		await triggerProgrammaticCompile();
+
+		expect(mockCompileCode).toHaveBeenCalledWith(
+			expect.anything(),
+			expect.objectContaining({ enableAssertions: !disabled })
+		);
+	});
+
+	it('enables assertions for a test module in a nested project', async () => {
+		mockState.codeBlockRendering.rootCodeBlocks.push(
+			createMockCodeBlock({
+				name: 'nested',
+				code: ['project nested', 'projectEnd'],
+				nestedProjectCodeBlocks: [
+					createMockCodeBlock({
+						blockType: 'module',
+						entry: 'test',
+						code: ['module checks', 'push 1', 'assert', 'moduleEnd'],
+					}),
+				],
+			})
+		);
+
+		await triggerProgrammaticCompile();
+
+		expect(mockCompileCode).toHaveBeenCalledWith(
+			expect.anything(),
+			expect.objectContaining({ enableAssertions: true })
+		);
+	});
+
+	it.each([
+		['test', '#export', true],
+		['checks', '#export test', true],
+		['test', '', false],
+	])('detects a root test function %s with directive %s', async (name, directive, enabled) => {
+		mockState.codeBlockRendering.rootCodeBlocks.push(
+			createMockCodeBlock({
+				blockType: 'function',
+				code: [`function ${name}`, directive, 'push 1', 'assert', 'functionEnd'],
+			})
+		);
+
+		await triggerProgrammaticCompile();
+
+		expect(mockCompileCode).toHaveBeenCalledWith(
+			expect.anything(),
+			expect.objectContaining({ enableAssertions: enabled })
+		);
+	});
+
 	it('stores code block type for compiler errors', async () => {
 		await triggerProgrammaticCompile();
 
@@ -138,6 +199,7 @@ describe('program compiler effect', () => {
 			{
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: true,
+				enableAssertions: false,
 			}
 		);
 		expect(mockState.info.compiler).toMatchObject({
@@ -181,6 +243,7 @@ describe('program compiler effect', () => {
 			{
 				startingMemoryWordAddress: 0,
 				includeStackAnalysis: true,
+				enableAssertions: false,
 			}
 		);
 	});

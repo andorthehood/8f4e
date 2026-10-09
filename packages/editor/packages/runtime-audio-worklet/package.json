@@ -30,7 +30,9 @@
     "url": "https://github.com/andorthehood/8f4e/issues"
   },
   "homepage": "https://github.com/andorthehood/8f4e#readme",
-  "dependencies": {},
+  "dependencies": {
+    "@8f4e/test-runner": "*"
+  },
   "devDependencies": {},
   "peerDependencies": {
     "@8f4e/editor-core": "*",

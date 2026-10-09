@@ -16,6 +16,7 @@ const baseConfig = createLibConfig({
 		'@8f4e/project-preparser',
 		'@8f4e/sprite-generator',
 		'@8f4e/state-manager',
+		'@8f4e/test-runner',
 		'@8f4e/tokenizer',
 	],
 });

@@ -1,3 +1,5 @@
+import { IGNORED_ASSERTION_IMPORTS } from '@8f4e/test-runner';
+
 export interface EditorEnvironmentWasmExports {
 	getExports: () => Promise<WebAssembly.Exports | undefined>;
 	invalidate: () => void;
@@ -19,6 +21,7 @@ async function instantiateWasmExports(
 	const { instance } = (await WebAssembly.instantiate(codeBuffer, {
 		host: {
 			memory,
+			...IGNORED_ASSERTION_IMPORTS,
 		},
 	})) as unknown as WebAssembly.WebAssemblyInstantiatedSource;
 

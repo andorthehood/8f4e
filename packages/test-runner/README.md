@@ -27,6 +27,9 @@ need. `runTests(compiled)` allocates fresh memory for each region, calls `initDe
 It returns `instance`, `memories`, `assertions`, and `failures`. Callers retain the compiler's source-site lookup and
 other output themselves. The runner has no compiler implementation dependency or source transformation step.
 
+Hosts that instantiate assertion-enabled Wasm without collecting results can import `IGNORED_ASSERTION_IMPORTS`
+and spread it into their `host` imports alongside memory. These callbacks ignore all assertion invocations.
+
 ## Assertions and reporting
 
 ```8f4e
