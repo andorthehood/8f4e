@@ -28,6 +28,9 @@
 - From package directory: use `npx nx run compiler:<target>` (e.g., `npx nx run compiler:dev`).
 - JS output is bundled with Vite; declarations are emitted separately with `tsc --emitDeclarationOnly`.
 - Artifacts in `dist/` must exist before root Vite build when APIs change.
+- Map codegen benchmark: after an Nx compiler build, run `node scripts/benchmark-map-codegen.mjs --capture <directory>`
+  from the repository root on the baseline revision, then rebuild the optimized revision and use `--baseline <directory>`.
+  See `docs/benchmarks/map-codegen.md` within this package for fixtures, methodology, and measured results.
 
 ## Coding Style
 - TypeScript (strict). Use Biome for linting and import organization.
