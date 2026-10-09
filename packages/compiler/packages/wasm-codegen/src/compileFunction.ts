@@ -8,10 +8,8 @@ import {
 import type {
 	CompiledFunction,
 	CompileOptions,
-	FunctionCodegenContext,
 	FunctionRegistry,
 	FunctionTypeRegistry,
-	Namespaces,
 	ValidatedFunctionAST,
 } from '@8f4e/language-spec';
 
@@ -27,7 +25,6 @@ import { getOrRegisterFunctionType } from './instructionCompilers/utils/function
  * Compiles one resolved function into a WebAssembly function body or import metadata.
  *
  * @param resolved - Executable body, source bindings, and registered function metadata.
- * @param namespaces - Collected namespaces used for symbol and memory resolution.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param functions - Function registry available to compilation.
  * @param stackReport - Stack-analysis report for this function.
@@ -36,35 +33,20 @@ import { getOrRegisterFunctionType } from './instructionCompilers/utils/function
  */
 export function compileFunction(
 	resolved: FunctionSemanticReferences,
-	namespaces: Namespaces,
 	typeRegistry: FunctionTypeRegistry,
 	functions: FunctionRegistry,
 	stackReport: StackAnalyzedFunction,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
 ): CompiledFunction {
 	const { ast, metadata: functionMetadata, bindings, body } = resolved;
-	const context = createCodegenContext<FunctionCodegenContext>(
+	const context = createCodegenContext(
 		{
-			namespace: {
-				namespaces,
-				moduleName: undefined,
-				functions,
-				prototypeShapeIds: [],
-			},
+			functions,
 			byteCode: [],
 			blockStack: [{ blockType: BlockType.FUNCTION, expectedResultTypes: [] }],
-			startingByteAddress: 0,
-			currentModuleNextWordOffset: 0,
-			currentModuleWordAlignedSize: 0,
-			currentMemoryIndex: 0,
-			memoryRegions: [],
-			mode: 'function',
 			codeBlockType: 'function',
 			projectBlockId: ast.projectBlockId,
 			source: ast.source,
-			currentFunctionId: functionMetadata.id,
-			currentFunctionName: functionMetadata.name,
-			currentFunctionMetadata: functionMetadata,
 			codeBlockId: functionMetadata.name,
 			functionTypeRegistry: typeRegistry,
 		},

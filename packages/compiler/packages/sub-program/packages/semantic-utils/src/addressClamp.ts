@@ -1,5 +1,4 @@
 import type {
-	CodegenContext,
 	CompilationContext,
 	CompilerASTLine,
 	MemoryAddressRange,
@@ -27,7 +26,7 @@ export function getClampAccessByteWidth(line: CompilerASTLine): number {
  * @param context - Compilation context used by the operation.
  * @returns The resolved memory address range.
  */
-export function getModuleAddressRange(context: CodegenContext | CompilationContext): MemoryAddressRange {
+export function getModuleAddressRange(context: Pick<CompilationContext, 'currentPlannedModule'>): MemoryAddressRange {
 	const plannedModule = context.currentPlannedModule!;
 	return {
 		source: 'module-start',

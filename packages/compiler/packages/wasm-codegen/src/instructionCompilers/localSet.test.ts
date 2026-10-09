@@ -1,7 +1,7 @@
 import type { ResolvedLocalSetLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
 import _localSet from './localSet';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
@@ -14,9 +14,8 @@ describe('localSet instruction compiler', () => {
 				0: local,
 			},
 		});
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			_localSet,
 			{
 				lineNumber: 1,
@@ -28,7 +27,6 @@ describe('localSet instruction compiler', () => {
 		);
 
 		expect({
-			stack: context.stack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});

@@ -3,7 +3,7 @@ import type { CompilerASTLine } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
 import loopIndex from './loopIndex';
 
 describe('loopIndex instruction compiler', () => {
@@ -26,7 +26,7 @@ describe('loopIndex instruction compiler', () => {
 			],
 		});
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			loopIndex,
 			{
 				lineNumber: 10,
@@ -37,7 +37,6 @@ describe('loopIndex instruction compiler', () => {
 		);
 
 		expect(context.byteCode).toEqual([...localGet(3), ...i32const(1), WASM_I32_SUB]);
-		expect(context.stack).toEqual([{ kind: 'value', valueType: 'int', isNonZero: false }]);
 	});
 
 	it('uses the innermost loop when nested', () => {
@@ -66,7 +65,7 @@ describe('loopIndex instruction compiler', () => {
 			],
 		});
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			loopIndex,
 			{
 				lineNumber: 10,

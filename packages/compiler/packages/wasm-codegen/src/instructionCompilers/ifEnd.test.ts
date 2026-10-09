@@ -2,7 +2,7 @@ import type { CompilerASTLine } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
 import ifEnd from './ifEnd';
 
 describe('ifEnd instruction compiler', () => {
@@ -16,9 +16,8 @@ describe('ifEnd instruction compiler', () => {
 				},
 			],
 		});
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			ifEnd,
 			{
 				lineNumber: 1,
@@ -29,7 +28,6 @@ describe('ifEnd instruction compiler', () => {
 		);
 
 		expect({
-			stack: context.stack,
 			blockStack: context.blockStack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
@@ -45,10 +43,8 @@ describe('ifEnd instruction compiler', () => {
 				},
 			],
 		});
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
-		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			ifEnd,
 			{
 				lineNumber: 1,
@@ -59,7 +55,6 @@ describe('ifEnd instruction compiler', () => {
 		);
 
 		expect({
-			stack: context.stack,
 			blockStack: context.blockStack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();

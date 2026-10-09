@@ -6,6 +6,5 @@ exports[`branchIfTrue instruction compiler > emits br_if bytecode 1`] = `
     13,
     2,
   ],
-  "stack": [],
 }
 `;

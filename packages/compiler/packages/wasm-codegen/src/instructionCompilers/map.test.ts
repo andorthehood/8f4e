@@ -1,11 +1,11 @@
-import type { CompilationContext, CompilerASTLine, MapBlockState } from '@8f4e/language-spec';
+import type { CodegenContext, CompilerASTLine, MapBlockState } from '@8f4e/language-spec';
 import { ArgumentType, BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
 import map from './map';
 
-function getActiveMapState(context: CompilationContext): MapBlockState {
+function getActiveMapState(context: CodegenContext): MapBlockState {
 	const block = context.activeMapBlock;
 
 	if (!block) {
@@ -36,7 +36,7 @@ describe('map instruction compiler', () => {
 			],
 		});
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			map,
 			{
 				lineNumber: 1,
@@ -72,7 +72,7 @@ describe('map instruction compiler', () => {
 			],
 		});
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			map,
 			{
 				lineNumber: 1,
@@ -122,7 +122,7 @@ describe('map instruction compiler', () => {
 			],
 		});
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			map,
 			{
 				lineNumber: 2,

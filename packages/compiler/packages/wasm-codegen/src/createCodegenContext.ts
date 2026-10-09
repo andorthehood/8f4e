@@ -1,18 +1,19 @@
-import type { CodegenContext, CompilationContext, LocalStorageMap, SourceLocalBinding } from '@8f4e/language-spec';
-import { createCompilationContext } from '@8f4e/semantic-utils';
+import type { CodegenContext, SourceLocalBinding } from '@8f4e/language-spec';
+import { createBlockState } from '@8f4e/semantic-utils';
 import { allocateLocalFromType } from './localStorage';
 
-export function createCodegenContext<TContext extends CodegenContext>(
-	overrides: Partial<CompilationContext>,
-	bindings: readonly SourceLocalBinding[]
-): TContext {
-	const { stack: _stack, ...context } = createCompilationContext<
-		CompilationContext & { locals: LocalStorageMap; nextLocalIndex: number }
-	>({
-		...overrides,
+/** Initializes bytecode emission state and allocates the resolved source bindings. */
+export function createCodegenContext(
+	overrides: Partial<CodegenContext> = {},
+	bindings: readonly SourceLocalBinding[] = []
+): CodegenContext {
+	const context: CodegenContext = {
+		byteCode: [],
 		locals: {},
 		nextLocalIndex: 0,
-	});
+		...overrides,
+		...createBlockState(overrides.blockStack),
+	};
 	for (const binding of bindings) allocateLocalFromType(context, String(binding.id), binding.type);
-	return context as TContext;
+	return context;
 }

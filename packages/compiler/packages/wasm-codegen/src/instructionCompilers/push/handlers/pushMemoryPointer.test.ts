@@ -24,13 +24,11 @@ function createPointerMemoryItem(
 	overrides: Partial<ResolvedMemoryDeclaration> & Pick<ResolvedMemoryDeclaration, 'id' | 'byteAddress'>
 ) {
 	return {
-		id: overrides.id,
 		numberOfElements: 1,
 		elementWordSize: 4,
 		memoryIndex: 0,
 		wordAlignedAddress: 0,
 		wordAlignedSize: 1,
-		byteAddress: overrides.byteAddress,
 		isInteger: true,
 		isUnsigned: false,
 		pointerDepth: 1,

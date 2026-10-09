@@ -5,13 +5,6 @@ exports[`lessOrEqual instruction compiler > emits F32_LE for float operands 1`] 
   "byteCode": [
     95,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;
 
@@ -19,13 +12,6 @@ exports[`lessOrEqual instruction compiler > emits I32_LE_S for integer operands 
 {
   "byteCode": [
     76,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

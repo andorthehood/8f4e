@@ -1,61 +1,10 @@
-import type { CompilationContext, CompilerASTLine, MapBlockStackFrame, MemoryAddressRange } from '@8f4e/language-spec';
+import type { CompilerASTLine, MapBlockStackFrame, MemoryAddressRange } from '@8f4e/language-spec';
 import { ArgumentType, BlockType, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import { analyzeInstruction } from './analyzeInstruction';
 
-function createStackAnalyzerTestContext(overrides: Partial<CompilationContext> = {}): CompilationContext {
-	return {
-		namespace: {
-			moduleName: 'test',
-			namespaces: {},
-			prototypeShapeIds: [],
-			...overrides.namespace,
-		},
-		locals: {},
-		stack: [],
-		blockStack: [
-			{
-				blockType: BlockType.MODULE,
-				expectedResultTypes: [],
-			},
-		],
-		activeBlockDepths: {
-			[BlockType.MODULE]: 1,
-			[BlockType.LOOP]: 0,
-			[BlockType.CONDITION]: 0,
-			[BlockType.FUNCTION]: 0,
-			[BlockType.BLOCK]: 0,
-			[BlockType.CONSTANTS]: 0,
-			[BlockType.MAP]: 0,
-		},
-		activeLoopBlocks: [],
-		insideModuleBlock: true,
-		insideFunctionBlock: false,
-		insideGenericBlock: false,
-		insideLoopBlock: false,
-		insideConditionBlock: false,
-		insideConstantsBlock: false,
-		insideMapBlock: false,
-		startingByteAddress: 0,
-		currentModuleNextWordOffset: 0,
-		currentModuleWordAlignedSize: 0,
-		currentMemoryIndex: 0,
-		memoryPlan: {
-			modules: {},
-			moduleList: [],
-			nextByteAddressByMemoryIndex: {},
-		},
-		memoryDefaults: {},
-		pointerMetadata: {},
-		memoryRegions: [],
-		byteCode: [],
-		mode: 'module',
-		codeBlockId: 'test',
-		codeBlockType: 'module',
-		...overrides,
-	};
-}
+import createStackAnalyzerTestContext from './testUtils';
 
 describe('analyzeInstruction', () => {
 	it('records stack before, consumed operands, produced items, and stack after', () => {
@@ -148,8 +97,8 @@ describe('analyzeInstruction', () => {
 	] as const)('propagates known float32 values through %s', (instruction, left, right, expected) => {
 		const context = createStackAnalyzerTestContext({
 			stack: [
-				{ kind: 'value', valueType: 'float', isNonZero: left !== 0, knownValue: Math.fround(left) },
-				{ kind: 'value', valueType: 'float', isNonZero: right !== 0, knownValue: Math.fround(right) },
+				{ kind: 'value', valueType: 'float', isNonZero: true, knownValue: Math.fround(left) },
+				{ kind: 'value', valueType: 'float', isNonZero: true, knownValue: Math.fround(right) },
 			],
 		});
 		const line = { lineNumber: 1, instruction, arguments: [] } as CompilerASTLine;
@@ -210,7 +159,6 @@ describe('analyzeInstruction', () => {
 				mapBlock,
 			],
 			activeMapBlock: mapBlock,
-			insideMapBlock: true,
 			activeBlockDepths: {
 				[BlockType.MODULE]: 1,
 				[BlockType.LOOP]: 0,
@@ -252,7 +200,7 @@ describe('analyzeInstruction', () => {
 		context.stack.push({
 			kind: 'address',
 			valueType: 'int',
-			address: { clampRange: range },
+			address: { memoryIndex: 0, clampRange: range },
 		});
 		const line = {
 			lineNumber: 1,

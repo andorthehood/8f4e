@@ -6,6 +6,5 @@ exports[`clearStack instruction compiler > drops all stack values 1`] = `
     26,
     26,
   ],
-  "stack": [],
 }
 `;

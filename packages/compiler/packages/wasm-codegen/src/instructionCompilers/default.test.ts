@@ -2,7 +2,7 @@ import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType, BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
 import _default from './default';
 
 describe('default instruction compiler', () => {
@@ -26,7 +26,7 @@ describe('default instruction compiler', () => {
 			],
 		});
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			_default,
 			{
 				lineNumber: 1,

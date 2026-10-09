@@ -7,13 +7,6 @@ exports[`loadFloat instruction compiler > loads from a safe memory address 1`] =
     2,
     0,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float",
-    },
-  ],
 }
 `;
 
@@ -52,13 +45,6 @@ exports[`loadFloat instruction compiler > loads from an unsafe memory address wi
     0,
     0,
     11,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float",
-    },
   ],
 }
 `;

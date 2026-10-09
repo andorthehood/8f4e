@@ -5,12 +5,5 @@ exports[`xor instruction compiler > emits I32_XOR for integer operands 1`] = `
   "byteCode": [
     115,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;

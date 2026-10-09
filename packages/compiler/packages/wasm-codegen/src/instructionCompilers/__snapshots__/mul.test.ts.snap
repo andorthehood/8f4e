@@ -5,13 +5,6 @@ exports[`mul instruction compiler > emits F32_MUL for float32 operands 1`] = `
   "byteCode": [
     148,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float",
-    },
-  ],
 }
 `;
 
@@ -20,13 +13,6 @@ exports[`mul instruction compiler > emits F64_MUL for float64 operands 1`] = `
   "byteCode": [
     162,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float64",
-    },
-  ],
 }
 `;
 
@@ -34,13 +20,6 @@ exports[`mul instruction compiler > emits I32_MUL for integer operands 1`] = `
 {
   "byteCode": [
     108,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

@@ -2,14 +2,14 @@ import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
 import loop from './loop';
 
 describe('loop instruction compiler', () => {
 	it('compiles the loop segment with default cap', () => {
 		const context = createInstructionCompilerTestContext();
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			loop,
 			{
 				lineNumber: 2,
@@ -29,7 +29,7 @@ describe('loop instruction compiler', () => {
 	it('compiles the loop segment with explicit cap argument', () => {
 		const context = createInstructionCompilerTestContext();
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			loop,
 			{
 				lineNumber: 2,
@@ -49,7 +49,7 @@ describe('loop instruction compiler', () => {
 	it('compiles a smaller resolved cap', () => {
 		const context = createInstructionCompilerTestContext();
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			loop,
 			{
 				lineNumber: 2,

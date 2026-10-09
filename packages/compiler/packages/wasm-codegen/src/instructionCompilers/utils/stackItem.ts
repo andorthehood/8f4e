@@ -1,4 +1,4 @@
-import type { CodegenContext, CompilationContext, CompilerASTLine, StackAddress, StackItem } from '@8f4e/language-spec';
+import type { CodegenContext, CompilerASTLine, StackAddress, StackItem } from '@8f4e/language-spec';
 import { ErrorCode, getError } from '@8f4e/language-spec';
 
 /**
@@ -9,11 +9,7 @@ import { ErrorCode, getError } from '@8f4e/language-spec';
  * @param context - Compilation context used by the operation.
  * @returns The computed result.
  */
-export function requireStackAddress(
-	item: StackItem,
-	line: CompilerASTLine,
-	context: CodegenContext | CompilationContext
-): StackAddress {
+export function requireStackAddress(item: StackItem, line: CompilerASTLine, context: CodegenContext): StackAddress {
 	if (item.kind !== 'address') {
 		if (item.valueType === 'int') {
 			return {

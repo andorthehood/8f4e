@@ -1,8 +1,8 @@
 import { WASM_I32_LT_S, WASM_I32_LT_U, WASM_MEMORY_SIZE, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine, MemoryAddressRange, PlannedMemoryModule } from '@8f4e/language-spec';
-import { ArgumentType, ErrorCode, GLOBAL_ALIGNMENT_BOUNDARY } from '@8f4e/language-spec';
+import type { CompilerASTLine, MemoryAddressRange } from '@8f4e/language-spec';
+import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
 import { clampAddress, clampGlobalAddress, clampModuleAddress } from './clampAddress';
 
 const range: MemoryAddressRange = {
@@ -12,25 +12,6 @@ const range: MemoryAddressRange = {
 	safeByteLength: 128,
 	memoryId: 'arr',
 };
-
-function createPlannedModule(overrides: Partial<PlannedMemoryModule> = {}): PlannedMemoryModule {
-	const byteAddress = overrides.byteAddress ?? 0;
-	const wordAlignedSize = overrides.wordAlignedSize ?? 0;
-	return {
-		id: overrides.id ?? 'test',
-		lineNumber: overrides.lineNumber ?? 0,
-		byteAddress,
-		wordAlignedSize,
-		wordAlignedByteLength: wordAlignedSize * GLOBAL_ALIGNMENT_BOUNDARY,
-		endByteAddress: wordAlignedSize > 0 ? byteAddress + (wordAlignedSize - 1) * GLOBAL_ALIGNMENT_BOUNDARY : byteAddress,
-		endAddressSafeByteLength: wordAlignedSize > 0 ? GLOBAL_ALIGNMENT_BOUNDARY : 0,
-		memory: overrides.memory ?? {},
-		declarations: overrides.declarations ?? [],
-		declarationSources: overrides.declarationSources ?? [],
-		memoryIndex: overrides.memoryIndex ?? 0,
-		...(overrides.memoryRegionName ? { memoryRegionName: overrides.memoryRegionName } : {}),
-	};
-}
 
 function createLine(
 	instruction: 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress',
@@ -47,61 +28,25 @@ function createLine(
 describe('clamp address instruction compilers', () => {
 	it('clamps to tracked address range metadata using the global alignment boundary by default', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({
-			kind: 'address',
-			valueType: 'int',
-			isNonZero: true,
-			knownValue: 1024,
-			address: { clampRange: range },
-		});
 
-		analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context);
-
-		expect(context.stack).toEqual([
-			{
-				kind: 'address',
-				valueType: 'int',
-				isNonZero: true,
-				knownValue: 128 - GLOBAL_ALIGNMENT_BOUNDARY,
-				address: {
+		compileInstructionForTest(
+			clampAddress,
+			createLine('clampAddress'),
+			context,
+			createStackFacts({
+				clamp: {
+					accessByteWidth: 4,
 					memoryIndex: 0,
-					clampRange: range,
-					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+					range,
 				},
-			},
-		]);
+			})
+		);
+
 		expect(context.byteCode).toContain(WASM_SELECT);
 		expect(context.byteCode).not.toContain(WASM_MEMORY_SIZE);
 	});
 
-	it('uses the optional access width when clamping to tracked address range metadata', () => {
-		const context = createInstructionCompilerTestContext();
-		context.stack.push({
-			kind: 'address',
-			valueType: 'int',
-			isNonZero: true,
-			knownValue: 1024,
-			address: { clampRange: range },
-		});
-
-		analyzeAndCompileInstruction(clampAddress, createLine('clampAddress', 1), context);
-
-		expect(context.stack).toEqual([
-			{
-				kind: 'address',
-				valueType: 'int',
-				isNonZero: true,
-				knownValue: 127,
-				address: {
-					memoryIndex: 0,
-					clampRange: range,
-					safeAccessByteWidth: 1,
-				},
-			},
-		]);
-	});
-
-	it('clamps known negative addresses to the lower range bound', () => {
+	it('emits a signed comparison for the lower range bound', () => {
 		const context = createInstructionCompilerTestContext();
 		const shiftedRange: MemoryAddressRange = {
 			source: 'memory-start',
@@ -110,118 +55,55 @@ describe('clamp address instruction compilers', () => {
 			safeByteLength: 128,
 			memoryId: 'arr',
 		};
-		context.stack.push({
-			kind: 'address',
-			valueType: 'int',
-			isNonZero: true,
-			knownValue: -1,
-			address: { clampRange: shiftedRange },
-		});
 
-		analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context);
-
-		expect(context.stack).toEqual([
-			{
-				kind: 'address',
-				valueType: 'int',
-				isNonZero: true,
-				knownValue: 64,
-				address: {
+		compileInstructionForTest(
+			clampAddress,
+			createLine('clampAddress'),
+			context,
+			createStackFacts({
+				clamp: {
+					accessByteWidth: 4,
 					memoryIndex: 0,
-					clampRange: shiftedRange,
-					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+					range: shiftedRange,
 				},
-			},
-		]);
+			})
+		);
+
 		expect(context.byteCode).toContain(WASM_I32_LT_S);
 		expect(context.byteCode).not.toContain(WASM_I32_LT_U);
 	});
 
-	it('throws when clampAddress has no address range metadata', () => {
-		const context = createInstructionCompilerTestContext();
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
-
-		expect(() => analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context)).toThrow(
-			expect.objectContaining({ code: ErrorCode.ADDRESS_RANGE_REQUIRED })
-		);
-	});
-
 	it('clamps to the current module range', () => {
-		const plannedModule = createPlannedModule({
-			id: 'osc',
-			byteAddress: 64,
-			wordAlignedSize: 8,
-		});
-		const context = createInstructionCompilerTestContext({
-			startingByteAddress: 64,
-			currentModuleWordAlignedSize: 8,
-			currentPlannedModule: plannedModule,
-			namespace: {
-				...createInstructionCompilerTestContext().namespace,
-				moduleName: 'osc',
-			},
-		});
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 999 });
+		const context = createInstructionCompilerTestContext();
 
-		analyzeAndCompileInstruction(clampModuleAddress, createLine('clampModuleAddress'), context);
-
-		expect(context.stack).toEqual([
-			{
-				kind: 'address',
-				valueType: 'int',
-				isNonZero: true,
-				knownValue: 92,
-				address: {
+		compileInstructionForTest(
+			clampModuleAddress,
+			createLine('clampModuleAddress'),
+			context,
+			createStackFacts({
+				clamp: {
+					accessByteWidth: 4,
 					memoryIndex: 0,
-					clampRange: {
-						source: 'module-start',
-						memoryIndex: 0,
-						byteAddress: 64,
-						safeByteLength: 32,
-						moduleId: 'osc',
-					},
-					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
+					range: { source: 'module-start', memoryIndex: 0, byteAddress: 64, safeByteLength: 32, moduleId: 'osc' },
 				},
-			},
-		]);
+			})
+		);
+
 		expect(context.byteCode).toContain(WASM_SELECT);
 		expect(context.byteCode).not.toContain(WASM_MEMORY_SIZE);
 	});
 
 	it('clamps to the full global memory range', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: true, knownValue: 1024 });
 
-		analyzeAndCompileInstruction(clampGlobalAddress, createLine('clampGlobalAddress'), context);
+		compileInstructionForTest(
+			clampGlobalAddress,
+			createLine('clampGlobalAddress'),
+			context,
+			createStackFacts({ clamp: { accessByteWidth: 4, memoryIndex: 0 } })
+		);
 
-		expect(context.stack).toEqual([
-			{
-				kind: 'address',
-				valueType: 'int',
-				isNonZero: false,
-				address: {
-					memoryIndex: 0,
-					safeAccessByteWidth: GLOBAL_ALIGNMENT_BOUNDARY,
-				},
-			},
-		]);
 		expect(context.byteCode).toContain(WASM_MEMORY_SIZE);
 		expect(context.byteCode).toContain(WASM_SELECT);
-	});
-
-	it('rejects access widths larger than the tracked range', () => {
-		const context = createInstructionCompilerTestContext();
-		context.stack.push({
-			kind: 'address',
-			valueType: 'int',
-			isNonZero: false,
-			address: {
-				clampRange: { source: 'memory-start', byteAddress: 0, safeByteLength: 2, memoryId: 'tiny' },
-			},
-		});
-
-		expect(() => analyzeAndCompileInstruction(clampAddress, createLine('clampAddress'), context)).toThrow(
-			expect.objectContaining({ code: ErrorCode.ADDRESS_RANGE_TOO_SMALL })
-		);
 	});
 });

@@ -9,13 +9,6 @@ exports[`push instruction compiler > float64 memory push > pushes a float64 memo
     3,
     0,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float64",
-    },
-  ],
 }
 `;
 
@@ -32,13 +25,6 @@ exports[`push instruction compiler > pushes a f64 literal value emitting f64.con
     9,
     64,
   ],
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "valueType": "float64",
-    },
-  ],
 }
 `;
 
@@ -47,14 +33,6 @@ exports[`push instruction compiler > pushes a literal value 1`] = `
   "byteCode": [
     65,
     5,
-  ],
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "knownValue": 5,
-      "valueType": "int",
-    },
   ],
 }
 `;
@@ -72,13 +50,6 @@ exports[`push instruction compiler > pushes a resolved f64 literal emitting f64.
     9,
     64,
   ],
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "valueType": "float64",
-    },
-  ],
 }
 `;
 
@@ -87,14 +58,6 @@ exports[`push instruction compiler > pushes a resolved literal value 1`] = `
   "byteCode": [
     65,
     42,
-  ],
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "knownValue": 42,
-      "valueType": "int",
-    },
   ],
 }
 `;

@@ -1,7 +1,7 @@
 import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
 import mapBegin from './mapBegin';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
@@ -10,7 +10,7 @@ describe('mapBegin instruction compiler', () => {
 	it('opens a map block for int input type', () => {
 		const context = createInstructionCompilerTestContext();
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			mapBegin,
 			{
 				lineNumber: 1,
@@ -28,7 +28,7 @@ describe('mapBegin instruction compiler', () => {
 	it('opens a map block for float input type', () => {
 		const context = createInstructionCompilerTestContext();
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			mapBegin,
 			{
 				lineNumber: 1,
@@ -46,7 +46,7 @@ describe('mapBegin instruction compiler', () => {
 	it('opens a map block for float64 input type', () => {
 		const context = createInstructionCompilerTestContext();
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			mapBegin,
 			{
 				lineNumber: 1,

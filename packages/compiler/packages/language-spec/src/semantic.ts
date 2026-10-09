@@ -21,6 +21,7 @@ import type {
 	PushShapeLine,
 } from './ast';
 import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMetadata } from './compiled';
+import type { CompilerDiagnosticContext } from './diagnostics';
 import type { FunctionValueType } from './functionTypes';
 import type {
 	CodegenInstructionName,
@@ -152,25 +153,11 @@ export type Namespaces = Record<string, CollectedNamespace>;
 
 export type CompilationMode = CompilerSourceCompilationMode;
 
-/** Shared mutable compiler state threaded through semantic analysis and code generation. */
-export interface CompilationContext {
+/** Mutable state used by semantic compiler passes. */
+export interface CompilationContext extends BlockState {
 	namespace: Namespace;
 	locals: LocalMap;
 	stack: Stack;
-	blockStack: BlockStack;
-	/** Cached active block counts keyed by block type, maintained with block stack mutations. */
-	activeBlockDepths: Record<BlockTypeValue, number>;
-	/** Open loop frames in nesting order, used to access the innermost loop without scanning. */
-	activeLoopBlocks: LoopBlockStackFrame[];
-	/** Current map frame; maps are non-nestable by placement rules. */
-	activeMapBlock?: MapBlockStackFrame;
-	insideModuleBlock: boolean;
-	insideFunctionBlock: boolean;
-	insideGenericBlock: boolean;
-	insideLoopBlock: boolean;
-	insideConditionBlock: boolean;
-	insideConstantsBlock: boolean;
-	insideMapBlock: boolean;
 	startingByteAddress: number;
 	currentModuleNextWordOffset: number;
 	currentModuleWordAlignedSize: number;
@@ -322,16 +309,14 @@ export interface MemoryReferenceResolutionReport {
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 }
 
-export type CodegenContext<TContext extends CompilationContext = CompilationContext> = Omit<
-	TContext,
-	'stack' | 'locals' | 'activeLoopBlocks' | 'blockStack'
-> & {
+/** Bytecode emission state, independent of semantic analysis and memory planning. */
+export interface CodegenContext extends BlockState<CodegenLoopBlockStackFrame>, CompilerDiagnosticContext {
+	byteCode: Array<WASMInstructionCode | WasmTypeValue | number>;
 	locals: LocalStorageMap;
 	nextLocalIndex: number;
-	activeLoopBlocks: CodegenLoopBlockStackFrame[];
-	blockStack: Array<Exclude<BlockStackFrame, LoopBlockStackFrame> | CodegenLoopBlockStackFrame>;
-};
-export type FunctionCodegenContext = CodegenContext<FunctionCompilationContext>;
+	functions?: FunctionRegistry;
+	functionTypeRegistry?: FunctionTypeRegistry;
+}
 
 export type ResolvedMapValueArgument = ResolvedArgumentLiteral | ArgumentStringLiteral;
 
@@ -544,6 +529,14 @@ export type BlockStackFrame =
 	| MapBlockStackFrame;
 
 export type BlockStack = BlockStackFrame[];
+
+/** Mutable block tracking shared by analysis and bytecode emission. */
+export interface BlockState<TLoop extends LoopBlockStackFrame = LoopBlockStackFrame> {
+	blockStack: Array<Exclude<BlockStackFrame, LoopBlockStackFrame> | TLoop>;
+	activeBlockDepths: Record<BlockTypeValue, number>;
+	activeLoopBlocks: TLoop[];
+	activeMapBlock?: MapBlockStackFrame;
+}
 
 export type InstructionCompiler<
 	TLine extends CompilerASTLine = CompilerASTLine,

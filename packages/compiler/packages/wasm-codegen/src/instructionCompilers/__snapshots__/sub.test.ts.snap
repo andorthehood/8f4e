@@ -5,13 +5,6 @@ exports[`sub instruction compiler > emits F32_SUB for float32 operands 1`] = `
   "byteCode": [
     147,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float",
-    },
-  ],
 }
 `;
 
@@ -20,13 +13,6 @@ exports[`sub instruction compiler > emits F64_SUB for float64 operands 1`] = `
   "byteCode": [
     161,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float64",
-    },
-  ],
 }
 `;
 
@@ -34,13 +20,6 @@ exports[`sub instruction compiler > emits I32_SUB for integer operands 1`] = `
 {
   "byteCode": [
     107,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

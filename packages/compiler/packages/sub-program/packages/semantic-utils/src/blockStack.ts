@@ -1,82 +1,44 @@
-import type { BlockStack, BlockTypeValue, CompilationContext } from '@8f4e/language-spec';
+import type { BlockState, LoopBlockStackFrame } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 
-/** Context shape shared by semantic analysis and codegen while mutating block state. */
-type BlockContext = Omit<CompilationContext, 'stack' | 'locals'>;
+/** Creates block tracking from an already-seeded stack. */
+export function createBlockState<TLoop extends LoopBlockStackFrame = LoopBlockStackFrame>(
+	blockStack: BlockState<TLoop>['blockStack'] = []
+): BlockState<TLoop> {
+	const state: BlockState<TLoop> = {
+		blockStack: [],
+		activeBlockDepths: {
+			[BlockType.MODULE]: 0,
+			[BlockType.FUNCTION]: 0,
+			[BlockType.BLOCK]: 0,
+			[BlockType.LOOP]: 0,
+			[BlockType.CONDITION]: 0,
+			[BlockType.CONSTANTS]: 0,
+			[BlockType.MAP]: 0,
+		},
+		activeLoopBlocks: [],
+	};
+	for (const block of blockStack) pushBlock(state, block);
+	return state;
+}
 
-/**
- * Pushes a compiler block and updates all cached active-block state.
- *
- * @param context - Compilation context used by the operation.
- * @param block - block value to use.
- * @returns The computed result.
- */
-export function pushBlock(context: BlockContext, block: BlockStack[number]) {
+/** Pushes a block and updates its cached active state. */
+export function pushBlock<TLoop extends LoopBlockStackFrame>(
+	context: BlockState<TLoop>,
+	block: BlockState<TLoop>['blockStack'][number]
+): void {
 	context.blockStack.push(block);
 	context.activeBlockDepths[block.blockType]++;
-
-	if (block.blockType === BlockType.LOOP) {
-		context.activeLoopBlocks.push(block);
-	}
-
-	if (block.blockType === BlockType.MAP) {
-		context.activeMapBlock = block;
-	}
-
-	updateBlockContextFlag(context, block.blockType, true);
+	if (block.blockType === BlockType.LOOP) context.activeLoopBlocks.push(block);
+	if (block.blockType === BlockType.MAP) context.activeMapBlock = block;
 }
 
-/**
- * Pops the innermost compiler block and updates all cached active-block state.
- *
- * @param context - Compilation context used by the operation.
- * @returns The computed result.
- */
-export function popBlock(context: BlockContext) {
+/** Pops the innermost block and updates its cached active state. */
+export function popBlock<TLoop extends LoopBlockStackFrame>(context: BlockState<TLoop>) {
 	const block = context.blockStack.pop();
-
-	if (!block) {
-		return block;
-	}
-
+	if (!block) return block;
 	context.activeBlockDepths[block.blockType]--;
-
-	if (block?.blockType === BlockType.LOOP) {
-		context.activeLoopBlocks.pop();
-	}
-
-	if (block.blockType === BlockType.MAP) {
-		context.activeMapBlock = undefined;
-	}
-
-	updateBlockContextFlag(context, block.blockType, context.activeBlockDepths[block.blockType] > 0);
-
+	if (block.blockType === BlockType.LOOP) context.activeLoopBlocks.pop();
+	if (block.blockType === BlockType.MAP) context.activeMapBlock = undefined;
 	return block;
-}
-
-/** Synchronizes legacy inside-block booleans with the cached block depth for a block type. */
-function updateBlockContextFlag(context: BlockContext, blockType: BlockTypeValue, isInside: boolean) {
-	switch (blockType) {
-		case BlockType.MODULE:
-			context.insideModuleBlock = isInside;
-			break;
-		case BlockType.FUNCTION:
-			context.insideFunctionBlock = isInside;
-			break;
-		case BlockType.BLOCK:
-			context.insideGenericBlock = isInside;
-			break;
-		case BlockType.LOOP:
-			context.insideLoopBlock = isInside;
-			break;
-		case BlockType.CONDITION:
-			context.insideConditionBlock = isInside;
-			break;
-		case BlockType.CONSTANTS:
-			context.insideConstantsBlock = isInside;
-			break;
-		case BlockType.MAP:
-			context.insideMapBlock = isInside;
-			break;
-	}
 }
