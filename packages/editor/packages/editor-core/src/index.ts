@@ -46,7 +46,6 @@ export {
 } from '@8f4e/editor-state';
 // Re-export types that consumers might need
 export type {
-	BrowserLocalNoteStorageBlock,
 	CodeBlockGraphicData,
 	CodeError,
 	CompilationResult,

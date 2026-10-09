@@ -11,7 +11,6 @@ import type {
 } from '@8f4e/language-spec';
 import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
 import type { BinaryAsset } from './features/binary-assets/types';
-import type { BrowserLocalNoteStorageBlock } from './features/browser-local-notes/types';
 import type {
 	ArrayBars,
 	ArrayMeter,
@@ -75,7 +74,6 @@ import type {
 // Re-export code-blocks types
 // Re-export menu types
 // Re-export program-language spec
-// Re-export browser-local note storage types
 // Re-export dialog types
 // Re-export global-editor-directives types
 // Re-export runtime types
@@ -89,7 +87,6 @@ export type {
 	ArrayPlotter,
 	ArrayWave,
 	BinaryAsset,
-	BrowserLocalNoteStorageBlock,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
 	CodeBlockRendering,
@@ -260,9 +257,6 @@ export interface FeatureFlags {
 
 	/** Enable/disable the menu action that creates a new project */
 	projectCreation: boolean;
-
-	/** Enable/disable loading and persisting browser-local note blocks */
-	browserLocalNotes: boolean;
 }
 
 /**
@@ -297,8 +291,6 @@ export interface Callbacks {
 	// Session storage callbacks
 	loadSession: () => Promise<ProjectObjectModel | null>;
 	saveSession?: (project: ProjectObjectModel) => Promise<void>;
-	loadBrowserLocalNotes?: () => Promise<BrowserLocalNoteStorageBlock[] | null>;
-	saveBrowserLocalNotes?: (blocks: BrowserLocalNoteStorageBlock[]) => Promise<void>;
 
 	// File handling callbacks
 	/** Returns null when the picker is cancelled. */
@@ -403,7 +395,6 @@ export interface State {
 }
 
 export type * from './features/binary-assets/types';
-export type * from './features/browser-local-notes/types';
 export type * from './features/code-blocks/buildDisplayModel';
 export type * from './features/code-blocks/features/directives/types';
 export type * from './features/code-blocks/types';

@@ -142,7 +142,6 @@ function selectExample(id: string | null, retry = false): void {
 				sharedAudioContext,
 				captureWheel: true,
 				featureFlags: {
-					browserLocalNotes: false,
 					projectCreation: false,
 					projectOpening: false,
 				},

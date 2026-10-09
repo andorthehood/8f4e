@@ -1,3 +1,4 @@
+import { parseProjectSource } from '@8f4e/compiler';
 import type { State } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
 import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
@@ -222,6 +223,34 @@ describe('projectExport', () => {
 	});
 
 	describe('saveSession', () => {
+		it('saves named notes and their position through the project callbacks, including deletion', async () => {
+			const saveSession = vi.fn().mockResolvedValue(undefined);
+			const saveProject = vi.fn().mockResolvedValue(undefined);
+			mockState.callbacks.saveSession = saveSession;
+			mockState.callbacks.saveProject = saveProject;
+			const note = createMockCodeBlock({
+				blockType: 'note',
+				code: ['note local.settings', '; @config font terminus8x16', 'noteEnd'],
+			});
+			mockState.codeBlockRendering.rootCodeBlocks = [note];
+			mockState.codeBlockRendering.codeBlocks = mockState.codeBlockRendering.rootCodeBlocks;
+			mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger = note;
+			projectExport(store, mockEvents);
+			const code = ['note local.settings', '; @pos 4 8', '; @config font terminus8x16', 'noteEnd'];
+
+			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', code);
+
+			expect(saveSession).toHaveBeenLastCalledWith(expect.objectContaining({ notes: [{ id: 0, code }] }));
+			const save = vi.mocked(mockEvents.on).mock.calls.find(call => call[0] === 'saveProject')![1];
+			save(undefined);
+			expect(parseProjectSource(saveProject.mock.calls[0][0]).notes.map(block => block.code)).toEqual([code]);
+
+			mockState.codeBlockRendering.rootCodeBlocks.splice(0);
+			store.set('codeBlockRendering.codeBlocks', mockState.codeBlockRendering.rootCodeBlocks);
+
+			expect(saveSession).toHaveBeenLastCalledWith(expect.objectContaining({ notes: [] }));
+		});
+
 		it('should save session when saveSession callback is provided', async () => {
 			const mockSaveSession = vi.fn().mockResolvedValue(undefined);
 			const mockGetStorageQuota = vi.fn().mockResolvedValue({ usedBytes: 1024, totalBytes: 10240 });

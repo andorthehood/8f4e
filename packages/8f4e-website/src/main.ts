@@ -93,7 +93,6 @@ function mountEditor(canvas: HTMLCanvasElement, index: number): Promise<DefaultE
 		sharedAudioContext,
 		captureWheel: false,
 		featureFlags: {
-			browserLocalNotes: false,
 			modeToggling: false,
 			projectCreation: false,
 			projectOpening: false,

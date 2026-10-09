@@ -69,7 +69,7 @@ describe('convertGraphicDataToProjectStructure', () => {
 		expect(result.unknown[0].code).toEqual(['code']);
 	});
 
-	it('excludes browser-local notes from the exported project', () => {
+	it('includes all notes regardless of their names in the exported project', () => {
 		const blocks: CodeBlockGraphicData[] = [
 			createMockCodeBlock({
 				name: 'local',
@@ -93,7 +93,7 @@ describe('convertGraphicDataToProjectStructure', () => {
 
 		const result = convertGraphicDataToProjectStructure(blocks);
 
-		expect(result.notes.map(block => block.code[0])).toEqual(['note', 'note custom']);
+		expect(result.notes.map(block => block.code[0])).toEqual(['note local.editorConfig', 'note', 'note custom']);
 	});
 
 	it('stores module entries on module blocks', () => {
