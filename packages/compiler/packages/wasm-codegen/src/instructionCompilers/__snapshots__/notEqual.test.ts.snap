@@ -5,13 +5,6 @@ exports[`notEqual instruction compiler > emits F32_NE for float operands 1`] = `
   "byteCode": [
     92,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;
 
@@ -20,13 +13,6 @@ exports[`notEqual instruction compiler > emits F64_NE for float64 operands 1`] =
   "byteCode": [
     98,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;
 
@@ -34,13 +20,6 @@ exports[`notEqual instruction compiler > emits I32_NE for integer operands 1`] =
 {
   "byteCode": [
     71,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

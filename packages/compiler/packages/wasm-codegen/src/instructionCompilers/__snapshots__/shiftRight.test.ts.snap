@@ -5,12 +5,5 @@ exports[`shiftRight instruction compiler > emits I32_SHR_S for integer operands 
   "byteCode": [
     117,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;

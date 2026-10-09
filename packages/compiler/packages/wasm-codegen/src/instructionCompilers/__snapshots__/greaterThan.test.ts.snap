@@ -5,13 +5,6 @@ exports[`greaterThan instruction compiler > emits F32_GT for float operands 1`] 
   "byteCode": [
     94,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;
 
@@ -19,13 +12,6 @@ exports[`greaterThan instruction compiler > emits I32_GT_S for integer operands 
 {
   "byteCode": [
     74,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

@@ -7,7 +7,6 @@ exports[`store instruction compiler > stores to a safe memory address 1`] = `
     2,
     0,
   ],
-  "stack": [],
 }
 `;
 
@@ -46,6 +45,5 @@ exports[`store instruction compiler > stores to an unsafe memory address with a 
     5,
     11,
   ],
-  "stack": [],
 }
 `;

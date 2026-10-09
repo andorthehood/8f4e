@@ -6,13 +6,6 @@ exports[`castToInt instruction compiler > converts float operand to int 1`] = `
     252,
     0,
   ],
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;
 
@@ -21,13 +14,6 @@ exports[`castToInt instruction compiler > converts float64 operand to int 1`] = 
   "byteCode": [
     252,
     2,
-  ],
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

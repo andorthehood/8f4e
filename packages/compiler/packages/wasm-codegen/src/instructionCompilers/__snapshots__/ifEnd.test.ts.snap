@@ -11,18 +11,6 @@ exports[`ifEnd instruction compiler > ends a conditional block with multiple res
   "byteCode": [
     11,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float",
-    },
-  ],
 }
 `;
 
@@ -36,13 +24,6 @@ exports[`ifEnd instruction compiler > ends a conditional block with result 1`] =
   ],
   "byteCode": [
     11,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

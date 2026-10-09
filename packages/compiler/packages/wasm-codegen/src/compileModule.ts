@@ -6,13 +6,10 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import type {
-	CodegenContext,
 	CompiledModule,
 	CompileOptions,
 	FunctionRegistry,
 	FunctionTypeRegistry,
-	MemoryLayoutPlan,
-	Namespaces,
 	ValidatedModuleAST,
 } from '@8f4e/language-spec';
 
@@ -26,8 +23,6 @@ import { createCodegenContext } from './createCodegenContext';
  * Compiles one resolved module into its WebAssembly cycle function and memory metadata.
  *
  * @param resolved - Executable body, source bindings, and module metadata.
- * @param namespaces - Collected namespaces used for symbol and memory resolution.
- * @param memoryPlan - Completed memory layout plan for the sub-program.
  * @param index - WASM index or source index assigned to the compiled item.
  * @param functions - Function registry available to compilation.
  * @param options - Compiler options for this compilation pass.
@@ -37,8 +32,6 @@ import { createCodegenContext } from './createCodegenContext';
  */
 export function compileModule(
 	resolved: ModuleSemanticReferences,
-	namespaces: Namespaces,
-	memoryPlan: MemoryLayoutPlan,
 	index: number,
 	functions: FunctionRegistry | undefined,
 	stackReport: StackAnalyzedModule,
@@ -46,31 +39,11 @@ export function compileModule(
 	typeRegistry?: FunctionTypeRegistry
 ): CompiledModule {
 	const { ast, bindings, body } = resolved;
-	const namespace = namespaces[ast.id];
-	const plannedModule = memoryPlan.modules[ast.id];
-	const memoryIndex = plannedModule.memoryIndex;
-	const memoryRegionName = plannedModule.memoryRegionName;
-	const moduleWordAlignedSize = plannedModule.wordAlignedSize;
-	const context = createCodegenContext<CodegenContext>(
+	const context = createCodegenContext(
 		{
-			namespace: {
-				namespaces,
-				moduleName: ast.id,
-				functions,
-				prototypeShapeIds: [],
-			},
+			functions,
 			byteCode: [],
 			blockStack: [{ blockType: BlockType.MODULE, expectedResultTypes: [] }],
-			startingByteAddress: plannedModule.byteAddress,
-			currentModuleNextWordOffset: moduleWordAlignedSize,
-			currentModuleWordAlignedSize: moduleWordAlignedSize,
-			currentMemoryIndex: memoryIndex,
-			...(memoryRegionName ? { currentMemoryRegionName: memoryRegionName } : {}),
-			memoryPlan,
-			currentPlannedModule: plannedModule,
-			memoryDefaults: namespace.memoryDefaults,
-			pointerMetadata: namespace.pointerMetadata,
-			mode: 'module',
 			functionTypeRegistry: typeRegistry,
 			codeBlockId: ast.id,
 			codeBlockType: 'module',

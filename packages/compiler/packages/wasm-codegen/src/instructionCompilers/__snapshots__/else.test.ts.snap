@@ -17,6 +17,5 @@ exports[`else instruction compiler > emits else bytecode and restores block 1`] 
   "byteCode": [
     5,
   ],
-  "stack": [],
 }
 `;

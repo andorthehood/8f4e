@@ -5,12 +5,5 @@ exports[`remainder instruction compiler > emits I32_REM_S for integer operands 1
   "byteCode": [
     111,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;

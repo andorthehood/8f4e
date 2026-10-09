@@ -5,12 +5,5 @@ exports[`drop instruction compiler > drops the top stack value 1`] = `
   "byteCode": [
     26,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;

@@ -5,13 +5,6 @@ exports[`greaterOrEqualUnsigned instruction compiler > emits F32_GE for float op
   "byteCode": [
     96,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;
 
@@ -19,13 +12,6 @@ exports[`greaterOrEqualUnsigned instruction compiler > emits I32_GE_U for intege
 {
   "byteCode": [
     79,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

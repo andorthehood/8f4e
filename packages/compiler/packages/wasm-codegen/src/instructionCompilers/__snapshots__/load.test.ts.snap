@@ -7,13 +7,6 @@ exports[`load instruction compiler > loads from a safe memory address 1`] = `
     2,
     0,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;
 
@@ -49,13 +42,6 @@ exports[`load instruction compiler > loads from an unsafe memory address with a 
     65,
     0,
     11,
-  ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
   ],
 }
 `;

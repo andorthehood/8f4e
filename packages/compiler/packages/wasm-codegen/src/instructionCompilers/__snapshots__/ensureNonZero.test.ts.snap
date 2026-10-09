@@ -32,13 +32,6 @@ exports[`ensureNonZero instruction compiler > ensures float operand is non-zero 
       "isInteger": false,
     },
   },
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "valueType": "float",
-    },
-  ],
 }
 `;
 
@@ -83,13 +76,6 @@ exports[`ensureNonZero instruction compiler > ensures float64 operand is non-zer
       "isInteger": false,
     },
   },
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "valueType": "float64",
-    },
-  ],
 }
 `;
 
@@ -116,12 +102,5 @@ exports[`ensureNonZero instruction compiler > ensures integer operand is non-zer
       "isInteger": true,
     },
   },
-  "stack": [
-    {
-      "isNonZero": true,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;

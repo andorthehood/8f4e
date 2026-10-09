@@ -5,12 +5,5 @@ exports[`shiftRightUnsigned instruction compiler > emits I32_SHR_U for integer o
   "byteCode": [
     118,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "int",
-    },
-  ],
 }
 `;

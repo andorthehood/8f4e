@@ -6,6 +6,5 @@ exports[`localSet instruction compiler > stores a local value 1`] = `
     33,
     0,
   ],
-  "stack": [],
 }
 `;

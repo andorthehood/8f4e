@@ -52,29 +52,27 @@ describe('blockStack utilities', () => {
 
 	describe('pushBlock and popBlock', () => {
 		it.each([
-			['module', mockModuleBlock, 'insideModuleBlock'],
-			['function', mockFunctionBlock, 'insideFunctionBlock'],
-			['generic', mockGenericBlock, 'insideGenericBlock'],
-			['loop', mockLoopBlock, 'insideLoopBlock'],
-			['condition', mockConditionBlock, 'insideConditionBlock'],
-			['constants', mockConstantsBlock, 'insideConstantsBlock'],
-			['map', mockMapBlock, 'insideMapBlock'],
-		] as const)('tracks %s block context with a simple boolean flag', (_name, block, flagName) => {
+			['module', mockModuleBlock],
+			['function', mockFunctionBlock],
+			['generic', mockGenericBlock],
+			['loop', mockLoopBlock],
+			['condition', mockConditionBlock],
+			['constants', mockConstantsBlock],
+			['map', mockMapBlock],
+		] as const)('tracks %s block depth', (_name, block) => {
 			const context = createBlockStackTestContext({ blockStack: [] });
 
 			pushBlock(context, block);
 
 			expect(context.blockStack).toEqual([block]);
 			expect(context.activeBlockDepths[block.blockType]).toBe(1);
-			expect(context[flagName]).toBe(true);
 
 			expect(popBlock(context)).toEqual(block);
 			expect(context.blockStack).toEqual([]);
 			expect(context.activeBlockDepths[block.blockType]).toBe(0);
-			expect(context[flagName]).toBe(false);
 		});
 
-		it('keeps the loop block flag set until the last loop is popped', () => {
+		it('tracks nested loop depths until the last loop is popped', () => {
 			const context = createBlockStackTestContext({ blockStack: [] });
 			const outerLoopBlock: typeof mockLoopBlock = {
 				...mockLoopBlock,
@@ -88,19 +86,15 @@ describe('blockStack utilities', () => {
 			pushBlock(context, innerLoopBlock);
 
 			expect(context.activeBlockDepths[BlockType.LOOP]).toBe(2);
-			expect(context.insideLoopBlock).toBe(true);
 
 			expect(popBlock(context)).toEqual(innerLoopBlock);
 			expect(context.activeBlockDepths[BlockType.LOOP]).toBe(1);
-			expect(context.insideLoopBlock).toBe(true);
 
 			expect(popBlock(context)).toEqual(mockGenericBlock);
 			expect(context.activeBlockDepths[BlockType.LOOP]).toBe(1);
-			expect(context.insideLoopBlock).toBe(true);
 
 			expect(popBlock(context)).toEqual(outerLoopBlock);
 			expect(context.activeBlockDepths[BlockType.LOOP]).toBe(0);
-			expect(context.insideLoopBlock).toBe(false);
 		});
 
 		it('tracks active loop blocks without scanning the block stack', () => {
@@ -126,7 +120,6 @@ describe('blockStack utilities', () => {
 
 			expect(popBlock(context)).toBe(outerLoopBlock);
 			expect(context.activeLoopBlocks).toEqual([]);
-			expect(context.insideLoopBlock).toBe(false);
 		});
 
 		it('tracks the active non-nestable map block directly', () => {
@@ -138,7 +131,6 @@ describe('blockStack utilities', () => {
 
 			expect(popBlock(context)).toBe(mockMapBlock);
 			expect(context.activeMapBlock).toBeUndefined();
-			expect(context.insideMapBlock).toBe(false);
 		});
 	});
 });

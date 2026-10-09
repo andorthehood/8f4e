@@ -5,12 +5,5 @@ exports[`round instruction compiler > rounds a float operand 1`] = `
   "byteCode": [
     144,
   ],
-  "stack": [
-    {
-      "isNonZero": false,
-      "kind": "value",
-      "valueType": "float",
-    },
-  ],
 }
 `;

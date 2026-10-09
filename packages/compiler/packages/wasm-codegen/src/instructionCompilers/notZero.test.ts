@@ -1,66 +1,62 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
 import notZero from './notZero';
 
 describe('notZero instruction compiler', () => {
 	it('emits I32_NE against zero for integer operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ kind: 'value', valueType: 'int', isNonZero: false });
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			notZero,
 			{
 				lineNumber: 1,
 				instruction: 'notZero',
 				arguments: [],
-			} as CompilerASTLine,
-			context
+			},
+			context,
+			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'int', isNonZero: false }] })
 		);
 
 		expect({
-			stack: context.stack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});
 
 	it('emits float comparison segment', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ kind: 'value', valueType: 'float', isNonZero: false });
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			notZero,
 			{
 				lineNumber: 1,
 				instruction: 'notZero',
 				arguments: [],
-			} as CompilerASTLine,
-			context
+			},
+			context,
+			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'float', isNonZero: false }] })
 		);
 
 		expect({
-			stack: context.stack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});
 
 	it('emits F64_NE against zero for float64 operands', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push({ kind: 'value', valueType: 'float64', isNonZero: false });
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			notZero,
 			{
 				lineNumber: 1,
 				instruction: 'notZero',
 				arguments: [],
-			} as CompilerASTLine,
-			context
+			},
+			context,
+			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'float64', isNonZero: false }] })
 		);
 
 		expect({
-			stack: context.stack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});

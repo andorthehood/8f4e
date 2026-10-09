@@ -1,29 +1,33 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
-import createInstructionCompilerTestContext, { analyzeAndCompileInstruction } from '../testUtils';
+import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
 import clearStack from './clearStack';
 
 describe('clearStack instruction compiler', () => {
 	it('drops all stack values', () => {
 		const context = createInstructionCompilerTestContext();
-		context.stack.push(
-			{ kind: 'value', valueType: 'int', isNonZero: false },
-			{ kind: 'value', valueType: 'float', isNonZero: true }
-		);
 
-		analyzeAndCompileInstruction(
+		compileInstructionForTest(
 			clearStack,
 			{
 				lineNumber: 1,
 				instruction: 'clearStack',
 				arguments: [],
-			} as CompilerASTLine,
-			context
+			},
+			context,
+			createStackFacts({
+				consumedOperands: [
+					{ kind: 'value', valueType: 'int', isNonZero: false },
+					{ kind: 'value', valueType: 'float', isNonZero: true },
+				],
+				droppedStackItems: [
+					{ kind: 'value', valueType: 'int', isNonZero: false },
+					{ kind: 'value', valueType: 'float', isNonZero: true },
+				],
+			})
 		);
 
 		expect({
-			stack: context.stack,
 			byteCode: context.byteCode,
 		}).toMatchSnapshot();
 	});

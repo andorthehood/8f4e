@@ -292,7 +292,6 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	const compiledFunctions = Object.values(semanticReferences.functions).map(resolved =>
 		compileFunction(
 			resolved,
-			namespaces,
 			functionTypeRegistry,
 			functionRegistry,
 			stackReport.functions[resolved.metadata.id],
@@ -302,8 +301,6 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	const compiledModules = compileModules(
 		Object.values(semanticReferences.modules),
 		options,
-		namespaces,
-		memoryPlan,
 		stackReport,
 		functionRegistry,
 		functionTypeRegistry
