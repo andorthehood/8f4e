@@ -40,9 +40,16 @@ Stack analysis consumes executable bodies and returns execution facts. Local poi
 identity, without WebAssembly indexes. It validates returns against registered signatures and never reconstructs
 imports, exports, parameters, or module execution metadata.
 
+Function symbols contain no WebAssembly indices. After stack and assertion analysis, backend layout planning collects
+user and native callback imports into one ordered list and assigns indices for imports, initialization, entry
+dispatchers, defined functions, and module bodies. Codegen and binary emission consume this same layout rather than
+adjusting symbol metadata or independently calculating offsets. Function signature types are registered during layout
+planning; body codegen can add block signature types.
+
 Codegen owns WebAssembly local indexes and generated temporary locals. It allocates source binding storage before
-emitting a body and reads registered metadata directly when building function types, imports, and exports. Original
-ASTs remain attached for source diagnostics and tooling; downstream stages do not replay declarations from them.
+emitting a body. Original ASTs remain attached for source diagnostics and tooling; downstream stages do not replay
+declarations from them. Composition produces `ComposedAST` types with required original source identity, and semantic
+reference reports preserve that input type through their output.
 
 Source-only function structure rules, including parameter ordering, duplicate directives, and imported function bodies,
 are checked during tokenization. Duplicate symbols and resolved signature limits remain semantic checks.
@@ -119,10 +126,11 @@ Do not add per-array or per-range zero-fill logic unless a measured optimization
 
 Native assertions are recognized and stack-checked in either flag mode. With `enableAssertions: false`, codegen emits
 operand drops. With the flag enabled, sub-program orchestration plans typed host imports and static assertion sites
-from resolved executable bodies and stack facts. Imports are planned before final Wasm function indices are assigned;
-user imports retain their indices, while entry and defined-function indices account for the added assertion imports.
+from resolved executable bodies and stack facts. These are signature requests, without numeric function/type indices.
+Backend layout planning then includes them with user imports and assigns final function indices once.
 
-The composer records original block names and canonical group paths separately from qualified AST symbols. Assertion
-planning combines these identities with physical source lines, project block IDs, and included-source provenance.
+The composer records original block names and canonical group paths as required metadata on composed ASTs, alongside
+qualified symbols. Assertion planning combines these identities with physical source lines, project block IDs, and
+included-source provenance.
 The emitted compiler result exposes that lookup only when assertions are enabled. Callbacks, result collection,
 memory/reset policy, and execution scheduling belong to consumers.

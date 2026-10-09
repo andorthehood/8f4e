@@ -45,8 +45,9 @@ package unit tests continue using Vitest.
 | Language specification and tokenizer | Define instruction syntax, placement, and operand rules; parse both instructions in either mode. |
 | Program composer | Preserve original source identity through includes, nested groups, and symbol qualification. |
 | Semantic resolution and stack analyzer | Resolve operands and record their types and stack effects. |
-| Sub-program planning | When enabled, build an assertion plan with site IDs, source lookup, callback signatures, and import indices. |
-| Wasm code generation and emission | Generate callback calls or drops and emit the planned import/type sections. |
+| Sub-program assertion planning | When enabled, build site IDs, source lookup, and callback signature requests. |
+| Wasm function layout planning | Collect all function imports and assign final type/function indices once. |
+| Wasm code generation and emission | Consume the shared layout, generate callback calls or drops, and emit the planned import/type sections. |
 
 The flag chiefly affects assertion planning and code generation. Callback imports must be accounted for before final
 function indices are assigned: adding imports changes the indices of defined functions, entry dispatchers, and
@@ -155,13 +156,17 @@ provenance, and qualified signature-derived function IDs. Existing runner source
 ordinary composed-AST metadata, and affected snapshots were regenerated to show it.
 
 Validation passed for tests and standard package typechecks across language-spec, tokenizer, program-composer,
-stack-analyzer, wasm-codegen, sub-program, compiler, test-runner, and CLI; affected compiler lint targets also passed.
-Added 16 compiler/Wasm integration cases and six parser syntax cases. Removed the unused internal function-index
-override and its tests; all function indices account for assertion imports through the same planning path.
+semantic-reference-resolver, stack-analyzer, wasm-codegen, sub-program, compiler, test-runner, and CLI; affected
+compiler lint targets also passed.
+Added 17 compiler/Wasm integration cases and six parser syntax cases. Removed the unused internal function-index
+override and its tests. Semantic symbols contain no Wasm indices; one backend layout assigns all function indices
+after analysis and supplies a common import list to binary emission. Composed AST contracts require original source
+identity, and semantic-reference output preserves that guarantee.
 
 The expanded compiler test typecheck (`tsconfig.test.json`) still reports six pre-existing errors in
 `src/diagnostic.test.ts` and `src/project-api.test.ts`; none are in the new assertion tests. Fresh dependency builds
-were completed before running suites to avoid a test/build output race.
+and suites ran in an isolated copy with its own workspace links and outputs, excluding a separate local fixture-runner
+edit and avoiding output rebuilds from the running website watchers.
 
 
 Recorded on 2026-10-09 from the testing/runtime design discussion. Exact equality, matching operand types, integer

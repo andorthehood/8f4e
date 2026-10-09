@@ -23,6 +23,7 @@ import type {
 } from './ast';
 import type { FunctionMetadata, FunctionRegistry, FunctionTypeRegistry, SourceMetadata } from './compiled';
 import type { CompilerDiagnosticContext } from './diagnostics';
+import type { WasmFunctionLayout } from './functionLayout';
 import type { FunctionValueType } from './functionTypes';
 import type {
 	CodegenInstructionName,
@@ -317,7 +318,7 @@ export interface CodegenContext extends BlockState<CodegenLoopBlockStackFrame>, 
 	byteCode: Array<WASMInstructionCode | WasmTypeValue | number>;
 	locals: LocalStorageMap;
 	nextLocalIndex: number;
-	functions?: FunctionRegistry;
+	functionLayout: WasmFunctionLayout;
 	functionTypeRegistry?: FunctionTypeRegistry;
 }
 

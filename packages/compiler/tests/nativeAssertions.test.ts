@@ -180,6 +180,28 @@ entryEnd`,
 		expect(view[index]).toBe(17);
 	});
 
+	it('calls a generated entry dispatcher from a defined function after native imports are planned', async () => {
+		const result = await compile(
+			`function invoke
+#export
+call test
+functionEnd
+entry test
+module checks
+push 1
+assert
+moduleEnd
+entryEnd`,
+			true
+		);
+		const condition = vi.fn();
+		const runtime = await instantiate(result, { assertCondition: condition });
+		runtime.exports.main();
+		expect(condition).not.toHaveBeenCalled();
+		runtime.exports.invoke();
+		expect(condition).toHaveBeenCalledWith(1, 0);
+	});
+
 	it('coexists with an ordinary imported assert function', async () => {
 		const result = await compile(
 			`function assert

@@ -236,8 +236,6 @@ export type CompilerASTLines = CompilerASTLine[];
 export interface SourceBlockMetadata {
 	projectBlockId?: number;
 	source?: SourceMetadata;
-	/** Original source identity attached by composition before symbol qualification. */
-	sourceIdentity?: { projectGroupPath: ProjectGroupPath; codeBlockId: string };
 }
 
 /** Parsed AST for a module block and its memory declarations. */
@@ -288,6 +286,21 @@ export type ValidatedModuleAST = ValidatedAST<ModuleAST>;
 export type ValidatedFunctionAST = ValidatedAST<FunctionAST>;
 export type ValidatedConstantsAST = ValidatedAST<ConstantsAST>;
 export type ValidatedPrototypeAST = ValidatedAST<PrototypeAST>;
+
+/** Source identity guaranteed by composition, before include renaming and group qualification. */
+export interface SourceBlockIdentity {
+	projectGroupPath: ProjectGroupPath;
+	codeBlockId: string;
+}
+
+/** Validated source block with its original identity preserved by program composition. */
+export type ComposedAST<TAST extends ValidatedAST = ValidatedAST> = TAST & {
+	sourceIdentity: SourceBlockIdentity;
+};
+export type ComposedModuleAST = ComposedAST<ValidatedModuleAST>;
+export type ComposedFunctionAST = ComposedAST<ValidatedFunctionAST>;
+export type ComposedConstantsAST = ComposedAST<ValidatedConstantsAST>;
+export type ComposedPrototypeAST = ComposedAST<ValidatedPrototypeAST>;
 
 const semanticInstructionSet = new Set<string>(semanticInstructionNames);
 

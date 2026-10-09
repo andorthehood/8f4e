@@ -9,7 +9,10 @@ function assertionCompiler(operandCount: number): InstructionCompiler {
 			return saveByteCode(context, Array(operandCount).fill(WASM_DROP));
 		}
 		const site = context.assertionCalls.get(line.lineNumber)!;
-		return saveByteCode(context, [...i32const(site.siteId), ...call(site.wasmIndex)]);
+		return saveByteCode(context, [
+			...i32const(site.siteId),
+			...call(context.functionLayout.assertionCallbacks.get(site.fieldName)!),
+		]);
 	};
 }
 

@@ -22,7 +22,6 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import type {
-	AssertionImport,
 	AssertionSite,
 	CompiledFunction,
 	CompiledModule,
@@ -34,8 +33,10 @@ import type {
 	MemoryLayoutPlan,
 	MemoryPointerMetadataMap,
 	ProjectMemoryExposuresByGroupPath,
+	WasmFunctionLayout,
 } from '@8f4e/language-spec';
 import {
+	createFunctionId,
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
 	GLOBAL_ALIGNMENT_BOUNDARY,
 	getCustomMemoryRegionName,
@@ -43,7 +44,7 @@ import {
 import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
 
 interface EmissionProgram {
-	assertionImports: AssertionImport[];
+	functionLayout: WasmFunctionLayout;
 	assertionSites?: AssertionSite[];
 	entryNames: string[];
 	compiledModules: CompiledModule[];
@@ -97,7 +98,7 @@ export function emitWasmProgram(
 	options: Pick<CompileOptions, 'disableSharedMemory' | 'memoryRegions'>
 ): CompileResult {
 	const {
-		assertionImports,
+		functionLayout,
 		assertionSites,
 		entryNames,
 		compiledModules,
@@ -122,21 +123,15 @@ export function emitWasmProgram(
 	const initialMemoryDataSegments = createInitialMemoryDataSegments(memoryPlan, memoryDefaultsByModuleId);
 	const cycleFunctions = compiledModules.map(({ cycleFunction }) => cycleFunction);
 	const functionSignatures = compiledModules.map(() => 0x00);
-	const importedUserFunctions = compiledFunctions.filter(func => func.import);
 	const definedFunctions = compiledFunctions.filter(func => !func.import);
-	const importedFunctionCount = importedUserFunctions.length + assertionImports.length;
-	const builtInFunctionCount = 1 + entryNames.length;
 	const uniqueUserFunctionTypes = functionTypeRegistry.types;
 	const userFunctionSignatureIndices = definedFunctions.map(func => func.typeIndex);
-	const userFunctionCount = definedFunctions.length;
-	const getCompiledModuleFunctionIndex = (module: (typeof compiledModules)[number]) =>
-		importedFunctionCount + builtInFunctionCount + userFunctionCount + module.index;
 	const entryDispatcherFunctions = entryNames.map(entryName =>
 		createFunction(
 			[],
 			compiledModules.flatMap(module =>
 				module.executionEntryName === entryName && !module.skipExecutionInCycle
-					? call(getCompiledModuleFunctionIndex(module))
+					? call(functionLayout.moduleFunctionIndices[module.id])
 					: []
 			)
 		)
@@ -169,17 +164,16 @@ export function emitWasmProgram(
 			!options.disableSharedMemory
 		);
 	});
-	const functionImports = [
-		...importedUserFunctions.map(func =>
-			createFunctionImport(func.import!.moduleName, func.import!.fieldName, func.typeIndex)
-		),
-		...assertionImports.map(func => createFunctionImport(func.moduleName, func.fieldName, func.typeIndex)),
-	];
+	const functionImports = functionLayout.imports.map(func =>
+		createFunctionImport(func.moduleName, func.fieldName, func.typeIndex)
+	);
 	const builtInFunctionSignatures = [0x00, ...entryNames.map(() => 0x00)];
 	const builtInFunctionBodies = [createFunction([], memoryInitiatorFunction), ...entryDispatcherFunctions];
 	const builtInExports = [
-		createFunctionExport('initDefaults', importedFunctionCount),
-		...entryNames.map((entryName, index) => createFunctionExport(entryName, importedFunctionCount + 1 + index)),
+		createFunctionExport('initDefaults', functionLayout.initDefaultsIndex),
+		...entryNames.map(entryName =>
+			createFunctionExport(entryName, functionLayout.functions[createFunctionId(entryName, [])].wasmIndex)
+		),
 	];
 	const wasmVersion = createWasmVersion(1);
 

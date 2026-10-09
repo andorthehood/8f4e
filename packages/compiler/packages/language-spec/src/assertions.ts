@@ -1,4 +1,4 @@
-import type { SourceMetadata } from './compiled';
+import type { FunctionTypeSignature, SourceMetadata } from './compiled';
 import type { FunctionImportMetadata } from './functionTypes';
 import type { ProjectGroupPath } from './project';
 
@@ -26,11 +26,15 @@ export const ASSERTION_IMPORT_NAMES = {
 	assertEqual: { int: 'assertEqualI32', float: 'assertEqualF32', float64: 'assertEqualF64' },
 } as const;
 
-/** Internal emission contract for an assertion callback import. */
+export type AssertionImportName =
+	| typeof ASSERTION_IMPORT_NAMES.assert
+	| (typeof ASSERTION_IMPORT_NAMES.assertEqual)[keyof typeof ASSERTION_IMPORT_NAMES.assertEqual];
+
+/** Typed callback request; WebAssembly indices are assigned by function layout planning. */
 export interface AssertionImport extends FunctionImportMetadata {
-	wasmIndex: number;
-	typeIndex: number;
+	fieldName: AssertionImportName;
+	signature: FunctionTypeSignature;
 }
 
 /** Internal assertion calls keyed by physical source line within one block. */
-export type AssertionCodegenSites = ReadonlyMap<number, { siteId: number; wasmIndex: number }>;
+export type AssertionCodegenSites = ReadonlyMap<number, { siteId: number; fieldName: AssertionImportName }>;

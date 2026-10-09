@@ -12,7 +12,7 @@ const call: InstructionCompiler<SemanticCallLine> = (line, context, facts) => {
 		push(inlinePushLine as CodegenPushLine, context, facts);
 	}
 
-	const targetFunction = context.functions!.byId[facts.targetFunctionId!]!;
+	const targetFunction = context.functionLayout.functions[facts.targetFunctionId!];
 	saveByteCode(context, wasmCall(targetFunction.wasmIndex));
 
 	return context;

@@ -85,27 +85,30 @@ export interface ResolvedBodyLine {
 	line: ExecutableInstructionLine;
 }
 
-export interface ModuleSemanticReferences {
-	ast: ModuleAST;
+export interface ModuleSemanticReferences<TModule extends ModuleAST = ModuleAST> {
+	ast: TModule;
 	bindings: readonly SourceLocalBinding[];
 	body: readonly ResolvedBodyLine[];
 	skipExecutionInCycle: boolean;
 }
 
-export interface FunctionSemanticReferences {
-	ast: FunctionAST;
+export interface FunctionSemanticReferences<TFunction extends FunctionAST = FunctionAST> {
+	ast: TFunction;
 	metadata: FunctionMetadata;
 	bindings: readonly SourceLocalBinding[];
 	body: readonly ResolvedBodyLine[];
 }
 
-export interface SemanticReferenceReport {
-	modules: Record<string, ModuleSemanticReferences>;
-	functions: Record<string, FunctionSemanticReferences>;
+export interface SemanticReferenceReport<
+	TModule extends ModuleAST = ModuleAST,
+	TFunction extends FunctionAST = FunctionAST,
+> {
+	modules: Record<string, ModuleSemanticReferences<TModule>>;
+	functions: Record<string, FunctionSemanticReferences<TFunction>>;
 }
 
-export interface ResolveSemanticReferencesResult {
-	references: SemanticReferenceReport;
+export interface ResolveSemanticReferencesResult<TModule extends ModuleAST, TFunction extends FunctionAST> {
+	references: SemanticReferenceReport<TModule, TFunction>;
 }
 
 function applyConstantFacts<TLine extends CompilerASTLine>(
@@ -434,11 +437,11 @@ function resolveBody(
 	return body;
 }
 
-function resolveModuleReferences(
+function resolveModuleReferences<TModule extends ModuleAST>(
 	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
-	ast: ModuleAST,
+	ast: TModule,
 	astIndex: number
-): [string, ModuleSemanticReferences] {
+): [string, ModuleSemanticReferences<TModule>] {
 	const context = createModuleContext(input, ast);
 	const body = resolveBody(
 		ast.lines,
@@ -457,11 +460,11 @@ function resolveModuleReferences(
 	];
 }
 
-function resolveFunctionReferences(
+function resolveFunctionReferences<TFunction extends FunctionAST>(
 	input: ResolveSemanticReferencesInput<PrototypeAST, ModuleAST, ConstantsAST, FunctionAST>,
-	declaration: RegisteredFunction<FunctionAST>,
+	declaration: RegisteredFunction<TFunction>,
 	astIndex: number
-): [string, FunctionSemanticReferences] {
+): [string, FunctionSemanticReferences<TFunction>] {
 	const { ast, metadata } = declaration;
 	const context = createFunctionContext(input, ast, metadata);
 	const body = resolveBody(
@@ -484,7 +487,9 @@ export function resolveSemanticReferences<
 	TModule extends ModuleAST = ValidatedModuleAST,
 	TConstants extends ConstantsAST = ValidatedConstantsAST,
 	TFunction extends FunctionAST = ValidatedFunctionAST,
->(input: ResolveSemanticReferencesInput<TPrototype, TModule, TConstants, TFunction>): ResolveSemanticReferencesResult {
+>(
+	input: ResolveSemanticReferencesInput<TPrototype, TModule, TConstants, TFunction>
+): ResolveSemanticReferencesResult<TModule, TFunction> {
 	return {
 		references: {
 			modules: Object.fromEntries(input.ast.modules.map((ast, index) => resolveModuleReferences(input, ast, index))),

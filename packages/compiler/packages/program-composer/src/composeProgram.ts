@@ -1,6 +1,7 @@
 import {
 	type CallLine,
 	type CompilerCache,
+	type ComposedAST,
 	createChildProjectGroupPath,
 	createProjectModuleId,
 	type FunctionLine,
@@ -115,7 +116,7 @@ function appendUnit(
 	const qualify = <TAst extends ValidatedAST>(
 		ast: TAst,
 		codeBlockId = ast.type === 'function' ? ast.name : ast.id
-	): TAst => {
+	): ComposedAST<TAst> => {
 		return {
 			...(prefix ? qualifyAst(ast, prefix) : ast),
 			sourceIdentity: { projectGroupPath: projectPath, codeBlockId },

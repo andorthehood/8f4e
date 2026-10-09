@@ -23,6 +23,6 @@ describe('compileSubProgram', () => {
 		expect(compiled.compiledModules).toEqual([]);
 		expect(compiled.compiledFunctions).toEqual([]);
 		expect(compiled.memoryPlan.moduleList).toEqual([]);
-		expect(compiled.assertionImports).toEqual([]);
+		expect(compiled.functionLayout.imports).toEqual([]);
 	});
 });

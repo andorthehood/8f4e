@@ -8,6 +8,7 @@ export * from './compilerError';
 export * from './constants';
 export * from './diagnostics';
 export * from './errors';
+export * from './functionLayout';
 export * from './functionTypes';
 export * from './instructionSpecs';
 export * from './instructionSpecTypes';

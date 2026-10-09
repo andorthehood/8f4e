@@ -1,5 +1,9 @@
 import type {
 	CompilerCache,
+	ComposedConstantsAST,
+	ComposedFunctionAST,
+	ComposedModuleAST,
+	ComposedPrototypeAST,
 	IncludedFunctionBindings,
 	ProjectConstantNamespaceScope,
 	ProjectGroupPath,
@@ -7,10 +11,6 @@ import type {
 	ProjectMemoryExposure,
 	ProjectModuleId,
 	SourceMetadata,
-	ValidatedConstantsAST,
-	ValidatedFunctionAST,
-	ValidatedModuleAST,
-	ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
 
 /** Function source produced by resolving a project's include blocks. */
@@ -37,10 +37,10 @@ export interface ComposedProgram {
 	entryNames: string[];
 	moduleEntryNames: string[];
 	ast: {
-		prototypes: ValidatedPrototypeAST[];
-		modules: ValidatedModuleAST[];
-		constants: ValidatedConstantsAST[];
-		functions: ValidatedFunctionAST[];
+		prototypes: ComposedPrototypeAST[];
+		modules: ComposedModuleAST[];
+		constants: ComposedConstantsAST[];
+		functions: ComposedFunctionAST[];
 	};
 	memoryExposures: ComposedProjectMemoryExposure[];
 	memoryAliases: ProjectMemoryAliasLookup;

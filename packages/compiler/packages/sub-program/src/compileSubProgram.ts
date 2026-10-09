@@ -1,11 +1,11 @@
 import { ConstantResolverError, type ResolveConstantsSubProgramAST, resolveConstants } from '@8f4e/constant-resolver';
 import type {
-	AssertionImport,
 	AssertionSite,
 	CompiledFunction,
 	CompiledModule,
 	CompileOptions,
 	CompilerCache,
+	ComposedPrototypeAST,
 	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionRegistry,
@@ -15,7 +15,7 @@ import type {
 	MemoryPointerMetadataMap,
 	ProjectMemoryExposuresByGroupPath,
 	ValidatedAST,
-	ValidatedPrototypeAST,
+	WasmFunctionLayout,
 } from '@8f4e/language-spec';
 import {
 	createFunctionId,
@@ -30,12 +30,12 @@ import { resolveMemoryReferences } from '@8f4e/memory-reference-resolver';
 import type { ComposedProgram } from '@8f4e/program-composer/internal';
 import { resolveSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { analyzeStack } from '@8f4e/stack-analyzer';
-import { compileFunction, compileModules } from '@8f4e/wasm-codegen';
+import { compileFunction, compileModules, planFunctionLayout } from '@8f4e/wasm-codegen';
 import { planAssertions } from './assertions';
 import { assertUniqueModuleIds, collectNamespacesFromASTs, registerFunctions } from './semantic/buildNamespace';
 
 interface CompiledSubProgram {
-	assertionImports: AssertionImport[];
+	functionLayout: WasmFunctionLayout;
 	assertionSites?: AssertionSite[];
 	entryNames: string[];
 	compiledModules: CompiledModule[];
@@ -77,17 +77,16 @@ function resolveProjectMemoryExposures(
 }
 
 /** Creates synthetic metadata for generated entry dispatcher functions. */
-function createEntryFunctionMetadata(entryNames: readonly string[], importedFunctionCount: number): FunctionRegistry {
+function createEntryFunctionMetadata(entryNames: readonly string[]): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
 	const arityByName: FunctionRegistry['arityByName'] = {};
 
-	entryNames.forEach((entryName, index) => {
+	entryNames.forEach(entryName => {
 		const parameters: FunctionMetadata['signature']['parameters'] = [];
 		const metadata: FunctionMetadata = {
 			id: createFunctionId(entryName, parameters),
 			name: entryName,
 			signature: { parameters, returns: [] },
-			wasmIndex: importedFunctionCount + 1 + index,
 		};
 		byId[metadata.id] = metadata;
 		arityByName[entryName] = parameters.length;
@@ -109,7 +108,7 @@ function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionReg
 	return { byId, arityByName };
 }
 
-function indexPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
+function indexPrototypeShapes(prototypes: readonly ComposedPrototypeAST[]): Record<string, ComposedPrototypeAST> {
 	return Object.fromEntries(prototypes.map(prototype => [prototype.id, prototype]));
 }
 
@@ -244,13 +243,8 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 
 	const namespaces = collectNamespacesFromASTs(subProgramAst.modules, memoryPlan, memoryDefaultResolution);
 
-	const importedUserFunctionCount = subProgramAst.functions.filter(ast => ast.importLine).length;
-	const builtInFunctionCount = 1 + entryNames.length;
-
-	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedUserFunctionCount);
+	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames);
 	const registration = registerFunctions(subProgramAst.functions, {
-		importedFunctionBaseIndex: 0,
-		definedFunctionBaseIndex: importedUserFunctionCount + builtInFunctionCount,
 		reservedFunctionIds: entryNames,
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
 		prototypeShapes: prototypeShapesById,
@@ -286,22 +280,19 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 		functionTypeRegistry,
 	});
 
-	const assertionPlan = options.enableAssertions
-		? planAssertions(semanticReferences, stackReport, functionTypeRegistry, importedUserFunctionCount)
-		: undefined;
-	// Registration provides symbolic metadata to analysis. Finalize defined indices after planning typed imports.
-	const assertionImports = assertionPlan?.imports ?? [];
-	const assertionImportCount = assertionImports.length;
-	for (const metadata of Object.values(entryFunctionMetadata.byId)) metadata.wasmIndex += assertionImportCount;
-	for (const metadata of Object.values(registration.registry.byId)) {
-		if (!metadata.import) metadata.wasmIndex += assertionImportCount;
-	}
+	const assertionPlan = options.enableAssertions ? planAssertions(semanticReferences, stackReport) : undefined;
+	const functionLayout = planFunctionLayout(
+		semanticReferences,
+		entryNames,
+		assertionPlan?.imports ?? [],
+		functionTypeRegistry
+	);
 
 	const compiledFunctions = Object.values(semanticReferences.functions).map(resolved =>
 		compileFunction(
 			resolved,
 			functionTypeRegistry,
-			functionRegistry,
+			functionLayout,
 			stackReport.functions[resolved.metadata.id],
 			options,
 			assertionPlan?.calls.get(resolved.ast)
@@ -311,7 +302,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 		Object.values(semanticReferences.modules),
 		options,
 		stackReport,
-		functionRegistry,
+		functionLayout,
 		functionTypeRegistry,
 		assertionPlan?.calls
 	).map((module, index) => ({
@@ -320,7 +311,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 	}));
 
 	return {
-		assertionImports,
+		functionLayout,
 		...(assertionPlan ? { assertionSites: assertionPlan.sites } : {}),
 		entryNames,
 		compiledModules,

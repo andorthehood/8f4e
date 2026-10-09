@@ -1,5 +1,6 @@
 import {
 	type CompilerDiagnosticContext,
+	type ComposedFunctionAST,
 	compilerSourceBlockInstructionByType,
 	createFunctionId,
 	DEFAULT_HOST_IMPORT_MODULE_NAME,
@@ -13,7 +14,6 @@ import {
 	getMemoryRegionFields,
 	type Namespaces,
 	type RegisteredFunction,
-	type ValidatedFunctionAST,
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
@@ -23,7 +23,7 @@ import type { MemoryLayoutPlan } from '@8f4e/memory-planner';
 const moduleBlock = compilerSourceBlockInstructionByType.module;
 
 function getAstDiagnosticContext(
-	ast: ValidatedFunctionAST | ValidatedModuleAST | ValidatedPrototypeAST
+	ast: ComposedFunctionAST | ValidatedModuleAST | ValidatedPrototypeAST
 ): CompilerDiagnosticContext {
 	return {
 		codeBlockType: ast.type,
@@ -33,19 +33,17 @@ function getAstDiagnosticContext(
 
 /** Inputs for registering function metadata and validating whole-program function names. */
 type FunctionRegistrationOptions = {
-	importedFunctionBaseIndex: number;
-	definedFunctionBaseIndex: number;
 	reservedFunctionIds: readonly string[];
 	reservedExportNames: readonly string[];
 	prototypeShapes: Readonly<Record<string, ValidatedPrototypeAST>>;
 };
 
-interface FunctionRegistration {
+interface FunctionRegistration<TFunction extends ComposedFunctionAST> {
 	registry: FunctionRegistry;
-	declarations: RegisteredFunction[];
+	declarations: RegisteredFunction<TFunction>[];
 }
 
-function getFunctionImportMetadata(ast: ValidatedFunctionAST): FunctionImportMetadata | undefined {
+function getFunctionImportMetadata(ast: ComposedFunctionAST): FunctionImportMetadata | undefined {
 	if (!ast.importLine) {
 		return undefined;
 	}
@@ -56,7 +54,7 @@ function getFunctionImportMetadata(ast: ValidatedFunctionAST): FunctionImportMet
 	};
 }
 
-function getFunctionExportName(ast: ValidatedFunctionAST): string | undefined {
+function getFunctionExportName(ast: ComposedFunctionAST): string | undefined {
 	return ast.exportLine ? (ast.exportLine.arguments[0]?.value ?? ast.name) : undefined;
 }
 
@@ -70,11 +68,11 @@ function getFunctionExportName(ast: ValidatedFunctionAST): string | undefined {
  * @param options - Compiler options for this compilation pass.
  * @returns The computed result.
  */
-export function registerFunctions(
-	asts: readonly ValidatedFunctionAST[],
+export function registerFunctions<TFunction extends ComposedFunctionAST>(
+	asts: readonly TFunction[],
 	options: FunctionRegistrationOptions
-): FunctionRegistration {
-	const declarations: RegisteredFunction[] = [];
+): FunctionRegistration<TFunction> {
+	const declarations: RegisteredFunction<TFunction>[] = [];
 	const byId: FunctionMetadataLookup = {};
 	const arityByName: FunctionRegistry['arityByName'] = {};
 	const overloadCountsByName = asts.reduce<Record<string, number>>((counts, ast) => {
@@ -84,8 +82,6 @@ export function registerFunctions(
 	const seenFunctionIds = new Set(options.reservedFunctionIds);
 	const reservedFunctionNames = new Set(options.reservedFunctionIds);
 	const seenExportNames = new Set(options.reservedExportNames);
-	let importedFunctionIndex = 0;
-	let definedFunctionIndex = 0;
 
 	for (const ast of asts) {
 		const name = ast.name;
@@ -142,9 +138,6 @@ export function registerFunctions(
 			id,
 			name,
 			signature: functionMetadata.signature,
-			wasmIndex: importedFunction
-				? options.importedFunctionBaseIndex + importedFunctionIndex++
-				: options.definedFunctionBaseIndex + definedFunctionIndex++,
 			...(importedFunction ? { import: importedFunction } : {}),
 			...(exportName ? { exportName } : {}),
 			...(importedFunction || ast.lines.some(line => line.instruction === '#impure') ? { isImpure: true } : {}),

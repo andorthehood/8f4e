@@ -97,7 +97,6 @@ exports[`resolveSemanticReferences integration > resolves sub-program-level sema
             "int",
           ],
         },
-        "wasmIndex": 2,
       },
     },
   },

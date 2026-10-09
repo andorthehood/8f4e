@@ -441,7 +441,7 @@ describe('resolveLineReferences', () => {
 	});
 
 	it('does not throw for call when the target function name is registered', () => {
-		const targetFunction = { id: 'knownFn', name: 'knownFn', signature: { parameters: [], returns: [] }, wasmIndex: 2 };
+		const targetFunction = { id: 'knownFn', name: 'knownFn', signature: { parameters: [], returns: [] } };
 		const context = {
 			namespace: {
 				moduleName: 'test',
@@ -467,7 +467,6 @@ describe('resolveLineReferences', () => {
 			id: 'knownFn__int',
 			name: 'knownFn',
 			signature: { parameters: ['int'], returns: [] },
-			wasmIndex: 2,
 		};
 		const context = {
 			namespace: {
@@ -494,7 +493,6 @@ describe('resolveLineReferences', () => {
 			id: 'knownFn',
 			name: 'knownFn',
 			signature: { parameters: ['int'], returns: [] },
-			wasmIndex: 2,
 		};
 		const context = {
 			namespace: {
@@ -583,7 +581,6 @@ describe('resolveSemanticReferences', () => {
 			id: functionId,
 			name: 'echo',
 			signature: { parameters: ['int'], returns: ['int'] },
-			wasmIndex: 0,
 		} satisfies FunctionMetadata;
 
 		const result = resolveSemanticReferences({
