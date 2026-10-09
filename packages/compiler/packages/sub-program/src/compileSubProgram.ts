@@ -1,9 +1,11 @@
 import { ConstantResolverError, type ResolveConstantsSubProgramAST, resolveConstants } from '@8f4e/constant-resolver';
 import type {
+	AssertionSite,
 	CompiledFunction,
 	CompiledModule,
 	CompileOptions,
 	CompilerCache,
+	ComposedPrototypeAST,
 	FunctionMetadata,
 	FunctionMetadataLookup,
 	FunctionRegistry,
@@ -13,7 +15,7 @@ import type {
 	MemoryPointerMetadataMap,
 	ProjectMemoryExposuresByGroupPath,
 	ValidatedAST,
-	ValidatedPrototypeAST,
+	WasmFunctionLayout,
 } from '@8f4e/language-spec';
 import {
 	createFunctionId,
@@ -28,10 +30,13 @@ import { resolveMemoryReferences } from '@8f4e/memory-reference-resolver';
 import type { ComposedProgram } from '@8f4e/program-composer/internal';
 import { resolveSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import { analyzeStack } from '@8f4e/stack-analyzer';
-import { compileFunction, compileModules } from '@8f4e/wasm-codegen';
+import { compileFunction, compileModules, planFunctionLayout } from '@8f4e/wasm-codegen';
+import { planAssertions } from './assertions';
 import { assertUniqueModuleIds, collectNamespacesFromASTs, registerFunctions } from './semantic/buildNamespace';
 
 interface CompiledSubProgram {
+	functionLayout: WasmFunctionLayout;
+	assertionSites?: AssertionSite[];
 	entryNames: string[];
 	compiledModules: CompiledModule[];
 	compiledFunctions: CompiledFunction[];
@@ -41,12 +46,6 @@ interface CompiledSubProgram {
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	cache: CompilerCache;
-}
-
-/** Internal layout settings for compiling one linkable sub-program. */
-export interface CompileSubProgramOptions extends CompileOptions {
-	/** Global WebAssembly index assigned to the first function defined by this sub-program. */
-	startingFunctionIndex?: number;
 }
 
 const DEFAULT_STARTING_MEMORY_WORD_ADDRESS = 1;
@@ -78,17 +77,16 @@ function resolveProjectMemoryExposures(
 }
 
 /** Creates synthetic metadata for generated entry dispatcher functions. */
-function createEntryFunctionMetadata(entryNames: readonly string[], importedFunctionCount: number): FunctionRegistry {
+function createEntryFunctionMetadata(entryNames: readonly string[]): FunctionRegistry {
 	const byId: FunctionMetadataLookup = {};
 	const arityByName: FunctionRegistry['arityByName'] = {};
 
-	entryNames.forEach((entryName, index) => {
+	entryNames.forEach(entryName => {
 		const parameters: FunctionMetadata['signature']['parameters'] = [];
 		const metadata: FunctionMetadata = {
 			id: createFunctionId(entryName, parameters),
 			name: entryName,
 			signature: { parameters, returns: [] },
-			wasmIndex: importedFunctionCount + 1 + index,
 		};
 		byId[metadata.id] = metadata;
 		arityByName[entryName] = parameters.length;
@@ -110,7 +108,7 @@ function mergeFunctionRegistries(...registries: FunctionRegistry[]): FunctionReg
 	return { byId, arityByName };
 }
 
-function indexPrototypeShapes(prototypes: readonly ValidatedPrototypeAST[]): Record<string, ValidatedPrototypeAST> {
+function indexPrototypeShapes(prototypes: readonly ComposedPrototypeAST[]): Record<string, ComposedPrototypeAST> {
 	return Object.fromEntries(prototypes.map(prototype => [prototype.id, prototype]));
 }
 
@@ -199,7 +197,7 @@ function wrapMemoryPlannerError(error: unknown, subProgramAst: ResolveConstantsS
  * @param options - Compiler options for this compilation pass.
  * @returns The compiled sub-program artifacts.
  */
-export function compileSubProgram(program: ComposedProgram, options: CompileSubProgramOptions): CompiledSubProgram {
+export function compileSubProgram(program: ComposedProgram, options: CompileOptions): CompiledSubProgram {
 	const { ast: subProgramAst, entryNames, moduleEntryNames, cache } = program;
 	assertUniqueModuleIds(subProgramAst.modules);
 	let constantResolution: ReturnType<typeof resolveConstants>;
@@ -245,15 +243,8 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 
 	const namespaces = collectNamespacesFromASTs(subProgramAst.modules, memoryPlan, memoryDefaultResolution);
 
-	const importedUserFunctionCount = subProgramAst.functions.filter(ast => ast.importLine).length;
-	const importedFunctionCount = importedUserFunctionCount;
-	const builtInFunctionCount = 1 + entryNames.length;
-	const userDefinedFunctionBaseIndex = options.startingFunctionIndex ?? importedFunctionCount + builtInFunctionCount;
-
-	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
+	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames);
 	const registration = registerFunctions(subProgramAst.functions, {
-		importedFunctionBaseIndex: 0,
-		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
 		reservedFunctionIds: entryNames,
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
 		prototypeShapes: prototypeShapesById,
@@ -289,27 +280,39 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 		functionTypeRegistry,
 	});
 
+	const assertionPlan = options.enableAssertions ? planAssertions(semanticReferences, stackReport) : undefined;
+	const functionLayout = planFunctionLayout(
+		semanticReferences,
+		entryNames,
+		assertionPlan?.imports ?? [],
+		functionTypeRegistry
+	);
+
 	const compiledFunctions = Object.values(semanticReferences.functions).map(resolved =>
 		compileFunction(
 			resolved,
 			functionTypeRegistry,
-			functionRegistry,
+			functionLayout,
 			stackReport.functions[resolved.metadata.id],
-			options
+			options,
+			assertionPlan?.calls.get(resolved.ast)
 		)
 	);
 	const compiledModules = compileModules(
 		Object.values(semanticReferences.modules),
 		options,
 		stackReport,
-		functionRegistry,
-		functionTypeRegistry
+		functionLayout,
+		functionTypeRegistry,
+		assertionPlan?.calls
 	).map((module, index) => ({
 		...module,
 		executionEntryName: moduleEntryNames[index],
 	}));
 
 	return {
+		functionLayout,
+		...(assertionPlan ? { assertionSites: assertionPlan.sites } : {}),
 		entryNames,
 		compiledModules,
 		compiledFunctions,

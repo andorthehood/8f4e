@@ -289,6 +289,10 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "lineNumber": 0,
         },
         "projectBlockId": 177,
+        "sourceIdentity": {
+          "codeBlockId": "audioout",
+          "projectGroupPath": "",
+        },
         "type": "module",
       },
       "cycleFunction": [
@@ -727,6 +731,10 @@ exports[`compileProject (audioBuffer example) > compiles build artifacts without
           "lineNumber": 0,
         },
         "projectBlockId": 134,
+        "sourceIdentity": {
+          "codeBlockId": "phaseAccumulator",
+          "projectGroupPath": "",
+        },
         "type": "module",
       },
       "cycleFunction": [

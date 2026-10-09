@@ -65,7 +65,11 @@
             }
           ]
         },
-        "projectBlockId": 39
+        "projectBlockId": 39,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "result"
+        }
       },
       "index": 0,
       "executionEntryName": "main"
@@ -111,7 +115,11 @@
             }
           ]
         },
-        "projectBlockId": 50
+        "projectBlockId": 50,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "notes"
+        }
       },
       "index": 1,
       "executionEntryName": "main"
@@ -191,7 +199,11 @@
             }
           ]
         },
-        "projectBlockId": 60
+        "projectBlockId": 60,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "inputs"
+        }
       },
       "index": 2,
       "executionEntryName": "main"
@@ -485,7 +497,11 @@
             }
           ]
         },
-        "projectBlockId": 70
+        "projectBlockId": 70,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "perceptron"
+        }
       },
       "index": 3,
       "executionEntryName": "main"
@@ -779,7 +795,11 @@
             }
           ]
         },
-        "projectBlockId": 95
+        "projectBlockId": 95,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "perceptron2"
+        }
       },
       "index": 4,
       "executionEntryName": "main"
@@ -918,7 +938,11 @@
             }
           ]
         },
-        "projectBlockId": 120
+        "projectBlockId": 120,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "activationFn"
+        }
       },
       "index": 5,
       "executionEntryName": "main"
@@ -1057,7 +1081,11 @@
             }
           ]
         },
-        "projectBlockId": 132
+        "projectBlockId": 132,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "activationFn2"
+        }
       },
       "index": 6,
       "executionEntryName": "main"
@@ -1352,7 +1380,11 @@
             }
           ]
         },
-        "projectBlockId": 144
+        "projectBlockId": 144,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "perceptron3"
+        }
       },
       "index": 7,
       "executionEntryName": "main"
@@ -1578,7 +1610,11 @@
             }
           ]
         },
-        "projectBlockId": 169
+        "projectBlockId": 169,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "activationFn3"
+        }
       },
       "index": 8,
       "executionEntryName": "main"

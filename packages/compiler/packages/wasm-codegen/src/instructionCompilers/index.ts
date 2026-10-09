@@ -1,6 +1,7 @@
 import abs from './abs';
 import add from './add';
 import and from './and';
+import { assert, assertEqual } from './assertions';
 import block from './block';
 import blockEnd from './blockEnd';
 import branch from './branch';
@@ -57,6 +58,8 @@ import sub from './sub';
 import xor from './xor';
 
 const instructions = {
+	assert,
+	assertEqual,
 	and,
 	or,
 	load: load,

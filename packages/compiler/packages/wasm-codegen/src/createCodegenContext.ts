@@ -4,7 +4,7 @@ import { allocateLocalFromType } from './localStorage';
 
 /** Initializes bytecode emission state and allocates the resolved source bindings. */
 export function createCodegenContext(
-	overrides: Partial<CodegenContext> = {},
+	overrides: Partial<CodegenContext> & Pick<CodegenContext, 'functionLayout'>,
 	bindings: readonly SourceLocalBinding[] = []
 ): CodegenContext {
 	const context: CodegenContext = {

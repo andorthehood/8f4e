@@ -7,7 +7,7 @@ import type { BlockTypeValue, CompilationContext } from './semantic';
 import { BlockType } from './semantic';
 
 /** Operand categories that instruction specs can require from the analysis stack. */
-export type OperandRule = 'int' | 'float' | 'matching';
+export type OperandRule = 'int' | 'float' | 'matching' | 'sameType';
 
 /** Source argument shapes that the tokenizer can validate before semantic resolution. */
 export type SourceArgumentShapeRule =
@@ -300,6 +300,24 @@ export const instructionSpecs = {
 		inputs: ['T'],
 		outputs: ['T'],
 	}),
+	assert: withDocsAndStack(
+		{ ...unaryNoSourceModuleOrFunctionSpec, operandTypes: 'int' },
+		{
+			shortDescription: 'Reports whether an integer condition is nonzero when assertions are enabled.',
+			inputs: ['int'],
+			outputs: [],
+			effect: stackMutation(1),
+		}
+	),
+	assertEqual: withDocsAndStack(
+		{ ...binaryMatchingSpec, operandTypes: 'sameType' },
+		{
+			shortDescription: 'Reports exact equality of two matching values when assertions are enabled.',
+			inputs: ['T', 'T'],
+			outputs: [],
+			effect: stackMutation(2),
+		}
+	),
 	add: withDocsAndStack(binaryMatchingSpec, {
 		shortDescription: 'Adds two numbers of the same type and pushes the result.',
 		inputs: ['T', 'T'],

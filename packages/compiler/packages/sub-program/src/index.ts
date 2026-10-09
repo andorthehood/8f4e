@@ -1,1 +1,1 @@
-export { type CompileSubProgramOptions, compileSubProgram } from './compileSubProgram';
+export { compileSubProgram } from './compileSubProgram';

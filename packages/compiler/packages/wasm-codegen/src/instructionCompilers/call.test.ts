@@ -1,15 +1,10 @@
-import type { FunctionMetadata, SemanticCallLine } from '@8f4e/language-spec';
+import type { SemanticCallLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext, { createStackFacts } from '../testUtils';
 import call from './call';
 
-const target: FunctionMetadata = {
-	id: 'convert__float',
-	name: 'convert',
-	signature: { parameters: ['float'], returns: ['int'] },
-	wasmIndex: 3,
-};
+const targetId = 'convert__float';
 
 function createCallLine(): SemanticCallLine {
 	return {
@@ -21,31 +16,18 @@ function createCallLine(): SemanticCallLine {
 
 describe('call instruction compiler', () => {
 	it('emits the call selected by stack analysis', () => {
-		const other: FunctionMetadata = {
-			id: 'convert__int',
-			name: 'convert',
-			signature: { parameters: ['int'], returns: ['int'] },
-			wasmIndex: 2,
+		const context = createInstructionCompilerTestContext();
+		context.functionLayout.functions = {
+			[targetId]: { wasmIndex: 3, typeIndex: 1 },
+			convert__int: { wasmIndex: 2, typeIndex: 2 },
 		};
-		const context = createInstructionCompilerTestContext({
-			functions: {
-				byId: { [target.id]: target, [other.id]: other },
-				arityByName: { convert: 1 },
-			},
-		});
-		call(createCallLine(), context, createStackFacts({ targetFunctionId: target.id }));
-		expect(context.byteCode).toEqual([0x10, target.wasmIndex]);
-		expect('used' in target).toBe(false);
-		expect('used' in other).toBe(false);
+		call(createCallLine(), context, createStackFacts({ targetFunctionId: targetId }));
+		expect(context.byteCode).toEqual([0x10, 3]);
 	});
 
 	it('emits resolved inline pushes before the selected call', () => {
-		const context = createInstructionCompilerTestContext({
-			functions: {
-				byId: { [target.id]: target },
-				arityByName: { convert: 1 },
-			},
-		});
+		const context = createInstructionCompilerTestContext();
+		context.functionLayout.functions[targetId] = { wasmIndex: 3, typeIndex: 1 };
 		const line: SemanticCallLine = {
 			...createCallLine(),
 			inlineArgumentPushes: [
@@ -56,7 +38,7 @@ describe('call instruction compiler', () => {
 				},
 			],
 		};
-		call(line, context, createStackFacts({ targetFunctionId: target.id }));
-		expect(context.byteCode).toEqual([0x43, 0, 0, 0xc0, 0x3f, 0x10, target.wasmIndex]);
+		call(line, context, createStackFacts({ targetFunctionId: targetId }));
+		expect(context.byteCode).toEqual([0x43, 0, 0, 0xc0, 0x3f, 0x10, 3]);
 	});
 });

@@ -1,5 +1,6 @@
 import type { FunctionType, WasmTypeValue } from '@8f4e/compiler-wasm-utils';
-import type { FunctionAST, ValidatedAST, ValidatedFunctionAST, ValidatedModuleAST } from './ast';
+import type { AssertionSite } from './assertions';
+import type { ComposedFunctionAST, ComposedModuleAST, FunctionAST, ValidatedAST, ValidatedFunctionAST } from './ast';
 import type { ASTCache } from './cache';
 import type { FunctionImportMetadata, FunctionSignature, FunctionValueType } from './functionTypes';
 import type { MemoryDefaults, MemoryLayoutPlan, MemoryPointerMetadataMap } from './memory';
@@ -18,7 +19,7 @@ export interface CompiledModule {
 	cycleFunction: number[];
 	id: string;
 	executionEntryName?: string;
-	ast: ValidatedModuleAST;
+	ast: ComposedModuleAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 	skipExecutionInCycle?: boolean;
 }
@@ -43,7 +44,7 @@ export interface FunctionTypeRegistry {
 	baseTypeIndex: number;
 }
 
-/** Public identity, signature, and WebAssembly index for a compiled function. */
+/** Expanded parameter declarations for a source `paramShape` instruction. */
 export interface FunctionParamShapeExpansion {
 	lineNumber: number;
 	parameters: Array<{
@@ -52,13 +53,13 @@ export interface FunctionParamShapeExpansion {
 	}>;
 }
 
+/** Semantic function symbol, independent of WebAssembly layout. */
 export interface FunctionMetadata {
 	/** Canonical compiler identity for this concrete function. */
 	id: string;
 	/** Source-level callable name written by the user. */
 	name: string;
 	signature: FunctionSignature;
-	wasmIndex: number;
 	import?: FunctionImportMetadata;
 	exportName?: string;
 	isImpure?: boolean;
@@ -87,12 +88,13 @@ export interface FunctionRegistry {
 
 /** Code generation output and metadata for a compiled function. */
 export interface CompiledFunction extends FunctionMetadata {
+	wasmIndex: number;
 	body: number[];
 	locals: Array<{ isInteger: boolean; count: number }>;
 	exportName?: string;
 	used?: boolean;
 	typeIndex: number;
-	ast: ValidatedFunctionAST;
+	ast: ComposedFunctionAST;
 	stackAnalysis?: CompiledStackAnalysisLine[];
 }
 
@@ -104,6 +106,8 @@ export interface CompilerCache {
 }
 
 export type CompileResult = {
+	/** Native assertion sites for this compilation, present only when assertions are enabled. */
+	assertionSites?: AssertionSite[];
 	codeBuffer: Uint8Array;
 	compiledModules: CompiledModuleLookup;
 	compiledFunctions?: CompiledFunctionLookup;

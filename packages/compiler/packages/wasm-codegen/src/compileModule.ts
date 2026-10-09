@@ -6,11 +6,12 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import type {
+	AssertionCodegenSites,
 	CompiledModule,
 	CompileOptions,
-	FunctionRegistry,
+	ComposedModuleAST,
 	FunctionTypeRegistry,
-	ValidatedModuleAST,
+	WasmFunctionLayout,
 } from '@8f4e/language-spec';
 
 import { BlockType } from '@8f4e/language-spec';
@@ -24,24 +25,26 @@ import { createCodegenContext } from './createCodegenContext';
  *
  * @param resolved - Executable body, source bindings, and module metadata.
  * @param index - WASM index or source index assigned to the compiled item.
- * @param functions - Function registry available to compilation.
+ * @param functionLayout - Final function indices shared with binary emission.
  * @param options - Compiler options for this compilation pass.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param stackReport - Stack-analysis report for this module.
  * @returns The compiled module artifact.
  */
 export function compileModule(
-	resolved: ModuleSemanticReferences,
+	resolved: ModuleSemanticReferences<ComposedModuleAST>,
 	index: number,
-	functions: FunctionRegistry | undefined,
+	functionLayout: WasmFunctionLayout,
 	stackReport: StackAnalyzedModule,
 	options: Pick<CompileOptions, 'includeStackAnalysis'> = {},
-	typeRegistry?: FunctionTypeRegistry
+	typeRegistry?: FunctionTypeRegistry,
+	assertionCalls?: AssertionCodegenSites
 ): CompiledModule {
 	const { ast, bindings, body } = resolved;
 	const context = createCodegenContext(
 		{
-			functions,
+			functionLayout,
+			assertionCalls,
 			byteCode: [],
 			blockStack: [{ blockType: BlockType.MODULE, expectedResultTypes: [] }],
 			functionTypeRegistry: typeRegistry,
@@ -67,7 +70,7 @@ export function compileModule(
 			}),
 			context.byteCode
 		),
-		ast: ast as ValidatedModuleAST,
+		ast,
 		...(options.includeStackAnalysis ? { stackAnalysis: stackReport.stackAnalysis } : {}),
 		index,
 		...(resolved.skipExecutionInCycle ? { skipExecutionInCycle: true } : {}),

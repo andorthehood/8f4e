@@ -248,7 +248,6 @@ describe('analyzeStack integration', () => {
 						parameters: ['int'],
 						returns: ['int'],
 					},
-					wasmIndex: 2,
 				},
 			},
 			arityByName: {

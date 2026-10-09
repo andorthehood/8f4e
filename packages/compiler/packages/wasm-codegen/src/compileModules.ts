@@ -1,4 +1,12 @@
-import type { CompiledModule, CompileOptions, FunctionRegistry, FunctionTypeRegistry } from '@8f4e/language-spec';
+import type {
+	AssertionCodegenSites,
+	CompiledModule,
+	CompileOptions,
+	ComposedAST,
+	ComposedModuleAST,
+	FunctionTypeRegistry,
+	WasmFunctionLayout,
+} from '@8f4e/language-spec';
 import type { ModuleSemanticReferences } from '@8f4e/semantic-reference-resolver';
 import type { StackAnalysisSubProgramReport } from '@8f4e/stack-analyzer';
 import { compileModule } from './compileModule';
@@ -8,19 +16,28 @@ import { compileModule } from './compileModule';
  *
  * @param modules - Resolved modules in execution order.
  * @param options - Compiler options for this compilation pass.
- * @param compiledFunctions - Function registry available to module compilation.
+ * @param functionLayout - Final function indices shared with binary emission.
  * @param typeRegistry - Function type registry used for WASM block signatures.
  * @param stackReport - Sub-program stack-analysis report.
  * @returns The compiled module artifact.
  */
 export function compileModules(
-	modules: readonly ModuleSemanticReferences[],
+	modules: readonly ModuleSemanticReferences<ComposedModuleAST>[],
 	options: CompileOptions,
 	stackReport: StackAnalysisSubProgramReport,
-	compiledFunctions?: FunctionRegistry,
-	typeRegistry?: FunctionTypeRegistry
+	functionLayout: WasmFunctionLayout,
+	typeRegistry?: FunctionTypeRegistry,
+	assertionCalls?: ReadonlyMap<ComposedAST, AssertionCodegenSites>
 ): CompiledModule[] {
 	return modules.map((resolved, index) =>
-		compileModule(resolved, index, compiledFunctions, stackReport.modules[resolved.ast.id], options, typeRegistry)
+		compileModule(
+			resolved,
+			index,
+			functionLayout,
+			stackReport.modules[resolved.ast.id],
+			options,
+			typeRegistry,
+			assertionCalls?.get(resolved.ast)
+		)
 	);
 }

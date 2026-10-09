@@ -3,6 +3,8 @@ import type { ProjectIncludeResolver } from './project';
 
 /** Optional settings that control compiler layout and emitted metadata. */
 export interface CompileOptions {
+	/** Emit native assertion callbacks and source sites. Default is false; disabled assertions consume operands only. */
+	enableAssertions?: boolean;
 	/** Word address where the first module memory allocation begins. Defaults to 1. */
 	startingMemoryWordAddress?: number;
 	/**

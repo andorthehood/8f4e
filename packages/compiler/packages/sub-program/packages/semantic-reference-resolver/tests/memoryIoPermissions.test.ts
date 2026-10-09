@@ -16,14 +16,12 @@ function resolveFunction(body: string[], isImpure = false) {
 		id: 'caller__int_p',
 		name: 'caller',
 		signature: { parameters: ['int*'], returns: [] },
-		wasmIndex: 0,
 		...(isImpure ? { isImpure: true } : {}),
 	};
 	const consumer: FunctionMetadata = {
 		id: 'consume__int',
 		name: 'consume',
 		signature: { parameters: ['int'], returns: [] },
-		wasmIndex: 1,
 	};
 
 	return resolveSemanticReferences({

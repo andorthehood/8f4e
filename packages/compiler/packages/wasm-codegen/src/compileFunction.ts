@@ -6,11 +6,12 @@ import {
 	WASM_TYPE_I32,
 } from '@8f4e/compiler-wasm-utils';
 import type {
+	AssertionCodegenSites,
 	CompiledFunction,
 	CompileOptions,
-	FunctionRegistry,
+	ComposedFunctionAST,
 	FunctionTypeRegistry,
-	ValidatedFunctionAST,
+	WasmFunctionLayout,
 } from '@8f4e/language-spec';
 
 import { BlockType } from '@8f4e/language-spec';
@@ -18,30 +19,30 @@ import type { FunctionSemanticReferences } from '@8f4e/semantic-reference-resolv
 import type { StackAnalyzedFunction } from '@8f4e/stack-analyzer';
 import { compileCodegenLine } from './compileLine';
 import { createCodegenContext } from './createCodegenContext';
-import { functionValueTypeToWasmType } from './functionValueType';
-import { getOrRegisterFunctionType } from './instructionCompilers/utils/functionTypeRegistry';
 
 /**
  * Compiles one resolved function into a WebAssembly function body or import metadata.
  *
  * @param resolved - Executable body, source bindings, and registered function metadata.
  * @param typeRegistry - Function type registry used for WASM block signatures.
- * @param functions - Function registry available to compilation.
+ * @param functionLayout - Final function indices and signatures shared with binary emission.
  * @param stackReport - Stack-analysis report for this function.
  * @param options - Compiler options for this compilation pass.
  * @returns The compiled function artifact.
  */
 export function compileFunction(
-	resolved: FunctionSemanticReferences,
+	resolved: FunctionSemanticReferences<ComposedFunctionAST>,
 	typeRegistry: FunctionTypeRegistry,
-	functions: FunctionRegistry,
+	functionLayout: WasmFunctionLayout,
 	stackReport: StackAnalyzedFunction,
-	options: Pick<CompileOptions, 'includeStackAnalysis'> = {}
+	options: Pick<CompileOptions, 'includeStackAnalysis'> = {},
+	assertionCalls?: AssertionCodegenSites
 ): CompiledFunction {
 	const { ast, metadata: functionMetadata, bindings, body } = resolved;
 	const context = createCodegenContext(
 		{
-			functions,
+			functionLayout,
+			assertionCalls,
 			byteCode: [],
 			blockStack: [{ blockType: BlockType.FUNCTION, expectedResultTypes: [] }],
 			codeBlockType: 'function',
@@ -55,10 +56,7 @@ export function compileFunction(
 
 	for (const { sourceLineIndex, line } of body)
 		compileCodegenLine(line, stackReport.lineFacts[sourceLineIndex]!, context);
-	const typeIndex = getOrRegisterFunctionType(typeRegistry, {
-		params: functionMetadata.signature.parameters.map(functionValueTypeToWasmType),
-		results: functionMetadata.signature.returns.map(functionValueTypeToWasmType),
-	});
+	const { wasmIndex, typeIndex } = functionLayout.functions[functionMetadata.id];
 
 	// Collect locals (excluding parameters)
 	// Parameters are always at indices 0, 1, 2, ..., (parameterCount - 1)
@@ -90,9 +88,9 @@ export function compileFunction(
 		locals: functionMetadata.import ? [] : localDeclarations,
 		...(functionMetadata.exportName ? { exportName: functionMetadata.exportName } : {}),
 		...(functionMetadata.import ? { import: functionMetadata.import } : {}),
-		wasmIndex: functionMetadata.wasmIndex,
+		wasmIndex,
 		typeIndex: typeIndex,
-		ast: ast as ValidatedFunctionAST,
+		ast,
 		...(stackReport.used ? { used: true } : {}),
 		...(functionMetadata.paramShapeExpansions ? { paramShapeExpansions: functionMetadata.paramShapeExpansions } : {}),
 		...(options.includeStackAnalysis ? { stackAnalysis: stackReport.stackAnalysis } : {}),

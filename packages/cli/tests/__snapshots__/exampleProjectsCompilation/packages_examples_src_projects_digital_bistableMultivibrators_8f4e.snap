@@ -44,7 +44,11 @@
             }
           ]
         },
-        "projectBlockId": 4
+        "projectBlockId": 4,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "projectConfig"
+        }
       },
       "index": 0,
       "executionEntryName": "main"
@@ -90,7 +94,11 @@
             }
           ]
         },
-        "projectBlockId": 11
+        "projectBlockId": 11,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "notes"
+        }
       },
       "index": 1,
       "executionEntryName": "main"
@@ -148,7 +156,11 @@
             }
           ]
         },
-        "projectBlockId": 20
+        "projectBlockId": 20,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "setButton"
+        }
       },
       "index": 2,
       "executionEntryName": "main"
@@ -206,7 +218,11 @@
             }
           ]
         },
-        "projectBlockId": 30
+        "projectBlockId": 30,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "resetButton"
+        }
       },
       "index": 3,
       "executionEntryName": "main"
@@ -464,7 +480,11 @@
             }
           ]
         },
-        "projectBlockId": 39
+        "projectBlockId": 39,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "norGate2"
+        }
       },
       "index": 4,
       "executionEntryName": "main"
@@ -722,7 +742,11 @@
             }
           ]
         },
-        "projectBlockId": 63
+        "projectBlockId": 63,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "norGate"
+        }
       },
       "index": 5,
       "executionEntryName": "main"
@@ -1076,7 +1100,11 @@
             }
           ]
         },
-        "projectBlockId": 87
+        "projectBlockId": 87,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "scope"
+        }
       },
       "index": 6,
       "executionEntryName": "main"
@@ -1146,7 +1174,11 @@
             }
           ]
         },
-        "projectBlockId": 116
+        "projectBlockId": 116,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "buttons"
+        }
       },
       "index": 7,
       "executionEntryName": "main"
@@ -1355,7 +1387,11 @@
             }
           ]
         },
-        "projectBlockId": 131
+        "projectBlockId": 131,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "negate"
+        }
       },
       "index": 8,
       "executionEntryName": "main"
@@ -1613,7 +1649,11 @@
             }
           ]
         },
-        "projectBlockId": 149
+        "projectBlockId": 149,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "orGate"
+        }
       },
       "index": 9,
       "executionEntryName": "main"
@@ -1871,7 +1911,11 @@
             }
           ]
         },
-        "projectBlockId": 172
+        "projectBlockId": 172,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "andGate"
+        }
       },
       "index": 10,
       "executionEntryName": "main"
@@ -2225,7 +2269,11 @@
             }
           ]
         },
-        "projectBlockId": 195
+        "projectBlockId": 195,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "scope2"
+        }
       },
       "index": 11,
       "executionEntryName": "main"

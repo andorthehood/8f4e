@@ -1,5 +1,6 @@
 export * from './addressValues';
 export * from './arguments';
+export * from './assertions';
 export * from './ast';
 export * from './cache';
 export * from './compiled';
@@ -7,6 +8,7 @@ export * from './compilerError';
 export * from './constants';
 export * from './diagnostics';
 export * from './errors';
+export * from './functionLayout';
 export * from './functionTypes';
 export * from './instructionSpecs';
 export * from './instructionSpecTypes';

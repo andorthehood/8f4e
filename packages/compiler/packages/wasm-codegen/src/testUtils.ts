@@ -12,6 +12,13 @@ import { createCodegenContext } from './createCodegenContext';
 
 export default function createInstructionCompilerTestContext(overrides: Partial<CodegenContext> = {}): CodegenContext {
 	return createCodegenContext({
+		functionLayout: {
+			imports: [],
+			functions: {},
+			assertionCallbacks: new Map(),
+			initDefaultsIndex: 0,
+			moduleFunctionIndices: {},
+		},
 		...overrides,
 		nextLocalIndex:
 			overrides.nextLocalIndex ??

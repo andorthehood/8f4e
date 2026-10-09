@@ -1,6 +1,7 @@
 import {
 	type CallLine,
 	type CompilerCache,
+	type ComposedAST,
 	createChildProjectGroupPath,
 	createProjectModuleId,
 	type FunctionLine,
@@ -112,7 +113,15 @@ function appendUnit(
 	});
 
 	const prefix = projectPath === ROOT_PROJECT_GROUP_PATH ? undefined : `${projectPath}/`;
-	const qualify = <TAst extends ValidatedAST>(ast: TAst): TAst => (prefix ? qualifyAst(ast, prefix) : ast);
+	const qualify = <TAst extends ValidatedAST>(
+		ast: TAst,
+		codeBlockId = ast.type === 'function' ? ast.name : ast.id
+	): ComposedAST<TAst> => {
+		return {
+			...(prefix ? qualifyAst(ast, prefix) : ast),
+			sourceIdentity: { projectGroupPath: projectPath, codeBlockId },
+		};
+	};
 	const prototypes = project.prototypes.filter(block => !block.disabled);
 	const modules = project.modules.filter(block => !block.disabled);
 	const constants = project.constants.filter(block => !block.disabled);
@@ -153,7 +162,7 @@ function appendUnit(
 				createCompilerSource(func, projectPath, `include:function:${index}`),
 				program.cache
 			);
-			return qualify(renameIncludedFunction(ast, func.bindings));
+			return qualify(renameIncludedFunction(ast, func.bindings), ast.name);
 		})
 	);
 
