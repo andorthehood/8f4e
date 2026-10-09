@@ -190,7 +190,7 @@ param int address
 functionEnd int
 ```
 
-Only function prologue directives, `param` declarations, and `functionEnd` are allowed in an imported function. Executable instructions such as `push`, `load`, `store`, or `call` are invalid because the implementation lives in the host.
+Only supported function prologue directives, `param` and `paramShape` declarations, and `functionEnd` are allowed in an imported function. Executable instructions such as `push`, `load`, `store`, or `call` are invalid because the implementation lives in the host.
 
 **Host imports:**
 ```ts
@@ -205,10 +205,10 @@ const { instance } = await WebAssembly.instantiate(codeBuffer, {
 ```
 
 **Errors:**
-- Using `#import` outside a function block results in an `IMPORT_DIRECTIVE_INVALID_CONTEXT` error
-- Declaring more than one `#import` in the same function results in a `DUPLICATE_FUNCTION_IMPORT` error
-- Combining `#import` and `#export` in the same function results in an `IMPORT_EXPORT_CONFLICT` error
-- Adding executable body instructions to an imported function results in an `IMPORTED_FUNCTION_BODY` error
+- Using `#import` outside a function block results in a syntax error
+- Declaring more than one `#import` in the same function results in a `DUPLICATE_FUNCTION_IMPORT` syntax error
+- Combining `#import` and `#export` in the same function results in an `IMPORT_EXPORT_CONFLICT` syntax error
+- Adding executable body instructions to an imported function results in an `IMPORTED_FUNCTION_BODY` syntax error
 - Placing `#import` after params, locals, or executable instructions results in a `COMPILER_DIRECTIVE_MUST_BE_PROLOGUE` syntax error
 
 ## Module- and Function-Scoped Directives

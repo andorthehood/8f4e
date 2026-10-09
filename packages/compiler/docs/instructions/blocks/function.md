@@ -111,6 +111,8 @@ Argument mapping:
 - `float64` maps to Wasm `f64` and a JavaScript `number`
 
 Export names must be unique and must not reuse built-in exports such as `initDefaults` or an execution entry name.
+Each function may declare `#export` once. Repeating the directive within one function is a syntax error; duplicate export
+names across different functions are checked during semantic validation.
 Overloaded functions cannot use `#export`; export a uniquely named wrapper instead.
 Functions that read from or write to memory still need `#impure`.
 
@@ -202,7 +204,7 @@ functionEnd float
 
 ## param
 
-The param instruction declares a function parameter (`param int name`, `param float name`, or a pointer type such as `param int8u* bytes`). Parameters must be declared before any other function body instructions.
+The param instruction declares a function parameter (`param int name`, `param float name`, or a pointer type such as `param int8u* bytes`). Parameters must be declared before any other function body instructions. A `param` or `paramShape` after a local declaration or executable instruction produces a `PARAM_AFTER_FUNCTION_BODY` syntax error.
 
 ### Examples
 

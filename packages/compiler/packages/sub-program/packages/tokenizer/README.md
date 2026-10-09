@@ -12,6 +12,7 @@ This package owns:
 
 - Source line tokenization and AST construction.
 - Source block structure validation.
+- Function parameter ordering, imported declaration structure, and import/export directive uniqueness.
 - Instruction placement and syntax-level argument validation.
 - Literal, identifier, compile-time operand, string literal, pointer-depth, and memory-reference token parsing.
 - Optional AST caching for repeated compilation of unchanged source blocks.
@@ -24,3 +25,8 @@ This package does not own:
 - Semantic compiler errors that require compiler state.
 
 Syntax errors belong to `src/syntax/syntaxError.ts`; semantic errors belong to later compiler phases.
+
+Function declaration checks run while the function AST builder consumes parsed lines. The builder records whether the
+body has started and uses its existing import/export metadata to reject invalid declarations before building a validated
+AST. Later stages trust these guarantees. Export-name collisions between different functions and prototype lookup for
+`paramShape` remain semantic checks.

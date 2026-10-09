@@ -85,32 +85,41 @@ export function createSourceBlockASTBuilder(line: CompilerASTLine): SourceBlockA
 	}
 }
 
-/** Records function import, export, and end metadata for a function builder. */
+/** Validates function declaration structure while collecting its AST metadata. */
 function applyFunctionASTLine(builder: FunctionASTBuilder, line: CompilerASTLine): void {
-	const fail = (code: (typeof SyntaxErrorCode)[keyof typeof SyntaxErrorCode]): never => {
-		throw new SyntaxRulesError(code, undefined, line);
-	};
-	if (builder.bodyStarted && (line.instruction === 'param' || line.instruction === 'paramShape'))
-		fail(SyntaxErrorCode.PARAM_AFTER_FUNCTION_BODY);
-	if (builder.importLine && !isImportedFunctionDeclarationInstructionName(line.instruction))
-		fail(
-			line.instruction === '#export' ? SyntaxErrorCode.IMPORT_EXPORT_CONFLICT : SyntaxErrorCode.IMPORTED_FUNCTION_BODY
-		);
-	if (line.instruction === '#export' && builder.exportLine) fail(SyntaxErrorCode.DUPLICATE_FUNCTION_EXPORT);
-	if (line.instruction === '#import') {
-		if (builder.importLine) fail(SyntaxErrorCode.DUPLICATE_FUNCTION_IMPORT);
-		if (builder.exportLine) fail(SyntaxErrorCode.IMPORT_EXPORT_CONFLICT);
+	if (builder.bodyStarted && (line.instruction === 'param' || line.instruction === 'paramShape')) {
+		throw new SyntaxRulesError(SyntaxErrorCode.PARAM_AFTER_FUNCTION_BODY, undefined, line);
 	}
-	if (isFunctionBodyInstructionName(line.instruction)) builder.bodyStarted = true;
+
 	switch (line.instruction) {
-		case 'functionEnd':
-			builder.functionEndLine = line;
-			return;
 		case '#export':
+			if (builder.importLine) {
+				throw new SyntaxRulesError(SyntaxErrorCode.IMPORT_EXPORT_CONFLICT, undefined, line);
+			}
+			if (builder.exportLine) {
+				throw new SyntaxRulesError(SyntaxErrorCode.DUPLICATE_FUNCTION_EXPORT, undefined, line);
+			}
 			builder.exportLine = line;
 			return;
 		case '#import':
+			if (builder.importLine) {
+				throw new SyntaxRulesError(SyntaxErrorCode.DUPLICATE_FUNCTION_IMPORT, undefined, line);
+			}
+			if (builder.exportLine) {
+				throw new SyntaxRulesError(SyntaxErrorCode.IMPORT_EXPORT_CONFLICT, undefined, line);
+			}
 			builder.importLine = line;
+			return;
+	}
+
+	if (builder.importLine && !isImportedFunctionDeclarationInstructionName(line.instruction)) {
+		throw new SyntaxRulesError(SyntaxErrorCode.IMPORTED_FUNCTION_BODY, undefined, line);
+	}
+	if (isFunctionBodyInstructionName(line.instruction)) {
+		builder.bodyStarted = true;
+	}
+	if (line.instruction === 'functionEnd') {
+		builder.functionEndLine = line;
 	}
 }
 
