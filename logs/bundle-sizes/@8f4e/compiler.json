@@ -1708,5 +1708,20 @@
 			"gzip": 2122,
 			"brotli": 1778
 		}
+	},
+	{
+		"schemaVersion": 1,
+		"recordedAt": "2026-10-09T09:31:07.513Z",
+		"commit": "0bd32680f853e71171d2caacc5b43637c84701a8",
+		"branch": "main",
+		"releaseTag": "@8f4e/compiler@6.2.2",
+		"packageName": "@8f4e/compiler",
+		"projectName": "@8f4e/compiler",
+		"version": "6.2.2",
+		"bytes": {
+			"raw": 5547,
+			"gzip": 2122,
+			"brotli": 1778
+		}
 	}
 ]
