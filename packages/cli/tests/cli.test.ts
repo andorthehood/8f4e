@@ -195,7 +195,9 @@ describe('cli', () => {
 
 	it('reports assertion failures from project tests', async () => {
 		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
-			stderr: expect.stringContaining('assert #0 expected 4, received 3 at module addFails, block line 6 (site 0)'),
+			stderr: expect.stringContaining(
+				'assertEqual #0 expected 4, received 3 at module addFails, block line 5 (site 0)'
+			),
 		});
 	});
 
@@ -209,7 +211,8 @@ entry test
 module driver
 push 0
 if
-call assert 99 99
+push 99
+assertEqual 99
 ifEnd
 loop 2
 call helper
@@ -217,17 +220,17 @@ loopEnd
 moduleEnd
 entryEnd
 function helper
-call assert ; continued arguments
-- 7
-- 8
+push
+- 7 ; continued argument
+assertEqual 8
 functionEnd`
 		);
 		await expect(execCli(['test', helperTestPath])).rejects.toMatchObject({
 			stderr: expect.stringContaining(
 				[
 					'2 assertions failed:',
-					'  assert #0 expected 8, received 7 at function helper, block line 2 (site 1)',
-					'  assert #1 expected 8, received 7 at function helper, block line 2 (site 1)',
+					'  assertEqual #0 expected 8, received 7 at function helper, block line 4 (site 1)',
+					'  assertEqual #1 expected 8, received 7 at function helper, block line 4 (site 1)',
 				].join('\n')
 			),
 		});
@@ -241,7 +244,8 @@ functionEnd`
 			`8f4e/v1
 function test
 #export
-call assert 3 3
+push 3
+assertEqual 3
 functionEnd`
 		);
 		const { stdout } = await execCli(['test', functionTestPath]);
@@ -253,17 +257,7 @@ functionEnd`
 		const groupedTestPath = path.join(tmpDir, 'groupedTest.8f4e');
 		await fs.writeFile(
 			groupedTestPath,
-			[
-				'8f4e/v1',
-				'',
-				'entry test',
-				'module groupedTest',
-				'push 1',
-				'push 1',
-				'call assert',
-				'moduleEnd',
-				'entryEnd',
-			].join('\n')
+			['8f4e/v1', '', 'entry test', 'module groupedTest', 'push 1', 'assertEqual 1', 'moduleEnd', 'entryEnd'].join('\n')
 		);
 
 		const { stdout } = await execCli(['test', groupedTestPath]);
@@ -289,8 +283,7 @@ functionEnd`
 				'module target',
 				'int* ptr &dependency:value',
 				'push *ptr',
-				'push 42',
-				'call assert',
+				'assertEqual 42',
 				'moduleEnd',
 				'',
 				'module dependency',

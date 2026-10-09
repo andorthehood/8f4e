@@ -18,15 +18,19 @@ The callback owns result collection. Returning normally allows execution to cont
 
 ## assertEqual
 
-**Stack effect:** `T T --`
+**Syntax:** `assertEqual expected`
+
+**Stack effect:** `T --`
 
 ```8f4e
 push 2
-push 2
-assertEqual
+assertEqual 2
 ```
 
-Push the received value first, then the expected value. Operands must have matching types: integer, float32, float64,
+Push the received value and supply exactly one expected argument. The argument supports numeric literals,
+constants, compile-time expressions, locals, memory values, and address/pointer references, using the same resolution
+rules as `push`. String literals are not accepted. For example, use `assertEqual EXPECTED`, `assertEqual value`, or
+`assertEqual &value`. The received and expected values must have matching types: integer, float32, float64,
 or matching pointer types. Pointers compare their 32-bit addresses without dereferencing. Pointer and ordinary integer
 operands cannot be mixed. Float32 and float64 operands cannot be mixed or implicitly converted.
 
@@ -36,8 +40,9 @@ by computing an integer condition and using `assert`.
 
 ## Compiler flag and host callbacks
 
-When disabled, `assert` emits one Wasm `drop` and `assertEqual` emits two. Instructions producing those operands still
-execute, including function calls and their side effects. Normal syntax, stack-count, and operand-type checks still
+When disabled, both instructions emit one Wasm `drop`. The inline expected value is not evaluated at runtime.
+Instructions producing the actual stack operand still execute, including function calls and their side effects.
+Normal syntax, reference-resolution, stack-count, and operand-type checks still
 apply. Disabled compilation omits `assertionSites` and native assertion imports.
 
 Enabled compilation adds only the callback signatures used by the program. Each import has no return values:
@@ -117,25 +122,12 @@ invocation counts and execution order belong to the caller. An enabled program w
 empty array and emits no assertion imports. Site IDs belong to one compilation; consumers must associate results
 with that compilation before matching them to editor lines.
 
-## Existing runner utility
+## Shared test runner
 
-The compiler fixture runner and `8f4e test` currently continue using the ordinary `call assert` utility supplied by
-`@8f4e/test-runner`. The runner instruments source calls with its nested precompiler and injects typed host declarations:
+Compiler fixtures and `8f4e test` use `@8f4e/test-runner` with assertions enabled.
+They use these native instructions directly; sources are not instrumented and no assertion functions are injected.
+The runner supplies collecting callbacks with the semantics above and reports compiler-produced source sites,
+including included helpers. See the [runner API and memory policy](../../../test-runner/README.md).
 
-```8f4e
-entry test
-module addWorks
-push 1
-push 2
-add
-push 3
-call assert
-moduleEnd
-entryEnd
-```
-
-These are normal function calls, independent of `enableAssertions`. The current runner's host ABI is
-`host.assert(received, expected, siteId)`; integer, float32, float64, and pointer overloads are supported. Its comparison
-tolerance is `0.001`, NaN comparisons fail, and it reports original source sites from its precompiler. Native callbacks
-have separate import names so both mechanisms can coexist. Migrating the runner, fixtures, CLI, and editor is tracked
-separately in TODO 491; adding compiler support does not perform that migration.
+Ordinary `call assert` still means a call to a user-defined function named `assert`; the test runner does not provide
+that function. To migrate `call assert received expected`, use `push received` followed by `assertEqual expected`.

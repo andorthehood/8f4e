@@ -19,7 +19,7 @@ store
 loopEnd
 
 push counter
-call assert 1000
+assertEqual 1000
 moduleEnd
 
 module directiveLoopCapAssertions
@@ -37,7 +37,7 @@ store
 loopEnd
 
 push counter
-call assert 500
+assertEqual 500
 moduleEnd
 
 module explicitLoopCapAssertions
@@ -53,7 +53,7 @@ store
 loopEnd
 
 push counter
-call assert 32
+assertEqual 32
 moduleEnd
 
 module constantLoopCapAssertions
@@ -71,7 +71,7 @@ store
 loopEnd
 
 push counter
-call assert 32
+assertEqual 32
 
 const FRAMES 16
 int expressionCounter
@@ -84,7 +84,7 @@ store
 loopEnd
 
 push expressionCounter
-call assert 32
+assertEqual 32
 moduleEnd
 
 module explicitCapOverridesDirectiveAssertions
@@ -101,7 +101,7 @@ store
 loopEnd
 
 push counter
-call assert 12
+assertEqual 12
 moduleEnd
 
 module nestedLoopCapAssertions
@@ -126,10 +126,10 @@ loopEnd
 loopEnd
 
 push outerCounter
-call assert 5
+assertEqual 5
 
 push innerCounter
-call assert 15
+assertEqual 15
 moduleEnd
 
 module zeroLoopCapAssertions
@@ -145,7 +145,7 @@ store
 loopEnd
 
 push counter
-call assert 0
+assertEqual 0
 moduleEnd
 
 module functionLoopCapAssertions
@@ -153,7 +153,7 @@ module functionLoopCapAssertions
 ; should bound loops inside
 ; functions.
 call countWithFunctionLoopCap
-call assert 7
+assertEqual 7
 moduleEnd
 entryEnd
 

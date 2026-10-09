@@ -9,6 +9,7 @@ import type {
 import type { AssertionCodegenSites } from './assertions';
 import type {
 	ArrayMemoryDeclarationLine,
+	AssertEqualLine,
 	CallLine,
 	CompilerASTLine,
 	DefaultLine,
@@ -413,6 +414,10 @@ export type SemanticCallLine = Omit<CallLine, 'arguments'> & {
 	inlineArgumentPushes?: CodegenPushLine[];
 };
 
+export type SemanticAssertEqualLine = AssertEqualLine & {
+	expectedPush: CodegenPushLine;
+};
+
 export type PushShapeExpansion = {
 	pushLine: CodegenPushLine;
 	pointerType: FunctionValueType;
@@ -425,23 +430,25 @@ export type ResolvedPushShapeLine = Omit<PushShapeLine, 'arguments'> & {
 
 export type SemanticReferenceLine<TLine extends CompilerASTLine = CompilerASTLine> = TLine extends DefaultLine
 	? ResolvedDefaultLine | DefaultLine
-	: TLine extends CallLine
-		? SemanticCallLine | CallLine
-		: TLine extends MapLine
-			? ResolvedMapLine
-			: TLine extends LocalSetLine
-				? ResolvedLocalSetLine
-				: TLine extends PushLine
-					? SemanticPushLine
-					: TLine extends PushShapeLine
-						? ResolvedPushShapeLine
-						: TLine extends LoopLine
-							? ResolvedLoopLine
-							: TLine extends MemoryCopyLine
-								? ResolvedMemoryCopyLine | MemoryCopyLine
-								: TLine extends ArrayDeclarationLine
-									? ArrayDeclarationLine
-									: TLine;
+	: TLine extends AssertEqualLine
+		? SemanticAssertEqualLine
+		: TLine extends CallLine
+			? SemanticCallLine | CallLine
+			: TLine extends MapLine
+				? ResolvedMapLine
+				: TLine extends LocalSetLine
+					? ResolvedLocalSetLine
+					: TLine extends PushLine
+						? SemanticPushLine
+						: TLine extends PushShapeLine
+							? ResolvedPushShapeLine
+							: TLine extends LoopLine
+								? ResolvedLoopLine
+								: TLine extends MemoryCopyLine
+									? ResolvedMemoryCopyLine | MemoryCopyLine
+									: TLine extends ArrayDeclarationLine
+										? ArrayDeclarationLine
+										: TLine;
 
 /** Resolved instructions that remain after declaration processing. */
 export type ExecutableInstructionLine = Extract<SemanticReferenceLine, { instruction: CodegenInstructionName }>;

@@ -23,7 +23,7 @@ map 1 100
 map 2 200
 map 3 300
 mapEnd int
-call assert 100
+assertEqual 100
 
 push &input
 push 2
@@ -34,7 +34,7 @@ map 1 100
 map 2 200
 map 3 300
 mapEnd int
-call assert 200
+assertEqual 200
 
 push &input
 push 3
@@ -45,7 +45,7 @@ map 1 100
 map 2 200
 map 3 300
 mapEnd int
-call assert 300
+assertEqual 300
 
 push &input
 push 99
@@ -56,7 +56,7 @@ map 1 100
 map 2 200
 map 3 300
 mapEnd int
-call assert 0
+assertEqual 0
 moduleEnd
 
 module mapCharLiteralAssertions
@@ -72,7 +72,7 @@ push input
 mapBegin int
 map "A" "B"
 mapEnd int
-call assert 66
+assertEqual 66
 
 push &input
 push 66
@@ -81,7 +81,7 @@ push input
 mapBegin int
 map "A" "B"
 mapEnd int
-call assert 0
+assertEqual 0
 moduleEnd
 
 module mapDefaultAssertions
@@ -97,7 +97,7 @@ mapBegin int
 map 1 10
 default 999
 mapEnd int
-call assert 10
+assertEqual 10
 
 push &input
 push 0
@@ -107,7 +107,7 @@ mapBegin int
 map 1 10
 default 999
 mapEnd int
-call assert 999
+assertEqual 999
 
 push &input
 push 42
@@ -117,7 +117,7 @@ mapBegin int
 map 1 10
 default 999
 mapEnd int
-call assert 999
+assertEqual 999
 moduleEnd
 
 module mapIntFloatAssertions
@@ -133,7 +133,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-call assert 0.5
+assertEqual 0.5
 
 push &input
 push 1
@@ -143,7 +143,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-call assert 1.5
+assertEqual 1.5
 
 push &input
 push 2
@@ -153,7 +153,7 @@ mapBegin int
 map 0 0.5
 map 1 1.5
 mapEnd float
-call assert 0.0
+assertEqual 0.0
 moduleEnd
 
 module mapFloatFloatAssertions
@@ -169,7 +169,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-call assert 10.0
+assertEqual 10.0
 
 push &input
 push 1.5
@@ -179,7 +179,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-call assert 20.0
+assertEqual 20.0
 
 push &input
 push 0.0
@@ -189,7 +189,7 @@ mapBegin float
 map 0.5 10.0
 map 1.5 20.0
 mapEnd float
-call assert 0.0
+assertEqual 0.0
 moduleEnd
 
 module mapImplicitDefaultAssertions
@@ -204,7 +204,7 @@ push input
 mapBegin int
 map 7 42
 mapEnd int
-call assert 42
+assertEqual 42
 
 push &input
 push 0
@@ -213,7 +213,7 @@ push input
 mapBegin int
 map 7 42
 mapEnd int
-call assert 0
+assertEqual 0
 moduleEnd
 
 module mapImplicitKeyAssertions
@@ -232,7 +232,7 @@ map 100
 map 200
 map 300
 mapEnd int
-call assert 100
+assertEqual 100
 
 push &input
 push 2
@@ -243,7 +243,7 @@ map 100
 map 200
 map 300
 mapEnd int
-call assert 300
+assertEqual 300
 
 push &input
 push 9
@@ -254,7 +254,7 @@ map 100
 map 200
 map 300
 mapEnd int
-call assert 0
+assertEqual 0
 moduleEnd
 
 module mapImplicitKeyMixedRowsAssertions
@@ -273,7 +273,7 @@ map 10
 map 9 99
 map 30
 mapEnd int
-call assert 30
+assertEqual 30
 
 push &input
 push 9
@@ -284,7 +284,7 @@ map 10
 map 9 99
 map 30
 mapEnd int
-call assert 99
+assertEqual 99
 moduleEnd
 
 module mapImplicitFloatKeyAssertions
@@ -301,7 +301,7 @@ mapBegin float
 map 0.5
 map 1.5
 mapEnd float
-call assert 1.5
+assertEqual 1.5
 moduleEnd
 
 module mapFirstMatchAssertions
@@ -313,7 +313,7 @@ mapBegin int
 map 1 10
 map 1 20
 mapEnd int
-call assert 10
+assertEqual 10
 moduleEnd
 
 module mapZeroRowsAssertions
@@ -324,12 +324,12 @@ int input 5
 push input
 mapBegin int
 mapEnd int
-call assert 0
+assertEqual 0
 
 push input
 mapBegin int
 default 42
 mapEnd int
-call assert 42
+assertEqual 42
 moduleEnd
 entryEnd

@@ -12,26 +12,26 @@ module extractByteIntAssertions
 push 0x12345678
 push 0
 call extractByte
-call assert 0x78
+assertEqual 0x78
 
 push 0x12345678
 push 1
 call extractByte
-call assert 0x56
+assertEqual 0x56
 
 push 0x12345678
 push 2
 call extractByte
-call assert 0x34
+assertEqual 0x34
 
 push 0x12345678
 push 3
 call extractByte
-call assert 0x12
+assertEqual 0x12
 
 push -1
 push 2
 call extractByte
-call assert 0xFF
+assertEqual 0xFF
 moduleEnd
 entryEnd

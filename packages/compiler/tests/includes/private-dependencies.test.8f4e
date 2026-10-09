@@ -8,6 +8,6 @@ entry test
 module privateDependencyAssertions
 ; Unselected inc overloads remain available to included functions.
 call addTwo 5
-call assert 7
+assertEqual 7
 moduleEnd
 entryEnd

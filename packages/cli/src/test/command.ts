@@ -1,5 +1,5 @@
 import { compileProject, parseProjectSource } from '@8f4e/compiler';
-import { formatTestFailures, hasTestEntry, runTestProject } from '@8f4e/test-runner';
+import { formatTestFailures, hasTestEntry, runTests } from '@8f4e/test-runner';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { resolveStdlibInclude } from '../shared/stdlibResolver';
@@ -160,18 +160,17 @@ async function runTestFile(inputPath: string): Promise<TestFileResult> {
 		return { assertions: 0, skipped: true };
 	}
 
-	const result = await runTestProject(project, {
-		compile: instrumented =>
-			compileProject(instrumented, {
-				disableSharedMemory: true,
-				resolveInclude: resolveStdlibInclude,
-			}),
+	const compiled = await compileProject(project, {
+		enableAssertions: true,
+		disableSharedMemory: true,
+		resolveInclude: resolveStdlibInclude,
 	});
+	const result = await runTests(compiled);
 	if (result.failures.length > 0) {
 		throw new Error(formatTestFailures(result.failures));
 	}
 
-	return { assertions: result.assertionCount, skipped: false };
+	return { assertions: result.assertions.length, skipped: false };
 }
 
 export async function runTestCommand(args: string[]): Promise<void> {

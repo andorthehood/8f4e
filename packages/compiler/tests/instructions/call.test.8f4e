@@ -15,7 +15,7 @@ module callConstantFunction
 ; return
 ; value.
 call getFortyTwo
-call assert 42
+assertEqual 42
 moduleEnd
 
 module callFunctionWithParameter
@@ -24,11 +24,11 @@ module callFunctionWithParameter
 ; declaration order.
 push 5
 call double
-call assert 10
+assertEqual 10
 
 push 10
 call double
-call assert 20
+assertEqual 20
 moduleEnd
 
 module callMultipleFunctions
@@ -37,7 +37,7 @@ module callMultipleFunctions
 call getTwo
 call getThree
 add
-call assert 5
+assertEqual 5
 moduleEnd
 
 module callNestedFunction
@@ -45,7 +45,7 @@ module callNestedFunction
 ; functions after signatures and
 ; indexes are collected.
 call compute
-call assert 42
+assertEqual 42
 moduleEnd
 
 module callFloat64RoundTrip
@@ -54,7 +54,7 @@ module callFloat64RoundTrip
 ; precision through calls.
 push 3.141592653589793f64
 call identityFloat64
-call assert 3.141592653589793f64
+assertEqual 3.141592653589793f64
 moduleEnd
 
 module callFloat64ReturningFunction
@@ -63,7 +63,7 @@ module callFloat64ReturningFunction
 ; in
 ; the callee.
 call getDoublePI
-call assert 6.28318530717958f64
+assertEqual 6.28318530717958f64
 moduleEnd
 
 module callPointerParamsWithLocalDereference
@@ -82,7 +82,7 @@ push &lut
 push 0
 push delta
 call readScaledBlep
-call assert 0.5
+assertEqual 0.5
 moduleEnd
 
 module callImpureFunctionWithExplicitLoadAndStore
@@ -100,7 +100,7 @@ push gain
 call scaleInto
 
 push output
-call assert 1.75
+assertEqual 1.75
 moduleEnd
 entryEnd
 

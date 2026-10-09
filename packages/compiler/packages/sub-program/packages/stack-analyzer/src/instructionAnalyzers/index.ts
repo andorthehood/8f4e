@@ -3,10 +3,12 @@ import type {
 	CompilerASTLine,
 	MapEndLine,
 	ResolvedPushShapeLine,
+	SemanticAssertEqualLine,
 	SemanticCallLine,
 	SemanticPushLine,
 } from '@8f4e/language-spec';
 import { getInstructionSpec } from '@8f4e/language-spec';
+import { analyzeAssertEqual } from './assertEqual';
 import { analyzeCall } from './call';
 import { analyzeExitIfTrue } from './controlFlow';
 import { analyzeFunctionEnd } from './functionEnd';
@@ -39,6 +41,8 @@ import type { InstructionAnalysisResult } from './types';
  */
 export function analyzeByInstruction(line: CompilerASTLine, context: CompilationContext): InstructionAnalysisResult {
 	switch (line.instruction) {
+		case 'assertEqual':
+			return analyzeAssertEqual(line as SemanticAssertEqualLine, context);
 		case 'push': {
 			return {
 				consumed: [],

@@ -10,17 +10,17 @@ entry test
 module includeSelectionAssertions
 ; Renaming preserves both public overloads.
 call addOne 10
-call assert 11
+assertEqual 11
 
 call addOne 1.5
-call assert 2.5
+assertEqual 2.5
 
 ; Internal calls follow source names and export aliases.
 call addTwo 20
-call assert 22
+assertEqual 22
 
 ; Repeated identical selections are deduplicated.
 call addOne 30
-call assert 31
+assertEqual 31
 moduleEnd
 entryEnd

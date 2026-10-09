@@ -30,8 +30,9 @@ package unit tests continue using Vitest.
 
 Compile test projects with `enableAssertions: true`. Supply callbacks matching the compiler-owned import contract
 and consume its source-site lookup instead of rewriting sources or assigning site IDs in the runner. Native `assert`
-uses a zero/nonzero integer condition; `assertEqual` uses exact equality for matching types and compares pointers by
-address. Callbacks must implement those agreed semantics rather than retain an implicit tolerance.
+uses a zero/nonzero integer condition; `assertEqual expected` consumes one actual stack value and requires an inline
+expected argument. It uses exact equality for matching types and compares pointers by address. Callbacks must
+implement those agreed semantics rather than retain an implicit tolerance.
 
 The compiler lookup identifies static sites by block ID, group path, module/function identity, instruction kind,
 physical block line, and included-source provenance. Runtime invocations report site IDs; loops share a static ID
@@ -40,9 +41,8 @@ while each invocation receives its own execution index.
 ### Shared execution
 
 Keep `@8f4e/test-runner` as the common owner of callback creation, test execution, result collection, and failure
-formatting. Separate execution of compiled artifacts from the convenience path that compiles a project, so an editor
-runtime can use its existing compilation. Remove source instrumentation and synthetic assertion declarations, then
-remove the nested `@8f4e/test-precompiler` package and its dependency/build configuration.
+formatting. Accept compiler output directly; callers compile projects and retain their compilation metadata.
+Remove source instrumentation and synthetic assertion declarations, then remove the nested `@8f4e/test-precompiler` package and its dependency/build configuration.
 
 Compiler fixture and CLI adapters retain their existing responsibilities for includes, memory options, snapshots,
 file selection, and presentation. Both compile with assertions enabled and use the same execution implementation.
@@ -71,10 +71,16 @@ Publish results tagged with a compilation/run identity and ignore results from s
 and execution results so later editor indicators can show red if any invocation fails, green if executed invocations
 all pass, and neutral if a site was never executed. Rendering green/red icons is a follow-up UI task.
 
+## Current migration scope
+
+The current PR migrates only the existing compiler fixture and CLI tests. Editor runtime integration and the test
+gallery are excluded. The editor plan above remains deferred to a separate follow-up; this TODO stays open for that
+remaining work.
+
 ## Implementation Plan
 
-1. Refactor the shared runner to consume compiled site metadata and supply callbacks. Support compilation convenience
-   and execution of existing artifacts, with explicit memory and initialization ownership.
+1. Refactor the shared runner to accept compiled artifacts, consume source sites, and supply assertion callbacks.
+   Keep compilation in the adapters, with explicit memory and initialization ownership.
 2. Migrate compiler fixtures and `8f4e test` to native instructions. Existing two-value `call assert` comparisons become
    `assertEqual`, preserving operand-producing code and physical source lines where practical. Review fixtures that
    previously relied on tolerance and express approximate expectations explicitly. Update snapshots.
@@ -85,15 +91,15 @@ all pass, and neutral if a site was never executed. Rendering green/red icons is
 
 ## Success Criteria
 
-- [ ] Runner callbacks implement the documented integer-condition and exact-equality semantics.
-- [ ] Failure reports use compiler-produced source sites, including nested groups and included code.
-- [ ] A failed assertion does not prevent subsequent assertions from running through the default collecting callbacks.
-- [ ] Loops preserve static site identity while results record each invocation; unexecuted sites remain distinguishable.
+- [x] Runner callbacks implement the documented integer-condition and exact-equality semantics.
+- [x] Failure reports use compiler-produced source sites, including nested groups and included code.
+- [x] A failed assertion does not prevent subsequent assertions from running through the default collecting callbacks.
+- [x] Loops preserve static site identity while results record each invocation; unexecuted sites remain distinguishable.
 - [ ] Compiler fixtures, CLI tests, and the editor runtime share callback creation, execution, and reporting.
-- [ ] The precompiler package and synthetic assertion declarations are removed.
+- [x] The precompiler package and synthetic assertion declarations are removed.
 - [ ] Editor runtime selection controls compilation, initialization instances satisfy imports, and stale results are ignored.
 - [ ] Memory ownership and reset behavior are documented and covered for CLI and editor execution.
-- [ ] Approximate fixture expectations are explicit rather than hidden in `assertEqual` callbacks.
+- [x] Approximate fixture expectations are explicit rather than hidden in `assertEqual` callbacks.
 - [ ] Runner, CLI, and runtime documentation describes the migrated contracts.
 
 ## Validation Checkpoints
@@ -149,6 +155,13 @@ all pass, and neutral if a site was never executed. Rendering green/red icons is
 Recorded on 2026-10-09. Compiler assertion support is an independent prerequisite in TODO 490. Memory/reset behavior
 and when tests run are runner/runtime choices; this plan mandates neither fresh memory per run nor automatic runs
 after compilation. Rendering green/red assertion icons remains a follow-up UI task.
+
+The compiler fixture and CLI adapters compile original project sources with native assertions enabled, then pass
+the compiled output to the shared runner. Assertion imports
+and source sites come from the compiler, and the precompiler package has been removed. Fresh CLI/fixture memory is
+initialized once. Approximate expectations in four fixture files now express a `0.001` absolute error bound in source; other
+comparisons use exact `assertEqual expected`, which consumes one actual stack value and requires the expected value
+inline. The fixture and CLI sources use this syntax directly. Editor execution and gallery behavior are deferred.
 
 ## Archive Instructions
 

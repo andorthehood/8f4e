@@ -9,13 +9,13 @@ module dupAssertions
 ; it duplicates int values.
 push 42
 call dup
-call assert 42
-call assert 42
+assertEqual 42
+assertEqual 42
 
 ; it duplicates float values.
 push 3.5
 call dup
-call assert 3.5
-call assert 3.5
+assertEqual 3.5
+assertEqual 3.5
 moduleEnd
 entryEnd

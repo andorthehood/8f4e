@@ -124,8 +124,10 @@ Do not add per-array or per-range zero-fill logic unless a measured optimization
 
 ## Native Assertion Planning
 
-Native assertions are recognized and stack-checked in either flag mode. With `enableAssertions: false`, codegen emits
-operand drops. With the flag enabled, sub-program orchestration plans typed host imports and static assertion sites
+Native assertions are recognized and stack-checked in either flag mode. Semantic resolution resolves the required
+`assertEqual` expected argument as a push; stack analysis checks it against the actual stack operand. With
+`enableAssertions: false`, codegen drops the actual value without emitting the expected push. With the flag enabled,
+codegen emits that push before the callback, and sub-program orchestration plans typed host imports and static assertion sites
 from resolved executable bodies and stack facts. These are signature requests, without numeric function/type indices.
 Backend layout planning then includes them with user imports and assigns final function indices once.
 

@@ -32,7 +32,9 @@ When `format` is used, the CLI wraps long semicolon comments to the requested `-
 of 32. It writes to stdout by default, writes to a separate file with `--out`, or updates the input file with `--write`.
 
 When `test` is used, the CLI executes test entries or exported test functions using `@8f4e/test-runner`, shared with
-compiler fixtures. Failure output includes the input filename, expected/received values, original module or function,
+compiler fixtures. Native `assert` checks nonzero integer conditions, and `assertEqual expected`
+compares the actual stack value to a required inline expected value with matching types and exact equality.
+Test compilation enables assertions and initializes fresh memory once. Failure output includes the input filename, expected/received values, original module or function,
 one-based line within that block, and assertion site ID. Loop invocations of the same assertion share a site ID.
 
 When `capture` is used, the CLI:

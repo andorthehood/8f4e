@@ -14,15 +14,15 @@ module guardedIntLoadAssertions
 ; trapping.
 push -1
 load
-call assert 0
+assertEqual 0
 
 push 65533
 load
-call assert 0
+assertEqual 0
 
 push 2147483647
 load
-call assert 0
+assertEqual 0
 moduleEnd
 
 module guardedFloatLoadAssertions
@@ -31,15 +31,15 @@ module guardedFloatLoadAssertions
 ; trapping.
 push -1
 loadFloat
-call assert 0.0
+assertEqual 0.0
 
 push 65533
 loadFloat
-call assert 0.0
+assertEqual 0.0
 
 push 2147483647
 loadFloat
-call assert 0.0
+assertEqual 0.0
 moduleEnd
 
 module guardedLocalPointerDereferenceAssertions
@@ -52,19 +52,19 @@ push &value
 push 4
 sub
 call readGuardedPointer
-call assert 0
+assertEqual 0
 
 push &value
 push 65533
 add
 call readGuardedPointer
-call assert 0
+assertEqual 0
 
 push &value
 push 2147483647
 add
 call readGuardedPointer
-call assert 0
+assertEqual 0
 moduleEnd
 entryEnd
 

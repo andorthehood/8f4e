@@ -12,7 +12,7 @@ import type {
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
 import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
-import { formatTestFailures, hasTestEntry, runTestProject, type TestRunResult } from '@8f4e/test-runner';
+import { formatTestFailures, hasTestEntry, runTests } from '@8f4e/test-runner';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -46,11 +46,6 @@ export interface FixtureProgramCompileOptions {
 
 export interface FixtureProgramInstantiateOptions extends FixtureProgramCompileOptions {
 	hostImports?: Record<string, CallableFunction>;
-}
-
-export interface FixtureProgramRunResult extends InstantiatedFixtureProgram {
-	assertionCount: number;
-	compileSnapshots: FixtureCompileSnapshots;
 }
 
 export const testRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -252,9 +247,7 @@ function serializeCompiledFunctionOverview(func: CompiledFunction): Record<strin
 }
 
 function getFixtureCompiledFunctions(result: CompileResult): Array<[string, CompiledFunction]> {
-	return Object.entries(result.compiledFunctions ?? {})
-		.filter(([, func]) => func.import?.moduleName !== 'host' || func.import.fieldName !== 'assert')
-		.sort(([left], [right]) => left.localeCompare(right));
+	return Object.entries(result.compiledFunctions ?? {}).sort(([left], [right]) => left.localeCompare(right));
 }
 
 export function serializeCompileResult(result: CompileResult): FixtureCompileSnapshots {
@@ -341,7 +334,7 @@ export async function instantiateFixtureProgramSource(
 	};
 }
 
-export async function runFixtureProgramFile(filePath: string): Promise<FixtureProgramRunResult> {
+export async function runFixtureProgramFile(filePath: string) {
 	const relativePath = path.relative(testRoot, filePath);
 	const source = await fs.readFile(filePath, 'utf8');
 	const project = parseProjectSource(source);
@@ -350,24 +343,24 @@ export async function runFixtureProgramFile(filePath: string): Promise<FixturePr
 		throw new Error(`${relativePath}: expected an entry test block or exported function test`);
 	}
 
-	let result: TestRunResult<CompileResult>;
+	let compiled: CompileResult;
+	let result: Awaited<ReturnType<typeof runTests>>;
 	try {
-		result = await runTestProject(project, {
-			compile: instrumented =>
-				compileProject(instrumented, {
-					disableSharedMemory: true,
-					memoryRegions: getTestMemoryRegions(source),
-					resolveInclude: resolveTestInclude,
-				}),
+		compiled = await compileProject(project, {
+			enableAssertions: true,
+			disableSharedMemory: true,
+			memoryRegions: getTestMemoryRegions(source),
+			resolveInclude: resolveTestInclude,
 		});
+		result = await runTests(compiled);
 	} catch (error) {
 		throw formatCompileError(relativePath, error);
 	}
 	if (result.failures.length > 0) {
 		throw new Error(`${relativePath}: ${formatTestFailures(result.failures)}`);
 	}
-	const compileSnapshots = serializeCompileResult(result.compileResult);
+	const compileSnapshots = serializeCompileResult(compiled);
 	compileSnapshots.overview.wasmExports = Object.keys(result.instance.exports).sort();
 
-	return { ...result, source, project, compileSnapshots };
+	return { assertions: result.assertions, compileSnapshots };
 }

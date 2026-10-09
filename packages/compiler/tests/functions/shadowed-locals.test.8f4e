@@ -12,9 +12,9 @@ noteEnd
 entry test
 module shadowedLocalAssertions
 call bindingSlots -11
-call assert 2.5
-call assert 7
-call assert 11
+assertEqual 2.5
+assertEqual 7
+assertEqual 11
 moduleEnd
 entryEnd
 

@@ -17,6 +17,6 @@ store
 blockEnd
 
 push output
-call assert 0
+assertEqual 0
 moduleEnd
 entryEnd

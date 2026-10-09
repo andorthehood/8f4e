@@ -10,28 +10,28 @@ module swapAssertions
 push 1
 push 2
 call swap
-call assert 1
-call assert 2
+assertEqual 1
+assertEqual 2
 
 ; it swaps an int and a float.
 push 3
 push 4.5
 call swap
-call assert 3
-call assert 4.5
+assertEqual 3
+assertEqual 4.5
 
 ; it swaps a float and an int.
 push 5.5
 push 6
 call swap
-call assert 5.5
-call assert 6
+assertEqual 5.5
+assertEqual 6
 
 ; it swaps two float values.
 push 7.25
 push 8.75
 call swap
-call assert 7.25
-call assert 8.75
+assertEqual 7.25
+assertEqual 8.75
 moduleEnd
 entryEnd

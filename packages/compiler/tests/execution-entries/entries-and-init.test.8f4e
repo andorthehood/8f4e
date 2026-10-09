@@ -51,20 +51,20 @@ function test
 ; entry.
 push &userInitEntryCounter:value
 load
-call assert 0
+assertEqual 0
 
 call main
 push &mainEntryCounter:value
 load
-call assert 1
+assertEqual 1
 
 call aux
 push &auxEntryCounter:value
 load
-call assert 2
+assertEqual 2
 
 call init
 push &userInitEntryCounter:value
 load
-call assert 7
+assertEqual 7
 functionEnd

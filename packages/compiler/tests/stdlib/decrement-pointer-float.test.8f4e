@@ -18,8 +18,7 @@ push count(buffer)
 call decrementPointer
 
 push pointer
-push buffer&
-call assert
+assertEqual buffer&
 
 push &pointer
 push &buffer
@@ -27,8 +26,7 @@ push count(buffer)
 call decrementPointer
 
 push pointer
-push &buffer+sizeof(buffer)
-call assert
+assertEqual &buffer+sizeof(buffer)
 
 push &pointer
 push &buffer
@@ -36,7 +34,6 @@ push count(buffer)
 call decrementPointer
 
 push pointer
-push &buffer
-call assert
+assertEqual &buffer
 moduleEnd
 entryEnd

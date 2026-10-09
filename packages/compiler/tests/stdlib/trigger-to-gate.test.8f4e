@@ -13,49 +13,49 @@ int remainingSamples
 push 0
 push 3
 call triggerToGate &remainingSamples
-call assert 0
+assertEqual 0
 push remainingSamples
-call assert 0
+assertEqual 0
 
 push 1
 push 3
 call triggerToGate &remainingSamples
-call assert 1
+assertEqual 1
 push remainingSamples
-call assert 2
+assertEqual 2
 
 push 0
 push 3
 call triggerToGate &remainingSamples
-call assert 1
+assertEqual 1
 push remainingSamples
-call assert 1
+assertEqual 1
 
 push 0
 push 3
 call triggerToGate &remainingSamples
-call assert 1
+assertEqual 1
 push remainingSamples
-call assert 0
+assertEqual 0
 
 push 0
 push 3
 call triggerToGate &remainingSamples
-call assert 0
+assertEqual 0
 
 push 1
 push 2
 call triggerToGate &remainingSamples
-call assert 1
+assertEqual 1
 push remainingSamples
-call assert 1
+assertEqual 1
 
 push 1
 push 4
 call triggerToGate &remainingSamples
-call assert 1
+assertEqual 1
 push remainingSamples
-call assert 3
+assertEqual 3
 moduleEnd
 
 module triggerToGateFloatAssertions
@@ -66,25 +66,25 @@ int remainingSamples
 push 0.0
 push 2
 call triggerToGate &remainingSamples
-call assert 0
+assertEqual 0
 
 push 0.5
 push 2
 call triggerToGate &remainingSamples
-call assert 1
+assertEqual 1
 push remainingSamples
-call assert 1
+assertEqual 1
 
 push -0.5
 push 2
 call triggerToGate &remainingSamples
-call assert 1
+assertEqual 1
 push remainingSamples
-call assert 0
+assertEqual 0
 
 push 0.0
 push 2
 call triggerToGate &remainingSamples
-call assert 0
+assertEqual 0
 moduleEnd
 entryEnd

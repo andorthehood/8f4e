@@ -10,18 +10,25 @@ module fractAssertions
 ; of positive float values.
 push 0.0
 call fract
-call assert 0.0
+assertEqual 0.0
 
 push 3.25
 call fract
-call assert 0.25
+assertEqual 0.25
 
 push 10.75
 call fract
-call assert 0.75
+assertEqual 0.75
 
 push 60.999
 call fract
-call assert 0.999
+push 0.999
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 moduleEnd
 entryEnd

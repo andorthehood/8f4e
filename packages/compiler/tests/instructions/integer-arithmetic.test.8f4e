@@ -2,8 +2,8 @@
 
 note
 Integer arithmetic behavior is
-checked through the shared
-imported assert helper.
+checked with native
+assertions.
 noteEnd
 
 entry test
@@ -14,22 +14,22 @@ module addAssertions
 push 2
 push 2
 add
-call assert 4
+assertEqual 4
 
 push -1
 push 1
 add
-call assert 0
+assertEqual 0
 
 push -69
 push 0
 add
-call assert -69
+assertEqual -69
 
 push 420
 push 0
 add
-call assert 420
+assertEqual 420
 moduleEnd
 
 module subAssertions
@@ -40,22 +40,22 @@ module subAssertions
 push 2
 push 2
 sub
-call assert 0
+assertEqual 0
 
 push -1
 push 1
 sub
-call assert -2
+assertEqual -2
 
 push -69
 push 0
 sub
-call assert -69
+assertEqual -69
 
 push 420
 push 0
 sub
-call assert 420
+assertEqual 420
 moduleEnd
 
 module mulAssertions
@@ -65,12 +65,12 @@ module mulAssertions
 push 2
 push 2
 mul
-call assert 4
+assertEqual 4
 
 push 2
 push 0
 mul
-call assert 0
+assertEqual 0
 moduleEnd
 
 module divAssertions
@@ -80,7 +80,7 @@ push 100
 push 10
 ensureNonZero
 div
-call assert 10
+assertEqual 10
 moduleEnd
 
 module remainderAssertions
@@ -91,13 +91,13 @@ push 4
 push 2
 ensureNonZero
 remainder
-call assert 0
+assertEqual 0
 
 push 3
 push 2
 ensureNonZero
 remainder
-call assert 1
+assertEqual 1
 moduleEnd
 
 module absAssertions
@@ -105,24 +105,24 @@ module absAssertions
 ; magnitudes.
 push 1
 abs
-call assert 1
+assertEqual 1
 
 push -1
 abs
-call assert 1
+assertEqual 1
 
 push -69
 abs
-call assert 69
+assertEqual 69
 
 push 420
 abs
-call assert 420
+assertEqual 420
 
 push 8
 push -2
 abs
 div
-call assert 4
+assertEqual 4
 moduleEnd
 entryEnd

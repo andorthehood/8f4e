@@ -599,23 +599,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 0,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 13,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -659,23 +648,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 14,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -691,23 +669,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 15,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -751,23 +718,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 16,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -783,23 +739,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 0,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 17,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -843,23 +788,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 0,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 18,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [],
@@ -935,23 +869,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 0,
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 0,
             },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -967,23 +890,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 0,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 1,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1027,55 +939,33 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "remainingSamples",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
             {
               "isInteger": true,
               "type": "literal",
               "value": 2,
             },
           ],
-          "instruction": "call",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "remainingSamples",
-            },
-          ],
-          "instruction": "push",
-        },
-        {
-          "arguments": [
-            {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 2,
-            },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 3,
-            },
-          ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1119,23 +1009,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 4,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1151,23 +1030,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 5,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1211,23 +1079,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 6,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1243,23 +1100,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 0,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 7,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1303,23 +1149,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 0,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 8,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1363,23 +1198,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 9,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1395,23 +1219,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 10,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1455,23 +1268,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 1,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 11,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [
@@ -1487,23 +1289,12 @@
         {
           "arguments": [
             {
-              "referenceKind": "plain",
-              "scope": "local",
-              "type": "identifier",
-              "value": "assert",
-            },
-            {
               "isInteger": true,
               "type": "literal",
               "value": 3,
             },
-            {
-              "isInteger": true,
-              "type": "literal",
-              "value": 12,
-            },
           ],
-          "instruction": "call",
+          "instruction": "assertEqual",
         },
         {
           "arguments": [],

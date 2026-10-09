@@ -13,17 +13,17 @@ module loadFloatAssertions
 float firstInput 69.1
 push &firstInput
 loadFloat
-call assert 69.1
+assertEqual 69.1
 
 float secondInput 0.1
 push &secondInput
 loadFloat
-call assert 0.1
+assertEqual 0.1
 
 float thirdInput -420.1
 push &thirdInput
 loadFloat
-call assert -420.1
+assertEqual -420.1
 moduleEnd
 
 module anonymousFloatDeclarationsCompile
@@ -34,23 +34,23 @@ module anonymousFloatDeclarationsCompile
 float
 push &this:0
 loadFloat
-call assert 0.0
+assertEqual 0.0
 
 float 3.14
 push &this:1
 loadFloat
-call assert 3.14
+assertEqual 3.14
 
 const PI 3.14159
 float PI
 push &this:2
 loadFloat
-call assert 3.14159
+assertEqual 3.14159
 
 float -2.5
 push &this:3
 loadFloat
-call assert -2.5
+assertEqual -2.5
 moduleEnd
 
 module intDeclarationAssertions
@@ -60,36 +60,36 @@ module intDeclarationAssertions
 int
 push &this:0
 load
-call assert 0
+assertEqual 0
 
 int 42
 push &this:1
 load
-call assert 42
+assertEqual 42
 
 int foo 42
 push foo
-call assert 42
+assertEqual 42
 
 int charValue "e"
 push charValue
-call assert 101
+assertEqual 101
 
 int "e"
 push &this:4
 load
-call assert 101
+assertEqual 101
 
 const MY_VALUE 100
 int MY_VALUE
 push &this:5
 load
-call assert 100
+assertEqual 100
 
 int -42
 push &this:6
 load
-call assert -42
+assertEqual -42
 moduleEnd
 
 module intSplitByteDeclarationAssertions
@@ -97,42 +97,42 @@ module intSplitByteDeclarationAssertions
 ; into 32-bit integer values.
 int splitHex 0xA8 0xFF
 push splitHex
-call assert -1459683328
+assertEqual -1459683328
 
 int splitHexFull 0xA8 0xFF 0x00 0x00
 push splitHexFull
-call assert -1459683328
+assertEqual -1459683328
 
 int 0xA8 0xFF
 push &this:2
 load
-call assert -1459683328
+assertEqual -1459683328
 
 int splitDecimal 32 64
 push splitDecimal
-call assert 541065216
+assertEqual 541065216
 
 int splitString "AB"
 push splitString
-call assert 1094844416
+assertEqual 1094844416
 
 int splitDecimalFull 32 64 0 0
 push splitDecimalFull
-call assert 541065216
+assertEqual 541065216
 
 int 32 64
 push &this:6
 load
-call assert 541065216
+assertEqual 541065216
 
 int 32
 push &this:7
 load
-call assert 32
+assertEqual 32
 
 int mixedBytes 0xA8 255
 push mixedBytes
-call assert -1459683328
+assertEqual -1459683328
 moduleEnd
 
 module intConstantSplitByteDeclarationAssertions
@@ -144,21 +144,21 @@ const HI 32
 const LO 64
 int foo HI LO
 push foo
-call assert 541065216
+assertEqual 541065216
 
 int HI LO
 push &this:1
 load
-call assert 541065216
+assertEqual 541065216
 
 int mixed 0xA8 LO
 push mixed
-call assert -1472200704
+assertEqual -1472200704
 
 int 0xA8 LO
 push &this:3
 load
-call assert -1472200704
+assertEqual -1472200704
 moduleEnd
 
 module intPointerDeclarationsCompile
@@ -167,6 +167,6 @@ module intPointerDeclarationsCompile
 int*
 push &this:0
 load
-call assert 0
+assertEqual 0
 moduleEnd
 entryEnd

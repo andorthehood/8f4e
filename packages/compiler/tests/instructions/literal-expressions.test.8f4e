@@ -17,14 +17,14 @@ const TEST2 420.69
 const TEST3 69
 
 push TEST1
-call assert 420
+assertEqual 420
 
 push TEST2
-call assert 420.69
+assertEqual 420.69
 
 int output3 TEST3
 push output3
-call assert 69
+assertEqual 69
 moduleEnd
 
 module fractionLiteralAssertions
@@ -32,27 +32,27 @@ module fractionLiteralAssertions
 ; push, memory declarations, and
 ; constants.
 push 1/16
-call assert 0.0625
+assertEqual 0.0625
 
 int intFraction 1/16
 push intFraction
-call assert 0
+assertEqual 0
 
 float floatFraction 1/16
 push floatFraction
-call assert 0.0625
+assertEqual 0.0625
 
 int intWholeFraction 8/2
 push intWholeFraction
-call assert 4
+assertEqual 4
 
 float negativeFraction -1/2
 push negativeFraction
-call assert -0.5
+assertEqual -0.5
 
 const MY_FRACTION 1/8
 push MY_FRACTION
-call assert 0.125
+assertEqual 0.125
 moduleEnd
 
 module literalMulDivExpressionAssertions
@@ -62,34 +62,34 @@ module literalMulDivExpressionAssertions
 ; and memory contexts.
 const MUL_RESULT 16*2
 push MUL_RESULT
-call assert 32
+assertEqual 32
 
 const DIV_RESULT 8/2
 push DIV_RESULT
-call assert 4
+assertEqual 4
 
 push 16*2
-call assert 32
+assertEqual 32
 
 push 1/2
-call assert 0.5
+assertEqual 0.5
 
 push 0x10*2
-call assert 32
+assertEqual 32
 
 push 0x10/2
-call assert 8
+assertEqual 8
 
 push 3.5*4
-call assert 14.0
+assertEqual 14.0
 
 int multipliedDefault 4*3
 push multipliedDefault
-call assert 12
+assertEqual 12
 
 int[] literalSizedBuffer 4*2
 push count(literalSizedBuffer)
-call assert 8
+assertEqual 8
 moduleEnd
 
 module constantExpressionAssertions
@@ -99,26 +99,26 @@ module constantExpressionAssertions
 const SIZE 8
 int[] dividedBuffer SIZE/2
 push count(dividedBuffer)
-call assert 4
+assertEqual 4
 
 int[] multipliedBuffer SIZE*2
 push count(multipliedBuffer)
-call assert 16
+assertEqual 16
 
 const HALF SIZE/2
 push HALF
-call assert 4
+assertEqual 4
 
 const SIGNED -1/SIZE
 push SIGNED
-call assert -0.125
+assertEqual -0.125
 
 push SIZE/2
-call assert 4
+assertEqual 4
 
 int defaultFromExpression SIZE/2
 push defaultFromExpression
-call assert 4
+assertEqual 4
 moduleEnd
 
 module sizeAndCountExpressionAssertions
@@ -126,30 +126,30 @@ module sizeAndCountExpressionAssertions
 ; work in push and buffer sizing.
 int16[] samples 4
 push sizeof(samples)*2
-call assert 4
+assertEqual 4
 
 const SIZE 8
 push SIZE*sizeof(samples)
-call assert 16
+assertEqual 16
 
 push sizeof(samples)*4
-call assert 8
+assertEqual 8
 
 push 123*sizeof(samples)
-call assert 246
+assertEqual 246
 
 push 2*SIZE
-call assert 16
+assertEqual 16
 
 float[] floatSamples 8
 float* ptr &floatSamples
 push count(*ptr)
-call assert 8
+assertEqual 8
 
 int8[] smallSamples 4
 int8* smallPtr &smallSamples
 push min(*smallPtr)
-call assert -128
+assertEqual -128
 
 moduleEnd
 
@@ -160,33 +160,33 @@ module exponentExpressionAssertions
 ; and buffer sizes.
 const WIDTH 2^16
 push WIDTH
-call assert 65536
+assertEqual 65536
 
 const SIZE 4
 const TOTAL SIZE^3
 push TOTAL
-call assert 64
+assertEqual 64
 
 const EXP 8
 const RESULT 2^EXP
 push RESULT
-call assert 256
+assertEqual 256
 
 push 2^SIZE
-call assert 16
+assertEqual 16
 
 const MEMORY_EXP 3
 int defaultFromExponent MEMORY_EXP^2
 push defaultFromExponent
-call assert 9
+assertEqual 9
 
 const BUFFER_BASE 2
 int[] exponentialBuffer BUFFER_BASE^3
 push count(exponentialBuffer)
-call assert 8
+assertEqual 8
 
 int32[] samples 4
 push sizeof(samples)^2
-call assert 16
+assertEqual 16
 moduleEnd
 entryEnd

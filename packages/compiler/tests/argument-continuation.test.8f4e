@@ -24,8 +24,7 @@ float*
 - &continuationPointerSource:samples
 
 push readHead
-push &continuationPointerSource:samples
-call assert
+assertEqual &continuationPointerSource:samples
 moduleEnd
 
 module splitByteDefaultAssertions
@@ -37,7 +36,7 @@ int color
 - 0xFF
 
 push color
-call assert -1459683328
+assertEqual -1459683328
 moduleEnd
 
 module continuedNegativeLiteralAssertions
@@ -47,6 +46,6 @@ module continuedNegativeLiteralAssertions
 ; literal sign.
 push
 - -1
-call assert -1
+assertEqual -1
 moduleEnd
 entryEnd

@@ -18,7 +18,7 @@ drop
 push 2
 push 2
 add
-call assert 4
+assertEqual 4
 moduleEnd
 
 module clearStackAssertions
@@ -31,7 +31,7 @@ clearStack
 push 3
 push 4
 add
-call assert 7
+assertEqual 7
 moduleEnd
 
 module blockIntAssertions
@@ -41,17 +41,17 @@ module blockIntAssertions
 block
  push 69
 blockEnd int
-call assert 69
+assertEqual 69
 
 block
  push 1
 blockEnd int
-call assert 1
+assertEqual 1
 
 block
  push -420
 blockEnd int
-call assert -420
+assertEqual -420
 moduleEnd
 
 module blockFloatAssertions
@@ -61,16 +61,16 @@ module blockFloatAssertions
 block
  push 69.1
 blockEnd float
-call assert 69.1
+assertEqual 69.1
 
 block
  push 1.1
 blockEnd float
-call assert 1.1
+assertEqual 1.1
 
 block
  push -420.1
 blockEnd float
-call assert -420.1
+assertEqual -420.1
 moduleEnd
 entryEnd

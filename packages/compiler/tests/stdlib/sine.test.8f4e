@@ -10,18 +10,46 @@ module sineAssertions
 ; cardinal phase points.
 push 0.0
 call sine
-call assert 0.0
+push 0.0
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 
 push 1.570796326794896
 call sine
-call assert 1.0
+push 1.0
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 
 push 3.141592653589793
 call sine
-call assert 0.0
+push 0.0
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 
 push -1.570796326794896
 call sine
-call assert -1.0
+push -1.0
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
 moduleEnd
 entryEnd

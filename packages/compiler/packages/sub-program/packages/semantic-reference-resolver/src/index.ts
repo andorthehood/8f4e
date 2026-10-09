@@ -403,13 +403,17 @@ function assertFunctionMemoryIoAllowed(line: SemanticReferenceLine, context: Ref
 	const pointerPush =
 		'resolvedTarget' in line &&
 		(line.resolvedTarget.kind === 'local-pointer' || line.resolvedTarget.kind === 'memory-pointer');
-	const inlinePointerPush =
-		'inlineArgumentPushes' in line &&
-		line.inlineArgumentPushes?.some(
-			push =>
-				'resolvedTarget' in push &&
-				(push.resolvedTarget.kind === 'local-pointer' || push.resolvedTarget.kind === 'memory-pointer')
-		);
+	const inlinePushes =
+		'expectedPush' in line
+			? [line.expectedPush]
+			: 'inlineArgumentPushes' in line
+				? (line.inlineArgumentPushes ?? [])
+				: [];
+	const inlinePointerPush = inlinePushes.some(
+		push =>
+			'resolvedTarget' in push &&
+			(push.resolvedTarget.kind === 'local-pointer' || push.resolvedTarget.kind === 'memory-pointer')
+	);
 	if (spec.effects?.memory || pointerPush || inlinePointerPush) {
 		throw getError(ErrorCode.IMPURE_DIRECTIVE_REQUIRED_FOR_MEMORY_IO, line, context);
 	}

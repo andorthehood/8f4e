@@ -13,10 +13,10 @@ describe('8f4e fixture programs', () => {
 	});
 
 	test.each(testFiles.map(filePath => [path.relative(testRoot, filePath), filePath]))('%s', async (_name, filePath) => {
-		const { assertionCount, compileSnapshots } = await runFixtureProgramFile(filePath);
+		const { assertions, compileSnapshots } = await runFixtureProgramFile(filePath);
 		const snapshotPath = getCompileSnapshotPath(filePath);
 
-		expect(assertionCount).toBeGreaterThan(0);
+		expect(assertions.length).toBeGreaterThan(0);
 		await fs.mkdir(path.dirname(snapshotPath), { recursive: true });
 		await expect(compileSnapshots).toMatchFileSnapshot(snapshotPath);
 	});

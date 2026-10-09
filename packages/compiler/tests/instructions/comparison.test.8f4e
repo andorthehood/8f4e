@@ -15,22 +15,22 @@ module equalAssertions
 push 420
 push 420
 equal
-call assert 1
+assertEqual 1
 
 push 420
 push -420
 equal
-call assert 0
+assertEqual 0
 
 push 69
 push 96
 equal
-call assert 0
+assertEqual 0
 
 push 0
 push 0
 equal
-call assert 1
+assertEqual 1
 moduleEnd
 
 module equalToZeroAssertions
@@ -38,15 +38,15 @@ module equalToZeroAssertions
 ; for zero.
 push 420
 equalToZero
-call assert 0
+assertEqual 0
 
 push -69
 equalToZero
-call assert 0
+assertEqual 0
 
 push 0
 equalToZero
-call assert 1
+assertEqual 1
 moduleEnd
 
 module greaterThanIntAssertions
@@ -55,27 +55,27 @@ module greaterThanIntAssertions
 push 420
 push 420
 greaterThan
-call assert 0
+assertEqual 0
 
 push 420
 push 0
 greaterThan
-call assert 1
+assertEqual 1
 
 push 0
 push 0
 greaterThan
-call assert 0
+assertEqual 0
 
 push 0
 push 69
 greaterThan
-call assert 0
+assertEqual 0
 
 push 0
 push -69
 greaterThan
-call assert 1
+assertEqual 1
 moduleEnd
 
 module greaterThanFloatAssertions
@@ -85,27 +85,27 @@ module greaterThanFloatAssertions
 push 420.1
 push 420.1
 greaterThan
-call assert 0
+assertEqual 0
 
 push 420.1
 push 0.001
 greaterThan
-call assert 1
+assertEqual 1
 
 push 0.001
 push 0.001
 greaterThan
-call assert 0
+assertEqual 0
 
 push 0.001
 push 69.1
 greaterThan
-call assert 0
+assertEqual 0
 
 push 0.001
 push -69.1
 greaterThan
-call assert 1
+assertEqual 1
 moduleEnd
 
 module greaterOrEqualIntAssertions
@@ -115,27 +115,27 @@ module greaterOrEqualIntAssertions
 push 420
 push 420
 greaterOrEqual
-call assert 1
+assertEqual 1
 
 push 420
 push 0
 greaterOrEqual
-call assert 1
+assertEqual 1
 
 push 0
 push 0
 greaterOrEqual
-call assert 1
+assertEqual 1
 
 push 0
 push 69
 greaterOrEqual
-call assert 0
+assertEqual 0
 
 push 0
 push -69
 greaterOrEqual
-call assert 1
+assertEqual 1
 moduleEnd
 
 module greaterOrEqualFloatAssertions
@@ -144,26 +144,26 @@ module greaterOrEqualFloatAssertions
 push 420.1
 push 420.1
 greaterOrEqual
-call assert 1
+assertEqual 1
 
 push 420.1
 push 0.001
 greaterOrEqual
-call assert 1
+assertEqual 1
 
 push 0.001
 push 0.001
 greaterOrEqual
-call assert 1
+assertEqual 1
 
 push 0.001
 push 69.1
 greaterOrEqual
-call assert 0
+assertEqual 0
 
 push 0.001
 push -69.1
 greaterOrEqual
-call assert 1
+assertEqual 1
 moduleEnd
 entryEnd

@@ -22,14 +22,14 @@ int output 0
 
 push &skippedDirectiveModule:value
 load
-call assert 123
+assertEqual 123
 
 push &output
 push 9
 call writeWithDirectivePrologue
 
 push output
-call assert 9
+assertEqual 9
 moduleEnd
 entryEnd
 

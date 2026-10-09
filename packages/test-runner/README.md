@@ -1,53 +1,69 @@
 # @8f4e/test-runner
 
-Shared test execution for compiler fixtures and the `cli test` command. The runner instruments assertion calls with
-`@8f4e/test-precompiler` (the nested workspace package in `packages/test-runner/packages/test-precompiler/`), adds typed
-host assertion imports, creates memory, calls `initDefaults()` and `test()`, and
-returns all assertion results. Assertion failures are returned as data; adapters decide how to report them.
-
-The compiler fixture adapter owns snapshot generation and fixture include/memory-region options. The CLI adapter owns
-file selection, standard-library includes, and terminal output. Both use this package for execution and failure text.
+Shared native assertion execution for compiler fixtures and `cli test`. The compiler emits
+assertion imports and static source sites. This package supplies collecting callbacks, executes the `test` export,
+and returns failures as data. Sources are compiled unchanged.
 
 ## Usage
 
 ```ts
 import { compileProject, parseProjectSource } from '@8f4e/compiler';
-import { formatTestFailures, hasTestEntry, runTestProject } from '@8f4e/test-runner';
+import { formatTestFailures, hasTestEntry, runTests } from '@8f4e/test-runner';
 
 const project = parseProjectSource(source);
 if (hasTestEntry(project)) {
-	const result = await runTestProject(project, {
-		compile: instrumented => compileProject(instrumented, { disableSharedMemory: true }),
-	});
-	if (result.failures.length) console.error(formatTestFailures(result.failures));
+  const compiled = await compileProject(project, {
+    enableAssertions: true,
+    disableSharedMemory: true,
+    resolveInclude,
+  });
+  const result = await runTests(compiled);
+  if (result.failures.length) console.error(formatTestFailures(result.failures));
 }
 ```
 
-The compile callback receives a project with three-parameter assertion declarations (`received`, `expected`, `siteId`).
-It must compile with non-shared memory and supply any include resolver or memory-region configuration needed by the
-project. The returned `compileResult` retains the callback's full result type, including data needed for snapshots.
-The input project is preserved. Run on the original project once; do not instrument it separately first.
+Callers compile with assertions enabled and non-shared memory, adding any include resolver or memory regions they
+need. `runTests(compiled)` allocates fresh memory for each region, calls `initDefaults()` once, and executes `test()`.
+It returns `instance`, `memories`, `assertions`, and `failures`. Callers retain the compiler's source-site lookup and
+other output themselves. The runner has no compiler implementation dependency or source transformation step.
 
-## Assertion results
+## Assertions and reporting
 
-`assertionSites` lists static calls, including calls in branches that never execute. `assertions` records runtime
-invocations in execution order, with `assertIndex`, `received`, `expected`, `passed`, and the original `site`.
-`failures` contains the failing invocations. Repeated loop invocations share a site ID but have distinct invocation
-indices. The comparison tolerance is 0.001; NaN comparisons fail.
+```8f4e
+entry test
+module addWorks
+push 1
+push 2
+add
+assertEqual 3
+push 1
+assert
+moduleEnd
+entryEnd
+```
 
-A site contains the project block ID, group path, module/function name, and zero-based physical line within that block.
-`formatTestFailures` displays a one-based **block line**, for example:
+`assert` passes for nonzero integers. `assertEqual expected` consumes the actual stack value and compares it to its
+required expected argument. It compares matching integer, float32, float64, or pointer values
+exactly. Pointers compare addresses. NaN fails, matching infinities pass, and signed zero compares equal. Express
+approximate expectations explicitly with arithmetic and `assert`; no tolerance is hidden in the runner.
+
+The callbacks collect results and return normally after failures. `assertions` records each invocation with
+`assertIndex`, `site`, and `passed`; condition results contain `condition`, equality results contain `received` and
+`expected`. `failures` contains failed invocations. Loops share a static site but have distinct invocation indices.
+The compiler's `assertionSites` lookup includes sites in branches that never execute. Count executed assertions with
+`result.assertions.length`.
+
+Failure formatting uses one-based physical block lines and included-source provenance:
 
 ```text
 1 assertion failed:
-  assert #0 expected 4, received 3 at module addFails, block line 6 (site 0)
+  assertEqual #0 expected 4, received 3 at module addFails, block line 5 (site 0)
 ```
 
-Adapters add the source filename. Site IDs are scoped to one run, and preserve the precompiler's original source
-mapping. Assertions in unresolved includes are outside the instrumentation pass; included helper functions can be
-resolved by the compiler callback, but assertion calls themselves must be in the supplied project blocks.
+Site IDs belong to one compilation. Static sites remain in compiler output; each executed invocation is recorded by
+the runner.
 
 ## Validation
 
 Use `npx nx run @8f4e/test-runner:build|test|typecheck|lint`. Real compiler/Wasm integration coverage lives in
-`packages/compiler/tests/testRunner.test.ts`; compiler fixtures and CLI tests exercise the same runner.
+`packages/compiler/tests/testRunner.test.ts`, terminal reporting in `packages/cli/tests/cli.test.ts`.

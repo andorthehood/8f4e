@@ -13,127 +13,127 @@ module mapNumericTypeAssertions
 call mapIntToInt 1
 push 10
 equal
-call assert 1
+assertEqual 1
 call mapIntToInt 2
 push 20
 equal
-call assert 1
+assertEqual 1
 call mapIntToInt 3
 push -7
 equal
-call assert 1
+assertEqual 1
 
 ; int keys, float results.
 call mapIntToFloat 1
 push 10.5
 equal
-call assert 1
+assertEqual 1
 call mapIntToFloat 2
 push 20.5
 equal
-call assert 1
+assertEqual 1
 call mapIntToFloat 3
 push -7.5
 equal
-call assert 1
+assertEqual 1
 
 ; int keys, float64 results.
 call mapIntToFloat64 1
 push 10.5f64
 equal
-call assert 1
+assertEqual 1
 call mapIntToFloat64 2
 push 20.5f64
 equal
-call assert 1
+assertEqual 1
 call mapIntToFloat64 3
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 
 ; float keys, int results.
 call mapFloatToInt 1.0
 push 10
 equal
-call assert 1
+assertEqual 1
 call mapFloatToInt 2.0
 push 20
 equal
-call assert 1
+assertEqual 1
 call mapFloatToInt 3.0
 push -7
 equal
-call assert 1
+assertEqual 1
 
 ; float keys, float results.
 call mapFloatToFloat 1.0
 push 10.5
 equal
-call assert 1
+assertEqual 1
 call mapFloatToFloat 2.0
 push 20.5
 equal
-call assert 1
+assertEqual 1
 call mapFloatToFloat 3.0
 push -7.5
 equal
-call assert 1
+assertEqual 1
 
 ; float keys, float64 results.
 call mapFloatToFloat64 1.0
 push 10.5f64
 equal
-call assert 1
+assertEqual 1
 call mapFloatToFloat64 2.0
 push 20.5f64
 equal
-call assert 1
+assertEqual 1
 call mapFloatToFloat64 3.0
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 
 ; float64 keys, int results.
 call mapFloat64ToInt 1.0f64
 push 10
 equal
-call assert 1
+assertEqual 1
 call mapFloat64ToInt 2.0f64
 push 20
 equal
-call assert 1
+assertEqual 1
 call mapFloat64ToInt 3.0f64
 push -7
 equal
-call assert 1
+assertEqual 1
 
 ; float64 keys, float results.
 call mapFloat64ToFloat 1.0f64
 push 10.5
 equal
-call assert 1
+assertEqual 1
 call mapFloat64ToFloat 2.0f64
 push 20.5
 equal
-call assert 1
+assertEqual 1
 call mapFloat64ToFloat 3.0f64
 push -7.5
 equal
-call assert 1
+assertEqual 1
 
 ; float64 keys, float64 results.
 call mapFloat64ToFloat64 1.0f64
 push 10.5f64
 equal
-call assert 1
+assertEqual 1
 call mapFloat64ToFloat64 2.0f64
 push 20.5f64
 equal
-call assert 1
+assertEqual 1
 call mapFloat64ToFloat64 3.0f64
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 moduleEnd
 
 module mapNonFiniteInputAssertions
@@ -147,14 +147,14 @@ sqrt
 call mapFloatToInt
 push -7
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
 call mapFloatToInt
 push -7
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -163,7 +163,7 @@ mul
 call mapFloatToInt
 push -7
 equal
-call assert 1
+assertEqual 1
 
 ; float input, float result.
 push -1.0
@@ -171,14 +171,14 @@ sqrt
 call mapFloatToFloat
 push -7.5
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
 call mapFloatToFloat
 push -7.5
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -187,7 +187,7 @@ mul
 call mapFloatToFloat
 push -7.5
 equal
-call assert 1
+assertEqual 1
 
 ; float input, float64 result.
 push -1.0
@@ -195,14 +195,14 @@ sqrt
 call mapFloatToFloat64
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
 call mapFloatToFloat64
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -211,7 +211,7 @@ mul
 call mapFloatToFloat64
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 
 ; float64 input, int result.
 push -1.0f64
@@ -219,7 +219,7 @@ sqrt
 call mapFloat64ToInt
 push -7
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -227,7 +227,7 @@ castToFloat64
 call mapFloat64ToInt
 push -7
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -237,7 +237,7 @@ castToFloat64
 call mapFloat64ToInt
 push -7
 equal
-call assert 1
+assertEqual 1
 
 ; float64 input, float result.
 push -1.0f64
@@ -245,7 +245,7 @@ sqrt
 call mapFloat64ToFloat
 push -7.5
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -253,7 +253,7 @@ castToFloat64
 call mapFloat64ToFloat
 push -7.5
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -263,7 +263,7 @@ castToFloat64
 call mapFloat64ToFloat
 push -7.5
 equal
-call assert 1
+assertEqual 1
 
 ; float64 input, float64 result.
 push -1.0f64
@@ -271,7 +271,7 @@ sqrt
 call mapFloat64ToFloat64
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -279,7 +279,7 @@ castToFloat64
 call mapFloat64ToFloat64
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 push 340282346638528859811704183484516925440.0
 push 2.0
 mul
@@ -289,7 +289,7 @@ castToFloat64
 call mapFloat64ToFloat64
 push -7.5f64
 equal
-call assert 1
+assertEqual 1
 moduleEnd
 entryEnd
 
