@@ -1,5 +1,5 @@
-import { compileProject, parseProjectSource, serializeDiagnostic } from '@8f4e/compiler';
 import type { ProjectObjectModel } from '@8f4e/language-spec';
+import { parseProjectSource } from '@8f4e/project-preparser';
 import { compileToAST } from '@8f4e/tokenizer';
 import { describe, expect, it } from 'vitest';
 import { precompileTestProject } from './index';
@@ -160,86 +160,10 @@ entryEnd`);
 			precompileTestProject(projectWithModule(['call']));
 			expect.fail('Expected a syntax error');
 		} catch (error) {
-			expect(serializeDiagnostic(error)).toMatchObject({
+			expect(error).toMatchObject({
 				line: { lineNumber: 1, instruction: 'call' },
 				context: { projectBlockId: 7, projectGroupPath: '' },
 			});
 		}
-	});
-});
-
-describe('compiled assertions', () => {
-	it('reports original sites for scalar and pointer overloads, skipped branches, loops, and helper functions', async () => {
-		const original = parseProjectSource(`8f4e/v1
-entry test
-module assertions
-int value 7
-push 1
-push 2
-add
-call assert 3
-push 9
-push 10
-call assert
-push &value
-call assert &value
-push 3.14
-call assert 3.14
-push 2.5f64
-call assert 2.5f64
-push 0
-if
-push 99
-call assert 99
-ifEnd
-loop 2
-push 7
-call assert 8
-loopEnd
-call helper
-moduleEnd
-entryEnd
-function helper
-push 5
-call assert
-- 5
-functionEnd`);
-		const { project, assertionSites } = precompileTestProject(original);
-		project.functions.push(
-			...['int', 'float', 'float64', 'int*'].map((type, index) => ({
-				id: -1 - index,
-				code: [
-					'function assert',
-					'#import assert',
-					`param ${type} received`,
-					`param ${type} expected`,
-					'param int siteId',
-					'functionEnd',
-				],
-			}))
-		);
-		const compiled = await compileProject(project, { disableSharedMemory: true });
-		const events: Array<{ siteId: number; received: number; expected: number; passed: boolean }> = [];
-		const { instance } = await WebAssembly.instantiate(new Uint8Array(compiled.codeBuffer), {
-			host: {
-				memory: new WebAssembly.Memory({ initial: 1, maximum: 1 }),
-				assert(received: number, expected: number, siteId: number) {
-					events.push({ siteId, received, expected, passed: Math.abs(received - expected) <= 0.001 });
-				},
-			},
-		});
-		(instance.exports.initDefaults as CallableFunction)();
-		(instance.exports.test as CallableFunction)();
-
-		expect(assertionSites).toHaveLength(8);
-		expect(events.map(event => event.siteId)).toEqual([0, 1, 2, 3, 4, 6, 6, 7]);
-		expect(events.filter(event => !event.passed).map(event => event.siteId)).toEqual([1, 6, 6]);
-		expect(events.find(event => event.siteId === 5)).toBeUndefined();
-		for (const event of events) {
-			const site = assertionSites[event.siteId];
-			const block = [...original.modules, ...original.functions].find(block => block.id === site.projectBlockId)!;
-			expect(block.code[site.lineNumber]).toMatch(/^call assert/);
-		}
-		expect(assertionSites[7]).toMatchObject({ codeBlockType: 'function', codeBlockId: 'helper', lineNumber: 2 });
 	});
 });

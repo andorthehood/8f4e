@@ -195,8 +195,57 @@ describe('cli', () => {
 
 	it('reports assertion failures from project tests', async () => {
 		await expect(execCli(['test', testFailingFixturePath])).rejects.toMatchObject({
-			stderr: expect.stringContaining('assert #0 expected 4, received 3'),
+			stderr: expect.stringContaining('assert #0 expected 4, received 3 at module addFails, block line 6 (site 0)'),
 		});
+	});
+
+	it('reports the original helper assertion site on repeated loop failures', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const helperTestPath = path.join(tmpDir, 'helperTest.8f4e');
+		await fs.writeFile(
+			helperTestPath,
+			`8f4e/v1
+entry test
+module driver
+push 0
+if
+call assert 99 99
+ifEnd
+loop 2
+call helper
+loopEnd
+moduleEnd
+entryEnd
+function helper
+call assert ; continued arguments
+- 7
+- 8
+functionEnd`
+		);
+		await expect(execCli(['test', helperTestPath])).rejects.toMatchObject({
+			stderr: expect.stringContaining(
+				[
+					'2 assertions failed:',
+					'  assert #0 expected 8, received 7 at function helper, block line 2 (site 1)',
+					'  assert #1 expected 8, received 7 at function helper, block line 2 (site 1)',
+				].join('\n')
+			),
+		});
+	});
+
+	it('runs a project with only an exported test function', async () => {
+		await fs.mkdir(tmpDir, { recursive: true });
+		const functionTestPath = path.join(tmpDir, 'functionTest.8f4e');
+		await fs.writeFile(
+			functionTestPath,
+			`8f4e/v1
+function test
+#export
+call assert 3 3
+functionEnd`
+		);
+		const { stdout } = await execCli(['test', functionTestPath]);
+		expect(stdout).toBe('Ran 1 assertion.\n');
 	});
 
 	it('runs tests from an explicit test entry', async () => {

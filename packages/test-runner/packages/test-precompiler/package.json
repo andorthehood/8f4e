@@ -24,8 +24,8 @@
     "@8f4e/tokenizer": "*"
   },
   "devDependencies": {
-    "@8f4e/compiler": "*",
     "@8f4e/config": "*",
-    "@types/node": "24.13.2"
+    "@types/node": "24.13.2",
+    "@8f4e/project-preparser": "*"
   }
 }

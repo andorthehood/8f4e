@@ -24,8 +24,8 @@
 - Standard library sources live in the nested source package `@8f4e/stdlib` (`packages/compiler/packages/stdlib`).
 
 ## Build, Test, Dev
-- From root: `npx nx run compiler:build|test|typecheck`.
-- From package directory: use `npx nx run compiler:<target>` (e.g., `npx nx run compiler:dev`).
+- From root: `npx nx run @8f4e/compiler:build|test|typecheck`.
+- From package directory: use `npx nx run @8f4e/compiler:<target>` (e.g., `npx nx run @8f4e/compiler:dev`).
 - JS output is bundled with Vite; declarations are emitted separately with `tsc --emitDeclarationOnly`.
 - Artifacts in `dist/` must exist before root Vite build when APIs change.
 
@@ -37,7 +37,9 @@
 - Vitest (via Nx). Keep narrow unit tests colocated with the source under test using `*.test.ts` or `__tests__/`.
 - Put broader compiler behavior, multi-module, integration-style, and generic regression coverage in `tests/`.
 - Syntax/parser in-source tests live with `@8f4e/tokenizer`; compiler tests should focus on semantic and codegen behavior.
-- To update snapshots after intentional changes, use `npx nx run compiler:test -- --update`.
+- Assertion execution and failure reporting use `@8f4e/test-runner`, shared with the CLI. Fixture adapters own compile
+  options and snapshot serialization; runner integration coverage lives in `tests/testRunner.test.ts`.
+- To update snapshots after intentional changes, use `npx nx run @8f4e/compiler:test --update`.
 
 ### Examples
 

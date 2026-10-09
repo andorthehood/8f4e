@@ -11,19 +11,13 @@ import type {
 	ProjectBlock,
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
-import { POINTER_FUNCTION_TYPE_IDENTIFIERS, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
+import { formatTestFailures, hasTestEntry, runTestProject, type TestRunResult } from '@8f4e/test-runner';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { compileProject, parseProjectSource, serializeDiagnostic } from '../src';
 import { resolveTestInclude } from './testIncludeResolver';
-
-interface AssertionFailure {
-	assertIndex: number;
-	assertName: string;
-	expected: number;
-	received: number;
-}
 
 export interface FixtureCompileSnapshots {
 	overview: Record<string, unknown>;
@@ -46,7 +40,6 @@ export interface InstantiatedFixtureProgram extends CompiledFixtureProgram {
 
 export interface FixtureProgramCompileOptions {
 	extraPrototypes?: ProjectBlock[];
-	includeAssertions?: boolean;
 	includeStackAnalysis?: boolean;
 	cache?: CompileResult['cache'];
 }
@@ -62,26 +55,6 @@ export interface FixtureProgramRunResult extends InstantiatedFixtureProgram {
 
 export const testRoot = path.dirname(fileURLToPath(import.meta.url));
 
-const FLOAT_ASSERT_TOLERANCE = 0.001;
-const assertFunctionBlocks: ProjectBlock[] = [
-	{
-		id: -1,
-		code: ['function assert', '#import assert', 'param int received', 'param int expected', 'functionEnd'],
-	},
-	{
-		id: -2,
-		code: ['function assert', '#import assert', 'param float received', 'param float expected', 'functionEnd'],
-	},
-	{
-		id: -3,
-		code: ['function assert', '#import assert', 'param float64 received', 'param float64 expected', 'functionEnd'],
-	},
-	...POINTER_FUNCTION_TYPE_IDENTIFIERS.map((type, index) => ({
-		id: -4 - index,
-		code: ['function assert', '#import assert', `param ${type} received`, `param ${type} expected`, 'functionEnd'],
-	})),
-];
-const injectedAssertionFunctionNames = new Set(['assert']);
 const memoryRegionsDirective = /^;\s*@memoryRegions\s+(.+)$/;
 
 export function getTestMemoryRegions(source: string): string[] {
@@ -90,17 +63,6 @@ export function getTestMemoryRegions(source: string): string[] {
 		.map(line => line.trim().match(memoryRegionsDirective)?.[1])
 		.filter((regions): regions is string => regions !== undefined)
 		.flatMap(regions => regions.split(/[\s,]+/).filter(Boolean));
-}
-
-export function hasTestExportDeclaration(project: ProjectObjectModel): boolean {
-	if (project.modules.some(block => !block.disabled && block.entry === 'test')) return true;
-	return project.functions.some(block => {
-		if (block.disabled) {
-			return false;
-		}
-		const [openingLine, ...body] = block.code.map(line => line.trim());
-		return openingLine === 'function test' && body.some(line => line === '#export' || line === '#export test');
-	});
 }
 
 export async function collectFixtureProgramFiles(directory = testRoot): Promise<string[]> {
@@ -158,10 +120,6 @@ export function formatCompileError(relativePath: string, error: unknown): Error 
 	const context = diagnostic.context.codeBlockId ? ` in ${diagnostic.context.codeBlockId}` : '';
 
 	return new Error(`${relativePath}: ${diagnostic.message}${context}${line}`);
-}
-
-function formatFailure(failure: AssertionFailure): string {
-	return `${failure.assertName} #${failure.assertIndex} expected ${failure.expected}, received ${failure.received}`;
 }
 
 function sortRecord<T, Result>(
@@ -295,7 +253,7 @@ function serializeCompiledFunctionOverview(func: CompiledFunction): Record<strin
 
 function getFixtureCompiledFunctions(result: CompileResult): Array<[string, CompiledFunction]> {
 	return Object.entries(result.compiledFunctions ?? {})
-		.filter(([, func]) => !injectedAssertionFunctionNames.has(func.name))
+		.filter(([, func]) => func.import?.moduleName !== 'host' || func.import.fieldName !== 'assert')
 		.sort(([left], [right]) => left.localeCompare(right));
 }
 
@@ -344,7 +302,6 @@ export async function compileFixtureProgramSource(
 	const memoryRegions = getTestMemoryRegions(normalizedSource);
 	const compileProjectModel: ProjectObjectModel = {
 		...project,
-		functions: [...project.functions, ...(options.includeAssertions ? assertFunctionBlocks : [])],
 		prototypes: [...project.prototypes, ...(options.extraPrototypes ?? [])],
 	};
 
@@ -373,7 +330,9 @@ export async function instantiateFixtureProgramSource(
 		),
 		...options.hostImports,
 	};
-	const { instance } = await WebAssembly.instantiate(compiledFixture.compileResult.codeBuffer, { host });
+	const { instance } = await WebAssembly.instantiate(new Uint8Array(compiledFixture.compileResult.codeBuffer), {
+		host,
+	});
 
 	return {
 		...compiledFixture,
@@ -387,49 +346,28 @@ export async function runFixtureProgramFile(filePath: string): Promise<FixturePr
 	const source = await fs.readFile(filePath, 'utf8');
 	const project = parseProjectSource(source);
 
-	if (!hasTestExportDeclaration(project)) {
+	if (!hasTestEntry(project)) {
 		throw new Error(`${relativePath}: expected an entry test block or exported function test`);
 	}
 
-	const failures: AssertionFailure[] = [];
-	let assertionCount = 0;
-	let instantiatedFixture: InstantiatedFixtureProgram;
+	let result: TestRunResult<CompileResult>;
 	try {
-		instantiatedFixture = await instantiateFixtureProgramSource(source, {
-			includeAssertions: true,
-			hostImports: {
-				assert(received: number, expected: number) {
-					const assertIndex = assertionCount;
-					assertionCount += 1;
-
-					if (Math.abs(received - expected) > FLOAT_ASSERT_TOLERANCE) {
-						failures.push({ assertIndex, assertName: 'assert', expected, received });
-					}
-				},
-			},
+		result = await runTestProject(project, {
+			compile: instrumented =>
+				compileProject(instrumented, {
+					disableSharedMemory: true,
+					memoryRegions: getTestMemoryRegions(source),
+					resolveInclude: resolveTestInclude,
+				}),
 		});
 	} catch (error) {
 		throw formatCompileError(relativePath, error);
 	}
-	const compileSnapshots = serializeCompileResult(instantiatedFixture.compileResult);
-
-	compileSnapshots.overview.wasmExports = Object.keys(instantiatedFixture.instance.exports).sort();
-
-	getExportedFunction(instantiatedFixture.instance.exports, 'initDefaults', relativePath)();
-	getExportedFunction(instantiatedFixture.instance.exports, 'test', relativePath)();
-
-	if (failures.length > 0) {
-		throw new Error(
-			[
-				`${relativePath}: ${failures.length} assertion${failures.length === 1 ? '' : 's'} failed:`,
-				...failures.map(failure => `  ${formatFailure(failure)}`),
-			].join('\n')
-		);
+	if (result.failures.length > 0) {
+		throw new Error(`${relativePath}: ${formatTestFailures(result.failures)}`);
 	}
+	const compileSnapshots = serializeCompileResult(result.compileResult);
+	compileSnapshots.overview.wasmExports = Object.keys(result.instance.exports).sort();
 
-	return {
-		...instantiatedFixture,
-		assertionCount,
-		compileSnapshots,
-	};
+	return { ...result, source, project, compileSnapshots };
 }

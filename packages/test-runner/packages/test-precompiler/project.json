@@ -1,6 +1,6 @@
 {
 	"name": "@8f4e/test-precompiler",
-	"sourceRoot": "packages/test-precompiler/src",
+	"sourceRoot": "packages/test-runner/packages/test-precompiler/src",
 	"projectType": "library",
 	"targets": {
 		"build": {
@@ -23,7 +23,7 @@
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "biome check --write packages/test-precompiler/src packages/test-precompiler/vite.config.ts packages/test-precompiler/vitest.config.ts",
+				"command": "biome check --write packages/test-runner/packages/test-precompiler/src packages/test-runner/packages/test-precompiler/vite.config.ts packages/test-runner/packages/test-precompiler/vitest.config.ts",
 				"cwd": "{workspaceRoot}"
 			}
 		},
