@@ -1,0 +1,31 @@
+{
+  "name": "@8f4e/test-precompiler",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Adds source site IDs to assertion calls in 8f4e test projects",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andorthehood/8f4e.git"
+  },
+  "author": "Andor Polgar",
+  "license": "MIT",
+  "dependencies": {
+    "@8f4e/language-spec": "*",
+    "@8f4e/tokenizer": "*"
+  },
+  "devDependencies": {
+    "@8f4e/compiler": "*",
+    "@8f4e/config": "*",
+    "@types/node": "24.13.2"
+  }
+}
