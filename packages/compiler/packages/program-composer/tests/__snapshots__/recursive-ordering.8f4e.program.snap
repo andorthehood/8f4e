@@ -37,6 +37,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 12,
+        "sourceIdentity": {
+          "codeBlockId": "descendant",
+          "projectGroupPath": "child/descendant",
+        },
         "type": "module",
       },
       {
@@ -73,6 +77,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 8,
+        "sourceIdentity": {
+          "codeBlockId": "child",
+          "projectGroupPath": "child",
+        },
         "type": "module",
       },
       {
@@ -109,6 +117,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 4,
+        "sourceIdentity": {
+          "codeBlockId": "root",
+          "projectGroupPath": "",
+        },
         "type": "module",
       },
     ],

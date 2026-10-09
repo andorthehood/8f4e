@@ -116,12 +116,10 @@ function appendUnit(
 		ast: TAst,
 		codeBlockId = ast.type === 'function' ? ast.name : ast.id
 	): TAst => {
-		const composed = prefix ? qualifyAst(ast, prefix) : ast;
-		program.sourceIdentities.set(composed, {
-			projectGroupPath: projectPath,
-			codeBlockId,
-		});
-		return composed;
+		return {
+			...(prefix ? qualifyAst(ast, prefix) : ast),
+			sourceIdentity: { projectGroupPath: projectPath, codeBlockId },
+		};
 	};
 	const prototypes = project.prototypes.filter(block => !block.disabled);
 	const modules = project.modules.filter(block => !block.disabled);
@@ -196,7 +194,6 @@ export function composeProgram(
 	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath = new Map()
 ): ComposedProgram {
 	const program: ComposedProgram = {
-		sourceIdentities: new WeakMap(),
 		entryNames: ['main'],
 		moduleEntryNames: [],
 		ast: {

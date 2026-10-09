@@ -43,7 +43,7 @@ import {
 import createInitialMemoryDataSegments from './initialMemoryDataSegments/createInitialMemoryDataSegments';
 
 interface EmissionProgram {
-	assertionImports?: AssertionImport[];
+	assertionImports: AssertionImport[];
 	assertionSites?: AssertionSite[];
 	entryNames: string[];
 	compiledModules: CompiledModule[];
@@ -97,7 +97,7 @@ export function emitWasmProgram(
 	options: Pick<CompileOptions, 'disableSharedMemory' | 'memoryRegions'>
 ): CompileResult {
 	const {
-		assertionImports = [],
+		assertionImports,
 		assertionSites,
 		entryNames,
 		compiledModules,

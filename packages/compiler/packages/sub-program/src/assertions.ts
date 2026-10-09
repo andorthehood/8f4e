@@ -7,7 +7,6 @@ import type {
 	FunctionTypeRegistry,
 } from '@8f4e/language-spec';
 import { ASSERTION_IMPORT_NAMES, DEFAULT_HOST_IMPORT_MODULE_NAME } from '@8f4e/language-spec';
-import type { ComposedProgram } from '@8f4e/program-composer/internal';
 import type { SemanticReferenceReport } from '@8f4e/semantic-reference-resolver';
 import type { StackAnalysisSubProgramReport } from '@8f4e/stack-analyzer';
 import { getOrRegisterFunctionType } from '@8f4e/wasm-codegen';
@@ -20,7 +19,6 @@ interface AssertionPlan {
 
 /** Plans typed assertion imports and source sites after operand analysis, before final function index assignment. */
 export function planAssertions(
-	program: ComposedProgram,
 	references: SemanticReferenceReport,
 	stackReport: StackAnalysisSubProgramReport,
 	types: FunctionTypeRegistry,
@@ -35,7 +33,10 @@ export function planAssertions(
 		const calls = new Map<number, { siteId: number; wasmIndex: number }>();
 		for (const { sourceLineIndex, line } of body) {
 			if (line.instruction !== 'assert' && line.instruction !== 'assertEqual') continue;
-			const valueType = report.lineFacts[sourceLineIndex]!.stackAnalysis.consumedOperands[0].valueType;
+			const valueType =
+				line.instruction === 'assert'
+					? 'int'
+					: report.lineFacts[sourceLineIndex]!.stackAnalysis.consumedOperands[0].valueType;
 			const fieldName =
 				line.instruction === 'assert' ? ASSERTION_IMPORT_NAMES.assert : ASSERTION_IMPORT_NAMES.assertEqual[valueType];
 			let imported = importsByName.get(fieldName);
@@ -57,7 +58,7 @@ export function planAssertions(
 				plan.imports.push(imported);
 				importsByName.set(fieldName, imported);
 			}
-			const origin = program.sourceIdentities.get(ast)!;
+			const origin = ast.sourceIdentity!;
 			const siteId = plan.sites.length;
 			plan.sites.push({
 				siteId,

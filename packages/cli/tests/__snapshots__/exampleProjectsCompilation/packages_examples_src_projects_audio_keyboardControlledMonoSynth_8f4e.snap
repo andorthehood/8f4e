@@ -44,7 +44,11 @@
             }
           ]
         },
-        "projectBlockId": 8
+        "projectBlockId": 8,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "projectConfig"
+        }
       },
       "index": 0,
       "executionEntryName": "main"
@@ -114,7 +118,11 @@
             }
           ]
         },
-        "projectBlockId": 17
+        "projectBlockId": 17,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "keyboard"
+        }
       },
       "index": 1,
       "executionEntryName": "main"
@@ -255,7 +263,11 @@
             }
           ]
         },
-        "projectBlockId": 33
+        "projectBlockId": 33,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "janko"
+        }
       },
       "index": 2,
       "executionEntryName": "main"
@@ -1709,7 +1721,11 @@
             }
           ]
         },
-        "projectBlockId": 55
+        "projectBlockId": 55,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "midiLUT"
+        }
       },
       "index": 3,
       "executionEntryName": "main"
@@ -1938,7 +1954,11 @@
             }
           ]
         },
-        "projectBlockId": 188
+        "projectBlockId": 188,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "midiNote2Freq"
+        }
       },
       "index": 4,
       "executionEntryName": "main"
@@ -2626,7 +2646,11 @@
             }
           ]
         },
-        "projectBlockId": 207
+        "projectBlockId": 207,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "arEnv"
+        }
       },
       "index": 5,
       "executionEntryName": "main"
@@ -3072,7 +3096,11 @@
             }
           ]
         },
-        "projectBlockId": 268
+        "projectBlockId": 268,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "phaseAccumulator"
+        }
       },
       "index": 6,
       "executionEntryName": "main"
@@ -3249,7 +3277,11 @@
             }
           ]
         },
-        "projectBlockId": 311
+        "projectBlockId": 311,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "vca"
+        }
       },
       "index": 7,
       "executionEntryName": "main"
@@ -3614,7 +3646,11 @@
             }
           ]
         },
-        "projectBlockId": 325
+        "projectBlockId": 325,
+        "sourceIdentity": {
+          "projectGroupPath": "",
+          "codeBlockId": "audioout"
+        }
       },
       "index": 8,
       "executionEntryName": "main"

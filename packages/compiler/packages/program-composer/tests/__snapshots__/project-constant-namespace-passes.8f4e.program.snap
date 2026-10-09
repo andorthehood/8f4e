@@ -52,6 +52,10 @@
           },
         ],
         "projectBlockId": 3,
+        "sourceIdentity": {
+          "codeBlockId": "env",
+          "projectGroupPath": "",
+        },
         "type": "constants",
       },
     ],
@@ -121,6 +125,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 24,
+        "sourceIdentity": {
+          "codeBlockId": "nestedVoice",
+          "projectGroupPath": "child/nested",
+        },
         "type": "module",
       },
       {
@@ -187,6 +195,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 16,
+        "sourceIdentity": {
+          "codeBlockId": "voice",
+          "projectGroupPath": "child",
+        },
         "type": "module",
       },
       {
@@ -253,6 +265,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 8,
+        "sourceIdentity": {
+          "codeBlockId": "root",
+          "projectGroupPath": "",
+        },
         "type": "module",
       },
     ],

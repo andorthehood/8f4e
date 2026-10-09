@@ -17,6 +17,7 @@ import {
 	isScalarMemoryDeclarationInstructionName,
 	type ScalarMemoryDeclarationInstruction,
 } from './memory';
+import type { ProjectGroupPath } from './project';
 
 type ClampAddressInstructionName = 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress';
 
@@ -235,6 +236,8 @@ export type CompilerASTLines = CompilerASTLine[];
 export interface SourceBlockMetadata {
 	projectBlockId?: number;
 	source?: SourceMetadata;
+	/** Original source identity attached by composition before symbol qualification. */
+	sourceIdentity?: { projectGroupPath: ProjectGroupPath; codeBlockId: string };
 }
 
 /** Parsed AST for a module block and its memory declarations. */

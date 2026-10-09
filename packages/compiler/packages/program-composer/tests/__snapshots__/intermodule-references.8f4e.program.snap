@@ -49,6 +49,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 5,
+        "sourceIdentity": {
+          "codeBlockId": "source",
+          "projectGroupPath": "audio",
+        },
         "type": "module",
       },
       {
@@ -105,6 +109,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 9,
+        "sourceIdentity": {
+          "codeBlockId": "consumer",
+          "projectGroupPath": "audio",
+        },
         "type": "module",
       },
     ],

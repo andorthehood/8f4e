@@ -37,6 +37,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 8,
+        "sourceIdentity": {
+          "codeBlockId": "same",
+          "projectGroupPath": "child",
+        },
         "type": "module",
       },
       {
@@ -73,6 +77,10 @@
           "lineNumber": 0,
         },
         "projectBlockId": 4,
+        "sourceIdentity": {
+          "codeBlockId": "same",
+          "projectGroupPath": "",
+        },
         "type": "module",
       },
     ],

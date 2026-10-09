@@ -35,7 +35,7 @@ import { planAssertions } from './assertions';
 import { assertUniqueModuleIds, collectNamespacesFromASTs, registerFunctions } from './semantic/buildNamespace';
 
 interface CompiledSubProgram {
-	assertionImports?: AssertionImport[];
+	assertionImports: AssertionImport[];
 	assertionSites?: AssertionSite[];
 	entryNames: string[];
 	compiledModules: CompiledModule[];
@@ -46,12 +46,6 @@ interface CompiledSubProgram {
 	pointerMetadataByModuleId: Record<string, MemoryPointerMetadataMap>;
 	projectMemoryExposuresByGroupPath: ProjectMemoryExposuresByGroupPath;
 	cache: CompilerCache;
-}
-
-/** Internal layout settings for compiling one linkable sub-program. */
-export interface CompileSubProgramOptions extends CompileOptions {
-	/** Global WebAssembly index assigned to the first function defined by this sub-program. */
-	startingFunctionIndex?: number;
 }
 
 const DEFAULT_STARTING_MEMORY_WORD_ADDRESS = 1;
@@ -204,7 +198,7 @@ function wrapMemoryPlannerError(error: unknown, subProgramAst: ResolveConstantsS
  * @param options - Compiler options for this compilation pass.
  * @returns The compiled sub-program artifacts.
  */
-export function compileSubProgram(program: ComposedProgram, options: CompileSubProgramOptions): CompiledSubProgram {
+export function compileSubProgram(program: ComposedProgram, options: CompileOptions): CompiledSubProgram {
 	const { ast: subProgramAst, entryNames, moduleEntryNames, cache } = program;
 	assertUniqueModuleIds(subProgramAst.modules);
 	let constantResolution: ReturnType<typeof resolveConstants>;
@@ -251,14 +245,12 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	const namespaces = collectNamespacesFromASTs(subProgramAst.modules, memoryPlan, memoryDefaultResolution);
 
 	const importedUserFunctionCount = subProgramAst.functions.filter(ast => ast.importLine).length;
-	const importedFunctionCount = importedUserFunctionCount;
 	const builtInFunctionCount = 1 + entryNames.length;
-	const userDefinedFunctionBaseIndex = options.startingFunctionIndex ?? importedFunctionCount + builtInFunctionCount;
 
-	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedFunctionCount);
+	const entryFunctionMetadata = createEntryFunctionMetadata(entryNames, importedUserFunctionCount);
 	const registration = registerFunctions(subProgramAst.functions, {
 		importedFunctionBaseIndex: 0,
-		definedFunctionBaseIndex: userDefinedFunctionBaseIndex,
+		definedFunctionBaseIndex: importedUserFunctionCount + builtInFunctionCount,
 		reservedFunctionIds: entryNames,
 		reservedExportNames: [...RESERVED_EXPORT_NAMES, ...entryNames],
 		prototypeShapes: prototypeShapesById,
@@ -295,15 +287,14 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	});
 
 	const assertionPlan = options.enableAssertions
-		? planAssertions(program, semanticReferences, stackReport, functionTypeRegistry, importedUserFunctionCount)
+		? planAssertions(semanticReferences, stackReport, functionTypeRegistry, importedUserFunctionCount)
 		: undefined;
 	// Registration provides symbolic metadata to analysis. Finalize defined indices after planning typed imports.
-	const assertionImportCount = assertionPlan?.imports.length ?? 0;
+	const assertionImports = assertionPlan?.imports ?? [];
+	const assertionImportCount = assertionImports.length;
 	for (const metadata of Object.values(entryFunctionMetadata.byId)) metadata.wasmIndex += assertionImportCount;
-	if (options.startingFunctionIndex === undefined) {
-		for (const metadata of Object.values(registration.registry.byId)) {
-			if (!metadata.import) metadata.wasmIndex += assertionImportCount;
-		}
+	for (const metadata of Object.values(registration.registry.byId)) {
+		if (!metadata.import) metadata.wasmIndex += assertionImportCount;
 	}
 
 	const compiledFunctions = Object.values(semanticReferences.functions).map(resolved =>
@@ -329,7 +320,8 @@ export function compileSubProgram(program: ComposedProgram, options: CompileSubP
 	}));
 
 	return {
-		...(assertionPlan ? { assertionImports: assertionPlan.imports, assertionSites: assertionPlan.sites } : {}),
+		assertionImports,
+		...(assertionPlan ? { assertionSites: assertionPlan.sites } : {}),
 		entryNames,
 		compiledModules,
 		compiledFunctions,

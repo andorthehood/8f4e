@@ -151,11 +151,13 @@ precompiler. This TODO does not migrate project sources, change runner/CLI/edito
 
 Completed on 2026-10-09. Native assertions are opt-in, retain their stack effects when disabled, and use only the
 needed typed host imports when enabled. Compiler output includes original block/group/line identity, include
-provenance, and qualified signature-derived function IDs. Existing runner sources and fixture snapshots were retained.
+provenance, and qualified signature-derived function IDs. Existing runner sources were retained. Source identity is
+ordinary composed-AST metadata, and affected snapshots were regenerated to show it.
 
 Validation passed for tests and standard package typechecks across language-spec, tokenizer, program-composer,
 stack-analyzer, wasm-codegen, sub-program, compiler, test-runner, and CLI; affected compiler lint targets also passed.
-Added 16 compiler/Wasm integration cases, six parser syntax cases, and a sub-program global-index regression case.
+Added 16 compiler/Wasm integration cases and six parser syntax cases. Removed the unused internal function-index
+override and its tests; all function indices account for assertion imports through the same planning path.
 
 The expanded compiler test typecheck (`tsconfig.test.json`) still reports six pre-existing errors in
 `src/diagnostic.test.ts` and `src/project-api.test.ts`; none are in the new assertion tests. Fresh dependency builds
