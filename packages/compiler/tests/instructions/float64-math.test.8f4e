@@ -1,10 +1,13 @@
 8f4e/v1
 
-; Float64 arithmetic and
-; comparison behavior should
-; execute
-; without falling back to
-; float32.
+note
+Float64 arithmetic and
+comparison behavior should
+execute
+without falling back to
+float32.
+noteEnd
+
 entry test
 module float64ComparisonAssertions
 ; Float64 comparisons should

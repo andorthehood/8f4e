@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Memory declarations and loads
-; can be asserted directly from
-; the language.
+note
+Memory declarations and loads
+can be asserted directly from
+the language.
+noteEnd
+
 entry test
 module loadFloatAssertions
 ; loadFloat reads the float

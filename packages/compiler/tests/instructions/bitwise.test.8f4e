@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Bitwise instruction behavior
-; is checked through the shared
-; imported assert helper.
+note
+Bitwise instruction behavior
+is checked through the shared
+imported assert helper.
+noteEnd
+
 entry test
 module andAssertions
 ; `and` should return only the
@@ -18,9 +21,9 @@ and
 call assert 2
 moduleEnd
 
+module orAssertions
 ; `or` should return the bits
 ; present in either operand.
-module orAssertions
 push 1
 push 0
 or
@@ -32,9 +35,9 @@ or
 call assert 7
 moduleEnd
 
+module xorAssertions
 ; `xor` should return only bits
 ; that differ between operands.
-module xorAssertions
 push 1
 push 0
 xor
@@ -46,9 +49,9 @@ xor
 call assert 5
 moduleEnd
 
+module shiftLeftAssertions
 ; shiftLeft moves integer bits
 ; left by the requested amount.
-module shiftLeftAssertions
 push 1
 push 1
 shiftLeft
@@ -65,9 +68,9 @@ shiftLeft
 call assert 24
 moduleEnd
 
+module shiftRightAssertions
 ; shiftRight moves integer bits
 ; right by the requested amount.
-module shiftRightAssertions
 push 1
 push 1
 shiftRight

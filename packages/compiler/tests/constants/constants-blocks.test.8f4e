@@ -27,10 +27,13 @@ const SAMPLE_RATE 48000
 const HALF SAMPLE_RATE/12000
 constantsEnd
 
-; Constants blocks should import
-; into modules through use
-; without becoming executable
-; modules themselves.
+note
+Constants blocks should import
+into modules through use
+without becoming executable
+modules themselves.
+noteEnd
+
 entry test
 module constantsBlockAssertions
 ; Values from top-level

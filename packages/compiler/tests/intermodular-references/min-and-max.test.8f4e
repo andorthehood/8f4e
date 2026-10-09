@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Intermodule min(...) and
-; max(...) references should
-; resolve
-; element bounds.
+note
+Intermodule min(...) and
+max(...) references should
+resolve
+element bounds.
+noteEnd
+
 entry test
 module intBoundsSource
 int[] ints 10 0

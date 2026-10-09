@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Intermodule address references
-; should resolve to usable
-; memory
-; addresses.
+note
+Intermodule address references
+should resolve to usable
+memory
+addresses.
+noteEnd
+
 entry test
 module addressSource
 ; The source module gives start,

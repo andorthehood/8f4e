@@ -1,8 +1,11 @@
 8f4e/v1
 
-; User-defined functions can
-; return values and consume
-; parameters.
+note
+User-defined functions can
+return values and consume
+parameters.
+noteEnd
+
 entry test
 module functionReturnConstant
 ; A function without parameters

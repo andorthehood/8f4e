@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Intermodule count(...) and
-; sizeof(...) references should
-; resolve in declaration
-; defaults.
+note
+Intermodule count(...) and
+sizeof(...) references should
+resolve in declaration
+defaults.
+noteEnd
+
 entry test
 module countSizeSource
 int[] buffer 10 0

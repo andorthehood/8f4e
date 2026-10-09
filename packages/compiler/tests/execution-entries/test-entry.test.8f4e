@@ -1,8 +1,11 @@
 8f4e/v1
 
-; The main entry should compile,
-; but the fixture runner only
-; executes the test entry.
+note
+The main entry should compile,
+but the fixture runner only
+executes the test entry.
+noteEnd
+
 entry main
 module productionEntryDoesNotRun
 push 1
@@ -12,10 +15,11 @@ call assert 4
 moduleEnd
 entryEnd
 
-; Test entry modules are
-; executed by the compiler
-; fixture
-; runner.
+note
+Test entry modules are executed
+by the compiler fixture runner.
+noteEnd
+
 entry test
 module testEntryRunsAssertions
 push 1
@@ -24,11 +28,11 @@ add
 call assert 3
 moduleEnd
 
+module testEntrySupportsPointerArguments
 ; Test modules can declare
 ; memory and pass addresses into
 ; imported or user-defined
 ; functions.
-module testEntrySupportsPointerArguments
 int[] values 2 7 8
 push &values
 call readFirst
@@ -36,10 +40,10 @@ call assert 7
 moduleEnd
 entryEnd
 
-; Helper used by the
-; pointer-address test module.
 function readFirst
 #impure
 param int* pointer
+; Helper used by the
+; pointer-address test module.
 push *pointer
 functionEnd int

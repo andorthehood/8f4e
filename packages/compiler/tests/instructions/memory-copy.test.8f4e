@@ -1,8 +1,11 @@
 8f4e/v1
 
-; memoryCopy copies byte ranges
-; between declared memory
-; addresses.
+note
+memoryCopy copies byte ranges
+between declared memory
+addresses.
+noteEnd
+
 entry test
 module memoryCopyAssertions
 ; A safe memoryCopy should copy

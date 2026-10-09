@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Push should resolve locals,
-; parameters, module memory, and
-; pointer dereference depth
-; correctly.
+note
+Push should resolve locals,
+parameters, module memory, and
+pointer dereference depth
+correctly.
+noteEnd
+
 entry test
 module pushLocalAssertions
 ; Function locals should

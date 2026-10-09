@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Loop counters keep distinct
-; storage from locals declared
-; after an earlier loop. Explicit
-; caps override the directive.
+note
+Loop counters keep distinct
+storage from locals declared
+after an earlier loop. Explicit
+caps override the directive.
+noteEnd
+
 entry test
 module loopLocalStorageAssertions
 call capped

@@ -1,6 +1,9 @@
 8f4e/v1
 
-; describe loop
+note
+describe loop
+noteEnd
+
 entry test
 module countedLoopAssertions
 ; it terminates through

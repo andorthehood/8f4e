@@ -1,9 +1,13 @@
 8f4e/v1
+
+note
 ; @memoryRegions sampleMemory displayMemory
 
-; Logical memory regions should
-; behave correctly when executed
-; through exported entries.
+Logical memory regions should
+behave correctly when executed
+through exported entries.
+noteEnd
+
 entry test
 module regionSamples
 ; #region declarations allocate

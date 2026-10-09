@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Guarded memory access should
-; return zero instead of
-; trapping
-; for unsafe addresses.
+note
+Guarded memory access should
+return zero instead of
+trapping
+for unsafe addresses.
+noteEnd
+
 entry test
 module guardedIntLoadAssertions
 ; Unsafe integer loads should

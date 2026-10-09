@@ -1,5 +1,8 @@
 8f4e/v1
+
+note
 ; @memoryRegions sampleMemory
+noteEnd
 
 entry main
 module unknownRegion

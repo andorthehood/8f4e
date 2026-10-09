@@ -1,9 +1,12 @@
 8f4e/v1
 
-; storeBytes writes integer
-; stack values into
-; byte-addressed
-; memory.
+note
+storeBytes writes integer
+stack values into
+byte-addressed
+memory.
+noteEnd
+
 entry test
 module storeBytesPopOrderAssertions
 ; Values are popped from the top

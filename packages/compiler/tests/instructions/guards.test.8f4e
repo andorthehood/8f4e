@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Guard helpers normalize
-; invalid runtime values into
-; safe stack
-; values.
+note
+Guard helpers normalize
+invalid runtime values into
+safe stack
+values.
+noteEnd
+
 entry test
 module ensureNonZeroIntAssertions
 ; ensureNonZero leaves non-zero

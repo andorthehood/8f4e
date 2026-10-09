@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Every numeric input/output pair
-; preserves first-match precedence
-; and explicit defaults.
+note
+Every numeric input/output pair
+preserves first-match precedence
+and explicit defaults.
+noteEnd
+
 entry test
 module mapNumericTypeAssertions
 

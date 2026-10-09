@@ -1,9 +1,12 @@
 8f4e/v1
 
-; Stack instructions should
-; leave modules with an empty
-; stack
-; after assertions.
+note
+Stack instructions should
+leave modules with an empty
+stack
+after assertions.
+noteEnd
+
 entry test
 module dropAssertions
 ; drop removes the top value so

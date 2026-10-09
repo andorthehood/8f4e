@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Comparison instructions return
-; integer booleans and are
-; checked with assert.
+note
+Comparison instructions return
+integer booleans and are
+checked with assert.
+noteEnd
+
 entry test
 module equalAssertions
 ; equal returns true for

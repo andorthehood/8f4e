@@ -1,5 +1,8 @@
 8f4e/v1
+
+note
 ; @memoryRegions default
+noteEnd
 
 entry main
 module invalidDefaultRegionNameHost

@@ -1,8 +1,11 @@
 8f4e/v1
 
-; Store writes integer and
-; floating values through memory
-; addresses.
+note
+Store writes integer and
+floating values through memory
+addresses.
+noteEnd
+
 entry test
 module intStoreAssertions
 ; int stores should write the

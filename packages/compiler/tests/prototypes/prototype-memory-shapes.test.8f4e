@@ -1,7 +1,10 @@
 8f4e/v1
 
-; describes a reusable module
-; memory shape with defaults
+note
+describes a reusable module
+memory shape with defaults
+noteEnd
+
 prototype oscillatorState
 float phase
 float frequency 440
