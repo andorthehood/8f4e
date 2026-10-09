@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -23,7 +22,7 @@ describe('return instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'return',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

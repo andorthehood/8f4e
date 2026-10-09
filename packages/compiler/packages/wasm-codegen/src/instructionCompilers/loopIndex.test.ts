@@ -1,5 +1,4 @@
 import { i32const, localGet, WASM_I32_SUB } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -32,7 +31,7 @@ describe('loopIndex instruction compiler', () => {
 				lineNumber: 10,
 				instruction: 'loopIndex',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -71,7 +70,7 @@ describe('loopIndex instruction compiler', () => {
 				lineNumber: 10,
 				instruction: 'loopIndex',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -15,7 +14,7 @@ describe('loop instruction compiler', () => {
 				lineNumber: 2,
 				instruction: 'loop',
 				arguments: [{ type: ArgumentType.LITERAL, value: 1000, isInteger: true }],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -35,7 +34,7 @@ describe('loop instruction compiler', () => {
 				lineNumber: 2,
 				instruction: 'loop',
 				arguments: [{ type: ArgumentType.LITERAL, value: 32, isInteger: true }],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -55,7 +54,7 @@ describe('loop instruction compiler', () => {
 				lineNumber: 2,
 				instruction: 'loop',
 				arguments: [{ type: ArgumentType.LITERAL, value: 10, isInteger: true }],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

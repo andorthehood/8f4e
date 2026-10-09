@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -15,7 +14,7 @@ describe('ensureNonZero instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'ensureNonZero',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'int', isNonZero: false }] })
 		);
@@ -35,7 +34,7 @@ describe('ensureNonZero instruction compiler', () => {
 				lineNumber: 2,
 				instruction: 'ensureNonZero',
 				arguments: [{ type: ArgumentType.LITERAL, value: 2.5, isInteger: false }],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'float', isNonZero: false }] })
 		);
@@ -61,7 +60,7 @@ describe('ensureNonZero instruction compiler', () => {
 						isInteger: false,
 					},
 				],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'float64', isNonZero: false }] })
 		);

@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
@@ -14,7 +13,7 @@ describe('castToInt instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'castToInt',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'float', isNonZero: true }] })
 		);
@@ -33,7 +32,7 @@ describe('castToInt instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'castToInt',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'float64', isNonZero: true }] })
 		);

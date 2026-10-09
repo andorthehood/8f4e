@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -24,7 +23,7 @@ describe('loopEnd instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'loopEnd',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

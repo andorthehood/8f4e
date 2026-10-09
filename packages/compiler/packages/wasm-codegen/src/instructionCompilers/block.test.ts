@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
@@ -15,7 +14,7 @@ describe('block instruction compiler', () => {
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultTypes: ['float'] },
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -35,7 +34,7 @@ describe('block instruction compiler', () => {
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultTypes: ['int'] },
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -55,7 +54,7 @@ describe('block instruction compiler', () => {
 				instruction: 'block',
 				arguments: [],
 				blockBlock: { matchingBlockEndIndex: 2, resultTypes: [] },
-			} as CompilerASTLine,
+			},
 			context
 		);
 

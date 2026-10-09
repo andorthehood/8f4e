@@ -1,4 +1,8 @@
-import type { CompilerASTLine, ResolvedMemoryDeclaration } from '@8f4e/language-spec';
+import type {
+	ResolvedMemoryDeclaration,
+	ResolvedMemoryPointerPushLine,
+	ResolvedMemoryPushLine,
+} from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -7,22 +11,34 @@ import push from './push';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
-function resolvedMemoryPushLine(id: string, memoryItem: ResolvedMemoryDeclaration): CompilerASTLine {
+function resolvedMemoryPushLine(id: string, memoryItem: ResolvedMemoryDeclaration): ResolvedMemoryPushLine {
 	return {
 		lineNumber: 1,
 		instruction: 'push',
 		arguments: [classifyIdentifier(id)],
 		resolvedTarget: { kind: 'memory', memoryItem },
-	} as CompilerASTLine;
+	};
 }
 
-function resolvedMemoryPointerPushLine(id: string, memoryItem: ResolvedMemoryDeclaration): CompilerASTLine {
+function resolvedMemoryPointerPushLine(
+	id: string,
+	memoryItem: ResolvedMemoryDeclaration
+): ResolvedMemoryPointerPushLine {
 	return {
 		lineNumber: 1,
 		instruction: 'push',
-		arguments: [classifyIdentifier(`*${id}`)],
+		arguments: [
+			{
+				type: ArgumentType.IDENTIFIER,
+				value: `*${id}`,
+				referenceKind: 'memory-pointer',
+				scope: 'local',
+				targetMemoryId: id,
+				dereferenceDepth: 1,
+			},
+		],
 		resolvedTarget: { kind: 'memory-pointer', memoryItem },
-	} as CompilerASTLine;
+	};
 }
 
 function createMemoryItem(
@@ -53,7 +69,7 @@ describe('push instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 5, isInteger: true }],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -71,7 +87,7 @@ describe('push instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 42, isInteger: true }],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -96,7 +112,7 @@ describe('push instruction compiler', () => {
 						isFloat64: true,
 					},
 				],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -121,7 +137,7 @@ describe('push instruction compiler', () => {
 						isFloat64: true,
 					},
 				],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -139,7 +155,7 @@ describe('push instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'push',
 				arguments: [{ type: ArgumentType.LITERAL, value: 3.14, isInteger: false }],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

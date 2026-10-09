@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
 import and from './and';
@@ -13,7 +12,7 @@ describe('and instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'and',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

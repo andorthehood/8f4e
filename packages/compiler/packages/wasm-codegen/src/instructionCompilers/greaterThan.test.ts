@@ -1,5 +1,4 @@
 import { WASM_F64_GT } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
@@ -15,7 +14,7 @@ describe('greaterThan instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'greaterThan',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -40,7 +39,7 @@ describe('greaterThan instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'greaterThan',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -65,7 +64,7 @@ describe('greaterThan instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'greaterThan',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [

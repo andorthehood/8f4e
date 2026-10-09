@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -15,7 +14,7 @@ describe('branch instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'branch',
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

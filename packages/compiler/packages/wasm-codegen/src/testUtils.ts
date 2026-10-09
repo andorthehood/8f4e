@@ -45,11 +45,11 @@ export function createStackFacts({
 
 export function compileInstructionForTest<TLine extends CompilerASTLine>(
 	compileInstruction: InstructionCompiler<TLine>,
-	line: CompilerASTLine,
+	line: TLine,
 	context: CodegenContext,
 	facts: StackAnalysisLineFacts = createStackFacts()
 ): CodegenContext {
-	compileInstruction(line as TLine, context, facts);
+	compileInstruction(line, context, facts);
 	return context;
 }
 

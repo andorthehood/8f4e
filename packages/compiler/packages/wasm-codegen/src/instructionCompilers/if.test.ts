@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
@@ -15,7 +14,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: [], hasElse: false },
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -35,7 +34,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: [], hasElse: false },
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -55,7 +54,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['float'], hasElse: false },
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -75,7 +74,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['int'], hasElse: false },
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -101,7 +100,7 @@ describe('if instruction compiler', () => {
 				instruction: 'if',
 				arguments: [],
 				ifBlock: { matchingIfEndIndex: 2, resultTypes: ['int', 'float'], hasElse: false },
-			} as CompilerASTLine,
+			},
 			context
 		);
 

@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -23,7 +22,7 @@ describe('ifEnd instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'ifEnd',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -50,7 +49,7 @@ describe('ifEnd instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'ifEnd',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

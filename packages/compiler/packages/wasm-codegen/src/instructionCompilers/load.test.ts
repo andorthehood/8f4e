@@ -1,5 +1,4 @@
 import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
@@ -15,7 +14,7 @@ describe('load instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'load',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -52,7 +51,7 @@ describe('load instruction compiler', () => {
 				lineNumber: 2,
 				instruction: 'load8u',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'int', isNonZero: false }] })
 		);
@@ -71,7 +70,7 @@ describe('load instruction compiler', () => {
 				lineNumber: 3,
 				instruction: 'load',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -106,7 +105,7 @@ describe('load instruction compiler', () => {
 				lineNumber: 4,
 				instruction: 'load',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [

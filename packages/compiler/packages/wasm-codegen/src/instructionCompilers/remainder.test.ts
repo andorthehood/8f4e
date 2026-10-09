@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
@@ -14,7 +13,7 @@ describe('remainder instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'remainder',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { ArgumentType, BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -32,7 +31,7 @@ describe('default instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'default',
 				arguments: [{ type: ArgumentType.LITERAL, value: 99, isInteger: true }],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

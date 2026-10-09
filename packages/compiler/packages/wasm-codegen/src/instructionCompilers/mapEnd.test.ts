@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -34,7 +33,7 @@ describe('mapEnd instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'mapEnd',
 				arguments: [classifyIdentifier('int')],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ map: { inputKind: 'int32', outputKind: 'int32' } })
 		);

@@ -1,5 +1,5 @@
 import { WASM_I32_LT_S, WASM_I32_LT_U, WASM_MEMORY_SIZE, WASM_SELECT } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine, MemoryAddressRange } from '@8f4e/language-spec';
+import type { ClampAddressLine, MemoryAddressRange } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
@@ -16,13 +16,13 @@ const range: MemoryAddressRange = {
 function createLine(
 	instruction: 'clampAddress' | 'clampModuleAddress' | 'clampGlobalAddress',
 	accessByteWidth?: number
-) {
+): ClampAddressLine {
 	return {
 		lineNumber: 1,
 		instruction,
 		arguments:
 			accessByteWidth === undefined ? [] : [{ type: ArgumentType.LITERAL, value: accessByteWidth, isInteger: true }],
-	} as CompilerASTLine;
+	};
 }
 
 describe('clamp address instruction compilers', () => {

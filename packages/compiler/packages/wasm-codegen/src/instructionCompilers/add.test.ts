@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
@@ -14,7 +13,7 @@ describe('add instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'add',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -39,7 +38,7 @@ describe('add instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'add',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -64,7 +63,7 @@ describe('add instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'add',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [

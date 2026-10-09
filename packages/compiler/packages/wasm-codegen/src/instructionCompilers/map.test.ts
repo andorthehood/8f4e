@@ -1,4 +1,4 @@
-import type { CodegenContext, CompilerASTLine, MapBlockState } from '@8f4e/language-spec';
+import type { CodegenContext, MapBlockState } from '@8f4e/language-spec';
 import { ArgumentType, BlockType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
@@ -45,7 +45,7 @@ describe('map instruction compiler', () => {
 					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 					{ type: ArgumentType.LITERAL, value: 100, isInteger: true },
 				],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -81,7 +81,7 @@ describe('map instruction compiler', () => {
 					{ type: ArgumentType.STRING_LITERAL, value: 'A' },
 					{ type: ArgumentType.STRING_LITERAL, value: 'B' },
 				],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -131,7 +131,7 @@ describe('map instruction compiler', () => {
 					{ type: ArgumentType.LITERAL, value: 1, isInteger: true },
 					{ type: ArgumentType.LITERAL, value: 200, isInteger: true },
 				],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

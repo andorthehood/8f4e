@@ -1,5 +1,4 @@
 import { WASM_F64_SQRT } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
@@ -15,7 +14,7 @@ describe('sqrt instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'sqrt',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'float', isNonZero: true }] })
 		);
@@ -34,7 +33,7 @@ describe('sqrt instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'sqrt',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({ consumedOperands: [{ kind: 'value', valueType: 'float64', isNonZero: true }] })
 		);

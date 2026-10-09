@@ -1,16 +1,16 @@
 import { WASM_MEMORY_SIZE, WASM_MISC_MEMORY_COPY } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine } from '@8f4e/language-spec';
+import type { ResolvedMemoryCopyLine } from '@8f4e/language-spec';
 import { ArgumentType } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
 import memoryCopy from './memoryCopy';
 
-const line = {
+const line: ResolvedMemoryCopyLine = {
 	lineNumber: 1,
 	instruction: 'memoryCopy',
 	arguments: [{ type: ArgumentType.LITERAL, value: 20, isInteger: true }],
-} as CompilerASTLine;
+};
 
 describe('memoryCopy instruction compiler', () => {
 	it('emits raw memory.copy when destination, source, and length are proven safe', () => {
@@ -86,7 +86,7 @@ describe('memoryCopy instruction compiler', () => {
 			{
 				...line,
 				arguments: [{ type: ArgumentType.LITERAL, value: 0, isInteger: true }],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [

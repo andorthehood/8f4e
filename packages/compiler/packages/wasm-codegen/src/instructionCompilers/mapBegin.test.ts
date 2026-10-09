@@ -1,4 +1,3 @@
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest } from '../testUtils';
@@ -16,7 +15,7 @@ describe('mapBegin instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('int')],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -34,7 +33,7 @@ describe('mapBegin instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('float')],
-			} as CompilerASTLine,
+			},
 			context
 		);
 
@@ -52,7 +51,7 @@ describe('mapBegin instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'mapBegin',
 				arguments: [classifyIdentifier('float64')],
-			} as CompilerASTLine,
+			},
 			context
 		);
 

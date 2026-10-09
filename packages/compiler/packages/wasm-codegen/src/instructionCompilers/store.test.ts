@@ -1,5 +1,4 @@
 import { WASM_MEMORY_SIZE } from '@8f4e/compiler-wasm-utils';
-import type { CompilerASTLine } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 
 import createInstructionCompilerTestContext, { compileInstructionForTest, createStackFacts } from '../testUtils';
@@ -15,7 +14,7 @@ describe('store instruction compiler', () => {
 				lineNumber: 1,
 				instruction: 'store',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -53,7 +52,7 @@ describe('store instruction compiler', () => {
 				lineNumber: 2,
 				instruction: 'store',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -77,7 +76,7 @@ describe('store instruction compiler', () => {
 				lineNumber: 3,
 				instruction: 'store',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -115,7 +114,7 @@ describe('store instruction compiler', () => {
 				lineNumber: 4,
 				instruction: 'store',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -152,7 +151,7 @@ describe('store instruction compiler', () => {
 				lineNumber: 5,
 				instruction: 'store',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [
@@ -175,7 +174,7 @@ describe('store instruction compiler', () => {
 				lineNumber: 6,
 				instruction: 'store',
 				arguments: [],
-			} as CompilerASTLine,
+			},
 			context,
 			createStackFacts({
 				consumedOperands: [

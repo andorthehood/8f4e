@@ -1,8 +1,15 @@
-import type { CompilationContext, CompilerASTLine, FunctionMetadata, LiteralPushLine } from '@8f4e/language-spec';
+import type {
+	CompilationContext,
+	CompilerASTLine,
+	FunctionMetadata,
+	LiteralPushLine,
+	PlannedMemoryDeclaration,
+	PlannedMemoryModule,
+} from '@8f4e/language-spec';
 import { ArgumentType, createFunctionId, ErrorCode } from '@8f4e/language-spec';
 import { describe, expect, it } from 'vitest';
 import { analyzeInstruction } from '../analyzeInstruction';
-import createStackAnalyzerTestContext, { seedTestMemoryDeclarations } from '../testUtils';
+import createStackAnalyzerTestContext from '../testUtils';
 
 const { classifyIdentifier } = await import('@8f4e/tokenizer');
 
@@ -115,26 +122,43 @@ describe('call stack analysis', () => {
 	});
 
 	it('resolves pointer overloads from known memory address literals', () => {
-		const context = seedTestMemoryDeclarations(createStackAnalyzerTestContext(), {
-			previousTrigger: {
-				id: 'previousTrigger',
-				elementByteLength: 4,
-				wordAlignedByteLength: 4,
-				endByteAddress: 0,
-				endAddressSafeByteLength: 4,
-				numberOfElements: 1,
-				elementWordSize: 4,
-				memoryIndex: 0,
-				wordAlignedAddress: 0,
-				wordAlignedSize: 1,
-				byteAddress: 0,
-				default: 0,
-				isInherited: false,
-				isInteger: true,
-				pointerDepth: 0,
-				isUnsigned: false,
-				type: 'int',
-				lineNumber: 1,
+		const previousTrigger: PlannedMemoryDeclaration = {
+			id: 'previousTrigger',
+			elementByteLength: 4,
+			wordAlignedByteLength: 4,
+			endByteAddress: 0,
+			endAddressSafeByteLength: 4,
+			numberOfElements: 1,
+			elementWordSize: 4,
+			memoryIndex: 0,
+			wordAlignedAddress: 0,
+			wordAlignedSize: 1,
+			byteAddress: 0,
+			isInteger: true,
+			pointerDepth: 0,
+			isUnsigned: false,
+			type: 'int',
+			lineNumber: 1,
+		};
+		const plannedModule: PlannedMemoryModule = {
+			id: 'test',
+			lineNumber: 0,
+			byteAddress: 0,
+			wordAlignedSize: 1,
+			wordAlignedByteLength: 4,
+			endByteAddress: 0,
+			endAddressSafeByteLength: 4,
+			memoryIndex: 0,
+			memory: { previousTrigger },
+			declarations: [previousTrigger],
+			declarationSources: [],
+		};
+		const context = createStackAnalyzerTestContext({
+			currentPlannedModule: plannedModule,
+			memoryPlan: {
+				modules: { test: plannedModule },
+				moduleList: [plannedModule],
+				nextByteAddressByMemoryIndex: { 0: 4 },
 			},
 		});
 		const targetFunction = {
