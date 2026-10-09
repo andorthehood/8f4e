@@ -4,8 +4,8 @@ priority: Medium
 effort: 2-4h
 created: 2026-09-06
 issue: https://github.com/andorthehood/8f4e/issues/955
-status: Open
-completed: null
+status: Completed
+completed: 2026-10-09
 ---
 
 # TODO: Simplify Map Codegen With Reverse Row Order
@@ -48,26 +48,26 @@ both variants returned the expected values for matching and nonmatching inputs a
 | 64 | About 2.3–2.4× faster | 1,907 → 939 bytes |
 
 These are exploratory microbenchmarks, not whole-application speedups or acceptance thresholds. Reproduce the comparison
-with a retained benchmark fixture during implementation; the initial scripts were temporary. Floating-point behavior
-was not covered by the initial experiment.
+as a one-time implementation check; the initial scripts were temporary. Floating-point behavior was not covered by the
+initial experiment.
 
 ## Implementation Plan
 
 - Replace forward iteration and matched/condition bookkeeping in `mapEnd.ts` with reverse-order selection.
 - Remove the two unused local allocations and opcode imports; update the lowering explanation.
 - Add focused runtime coverage and update bytecode snapshots for the intentional output change.
-- Retain a reproducible benchmark for small and larger maps, recording runtime and emitted size.
+- Record a one-time benchmark for small and larger maps, including runtime and emitted size.
 
 ## Success Criteria
 
-- [ ] Nonempty maps allocate only input and result temporaries.
-- [ ] First-match-wins behavior is preserved for duplicate keys.
-- [ ] Empty maps, one-row maps, unmatched inputs, explicit defaults, and implicit typed-zero defaults behave as before.
-- [ ] Integer, float32, and float64 input/output combinations retain their existing behavior.
-- [ ] Float coverage includes NaN inputs, signed-zero keys and results, and distinct source keys that encode to the same
+- [x] Nonempty maps allocate only input and result temporaries.
+- [x] First-match-wins behavior is preserved for duplicate keys.
+- [x] Empty maps, one-row maps, unmatched inputs, explicit defaults, and implicit typed-zero defaults behave as before.
+- [x] Integer, float32, and float64 input/output combinations retain their existing behavior.
+- [x] Float coverage includes NaN inputs, signed-zero keys and results, and distinct source keys that encode to the same
       float32 value; preserve Wasm comparison behavior rather than deduplicating keys using JavaScript equality.
-- [ ] Generated Wasm validates and runtime results match the existing lowering.
-- [ ] Snapshots demonstrate removal of matched/condition bookkeeping, and repeated benchmarks record the actual gain.
+- [x] Generated Wasm validates and runtime results match the existing lowering.
+- [x] Snapshots demonstrate removal of matched/condition bookkeeping, and repeated benchmarks record the actual gain.
 
 ## Affected Components
 
@@ -84,4 +84,18 @@ was not covered by the initial experiment.
 
 ## Related Items
 
-- [TODO 273: Add map block instruction family](archived/273-add-map-block-instruction-family.md)
+- [TODO 273: Add map block instruction family](273-add-map-block-instruction-family.md)
+
+## Completion Notes
+
+- Completed on 2026-10-09. Reverse iteration leaves source rows unchanged and removes the matched/condition locals and
+  all their bookkeeping opcodes.
+- Added a nonempty-map bytecode/local snapshot. Runtime coverage lives in the executable
+  `map-numeric-types.test.8f4e` and `map-numeric-edge-cases.test.8f4e` project fixtures, alongside the existing map fixture.
+  These cover every numeric input/output combination, defaults, duplicate keys, nonfinite inputs, float32 precision,
+  and signed-zero bits. JavaScript tests remain only for internal local allocation and source-row immutability.
+- Full `@8f4e/wasm-codegen` and `@8f4e/compiler` test suites and typechecks passed.
+- A one-time comparison on Node v24.16.0 measured complete 64-row fixture size falling from 1,863 to 895 bytes; runtime
+  improved 2.40–2.47× in the isolated lookup benchmark. The 16-row fixture improved 2.07–2.12×; the 4-row fixture mainly
+  benefited from smaller bytecode. The executable benchmark, its report, and the AGENTS.md benchmark instructions were
+  removed during review; there is no recurring benchmark workflow.

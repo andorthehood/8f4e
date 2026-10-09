@@ -132,5 +132,5 @@ repeated samples, several input sizes, and both cold and warm AST-cache compilat
 
 ## Related Items
 
-- [TODO 480: Simplify map codegen with reverse row order](../480-simplify-map-codegen-with-reverse-row-order.md) — coordinate
+- [TODO 480: Simplify map codegen with reverse row order](480-simplify-map-codegen-with-reverse-row-order.md) — coordinate
   changes to map temporary allocation if both tasks are implemented together; neither depends on the other.

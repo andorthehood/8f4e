@@ -8,10 +8,7 @@ import {
 	WASM_DROP,
 	WASM_F32_EQ,
 	WASM_F64_EQ,
-	WASM_I32_AND,
 	WASM_I32_EQ,
-	WASM_I32_EQZ,
-	WASM_I32_OR,
 	WASM_SELECT,
 } from '@8f4e/compiler-wasm-utils';
 import type {
@@ -45,13 +42,10 @@ const eqOpcode: Record<StackAnalysisNumericValueKind, WASMInstructionCode> = {
  * Lowering algorithm (first-match-wins, branchless):
  * 1. Pop input into `inputLocal`.
  * 2. Initialise `resultLocal` to explicit default or typed zero.
- * 3. Initialise `matchedLocal` (i32) to 0.
- * 4. For each row (key, value):
- *    - cond = (inputLocal == key)
- *    - apply = cond AND (matchedLocal == 0)
- *    - resultLocal = select(value, resultLocal, apply)
- *    - matchedLocal = matchedLocal OR cond
- * 5. Push `resultLocal`.
+ * 3. Visit rows in reverse source order:
+ *    - resultLocal = select(value, resultLocal, inputLocal == key)
+ *    Earlier source rows overwrite later matches, preserving first-match precedence.
+ * 4. Push `resultLocal`.
  *
  * @see [Instruction docs](../../docs/instructions/control-flow.md)
  */
@@ -73,7 +67,7 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context, fact
 		// No rows: discard the input and push the default/zero value
 		saveByteCode(context, [WASM_DROP, ...constOp[outputKind](defaultValue)]);
 	} else {
-		// Allocate four temporary locals: inputLocal, resultLocal, matchedLocal, condLocal
+		// Allocate only the input and accumulated result.
 		const inputLocal = allocateLocal(context, `__map_${line.lineNumber}_input`, {
 			isInteger: inputIsInteger,
 			...(inputIsFloat64 ? { isFloat64: true } : {}),
@@ -82,58 +76,36 @@ const mapEnd: InstructionCompiler<MapEndLine> = (line: MapEndLine, context, fact
 			isInteger: outputIsInteger,
 			...(outputIsFloat64 ? { isFloat64: true } : {}),
 		});
-		const matchedLocal = allocateLocal(context, `__map_${line.lineNumber}_matched`, {
-			isInteger: true,
-		});
-		const condLocal = allocateLocal(context, `__map_${line.lineNumber}_cond`, {
-			isInteger: true,
-		});
-
 		const inputLocalIdx = inputLocal.index;
 		const resultLocalIdx = resultLocal.index;
-		const matchedLocalIdx = matchedLocal.index;
-		const condLocalIdx = condLocal.index;
 
-		// Step 1: save input; Step 2: init resultLocal; Step 3: init matchedLocal
+		// Save the input and initialize the result to the default.
 		saveByteCode(context, [
 			...localSet(inputLocalIdx),
 			...constOp[outputKind](defaultValue),
 			...localSet(resultLocalIdx),
-			...i32const(0),
-			...localSet(matchedLocalIdx),
 		]);
 
-		// Step 4: emit one select-based update per row
-		for (const row of rows) {
+		// Earlier source rows execute last and win, without mutating the source rows.
+		for (let index = rows.length - 1; index >= 0; index--) {
+			const row = rows[index];
 			saveByteCode(context, [
 				// Push the candidate value for this row
 				...constOp[outputKind](row.valueValue),
 				// Push current resultLocal
 				...localGet(resultLocalIdx),
-				// Compute cond = (inputLocal == key)
+				// Compare the input with this row's key.
 				...localGet(inputLocalIdx),
 				...constOp[inputKind](row.keyValue),
 				eqOpcode[inputKind],
-				// Save cond for re-use
-				...localSet(condLocalIdx),
-				// Compute apply = cond AND !matchedLocal
-				...localGet(condLocalIdx),
-				...localGet(matchedLocalIdx),
-				WASM_I32_EQZ,
-				WASM_I32_AND,
-				// select(value, resultLocal, apply)
+				// select(value, resultLocal, inputLocal == key)
 				WASM_SELECT,
 				// Update resultLocal
 				...localSet(resultLocalIdx),
-				// Update matchedLocal = matchedLocal OR cond
-				...localGet(matchedLocalIdx),
-				...localGet(condLocalIdx),
-				WASM_I32_OR,
-				...localSet(matchedLocalIdx),
 			]);
 		}
 
-		// Step 5: push the final result
+		// Push the final result.
 		saveByteCode(context, localGet(resultLocalIdx));
 	}
 

@@ -1,0 +1,3886 @@
+{
+  "functionAst": {
+    "mapFloat64ToFloat64__float64": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat64",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapFloat64ToFloat64",
+      "type": "function",
+    },
+    "mapFloat64ToFloat__float64": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapFloat64ToFloat",
+      "type": "function",
+    },
+    "mapFloat64ToInt__float64": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToInt",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapFloat64ToInt",
+      "type": "function",
+    },
+    "mapFloatToFloat64__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat64",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapFloatToFloat64",
+      "type": "function",
+    },
+    "mapFloatToFloat__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapFloatToFloat",
+      "type": "function",
+    },
+    "mapFloatToInt__float": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToInt",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapFloatToInt",
+      "type": "function",
+    },
+    "mapIntToFloat64__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToFloat64",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float64",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapIntToFloat64",
+      "type": "function",
+    },
+    "mapIntToFloat__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToFloat",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "float",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapIntToFloat",
+      "type": "function",
+    },
+    "mapIntToInt__int": {
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToInt",
+            },
+          ],
+          "instruction": "function",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "param",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "mapBegin",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "map",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "default",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "mapEnd",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "int",
+            },
+          ],
+          "instruction": "functionEnd",
+        },
+      ],
+      "name": "mapIntToInt",
+      "type": "function",
+    },
+  },
+  "functionOverview": {
+    "mapFloat64ToFloat64__float64": {
+      "id": "mapFloat64ToFloat64__float64",
+      "signature": {
+        "parameters": [
+          "float64",
+        ],
+        "returns": [
+          "float64",
+        ],
+      },
+    },
+    "mapFloat64ToFloat__float64": {
+      "id": "mapFloat64ToFloat__float64",
+      "signature": {
+        "parameters": [
+          "float64",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
+    "mapFloat64ToInt__float64": {
+      "id": "mapFloat64ToInt__float64",
+      "signature": {
+        "parameters": [
+          "float64",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "mapFloatToFloat64__float": {
+      "id": "mapFloatToFloat64__float",
+      "signature": {
+        "parameters": [
+          "float",
+        ],
+        "returns": [
+          "float64",
+        ],
+      },
+    },
+    "mapFloatToFloat__float": {
+      "id": "mapFloatToFloat__float",
+      "signature": {
+        "parameters": [
+          "float",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
+    "mapFloatToInt__float": {
+      "id": "mapFloatToInt__float",
+      "signature": {
+        "parameters": [
+          "float",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+    "mapIntToFloat64__int": {
+      "id": "mapIntToFloat64__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "float64",
+        ],
+      },
+    },
+    "mapIntToFloat__int": {
+      "id": "mapIntToFloat__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "float",
+        ],
+      },
+    },
+    "mapIntToInt__int": {
+      "id": "mapIntToInt__int",
+      "signature": {
+        "parameters": [
+          "int",
+        ],
+        "returns": [
+          "int",
+        ],
+      },
+    },
+  },
+  "moduleAst": {
+    "mapNonFiniteInputAssertions": {
+      "id": "mapNonFiniteInputAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapNonFiniteInputAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sqrt",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToInt",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToInt",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToInt",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sqrt",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sqrt",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat64",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat64",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat64",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sqrt",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToInt",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat64",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToInt",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat64",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToInt",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sqrt",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat64",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat64",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "sqrt",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat64",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat64",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat64",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3.4028234663852886e+38,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -1,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "mul",
+        },
+        {
+          "arguments": [],
+          "instruction": "castToFloat64",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat64",
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "mapNumericTypeAssertions": {
+      "id": "mapNumericTypeAssertions",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapNumericTypeAssertions",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToInt",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToInt",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToInt",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToFloat",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToFloat",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToFloat",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToFloat64",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToFloat64",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapIntToFloat64",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToInt",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToInt",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToInt",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat64",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat64",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloatToFloat64",
+            },
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToInt",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 10,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToInt",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 20,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToInt",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": -7,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat64",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 10.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat64",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 2,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 20.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "mapFloat64ToFloat64",
+            },
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": 3,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [
+            {
+              "isFloat64": true,
+              "isInteger": false,
+              "type": "literal",
+              "value": -7.5,
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [],
+          "instruction": "equal",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "assert",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "call",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "mapNonFiniteInputAssertions": {
+      "memory": {},
+    },
+    "mapNumericTypeAssertions": {
+      "memory": {},
+    },
+  },
+  "overview": {
+    "compiledFunctions": [
+      "mapFloat64ToFloat__float64",
+      "mapFloat64ToFloat64__float64",
+      "mapFloat64ToInt__float64",
+      "mapFloatToFloat__float",
+      "mapFloatToFloat64__float",
+      "mapFloatToInt__float",
+      "mapIntToFloat__int",
+      "mapIntToFloat64__int",
+      "mapIntToInt__int",
+    ],
+    "compiledModules": [
+      "mapNonFiniteInputAssertions",
+      "mapNumericTypeAssertions",
+    ],
+    "requiredMemoryBytes": 4,
+    "requiredMemoryBytesByRegion": {},
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

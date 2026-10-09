@@ -305,7 +305,7 @@ mapEnd int
 
 The `mapEnd` instruction closes a map block and declares the output type (`int`, `float`, or `float64`). It consumes the input value from the stack and pushes the mapped result.
 
-Lowering uses branchless WebAssembly `select` instructions: each row is evaluated in declaration order with first-match-wins semantics.
+Lowering uses branchless WebAssembly `select` instructions. Rows are emitted in reverse declaration order, so earlier source rows overwrite later matches and the first matching source row wins.
 
 > **Note on float key precision**: key matching uses exact equality (`f32.eq` / `f64.eq`). Rounding and precision management is the user's responsibility.
 
