@@ -1,9 +1,8 @@
 import type { EventDispatcher, State } from '@8f4e/editor-core';
-import type { TestRunResult } from '@8f4e/editor-state-types';
 import createStateManager from '@8f4e/state-manager';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createTestRuntimeDef } from './runtimeDef';
-import type { TestRuntimeProgram } from './types';
+import type { TestRunResult, TestRuntimeProgram } from './types';
 
 class FakeWorker {
 	static instances: FakeWorker[] = [];
@@ -31,7 +30,11 @@ function createProgram(): TestRuntimeProgram {
 function setup(initialProgram?: TestRuntimeProgram, isCompiling = false) {
 	FakeWorker.instances = [];
 	let program = initialProgram;
-	const state = { compiler: { isCompiling }, runtime: { values: { other: { retained: true } } } } as unknown as State;
+	const state = {
+		compiler: { isCompiling },
+		assertionResults: [],
+		runtime: { values: { other: { retained: true } } },
+	} as unknown as State;
 	const store = createStateManager(state);
 	const events = { dispatch: vi.fn() } as unknown as EventDispatcher;
 	const definition = createTestRuntimeDef(
@@ -61,6 +64,37 @@ const passed = (): TestRunResult => ({
 describe('TestRuntime lifecycle', () => {
 	afterEach(() => {
 		vi.restoreAllMocks();
+	});
+
+	it('publishes only source sites and outcomes to editor assertion state and clears them on restart and disposal', () => {
+		vi.spyOn(console, 'error').mockImplementation(() => {});
+		const { state, store, dispose } = setup(createProgram());
+		const assertion = {
+			site: {
+				siteId: 0,
+				instruction: 'assert' as const,
+				projectBlockId: 7,
+				projectGroupPath: '',
+				codeBlockType: 'module' as const,
+				codeBlockId: 'checks',
+				lineNumber: 2,
+			},
+			passed: false,
+			condition: 0,
+			assertIndex: 0,
+		};
+		const result: TestRunResult = { status: 'failed', assertions: [assertion], failures: [assertion] };
+		expect(state.assertionResults).toEqual([]);
+		FakeWorker.instances[0].emit(result);
+		expect(state.assertionResults).toEqual([{ site: assertion.site, passed: false }]);
+		expect(state.runtime.values.TestRuntime).toMatchObject(result);
+		store.set('compiler.isCompiling', true);
+		expect(state.assertionResults).toEqual([]);
+		store.set('compiler.isCompiling', false);
+		FakeWorker.instances[1].emit(result);
+		expect(state.assertionResults).toHaveLength(1);
+		dispose();
+		expect(state.assertionResults).toEqual([]);
 	});
 
 	it('runs the latest successful compilation on selection and once after each recompile', () => {
@@ -115,6 +149,7 @@ describe('TestRuntime lifecycle', () => {
 		const worker = FakeWorker.instances[0];
 		worker.emit({ status: 'error', error: 'integer divide by zero' });
 		expect(state.runtime.values.TestRuntime).toMatchObject({ status: 'error' });
+		expect(state.assertionResults).toEqual([]);
 		expect(events.dispatch).toHaveBeenCalledWith('runtimeInitialized');
 		dispose();
 		setProgram(createProgram());

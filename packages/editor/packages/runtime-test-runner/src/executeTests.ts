@@ -1,6 +1,5 @@
-import type { TestRunResult } from '@8f4e/editor-state-types';
 import { runTests } from '@8f4e/test-runner';
-import type { TestRuntimeProgram } from './types';
+import type { TestRunResult, TestRuntimeProgram } from './types';
 
 /** Uses editor-owned, already initialized memory and returns only serializable results. */
 export async function executeTests(program: TestRuntimeProgram): Promise<TestRunResult> {

@@ -10,6 +10,7 @@ import type {
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
 import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { AssertionResult } from './features/assertions/types';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	ArrayBars,
@@ -50,7 +51,6 @@ import type { ConsoleState, LogMessage } from './features/logger/types';
 import type { ContextMenu, ContextMenuItem, MenuGenerator, MenuStackEntry } from './features/menu/types';
 import type { PresentationState } from './features/presentation/types';
 import type { CompilationResult, Compiler } from './features/program-compiler/types';
-import type { TestRunResult, TestRuntimeState } from './features/runtime/testRuntime';
 import type {
 	RuntimeEnvConstantsContributor,
 	RuntimeFactory,
@@ -87,6 +87,7 @@ export type {
 	ArrayMeter,
 	ArrayPlotter,
 	ArrayWave,
+	AssertionResult,
 	BinaryAsset,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
@@ -138,8 +139,6 @@ export type {
 	Size,
 	Slider,
 	Switch,
-	TestRunResult,
-	TestRuntimeState,
 	TypedValueKind,
 };
 
@@ -379,6 +378,8 @@ export interface State {
 	binaryAssets: BinaryAsset[];
 	/** Console state for internal logging */
 	console: ConsoleState;
+	/** Executed assertion outcomes published by the active runtime for editor rendering. */
+	assertionResults: AssertionResult[];
 	runtime: {
 		values: RuntimeValuesByRuntimeId;
 	};

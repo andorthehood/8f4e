@@ -10,7 +10,7 @@ export default function assertions(store: StateManager<State>): () => void {
 		}
 	}
 
-	const selectors = ['runtime.values.TestRuntime', 'compiler.isCompiling', 'codeBlockRendering.codeBlocks'] as const;
+	const selectors = ['assertionResults', 'compiler.isCompiling', 'codeBlockRendering.codeBlocks'] as const;
 	for (const selector of selectors) store.subscribe(selector, refresh);
 	refresh();
 	return () => {

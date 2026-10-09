@@ -1,8 +1,7 @@
 import { compileProject } from '@8f4e/compiler';
 import { createMockCodeBlock, createMockState } from '@8f4e/editor-state-testing';
-import type { TestRuntimeState } from '@8f4e/editor-state-types';
+import type { AssertionResult } from '@8f4e/editor-state-types';
 import type { AssertionSite } from '@8f4e/language-spec';
-import type { TestAssertionResult } from '@8f4e/test-runner';
 import { runTests } from '@8f4e/test-runner';
 import { describe, expect, it } from 'vitest';
 import convertGraphicDataToProjectStructure from '../../../project-export/serializeCodeBlocks';
@@ -24,18 +23,8 @@ function site(overrides: Partial<AssertionSite> = {}): AssertionSite {
 	};
 }
 
-function invocation(site: AssertionSite, passed = true, assertIndex = 0): TestAssertionResult {
-	return { site, passed, assertIndex, condition: passed ? 1 : 0 };
-}
-
-function completed(assertions: TestAssertionResult[]): Extract<TestRuntimeState, { status: 'passed' | 'failed' }> {
-	const failures = assertions.filter(assertion => !assertion.passed);
-	return {
-		status: failures.length ? 'failed' : 'passed',
-		assertions,
-		failures,
-		assertionSites: assertions.map(assertion => assertion.site),
-	};
+function invocation(site: AssertionSite, passed = true): AssertionResult {
+	return { site, passed };
 }
 
 function setup() {
@@ -51,8 +40,22 @@ function setup() {
 }
 
 describe('assertion marker derivation', () => {
-	it('maps real compiler assertion sites back to editor-owned blocks', async () => {
+	it('maps executed compiler sites back to editor blocks and omits unexecuted assertions', async () => {
 		const { block, state } = setup();
+		block.code = [
+			'module checks',
+			'push 1',
+			'assert',
+			'push 0',
+			'if',
+			'push 0',
+			'assert',
+			'ifEnd',
+			'push 2',
+			'assertEqual 2',
+			'moduleEnd',
+		];
+		block.displayModel = buildDisplayModel(block.code);
 		block.entry = 'test';
 		block.projectPath = '';
 		const compiled = await compileProject(convertGraphicDataToProjectStructure([block]), {
@@ -60,24 +63,23 @@ describe('assertion marker derivation', () => {
 			disableSharedMemory: true,
 		});
 		const result = await runTests(compiled);
-		state.runtime.values.TestRuntime = completed(result.assertions);
+		state.assertionResults = result.assertions;
 		expect(deriveAssertionMarkers(block, state)).toEqual([
 			{ lineNumber: 2, passed: true, x: 8, y: 32, width: 16, height: 16 },
-			{ lineNumber: 4, passed: true, x: 8, y: 64, width: 16, height: 16 },
+			{ lineNumber: 9, passed: true, x: 8, y: 144, width: 16, height: 16 },
 		]);
 	});
-	it('aggregates repeated calls with failure taking precedence and omits unexecuted sites', () => {
+	it('aggregates repeated calls with failure taking precedence', () => {
 		const { block, state } = setup();
 		const failedSite = site();
 		const passedSite = site({ siteId: 1, instruction: 'assertEqual', lineNumber: 4 });
-		state.runtime.values.TestRuntime = completed([
-			invocation(failedSite, true, 0),
-			invocation(failedSite, false, 1),
-			invocation(failedSite, true, 2),
-			invocation(passedSite, true, 3),
-			invocation(passedSite, true, 4),
-		]);
-		state.runtime.values.TestRuntime.assertionSites.push(site({ siteId: 2, lineNumber: 1 }));
+		state.assertionResults = [
+			invocation(failedSite, true),
+			invocation(failedSite, false),
+			invocation(failedSite, true),
+			invocation(passedSite, true),
+			invocation(passedSite, true),
+		];
 		expect(deriveAssertionMarkers(block, state)).toEqual([
 			{ lineNumber: 2, passed: false, x: 8, y: 32, width: 16, height: 16 },
 			{ lineNumber: 4, passed: true, x: 8, y: 64, width: 16, height: 16 },
@@ -86,14 +88,14 @@ describe('assertion marker derivation', () => {
 
 	it('matches physical block identity and project path, including functions', () => {
 		const { block, state } = setup();
-		state.runtime.values.TestRuntime = completed([
+		state.assertionResults = [
 			invocation(site()),
 			invocation(site({ siteId: 1, projectBlockId: 8 })),
 			invocation(site({ siteId: 2, projectGroupPath: 'other' })),
 			invocation(site({ siteId: 3, codeBlockType: 'function' })),
 			invocation(site({ siteId: 4, projectBlockId: undefined })),
 			invocation(site({ siteId: 5, source: { kind: 'include', includeId: 'test/helpers', symbolName: 'checks' } })),
-		]);
+		];
 		expect(deriveAssertionMarkers(block, state)).toHaveLength(1);
 		block.blockType = 'function';
 		expect(deriveAssertionMarkers(block, state)).toHaveLength(1);
@@ -101,7 +103,7 @@ describe('assertion marker derivation', () => {
 
 	it('uses displayed rows and widget gaps, omitting assertions hidden by collapse', () => {
 		const { block, state } = setup();
-		state.runtime.values.TestRuntime = completed([invocation(site()), invocation(site({ siteId: 1, lineNumber: 4 }))]);
+		state.assertionResults = [invocation(site()), invocation(site({ siteId: 1, lineNumber: 4 }))];
 		block.displayModel = buildDisplayModel(code, { hideAfterRawRow: 3 });
 		block.gaps.set(1, { size: 3 });
 		expect(deriveAssertionMarkers(block, state)).toEqual([
@@ -111,18 +113,10 @@ describe('assertion marker derivation', () => {
 		expect(deriveAssertionMarkers(block, state)).toHaveLength(2);
 	});
 
-	it('returns no markers for idle, running, or trapped tests, disabled blocks, or recompilation', () => {
+	it('returns no markers without results, for disabled blocks, or during recompilation', () => {
 		const { block, state } = setup();
 		expect(deriveAssertionMarkers(block, state)).toEqual([]);
-		for (const result of [
-			{ status: 'idle' },
-			{ status: 'running', assertionSites: [site()] },
-			{ status: 'error', error: 'integer overflow', assertionSites: [site()] },
-		] satisfies TestRuntimeState[]) {
-			state.runtime.values.TestRuntime = result;
-			expect(deriveAssertionMarkers(block, state)).toEqual([]);
-		}
-		state.runtime.values.TestRuntime = completed([invocation(site())]);
+		state.assertionResults = [invocation(site())];
 		block.disabled = true;
 		expect(deriveAssertionMarkers(block, state)).toEqual([]);
 		block.disabled = false;

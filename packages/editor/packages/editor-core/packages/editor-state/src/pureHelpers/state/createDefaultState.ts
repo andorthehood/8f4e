@@ -89,6 +89,7 @@ export default function createDefaultState() {
 			maxLogs: 100,
 		},
 		globalEditorDirectives: {},
+		assertionResults: [],
 		runtime: {
 			values: {},
 		},

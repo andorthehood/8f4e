@@ -6,17 +6,10 @@ export default function deriveAssertionMarkers(
 	codeBlock: CodeBlockGraphicData,
 	state: State
 ): CodeBlockGraphicData['widgets']['assertions'] {
-	const result = state.runtime.values.TestRuntime;
-	if (
-		state.compiler.isCompiling ||
-		codeBlock.disabled ||
-		!result ||
-		(result.status !== 'passed' && result.status !== 'failed')
-	)
-		return [];
+	if (state.compiler.isCompiling || codeBlock.disabled) return [];
 
 	const sites = new Map<number, { site: AssertionSite; passed: boolean }>();
-	for (const assertion of result.assertions) {
+	for (const assertion of state.assertionResults) {
 		const { site } = assertion;
 		if (
 			site.projectBlockId !== codeBlock.creationIndex ||

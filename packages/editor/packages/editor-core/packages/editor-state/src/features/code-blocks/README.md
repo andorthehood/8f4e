@@ -34,7 +34,7 @@ Block types are automatically detected and updated based on code content.
 This feature contains several subfeatures under `features/` that handle specific aspects:
 
 - `blockHighlights` - Visual highlighting for selected/hovered blocks
-- `assertions` - Derives assertion result rectangles from `runtime.values.TestRuntime` into `widgets.assertions`
+- `assertions` - Derives assertion result rectangles from `state.assertionResults` into `widgets.assertions`
 - `blockTypeUpdater` - Automatic block type detection and updates
 - `arrayPlotters` - Visualization of runtime array data
 - `buttons` - Interactive button controls derived from code

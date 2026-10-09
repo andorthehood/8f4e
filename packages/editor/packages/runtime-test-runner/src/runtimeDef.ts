@@ -1,8 +1,8 @@
 import type { EventDispatcher, RuntimeRegistryEntry, State } from '@8f4e/editor-core';
-import type { TestRunResult, TestRuntimeState } from '@8f4e/editor-state-types';
 import type { AssertionSite } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { formatTestFailures } from '@8f4e/test-runner';
+import type { TestRunResult, TestRuntimeState } from './types';
 
 const TEST_RUNTIME_ID = 'TestRuntime';
 
@@ -20,6 +20,12 @@ export function createTestRuntimeDef(
 
 			function publish(result: TestRuntimeState) {
 				store.set('runtime.values', { ...state.runtime.values, [TEST_RUNTIME_ID]: result });
+				store.set(
+					'assertionResults',
+					result.status === 'passed' || result.status === 'failed'
+						? result.assertions.map(({ site, passed }) => ({ site, passed }))
+						: []
+				);
 			}
 
 			function stopWorker() {

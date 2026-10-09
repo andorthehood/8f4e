@@ -356,6 +356,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 			logs: [],
 			maxLogs: 100,
 		},
+		assertionResults: [],
 		runtime: {
 			values: {},
 		},
