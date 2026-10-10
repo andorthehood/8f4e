@@ -249,6 +249,7 @@ export function createMockState(overrides: DeepPartial<State> = {}): State {
 	const rootCodeBlocks: CodeBlockGraphicData[] = [];
 
 	const defaults: State = {
+		compilerInputRevision: 0,
 		compiler: {
 			isCompiling: false,
 			compiledModules: {},

@@ -217,8 +217,9 @@ describe('groupSkipExecutionToggler', () => {
 
 		toggleCallback({ codeBlock: block1 });
 
-		// Should be called twice - once for each block
-		expect(setSpy).toHaveBeenCalledTimes(2);
+		// Update each block, then advance the compiler input revision once for the group.
+		expect(setSpy).toHaveBeenCalledTimes(3);
+		expect(setSpy).toHaveBeenLastCalledWith('compilerInputRevision', 1);
 		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block1);
 		expect(setSpy).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block2);
 	});

@@ -26,9 +26,4 @@ export default function parsedDirectivesUpdater(store: StateManager<State>): voi
 	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', () => {
 		updateParsedDirectivesForBlock(store.getState().codeBlockRendering.selectedCodeBlockForProgrammaticEdit);
 	});
-	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', () => {
-		updateParsedDirectivesForBlock(
-			store.getState().codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
-		);
-	});
 }

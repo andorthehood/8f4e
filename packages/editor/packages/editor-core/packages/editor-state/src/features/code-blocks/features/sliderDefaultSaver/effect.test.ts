@@ -117,9 +117,7 @@ describe('slider default saver', () => {
 			'; @piano &notes &count 48',
 			'moduleEnd',
 		]);
-		expect(mockStore.set).toHaveBeenCalledExactlyOnceWith(
-			'codeBlockRendering.selectedCodeBlockForProgrammaticEdit',
-			codeBlock
-		);
+		expect(mockStore.set).toHaveBeenCalledWith('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		expect(mockStore.set).toHaveBeenCalledWith('compilerInputRevision', 1);
 	});
 });

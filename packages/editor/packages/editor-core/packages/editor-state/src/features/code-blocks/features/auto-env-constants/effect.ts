@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { ProjectBlock } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
+import incrementCompilerInputRevision from '../../../program-compiler/incrementCompilerInputRevision';
 import { getSelectedRuntimeEntry } from '../../../runtime/editorConfig';
 import parsePos from '../directives/pos/data';
 
@@ -108,6 +109,7 @@ export default function autoEnvConstants(store: StateManager<State>): void {
 		targetBlock.lastUpdated = performance.now();
 
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', targetBlock);
+		incrementCompilerInputRevision(store);
 	}
 
 	/**

@@ -26,7 +26,6 @@ describe('projectGroupNavigation', () => {
 				codeBlocks: rootCodeBlocks,
 				selectedCodeBlock: groupBlock,
 				selectedCodeBlockForProgrammaticEdit: groupBlock,
-				selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger: groupBlock,
 				draggedCodeBlock: groupBlock,
 			},
 			viewport: { x: 64, y: 96 },
@@ -44,7 +43,6 @@ describe('projectGroupNavigation', () => {
 		expect(state.codeBlockRendering.codeBlocks).toBe(nestedProjectCodeBlocks);
 		expect(state.codeBlockRendering.selectedCodeBlock).toBeUndefined();
 		expect(state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit).toBeUndefined();
-		expect(state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger).toBeUndefined();
 		expect(state.codeBlockRendering.draggedCodeBlock).toBeUndefined();
 		expect(state.viewport.x).toBe(0);
 		expect(state.viewport.y).toBe(0);

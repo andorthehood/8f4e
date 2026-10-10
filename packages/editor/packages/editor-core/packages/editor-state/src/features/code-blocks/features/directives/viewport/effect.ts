@@ -74,17 +74,6 @@ export default function viewportDirectiveEffect(store: StateManager<State>, even
 		recomputeViewportAnchoredPosition(state, state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit);
 	};
 
-	const syncProgrammaticSelectedCodeBlockWithoutCompilerTrigger = () => {
-		syncViewportAnchoredBlock(
-			state,
-			state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
-		);
-		recomputeViewportAnchoredPosition(
-			state,
-			state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger
-		);
-	};
-
 	const recomputeAnchoredPositions = () => {
 		recomputeViewportAnchoredPositions(state);
 	};
@@ -92,10 +81,6 @@ export default function viewportDirectiveEffect(store: StateManager<State>, even
 	store.subscribe('codeBlockRendering.codeBlocks', syncAllBlocks);
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncSelectedCodeBlock);
 	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', syncProgrammaticSelectedCodeBlock);
-	store.subscribe(
-		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
-		syncProgrammaticSelectedCodeBlockWithoutCompilerTrigger
-	);
 	events.on('spriteSheetRerendered', recomputeAnchoredPositions);
 	events.on('viewportChanged', recomputeAnchoredPositions);
 	events.on('viewportResized', recomputeAnchoredPositions);

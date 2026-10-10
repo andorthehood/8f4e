@@ -234,11 +234,11 @@ describe('projectExport', () => {
 			});
 			mockState.codeBlockRendering.rootCodeBlocks = [note];
 			mockState.codeBlockRendering.codeBlocks = mockState.codeBlockRendering.rootCodeBlocks;
-			mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger = note;
+			mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = note;
 			projectExport(store, mockEvents);
 			const code = ['note local.settings', '; @pos 4 8', '; @config font terminus8x16', 'noteEnd'];
 
-			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code', code);
+			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', code);
 
 			expect(saveSession).toHaveBeenLastCalledWith(expect.objectContaining({ notes: [{ id: 0, code }] }));
 			const save = vi.mocked(mockEvents.on).mock.calls.find(call => call[0] === 'saveProject')![1];

@@ -459,10 +459,9 @@ export type CodeBlockRendering = {
 	selectedCodeBlock?: CodeBlockGraphicData;
 	/** When true, blocks hidden by `; @hidden` stay visible regardless of selection. */
 	showHiddenCodeBlocks: boolean;
-	selectedCodeBlockForProgrammaticEdit?: CodeBlockGraphicData;
 	/**
-	 * Similar to selectedCodeBlockForProgrammaticEdit but without triggering compiler effects.
-	 * Use this for operations like drag-end position updates that should save but not recompile.
+	 * Target for refreshing and saving a block after a programmatic update, including editor metadata.
+	 * Compiler input changes separately advance compilerInputRevision.
 	 */
-	selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger?: CodeBlockGraphicData;
+	selectedCodeBlockForProgrammaticEdit?: CodeBlockGraphicData;
 };

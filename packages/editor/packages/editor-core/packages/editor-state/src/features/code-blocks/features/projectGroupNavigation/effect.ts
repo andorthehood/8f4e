@@ -60,7 +60,6 @@ export default function projectGroupNavigation(store: StateManager<State>, event
 	function showProjectSlice(codeBlocks: CodeBlockGraphicData[]): void {
 		store.set('codeBlockRendering.selectedCodeBlock', undefined);
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', undefined);
-		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', undefined);
 		state.codeBlockRendering.draggedCodeBlock = undefined;
 		store.set('codeBlockRendering.codeBlocks', codeBlocks);
 

@@ -1,7 +1,9 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 
 import type { StateManager } from '@8f4e/state-manager';
-import { instructionParser, isSkipExecutionDirective } from '@8f4e/tokenizer';
+import { isSkipExecutionDirective } from '@8f4e/tokenizer';
+import incrementCompilerInputRevision from '../../../program-compiler/incrementCompilerInputRevision';
+import setSkipExecution from './setSkipExecution';
 
 /**
  * Effect that handles toggling the #skipExecution directive in module code blocks.
@@ -18,31 +20,18 @@ export default function skipExecutionToggler(store: StateManager<State>, events:
 		// Set target code block for programmatic edit to avoid re-rendering all code blocks
 		state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = codeBlock;
 
-		// Check if module has #skipExecution directive
-		const hasDirective = codeBlock.code.some(line => isSkipExecutionDirective(line));
-
-		if (hasDirective) {
-			// Remove all #skipExecution directive lines
-			codeBlock.code = codeBlock.code.filter(line => !isSkipExecutionDirective(line));
-		} else {
-			// Insert #skipExecution after module header (first line)
-			// Find the module header line index
-			const moduleHeaderIndex = codeBlock.code.findIndex(line => {
-				const match = line.match(instructionParser);
-				return match && match[1] === 'module';
-			});
-
-			if (moduleHeaderIndex !== -1) {
-				// Insert directive after module header
-				codeBlock.code.splice(moduleHeaderIndex + 1, 0, '#skipExecution');
-			}
-		}
+		const skipExecution = !codeBlock.code.some(line => isSkipExecutionDirective(line));
+		const result = setSkipExecution(codeBlock.code, skipExecution);
+		codeBlock.code = result.code;
 
 		// Update lastUpdated to invalidate cache
 		codeBlock.lastUpdated = Date.now();
 
 		// Trigger store update to re-render only the specific code block
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', codeBlock);
+		if (result.changed) {
+			incrementCompilerInputRevision(store);
+		}
 	}
 
 	events.on('toggleModuleSkipExecutionDirective', onToggleModuleSkipExecutionDirective);

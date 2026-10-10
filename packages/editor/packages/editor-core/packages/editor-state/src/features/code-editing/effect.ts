@@ -1,5 +1,6 @@
 import type { EventDispatcher, InsertTextEvent, MoveCaretEvent, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import incrementCompilerInputRevision from '../program-compiler/incrementCompilerInputRevision';
 import backSpace from './backSpace';
 import enter from './enter';
 import { moveCaret } from './moveCaret';
@@ -56,10 +57,14 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 
 		const codeBlock = state.codeBlockRendering.selectedCodeBlock;
 		const bp = backSpace(codeBlock.code, codeBlock.cursor.row, codeBlock.cursor.col);
+		const codeChanged = bp.code !== codeBlock.code;
 		store.set('codeBlockRendering.selectedCodeBlock.cursor.row', bp.row);
 		store.set('codeBlockRendering.selectedCodeBlock.cursor.col', bp.col);
 		store.set('codeBlockRendering.selectedCodeBlock.code', bp.code);
 		store.set('codeBlockRendering.selectedCodeBlock.lastUpdated', Date.now());
+		if (codeChanged) {
+			incrementCompilerInputRevision(store);
+		}
 	};
 
 	const onInsertNewLine = () => {
@@ -77,6 +82,7 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 		store.set('codeBlockRendering.selectedCodeBlock.cursor.col', ent.col);
 		store.set('codeBlockRendering.selectedCodeBlock.code', ent.code);
 		store.set('codeBlockRendering.selectedCodeBlock.lastUpdated', Date.now());
+		incrementCompilerInputRevision(store);
 	};
 
 	const onInsertText = (event: InsertTextEvent) => {
@@ -94,6 +100,9 @@ export default function codeEditing(store: StateManager<State>, events: EventDis
 		store.set('codeBlockRendering.selectedCodeBlock.cursor.col', bp.col);
 		store.set('codeBlockRendering.selectedCodeBlock.code', bp.code);
 		store.set('codeBlockRendering.selectedCodeBlock.lastUpdated', Date.now());
+		if (event.text.length > 0) {
+			incrementCompilerInputRevision(store);
+		}
 	};
 
 	events.on<MoveCaretEvent>('moveCaret', onMoveCaret);

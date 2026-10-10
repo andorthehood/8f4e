@@ -1,15 +1,12 @@
 import type { InfoRecord, State } from '@8f4e/editor-state-types';
 import type { CompilerDiagnostic } from '@8f4e/language-spec';
-import { documentBlockInstructionByType, WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
+import { WASM_MEMORY_PAGE_SIZE } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
 import { hasTestEntry } from '@8f4e/test-runner';
-import { isCompilableBlockType } from '@8f4e/tokenizer';
 import debounceTrailing from '../../pureHelpers/debounceTrailing';
 import { log } from '../logger/logger';
 import convertGraphicDataToProjectStructure from '../project-export/serializeCodeBlocks';
 import { DEFAULT_RECOMPILE_DEBOUNCE_DELAY, registerRecompileDebounceDelayEditorConfigValidator } from './editorConfig';
-
-const includesBlockType = documentBlockInstructionByType.includes.type;
 
 export default function compiler(store: StateManager<State>): () => void {
 	const state = store.getState();
@@ -17,7 +14,7 @@ export default function compiler(store: StateManager<State>): () => void {
 	let disposed = false;
 
 	const scheduleRecompile = debounceTrailing(
-		onRecompile,
+		compileProject,
 		() => state.editorConfig.recompileDebounceDelay ?? DEFAULT_RECOMPILE_DEBOUNCE_DELAY
 	);
 
@@ -28,24 +25,22 @@ export default function compiler(store: StateManager<State>): () => void {
 		});
 	}
 
-	async function onForceCompile() {
+	async function compileProject(): Promise<void> {
 		if (disposed) {
 			return;
 		}
 
-		scheduleRecompile.cancel();
+		store.set('codeErrors.compilationErrors', []);
+		if (!state.callbacks.compileCode) {
+			return;
+		}
+
 		const compilationStart = performance.now();
 
 		store.set('compiler.isCompiling', true);
 		setCompilerInfo({ isCompiling: true });
 
 		try {
-			if (!state.callbacks.compileCode) {
-				store.set('compiler.isCompiling', false);
-				setCompilerInfo({ isCompiling: false });
-				return;
-			}
-
 			const project = convertGraphicDataToProjectStructure(state.codeBlockRendering.rootCodeBlocks);
 			const compilerOptions = {
 				startingMemoryWordAddress: 0,
@@ -119,47 +114,11 @@ export default function compiler(store: StateManager<State>): () => void {
 		}
 	}
 
-	function onRecompile() {
-		if (disposed) {
-			return;
-		}
-
-		store.set('codeErrors.compilationErrors', []);
-
-		if (!state.callbacks.compileCode) {
-			return;
-		}
-
-		onForceCompile();
-	}
-
-	const onSelectedCodeChanged = () => {
-		if (state.codeBlockRendering.selectedCodeBlock?.disabled) {
-			return;
-		}
-
-		const blockType = state.codeBlockRendering.selectedCodeBlock?.blockType;
-		const isProjectGroup = state.codeBlockRendering.selectedCodeBlock?.nestedProjectCodeBlocks !== undefined;
-		if (!isProjectGroup && !isCompilableBlockType(blockType) && blockType !== includesBlockType) {
-			return;
-		}
-		scheduleRecompile();
-	};
-	const onProgrammaticCodeChanged = () => {
-		const blockType = state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit?.blockType;
-		if (!isCompilableBlockType(blockType) && blockType !== includesBlockType) {
-			return;
-		}
-		scheduleRecompile();
-	};
-
-	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeChanged);
-	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticCodeChanged);
+	store.subscribe('compilerInputRevision', scheduleRecompile);
 
 	return () => {
 		disposed = true;
 		scheduleRecompile.cancel();
-		store.unsubscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeChanged);
-		store.unsubscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', onProgrammaticCodeChanged);
+		store.unsubscribe('compilerInputRevision', scheduleRecompile);
 	};
 }

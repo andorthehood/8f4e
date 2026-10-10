@@ -1,5 +1,6 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
+import incrementCompilerInputRevision from '../../../program-compiler/incrementCompilerInputRevision';
 import { removeIntermodularMemoryConnectionsFromCode } from './removeConnections';
 
 export default function memoryConnectionRemover(store: StateManager<State>, events: EventDispatcher): () => void {
@@ -24,6 +25,7 @@ export default function memoryConnectionRemover(store: StateManager<State>, even
 		targetCodeBlock.lastUpdated = Date.now();
 		state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = targetCodeBlock;
 		store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', targetCodeBlock);
+		incrementCompilerInputRevision(store);
 	};
 
 	events.on('removeConnections', onRemoveConnections);
