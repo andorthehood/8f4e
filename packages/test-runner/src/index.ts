@@ -88,14 +88,18 @@ export async function runTests(compiled: TestRunInput) {
 	return { instance, memories, assertions, failures: assertions.filter(assertion => !assertion.passed) };
 }
 
+/** Formats the expected and received values for console and inline failure reporting. */
+export function formatAssertionExpectation(assertion: TestAssertionResult): string {
+	return 'condition' in assertion
+		? `expected nonzero, received ${assertion.condition}`
+		: `expected ${assertion.expected}, received ${assertion.received}`;
+}
+
 /** Formats a failure with a one-based physical line within the original block. */
 function formatAssertionFailure(failure: TestAssertionResult): string {
 	const { site } = failure;
 	const name = site.projectGroupPath ? `${site.projectGroupPath}/${site.codeBlockId}` : site.codeBlockId;
-	const expectation =
-		'condition' in failure
-			? `expected nonzero, received ${failure.condition}`
-			: `expected ${failure.expected}, received ${failure.received}`;
+	const expectation = formatAssertionExpectation(failure);
 	const source = site.source ? `, include ${site.source.includeId} (${site.source.symbolName})` : '';
 	return `${site.instruction} #${failure.assertIndex} ${expectation} at ${site.codeBlockType} ${name}, block line ${site.lineNumber + 1}${source} (site ${site.siteId})`;
 }

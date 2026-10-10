@@ -14,6 +14,7 @@ import { getRawIndexForVisualColumn, getTabStopsByLine, getVisualColumnForRawInd
 import incrementCompilerInputRevision from '../program-compiler/incrementCompilerInputRevision';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import updateViewport from '../viewport/updateViewport';
+import deriveErrorMessages from './deriveErrorMessages';
 import deriveAssertionMarkers from './features/assertions/deriveAssertionMarkers';
 import blockHighlights from './features/blockHighlights/updateGraphicData';
 import type { CodeBlockClickEvent } from './features/codeBlockDragger/effect';
@@ -32,7 +33,6 @@ import shape, { updateShapeDeclarations } from './shape/updateGraphicData';
 import { createCodeBlockGraphicData } from './utils/createCodeBlockGraphicData';
 import getCodeBlockNameFromSource from './utils/getCodeBlockNameFromSource';
 import { parseBlockDirectives } from './utils/parseBlockDirectives';
-import wrapText from './utils/wrapText';
 
 export default function codeBlockRendering(store: StateManager<State>, events: EventDispatcher) {
 	const state = store.getState();
@@ -109,7 +109,12 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 
 		shape(graphicData, state, directiveState);
 		paramShape(graphicData, state, directiveState);
+		graphicData.widgets.errorMessages = deriveErrorMessages(graphicData, state);
 		gaps(graphicData, directiveState);
+		for (const error of graphicData.widgets.errorMessages) {
+			const displayRow = displayModel.rawRowToDisplayRow[error.lineNumber] ?? error.lineNumber;
+			error.y = (gapCalculator(displayRow, graphicData.gaps) + 1) * state.viewport.hGrid;
+		}
 		updateShapeDeclarations(graphicData, state, directiveState);
 		updateParamShapeDeclarations(graphicData, state, directiveState);
 		runBeforeGraphicDataWidthCalculation(graphicData, state, directiveState);
@@ -361,38 +366,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		incrementCompilerInputRevision(store);
 	};
 
-	function updateErrorMessages() {
-		const codeErrors = [...state.codeErrors.compilationErrors, ...state.codeErrors.editorDirectiveErrors];
-		state.codeBlockRendering.codeBlocks.forEach(codeBlock => {
-			codeBlock.widgets.errorMessages = [];
-			codeErrors.forEach(codeError => {
-				const projectScopePath = codeBlock.isProjectScope
-					? codeBlock.projectPath
-					: codeBlock.nestedProjectCodeBlocks !== undefined
-						? createChildProjectGroupPath(codeBlock.projectPath, codeBlock.name)
-						: undefined;
-				const matchesCodeBlock =
-					codeBlock.creationIndex === codeError.codeBlockId ||
-					(projectScopePath !== undefined && projectScopePath === codeError.projectGroupPath);
-
-				if (matchesCodeBlock) {
-					const message = wrapText(codeError.message, codeBlock.width / state.viewport.vGrid - 1).map(
-						line => ' ' + line
-					);
-
-					codeBlock.widgets.errorMessages.push({
-						x: 0,
-						y: (gapCalculator(codeError.lineNumber, codeBlock.gaps) + 1) * state.viewport.hGrid,
-						message: [' Error:', ...message],
-						lineNumber: codeError.lineNumber,
-					});
-
-					updateBlockDerivedState(codeBlock);
-				}
-			});
-		});
-	}
-
 	// When user edits code, parse @pos and update runtime position if valid
 	const applyPositionFromCodeEdit = () => {
 		if (!state.codeBlockRendering.selectedCodeBlock) {
@@ -415,7 +388,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		}
 	};
 
-	updateErrorMessages();
+	updateAllBlockDerivedState();
 
 	events.on<CodeBlockClickEvent>('codeBlockClick', onCodeBlockClick);
 	events.on<CodeBlockClickEvent>('codeBlockClick', ({ codeBlock }) => updateBlockDerivedState(codeBlock));
@@ -424,7 +397,9 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		recomputePixelCoordinatesAndBlockDerivedState();
 		centerViewportOnSelectedOrHomeCodeBlock();
 	});
-	store.subscribe('codeErrors', updateErrorMessages);
+	store.subscribe('codeErrors', updateAllBlockDerivedState);
+	store.subscribe('assertionResults', updateAllBlockDerivedState);
+	store.subscribe('compiler.isCompiling', updateAllBlockDerivedState);
 	store.subscribe('initialProjectState', populateCodeBlocks);
 	store.subscribe('codeBlockRendering.codeBlocks', updateAllBlockDerivedState);
 	store.subscribe('info', updateAllBlockDerivedState);

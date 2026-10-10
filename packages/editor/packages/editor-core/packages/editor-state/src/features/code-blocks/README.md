@@ -79,6 +79,11 @@ layout. Markers remain during the debounce delay and clear when compilation star
 The web UI draws these rectangles over the line numbers, using `assertionPassed` (green) and `assertionFailed`
 (red) fill sprites. The instruction text remains visible.
 
+Failed assertions also use the inline error-message widget. The runtime can provide a formatted `message` with
+expected and received values; outcomes without a message display `Assertion failed`. One message is shown per
+source site, using its first failed invocation. Messages follow the same block and project identity as markers,
+clear with results or compilation start, and contribute space below the assertion through the existing error layout.
+
 ## Integration Points
 
 - **Compiler**: Blocks are sorted by `creationIndex` and filtered by type for compilation

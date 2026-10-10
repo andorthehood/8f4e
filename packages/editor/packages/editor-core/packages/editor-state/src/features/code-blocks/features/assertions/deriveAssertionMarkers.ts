@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import type { AssertionSite } from '@8f4e/language-spec';
 import gapCalculator from '../../../code-editing/gapCalculator';
+import isAssertionForCodeBlock from './isAssertionForCodeBlock';
 
 export default function deriveAssertionMarkers(
 	codeBlock: CodeBlockGraphicData,
@@ -11,13 +12,7 @@ export default function deriveAssertionMarkers(
 	const sites = new Map<number, { site: AssertionSite; passed: boolean }>();
 	for (const assertion of state.assertionResults) {
 		const { site } = assertion;
-		if (
-			site.projectBlockId !== codeBlock.creationIndex ||
-			site.projectGroupPath !== codeBlock.projectPath ||
-			site.codeBlockType !== codeBlock.blockType ||
-			site.source
-		)
-			continue;
+		if (!isAssertionForCodeBlock(site, codeBlock)) continue;
 		const previous = sites.get(site.siteId);
 		if (previous) previous.passed &&= assertion.passed;
 		else sites.set(site.siteId, { site, passed: assertion.passed });

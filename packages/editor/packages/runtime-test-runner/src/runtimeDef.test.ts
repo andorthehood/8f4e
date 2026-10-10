@@ -1,6 +1,8 @@
+import { compileProject, parseProjectSource } from '@8f4e/compiler';
 import type { EventDispatcher, State } from '@8f4e/editor-core';
 import createStateManager from '@8f4e/state-manager';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { executeTests } from './executeTests';
 import { createTestRuntimeDef } from './runtimeDef';
 import type { TestRunResult, TestRuntimeProgram } from './types';
 
@@ -66,7 +68,7 @@ describe('TestRuntime lifecycle', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('publishes only source sites and outcomes to editor assertion state and clears them on restart and disposal', () => {
+	it('publishes source sites, outcomes, and failure details and clears them on restart and disposal', () => {
 		vi.spyOn(console, 'error').mockImplementation(() => {});
 		const { state, store, dispose } = setup(createProgram());
 		const assertion = {
@@ -86,7 +88,9 @@ describe('TestRuntime lifecycle', () => {
 		const result: TestRunResult = { status: 'failed', assertions: [assertion], failures: [assertion] };
 		expect(state.assertionResults).toEqual([]);
 		FakeWorker.instances[0].emit(result);
-		expect(state.assertionResults).toEqual([{ site: assertion.site, passed: false }]);
+		expect(state.assertionResults).toEqual([
+			{ site: assertion.site, passed: false, message: 'Assertion failed: expected nonzero, received 0' },
+		]);
 		expect(state.runtime.values.TestRuntime).toMatchObject(result);
 		store.set('compiler.isCompiling', true);
 		expect(state.assertionResults).toEqual([]);
@@ -95,6 +99,37 @@ describe('TestRuntime lifecycle', () => {
 		expect(state.assertionResults).toHaveLength(1);
 		dispose();
 		expect(state.assertionResults).toEqual([]);
+	});
+
+	it('publishes expected and received values from executed Wasm assertions to the editor', async () => {
+		vi.spyOn(console, 'error').mockImplementation(() => {});
+		const compiled = await compileProject(
+			parseProjectSource(`8f4e/v1
+entry test
+module checks
+push 10
+assertEqual 9
+push 0
+assert
+push 1
+assert
+moduleEnd
+entryEnd`),
+			{ enableAssertions: true }
+		);
+		const program = {
+			codeBuffer: compiled.codeBuffer,
+			assertionSites: compiled.assertionSites!,
+			memory: new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }),
+		};
+		const { state, dispose } = setup(program);
+		FakeWorker.instances[0].emit(await executeTests(program));
+		expect(state.assertionResults).toEqual([
+			{ site: compiled.assertionSites![0], passed: false, message: 'Assertion failed: expected 9, received 10' },
+			{ site: compiled.assertionSites![1], passed: false, message: 'Assertion failed: expected nonzero, received 0' },
+			{ site: compiled.assertionSites![2], passed: true },
+		]);
+		dispose();
 	});
 
 	it('runs the latest successful compilation on selection and once after each recompile', () => {
