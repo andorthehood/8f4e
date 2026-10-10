@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 
 import type { StateManager } from '@8f4e/state-manager';
+import incrementCompilerInputRevision from '../../../../program-compiler/incrementCompilerInputRevision';
 import replaceCodeBlocksInPlace from '../../../replaceCodeBlocksInPlace';
 import { getGroupBlocks } from '../getGroupBlocks';
 
@@ -31,6 +32,7 @@ export default function groupDeleter(store: StateManager<State>, events: EventDi
 
 		// Filter out all blocks in the group
 		const remainingBlocks = state.codeBlockRendering.codeBlocks.filter(block => !blocksToDelete.has(block));
+		const blocksRemoved = remainingBlocks.length !== state.codeBlockRendering.codeBlocks.length;
 
 		// Clear selected/dragged references if they point to deleted blocks
 		if (state.codeBlockRendering.selectedCodeBlock && blocksToDelete.has(state.codeBlockRendering.selectedCodeBlock)) {
@@ -49,17 +51,12 @@ export default function groupDeleter(store: StateManager<State>, events: EventDi
 			state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = undefined;
 		}
 
-		// Clear non-compiler programmatic selection if it points to a deleted block
-		if (
-			state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger &&
-			blocksToDelete.has(state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger)
-		) {
-			state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger = undefined;
-		}
-
 		// Update the code blocks array
 		replaceCodeBlocksInPlace(state.codeBlockRendering.codeBlocks, remainingBlocks);
 		store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
+		if (blocksRemoved) {
+			incrementCompilerInputRevision(store);
+		}
 	}
 
 	events.on('deleteGroup', onDeleteGroup);

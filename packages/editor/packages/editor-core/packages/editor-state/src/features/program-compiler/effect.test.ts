@@ -9,7 +9,6 @@ describe('program compiler effect', () => {
 	let mockState: State;
 	let store: ReturnType<typeof createStateManager<State>>;
 	let mockCompileCode: MockInstance;
-	let subscribeSpy: MockInstance;
 
 	beforeEach(() => {
 		vi.useFakeTimers();
@@ -38,27 +37,44 @@ describe('program compiler effect', () => {
 		});
 
 		mockState.codeBlockRendering.codeBlocks.push(helperBlock);
-		mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = helperBlock;
 
 		store = createStateManager(mockState);
-		subscribeSpy = vi.spyOn(store, 'subscribe') as MockInstance;
 	});
 
 	afterEach(() => {
-		subscribeSpy.mockRestore();
+		store.dispose();
+		vi.clearAllTimers();
 		vi.useRealTimers();
 	});
 
-	async function triggerProgrammaticCompile(delayMs = 500): Promise<void> {
+	async function triggerCompile(delayMs = 500): Promise<void> {
 		compilerEffect(store);
-		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
-		);
-		expect(programmaticChangeCall).toBeDefined();
-
-		programmaticChangeCall![1]();
+		store.set('compilerInputRevision', mockState.compilerInputRevision + 1);
 		await vi.advanceTimersByTimeAsync(delayMs);
 	}
+
+	it('subscribes only to the compiler input revision', () => {
+		const subscribeSpy = vi.spyOn(store, 'subscribe');
+		compilerEffect(store);
+		expect(subscribeSpy).toHaveBeenCalledExactlyOnceWith('compilerInputRevision', expect.any(Function));
+	});
+
+	it('debounces multiple revisions and compiles the current project independently of selection', async () => {
+		compilerEffect(store);
+		store.set('compilerInputRevision', 1);
+		await vi.advanceTimersByTimeAsync(300);
+		const block = mockState.codeBlockRendering.rootCodeBlocks[0];
+		block.code = ['function helper', 'push 2', 'functionEnd'];
+		store.set('compilerInputRevision', 2);
+		await vi.advanceTimersByTimeAsync(499);
+		expect(mockCompileCode).not.toHaveBeenCalled();
+		await vi.advanceTimersByTimeAsync(1);
+		expect(mockCompileCode).toHaveBeenCalledTimes(1);
+		expect(mockCompileCode).toHaveBeenCalledWith(
+			expect.objectContaining({ functions: [expect.objectContaining({ code: block.code })] }),
+			expect.anything()
+		);
+	});
 
 	it.each([false, true])('enables assertions for a test module with disabled=%s', async disabled => {
 		mockState.codeBlockRendering.rootCodeBlocks.push(
@@ -70,7 +86,7 @@ describe('program compiler effect', () => {
 			})
 		);
 
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.anything(),
@@ -93,7 +109,7 @@ describe('program compiler effect', () => {
 			})
 		);
 
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.anything(),
@@ -113,7 +129,7 @@ describe('program compiler effect', () => {
 			})
 		);
 
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.anything(),
@@ -122,7 +138,7 @@ describe('program compiler effect', () => {
 	});
 
 	it('stores code block type for compiler errors', async () => {
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
@@ -141,7 +157,7 @@ describe('program compiler effect', () => {
 			context: { projectBlockId: 0 },
 		});
 
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
@@ -160,7 +176,7 @@ describe('program compiler effect', () => {
 			context: { projectGroupPath: 'audio' },
 		});
 
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockState.codeErrors.compilationErrors).toEqual([
 			{
@@ -187,7 +203,7 @@ describe('program compiler effect', () => {
 			byteCodeSize: 1,
 		});
 
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
@@ -231,7 +247,7 @@ describe('program compiler effect', () => {
 			byteCodeSize: 1,
 		});
 
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
@@ -256,16 +272,40 @@ describe('program compiler effect', () => {
 
 	it('cancels a scheduled compilation when disposed', async () => {
 		const dispose = compilerEffect(store);
-		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
-		);
-		expect(programmaticChangeCall).toBeDefined();
-
-		programmaticChangeCall![1]();
+		store.set('compilerInputRevision', mockState.compilerInputRevision + 1);
 		dispose();
+		store.set('compilerInputRevision', mockState.compilerInputRevision + 1);
 		await vi.advanceTimersByTimeAsync(500);
 
 		expect(mockCompileCode).not.toHaveBeenCalled();
+	});
+
+	it('clears diagnostics without starting compilation when the callback is absent', async () => {
+		mockState.callbacks.compileCode = undefined;
+		mockState.codeErrors.compilationErrors = [{ lineNumber: 1, codeBlockId: 0, message: 'Previous error' }];
+		await triggerCompile();
+		expect(mockState.codeErrors.compilationErrors).toEqual([]);
+		expect(mockState.compiler.isCompiling).toBe(false);
+		expect(mockCompileCode).not.toHaveBeenCalled();
+	});
+
+	it('ignores a compilation failure that arrives after disposal', async () => {
+		let rejectCompilation!: (error: unknown) => void;
+		mockCompileCode.mockImplementation(
+			() =>
+				new Promise((_, reject) => {
+					rejectCompilation = reject;
+				})
+		);
+		const dispose = compilerEffect(store);
+		store.set('compilerInputRevision', 1);
+		await vi.advanceTimersByTimeAsync(500);
+		expect(mockCompileCode).toHaveBeenCalledTimes(1);
+		dispose();
+		const setSpy = vi.spyOn(store, 'set');
+		rejectCompilation({ message: 'Late failure', line: { lineNumber: 2 }, context: {} });
+		await vi.advanceTimersByTimeAsync(0);
+		expect(setSpy).not.toHaveBeenCalled();
 	});
 
 	it('passes the includes collection and resolver to the compiler callback', async () => {
@@ -311,9 +351,8 @@ describe('program compiler effect', () => {
 			blockType: 'includes',
 		});
 		mockState.codeBlockRendering.codeBlocks.unshift(includesBlock);
-		mockState.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = includesBlock;
 
-		await triggerProgrammaticCompile();
+		await triggerCompile();
 
 		expect(mockCompileCode).toHaveBeenCalledWith(
 			expect.objectContaining({
@@ -326,12 +365,7 @@ describe('program compiler effect', () => {
 	it('uses the configured recompile debounce delay', async () => {
 		mockState.editorConfig.recompileDebounceDelay = 120;
 		compilerEffect(store);
-		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
-		);
-		expect(programmaticChangeCall).toBeDefined();
-
-		programmaticChangeCall![1]();
+		store.set('compilerInputRevision', mockState.compilerInputRevision + 1);
 		await vi.advanceTimersByTimeAsync(119);
 		expect(mockCompileCode).not.toHaveBeenCalled();
 
@@ -341,12 +375,7 @@ describe('program compiler effect', () => {
 
 	it('uses the default recompile debounce delay when the config value is absent', async () => {
 		compilerEffect(store);
-		const programmaticChangeCall = subscribeSpy.mock.calls.find(
-			call => call[0] === 'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code'
-		);
-		expect(programmaticChangeCall).toBeDefined();
-
-		programmaticChangeCall![1]();
+		store.set('compilerInputRevision', mockState.compilerInputRevision + 1);
 		await vi.advanceTimersByTimeAsync(499);
 		expect(mockCompileCode).not.toHaveBeenCalled();
 

@@ -358,6 +358,8 @@ export interface Options {
 
 // State interface - complete editor state tree (top-level public API)
 export interface State {
+	/** Monotonic change signal for compiler inputs; selection and visual metadata do not advance it. */
+	compilerInputRevision: number;
 	compiler: Compiler;
 	codeBlockRendering: CodeBlockRendering;
 	contextMenu: ContextMenu;

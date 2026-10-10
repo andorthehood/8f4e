@@ -306,6 +306,7 @@ describe('code block rendering home directive', () => {
 
 		codeBlockRenderingEffect(store, events);
 		store.set('initialProjectState', state.initialProjectState);
+		expect(state.compilerInputRevision).toBe(1);
 		const firstRoot = state.codeBlockRendering.rootCodeBlocks;
 		const nestedSlice = firstRoot[0].nestedProjectCodeBlocks;
 		expect(nestedSlice).toBeDefined();
@@ -318,6 +319,7 @@ describe('code block rendering home directive', () => {
 
 		expect(state.codeBlockRendering.rootCodeBlocks).not.toBe(firstRoot);
 		expect(state.codeBlockRendering.codeBlocks).toBe(state.codeBlockRendering.rootCodeBlocks);
+		expect(state.compilerInputRevision).toBe(2);
 		expect(state.codeBlockRendering.codeBlocks.map(block => block.name)).toEqual(['replacement']);
 	});
 

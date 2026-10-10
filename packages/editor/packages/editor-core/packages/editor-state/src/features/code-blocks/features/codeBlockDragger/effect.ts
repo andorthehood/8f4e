@@ -174,7 +174,7 @@ export default function codeBlockDragger(store: StateManager<State>, events: Eve
 			block.gridY = gridY;
 			block.lastUpdated = Date.now();
 			block.code = upsertPos(block.code, gridX, gridY);
-			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', block);
+			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block);
 		}
 
 		state.codeBlockRendering.draggedCodeBlock = undefined;

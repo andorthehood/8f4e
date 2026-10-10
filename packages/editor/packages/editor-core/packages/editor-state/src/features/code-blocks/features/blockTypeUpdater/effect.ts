@@ -59,21 +59,10 @@ export default function blockTypeUpdater(store: StateManager<State>): void {
 		}
 	}
 
-	function onProgrammaticSelectedCodeBlockWithoutCompilerTriggerCodeChange(): void {
-		const block = state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
-		if (block) {
-			updateBlockType(block);
-		}
-	}
-
 	store.subscribe('codeBlockRendering.codeBlocks', updateAllBlockTypes);
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', onSelectedCodeBlockCodeChange);
 	store.subscribe(
 		'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code',
 		onProgrammaticSelectedCodeBlockCodeChange
-	);
-	store.subscribe(
-		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
-		onProgrammaticSelectedCodeBlockWithoutCompilerTriggerCodeChange
 	);
 }

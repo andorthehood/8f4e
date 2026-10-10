@@ -2,7 +2,8 @@ import type { CodeBlockGraphicData, CodeError, State } from '@8f4e/editor-state-
 import type { StateManager } from '@8f4e/state-manager';
 import deepEqual from '../../shared/utils/deepEqual';
 import { resolveEditorConfigEntries, validateEditorConfigEntries } from '../editor-config/validators';
-import { resolveGlobalEditorDirectives } from './registry';
+import { globalEditorDirectivePlugins, resolveGlobalEditorDirectives } from './registry';
+import { parseGlobalEditorDirectives } from './utils';
 
 const GLOBAL_EDITOR_DIRECTIVES_ERROR_OWNER_ID = 'global-editor-directives';
 
@@ -20,6 +21,16 @@ function collectProjectCodeBlocks(codeBlocks: CodeBlockGraphicData[]): CodeBlock
 	]);
 }
 
+function getGlobalDirectiveInputs(block: CodeBlockGraphicData) {
+	return {
+		directives: parseGlobalEditorDirectives(block.parsedDirectives, globalEditorDirectivePlugins),
+		creationIndex: block.creationIndex,
+		name: block.name,
+		blockType: block.blockType,
+		projectPath: block.projectPath,
+	};
+}
+
 /**
  * Global-editor-directives effect.
  *
@@ -30,9 +41,12 @@ function collectProjectCodeBlocks(codeBlocks: CodeBlockGraphicData[]): CodeBlock
  * Conflicting directive values are written to `state.codeErrors.editorDirectiveErrors`.
  */
 export default function globalEditorDirectivesEffect(store: StateManager<State>): void {
+	let resolvedInputs = new WeakMap<CodeBlockGraphicData, ReturnType<typeof getGlobalDirectiveInputs>>();
+
 	function resolve(): void {
 		const state = store.getState();
 		const projectCodeBlocks = collectProjectCodeBlocks(state.codeBlockRendering.rootCodeBlocks);
+		resolvedInputs = new WeakMap(projectCodeBlocks.map(block => [block, getGlobalDirectiveInputs(block)]));
 		const { resolved, errors } = resolveGlobalEditorDirectives(projectCodeBlocks);
 		const { configEntries, ...globalEditorDirectives } = resolved;
 		const nextEditorConfig = resolveEditorConfigEntries(configEntries ?? [], state.editorConfigValidators);
@@ -61,8 +75,16 @@ export default function globalEditorDirectivesEffect(store: StateManager<State>)
 		}
 	}
 
+	function resolveProgrammaticUpdate(): void {
+		const block = store.getState().codeBlockRendering.selectedCodeBlockForProgrammaticEdit;
+		// Position and other visual metadata updates share this notification but cannot change global configuration.
+		if (block && !deepEqual(resolvedInputs.get(block), getGlobalDirectiveInputs(block))) {
+			resolve();
+		}
+	}
+
 	store.subscribe('codeBlockRendering.codeBlocks', resolve);
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', resolve);
-	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', resolve);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', resolveProgrammaticUpdate);
 	store.subscribe('editorConfigSchemaContributions', resolve);
 }

@@ -5,6 +5,7 @@ export default function createDefaultState() {
 	const rootCodeBlocks: CodeBlockGraphicData[] = [];
 
 	return {
+		compilerInputRevision: 0,
 		compiler: {
 			isCompiling: false,
 			compiledModules: {},

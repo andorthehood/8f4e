@@ -1,6 +1,8 @@
 import type { CodeBlockGraphicData, EventDispatcher, State } from '@8f4e/editor-state-types';
 import type { StateManager } from '@8f4e/state-manager';
-import { instructionParser, isSkipExecutionDirective } from '@8f4e/tokenizer';
+import { isSkipExecutionDirective } from '@8f4e/tokenizer';
+import incrementCompilerInputRevision from '../../../../program-compiler/incrementCompilerInputRevision';
+import setSkipExecution from '../../skipExecutionToggler/setSkipExecution';
 import { getGroupModuleBlocks } from '../getGroupBlocks';
 
 /**
@@ -29,38 +31,25 @@ export default function groupSkipExecutionToggler(store: StateManager<State>, ev
 
 		// Check if all group blocks have #skipExecution directive
 		const allSkipped = groupBlocks.every(block => block.code.some(line => isSkipExecutionDirective(line)));
+		let codeChanged = false;
 
 		// Apply the same operation to all group blocks
 		for (const block of groupBlocks) {
 			// Set target code block for programmatic edit to avoid re-rendering all code blocks
 			state.codeBlockRendering.selectedCodeBlockForProgrammaticEdit = block;
 
-			if (allSkipped) {
-				// Remove all #skipExecution directive lines
-				block.code = block.code.filter(line => !isSkipExecutionDirective(line));
-			} else {
-				// Check if this specific block already has the directive
-				const hasDirective = block.code.some(line => isSkipExecutionDirective(line));
-
-				if (!hasDirective) {
-					// Insert #skipExecution after module header (first line)
-					const moduleHeaderIndex = block.code.findIndex(line => {
-						const match = line.match(instructionParser);
-						return match && match[1] === 'module';
-					});
-
-					if (moduleHeaderIndex !== -1) {
-						// Insert directive after module header
-						block.code.splice(moduleHeaderIndex + 1, 0, '#skipExecution');
-					}
-				}
-			}
+			const result = setSkipExecution(block.code, !allSkipped);
+			block.code = result.code;
 
 			// Update lastUpdated to invalidate cache
 			block.lastUpdated = Date.now();
 
 			// Trigger store update to re-render only the specific code block
 			store.set('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', block);
+			codeChanged ||= result.changed;
+		}
+		if (codeChanged) {
+			incrementCompilerInputRevision(store);
 		}
 	}
 

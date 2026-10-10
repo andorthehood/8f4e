@@ -15,11 +15,6 @@ export default function entryOutlines(store: StateManager<State>): void {
 	store.subscribe('codeBlockRendering.codeBlocks', syncEntryOutlines);
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', syncEntryOutlines);
 	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', syncEntryOutlines);
-	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger', syncEntryOutlines);
-	store.subscribe(
-		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
-		syncEntryOutlines
-	);
 
 	syncEntryOutlines();
 }

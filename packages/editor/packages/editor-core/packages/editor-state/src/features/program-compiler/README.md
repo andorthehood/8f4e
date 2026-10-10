@@ -12,7 +12,7 @@ Compiles 8f4e code blocks into executable WASM bytecode. Coordinates with the co
 - **Error Mapping**: Maps compilation errors back to specific code blocks and line numbers
 - **Memory Management**: Tracks compiler-derived memory usage and handles memory recreation events
 - **Performance Tracking**: Measures and logs compilation time
-- **Auto Compilation**: Recompiles changed compilable blocks automatically
+- **Auto Compilation**: Recompiles the project when its compiler input revision advances
 - **Recompile Debounce**: Defaults to 500ms and can be configured with `; @config recompileDebounceDelay <ms>`
 
 ## Compiler Options
@@ -37,10 +37,27 @@ Assertions are enabled when the project contains an enabled `test` entry, includ
 
 ## Subscriptions & Callbacks
 
+### Compiler input revision
+
+`state.compilerInputRevision` starts at zero and advances after source edits, block creation/deletion/paste,
+execution or disabled-state toggles, regenerated environment constants, saved control defaults, memory connection
+removal, and project loading (including undo/redo loads). Group operations and multi-block paste advance it once
+after updating all affected blocks. It remains monotonic across project loads and is not stored in project files.
+
+Selection, caret movement, block/project navigation, dragging, favorites, and visual grouping metadata do not
+advance the revision. No-op edit operations leave it unchanged. Text edits conservatively advance it without
+attempting to compare compiler output, so incomplete source and changes that affect diagnostics are covered.
+
+Call `incrementCompilerInputRevision(store)` after updating compiler inputs and their derived state. The compiler
+subscribes to this revision independently of the selected block or the target of a programmatic edit.
+
+`selectedCodeBlockForProgrammaticEdit` is the shared target for refreshing a block and saving programmatic
+updates, including drag-end position changes. Setting it does not schedule compilation; source-changing
+operations also advance the compiler input revision.
+
 ### Subscriptions
 
-- `codeBlockRendering.selectedCodeBlock.code` - Schedules compilation when the selected compilable block changes
-- `codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code` - Schedules compilation when programmatic edits change a compilable block
+- `compilerInputRevision` - Schedules debounced compilation when compiler inputs change
 
 ### Callbacks Used
 

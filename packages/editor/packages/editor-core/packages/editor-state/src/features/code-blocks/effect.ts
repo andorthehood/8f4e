@@ -11,6 +11,7 @@ import gapCalculator from '../code-editing/gapCalculator';
 import { moveCaret } from '../code-editing/moveCaret';
 import reverseGapCalculator from '../code-editing/reverseGapCalculator';
 import { getRawIndexForVisualColumn, getTabStopsByLine, getVisualColumnForRawIndex } from '../code-editing/tabLayout';
+import incrementCompilerInputRevision from '../program-compiler/incrementCompilerInputRevision';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import updateViewport from '../viewport/updateViewport';
 import deriveAssertionMarkers from './features/assertions/deriveAssertionMarkers';
@@ -190,14 +191,6 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		updateBlockDerivedState(block);
 	};
 
-	const updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger = () => {
-		const block = state.codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger;
-		if (!block) {
-			return;
-		}
-		updateBlockDerivedState(block);
-	};
-
 	const updateHideSelectionTransition = (
 		previousBlock: CodeBlockGraphicData | undefined,
 		nextBlock: CodeBlockGraphicData | undefined
@@ -365,6 +358,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		} else {
 			updateViewport(state, 0, 0, events);
 		}
+		incrementCompilerInputRevision(store);
 	};
 
 	function updateErrorMessages() {
@@ -438,13 +432,5 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', updateSelectedCodeBlock);
 	store.subscribe('codeBlockRendering.selectedCodeBlock.code', applyPositionFromCodeEdit);
 	store.subscribe('codeBlockRendering.selectedCodeBlock.cursor', updateSelectedCodeBlock);
-	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit.code', updateProgrammaticSelectedCodeBlock);
-	store.subscribe(
-		'codeBlockRendering.selectedCodeBlockForProgrammaticEdit.cursor',
-		updateProgrammaticSelectedCodeBlock
-	);
-	store.subscribe(
-		'codeBlockRendering.selectedCodeBlockForProgrammaticEditWithoutCompilerTrigger.code',
-		updateProgrammaticSelectedCodeBlockWithoutCompilerTrigger
-	);
+	store.subscribe('codeBlockRendering.selectedCodeBlockForProgrammaticEdit', updateProgrammaticSelectedCodeBlock);
 }

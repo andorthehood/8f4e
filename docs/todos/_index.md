@@ -15,6 +15,7 @@ Active todo files are listed below.
 | 272 | Add float32/float64 width checks to localSet instruction | 🔴 | 1-3h | 2026-02-20 | `localSet` is missing explicit float64 support in the compiler instruction path. |
 | 278 | Add storeWords with explicit count and word size | 🔴 | 1-2d | 2026-02-23 | `storeBytes <count>` covers contiguous byte writes, but there is no equivalent explicit instruction for contiguous multi-byte word writes. |
 | 305 | Reuse WASM instance across incremental compiles | 🔴 | 3-6h | 2026-03-14 | The compiler worker currently recreates the WebAssembly instance on every compile, even when memory can be reused and the runtime shape has not changed. |
+| 492 | Trigger autosave and history only on project changes | 🔴 | 3-6h | 2026-10-10 | Selection can autosave unchanged source, add undo-history entries, and clear redo; use a project-change signal that also covers persisted editor metadata. |
 
 ### 🟡 Medium Priority
 

@@ -1,6 +1,7 @@
 import type { CodeBlockGraphicData, State } from '@8f4e/editor-state-types';
 import { createChildProjectGroupPath, type ProjectGroupPath, ROOT_PROJECT_GROUP_PATH } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
+import incrementCompilerInputRevision from '../../../program-compiler/incrementCompilerInputRevision';
 import replaceCodeBlocksInPlace from '../../replaceCodeBlocksInPlace';
 import getBlockType from '../../utils/codeParsers/getBlockType';
 import { createCodeBlockGraphicData } from '../../utils/createCodeBlockGraphicData';
@@ -273,4 +274,7 @@ export function pasteMultipleBlocks(
 	// Trigger single store update with all new blocks
 	replaceCodeBlocksInPlace(state.codeBlockRendering.codeBlocks, sorted);
 	store.set('codeBlockRendering.codeBlocks', state.codeBlockRendering.codeBlocks);
+	if (newBlocks.length > 0) {
+		incrementCompilerInputRevision(store);
+	}
 }
