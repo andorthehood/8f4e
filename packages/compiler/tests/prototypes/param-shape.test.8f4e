@@ -1,5 +1,9 @@
 8f4e/v1
 
+note
+; @config runtime TestRuntime
+noteEnd
+
 prototype mixerState
 int a 2
 float b 4.5

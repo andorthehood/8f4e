@@ -42,6 +42,8 @@ export const minimalColorScheme: ColorScheme = {
 		wire: '#ffffff',
 		wireHighlighted: '#ffffff',
 		errorMessageBackground: '#ff0000',
+		assertionPassed: '#00ff00',
+		assertionFailed: '#ff0000',
 		dialogBackground: '#000000',
 		dialogDimmer: 'rgba(0,0,0,0.5)',
 		highlightedCodeLine: '#333333',

@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Memory declarations and loads
 can be asserted directly from
 the language.

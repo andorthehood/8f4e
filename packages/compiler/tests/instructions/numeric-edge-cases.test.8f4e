@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Numeric edge cases are
 executable fixtures so the
 real Wasm

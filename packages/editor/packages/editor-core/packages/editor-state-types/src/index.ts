@@ -10,6 +10,7 @@ import type {
 	ProjectObjectModel,
 } from '@8f4e/language-spec';
 import type { FillSpriteColorName, SpriteFont, SpriteIdLookups } from '@8f4e/sprite-generator';
+import type { AssertionResult } from './features/assertions/types';
 import type { BinaryAsset } from './features/binary-assets/types';
 import type {
 	ArrayBars,
@@ -86,6 +87,7 @@ export type {
 	ArrayMeter,
 	ArrayPlotter,
 	ArrayWave,
+	AssertionResult,
 	BinaryAsset,
 	CodeBlockEntryOutline,
 	CodeBlockGraphicData,
@@ -376,6 +378,8 @@ export interface State {
 	binaryAssets: BinaryAsset[];
 	/** Console state for internal logging */
 	console: ConsoleState;
+	/** Executed assertion outcomes published by the active runtime for editor rendering. */
+	assertionResults: AssertionResult[];
 	runtime: {
 		values: RuntimeValuesByRuntimeId;
 	};

@@ -20,6 +20,12 @@ export function createTestRuntimeDef(
 
 			function publish(result: TestRuntimeState) {
 				store.set('runtime.values', { ...state.runtime.values, [TEST_RUNTIME_ID]: result });
+				store.set(
+					'assertionResults',
+					result.status === 'passed' || result.status === 'failed'
+						? result.assertions.map(({ site, passed }) => ({ site, passed }))
+						: []
+				);
 			}
 
 			function stopWorker() {

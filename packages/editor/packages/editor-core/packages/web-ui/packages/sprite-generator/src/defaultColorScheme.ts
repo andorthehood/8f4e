@@ -42,6 +42,8 @@ const defaultColorScheme: ColorScheme = {
 		wire: 'rgba(255,255,255,0.3)',
 		wireHighlighted: '#ffffff',
 		errorMessageBackground: '#cc0000',
+		assertionPassed: '#00ff00',
+		assertionFailed: '#ff0000',
 		dialogBackground: '#000000',
 		dialogDimmer: 'rgba(0,0,0,0.7)',
 		highlightedCodeLine: '#444444',

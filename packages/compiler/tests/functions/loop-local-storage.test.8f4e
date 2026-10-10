@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Loop counters keep distinct
 storage from locals declared
 after an earlier loop. Explicit

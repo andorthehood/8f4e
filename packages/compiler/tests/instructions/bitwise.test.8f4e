@@ -1,55 +1,26 @@
 8f4e/v1
 
+constants env
+; @pos -68 -6
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos -3 -6
+; @config runtime TestRuntime
+
 Bitwise instruction behavior
 is checked with native
 assertions.
 noteEnd
 
 entry test
-module andAssertions
-; `and` should return only the
-; bits present in both operands.
-push 1
-push 0
-and
-assertEqual 0
-
-push 3
-push 6
-and
-assertEqual 2
-moduleEnd
-
-module orAssertions
-; `or` should return the bits
-; present in either operand.
-push 1
-push 0
-or
-assertEqual 1
-
-push 3
-push 6
-or
-assertEqual 7
-moduleEnd
-
-module xorAssertions
-; `xor` should return only bits
-; that differ between operands.
-push 1
-push 0
-xor
-assertEqual 1
-
-push 3
-push 6
-xor
-assertEqual 5
-moduleEnd
-
 module shiftLeftAssertions
+; @pos -3 4
 ; shiftLeft moves integer bits
 ; left by the requested amount.
 push 1
@@ -67,8 +38,50 @@ push 3
 shiftLeft
 assertEqual 24
 moduleEnd
+module andAssertions
+; @pos 39 -6
+; `and` should return only the
+; bits present in both operands.
+push 1
+push 0
+and
+assertEqual 0
 
+push 3
+push 6
+and
+assertEqual 2
+moduleEnd
+module xorAssertions
+; @pos 39 9
+; `xor` should return only bits
+; that differ between operands.
+push 1
+push 0
+xor
+assertEqual 1
+
+push 3
+push 6
+xor
+assertEqual 5
+moduleEnd
+module orAssertions
+; @pos 82 -6
+; `or` should return the bits
+; present in either operand.
+push 1
+push 0
+or
+assertEqual 1
+
+push 3
+push 6
+or
+assertEqual 7
+moduleEnd
 module shiftRightAssertions
+; @pos 82 9
 ; shiftRight moves integer bits
 ; right by the requested amount.
 push 1

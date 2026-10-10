@@ -13,6 +13,7 @@ import reverseGapCalculator from '../code-editing/reverseGapCalculator';
 import { getRawIndexForVisualColumn, getTabStopsByLine, getVisualColumnForRawIndex } from '../code-editing/tabLayout';
 import centerViewportOnCodeBlock from '../viewport/centerViewportOnCodeBlock';
 import updateViewport from '../viewport/updateViewport';
+import deriveAssertionMarkers from './features/assertions/deriveAssertionMarkers';
 import blockHighlights from './features/blockHighlights/updateGraphicData';
 import type { CodeBlockClickEvent } from './features/codeBlockDragger/effect';
 import parsePos from './features/directives/pos/data';
@@ -118,6 +119,7 @@ export default function codeBlockRendering(store: StateManager<State>, events: E
 		outputs(graphicData, state);
 		inputs(graphicData, state);
 		blockHighlights(graphicData, state);
+		graphicData.widgets.assertions = deriveAssertionMarkers(graphicData, state);
 
 		const gapRowCount = [...graphicData.gaps.values()].reduce((total, gap) => total + gap.size, 0);
 		graphicData.height = (displayModel.lines.length + gapRowCount) * state.viewport.hGrid;

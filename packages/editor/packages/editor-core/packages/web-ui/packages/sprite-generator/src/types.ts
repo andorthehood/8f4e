@@ -60,6 +60,8 @@ export interface ColorScheme {
 		wire: string;
 		wireHighlighted: string;
 		errorMessageBackground: string;
+		assertionPassed: string;
+		assertionFailed: string;
 		dialogBackground: string;
 		dialogDimmer: string;
 		highlightedCodeLine: string;

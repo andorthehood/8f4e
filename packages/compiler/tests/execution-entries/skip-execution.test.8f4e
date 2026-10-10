@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 #skipExecution keeps a module
 compiled and initialized, but
 leaves it out of its entry

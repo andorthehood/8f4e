@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Intermodule min(...) and
 max(...) references should
 resolve

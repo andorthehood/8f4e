@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Integer arithmetic behavior is
 checked with native
 assertions.

@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Comparison instructions return
 integer booleans and are
 checked with assert.

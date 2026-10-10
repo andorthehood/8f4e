@@ -34,6 +34,7 @@ Block types are automatically detected and updated based on code content.
 This feature contains several subfeatures under `features/` that handle specific aspects:
 
 - `blockHighlights` - Visual highlighting for selected/hovered blocks
+- `assertions` - Derives assertion result rectangles from `state.assertionResults` into `widgets.assertions`
 - `blockTypeUpdater` - Automatic block type detection and updates
 - `arrayPlotters` - Visualization of runtime array data
 - `buttons` - Interactive button controls derived from code
@@ -69,6 +70,14 @@ not diverge. Loading a project rebuilds the recursive tree and resets `codeBlock
 Project-group blocks expose an **Open group** context-menu action that points `codeBlocks` directly at their child
 slice. Nested-slice context menus expose **Go back**, which finds the immediate parent through those stable array
 references.
+
+Assertion markers match compiler site block IDs to `creationIndex` within the corresponding `projectPath`.
+Repeated calls to a site produce one marker; any failure makes it failed. Sites that were not executed or belong
+to included source have no marker. Geometry is relative to the code block, using the source-to-display row map
+and widget gaps. Runtime updates and group navigation refresh markers, and normal block derivation updates their
+layout. Markers remain during the debounce delay and clear when compilation starts.
+The web UI draws these rectangles over the line numbers, using `assertionPassed` (green) and `assertionFailed`
+(red) fill sprites. The instruction text remains visible.
 
 ## Integration Points
 

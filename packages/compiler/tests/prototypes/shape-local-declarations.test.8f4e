@@ -1,5 +1,9 @@
 8f4e/v1
 
+note
+; @config runtime TestRuntime
+noteEnd
+
 prototype baryon
 int foo 1
 int he 2

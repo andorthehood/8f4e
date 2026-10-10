@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Pure functions should compile,
 expose stable signatures in
 snapshots, and run through

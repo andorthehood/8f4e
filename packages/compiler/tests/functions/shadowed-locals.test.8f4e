@@ -1,6 +1,8 @@
 8f4e/v1
 
 note
+; @config runtime TestRuntime
+
 Earlier references keep their
 bindings when a later local
 reuses the parameter name and
