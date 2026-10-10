@@ -59,6 +59,8 @@ approximate expectations explicitly with arithmetic and `assert`; no tolerance i
 The callbacks collect results and return normally after failures. `assertions` records each invocation with
 `assertIndex`, `site`, and `passed`; condition results contain `condition`, equality results contain `received` and
 `expected`. `failures` contains failed invocations. Loops share a static site but have distinct invocation indices.
+`formatAssertionExpectation(result)` formats the expected and received values for inline diagnostics as well as
+the failure text used by `formatTestFailures`.
 The compiler's `assertionSites` lookup includes sites in branches that never execute. Count executed assertions with
 `result.assertions.length`.
 

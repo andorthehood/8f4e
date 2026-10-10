@@ -1,7 +1,7 @@
 import type { EventDispatcher, RuntimeRegistryEntry, State } from '@8f4e/editor-core';
 import type { AssertionSite } from '@8f4e/language-spec';
 import type { StateManager } from '@8f4e/state-manager';
-import { formatTestFailures } from '@8f4e/test-runner';
+import { formatAssertionExpectation, formatTestFailures } from '@8f4e/test-runner';
 import type { TestRunResult, TestRuntimeState } from './types';
 
 const TEST_RUNTIME_ID = 'TestRuntime';
@@ -23,7 +23,11 @@ export function createTestRuntimeDef(
 				store.set(
 					'assertionResults',
 					result.status === 'passed' || result.status === 'failed'
-						? result.assertions.map(({ site, passed }) => ({ site, passed }))
+						? result.assertions.map(assertion => ({
+								site: assertion.site,
+								passed: assertion.passed,
+								...(!assertion.passed ? { message: `Assertion failed: ${formatAssertionExpectation(assertion)}` } : {}),
+							}))
 						: []
 				);
 			}
