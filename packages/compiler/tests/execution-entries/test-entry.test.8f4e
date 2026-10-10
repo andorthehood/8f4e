@@ -1,6 +1,31 @@
 8f4e/v1
 
+function readFirst
+; @pos 85 32
+#impure
+param int* pointer
+; Helper used by the
+; pointer-address test module.
+push *pointer
+functionEnd int
+
+constants env
+; @pos 138 22
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 53 24
+Test entry modules are executed
+by the compiler fixture runner.
+noteEnd
+
+note
+; @pos 55 7
 ; @config runtime TestRuntime
 
 The main entry should compile,
@@ -10,6 +35,7 @@ noteEnd
 
 entry main
 module productionEntryDoesNotRun
+; @pos 13 7
 push 1
 push 2
 add
@@ -17,20 +43,16 @@ assertEqual 4
 moduleEnd
 entryEnd
 
-note
-Test entry modules are executed
-by the compiler fixture runner.
-noteEnd
-
 entry test
 module testEntryRunsAssertions
+; @pos 13 24
 push 1
 push 2
 add
 assertEqual 3
 moduleEnd
-
 module testEntrySupportsPointerArguments
+; @pos 13 33
 ; Test modules can declare
 ; memory and pass addresses into
 ; imported or user-defined
@@ -41,11 +63,3 @@ call readFirst
 assertEqual 7
 moduleEnd
 entryEnd
-
-function readFirst
-#impure
-param int* pointer
-; Helper used by the
-; pointer-address test module.
-push *pointer
-functionEnd int

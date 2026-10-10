@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos 14 10
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 15 38
 ; @config runtime TestRuntime
 
 Continuation lines append one
@@ -10,14 +20,15 @@ noteEnd
 
 entry test
 module continuationPointerSource
+; @pos 15 28
 ; The split pointer declaration
 ; below should resolve the same
 ; intermodule address as a
 ; single-line declaration.
 float[] samples 8 0.0
 moduleEnd
-
 module splitPointerDeclarationAssertions
+; @pos 57 28
 ; Declaration arguments can be
 ; continued one argument per
 ; line.
@@ -28,8 +39,8 @@ float*
 push readHead
 assertEqual &continuationPointerSource:samples
 moduleEnd
-
 module splitByteDefaultAssertions
+; @pos 57 43
 ; Split-byte defaults can be
 ; supplied by continuation
 ; lines.
@@ -40,8 +51,8 @@ int color
 push color
 assertEqual -1459683328
 moduleEnd
-
 module continuedNegativeLiteralAssertions
+; @pos 57 58
 ; A continuation marker before a
 ; negative literal should be
 ; treated as syntax, not as the

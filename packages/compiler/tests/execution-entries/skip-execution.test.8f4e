@@ -1,38 +1,7 @@
 8f4e/v1
 
-note
-; @config runtime TestRuntime
-
-#skipExecution keeps a module
-compiled and initialized, but
-leaves it out of its entry
-dispatcher.
-noteEnd
-
-entry main
-module activeEntryModule
-int counter 0
-
-push &counter
-push counter
-push 1
-add
-store
-moduleEnd
-
-module skippedEntryModule
-#skipExecution
-int counter 3
-
-push &counter
-push counter
-push 1
-add
-store
-moduleEnd
-entryEnd
-
 function test
+; @pos 58 18
 #export
 #impure
 loop 3
@@ -46,4 +15,48 @@ assertEqual 3
 push &skippedEntryModule:counter
 load
 assertEqual 3
+
 functionEnd
+
+constants env
+; @pos 120 19
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
+note
+; @pos 58 7
+; @config runtime TestRuntime
+
+#skipExecution keeps a module
+compiled and initialized, but
+leaves it out of its entry
+dispatcher.
+noteEnd
+
+entry main
+module activeEntryModule
+; @pos 15 7
+int counter 0
+
+push &counter
+push counter
+push 1
+add
+store
+moduleEnd
+module skippedEntryModule
+; @pos 15 19
+#skipExecution
+int counter 3
+
+push &counter
+push counter
+push 1
+add
+store
+moduleEnd
+entryEnd

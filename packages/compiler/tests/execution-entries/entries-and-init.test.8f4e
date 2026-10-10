@@ -1,50 +1,7 @@
 8f4e/v1
 
-note
-; @config runtime TestRuntime
-
-Entries compile into
-independent exported
-dispatchers, and
-functions can call them
-explicitly.
-noteEnd
-
-entry main
-module mainEntryCounter
-int value 0
-
-push &value
-push value
-push 1
-add
-store
-moduleEnd
-entryEnd
-
-entry aux
-module auxEntryCounter
-int value 0
-
-push &value
-push value
-push 2
-add
-store
-moduleEnd
-entryEnd
-
-entry init
-module userInitEntryCounter
-int value 0
-
-push &value
-push 7
-store
-moduleEnd
-entryEnd
-
 function test
+; @pos 62 22
 #export
 #impure
 ; initDefaults runs before this
@@ -70,3 +27,60 @@ push &userInitEntryCounter:value
 load
 assertEqual 7
 functionEnd
+
+constants env
+; @pos 109 22
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
+note
+; @pos 16 22
+; @config runtime TestRuntime
+
+Entries compile into
+independent exported
+dispatchers, and
+functions can call them
+explicitly.
+noteEnd
+
+entry aux
+module auxEntryCounter
+; @pos 16 6
+int value 0
+
+push &value
+push value
+push 2
+add
+store
+moduleEnd
+entryEnd
+
+entry main
+module mainEntryCounter
+; @pos 16 39
+int value 0
+
+push &value
+push value
+push 1
+add
+store
+moduleEnd
+entryEnd
+
+entry init
+module userInitEntryCounter
+; @pos 71 6
+int value 0
+
+push &value
+push 7
+store
+moduleEnd
+entryEnd
