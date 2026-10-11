@@ -1,6 +1,119 @@
 8f4e/v1
 
+function noop
+; @pos -28 14
+functionEnd
+
+function readValue
+; @pos -28 19
+#impure
+param int* address
+push address
+load
+functionEnd int
+
+function writeValue
+; @pos -28 27
+#impure
+param int* address
+param int value
+push address
+push value
+store
+functionEnd
+
+function duplicateInt
+; @pos -28 39
+param int x
+push x
+push x
+functionEnd int int
+
+function absInt
+; @pos -28 51
+param int x
+push x
+push 0
+lessThan
+if
+push 0
+push x
+sub
+else
+push x
+ifEnd int
+functionEnd int
+
+function multiplyMixed
+; @pos -28 67
+param int x
+param float y
+push x
+castToFloat
+push y
+mul
+functionEnd float
+
+function addInts
+; @pos -28 80
+param int x
+param int y
+push x
+push y
+add
+functionEnd int
+
+function square
+; @pos -28 89
+param int x
+push x
+push x
+mul
+functionEnd int
+
+function addWithLocal
+; @pos -28 99
+param int x
+param int y
+local int temp
+push x
+push y
+add
+localSet temp
+push temp
+functionEnd int
+
+function multiplyFloats
+; @pos -28 112
+param float x
+param float y
+push x
+push y
+mul
+functionEnd float
+
+function getZero
+; @pos -28 123
+push 0
+functionEnd int
+
+function getPi
+; @pos -28 134
+const PI 3.14159
+push PI
+functionEnd float
+
+constants env
+; @pos 58 -4
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 8 8
 ; @config runtime TestRuntime
 
 Pure functions should compile,
@@ -10,76 +123,8 @@ normal calls.
 noteEnd
 
 entry test
-module zeroValueFunctionAssertions
-; Functions with no parameters
-; and no returns can be called
-; without affecting the stack.
-call noop
-call getZero
-assertEqual 0
-moduleEnd
-
-module intParameterFunctionAssertions
-; Integer parameters are passed
-; in declaration order.
-push 3
-push 4
-call addInts
-assertEqual 7
-
-push 5
-call square
-assertEqual 25
-moduleEnd
-
-module floatParameterFunctionAssertions
-; Float parameters and returns
-; should stay on the float path.
-push 3.0
-push 2.0
-call multiplyFloats
-assertEqual 6.0
-moduleEnd
-
-module mixedParameterFunctionAssertions
-; Mixed parameters can be
-; converted and combined inside
-; a
-; function.
-push 4
-push 2.5
-call multiplyMixed
-assertEqual 10.0
-moduleEnd
-
-module multipleReturnFunctionAssertions
-; Multiple returns should leave
-; both returned values on the
-; caller stack.
-push 9
-call duplicateInt
-assertEqual 9
-assertEqual 9
-moduleEnd
-
-module localFunctionAssertions
-; Functions can use locals to
-; stage computed values.
-push 2
-push 5
-call addWithLocal
-assertEqual 7
-moduleEnd
-
-module functionConstantAssertions
-; Constants declared near a
-; function can be used by that
-; function.
-call getPi
-assertEqual 3.14159
-moduleEnd
-
 module impureFunctionAssertions
+; @pos 8 19
 ; Impure functions are allowed
 ; to perform memory IO through
 ; pointer arguments.
@@ -96,8 +141,18 @@ call writeValue
 push dest
 assertEqual 77
 moduleEnd
-
+module multipleReturnFunctionAssertions
+; @pos 8 39
+; Multiple returns should leave
+; both returned values on the
+; caller stack.
+push 9
+call duplicateInt
+assertEqual 9
+assertEqual 9
+moduleEnd
 module functionControlFlowAssertions
+; @pos 8 51
 ; Functions can use block
 ; control flow and return the
 ; resulting
@@ -110,95 +165,63 @@ push 12
 call absInt
 assertEqual 12
 moduleEnd
+module mixedParameterFunctionAssertions
+; @pos 8 67
+; Mixed parameters can be
+; converted and combined inside
+; a
+; function.
+push 4
+push 2.5
+call multiplyMixed
+assertEqual 10.0
+moduleEnd
+module intParameterFunctionAssertions
+; @pos 8 80
+; Integer parameters are passed
+; in declaration order.
+push 3
+push 4
+call addInts
+assertEqual 7
+
+push 5
+call square
+assertEqual 25
+moduleEnd
+module localFunctionAssertions
+; @pos 8 99
+; Functions can use locals to
+; stage computed values.
+push 2
+push 5
+call addWithLocal
+assertEqual 7
+moduleEnd
+module floatParameterFunctionAssertions
+; @pos 8 112
+; Float parameters and returns
+; should stay on the float path.
+push 3.0
+push 2.0
+call multiplyFloats
+assertEqual 6.0
+moduleEnd
+module zeroValueFunctionAssertions
+; @pos 8 123
+; Functions with no parameters
+; and no returns can be called
+; without affecting the stack.
+call noop
+call getZero
+assertEqual 0
+moduleEnd
+module functionConstantAssertions
+; @pos 8 134
+; Constants declared near a
+; function can be used by that
+; function.
+call getPi
+assertEqual 3.14159
+moduleEnd
 entryEnd
-
-function noop
-functionEnd
-
-function getZero
-push 0
-functionEnd int
-
-function addInts
-param int x
-param int y
-push x
-push y
-add
-functionEnd int
-
-function square
-param int x
-push x
-push x
-mul
-functionEnd int
-
-function multiplyFloats
-param float x
-param float y
-push x
-push y
-mul
-functionEnd float
-
-function multiplyMixed
-param int x
-param float y
-push x
-castToFloat
-push y
-mul
-functionEnd float
-
-function duplicateInt
-param int x
-push x
-push x
-functionEnd int int
-
-function addWithLocal
-param int x
-param int y
-local int temp
-push x
-push y
-add
-localSet temp
-push temp
-functionEnd int
-
-function getPi
-const PI 3.14159
-push PI
-functionEnd float
-
-function readValue
-#impure
-param int* address
-push address
-load
-functionEnd int
-
-function writeValue
-#impure
-param int* address
-param int value
-push address
-push value
-store
-functionEnd
-
-function absInt
-param int x
-push x
-push 0
-lessThan
-if
-push 0
-push x
-sub
-else
-push x
-ifEnd int
-functionEnd int

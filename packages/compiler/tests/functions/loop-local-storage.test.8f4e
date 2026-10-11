@@ -1,23 +1,7 @@
 8f4e/v1
 
-note
-; @config runtime TestRuntime
-
-Loop counters keep distinct
-storage from locals declared
-after an earlier loop. Explicit
-caps override the directive.
-noteEnd
-
-entry test
-module loopLocalStorageAssertions
-call capped
-assertEqual 2
-assertEqual 1
-moduleEnd
-entryEnd
-
 function capped
+; @pos 77 14
 #export
 #loopCap 2
 local int total
@@ -33,3 +17,31 @@ localSet late
 loopEnd
 push late
 functionEnd int int
+
+constants env
+; @pos 18 11
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
+note
+; @pos 18 22
+; @config runtime TestRuntime
+
+Loop counters keep distinct
+storage from locals declared
+after an earlier loop. Explicit
+caps override the directive.
+noteEnd
+
+entry test
+module loopLocalStorageAssertions
+; @pos 77 33
+call capped
+assertEqual 2
+assertEqual 1
+moduleEnd
+entryEnd
