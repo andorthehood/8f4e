@@ -1,3 +1,9 @@
+html,
+body {
+	/* Keep horizontal gestures from navigating away from either gallery. */
+	overscroll-behavior-x: contain;
+}
+
 .examples-page {
 	--examples-sidebar-width: min(400px, 30vw);
 	font-size: 14px;
