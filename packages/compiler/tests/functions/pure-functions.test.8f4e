@@ -115,7 +115,7 @@ constantsEnd
 note
 ; @pos 8 8
 ; @config runtime TestRuntime
-
+; @home top
 Pure functions should compile,
 expose stable signatures in
 snapshots, and run through

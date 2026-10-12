@@ -1,57 +1,57 @@
 8f4e/v1
 
+function packTriple
+; @pos 9 10
+param int left
+param int right
+param int last
+push left
+push 1000
+mul
+push right
+push 10
+mul
+add
+push last
+add
+functionEnd int
+
+constants env
+; @pos -67 17
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 2 2
 ; @config runtime TestRuntime
 
 describe if
 noteEnd
 
 entry test
-module ifIntAssertions
-; it produces integer values
-; from both branches
-int truthyInput 1
-push truthyInput
-if
+module multiResultIfAssertions
+; @pos 45 10
+; it preserves multiple produced
+; values in order
 push 1
-else
-push -1
-ifEnd int
-assertEqual 1
-
-int falsyInput 0
-push falsyInput
 if
-push 1
+push 10
+push 20
+push 3
 else
-push -1
-ifEnd int
-assertEqual -1
+push 30
+push 40
+push 5
+ifEnd int int int
+call packTriple
+assertEqual 10203
 moduleEnd
-
-module ifFloatAssertions
-; it produces float values from
-; both branches
-int truthyInput 1
-push truthyInput
-if
-push 1.1
-else
-push -1.1
-ifEnd float
-assertEqual 1.1
-
-int falsyInput 0
-push falsyInput
-if
-push 1.1
-else
-push -1.1
-ifEnd float
-assertEqual -1.1
-moduleEnd
-
 module ifVoidAssertions
+; @pos 45 29
 ; it performs side effects in
 ; either branch for void blocks
 int truthyInput 1
@@ -84,36 +84,48 @@ ifEnd
 push falsyOutput
 assertEqual -1
 moduleEnd
-
-module multiResultIfAssertions
-; it preserves multiple produced
-; values in order
-push 1
+module ifFloatAssertions
+; @pos 45 65
+; it produces float values from
+; both branches
+int truthyInput 1
+push truthyInput
 if
-push 10
-push 20
-push 3
+push 1.1
 else
-push 30
-push 40
-push 5
-ifEnd int int int
-call packTriple
-assertEqual 10203
+push -1.1
+ifEnd float
+assertEqual 1.1
+
+int falsyInput 0
+push falsyInput
+if
+push 1.1
+else
+push -1.1
+ifEnd float
+assertEqual -1.1
+moduleEnd
+module ifIntAssertions
+; @pos 45 89
+; it produces integer values
+; from both branches
+int truthyInput 1
+push truthyInput
+if
+push 1
+else
+push -1
+ifEnd int
+assertEqual 1
+
+int falsyInput 0
+push falsyInput
+if
+push 1
+else
+push -1
+ifEnd int
+assertEqual -1
 moduleEnd
 entryEnd
-
-function packTriple
-param int left
-param int right
-param int last
-push left
-push 1000
-mul
-push right
-push 10
-mul
-add
-push last
-add
-functionEnd int

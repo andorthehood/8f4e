@@ -1,6 +1,38 @@
 8f4e/v1
 
+function getFortyTwoForFunctionTest
+; @pos -15 11
+push 42
+functionEnd int
+
+function doubleForFunctionTest
+; @pos -10 43
+param int x
+push x
+push 2
+mul
+functionEnd int
+
+function addForFunctionTest
+; @pos -7 20
+param int x
+param int y
+push x
+push y
+add
+functionEnd int
+
+constants env
+; @pos -87 17
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 2 2
 ; @config runtime TestRuntime
 
 User-defined functions can
@@ -10,26 +42,14 @@ noteEnd
 
 entry test
 module functionReturnConstant
+; @pos 30 11
 ; A function without parameters
 ; can return a constant value.
 call getFortyTwoForFunctionTest
 assertEqual 42
 moduleEnd
-
-module functionWithParameter
-; A function with one parameter
-; should consume one stack
-; argument.
-push 5
-call doubleForFunctionTest
-assertEqual 10
-
-push 10
-call doubleForFunctionTest
-assertEqual 20
-moduleEnd
-
 module functionWithTwoParameters
+; @pos 30 20
 ; A function with two parameters
 ; should consume both stack
 ; arguments in order.
@@ -43,23 +63,17 @@ push 10
 call addForFunctionTest
 assertEqual 5
 moduleEnd
+module functionWithParameter
+; @pos 30 37
+; A function with one parameter
+; should consume one stack
+; argument.
+push 5
+call doubleForFunctionTest
+assertEqual 10
+
+push 10
+call doubleForFunctionTest
+assertEqual 20
+moduleEnd
 entryEnd
-
-function getFortyTwoForFunctionTest
-push 42
-functionEnd int
-
-function doubleForFunctionTest
-param int x
-push x
-push 2
-mul
-functionEnd int
-
-function addForFunctionTest
-param int x
-param int y
-push x
-push y
-add
-functionEnd int

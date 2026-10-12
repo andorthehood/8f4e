@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -77 18
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 1 1
 ; @config runtime TestRuntime
 
 Float64 arithmetic and
@@ -12,6 +22,7 @@ noteEnd
 
 entry test
 module float64ComparisonAssertions
+; @pos 16 13
 ; Float64 comparisons should
 ; produce integer booleans for
 ; matching operand widths.
@@ -45,8 +56,8 @@ push 1.25f64
 greaterOrEqualUnsigned
 assertEqual 1
 moduleEnd
-
 module float64SqrtAssertions
+; @pos 16 50
 ; sqrt should operate on float64
 ; values when given a float64
 ; operand.

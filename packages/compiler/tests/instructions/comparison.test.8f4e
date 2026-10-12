@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -85 18
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 1 1
 ; @config runtime TestRuntime
 
 Comparison instructions return
@@ -9,108 +19,8 @@ checked with assert.
 noteEnd
 
 entry test
-module equalAssertions
-; equal returns true for
-; matching integer operands and
-; false
-; otherwise.
-push 420
-push 420
-equal
-assertEqual 1
-
-push 420
-push -420
-equal
-assertEqual 0
-
-push 69
-push 96
-equal
-assertEqual 0
-
-push 0
-push 0
-equal
-assertEqual 1
-moduleEnd
-
-module equalToZeroAssertions
-; equalToZero returns true only
-; for zero.
-push 420
-equalToZero
-assertEqual 0
-
-push -69
-equalToZero
-assertEqual 0
-
-push 0
-equalToZero
-assertEqual 1
-moduleEnd
-
-module greaterThanIntAssertions
-; greaterThan compares signed
-; integers.
-push 420
-push 420
-greaterThan
-assertEqual 0
-
-push 420
-push 0
-greaterThan
-assertEqual 1
-
-push 0
-push 0
-greaterThan
-assertEqual 0
-
-push 0
-push 69
-greaterThan
-assertEqual 0
-
-push 0
-push -69
-greaterThan
-assertEqual 1
-moduleEnd
-
-module greaterThanFloatAssertions
-; greaterThan compares floats
-; and still returns an integer
-; boolean.
-push 420.1
-push 420.1
-greaterThan
-assertEqual 0
-
-push 420.1
-push 0.001
-greaterThan
-assertEqual 1
-
-push 0.001
-push 0.001
-greaterThan
-assertEqual 0
-
-push 0.001
-push 69.1
-greaterThan
-assertEqual 0
-
-push 0.001
-push -69.1
-greaterThan
-assertEqual 1
-moduleEnd
-
 module greaterOrEqualIntAssertions
+; @pos 15 11
 ; greaterOrEqual returns true
 ; for equal or greater signed
 ; integers.
@@ -139,8 +49,54 @@ push -69
 greaterOrEqual
 assertEqual 1
 moduleEnd
+module equalToZeroAssertions
+; @pos 15 43
+; equalToZero returns true only
+; for zero.
+push 420
+equalToZero
+assertEqual 0
 
+push -69
+equalToZero
+assertEqual 0
+
+push 0
+equalToZero
+assertEqual 1
+moduleEnd
+module greaterThanFloatAssertions
+; @pos 15 61
+; greaterThan compares floats
+; and still returns an integer
+; boolean.
+push 420.1
+push 420.1
+greaterThan
+assertEqual 0
+
+push 420.1
+push 0.001
+greaterThan
+assertEqual 1
+
+push 0.001
+push 0.001
+greaterThan
+assertEqual 0
+
+push 0.001
+push 69.1
+greaterThan
+assertEqual 0
+
+push 0.001
+push -69.1
+greaterThan
+assertEqual 1
+moduleEnd
 module greaterOrEqualFloatAssertions
+; @pos 60 11
 ; greaterOrEqual returns true
 ; for equal or greater floats.
 push 420.1
@@ -166,6 +122,61 @@ assertEqual 0
 push 0.001
 push -69.1
 greaterOrEqual
+assertEqual 1
+moduleEnd
+module equalAssertions
+; @pos 60 42
+; equal returns true for
+; matching integer operands and
+; false
+; otherwise.
+push 420
+push 420
+equal
+assertEqual 1
+
+push 420
+push -420
+equal
+assertEqual 0
+
+push 69
+push 96
+equal
+assertEqual 0
+
+push 0
+push 0
+equal
+assertEqual 1
+moduleEnd
+module greaterThanIntAssertions
+; @pos 60 70
+; greaterThan compares signed
+; integers.
+push 420
+push 420
+greaterThan
+assertEqual 0
+
+push 420
+push 0
+greaterThan
+assertEqual 1
+
+push 0
+push 0
+greaterThan
+assertEqual 0
+
+push 0
+push 69
+greaterThan
+assertEqual 0
+
+push 0
+push -69
+greaterThan
 assertEqual 1
 moduleEnd
 entryEnd

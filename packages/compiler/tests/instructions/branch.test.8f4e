@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -84 4
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 1 2
 ; @config runtime TestRuntime
 
 describe branch
@@ -8,6 +18,7 @@ noteEnd
 
 entry test
 module branchAssertions
+; @pos 14 10
 ; it exits the current block
 ; before later instructions run
 int output

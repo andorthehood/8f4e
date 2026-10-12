@@ -1,26 +1,7 @@
 8f4e/v1
 
-note
-; @config runtime TestRuntime
-
-Earlier references keep their
-bindings when a later local
-reuses the parameter name and
-changes its type. The abs
-instruction precedes both
-local declarations.
-noteEnd
-
-entry test
-module shadowedLocalAssertions
-call bindingSlots -11
-assertEqual 2.5
-assertEqual 7
-assertEqual 11
-moduleEnd
-entryEnd
-
 function bindingSlots
+; @pos 10 24
 #export
 param int value
 push value
@@ -34,3 +15,34 @@ push 2.5
 localSet value
 push value
 functionEnd int int float
+
+constants env
+; @pos -84 18
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
+note
+; @pos 5 2
+; @config runtime TestRuntime
+
+Earlier references keep their
+bindings when a later local
+reuses the parameter name and
+changes its type. The abs
+instruction precedes both
+local declarations.
+noteEnd
+
+entry test
+module shadowedLocalAssertions
+; @pos 55 27
+call bindingSlots -11
+assertEqual 2.5
+assertEqual 7
+assertEqual 11
+moduleEnd
+entryEnd

@@ -1,6 +1,36 @@
 8f4e/v1
 
+function multiplyExportedByOwnName
+; @pos 3 13
+#export
+param int a
+param int b
+push a
+push b
+mul
+functionEnd int
+
+function addForExportSnapshot
+; @pos 3 24
+#export addFromHost
+param int a
+param int b
+push a
+push b
+add
+functionEnd int
+
+constants env
+; @pos -59 20
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 3 1
 ; @config runtime TestRuntime
 
 Export directives are captured
@@ -12,6 +42,7 @@ noteEnd
 
 entry test
 module exportedFunctionAssertions
+; @pos 54 20
 push 2
 push 3
 call addForExportSnapshot
@@ -23,21 +54,3 @@ call multiplyExportedByOwnName
 assertEqual 20
 moduleEnd
 entryEnd
-
-function addForExportSnapshot
-#export addFromHost
-param int a
-param int b
-push a
-push b
-add
-functionEnd int
-
-function multiplyExportedByOwnName
-#export
-param int a
-param int b
-push a
-push b
-mul
-functionEnd int

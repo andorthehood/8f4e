@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -73 15
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 1 1
 ; @config runtime TestRuntime
 
 Float instruction behavior is
@@ -9,7 +19,25 @@ assertions.
 noteEnd
 
 entry test
+module floatDivAssertions
+; @pos 14 11
+; Float division checks an
+; explicit absolute error bound.
+push 420.001
+push 69.001
+ensureNonZero
+div
+push 6.0869
+; Absolute error is bounded
+; by 0.001.
+sub
+abs
+push 0.001
+lessOrEqual
+assert
+moduleEnd
 module floatMulAssertions
+; @pos 14 30
 ; Float multiplication is
 ; approximate because
 ; WebAssembly stores
@@ -26,25 +54,8 @@ push 0.001
 lessOrEqual
 assert
 moduleEnd
-
-module floatDivAssertions
-; Float division checks an
-; explicit absolute error bound.
-push 420.001
-push 69.001
-ensureNonZero
-div
-push 6.0869
-; Absolute error is bounded
-; by 0.001.
-sub
-abs
-push 0.001
-lessOrEqual
-assert
-moduleEnd
-
 module floatAbsAssertions
+; @pos 14 50
 ; abs returns positive float
 ; magnitudes.
 push 1.1
@@ -63,8 +74,28 @@ push 420.1
 abs
 assertEqual 420.1
 moduleEnd
+module castToIntAssertions
+; @pos 14 72
+; castToInt truncates toward
+; zero.
+push 1.1
+castToInt
+assertEqual 1
 
+push -69.69
+castToInt
+assertEqual -69
+
+push 0.001
+castToInt
+assertEqual 0
+
+push 420.99
+castToInt
+assertEqual 420
+moduleEnd
 module castToFloatAssertions
+; @pos 57 11
 ; castToFloat should preserve
 ; integer magnitude when
 ; converting
@@ -85,28 +116,8 @@ push 420
 castToFloat
 assertEqual 420.0
 moduleEnd
-
-module castToIntAssertions
-; castToInt truncates toward
-; zero.
-push 1.1
-castToInt
-assertEqual 1
-
-push -69.69
-castToInt
-assertEqual -69
-
-push 0.001
-castToInt
-assertEqual 0
-
-push 420.99
-castToInt
-assertEqual 420
-moduleEnd
-
 module roundAssertions
+; @pos 57 35
 ; round follows the compiler's
 ; current half-down behavior.
 push 4.1
@@ -129,8 +140,8 @@ push 4.9
 round
 assertEqual 5.0
 moduleEnd
-
 module sqrtAssertions
+; @pos 57 61
 ; sqrt returns approximate float
 ; square roots.
 push 4.001

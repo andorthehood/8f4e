@@ -1,6 +1,28 @@
 8f4e/v1
 
+function writeWithDirectivePrologue
+; @pos 5 28
+#export writeWithDirectivePrologue
+#impure
+#loopCap 4
+param int* address
+param int value
+push address
+push value
+store
+functionEnd
+
+constants env
+; @pos -78 21
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 3 2
 ; @config runtime TestRuntime
 
 Directive prologues are
@@ -10,6 +32,7 @@ noteEnd
 
 entry test
 module skippedDirectiveModule
+; @pos 11 16
 #skipExecution
 #loopCap 4
 int value 123
@@ -18,8 +41,8 @@ push &value
 push 999
 store
 moduleEnd
-
 module directiveAssertions
+; @pos 51 16
 int output 0
 
 push &skippedDirectiveModule:value
@@ -34,14 +57,3 @@ push output
 assertEqual 9
 moduleEnd
 entryEnd
-
-function writeWithDirectivePrologue
-#export writeWithDirectivePrologue
-#impure
-#loopCap 4
-param int* address
-param int value
-push address
-push value
-store
-functionEnd

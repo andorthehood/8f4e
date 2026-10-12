@@ -1,6 +1,16 @@
 8f4e/v1
 
+constants env
+; @pos -82 17
+; @favorite
+; Auto-generated environment constants
+; Changes will be overwritten
+
+
+constantsEnd
+
 note
+; @pos 2 2
 ; @config runtime TestRuntime
 
 Guard helpers normalize
@@ -10,7 +20,25 @@ values.
 noteEnd
 
 entry test
+module ensureNonZeroFloatAssertions
+; @pos 33 13
+; ensureNonZero leaves non-zero
+; floats unchanged and replaces
+; zero with 1.0.
+push 69.1
+ensureNonZero
+assertEqual 69.1
+
+push 0.0
+ensureNonZero
+assertEqual 1.0
+
+push -420.1
+ensureNonZero
+assertEqual -420.1
+moduleEnd
 module ensureNonZeroIntAssertions
+; @pos 33 32
 ; ensureNonZero leaves non-zero
 ; integers unchanged and
 ; replaces
@@ -26,22 +54,5 @@ assertEqual 1
 push -420
 ensureNonZero
 assertEqual -420
-moduleEnd
-
-module ensureNonZeroFloatAssertions
-; ensureNonZero leaves non-zero
-; floats unchanged and replaces
-; zero with 1.0.
-push 69.1
-ensureNonZero
-assertEqual 69.1
-
-push 0.0
-ensureNonZero
-assertEqual 1.0
-
-push -420.1
-ensureNonZero
-assertEqual -420.1
 moduleEnd
 entryEnd
