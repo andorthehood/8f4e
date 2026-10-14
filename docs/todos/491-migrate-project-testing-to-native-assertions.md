@@ -3,7 +3,7 @@ title: 'TODO: Migrate Project Testing to Native Assertions'
 priority: Medium
 effort: 2-4d
 created: 2026-10-09
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/1023
 status: Open
 completed: null
 ---

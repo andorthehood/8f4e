@@ -3,7 +3,7 @@ title: 'TODO: Unify project instruction syntax parsing'
 priority: Medium
 effort: 4-8h
 created: 2026-10-14
-issue: null
+issue: https://github.com/andorthehood/8f4e/issues/1026
 status: Open
 completed: null
 ---

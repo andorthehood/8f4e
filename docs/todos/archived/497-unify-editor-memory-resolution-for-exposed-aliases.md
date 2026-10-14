@@ -121,7 +121,7 @@ declaration's default through its canonical owner, including when the control is
 
 ## Related Items
 
-- [Compiler group memory alias resolution](../478-resolve-group-memory-exposures-through-alias-table.md) provides the
+- [Compiler group memory alias resolution](478-resolve-group-memory-exposures-through-alias-table.md) provides the
   existing compiler contract; this task integrates it throughout the editor.
 - [Index editor pointer targets by memory and address](../495-index-editor-pointer-targets-by-memory-and-address.md)
   concerns the same resolver. Coordinate lookup lifecycle and canonical pointer ownership without making that
