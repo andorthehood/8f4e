@@ -16,9 +16,8 @@ function resolvePlotDirectiveWidget(
 		return;
 	}
 
-	const moduleId = graphicData;
-	const startAddress = resolveMemoryIdentifier(state, moduleId, plotter.startAddressMemoryId);
-	const length = resolveElementCount(plotter.length, moduleId, state);
+	const startAddress = resolveMemoryIdentifier(state, graphicData, plotter.startAddressMemoryId);
+	const length = resolveElementCount(plotter.length, graphicData, state);
 	const valueSpec = startAddress ? resolveTypedValueSpec(startAddress) : undefined;
 
 	if (!startAddress || !valueSpec || !length) {

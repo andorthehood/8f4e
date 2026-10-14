@@ -35,9 +35,8 @@ function resolveBarsDirectiveWidget(
 		return;
 	}
 
-	const moduleId = graphicData;
-	const startAddress = resolveMemoryIdentifier(state, moduleId, bars.startAddressMemoryId);
-	const length = resolveElementCount(bars.length, moduleId, state);
+	const startAddress = resolveMemoryIdentifier(state, graphicData, bars.startAddressMemoryId);
+	const length = resolveElementCount(bars.length, graphicData, state);
 	const valueSpec = startAddress ? resolveTypedValueSpec(startAddress) : undefined;
 
 	if (!startAddress || !valueSpec || !length) {

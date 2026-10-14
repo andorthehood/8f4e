@@ -112,7 +112,7 @@ export function resolveDirectOrPointerTypedValueSpec(startAddress: MemoryIdentif
 
 export function resolveElementCount(
 	length: string | number | undefined,
-	moduleId: MemoryResolutionScope,
+	scope: MemoryResolutionScope,
 	state: State
 ): number | MemoryIdentifier | undefined {
 	if (typeof length === 'number') {
@@ -124,9 +124,9 @@ export function resolveElementCount(
 	}
 
 	if (hasElementCountPrefix(length)) {
-		const countedMemory = resolveMemoryIdentifier(state, moduleId, extractElementCountBase(length));
+		const countedMemory = resolveMemoryIdentifier(state, scope, extractElementCountBase(length));
 		return countedMemory?.memory.numberOfElements;
 	}
 
-	return resolveMemoryIdentifier(state, moduleId, length);
+	return resolveMemoryIdentifier(state, scope, length);
 }

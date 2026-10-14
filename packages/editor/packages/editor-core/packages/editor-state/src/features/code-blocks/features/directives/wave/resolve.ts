@@ -16,10 +16,9 @@ function resolveWaveDirectiveWidget(
 		return;
 	}
 
-	const moduleId = graphicData;
-	const startAddress = resolveMemoryIdentifier(state, moduleId, wave.startAddressMemoryId);
-	const length = resolveElementCount(wave.length, moduleId, state);
-	const pointer = resolveMemoryIdentifier(state, moduleId, wave.pointerMemoryId);
+	const startAddress = resolveMemoryIdentifier(state, graphicData, wave.startAddressMemoryId);
+	const length = resolveElementCount(wave.length, graphicData, state);
+	const pointer = resolveMemoryIdentifier(state, graphicData, wave.pointerMemoryId);
 	const valueSpec = startAddress ? resolveTypedValueSpec(startAddress) : undefined;
 
 	if (!startAddress || !length || !valueSpec || valueSpec.elementByteSize <= 0) {

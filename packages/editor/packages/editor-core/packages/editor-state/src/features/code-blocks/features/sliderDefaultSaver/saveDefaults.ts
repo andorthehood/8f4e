@@ -189,7 +189,6 @@ export function getControlDefaultEdits(state: State, source: CodeBlockGraphicDat
 			else if (block.blockType === 'module') owners.set(getCodeBlockModuleId(block), block);
 		}
 	};
-	collectOwners([source]);
 	collectOwners(state.codeBlockRendering.rootCodeBlocks);
 
 	const updates = new Map<CodeBlockGraphicData, string[]>();

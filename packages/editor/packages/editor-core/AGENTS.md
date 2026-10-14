@@ -3,8 +3,6 @@
 ## Package Scope & Layout
 - Path: `packages/editor/packages/editor-core`; source in `src/`, output in `dist/`.
 - Alias: `@8f4e/editor-core`. Consumed by the default editor composition and runtime definitions.
-- Shared memory-target resolution lives in `@8f4e/editor-state/memory`. Widgets, connectors, renderers, and environment
-  bindings use this entry; the editor-state build emits it alongside the main state entry without initializing effects.
 
 ## Build, Bundle, Dev
 - From root: `npx nx run @8f4e/editor-core:build|test|typecheck`.

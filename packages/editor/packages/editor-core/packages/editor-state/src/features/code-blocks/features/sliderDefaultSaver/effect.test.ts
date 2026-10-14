@@ -73,6 +73,7 @@ describe('slider default saver', () => {
 			},
 		];
 
+		mockState.codeBlockRendering.rootCodeBlocks.push(codeBlock);
 		saveSliderValuesToCodeCallback?.({ codeBlock });
 
 		expect(codeBlock.code).toEqual([
@@ -110,6 +111,7 @@ describe('slider default saver', () => {
 			[8, 2],
 		]);
 		mockState.callbacks.getWordFromMemory = address => memory.get(address) ?? 0;
+		mockState.codeBlockRendering.rootCodeBlocks.push(codeBlock);
 		mockState.codeBlockRendering.selectedCodeBlock = codeBlock;
 		sliderDefaultSaver(mockStore as any, mockEvents);
 

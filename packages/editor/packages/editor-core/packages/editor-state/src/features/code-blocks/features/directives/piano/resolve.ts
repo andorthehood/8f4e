@@ -73,12 +73,11 @@ function resolvePianoDirectiveWidget(
 	if (!graphicData.name) {
 		return;
 	}
-	const moduleId = graphicData;
 
-	const memoryIdentifierKeysList = resolveMemoryIdentifier(state, moduleId, pianoKeyboard.pressedKeysListMemoryId);
+	const memoryIdentifierKeysList = resolveMemoryIdentifier(state, graphicData, pianoKeyboard.pressedKeysListMemoryId);
 	const memoryIdentifierNumberOfKeys = resolveMemoryIdentifier(
 		state,
-		moduleId,
+		graphicData,
 		pianoKeyboard.pressedNumberOfKeysMemoryId
 	);
 

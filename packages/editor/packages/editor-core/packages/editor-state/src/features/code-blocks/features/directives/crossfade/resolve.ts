@@ -15,9 +15,8 @@ function resolveCrossfadeDirectiveWidget(
 		return;
 	}
 
-	const moduleId = graphicData;
-	const leftMemory = resolveMemoryIdentifier(state, moduleId, crossfade.leftMemoryId);
-	const rightMemory = resolveMemoryIdentifier(state, moduleId, crossfade.rightMemoryId);
+	const leftMemory = resolveMemoryIdentifier(state, graphicData, crossfade.leftMemoryId);
+	const rightMemory = resolveMemoryIdentifier(state, graphicData, crossfade.rightMemoryId);
 
 	if (!leftMemory || !rightMemory) {
 		return;
