@@ -1,0 +1,30 @@
+{
+  "code": 76,
+  "context": {
+    "projectGroupPath": "synth",
+  },
+  "line": {
+    "arguments": [
+      {
+        "isEndAddress": false,
+        "referenceKind": "memory-reference",
+        "scope": "local",
+        "targetMemoryId": "anotherName",
+        "type": "identifier",
+        "value": "&anotherName",
+      },
+      {
+        "isEndAddress": false,
+        "referenceKind": "intermodular-reference",
+        "scope": "intermodule",
+        "targetMemoryId": "output",
+        "targetModuleId": "source",
+        "type": "identifier",
+        "value": "&source:output",
+      },
+    ],
+    "instruction": "bind",
+    "lineNumber": 4,
+  },
+  "message": "Multiple bindings target the same pointer: anotherName. (76)",
+}

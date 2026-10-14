@@ -46,9 +46,10 @@ describe('ProjectObjectModel', () => {
 			entry: { opener: 'entry', closer: 'entryEnd' },
 			group: { opener: 'group', closer: 'groupEnd' },
 			expose: 'expose',
+			bind: 'bind',
 			pass: 'pass',
 		});
-		expect(projectInstructionNames).toEqual(['entry', 'entryEnd', 'group', 'groupEnd', 'expose', 'pass']);
+		expect(projectInstructionNames).toEqual(['entry', 'entryEnd', 'group', 'groupEnd', 'expose', 'bind', 'pass']);
 	});
 
 	it('resolves structured project memory aliases', () => {

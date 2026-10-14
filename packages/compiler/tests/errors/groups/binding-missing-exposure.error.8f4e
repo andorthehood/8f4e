@@ -1,0 +1,12 @@
+8f4e/v1
+entry main
+module source
+int output
+moduleEnd
+group synth
+bind &input &source:output
+module processor
+int* input
+moduleEnd
+groupEnd
+entryEnd

@@ -8,6 +8,31 @@ async function readProject(relativePath: string) {
 }
 
 describe('group compiler metadata and cache', () => {
+	it('re-resolves group bindings without changing cached declaration source', async () => {
+		const project = await readProject('./groups/pointer-bindings.test.8f4e');
+		const group = project.groups[0]!;
+		const first = await compileProject(project, { disableSharedMemory: true });
+		const previousHits = first.cache.ast.stats.hits;
+		const bindingRow = group.code.findIndex(line => line.startsWith('bind '));
+		group.code[bindingRow] = 'bind &input &source:alternate';
+
+		const second = await compileProject(project, { disableSharedMemory: true, cache: first.cache });
+		expect(second.cache.ast.stats.hits).toBeGreaterThan(previousHits);
+		expect(second.memoryDefaultsByModuleId['synth/processor']!.input!.value).toBe(
+			second.memoryPlan.modules.source!.memory.alternate!.byteAddress
+		);
+		expect(first.pointerMetadataByModuleId['synth/processor']!.input!.pointeeElementCount).toBe(3);
+		expect(second.pointerMetadataByModuleId['synth/processor']!.input!.pointeeElementCount).toBe(2);
+		expect(group.modules.find(module => module.code[0] === 'module processor')!.code).toContain('int* input &fallback');
+
+		group.code.splice(bindingRow, 1);
+		const unbound = await compileProject(project, { disableSharedMemory: true, cache: second.cache });
+		expect(unbound.memoryDefaultsByModuleId['synth/processor']!.input!.value).toBe(
+			unbound.memoryPlan.modules['synth/processor']!.memory.fallback!.byteAddress
+		);
+		expect(unbound.pointerMetadataByModuleId['synth/processor']!.input!.pointeeElementCount).toBe(2);
+	});
+
 	it('re-resolves passed namespaces when cached child ASTs are unchanged', async () => {
 		const project = await readProject('./groups/constant-namespace-passes.test.8f4e');
 		const first = await compileProject(project, { disableSharedMemory: true });

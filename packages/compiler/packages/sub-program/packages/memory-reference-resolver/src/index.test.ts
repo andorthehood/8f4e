@@ -162,6 +162,7 @@ describe('resolveMemoryReferences', () => {
 			},
 			memoryPlan,
 			memoryAliases: new Map(),
+			projectMemoryBindingScopes: [],
 			constantReferences: noConstantReferences(),
 		});
 
@@ -242,6 +243,7 @@ describe('resolveMemoryReferences', () => {
 			},
 			memoryPlan,
 			memoryAliases: new Map(),
+			projectMemoryBindingScopes: [],
 			constantReferences: noConstantReferences(),
 		});
 
@@ -291,6 +293,7 @@ describe('resolveMemoryReferences', () => {
 			},
 			memoryPlan,
 			memoryAliases: new Map(),
+			projectMemoryBindingScopes: [],
 			constantReferences: {
 				prototypes: [],
 				modules: [
@@ -371,6 +374,7 @@ describe('resolveMemoryReferences', () => {
 			ast: { prototypes: [], modules: [ast], constants: [], functions: [] },
 			memoryPlan,
 			memoryAliases,
+			projectMemoryBindingScopes: [],
 			constantReferences: noConstantReferences(),
 		});
 

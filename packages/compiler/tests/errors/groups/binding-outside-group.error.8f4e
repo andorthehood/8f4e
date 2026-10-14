@@ -1,0 +1,7 @@
+8f4e/v1
+bind &input &source:output
+entry main
+module source
+int output
+moduleEnd
+entryEnd

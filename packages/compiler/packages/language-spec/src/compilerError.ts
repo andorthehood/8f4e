@@ -146,6 +146,22 @@ export function getError(
 				line,
 				context,
 			};
+		case ErrorCode.GROUP_MEMORY_BINDING_OUTSIDE_GROUP:
+			return { code, message: `bind can only be used at group level. (${code})`, line, context };
+		case ErrorCode.INVALID_GROUP_MEMORY_BINDING_TARGET:
+			return {
+				code,
+				message: `Binding destination must be an exposed scalar pointer${details?.identifier ? `: ${details.identifier}` : ''}. (${code})`,
+				line,
+				context,
+			};
+		case ErrorCode.DUPLICATE_GROUP_MEMORY_BINDING:
+			return {
+				code,
+				message: `Multiple bindings target the same pointer${details?.identifier ? `: ${details.identifier}` : ''}. (${code})`,
+				line,
+				context,
+			};
 		case ErrorCode.CONSTANT_RESOLUTION_FAILED:
 			return {
 				code,

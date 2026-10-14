@@ -1,0 +1,15 @@
+8f4e/v1
+entry main
+module source
+int output
+moduleEnd
+group synth
+expose int* input &processor:input
+expose int* anotherName &processor:input
+bind &input &source:output
+bind &anotherName &source:output
+module processor
+int* input
+moduleEnd
+groupEnd
+entryEnd

@@ -228,6 +228,7 @@ export function compileSubProgram(program: ComposedProgram, options: CompileOpti
 		ast: subProgramAst,
 		memoryPlan,
 		memoryAliases: program.memoryAliases,
+		projectMemoryBindingScopes: program.projectMemoryBindingScopes,
 		constantReferences: constantResolution.references,
 	});
 	const prototypeShapesById = indexPrototypeShapes(subProgramAst.prototypes);

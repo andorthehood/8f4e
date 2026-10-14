@@ -1,0 +1,11 @@
+{
+  "code": 11,
+  "context": {
+    "projectBlockId": 3,
+  },
+  "line": {
+    "instruction": "bind",
+    "lineNumber": 2,
+  },
+  "message": "Unrecognised instruction.",
+}

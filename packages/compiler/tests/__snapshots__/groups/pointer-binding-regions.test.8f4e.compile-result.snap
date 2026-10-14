@@ -1,0 +1,242 @@
+{
+  "functionAst": {},
+  "functionOverview": {},
+  "moduleAst": {
+    "reader/processor": {
+      "id": "reader/processor",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "reader/processor",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "input",
+            },
+          ],
+          "instruction": "int8*",
+        },
+        {
+          "arguments": [
+            {
+              "dereferenceDepth": 1,
+              "referenceKind": "memory-pointer",
+              "scope": "local",
+              "targetMemoryId": "input",
+              "type": "identifier",
+              "value": "*input",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 11,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-count",
+              "scope": "local",
+              "targetMemoryId": "input",
+              "type": "identifier",
+              "value": "count(*input)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [
+            {
+              "isPointee": true,
+              "referenceKind": "pointee-element-word-size",
+              "scope": "local",
+              "targetMemoryId": "input",
+              "type": "identifier",
+              "value": "sizeof(*input)",
+            },
+          ],
+          "instruction": "push",
+        },
+        {
+          "arguments": [
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 1,
+            },
+          ],
+          "instruction": "assertEqual",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+    "source": {
+      "id": "source",
+      "lines": [
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "source",
+            },
+          ],
+          "instruction": "module",
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "sampleMemory",
+            },
+          ],
+          "instruction": "#region",
+          "isBlockPrologue": true,
+        },
+        {
+          "arguments": [
+            {
+              "referenceKind": "plain",
+              "scope": "local",
+              "type": "identifier",
+              "value": "values",
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 4,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 11,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 12,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 13,
+            },
+            {
+              "isInteger": true,
+              "type": "literal",
+              "value": 14,
+            },
+          ],
+          "instruction": "int8[]",
+        },
+        {
+          "arguments": [],
+          "instruction": "moduleEnd",
+        },
+      ],
+      "type": "module",
+    },
+  },
+  "moduleMemory": {
+    "reader/processor": {
+      "memory": {
+        "input": {
+          "byteAddress": 4,
+          "default": 4,
+          "elementWordSize": 4,
+          "hasExplicitDefault": true,
+          "id": "input",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 0,
+          "numberOfElements": 1,
+          "pointeeBaseType": "int8",
+          "pointeeElementCount": 4,
+          "pointeeMemoryIndex": 1,
+          "pointeeMemoryRegionName": "sampleMemory",
+          "pointerDepth": 1,
+          "type": "int8*",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+    "source": {
+      "memory": {
+        "values": {
+          "byteAddress": 4,
+          "default": {
+            "0": 11,
+            "1": 12,
+            "2": 13,
+            "3": 14,
+          },
+          "elementWordSize": 1,
+          "hasExplicitDefault": true,
+          "id": "values",
+          "isInteger": true,
+          "isUnsigned": false,
+          "memoryIndex": 1,
+          "memoryRegionName": "sampleMemory",
+          "numberOfElements": 4,
+          "pointerDepth": 0,
+          "type": "int8",
+          "wordAlignedAddress": 1,
+          "wordAlignedSize": 1,
+        },
+      },
+    },
+  },
+  "overview": {
+    "compiledFunctions": [],
+    "compiledModules": [
+      "reader/processor",
+      "source",
+    ],
+    "requiredMemoryBytes": 8,
+    "requiredMemoryBytesByRegion": {
+      "sampleMemory": 8,
+    },
+    "wasmExports": [
+      "initDefaults",
+      "main",
+      "test",
+    ],
+  },
+}

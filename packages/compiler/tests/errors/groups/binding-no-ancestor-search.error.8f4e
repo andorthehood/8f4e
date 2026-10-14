@@ -1,0 +1,15 @@
+8f4e/v1
+entry main
+module source
+int output
+moduleEnd
+group outer
+group inner
+expose int* input &processor:input
+bind &input &source:output
+module processor
+int* input
+moduleEnd
+groupEnd
+groupEnd
+entryEnd

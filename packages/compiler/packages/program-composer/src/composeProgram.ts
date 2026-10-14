@@ -8,6 +8,7 @@ import {
 	type IncludedFunctionBindings,
 	type ProjectConstantNamespacePassLine,
 	type ProjectGroupPath,
+	type ProjectMemoryBindingLine,
 	type ProjectObjectModel,
 	ROOT_PROJECT_GROUP_PATH,
 	type ValidatedAST,
@@ -16,7 +17,11 @@ import {
 	type ValidatedModuleAST,
 	type ValidatedPrototypeAST,
 } from '@8f4e/language-spec';
-import { parseProjectConstantNamespacePassLine, SyntaxRulesError } from '@8f4e/tokenizer';
+import {
+	parseProjectConstantNamespacePassLine,
+	parseProjectMemoryBindingLine,
+	SyntaxRulesError,
+} from '@8f4e/tokenizer';
 import { compileSourceToAST, createCompilerSource } from './compilerSource';
 import { createCompilerCache } from './createCompilerCache';
 import { qualifyAst } from './qualifyAst';
@@ -66,6 +71,21 @@ function appendMemoryExposureAliases(
 	program.memoryAliases = aliases;
 }
 
+function collectProjectMemoryBindings(
+	code: readonly string[],
+	projectPath: ProjectGroupPath
+): ProjectMemoryBindingLine[] {
+	return code.flatMap((line, index) => {
+		if (!/^\s*bind(?:\s|$)/.test(line)) return [];
+		try {
+			return [parseProjectMemoryBindingLine(line, index)];
+		} catch (error) {
+			if (error instanceof SyntaxRulesError) error.context = { ...error.context, projectGroupPath: projectPath };
+			throw error;
+		}
+	});
+}
+
 function renameIncludedFunction(ast: ValidatedFunctionAST, bindings: IncludedFunctionBindings): ValidatedFunctionAST {
 	const functionLine: FunctionLine = {
 		...ast.functionLine,
@@ -97,6 +117,14 @@ function appendUnit(
 	program: ComposedProgram,
 	includedFunctionsByProjectPath: IncludedFunctionsByProjectGroupPath
 ): void {
+	const memoryBindings = collectProjectMemoryBindings(project.code, projectPath);
+	if (memoryBindings.length > 0) {
+		program.projectMemoryBindingScopes.push({
+			groupPath: projectPath,
+			...(parentProjectPath !== undefined ? { parentGroupPath: parentProjectPath } : {}),
+			bindings: memoryBindings,
+		});
+	}
 	const constantNamespacePasses = collectProjectConstantNamespacePasses(project.code, projectPath);
 	if (constantNamespacePasses.length > 0) {
 		program.projectConstantNamespaceScopes.push({
@@ -206,6 +234,7 @@ export function composeProgram(
 		memoryExposures: [],
 		memoryAliases: new Map(),
 		projectConstantNamespaceScopes: [],
+		projectMemoryBindingScopes: [],
 		cache,
 	};
 

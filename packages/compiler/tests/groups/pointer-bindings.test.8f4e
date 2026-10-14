@@ -1,0 +1,76 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+
+Bindings initialize exposed pointers before child modules execute. Nested bindings use the immediate parent,
+and sibling group exposures can supply source addresses. Pointers inherited from a shape can also be bound.
+Public exposure types remain independent of storage.
+noteEnd
+
+entry test
+module source
+int[] output 3 41 42 43
+int[] alternate 2 91 92
+moduleEnd
+
+group synth
+expose float* input &processor:input
+bind &input &source:output ; host wiring
+
+module source
+int output 999
+moduleEnd
+
+module processor
+int* input &fallback
+int[] fallback 2 7 8
+
+push *input
+assertEqual 41
+push count(*input)
+assertEqual 3
+push sizeof(*input)
+assertEqual 4
+moduleEnd
+groupEnd
+
+group outer
+module source
+int output 17
+moduleEnd
+
+group inner
+expose int* input &processor:input
+bind &input &source:output
+
+module processor
+int* input
+push *input
+assertEqual 17
+moduleEnd
+groupEnd
+groupEnd
+
+group signal
+expose int output &data:value
+module data
+int value 55
+moduleEnd
+groupEnd
+
+group consumer
+expose int* input &processor:input
+bind &input &signal:output
+
+prototype state
+int* input
+prototypeEnd
+
+module processor
+shape state
+push *input
+assertEqual 55
+moduleEnd
+groupEnd
+entryEnd

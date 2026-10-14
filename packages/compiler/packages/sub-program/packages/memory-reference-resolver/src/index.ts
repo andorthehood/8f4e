@@ -18,6 +18,7 @@ import type {
 	ModuleAST,
 	ParamLine,
 	ProjectMemoryAliasLookup,
+	ProjectMemoryBindingScope,
 	PrototypeAST,
 	ResolvedArgumentLiteral,
 	ValidatedConstantsAST,
@@ -32,6 +33,7 @@ import type {
 	MemoryReferencePointerMetadataByModuleId,
 	MemoryReferenceResolutionContext,
 } from './resolveMemoryExpressionOperand';
+import { resolveProjectMemoryBindings } from './resolveProjectMemoryBindings';
 import { tryResolveValueArgument } from './tryResolveValueArgument';
 
 export type {
@@ -61,6 +63,7 @@ export interface ResolveMemoryReferencesInput<
 	ast: MemoryReferenceSubProgramAST<TPrototype, TModule, TConstants, TFunction>;
 	memoryPlan: MemoryLayoutPlan;
 	memoryAliases: ProjectMemoryAliasLookup;
+	projectMemoryBindingScopes: readonly ProjectMemoryBindingScope[];
 	constantReferences: {
 		prototypes: readonly ConstantResolutionBlockFacts[];
 		modules: readonly ConstantResolutionBlockFacts[];
@@ -237,8 +240,15 @@ function resolveMemoryReferenceArgument(
 
 function resolveMemoryReferenceLineFacts(
 	line: CompilerASTLine,
-	context: MemoryReferenceResolutionContext
+	context: MemoryReferenceResolutionContext,
+	boundDefaults: ReadonlyMap<string, Const> | undefined
 ): MemoryReferenceResolutionLineFacts | undefined {
+	const firstArgument = line.arguments[0];
+	const binding =
+		isScalarMemoryDeclarationLine(line) && firstArgument?.type === ArgumentType.IDENTIFIER
+			? boundDefaults?.get(firstArgument.value)
+			: undefined;
+	if (binding) return { arguments: [firstArgument!, resolvedValueToLiteral(binding)] };
 	let changed = false;
 	const nextArguments = line.arguments.map(argument => {
 		const resolved = resolveMemoryReferenceArgument(argument, context);
@@ -267,7 +277,8 @@ function resolveMemoryReferencesInAst(
 	memoryPlan: MemoryLayoutPlan,
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
 	memoryAliases: ProjectMemoryAliasLookup,
-	constantReferences: ConstantResolutionBlockFacts | undefined
+	constantReferences: ConstantResolutionBlockFacts | undefined,
+	boundDefaults: ReadonlyMap<string, Const> | undefined
 ): MemoryReferenceResolutionBlockFacts {
 	const context =
 		ast.type === 'module'
@@ -275,7 +286,7 @@ function resolveMemoryReferencesInAst(
 			: createSubProgramResolutionContext(memoryPlan, pointerMetadata, memoryAliases);
 	const lineFacts = ast.lines.map((line, lineIndex) => {
 		const constantResolvedLine = applyConstantFacts(line, constantReferences?.lineFacts[lineIndex]);
-		const memoryReferenceFacts = resolveMemoryReferenceLineFacts(constantResolvedLine, context);
+		const memoryReferenceFacts = resolveMemoryReferenceLineFacts(constantResolvedLine, context, boundDefaults);
 		const resolvedLine = applyMemoryReferenceFacts(constantResolvedLine, memoryReferenceFacts);
 		if (ast.type === 'function') {
 			collectFunctionLocal(resolvedLine, context.locals);
@@ -293,12 +304,13 @@ function resolveDeclarationSourceReferences(
 	module: PlannedMemoryModule,
 	memoryPlan: MemoryLayoutPlan,
 	pointerMetadata: MemoryReferencePointerMetadataByModuleId,
-	memoryAliases: ProjectMemoryAliasLookup
+	memoryAliases: ProjectMemoryAliasLookup,
+	boundDefaults: ReadonlyMap<string, Const> | undefined
 ): MemoryReferenceResolutionBlockFacts {
 	pointerMetadata[module.id] = pointerMetadata[module.id] ?? {};
 	const context = createModuleResolutionContext(memoryPlan, pointerMetadata, memoryAliases, module);
 	const lineFacts = module.declarationSources.map(({ line }) => {
-		const memoryReferenceFacts = resolveMemoryReferenceLineFacts(line, context);
+		const memoryReferenceFacts = resolveMemoryReferenceLineFacts(line, context, boundDefaults);
 		updatePointerMemoryMetadata(applyMemoryReferenceFacts(line, memoryReferenceFacts), context);
 		return memoryReferenceFacts;
 	});
@@ -320,13 +332,18 @@ export function resolveMemoryReferences<
 >(input: ResolveMemoryReferencesInput<TPrototype, TModule, TConstants, TFunction>): ResolveMemoryReferencesResult {
 	const pointerMetadata: Record<string, MemoryPointerMetadataMap> = {};
 	const declarationSourcesByModuleId: Record<string, MemoryReferenceResolutionBlockFacts> = {};
+	const boundDefaults = resolveProjectMemoryBindings(
+		input.projectMemoryBindingScopes,
+		createSubProgramResolutionContext(input.memoryPlan, pointerMetadata, input.memoryAliases)
+	);
 
 	for (const plannedModule of input.memoryPlan.moduleList) {
 		declarationSourcesByModuleId[plannedModule.id] = resolveDeclarationSourceReferences(
 			plannedModule,
 			input.memoryPlan,
 			pointerMetadata,
-			input.memoryAliases
+			input.memoryAliases,
+			boundDefaults.get(plannedModule.id)
 		);
 	}
 
@@ -338,7 +355,8 @@ export function resolveMemoryReferences<
 					input.memoryPlan,
 					pointerMetadata,
 					input.memoryAliases,
-					input.constantReferences.prototypes[index]
+					input.constantReferences.prototypes[index],
+					undefined
 				)
 			),
 			modules: input.ast.modules.map((ast, index) =>
@@ -347,7 +365,8 @@ export function resolveMemoryReferences<
 					input.memoryPlan,
 					pointerMetadata,
 					input.memoryAliases,
-					input.constantReferences.modules[index]
+					input.constantReferences.modules[index],
+					boundDefaults.get(ast.id)
 				)
 			),
 			constants: input.ast.constants.map((ast, index) =>
@@ -356,7 +375,8 @@ export function resolveMemoryReferences<
 					input.memoryPlan,
 					pointerMetadata,
 					input.memoryAliases,
-					input.constantReferences.constants[index]
+					input.constantReferences.constants[index],
+					undefined
 				)
 			),
 			functions: input.ast.functions.map((ast, index) =>
@@ -365,7 +385,8 @@ export function resolveMemoryReferences<
 					input.memoryPlan,
 					pointerMetadata,
 					input.memoryAliases,
-					input.constantReferences.functions[index]
+					input.constantReferences.functions[index],
+					undefined
 				)
 			),
 			declarationSourcesByModuleId,

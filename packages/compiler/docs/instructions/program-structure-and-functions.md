@@ -10,6 +10,52 @@ Block instructions define the structure of your program. See detailed documentat
 
 ## Other Instructions
 
+### bind
+
+A group contains modules under its own project scope, and an `expose` line gives a module's memory item a public name.
+Inside a group, `bind` initializes one of these exposed pointers with the address of memory in the group's immediate
+parent project:
+
+```8f4e
+entry main
+module source
+float output 0.5
+moduleEnd
+
+group synth
+expose float* input &processor:input
+bind &input &source:output
+
+module processor
+float* input
+push *input
+drop
+moduleEnd
+groupEnd
+entryEnd
+```
+
+The syntax is `bind &<exposed-pointer> &<module>:<memory>`. The destination name resolves against this group's
+exposures. The source module or group name resolves in the immediate parent project; a source group can supply one
+of its exposed memory items. For example, a binding inside `audio/synth` resolves `&source:output` to
+`audio/source:output`, even if `synth` also contains its own module named `source`.
+
+Binding sources use a single module/group name, without a canonical path or an ancestor search. Each nested group
+therefore has the same immediate-parent rule. Both operands must be start-address references to named memory items;
+literal addresses, expressions, indexed slots, and end addresses are not accepted.
+
+The destination must expose a scalar pointer declaration. Pointer arrays cannot be bound as a whole. Validation uses
+the backing declaration; the public exposure type remains independent of that declaration's type.
+
+A binding overrides the backing pointer's declaration default. An unbound pointer keeps its normal default. Two
+bindings to the same backing pointer are an error, including when different exposed names target that pointer.
+
+Bindings participate in `initDefaults()` and are ready before any entry's modules execute. They also provide the
+source's memory region and pointee element count to pointer analysis. Source declarations remain unchanged, and a
+binding allocates no additional memory.
+
+`bind` is valid only at group level. Root project scope, entry scope, and module/function bodies cannot contain bindings.
+
 ### call
 
 The call instruction invokes a function by name, consuming its arguments from the stack and pushing its return values.

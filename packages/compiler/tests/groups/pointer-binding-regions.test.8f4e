@@ -1,0 +1,30 @@
+8f4e/v1
+
+note
+; @config runtime TestRuntime
+; @memoryRegions sampleMemory
+
+A group binding carries its source memory region and pointee element count into compilation.
+noteEnd
+
+entry test
+module source
+#region sampleMemory
+int8[] values 4 11 12 13 14
+moduleEnd
+
+group reader
+expose int8* input &processor:input
+bind &input &source:values
+
+module processor
+int8* input
+push *input
+assertEqual 11
+push count(*input)
+assertEqual 4
+push sizeof(*input)
+assertEqual 1
+moduleEnd
+groupEnd
+entryEnd

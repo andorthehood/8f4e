@@ -6,6 +6,7 @@ export const projectInstructions = {
 	entry: { opener: 'entry', closer: 'entryEnd' },
 	group: { opener: 'group', closer: 'groupEnd' },
 	expose: 'expose',
+	bind: 'bind',
 	pass: 'pass',
 } as const;
 
@@ -15,6 +16,7 @@ export const projectInstructionNames = [
 	projectInstructions.group.opener,
 	projectInstructions.group.closer,
 	projectInstructions.expose,
+	projectInstructions.bind,
 	projectInstructions.pass,
 ] as const;
 
@@ -47,6 +49,23 @@ export interface ProjectConstantNamespaceScope {
 	groupPath: ProjectGroupPath;
 	parentGroupPath?: ProjectGroupPath;
 	passes: ProjectConstantNamespacePassLine[];
+}
+
+/** A group-local exposed pointer initialized from an immediate-parent memory address. */
+export interface ProjectMemoryBindingLine {
+	lineNumber: number;
+	instruction: 'bind';
+	arguments: [
+		Extract<ArgumentIdentifier, { referenceKind: 'memory-reference' }>,
+		Extract<ArgumentIdentifier, { referenceKind: 'intermodular-reference' }>,
+	];
+}
+
+/** Source bindings and the two project scopes used to resolve their endpoints. */
+export interface ProjectMemoryBindingScope {
+	groupPath: ProjectGroupPath;
+	parentGroupPath?: ProjectGroupPath;
+	bindings: ProjectMemoryBindingLine[];
 }
 
 /** Canonical path of the root project. */

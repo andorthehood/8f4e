@@ -1,0 +1,11 @@
+{
+  "code": 18,
+  "context": {
+    "projectGroupPath": "synth",
+  },
+  "line": {
+    "instruction": "bind",
+    "lineNumber": 1,
+  },
+  "message": "Expected "bind &<exposed-pointer> &<module>:<memory>".",
+}
